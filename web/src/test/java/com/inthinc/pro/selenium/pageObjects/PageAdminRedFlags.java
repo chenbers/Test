@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminRedFlags;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminRedFlagsEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.RedFlagColumns;
 
 public class PageAdminRedFlags extends AdminTables {
 
@@ -22,13 +22,13 @@ public class PageAdminRedFlags extends AdminTables {
     public class PageAdminRedFlagssLinks extends AdminTablesLinks {
         
         public TextTableLink entryRedFlagName(){
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, AdminRedFlagsEntries.RED_FLAG);
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, RedFlagColumns.RED_FLAG);
         }
     }
 
     public class PageAdminRedFlagssTexts extends AdminTablesTexts {
         
-        public TextTable tableEntry(AdminRedFlagsEntries column){
+        public TextTable tableEntry(RedFlagColumns column){
             return new TextTable(AdminBarEnum.TABLE_ENTRIES, column);
         }
         
@@ -41,7 +41,7 @@ public class PageAdminRedFlags extends AdminTables {
 
     public class PageAdminRedFlagssButtons extends AdminTablesButtons {
         
-        public TextButton sortByColumn(AdminRedFlagsEntries column){
+        public TextButton sortByColumn(RedFlagColumns column){
             return new SortHeader(AdminBarEnum.TABLE_ENTRIES, column);
         }
         

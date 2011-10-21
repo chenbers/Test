@@ -1,62 +1,76 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class AdminTables {
     
-    public enum AdminDevicesEntries implements TextEnum {
-        DEVICE_ID("name"),
-        VEHICLE_ID("vehicle"),
-        IMEI("imei"),
-        SIM_CARD("sim"),
-        SERIAL_NUMBER("serialNumber"),
-        DEVICE_PHONE("phone"),
-        STATUS("status"),
-        MCM_ID("mcmid"),
-        ALTERNATE_IMEI("altimei"),
-        PRODUCT("productVersion"),
+    public enum DeviceColumns implements TextEnum, IndexEnum {
+        DEVICE_ID("name", 1),
+        VEHICLE_ID("vehicle", 2),
+        IMEI("imei", 3),
+        SIM_CARD("sim", 4),
+        SERIAL_NUMBER("serialNumber", 5),
+        DEVICE_PHONE("phone", 6),
+        STATUS("status", 7),
+        MCM_ID("mcmid", 8),
+        ALTERNATE_IMEI("altimei", 9),
+        PRODUCT("productVersion", 10),
 
         ;
 
         private String text;
+        private Integer index;
 
-        private AdminDevicesEntries(String text) {
+        private DeviceColumns(String text, int index) {
             this.text = text;
+            this.index = index;
         }
 
         @Override
         public String getText() {
             return text;
         }
+        
+        @Override
+        public Integer getIndex(){
+            return index;
+        }
     }
 
-    public enum AdminVehiclesEntries implements TextEnum {
-        VEHICLE_ID("name"),
-        DRIVER("fullName"),
-        TEAM("group"),
-        YEAR("year"),
-        MAKE("make"),
-        MODEL("model"),
-        COLOR("color"),
-        ZONE_TYPE("vtype"),
-        VIN("vin"),
-        WEIGHT("weight"),
-        LICENSE_NUMBER("license"),
-        STATE("state"),
-        STATUS("status"),
-        DEVICE("device"),
-        ODOMETER("odometer"),
-        E_CALL_PHONE("ePhone"),
-        DOT("DOT"),
-        IFTA("IFTA"),
-        PRODUCT("productVersion"),
+    public enum VehicleColumns implements TextEnum, IndexEnum {
+        VEHICLE_ID("name", 1),
+        DRIVER("fullName", 2),
+        TEAM("group", 3),
+        YEAR("year", 4),
+        MAKE("make", 5),
+        MODEL("model", 6),
+        COLOR("color", 7),
+        ZONE_TYPE("vtype", 8),
+        VIN("vin", 9),
+        WEIGHT("weight", 10),
+        LICENSE_NUMBER("license", 11),
+        STATE("state", 12),
+        STATUS("status", 13),
+        DEVICE("device", 14),
+        ODOMETER("odometer", 15),
+        E_CALL_PHONE("ePhone", 16),
+        DOT("DOT", 17),
+        IFTA("IFTA", 18),
+        PRODUCT("productVersion", 19),
         EDIT("edit"),
         
         ;
 
         private String text;
+        private Integer index;
+        
+        private VehicleColumns(String text, int index){
+            this.text = text;
+            this.index = index;
+        }
 
-        private AdminVehiclesEntries(String text) {
+        private VehicleColumns(String text) {
             this.text = text;
         }
 
@@ -64,9 +78,14 @@ public class AdminTables {
         public String getText() {
             return text;
         }
+        
+        @Override
+        public Integer getIndex(){
+            return index;
+        }
     }
 
-    public enum AdminUsersEntries implements TextEnum {
+    public enum UserColumns implements TextEnum, IndexEnum {
         /* Person Attributes */
         FULL_NAME("name", 1),
 
@@ -119,14 +138,14 @@ public class AdminTables {
         ;
 
         private String text;
-        private int position;
+        private int index;
         
-        private AdminUsersEntries(String text, int position){
+        private UserColumns(String text, int index){
             this(text);
-            this.position = position;
+            this.index = index;
         }
 
-        private AdminUsersEntries(String text) {
+        private UserColumns(String text) {
             this.text = text;
         }
 
@@ -135,34 +154,101 @@ public class AdminTables {
             return text;
         }
         
-        public Integer getPosition() {
-            return position;
+        @Override
+        public Integer getIndex() {
+            return index;
         }
-
     }
     
-    public enum AdminRedFlagsEntries implements TextEnum {
+    public enum RedFlagColumns implements TextEnum, IndexEnum {
         
-        RED_FLAG("name"),
-        DESCRIPTION("description"),
-        TYPE("type"),
-        STATUS("status"),
-        ZONE("zoneName"),
-        OWNER("owner"),
+        RED_FLAG("name", 1),
+        DESCRIPTION("description", 2),
+        TYPE("type", 3),
+        STATUS("status", 4),
+        ZONE("zoneName", 5),
+        OWNER("owner", 6),
 
         ;
 
         private String text;
+        private Integer index;
 
-        private AdminRedFlagsEntries(String text) {
+        private RedFlagColumns(String text, int index) {
             this.text = text;
+            this.index = index;
         }
 
         @Override
         public String getText() {
             return text;
         }
+        
+        @Override
+        public Integer getIndex(){
+            return index;
+        }
+    }
+    
+    public enum ReportsColumns implements TextEnum, IndexEnum {
+        NAME("name", 1),
+        OCCURRENCE("occurrence", 2),
+        LAST_SENT("lastEmail", 3),
+        REPORT("report", 4),
+        STATUS("status", 5),
+        OWNER("owner", 6),
+        EDIT("edit"),
+        
+        ;
+        
+        private String text;
+        private Integer index;
+        
+        private ReportsColumns(String text, Integer index){
+            this.text = text;
+            this.index = index;
+        }
+        
+        private ReportsColumns(String text){
+            this.text = text;
+        }
 
+        @Override
+        public Integer getIndex() {
+            return index;
+        }
+
+        @Override
+        public String getText() {
+            return text;
+        }
+    }
+    
+    
+    public enum CustomRoles implements TextEnum, IndexEnum {
+        ROLE_NAME("name", 1),
+        
+        ;
+        
+        private String text;
+        private Integer index;
+        
+        private CustomRoles(String text, int index){
+            this.text = text;
+            this.index = index;
+        }
+
+        @Override
+        public Integer getIndex() {
+            return index;
+        }
+
+        @Override
+        public String getText() {
+            return text;
+        }
+        
+        
     }
 
 }

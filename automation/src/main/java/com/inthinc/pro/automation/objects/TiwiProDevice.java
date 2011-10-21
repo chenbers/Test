@@ -291,20 +291,20 @@ public class TiwiProDevice extends Base {
         Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
 
         if (fwdCmd == TiwiFwdCmds.ASSIGN_DRIVER) {
-            String[] values = reply.get("fwdData").toString().split(" ");
+            String[] values = reply.get("data").toString().split(" ");
             setDeviceDriverID(Integer.parseInt(values[0]));
         } else if (fwdCmd == TiwiFwdCmds.DUMP_CONFIGURATION)
             dump_settings();
         else if (fwdCmd == TiwiFwdCmds.UPDATE_CONFIGURATION)
             get_changes();
         else if (fwdCmd == TiwiFwdCmds.DOWNLOAD_NEW_WITNESSII_FIRMWARE)
-            set_MSP(reply.get("fwdData"));
+            set_MSP(reply.get("data"));
         else if (fwdCmd == TiwiFwdCmds.DOWNLOAD_NEW_FIRMWARE)
-            set_WMP(reply.get("fwdData"));
+            set_WMP(reply.get("data"));
         else if (fwdCmd == TiwiFwdCmds.SET_SPEED_BUFFER_VALUES) {
             changes.put(TiwiProps.PROPERTY_VARIABLE_SPEED_LIMITS, reply.get("fwdData").toString());
         } else if (fwdCmd == TiwiFwdCmds.DOWNLOAD_NEW_MAPS){
-            checkSbsSubscribed();
+//            checkSbsSubscribed();
         }
         
 

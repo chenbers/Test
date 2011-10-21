@@ -3,12 +3,13 @@ package com.inthinc.pro.automation.elements;
 import java.util.Iterator;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
-import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
-public class LinkTable implements ClickableTableBased {
+public class LinkTable implements TableBased<Clickable> {
 
     private SeleniumEnumWrapper myEnum;
 
@@ -47,5 +48,10 @@ public class LinkTable implements ClickableTableBased {
     @Override
     public Clickable row(int rowNumber) {
         return new ClickableObject(myEnum, rowNumber);
+    }
+
+    @Override
+    public Clickable row(IndexEnum indexByName) {
+        return row(indexByName.getIndex());
     }
 }

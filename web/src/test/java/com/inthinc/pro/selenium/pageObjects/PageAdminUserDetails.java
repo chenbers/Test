@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 
 public class PageAdminUserDetails extends AdminBar {
@@ -58,13 +58,13 @@ public class PageAdminUserDetails extends AdminBar {
 
     public class UserDetailsTexts extends AdminBarTexts {
 
-        public TextLabel labels(AdminUsersEntries value) {
+        public TextLabel labels(UserColumns value) {
             SeleniumEnumWrapper temp = new SeleniumEnumWrapper(value);
             temp.setID("display-form:"+temp.getIDs()[0]);
             return new TextLabel(temp);
         }
 
-        public Text values(AdminUsersEntries value) {
+        public Text values(UserColumns value) {
             SeleniumEnumWrapper temp = new SeleniumEnumWrapper(value);
             temp.setID("display-form:"+temp.getIDs()[0]);
             return new Text(temp);
@@ -96,10 +96,10 @@ public class PageAdminUserDetails extends AdminBar {
 
     // Helper methods
     public String getFullName() {
-        String firstname = this._text().values(AdminUsersEntries.FIRST_NAME).getText();
-        String lastname = this._text().values(AdminUsersEntries.LAST_NAME).getText();
-        String middlename = this._text().values(AdminUsersEntries.MIDDLE_NAME).getText();
-        String suffix = this._text().values(AdminUsersEntries.SUFFIX).getText();
+        String firstname = this._text().values(UserColumns.FIRST_NAME).getText();
+        String lastname = this._text().values(UserColumns.LAST_NAME).getText();
+        String middlename = this._text().values(UserColumns.MIDDLE_NAME).getText();
+        String suffix = this._text().values(UserColumns.SUFFIX).getText();
         return (firstname + " " + middlename + " " + lastname + " " + suffix).replace("  ", " ").trim();
     }
 

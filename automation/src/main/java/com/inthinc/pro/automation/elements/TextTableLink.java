@@ -3,13 +3,14 @@ package com.inthinc.pro.automation.elements;
 import java.util.Iterator;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
-import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextTableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.thoughtworks.selenium.SeleniumException;
 
-public class TextTableLink implements ClickableTextTableBased {
+public class TextTableLink implements TableBased<ClickableTextBased> {
 
     protected SeleniumEnumWrapper myEnum;
 
@@ -55,6 +56,11 @@ public class TextTableLink implements ClickableTextTableBased {
         return new TextLink(myEnum, rowNumber);
     }
     
+    @Override
+    public ClickableTextBased row(IndexEnum indexByName) {
+        return row(indexByName.getIndex());
+    }
+    
     public ClickableText getFirstClickableLink(){
         ClickableText link = null;
         Iterator<ClickableTextBased> iterator = this.iterator();
@@ -82,4 +88,5 @@ public class TextTableLink implements ClickableTextTableBased {
             return link;
         throw new SeleniumException("No link with text matching '"+matchText+"' could be found");   
     }
+
 }

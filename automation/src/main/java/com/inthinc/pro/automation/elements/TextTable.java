@@ -2,13 +2,14 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.Iterator;
 
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.elements.ElementInterface.TextTableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
-public class TextTable implements TextTableBased {
+public class TextTable implements TableBased<TextBased> {
 
     protected SeleniumEnumWrapper myEnum;
 
@@ -53,6 +54,11 @@ public class TextTable implements TextTableBased {
     @Override
     public Text row(int rowNumber) {
         return new Text(myEnum, rowNumber);
+    }
+
+    @Override
+    public TextBased row(IndexEnum indexByName) {
+        return row(indexByName.getIndex());
     }
 
 }

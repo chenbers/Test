@@ -2,12 +2,13 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.Iterator;
 
-import com.inthinc.pro.automation.elements.ElementInterface.TextFieldTableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
-public class TextFieldTable implements TextFieldTableBased{
+public class TextFieldTable implements TableBased<TextField>{
     protected SeleniumEnumWrapper myEnum;
 
     public TextFieldTable(SeleniumEnums anEnum, String replaceWord,
@@ -50,6 +51,11 @@ public class TextFieldTable implements TextFieldTableBased{
     @Override
     public TextField row(int rowNumber) {
         return new TextField(myEnum, rowNumber);
+    }
+
+    @Override
+    public TextField row(IndexEnum indexByName) {
+        return row(indexByName.getIndex());
     }
 
 }

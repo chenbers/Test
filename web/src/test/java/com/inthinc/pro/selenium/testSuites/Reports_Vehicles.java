@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ClickableObject;
@@ -12,20 +11,20 @@ import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums;
+import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums.Tabs;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
+import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
-import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
 
-@Ignore
 public class Reports_Vehicles extends WebRallyTest {
-    private String username = "prime";
-    private String password = "password";
     private PageReportsVehicles reports_vehicles;
     private PageLogin login_page;
     private PageDriverPerformance driver_performance;
@@ -34,6 +33,7 @@ public class Reports_Vehicles extends WebRallyTest {
     private PageVehiclePerformanceStyle vehicle_performance_style;
     private PageVehiclePerformance  vehicle_performance;
     private PageAdminUsers  admin_users;
+    private AutomationUser login;
     
     @Before
     public void setuppage() {
@@ -45,6 +45,8 @@ public class Reports_Vehicles extends WebRallyTest {
         vehicle_performance_style = new PageVehiclePerformanceStyle();
         vehicle_performance = new PageVehiclePerformance();
         admin_users = new PageAdminUsers();
+        
+        login = users.getOne();
     }
 
     @Test
@@ -52,7 +54,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1614");
 
         //Login
-        reports_vehicles.loginProcess(username, password);
+        reports_vehicles.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -74,8 +76,8 @@ public class Reports_Vehicles extends WebRallyTest {
         login_page.verifyOnPage();
         
         //login
-        login_page._textField().userName().type(username);
-        login_page._textField().password().type(password);
+        login_page._textField().userName().type(login.getUsername());
+        login_page._textField().password().type(login.getPassword());
         login_page._button().logIn().click();
         
         reports_vehicles._text().title().assertVisibility(true);
@@ -86,7 +88,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1615");
         
         //Login
-        reports_vehicles.loginProcess(username, password);
+        reports_vehicles.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -104,7 +106,7 @@ public class Reports_Vehicles extends WebRallyTest {
         //Login to different account.                           
         String temp_user = "0004";
         
-        reports_vehicles.loginProcess(temp_user, password);
+        reports_vehicles.loginProcess(temp_user, "password");
         openSavedPage();
         
         //validation of location
@@ -117,7 +119,7 @@ public class Reports_Vehicles extends WebRallyTest {
       
 
         //login
-        reports_vehicles.loginProcess(username, password);
+        reports_vehicles.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -176,7 +178,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1619");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -215,7 +217,7 @@ public class Reports_Vehicles extends WebRallyTest {
 //        set_test_case("TC1621");
 //                                                                //TODO: dtanner: Currently does not function
 //        //Login                                                       //because report cannot be pulled up.
-//        login_page.loginProcess(username, password);
+//        login_page.loginProcess(login);
 //                                                                //TODO: dmonk: change email to correct 
 //        //Navigate to reports>vehicles>tools page               //      automation email. Test is not Complete.
 //        reports_vehicles._link().reports().click();
@@ -232,7 +234,7 @@ public class Reports_Vehicles extends WebRallyTest {
 //        set_test_case("TC1622");
 //                                                                //TODO: dtanner: Currently does not function
 //        //Login                                                 //      because report cannot be pulled up.
-//        login_page.loginProcess(username, password);
+//        login_page.loginProcess(login);
 //                                                                //TODO: dmonk: Test is not Complete.  
 //        //Navigate to reports>vehicles>tools page
 //        reports_vehicles._link().reports().click();
@@ -244,7 +246,7 @@ public class Reports_Vehicles extends WebRallyTest {
 //        set_test_case("TC1623");
 //                                                                //TODO: dtanner: Currently does not function
 //        //Login                                                 //      because report cannot be pulled up.
-//        login_page.loginProcess(username, password);
+//        login_page.loginProcess(login);
 //                                                                //TODO: dmonk: Test is not Complete.  
 //        //Navigate to reports>vehicles>tools page
 //        reports_vehicles._link().reports().click();
@@ -257,7 +259,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1624");
 
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -289,7 +291,7 @@ public class Reports_Vehicles extends WebRallyTest {
 //        set_test_case("TC1626");
 //                                                  //TODO: dtanner: mouse over function not yet available.
 //        //Login                                   //TODO: dmonk: finish writing test.
-//        login_page.loginProcess(username, password);
+//        login_page.loginProcess(login);
 //        
 //        //Navigate to reports>vehicles page
 //        reports_vehicles._link().reports().click();
@@ -303,7 +305,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1627");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -337,7 +339,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1629");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -357,7 +359,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1634");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -443,7 +445,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1637");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -475,10 +477,11 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1639");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
+        pause(2,"Waiting for the Vehicles Tab");
         reports_vehicles._link().vehicles().click();
         
         //Click edit columns link
@@ -489,6 +492,7 @@ public class Reports_Vehicles extends WebRallyTest {
         reports_vehicles._link().groupSort().click();
 
         Map<ClickableObject, TableBased<? extends TextBased>> values = new HashMap<ClickableObject, TableBased<? extends TextBased>>();
+        
         
         TextLink[] columns = { reports_vehicles._link().groupSort(),
                 reports_vehicles._link().vehicleIDSort(),
@@ -520,26 +524,24 @@ public class Reports_Vehicles extends WebRallyTest {
 
         for (int i=0;i<columns.length;i++){
             columns[i].click();
-            pause(5,"");
+            pause(15,"Wait for rows to sort");
             TableBased<? extends TextBased> value = values.get(columns[i]);
-            TableBased<? extends TextBased> value2 = values.get(columns[i+1]);
+//            TableBased<? extends TextBased> value2 = values.get(columns[i+1]);
             // Do some loop through all available rows
             for (int j=1;j<=20;j++){
-                pause(10,"");
                 if (value.row(j).isPresent() && value.row(j+1).isPresent()){
-                    int sorted = value.row(j).getText().compareToIgnoreCase(value2.row(j+1).getText());
-                    assertTrue(sorted >= 0,"List not in alphabetical order for column: "+ columns[i].getMyEnum().toString());
+                    int sorted = value.row(j).getText().compareToIgnoreCase(value.row(j+1).getText());
+                    assertTrue(sorted >= 0,"List not in alphabetical order for column: "+ columns[i].getMyEnum());
                 } else {
                     break;
                 }
             }
             columns[i].click();
-            pause(5,"");
+            pause(15,"Wait for rows to sort");
             for (int j=1;j<=20;j++){
-                pause(10,"");
                 if (value.row(j).isPresent() && value.row(j+1).isPresent()){
-                    int sorted = value.row(j).getText().compareToIgnoreCase(value2.row(j+1).getText());
-                    assertTrue(sorted <= 0,"List not in alphabetical order for column: "+ columns[i].getMyEnum().toString());
+                    int sorted = value.row(j).getText().compareToIgnoreCase(value.row(j+1).getText());
+                    assertTrue(sorted <= 0,"List not in alphabetical order for column: "+ columns[i].getMyEnum());
                 } else {
                     break;
                 }
@@ -552,7 +554,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1640");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -572,7 +574,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1641");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -580,6 +582,7 @@ public class Reports_Vehicles extends WebRallyTest {
         
         //Verify correct page and different attributes.
         reports_vehicles.verifyOnPage();
+        checkAllColumns();
         reports_vehicles._button().editColumns().assertVisibility(true);
         reports_vehicles._button().tools().assertVisibility(true);
         reports_vehicles._textField().groupSearch().assertVisibility(true);
@@ -590,7 +593,7 @@ public class Reports_Vehicles extends WebRallyTest {
         reports_vehicles._link().groupSort().assertVisibility(true);
         reports_vehicles._link().vehicleIDSort().assertVisibility(true);
         reports_vehicles._link().yearMakeModelSort().assertVisibility(true);
-//        reports_vehicles._link().driverSort().assertVisibility(true);
+        reports_vehicles._link().driverSort().assertVisibility(true);
         reports_vehicles._link().distanceDrivenSort().assertVisibility(true);
         reports_vehicles._link().overallSort().assertVisibility(true);
         reports_vehicles._link().speedSort().assertVisibility(true);
@@ -603,7 +606,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1642");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -636,7 +639,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1644");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -647,18 +650,18 @@ public class Reports_Vehicles extends WebRallyTest {
  
         //Click edit columns and cancel edits
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(4).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(5).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_GROUP).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_VEHICLE_ID).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_YEAR_MAKE_MODEL).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DRIVER).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DISTANCE_DRIVEN).check();
         reports_vehicles._popUp().editColumns()._button().cancel().click();
 
         //Check that all columns are still visible.
         reports_vehicles._link().groupSort().assertPresence(true);
         reports_vehicles._link().vehicleIDSort().assertPresence(true);
         reports_vehicles._link().yearMakeModelSort().assertPresence(true);
-//        reports_vehicles._link().driverSort().assertPresence(true);
+        reports_vehicles._link().driverSort().assertPresence(true);
         reports_vehicles._link().distanceDrivenSort().assertPresence(true);
         reports_vehicles._link().odometerSort().assertPresence(true);
         reports_vehicles._link().overallSort().assertPresence(true);
@@ -672,7 +675,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1645");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -690,7 +693,7 @@ public class Reports_Vehicles extends WebRallyTest {
         set_test_case("TC1648");
  
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -701,15 +704,15 @@ public class Reports_Vehicles extends WebRallyTest {
  
         //Click edit columns and cancel edits
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(4).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(5).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(6).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(7).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(8).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(9).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_GROUP).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_VEHICLE_ID).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_YEAR_MAKE_MODEL).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DRIVER).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DISTANCE_DRIVEN).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_OVERALL).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_SPEED).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_STYLE).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_ODOMETER).uncheck();
         reports_vehicles._popUp().editColumns()._button().save().click();
 
         //Check that all columns are still visible.
@@ -730,7 +733,7 @@ public class Reports_Vehicles extends WebRallyTest {
         //Return to vehicle reports page and check that the same columns are present.
         reports_vehicles._link().reports().click();
         reports_vehicles._link().vehicles().click();
-pause(10,"");
+        pause(10,"");
         reports_vehicles._link().groupSort().assertPresence(true);
         reports_vehicles._link().vehicleIDSort().assertPresence(true);
         reports_vehicles._link().yearMakeModelSort().assertPresence(true);
@@ -748,7 +751,7 @@ pause(10,"");
         set_test_case("TC1650");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -756,15 +759,15 @@ pause(10,"");
         
         //check different columns to show in edit columns, save.
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(4).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(5).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(6).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(7).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(8).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(9).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_GROUP).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_VEHICLE_ID).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_YEAR_MAKE_MODEL).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DRIVER).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DISTANCE_DRIVEN).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_OVERALL).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_SPEED).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_STYLE).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_ODOMETER).uncheck();
         reports_vehicles._popUp().editColumns()._button().save().click();
 
         //Check that correct columns are shown.
@@ -780,15 +783,15 @@ pause(10,"");
 
         //Check that the correct boxes are still check in edit columns pop-up.
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().row(1).assertChecked(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(2).assertChecked(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(3).assertChecked(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(4).assertChecked(false);
-        reports_vehicles._popUp().editColumns()._checkBox().row(5).assertChecked(false);
-        reports_vehicles._popUp().editColumns()._checkBox().row(6).assertChecked(false);
-        reports_vehicles._popUp().editColumns()._checkBox().row(7).assertChecked(false);
-        reports_vehicles._popUp().editColumns()._checkBox().row(8).assertChecked(false);
-        reports_vehicles._popUp().editColumns()._checkBox().row(9).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_GROUP).assertChecked(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_VEHICLE_ID).assertChecked(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_YEAR_MAKE_MODEL).assertChecked(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DRIVER).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DISTANCE_DRIVEN).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_OVERALL).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_SPEED).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_STYLE).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_ODOMETER).assertChecked(false);
 
     }
     
@@ -797,7 +800,7 @@ pause(10,"");
         set_test_case("TC1651");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -806,15 +809,15 @@ pause(10,"");
         //Check random boxes in the edit columns pop-up.
         //check different columns to show in edit columns, save.
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(4).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(5).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(6).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(7).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(8).uncheck();
-        reports_vehicles._popUp().editColumns()._checkBox().row(9).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_GROUP).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_VEHICLE_ID).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_YEAR_MAKE_MODEL).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DRIVER).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_DISTANCE_DRIVEN).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_OVERALL).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_SPEED).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_STYLE).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(EditColumnsEnums.REPORTS_VEHICLES_ODOMETER).uncheck();
         reports_vehicles._popUp().editColumns()._button().save().click();
 
         //Check that correct columns are shown.
@@ -831,8 +834,8 @@ pause(10,"");
         //Log out, log back in.
         reports_vehicles._link().logout().click();
         login_page.verifyOnPage();
-        login_page._textField().userName().type(username);
-        login_page._textField().password().type(password);
+        login_page._textField().userName().type(login.getUsername());
+        login_page._textField().password().type(login.getPassword());
         login_page._button().logIn().click();
         
         //Navigate to reports>vehicles page
@@ -856,7 +859,7 @@ pause(10,"");
         set_test_case("TC1653");
         
         //Login
-        login_page.loginProcess(username, password);
+        login_page.loginProcess(login);
         
         //Navigate to reports>vehicles page
         reports_vehicles._link().reports().click();
@@ -864,32 +867,19 @@ pause(10,"");
 
         //Verify contents of edit columns pop-up.
         reports_vehicles._button().editColumns().click();
-
-        reports_vehicles._popUp().editColumns()._checkBox().row(1).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(2).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(3).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(4).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(5).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(6).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(7).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(8).assertVisibility(true);
-        reports_vehicles._popUp().editColumns()._checkBox().row(9).assertVisibility(true);
-
+        for (EditColumnsEnums column : EditColumnsEnums.enumsByPage(Tabs.REPORTS_VEHICLES)){
+            reports_vehicles._popUp().editColumns()._checkBox().row(column).assertPresence(true);
+            reports_vehicles._popUp().editColumns()._checkBox().row(column).assertVisibility(true);
+        }
     }
     
     public void checkAllColumns() {
         reports_vehicles._button().editColumns().click();
         
         //Check all options in edit columns pop up.
-        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(4).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(5).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(6).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(7).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(8).check();
-        reports_vehicles._popUp().editColumns()._checkBox().row(9).check();
+        for (EditColumnsEnums column : EditColumnsEnums.enumsByPage(Tabs.REPORTS_VEHICLES)){
+            reports_vehicles._popUp().editColumns()._checkBox().row(column).check();
+        }
         reports_vehicles._popUp().editColumns()._button().save().click();
         
         reports_vehicles._link().groupSort().assertPresence(true);

@@ -10,7 +10,7 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 
 public class PageAdminUsers extends AdminTables {
@@ -36,9 +36,9 @@ public class PageAdminUsers extends AdminTables {
     public class AdminUsersLinks extends AdminTablesLinks {
 
         public TextTableLink tableEntryUserFullName() {
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminUsersEntries.FULL_NAME);
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.FULL_NAME);
         }
-        public TextLink sortByColumn(AdminUsersEntries column) {
+        public TextLink sortByColumn(UserColumns column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
         }
 
@@ -54,7 +54,7 @@ public class PageAdminUsers extends AdminTables {
     
     public class AdminUsersTexts extends AdminTablesTexts {
 
-        public TextTable tableEntry(AdminUsersEntries column) {
+        public TextTable tableEntry(UserColumns column) {
             return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
         }
         
@@ -105,7 +105,7 @@ public class PageAdminUsers extends AdminTables {
         this._button().search().click();
         return this;
     }
-    public PageAdminUsers clickFullNameMatching(AdminUsersEntries column, String value){
+    public PageAdminUsers clickFullNameMatching(UserColumns column, String value){
         this.showAllColumns();
         this.search(value);
         Iterator<TextBased> rowIterator = this._text().tableEntry(column).iterator();

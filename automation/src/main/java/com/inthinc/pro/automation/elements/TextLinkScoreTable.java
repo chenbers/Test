@@ -1,9 +1,10 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextTableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public class TextLinkScoreTable extends TextTableLink implements ClickableTextTableBased {
+public class TextLinkScoreTable extends TextTableLink implements TableBased<ClickableTextBased> {
 
     public TextLinkScoreTable(SeleniumEnums anEnum) {
 	super(anEnum);

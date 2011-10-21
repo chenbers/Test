@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminVehiclesEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.VehicleColumns;
 import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
 
 public class PageAdminVehicles extends AdminTables {
@@ -58,14 +58,14 @@ public class PageAdminVehicles extends AdminTables {
     public class AdminVehiclesLinks extends AdminTablesLinks {
 
         public TextTableLink entryVehicleId() {
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminVehiclesEntries.VEHICLE_ID);
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, VehicleColumns.VEHICLE_ID);
         }
 
-        public TextLink sortBy(AdminVehiclesEntries column) {
+        public TextLink sortBy(VehicleColumns column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
         }
         public TextTableLink editVehicleLink() {
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminVehiclesEntries.EDIT);
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, VehicleColumns.EDIT);
         }
     }
 
@@ -74,7 +74,7 @@ public class PageAdminVehicles extends AdminTables {
 
     public class AdminVehiclesTexts extends AdminTablesTexts {
 
-        public TextTable entryTableValue(AdminVehiclesEntries column) {
+        public TextTable entryTableValue(VehicleColumns column) {
             return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
         }
     }

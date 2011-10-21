@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -69,9 +69,9 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageAdminUsers pau = new PageAdminUsers();
         pau._link().adminAddUser().click();
         PageAddEditUser paeu = new PageAddEditUser();
-        paeu._textField().personFields(AdminUsersEntries.FIRST_NAME).type("Alpha");
-        paeu._textField().personFields(AdminUsersEntries.LAST_NAME).type("Betical");
-        paeu._dropDown().regularDropDowns(AdminUsersEntries.TIME_ZONE).selectPartMatch("US/Mount");
+        paeu._textField().personFields(UserColumns.FIRST_NAME).type("Alpha");
+        paeu._textField().personFields(UserColumns.LAST_NAME).type("Betical");
+        paeu._dropDown().regularDropDowns(UserColumns.TIME_ZONE).selectPartMatch("US/Mount");
         paeu._dropDown().driverTeam().select("Top - Test Group WR");
         paeu._checkBox().userInformation().uncheck();
         paeu._button().saveTop().click();
@@ -96,11 +96,11 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageAdminUserDetails paud = new PageAdminUserDetails();
         paud._button().edit().click();
         PageAddEditUser paeu = new PageAddEditUser();
-        paeu._textField().personFields(AdminUsersEntries.FIRST_NAME).clear().type("Blooregard");
+        paeu._textField().personFields(UserColumns.FIRST_NAME).clear().type("Blooregard");
         //Middle Name fix will be in the next build.
         //paeu._textField().personFields(AdminUsersEntries.MIDDLE_NAME).type("Q");
-        paeu._textField().personFields(AdminUsersEntries.LAST_NAME).clear().type("Kazoo");
-        paeu._dropDown().regularDropDowns(AdminUsersEntries.GENDER).select("Male");
+        paeu._textField().personFields(UserColumns.LAST_NAME).clear().type("Kazoo");
+        paeu._dropDown().regularDropDowns(UserColumns.GENDER).select("Male");
         paeu._button().saveBottom().click();
         //TODO test edit of vehicle.
         //TODO get driver information to check on.
@@ -214,9 +214,9 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageAdminUsers pau = new PageAdminUsers();
         pau._link().adminAddUser().click();
         PageAddEditUser paeu = new PageAddEditUser();
-        paeu._textField().personFields(AdminUsersEntries.FIRST_NAME).type(first);
-        paeu._textField().personFields(AdminUsersEntries.LAST_NAME).type(last);
-        paeu._dropDown().regularDropDowns(AdminUsersEntries.TIME_ZONE).selectPartMatch("US/Mount");
+        paeu._textField().personFields(UserColumns.FIRST_NAME).type(first);
+        paeu._textField().personFields(UserColumns.LAST_NAME).type(last);
+        paeu._dropDown().regularDropDowns(UserColumns.TIME_ZONE).selectPartMatch("US/Mount");
         paeu._dropDown().driverTeam().select(team);
         paeu._checkBox().userInformation().uncheck();
         paeu._button().saveTop().click();

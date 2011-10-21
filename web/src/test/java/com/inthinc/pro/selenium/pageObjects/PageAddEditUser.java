@@ -13,7 +13,7 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUserEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 
 public class PageAddEditUser extends AdminBar {
 
@@ -77,27 +77,27 @@ public class PageAddEditUser extends AdminBar {
             return new Text(AdminBarEnum.MASTER_ERROR);
         }
 
-        public TextFieldLabel personLabel(AdminUsersEntries label) {
+        public TextFieldLabel personLabel(UserColumns label) {
             return new TextFieldLabel(AdminAddEditUserEnum.TEXT_FIELDS, label);
         }
 
-        public TextFieldLabel driverLabel(AdminUsersEntries label) {
+        public TextFieldLabel driverLabel(UserColumns label) {
             return new TextFieldLabel(AdminAddEditUserEnum.TEXT_FIELDS, "driver_", label);
         }
 
-        public TextFieldLabel userLabel(AdminUsersEntries label) {
+        public TextFieldLabel userLabel(UserColumns label) {
             return new TextFieldLabel(AdminAddEditUserEnum.TEXT_FIELDS, "user_", label);
         }
 
-        public TextFieldError personError(AdminUsersEntries label) {
+        public TextFieldError personError(UserColumns label) {
             return new TextFieldError(AdminAddEditUserEnum.TEXT_FIELDS, label);
         }
 
-        public TextFieldError driverError(AdminUsersEntries label) {
+        public TextFieldError driverError(UserColumns label) {
             return new TextFieldError(AdminAddEditUserEnum.TEXT_FIELDS, "driver_", label);
         }
 
-        public TextFieldError userError(AdminUsersEntries label) {
+        public TextFieldError userError(UserColumns label) {
             return new TextFieldError(AdminAddEditUserEnum.TEXT_FIELDS, "user_", label);
         }
 
@@ -109,15 +109,15 @@ public class PageAddEditUser extends AdminBar {
 
     public class AddEditUserTextFields extends AdminBarTextFields {
 
-        public TextField personFields(AdminUsersEntries textField) {
+        public TextField personFields(UserColumns textField) {
             return new TextField(AdminAddEditUserEnum.TEXT_FIELDS, textField);
         }
 
-        public TextField driverFields(AdminUsersEntries textField) {
+        public TextField driverFields(UserColumns textField) {
             return new TextField(AdminAddEditUserEnum.TEXT_FIELDS, "driver_", textField);
         }
 
-        public TextField userFields(AdminUsersEntries textField) {
+        public TextField userFields(UserColumns textField) {
             return new TextField(AdminAddEditUserEnum.TEXT_FIELDS, "user_", textField);
         }
     }
@@ -170,7 +170,7 @@ public class PageAddEditUser extends AdminBar {
 
         private SeleniumEnums[] enums = { AdminAddEditUserEnum.USER_GROUP_DHX, AdminAddEditUserEnum.DRIVER_TEAM_DHX };
 
-        public DropDown regularDropDowns(AdminUsersEntries dropDown) {
+        public DropDown regularDropDowns(UserColumns dropDown) {
             return new DropDown(AdminAddEditUserEnum.DROP_DOWNS, dropDown);
         }
 

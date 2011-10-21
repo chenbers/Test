@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.AccountCapabilities;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -48,13 +48,13 @@ public class AdminUsersEditTest extends WebRallyTest {
         usersPage._link().tableEntryUserFullName().row(1).click();
 
         // 5- Verify the page is the correct page
-        String firstName = details._text().values(AdminUsersEntries.FIRST_NAME)
+        String firstName = details._text().values(UserColumns.FIRST_NAME)
                 .getText();
         String middleName = details._text()
-                .values(AdminUsersEntries.MIDDLE_NAME).getText();
-        String lastName = details._text().values(AdminUsersEntries.LAST_NAME)
+                .values(UserColumns.MIDDLE_NAME).getText();
+        String lastName = details._text().values(UserColumns.LAST_NAME)
                 .getText();
-        String suffix = details._text().values(AdminUsersEntries.SUFFIX)
+        String suffix = details._text().values(UserColumns.SUFFIX)
                 .getText();
         assertEquals(fullname, (firstName + " " + middleName + " " + lastName
                 + " " + suffix).replace("  ", " ").trim());
@@ -73,13 +73,13 @@ public class AdminUsersEditTest extends WebRallyTest {
 
         // 3- Take note of the top user's employee ID
         String employeeID = usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).getText();// TODO: this test needs to ensure that the EMPLOYEE_ID line is visible before trying to getText on it
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).getText();// TODO: this test needs to ensure that the EMPLOYEE_ID line is visible before trying to getText on it
 
         // 4- Click on the Edit link for the top name
         usersPage._link().edit().row(1).click();
 
         // 5- Verify the page is the correct page
-        edituser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID)
+        edituser._textField().personFields(UserColumns.EMPLOYEE_ID)
                 .assertEquals(employeeID);
 
     }
@@ -130,11 +130,11 @@ public class AdminUsersEditTest extends WebRallyTest {
         boolean originallyHadGroupColumnName = usersPage._link()
                 .tableEntryUserFullName().row(1).isPresent();
         boolean originallyHadGroupColumnEmpID = usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent();
         boolean originallyHadGroupColumnDOB = usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent();
         boolean originallyHadGroupColumnLicense = usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent();
 
         // 4- Click on Edit Columns
@@ -154,15 +154,15 @@ public class AdminUsersEditTest extends WebRallyTest {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnEmpID != usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnDOB != usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent()) {
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnLicense != usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
@@ -182,11 +182,11 @@ public class AdminUsersEditTest extends WebRallyTest {
         boolean originallyHadGroupColumnName = usersPage._link()
                 .tableEntryUserFullName().row(1).isPresent();
         boolean originallyHadGroupColumnEmpID = usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent();
         boolean originallyHadGroupColumnDOB = usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent();
         boolean originallyHadGroupColumnLicense = usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent();
 
         // 4- Click on Edit Columns
@@ -201,15 +201,15 @@ public class AdminUsersEditTest extends WebRallyTest {
             addError("something", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnEmpID != usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnDOB != usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent()) {
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnLicense != usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
@@ -229,11 +229,11 @@ public class AdminUsersEditTest extends WebRallyTest {
         boolean originallyHadGroupColumnName = usersPage._link()
                 .tableEntryUserFullName().row(1).isPresent();
         boolean originallyHadGroupColumnEmpID = usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent();
         boolean originallyHadGroupColumnDOB = usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent();
         boolean originallyHadGroupColumnLicense = usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent();
 
         // 4- Click on Edit Columns
@@ -249,19 +249,19 @@ public class AdminUsersEditTest extends WebRallyTest {
 
         // 7- Verify changes are there
         if (originallyHadGroupColumnName == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnEmpID == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnDOB == usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent()) {
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnLicense != usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
@@ -274,19 +274,19 @@ public class AdminUsersEditTest extends WebRallyTest {
 
         // 10- Verify changes remain
         if (originallyHadGroupColumnName == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnEmpID == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnDOB == usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent()) {
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnLicense != usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
@@ -318,11 +318,11 @@ public class AdminUsersEditTest extends WebRallyTest {
         boolean originallyHadGroupColumnName = usersPage._link()
                 .tableEntryUserFullName().row(1).isPresent();
         boolean originallyHadGroupColumnEmpID = usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent();
         boolean originallyHadGroupColumnDOB = usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent();
         boolean originallyHadGroupColumnLicense = usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent();
 
         // 4- Click on Edit Columns
@@ -338,19 +338,19 @@ public class AdminUsersEditTest extends WebRallyTest {
 
         // 7- Verify changes are there
         if (originallyHadGroupColumnName == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnEmpID == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnDOB == usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent()) {
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnLicense != usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
@@ -381,11 +381,11 @@ public class AdminUsersEditTest extends WebRallyTest {
         boolean originallyHadGroupColumnName = usersPage._link()
                 .tableEntryUserFullName().row(1).isPresent();
         boolean originallyHadGroupColumnEmpID = usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent();
         boolean originallyHadGroupColumnDOB = usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent();
         boolean originallyHadGroupColumnLicense = usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent();
 
         // 4- Click on Edit Columns
@@ -401,19 +401,19 @@ public class AdminUsersEditTest extends WebRallyTest {
 
         // 7- Verify changes are there
         if (originallyHadGroupColumnName == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnEmpID == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnDOB == usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent()) {
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnLicense != usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
@@ -429,19 +429,19 @@ public class AdminUsersEditTest extends WebRallyTest {
 
         // 11- Verify changes are still there
         if (originallyHadGroupColumnName == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnEmpID == usersPage._text()
-                .tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
+                .tableEntry(UserColumns.EMPLOYEE_ID).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnDOB == usersPage._text()
-                .tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent()) {
+                .tableEntry(UserColumns.DOB_MAIN).row(1).isPresent()) {
             addError("Expected line to change", ErrorLevel.FAIL);
         }
         if (originallyHadGroupColumnLicense != usersPage._text()
-                .tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1)
+                .tableEntry(UserColumns.LICENSE_NUMBER).row(1)
                 .isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
@@ -589,7 +589,7 @@ public class AdminUsersEditTest extends WebRallyTest {
         boolean foundWhoIWasLookingFor = false;
         int rowNumber = 0;
         Iterator<TextBased> itr = usersPage._text()
-                .tableEntry(AdminUsersEntries.USER_NAME).iterator();
+                .tableEntry(UserColumns.USER_NAME).iterator();
         while (itr.hasNext()) {
             TextBased row = itr.next();
             rowNumber++;
@@ -607,7 +607,7 @@ public class AdminUsersEditTest extends WebRallyTest {
         details._button().edit().click();
         edituser._dropDown().dot().select(hosRuleset);
         edituser._button().saveBottom().click();
-        details._text().values(AdminUsersEntries.DOT).assertEquals(hosRuleset);
+        details._text().values(UserColumns.DOT).assertEquals(hosRuleset);
 
     }
 }

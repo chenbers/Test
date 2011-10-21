@@ -27,16 +27,29 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.ProductType;
 
+/**
+ * This test is used to create x number of drivers and all of the support records.<br />
+ * Not an actual test!!!!
+ * @author dtanner
+ *
+ */
 public class ReportTest {
-	private final Integer accountID=32;
-	private final Integer groupID=53;
-	private static final Addresses portal = Addresses.QA;
+	private final Integer accountID=4342;
+	private final Integer groupID=6533;
+	private final Addresses portal;
 	
-	private static final String address = "ReportTest Stuff";
+	private final String address;
 	
-	private final AutomationSiloService portalHessian = new AutomationSiloService(portal);
-	private final SiloService portalProxy = new AutomationHessianFactory().getPortalProxy(portal);
+	private final AutomationSiloService portalHessian;
+	private final SiloService portalProxy;
 	private HashMap<Integer, HashMap<String, String>> drivers;
+	
+	public ReportTest(Addresses address){
+	    portal = address;
+	    portalHessian = new AutomationSiloService(address);
+	    portalProxy = new AutomationHessianFactory().getPortalProxy(portal);
+        this.address = "src/main/resources/records_created_on_" + address.name();
+	}
 	
 	public void create(Integer numberOfDrivers){
 		Unique unique = new Unique(portal);
@@ -135,7 +148,7 @@ public class ReportTest {
 	public void driveTiwis(){
 		Integer size = drivers.size();
 		Integer i = size;
-		Integer threads = 30;
+		Integer threads = 500;
 		Iterator<Integer> itr = drivers.keySet().iterator();
 		HanSoloTrip[] trips = new HanSoloTrip[size];
 
@@ -143,17 +156,19 @@ public class ReportTest {
 			Integer driverID = itr.next();
 			Long currentTime = System.currentTimeMillis()/1000;
 	        Integer initialTime = currentTime.intValue();
-	        Addresses address = Addresses.QA;
 	        trips[--i]=new HanSoloTrip();
-	        trips[i].start(drivers.get(driverID).get("device"), address, 1315327860);
+	        trips[i].start(drivers.get(driverID).get("device"), portal, initialTime);
 //	        trips[i].start("DEVICEDOESNTEXIST", address, 1315326435);
-	        AutomationThread.pause(1);
+//	        AutomationThread.pause(1);
+	        if (threads-- == 0){
+	            break;
+	        }
 		}
 	}
 		
 	public static void main(String[] args){
-		ReportTest test = new ReportTest();
-		test.create(1000);
+		ReportTest test = new ReportTest(Addresses.DEV);
+//		test.create(1000);
 		test.readDrivers();
 		test.driveTiwis();
 	}

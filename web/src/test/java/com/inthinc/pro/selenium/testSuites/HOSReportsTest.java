@@ -6,12 +6,12 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.HOSRecordOfDutyStatus;
-import com.inthinc.pro.selenium.pageObjects.PageHOSReports;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
+import com.inthinc.pro.selenium.pageObjects.PageHOSReports;
 
 
 public class HOSReportsTest extends WebRallyTest {
@@ -66,7 +66,7 @@ public class HOSReportsTest extends WebRallyTest {
         
       // 3. grab team name and address; Save for later comparison. 
         
-        String valueTeam = myAdminUserDetails._text().values(AdminUsersEntries.TEAM).getText();
+        String valueTeam = myAdminUserDetails._text().values(UserColumns.TEAM).getText();
        
         myAdminUsers._link().adminOrganization().click();
         myAdminOrg.getFleet().getDivision(1).arrow().click();

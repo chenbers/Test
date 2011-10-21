@@ -28,10 +28,14 @@ public enum Addresses implements AddressInterface {
     STAGE_DIRECT("ec2-50-18-81-171.us-west-1.compute.amazonaws.com"),
 
     DEV("dev-pro.inthinc.com", 8081, null, null, 7780, 8888, null),
-
+    
+    DEV_NOTE_SERVER("192.168.11.111", 8081, null, null, 8091, 8888, null),
+    
     EC2("204.236.172.41", null, null, "stage.inthinc.com", null, null, null),
 
     QA("qa.tiwipro.com", 8423, 8199, "qa.tiwipro.com", 8190, 8988, 7880),
+    
+    QA_NOTE_SERVER("192.168.11.115", 8423, 8199, null, 8091, 8988, 7880),
 
     // QA2("qa2.tiwipro.com", 8299, "qa2.tiwipro.com", 8290, 8988, 7980),
 
@@ -57,8 +61,8 @@ public enum Addresses implements AddressInterface {
     private Addresses() {}
 
     private Addresses(String url) {
-        this(url, null, prodPortalPort, url, prodMCMPort, prodWaysPort,
-                prodSatPort);
+        this(url, null, null, null, null, null,
+                null);
     }
 
     private Addresses(String portalUrl, Integer webPort, Integer portalPort,

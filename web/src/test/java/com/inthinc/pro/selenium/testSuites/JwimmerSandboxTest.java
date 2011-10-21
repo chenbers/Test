@@ -10,7 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -582,8 +582,8 @@ public void sometest() {
     public void pageAdminUsers_smokeTest() {
         PageAdminUsers page = new PageAdminUsers();
         int row = 1;
-        page._text().tableEntry(AdminUsersEntries.FULL_NAME).row(row).getText();
-        page._text().tableEntry(AdminUsersEntries.FULL_NAME).row(row).getText();
+        page._text().tableEntry(UserColumns.FULL_NAME).row(row).getText();
+        page._text().tableEntry(UserColumns.FULL_NAME).row(row).getText();
     }
 
     @Ignore

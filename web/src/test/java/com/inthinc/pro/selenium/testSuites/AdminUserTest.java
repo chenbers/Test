@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails.UserDetailsTexts;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -48,9 +48,9 @@ public class AdminUserTest extends WebRallyTest {
 		my._link().admin().click();
 		
 		//ensure that username column is available before searching
-		if(my._link().sortByColumn(AdminUsersEntries.USER_NAME).isPresent()){
+		if(my._link().sortByColumn(UserColumns.USER_NAME).isPresent()){
     		my._link().editColumns().click();
-    		my._popUp().editColumns()._checkBox().row(AdminUsersEntries.USER_NAME.getPosition()).check();
+    		my._popUp().editColumns()._checkBox().row(UserColumns.USER_NAME).check();
     		my._popUp().editColumns()._button().save().click();
 		}
     		
@@ -58,7 +58,7 @@ public class AdminUserTest extends WebRallyTest {
 		my._textField().search().type(login.getUsername());
 		my._button().search().click();
 		
-		Iterator<TextBased> iter = my._text().tableEntry(AdminUsersEntries.USER_NAME).iterator();
+		Iterator<TextBased> iter = my._text().tableEntry(UserColumns.USER_NAME).iterator();
 		int rowNumber = 0;
 		boolean clicked = false;
 		pause(1, "Looking for a login");
@@ -79,41 +79,41 @@ public class AdminUserTest extends WebRallyTest {
 		/*User Info*/
 		
 		UserDetailsTexts _text = myAdminUserDetails._text();
-        String firstname =_text.values(AdminUsersEntries.FIRST_NAME).getText();
-		String middlename =_text.values(AdminUsersEntries.MIDDLE_NAME).getText();
-		String lastname =_text.values(AdminUsersEntries.LAST_NAME).getText();
-		String suffix =_text.values(AdminUsersEntries.SUFFIX).getText();
+        String firstname =_text.values(UserColumns.FIRST_NAME).getText();
+		String middlename =_text.values(UserColumns.MIDDLE_NAME).getText();
+		String lastname =_text.values(UserColumns.LAST_NAME).getText();
+		String suffix =_text.values(UserColumns.SUFFIX).getText();
 		
 		
 		/*Driver Info*/
 		
-        String team =_text.values(AdminUsersEntries.TEAM).getText();
+        String team =_text.values(UserColumns.TEAM).getText();
         print(team);
         
         /*Employee Info*/
       
-        String locale = _text.values(AdminUsersEntries.LOCALE).getText();
-        String measurement =_text.values(AdminUsersEntries.MEASUREMENT).getText();
-        String fuelratio =_text.values(AdminUsersEntries.FUEL_RATIO).getText();
+        String locale = _text.values(UserColumns.LOCALE).getText();
+        String measurement =_text.values(UserColumns.MEASUREMENT).getText();
+        String fuelratio =_text.values(UserColumns.FUEL_RATIO).getText();
 
       
         /* Login Info*/
        
-        String loginname =_text.values(AdminUsersEntries.USER_NAME).getText();
-        String group =_text.values(AdminUsersEntries.GROUP).getText();
+        String loginname =_text.values(UserColumns.USER_NAME).getText();
+        String group =_text.values(UserColumns.GROUP).getText();
                
         /*Notifications*/
         
-        String mailone =_text.values(AdminUsersEntries.EMAIL_1).getText();
-        String mailtwo =_text.values(AdminUsersEntries.EMAIL_2).getText();
-        String textone =_text.values(AdminUsersEntries.TEXT_MESSAGE_1).getText();
-        String texttwo =_text.values(AdminUsersEntries.TEXT_MESSAGE_2).getText();
-        String phoneone =_text.values(AdminUsersEntries.PHONE_1).getText();
+        String mailone =_text.values(UserColumns.EMAIL_1).getText();
+        String mailtwo =_text.values(UserColumns.EMAIL_2).getText();
+        String textone =_text.values(UserColumns.TEXT_MESSAGE_1).getText();
+        String texttwo =_text.values(UserColumns.TEXT_MESSAGE_2).getText();
+        String phoneone =_text.values(UserColumns.PHONE_1).getText();
        
-        String phonetwo =_text.values(AdminUsersEntries.PHONE_2).getText();
-        String information =_text.values(AdminUsersEntries.INFORMATION).getText();
-        String warning =_text.values(AdminUsersEntries.WARNING).getText();
-        String critical =_text.values(AdminUsersEntries.CRITICAL).getText();
+        String phonetwo =_text.values(UserColumns.PHONE_2).getText();
+        String information =_text.values(UserColumns.INFORMATION).getText();
+        String warning =_text.values(UserColumns.WARNING).getText();
+        String critical =_text.values(UserColumns.CRITICAL).getText();
         
                 
         /*click into My Account to compare*/

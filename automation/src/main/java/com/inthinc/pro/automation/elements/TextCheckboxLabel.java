@@ -1,9 +1,10 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextTableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public class TextCheckboxLabel extends TextTableLink implements ClickableTextTableBased {
+public class TextCheckboxLabel extends TextTableLink implements TableBased<ClickableTextBased> {
 	
 	public TextCheckboxLabel(SeleniumEnums anEnum) {
         super(anEnum);

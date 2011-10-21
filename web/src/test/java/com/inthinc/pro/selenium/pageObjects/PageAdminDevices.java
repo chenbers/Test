@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminDevicesEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminDevicesEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.DeviceColumns;
 
 public class PageAdminDevices extends AdminTables {
     
@@ -26,17 +26,17 @@ public class PageAdminDevices extends AdminTables {
 
 
         public TextTableLink entryDeviceID() {
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminDevicesEntries.DEVICE_ID);
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, DeviceColumns.DEVICE_ID);
         }
 
-        public TextLink sortByColumn(AdminDevicesEntries column) {
+        public TextLink sortByColumn(DeviceColumns column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
         }
 
     }
     public class AdminDevicesTexts extends AdminTablesTexts{
 
-        public TextTable tableEntry(AdminDevicesEntries column) {
+        public TextTable tableEntry(DeviceColumns column) {
             return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
         }
         

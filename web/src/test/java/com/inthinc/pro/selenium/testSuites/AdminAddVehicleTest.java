@@ -11,7 +11,7 @@ import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.Unique;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
 
-@Ignore
+//@Ignore
 public class AdminAddVehicleTest extends WebRallyTest {
 
     private AutomationUser login;
@@ -28,6 +28,7 @@ public class AdminAddVehicleTest extends WebRallyTest {
     }
     
     @Test
+    @Ignore
     public void defaultCommandButton(){
         set_test_case("TC166");
         //TODO: dtanner: Implement this test
@@ -40,6 +41,7 @@ public class AdminAddVehicleTest extends WebRallyTest {
         editVehicle._link().admin().click();
         editVehicle._link().adminVehicles().click();
         editVehicle._link().adminAddVehicle().click();
+        pause(3, "Page still loading?");
         editVehicle._textField().VIN().type(1);
         print(editVehicle._text().errorVIN().getText());
         editVehicle._textField().VIN().type(values.getUniqueValue(17, UniqueValues.VEHICLE_VIN));

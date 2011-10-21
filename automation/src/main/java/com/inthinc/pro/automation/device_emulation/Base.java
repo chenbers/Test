@@ -198,13 +198,16 @@ public abstract class Base {
             reply = dbErrors[0];
             while (check_error(reply)) {
                 try {
-                    System.out.println("dumping settings");
+                    logger.debug("dumping settings");
                     reply = mcmProxy.dumpSet(imei, productVersion.getVersion(), oursToThiers());
-                    System.out.println(reply);
+                    logger.debug(reply);
                 } catch (GenericHessianException e) {
                     reply = 0;
                 } catch (RemoteServerException e) {
                     reply = 307;
+                } catch (Exception e){
+                    reply = 307;
+                    logger.error(StackToString.toString(e));
                 }
             }
             if (reply instanceof Integer && (Integer) reply != 0) {
@@ -409,11 +412,6 @@ public abstract class Base {
             reply = dbErrors[0];
             while (check_error(reply)) {
                 reply = mcmProxy.note(imei, sendingQueue);
-                try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
                 if (check_error(reply)){
                     logger.info("Invalid Reply from server: "+reply);
                 }

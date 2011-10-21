@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
 
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.model.File;
@@ -32,25 +33,6 @@ public interface ElementInterface {
     	public Boolean validateChecked(Boolean checked);
     }
     
-    public interface TextFieldTableBased extends TableBased<TextField> {
-        public TextField row(int rowNumber);
-    }
-    
-    public interface CheckableTable extends TableBased<Checkable>  {
-    	public Checkable row(int rowNumber);
-    }
-    
-    public interface ClickableTableBased extends TableBased<Clickable>  {
-        public Clickable row(int rowNumber);
-    }
-    
-    public interface ClickableTextTableBased extends TableBased<ClickableTextBased>{
-        public TextLink row(int rowNumber);
-    }
-    
-    public interface TableBasedWithText extends TableBased<TextBased> {
-        public TextBased row(int rowNumber);
-    }
     
     public interface ClickableTextBased extends Clickable, TextBased {}
     
@@ -110,7 +92,9 @@ public interface ElementInterface {
     
     public interface TableBased<T> extends Iterable<T> {
         public T row(int rowNumber);
+        public T row(IndexEnum indexByName);
     }
+    
     public interface TextBased extends ElementInterface {
         public Boolean assertEquals();
         public Boolean assertEquals(String compareAgainst);
@@ -138,17 +122,13 @@ public interface ElementInterface {
         public Boolean validate(TextEnum expected);
         public Boolean validate(TextEnum expected, String replaceOld, String withNew);
         public Boolean validateContains(String expectedPart);
-        
     }
     
     public interface TextFieldWithSuggestions extends TextBased {
-	public TextLink getSuggestion(Integer row);
-	public TextLink getSuggestion(String fullName);
+        public TextLink getSuggestion(Integer row);
+        public TextLink getSuggestion(String fullName);
     }
     
-    public interface TextTableBased extends TableBasedWithText  {
-        public TextBased row(int rowNumber);
-    }
     public interface Typeable extends TextBased {
         public Typeable type(Object inputText);
         public TextField clear();
@@ -160,7 +140,6 @@ public interface ElementInterface {
         // compare with existing binary files?
         // extract data? for comparison to input values?
         public String getURL();
-        
     }
 
 }

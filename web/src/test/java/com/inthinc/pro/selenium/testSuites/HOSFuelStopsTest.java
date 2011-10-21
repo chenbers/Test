@@ -1,8 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.AccountCapabilities;
@@ -10,7 +8,7 @@ import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageFuelStops;
@@ -25,23 +23,24 @@ public class HOSFuelStopsTest extends WebRallyTest {
     
     private PageFuelStops myFuelStops; 
     private PageFuelStopsAddEdit myFuelStopsAddEdit;
-    private static AutomationUser login;
+    private AutomationUser login;
     
-    @BeforeClass
-    public static void beforeClass() {
-        login = users.getOneBy(AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.HasWaySmart, LoginCapabilities.RoleAdmin);
-    }
     
     @Before
     public void setupPage() {
         myAccount = new PageMyAccount();
         myFuelStops = new PageFuelStops();
         myFuelStopsAddEdit = new PageFuelStopsAddEdit();
+        login = users.getOneBy(AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver, LoginCapabilities.HasWaySmart, LoginCapabilities.HasVehicle, LoginCapabilities.RoleHOS);
+        if (login == null){
+            throw new NullPointerException(login.toString());
+        }
     }
 
     @Test
-    @Ignore //TODO: waiting on errorVehicleFuel().validate() pageObject fix
+//    @Ignore //TODO: waiting on errorVehicleFuel().validate() pageObject fix
     public void FuelStopErrors() {
+        
         set_test_case("TC5627");
 
         // 0.Login
@@ -51,7 +50,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().admin().click();
         usersPage = new PageAdminUsers();
         usersPage.search(login.getUsername());
-        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
+        usersPage.clickFullNameMatching(UserColumns.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
@@ -109,7 +108,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().admin().click();
         usersPage = new PageAdminUsers();
         usersPage.search(login.getUsername());
-        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
+        usersPage.clickFullNameMatching(UserColumns.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
@@ -142,7 +141,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().admin().click();
         usersPage = new PageAdminUsers();
         usersPage.search(login.getUsername());
-        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
+        usersPage.clickFullNameMatching(UserColumns.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
@@ -331,7 +330,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().admin().click();
         usersPage = new PageAdminUsers();
         usersPage.search(login.getUsername());
-        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
+        usersPage.clickFullNameMatching(UserColumns.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
