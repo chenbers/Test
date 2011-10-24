@@ -38,12 +38,10 @@ public class Vehicle implements Serializable
     private Integer           weight;
     private String            license;
     private Integer             stateID;
-//    private Integer           driverID;
-//    private Integer           deviceID;
     
     private Integer           odometer;
     
-    private VehicleDOTType    dot;
+//    private VehicleDOTType    dot;
     private Boolean           ifta;
 	@Temporal(TemporalType.TIMESTAMP)
     private Date modified;
@@ -81,15 +79,13 @@ public class Vehicle implements Serializable
 
     
 
-    public VehicleDOTType getDot() {
-//        if (dot == null)
-//            return VehicleDOTType.NON_DOT;
-        return dot;
-    }
-
-    public void setDot(VehicleDOTType dot) {
-        this.dot = dot;
-    }
+//    public VehicleDOTType getDot() {
+//        return dot;
+//    }
+//
+//    public void setDot(VehicleDOTType dot) {
+//        this.dot = dot;
+//    }
 
     public Boolean getIfta() {
         return ifta;
@@ -227,7 +223,7 @@ public class Vehicle implements Serializable
 
     public Vehicle(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, 
             Integer year, String color,
-            VehicleType vtype, String vin, Integer weight, String license, State state, VehicleDOTType dot)
+            VehicleType vtype, String vin, Integer weight, String license, State state)
     {
         super();
         this.vehicleID = vehicleID;
@@ -243,7 +239,7 @@ public class Vehicle implements Serializable
         this.weight = weight;
         this.license = license;
 //        this.state = state;
-        this.dot = dot;
+//        this.dot = dot;
     }
 
     public Status getStatus()
@@ -286,7 +282,7 @@ public class Vehicle implements Serializable
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", groupID=" + groupID
                 + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", stateID=" + stateID + ", status=" + status + ", vehicleID=" + vehicleID
                 + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + //", hos="+ hos+
-                ", dot="+dot+
+//                ", dot="+dot+
                 ", ifta="+ifta+
                "]";
     }

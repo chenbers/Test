@@ -7,19 +7,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import com.inthinc.pro.repository.GenericRepository;
+import com.inthinc.pro.repository.CentDBRepository;
 
+public class CentDBRepositoryImpl<T, ID> implements CentDBRepository<T,ID>{
 
-public class GenericRepositoryImpl<T,ID> implements GenericRepository<T,ID>{
+    @PersistenceContext(unitName = "deviceSettingDefinitionService")
 
-
-    @PersistenceContext(unitName = "vehicleSettingsService")
     EntityManager entityManager;
-    
     private Class<T> domainClass; //The Class of the domain model object
     
     @SuppressWarnings("unchecked")
-    public GenericRepositoryImpl() {
+    public CentDBRepositoryImpl() {
         this.domainClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
     
@@ -78,4 +76,5 @@ public class GenericRepositoryImpl<T,ID> implements GenericRepository<T,ID>{
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
+
 }

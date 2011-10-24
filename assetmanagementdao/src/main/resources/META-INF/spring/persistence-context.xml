@@ -46,6 +46,24 @@
 		<property name="username" value="${iridiumDS.username}" />
 		<property name="password" value="${iridiumDS.password}" />
 	</bean>
+	<bean id="centDBEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="deviceSettingDefinitionService" />
+		<property name="dataSource" ref="centDB" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="database" value="MYSQL" />
+				<property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+				<property name="generateDdl" value="false" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+	<bean id="centDB" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${centDBdatabase.driverClassName}" />
+		<property name="url" value="${centDBdatabase.url}" />
+		<property name="username" value="${centDBdatabase.username}" />
+		<property name="password" value="${centDBdatabase.password}" />
+	</bean>
 	
 <!-- 	<bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO"> -->
 <!-- 		<property name="dataSource" ref="siloDB"/> -->

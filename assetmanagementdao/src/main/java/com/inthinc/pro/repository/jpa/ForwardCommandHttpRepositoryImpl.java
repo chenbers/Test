@@ -14,7 +14,6 @@ public class ForwardCommandHttpRepositoryImpl extends GenericRepositoryImpl<Forw
 								   implements ForwardCommandHttpRepository {
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<ForwardCommandHttp> getForwardCommandsByVehicleID(Integer vehicleID) {
 		Query query = entityManager.createQuery("SELECT v.deviceID FROM VDDLog v WHERE v.vehicleID=:vehicleID and v.stop is null")
 		.setParameter("vehicleID", vehicleID);

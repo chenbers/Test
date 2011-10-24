@@ -2,8 +2,12 @@ package com.inthinc.pro.domain;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,13 +23,22 @@ public class VDDLog {
 	private Date stop;
 	private String imei;
 	private Integer acctID;
-	private Integer deviceID;
+	@ManyToOne
+	@JoinColumn(name="deviceID")
+	@Basic(fetch=FetchType.LAZY)
+	private Device device;
 	private Integer baseID;
 	private Integer emuFeatureMask;
-	private Integer vehicleID;
+	@ManyToOne
+	@JoinColumn(name="vehicleID")
+	@Basic(fetch=FetchType.LAZY)
+	private Vehicle vehicle;
 	private Integer vgroupID;
 	private Integer vtype;	
-	private Integer driverID;
+	@ManyToOne
+	@JoinColumn(name="driverID")
+	@Basic(fetch=FetchType.LAZY)
+	private Driver driver;
 	private Integer dgroupID;	
 	private Integer tzID;
 	
@@ -59,11 +72,11 @@ public class VDDLog {
 	public void setAcctID(Integer acctID) {
 		this.acctID = acctID;
 	}
-	public Integer getDeviceID() {
-		return deviceID;
+	public Device getDevice() {
+		return device;
 	}
-	public void setDeviceID(Integer deviceID) {
-		this.deviceID = deviceID;
+	public void setDevice(Device device) {
+		this.device = device;
 	}
 	public Integer getBaseID() {
 		return baseID;
@@ -77,12 +90,6 @@ public class VDDLog {
 	public void setEmuFeatureMask(Integer emuFeatureMask) {
 		this.emuFeatureMask = emuFeatureMask;
 	}
-	public Integer getVehicleID() {
-		return vehicleID;
-	}
-	public void setVehicleID(Integer vehicleID) {
-		this.vehicleID = vehicleID;
-	}
 	public Integer getVgroupID() {
 		return vgroupID;
 	}
@@ -95,11 +102,17 @@ public class VDDLog {
 	public void setVtype(Integer vtype) {
 		this.vtype = vtype;
 	}
-	public Integer getDriverID() {
-		return driverID;
+	public Vehicle getVehicle() {
+		return vehicle;
 	}
-	public void setDriverID(Integer driverID) {
-		this.driverID = driverID;
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+	public Driver getDriver() {
+		return driver;
+	}
+	public void setDriver(Driver driver) {
+		this.driver = driver;
 	}
 	public Integer getDgroupID() {
 		return dgroupID;
@@ -117,10 +130,12 @@ public class VDDLog {
 	public String toString() {
 		return "VDDLog [vddlogID=" + vddlogID + ", start=" + start + ", stop="
 				+ stop + ", imei=" + imei + ", acctID=" + acctID
-				+ ", deviceID=" + deviceID + ", baseID=" + baseID
-				+ ", emuFeatureMask=" + emuFeatureMask + ", vehicleID="
-				+ vehicleID + ", vgroupID=" + vgroupID + ", vtype=" + vtype
-				+ ", driverID=" + driverID + ", dgroupID=" + dgroupID
+				+ ", device=" + device.toString() +
+				", baseID=" + baseID
+				+ ", emuFeatureMask=" + emuFeatureMask 
+				+ ", vehicleID="+ vehicle.toString() 
+				+ ", vgroupID=" + vgroupID + ", vtype=" + vtype
+				+ ", driver=" + driver.toString() + ", dgroupID=" + dgroupID
 				+ ", tzID=" + tzID + "]";
 	}
 }

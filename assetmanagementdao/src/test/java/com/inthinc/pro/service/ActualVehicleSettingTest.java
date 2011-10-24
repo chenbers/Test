@@ -10,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.inthinc.pro.domain.settings.ActualVehicleSetting;
-import com.inthinc.pro.service.ActualVehicleSettingService;
 
 @ContextConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)

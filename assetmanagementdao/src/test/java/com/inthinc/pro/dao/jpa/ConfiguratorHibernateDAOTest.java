@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inthinc.pro.configurator.model.VehicleSetting;
-import com.inthinc.pro.dao.jpa.ConfiguratorJPADAO;
 import com.inthinc.pro.domain.settings.DesiredVehicleSetting;
 import com.inthinc.pro.domain.settings.VehicleSettingHistory;
 

@@ -7,7 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.inthinc.pro.domain.Device;
-import com.inthinc.pro.service.DeviceService;
 
 @ContextConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)

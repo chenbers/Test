@@ -17,4 +17,17 @@
 <!-- 			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" /> -->
         </properties>
     </persistence-unit>
+    <persistence-unit name="deviceSettingDefinitionService"
+                      transaction-type="RESOURCE_LOCAL">
+<!--         <class>com.inthinc.pro.domain.settings.DeviceSettingDefinition</class> -->
+        <properties>
+<!--             <property name="javax.persistence.jdbc.driver" -->
+<!--                       value="com.mysql.jdbc.Driver"/> -->
+<!--             <property name="javax.persistence.jdbc.url" -->
+<!--                 value="jdbc:mysql://tiwipro1.tiwipro.com:3306/centDB"/> -->
+<!--             <property name="javax.persistence.jdbc.user" value="bmiller"/> -->
+<!--             <property name="javax.persistence.jdbc.password" value="4monkey"/> -->
+<!-- 			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" /> -->
+        </properties>
+    </persistence-unit>
 </persistence>

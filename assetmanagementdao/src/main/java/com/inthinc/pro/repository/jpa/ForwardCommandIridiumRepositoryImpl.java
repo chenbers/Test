@@ -14,7 +14,6 @@ public class ForwardCommandIridiumRepositoryImpl extends GenericRepositoryImpl<F
 implements ForwardCommandIridiumRepository {
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<ForwardCommandIridium> getForwardCommandsByVehicleID(Integer vehicleID) {
 		Query query = entityManager.createQuery("SELECT v.deviceID FROM VDDLog v WHERE v.vehicleID=:vehicleID and v.stop is null")
 		.setParameter("vehicleID", vehicleID);

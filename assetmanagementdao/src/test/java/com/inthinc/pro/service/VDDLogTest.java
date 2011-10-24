@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.inthinc.pro.domain.Device;
 import com.inthinc.pro.domain.VDDLog;
-import com.inthinc.pro.service.VddLogService;
+import com.inthinc.pro.domain.Vehicle;
 
 @ContextConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,8 +30,13 @@ public class VDDLogTest {
     }
     @Test
     public void getVddLogByVehicleIDTest(){
-    	Integer deviceID = vddLogService.getDeviceIDByVehicleID(2);
-    	System.out.println("deviceID for vehicle 2 is "+deviceID);
+    	Device device = vddLogService.getDeviceByVehicleID(2);
+    	System.out.println("device for vehicle 2 is "+device.toString());
+    }
+    @Test
+    public void getVddLogByDeviceIDTest(){
+    	Vehicle vehicle = vddLogService.getVehicleByDeviceID(2);
+    	System.out.println("vehicle for device 2 is "+vehicle.toString());
     }
 
 }
