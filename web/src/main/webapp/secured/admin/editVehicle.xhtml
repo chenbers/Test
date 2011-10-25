@@ -264,7 +264,7 @@
                                 <td>
                                   <rich:message for="editVehicle-name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.name}" id="editVehicle-name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="20" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
+                                   style="text-transform: uppercase;" maxlength="20" converter="ForceUpperCaseConverter" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
                                 </td>
                               </tr>
                               </ui:fragment>
