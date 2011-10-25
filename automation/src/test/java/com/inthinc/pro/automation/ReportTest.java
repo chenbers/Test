@@ -177,7 +177,7 @@ public class ReportTest {
         while (!HanSoloTrip.isDone()){
 		    AutomationThread.pause(1);
 		    MasterTest.print("Pausing for one second, count is " + HanSoloTrip.getCount());
-		    MasterTest.print("We made " + HessianTCPProxy.getCount());
+//		    MasterTest.print("We made " + HessianTCPProxy.getCount());
 		}
         
         long stop = System.currentTimeMillis();
