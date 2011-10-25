@@ -256,6 +256,8 @@ public class RallyHTTP extends HTTPCommands {
             return queryResults.getJSONArray("Results");
         } catch (JSONException e) {
             return new JSONArray().put(queryResults.getJSONObject("Object"));
+        } catch (Exception e){
+            return null;
         }
     }
 

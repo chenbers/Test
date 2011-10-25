@@ -10,8 +10,10 @@ import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.organization.OrganizationBase;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels;
+import com.inthinc.pro.automation.elements.organization.OrganizationBase.OrganizationType;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.DivisionLevel;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.FleetLevel;
+import com.inthinc.pro.automation.elements.organization.OrganizationLevels.GroupLevels;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.TeamLevel;
 import com.inthinc.pro.selenium.pageEnums.AdminOrganizationEnum;
 
@@ -567,15 +569,15 @@ public class PageAdminOrganization extends AdminBar{
     }
     
     public DivisionLevel getDivision(){
-        return new OrganizationLevels(). new DivisionLevel();
+        return OrganizationLevels.getDivision();
     }
     
     public TeamLevel getTeam(){
-        return new OrganizationLevels(). new TeamLevel();
+        return OrganizationLevels.getTeam();
     }
     
     public FleetLevel getFleet(){
-        return new OrganizationLevels(). new FleetLevel();
+        return OrganizationLevels.getFleet();
     }
     
     public boolean isFleetTop(){
@@ -590,17 +592,19 @@ public class PageAdminOrganization extends AdminBar{
         return getSelenium().isElementPresent("//td[@id='display-form:tree:0::team:text");
     }
     
-    public OrganizationBase getTopLevel(){
-        OrganizationBase returnable = null;
+    public GroupLevels getTopLevel(){
+        GroupLevels returnable = null;
         if (isFleetTop()){
-            returnable = new OrganizationLevels().new FleetLevel();
+            returnable = OrganizationLevels.getFleet();
         } else if (isDivisionTop()){
-            returnable = new OrganizationLevels().new DivisionLevel();
+            returnable = OrganizationLevels.getDivision();
         } else if (isTeamTop()){
-            returnable = new OrganizationLevels().new TeamLevel();
+            returnable = OrganizationLevels.getTeam();
         }
         return returnable;
     }
     
-    
+    public GroupLevels clickToGroup(String groups){
+        return new OrganizationBase(OrganizationType.FLEET).goToGroup(groups);
+    }
 }

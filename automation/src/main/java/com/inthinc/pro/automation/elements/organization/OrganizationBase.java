@@ -9,10 +9,14 @@ import org.openqa.selenium.WebElement;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.organization.OrganizationLevels.DivisionLevel;
+import com.inthinc.pro.automation.elements.organization.OrganizationLevels.FleetLevel;
+import com.inthinc.pro.automation.elements.organization.OrganizationLevels.GroupLevels;
+import com.inthinc.pro.automation.elements.organization.OrganizationLevels.TeamLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.MasterTest;
 
-public abstract class OrganizationBase extends MasterTest{
+public class OrganizationBase extends MasterTest{
 
     protected final int[] structure;
     
@@ -30,6 +34,17 @@ public abstract class OrganizationBase extends MasterTest{
         @Override 
         public String toString(){
             return this.name().toLowerCase();
+        }
+        
+        public GroupLevels getGroup(){
+            String name = toString();
+            if (name.equals("fleet")){
+                return OrganizationLevels.getFleet();
+            } else if (name.equals("division")){
+                return OrganizationLevels.getDivision();
+            } else {
+                return OrganizationLevels.getTeam();
+            }
         }
     }
     
@@ -91,6 +106,16 @@ public abstract class OrganizationBase extends MasterTest{
         return anEnum;
     }
     
+    protected String getID(){
+        StringWriter writer = new StringWriter();
+        writer.write("display-form:tree:");
+        for (int position:structure){
+            writer.write(position + ":");
+        }
+        writer.write(":");
+        return writer.toString();
+    }
+    
     public TextLink text(){
         return new TextLink(getID("text"));
     }
@@ -98,5 +123,52 @@ public abstract class OrganizationBase extends MasterTest{
     
     public Button icon(){
         return new Button(getID("icon"));
+    }
+    
+    public GroupLevels goToGroup(String groupList){
+        String[] groups = groupList.split(" - ");
+        int pos = 1;
+        OrganizationType top = getTopGroupType();
+        GroupLevels topGroup = top.getGroup();
+        return clickDownTree(topGroup, groups, pos);
+        
+    }
+    
+    private GroupLevels clickDownTree(GroupLevels currentGroup, String[] groupList, int position){
+        if (currentGroup == null){
+            return currentGroup;
+        }
+        currentGroup.arrow().click();
+        if (currentGroup instanceof TeamLevel || position == groupList.length-1){
+            return currentGroup;
+        } else if (currentGroup instanceof FleetLevel){
+            FleetLevel group = (FleetLevel) currentGroup;
+            if (clickDownTree(group.getDivision(groupList[position++]), groupList, position)==null){
+                return clickDownTree(group.getTeam(groupList[position]), groupList, position);   
+            }
+        } else if (currentGroup instanceof DivisionLevel){
+            DivisionLevel group = (DivisionLevel) currentGroup;
+            if (clickDownTree(group.getDivision(groupList[position++]), groupList, position)==null){
+                return clickDownTree(group.getTeam(groupList[position]), groupList, position);   
+            }
+        }
+        
+        return currentGroup;
+    }
+       
+
+    private OrganizationType getTopGroupType() {
+        WebElement element = getSelenium().getWrappedDriver().findElement(By.xpath("//td[contains(@id,'display-form:tree:0::')][contains(@id,':text')]"));
+        String id = element.getAttribute("id");
+        print(id);
+        String[] split = id.split(":");
+        String type = split[split.length-2];
+        if (type.equals("fleet")){
+            return OrganizationType.FLEET;
+        } else if (type.equals("division")){
+            return OrganizationType.DIVISION;
+        } else {
+            return OrganizationType.TEAM;
+        }
     }
 }

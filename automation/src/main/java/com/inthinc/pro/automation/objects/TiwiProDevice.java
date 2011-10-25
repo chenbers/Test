@@ -283,7 +283,7 @@ public class TiwiProDevice extends Base {
 
     @Override
     protected Integer processCommand(Map<String, Object> reply) {
-        logger.info(reply);
+        logger.debug(reply);
         if (reply.get("cmd") == null)
             return 1;
         TiwiFwdCmds fwdCmd = TiwiFwdCmds.valueOf(reply.get("cmd"));
@@ -356,7 +356,7 @@ public class TiwiProDevice extends Base {
     @Override
     protected TiwiProDevice set_server(Addresses server) {
         getHessian = new AutomationHessianFactory();
-        logger.info("MCM Server is " + server);
+        logger.debug("MCM Server is " + server);
         mcmProxy = getHessian.getMcmProxy(server);
         Settings.put(TiwiProps.PROPERTY_SERVER_PORT, server.getMCMPort().toString());
         Settings.put(TiwiProps.PROPERTY_SERVER_URL, server.getMCMUrl());
@@ -372,10 +372,6 @@ public class TiwiProDevice extends Base {
     public TiwiProDevice set_speed_limit(Integer limit) {
         Settings.put(TiwiProps.PROPERTY_SPEED_LIMIT, limit.toString());
         return this;
-    }
-
-    public void setLogLevel(Level level) {
-        logger.setLevel(level);
     }
 
     public TiwiProDevice tampering(Integer timeDelta) {
@@ -524,7 +520,7 @@ public class TiwiProDevice extends Base {
         map.put("cv", currentVersion);
         list.add(map);
         List<Map<String, Object>> reply = mcmProxy.checkSbsEdit(imei, list);
-        logger.info(reply);
+        logger.debug(reply);
         
         return false;
     }
@@ -538,7 +534,7 @@ public class TiwiProDevice extends Base {
             Map<String, Object> reply = mcmProxy.zoneUpdate(imei, map);
             zones = new ZoneManager((byte[]) reply.get("f"));
         } catch (Exception e){
-            logger.info(StackToString.toString(e));
+            logger.debug(StackToString.toString(e));
             return false;
         }
         

@@ -87,6 +87,8 @@ public abstract class Base {
     
     protected Addresses portal;
     protected Map<Integer, MapSection> sbsModule;
+
+    protected static int count = 0;
     
 
     public Base(String IMEI, Addresses server, Map<?, String> map, ProductType version) {
@@ -94,6 +96,10 @@ public abstract class Base {
         Settings = new HashMap<DeviceProperties, String>();
         set_IMEI(IMEI, server, map, version);
         sbsModule = new HashMap<Integer, MapSection>();
+    }
+    
+    public static int getCount(){
+        return count;
     }
     
     private Base ackFwdCmds(List<HashMap<String, Object>> reply) {
@@ -119,18 +125,17 @@ public abstract class Base {
         String testSet = "TS96";
         String byID = "FormattedID";
         
-        TestCaseResult tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
-        AutomationCalendar today = AutomationCalendar.now(WebDateFormat.RALLY_DATE_FORMAT);
-        tcr.setBuildNumber(today.toString(WebDateFormat.NOTE_DATE_TIME));
-        tcr.setTestCase(new NameValuePair(byID, testCase));
-        tcr.setTestSet(new NameValuePair(byID, testSet));
+        
         
         if (numOfCommands > 5 ){
+            TestCaseResult tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+            AutomationCalendar today = AutomationCalendar.now(WebDateFormat.RALLY_DATE_FORMAT);
+
+            tcr.setBuildNumber(today.toString(WebDateFormat.NOTE_DATE_TIME));
+            tcr.setTestCase(new NameValuePair(byID, testCase));
+            tcr.setTestSet(new NameValuePair(byID, testSet));
             tcr.setVerdict(Verdicts.FAIL);
             tcr.send_test_case_results();
-        } else if (numOfCommands == 5){
-            tcr.setVerdict(Verdicts.PASS);
-            tcr.updateTestCase(testCase, byID);
         }
     }
 
@@ -201,13 +206,16 @@ public abstract class Base {
                     logger.debug("dumping settings");
                     reply = mcmProxy.dumpSet(imei, productVersion.getVersion(), oursToThiers());
                     logger.debug(reply);
+                    count++;
                 } catch (GenericHessianException e) {
                     reply = 0;
                 } catch (RemoteServerException e) {
                     reply = 307;
                 } catch (Exception e){
                     reply = 307;
-                    logger.error(StackToString.toString(e));
+                    logger.fatal("Error from Note: " + e.getCause());
+                    logger.error("Current Note Count is " + getCount());
+                    logger.info("Current time is: " + System.currentTimeMillis());
                 }
             }
             if (reply instanceof Integer && (Integer) reply != 0) {
@@ -262,11 +270,11 @@ public abstract class Base {
             logger.debug("SHA1 Hash is: " + SHA1Checksum.getSHA1Checksum(lastDownload));
             return true;
         } catch (FileNotFoundException e) {
-            logger.info(StackToString.toString(e));
+            logger.debug(StackToString.toString(e));
         } catch (IOException e) {
-            logger.info(StackToString.toString(e));
+            logger.debug(StackToString.toString(e));
         } catch (Exception e) {
-            logger.info(StackToString.toString(e));
+            logger.debug(StackToString.toString(e));
         }
         return false;
     }
@@ -280,12 +288,17 @@ public abstract class Base {
             while (check_error(reply)) {
                 try {
                     reply = mcmProxy.reqSet(imei);
+                    count++;
                 } catch (EmptyResultSetException e) {
                     reply = 304;
+                } catch (Exception e){
+                    logger.fatal("Error from Note: " + e.getCause());
+                    logger.error("Current Note Count is " + getCount());
+                    logger.info("Current time is: " + System.currentTimeMillis());
                 }
             }
             if (reply instanceof Integer && (Integer) reply != 304) {
-                System.out.println(reply + " We failed to get any changes");
+                logger.debug(reply + " We failed to get any changes");
             } else if (reply instanceof HashMap<?, ?>) {
                 set_settings( theirsToOurs((HashMap<?, ?>) reply));
             }
@@ -377,7 +390,9 @@ public abstract class Base {
         } else {
             logger.info("The device is already off.");
         }
-        logger.info("Last note created at: " +time);
+        logger.info("Last note created at: " + time);
+        logger.info("We finished at " + System.currentTimeMillis());
+        logger.info("Total Notes to now is " + getCount());
         return this;
     }
 
@@ -411,11 +426,21 @@ public abstract class Base {
             }
             reply = dbErrors[0];
             while (check_error(reply)) {
-                reply = mcmProxy.note(imei, sendingQueue);
+                try{
+                    reply = mcmProxy.note(imei, sendingQueue);
+                    if (check_error(reply)){
+                        throw new IllegalArgumentException("Got " + reply + "From the server");
+                    }
+                    count++;
+                } catch (Exception e){
+                    logger.fatal("Error from Note: " + e.getCause());
+                    logger.error("Current Note Count is " + getCount());
+                    logger.info("Current time is: " + System.currentTimeMillis());
+                }
                 if (check_error(reply)){
                     logger.info("Invalid Reply from server: "+reply);
                 }
-                logger.info("Reply from Server: "+reply);
+                logger.debug("Reply from Server: "+reply);
             }
             if (reply instanceof ArrayList<?>) {
                 ackFwdCmds((List<HashMap<String, Object>>) reply);

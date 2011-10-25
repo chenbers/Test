@@ -2,19 +2,23 @@ package com.inthinc.pro.automation;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
+import com.inthinc.pro.automation.device_emulation.Base;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
-import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.AutomationSiloService;
+import com.inthinc.pro.automation.utils.AutomationThread;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Unique;
+import com.inthinc.pro.dao.hessian.extension.HessianTCPProxy;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -34,6 +38,7 @@ import com.inthinc.pro.model.configurator.ProductType;
  *
  */
 public class ReportTest {
+    
 	private final Integer accountID=4342;
 	private final Integer groupID=6533;
 	private final Addresses portal;
@@ -62,6 +67,10 @@ public class ReportTest {
 
 			HashMap<String, String> objects = new HashMap<String, String>();
 			String priEmail = "driver_"+i+"@tiwisucks.com";
+//			MasterTest.print(priEmail);
+//			if (!priEmail.isEmpty()){
+//			    throw new NullPointerException("Hello");
+//			}
 			
 			try{
 			    Person person = portalHessian.getPerson(priEmail);
@@ -75,7 +84,8 @@ public class ReportTest {
 	            drivers.put(driver.getDriverID(), objects);
 			    continue;
 			} catch (Exception e){
-			    e.printStackTrace();
+			    MasterTest.print("Ran into an error with " + priEmail + ", error is " + e.getMessage());
+//			    e.printStackTrace();
 			}
 			
 			Person person = new Person();
@@ -147,30 +157,43 @@ public class ReportTest {
 	
 	public void driveTiwis(){
 		Integer size = drivers.size();
-		Integer i = size;
-		Integer threads = 500;
+		Integer threads = 600;
 		Iterator<Integer> itr = drivers.keySet().iterator();
-		HanSoloTrip[] trips = new HanSoloTrip[size];
+		LinkedHashMap<Integer, HanSoloTrip> trips = new LinkedHashMap<Integer, HanSoloTrip>();
 
+        Long currentTime = System.currentTimeMillis()/1000;
+        Integer initialTime = currentTime.intValue();
+		MasterTest.print(portal);
+		
+        long start = System.currentTimeMillis();
+        MasterTest.print("Starting time is " + start);
 		while (itr.hasNext()){
-			Integer driverID = itr.next();
-			Long currentTime = System.currentTimeMillis()/1000;
-	        Integer initialTime = currentTime.intValue();
-	        trips[--i]=new HanSoloTrip();
-	        trips[i].start(drivers.get(driverID).get("device"), portal, initialTime);
-//	        trips[i].start("DEVICEDOESNTEXIST", address, 1315326435);
-//	        AutomationThread.pause(1);
-	        if (threads-- == 0){
-	            break;
-	        }
+			Integer next = itr.next();
+			new HanSoloTrip().start(drivers.get(next).get("device"), portal, 1319575402);
 		}
+
+		MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
+		
+        while (!HanSoloTrip.isDone()){
+		    AutomationThread.pause(1);
+		    MasterTest.print("Pausing for one second, count is " + HanSoloTrip.getCount());
+		    MasterTest.print("We made " + HessianTCPProxy.getCount());
+		}
+        
+        long stop = System.currentTimeMillis();
+        MasterTest.print("Ending time is " + start);
+		MasterTest.print("We sent " + Base.getCount() + " Notes");
+//		MasterTest.print("We made " + HessianTCPProxy.getCount());
+        MasterTest.print("We took :" + ((stop-start)) + " milliseconds to run");
+        MasterTest.print(portal);
 	}
 		
 	public static void main(String[] args){
 		ReportTest test = new ReportTest(Addresses.DEV);
-//		test.create(1000);
+//		test.create(3000);
 		test.readDrivers();
 		test.driveTiwis();
+		
 	}
 
 }

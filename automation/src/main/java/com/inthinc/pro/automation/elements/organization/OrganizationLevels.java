@@ -7,8 +7,39 @@ public class OrganizationLevels {
     
     public OrganizationLevels(){}
     
+    public static FleetLevel getFleet(){
+        return new OrganizationLevels().new FleetLevel();
+    }
+    
+    public static DivisionLevel getDivision(){
+        return new OrganizationLevels().new DivisionLevel();
+    }
+    
+    public static TeamLevel getTeam(){
+        return new OrganizationLevels().new TeamLevel();
+    }
+    
+    public class GroupLevels extends OrganizationBase {
 
-    public class TeamLevel extends OrganizationBase {
+        public GroupLevels(int[] parent, int position, OrganizationType type) {
+            super(parent, position, type);
+        }
+
+        public GroupLevels(int[] parent, String position, OrganizationType type) {
+            super(parent, position, type);
+        }
+
+        public GroupLevels(OrganizationType type) {
+            super(type);
+        }
+
+        public Button arrow(){
+            return new Button(getID("handle"));
+        }
+    }
+    
+
+    public class TeamLevel extends GroupLevels {
         public TeamLevel(int[] parent, int position){
             super(parent, position, OrganizationType.TEAM);
         }
@@ -46,12 +77,9 @@ public class OrganizationLevels {
         }
         
 
-        public Button arrow(){
-            return new Button(getID("handle"));
-        }
     }
     
-    public class DivisionLevel extends OrganizationBase {
+    public class DivisionLevel extends GroupLevels {
         public DivisionLevel(int[] parent, int position){
             super(parent, position, OrganizationType.DIVISION);
         }
@@ -89,13 +117,9 @@ public class OrganizationLevels {
             return new TeamLevel(structure, teamName);
         }
         
-
-        public Button arrow(){
-            return new Button(getID("handle"));
-        }
     }
     
-    public class FleetLevel extends OrganizationBase {
+    public class FleetLevel extends GroupLevels {
         public FleetLevel(int[] parent, int position){
             super(parent, position, OrganizationType.FLEET);
         }
@@ -131,11 +155,6 @@ public class OrganizationLevels {
         
         public TeamLevel getTeam(String teamName){
             return new TeamLevel(structure, teamName);
-        }
-        
-
-        public Button arrow(){
-            return new Button(getID("handle"));
         }
     }
     
