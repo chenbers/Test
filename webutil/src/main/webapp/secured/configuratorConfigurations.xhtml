@@ -178,10 +178,10 @@ function buildPage(configurationData){
 					<a4j:commandLink value="Edit" action="#{configuratorBean.editConfigurationSettings}" reRender="configuratorSettings,editSettings">
              			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
 					</a4j:commandLink>
-             		<a4j:commandLink value="Apply To..."  oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
-             					reRender="configuratorSettings,assignVehicles" ajaxSingle="true">
-             			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>
-             		</a4j:commandLink>
+<!--             		<a4j:commandLink value="Apply To..."  oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"-->
+<!--             					reRender="configuratorSettings,assignVehicles" ajaxSingle="true">-->
+<!--             			 <a4j:actionparam name="selectedConfiguration" value="#{configuration.configurationID}" assignTo="#{configuratorBean.selectedConfigurationID}"/>-->
+<!--             		</a4j:commandLink>-->
                     </h:panelGrid>
                 </rich:column>
                  <rich:column id="count">
