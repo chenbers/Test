@@ -295,9 +295,9 @@ function buildPage(configurationData){
          					oncomplete="#{rich:component('saveConfiguration')}.show()" title="Apply these settings to all the vehicles listed"
          					reRender="editSettings" ajaxSingle="true">
          		</a4j:commandLink>
-         		<a4j:commandLink value="Apply To..."  oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"
-         					reRender="editSettings" ajaxSingle="true">
-         		</a4j:commandLink>
+<!--         		<a4j:commandLink value="Apply To..."  oncomplete="#{rich:component('assignVehicles')}.show()" title="Select vehicles to apply these settings to"-->
+<!--         					reRender="editSettings" ajaxSingle="true">-->
+<!--         		</a4j:commandLink>-->
          		<a4j:commandLink value="Done"  title="Done editing - refresh configurations" action="#{configuratorBean.doneEditing}"
          					reRender="editSettings,configuratorSettings" ajaxSingle="true">
          		</a4j:commandLink>
