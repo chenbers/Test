@@ -8,6 +8,7 @@ import com.inthinc.hos.model.HOSStatus;
 
 public class PayrollData implements Comparable<PayrollData>
 {
+    private Integer groupID;
     private String groupName;
     private String groupAddress;
     private Integer driverId;
@@ -37,10 +38,11 @@ public class PayrollData implements Comparable<PayrollData>
         this.totalAdjustedMinutes = totalAdjustedMinutes;
         this.dateTime = new DateTime(day.getTime()); 
     }
-    public PayrollData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
+    public PayrollData(Integer groupID, String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
             Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime)
     {
         super();
+        this.groupID = groupID;
         this.groupName = groupName;
         this.groupAddress = groupAddress;
         this.driverId = driverId;
@@ -50,6 +52,10 @@ public class PayrollData implements Comparable<PayrollData>
         this.status = status;
         this.totalAdjustedMinutes = totalAdjustedMinutes;
         this.dateTime = dateTime; 
+    }
+    
+    public void addTotalAdjustedMinutes(int minutesToAdd) {
+        totalAdjustedMinutes += minutesToAdd;
     }
 
     public void dump()
@@ -163,6 +169,12 @@ public class PayrollData implements Comparable<PayrollData>
     }
     public void setDayStr(String dayStr) {
         this.dayStr = dayStr;
+    }
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
+    }
+    public Integer getGroupID() {
+        return groupID;
     }
 
 }

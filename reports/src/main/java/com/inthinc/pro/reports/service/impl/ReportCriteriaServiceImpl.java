@@ -81,6 +81,7 @@ import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
+import com.inthinc.pro.reports.performance.PayrollReportCompensatedHoursCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSummaryReportCriteria;
 import com.inthinc.pro.reports.performance.TenHoursViolationReportCriteria;
@@ -725,7 +726,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
-
+    @Override
+    public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        PayrollReportCompensatedHoursCriteria criteria = new PayrollReportCompensatedHoursCriteria(locale);
+        criteria.setAccountDAO(accountDAO);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }    
     /**
      * Provide all data criteria including layout and data.
      * 
@@ -1273,7 +1284,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             person.getLocale()));
                     break;
-                    
+                case PAYROLL_COMPENSATED_HOURS:
+                    reportCriteriaList.add(getPayrollCompensatedHoursReportCriteria(groupHierarchy, 
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            person.getLocale()));
+                    break;    
                     
                 case TEN_HOUR_DAY_VIOLATIONS:
                     reportCriteriaList.add(getTenHoursDayViolationsCriteria(groupHierarchy,reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale()));

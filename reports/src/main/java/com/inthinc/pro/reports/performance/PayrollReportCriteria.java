@@ -2,6 +2,7 @@ package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,6 +32,7 @@ import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.performance.model.PayrollData;
+import com.inthinc.pro.reports.performance.model.PayrollDriverSummaryData;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
 import com.inthinc.pro.reports.tabular.Result;
 import com.inthinc.pro.reports.tabular.Tabular;
@@ -83,7 +85,7 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
                 if (log.getTotalIncrements() > 0)
                 {
                     //String groupName, String groupAddress, Integer driverId, String driverName, TimeZone timeZone, String employeeID,
-                    PayrollData item = new PayrollData(groupName, groupAddress, driver.getDriverID(), driverName, employeeID,
+                    PayrollData item = new PayrollData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID,
                             day.toDate(), log.getStatus(), log.getTotalIncrements()*15, day);
                     item.setDayStr(dateTimeFormatter.print(day));
                     dataList.add(item);
@@ -120,10 +122,14 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
     
     @Override
     public List<String> getColumnHeaders() {
-        ResourceBundle resourceBundle = ReportType.PAYROLL_DETAIL.getResourceBundle(getLocale());
+        return getColumnHeaders(ReportType.PAYROLL_DETAIL, 8);
+    }
+    
+    public List<String> getColumnHeaders(ReportType reportType, int numberOfCols) {
+        ResourceBundle resourceBundle = reportType.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= numberOfCols; i++)
             columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
         
         return columnHeaders;

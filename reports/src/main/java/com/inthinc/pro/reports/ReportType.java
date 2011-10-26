@@ -63,6 +63,7 @@ public enum ReportType
     PAYROLL_DETAIL("Driver Hours Report","payrollDetail.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollDetail", null, true),
     PAYROLL_SIGNOFF("Driver Hours Signoff","payrollSignOff.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSignOff", null, true),
     PAYROLL_SUMMARY("Driver Hours Summary","payrollSummary.jrxml", "payrollRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollSummary", null, true),
+    PAYROLL_COMPENSATED_HOURS("Payroll Compensated Hours","payrollCompensatedHoursReport.jrxml", "payrollCompensatedHoursRaw.jrxml", "performance", "com.inthinc.pro.reports.jasper.performance.i18n.payrollReportCompensatedHours", null, true),
     
     TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations","tenHourDayViolations.jrxml","tenHourDayViolationsRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.tenHourDayViolations", null, false),
     DRIVER_HOURS("Driver Hours","driverHoursReport.jrxml","driverHoursReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverHours", null, false), 
