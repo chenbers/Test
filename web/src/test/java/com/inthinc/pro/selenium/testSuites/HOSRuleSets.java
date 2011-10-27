@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 @Ignore
 public class HOSRuleSets extends WebRallyTest {
@@ -24,8 +25,7 @@ public class HOSRuleSets extends WebRallyTest {
         String driverID = "CANADA";
         String occupantID = "TWO";
         Addresses server = Addresses.QA; 
-        Long currentTime = System.currentTimeMillis()/1000;
-        Integer initialTime = currentTime.intValue();
+        AutomationCalendar initialTime = new AutomationCalendar();
         String vehicleID="virtualWS"; 
         int accountID=2;
         

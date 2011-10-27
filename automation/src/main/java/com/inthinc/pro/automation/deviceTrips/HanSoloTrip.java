@@ -9,16 +9,12 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
-import com.inthinc.pro.automation.utils.AutomationThread;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.HTTPCommands;
-import com.inthinc.pro.rally.PrettyJSON;
 
 public class HanSoloTrip extends Thread{
     private final static Logger logger = Logger.getLogger(HanSoloTrip.class);
@@ -27,13 +23,13 @@ public class HanSoloTrip extends Thread{
     
     private String IMEI;
     private Addresses server;
-    private Integer initialTime;
+    private AutomationCalendar initialTime;
     private static int count=0;
     
     
 
 
-    public boolean start(String IMEI, Addresses server, Integer initialTime) {
+    public boolean start(String IMEI, Addresses server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime;
@@ -41,7 +37,7 @@ public class HanSoloTrip extends Thread{
         return true;
     }
     
-    public void hanSolosFirstTrip(String IMEI, Addresses server, Integer initialTime) {
+    public void hanSolosFirstTrip(String IMEI, Addresses server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime;
@@ -52,8 +48,7 @@ public class HanSoloTrip extends Thread{
         String imei = "FAKEIMEIDEVICE"; 
         Addresses address=Addresses.QA; 
         tiwi = new TiwiProDevice(imei, address);
-        Long currentTime = System.currentTimeMillis()/1000;
-        tiwi.set_time(currentTime);
+        tiwi.set_time(new AutomationCalendar());
         tiwi.set_WMP(17116);
         tiwi.setOdometer(67751-(99*1));
         tiwi.set_location(40.74290000000001, -111.865340);
@@ -84,7 +79,7 @@ public class HanSoloTrip extends Thread{
         count++;
         tiwi = new TiwiProDevice(IMEI, server);
 
-        tiwi.set_time( initialTime + 60);
+        tiwi.set_time( initialTime.addToSeconds(60));
         tiwi.set_WMP(17116);
         tiwi.set_location(33.0104, -117.111);
         tiwi.power_on_device();
@@ -226,8 +221,7 @@ public class HanSoloTrip extends Thread{
         String driverID = "CANADA";
         String occupantID = "TWO";
         Addresses server = Addresses.QA; 
-        Long currentTime = System.currentTimeMillis()/1000;
-        Integer initialTime = currentTime.intValue();
+        AutomationCalendar initialTime = new AutomationCalendar();
         String vehicleID="virtualWS"; 
         int accountID=2;
         
@@ -248,7 +242,7 @@ public class HanSoloTrip extends Thread{
         waySmart.power_off_device(100);
     }
     
-    public void chewiesTurn(String mcmID, String satImei, String vehicleID, int accountID, Addresses server, Integer initialTime){
+    public void chewiesTurn(String mcmID, String satImei, String vehicleID, int accountID, Addresses server, AutomationCalendar initialTime){
         waySmart = new WaysmartDevice(satImei, mcmID, server);
         waySmart.set_time(initialTime);
         waySmart.set_location(33.0104, -117.111);
@@ -271,30 +265,29 @@ public class HanSoloTrip extends Thread{
     public static void main(String[] args){
 //        generateTrip("Vancouver Canada", "Abbotsford Canada", new TiwiProDevice("0000"));
         HanSoloTrip trip = new HanSoloTrip();
-        Long currentTime = System.currentTimeMillis()/1000;
-        Integer initialTime = currentTime.intValue();
+        AutomationCalendar initialTime = new AutomationCalendar();
         Addresses address;
-        String imei = "FAKEIMEIDEVICE"; address=Addresses.DEV_NOTE_SERVER;
+        String imei = "FAKEIMEIDEVICE"; address=Addresses.QA;
         imei = "DEVICEDOESNTEXIST";
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
-//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313106000;  // vehicleID=37706       deviceID=34506
-//        address=Addresses.QA;           initialTime = 1317730000;  // vehicleID=7293        deviceID=3753
-//        address=Addresses.STAGE;        initialTime = 1317730000;  // vehicleID=117441441   deviceID=117441936 
-//        address=Addresses.PROD;         initialTime = 1317730000;  // vehicleID=1           deviceID=1
+        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1317921311);  // vehicleID=37706       deviceID=34506
+//        address=Addresses.QA;           initialTime.setDate(1317921311);  // vehicleID=7293        deviceID=3753
+//        address=Addresses.STAGE;        initialTime.setDate(1317921311);  // vehicleID=117441441   deviceID=117441936 
+//        address=Addresses.PROD;         initialTime.setDate(1317921311);  // vehicleID=1           deviceID=1
         trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CHEVRON;      initialTime = 1317730000;  // vehicleID=117441441   deviceID=117441936
+//        address=Addresses.CHEVRON;      initialTime.setDate(1317921311);  // vehicleID=117441441   deviceID=117441936
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.SCHLUMBERGER; initialTime = 1317730000;  // vehicleID=150994955   deviceID=150994955
+//        address=Addresses.SCHLUMBERGER; initialTime.setDate(1317921311);  // vehicleID=150994955   deviceID=150994955
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.WEATHORFORD;  initialTime = 1317730000;  // vehicleID=184549575   deviceID=184549735
+//        address=Addresses.WEATHORFORD;  initialTime.setDate(1317921311);  // vehicleID=184549575   deviceID=184549735
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.TECK;         initialTime = 1317730000;  // vehicleID=251658249   deviceID=251658248
+//        address=Addresses.TECK;         initialTime.setDate(1317921311);  // vehicleID=251658249   deviceID=251658248
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.BARRICK;      initialTime = 1317730000;  // vehicleID=83886085    deviceID=83886086
+//        address=Addresses.BARRICK;      initialTime.setDate(1317921311);  // vehicleID=83886085    deviceID=83886086
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CINTAS;       initialTime = 1317730000;  // vehicleID=234881465   deviceID=234881624
+//        address=Addresses.CINTAS;       initialTime.setDate(1317921311);  // vehicleID=234881465   deviceID=234881624
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.LDS;       initialTime = 1317921311;  // vehicleID=100663298   deviceID=100663298
+//        address=Addresses.LDS;       initialTime.setDate(1317921311);  // vehicleID=100663298   deviceID=100663298
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
         
         

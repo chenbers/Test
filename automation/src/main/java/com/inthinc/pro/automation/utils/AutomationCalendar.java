@@ -451,68 +451,89 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         this(WebDateFormat.NOTE_DATE_TIME);
     }
 
-    public void addToDay(int amount) {
+    public AutomationCalendar(Calendar calendar) {
+        this();
+        this.date = calendar;
+    }
+
+    public AutomationCalendar addToDay(int amount) {
         date.add(Calendar.DAY_OF_YEAR, amount);
+        return this;
     }
 
-    public void addToHours(int i){
+    public AutomationCalendar addToHours(int i){
         date.add(Calendar.HOUR_OF_DAY, i);
+        return this;
     }
 
-    public void addToMilliseconds(int amount) {
+    public AutomationCalendar addToMilliseconds(int amount) {
         date.add(Calendar.MILLISECOND, amount);
+        return this;
     }
 
-    public void addToMinutes(int amount) {
+    public AutomationCalendar addToMinutes(int amount) {
         date.add(Calendar.MINUTE, amount);
+        return this;
     }
 
-    public void addToMonth(int amount) {
+    public AutomationCalendar addToMonth(int amount) {
         date.add(Calendar.MONTH, amount);
+        return this;
     }
 
-    public void addToSeconds(int amount) {
+    public AutomationCalendar addToSeconds(int amount) {
         date.add(Calendar.SECOND, amount);
+        return this;
     }
 
-    public void addToYear(int amount) {
+    public AutomationCalendar addToYear(int amount) {
         date.add(Calendar.YEAR, amount);
+        return this;
     }
 
-    public void changeDayOfMonthTo(int amount) {
+    public AutomationCalendar changeDayOfMonthTo(int amount) {
         date.set(Calendar.DAY_OF_MONTH, amount);
+        return this;
     }
 
-    public void changeDayOfWeekTo(int amount) {
+    public AutomationCalendar changeDayOfWeekTo(int amount) {
         date.set(Calendar.DAY_OF_WEEK, amount);
+        return this;
     }
 
-    public void changeDayOfYearTo(int amount) {
+    public AutomationCalendar changeDayOfYearTo(int amount) {
         date.set(Calendar.DAY_OF_YEAR, amount);
+        return this;
     }
     
-    public void changeHourseTo(int i) {
+    public AutomationCalendar changeHourseTo(int i) {
         date.set(Calendar.HOUR_OF_DAY, i);
+        return this;
     }
 
-    public void changeMillisecondsTo(int amount) {
+    public AutomationCalendar changeMillisecondsTo(int amount) {
         date.set(Calendar.MILLISECOND, amount);
+        return this;
     }
 
-    public void changeMinutesTo(int amount) {
+    public AutomationCalendar changeMinutesTo(int amount) {
         date.set(Calendar.MINUTE, amount);
+        return this;
     }
 
-    public void changeMonthTo(int amount) {
+    public AutomationCalendar changeMonthTo(int amount) {
         date.set(Calendar.MONTH, amount);
+        return this;
     }
 
-    public void changeSecondsTo(int amount) {
+    public AutomationCalendar changeSecondsTo(int amount) {
         date.set(Calendar.SECOND, amount);
+        return this;
     }
 
-    public void changeYearTo(int amount) {
+    public AutomationCalendar changeYearTo(int amount) {
         date.set(Calendar.YEAR, amount);
+        return this;
     }
 
     public boolean compareDays(AutomationCalendar compareAgainst) {
@@ -600,22 +621,25 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         return date.getTimeInMillis()/1000;
     }
 
-    public void setDate(String dateTime) {
+    public AutomationCalendar setDate(String dateTime) {
         try {
             date.setTime(formatter.parse(dateTime));
         } catch (ParseException e) {
             throw new IllegalArgumentException(dateTime + " does not match the pattern " + formatter.toPattern());
         }
+        return this;
     }
 
-    public void setFormat(WebDateFormat format) {
+    public AutomationCalendar setFormat(WebDateFormat format) {
         this.format = format.toString();
         formatter = new SimpleDateFormat(this.format);
+        return this;
         
     }
     
-    public void setTimeZone(TimeZones timeZone){
+    public AutomationCalendar setTimeZone(TimeZones timeZone){
         date.setTimeZone(timeZone.getTimeZone());
+        return this;
     }
 
     @Override
@@ -632,12 +656,13 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         return new AutomationCalendar(this.getCalendar(), format).toString();
     }
     
-    public void zeroTimeOfDay(){
+    public AutomationCalendar zeroTimeOfDay(){
         setTimeZone(TimeZones.UTC);
         changeMillisecondsTo(0);
         changeMinutesTo(0);
         changeSecondsTo(0);
         changeHourseTo(0);
+        return this;
     }
     
     public int getMonth(){
@@ -650,6 +675,28 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     
     public int getDayOfWeek(){
         return this.date.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public int toInt() {
+        Long time = date.getTimeInMillis()/1000;
+        return time.intValue();
+    }
+
+    public AutomationCalendar copy() {
+        return new AutomationCalendar(date);
+    }
+
+    public Long getDelta(AutomationCalendar time_last) {
+        long delta = getEpochTime() - time_last.getEpochTime();
+        return delta;
+    }
+
+    public void setDate(long ephochTime) {
+        this.date.setTimeInMillis(ephochTime);
+    }
+    
+    public void setDate(int epochTimeWithoutMillis){
+        setDate(epochTimeWithoutMillis * 1000l);
     }
 
 }

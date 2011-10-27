@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.caucho.hessian.client.HessianRuntimeException;
@@ -19,11 +18,12 @@ import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.TiwiProps;
 import com.inthinc.pro.automation.device_emulation.Base;
-import com.inthinc.pro.automation.device_emulation.NoteBuilder;
 import com.inthinc.pro.automation.device_emulation.Package_tiwiPro_Note;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.interfaces.NoteBuilder;
 import com.inthinc.pro.automation.models.MapSection;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
@@ -35,7 +35,7 @@ public class TiwiProDevice extends Base {
     private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
 
     private HashMap<TiwiAttrs, Integer> attrs;
-    private Long trip_start, trip_stop;
+    private AutomationCalendar trip_start, trip_stop;
     private AutomationHessianFactory getHessian;
 
     private ZoneManager zones;
@@ -133,7 +133,7 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.TYPE_HIGH_IDLE, highIdleTime);
 
         construct_note(TiwiNoteTypes.NOTE_TYPE_IDLING, attrs);
-        time += lowIdleTime + highIdleTime;
+        time.addToSeconds(lowIdleTime + highIdleTime);
         time_last = time;
         return this;
     }
@@ -197,14 +197,14 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    public TiwiProDevice construct_note(TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> attrs) {
+    public TiwiProDevice construct_note(TiwiNoteTypes type, Map<TiwiAttrs, Integer> attrs) {
         try {
             attrs.put(TiwiAttrs.TYPE_SPEED_LIMIT, speed_limit.intValue());
         } catch (Exception e) {
             logger.debug(StackToString.toString(e));
             e.printStackTrace();
         }
-        Package_tiwiPro_Note note = new Package_tiwiPro_Note(type, time, sats, heading, 1, latitude, longitude, speed, odometer, attrs);
+        Package_tiwiPro_Note note = new Package_tiwiPro_Note(type, time, sats, heading, 1, latitude, longitude, speed, odometer);
         logger.debug(note.toString());
         clear_internal_settings();
         add_note(note);
@@ -215,8 +215,8 @@ public class TiwiProDevice extends Base {
     public TiwiProDevice createAckNote(Map<String, Object> reply) {
         if (((Integer)reply.get("fwdID")) > 100){
             Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
-            ackNote.AddAttrs(TiwiAttrs.TYPE_FWDCMD_ID, (Integer) reply.get("fwdID"));
-            ackNote.AddAttrs(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_RECEIVED);
+            ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_ID, (Integer) reply.get("fwdID"));
+            ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_RECEIVED);
             byte[] packaged = ackNote.Package();
             note_queue.add(packaged);
         }
@@ -270,7 +270,7 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    public TiwiProDevice nonTripNote(long time, int sats, int heading, Double latitude, Double longitude, int speed, int odometer) {
+    public TiwiProDevice nonTripNote(AutomationCalendar time, int sats, int heading, Double latitude, Double longitude, int speed, int odometer) {
         this.time = time;
         this.sats = sats;
         this.heading = heading;
@@ -311,8 +311,8 @@ public class TiwiProDevice extends Base {
         if (reply.get("fwdID").equals(100)||reply.get("fwdID").equals(1))
             return 1;
 
-        ackNote.AddAttrs(TiwiAttrs.TYPE_FWDCMD_ID, reply.get("fwdId"));
-        ackNote.AddAttrs(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
+        ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_ID, reply.get("fwdId"));
+        ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
         byte[] packaged = ackNote.Package();
         note_queue.add(packaged);
 
@@ -323,14 +323,14 @@ public class TiwiProDevice extends Base {
 
     protected TiwiProDevice set_ignition(Integer time_delta) {
         ignition_state = !ignition_state;
-        Long newTime = (Long) (time + time_delta);
-        set_time(newTime);
+        
+        set_time(time.addToSeconds(time_delta));
         if (ignition_state) {
             construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_ON);
-            trip_start = newTime;
+            trip_start = time.copy();
         } else if (!ignition_state) {
-            trip_stop = newTime;
-            Long tripTime = trip_stop - trip_start;
+            trip_stop = time.copy();
+            Long tripTime = trip_stop.getDelta(trip_start);
             addIgnitionOffNote(tripTime.intValue(), 980);
         }
         return this;

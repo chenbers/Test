@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -387,13 +388,12 @@ public class LiveFleetTest extends WebRallyTest {
         pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
         ptds._link().liveFleet().click();
         
-        Long currentTime = System.currentTimeMillis()/1000;
-        Integer initialTime = currentTime.intValue();
+        AutomationCalendar initialTime = new AutomationCalendar();
         
         tiwi.set_location(60, 0);
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
-        tiwi.set_time(initialTime + 60);
+        tiwi.set_time(initialTime.addToSeconds(60));
         tiwi.update_location(60, 0, 15);
         tiwi.last_location(60, 0, 15);
         
@@ -410,7 +410,7 @@ public class LiveFleetTest extends WebRallyTest {
         tiwi.set_location(40.7097, -111.9925);
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
-        tiwi.set_time(initialTime + 120);
+        tiwi.set_time(initialTime.addToSeconds(120));
         tiwi.update_location(40.7097, -111.9925, 15);
         tiwi.last_location(40.7097, -111.9925, 15);
         

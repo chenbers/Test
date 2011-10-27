@@ -24,7 +24,6 @@ public class AdminAddVehicleTest extends WebRallyTest {
         editVehicle = new PageAdminVehicleEdit();
         login = users.getOneBy(LoginCapabilities.RoleAdmin);
         values = new Unique(Addresses.getSilo(getAutomationPropertiesBean().getSilo()));
-        editVehicle.loginProcess(login);
     }
     
     @Test
@@ -37,7 +36,7 @@ public class AdminAddVehicleTest extends WebRallyTest {
     
     @Test
     public void variableLengthVINs(){
-        
+        editVehicle.loginProcess(login);
         editVehicle._link().admin().click();
         editVehicle._link().adminVehicles().click();
         editVehicle._link().adminAddVehicle().click();

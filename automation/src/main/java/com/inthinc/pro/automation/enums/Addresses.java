@@ -33,7 +33,7 @@ public enum Addresses implements AddressInterface {
     
     EC2("204.236.172.41", null, null, "stage.inthinc.com", null, null, null),
 
-    QA("qa.tiwipro.com", 8423, 8199, "qa.tiwipro.com", 8190, 8988, 7880),
+    QA("qa.tiwipro.com", 8423, 8199, "qa.tiwipro.com", 8090, 8988, 7880),
     
     QA_NOTE_SERVER("192.168.11.115", 8423, 8199, null, 8091, 8988, 7880),
 

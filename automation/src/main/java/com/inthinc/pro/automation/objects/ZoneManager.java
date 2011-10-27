@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.inthinc.pro.automation.models.DeviceZone;
+import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
 import com.inthinc.pro.model.zone.option.ZoneOption;
@@ -25,12 +26,12 @@ public class ZoneManager implements Iterable<DeviceZone> {
         zones = new HashMap<Integer, DeviceZone>();
 
         ByteArrayInputStream bab = new ByteArrayInputStream(zoneArray);
-        fileFormatVersion = byteToInt(bab, 4);
-        fileVersion = byteToInt(bab, 4);
-        int nZones = byteToInt(bab, 4);
+        fileFormatVersion = AutomationNumberManager.byteToInt(bab, 4);
+        fileVersion = AutomationNumberManager.byteToInt(bab, 4);
+        int nZones = AutomationNumberManager.byteToInt(bab, 4);
         for (int i = 0; i < nZones; i++) {
             DeviceZone zone = new DeviceZone();
-            zone.setZoneID(byteToInt(bab, 4));
+            zone.setZoneID(AutomationNumberManager.byteToInt(bab, 4));
             bab.skip(4 * 3);
             zone.setPoints(parseVertices(bab));
             zone.setOptions(parseAttributes(bab));
@@ -40,7 +41,7 @@ public class ZoneManager implements Iterable<DeviceZone> {
     }
 
     private List<LatLng> parseVertices(ByteArrayInputStream bais) {
-        int nVertices = byteToInt(bais, 2);
+        int nVertices = AutomationNumberManager.byteToInt(bais, 2);
         List<LatLng> pointList = new ArrayList<LatLng>();
         double lat = 0.0;
         double lng = 0.0;
@@ -72,10 +73,10 @@ public class ZoneManager implements Iterable<DeviceZone> {
     }
 
     private List<ZoneOption> parseAttributes(ByteArrayInputStream bais) {
-        int nAttributes = byteToInt(bais, 2);
+        int nAttributes = AutomationNumberManager.byteToInt(bais, 2);
         List<ZoneOption> attributes = new ArrayList<ZoneOption>();
         for (; nAttributes > 0; nAttributes--) {
-            int id = byteToInt(bais, 1);
+            int id = AutomationNumberManager.byteToInt(bais, 1);
             int size = 0;
             if (id < 128) {
                 size = 1;
@@ -86,7 +87,7 @@ public class ZoneManager implements Iterable<DeviceZone> {
             } else {
                 throw new IllegalArgumentException("No such ID as " + id);
             }
-            int attribute = byteToInt(bais, size);
+            int attribute = AutomationNumberManager.byteToInt(bais, size);
             ZoneAvailableOption attributeType = ZoneAvailableOption.valueOf(id);
             if (attributeType == null){
                 continue;
@@ -100,17 +101,17 @@ public class ZoneManager implements Iterable<DeviceZone> {
     }
 
     
-    private Integer byteToInt(ByteArrayInputStream bais, int numOfBytes) {
-        return byteToLong(bais, numOfBytes).intValue();
-    }
-
-    private Long byteToLong(ByteArrayInputStream bais, int numOfBytes) {
-        Long number = 0l;
-        for (int shift = 0; numOfBytes-- > 0 && shift < 64; shift += 8) {
-            number |= (bais.read() & 0xFF) << shift;
-        }
-        return number;
-    }
+//    private Integer byteToInt(ByteArrayInputStream bais, int numOfBytes) {
+//        return byteToLong(bais, numOfBytes).intValue();
+//    }
+//
+//    private Long byteToLong(ByteArrayInputStream bais, int numOfBytes) {
+//        Long number = 0l;
+//        for (int shift = 0; numOfBytes-- > 0 && shift < 64; shift += 8) {
+//            number |= (bais.read() & 0xFF) << shift;
+//        }
+//        return number;
+//    }
 
     public int nextInt() {
 

@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.interfaces.NoteBuilder;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.CommandLine;
 import com.inthinc.pro.automation.utils.StackToString;
 
@@ -70,8 +72,8 @@ public class Package_Waysmart_Note implements NoteBuilder {
         sendNote.setArgs("speed", speed);
     }
     
-    public void setTime(long time){
-        sendNote.setArgs("time", time);
+    public void setTime(AutomationCalendar time){
+        sendNote.setArgs("time", time.getEpochTime());
     }
     
     public void setLocation(String location){

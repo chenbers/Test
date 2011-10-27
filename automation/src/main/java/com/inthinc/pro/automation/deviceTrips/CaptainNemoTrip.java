@@ -2,18 +2,19 @@ package com.inthinc.pro.automation.deviceTrips;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 public class CaptainNemoTrip extends Thread{
     private TiwiProDevice tiwi;
     
     private String IMEI;
     private Addresses server;
-    private Integer initialTime;
+    private AutomationCalendar initialTime;
     
     
 
 
-    public void start(String IMEI, Addresses server, Integer initialTime) {
+    public void start(String IMEI, Addresses server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime;
@@ -21,7 +22,7 @@ public class CaptainNemoTrip extends Thread{
         
     }
     
-    public void captainNemosFirstTrip(String IMEI, Addresses server, Integer initialTime) {
+    public void captainNemosFirstTrip(String IMEI, Addresses server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime;
@@ -31,7 +32,7 @@ public class CaptainNemoTrip extends Thread{
     public void captainNemosFirstTrip() {
         tiwi = new TiwiProDevice(IMEI, server);
 
-        tiwi.set_time( initialTime +60);
+        tiwi.set_time( initialTime.addToSeconds(60));
         tiwi.set_WMP(17116);
         tiwi.set_location(0, 0);
         tiwi.power_on_device();
@@ -72,8 +73,7 @@ public class CaptainNemoTrip extends Thread{
     
     public static void main(String[] args){
         CaptainNemoTrip trip = new CaptainNemoTrip();
-        Long currentTime = System.currentTimeMillis()/1000;
-        Integer initialTime = currentTime.intValue();
+        AutomationCalendar initialTime = new AutomationCalendar();
         Addresses address;
         String imei;
         imei = "999999000109751"; address=Addresses.QA;//         initialTime = initialTime; // NO VEHICLE            NO DEVICE

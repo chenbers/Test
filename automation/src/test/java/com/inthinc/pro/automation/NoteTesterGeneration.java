@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 public class NoteTesterGeneration extends Thread{
     private TiwiProDevice tiwi1;
@@ -16,12 +17,12 @@ public class NoteTesterGeneration extends Thread{
     private String IMEI3;
     private String IMEI4;
     private Addresses server;
-    private Integer initialTime;
+    private AutomationCalendar initialTime;
     
     
 
 
-    public void start(String IMEI1, String IMEI2, String IMEI3, String IMEI4, Addresses server, Integer initialTime) {
+    public void start(String IMEI1, String IMEI2, String IMEI3, String IMEI4, Addresses server, AutomationCalendar initialTime) {
         this.IMEI1=IMEI1;
         this.IMEI2=IMEI2;
         this.IMEI3=IMEI3;
@@ -32,7 +33,7 @@ public class NoteTesterGeneration extends Thread{
         
     }
     
-    public void noteTesterFirstGeneration(String IMEI1, String IMEI2, String IMEI3, String IMEI4, Addresses server, Integer initialTime) {
+    public void noteTesterFirstGeneration(String IMEI1, String IMEI2, String IMEI3, String IMEI4, Addresses server, AutomationCalendar initialTime) {
         this.IMEI1=IMEI1;
         this.IMEI2=IMEI2;
         this.IMEI3=IMEI3;
@@ -57,15 +58,15 @@ public class NoteTesterGeneration extends Thread{
         tiwiArray[3] = tiwi4;
         
         for(int i=0; i<4; i++){
-            tiwiArray[i].set_time( initialTime +60);
+            tiwiArray[i].set_time( initialTime.addToSeconds(60));
             tiwiArray[i].power_on_device();
             tiwiArray[i].turn_key_on(15);
         }
         
-        tiwi1.nonTripNote( initialTime +60, 1, 1, 10.0, 0.0, 60, 100);
-        tiwi2.nonTripNote( initialTime +60, 1, 1, 0.0, 10.0, 60, 100);
-        tiwi3.nonTripNote( initialTime +60, 1, 1, -10.0, 0.0, 60, 100);
-        tiwi4.nonTripNote( initialTime +60, 1, 1, 0.0, -10.0, 60, 100);
+        tiwi1.nonTripNote( initialTime.addToSeconds(60), 1, 1, 10.0, 0.0, 60, 100);
+        tiwi2.nonTripNote( initialTime.addToSeconds(60), 1, 1, 0.0, 10.0, 60, 100);
+        tiwi3.nonTripNote( initialTime.addToSeconds(60), 1, 1, -10.0, 0.0, 60, 100);
+        tiwi4.nonTripNote( initialTime.addToSeconds(60), 1, 1, 0.0, -10.0, 60, 100);
 
         
         //Driving Style notes.
@@ -120,8 +121,7 @@ public class NoteTesterGeneration extends Thread{
     
     public static void main(String[] args){
         NoteTesterGeneration trip = new NoteTesterGeneration();
-        Long currentTime = System.currentTimeMillis()/1000;
-        Integer initialTime = currentTime.intValue();
+        AutomationCalendar initialTime = new AutomationCalendar();
         Addresses address;
         String imei1; String imei2; String imei3; String imei4;
         imei1 = "999999000109741";

@@ -42,6 +42,11 @@ public class SelectableObject extends Text implements Selectable {
         }
         return select(value.getText());
     }
+    
+    @Override
+    public String getText() {
+        return selenium.getSelectedLabel(myEnum);
+    }
 
     @Override
     public String getText(Integer optionNumber) {
@@ -58,6 +63,7 @@ public class SelectableObject extends Text implements Selectable {
     public SelectableObject select(Integer optionNumber) {
         optionNumber--;
         selenium.select(myEnum, "index=" + optionNumber);
+        pause(2, "Wait for propogation");
         String selected = selenium.getSelectedIndex(myEnum);
         assertEquals(optionNumber.toString(), selected);
         return this;

@@ -4,12 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,6 +18,7 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
 import com.inthinc.pro.automation.interfaces.MCMProxy;
+import com.inthinc.pro.automation.interfaces.NoteBuilder;
 import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
@@ -75,8 +71,8 @@ public abstract class Base {
 
     protected final static int[] dbErrors = { 302, 303, 402 };
 
-    protected long time;
-    protected long time_last;
+    protected AutomationCalendar time;
+    protected AutomationCalendar time_last;
 
     protected MCMProxy mcmProxy;
 
@@ -323,9 +319,8 @@ public abstract class Base {
     }
 
     protected Base get_time() {
-
-        time = System.currentTimeMillis() / 1000;
-        time_last = time;
+        time = new AutomationCalendar();
+        time_last = time.copy();
         return this;
     }
 
@@ -334,8 +329,8 @@ public abstract class Base {
     }
 
     public Base increment_time(Integer increment) {
-        time_last = time;
-        time += increment;
+        time_last = time.copy();
+        time.addToSeconds(increment);
         return this;
     }
 
@@ -401,13 +396,13 @@ public abstract class Base {
         return this;
     }
 
-    public Base power_on_device(Long time_now) {
+    public Base power_on_device(AutomationCalendar time_now) {
         assert (latitude != 0.0 && longitude != 0.0);
         if (!power_state) {
             set_time(time_now);
             set_power();
             configurate_device();
-            time_now += 30;
+            time_now.addToSeconds(30);
             set_time(time_now);
         } else {
             logger.info("The device is already on.");
@@ -546,48 +541,18 @@ public abstract class Base {
 
     public abstract Base set_speed_limit(Integer limit);
 
-    public Base set_time(Date time_now) {
 
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(time_now);
-
-        set_time((Long) (cal.getTimeInMillis() / 1000));
-        return this;
-    }
-
-    public Base set_time(Long time_now) {
+    public Base set_time(AutomationCalendar time_now) {
 
         time = time_now;
-        time_last = time;
+        time_last = time.copy();
         logger.debug("Time = "+time);
         return this;
     }
     
-    public Base set_time(Integer time_now){
-        return set_time(time_now.longValue());
-    }
-
-    public Base set_time(String time_now) {
-
-        Date date = new Date();
-        SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat.getInstance();
-        df.applyPattern("yyyy MMM dd HH:mm:ss");
-        try {
-            date = df.parse(time_now);
-        } catch (ParseException e) {
-            logger.info("Hello, We Failed to parse your time");
-            time = System.currentTimeMillis() / 1000;
-        }
-        logger.debug(date);
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-
-        set_time((Long) (cal.getTimeInMillis() / 1000));
-        return this;
-    }
 
     private Base set_vehicle_speed() {
-        Long timeDelta = (time - time_last);
+        Long timeDelta = (time.getDelta(time_last));
         Double speed =((odometer / timeDelta.doubleValue()) * 36.0);
         this.speed=speed.intValue();
         is_speeding();

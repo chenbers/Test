@@ -41,7 +41,7 @@ public class DeviceTests extends WebDeviceOnlyRallyTest {
                     portalProxy.queueFwdCmd(deviceID, fwdMap);
                 }
                 TiwiProDevice tiwi = new TiwiProDevice(imei, server);
-                tiwi.nonTripNote(System.currentTimeMillis() / 1000, 9, 8, 55.0,
+                tiwi.nonTripNote(new AutomationCalendar(), 9, 8, 55.0,
                         55.0, 5, 5);
                 tiwi.add_location();
                 tiwi.flushNotes();

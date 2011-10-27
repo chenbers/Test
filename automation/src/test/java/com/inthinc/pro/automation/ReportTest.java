@@ -11,6 +11,7 @@ import com.inthinc.pro.automation.device_emulation.Base;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.automation.utils.AutomationThread;
@@ -18,7 +19,6 @@ import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Unique;
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxy;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -161,15 +161,15 @@ public class ReportTest {
 		Iterator<Integer> itr = drivers.keySet().iterator();
 		LinkedHashMap<Integer, HanSoloTrip> trips = new LinkedHashMap<Integer, HanSoloTrip>();
 
-        Long currentTime = System.currentTimeMillis()/1000;
-        Integer initialTime = currentTime.intValue();
+        AutomationCalendar initialTime = new AutomationCalendar();
 		MasterTest.print(portal);
 		
         long start = System.currentTimeMillis();
         MasterTest.print("Starting time is " + start);
+        initialTime.setDate(1319575402);
 		while (itr.hasNext()){
 			Integer next = itr.next();
-			new HanSoloTrip().start(drivers.get(next).get("device"), portal, 1319575402);
+			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
 		}
 
 		MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");

@@ -10,11 +10,11 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.deviceEnums.WaysmartProps;
 import com.inthinc.pro.automation.device_emulation.Base;
-import com.inthinc.pro.automation.device_emulation.NoteBuilder;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note.Direction;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.interfaces.NoteBuilder;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -194,8 +194,7 @@ public class WaysmartDevice extends Base {
 	@Override
 	protected WaysmartDevice set_ignition(Integer time_delta) {
 	    ignition_state = !ignition_state;
-        Long newTime = (Long) (time + time_delta);
-        set_time(newTime);
+	    time.addToSeconds(time_delta);
         if (ignition_state) {
             addIgnitionOnNote(Direction.wifi);
         } else {

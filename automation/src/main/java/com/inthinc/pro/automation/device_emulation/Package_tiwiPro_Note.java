@@ -6,67 +6,46 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
-import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.interfaces.NoteBuilder;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.automation.utils.StackToString;
 
 
 public class Package_tiwiPro_Note implements NoteBuilder{
 	private final static Logger logger = Logger.getLogger(Package_tiwiPro_Note.class);
     
-    private Integer nType, sats, heading, maprev, Speed, odometer, nTime;
-    private Double lat, lng;
-    private HashMap<Integer, Integer> attrs;
+    private final Integer sats, heading, maprev, Speed, odometer;
+    private final AutomationCalendar nTime;
+    private final Double lat, lng;
+    private final HashMap<DeviceTypes, Integer> attrs;
+    private final TiwiNoteTypes nType;
     
     
-    public Package_tiwiPro_Note(TiwiNoteTypes type, String time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<TiwiAttrs, Integer> Attrs){
-        nType = type.getValue();
-        nTime = (int)DateToLong(time);
-        sats = Sats;
-        heading = Heading;
-        maprev = Maprev;
-        lat = Lat;
-        lng = Lng;
-        Speed = speed;
-        odometer = Odometer;
-        processAttrs(Attrs);
+    public Package_tiwiPro_Note(TiwiNoteTypes type, AutomationCalendar time, int sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer){
+        nType = type;
+        nTime = time;
+        this.sats = sats;
+        this.heading = Heading;
+        this.maprev = Maprev;
+        this.lat = Lat;
+        this.lng = Lng;
+        this.Speed = speed;
+        this.odometer = Odometer;
+        attrs = new HashMap<DeviceTypes, Integer>();
     }
     
     
-    public Package_tiwiPro_Note(TiwiNoteTypes type, long time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<TiwiAttrs, Integer> Attrs){
-        nType = type.getValue();
-        if ( time > (System.currentTimeMillis()/100 )) nTime = (int)( time/1000 );
-        else{ nTime = (int)time; }
-        sats = Sats;
-        heading = Heading;
-        maprev = Maprev;
-        lat = Lat;
-        lng = Lng;
-        Speed = speed;
-        odometer = Odometer;
-        processAttrs(Attrs);
-    }
-    
-    public Package_tiwiPro_Note( TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> Attrs ){
-        nType = type.getValue();
-        nTime = (int)(System.currentTimeMillis()/1000);
-        sats = 0;
-        heading = 0;
-        maprev = 0;
-        lat = 0.0;
-        lng = 0.0;
-        Speed = 0;
-        odometer = 0;
-        processAttrs(Attrs);
-    }
     
     public Package_tiwiPro_Note( TiwiNoteTypes type ){
-        nType = type.getValue();
-        nTime = (int)(System.currentTimeMillis()/1000);
+        nType = type;
+        nTime = new AutomationCalendar();
         sats = 0;
         heading = 0;
         maprev = 0;
@@ -74,46 +53,29 @@ public class Package_tiwiPro_Note implements NoteBuilder{
         lng = 0.0;
         Speed = 0;
         odometer = 0;
-        attrs = new HashMap<Integer, Integer>();
+        attrs = new HashMap<DeviceTypes, Integer>();
     }
     
     public Package_tiwiPro_Note(){
-        nType = TiwiNoteTypes.NOTE_TYPE_LOCATION.getValue();
-        nTime = (int)(System.currentTimeMillis()/1000);
-        sats = 0;
-        heading = 0;
-        maprev = 0;
-        lat = 0.0;
-        lng = 0.0;
-        Speed = 0;
-        odometer = 0;
-        attrs = new HashMap<Integer, Integer>();
+        this(TiwiNoteTypes.NOTE_TYPE_LOCATION);
     }
-    
-    
 
-	public void AddAttrs(HashMap<TiwiAttrs, Integer> Attrs){
-    	processAttrs(Attrs);
-    }
-    public void AddAttrs(FwdCmdStatus cmd, Integer reply){
-    	attrs.put(cmd.getValue(), reply);
-    }
-    public void AddAttrs(TiwiAttrs cmd, Integer reply){
-    	attrs.put(cmd.getValue(), reply);
-    }
-    public void AddAttrs(TiwiAttrs cmd, Object reply){
-    	attrs.put(cmd.getValue(), (Integer)reply);
-    }
-    public void AddAttrs(TiwiAttrs cmd, FwdCmdStatus reply) {
-    	attrs.put(cmd.getValue(), reply.getValue());
+    public void AddAttrs(HashMap<? extends DeviceTypes, Integer> Attrs){
+    	addAttrs(Attrs);
     }
     
-    public void AddAttrs(TiwiAttrs cmd, TiwiAttrs reply){
-    	HashMap<TiwiAttrs, Integer> Attrs = new HashMap<TiwiAttrs, Integer>();
-    	Attrs.put(cmd, reply.getValue());
-    	processAttrs(Attrs);
+    public void addAttr(DeviceTypes id, Object value){
+        int cast;
+        if (value instanceof Integer){
+            cast = (Integer) value;
+        } else if (value instanceof DeviceTypes){
+            cast = ((DeviceTypes) value).getValue();
+        } else {
+            throw new IllegalArgumentException("Cannot add value of type: " + value.getClass());
+        }
+        attrs.put(id, cast);
     }
-        
+    
         
     public long DateToLong( String datetime ){
         long epoch_time = (int)(System.currentTimeMillis()/1000);
@@ -144,13 +106,12 @@ public class Package_tiwiPro_Note implements NoteBuilder{
     	return note;
     }
     
-    public void processAttrs(HashMap<TiwiAttrs, Integer> Attrs){
-    	attrs = new HashMap<Integer, Integer>();
-    	TiwiAttrs attrID;
-    	Iterator<TiwiAttrs> itr = Attrs.keySet().iterator();
+    public void addAttrs(Map<? extends DeviceTypes, Integer> Attrs){
+    	DeviceTypes attrID;
+    	Iterator<? extends DeviceTypes> itr = Attrs.keySet().iterator();
     	while (itr.hasNext()){
     		attrID = itr.next();
-    		attrs.put(attrID.getValue(), Attrs.get(attrID));
+    		attrs.put(attrID, Attrs.get(attrID));
     	}
     }
    
@@ -162,74 +123,19 @@ public class Package_tiwiPro_Note implements NoteBuilder{
     	
     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
-        
-        if (lng < 0.0 ){
-            lng += 360.0;
-        }
-        
-        double latitude = ( 90.0 - lat ) / 180.0;
-        double longitude = ( lng / 360.0 );
-        
-        int val1  = (int)( latitude  * 0x00FFFFFF );
-        int val2  = (int)( longitude * 0x00FFFFFF );
-        int flags = (int)(  heading << 4)  & 0xF0 | sats & 0x0F;
-        
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        bos.write(  nType          & 0xFF );
-        bos.write(( nTime >> 24 )  & 0xFF );
-        bos.write(( nTime >> 16 )  & 0xFF );
-        bos.write(( nTime >>  8 )  & 0xFF );
-        bos.write(  nTime          & 0xFF );
-        bos.write( flags);
-        bos.write(  maprev         & 0xFF );
-        bos.write(( val1 >> 16 )   & 0xFF );
-        bos.write(( val1 >>  8 )   & 0xFF );
-        bos.write(  val1           & 0xFF );
-        bos.write(( val2 >> 16 )   & 0xFF );
-        bos.write(( val2 >>  8 )   & 0xFF );
-        bos.write(  val2           & 0xFF );
-        bos.write(  Speed          & 0xFF );
-        bos.write(( odometer >> 8) & 0xFF );
-        bos.write(  odometer       & 0xFF );
+        AutomationNumberManager.intToByte(bos, nType.getValue(), 1);
+        AutomationNumberManager.intToByte(bos, nTime.toInt(), 4);
+        AutomationNumberManager.intToByte(bos, AutomationNumberManager.concatenateTwoInts(heading, sats), 1);
+        AutomationNumberManager.intToByte(bos, maprev, 1);
+        AutomationNumberManager.intToByte(bos, AutomationNumberManager.encodeLat(lat), 3);
+        AutomationNumberManager.intToByte(bos, AutomationNumberManager.encodeLng(lng), 3);
+        AutomationNumberManager.intToByte(bos, odometer, 2);
         
-        
-        Iterator<Integer> keys = attrs.keySet().iterator();
-        
-        while( keys.hasNext()){
-            int key=0;
-            int value=0;
-            try {
-
-                key = keys.next();
-                value = attrs.get(key);
-            } catch (NullPointerException e){
-                logger.info("Key: " + key);
-                continue;
-            }
-            
-            if ( key < 128 ){
-                bos.write( key   & 0xFF );
-                bos.write( value & 0xFF );                
-            }
-            
-            else if ( key < 192 && key >= 128 ){
-                bos.write(  key           & 0xFF );
-                bos.write(( value >>  8 ) & 0xFF );
-                bos.write(  value         & 0xFF );                
-            }
-            
-            else if ( key < 255 && key >= 192 ){
-                bos.write(  key           & 0xFF );
-                bos.write(( value >> 24 ) & 0xFF );
-                bos.write(( value >> 16 ) & 0xFF );
-                bos.write(( value >>  8 ) & 0xFF );
-                bos.write(  value         & 0xFF );
-            }
-        }
+        NoteManager.encodeAttributes(bos, attrs);
         
         return bos.toByteArray();   
     }
-
 
     @Override
     public String sendNote() {
