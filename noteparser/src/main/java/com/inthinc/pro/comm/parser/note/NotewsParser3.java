@@ -7,7 +7,7 @@ import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.comm.parser.attrib.AttribParser;
 import com.inthinc.pro.comm.parser.attrib.AttribParserFactory;
 import com.inthinc.pro.comm.parser.attrib.LatLongParser;
-import com.inthinc.pro.comm.util.ReadUtil;
+import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

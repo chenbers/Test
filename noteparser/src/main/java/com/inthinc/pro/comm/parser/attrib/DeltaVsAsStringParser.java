@@ -3,7 +3,7 @@ package com.inthinc.pro.comm.parser.attrib;
 import java.text.DecimalFormat;
 import java.util.Map;
 
-import com.inthinc.pro.comm.util.ReadUtil;
+import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class DeltaVsAsStringParser implements AttribParser {
 

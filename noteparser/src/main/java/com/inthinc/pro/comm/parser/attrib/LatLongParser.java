@@ -5,10 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import com.inthinc.pro.comm.NoteProcessor;
-import com.inthinc.pro.comm.util.ReadUtil;
+import com.inthinc.pro.comm.parser.util.ReadUtil;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.comm.util.LatLngUtil;
+import com.inthinc.pro.comm.parser.util.LatLngUtil;
 
 public class LatLongParser implements AttribParser {
 	private static Logger logger = LoggerFactory.getLogger(LatLongParser.class);
