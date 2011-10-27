@@ -12,7 +12,12 @@
 	<artifactId>noteparser</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>noteparser</name>
+	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
+	<build>
+		<finalName>noteparser</finalName>
+	</build>
+	
 
     <!--                          -->
     <!-- Distritubtion Management -->
