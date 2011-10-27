@@ -61,6 +61,7 @@
 		<module>hoskiosk</module>
 		<module>i18nutil</module>
 		<module>automation</module>
+		<module>noteparser</module>
 <!-- 		<module>assetmanagementdao</module> -->
 	</modules>
 	<properties>
