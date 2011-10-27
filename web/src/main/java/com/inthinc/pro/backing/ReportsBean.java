@@ -154,6 +154,10 @@ public abstract class ReportsBean extends BaseBean {
                 reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
+            case PAYROLL_COMPENSATED_HOURS:
+                reportCriteriaList.add(getReportCriteriaService().getPayrollCompensatedHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
             case PAYROLL_DETAIL:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
                         params.getLocale()));
@@ -231,7 +235,7 @@ public abstract class ReportsBean extends BaseBean {
                 break;
 
         }
-        for (ReportCriteria reportCriteria : reportCriteriaList) {
+        for (ReportCriteria reportCriteria : reportCriteriaList) { 
             reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
             reportCriteria.setLocale(getUser().getPerson().getLocale());
             reportCriteria.setUseMetric((getUser().getPerson().getMeasurementType() != null && getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
