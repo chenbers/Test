@@ -11,9 +11,10 @@
 	<groupId>com.inthinc.pro.noteparser</groupId>
 	<artifactId>noteparser</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>noteparser</name>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
+
+	<name>Note Parsers</name>
 	<build>
 		<finalName>noteparser</finalName>
 	</build>
@@ -22,6 +23,7 @@
     <!--                          -->
     <!-- Distritubtion Management -->
     <!--                          -->
+<!--
 	<distributionManagement>
 		<repository>
 			<id>devserv.tiwipro.com</id>
@@ -34,7 +36,7 @@
 			<url>https://devserv.tiwipro.com:8484/artifactory/libs-snapshots-local</url>
 		</snapshotRepository>
 	</distributionManagement>
-
+-->
 	<dependencies>
 
 		<dependency>
