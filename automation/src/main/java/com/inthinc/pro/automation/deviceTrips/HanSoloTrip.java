@@ -11,10 +11,13 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
+import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.HTTPCommands;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 public class HanSoloTrip extends Thread{
     private final static Logger logger = Logger.getLogger(HanSoloTrip.class);
@@ -32,7 +35,7 @@ public class HanSoloTrip extends Thread{
     public boolean start(String IMEI, Addresses server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
-        this.initialTime = initialTime;
+        this.initialTime = initialTime.copy();
         super.start();
         return true;
     }
@@ -40,7 +43,7 @@ public class HanSoloTrip extends Thread{
     public void hanSolosFirstTrip(String IMEI, Addresses server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
-        this.initialTime = initialTime;
+        this.initialTime = initialTime.copy();
         hanSolosFirstTrip();
     }
     
@@ -132,7 +135,6 @@ public class HanSoloTrip extends Thread{
         tiwi.add_lowBattery();
         tiwi.power_off_device(900);
         count--;
-        logger.info(count);
     }
     
     public static boolean isDone(){
@@ -225,13 +227,13 @@ public class HanSoloTrip extends Thread{
         String vehicleID="virtualWS"; 
         int accountID=2;
         
-        waySmart = new WaysmartDevice(satImei, mcmID, server);
+        waySmart = new WaysmartDevice(satImei, mcmID, server, Direction.wifi);
         waySmart.set_time(initialTime);
         waySmart.set_location(33.0104, -117.111);
         waySmart.setBaseOdometer(5000);
         waySmart.addInstallEvent(vehicleID, accountID);
         waySmart.power_on_device();
-        waySmart.logInDriver(driverID);
+//        waySmart.logInDriver(driverID);
         
         waySmart.logInOccupant(occupantID);
         waySmart.turn_key_on(15);
@@ -243,7 +245,7 @@ public class HanSoloTrip extends Thread{
     }
     
     public void chewiesTurn(String mcmID, String satImei, String vehicleID, int accountID, Addresses server, AutomationCalendar initialTime){
-        waySmart = new WaysmartDevice(satImei, mcmID, server);
+        waySmart = new WaysmartDevice(satImei, mcmID, server, Direction.wifi);
         waySmart.set_time(initialTime);
         waySmart.set_location(33.0104, -117.111);
         waySmart.setBaseOdometer(5000);
@@ -267,14 +269,17 @@ public class HanSoloTrip extends Thread{
         HanSoloTrip trip = new HanSoloTrip();
         AutomationCalendar initialTime = new AutomationCalendar();
         Addresses address;
-        String imei = "FAKEIMEIDEVICE"; address=Addresses.QA;
+        String imei = "FAKEIMEIDEVICE"; address=Addresses.DEV;
         imei = "DEVICEDOESNTEXIST";
+        MasterTest.print("We have " + Thread.activeCount() + " threads running currently");
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
-        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1317921311);  // vehicleID=37706       deviceID=34506
+//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1317921311);  // vehicleID=37706       deviceID=34506
 //        address=Addresses.QA;           initialTime.setDate(1317921311);  // vehicleID=7293        deviceID=3753
 //        address=Addresses.STAGE;        initialTime.setDate(1317921311);  // vehicleID=117441441   deviceID=117441936 
 //        address=Addresses.PROD;         initialTime.setDate(1317921311);  // vehicleID=1           deviceID=1
         trip.hanSolosFirstTrip( imei, address, initialTime);
+        MasterTest.print("Now we have " + Thread.activeCount() + " threads running currently");
+        MasterTest.print(DeviceStatistics.getCallsPerMinute());
 //        address=Addresses.CHEVRON;      initialTime.setDate(1317921311);  // vehicleID=117441441   deviceID=117441936
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.SCHLUMBERGER; initialTime.setDate(1317921311);  // vehicleID=150994955   deviceID=150994955

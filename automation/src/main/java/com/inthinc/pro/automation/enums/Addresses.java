@@ -27,13 +27,13 @@ public enum Addresses implements AddressInterface {
     
     STAGE_DIRECT("ec2-50-18-81-171.us-west-1.compute.amazonaws.com"),
 
-    DEV("192.168.11.110", 8081, null, null, 7780, 8888, null),
+    DEV("192.168.11.110", 8081, null, null, 8090, 8888, null),
     
     DEV_NOTE_SERVER("192.168.11.111", 8081, null, null, 8091, 8888, null),
     
     EC2("204.236.172.41", null, null, "stage.inthinc.com", null, null, null),
 
-    QA("qa.tiwipro.com", 8423, 8199, "qa.tiwipro.com", 8090, 8988, 7880),
+    QA("qa.tiwipro.com", 8423, 8199, "qa.tiwipro.com", 8190, 8988, 7880),
     
     QA_NOTE_SERVER("192.168.11.115", 8423, 8199, null, 8091, 8988, 7880),
 

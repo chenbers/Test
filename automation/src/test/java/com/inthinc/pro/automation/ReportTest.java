@@ -7,10 +7,11 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
-import com.inthinc.pro.automation.device_emulation.Base;
+import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
+import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.AutomationSiloService;
@@ -19,6 +20,7 @@ import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Unique;
+import com.inthinc.pro.dao.hessian.extension.HessianTCPProxy;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -162,30 +164,27 @@ public class ReportTest {
 		LinkedHashMap<Integer, HanSoloTrip> trips = new LinkedHashMap<Integer, HanSoloTrip>();
 
         AutomationCalendar initialTime = new AutomationCalendar();
+        initialTime.setDate(1319575402);
 		MasterTest.print(portal);
 		
         long start = System.currentTimeMillis();
-        MasterTest.print("Starting time is " + start);
-        initialTime.setDate(1319575402);
 		while (itr.hasNext()){
 			Integer next = itr.next();
+//			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
 			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
 		}
 
 		MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
 		
-        while (!HanSoloTrip.isDone()){
+        while (Thread.activeCount() > 1){
 		    AutomationThread.pause(1);
-		    MasterTest.print("Pausing for one second, count is " + HanSoloTrip.getCount());
-//		    MasterTest.print("We made " + HessianTCPProxy.getCount());
 		}
-        
-        long stop = System.currentTimeMillis();
-        MasterTest.print("Ending time is " + start);
-		MasterTest.print("We sent " + Base.getCount() + " Notes");
-//		MasterTest.print("We made " + HessianTCPProxy.getCount());
-        MasterTest.print("We took :" + ((stop-start)) + " milliseconds to run");
-        MasterTest.print(portal);
+
+        MasterTest.print("Starting time is " + DeviceStatistics.getStart());
+        MasterTest.print("Ending time is " + DeviceStatistics.getStop());
+		MasterTest.print("We made " + DeviceStatistics.getHessianCalls());
+        MasterTest.print("We took :" + DeviceStatistics.getTimeDelta() + " seconds to run");
+        MasterTest.print("This is an average of " + DeviceStatistics.getCallsPerMinute() + " calls per minute");
 	}
 		
 	public static void main(String[] args){

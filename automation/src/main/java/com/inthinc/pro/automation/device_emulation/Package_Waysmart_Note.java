@@ -8,6 +8,7 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.NoteBuilder;
+import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.CommandLine;
 import com.inthinc.pro.automation.utils.StackToString;
@@ -17,11 +18,6 @@ public class Package_Waysmart_Note implements NoteBuilder {
     private final static Logger logger = Logger.getLogger(Package_Waysmart_Note.class);
 
     private final CommandLine sendNote;
-
-    public static enum Direction {
-        wifi,
-        sat
-    };
 
     /**
      * @param type

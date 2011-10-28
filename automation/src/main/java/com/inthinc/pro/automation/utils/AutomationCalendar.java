@@ -617,7 +617,11 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         return date.getTime();
     }
 
-    public long getEpochTime() {
+    public Integer getEpochTime() {
+        return getEpochTimeL().intValue();
+    }
+    
+    public Long getEpochTimeL() {
         return date.getTimeInMillis()/1000;
     }
 
@@ -627,6 +631,11 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         } catch (ParseException e) {
             throw new IllegalArgumentException(dateTime + " does not match the pattern " + formatter.toPattern());
         }
+        return this;
+    }
+    
+    public AutomationCalendar setDate(AutomationCalendar time){
+        date.setTime(time.getDate());
         return this;
     }
 
@@ -691,12 +700,14 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         return delta;
     }
 
-    public void setDate(long ephochTime) {
+    public AutomationCalendar setDate(long ephochTime) {
         this.date.setTimeInMillis(ephochTime);
+        return this;
     }
     
-    public void setDate(int epochTimeWithoutMillis){
+    public AutomationCalendar setDate(int epochTimeWithoutMillis){
         setDate(epochTimeWithoutMillis * 1000l);
+        return this;
     }
 
 }

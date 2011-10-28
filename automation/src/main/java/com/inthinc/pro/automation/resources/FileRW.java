@@ -3,9 +3,10 @@ package com.inthinc.pro.automation.resources;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class FileRW {
 	private static BufferedImage image;
 	private String fileName;
 	private BufferedReader in;
-	private InputStream stream;
+//	private InputStream stream;
 
 	public FileRW(String fileName){
 		logger.debug(fileName);
@@ -43,9 +44,13 @@ public class FileRW {
 //	}
 	
 	private void openReader(){
-		stream = getClass().getResourceAsStream(fileName);
-		logger.debug(stream);
-		in = new BufferedReader(new InputStreamReader(stream));
+	    File file = new File(fileName);
+		try {
+            in = new BufferedReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            logger.info(StackToString.toString(e));
+            throw new NullPointerException(fileName + " was not found");
+        }
 	}
 	
 //	public void write(String fileName, String text){
@@ -85,7 +90,7 @@ public class FileRW {
 		try {
 //			fis.close();
 //			bis.close();
-			stream.close();
+//			stream.close();
 			in.close();
 		} catch (IOException e) {
 			logger.debug(StackToString.toString(e));

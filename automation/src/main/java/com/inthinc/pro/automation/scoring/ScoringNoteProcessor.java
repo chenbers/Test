@@ -50,8 +50,12 @@ public class ScoringNoteProcessor {
 	
 	public void scoreMe(UnitType type, Integer ID, AutomationCalendar start, AutomationCalendar stop, ProductType deviceType) {
 		this.deviceType = deviceType;
-		if (type == UnitType.DRIVER)getDriverNotes(ID, start.getEpochTime(), stop.getEpochTime());
-		else getVehicleNotes(ID, start.getEpochTime(), stop.getEpochTime());
+		if (type == UnitType.DRIVER){
+		    getDriverNotes(ID, start, stop);
+		}
+		else {
+		    getVehicleNotes(ID, start, stop);
+		}
 		scores.put("Overall", ScoringFormulas.overallScore(speedingScore(), drivingStyleScore(), seatBeltScore()));		
 	}
 	
@@ -63,13 +67,13 @@ public class ScoringNoteProcessor {
 		hessian = new AutomationSiloService(server);
 	}
 	
-	private void getVehicleNotes(Integer ID, Long start, Long stop){
-		processor.preProcessNotes(hessian.getVehicleNote(ID, start, stop), deviceType);
+	private void getVehicleNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
+		processor.preProcessNotes(hessian.getVehicleNote(ID, start.getEpochTimeL(), stop.getEpochTimeL()), deviceType);
 		theResultsAreIn();
 	}
 	
-	private void getDriverNotes(Integer ID, Long start, Long stop){
-		processor.preProcessNotes(hessian.getDriverNote(ID, start, stop), deviceType );
+	private void getDriverNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
+		processor.preProcessNotes(hessian.getDriverNote(ID, start.getEpochTimeL(), stop.getEpochTimeL()), deviceType );
 		theResultsAreIn();
 	}
 	

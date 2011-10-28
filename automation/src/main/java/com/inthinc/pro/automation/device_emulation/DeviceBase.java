@@ -14,12 +14,17 @@ import java.util.Map;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
-import com.inthinc.pro.automation.interfaces.MCMProxy;
-import com.inthinc.pro.automation.interfaces.NoteBuilder;
+import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
+import com.inthinc.pro.automation.models.NoteBC;
+import com.inthinc.pro.automation.models.NoteBC.Direction;
+import com.inthinc.pro.automation.models.NoteWS;
+import com.inthinc.pro.automation.models.TiwiNote;
+import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
@@ -33,14 +38,20 @@ import com.inthinc.pro.rally.TestCaseResult;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 @SuppressWarnings("unchecked")
-public abstract class Base {
+public abstract class DeviceBase {
+    
+    protected final static int[] dbErrors = { 302, 303, 402 };
 
-    private final static Logger logger = Logger.getLogger(Base.class);
+    private final static Logger logger = Logger.getLogger(DeviceBase.class);
+    protected final NoteManager notes ;
+    protected final ArrayList<Integer> speed_points;
+    protected final ArrayList<Double[]> speed_loc;
+    protected final String imei;
+    protected final Distance_Calc calculator;
+    protected final AutomationCalendar time;
+    protected final AutomationCalendar time_last;
+    protected final ProductType productVersion;
 
-    private LinkedList<byte[]> sendingQueue = new LinkedList<byte[]>();
-    protected LinkedList<byte[]> note_queue = new LinkedList<byte[]>();
-    protected ArrayList<Integer> speed_points = new ArrayList<Integer>();
-    protected ArrayList<Double[]> speed_loc = new ArrayList<Double[]>();
 
     protected Boolean ignition_state = false;
     protected Boolean power_state = false;
@@ -53,7 +64,6 @@ public abstract class Base {
     protected Double last_lat, last_lng;
     protected Double speed_limit = 75.0;
 
-    protected Distance_Calc calculator = new Distance_Calc();
 
     protected Map<DeviceProperties, String> Settings;
 
@@ -64,41 +74,45 @@ public abstract class Base {
     protected int odometer = 0;
 
     protected int note_count = 4;
-    protected ProductType productVersion;
     protected int deviceDriverID;
     protected int timeSinceLastLoc = 0;
     protected int timeBetweenNotes = 15;
 
-    protected final static int[] dbErrors = { 302, 303, 402 };
 
-    protected AutomationCalendar time;
-    protected AutomationCalendar time_last;
-
-    protected MCMProxy mcmProxy;
+    protected MCMProxyObject mcmProxy;
 
     protected Object reply;
 
-    protected String imei;
+    protected String mcmID;
     protected String lastDownload;
     
     protected Addresses portal;
     protected Map<Integer, MapSection> sbsModule;
 
-    protected static int count = 0;
-    
+    protected Direction waysDirection;
 
-    public Base(String IMEI, Addresses server, Map<?, String> map, ProductType version) {
+    
+    private DeviceBase(String IMEI, ProductType version){
+        this.imei = IMEI;
+        sbsModule = new HashMap<Integer, MapSection>();
+        speed_points = new ArrayList<Integer>();
+        speed_loc = new ArrayList<Double[]>();
+        notes = new NoteManager();
+        time = new AutomationCalendar();
+        time_last = new AutomationCalendar();
+        productVersion = version;
+        calculator = new Distance_Calc();
+    }
+
+    public DeviceBase(String IMEI, Addresses server, Map<?, String> map, ProductType version) {
+        this(IMEI, version);
     	portal = server;
         Settings = new HashMap<DeviceProperties, String>();
-        set_IMEI(IMEI, server, map, version);
-        sbsModule = new HashMap<Integer, MapSection>();
+        set_IMEI(map);
+        
     }
     
-    public static int getCount(){
-        return count;
-    }
-    
-    private Base ackFwdCmds(List<HashMap<String, Object>> reply) {
+    private DeviceBase ackFwdCmds(List<HashMap<String, Object>> reply) {
 
         testFwdCmdLimit(reply.size());
         
@@ -136,9 +150,13 @@ public abstract class Base {
     }
 
 
-    protected abstract Base add_location();
+    protected abstract DeviceBase add_location();
 
-    protected abstract Base add_note(NoteBuilder note);
+    protected DeviceBase addNote(DeviceNote note){
+        notes.addNote(note);
+        check_queue();
+        return this;
+    }
 
     private Boolean check_error(Object reply) {
         if (reply == null)
@@ -155,14 +173,14 @@ public abstract class Base {
         return false;
     }
 
-    protected Base check_queue() {
-        if (note_queue.size() >= get_note_count()) {
+    protected DeviceBase check_queue() {
+        if (notes.size() >= get_note_count()) {
             send_note();
         }
         return this;
     }
 
-    protected Base clear_internal_settings() {
+    protected DeviceBase clear_internal_settings() {
 
         odometer = 0;
         try {
@@ -176,7 +194,7 @@ public abstract class Base {
         return this;
     }
 
-    private Base configurate_device() {
+    private DeviceBase configurate_device() {
     	if (portal==Addresses.TEEN_PROD){
     		return this;
     	}
@@ -185,15 +203,14 @@ public abstract class Base {
         return this;
     }
 
-    protected abstract Base construct_note();
+    protected abstract DeviceBase construct_note();
 
-    protected abstract Base createAckNote(Map<String, Object> reply);
+    protected abstract DeviceBase createAckNote(Map<String, Object> reply);
 
-    public Base dump_settings() {
+    public DeviceBase dump_settings() {
     	if (portal==Addresses.TEEN_PROD){
     		return this;
     	}
-        assert (imei.getClass() == "".getClass());
 
         if (WMP >= 17013) {
             reply = dbErrors[0];
@@ -202,15 +219,14 @@ public abstract class Base {
                     logger.debug("dumping settings");
                     reply = mcmProxy.dumpSet(imei, productVersion.getVersion(), oursToThiers());
                     logger.debug(reply);
-                    count++;
                 } catch (GenericHessianException e) {
                     reply = 0;
                 } catch (RemoteServerException e) {
                     reply = 307;
                 } catch (Exception e){
                     reply = 307;
-                    logger.fatal("Error from Note: " + e.getCause());
-                    logger.error("Current Note Count is " + getCount());
+                    logger.fatal("Error from DumpSet[210]: " + e.getCause());
+                    logger.error("Current Note Count is " + DeviceStatistics.getHessianCalls());
                     logger.info("Current time is: " + System.currentTimeMillis());
                 }
             }
@@ -219,6 +235,11 @@ public abstract class Base {
             }
         }
         return this;
+    }
+
+    public void flushNotes() {
+        while (notes.hasNext())
+            send_note();
     }
     
     private Map<Integer, String> oursToThiers(){
@@ -275,7 +296,7 @@ public abstract class Base {
         return false;
     }
 
-    protected Base get_changes() {
+    protected DeviceBase get_changes() {
     	if (portal==Addresses.TEEN_PROD){
     		return this;
     	}
@@ -284,12 +305,11 @@ public abstract class Base {
             while (check_error(reply)) {
                 try {
                     reply = mcmProxy.reqSet(imei);
-                    count++;
                 } catch (EmptyResultSetException e) {
                     reply = 304;
                 } catch (Exception e){
-                    logger.fatal("Error from Note: " + e.getCause());
-                    logger.error("Current Note Count is " + getCount());
+                    logger.fatal("Error from ReqSet[289]: " + e.getCause());
+                    logger.error("Current Note Count is " + DeviceStatistics.getHessianCalls());
                     logger.info("Current time is: " + System.currentTimeMillis());
                 }
             }
@@ -311,39 +331,34 @@ public abstract class Base {
     }
     
     protected abstract HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply);
-
+    
     protected abstract Integer get_note_count();
 
     public String get_setting(DeviceProperties propertyID){
         return Settings.get(propertyID);
     }
 
-    protected Base get_time() {
-        time = new AutomationCalendar();
-        time_last = time.copy();
-        return this;
-    }
-
     public int getDeviceDriverID() {
         return deviceDriverID;
     }
 
-    public Base increment_time(Integer increment) {
-        time_last = time.copy();
+    public DeviceBase increment_time(Integer increment) {
+        setLastTime(time);
         time.addToSeconds(increment);
         return this;
     }
+    
+    protected DeviceBase setLastTime(AutomationCalendar time){
+        time_last.setDate(time);
+        return this;
+    }
 
-    private Base initiate_device(Addresses server) {
+    private DeviceBase initiate_device() {
         ignition_state = false;
-
-        note_queue = new LinkedList<byte[]>();
-        speed_points = new ArrayList<Integer>();
-        speed_loc = new ArrayList<Double[]>();
+        set_time(new AutomationCalendar());
         clear_internal_settings();
-
-        get_time();
-        set_server(server);
+        
+        set_server(portal);
 
         set_satelites(8);
         set_location(0.0, 0.0);
@@ -360,7 +375,7 @@ public abstract class Base {
         return this;
     }
 
-    private Base is_speeding() {
+    private DeviceBase is_speeding() {
         Double[] point = { latitude, longitude };
         if (speed > speed_limit && !speeding) {
             speeding = true;
@@ -378,25 +393,23 @@ public abstract class Base {
         return this;
     }
 
-    public Base power_off_device(Integer time_delta) {
+    public DeviceBase power_off_device(Integer time_delta) {
         if (power_state) {
             increment_time(time_delta);
             set_power();
         } else {
             logger.info("The device is already off.");
         }
-        logger.info("Last note created at: " + time);
-        logger.info("We finished at " + System.currentTimeMillis());
-        logger.info("Total Notes to now is " + getCount());
+        logger.info("Last note created at: " + time.getEpochTime());
         return this;
     }
 
-    public Base power_on_device() {
+    public DeviceBase power_on_device() {
         power_on_device(time);
         return this;
     }
 
-    public Base power_on_device(AutomationCalendar time_now) {
+    public DeviceBase power_on_device(AutomationCalendar time_now) {
         assert (latitude != 0.0 && longitude != 0.0);
         if (!power_state) {
             set_time(time_now);
@@ -413,38 +426,55 @@ public abstract class Base {
 
     protected abstract Integer processCommand(Map<String, Object> reply);
 
-    protected Base send_note() {
-        while (!note_queue.isEmpty()) {
-            sendingQueue = new LinkedList<byte[]>();
-            for (int i = 0; i < note_count && !note_queue.isEmpty(); i++) {
-                sendingQueue.offer(note_queue.poll());
-            }
+    protected DeviceBase send_note() {
+        while (notes.hasNext()) {
+            Map<Class<? extends DeviceNote>, LinkedList<byte[]>> sendingQueue = notes.getNotes(note_count);
             reply = dbErrors[0];
-            while (check_error(reply)) {
+            while (!sendingQueue.isEmpty()) {
                 try{
-                    reply = mcmProxy.note(imei, sendingQueue);
+                    if (this.productVersion == ProductType.WAYSMART){
+                        if (waysDirection.equals(Direction.sat)){
+                            if (sendingQueue.containsKey(NoteBC.class)){
+                                reply = mcmProxy.notebc(imei, waysDirection.getValue(), sendingQueue.get(NoteBC.class));
+                                sendingQueue.remove(NoteBC.class);
+                            } else if (sendingQueue.containsKey(NoteWS.class)){
+                                reply = mcmProxy.notews(imei, waysDirection.getValue(), sendingQueue.get(NoteWS.class));
+                                sendingQueue.remove(NoteWS.class);
+                            }
+                        } else{
+                            if (sendingQueue.containsKey(NoteBC.class)){
+                                reply = mcmProxy.notebc(mcmID, waysDirection.getValue(), sendingQueue.get(NoteBC.class));
+                                sendingQueue.remove(NoteBC.class);
+                            } else if (sendingQueue.containsKey(NoteWS.class)){
+                                reply = mcmProxy.notews(mcmID, waysDirection.getValue(), sendingQueue.get(NoteWS.class));
+                                sendingQueue.remove(NoteWS.class);
+                            }
+                        }
+                    } else if (sendingQueue.containsKey(TiwiNote.class)){
+                        reply = mcmProxy.note(imei, sendingQueue.get(TiwiNote.class));
+                        sendingQueue.remove(TiwiNote.class);
+                    }
                     if (check_error(reply)){
                         throw new IllegalArgumentException("Got " + reply + "From the server");
                     }
-                    count++;
                 } catch (Exception e){
-                    logger.fatal("Error from Note: " + e.getCause());
-                    logger.error("Current Note Count is " + getCount());
+                    reply = "error";
+                    logger.fatal("Error from Note[439]: " + StackToString.toString(e));
+                    logger.error("Current Note Count is " + DeviceStatistics.getHessianCalls());
                     logger.info("Current time is: " + System.currentTimeMillis());
+                    break;
                 }
-                if (check_error(reply)){
-                    logger.info("Invalid Reply from server: "+reply);
+
+                if (reply instanceof ArrayList<?>) {
+                    ackFwdCmds((List<HashMap<String, Object>>) reply);
                 }
                 logger.debug("Reply from Server: "+reply);
-            }
-            if (reply instanceof ArrayList<?>) {
-                ackFwdCmds((List<HashMap<String, Object>>) reply);
             }
         }
         return this;
     }
 
-    private Base set_heading() {
+    private DeviceBase set_heading() {
         Integer direction = calculator.get_heading(last_lat, last_lng, latitude, longitude);
         // if (productVersion==5){
         Integer[] headers = { 0, 45, 90, 135, 180, 225, 270, 315, 360 };
@@ -473,51 +503,48 @@ public abstract class Base {
         return this;
     }
 
-    protected abstract Base set_ignition(Integer time_delta);//
+    protected abstract DeviceBase set_ignition(Integer time_delta);//
 
-    protected Base set_IMEI(String imei, Addresses server, Map<?, String> map, ProductType version) {
-
-        this.imei = imei;
+    protected DeviceBase set_IMEI(Map<?, String> map) {
         this.Settings = (Map<DeviceProperties, String>) map;
-        set_version(version);
-        initiate_device(server);
+        initiate_device();
         return this;
     }
 
-    public Base set_location(double lat, double lng) {
+    public DeviceBase set_location(double lat, double lng) {
         update_location(lat, lng, 0);
 //        speed=0;
 //        odometer=0;
         return this;
     }
 
-    public Base set_MSP(Integer version) {
+    public DeviceBase set_MSP(Integer version) {
         MSP = version;
         return this;
     }
 
-    public Base set_MSP(Object version) {
+    public DeviceBase set_MSP(Object version) {
         MSP = (Integer) version;
         return this;
     }
 
-    private Base set_odometer() {
+    private DeviceBase set_odometer() {
         Double miles = calculator.calc_distance(last_lat, last_lng, latitude, longitude);
         int tenths_of_mile = (int) (miles * 100);
         odometer = tenths_of_mile;
         return this;
     }
 
-    protected abstract Base set_power();
+    protected abstract DeviceBase set_power();
 
-    public Base set_satelites(Integer satelites) {
+    public DeviceBase set_satelites(Integer satelites) {
         sats = satelites;
         return this;
     }
 
-    protected abstract Base set_server(Addresses server);
+    protected abstract DeviceBase set_server(Addresses server);
 
-    public Base set_settings(HashMap<?, String> changes) {
+    public DeviceBase set_settings(HashMap<?, String> changes) {
 
         Iterator<?> itr = changes.keySet().iterator();
         while (itr.hasNext()) {
@@ -528,30 +555,29 @@ public abstract class Base {
         return this;
     }
 
-    public Base set_settings(DeviceProperties key, String value) {
+    public DeviceBase set_settings(DeviceProperties key, String value) {
         HashMap<DeviceProperties, String> change = new HashMap<DeviceProperties, String>();
         change.put(key, value);
         set_settings(change);
         return this;
     }
     
-    public Base set_settings(DeviceProperties key, Integer value){
+    public DeviceBase set_settings(DeviceProperties key, Integer value){
         return set_settings(key, value.toString());
     }
 
-    public abstract Base set_speed_limit(Integer limit);
+    public abstract DeviceBase set_speed_limit(Integer limit);
 
 
-    public Base set_time(AutomationCalendar time_now) {
-
-        time = time_now;
-        time_last = time.copy();
+    public DeviceBase set_time(AutomationCalendar time_now) {
+        time.setDate(time_now);
+        setLastTime(time);
         logger.debug("Time = "+time);
         return this;
     }
     
 
-    private Base set_vehicle_speed() {
+    private DeviceBase set_vehicle_speed() {
         Long timeDelta = (time.getDelta(time_last));
         Double speed =((odometer / timeDelta.doubleValue()) * 36.0);
         this.speed=speed.intValue();
@@ -559,27 +585,22 @@ public abstract class Base {
         return this;
     }
 
-    public Base set_version(ProductType version) {
-        productVersion = version;
-        return this;
-    }
-
-    public Base set_WMP(Integer version) {
+    public DeviceBase set_WMP(Integer version) {
         WMP = version;
         return this;
     }
 
-    public Base set_WMP(Object version) {
+    public DeviceBase set_WMP(Object version) {
         WMP = (Integer) version;
         return this;
     }
 
-    public Base setDeviceDriverID(int deviceDriverID) {
+    public DeviceBase setDeviceDriverID(int deviceDriverID) {
         this.deviceDriverID = deviceDriverID;
         return this;
     }
 
-    public Base turn_key_off(Integer time_delta) {
+    public DeviceBase turn_key_off(Integer time_delta) {
         if (ignition_state) {
             set_ignition(time_delta);
         } else {
@@ -588,7 +609,7 @@ public abstract class Base {
         return this;
     }
 
-    public Base turn_key_on(Integer time_delta) {
+    public DeviceBase turn_key_on(Integer time_delta) {
         if (!ignition_state) {
             set_ignition(time_delta);
         } else {
@@ -597,7 +618,7 @@ public abstract class Base {
         return this;
     }
 
-    public Base update_location(double lat, double lng, Integer time_delta) {
+    public DeviceBase update_location(double lat, double lng, Integer time_delta) {
         timeSinceLastLoc += time_delta;
         try {
             if (last_lat != latitude)
@@ -633,13 +654,13 @@ public abstract class Base {
         return this;
     }
     
-    public Base last_location(double lat, double lng, Integer time_delta){
+    public DeviceBase last_location(double lat, double lng, Integer time_delta){
         update_location(lat, lng, time_delta);
         speed = 0;
         return this;
     }
 
-    protected abstract Base was_speeding();
+    protected abstract DeviceBase was_speeding();
 
 
 }

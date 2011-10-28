@@ -17,26 +17,24 @@ import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.TiwiProps;
-import com.inthinc.pro.automation.device_emulation.Base;
-import com.inthinc.pro.automation.device_emulation.Package_tiwiPro_Note;
+import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
-import com.inthinc.pro.automation.interfaces.NoteBuilder;
+import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
+import com.inthinc.pro.automation.models.TiwiNote;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
-import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.model.configurator.ProductType;
 
-public class TiwiProDevice extends Base {
+public class TiwiProDevice extends DeviceBase {
 
     private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
 
-    private HashMap<TiwiAttrs, Integer> attrs;
+    private Map<TiwiAttrs, Integer> attrs;
     private AutomationCalendar trip_start, trip_stop;
-    private AutomationHessianFactory getHessian;
 
     private ZoneManager zones;
 
@@ -87,12 +85,6 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    protected TiwiProDevice add_note(NoteBuilder note) {
-        note_queue.offer(note.Package());
-        check_queue();
-        return this;
-    }
-
     public TiwiProDevice add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.TYPE_DELTA_VX, deltaX);
@@ -133,8 +125,7 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.TYPE_HIGH_IDLE, highIdleTime);
 
         construct_note(TiwiNoteTypes.NOTE_TYPE_IDLING, attrs);
-        time.addToSeconds(lowIdleTime + highIdleTime);
-        time_last = time;
+        increment_time(lowIdleTime + highIdleTime);
         return this;
     }
 
@@ -198,27 +189,26 @@ public class TiwiProDevice extends Base {
     }
 
     public TiwiProDevice construct_note(TiwiNoteTypes type, Map<TiwiAttrs, Integer> attrs) {
+        TiwiNote note = new TiwiNote(type, time, sats, heading, 1, latitude, longitude, speed, odometer);
+        note.addAttrs(attrs);
         try {
-            attrs.put(TiwiAttrs.TYPE_SPEED_LIMIT, speed_limit.intValue());
+            note.addAttr(TiwiAttrs.TYPE_SPEED_LIMIT, speed_limit.intValue());
         } catch (Exception e) {
             logger.debug(StackToString.toString(e));
-            e.printStackTrace();
         }
-        Package_tiwiPro_Note note = new Package_tiwiPro_Note(type, time, sats, heading, 1, latitude, longitude, speed, odometer);
         logger.debug(note.toString());
         clear_internal_settings();
-        add_note(note);
+        addNote(note);
         return this;
     }
 
     @Override
     public TiwiProDevice createAckNote(Map<String, Object> reply) {
         if (((Integer)reply.get("fwdID")) > 100){
-            Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
+            TiwiNote ackNote = new TiwiNote(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
             ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_ID, (Integer) reply.get("fwdID"));
             ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_RECEIVED);
-            byte[] packaged = ackNote.Package();
-            note_queue.add(packaged);
+            notes.addNote(ackNote);
         }
         processCommand(reply);
         return this;
@@ -229,11 +219,6 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.TYPE_ZONE_ID, zoneID);
         construct_note(TiwiNoteTypes.NOTE_TYPE_WSZONES_ARRIVAL_EX, attrs);
         return this;
-    }
-
-    public void flushNotes() {
-        if (!note_queue.isEmpty())
-            send_note();
     }
 
     @Override
@@ -271,7 +256,7 @@ public class TiwiProDevice extends Base {
     }
 
     public TiwiProDevice nonTripNote(AutomationCalendar time, int sats, int heading, Double latitude, Double longitude, int speed, int odometer) {
-        this.time = time;
+        this.time.setDate(time);
         this.sats = sats;
         this.heading = heading;
         this.latitude = latitude;
@@ -288,7 +273,7 @@ public class TiwiProDevice extends Base {
             return 1;
         TiwiFwdCmds fwdCmd = TiwiFwdCmds.valueOf(reply.get("cmd"));
         HashMap<TiwiProps, String> changes = new HashMap<TiwiProps, String>();
-        Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
+        TiwiNote ackNote = new TiwiNote(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
 
         if (fwdCmd == TiwiFwdCmds.ASSIGN_DRIVER) {
             String[] values = reply.get("data").toString().split(" ");
@@ -313,8 +298,7 @@ public class TiwiProDevice extends Base {
 
         ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_ID, reply.get("fwdId"));
         ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
-        byte[] packaged = ackNote.Package();
-        note_queue.add(packaged);
+        notes.addNote(ackNote);
 
         if (!changes.isEmpty())
             set_settings(changes);
@@ -355,9 +339,7 @@ public class TiwiProDevice extends Base {
 
     @Override
     protected TiwiProDevice set_server(Addresses server) {
-        getHessian = new AutomationHessianFactory();
-        logger.debug("MCM Server is " + server);
-        mcmProxy = getHessian.getMcmProxy(server);
+        mcmProxy = new MCMProxyObject(server);
         Settings.put(TiwiProps.PROPERTY_SERVER_PORT, server.getMCMPort().toString());
         Settings.put(TiwiProps.PROPERTY_SERVER_URL, server.getMCMUrl());
         return this;
@@ -494,7 +476,6 @@ public class TiwiProDevice extends Base {
         map.put("f", fileHash);
         map.put("b", baseVer);
         Map<String, Object> reply = mcmProxy.getSbsBase(imei, map);
-        
         return reply;
     }
     
@@ -553,4 +534,5 @@ public class TiwiProDevice extends Base {
     public void setBaseVer(int baseVer) {
         this.baseVer = baseVer;
     }
+
 }
