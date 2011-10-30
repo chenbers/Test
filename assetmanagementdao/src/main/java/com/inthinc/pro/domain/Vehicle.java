@@ -346,4 +346,33 @@ public class Vehicle implements Serializable
 	public void setStateID(Integer stateID) {
 		this.stateID = stateID;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((VIN == null) ? 0 : VIN.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vehicle other = (Vehicle) obj;
+		if (VIN == null) {
+			if (other.VIN != null)
+				return false;
+		} else if (!VIN.equals(other.VIN))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
 }

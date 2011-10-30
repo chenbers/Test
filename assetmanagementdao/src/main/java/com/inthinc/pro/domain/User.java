@@ -2,10 +2,14 @@ package com.inthinc.pro.domain;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,7 +26,10 @@ public class User{
     @Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
     private Integer userID;
-    private Integer personID;
+	@OneToOne
+	@JoinColumn(name="personID")
+	@Basic(fetch=FetchType.LAZY)
+	private Person person;
 //    private List<Integer> roles;
 //    private List<AccessPoint> accessPoints;
     private Status status;
@@ -36,16 +43,16 @@ public class User{
 	@Temporal(TemporalType.DATE)
     private Date modified;
 
-    public User(Integer userID, Integer personID, Status status, String username, String password, Integer groupID) {
-        super();
-        this.userID = userID;
-        this.personID = personID;
-//        this.roles = roles;
-        this.status = status;
-        this.username = username;
-        this.password = password;
-        this.groupID = groupID;
-    }
+//    public User(Integer userID, Integer personID, Status status, String username, String password, Integer groupID) {
+//        super();
+//        this.userID = userID;
+//        this.personID = personID;
+////        this.roles = roles;
+//        this.status = status;
+//        this.username = username;
+//        this.password = password;
+//        this.groupID = groupID;
+//    }
 
     public User() {
         super();
@@ -84,14 +91,6 @@ public class User{
         this.status = status;
     }
 
-    public Integer getPersonID() {
-        return personID;
-    }
-
-    public void setPersonID(Integer personID) {
-        this.personID = personID;
-    }
-
     public Integer getGroupID() {
         return groupID;
     }
@@ -100,11 +99,6 @@ public class User{
         this.groupID = groupID;
     }
 
-    @Override
-    public String toString() {
-        return "User [groupID=" + groupID + ", password=" + password + ", personID=" + personID + ", status=" + status + ", userID=" + userID + ", username="
-                + username + "]";
-    }
 
 //	public List<Integer> getRoles() {
 //		return roles;
@@ -122,7 +116,23 @@ public class User{
 //		this.accessPoints = accessPoints;
 //	}
 
-    public void setLastLogin(Date lastLogin) {
+    @Override
+	public String toString() {
+		return "User [userID=" + userID + ", person=" + person + ", status="
+				+ status + ", username=" + username + ", password=" + password
+				+ ", groupID=" + groupID + ", lastLogin=" + lastLogin
+				+ ", passwordDT=" + passwordDT + ", modified=" + modified + "]";
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }
 

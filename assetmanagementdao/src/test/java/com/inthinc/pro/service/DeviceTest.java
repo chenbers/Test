@@ -31,5 +31,10 @@ public class DeviceTest {
     	Device device = deviceService.getDeviceByVehicleID(2);
     	System.out.println("deviceID for vehicle 2 is "+device.getDeviceID());
     }
+    @Test
+    public void getVddLogByVehicleIDCriteriaTest(){
+    	Device device = deviceService.getDeviceByVehicleIDCriteria(2);
+    	System.out.println("deviceID for vehicle 2 is "+device.getDeviceID());
+    }
     
 }

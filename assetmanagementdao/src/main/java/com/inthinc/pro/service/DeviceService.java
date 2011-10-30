@@ -21,4 +21,9 @@ public class DeviceService {
 	public Device getDeviceByVehicleID(Integer vehicleID){
 		return deviceRepository.getDeviceIDByVehicleID(vehicleID);
 	}
+
+	public Device getDeviceByVehicleIDCriteria(Integer vehicleID) {
+		// TODO Auto-generated method stub
+		return deviceRepository.getDeviceIDByVehicleIDCriteria(vehicleID);
+	}
 }

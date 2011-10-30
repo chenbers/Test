@@ -22,7 +22,10 @@ public class VDDLog {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date stop;
 	private String imei;
-	private Integer acctID;
+	@ManyToOne
+	@JoinColumn(name="acctID")
+	@Basic(fetch=FetchType.LAZY)
+	private Account  account;
 	@ManyToOne
 	@JoinColumn(name="deviceID")
 	@Basic(fetch=FetchType.LAZY)
@@ -33,14 +36,24 @@ public class VDDLog {
 	@JoinColumn(name="vehicleID")
 	@Basic(fetch=FetchType.LAZY)
 	private Vehicle vehicle;
-	private Integer vgroupID;
+	@ManyToOne
+	@JoinColumn(name="vgroupID")
+	@Basic(fetch=FetchType.LAZY)
+	private Group vehicleGroup;
 	private Integer vtype;	
 	@ManyToOne
 	@JoinColumn(name="driverID")
 	@Basic(fetch=FetchType.LAZY)
 	private Driver driver;
-	private Integer dgroupID;	
-	private Integer tzID;
+	
+	@ManyToOne
+	@JoinColumn(name="dgroupID")
+	@Basic(fetch=FetchType.LAZY)
+	private Group driverGroup;
+	@ManyToOne
+	@JoinColumn(name="tzID")
+	@Basic(fetch=FetchType.LAZY)
+	private SupportedTimeZone timeZone;
 	
 	public Integer getVddlogID() {
 		return vddlogID;
@@ -66,14 +79,20 @@ public class VDDLog {
 	public void setImei(String imei) {
 		this.imei = imei;
 	}
-	public Integer getAcctID() {
-		return acctID;
-	}
-	public void setAcctID(Integer acctID) {
-		this.acctID = acctID;
-	}
+//	public Integer getAcctID() {
+//		return acctID;
+//	}
+//	public void setAcctID(Integer acctID) {
+//		this.acctID = acctID;
+//	}
 	public Device getDevice() {
 		return device;
+	}
+	public Account getAccount() {
+		return account;
+	}
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	public void setDevice(Device device) {
 		this.device = device;
@@ -89,12 +108,6 @@ public class VDDLog {
 	}
 	public void setEmuFeatureMask(Integer emuFeatureMask) {
 		this.emuFeatureMask = emuFeatureMask;
-	}
-	public Integer getVgroupID() {
-		return vgroupID;
-	}
-	public void setVgroupID(Integer vgroupID) {
-		this.vgroupID = vgroupID;
 	}
 	public Integer getVtype() {
 		return vtype;
@@ -114,28 +127,22 @@ public class VDDLog {
 	public void setDriver(Driver driver) {
 		this.driver = driver;
 	}
-	public Integer getDgroupID() {
-		return dgroupID;
+	public Group getVehicleGroup() {
+		return vehicleGroup;
 	}
-	public void setDgroupID(Integer dgroupID) {
-		this.dgroupID = dgroupID;
+	public void setVehicleGroup(Group vehicleGroup) {
+		this.vehicleGroup = vehicleGroup;
 	}
-	public Integer getTzID() {
-		return tzID;
+	public Group getDriverGroup() {
+		return driverGroup;
 	}
-	public void setTzID(Integer tzID) {
-		this.tzID = tzID;
+	public void setDriverGroup(Group driverGroup) {
+		this.driverGroup = driverGroup;
 	}
-	@Override
-	public String toString() {
-		return "VDDLog [vddlogID=" + vddlogID + ", start=" + start + ", stop="
-				+ stop + ", imei=" + imei + ", acctID=" + acctID
-				+ ", device=" + device.toString() +
-				", baseID=" + baseID
-				+ ", emuFeatureMask=" + emuFeatureMask 
-				+ ", vehicleID="+ vehicle.toString() 
-				+ ", vgroupID=" + vgroupID + ", vtype=" + vtype
-				+ ", driver=" + driver.toString() + ", dgroupID=" + dgroupID
-				+ ", tzID=" + tzID + "]";
+	public SupportedTimeZone getTimeZone() {
+		return timeZone;
+	}
+	public void setTimeZone(SupportedTimeZone timeZone) {
+		this.timeZone = timeZone;
 	}
 }

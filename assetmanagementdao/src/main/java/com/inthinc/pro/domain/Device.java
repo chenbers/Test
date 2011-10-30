@@ -303,4 +303,60 @@ public class Device
 				+ ", turn=" + turn + ", vert=" + vert + ", modified="
 				+ modified + "]";
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((accountID == null) ? 0 : accountID.hashCode());
+		result = prime * result + ((imei == null) ? 0 : imei.hashCode());
+		result = prime * result + ((mcmid == null) ? 0 : mcmid.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((productVersion == null) ? 0 : productVersion.hashCode());
+		result = prime * result
+				+ ((serialNum == null) ? 0 : serialNum.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Device other = (Device) obj;
+		if (accountID == null) {
+			if (other.accountID != null)
+				return false;
+		} else if (!accountID.equals(other.accountID))
+			return false;
+		if (imei == null) {
+			if (other.imei != null)
+				return false;
+		} else if (!imei.equals(other.imei))
+			return false;
+		if (mcmid == null) {
+			if (other.mcmid != null)
+				return false;
+		} else if (!mcmid.equals(other.mcmid))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (productVersion == null) {
+			if (other.productVersion != null)
+				return false;
+		} else if (!productVersion.equals(other.productVersion))
+			return false;
+		if (serialNum == null) {
+			if (other.serialNum != null)
+				return false;
+		} else if (!serialNum.equals(other.serialNum))
+			return false;
+		return true;
+	}
 }
