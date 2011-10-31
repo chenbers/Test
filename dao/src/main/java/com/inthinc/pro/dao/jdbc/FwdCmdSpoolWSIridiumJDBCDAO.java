@@ -57,6 +57,52 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         return id;
     }
 
+    private static final String FETCH_FOR_ID = "select Fwd_WSiridiumID, command, created, modified, status, iridiumStatus FROM Fwd_WSiridium where Fwd_WSiridiumID = ?";
+    public ForwardCommandSpool fetch(long id) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        ForwardCommandSpool record = null;
+
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareStatement(FETCH_FOR_ID);
+            statement.setLong(1, id);
+            
+            resultSet = statement.executeQuery();
+
+            if(resultSet.next())
+            {
+                record = new ForwardCommandSpool();
+                
+                record.setFwdID(resultSet.getInt(1));
+                record.setCommand(resultSet.getInt(2));
+                record.setData(resultSet.getBytes(3));
+                String createdStr = resultSet.getString(4);
+                String modStr = resultSet.getString(5);
+                record.setCreated(new DateTime(dateFormatter.parseMillis(createdStr+ "+0000")).toDate());
+                record.setModified(new DateTime(dateFormatter.parseMillis(modStr + "+0000")).toDate());
+
+                record.setStatus(ForwardCommandStatus.valueOf(resultSet.getInt(5)));
+                Integer iridiumStatus = resultSet.getInt(6);
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return record;
+    }
+	
 // TODO: FIX -- NOT WORKING
     public List<ForwardCommandSpool> getForAddress(String address) {
         Connection conn = null;
@@ -161,6 +207,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
 
         return recordList;
     }
+	
     private String getCommaSepList(List<Integer> cmdIDList) {
         
         StringBuffer buffer = new StringBuffer();
