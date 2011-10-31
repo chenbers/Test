@@ -28,6 +28,7 @@ public class TiwiParser implements NoteParser{
 		{
 
 			attrID = ReadUtil.unsign(data[offset++]);
+logger.debug("attrID: " + attrID);			
 			
 			if (attrID < 128) 
 				attrVal = data[offset++];
@@ -58,7 +59,7 @@ public class TiwiParser implements NoteParser{
 		{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
 //			attribParser.parseAttrib(data, 2, Attrib.NOTETYPE, attribMap);
-			
+logger.debug("Note Type: " + ReadUtil.unsign(data[0]));			
 			attribMap.put(Attrib.NOTETYPE.getCode(), ReadUtil.unsign(data[0]));
 
 //        	logger.info("Note Type: " + ReadUtil.unsign(data[0]));
