@@ -35,7 +35,7 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
     protected List<PayrollData> getCompensatedRecords(List<PayrollData> records) {
         HashMap<String, PayrollData> compensatedRecords = new HashMap<String, PayrollData>();
         for (PayrollData rec : records) {
-            if (!compensatedRecords.containsKey(rec.getDay())) {
+            if (!compensatedRecords.containsKey(rec.getDay()+"_"+rec.getDriverId())) {
                 // add an onduty row with 0 minutes so that all driver/days show up on report
                 compensatedRecords.put(rec.getDay()+"_"+rec.getDriverId(), new PayrollData(rec.getGroupName(), rec.getGroupAddress(), rec.getDriverId(), rec.getDriverName(), rec.getEmployeeID(), rec.getDay(),
                         HOSStatus.ON_DUTY, 0));
@@ -46,9 +46,8 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
                     || rec.getStatus() == HOSStatus.ON_DUTY_OCCUPANT        //
                     || rec.getStatus() == HOSStatus.DRIVING_NONDOT          //
                     || rec.getStatus() == HOSStatus.TRAVELTIME_OCCUPANT) {
-
                 compensatedRecords.get(rec.getDay()+"_"+rec.getDriverId()).addTotalAdjustedMinutes(rec.getTotalAdjustedMinutes());
-            } 
+            }
         }
 
         return new ArrayList<PayrollData>(compensatedRecords.values());
