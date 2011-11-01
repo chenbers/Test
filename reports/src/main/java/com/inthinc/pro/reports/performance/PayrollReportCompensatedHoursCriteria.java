@@ -110,7 +110,7 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
             row.add(new Result(data.getEmployeeID(), data.getEmployeeID()));
             row.add(new Result(data.getDriverName(), data.getDriverName()));
             row.add(new Result(dateTimeFormatter.print(new DateTime(data.getDay())), data.getDay()));
-            row.add(new Result(Converter.convertMinutesRound15(data.getTotalAdjustedMinutes()), data.getTotalAdjustedMinutes()));
+            row.add(new Result(Converter.convertMinutes(new Long(data.getTotalAdjustedMinutes())), data.getTotalAdjustedMinutes()));
             records.add(row);
         }
 

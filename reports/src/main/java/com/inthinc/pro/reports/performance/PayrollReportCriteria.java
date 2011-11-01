@@ -62,36 +62,33 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
     }
 
     protected List<PayrollData> getDriverPayrollData(Interval interval, GroupHierarchy groupHierarchy, Date currentTime, Driver driver, List<HOSRecord> hosRecordList) {
-        
+
         List<PayrollData> dataList = new ArrayList<PayrollData>();
-        
-        
+
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
         Group group = groupHierarchy.getGroup(driver.getGroupID());
         String groupName = getFullGroupName(groupHierarchy, group.getGroupID());
         String groupAddress = group.getAddress() == null ? "" : group.getAddress().getDisplayString();
-        
+
         String driverName = driver.getPerson().getFullNameLastFirst();
         String employeeID = driver.getPerson().getEmpid();
         List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
-        
+
         for (DateTime day : dayList) {
-            List<HOSRecAdjusted> dayLogList =adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true);
-            
-            for (HOSRecAdjusted log : dayLogList)
-            {
-                if (log.getTotalIncrements() > 0)
-                {
-                    //String groupName, String groupAddress, Integer driverId, String driverName, TimeZone timeZone, String employeeID,
-                    PayrollData item = new PayrollData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID,
-                            day.toDate(), log.getStatus(), log.getTotalIncrements()*15, day);
+            List<HOSRecAdjusted> dayLogList = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true);
+
+            for (HOSRecAdjusted log : dayLogList) {
+                if (log.getTotalRealMinutes() > 0) {
+                    // String groupName, String groupAddress, Integer driverId, String driverName, TimeZone timeZone, String employeeID,
+                    PayrollData item = new PayrollData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID, day.toDate(), log.getStatus(), (int) log
+                            .getTotalRealMinutes(), day);
                     item.setDayStr(dateTimeFormatter.print(day));
                     dataList.add(item);
                 }
             }
 
         }
-        
+
         return dataList;
     }
 
@@ -183,11 +180,11 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
                 row.add(new Result(dateTimeFormatter.print(new DateTime(dayEntry.getKey())), dayEntry.getKey()));
                 long sum = 0;
                 for (int i = 0; i < 5; i++) {
-                    row.add(new Result(Converter.convertMinutesRound15(dayEntry.getValue()[i]), dayEntry.getValue()[i]));
+                    row.add(new Result(Converter.convertMinutes(new Long(dayEntry.getValue()[i])), dayEntry.getValue()[i]));
                     if (i != 0)
                         sum += dayEntry.getValue()[i];
                 }
-                row.add(new Result(Converter.convertMinutesRound15(sum), sum));
+                row.add(new Result(Converter.convertMinutes(sum), sum));
                 records.add(row);
             }
         }
