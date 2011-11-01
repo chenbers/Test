@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"  ?>
 <!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="payrollReportCompensatedHours"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="842"
-		 pageHeight="595"
-		 columnWidth="782"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="AllSectionsNoDetail"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false"
-		 resourceBundle="payrollReportCompensatedHours">
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">	 
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" 
+	name="payrollReportCompensatedHours" pageWidth="842" pageHeight="595" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" 
+	resourceBundle="payrollReportCompensatedHours">
 	<property name="ireport.scriptlethandling" value="0" />
 	<property name="ireport.encoding" value="UTF-8" />
 	<import value="java.util.*" />
@@ -54,7 +40,7 @@
 		<group  name="groupName" >
 			<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
 			<groupHeader>
-			<band height="20"  isSplitAllowed="true" >
+			<band height="20" splitType="Stretch" >
 				<rectangle>
 					<reportElement
 						x="0"
@@ -109,16 +95,16 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  splitType="Stretch" >
 			</band>
 			</groupFooter>
 		</group>
 		<background>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  splitType="Stretch" >
 			</band>
 		</background>
 		<title>
-			<band height="104"  isSplitAllowed="true" >
+			<band height="104"  splitType="Stretch" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="316"
@@ -212,7 +198,7 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="24"  isSplitAllowed="true" >
+			<band height="24"  splitType="Stretch" >
 				<rectangle>
 					<reportElement
 						x="0"
@@ -248,7 +234,7 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="26"  isSplitAllowed="true" >
+			<band height="26"  splitType="Stretch" >
 				<rectangle>
 					<reportElement
 						mode="Opaque"
@@ -368,7 +354,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="23"  splitType="Stretch" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -449,11 +435,11 @@
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  splitType="Stretch" >
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="27"  isSplitAllowed="true" >
+			<band height="27"  splitType="Stretch" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -541,7 +527,7 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  splitType="Stretch" >
 			</band>
 		</summary>
 </jasperReport>
