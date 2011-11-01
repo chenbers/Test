@@ -57,7 +57,7 @@
 		<module>scheduler</module>
 		<module>service</module>
 		<module>reports</module>
-		<module>webfulfillment</module>
+<!-- 		<module>webfulfillment</module> -->
 		<module>hoskiosk</module>
 		<module>i18nutil</module>
 		<module>automation</module>
