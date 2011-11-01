@@ -295,14 +295,14 @@
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_warning}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.warn}" />
-                            <td><h:outputText value="#{messages[alertText]}" id="warning" /></td>
+                            <td><h:outputText value="#{messages[alertText]}" id="warn" /></td>
                           </tr>
                           <tr>
                             <td width="120"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" />
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_critical}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.crit}" />
-                            <td><h:outputText value="#{messages[alertText]}" id="critical" /></td>
+                            <td><h:outputText value="#{messages[alertText]}" id="crit" /></td>
                           </tr>
                         </table>
 
