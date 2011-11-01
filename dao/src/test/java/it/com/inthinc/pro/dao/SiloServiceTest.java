@@ -310,7 +310,7 @@ public class SiloServiceTest {
         settingValues = slider.getSettingValuesFromSliderValue(1);
         assertTrue(settingValues.size()==2);
         assertTrue(settingValues.get(1234) != null);
-        assertEquals("300",settingValues.get(1234));
+        assertEquals("254",settingValues.get(1234));
 
         sliderValue = slider.getSliderValueFromSettings(settingValues);
         assertTrue(sliderValue==1);
