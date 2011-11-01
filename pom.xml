@@ -62,7 +62,6 @@
 		<module>i18nutil</module>
 		<module>automation</module>
 		<module>noteparser</module> 
-<!-- 		<module>assetmanagementdao</module> -->
 	</modules>
 	<properties>
 		<compileSource>1.6</compileSource>
