@@ -2,6 +2,8 @@ package com.inthinc.pro.automation.models;
 
 import java.io.ByteArrayOutputStream;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.automation.deviceEnums.Ways_ATTRS;
 import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
@@ -9,9 +11,12 @@ import com.inthinc.pro.automation.device_emulation.NoteManager.AttrTypes;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteWS implements DeviceNote {
+    
+    private final static Logger logger = Logger.getLogger(NoteWS.class);
     
     private final Ways_SAT_EVENT nType;
     private final ProductType nVersion;
@@ -56,6 +61,9 @@ public class NoteWS implements DeviceNote {
         NoteManager.encodeAttributes(baos, attrs);
         byte[] temp = baos.toByteArray();
         temp[0] = (byte) (temp.length & 0xFF);
+        for (int i=0;i<temp.length;i++){
+            MasterTest.print("Byte " + i + " = " + temp[i]);
+        }
         return temp;
     }
 
@@ -91,7 +99,7 @@ public class NoteWS implements DeviceNote {
         } else if (value instanceof DeviceTypes){
             addAttr(id, ((DeviceTypes) value).getValue(), size);
         } else {
-            addAttr(id, value, size);
+            attrs.addAttribute(id, value, size);
         }
     }
     
@@ -113,7 +121,7 @@ public class NoteWS implements DeviceNote {
         String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%d, sats=%d,\n" +
                 "lat=%.5f, lng=%.5f, speed=%d, odometer=%d,\n" +
                 "attrs={%s}", 
-                nType.toString(), nVersion, nTime, heading, sats, fLatitude, fLongitude, nSpeed, odometer, attrs.toString());
+                nType.toString(), nVersion.getVersion(), nTime, heading, sats, fLatitude, fLongitude, nSpeed, odometer, attrs.toString());
         return temp;
     }
     

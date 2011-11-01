@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
@@ -58,9 +59,32 @@ public class MasterTest {
     }
 
     public static void print(Object printToScreen) {
-        StackTraceElement element = Thread.currentThread().getStackTrace()[2];
+        print(printToScreen, Level.INFO, 2);
+    }
+    
+    private static void print(Object printToScreen, Level level, int stepsBack){
+        stepsBack ++;
+        if (printToScreen == null){
+            printToScreen = "error";
+        }
+        StackTraceElement element = Thread.currentThread().getStackTrace()[3];
         String print = String.format("line:%3d - %s\n", element.getLineNumber(), printToScreen.toString());
-        Logger.getLogger(element.getClassName()).info(print);
+        Logger temp = Logger.getLogger(element.getClassName());
+        if (level.equals(Level.INFO)){
+            temp.info(print);
+        } else if (level.equals(Level.DEBUG)){
+            temp.debug(print);
+        } else if (level.equals(Level.ERROR)){
+            temp.error(print);
+        } else if (level.equals(Level.FATAL)){
+            temp.fatal(print);
+        } else {
+            temp.trace(print);
+        }
+    }
+    
+    public static void print(Object printToScreen, Level level){
+        print(printToScreen, level, 3);
     }
 
     protected void tabKey() {

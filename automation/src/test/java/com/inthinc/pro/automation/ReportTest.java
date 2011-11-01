@@ -2,12 +2,12 @@ package com.inthinc.pro.automation;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.log4j.Level;
+
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
-import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
@@ -20,7 +20,6 @@ import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Unique;
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxy;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -69,10 +68,6 @@ public class ReportTest {
 
 			HashMap<String, String> objects = new HashMap<String, String>();
 			String priEmail = "driver_"+i+"@tiwisucks.com";
-//			MasterTest.print(priEmail);
-//			if (!priEmail.isEmpty()){
-//			    throw new NullPointerException("Hello");
-//			}
 			
 			try{
 			    Person person = portalHessian.getPerson(priEmail);
@@ -86,8 +81,7 @@ public class ReportTest {
 	            drivers.put(driver.getDriverID(), objects);
 			    continue;
 			} catch (Exception e){
-			    MasterTest.print("Ran into an error with " + priEmail + ", error is " + e.getMessage());
-//			    e.printStackTrace();
+			    MasterTest.print("Ran into an error with " + priEmail + ", error is " + e.getMessage(), Level.DEBUG);
 			}
 			
 			Person person = new Person();
@@ -158,13 +152,10 @@ public class ReportTest {
 	}
 	
 	public void driveTiwis(){
-		Integer size = drivers.size();
-		Integer threads = 600;
 		Iterator<Integer> itr = drivers.keySet().iterator();
-		LinkedHashMap<Integer, HanSoloTrip> trips = new LinkedHashMap<Integer, HanSoloTrip>();
 
         AutomationCalendar initialTime = new AutomationCalendar();
-        initialTime.setDate(1319575402);
+        initialTime.setDate(1319706291);
 		MasterTest.print(portal);
 		
         long start = System.currentTimeMillis();
@@ -172,6 +163,7 @@ public class ReportTest {
 			Integer next = itr.next();
 //			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
 			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
+//			break;
 		}
 
 		MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");

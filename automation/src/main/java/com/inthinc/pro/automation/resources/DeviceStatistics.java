@@ -5,14 +5,10 @@ import com.inthinc.pro.automation.utils.AutomationCalendar;
 public class DeviceStatistics {
     
     private static int hessianCalls = 0;
-    private static AutomationCalendar start;
-    private static AutomationCalendar stop;
+    private static AutomationCalendar start = new AutomationCalendar();
+    private static AutomationCalendar stop = new AutomationCalendar();
     
     
-    public static boolean setStartTime(){
-        start = new AutomationCalendar();
-        return true;
-    }
     
     public static boolean addCall(){
         hessianCalls++;
@@ -21,9 +17,6 @@ public class DeviceStatistics {
     }
     
     public static boolean updateStop(){
-        if (start == null){
-            setStartTime();
-        }
         stop = new AutomationCalendar();
         return true;
     }

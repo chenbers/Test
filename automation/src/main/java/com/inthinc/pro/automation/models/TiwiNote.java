@@ -91,6 +91,7 @@ public class TiwiNote implements DeviceNote {
         NoteManager.longToByte(bos, maprev, 1);
         NoteManager.longToByte(bos, NoteManager.encodeLat(lat), 3);
         NoteManager.longToByte(bos, NoteManager.encodeLng(lng), 3);
+        NoteManager.longToByte(bos, Speed, 1);
         NoteManager.longToByte(bos, odometer, 2);
         
         NoteManager.encodeAttributes(bos, attrs);

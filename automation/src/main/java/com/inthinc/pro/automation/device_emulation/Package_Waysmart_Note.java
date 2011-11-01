@@ -69,7 +69,7 @@ public class Package_Waysmart_Note implements NoteBuilder {
     }
     
     public void setTime(AutomationCalendar time){
-        sendNote.setArgs("time", time.getEpochTime());
+        sendNote.setArgs("time", time.epochSecondsInt());
     }
     
     public void setLocation(String location){

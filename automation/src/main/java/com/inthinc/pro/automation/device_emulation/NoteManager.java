@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.device_emulation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -95,18 +96,17 @@ public class NoteManager {
         return !notes.isEmpty();
     }
     
-    public Map<Class<? extends DeviceNote>, LinkedList<byte[]>> getNotes(int queueSize){
-        Map<Class<? extends DeviceNote>, LinkedList<byte[]>> temp = new HashMap<Class<? extends DeviceNote>, LinkedList<byte[]>>();
+    public Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> getNotes(int queueSize){
+        Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> noteList = new HashMap<Class<? extends DeviceNote>, LinkedList<DeviceNote>>();
         for (int i = 0; i < queueSize && hasNext(); i++) {
-            DeviceNote temp2 = notes.poll(); 
-            byte[] array = temp2.Package();
-            if (!temp.containsKey(temp2.getClass())){
-                temp.put(temp2.getClass(), new LinkedList<byte[]>());
+            DeviceNote note = notes.poll(); 
+            if (!noteList.containsKey(note.getClass())){
+                noteList.put(note.getClass(), new LinkedList<DeviceNote>());
             }
-            temp.get(temp2.getClass()).offer(array);
+            noteList.get(note.getClass()).offer(note);
             
         }
-        return temp;
+        return noteList;
     }
     
     public interface DeviceNote{
@@ -127,17 +127,27 @@ public class NoteManager {
     }
     
     public static void longToByte(ByteArrayOutputStream baos, Long toAdd, int numOfBytes){
-        int size = Byte.SIZE;
-        int offset = numOfBytes * size - size;
-        for (;offset>=0;offset-=size){
-            Long temp = (toAdd >> offset) & 0xFF;
-            baos.write(temp.intValue());
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(bos);
+        byte[] array = null;
+        try {
+            dos.writeLong(toAdd);
+            dos.flush();
+            array = bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        byte[] arrayToAdd = new byte[numOfBytes];
+        for (int i=array.length-numOfBytes; i<array.length;i++){
+            arrayToAdd[i-array.length+numOfBytes] = array[i];
+        }
+        
+        baos.write(arrayToAdd, 0, numOfBytes);
     }
     
     public static byte longToByte(Long toAdd){
         Long temp = toAdd & 0xFF;
-        return (byte) temp.intValue();
+        return temp.byteValue();
     }
     
     public static void longToByte(ByteArrayOutputStream baos, Integer toAdd, int numOfBytes){
@@ -179,7 +189,14 @@ public class NoteManager {
             try {
                 key = keys.next();
                 size = attrs.getSize(key);
-                longToByte(baos, key.getValue().longValue(), 1);
+                if (key.getValue() < Math.pow(2, 1*Byte.SIZE)){
+                    longToByte(baos, key.getValue(), 1);    
+                } else if (key.getValue() < Math.pow(2, 2*Byte.SIZE)){
+                    longToByte(baos, key.getValue(), 2);   
+                } else if (key.getValue() < Math.pow(2, 3*Byte.SIZE)){
+                    longToByte(baos, key.getValue(), 3);   
+                }
+                
                 
                 Object object = attrs.getValue(key);
                 if (object instanceof Number){
@@ -189,7 +206,9 @@ public class NoteManager {
                         longToByte(baos, (Long)object, size);    
                     }
                 } else if (object instanceof String){
-                    baos.write(((String)object).getBytes());
+                    byte[] str = ((String)object).getBytes();
+                    baos.write(str);
+                    baos.write(0x0);
                 }
             } catch (NullPointerException e){
                 logger.info("Key: " + key + " had no value attached to it");

@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Level;
+
 //TODO: Document
 /**
  *
@@ -65,7 +67,7 @@ public class ObjectReadWrite {
 	        
 	     
 	    } catch (EOFException ex) { //This exception will be caught when EOF is reached
-	        System.out.println("End of file reached.");
+	        MasterTest.print("End of file reached.", Level.DEBUG);
 	    } catch (ClassNotFoundException ex) {
 	        ex.printStackTrace();
 	    } catch (FileNotFoundException ex) {

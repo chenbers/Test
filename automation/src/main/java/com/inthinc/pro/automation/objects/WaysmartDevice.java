@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.automation.deviceEnums.Ways_ATTRS;
@@ -18,6 +18,7 @@ import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.NoteBC;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.models.NoteWS;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -27,7 +28,7 @@ public class WaysmartDevice extends DeviceBase {
     private Addresses server;
     
     private int driverID;
-    private String driverStr;
+    private String employeeID;
     
     private int accountID;
 
@@ -36,8 +37,6 @@ public class WaysmartDevice extends DeviceBase {
     private String vehicleID;
     private long waysOdometer;
     private int state;
-    
-    private final static Logger logger = Logger.getLogger(WaysmartDevice.class);
     
     protected final static ProductType productVersion = ProductType.WAYSMART;
 	
@@ -66,12 +65,14 @@ public class WaysmartDevice extends DeviceBase {
 		
 	}
 	
-	/*116 {SAT_EVENT_NEWDRIVER_HOSRULE, {ATTR_driverStr, ATTR_mcmRuleset}}*/
+	/**
+	 * 116 {SAT_EVENT_NEWDRIVER_HOSRULE, {ATTR_driverStr, ATTR_mcmRuleset}}
+	 **/
 	public WaysmartDevice addHosStateChange(String driverStr, HOSStatus status){
-	    this.driverStr = driverStr;
+	    this.employeeID = driverStr;
 	    NoteWS note = constructWSNote(Ways_SAT_EVENT.SAT_EVENT_NEWDRIVER_HOSRULE);
 	    note.addAttr(Ways_ATTRS.ATTR_DRIVERSTR, driverStr);
-	    note.addAttr(Ways_ATTRS.ATTR_MCMRULESET, status);
+	    note.addAttr(Ways_ATTRS.ATTR_MCMRULESET, status.getCode());
 	    addNote(note);
 	    
 //	    Package_Waysmart_Note note = construct_note();
@@ -84,11 +85,11 @@ public class WaysmartDevice extends DeviceBase {
 	
 	
 	public void addIgnitionOffNote(){
-        logger.debug(sendNote(construct_note(Ways_SAT_EVENT.SAT_EVENT_IGNITION_OFF)));
+        MasterTest.print(sendNote(construct_note(Ways_SAT_EVENT.SAT_EVENT_IGNITION_OFF)), Level.DEBUG);
     }
 	
 	public void addIgnitionOnNote(){
-	    logger.debug(sendNote(construct_note(Ways_SAT_EVENT.SAT_EVENT_IGNITION_ON)));
+	    MasterTest.print(sendNote(construct_note(Ways_SAT_EVENT.SAT_EVENT_IGNITION_ON)), Level.DEBUG);
 	}
 	
 	public WaysmartDevice addInstallEvent(String vehicleID, int accountID){
@@ -101,7 +102,7 @@ public class WaysmartDevice extends DeviceBase {
 	    note.setVehicleID(vehicleID);
 	    note.setCompanyID(accountID);
 	    note.setAccountID(accountID);
-	    logger.info(sendNote(note));
+	    MasterTest.print(sendNote(note));
 	    waysDirection = temp;
 	    return this;
 	}
@@ -146,8 +147,6 @@ public class WaysmartDevice extends DeviceBase {
 		
 	}
 	
-	
-
 	@Override
 	protected Integer get_note_count() {
 		return note_count;
@@ -174,7 +173,7 @@ public class WaysmartDevice extends DeviceBase {
     }
 	
 	public WaysmartDevice logInDriver(String driverID){
-	    this.driverStr = driverID;
+	    this.employeeID = driverID;
 	    return this;
 	}
 	
@@ -182,7 +181,7 @@ public class WaysmartDevice extends DeviceBase {
         Package_Waysmart_Note note = construct_note(Ways_SAT_EVENT.SAT_EVENT_HOS_CHANGE_STATE_NO_GPS_LOCK);
         note.setDriverID(occupantsDriverID);
         note.setHosStatus(HOSStatus.ON_DUTY_OCCUPANT);
-        logger.info(sendNote(note));
+        MasterTest.print(sendNote(note));
         return this;
 	}
 	
@@ -206,7 +205,7 @@ public class WaysmartDevice extends DeviceBase {
         note.setOdometer(waysOdometer+=odometer);
         note.setTime(time);
         clear_internal_settings();
-        logger.info(note.sendNote());
+        MasterTest.print(note.sendNote());
 	    return this;
 	}
 
@@ -224,8 +223,8 @@ public class WaysmartDevice extends DeviceBase {
 	}
 
 
-	protected WaysmartDevice set_IMEI( HashMap<Integer, String> settings ){
-		logger.debug("IMEI: "+imei+", Server: " + portal);
+	protected WaysmartDevice set_IMEI( HashMap<WaysmartProps, String> settings ){
+		MasterTest.print("IMEI: "+imei+", Server: " + portal, Level.DEBUG);
         super.set_IMEI(settings);
         Settings.put(WaysmartProps.MCM_ID, mcmID);
         Settings.put(WaysmartProps.WITNESS_ID, imei);
@@ -242,7 +241,7 @@ public class WaysmartDevice extends DeviceBase {
         } else {
             note = construct_note(Ways_SAT_EVENT.SAT_EVENT_LOW_POWER_MODE);
         }
-        logger.info(sendNote(note));
+        MasterTest.print(sendNote(note));
         return this;
 		
 	}
@@ -280,8 +279,8 @@ public class WaysmartDevice extends DeviceBase {
         this.companyID = companyID;
     }
 
-    public void setDriverStr(String driverID) {
-        this.driverStr = driverID;
+    public void setEmployeeID(String employeeID) {
+        this.employeeID = employeeID;
     }
 
     public void setState(int state) {

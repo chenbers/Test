@@ -68,12 +68,12 @@ public class ScoringNoteProcessor {
 	}
 	
 	private void getVehicleNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
-		processor.preProcessNotes(hessian.getVehicleNote(ID, start.getEpochTimeL(), stop.getEpochTimeL()), deviceType);
+		processor.preProcessNotes(hessian.getVehicleNote(ID, start.epochSeconds(), stop.epochSeconds()), deviceType);
 		theResultsAreIn();
 	}
 	
 	private void getDriverNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
-		processor.preProcessNotes(hessian.getDriverNote(ID, start.getEpochTimeL(), stop.getEpochTimeL()), deviceType );
+		processor.preProcessNotes(hessian.getDriverNote(ID, start.epochSeconds(), stop.epochSeconds()), deviceType );
 		theResultsAreIn();
 	}
 	

@@ -453,7 +453,7 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
 
     public AutomationCalendar(Calendar calendar) {
         this();
-        this.date = calendar;
+        this.date = (Calendar) calendar.clone();
     }
 
     public AutomationCalendar addToDay(int amount) {
@@ -561,7 +561,7 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
      * @return
      */
     public int compareTo(AutomationCalendar o) {
-        return (int) (getEpochTime() - o.getEpochTime());
+        return (int) (epochSecondsInt() - o.epochSecondsInt());
     }
 
     @Override
@@ -600,7 +600,7 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof AutomationCalendar){
-            return getEpochTime() == ((AutomationCalendar) obj).getEpochTime();
+            return epochSecondsInt() == ((AutomationCalendar) obj).epochSecondsInt();
         } else if (obj instanceof Calendar){
             return date.equals(obj);
         } else if (obj instanceof Date){
@@ -617,12 +617,16 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         return date.getTime();
     }
 
-    public Integer getEpochTime() {
-        return getEpochTimeL().intValue();
+    public Integer epochSecondsInt() {
+        return epochSeconds().intValue();
     }
     
-    public Long getEpochTimeL() {
-        return date.getTimeInMillis()/1000;
+    public Long epochSeconds() {
+        return epochTime()/1000;
+    }
+    
+    public Long epochTime(){
+        return date.getTimeInMillis();
     }
 
     public AutomationCalendar setDate(String dateTime) {
@@ -696,7 +700,7 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     }
 
     public Long getDelta(AutomationCalendar time_last) {
-        long delta = getEpochTime() - time_last.getEpochTime();
+        long delta = epochSecondsInt() - time_last.epochSecondsInt();
         return delta;
     }
 

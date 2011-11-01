@@ -25,6 +25,7 @@ import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.models.TiwiNote;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -209,6 +210,8 @@ public class TiwiProDevice extends DeviceBase {
             ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_ID, (Integer) reply.get("fwdID"));
             ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_RECEIVED);
             notes.addNote(ackNote);
+            addNote(ackNote);
+            MasterTest.print(ackNote);
         }
         processCommand(reply);
         return this;
@@ -298,7 +301,9 @@ public class TiwiProDevice extends DeviceBase {
 
         ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_ID, reply.get("fwdId"));
         ackNote.addAttr(TiwiAttrs.TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
+        MasterTest.print(ackNote);
         notes.addNote(ackNote);
+//        check_queue();
 
         if (!changes.isEmpty())
             set_settings(changes);

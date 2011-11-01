@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
@@ -27,22 +27,16 @@ import com.inthinc.pro.automation.models.TiwiNote;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.pro.automation.utils.StackToString;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
-import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCaseResult;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
-@SuppressWarnings("unchecked")
 public abstract class DeviceBase {
     
-    protected final static int[] dbErrors = { 302, 303, 402 };
-
-    private final static Logger logger = Logger.getLogger(DeviceBase.class);
     protected final NoteManager notes ;
     protected final ArrayList<Integer> speed_points;
     protected final ArrayList<Double[]> speed_loc;
@@ -89,7 +83,7 @@ public abstract class DeviceBase {
     protected Addresses portal;
     protected Map<Integer, MapSection> sbsModule;
 
-    protected Direction waysDirection;
+    protected Direction waysDirection = Direction.wifi;
 
     
     private DeviceBase(String IMEI, ProductType version){
@@ -104,7 +98,7 @@ public abstract class DeviceBase {
         calculator = new Distance_Calc();
     }
 
-    public DeviceBase(String IMEI, Addresses server, Map<?, String> map, ProductType version) {
+    public DeviceBase(String IMEI, Addresses server, Map<? extends DeviceProperties, String> map, ProductType version) {
         this(IMEI, version);
     	portal = server;
         Settings = new HashMap<DeviceProperties, String>();
@@ -158,21 +152,6 @@ public abstract class DeviceBase {
         return this;
     }
 
-    private Boolean check_error(Object reply) {
-        if (reply == null)
-            return false;
-        try {
-            reply = (Integer) reply;
-        } catch (ClassCastException e) {
-            return false;
-        }
-        for (int i = 0; i < dbErrors.length; i++) {
-            if (dbErrors[i] == (Integer) reply)
-                return true;
-        }
-        return false;
-    }
-
     protected DeviceBase check_queue() {
         if (notes.size() >= get_note_count()) {
             send_note();
@@ -208,32 +187,23 @@ public abstract class DeviceBase {
     protected abstract DeviceBase createAckNote(Map<String, Object> reply);
 
     public DeviceBase dump_settings() {
-    	if (portal==Addresses.TEEN_PROD){
-    		return this;
-    	}
-
-        if (WMP >= 17013) {
-            reply = dbErrors[0];
-            while (check_error(reply)) {
-                try {
-                    logger.debug("dumping settings");
-                    reply = mcmProxy.dumpSet(imei, productVersion.getVersion(), oursToThiers());
-                    logger.debug(reply);
-                } catch (GenericHessianException e) {
-                    reply = 0;
-                } catch (RemoteServerException e) {
-                    reply = 307;
-                } catch (Exception e){
-                    reply = 307;
-                    logger.fatal("Error from DumpSet[210]: " + e.getCause());
-                    logger.error("Current Note Count is " + DeviceStatistics.getHessianCalls());
-                    logger.info("Current time is: " + System.currentTimeMillis());
-                }
-            }
-            if (reply instanceof Integer && (Integer) reply != 0) {
-                logger.debug("Reply from dumpSet: " + reply);
-            }
-        }
+//    	if (portal==Addresses.TEEN_PROD){
+//    		return this;
+//    	}
+//
+//        if (WMP >= 17013) {
+//            reply = null;
+//            try {
+//                MasterTest.print("dumping settings", Level.DEBUG);
+//                reply = mcmProxy.dumpSet(imei, productVersion.getVersion(), oursToThiers());
+//                MasterTest.print(reply, Level.DEBUG);
+//            } catch (Exception e){
+//                MasterTest.print("Error from DumpSet: " + StackToString.toString(e), Level.ERROR);
+//                MasterTest.print("Current Note Count is " + DeviceStatistics.getHessianCalls(), Level.ERROR);
+//                MasterTest.print("Current time is: " + System.currentTimeMillis(), Level.ERROR);
+//                MasterTest.print("Notes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
+//            }
+//        }
         return this;
     }
 
@@ -259,17 +229,12 @@ public abstract class DeviceBase {
         map.put("fileVersion", fileVersion);
         map.put("locale", locale.toString());
         map.put("productVersion", this.productVersion.getVersion());
-//        try{
-            return writeTiwiFile(fileName, mcmProxy.audioUpdate(this.imei, map));
-//        } catch (Exception e){
-//            logger.info(StackToString.toString(e));
-//        }
-//        return false;
+        return writeTiwiFile(fileName, mcmProxy.audioUpdate(this.imei, map));
     }
     
     
     protected boolean writeTiwiFile(String fileName, Map<String, Object> reply){
-        logger.debug(reply);
+        MasterTest.print(reply, Level.DEBUG);
         if (!fileName.startsWith("target")){
             String resourceFile = "target/test/resources/" + imei + "/" + "downloads/";
             lastDownload = resourceFile + fileName;
@@ -284,41 +249,35 @@ public abstract class DeviceBase {
             FileOutputStream fw = new FileOutputStream(destination);
             fw.write((byte[]) reply.get("f"));
             fw.close();
-            logger.debug("SHA1 Hash is: " + SHA1Checksum.getSHA1Checksum(lastDownload));
+            MasterTest.print("SHA1 Hash is: " + SHA1Checksum.getSHA1Checksum(lastDownload), Level.DEBUG);
             return true;
         } catch (FileNotFoundException e) {
-            logger.debug(StackToString.toString(e));
+            MasterTest.print(StackToString.toString(e), Level.ERROR);
         } catch (IOException e) {
-            logger.debug(StackToString.toString(e));
+            MasterTest.print(StackToString.toString(e), Level.ERROR);
         } catch (Exception e) {
-            logger.debug(StackToString.toString(e));
+            MasterTest.print(StackToString.toString(e), Level.ERROR);
         }
         return false;
     }
 
     protected DeviceBase get_changes() {
-    	if (portal==Addresses.TEEN_PROD){
-    		return this;
-    	}
-        if (WMP >= 17013) {
-            reply = dbErrors[0];
-            while (check_error(reply)) {
-                try {
-                    reply = mcmProxy.reqSet(imei);
-                } catch (EmptyResultSetException e) {
-                    reply = 304;
-                } catch (Exception e){
-                    logger.fatal("Error from ReqSet[289]: " + e.getCause());
-                    logger.error("Current Note Count is " + DeviceStatistics.getHessianCalls());
-                    logger.info("Current time is: " + System.currentTimeMillis());
-                }
-            }
-            if (reply instanceof Integer && (Integer) reply != 304) {
-                logger.debug(reply + " We failed to get any changes");
-            } else if (reply instanceof HashMap<?, ?>) {
-                set_settings( theirsToOurs((HashMap<?, ?>) reply));
-            }
-        }
+//    	if (portal==Addresses.TEEN_PROD){
+//    		return this;
+//    	}
+//        if (WMP >= 17013) {
+//            try {
+//                reply = mcmProxy.reqSet(imei);
+//            } catch (Exception e){
+//                MasterTest.print("Error from ReqSet[289]: " + e.getCause(), Level.ERROR);
+//                MasterTest.print("Current Note Count is " + DeviceStatistics.getHessianCalls(), Level.ERROR);
+//                MasterTest.print("Current time is: " + System.currentTimeMillis(), Level.ERROR);
+//                MasterTest.print("Notes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
+//            }
+//            if (reply instanceof HashMap<?, ?>) {
+//                set_settings( theirsToOurs((HashMap<?, ?>) reply));
+//            }
+//        }
         return this;
     }
 
@@ -398,9 +357,9 @@ public abstract class DeviceBase {
             increment_time(time_delta);
             set_power();
         } else {
-            logger.info("The device is already off.");
+            MasterTest.print("The device is already off.");
         }
-        logger.info("Last note created at: " + time.getEpochTime());
+        MasterTest.print("Last note created at: " + time.epochSecondsInt());
         return this;
     }
 
@@ -418,7 +377,7 @@ public abstract class DeviceBase {
             time_now.addToSeconds(30);
             set_time(time_now);
         } else {
-            logger.info("The device is already on.");
+            MasterTest.print("The device is already on.");
         }
         return this;
     }
@@ -426,49 +385,43 @@ public abstract class DeviceBase {
 
     protected abstract Integer processCommand(Map<String, Object> reply);
 
+    @SuppressWarnings("unchecked")
     protected DeviceBase send_note() {
         while (notes.hasNext()) {
-            Map<Class<? extends DeviceNote>, LinkedList<byte[]>> sendingQueue = notes.getNotes(note_count);
-            reply = dbErrors[0];
+            Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = notes.getNotes(note_count);
+            reply = null;
+            
             while (!sendingQueue.isEmpty()) {
+                String sendingImei = imei;
+                Class<?> noteClass = DeviceNote.class;
                 try{
-                    if (this.productVersion == ProductType.WAYSMART){
-                        if (waysDirection.equals(Direction.sat)){
-                            if (sendingQueue.containsKey(NoteBC.class)){
-                                reply = mcmProxy.notebc(imei, waysDirection.getValue(), sendingQueue.get(NoteBC.class));
-                                sendingQueue.remove(NoteBC.class);
-                            } else if (sendingQueue.containsKey(NoteWS.class)){
-                                reply = mcmProxy.notews(imei, waysDirection.getValue(), sendingQueue.get(NoteWS.class));
-                                sendingQueue.remove(NoteWS.class);
-                            }
-                        } else{
-                            if (sendingQueue.containsKey(NoteBC.class)){
-                                reply = mcmProxy.notebc(mcmID, waysDirection.getValue(), sendingQueue.get(NoteBC.class));
-                                sendingQueue.remove(NoteBC.class);
-                            } else if (sendingQueue.containsKey(NoteWS.class)){
-                                reply = mcmProxy.notews(mcmID, waysDirection.getValue(), sendingQueue.get(NoteWS.class));
-                                sendingQueue.remove(NoteWS.class);
-                            }
-                        }
+                    if (!waysDirection.equals(Direction.sat)){
+                        sendingImei = mcmID;
+                    }
+                    if (sendingQueue.containsKey(NoteBC.class)){
+                        noteClass = NoteBC.class;
+                        reply = mcmProxy.notebc(sendingImei, waysDirection.getValue(), sendingQueue.get(noteClass), true);
+                    } else if (sendingQueue.containsKey(NoteWS.class)){
+                        noteClass = NoteWS.class;
+                        reply = mcmProxy.notews(sendingImei, waysDirection.getValue(), sendingQueue.get(noteClass), true);
                     } else if (sendingQueue.containsKey(TiwiNote.class)){
-                        reply = mcmProxy.note(imei, sendingQueue.get(TiwiNote.class));
-                        sendingQueue.remove(TiwiNote.class);
+                        noteClass = TiwiNote.class;
+                        reply = mcmProxy.note(imei, sendingQueue.get(noteClass), true);
                     }
-                    if (check_error(reply)){
-                        throw new IllegalArgumentException("Got " + reply + "From the server");
-                    }
-                } catch (Exception e){
-                    reply = "error";
-                    logger.fatal("Error from Note[439]: " + StackToString.toString(e));
-                    logger.error("Current Note Count is " + DeviceStatistics.getHessianCalls());
-                    logger.info("Current time is: " + System.currentTimeMillis());
+                } catch (Exception e) {
+                    MasterTest.print("Error from Note: " + StackToString.toString(e), Level.ERROR);
+                    MasterTest.print("Current Note Count is " + DeviceStatistics.getHessianCalls(), Level.ERROR);
+                    MasterTest.print("Current time is: " + System.currentTimeMillis(), Level.ERROR);
+                    MasterTest.print("Notes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
                     break;
+                } finally {
+                 sendingQueue.remove(noteClass);   
                 }
 
                 if (reply instanceof ArrayList<?>) {
                     ackFwdCmds((List<HashMap<String, Object>>) reply);
                 }
-                logger.debug("Reply from Server: "+reply);
+                MasterTest.print("Reply from Server: "+reply, Level.DEBUG);
             }
         }
         return this;
@@ -505,7 +458,8 @@ public abstract class DeviceBase {
 
     protected abstract DeviceBase set_ignition(Integer time_delta);//
 
-    protected DeviceBase set_IMEI(Map<?, String> map) {
+    @SuppressWarnings("unchecked")
+    protected DeviceBase set_IMEI(Map<? extends DeviceProperties, String> map) {
         this.Settings = (Map<DeviceProperties, String>) map;
         initiate_device();
         return this;
@@ -572,7 +526,7 @@ public abstract class DeviceBase {
     public DeviceBase set_time(AutomationCalendar time_now) {
         time.setDate(time_now);
         setLastTime(time);
-        logger.debug("Time = "+time);
+        MasterTest.print("Time = "+time, Level.DEBUG);
         return this;
     }
     
@@ -604,7 +558,7 @@ public abstract class DeviceBase {
         if (ignition_state) {
             set_ignition(time_delta);
         } else {
-            logger.info("Vehicle was already turned off");
+            MasterTest.print("Vehicle was already turned off");
         }
         return this;
     }
@@ -613,7 +567,7 @@ public abstract class DeviceBase {
         if (!ignition_state) {
             set_ignition(time_delta);
         } else {
-            logger.info("Vehicle was already turned on");
+            MasterTest.print("Vehicle was already turned on");
         }
         return this;
     }
