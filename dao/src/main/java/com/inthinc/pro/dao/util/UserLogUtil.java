@@ -47,15 +47,22 @@ public class UserLogUtil {
      */
     private static String findUserName() {
         String userName;
-        Object userObject = null;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        userObject = (auth!=null)?auth.getPrincipal():null;
-        
-        // If coming from "Forgot your user name or password", userObject will be a String, not a User.
-        if ( userObject instanceof User ) {
-            userName = (userObject!=null)?((User)userObject).getUsername():"noPersonFound";
-        } else {
-            userName = "forgot_userName_password";
+        try {
+            Object userObject = null;
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            userObject = (auth!=null)?auth.getPrincipal():null;
+            
+            // If coming from "Forgot your user name or password", userObject will be a String, not a User.
+            if ( userObject instanceof User ) {
+                userName = (userObject!=null)?((User)userObject).getUsername():"noPersonFound";
+            } else {
+                userName = "forgot_userName_password";
+            }
+        } catch (NoClassDefFoundError ex) {
+            // cj - added this check because of the coupling of the spring security with user lookup wasn't
+            // working when dao jar is used with a new spring security version (e.g. 3.1) -- need to figure out
+            // a way to decouple this
+            userName = "unknown";
         }
         return userName;
     }
