@@ -319,7 +319,7 @@ public class TiwiProDevice extends DeviceBase {
             trip_start = time.copy();
         } else if (!ignition_state) {
             trip_stop = time.copy();
-            Long tripTime = trip_stop.getDelta(trip_start);
+            Long tripTime = trip_stop.getDelta(trip_start)/1000;
             addIgnitionOffNote(tripTime.intValue(), 980);
         }
         return this;

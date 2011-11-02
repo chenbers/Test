@@ -700,7 +700,7 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     }
 
     public Long getDelta(AutomationCalendar time_last) {
-        long delta = epochSecondsInt() - time_last.epochSecondsInt();
+        long delta = epochTime() - time_last.epochTime();
         return delta;
     }
 

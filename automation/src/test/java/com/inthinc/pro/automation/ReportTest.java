@@ -12,12 +12,12 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
+import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.automation.utils.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Unique;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -149,6 +149,7 @@ public class ReportTest {
 	public void readDrivers(){
 		ObjectReadWrite reader = new ObjectReadWrite();
 		drivers = (HashMap<Integer, HashMap<String, String>>) reader.readObject(address).get(0);
+		MasterTest.print(drivers.size());
 	}
 	
 	public void driveTiwis(){
@@ -181,9 +182,9 @@ public class ReportTest {
 		
 	public static void main(String[] args){
 		ReportTest test = new ReportTest(Addresses.DEV);
-//		test.create(3000);
+//		test.create(5000);
 		test.readDrivers();
-		test.driveTiwis();
+//		test.driveTiwis();
 		
 	}
 

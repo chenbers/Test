@@ -26,6 +26,10 @@ public class DeviceStatistics {
     }
     
     public static Long getTimeDelta(){
+        return stop.getDelta(start)/1000;
+    }
+    
+    public static Long getTimeDeltaL(){
         return stop.getDelta(start);
     }
     

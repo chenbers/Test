@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.inthinc.pro.automation.utils.ObjectReadWrite;
+import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.rally.PrettyJSON;
 import com.inthinc.pro.rally.Project;
 import com.inthinc.pro.rally.RallyWebServices;

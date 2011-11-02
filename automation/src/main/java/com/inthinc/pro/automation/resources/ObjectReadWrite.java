@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.utils;
+package com.inthinc.pro.automation.resources;
 
 
 import java.io.EOFException;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.log4j.Level;
+
+import com.inthinc.pro.automation.utils.MasterTest;
 
 //TODO: Document
 /**
@@ -58,19 +60,29 @@ public class ObjectReadWrite {
 	    try {
 	        
 	        //Construct the ObjectInputStream object
+	        System.out.println(filename);
 	        inputStream = new ObjectInputStream(new FileInputStream(filename));
 	        
 	        Object obj = null;
 	        while ((obj = inputStream.readObject()) != null) {
 	            objects.add(obj);
 	        }
-	        
-	     
 	    } catch (EOFException ex) { //This exception will be caught when EOF is reached
 	        MasterTest.print("End of file reached.", Level.DEBUG);
 	    } catch (ClassNotFoundException ex) {
 	        ex.printStackTrace();
 	    } catch (FileNotFoundException ex) {
+	        try {
+                inputStream = new ObjectInputStream(this.getClass().getResource(filename).openStream());
+                Object obj = null;
+                while ((obj = inputStream.readObject()) != null) {
+                    objects.add(obj);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 	        ex.printStackTrace();
 	    } catch (IOException ex) {
 	        ex.printStackTrace();
