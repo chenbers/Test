@@ -26,9 +26,7 @@ public class TiwiParser implements NoteParser{
 		int attrVal = 0;
 		while (offset < data.length)
 		{
-
 			attrID = ReadUtil.unsign(data[offset++]);
-logger.debug("attrID: " + attrID);			
 			
 			if (attrID < 128) 
 				attrVal = data[offset++];
@@ -48,43 +46,36 @@ logger.debug("attrID: " + attrID);
 				while ((offset < data.length) && (data[offset] != '\0'))
 					offset++;
 			}
-
-			attribMap.put(new Integer(attrID), String.valueOf(attrVal));
+			attribMap.put(new String.valueOf(attrID), String.valueOf(attrVal));
 		}
 		return attribMap;
 	}
 	
 	private static Map parseHeader(byte[] data, Map attribMap)
 	{
-		{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
 //			attribParser.parseAttrib(data, 2, Attrib.NOTETYPE, attribMap);
-logger.debug("Note Type: " + ReadUtil.unsign(data[0]));			
-			attribMap.put(Attrib.NOTETYPE.getCode(), ReadUtil.unsign(data[0]));
+		attribMap.put(Attrib.NOTETYPE.getCode(), ReadUtil.unsign(data[0]));
 
 //        	logger.info("Note Type: " + ReadUtil.unsign(data[0]));
-			
-			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
-			attribParser.parseAttrib(data, 1, Attrib.NOTETIME, attribMap);
-			
-			attribMap.put(Attrib.NOTEFLAGS.getCode(), ReadUtil.unsign(data[5]));
+		
+		AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
+		attribParser.parseAttrib(data, 1, Attrib.NOTETIME, attribMap);
+		
+		attribMap.put(Attrib.NOTEFLAGS.getCode(), ReadUtil.unsign(data[5]));
 
-			attribMap.put(Attrib.NOTEMAPREV.getCode(), ReadUtil.unsign(data[6]));
-			
-			//TO DO: KLUDGE here deciding between version 2 & 3 lat/lng.  Need to fix
-			attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
-			((LatLongParser)attribParser).parseAttrib(data, 7, Attrib.NOTELATLONG, attribMap, 3);
-	
-			attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEED.getAttribParserType()); 
-			attribParser.parseAttrib(data, 13, Attrib.NOTESPEED, attribMap);
+		attribMap.put(Attrib.NOTEMAPREV.getCode(), ReadUtil.unsign(data[6]));
+		
+		//TO DO: KLUDGE here deciding between version 2 & 3 lat/lng.  Need to fix
+		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
+		((LatLongParser)attribParser).parseAttrib(data, 7, Attrib.NOTELATLONG, attribMap, 3);
 
-			//Odometer size/value different between version 2 and 3 notes, so just read it raw
-			short odometer = (short) ReadUtil.read(data, 14, 2);
-			attribMap.put(Attrib.NOTEODOMETER.getCode(), new Short(odometer));
-		}
+		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEED.getAttribParserType()); 
+		attribParser.parseAttrib(data, 13, Attrib.NOTESPEED, attribMap);
+
+		//Odometer size/value different between version 2 and 3 notes, so just read it raw
+		short odometer = (short) ReadUtil.read(data, 14, 2);
+		attribMap.put(Attrib.NOTEODOMETER.getCode(), new Short(odometer));
 		return attribMap;
-	
 	}
-	
-	
 }
