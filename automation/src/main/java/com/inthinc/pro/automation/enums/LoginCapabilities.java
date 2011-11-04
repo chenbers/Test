@@ -6,6 +6,7 @@ public enum LoginCapabilities implements AutoCapabilities  {
     //Login Capabilities
     RoleAdmin,
     RoleHOS,
+    RoleLiveFleet,
     IsDriver,
     HasVehicle,
     HasWaySmart,
@@ -16,6 +17,8 @@ public enum LoginCapabilities implements AutoCapabilities  {
     PasswordChanging(true), 
     DOT,
     TeamLevelLogin,
+    FleetLevelLogin,
+    DivisionLevelLogin,
     
     ;
     private Integer intValue;

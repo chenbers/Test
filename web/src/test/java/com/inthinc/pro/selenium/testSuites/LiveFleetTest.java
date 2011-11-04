@@ -5,6 +5,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -13,19 +15,20 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
-@Ignore
+//@Ignore
 public class LiveFleetTest extends WebRallyTest {
-    String CORRECT_USERNAME = "dastardly";
-    String CORRECT_USERNAME_TOP = "pitstop";
-    String CORRECT_PASSWORD = "Muttley";
     PageLogin pl;
     PageLiveFleet plf;
     PageTeamDashboardStatistics ptds;
+    private AutomationUser user;
+    private AutomationUser userTop;
 
     @Before
     public void before(){
+        user = users.getOneBy(LoginCapabilities.StatusActive, LoginCapabilities.TeamLevelLogin, LoginCapabilities.RoleAdmin);
+        userTop = users.getOneBy(user.getAccount(), LoginCapabilities.FleetLevelLogin, LoginCapabilities.RoleAdmin);
         pl = new PageLogin();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(user);
         ptds = new PageTeamDashboardStatistics();
         ptds._link().liveFleet().click();
         plf = new PageLiveFleet();
@@ -46,7 +49,7 @@ public class LiveFleetTest extends WebRallyTest {
         savePageLink();
         plf._link().logout().click();
         openSavedPage();
-        plf.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        plf.loginProcess(user);
         assertStringContains("app/liveFleet", ptds.getCurrentLocation());
     }
     
@@ -56,7 +59,7 @@ public class LiveFleetTest extends WebRallyTest {
         
         savePageLink();
         plf._link().logout();
-        plf.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        plf.loginProcess(userTop);
         openSavedPage();
         assertStringContains("app/liveFleet", ptds.getCurrentLocation());
         plf._link().entryFleetLegend().row(2).assertPresence(true);
@@ -311,7 +314,7 @@ public class LiveFleetTest extends WebRallyTest {
     @Test
     public void findAddressTest1233(){
         set_test_case("TC1232");
-        pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        pl.loginProcess(userTop);
         ptds._link().liveFleet().click();
         String targetVehicle = "nautilus";
         String targetLocation = "0,0";
@@ -385,7 +388,7 @@ public class LiveFleetTest extends WebRallyTest {
         String targetVehicle = "mannymachine";
         String targetIMEI = "999999000109750";
         TiwiProDevice tiwi = new TiwiProDevice(targetIMEI, Addresses.QA);
-        pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        pl.loginProcess(userTop);
         ptds._link().liveFleet().click();
         
         AutomationCalendar initialTime = new AutomationCalendar();
