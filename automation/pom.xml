@@ -71,7 +71,7 @@
 			<groupId>com.inthinc.noteservice</groupId>
 			<artifactId>noteservice</artifactId>
 			<version>.01-SNAPSHOT</version>
-			<packaging>jar</packaging>
+			<type>jar</type>
 		</dependency>
 	</dependencies>
 	<build>
