@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.models;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
+import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.StackToString;
 
@@ -97,6 +99,24 @@ public class TiwiNote implements DeviceNote {
         NoteManager.encodeAttributes(bos, attrs);
         
         return bos.toByteArray();   
+    }
+    
+    public Map<String, String> packageToMap(){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("10", nType + "");
+        map.put("11", nTime + "");
+        map.put("12", heading + ", " + sats);
+        map.put("20", maprev + "");
+        map.put("13", lat + "," + lng);
+        map.put("15", Speed.toString());
+        map.put("16", odometer.toString());
+        Iterator<DeviceTypes> itr = attrs.iterator();
+        while (itr.hasNext()){
+            DeviceTypes next = itr.next();
+            Object value = attrs.getValue(next);
+            map.put(next.getValue().toString(), value.toString());
+        }
+        return map;
     }
     
     @Override

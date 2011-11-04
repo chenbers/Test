@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.models;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,23 @@ import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.MasterTest;
 
+import com.inthinc.noteservice.NoteService;
+
 
 public class MCMProxyObject implements MCMProxy{
     
     private MCMProxy proxy;
+
+
+    public static boolean regularNote = true;
+    
+
+    public static Map<Integer, Map<String, String>> drivers;
+    
+    public static boolean addDriversList(Map<Integer, Map<String, String>> driverSet){
+        drivers = driverSet;
+        return true;
+    }
 
     public MCMProxyObject(Addresses server) {
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
@@ -39,24 +51,25 @@ public class MCMProxyObject implements MCMProxy{
     }
     
     public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){
-        List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
-        for (DeviceNote note : noteList){
-            byte[] array = note.Package();
-            temp.add(array);
-            printNote(note);
-            
-            if (array.length <=17){
-                throw new IllegalArgumentException("Note cannot be 17 bytes long");
-//            } else if (array.length == 18){
-//                MasterTest.print(note);
-//                StringWriter writer = new StringWriter();
-//                for (int i=0; i<array.length;i++){
-//                    writer.write((int)array[i] + " ");
-//                }
-//                MasterTest.print(writer);
+        if (regularNote ){
+            List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
+            for (DeviceNote note : noteList){
+                byte[] array = note.Package();
+                temp.add(array);
+                printNote(note);
+                
+                if (array.length <=17){
+                    throw new IllegalArgumentException("Note cannot be 17 bytes long");
+                }
+            }
+            return note(mcmID, temp);
+        } else {
+            for (DeviceNote note : noteList){
+                NoteService notes = new NoteService("inthinc", "note", "cassandra-node0.tiwipro.com:9160,cassandra-node1.tiwipro.com:9160");
+                notes.insertNote(((TiwiNote)note).packageToMap());
             }
         }
-        return note(mcmID, temp);
+        return null;
     }
     
 

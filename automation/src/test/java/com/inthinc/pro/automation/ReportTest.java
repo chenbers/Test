@@ -3,6 +3,7 @@ package com.inthinc.pro.automation;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Level;
@@ -11,6 +12,7 @@ import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
+import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -48,7 +50,7 @@ public class ReportTest {
 	
 	private final AutomationSiloService portalHessian;
 	private final SiloService portalProxy;
-	private HashMap<Integer, HashMap<String, String>> drivers;
+	private static Map<Integer, Map<String, String>> drivers;
 	
 	public ReportTest(Addresses address){
 	    portal = address;
@@ -61,7 +63,7 @@ public class ReportTest {
 		Unique unique = new Unique(portal);
 		RandomValues random = new RandomValues();
 		
-		drivers = new HashMap<Integer, HashMap<String, String>>();
+		drivers = new HashMap<Integer, Map<String, String>>();
 		
 		
 		for (int i=1;i<=numberOfDrivers;i++){
@@ -78,6 +80,7 @@ public class ReportTest {
 	            objects.put("person", person.getPersonID().toString());     
 	            objects.put("vehicle", vehicle.getVehicleID().toString());
 	            objects.put("device", device.getImei());
+	            objects.put("deviceID", device.getDeviceID().toString());
 	            drivers.put(driver.getDriverID(), objects);
 			    continue;
 			} catch (Exception e){
@@ -148,23 +151,27 @@ public class ReportTest {
 	@SuppressWarnings("unchecked")
 	public void readDrivers(){
 		ObjectReadWrite reader = new ObjectReadWrite();
-		drivers = (HashMap<Integer, HashMap<String, String>>) reader.readObject(address).get(0);
+		drivers = (HashMap<Integer, Map<String, String>>) reader.readObject(address).get(0);
 		MasterTest.print(drivers.size());
+		MCMProxyObject.addDriversList(drivers);
 	}
 	
 	public void driveTiwis(){
 		Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
-        initialTime.setDate(1319706291);
+        initialTime.setDate(1319720774);
 		MasterTest.print(portal);
 		
         long start = System.currentTimeMillis();
+        int count = 0;
 		while (itr.hasNext()){
 			Integer next = itr.next();
 //			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
 			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
-//			break;
+			if (count++==3000){
+			    break;
+			}
 		}
 
 		MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
@@ -184,7 +191,7 @@ public class ReportTest {
 		ReportTest test = new ReportTest(Addresses.DEV);
 //		test.create(5000);
 		test.readDrivers();
-//		test.driveTiwis();
+		test.driveTiwis();
 		
 	}
 
