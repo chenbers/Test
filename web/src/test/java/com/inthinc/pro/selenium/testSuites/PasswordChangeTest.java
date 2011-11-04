@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.LoginCapabilities;
@@ -243,6 +244,8 @@ public class PasswordChangeTest extends WebRallyTest {
     }
 
     @Test
+    @Ignore
+    //TODO: This test is failing and changing the passwords for all logins. Need to rework this test.
     public void MaxCharacterError() {
         set_test_case("TC1295");
 
