@@ -46,7 +46,7 @@ public class TiwiParser implements NoteParser{
 				while ((offset < data.length) && (data[offset] != '\0'))
 					offset++;
 			}
-			attribMap.put(new String.valueOf(attrID), String.valueOf(attrVal));
+			attribMap.put(String.valueOf(attrID), String.valueOf(attrVal));
 		}
 		return attribMap;
 	}
