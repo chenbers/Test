@@ -1,19 +1,20 @@
 package com.inthinc.pro.automation.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Level;
 
+import com.inthinc.noteservice.NoteService;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.MasterTest;
-
-import com.inthinc.noteservice.NoteService;
 
 
 public class MCMProxyObject implements MCMProxy{
@@ -24,13 +25,8 @@ public class MCMProxyObject implements MCMProxy{
     public static boolean regularNote = true;
     
 
-    public static Map<Integer, Map<String, String>> drivers;
+    public static Map<String, String> drivers;
     
-    public static boolean addDriversList(Map<Integer, Map<String, String>> driverSet){
-        drivers = driverSet;
-        return true;
-    }
-
     public MCMProxyObject(Addresses server) {
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
         MasterTest.print("MCM Server is " + server, Level.DEBUG);
@@ -50,6 +46,16 @@ public class MCMProxyObject implements MCMProxy{
         MasterTest.print(other, Level.DEBUG);
     }
     
+    public static void processDrivers(Map<Integer, Map<String, String>> driversMap){
+        drivers = new HashMap<String, String>();
+        Iterator<Integer> itr = driversMap.keySet().iterator();
+        while (itr.hasNext()){
+            Integer next = itr.next();
+            Map<String, String> map = driversMap.get(next);
+            drivers.put(map.get("device"), map.get("deviceID"));
+        }
+    }
+    
     public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){
         if (regularNote ){
             List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
@@ -65,8 +71,11 @@ public class MCMProxyObject implements MCMProxy{
             return note(mcmID, temp);
         } else {
             for (DeviceNote note : noteList){
+                Map<String, String> temp = ((TiwiNote)note).packageToMap();
+                temp.put("39000", drivers.get(mcmID).toString());
                 NoteService notes = new NoteService("inthinc", "note", "cassandra-node0.tiwipro.com:9160,cassandra-node1.tiwipro.com:9160");
-                notes.insertNote(((TiwiNote)note).packageToMap());
+                notes.insertNote(temp);
+                DeviceStatistics.addCall();
             }
         }
         return null;

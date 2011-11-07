@@ -131,6 +131,7 @@ public class ReportTest {
 			device.setName("Automated Device " + i);
 
 			objects.put("device", device.getImei());
+            objects.put("deviceID", device.getDeviceID().toString());
 			device.setDeviceID(portalHessian.createDevice(device).getDeviceID());
 			
 			
@@ -152,8 +153,7 @@ public class ReportTest {
 	public void readDrivers(){
 		ObjectReadWrite reader = new ObjectReadWrite();
 		drivers = (HashMap<Integer, Map<String, String>>) reader.readObject(address).get(0);
-		MasterTest.print(drivers.size());
-		MCMProxyObject.addDriversList(drivers);
+		MCMProxyObject.processDrivers(drivers);
 	}
 	
 	public void driveTiwis(){
@@ -164,12 +164,12 @@ public class ReportTest {
 		MasterTest.print(portal);
 		
         long start = System.currentTimeMillis();
-        int count = 0;
+        int count = -1;
 		while (itr.hasNext()){
 			Integer next = itr.next();
 //			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
 			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
-			if (count++==3000){
+			if (count++==20){
 			    break;
 			}
 		}
@@ -190,6 +190,7 @@ public class ReportTest {
 	public static void main(String[] args){
 		ReportTest test = new ReportTest(Addresses.DEV);
 //		test.create(5000);
+		MCMProxyObject.regularNote=false;
 		test.readDrivers();
 		test.driveTiwis();
 		
