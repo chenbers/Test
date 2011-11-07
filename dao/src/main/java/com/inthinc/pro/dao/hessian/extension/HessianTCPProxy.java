@@ -25,12 +25,6 @@ import com.inthinc.pro.dao.util.UserLogUtil;
 
 public class HessianTCPProxy implements InvocationHandler
 {
-    
-    private static int count;
-    public static int getCount(){
-        return count;
-    }
-    
     private static final Log log = LogFactory.getLog(HessianTCPProxy.class);
 
 //    private static final Log profileLog = LogFactory.getLog(HessianTCPProxy.class);
@@ -182,7 +176,7 @@ public class HessianTCPProxy implements InvocationHandler
             }
 
             // If return value is an integer, then we have an error condition
-            if (value instanceof Integer && (Integer)value != 0)
+            if (value instanceof Integer)
             {
                 throw HessianExceptionConverter.convert(methodName, args, (Integer) value);
             }
@@ -225,8 +219,6 @@ public class HessianTCPProxy implements InvocationHandler
     {
         Socket socket = null;
         socket = new Socket(InetAddress.getByName(hostName), port);
-        count ++;
-        socket.setSoLinger(false, 0);
 
         OutputStream os = null;
         os = socket.getOutputStream();
