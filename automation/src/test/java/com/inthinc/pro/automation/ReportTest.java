@@ -160,7 +160,7 @@ public class ReportTest {
 		Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
-        initialTime.setDate(1319720774);
+        initialTime.setDate(1319724912);
 		MasterTest.print(portal);
 		
         long start = System.currentTimeMillis();
@@ -169,15 +169,16 @@ public class ReportTest {
 			Integer next = itr.next();
 //			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
 			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
-			if (count++==20){
+			if (count++==3000){
 			    break;
 			}
 		}
 
 		MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
 		
-        while (Thread.activeCount() > 1){
+        while (Thread.activeCount() > 2){
 		    AutomationThread.pause(1);
+//		    MasterTest.print("There are " + Thread.activeCount() + " threads still running");
 		}
 
         MasterTest.print("Starting time is " + DeviceStatistics.getStart());

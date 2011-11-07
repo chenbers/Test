@@ -1,9 +1,10 @@
 package com.inthinc.pro.automation.deviceTrips;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -16,7 +17,7 @@ public class VariableTripCreator {
     
     private final String address;
     
-    private HashMap<Integer, HashMap<String, String>> drivers;
+    private Map<Integer, Map<String, String>> drivers;
     
     public VariableTripCreator(Addresses address){
         portal = address;
@@ -26,24 +27,33 @@ public class VariableTripCreator {
     @SuppressWarnings("unchecked")
     public void readDrivers(){
         ObjectReadWrite reader = new ObjectReadWrite();
-        drivers = (HashMap<Integer, HashMap<String, String>>) reader.readObject(address).get(0);
+        drivers = (Map<Integer, Map<String, String>>) reader.readObject(address).get(0);
+        MCMProxyObject.processDrivers(drivers);
     }
     
     public void driveTiwis(){
         Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
-        MasterTest.print(portal);
+        AutomationCalendar secondTrip = new AutomationCalendar();
+        secondTrip.addToDay(1);
         
+        MasterTest.print(portal);
+
+        int threads = Thread.activeCount();
         long start = System.currentTimeMillis();
         while (itr.hasNext()){
             Integer next = itr.next();
             new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
+            new HanSoloTrip().start(drivers.get(next).get("device"), portal, secondTrip);
+            if (Thread.activeCount() > 3000){
+                AutomationThread.pause(500l);
+            }
         }
 
         MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
         
-        while (Thread.activeCount() > 1){
+        while (Thread.activeCount() > threads){
             AutomationThread.pause(1);
         }
 
@@ -56,6 +66,7 @@ public class VariableTripCreator {
         
     public static void main(String[] args){
         VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
+        MCMProxyObject.regularNote=false;
         test.readDrivers();
         test.driveTiwis();
     }

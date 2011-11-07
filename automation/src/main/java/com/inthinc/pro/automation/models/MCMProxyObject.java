@@ -26,6 +26,9 @@ public class MCMProxyObject implements MCMProxy{
     
 
     public static Map<String, String> drivers;
+
+
+    private static NoteService notes;
     
     public MCMProxyObject(Addresses server) {
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
@@ -54,6 +57,7 @@ public class MCMProxyObject implements MCMProxy{
             Map<String, String> map = driversMap.get(next);
             drivers.put(map.get("device"), map.get("deviceID"));
         }
+        notes = new NoteService("inthinc", "note", "cassandra-node0.tiwipro.com:9160,cassandra-node1.tiwipro.com:9160");
     }
     
     public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){
@@ -72,8 +76,7 @@ public class MCMProxyObject implements MCMProxy{
         } else {
             for (DeviceNote note : noteList){
                 Map<String, String> temp = ((TiwiNote)note).packageToMap();
-                temp.put("39000", drivers.get(mcmID).toString());
-                NoteService notes = new NoteService("inthinc", "note", "cassandra-node0.tiwipro.com:9160,cassandra-node1.tiwipro.com:9160");
+                temp.put("32900", drivers.get(mcmID).toString());
                 notes.insertNote(temp);
                 DeviceStatistics.addCall();
             }
