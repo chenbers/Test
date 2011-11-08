@@ -21,6 +21,7 @@ import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
+import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.Unique;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Device;
@@ -160,16 +161,20 @@ public class ReportTest {
 		Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
-        initialTime.setDate(1319724912);
+        initialTime.setDate(1319726981);
 		MasterTest.print(portal);
 		
         long start = System.currentTimeMillis();
-        int count = -1;
+        
 		while (itr.hasNext()){
 			Integer next = itr.next();
 //			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
 			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
-			if (count++==3000){
+//			if (Thread.activeCount() >= 2){
+//			    break;
+//			}
+			while (Thread.activeCount() > 500){
+			    AutomationThread.pause(500l);
 			    break;
 			}
 		}
@@ -180,12 +185,13 @@ public class ReportTest {
 		    AutomationThread.pause(1);
 //		    MasterTest.print("There are " + Thread.activeCount() + " threads still running");
 		}
-
+        MCMProxyObject.closeService();
         MasterTest.print("Starting time is " + DeviceStatistics.getStart());
         MasterTest.print("Ending time is " + DeviceStatistics.getStop());
 		MasterTest.print("We made " + DeviceStatistics.getHessianCalls());
         MasterTest.print("We took :" + DeviceStatistics.getTimeDelta() + " seconds to run");
         MasterTest.print("This is an average of " + DeviceStatistics.getCallsPerMinute() + " calls per minute");
+        
 	}
 		
 	public static void main(String[] args){

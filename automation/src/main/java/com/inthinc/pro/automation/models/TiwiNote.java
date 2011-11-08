@@ -107,7 +107,7 @@ public class TiwiNote implements DeviceNote {
         map.put("11", nTime.toInt() + "");
         map.put("12", heading + ", " + sats);
         map.put("20", maprev + "");
-        map.put("13", lat + "," + lng);
+        map.put("13", "(" + lat + "," + lng + ")");
         map.put("15", Speed.toString());
         map.put("16", odometer.toString());
         Iterator<DeviceTypes> itr = attrs.iterator();

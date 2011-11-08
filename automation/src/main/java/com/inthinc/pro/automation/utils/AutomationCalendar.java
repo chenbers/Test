@@ -456,6 +456,11 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         this.date = (Calendar) calendar.clone();
     }
 
+    public AutomationCalendar(Long epochTime) {
+        this();
+        setDate(epochTime);
+    }
+
     public AutomationCalendar addToDay(int amount) {
         date.add(Calendar.DAY_OF_YEAR, amount);
         return this;

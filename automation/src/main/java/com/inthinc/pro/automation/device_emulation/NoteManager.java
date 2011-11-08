@@ -120,8 +120,16 @@ public class NoteManager {
 
     public static Long byteToLong(ByteArrayInputStream bais, int numOfBytes) {
         Long number = 0l;
-        for (int shift = 0; numOfBytes-- > 0 && shift < 64; shift += 8) {
+        for (int shift = (numOfBytes-1) * Byte.SIZE; shift >= 0; shift -= Byte.SIZE) {
             number |= (bais.read() & 0xFF) << shift;
+        }
+        return number;
+    }
+    
+    public static Long byteToLong(byte[] ba, int offset, int numOfBytes) {
+        Long number = 0l;
+        for (int shift = (numOfBytes-1) * Byte.SIZE; shift >= 0; shift -= Byte.SIZE) {
+            number |= (ba[offset++] & 0xFF) << shift;
         }
         return number;
     }
@@ -130,6 +138,7 @@ public class NoteManager {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
         byte[] array = null;
+        
         try {
             dos.writeLong(toAdd);
             dos.flush();
@@ -137,17 +146,9 @@ public class NoteManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        byte[] arrayToAdd = new byte[numOfBytes];
         for (int i=array.length-numOfBytes; i<array.length;i++){
-            arrayToAdd[i-array.length+numOfBytes] = array[i];
+            baos.write(array[i]);
         }
-        
-        baos.write(arrayToAdd, 0, numOfBytes);
-    }
-    
-    public static byte longToByte(Long toAdd){
-        Long temp = toAdd & 0xFF;
-        return temp.byteValue();
     }
     
     public static void longToByte(ByteArrayOutputStream baos, Integer toAdd, int numOfBytes){

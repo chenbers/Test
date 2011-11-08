@@ -15,6 +15,7 @@ import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.utils.StackToString;
 
 
 public class MCMProxyObject implements MCMProxy{
@@ -29,6 +30,10 @@ public class MCMProxyObject implements MCMProxy{
 
 
     private static NoteService notes;
+    
+    public static NoteService getService(){
+        return notes;
+    }
     
     public MCMProxyObject(Addresses server) {
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
@@ -77,8 +82,12 @@ public class MCMProxyObject implements MCMProxy{
             for (DeviceNote note : noteList){
                 Map<String, String> temp = ((TiwiNote)note).packageToMap();
                 temp.put("32900", drivers.get(mcmID).toString());
-                notes.insertNote(temp);
-                DeviceStatistics.addCall();
+                try {
+                    notes.insertNote(temp);
+                    DeviceStatistics.addCall();
+                } catch (Exception e) {
+                    MasterTest.print(StackToString.toString(e));
+                }
             }
         }
         return null;
@@ -251,5 +260,9 @@ public class MCMProxyObject implements MCMProxy{
         printReply(reply);
         DeviceStatistics.addCall();
         return reply;
+    }
+
+    public static void closeService() {
+        notes.shutdown();
     }
 }
