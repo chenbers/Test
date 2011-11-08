@@ -2,7 +2,6 @@ package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.LoginCapabilities;
@@ -243,28 +242,34 @@ public class PasswordChangeTest extends WebRallyTest {
 
     }
 
+    
     @Test
-    @Ignore
-    //TODO: This test is failing and changing the passwords for all logins. Need to rework this test.
-    public void MaxCharacterError() {
+    public void maxCharacterError() {
         set_test_case("TC1295");
 
         // 0. login
         myAccountPage.loginProcess(login);
 
-        // 1. Change existing password to more than 12 characters and validate
-        // error message.
+        // 1. Attempt to change existing password to more than 12 characters 
+        //and ensure it only allows 12. 
         String randomPassword = random.getMixedString(13);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
-        myAccountPage._popUp().changeMyPassword()._button().change().click();
-        if (myAccountPage._popUp().changeMyPassword()._text().newPasswordError().validate("Must be 6 to 12 characters")) {
-            myAccountPage._popUp().changeMyPassword()._button().cancel().click();
-
+       
+       
+        if(myAccountPage._popUp().changeMyPassword()._textField().newPassword().getText().length() > 12){
+            addError("allowed more than max characters in new password field", ErrorLevel.FAIL);
+               
         }
+       
+        if(myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().getText().length() > 12){
+            addError("allowed more than max characters in confirmNewPassword field", ErrorLevel.FAIL);
+               
+        }   
+                
         // 2. Verify no changes were made to password by logging in with
         // original password.
         myAccountPage.loginProcess(login);
