@@ -90,7 +90,7 @@ public class HanSoloTrip extends Thread{
         tiwi.addIdlingNote(300, 300);
         tiwi.update_location(33.0104, -117.111, 15);
         tiwi.update_location(33.0104, -117.113, 15);
-        tiwi.add_noDriver();
+//        tiwi.add_noDriver();
         
         tiwi.add_seatBelt(50, 50, 50);
         tiwi.add_note_event(5, 105, 5);

@@ -45,10 +45,11 @@ public class VariableTripCreator {
         while (itr.hasNext()){
             Integer next = itr.next();
             new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
-            new HanSoloTrip().start(drivers.get(next).get("device"), portal, secondTrip);
-//            if (Thread.activeCount() > 3000){
-//                AutomationThread.pause(500l);
-//            }
+            new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime.addToDay(1));
+            new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime.addToDay(2));
+            while (Thread.activeCount() > 5000){
+                AutomationThread.pause(1);
+            }
         }
 
         MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
@@ -56,8 +57,10 @@ public class VariableTripCreator {
         while (Thread.activeCount() > threads){
             AutomationThread.pause(1);
         }
-
-        MCMProxyObject.closeService();
+        try {
+            MCMProxyObject.closeService();
+        } catch (Exception e) {}
+        
         MasterTest.print("Starting time is " + DeviceStatistics.getStart().epochTime());
         MasterTest.print("Ending time is " + DeviceStatistics.getStop().epochTime());
         MasterTest.print("We made " + DeviceStatistics.getHessianCalls());

@@ -212,7 +212,7 @@ public abstract class DeviceBase {
             send_note();
     }
     
-    private Map<Integer, String> oursToThiers(){
+    protected Map<Integer, String> oursToThiers(){
         Map<Integer, String> map = new HashMap<Integer, String>();
         Iterator<?> itr = Settings.keySet().iterator();
         while (itr.hasNext()){
@@ -390,7 +390,7 @@ public abstract class DeviceBase {
         while (notes.hasNext()) {
             Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = notes.getNotes(note_count);
             reply = null;
-            
+            int loop = 0;
             while (!sendingQueue.isEmpty()) {
                 String sendingImei = imei;
                 Class<?> noteClass = DeviceNote.class;
@@ -408,20 +408,23 @@ public abstract class DeviceBase {
                         noteClass = TiwiNote.class;
                         reply = mcmProxy.note(imei, sendingQueue.get(noteClass), true);
                     }
+                    sendingQueue.remove(noteClass); 
                 } catch (Exception e) {
-                    MasterTest.print("Error from Note: " + StackToString.toString(e), Level.ERROR);
-                    MasterTest.print("Current Note Count is " + DeviceStatistics.getHessianCalls(), Level.ERROR);
-                    MasterTest.print("Current time is: " + System.currentTimeMillis(), Level.ERROR);
-                    MasterTest.print("Notes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
-                    break;
-                } finally {
-                 sendingQueue.remove(noteClass);   
+                    MasterTest.print("Error from Note with IMEI: " + imei + "  " + StackToString.toString(e) + 
+                            "\nCurrent Note Count is " + DeviceStatistics.getHessianCalls()+
+                            "\nCurrent time is: " + System.currentTimeMillis() +
+                            "\nNotes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
+                    loop ++;
+                    if (loop == 30){
+                        MasterTest.print("Unable to send note!!!!!" + StackToString.toString(e), Level.FATAL);
+                        break;
+                    }
                 }
 
                 if (reply instanceof ArrayList<?>) {
                     ackFwdCmds((List<HashMap<String, Object>>) reply);
                 }
-                MasterTest.print("Reply from Server: "+reply, Level.DEBUG);
+                MasterTest.print("Reply from Server: " + reply, Level.DEBUG);
             }
         }
         return this;
