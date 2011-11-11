@@ -12,7 +12,12 @@ public enum CrashReportStatus implements BaseEnum{
     NEW(0),
     CONFIRMED(1),
     EXCLUDE(2),
-    DELETED(3);
+    DELETED(3),
+    POTENTIAL(4),
+    ROLLOVER(5),
+    STOP(6),
+    PANIC(7),
+    AGRESSIVE_DRIVING(8);
 
     private int code;
 
