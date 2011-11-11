@@ -124,8 +124,3 @@ And I should remain on the Login Page
 When I close the alert message
 Then I should remain on the Login Page
 And the Login Page fields should be empty  
-
-Scenario: Demonstrate jBehave ability to create method stubs
-Given I want to learn more about jBehave
-When I have not created step definitions yet
-Then jBehave should do it for me
