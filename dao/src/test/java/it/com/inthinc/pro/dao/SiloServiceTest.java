@@ -5,8 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import it.com.inthinc.pro.dao.model.ITData;
 import it.config.IntegrationConfig;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +23,7 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.model.RuleSetType;
@@ -135,9 +138,11 @@ public class SiloServiceTest {
     private static final String SPEEDRACER = "speedracer";
     @SuppressWarnings("unused")
     private static final String SPEEDRACER_RFID = "speedRacerRFID";
-    private static Integer TESTING_DRIVER_ID; // speedracer
-    private static Integer TESTING_VEHICLE_ID = 1; // speedracer
-    private static Integer TESTING_GROUP_ID; // speedracer
+    private static Integer TESTING_DRIVER_ID; 
+    private static Integer TESTING_VEHICLE_ID;
+    private static Integer TESTING_GROUP_ID;
+
+    private static final String REPORT_BASE_DATA_XML = "ReportTest.xml";
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -145,31 +150,17 @@ public class SiloServiceTest {
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         siloService = new SiloServiceCreator(host, port).getService();
-        // HessianDebug.debugIn = true;
-        // HessianDebug.debugOut = true;
-        // HessianDebug.debugRequest = true;
-        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
-        deviceDAO.setSiloService(siloService);
-//        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
-//        mapping.setDeviceDAO(deviceDAO);
-//        mapping.init();
-        
-        //Setup Speedracer
-        UserHessianDAO userDAO = new UserHessianDAO();
-        userDAO.setSiloService(siloService);
-        User user = userDAO.findByUserName(SPEEDRACER);
-        assertNotNull("Error retrieving the User 'speedracer'", user);
-        TESTING_GROUP_ID = user.getGroupID();
-        DriverHessianDAO driverDAO = new DriverHessianDAO();
-        driverDAO.setSiloService(siloService);
-        Driver driver = driverDAO.findByPersonID(user.getPerson().getPersonID());
-        assertNotNull("Error retrieving the Driver associated with 'speedracer'", driver);
-        TESTING_DRIVER_ID = driver.getDriverID();
-        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
-        vehicleDAO.setSiloService(siloService);
-        Vehicle vehicle = vehicleDAO.findByDriverID(TESTING_DRIVER_ID);
-        assertNotNull("Error retrieving the Vehicle associated with 'speedracer'", vehicle);
-        TESTING_VEHICLE_ID = vehicle.getVehicleID();
+
+        ITData itData = new ITData();
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(REPORT_BASE_DATA_XML);
+
+        if (!itData.parseTestData(stream, siloService, false, false)) {
+            throw new Exception("Error parsing Test data xml file");
+        }
+
+        TESTING_GROUP_ID = itData.teamGroupData.get(ITData.BAD).group.getGroupID();
+        TESTING_DRIVER_ID = itData.teamGroupData.get(ITData.BAD).driver.getDriverID();
+        TESTING_VEHICLE_ID = itData.teamGroupData.get(ITData.BAD).vehicle.getVehicleID();
     }
     
     @AfterClass
@@ -345,10 +336,10 @@ public class SiloServiceTest {
         configuratorDAO.setSiloService(siloService);
         VehicleSetting vs = configuratorDAO.getVehicleSettings(TESTING_VEHICLE_ID);
         assertEquals(ProductType.TIWIPRO_R74,vs.getProductType());
-        assertEquals(new Integer(1),vs.getVehicleID());
+        assertEquals(new Integer(19164),vs.getVehicleID());
         assertTrue(vs.getActual()!= null);
         assertTrue(vs.getDesired()!=null);
-        assertEquals(new Integer(1),vs.getDeviceID());
+        assertEquals(new Integer(15641),vs.getDeviceID());
     }
     @Test
     public void vehicleSettingsForGroup(){
@@ -509,19 +500,18 @@ public class SiloServiceTest {
         assertTrue("expected some events to be returned", violationEventsList.size() > 0);
         validateEvents(EventCategory.VIOLATION.getNoteTypesInCategory(), violationEventsList, startDate, endDate);
         List<Event> warningEventsList = eventDAO.getWarningEventsForDriver(TESTING_DRIVER_ID, startDate, endDate, EventDAO.EXCLUDE_FORGIVEN);
-        // TODO: ask David to generate some of these types
-        // assertTrue("expected some events to be returned", warningEventsList.size() > 0);
         validateEvents(EventCategory.WARNING.getNoteTypesInCategory(), warningEventsList, startDate, endDate);
+        
+/*
+ * removing because recent events was on old team page, no longer used in portal        
         List<Event> recentEventsList = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
-        // assertTrue("expected some events to be returned", (recentEventsList.size() >= 0 && recentEventsList.size() < 6));
         validateEvents(EventCategory.VIOLATION.getNoteTypesInCategory(), recentEventsList);
         int listSize = recentEventsList.size();
         List<Event> recentWarningsList = eventDAO.getMostRecentWarnings(TESTING_GROUP_ID, 5);
-        // TODO: ask David to generate some of these types
-        // assertTrue("expected some events to be returned", (recentWarningsList.size() > 0 && recentWarningsList.size() < 6));
         validateEvents(EventCategory.WARNING.getNoteTypesInCategory(), recentWarningsList);
         recentEventsList = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
         assertEquals(listSize, recentEventsList.size());
+*/        
     }
 
     private void validateEvents(List<NoteType> expectedTypes, List<Event> eventList, Date startDate, Date endDate) {
