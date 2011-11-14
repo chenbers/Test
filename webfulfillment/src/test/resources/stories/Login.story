@@ -4,7 +4,7 @@ In order to show the web fulfillment login features
 As Superuser or Team Member
 I want to see valid and invalid logins
 
-Scenario: TC5926: Username field is blank error message
+Scenario: TC5926: All fields are blank error message
 Given I am on the login page
 and the username field is blank
 and the password field is blank
