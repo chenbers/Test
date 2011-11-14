@@ -34,7 +34,7 @@ and I enter a different password in the confirm field
 and I click on the "Change" button
 Then an error message displays "New and Confirm New Password do not match"
 
-Scenario: TC5964: Password Change Successful
+Scenario: TC5965: Password Change Successful
 Given I am on the web fulfillment Admin page
 When I click on the "Change Password" link
 and Change Password popup displays
@@ -50,3 +50,26 @@ When I click on the "Change Password" link
 and Change Password popup displays
 and I click on the "Change" button
 Then "!Required" message displays above each empty field.
+
+Scenario: TC5967: Must be 6-12 Characters
+Given I am on the web fulfillment Admin page
+When I click on the "Change Password" link
+and Change Password popup displays
+and I enter correct current password
+and I enter a new password with one character
+and I enter the same one character password in the confirm field
+and I click on the "Change" button
+Then an error message displays "Must be 6 to 12 characters" over the New Password field.
+
+Scenario: TC5968: Meets the 12 Character Max limit
+Given I am on the web fulfillment Admin page
+When I click on the "Change Password" link
+and Change Password popup displays
+and I enter correct current password
+and I attempt to enter a new password with 13 characters but it only limits me to 12
+and I enter the same first 12 character password in the confirm field
+and I click on the "Change" button
+Then "Password successfully changed" message displays
+
+
+
