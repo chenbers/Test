@@ -37,4 +37,12 @@ public class HessianServiceCreator<T extends HessianService> implements ServiceC
     }
     return service;
   }
+  public Integer getPort() {
+      return port;
+  }
+
+  public String getHost() {
+      return host;
+  }
+
 }
