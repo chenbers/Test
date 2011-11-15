@@ -21,7 +21,7 @@ public class DeviceState {
     private int driverID;
     private String employeeID;
 
-    private Heading heading;
+    private Heading heading = Heading.NORTH;
 
     private Boolean ignition_state = false;
     private final String imei;

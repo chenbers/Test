@@ -29,9 +29,9 @@ public class GoogleTrips {
         String query = http.constructQuery("sensor", "false", "origin", start, "destination", stop);
         GetMethod getRequest = new GetMethod(googleMapsAPI + Mode.json);
         getRequest.setQueryString(query);
-        String response;
         try {
-            response = http.httpRequest(getRequest);
+            MasterTest.print(getRequest.getURI().toString());
+            String response = http.httpRequest(getRequest);
             JSONObject googleReply = new JSONObject(response);
             return processReply(googleReply);
             
@@ -54,7 +54,8 @@ public class GoogleTrips {
                 JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
                 for (int k=0;k<steps.length();k++){
                     JSONObject polyline = steps.getJSONObject(k).getJSONObject("polyline");
-                    points.addAll(decodePoly(polyline.getString("points")));
+                    List<GeoPoint> poly = decodePoly(polyline.getString("points"));
+                    points.addAll(poly);
                 }
             }
         }
@@ -100,7 +101,6 @@ public class GoogleTrips {
                     (int) (((double) lng / 1E5) * 1E6));
             poly.add(p);
         }
-        MasterTest.print(poly.size());
         return poly;
     }
 

@@ -136,6 +136,10 @@ public abstract class DeviceBase {
         get_changes();
         return this;
     }
+    
+    public TripTracker getTripTracker(){
+        return tripTracker;
+    }
 
     protected abstract DeviceBase construct_note();
 
@@ -355,6 +359,7 @@ public abstract class DeviceBase {
                     sendingQueue.remove(noteClass); 
                 } catch (Exception e) {
                     MasterTest.print("Error from Note with IMEI: " + sendingImei + "  " + StackToString.toString(e) + 
+                            "\n" + sendingQueue +
                             "\nCurrent Note Count is " + DeviceStatistics.getHessianCalls()+
                             "\nCurrent time is: " + System.currentTimeMillis() +
                             "\nNotes Started at: " + DeviceStatistics.getStart().epochTime(), Level.INFO);
@@ -501,5 +506,9 @@ public abstract class DeviceBase {
 
     public void firstLocation(GeoPoint geoPoint) {
         tripTracker.firstPoint(geoPoint);
+    }
+
+    public DeviceState getState() {
+        return state;
     }
 }

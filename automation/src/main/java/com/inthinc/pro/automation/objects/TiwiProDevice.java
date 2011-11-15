@@ -310,8 +310,7 @@ public class TiwiProDevice extends DeviceBase {
 
     protected TiwiProDevice set_ignition(Integer time_delta) {
         state.setIgnition_state(!state.getIgnition_state());
-        state.getTime_last().setDate(state.getTime());
-        state.getTime().addToSeconds(time_delta);
+        state.incrementTime(time_delta);
 
         if (state.getIgnition_state()) {
             construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_ON);

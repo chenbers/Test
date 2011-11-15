@@ -127,7 +127,7 @@ public class TiwiNote implements DeviceNote {
     public String toString(){
         String note = "";
         try{
-            note = String.format("TiwiNote(nType=%d, nTime=\"%s\", sats=%d, heading=%d, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d, attrs=%s)", 
+            note = String.format("TiwiNote(nType=%d, nTime=\"%s\", sats=%d, heading=%s, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d, attrs=%s)", 
                     nType.getValue(), nTime, sats, heading, maprev, location.getLat(), location.getLng(), Speed, odometer, attrs);
         }catch(Exception e){
             logger.info(StackToString.toString(e));

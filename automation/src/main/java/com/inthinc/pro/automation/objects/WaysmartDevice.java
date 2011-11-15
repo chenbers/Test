@@ -154,7 +154,7 @@ public class WaysmartDevice extends DeviceBase {
         return state.getDriverID();
     }
 
-	public int getState() {
+	public int getStateID() {
         return state.getStateID();
     }
 	
