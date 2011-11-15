@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -16,6 +17,7 @@ import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.rally.PrettyJSON;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class MasterTest {
@@ -63,12 +65,19 @@ public class MasterTest {
     }
     
     private static void print(Object printToScreen, Level level, int stepsBack){
+        String printStringToScreen = "";
         stepsBack ++;
         if (printToScreen == null){
             printToScreen = "error";
+        } else if (printToScreen instanceof Throwable){
+            printStringToScreen = StackToString.toString((Throwable) printToScreen);
+        } else if (printToScreen instanceof JSONObject){
+            printStringToScreen = PrettyJSON.toString(printToScreen);
+        } else {
+            printStringToScreen = printToScreen.toString();
         }
         StackTraceElement element = Thread.currentThread().getStackTrace()[3];
-        String print = String.format("line:%3d - %s\n", element.getLineNumber(), printToScreen.toString());
+        String print = String.format("line:%3d - %s\n", element.getLineNumber(), printStringToScreen);
         Logger temp = Logger.getLogger(element.getClassName());
         if (level.equals(Level.INFO)){
             temp.info(print);

@@ -2,30 +2,31 @@ package com.inthinc.pro.automation.models;
 
 import java.io.ByteArrayOutputStream;
 
+import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.deviceEnums.Ways_ATTRS;
 import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
+import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.AttrTypes;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteBC implements DeviceNote {
     
     private final Ways_SAT_EVENT nType;
     private final int nVersion;
     private final AutomationCalendar nTime;
-    private final int heading;
+    private final Heading heading;
     private final int sats;
-    private final double fLongitude;
-    private final double fLatitude;
     private final int nSpeed;
     private final int nOdometer;
     private final int nSpeedLimit;
     private final int nLinkID;
     private final int nBoundaryID;
     private final int nDriverID;
+    private final DeviceAttributes attrs;
+    private final GeoPoint location;
     
     public static enum Direction implements DeviceTypes{
         wifi(3),
@@ -45,7 +46,6 @@ public class NoteBC implements DeviceNote {
         }
     };
     
-    public final DeviceAttributes attrs;
     
     /***
      * Pack the values into a note.
@@ -72,9 +72,9 @@ public class NoteBC implements DeviceNote {
         NoteManager.longToByte(bos, nType.getValue(), 1);
         NoteManager.longToByte(bos, nVersion, 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
-        NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading, sats), 2);
-        NoteManager.longToByte(bos, NoteManager.encodeLat(fLatitude), 4);
-        NoteManager.longToByte(bos, NoteManager.encodeLng(fLongitude), 4);
+        NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
+        NoteManager.longToByte(bos, location.getEncodedLat(), 4);
+        NoteManager.longToByte(bos, location.getEncodedLng(), 4);
         NoteManager.longToByte(bos, nSpeed, 1);
         NoteManager.longToByte(bos, nSpeedLimit, 1);
         NoteManager.longToByte(bos, nLinkID, 4);
@@ -108,21 +108,19 @@ public class NoteBC implements DeviceNote {
     * 2-boundaryID
     * 4-driverID
     */
-    public NoteBC(Direction method, Ways_SAT_EVENT type, ProductType version, AutomationCalendar time, int heading, int sats, double lat, double lng, 
-            int speed, int speedLimit, int linkID, int odometer, int boundaryID, int driverID) {
-        this.nType = type;
-        this.nVersion = version.getVersion();
-        this.nTime = time;
-        this.heading = heading;
-        this.sats = sats;
-        this.fLatitude = lat;
-        this.fLongitude = lng;
-        this.nSpeed = speed;
-        this.nSpeedLimit = speedLimit;
-        this.nLinkID = linkID;
-        this.nOdometer = odometer;
-        this.nBoundaryID = boundaryID;
-        this.nDriverID = driverID;
+    public NoteBC(Ways_SAT_EVENT type, DeviceState state, GeoPoint location){
+        nType = type;
+        nVersion = state.getProductVersion().getVersion();
+        nTime = state.copyTime();
+        heading = state.getHeading();
+        sats = state.getSats();
+        this.location = location.copy();
+        nSpeed = state.getSpeed();
+        nSpeedLimit = state.getSpeed_limit().intValue();
+        nLinkID = state.getLinkID();
+        nOdometer = state.getOdometer();
+        nBoundaryID = state.getBoundaryID();
+        nDriverID = state.getDeviceDriverID();
         attrs = new DeviceAttributes();
     }
 
@@ -182,7 +180,7 @@ public class NoteBC implements DeviceNote {
         String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%d, sats=%d,\n" +
         		"lat=%.5f, lng=%.5f, speed=%d, odometer=%d, speedLimit=%d, linkID=%d, boundary=%d, driverID=%d,\n" +
         		"attrs={%s}", 
-                nType.toString(), nVersion, nTime, heading, sats, fLatitude, fLongitude, nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
+                nType.toString(), nVersion, nTime, heading, sats, location.getLat(), location.getLng(), nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
         return temp;
     }
     

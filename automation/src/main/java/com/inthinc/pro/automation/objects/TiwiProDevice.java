@@ -8,9 +8,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.caucho.hessian.client.HessianRuntimeException;
+import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
 import com.inthinc.pro.automation.deviceEnums.TiwiFwdCmds;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
@@ -18,8 +20,10 @@ import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.TiwiProps;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
+import com.inthinc.pro.automation.device_emulation.Distance_Calc;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.models.TiwiNote;
@@ -56,17 +60,16 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     public TiwiProDevice add_location() {
-        timeSinceLastLoc = 0;
         attrs = new HashMap<TiwiAttrs, Integer>();
-        if (speeding) {
+        if (state.getSpeeding()) {
             attrs.put(TiwiAttrs.TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SPEEDING.getValue());
         }
 
-        else if (rpm_violation) {
+        if (state.getRpm_violation()) {
             attrs.put(TiwiAttrs.TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_RPM.getValue());
         }
 
-        else if (seatbelt_violation) {
+        if (state.getSeatbelt_violation()) {
             attrs.put(TiwiAttrs.TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SEATBELT.getValue());
         }
 
@@ -181,7 +184,7 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice construct_note(TiwiNoteTypes type) {
-        if (productVersion == ProductType.TIWIPRO_R74) {
+        if (state.getProductVersion() == ProductType.TIWIPRO_R74) {
             attrs = new HashMap<TiwiAttrs, Integer>();
             construct_note(type, attrs);
         }
@@ -190,16 +193,17 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice construct_note(TiwiNoteTypes type, Map<TiwiAttrs, Integer> attrs) {
-        TiwiNote note = new TiwiNote(type, time, sats, heading, 1, latitude, longitude, speed, odometer);
+        TiwiNote note = new TiwiNote(type, state, tripTracker.currentLocation());
         note.addAttrs(attrs);
         try {
-            note.addAttr(TiwiAttrs.TYPE_SPEED_LIMIT, speed_limit.intValue());
+            note.addAttr(TiwiAttrs.TYPE_SPEED_LIMIT, state.getSpeed_limit().intValue());
         } catch (Exception e) {
             logger.debug(StackToString.toString(e));
         }
-        logger.debug(note.toString());
-        clear_internal_settings();
+        MasterTest.print(note.toString(), Level.DEBUG);
+        state.setOdometer(0);
         addNote(note);
+        
         return this;
     }
 
@@ -226,15 +230,15 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     protected Integer get_note_count() {
-        return Integer.parseInt(Settings.get(TiwiProps.PROPERTY_SET_MSGS_PER_NOTIFICATION));
+        return Integer.parseInt(state.get_setting(TiwiProps.PROPERTY_SET_MSGS_PER_NOTIFICATION));
     }
 
     public String get_setting(TiwiProps settingID) {
-        return Settings.get(settingID.getValue());
+        return state.get_setting(settingID);
     }
 
     public Integer get_setting_int(TiwiProps settingID) {
-        Double valueD = Double.parseDouble(Settings.get(settingID));
+        Double valueD = Double.parseDouble(state.get_setting(settingID));
         Integer valueI = valueD.intValue();
         return valueI;
     }
@@ -258,14 +262,8 @@ public class TiwiProDevice extends DeviceBase {
         return this;
     }
 
-    public TiwiProDevice nonTripNote(AutomationCalendar time, int sats, int heading, Double latitude, Double longitude, int speed, int odometer) {
-        this.time.setDate(time);
-        this.sats = sats;
-        this.heading = heading;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.speed = speed;
-        this.odometer = odometer;
+    public TiwiProDevice nonTripNote(AutomationCalendar time, int sats, Heading heading, GeoPoint location, int speed, int odometer) {
+        tripTracker.fakeLocationNote(location, time, sats, heading, speed, odometer);
         return this;
     }
 
@@ -311,14 +309,15 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     protected TiwiProDevice set_ignition(Integer time_delta) {
-        ignition_state = !ignition_state;
-        
-        set_time(time.addToSeconds(time_delta));
-        if (ignition_state) {
+        state.setIgnition_state(!state.getIgnition_state());
+        state.getTime_last().setDate(state.getTime());
+        state.getTime().addToSeconds(time_delta);
+
+        if (state.getIgnition_state()) {
             construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_ON);
-            trip_start = time.copy();
-        } else if (!ignition_state) {
-            trip_stop = time.copy();
+            trip_start = state.getTime().copy();
+        } else {
+            trip_stop = state.getTime().copy();
             Long tripTime = trip_stop.getDelta(trip_start)/1000;
             addIgnitionOffNote(tripTime.intValue(), 980);
         }
@@ -330,11 +329,11 @@ public class TiwiProDevice extends DeviceBase {
 
         attrs = new HashMap<TiwiAttrs, Integer>();
 
-        power_state = !power_state; // Change the power state between on and off
-        if (power_state) {
-            addPowerOnNote(WMP, MSP, 10);
+        state.setPower_state(!state.getPower_state()); // Change the power state between on and off
+        if (state.getPower_state()) {
+            addPowerOnNote(state.getWMP(), state.getMSP(), 10);
 
-        } else if (!power_state) {
+        } else if (!state.getPower_state()) {
             addPowerOffNote(get_setting_int(TiwiProps.PROPERTY_LOW_POWER_MODE_SECONDS));
 
             check_queue();
@@ -345,8 +344,8 @@ public class TiwiProDevice extends DeviceBase {
     @Override
     protected TiwiProDevice set_server(Addresses server) {
         mcmProxy = new MCMProxyObject(server);
-        Settings.put(TiwiProps.PROPERTY_SERVER_PORT, server.getMCMPort().toString());
-        Settings.put(TiwiProps.PROPERTY_SERVER_URL, server.getMCMUrl());
+        state.setSetting(TiwiProps.PROPERTY_SERVER_PORT, server.getMCMPort().toString());
+        state.setSetting(TiwiProps.PROPERTY_SERVER_URL, server.getMCMUrl());
         return this;
     }
 
@@ -357,18 +356,18 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     public TiwiProDevice set_speed_limit(Integer limit) {
-        Settings.put(TiwiProps.PROPERTY_SPEED_LIMIT, limit.toString());
+        state.setSetting(TiwiProps.PROPERTY_SPEED_LIMIT, limit.toString());
         return this;
     }
 
     public TiwiProDevice tampering(Integer timeDelta) {
-        power_state = false;
-        ignition_state = false;
+        state.setPower_state(false);
+        state.setIgnition_state(false);
         increment_time(timeDelta);
 
         addTamperingNote(850);
 
-        power_on_device(time);
+        power_on_device(state.getTime());
         turn_key_on(10);
         return this;
     }
@@ -400,9 +399,9 @@ public class TiwiProDevice extends DeviceBase {
         avg = avg / (speed_points.size());
         avgSpeed = avg.intValue();
         for (int i = 1; i < speed_loc.size(); i++) {
-            Double[] last = speed_loc.get(i - 1);
-            Double[] loc = speed_loc.get(i);
-            speeding_distance += Math.abs(calculator.calc_distance(last[0], last[1], loc[0], loc[1]));
+            GeoPoint last = speed_loc.get(i - 1);
+            GeoPoint loc = speed_loc.get(i);
+            speeding_distance += Math.abs(Distance_Calc.calc_distance(last, loc));
         }
         Integer distance = (int) (speeding_distance * 100);
         addSpeedingNote(distance, topSpeed, avgSpeed);
@@ -411,24 +410,24 @@ public class TiwiProDevice extends DeviceBase {
     
     public boolean updateFirmware(int versionNumber){
         Map<String, Object> updateMap = new HashMap<String, Object>();
-        updateMap.put("hardwareVersion", WMP);
+        updateMap.put("hardwareVersion", state.getWMP());
         updateMap.put("fileVersion", versionNumber);
-        updateMap.put("productVersion", productVersion.getVersion());
-        Map<String, Object> reply = mcmProxy.tiwiproUpdate(imei, updateMap);
-        String fileName = productVersion.name().toLowerCase().replace("_",".") + "." + versionNumber + "-hessian.dwl";
+        updateMap.put("productVersion", state.getProductVersion().getVersion());
+        Map<String, Object> reply = mcmProxy.tiwiproUpdate(state.getImei(), updateMap);
+        String fileName = state.getProductVersion().name().toLowerCase().replace("_",".") + "." + versionNumber + "-hessian.dwl";
         return writeTiwiFile(fileName, reply);
     }
     
     public boolean getFirmwareFromSVN(int versionNumber){
         try {
             String svnUrl = "https://svn.iwiglobal.com/iwi/release/tiwi/pro/wmp";
-            if (this.productVersion.equals(ProductType.TIWIPRO_R74)){
+            if (state.getProductVersion().equals(ProductType.TIWIPRO_R74)){
                 svnUrl += "R74/";
             } else {
                 svnUrl += "/";
             }
-            String directory = "target/test/resources/" + imei + "/downloads/";
-            String fileName = productVersion.name().toLowerCase().replace("_",".") + "." + versionNumber + "-svn.dwl";
+            String directory = "target/test/resources/" + state.getImei() + "/downloads/";
+            String fileName = state.getProductVersion().name().toLowerCase().replace("_",".") + "." + versionNumber + "-svn.dwl";
             File file = new File(directory);
             file.mkdirs();
             file = new File(lastDownload = directory + fileName);
@@ -455,7 +454,7 @@ public class TiwiProDevice extends DeviceBase {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("b", baseVer);
             
-            List<Map<String, Object>> reply = mcmProxy.checkSbsSubscribed(imei, map);
+            List<Map<String, Object>> reply = mcmProxy.checkSbsSubscribed(state.getImei(), map);
             for (Map<String, Object> section : reply){
                 try {
                     int f = (Integer) section.get("f");
@@ -480,7 +479,7 @@ public class TiwiProDevice extends DeviceBase {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("f", fileHash);
         map.put("b", baseVer);
-        Map<String, Object> reply = mcmProxy.getSbsBase(imei, map);
+        Map<String, Object> reply = mcmProxy.getSbsBase(state.getImei(), map);
         return reply;
     }
     
@@ -494,7 +493,7 @@ public class TiwiProDevice extends DeviceBase {
         map.put("cv", currentVersion);
         map.put("nv", newVersion);
         
-        Map<String, Object> reply = mcmProxy.getSbsEdit(imei, map);
+        Map<String, Object> reply = mcmProxy.getSbsEdit(state.getImei(), map);
         return reply;
     }
     
@@ -505,7 +504,7 @@ public class TiwiProDevice extends DeviceBase {
         map.put("f", fileHash);
         map.put("cv", currentVersion);
         list.add(map);
-        List<Map<String, Object>> reply = mcmProxy.checkSbsEdit(imei, list);
+        List<Map<String, Object>> reply = mcmProxy.checkSbsEdit(state.getImei(), list);
         logger.debug(reply);
         
         return false;
@@ -514,10 +513,10 @@ public class TiwiProDevice extends DeviceBase {
     public boolean getZones(){
         try {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("hardwareVersion", productVersion.getVersion());
+            map.put("hardwareVersion", state.getProductVersion().getVersion());
             map.put("fileVersion", 1);
             map.put("formatVersion", 1);
-            Map<String, Object> reply = mcmProxy.zoneUpdate(imei, map);
+            Map<String, Object> reply = mcmProxy.zoneUpdate(state.getImei(), map);
             zones = new ZoneManager((byte[]) reply.get("f"));
         } catch (Exception e){
             logger.debug(StackToString.toString(e));
@@ -539,5 +538,4 @@ public class TiwiProDevice extends DeviceBase {
     public void setBaseVer(int baseVer) {
         this.baseVer = baseVer;
     }
-
 }

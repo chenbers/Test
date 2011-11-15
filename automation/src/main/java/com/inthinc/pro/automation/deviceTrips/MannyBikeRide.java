@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.deviceTrips;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 
@@ -34,19 +35,19 @@ public class MannyBikeRide extends Thread{
 
         tiwi.set_time( initialTime.addToSeconds(60));
         tiwi.set_WMP(17116);
-        tiwi.set_location(40.7097, -111.9925);
+        tiwi.firstLocation(new GeoPoint(40.7097, -111.9925));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
-        tiwi.update_location(40.7097, -111.9925, 15);
-        tiwi.update_location(40.7097, -111.9927, 15);
-        tiwi.update_location(40.7097, -111.9929, 15);
-        tiwi.update_location(40.7097, -111.9931, 15);
-        tiwi.update_location(40.7099, -111.9931, 15);
-        tiwi.update_location(40.7099, -111.9929, 15);
-        tiwi.update_location(40.7099, -111.9927, 15);
-        tiwi.update_location(40.7099, -111.9925, 15);
-        tiwi.update_location(40.7097, -111.9925, 15);
-        tiwi.last_location(40.7097, -111.9925, 15);
+        tiwi.update_location(new GeoPoint(40.7097, -111.9925), 15);
+        tiwi.update_location(new GeoPoint(40.7097, -111.9927), 15);
+        tiwi.update_location(new GeoPoint(40.7097, -111.9929), 15);
+        tiwi.update_location(new GeoPoint(40.7097, -111.9931), 15);
+        tiwi.update_location(new GeoPoint(40.7099, -111.9931), 15);
+        tiwi.update_location(new GeoPoint(40.7099, -111.9929), 15);
+        tiwi.update_location(new GeoPoint(40.7099, -111.9927), 15);
+        tiwi.update_location(new GeoPoint(40.7099, -111.9925), 15);
+        tiwi.update_location(new GeoPoint(40.7097, -111.9925), 15);
+        tiwi.last_location(new GeoPoint(40.7097, -111.9925), 15);
         
         tiwi.add_stats();
         tiwi.turn_key_off(30);

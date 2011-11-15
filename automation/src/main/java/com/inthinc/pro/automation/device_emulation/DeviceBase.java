@@ -18,15 +18,18 @@ import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.models.NoteBC;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.models.NoteWS;
 import com.inthinc.pro.automation.models.TiwiNote;
+import com.inthinc.pro.automation.objects.TripTracker;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.pro.automation.utils.StackToString;
@@ -39,71 +42,36 @@ public abstract class DeviceBase {
     
     protected final NoteManager notes ;
     protected final ArrayList<Integer> speed_points;
-    protected final ArrayList<Double[]> speed_loc;
-    protected final String imei;
+    protected final ArrayList<GeoPoint> speed_loc;
     protected final Distance_Calc calculator;
-    protected final AutomationCalendar time;
-    protected final AutomationCalendar time_last;
-    protected final ProductType productVersion;
-
-
-    protected Boolean ignition_state = false;
-    protected Boolean power_state = false;
-    protected Boolean speeding = false;
-    protected Boolean rpm_violation = false;
-    protected Boolean seatbelt_violation = false;
-
-    protected Double latitude;
-    protected Double longitude;
-    protected Double last_lat, last_lng;
-    protected Double speed_limit = 75.0;
-
-
-    protected Map<DeviceProperties, String> Settings;
-
-    protected int heading = 0;
-    protected int speed = 0;
-    protected int WMP = 17013, MSP = 50;
-    protected int sats = 9;
-    protected int odometer = 0;
-
-    protected int note_count = 4;
-    protected int deviceDriverID;
-    protected int timeSinceLastLoc = 0;
-    protected int timeBetweenNotes = 15;
-
-
+    protected final TripTracker tripTracker;
     protected MCMProxyObject mcmProxy;
-
     protected Object reply;
 
-    protected String mcmID;
     protected String lastDownload;
     
     protected Addresses portal;
     protected Map<Integer, MapSection> sbsModule;
 
-    protected Direction waysDirection = Direction.wifi;
-
+    protected DeviceState state;
+    protected int note_count = 4;
     
-    private DeviceBase(String IMEI, ProductType version){
-        this.imei = IMEI;
+    private DeviceBase(String IMEI, ProductType version, Map<? extends DeviceProperties, String> settings){
+        state = new DeviceState(IMEI, version);
+        tripTracker = new TripTracker(state);
+        state.setSettings(settings);
         sbsModule = new HashMap<Integer, MapSection>();
         speed_points = new ArrayList<Integer>();
-        speed_loc = new ArrayList<Double[]>();
+        speed_loc = new ArrayList<GeoPoint>();
         notes = new NoteManager();
-        time = new AutomationCalendar();
-        time_last = new AutomationCalendar();
-        productVersion = version;
         calculator = new Distance_Calc();
+        state.setMapRev(0);
     }
 
     public DeviceBase(String IMEI, Addresses server, Map<? extends DeviceProperties, String> map, ProductType version) {
-        this(IMEI, version);
+        this(IMEI, version, map);
     	portal = server;
-        Settings = new HashMap<DeviceProperties, String>();
-        set_IMEI(map);
-        
+        initiate_device();
     }
     
     private DeviceBase ackFwdCmds(List<HashMap<String, Object>> reply) {
@@ -159,19 +127,6 @@ public abstract class DeviceBase {
         return this;
     }
 
-    protected DeviceBase clear_internal_settings() {
-
-        odometer = 0;
-        try {
-            last_lat = latitude;
-            last_lng = longitude;
-
-        } catch (NullPointerException e) {
-            last_lat = 0.0;
-            last_lng = 0.0;
-        }
-        return this;
-    }
 
     private DeviceBase configurate_device() {
     	if (portal==Addresses.TEEN_PROD){
@@ -208,16 +163,17 @@ public abstract class DeviceBase {
     }
 
     public void flushNotes() {
-        while (notes.hasNext())
+        while (notes.hasNext()){
             send_note();
+        }
     }
     
     protected Map<Integer, String> oursToThiers(){
         Map<Integer, String> map = new HashMap<Integer, String>();
-        Iterator<?> itr = Settings.keySet().iterator();
+        Iterator<?> itr = state.getSettings().keySet().iterator();
         while (itr.hasNext()){
             DeviceProperties next = (DeviceProperties) itr.next();
-            map.put(next.getValue(), Settings.get(next));
+            map.put(next.getValue(), state.getSettings().get(next));
         }
         
         return map;
@@ -225,18 +181,18 @@ public abstract class DeviceBase {
     
     public boolean getAudioFile(String fileName, int fileVersion, Locales locale){
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("hardwareVersion", this.WMP);
+        map.put("hardwareVersion", state.getWMP());
         map.put("fileVersion", fileVersion);
         map.put("locale", locale.toString());
-        map.put("productVersion", this.productVersion.getVersion());
-        return writeTiwiFile(fileName, mcmProxy.audioUpdate(this.imei, map));
+        map.put("productVersion", state.getProductVersion().getVersion());
+        return writeTiwiFile(fileName, mcmProxy.audioUpdate(state.getImei(), map));
     }
     
     
     protected boolean writeTiwiFile(String fileName, Map<String, Object> reply){
         MasterTest.print(reply, Level.DEBUG);
         if (!fileName.startsWith("target")){
-            String resourceFile = "target/test/resources/" + imei + "/" + "downloads/";
+            String resourceFile = "target/test/resources/" + state.getImei() + "/" + "downloads/";
             lastDownload = resourceFile + fileName;
         } else {
             lastDownload = fileName;
@@ -282,11 +238,11 @@ public abstract class DeviceBase {
     }
 
     public int getOdometer() {
-        return odometer;
+        return state.getOdometer();
     }
 
     public void setOdometer(int odometer) {
-        this.odometer = odometer;
+        state.setOdometer(odometer);
     }
     
     protected abstract HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply);
@@ -294,83 +250,71 @@ public abstract class DeviceBase {
     protected abstract Integer get_note_count();
 
     public String get_setting(DeviceProperties propertyID){
-        return Settings.get(propertyID);
+        return state.getSettings().get(propertyID);
     }
 
-    public int getDeviceDriverID() {
-        return deviceDriverID;
-    }
 
     public DeviceBase increment_time(Integer increment) {
-        setLastTime(time);
-        time.addToSeconds(increment);
+        state.incrementTime(increment);
         return this;
     }
     
-    protected DeviceBase setLastTime(AutomationCalendar time){
-        time_last.setDate(time);
-        return this;
-    }
-
     private DeviceBase initiate_device() {
-        ignition_state = false;
-        set_time(new AutomationCalendar());
-        clear_internal_settings();
+        state.setIgnition_state(false);
+        state.setSats(8);
+        state.setWMP(17014);
+        state.setMSP(50);
+        state.setSpeed(0);
+        
+        state.setIgnition_state(false);
+        state.setPower_state(false);
+        state.setSpeeding(false);
+        state.setRpm_violation(false);
+        state.setSeatbelt_violation(false);
+        
+//        clear_internal_settings();
         
         set_server(portal);
 
-        set_satelites(8);
-        set_location(0.0, 0.0);
-        set_WMP(17014);
-        set_MSP(50);
-        set_vehicle_speed();
-
-        ignition_state = false;
-        power_state = false;
-        speeding = false;
-        rpm_violation = false;
-        seatbelt_violation = false;
-        speeding = false;
         return this;
     }
 
     private DeviceBase is_speeding() {
-        Double[] point = { latitude, longitude };
-        if (speed > speed_limit && !speeding) {
-            speeding = true;
+        GeoPoint point = tripTracker.currentLocation();
+        if (state.getSpeed() > state.getSpeed_limit() && !state.getSpeeding()) {
+            state.setSpeeding(true);
             speed_loc.add(point);
-            speed_points.add(speed);
-        } else if (speed > speed_limit && speeding) {
+            speed_points.add(state.getSpeed());
+        } else if (state.getSpeed() > state.getSpeed_limit() && state.getSpeeding()) {
             speed_loc.add(point);
-            speed_points.add(speed);
-        } else if (speed < speed_limit && speeding) {
-            speeding = false;
+            speed_points.add(state.getSpeed());
+        } else if (state.getSpeed() < state.getSpeed_limit() && state.getSpeeding()) {
+            state.setSpeeding(false);
             speed_loc.add(point);
-            speed_points.add(speed);
+            speed_points.add(state.getSpeed());
             was_speeding();
         }
         return this;
     }
 
     public DeviceBase power_off_device(Integer time_delta) {
-        if (power_state) {
+        if (state.getPower_state()) {
             increment_time(time_delta);
             set_power();
         } else {
             MasterTest.print("The device is already off.");
         }
-        MasterTest.print("Last note created at: " + time.epochSecondsInt());
+        MasterTest.print("Last note created at: " + state.getTime().epochSecondsInt());
         return this;
     }
 
     public DeviceBase power_on_device() {
-        power_on_device(time);
+        power_on_device(state.getTime());
         return this;
     }
 
     public DeviceBase power_on_device(AutomationCalendar time_now) {
-        assert (latitude != 0.0 && longitude != 0.0);
-        if (!power_state) {
+        if (!state.getPower_state()) {
             set_time(time_now);
             set_power();
             configurate_device();
@@ -392,30 +336,31 @@ public abstract class DeviceBase {
             reply = null;
             int loop = 0;
             while (!sendingQueue.isEmpty()) {
-                String sendingImei = imei;
+                String sendingImei = state.getImei();
                 Class<?> noteClass = DeviceNote.class;
                 try{
-                    if (!waysDirection.equals(Direction.sat)){
-                        sendingImei = mcmID;
+                    if (state.getProductVersion() == ProductType.WAYSMART && !state.getWaysDirection().equals(Direction.sat)){
+                        sendingImei = state.getMcmID();
                     }
                     if (sendingQueue.containsKey(NoteBC.class)){
                         noteClass = NoteBC.class;
-                        reply = mcmProxy.notebc(sendingImei, waysDirection.getValue(), sendingQueue.get(noteClass), true);
+                        reply = mcmProxy.notebc(sendingImei, state.getWaysDirection().getValue(), sendingQueue.get(noteClass), true);
                     } else if (sendingQueue.containsKey(NoteWS.class)){
                         noteClass = NoteWS.class;
-                        reply = mcmProxy.notews(sendingImei, waysDirection.getValue(), sendingQueue.get(noteClass), true);
+                        reply = mcmProxy.notews(sendingImei, state.getWaysDirection().getValue(), sendingQueue.get(noteClass), true);
                     } else if (sendingQueue.containsKey(TiwiNote.class)){
                         noteClass = TiwiNote.class;
-                        reply = mcmProxy.note(imei, sendingQueue.get(noteClass), true);
+                        reply = mcmProxy.note(sendingImei, sendingQueue.get(noteClass), true);
                     }
                     sendingQueue.remove(noteClass); 
                 } catch (Exception e) {
-                    MasterTest.print("Error from Note with IMEI: " + imei + "  " + StackToString.toString(e) + 
+                    MasterTest.print("Error from Note with IMEI: " + sendingImei + "  " + StackToString.toString(e) + 
                             "\nCurrent Note Count is " + DeviceStatistics.getHessianCalls()+
                             "\nCurrent time is: " + System.currentTimeMillis() +
-                            "\nNotes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
+                            "\nNotes Started at: " + DeviceStatistics.getStart().epochTime(), Level.INFO);
                     loop ++;
-                    if (loop == 30){
+                    AutomationThread.pause(1);
+                    if (loop == 5){
                         MasterTest.print("Unable to send note!!!!!" + StackToString.toString(e), Level.FATAL);
                         break;
                     }
@@ -430,72 +375,25 @@ public abstract class DeviceBase {
         return this;
     }
 
-    private DeviceBase set_heading() {
-        Integer direction = calculator.get_heading(last_lat, last_lng, latitude, longitude);
-        // if (productVersion==5){
-        Integer[] headers = { 0, 45, 90, 135, 180, 225, 270, 315, 360 };
-        // }
-        // else if (productVersion==2){
-        // Integer[] headers = {0,45,90,135,180,225,270,315,360};
-        // }
-
-        for (int heading = 0; heading < headers.length - 1; heading++) {
-            if (direction < headers[heading + 1]) {
-                Integer deltaA = Math.abs(headers[heading] - direction);
-                Integer deltaB = Math.abs(headers[heading + 1] - direction);
-                Integer winner = Math.min(deltaA, deltaB);
-                if (winner == deltaA) {
-                    direction = heading;
-                    break;
-                } else if (winner == deltaB) {
-                    direction = heading + 1;
-                    break;
-                }
-            }
-        }
-        if (direction == 9)
-            direction = 0;
-        this.heading = direction;
-        return this;
-    }
-
+    
     protected abstract DeviceBase set_ignition(Integer time_delta);//
 
-    @SuppressWarnings("unchecked")
-    protected DeviceBase set_IMEI(Map<? extends DeviceProperties, String> map) {
-        this.Settings = (Map<DeviceProperties, String>) map;
-        initiate_device();
-        return this;
-    }
-
-    public DeviceBase set_location(double lat, double lng) {
-        update_location(lat, lng, 0);
-//        speed=0;
-//        odometer=0;
-        return this;
-    }
-
+    
     public DeviceBase set_MSP(Integer version) {
-        MSP = version;
+        state.setMSP(version);
         return this;
     }
 
     public DeviceBase set_MSP(Object version) {
-        MSP = (Integer) version;
+        set_MSP((Integer) version);
         return this;
     }
 
-    private DeviceBase set_odometer() {
-        Double miles = calculator.calc_distance(last_lat, last_lng, latitude, longitude);
-        int tenths_of_mile = (int) (miles * 100);
-        odometer = tenths_of_mile;
-        return this;
-    }
 
     protected abstract DeviceBase set_power();
 
     public DeviceBase set_satelites(Integer satelites) {
-        sats = satelites;
+        state.setSats(satelites);
         return this;
     }
 
@@ -506,7 +404,7 @@ public abstract class DeviceBase {
         Iterator<?> itr = changes.keySet().iterator();
         while (itr.hasNext()) {
             DeviceProperties next = (DeviceProperties) itr.next();
-            Settings.put(next, changes.get(next));
+            state.setSetting(next, changes.get(next));
         }
         dump_settings();
         return this;
@@ -527,38 +425,31 @@ public abstract class DeviceBase {
 
 
     public DeviceBase set_time(AutomationCalendar time_now) {
-        time.setDate(time_now);
-        setLastTime(time);
-        MasterTest.print("Time = "+time, Level.DEBUG);
+        state.getTime_last().setDate(state.getTime());
+        state.getTime().setDate(time_now);
+        MasterTest.print("Time = "+time_now, Level.DEBUG);
         return this;
     }
     
 
-    private DeviceBase set_vehicle_speed() {
-        Long timeDelta = (time.getDelta(time_last));
-        Double speed =((odometer / timeDelta.doubleValue()) * 36.0);
-        this.speed=speed.intValue();
-        is_speeding();
-        return this;
-    }
 
     public DeviceBase set_WMP(Integer version) {
-        WMP = version;
+        state.setWMP(version);
         return this;
     }
 
     public DeviceBase set_WMP(Object version) {
-        WMP = (Integer) version;
+        set_WMP((Integer) version);
         return this;
     }
 
     public DeviceBase setDeviceDriverID(int deviceDriverID) {
-        this.deviceDriverID = deviceDriverID;
+        state.setDeviceDriverID(deviceDriverID);
         return this;
     }
 
     public DeviceBase turn_key_off(Integer time_delta) {
-        if (ignition_state) {
+        if (state.getIgnition_state()) {
             set_ignition(time_delta);
         } else {
             MasterTest.print("Vehicle was already turned off");
@@ -567,57 +458,48 @@ public abstract class DeviceBase {
     }
 
     public DeviceBase turn_key_on(Integer time_delta) {
-        if (!ignition_state) {
+        if (!state.getIgnition_state()) {
             set_ignition(time_delta);
         } else {
             MasterTest.print("Vehicle was already turned on");
         }
         return this;
     }
-
-    public DeviceBase update_location(double lat, double lng, Integer time_delta) {
-        timeSinceLastLoc += time_delta;
-        try {
-            if (last_lat != latitude)
-                last_lat = latitude;
-            else if (last_lat == null)
-                last_lat = lat;
-        } catch (Exception e) {
-            last_lat = lat;
-        }
-        try {
-            if (last_lng != longitude)
-                last_lng = longitude;
-            else if (last_lng == null)
-                last_lng = lat;
-        } catch (Exception e) {
-            last_lng = lng;
-        }
-        latitude = lat;
-        longitude = lng;
-        increment_time(time_delta);
-
-        set_heading();
-
-        if ((latitude != last_lat || longitude != last_lng) && (last_lat != 0.0 && last_lng != 0.0)) {
-            set_odometer();
-        }
-        if (time_delta!=0){
-            set_vehicle_speed();
-        }
-        if (timeSinceLastLoc >= timeBetweenNotes) {
-            add_location();
-        }
+    
+    public DeviceBase update_location(GeoPoint next, int value, boolean time){
+        tripTracker.setNextLocation(next, value, time);
+        add_location();
+        is_speeding();
         return this;
     }
     
-    public DeviceBase last_location(double lat, double lng, Integer time_delta){
-        update_location(lat, lng, time_delta);
-        speed = 0;
+    public DeviceBase goToNextLocation(int value, boolean time){
+        tripTracker.getNextLocation(value, time);
+        add_location();
+        is_speeding();
         return this;
+    }
+    
+
+    public DeviceBase update_location(GeoPoint geoPoint, int i) {
+        return update_location(geoPoint, i, true);
+    }
+
+    
+    public DeviceBase last_location(GeoPoint last, int value, boolean time){
+        update_location(last, value, time);
+        update_location(last, 0, false);
+        return this;
+    }
+    
+    public DeviceBase last_location(GeoPoint last, int value){
+        return last_location(last, value, true);
     }
 
     protected abstract DeviceBase was_speeding();
+    
 
-
+    public void firstLocation(GeoPoint geoPoint) {
+        tripTracker.firstPoint(geoPoint);
+    }
 }

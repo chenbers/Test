@@ -154,7 +154,7 @@ public class ReportTest {
 	public void readDrivers(){
 		ObjectReadWrite reader = new ObjectReadWrite();
 		drivers = (HashMap<Integer, Map<String, String>>) reader.readObject(address).get(0);
-		MCMProxyObject.processDrivers(drivers);
+//		MCMProxyObject.processDrivers(drivers);
 	}
 	
 	public void driveTiwis(){
@@ -173,7 +173,7 @@ public class ReportTest {
 //			if (Thread.activeCount() >= 2){
 //			    break;
 //			}
-			while (Thread.activeCount() > 500){
+			while (Thread.activeCount() > 50){
 			    AutomationThread.pause(500l);
 			    break;
 			}
@@ -185,7 +185,10 @@ public class ReportTest {
 		    AutomationThread.pause(1);
 //		    MasterTest.print("There are " + Thread.activeCount() + " threads still running");
 		}
-        MCMProxyObject.closeService();
+        try{
+            MCMProxyObject.closeService();
+        } catch (Exception e) {
+        }
         MasterTest.print("Starting time is " + DeviceStatistics.getStart());
         MasterTest.print("Ending time is " + DeviceStatistics.getStop());
 		MasterTest.print("We made " + DeviceStatistics.getHessianCalls());
@@ -197,7 +200,7 @@ public class ReportTest {
 	public static void main(String[] args){
 		ReportTest test = new ReportTest(Addresses.DEV);
 //		test.create(5000);
-		MCMProxyObject.regularNote=false;
+//		MCMProxyObject.regularNote=false;
 		test.readDrivers();
 		test.driveTiwis();
 		

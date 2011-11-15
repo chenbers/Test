@@ -3,7 +3,6 @@ package com.inthinc.pro.rally;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
@@ -31,10 +30,12 @@ public class RallyHTTP extends HTTPCommands {
     private String query;
 
     private RallyWebServices workingSpace;
+    
+    public interface RallyFields{}
 
 
     public RallyHTTP(String username, String password) {
-        httpClient = new HttpClient();
+        super();
         httpClient.getHttpConnectionManager().getParams()
                 .setConnectionTimeout(10000);
         httpClient.getParams().setAuthenticationPreemptive(true);
@@ -55,21 +56,16 @@ public class RallyHTTP extends HTTPCommands {
 
     public void constructQuery(String queryString, Integer startPosition,
             Integer pageSize) {
-
-        query = "workspace=" + workingSpace.getValue();
-        query += "&query=" + queryString;
-        query += "&start=" + startPosition;
-        query += "&pageSize=" + pageSize;
-        logger.debug(query);
+        constructQuery(queryString, startPosition, pageSize, false);
     }
 
     public void constructQuery(String queryString, Integer startPosition,
             Integer pageSize, Boolean fetch) {
-        query = "workspace=" + workingSpace.getValue();
-        query += "&query=" + queryString;
-        query += "&start=" + startPosition;
-        query += "&pageSize=" + pageSize;
-        query += "&fetch=" + fetch;
+        query = constructQuery("workspace", workingSpace.getValue(), 
+                "query", queryString,
+                "start", startPosition.toString(), 
+                "pageSize", pageSize.toString(),
+                "fetch", fetch.toString());
         logger.debug(query);
     }
 

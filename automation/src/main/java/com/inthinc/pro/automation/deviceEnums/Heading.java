@@ -3,6 +3,7 @@ package com.inthinc.pro.automation.deviceEnums;
 import java.util.EnumSet;
 
 import com.inthinc.pro.automation.device_emulation.Distance_Calc;
+import com.inthinc.pro.automation.models.GeoPoint;
 
 public enum Heading {
     NORTH(0),
@@ -31,9 +32,8 @@ public enum Heading {
         return direction;
     }
 
-    public Heading getHeading(Double last_lat, Double last_lng, Double latitude, Double longitude){
-        Distance_Calc calculator = new Distance_Calc();
-        Integer direction = calculator.get_heading(last_lat, last_lng, latitude, longitude);
+    public static Heading getHeading(GeoPoint start, GeoPoint stop){
+        Integer direction = Distance_Calc.get_heading(start, stop);
         for (Heading heading : EnumSet.allOf(Heading.class)){
             if (direction > heading.min && direction < heading.max){
                 return heading;

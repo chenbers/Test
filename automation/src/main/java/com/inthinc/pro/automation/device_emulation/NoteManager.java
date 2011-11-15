@@ -104,7 +104,6 @@ public class NoteManager {
                 noteList.put(note.getClass(), new LinkedList<DeviceNote>());
             }
             noteList.get(note.getClass()).offer(note);
-            
         }
         return noteList;
     }

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.log4j.Level;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.deviceEnums.Ways_ATTRS;
 import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.deviceEnums.WaysmartProps;
@@ -14,10 +15,12 @@ import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.NoteBC;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.models.NoteWS;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -25,18 +28,6 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 
 public class WaysmartDevice extends DeviceBase {
-    private Addresses server;
-    
-    private int driverID;
-    private String employeeID;
-    
-    private int accountID;
-
-    private int companyID;
-
-    private String vehicleID;
-    private long waysOdometer;
-    private int state;
     
     protected final static ProductType productVersion = ProductType.WAYSMART;
 	
@@ -52,15 +43,15 @@ public class WaysmartDevice extends DeviceBase {
 
 	public WaysmartDevice(String IMEI, String MCM, Addresses server, Direction comMethod, HashMap<WaysmartProps, String> settings) {
 		super(IMEI, server, settings, productVersion);
-		this.mcmID = MCM;
-		this.server = server;
-		this.waysDirection = comMethod;
+		state.setMcmID(MCM);
+		portal = server;
+		state.setWaysDirection(comMethod);
 		setState(RandomValues.newOne().getStateByName("Utah", ProductType.WAYSMART));
 	}
 	
 	@Override
 	public WaysmartDevice add_location() {
-	    addLocationNote(7, speed, hosStatus);
+	    addLocationNote(7, state.getSpeed(), hosStatus);
         return this;
 		
 	}
@@ -69,8 +60,8 @@ public class WaysmartDevice extends DeviceBase {
 	 * 116 {SAT_EVENT_NEWDRIVER_HOSRULE, {ATTR_driverStr, ATTR_mcmRuleset}}
 	 **/
 	public WaysmartDevice addHosStateChange(String driverStr, HOSStatus status){
-	    this.employeeID = driverStr;
-	    NoteWS note = constructWSNote(Ways_SAT_EVENT.SAT_EVENT_NEWDRIVER_HOSRULE);
+	    state.setEmployeeID(driverStr);
+	    NoteWS note = constructWSNote(Ways_SAT_EVENT.SAT_EVENT_NEWDRIVER_HOSRULE, 0);
 	    note.addAttr(Ways_ATTRS.ATTR_DRIVERSTR, driverStr);
 	    note.addAttr(Ways_ATTRS.ATTR_MCMRULESET, status.getCode());
 	    addNote(note);
@@ -96,14 +87,14 @@ public class WaysmartDevice extends DeviceBase {
 	    this.setVehicleID(vehicleID);
 	    this.setAccountID(accountID);
 	    this.setCompanyID(accountID);
-	    Direction temp = waysDirection;
-	    waysDirection = Direction.sat;
+	    Direction temp = state.getWaysDirection();
+	    state.setWaysDirection(Direction.sat);
 	    Package_Waysmart_Note note = construct_note(Ways_SAT_EVENT.SAT_EVENT_INSTALL);
 	    note.setVehicleID(vehicleID);
 	    note.setCompanyID(accountID);
 	    note.setAccountID(accountID);
 	    MasterTest.print(sendNote(note));
-	    waysDirection = temp;
+	    state.setWaysDirection(temp);
 	    return this;
 	}
 	
@@ -128,16 +119,15 @@ public class WaysmartDevice extends DeviceBase {
     }
 	
 	protected NoteBC constructBCNote(Ways_SAT_EVENT type){
-	    return new NoteBC(waysDirection, type, productVersion, time, heading, sats, latitude, longitude, speed, 
-	            speed_limit.intValue(), state, odometer, 0, driverID);
+	    return new NoteBC(type, state, tripTracker.currentLocation());
 	}
 	
-	protected NoteWS constructWSNote(Ways_SAT_EVENT type){
-	    return new NoteWS(type, productVersion, time, heading, sats, latitude, longitude, speed, companyID, 0);
+	protected NoteWS constructWSNote(Ways_SAT_EVENT type, int duration){
+	    return new NoteWS(type, state, tripTracker.currentLocation(), duration);
 	}
 
 	protected Package_Waysmart_Note construct_note( Ways_SAT_EVENT type){
-	    return new Package_Waysmart_Note(type, waysDirection, server, mcmID, imei);
+	    return new Package_Waysmart_Note(type, state.getWaysDirection(), portal, state.getMcmID(), state.getImei());
 	}
 	
 	
@@ -153,27 +143,27 @@ public class WaysmartDevice extends DeviceBase {
 	}
 
 	public int getAccountID() {
-        return accountID;
+        return state.getAccountID();
     }
 
 	public int getCompanyID() {
-        return companyID;
+        return state.getCompanyID();
     }
 	
 	public int getDriverID() {
-        return driverID;
+        return state.getDriverID();
     }
 
 	public int getState() {
-        return state;
+        return state.getStateID();
     }
 	
 	public String getVehicleID() {
-        return vehicleID;
+        return state.getVehicleID();
     }
 	
-	public WaysmartDevice logInDriver(String driverID){
-	    this.employeeID = driverID;
+	public WaysmartDevice logInDriver(String employeeID){
+	    state.setEmployeeID(employeeID);
 	    return this;
 	}
 	
@@ -185,11 +175,9 @@ public class WaysmartDevice extends DeviceBase {
         return this;
 	}
 	
-	public WaysmartDevice nonTripNote(Double latitude, Double longitude, int odometer){
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.waysOdometer = odometer;
-        this.odometer = 0;
+	public WaysmartDevice nonTripNote(GeoPoint location, AutomationCalendar time, int sats, Heading heading, int speed, int odometer){
+        tripTracker.fakeLocationNote(location, time, sats, heading, speed, odometer);
+        state.setOdometer(odometer);
         return this;
     }
 
@@ -200,20 +188,21 @@ public class WaysmartDevice extends DeviceBase {
 	}
 
 	private WaysmartDevice sendNote(Package_Waysmart_Note note){
-	    note.setLatitude(latitude);
-	    note.setLongitude(longitude);
-        note.setOdometer(waysOdometer+=odometer);
-        note.setTime(time);
-        clear_internal_settings();
+	    GeoPoint current = tripTracker.currentLocation();
+	    note.setLatitude(current.getLat());
+	    note.setLongitude(current.getLng());
+        note.setOdometer(state.getOdometer());
+        note.setTime(state.getTime());
         MasterTest.print(note.sendNote());
 	    return this;
 	}
 
 	@Override
 	protected WaysmartDevice set_ignition(Integer time_delta) {
-	    ignition_state = !ignition_state;
-	    time.addToSeconds(time_delta);
-        if (ignition_state) {
+	    state.setIgnition_state(!state.getIgnition_state());
+	    state.getTime_last().setDate(state.getTime());
+	    state.getTime().addToSeconds(time_delta);
+        if (state.getIgnition_state()) {
             addIgnitionOnNote();
         } else {
             addIgnitionOffNote();
@@ -224,19 +213,18 @@ public class WaysmartDevice extends DeviceBase {
 
 
 	protected WaysmartDevice set_IMEI( HashMap<WaysmartProps, String> settings ){
-		MasterTest.print("IMEI: "+imei+", Server: " + portal, Level.DEBUG);
-        super.set_IMEI(settings);
-        Settings.put(WaysmartProps.MCM_ID, mcmID);
-        Settings.put(WaysmartProps.WITNESS_ID, imei);
+		MasterTest.print("IMEI: "+state.getImei()+", Server: " + portal, Level.DEBUG);
+		state.setSetting(WaysmartProps.MCM_ID, state.getMcmID());
+        state.setSetting(WaysmartProps.WITNESS_ID, state.getImei());
         return this;
     }
 
 	 @Override
 	protected WaysmartDevice set_power() {
-        power_state = !power_state; // Change the power state between on and off
+        state.setPower_state(!state.getPower_state()); // Change the power state between on and off
         
         Package_Waysmart_Note note;
-        if (power_state) {
+        if (state.getPower_state()) {
             note = construct_note(Ways_SAT_EVENT.SAT_EVENT_POWER_ON);
         } else {
             note = construct_note(Ways_SAT_EVENT.SAT_EVENT_LOW_POWER_MODE);
@@ -249,13 +237,13 @@ public class WaysmartDevice extends DeviceBase {
     @Override
 	protected WaysmartDevice set_server(Addresses server) {
 		mcmProxy = new MCMProxyObject(server);
-		this.server = server;
+		portal = server;
 		String url, port;
 		url = server.getMCMUrl();
 		port = server.getWaysPort().toString();
-		Settings.put(WaysmartProps.SERVER_IP, url+":"+port);
-		Settings.put(WaysmartProps.MAP_SERVER_URL, url);
-		Settings.put(WaysmartProps.MAP_SERVER_PORT, server.getMCMPort().toString());
+		state.setSetting(WaysmartProps.SERVER_IP, url+":"+port);
+		state.setSetting(WaysmartProps.MAP_SERVER_URL, url);
+		state.setSetting(WaysmartProps.MAP_SERVER_PORT, server.getMCMPort().toString());
         return this;
 	}
 
@@ -267,28 +255,28 @@ public class WaysmartDevice extends DeviceBase {
 	}
 
     public void setAccountID(int accountID) {
-        this.accountID = accountID;
+        state.setAccountID(accountID);
     }
 
-    public WaysmartDevice setBaseOdometer(long odometer){
-	    waysOdometer = odometer;
+    public WaysmartDevice setBaseOdometer(double odometer){
+	    state.setOdometer(odometer);
 	    return this;
 	}
 
     public void setCompanyID(int companyID) {
-        this.companyID = companyID;
+        state.setCompanyID(companyID);
     }
 
     public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
+        state.setEmployeeID(employeeID);
     }
 
     public void setState(int state) {
-        this.state = state;
+        this.state.setStateID(state);
     }
 
     public void setVehicleID(String vehicleID) {
-        this.vehicleID = vehicleID;
+        state.setVehicleID(vehicleID);
     }
 
     protected HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply){

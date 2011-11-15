@@ -1,12 +1,12 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -393,12 +393,12 @@ public class LiveFleetTest extends WebRallyTest {
         
         AutomationCalendar initialTime = new AutomationCalendar();
         
-        tiwi.set_location(60, 0);
+        tiwi.firstLocation(new GeoPoint(60, 0));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
         tiwi.set_time(initialTime.addToSeconds(60));
-        tiwi.update_location(60, 0, 15);
-        tiwi.last_location(60, 0, 15);
+        tiwi.update_location(new GeoPoint(60, 0), 15);
+        tiwi.last_location(new GeoPoint(60, 0), 15);
         
         tiwi.add_stats();
         tiwi.turn_key_off(30);
@@ -410,12 +410,12 @@ public class LiveFleetTest extends WebRallyTest {
         pause(10, "Wait for refresh.");
         plf.getLinkByText(targetVehicle).assertPresence(false);
         
-        tiwi.set_location(40.7097, -111.9925);
+        tiwi.firstLocation(new GeoPoint(40.7097, -111.9925));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
         tiwi.set_time(initialTime.addToSeconds(120));
-        tiwi.update_location(40.7097, -111.9925, 15);
-        tiwi.last_location(40.7097, -111.9925, 15);
+        tiwi.update_location(new GeoPoint(40.7097, -111.9925), 15);
+        tiwi.last_location(new GeoPoint(40.7097, -111.9925), 15);
         
         tiwi.add_stats();
         tiwi.turn_key_off(30);

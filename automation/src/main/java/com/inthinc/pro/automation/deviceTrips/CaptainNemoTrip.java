@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.deviceTrips;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 
@@ -34,31 +35,31 @@ public class CaptainNemoTrip extends Thread{
 
         tiwi.set_time( initialTime.addToSeconds(60));
         tiwi.set_WMP(17116);
-        tiwi.set_location(0, 0);
+        tiwi.firstLocation(new GeoPoint(0, 0));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
-        tiwi.update_location(0, 0, 180);
-        tiwi.update_location(0, 0.05, 180);
-        tiwi.update_location(0, 0.1, 180);
-        tiwi.update_location(0.05, 0.1, 180);
-        tiwi.update_location(0.1, 0.1, 180);
-        tiwi.update_location(0.1, 0.05, 180);
-        tiwi.update_location(0.1, 0, 180);
-        tiwi.update_location(0.1, -0.05, 180);
-        tiwi.update_location(0.1, -0.1, 180);
-        tiwi.update_location(0.05, -0.1, 180);
-        tiwi.update_location(0, -0.1, 180);
-        tiwi.update_location(-0.05, -0.1, 180);
-        tiwi.update_location(-0.1, -0.1, 180);
-        tiwi.update_location(-0.1, -0.05, 180);
-        tiwi.update_location(-0.1, 0, 180);
-        tiwi.update_location(-0.1, 0.05, 180);
-        tiwi.update_location(-0.1, 0.1, 180);
-        tiwi.update_location(-0.05, 0.1, 180);
-        tiwi.update_location(0, 0.1, 180);
-        tiwi.update_location(0, 0.05, 180);
-        tiwi.update_location(0, 0, 180);
-        tiwi.last_location(0, 0, 180);
+        tiwi.update_location(new GeoPoint(0, 0), 180);
+        tiwi.update_location(new GeoPoint(0, 0.05), 180);
+        tiwi.update_location(new GeoPoint(0, 0.1), 180);
+        tiwi.update_location(new GeoPoint(0.05, 0.1), 180);
+        tiwi.update_location(new GeoPoint(0.1, 0.1), 180);
+        tiwi.update_location(new GeoPoint(0.1, 0.05), 180);
+        tiwi.update_location(new GeoPoint(0.1, 0), 180);
+        tiwi.update_location(new GeoPoint(0.1, -0.05), 180);
+        tiwi.update_location(new GeoPoint(0.1, -0.1), 180);
+        tiwi.update_location(new GeoPoint(0.05, -0.1), 180);
+        tiwi.update_location(new GeoPoint(0, -0.1), 180);
+        tiwi.update_location(new GeoPoint(-0.05, -0.1), 180);
+        tiwi.update_location(new GeoPoint(-0.1, -0.1), 180);
+        tiwi.update_location(new GeoPoint(-0.1, -0.05), 180);
+        tiwi.update_location(new GeoPoint(-0.1, 0), 180);
+        tiwi.update_location(new GeoPoint(-0.1, 0.05), 180);
+        tiwi.update_location(new GeoPoint(-0.1, 0.1), 180);
+        tiwi.update_location(new GeoPoint(-0.05, 0.1), 180);
+        tiwi.update_location(new GeoPoint(0, 0.1), 180);
+        tiwi.update_location(new GeoPoint(0, 0.05), 180);
+        tiwi.update_location(new GeoPoint(0, 0), 180);
+        tiwi.last_location(new GeoPoint(0, 0), 180);
         
         tiwi.add_stats();
         tiwi.turn_key_off(30);

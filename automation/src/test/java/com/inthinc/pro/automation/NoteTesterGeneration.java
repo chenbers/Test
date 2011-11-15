@@ -2,7 +2,9 @@ package com.inthinc.pro.automation;
 
 import org.junit.Test;
 
+import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 
@@ -63,10 +65,10 @@ public class NoteTesterGeneration extends Thread{
             tiwiArray[i].turn_key_on(15);
         }
         
-        tiwi1.nonTripNote( initialTime.addToSeconds(60), 1, 1, 10.0, 0.0, 60, 100);
-        tiwi2.nonTripNote( initialTime.addToSeconds(60), 1, 1, 0.0, 10.0, 60, 100);
-        tiwi3.nonTripNote( initialTime.addToSeconds(60), 1, 1, -10.0, 0.0, 60, 100);
-        tiwi4.nonTripNote( initialTime.addToSeconds(60), 1, 1, 0.0, -10.0, 60, 100);
+        tiwi1.nonTripNote( initialTime.addToSeconds(60), 1, Heading.NORTH_EAST, new GeoPoint(10.0, 0.0), 60, 100);
+        tiwi2.nonTripNote( initialTime.addToSeconds(60), 1, Heading.NORTH_EAST, new GeoPoint(0.0, 10.0), 60, 100);
+        tiwi3.nonTripNote( initialTime.addToSeconds(60), 1, Heading.NORTH_EAST, new GeoPoint(-10.0, 0.0), 60, 100);
+        tiwi4.nonTripNote( initialTime.addToSeconds(60), 1, Heading.NORTH_EAST, new GeoPoint(0.0, -10.0), 60, 100);
 
         
         //Driving Style notes.
@@ -101,10 +103,10 @@ public class NoteTesterGeneration extends Thread{
         tiwi3.leave_zone(915);
         tiwi4.leave_zone(916);
         
-        tiwi1.update_location(10, 0, 15);
-        tiwi2.update_location(0, 10, 15);
-        tiwi3.update_location(-10, 0, 15);
-        tiwi4.update_location(0, -10, 15);
+        tiwi1.update_location(new GeoPoint(10, 0), 15);
+        tiwi2.update_location(new GeoPoint(0, 10), 15);
+        tiwi3.update_location(new GeoPoint(-10, 0), 15);
+        tiwi4.update_location(new GeoPoint(0, -10), 15);
         
         for(int i=0; i<4; i++){
             tiwiArray[i].add_stats();

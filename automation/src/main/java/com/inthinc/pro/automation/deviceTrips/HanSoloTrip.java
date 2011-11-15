@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
@@ -54,23 +55,23 @@ public class HanSoloTrip extends Thread{
         tiwi.set_time(new AutomationCalendar());
         tiwi.set_WMP(17116);
         tiwi.setOdometer(67751-(99*1));
-        tiwi.set_location(40.74290000000001, -111.865340);
+        tiwi.firstLocation(new GeoPoint(40.74290000000001, -111.865340));
         tiwi.power_on_device();
         
         tiwi.turn_key_on(15);
-        tiwi.update_location(40.74290000000001, -111.865340, 15);
-        tiwi.update_location(40.725450, -111.865330, 211);
-        tiwi.update_location(40.725470, -111.871310, 54);
-        tiwi.update_location(40.719810, -111.871340, 63);
-        tiwi.update_location(40.718380, -111.888840, 68);
-        tiwi.update_location(40.71852000000001, -111.898050, 40);
-        tiwi.update_location(40.71861000000001, -111.901290, 15);
-        tiwi.update_location(40.72434000000001,-111.918240, 92);
-        tiwi.update_location(40.724460, -111.924430, 20);
-        tiwi.update_location(40.725970, -111.980440, 161);
-        tiwi.update_location(40.727020, -111.986490, 29);
-        tiwi.update_location(40.71832000000001,-111.985770, 185);
-        tiwi.update_location(40.71089000000001,-111.994450, 113);
+        tiwi.update_location(new GeoPoint(40.74290000000001, -111.865340), 15);
+        tiwi.update_location(new GeoPoint(40.725450, -111.865330), 211);
+        tiwi.update_location(new GeoPoint(40.725470, -111.871310), 54);
+        tiwi.update_location(new GeoPoint(40.719810, -111.871340), 63);
+        tiwi.update_location(new GeoPoint(40.718380, -111.888840), 68);
+        tiwi.update_location(new GeoPoint(40.71852000000001, -111.898050), 40);
+        tiwi.update_location(new GeoPoint(40.71861000000001, -111.901290), 15);
+        tiwi.update_location(new GeoPoint(40.72434000000001,-111.918240), 92);
+        tiwi.update_location(new GeoPoint(40.724460, -111.924430), 20);
+        tiwi.update_location(new GeoPoint(40.725970, -111.980440), 161);
+        tiwi.update_location(new GeoPoint(40.727020, -111.986490), 29);
+        tiwi.update_location(new GeoPoint(40.71832000000001,-111.985770), 185);
+        tiwi.update_location(new GeoPoint(40.71089000000001,-111.994450), 113);
         
         tiwi.add_stats();
         tiwi.logout_driver(null, 890, 204, 200);
@@ -84,50 +85,50 @@ public class HanSoloTrip extends Thread{
 
         tiwi.set_time( initialTime.addToSeconds(60));
         tiwi.set_WMP(17116);
-        tiwi.set_location(33.0104, -117.111);
+        tiwi.firstLocation(new GeoPoint(33.0104, -117.111));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
         tiwi.addIdlingNote(300, 300);
-        tiwi.update_location(33.0104, -117.111, 15);
-        tiwi.update_location(33.0104, -117.113, 15);
+        tiwi.update_location(new GeoPoint(33.0104, -117.111), 15);
+        tiwi.update_location(new GeoPoint(33.0104, -117.113), 15);
 //        tiwi.add_noDriver();
         
         tiwi.add_seatBelt(50, 50, 50);
         tiwi.add_note_event(5, 105, 5);
 
-        tiwi.update_location(33.01, -117.113, 15);
-        tiwi.update_location(33.0097, -117.1153, 15);
-        tiwi.update_location(33.015, -117.116, 15);
+        tiwi.update_location(new GeoPoint(33.01, -117.113), 15);
+        tiwi.update_location(new GeoPoint(33.0097, -117.1153), 15);
+        tiwi.update_location(new GeoPoint(33.015, -117.116), 15);
 
         tiwi.enter_zone(2);
         
-        tiwi.update_location(33.0163, -117.1159, 15);
-        tiwi.update_location(33.018, -117.1153, 15);
-        tiwi.update_location(33.0188, -117.118, 15);
-        tiwi.update_location(33.0192, -117.1199, 15);
-        tiwi.update_location(33.021, -117.119, 15);
-        tiwi.update_location(33.022, -117.114, 15);
-        tiwi.update_location(33.0205, -117.111, 15);
+        tiwi.update_location(new GeoPoint(33.0163, -117.1159), 15);
+        tiwi.update_location(new GeoPoint(33.018, -117.1153), 15);
+        tiwi.update_location(new GeoPoint(33.0188, -117.118), 15);
+        tiwi.update_location(new GeoPoint(33.0192, -117.1199), 15);
+        tiwi.update_location(new GeoPoint(33.021, -117.119), 15);
+        tiwi.update_location(new GeoPoint(33.022, -117.114), 15);
+        tiwi.update_location(new GeoPoint(33.0205, -117.111), 15);
         
         tiwi.tampering(4);
         
-        tiwi.update_location(33.02, -117.109, 15);
-        tiwi.update_location(33.02, -117.108, 15);
-        tiwi.update_location(33.022, -117.104, 15);
-        tiwi.update_location(33.0217, -117.103, 15);
-        tiwi.update_location(33.0213, -117.1015, 15);
-        tiwi.update_location(33.0185, -117.1019, 15);
-        tiwi.update_location(33.017, -117.102, 15);
-        tiwi.update_location(33.015, -117.1032, 15);
-        tiwi.update_location(33.013, -117.105, 15);
-        tiwi.update_location(33.011, -117.106, 15);
-        tiwi.update_location(33.0108, -117.108, 15);
-        tiwi.update_location(33.0108, -117.109, 15);
+        tiwi.update_location(new GeoPoint(33.02, -117.109), 15);
+        tiwi.update_location(new GeoPoint(33.02, -117.108), 15);
+        tiwi.update_location(new GeoPoint(33.022, -117.104), 15);
+        tiwi.update_location(new GeoPoint(33.0217, -117.103), 15);
+        tiwi.update_location(new GeoPoint(33.0213, -117.1015), 15);
+        tiwi.update_location(new GeoPoint(33.0185, -117.1019), 15);
+        tiwi.update_location(new GeoPoint(33.017, -117.102), 15);
+        tiwi.update_location(new GeoPoint(33.015, -117.1032), 15);
+        tiwi.update_location(new GeoPoint(33.013, -117.105), 15);
+        tiwi.update_location(new GeoPoint(33.011, -117.106), 15);
+        tiwi.update_location(new GeoPoint(33.0108, -117.108), 15);
+        tiwi.update_location(new GeoPoint(33.0108, -117.109), 15);
 
         tiwi.leave_zone(2);
 
-        tiwi.update_location(33.0106, -117.11, 15);
-        tiwi.last_location(33.0104, -117.111, 15);
+        tiwi.update_location(new GeoPoint(33.0106, -117.11), 15);
+        tiwi.last_location(new GeoPoint(33.0104, -117.111), 15);
         
         tiwi.add_stats();
         tiwi.logout_driver(null, 890, 204, 200);
@@ -164,9 +165,9 @@ public class HanSoloTrip extends Thread{
 //                double lng = steps.getJSONObject(i).getJSONObject("end_location").getDouble("lng");
 //                int time_delta = steps.getJSONObject(i).getJSONObject("duration").getInt("value");
 //                if (device instanceof WaysmartDevice)
-//                    ((WaysmartDevice) device).update_location(lat, lng, time_delta);
+//                    ((WaysmartDevice) device).update_location(new GeoPoint(lat, lng, time_delta);
 //                else if (device instanceof TiwiProDevice)
-//                    ((TiwiProDevice) device).update_location(lat, lng, time_delta);
+//                    ((TiwiProDevice) device).update_location(new GeoPoint(lat, lng, time_delta);
 //                else
 //                    throw new IllegalArgumentException("generateTrip requires device to be either a WaysmartDevice or a TiwiProDevice");
 //            }
@@ -229,7 +230,7 @@ public class HanSoloTrip extends Thread{
         
         waySmart = new WaysmartDevice(satImei, mcmID, server, Direction.wifi);
         waySmart.set_time(initialTime);
-        waySmart.set_location(33.0104, -117.111);
+        waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
         waySmart.addInstallEvent(vehicleID, accountID);
         waySmart.power_on_device();
@@ -247,7 +248,7 @@ public class HanSoloTrip extends Thread{
     public void chewiesTurn(String mcmID, String satImei, String vehicleID, int accountID, Addresses server, AutomationCalendar initialTime){
         waySmart = new WaysmartDevice(satImei, mcmID, server, Direction.wifi);
         waySmart.set_time(initialTime);
-        waySmart.set_location(33.0104, -117.111);
+        waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
         waySmart.addInstallEvent(vehicleID, accountID);
         waySmart.power_on_device();

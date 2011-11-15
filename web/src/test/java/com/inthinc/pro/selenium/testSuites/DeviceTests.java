@@ -7,8 +7,10 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
@@ -41,8 +43,8 @@ public class DeviceTests extends WebDeviceOnlyRallyTest {
                     portalProxy.queueFwdCmd(deviceID, fwdMap);
                 }
                 TiwiProDevice tiwi = new TiwiProDevice(imei, server);
-                tiwi.nonTripNote(new AutomationCalendar(), 9, 8, 55.0,
-                        55.0, 5, 5);
+                tiwi.nonTripNote(new AutomationCalendar(), 9, Heading.NORTH_EAST, new GeoPoint(55.0,
+                        55.0), 5, 5);
                 tiwi.add_location();
                 tiwi.flushNotes();
             } catch (Exception e) {

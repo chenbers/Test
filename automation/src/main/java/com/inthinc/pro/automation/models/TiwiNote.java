@@ -7,8 +7,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
+import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.interfaces.DeviceTypes;
@@ -20,23 +22,26 @@ public class TiwiNote implements DeviceNote {
 
     private final static Logger logger = Logger.getLogger(TiwiNote.class);
 
-    private final Integer sats, heading, maprev, Speed, odometer;
+    private final Integer sats;
+    private final Integer maprev;
+    private final Integer Speed;
+    private final Integer odometer;
+    private final Heading heading;
     private final AutomationCalendar nTime;
-    private final Double lat, lng;
+    private final GeoPoint location;
     private final DeviceAttributes attrs;
     private final TiwiNoteTypes nType;
     
 
-    public TiwiNote(TiwiNoteTypes type, AutomationCalendar time, int sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer){
+    public TiwiNote(TiwiNoteTypes type, DeviceState state, GeoPoint location){
         nType = type;
-        nTime = time;
-        this.sats = sats;
-        this.heading = Heading;
-        this.maprev = Maprev;
-        this.lat = Lat;
-        this.lng = Lng;
-        this.Speed = speed;
-        this.odometer = Odometer;
+        nTime = state.copyTime();
+        this.sats = state.getSats();
+        this.heading = state.getHeading();
+        this.maprev = state.getMapRev();
+        this.location = location.copy();
+        this.Speed = state.getSpeed();
+        this.odometer = state.getOdometer();
         attrs = new DeviceAttributes();
     }
     
@@ -46,10 +51,9 @@ public class TiwiNote implements DeviceNote {
         nType = type;
         nTime = new AutomationCalendar();
         sats = 0;
-        heading = 0;
+        heading = Heading.NORTH;
         maprev = 0;
-        lat = 0.0;
-        lng = 0.0;
+        location = new GeoPoint(0.0,0.0);
         Speed = 0;
         odometer = 0;
         attrs = new DeviceAttributes();
@@ -89,10 +93,10 @@ public class TiwiNote implements DeviceNote {
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
         NoteManager.longToByte(bos, nType.getValue(), 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
-        NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading, sats), 1);
+        NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
         NoteManager.longToByte(bos, maprev, 1);
-        NoteManager.longToByte(bos, NoteManager.encodeLat(lat), 3);
-        NoteManager.longToByte(bos, NoteManager.encodeLng(lng), 3);
+        NoteManager.longToByte(bos, location.getEncodedLat(), 3);
+        NoteManager.longToByte(bos, location.getEncodedLng(), 3);
         NoteManager.longToByte(bos, Speed, 1);
         NoteManager.longToByte(bos, odometer, 2);
         
@@ -107,7 +111,7 @@ public class TiwiNote implements DeviceNote {
         map.put("11", nTime.toInt() + "");
         map.put("12", heading + ", " + sats);
         map.put("20", maprev + "");
-        map.put("13", "(" + lat + "," + lng + ")");
+        map.put("13", location.toString());
         map.put("15", Speed.toString());
         map.put("16", odometer.toString());
         Iterator<DeviceTypes> itr = attrs.iterator();
@@ -124,7 +128,7 @@ public class TiwiNote implements DeviceNote {
         String note = "";
         try{
             note = String.format("TiwiNote(nType=%d, nTime=\"%s\", sats=%d, heading=%d, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d, attrs=%s)", 
-                    nType.getValue(), nTime, sats, heading, maprev, lat, lng, Speed, odometer, attrs);
+                    nType.getValue(), nTime, sats, heading, maprev, location.getLat(), location.getLng(), Speed, odometer, attrs);
         }catch(Exception e){
             logger.info(StackToString.toString(e));
             e.printStackTrace();
