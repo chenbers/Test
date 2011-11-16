@@ -6,15 +6,15 @@ I want to see valid and invalid logins
 
 Scenario: TC5926: All fields are blank error message
 Given I am on the login page
-and the username field is blank
-and the password field is blank
+and the Username field is blank
+and the Password field is blank
 When I click on the Sign In button
 Then error message "Your login information was incorrect. Please try again" displays
 
 Scenario: TC5958: Missing Username field error message on submit
 Given I am on the login page
-and the username field is blank
-When I Enter a password
+and the Username field is blank
+When I Enter a Password
 and I click on the Sign In button
 Then error message "Your login information was incorrect. Please try again" displays
 
@@ -28,7 +28,7 @@ Then error message "Your login information was incorrect. Please try again" disp
 Scenario: TC5960: Incorrect Username
 Given I am on the login page
 When I Enter an Incorrect Username
-and a correct password
+and a correct Password
 and I click on the Sign In button
 Then error message "Your login information was incorrect. Please try again" displays
 
@@ -44,7 +44,9 @@ Given I am on the login page
 When I Enter an Correct Username
 and an Correct Password
 and I click on the Sign In button
-Then I am on the Webfulfillment Home page
+Then the Web fulfillment Home page opens
+
+
 
 
 
