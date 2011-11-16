@@ -15,7 +15,9 @@ import java.util.Map;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.GenericDAO;
+import com.inthinc.pro.dao.SiloAware;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
@@ -25,8 +27,11 @@ import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.app.Silos;
+import com.inthinc.pro.model.silo.SiloDef;
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Serializable {
+public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Serializable, SiloAware {
     /**
      * 
      */
@@ -316,4 +321,16 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
         return (Integer) map.get("id");
     }
 
+    @Override
+    public void switchSilo(Integer siloID)
+    {
+        SiloDef siloDef = Silos.getSiloById(siloID);
+        
+        if (siloDef == null || siloDef.getProxyHost() == null || siloDef.getProxyPort() == null) {
+            throw new ProDAOException("Switch Silo Failed, Cannot find siloID: " + siloID);
+        }
+        SiloServiceCreator ssc = new SiloServiceCreator(siloDef.getProxyHost(), siloDef.getProxyPort());
+        setSiloService(ssc.getService());
+
+    }
 }
