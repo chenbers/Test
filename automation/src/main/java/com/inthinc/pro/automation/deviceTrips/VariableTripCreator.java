@@ -60,7 +60,7 @@ public class VariableTripCreator {
             trips.add(trip);
             trip.start();
             runningTime = (System.currentTimeMillis() - start) / 1000;
-            while (Thread.activeCount() > 3){
+            while (Thread.activeCount() > 3000){
                 AutomationThread.pause(1);
             }
         }
