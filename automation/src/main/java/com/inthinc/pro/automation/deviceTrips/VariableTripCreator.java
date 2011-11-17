@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.noteservice.NoteService;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.models.MCMProxyObject;
@@ -29,10 +30,10 @@ public class VariableTripCreator {
     }
     
     @SuppressWarnings("unchecked")
-    public void readDrivers(List<Integer> nodes){
+    public void readDrivers(NoteService nodes){
         ObjectReadWrite reader = new ObjectReadWrite();
         drivers = (Map<Integer, Map<String, String>>) reader.readObject(address).get(0);
-        MCMProxyObject.processDrivers(drivers, AutomationCassandra.Default.createNoteService(nodes));
+        MCMProxyObject.processDrivers(drivers, nodes);
     }
     
     public void driveTiwis(Integer totalTime){
@@ -60,7 +61,7 @@ public class VariableTripCreator {
             trips.add(trip);
             trip.start();
             runningTime = (System.currentTimeMillis() - start) / 1000;
-            while (Thread.activeCount() > 3000){
+            while (Thread.activeCount() > 1000 && runningTime < totalTime){
                 AutomationThread.pause(1);
             }
         }
@@ -82,42 +83,17 @@ public class VariableTripCreator {
     }
         
     public static void main(String[] args){
-        List<Integer> nodes = new ArrayList<Integer>();
-        String last = "";
         Integer minutes = 0;
         Integer seconds = 10;
-        try {
-            boolean readNodes = true;
-            for (String string: args){
-                if (string.equals("time")){
-                    readNodes = false;
-                    continue;
-                }
-                if (readNodes){
-                    last = string;
-                    Integer next = Integer.parseInt(string);
-                    nodes.add(next);
-                } else {
-                    String[] split = string.split(":");
-                    minutes = Integer.parseInt(split[0]);
-                    seconds = Integer.parseInt(split[1]);
-                }
-            }
-            
-        } catch (Exception e) {
-            MasterTest.print(e);
-            MasterTest.print(last + " is not a valid Integer parameter, moving on with " + nodes + " nodes, or default");
-        }
-        if (nodes.isEmpty()){
-            MasterTest.print("Using default nodes");
-        } else {
-            MasterTest.print("Using nodes: " + nodes);
-        }
+        String[] split = args[0].split(":");
+        minutes = Integer.parseInt(split[0]);
+        seconds = Integer.parseInt(split[1]);
+        String cassandraNode = args[1];
         MasterTest.print("We will run for: " + minutes + " minutes and " + seconds + " seconds");
         Integer totalTime = minutes * 60 + seconds;
         VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
         MCMProxyObject.regularNote=false;
-        test.readDrivers(nodes);
+        test.readDrivers(AutomationCassandra.createNode(cassandraNode));
         test.driveTiwis(totalTime);
     }
 }

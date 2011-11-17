@@ -45,4 +45,8 @@ public enum AutomationCassandra {
         return service;
     }
 
+    public static NoteService createNode(String cassandraNode) {
+        return new NoteService("inthinc", "note", cassandraNode);
+    }
+
 }
