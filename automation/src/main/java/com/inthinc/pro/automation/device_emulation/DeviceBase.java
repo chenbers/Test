@@ -505,7 +505,7 @@ public abstract class DeviceBase {
     
 
     public void firstLocation(GeoPoint geoPoint) {
-        tripTracker.firstPoint(geoPoint);
+        tripTracker.addLocation(geoPoint);
     }
 
     public DeviceState getState() {

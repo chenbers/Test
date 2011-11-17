@@ -105,11 +105,11 @@ public class TripTracker implements Iterable<GeoPoint> {
         trip.offer(location);
     }
 
-    public void firstPoint(GeoPoint geoPoint) {
-        trip.offer(geoPoint);        
-    }
-
     public GeoPoint getFirstLocation() {
         return trip.getFirst();
+    }
+
+    public void addLocation(GeoPoint geoPoint) {
+        trip.offer(geoPoint);
     }
 }

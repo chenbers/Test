@@ -1,10 +1,14 @@
 package com.inthinc.pro.automation.deviceTrips;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.models.MCMProxyObject;
+import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -25,13 +29,13 @@ public class VariableTripCreator {
     }
     
     @SuppressWarnings("unchecked")
-    public void readDrivers(){
+    public void readDrivers(List<Integer> nodes){
         ObjectReadWrite reader = new ObjectReadWrite();
         drivers = (Map<Integer, Map<String, String>>) reader.readObject(address).get(0);
-        MCMProxyObject.processDrivers(drivers);
+        MCMProxyObject.processDrivers(drivers, AutomationCassandra.Default.createNoteService(nodes));
     }
     
-    public void driveTiwis(){
+    public void driveTiwis(Integer totalTime){
         Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
@@ -40,22 +44,30 @@ public class VariableTripCreator {
         
         MasterTest.print(portal);
 
-        int threads = Thread.activeCount();
         long start = System.currentTimeMillis();
-        while (itr.hasNext()){
-            Integer next = itr.next();
-            new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
-            new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime.addToDay(1));
-            new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime.addToDay(2));
-            while (Thread.activeCount() > 5000){
-                AutomationThread.pause(1);
+        long runningTime = 0;
+        List<TripDriver> trips = new ArrayList<TripDriver>();
+        while (runningTime < totalTime){
+            if (!itr.hasNext()){
+                itr = drivers.keySet().iterator();
             }
+            Integer next = itr.next();
+            TiwiProDevice tiwi = new TiwiProDevice(drivers.get(next).get("device"), portal);
+            tiwi.set_time(initialTime);
+            TripDriver trip = new TripDriver(tiwi);
+            trip.testTrip();
+            
+            trips.add(trip);
+            trip.start();
+            runningTime = (System.currentTimeMillis() - start) / 1000;
         }
 
         MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
         
-        while (Thread.activeCount() > threads){
-            AutomationThread.pause(1);
+        for (TripDriver trip: trips){
+            if (trip.isAlive()){
+                trip.interrupt();
+            }
         }
         try {
             MCMProxyObject.closeService();
@@ -69,9 +81,42 @@ public class VariableTripCreator {
     }
         
     public static void main(String[] args){
+        List<Integer> nodes = new ArrayList<Integer>();
+        String last = "";
+        Integer minutes = 0;
+        Integer seconds = 10;
+        try {
+            boolean readNodes = true;
+            for (String string: args){
+                if (string.equals("time")){
+                    readNodes = false;
+                    continue;
+                }
+                if (readNodes){
+                    last = string;
+                    Integer next = Integer.parseInt(string);
+                    nodes.add(next);
+                } else {
+                    String[] split = string.split(":");
+                    minutes = Integer.parseInt(split[0]);
+                    seconds = Integer.parseInt(split[1]);
+                }
+            }
+            
+        } catch (Exception e) {
+            MasterTest.print(e);
+            MasterTest.print(last + " is not a valid Integer parameter, moving on with " + nodes + " nodes, or default");
+        }
+        if (nodes.isEmpty()){
+            MasterTest.print("Using default nodes");
+        } else {
+            MasterTest.print("Using nodes: " + nodes);
+        }
+        MasterTest.print("We will run for: " + minutes + " minutes and " + seconds);
+        Integer totalTime = minutes * 60 + seconds;
         VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
         MCMProxyObject.regularNote=false;
-        test.readDrivers();
-        test.driveTiwis();
+        test.readDrivers(nodes);
+        test.driveTiwis(totalTime);
     }
 }

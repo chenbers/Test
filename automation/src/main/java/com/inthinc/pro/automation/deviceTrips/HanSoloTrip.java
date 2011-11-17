@@ -31,6 +31,10 @@ public class HanSoloTrip extends Thread{
     private static int count=0;
     
     
+    @Override
+    public void interrupt(){
+        super.interrupt();
+    }
 
 
     public boolean start(String IMEI, Addresses server, AutomationCalendar initialTime) {

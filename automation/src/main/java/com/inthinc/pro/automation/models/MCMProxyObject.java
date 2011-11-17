@@ -54,7 +54,7 @@ public class MCMProxyObject implements MCMProxy{
         MasterTest.print(other, Level.DEBUG);
     }
     
-    public static void processDrivers(Map<Integer, Map<String, String>> driversMap){
+    public static void processDrivers(Map<Integer, Map<String, String>> driversMap, NoteService service){
         drivers = new HashMap<String, String>();
         Iterator<Integer> itr = driversMap.keySet().iterator();
         while (itr.hasNext()){
@@ -62,8 +62,7 @@ public class MCMProxyObject implements MCMProxy{
             Map<String, String> map = driversMap.get(next);
             drivers.put(map.get("device"), map.get("deviceID"));
         }
-        notes = new NoteService("inthinc", "note", "cassandra-node0.tiwipro.com:9160,cassandra-node1.tiwipro.com:9160," +
-        		"cassandra-node2.tiwipro.com:9160,cassandra-node3.tiwipro.com:9160");
+        notes = service;
     }
     
     public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){
@@ -265,5 +264,10 @@ public class MCMProxyObject implements MCMProxy{
 
     public static void closeService() {
         notes.shutdown();
+    }
+
+    public static void setupCassandra(NoteService service) {
+        notes = service;
+        regularNote = false;
     }
 }
