@@ -60,10 +60,12 @@ public class VariableTripCreator {
             trips.add(trip);
             trip.start();
             runningTime = (System.currentTimeMillis() - start) / 1000;
+            while (Thread.activeCount() > 3){
+                AutomationThread.pause(1);
+            }
+            break;
         }
 
-        MasterTest.print("All Trips have been started, took " + (System.currentTimeMillis()-start) + " milliseconds to start it");
-        
         for (TripDriver trip: trips){
             if (trip.isAlive()){
                 trip.interrupt();
@@ -112,7 +114,7 @@ public class VariableTripCreator {
         } else {
             MasterTest.print("Using nodes: " + nodes);
         }
-        MasterTest.print("We will run for: " + minutes + " minutes and " + seconds);
+        MasterTest.print("We will run for: " + minutes + " minutes and " + seconds + " seconds");
         Integer totalTime = minutes * 60 + seconds;
         VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
         MCMProxyObject.regularNote=false;

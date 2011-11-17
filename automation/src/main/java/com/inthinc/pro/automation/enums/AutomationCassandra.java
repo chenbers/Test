@@ -8,7 +8,7 @@ import com.inthinc.noteservice.NoteService;
 
 public enum AutomationCassandra {
     
-    Default("cassandra-node###.tiwipro.com:9160"),
+    Default("ec2-50-19-131-40.compute-1.amazonaws.com"),
     
     ;
     
