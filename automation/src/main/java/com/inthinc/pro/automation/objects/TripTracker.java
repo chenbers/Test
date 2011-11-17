@@ -54,7 +54,7 @@ public class TripTracker implements Iterable<GeoPoint> {
     
     public TripTracker getTrip(String startPoint, String endPoint){
         GoogleTrips trips = new GoogleTrips();
-        trip = trips.getTrip(startPoint, endPoint);
+        trip.addAll(trips.getTrip(startPoint, endPoint));
         return this;
     }
     
