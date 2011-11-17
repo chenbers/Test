@@ -63,7 +63,6 @@ public class VariableTripCreator {
             while (Thread.activeCount() > 3){
                 AutomationThread.pause(1);
             }
-            break;
         }
 
         for (TripDriver trip: trips){
