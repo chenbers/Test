@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.noteservice.NoteService;
+import com.inthinc.pro.automation.CassandraPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.models.MCMProxyObject;
@@ -14,6 +15,7 @@ import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationThread;
+import com.inthinc.pro.automation.utils.CassandraProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class VariableTripCreator {
@@ -64,6 +66,16 @@ public class VariableTripCreator {
             while (Thread.activeCount() > 1000 && runningTime < totalTime){
                 AutomationThread.pause(1);
             }
+            if (runningTime>totalTime){
+                for (TripDriver killTrip: trips){
+                    if (killTrip.isAlive()){
+                        killTrip.interrupt();
+                        while (killTrip.isAlive()){
+                            AutomationThread.pause(1);
+                        }
+                    }
+                }
+            }
         }
 
         for (TripDriver trip: trips){
@@ -83,17 +95,12 @@ public class VariableTripCreator {
     }
         
     public static void main(String[] args){
-        Integer minutes = 0;
-        Integer seconds = 10;
-        String[] split = args[0].split(":");
-        minutes = Integer.parseInt(split[0]);
-        seconds = Integer.parseInt(split[1]);
-        String cassandraNode = args[1];
-        MasterTest.print("We will run for: " + minutes + " minutes and " + seconds + " seconds");
-        Integer totalTime = minutes * 60 + seconds;
+        CassandraPropertiesBean cpb = CassandraProperties.getPropertyBean();
+        MasterTest.print("We will run for: " + cpb.getMinutes() + " minutes and " + cpb.getSeconds() + " seconds");
+        Integer totalTime = cpb.getMinutes() * 60 + cpb.getSeconds();
         VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
         MCMProxyObject.regularNote=false;
-        test.readDrivers(AutomationCassandra.createNode(cassandraNode));
+        test.readDrivers(AutomationCassandra.createNode(cpb.getEc2ip()));
         test.driveTiwis(totalTime);
     }
 }
