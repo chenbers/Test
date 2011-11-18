@@ -17,7 +17,7 @@ public enum CrashReportStatus implements BaseEnum{
     ROLLOVER(5),
     STOP(6),
     PANIC(7),
-    AGRESSIVE_DRIVING(8);
+    AGGRESSIVE_DRIVING(8);
 
     private int code;
 
