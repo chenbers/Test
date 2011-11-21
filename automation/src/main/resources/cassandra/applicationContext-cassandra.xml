@@ -25,7 +25,12 @@
 		scope="singleton">
 		<property name="defaultAddress" value="${cassandra.node.default}" />
 		<property name="ec2ip" value="${cassandra.node.ec2ip}" />
+		<property name="useDefaultNode" value="${cassandra.useDefaultNode}" />
 		<property name="minutes" value="${cassandra.time.minutes}" />
 		<property name="seconds" value="${cassandra.time.seconds}" />
+		<property name="threads" value="${cassandra.maxThreads}" />
+		<property name="poolSize" value="${cassandra.poolSize}" />
+		<property name="autoDiscovery" value="${cassandra.useAutoDiscovery}" />
 	</bean>
 </beans>
+

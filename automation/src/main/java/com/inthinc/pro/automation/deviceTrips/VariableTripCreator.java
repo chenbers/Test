@@ -25,6 +25,8 @@ public class VariableTripCreator {
     private final String address;
     
     private Map<Integer, Map<String, String>> drivers;
+
+    private boolean once = false;
     
     public VariableTripCreator(Addresses address){
         portal = address;
@@ -38,7 +40,7 @@ public class VariableTripCreator {
         MCMProxyObject.processDrivers(drivers, nodes);
     }
     
-    public void driveTiwis(Integer totalTime){
+    public void driveTiwis(Integer totalTime, Integer maxThreads){
         Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
@@ -46,12 +48,19 @@ public class VariableTripCreator {
         secondTrip.addToDay(1);
         
         MasterTest.print(portal);
+        int threads = Thread.activeCount();
 
         long start = System.currentTimeMillis();
         long runningTime = 0;
         List<TripDriver> trips = new ArrayList<TripDriver>();
-        while (runningTime < totalTime){
-            if (!itr.hasNext()){
+        boolean loop = true;
+        if (totalTime == 0){
+            loop = itr.hasNext();
+        } else {
+            loop = runningTime < totalTime;
+        }
+        while (loop){
+            if (!itr.hasNext() && !once){
                 itr = drivers.keySet().iterator();
             }
             Integer next = itr.next();
@@ -63,30 +72,22 @@ public class VariableTripCreator {
             trips.add(trip);
             trip.start();
             runningTime = (System.currentTimeMillis() - start) / 1000;
-            while (Thread.activeCount() > 1000 && runningTime < totalTime){
+            while (Thread.activeCount() > maxThreads){
                 AutomationThread.pause(1);
             }
-            if (runningTime>totalTime){
-                for (TripDriver killTrip: trips){
-                    try {
-                        if (killTrip.isAlive()){
-                            killTrip.interrupt();
-                            while (killTrip.isAlive()){
-                                AutomationThread.pause(1);
-                            }
-                        } 
-                    } catch (Exception e) {
-//                            continue;
-                    }
-                }
+            if (totalTime == 0){
+                loop = itr.hasNext();
+            } else {
+                loop = runningTime < totalTime;
             }
         }
-
-        for (TripDriver trip: trips){
-            if (trip.isAlive()){
-                trip.interrupt();
-            }
+        int count = Thread.activeCount();
+        while (count > threads ){
+            MasterTest.print("Still running " + (count - threads) + " active threads");
+            count = Thread.activeCount();
+            AutomationThread.pause(2);
         }
+        
         try {
             MCMProxyObject.closeService();
         } catch (Exception e) {}
@@ -100,11 +101,21 @@ public class VariableTripCreator {
         
     public static void main(String[] args){
         CassandraPropertiesBean cpb = CassandraProperties.getPropertyBean();
-        MasterTest.print("We will run for: " + cpb.getMinutes() + " minutes and " + cpb.getSeconds() + " seconds");
+        MasterTest.print(cpb.toString());
         Integer totalTime = cpb.getMinutes() * 60 + cpb.getSeconds();
         VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
+        if (totalTime == 0){
+            test.once  = true;
+        }
         MCMProxyObject.regularNote=false;
-        test.readDrivers(AutomationCassandra.createNode(cpb.getEc2ip()));
-        test.driveTiwis(totalTime);
+        cpb.toString();
+        String node;
+        if (cpb.isUseDefaultNode()){
+            node = cpb.getDefaultAddress();
+        } else {
+            node = cpb.getEc2ip();
+        }
+        test.readDrivers(AutomationCassandra.createNode(node, cpb.getPoolSize(), cpb.isAutoDiscovery()));
+        test.driveTiwis(totalTime, cpb.getThreads());
     }
 }

@@ -41,12 +41,12 @@ public enum AutomationCassandra {
             }
             writer.write(baseNode.replace("###", nodes.get(i) + ""));
         }
-        NoteService service = new NoteService("inthinc", "note", writer.toString());
+        NoteService service = createNode(writer.toString(), 50, false);
         return service;
     }
 
-    public static NoteService createNode(String cassandraNode) {
-        return new NoteService("inthinc", "note", cassandraNode);
+    public static NoteService createNode(String cassandraNode, Integer poolSize, boolean autoDiscovery) {
+        return new NoteService("inthinc-2011-11-17", "note", cassandraNode, poolSize, autoDiscovery);
     }
 
 }
