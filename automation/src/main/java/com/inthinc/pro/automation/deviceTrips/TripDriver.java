@@ -46,6 +46,8 @@ public class TripDriver extends Thread {
     @Override
     public void interrupt(){
         interrupt = true;
+        device = null;
+        throw new NullPointerException("Ending the trip???");
     }
 
     public void testTrip() {

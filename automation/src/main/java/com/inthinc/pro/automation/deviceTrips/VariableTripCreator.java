@@ -68,11 +68,15 @@ public class VariableTripCreator {
             }
             if (runningTime>totalTime){
                 for (TripDriver killTrip: trips){
-                    if (killTrip.isAlive()){
-                        killTrip.interrupt();
-                        while (killTrip.isAlive()){
-                            AutomationThread.pause(1);
-                        }
+                    try {
+                        if (killTrip.isAlive()){
+                            killTrip.interrupt();
+                            while (killTrip.isAlive()){
+                                AutomationThread.pause(1);
+                            }
+                        } 
+                    } catch (Exception e) {
+//                            continue;
                     }
                 }
             }
