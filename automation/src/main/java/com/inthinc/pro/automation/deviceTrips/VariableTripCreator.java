@@ -5,10 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.noteservice.NoteService;
 import com.inthinc.pro.automation.CassandraPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
@@ -34,10 +32,10 @@ public class VariableTripCreator {
     }
     
     @SuppressWarnings("unchecked")
-    public void readDrivers(NoteService nodes){
+    public void readDrivers(String cassandraNode, Integer poolSize, boolean autoDiscovery){
         ObjectReadWrite reader = new ObjectReadWrite();
         drivers = (Map<Integer, Map<String, String>>) reader.readObject(address).get(0);
-        MCMProxyObject.processDrivers(drivers, nodes);
+        MCMProxyObject.processDrivers(drivers, cassandraNode, poolSize, autoDiscovery);
     }
     
     public void driveTiwis(Integer totalTime, Integer maxThreads){
@@ -115,7 +113,7 @@ public class VariableTripCreator {
         } else {
             node = cpb.getEc2ip();
         }
-        test.readDrivers(AutomationCassandra.createNode(node, cpb.getPoolSize(), cpb.isAutoDiscovery()));
+        test.readDrivers(node, cpb.getPoolSize(), cpb.isAutoDiscovery());
         test.driveTiwis(totalTime, cpb.getThreads());
     }
 }

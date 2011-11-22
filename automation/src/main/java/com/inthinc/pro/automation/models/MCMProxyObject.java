@@ -8,14 +8,15 @@ import java.util.Map;
 
 import org.apache.log4j.Level;
 
-import com.inthinc.noteservice.NoteService;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.noteservice.NoteService;
 
 
 public class MCMProxyObject implements MCMProxy{
@@ -54,7 +55,7 @@ public class MCMProxyObject implements MCMProxy{
         MasterTest.print(other, Level.DEBUG);
     }
     
-    public static void processDrivers(Map<Integer, Map<String, String>> driversMap, NoteService service){
+    public static void processDrivers(Map<Integer, Map<String, String>> driversMap, String cassandraNode, Integer poolSize, boolean autoDiscovery){
         drivers = new HashMap<String, String>();
         Iterator<Integer> itr = driversMap.keySet().iterator();
         while (itr.hasNext()){
@@ -62,7 +63,7 @@ public class MCMProxyObject implements MCMProxy{
             Map<String, String> map = driversMap.get(next);
             drivers.put(map.get("device"), map.get("deviceID"));
         }
-        notes = service;
+        notes = AutomationCassandra.createNode(cassandraNode, poolSize, autoDiscovery);
     }
     
     public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){

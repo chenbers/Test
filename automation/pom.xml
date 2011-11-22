@@ -43,8 +43,6 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-chrome-driver</artifactId>
 		</dependency>
-		<!--<dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
-			<version>4.8.2</version> <scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
@@ -68,11 +66,34 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.inthinc.noteservice</groupId>
-			<artifactId>noteservice</artifactId>
-			<version>.01-SNAPSHOT</version>
+			<groupId>me.prettyprint</groupId>
+			<artifactId>hector-core</artifactId>
+			<version>1.0-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+		</dependency>		
+		<dependency>
+			<groupId>com.eaio.uuid</groupId>
+			<artifactId>uuid</artifactId>
+			<version>3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.9</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>

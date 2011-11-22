@@ -4,7 +4,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.noteservice.NoteService;
+import com.inthinc.pro.noteservice.NoteService;
 
 public enum AutomationCassandra {
     
