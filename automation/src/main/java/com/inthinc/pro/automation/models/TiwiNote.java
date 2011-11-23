@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
-import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
-import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
@@ -30,10 +30,10 @@ public class TiwiNote implements DeviceNote {
     private final AutomationCalendar nTime;
     private final GeoPoint location;
     private final DeviceAttributes attrs;
-    private final TiwiNoteTypes nType;
+    private final DeviceNoteTypes nType;
     
 
-    public TiwiNote(TiwiNoteTypes type, DeviceState state, GeoPoint location){
+    public TiwiNote(DeviceNoteTypes type, DeviceState state, GeoPoint location){
         nType = type;
         nTime = state.copyTime();
         this.sats = state.getSats();
@@ -47,7 +47,7 @@ public class TiwiNote implements DeviceNote {
     
     
     
-    public TiwiNote( TiwiNoteTypes type ){
+    public TiwiNote( DeviceNoteTypes type ){
         nType = type;
         nTime = new AutomationCalendar();
         sats = 0;
@@ -60,24 +60,26 @@ public class TiwiNote implements DeviceNote {
     }
     
     public TiwiNote(){
-        this(TiwiNoteTypes.NOTE_TYPE_LOCATION);
+        this(DeviceNoteTypes.LOCATION);
     }
 
-    public void addAttr(TiwiAttrs id, Object value){
+    public void addAttr(DeviceAttrs id, Object value){
         int cast;
         if (value instanceof Integer){
             cast = (Integer) value;
-        } else if (value instanceof TiwiAttrs){
-            cast = ((TiwiAttrs) value).getValue();
+        } else if (value instanceof DeviceTypes){
+            cast = ((DeviceTypes) value).getCode();
+        } else  if (value == null){
+            cast = 0;
         } else {
             throw new IllegalArgumentException("Cannot add value of type: " + value.getClass());
         }
         attrs.addAttribute(id, cast);
     }
         
-    public void addAttrs(Map<TiwiAttrs, Integer> atttrs){
-        TiwiAttrs attrID;
-        Iterator<TiwiAttrs> itr = atttrs.keySet().iterator();
+    public void addAttrs(Map<DeviceAttrs, Integer> atttrs){
+        DeviceAttrs attrID;
+        Iterator<DeviceAttrs> itr = atttrs.keySet().iterator();
         while (itr.hasNext()){
             attrID = itr.next();
             addAttr(attrID, atttrs.get(attrID));
@@ -91,7 +93,7 @@ public class TiwiNote implements DeviceNote {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        NoteManager.longToByte(bos, nType.getValue(), 1);
+        NoteManager.longToByte(bos, nType.getCode(), 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
         NoteManager.longToByte(bos, maprev, 1);
@@ -107,18 +109,18 @@ public class TiwiNote implements DeviceNote {
     
     public Map<String, String> packageToMap(){
         Map<String, String> map = new HashMap<String, String>();
-        map.put("10", nType.getValue() + "");
+        map.put("10", nType.getCode() + "");
         map.put("11", nTime.toInt() + "");
         map.put("12", heading + ", " + sats);
         map.put("20", maprev + "");
         map.put("13", location.toString());
         map.put("15", Speed.toString());
         map.put("16", odometer.toString());
-        Iterator<DeviceTypes> itr = attrs.iterator();
+        Iterator<DeviceAttrs> itr = attrs.iterator();
         while (itr.hasNext()){
-            DeviceTypes next = itr.next();
+            DeviceAttrs next = itr.next();
             Object value = attrs.getValue(next);
-            map.put(next.getValue().toString(), value.toString());
+            map.put(next.getCode().toString(), value.toString());
         }
         return map;
     }
@@ -127,8 +129,8 @@ public class TiwiNote implements DeviceNote {
     public String toString(){
         String note = "";
         try{
-            note = String.format("TiwiNote(nType=%d, nTime=\"%s\", sats=%d, heading=%s, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d, attrs=%s)", 
-                    nType.getValue(), nTime, sats, heading, maprev, location.getLat(), location.getLng(), Speed, odometer, attrs);
+            note = String.format("TiwiNote(nType=%s, nTime=\"%s\", sats=%d, heading=%s, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d, attrs=%s)", 
+                    nType, nTime, sats, heading, maprev, location.getLat(), location.getLng(), Speed, odometer, attrs);
         }catch(Exception e){
             logger.info(StackToString.toString(e));
             e.printStackTrace();
@@ -137,4 +139,15 @@ public class TiwiNote implements DeviceNote {
         return note;
     }
 
+
+    @Override
+    public DeviceNoteTypes getType() {
+        return nType;
+    }
+
+    @Override
+    public Long getTime() {
+        return nTime.epochSeconds();
+    }
+    
 }

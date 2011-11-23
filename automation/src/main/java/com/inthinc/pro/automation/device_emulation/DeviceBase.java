@@ -14,10 +14,11 @@ import java.util.Map;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Level;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceForwardCommands;
+import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
-import com.inthinc.pro.automation.interfaces.DeviceProperties;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
@@ -56,7 +57,7 @@ public abstract class DeviceBase {
     protected DeviceState state;
     protected int note_count = 4;
     
-    private DeviceBase(String IMEI, ProductType version, Map<? extends DeviceProperties, String> settings){
+    private DeviceBase(String IMEI, ProductType version, Map<DeviceProps, String> settings){
         state = new DeviceState(IMEI, version);
         tripTracker = new TripTracker(state);
         state.setSettings(settings);
@@ -68,14 +69,13 @@ public abstract class DeviceBase {
         state.setMapRev(0);
     }
 
-    public DeviceBase(String IMEI, Addresses server, Map<? extends DeviceProperties, String> map, ProductType version) {
+    public DeviceBase(String IMEI, Addresses server, Map<DeviceProps, String> map, ProductType version) {
         this(IMEI, version, map);
     	portal = server;
         initiate_device();
     }
     
     private DeviceBase ackFwdCmds(List<HashMap<String, Object>> reply) {
-
         testFwdCmdLimit(reply.size());
         
         HashMap<String, Object> fwd = new HashMap<String, Object>();
@@ -86,6 +86,7 @@ public abstract class DeviceBase {
                 fwd = itr.next();
 //                if (fwd.get("fwdID").equals(100)||fwd.get("fwdID").equals(1))
 //                    continue;
+                fwd.put("cmd", DeviceForwardCommands.valueOf((Integer) fwd.get("cmd")));
                 createAckNote(fwd);
             }
         }
@@ -176,7 +177,7 @@ public abstract class DeviceBase {
         Map<Integer, String> map = new HashMap<Integer, String>();
         Iterator<?> itr = state.getSettings().keySet().iterator();
         while (itr.hasNext()){
-            DeviceProperties next = (DeviceProperties) itr.next();
+            DeviceProps next = (DeviceProps) itr.next();
             map.put(next.getValue(), state.getSettings().get(next));
         }
         
@@ -249,11 +250,11 @@ public abstract class DeviceBase {
         state.setOdometer(odometer);
     }
     
-    protected abstract HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply);
+    protected abstract HashMap<DeviceProps, String> theirsToOurs(HashMap<?, ?> reply);
     
     protected abstract Integer get_note_count();
 
-    public String get_setting(DeviceProperties propertyID){
+    public String get_setting(DeviceProps propertyID){
         return state.getSettings().get(propertyID);
     }
 
@@ -348,10 +349,10 @@ public abstract class DeviceBase {
                     }
                     if (sendingQueue.containsKey(NoteBC.class)){
                         noteClass = NoteBC.class;
-                        reply = mcmProxy.notebc(sendingImei, state.getWaysDirection().getValue(), sendingQueue.get(noteClass), true);
+                        reply = mcmProxy.notebc(sendingImei, state.getWaysDirection().getCode(), sendingQueue.get(noteClass), true);
                     } else if (sendingQueue.containsKey(NoteWS.class)){
                         noteClass = NoteWS.class;
-                        reply = mcmProxy.notews(sendingImei, state.getWaysDirection().getValue(), sendingQueue.get(noteClass), true);
+                        reply = mcmProxy.notews(sendingImei, state.getWaysDirection().getCode(), sendingQueue.get(noteClass), true);
                     } else if (sendingQueue.containsKey(TiwiNote.class)){
                         noteClass = TiwiNote.class;
                         reply = mcmProxy.note(sendingImei, sendingQueue.get(noteClass), true);
@@ -373,8 +374,10 @@ public abstract class DeviceBase {
 
                 if (reply instanceof ArrayList<?>) {
                     ackFwdCmds((List<HashMap<String, Object>>) reply);
+                } else {
+                    MasterTest.print("Reply from Server: " + reply, Level.DEBUG);    
                 }
-                MasterTest.print("Reply from Server: " + reply, Level.DEBUG);
+                
             }
         }
         return this;
@@ -404,25 +407,25 @@ public abstract class DeviceBase {
 
     protected abstract DeviceBase set_server(Addresses server);
 
-    public DeviceBase set_settings(HashMap<?, String> changes) {
+    public DeviceBase set_settings(Map<DeviceProps, String> changes) {
 
-        Iterator<?> itr = changes.keySet().iterator();
+        Iterator<DeviceProps> itr = changes.keySet().iterator();
         while (itr.hasNext()) {
-            DeviceProperties next = (DeviceProperties) itr.next();
+            DeviceProps next = itr.next();
             state.setSetting(next, changes.get(next));
         }
         dump_settings();
         return this;
     }
 
-    public DeviceBase set_settings(DeviceProperties key, String value) {
-        HashMap<DeviceProperties, String> change = new HashMap<DeviceProperties, String>();
+    public DeviceBase set_settings(DeviceProps key, String value) {
+        Map<DeviceProps, String> change = new HashMap<DeviceProps, String>();
         change.put(key, value);
         set_settings(change);
         return this;
     }
     
-    public DeviceBase set_settings(DeviceProperties key, Integer value){
+    public DeviceBase set_settings(DeviceProps key, Integer value){
         return set_settings(key, value.toString());
     }
 

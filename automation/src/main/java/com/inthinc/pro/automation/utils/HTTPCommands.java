@@ -11,6 +11,10 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -23,9 +27,13 @@ public class HTTPCommands {
     protected HttpClient httpClient;
 
     protected String response;
+
+
+    private DefaultHttpClient defaultClient;
     
     public HTTPCommands(){
         httpClient = new HttpClient();
+        defaultClient = new DefaultHttpClient();
     }
 
     /**
@@ -93,6 +101,21 @@ public class HTTPCommands {
             str = new String(baos.toByteArray());
         } catch (IOException ioe) {}
         return str;
+    }
+
+    public String httpRequest(HttpUriRequest method) {
+        try {
+            HttpResponse response = defaultClient.execute(method);
+            MasterTest.print(response.getStatusLine());
+            String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
+            MasterTest.print(returnResponse);
+            return returnResponse;
+        } catch (ClientProtocolException e) {
+            MasterTest.print(e);
+        } catch (IOException e) {
+            MasterTest.print(e);
+        }
+        return "";
     }
 
 }

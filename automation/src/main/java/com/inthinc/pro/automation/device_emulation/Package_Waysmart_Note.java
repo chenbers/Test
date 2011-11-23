@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.NoteBuilder;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
@@ -26,12 +26,12 @@ public class Package_Waysmart_Note implements NoteBuilder {
      * @param mcm
      * @param imei
      */
-    public Package_Waysmart_Note(Ways_SAT_EVENT type, Direction method, Addresses server, String mcm, String imei) {
+    public Package_Waysmart_Note(DeviceNoteTypes type, Direction method, Addresses server, String mcm, String imei) {
 
         sendNote = new CommandLine();
         sendNote.setWorkingDirectory("src/main/resources/waysNote");
 
-        sendNote.setArgs("type", type.getValue());
+        sendNote.setArgs("type", type.getCode());
         sendNote.setArgs("direction", method);
         sendNote.setArgs("sat_server", server.getMCMUrl());
         sendNote.setArgs("sat_port", server.getSatPort());

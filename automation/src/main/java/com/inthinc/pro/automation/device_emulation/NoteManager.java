@@ -12,7 +12,8 @@ import java.util.Queue;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.utils.StackToString;
 
@@ -21,59 +22,6 @@ public class NoteManager {
     private final static Logger logger = Logger.getLogger(NoteManager.class);
     private Queue<DeviceNote> notes;
     
-    public static enum AttrTypes{
-        BYTE(1),
-        SHORT(2),
-        STRING,
-        INT(4),
-        DOUBLE(8),
-        BINARY,
-        
-        ;
-        private Integer bytes;
-        
-        private AttrTypes(){}
-        private AttrTypes(int bytes){
-            this.bytes = bytes;
-        }
-        
-        public boolean hasSize(){
-            return bytes != null;
-        }
-        
-        public Integer getSize(){
-            return bytes;
-        }
-        
-        
-        public static AttrTypes getType(DeviceTypes id){
-            AttrTypes temp;
-            int key = id.getValue();
-            if ( key < 128 ){
-                temp = BYTE;
-            } else if ( key < 192 && key >= 128 ){
-                temp = SHORT;
-            } else if ( key < 255 && key >= 192 ){
-                temp = INT;
-            } else if ( key < 16384 && key >= 8192){
-                temp = BYTE;
-            } else if ( key < 24576 && key >= 16384){
-                temp = SHORT;
-            } else if ( key < 32768 && key >= 24576 ){
-                temp = STRING;
-            } else if ( key < 40960 && key >= 32768){
-                temp = INT;
-            } else if ( key < 49152 && key >= 40960){
-                temp = DOUBLE;
-            } else if ( key < 49153 && key >= 49152){
-                temp = BINARY;
-            } else {
-                throw new IllegalArgumentException("The key " + key + " doesn't exist!!!");
-            }
-            return temp;
-        }
-        
-    }
     
     
     public NoteManager(){
@@ -110,6 +58,8 @@ public class NoteManager {
     
     public interface DeviceNote{
         public byte[] Package();
+        public DeviceNoteTypes getType();
+        public Long getTime();
     }
     
     
@@ -180,30 +130,27 @@ public class NoteManager {
      * @param attrs 
      */
     public static void encodeAttributes(ByteArrayOutputStream baos, DeviceAttributes attrs) {
-        Iterator<? extends DeviceTypes> keys = attrs.iterator();
+        Iterator<DeviceAttrs> keys = attrs.iterator();
         
         while( keys.hasNext()){
-            DeviceTypes key=null;
-            int size=0;
-            
+            DeviceAttrs key=null;
+
             try {
                 key = keys.next();
-                size = attrs.getSize(key);
-                if (key.getValue() < Math.pow(2, 1*Byte.SIZE)){
-                    longToByte(baos, key.getValue(), 1);    
-                } else if (key.getValue() < Math.pow(2, 2*Byte.SIZE)){
-                    longToByte(baos, key.getValue(), 2);   
-                } else if (key.getValue() < Math.pow(2, 3*Byte.SIZE)){
-                    longToByte(baos, key.getValue(), 3);   
+                if (key.getCode() < Math.pow(2, 1*Byte.SIZE)){
+                    longToByte(baos, key.getCode(), 1);    
+                } else if (key.getCode() < Math.pow(2, 2*Byte.SIZE)){
+                    longToByte(baos, key.getCode(), 2);   
+                } else if (key.getCode() < Math.pow(2, 3*Byte.SIZE)){
+                    longToByte(baos, key.getCode(), 3);   
                 }
-                
                 
                 Object object = attrs.getValue(key);
                 if (object instanceof Number){
                     if (object instanceof Integer){
-                        longToByte(baos, ((Integer)object).longValue(), size);
+                        longToByte(baos, ((Integer)object).longValue(), key.getSize());
                     } else if (object instanceof Long){
-                        longToByte(baos, (Long)object, size);    
+                        longToByte(baos, (Long)object, key.getSize());    
                     }
                 } else if (object instanceof String){
                     byte[] str = ((String)object).getBytes();

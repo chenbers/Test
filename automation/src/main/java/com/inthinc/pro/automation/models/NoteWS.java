@@ -2,21 +2,19 @@ package com.inthinc.pro.automation.models;
 
 import java.io.ByteArrayOutputStream;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
-import com.inthinc.pro.automation.deviceEnums.Ways_ATTRS;
-import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
-import com.inthinc.pro.automation.device_emulation.NoteManager.AttrTypes;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteWS implements DeviceNote {
     
-    private final Ways_SAT_EVENT nType;
+    private final DeviceNoteTypes nType;
     private final ProductType nVersion;
     private final AutomationCalendar nTime;
     private final Heading heading;
@@ -28,7 +26,7 @@ public class NoteWS implements DeviceNote {
     private final DeviceAttributes attrs;
 
     
-    public NoteWS(Ways_SAT_EVENT type, DeviceState state,
+    public NoteWS(DeviceNoteTypes type, DeviceState state,
             GeoPoint currentLocation, int duration) {
 
         this.nType = type;
@@ -47,7 +45,7 @@ public class NoteWS implements DeviceNote {
     public byte[] Package() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write(0);
-        NoteManager.longToByte(baos, nType.getValue(), 1);
+        NoteManager.longToByte(baos, nType.getCode(), 1);
         NoteManager.longToByte(baos, nVersion.getVersion(), 1);
         NoteManager.longToByte(baos, nTime.toInt(), 4);
         NoteManager.longToByte(baos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
@@ -59,21 +57,17 @@ public class NoteWS implements DeviceNote {
         NoteManager.encodeAttributes(baos, attrs);
         byte[] temp = baos.toByteArray();
         temp[0] = (byte) (temp.length & 0xFF);
-        for (int i=0;i<temp.length;i++){
-            MasterTest.print("Byte " + i + " = " + temp[i]);
-        }
+//        for (int i=0;i<temp.length;i++){
+//            MasterTest.print("Byte " + i + " = " + temp[i]);
+//        }
         return temp;
     }
 
     
 
-    public void addAttr(Ways_ATTRS id, Number value, int size){
-        attrs.addAttribute(id, value, size);
-    }
-    
-    public void addAttr(Ways_ATTRS id, Number value){
+    public void addAttr(DeviceAttrs id, Number value){
         try {
-            attrs.addAttribute(id, value, AttrTypes.getType(id).getSize());    
+            attrs.addAttribute(id, value);    
         } catch (Exception e) {
             
             throw new NullPointerException("Cannot add " + id + " with value " + value);
@@ -81,29 +75,20 @@ public class NoteWS implements DeviceNote {
         
     }
     
-    public void addAttr(Ways_ATTRS id, Object value){
+    public void addAttr(DeviceAttrs id, Object value){
         if (value instanceof Number){
             addAttr(id, (Number) value);
         } else if (value instanceof DeviceTypes){
-            addAttr(id, ((DeviceTypes) value).getValue());
+            addAttr(id, ((DeviceTypes) value).getCode());
         } else if (value instanceof String){
-            addAttr(id, value, ((String)value).length());
+            attrs.addAttribute(id, value);
         }
     }
     
-    public void addAttr(Ways_ATTRS id, Object value, int size){
-        if (value instanceof Number){
-            addAttr(id, (Number) value, size);
-        } else if (value instanceof DeviceTypes){
-            addAttr(id, ((DeviceTypes) value).getValue(), size);
-        } else {
-            attrs.addAttribute(id, value, size);
-        }
-    }
     
     
     /**
-     * private final Ways_SAT_EVENT nType;
+     * private final DeviceNoteTypes nType;
     private final int nVersion;
     private final AutomationCalendar nTime;
     private final int heading;
@@ -119,8 +104,20 @@ public class NoteWS implements DeviceNote {
         String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%d, sats=%d,\n" +
                 "lat=%.5f, lng=%.5f, speed=%d, odometer=%d,\n" +
                 "attrs={%s}", 
-                nType.toString(), nVersion.getVersion(), nTime, heading, sats, location.getLat(), location.getLng(), nSpeed, odometer, attrs.toString());
+                nType.toString(), nVersion.getVersion(), nTime, heading.getHeading(), sats, location.getLat(), location.getLng(), nSpeed, odometer, attrs.toString());
         return temp;
     }
+    
+
+    @Override
+    public DeviceNoteTypes getType() {
+        return nType;
+    }
+
+    @Override
+    public Long getTime() {
+        return nTime.epochSeconds();
+    }
+    
     
 }

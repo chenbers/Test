@@ -3,8 +3,8 @@ package com.inthinc.pro.automation.device_emulation;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.deviceEnums.Heading;
-import com.inthinc.pro.automation.interfaces.DeviceProperties;
 import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -43,7 +43,7 @@ public class DeviceState {
     private Map<Integer, MapSection> sbsModule;
 
     private Boolean seatbelt_violation = false;
-    private final Map<DeviceProperties, String> settings;
+    private final Map<DeviceProps, String> settings;
 
     private int speed;
 
@@ -71,14 +71,14 @@ public class DeviceState {
         time_last = new AutomationCalendar();
         this.imei = imei;
         this.productVersion = type;
-        settings = new HashMap<DeviceProperties, String>();
+        settings = new HashMap<DeviceProps, String>();
     }
 
     public AutomationCalendar copyTime() {
         return time.copy();
     }
 
-    public String get_setting(DeviceProperties propertyID) {
+    public String get_setting(DeviceProps propertyID) {
         return settings.get(propertyID);
     }
 
@@ -170,7 +170,7 @@ public class DeviceState {
         return seatbelt_violation;
     }
 
-    public Map<? extends DeviceProperties, String> getSettings() {
+    public Map<DeviceProps, String> getSettings() {
         return settings;
     }
 
@@ -311,12 +311,12 @@ public class DeviceState {
         this.seatbelt_violation = seatbelt_violation;
     }
 
-    public <T extends DeviceProperties> void setSetting(T propertyID,
+    public void setSetting(DeviceProps propertyID,
             String setting) {
         settings.put(propertyID, setting);
     }
 
-    public <T extends DeviceProperties> void setSettings(Map<T, String> settings) {
+    public void setSettings(Map<DeviceProps, String> settings) {
         this.settings.putAll(settings);
     }
 

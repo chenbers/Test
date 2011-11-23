@@ -2,19 +2,18 @@ package com.inthinc.pro.automation.models;
 
 import java.io.ByteArrayOutputStream;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
-import com.inthinc.pro.automation.deviceEnums.Ways_ATTRS;
-import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
-import com.inthinc.pro.automation.device_emulation.NoteManager.AttrTypes;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 public class NoteBC implements DeviceNote {
     
-    private final Ways_SAT_EVENT nType;
+    private final DeviceNoteTypes nType;
     private final int nVersion;
     private final AutomationCalendar nTime;
     private final Heading heading;
@@ -41,7 +40,7 @@ public class NoteBC implements DeviceNote {
         }
         
         @Override
-        public Integer getValue() {
+        public Integer getCode() {
             return direction;
         }
     };
@@ -69,7 +68,7 @@ public class NoteBC implements DeviceNote {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        NoteManager.longToByte(bos, nType.getValue(), 1);
+        NoteManager.longToByte(bos, nType.getCode(), 1);
         NoteManager.longToByte(bos, nVersion, 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
@@ -108,7 +107,7 @@ public class NoteBC implements DeviceNote {
     * 2-boundaryID
     * 4-driverID
     */
-    public NoteBC(Ways_SAT_EVENT type, DeviceState state, GeoPoint location){
+    public NoteBC(DeviceNoteTypes type, DeviceState state, GeoPoint location){
         nType = type;
         nVersion = state.getProductVersion().getVersion();
         nTime = state.copyTime();
@@ -125,42 +124,37 @@ public class NoteBC implements DeviceNote {
     }
 
     
-    public void addAttr(Ways_ATTRS id, Number value, int size){
-        attrs.addAttribute(id, value, size);
-    }
-    
-    public void addAttr(Ways_ATTRS id, Number value){
+    public void addAttr(DeviceAttrs id, Number value){
         try {
-            attrs.addAttribute(id, value, AttrTypes.getType(id).getSize());    
+            attrs.addAttribute(id, value);
         } catch (Exception e) {
-            
             throw new NullPointerException("Cannot add " + id + " with value " + value);
         }
         
     }
     
-    public void addAttr(Ways_ATTRS id, Object value){
+    public void addAttr(DeviceAttrs id, Object value){
         if (value instanceof Number){
             addAttr(id, (Number) value);
         } else if (value instanceof DeviceTypes){
-            addAttr(id, ((DeviceTypes) value).getValue());
+            addAttr(id, ((DeviceTypes) value).getCode());
         }
     }
     
-    public void addAttr(Ways_ATTRS id, Object value, int size){
+    public void addAttr(DeviceAttrs id, Object value, int size){
         if (value instanceof Number){
             addAttr(id, (Number) value, size);
         } else if (value instanceof DeviceTypes){
-            addAttr(id, ((DeviceTypes) value).getValue(), size);
+            addAttr(id, ((DeviceTypes) value).getCode(), size);
         }
     }
     
-    public void addAttr(Ways_ATTRS id, String value){
-        attrs.addAttribute(id, value, 0);
+    public void addAttr(DeviceAttrs id, String value){
+        attrs.addAttribute(id, value);
     }
     
     /**
-     * private final Ways_SAT_EVENT nType;
+     * private final DeviceNoteTypes nType;
     private final int nVersion;
     private final AutomationCalendar nTime;
     private final int heading;
@@ -182,6 +176,16 @@ public class NoteBC implements DeviceNote {
         		"attrs={%s}", 
                 nType.toString(), nVersion, nTime, heading, sats, location.getLat(), location.getLng(), nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
         return temp;
+    }
+
+    @Override
+    public DeviceNoteTypes getType() {
+        return nType;
+    }
+
+    @Override
+    public Long getTime() {
+        return nTime.epochSeconds();
     }
     
 

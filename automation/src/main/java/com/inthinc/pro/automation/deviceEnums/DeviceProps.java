@@ -2,13 +2,185 @@ package com.inthinc.pro.automation.deviceEnums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Map;
 
-import com.inthinc.pro.automation.interfaces.DeviceProperties;
 
-public enum WaysmartProps implements DeviceProperties {
+public enum DeviceProps {
 
-    /* Config Settings */
+    /* Properties */
 
+    TIWI_UNIT_ENABLED(1),
+    TIWI_NOTIFICATIONS_ENABLED(2),
+    TIWI_BUZZER_MASTER(3, "1"),
+    TIWI_MCM_ID(4),
+    TIWI_DEPRECATED_SERVER_CONTEXT(5),
+    TIWI_SERVER_URL(6, "qa.tiwipro.com"),
+    TIWI_GPRS_APN(7, "safety.t-mobile.com"),
+    TIWI_EVENT_LOCATION_SECONDS(8, "15"),
+    TIWI_LOCATION_UPDATE_ALWAYS(9, "0"),
+    TIWI_ZONE_MODULE(10, "1"),
+    TIWI_EVENT_SPEEDING(11, "1"),
+    TIWI_BUZZER_SPEED(12, "1"),
+    TIWI_SPEED_MODULE(13, "1"),
+    TIWI_SPEED_LIMIT(14, "78.0"),
+    TIWI_SEVERE_SPEED_THRESHOLD(15),
+    TIWI_SPEEDING_BUFFER(16),
+    TIWI_DEPRECATED_SPEED_UNKNOWN_LIMIT(17),
+    TIWI_RAMP_SPEED(18),
+    TIWI_RAMP_SPEED_LIMIT(19),
+    TIWI_SPDLIMCHNG_GRACE_PERIOD(20),
+    TIWI_SPEEDING_GRACE_PERIOD(21, "15"),
+    TIWI_EVENT_RPM(22, "1"),
+    TIWI_BUZZER_RPM(23, "1"),
+    TIWI_RPM_LIMIT(24, "5000"),
+    TIWI_EVENT_SEATBELT(25, "1"),
+    TIWI_BUZZER_SEATBELT(26, "1"),
+    TIWI_SEATBELT_GRACE_PERIOD(27, "10"),
+    TIWI_SEATBELT_SPEED_LIMIT(28, "10.0"),
+    TIWI_EVENT_WITNESS_NOTE(29, "1"),
+    TIWI_BUZZER_NOTEEVENT(30, "1"),
+    TIWI_EVENT_WITNESS_FULL(31, "1"),
+    TIWI_BUZZER_FULLEVENT(32, "0"),
+    TIWI_EVENT_IGNITION_ON(33),
+    TIWI_EVENT_IGNITION_OFF(34),
+    TIWI_EVENT_LOW_POWER(35),
+    TIWI_LOW_POWER_MODE_SECONDS(36, "900"),
+    TIWI_REBOOTS(37),
+    TIWI_LAST_ZONE_ID(38),
+    TIWI_CURRENT_ZONE_ID(39),
+    TIWI_ZONES_HIT(40),
+    TIWI_SERVER_PORT(41, "8190"),
+    TIWI_SET_MSGS_PER_NOTIFICATION(42, "4"),
+    TIWI_DEPRECATED_DOWNLOAD_SERVER_URL(43),
+    TIWI_DEPRECATED_DOWNLOAD_SERVER_PORT(44),
+    TIWI_DEPRECATED_SERVER_URL(45),
+    TIWI_DEPRECATED_SERVER_PORT(46),
+    TIWI_EVENT_START_SPEEDING(47, "0"),
+    TIWI_SMTOOLS_SECURITY_URL(48, "http://www.iwiglobal.com"),
+    TIWI_SMTOOLS_SECURITY_CONTEXT(49, "asip"),
+    TIWI_SMTOOLS_EMU_URL(50),
+    TIWI_SMTOOLS_EMU_CONTEXT(51),
+    TIWI_DEPRECATED_SMTOOLS_FIRMWARE_URL(52),
+    TIWI_DEPRECATED_SMTOOLS_FIRMWARE_CONTEXT(53),
+    TIWI_CAR_BATTERY_LOW_POWER(54, "11000"),
+    TIWI_BACKUP_BATTERY_LOW_POWER(55),
+    OBSOLETE_TIWI_SPEEDING_BUZZER_BUFFER(56),
+    OBSOLETE_TIWI_SPEEDING_BUFFER_SLOPE(57),
+    TIWI_EVENT_START_SEATBELT(58, "1"),
+    TIWI_PARENT_MODE(59, "0"),
+    TIWI_ECALL_PHONE_NUMBER(60, "8014175665"),
+    TIWI_DEBUG_GPS(61, "0"),
+    OBSOLETE_TIWI_SPEEDING_BUFFER_MINIMUM(62),
+    TIWI_DMM_MONITOR_TIMEOUT(63),
+    TIWI_SMTOOLS_SILICON_ID(64),
+    TIWI_SMTOOLS_SECURITY_CODE(65),
+    TIWI_SMTOOLS_SERIAL_NUMBER(66),
+    TIWI_SMTOOLS_SECURITY_STATUS(67),
+    TIWI_SMTOOLS_DEVICE_ENABLED(68),
+    TIWI_SMTOOLS_EMU_DOWNLOADED(69),
+    TIWI_SMTOOLS_DEACTIVATE_OVERRIDE(70, "0"),
+    TIWI_GPRS_APN2(71),
+    TIWI_SMTOOLS_EMU_NAME_VERIFICATION_OVERRIDE(72),
+    TIWI_SMTOOLS_TEST_EMU_NAME(73),
+    TIWI_RAMP_SPEED_BUFFER(74),
+    TIWI_MIN_SNR_FOR_BEST_THREE_SATS_CRITERIA(75),
+    TIWI_SPEAKER_GAIN(76, "-1000"),
+    TIWI_SMTOOLS_EMU_HASH(77),
+    TIWI_SMTOOLS_EMU_FILENAME(78),
+    TIWI_SMTOOLS_EMU_VINRULE(79),
+    TIWI_SMTOOLS_EMU_MAKE(80),
+    TIWI_SMTOOLS_EMU_MODEL(81),
+    TIWI_SMTOOLS_EMU_YEAR(82),
+    TIWI_SEVERE_SPEEDING_GRACE_PERIOD(83, "15"),
+    TIWI_SUPERTRACK(84),
+    TIWI_VARIABLE_SPEED_LIMITS(85, "5 10 15 20 25 30 35 40 45 50 55 60 65 70 75"),
+    TIWI_SPEEDING_TIME_TO_LED(86),
+    TIWI_SPEEDING_TIME_TO_AUDIO(87),
+    TIWI_HDOP_CRITERIA(88),
+    TIWI_NVP_LATENCY_CRITERIA(89),
+    TIWI_NVP_MIN_DISTANCE_CHANGE(90),
+    TIWI_DEBUGOBD(91),
+    TIWI_CAR_BATTERY_VEHICLE_ON(92),
+    TIWI_LOG_NMEA(93),
+    TIWI_TIWI_FLASH(94),
+    TIWI_SMTOOLS_FLASH(95),
+    TIWI_WITNESS_FLASH(96),
+    TIWI_SEND_RFID(97),
+    TIWI_QA_BUZZER(98, "0"),
+    TIWI_DESIRED_A_AND_D(99),
+    TIWI_EVENT_WITNESS_FULL_ECALL(100, "0"),
+    TIWI_EVENT_ROLLOVER(101, "1"),
+    TIWI_EVENT_ROLLOVER_ECALL(102, "0"),
+    TIWI_CRASH_ROLLOVER_RENOTIFICATION_DELAY(103, "1"),
+    TIWI_RFID8(104),
+    TIWI_EVENT_IDLING(105, "1"),
+    TIWI_IDLE_TIMEOUT(106, "60"),
+    TIWI_VEHICLE_MPG(107),
+    TIWI_MPG_DISTANCE(108),
+    TIWI_XLOGS_ENABLED(109, "0"),
+    TIWI_BUZZER_ROLLOVER(110, "0"),
+    TIWI_IGN_AVAILABLE_FROM_EMU(111),
+    TIWI_RUN_TEST_ON_BOOT(112),
+    TIWI_HARD_VERT_SPEED_THRESH(113, "25"),
+    TIWI_HARD_VERT_SEVERE_PK2PK_THRESH(114),
+    TIWI_EVENT_HISTORY(115),
+    TIWI_AUTOSAVE_EVENT_HISTORY(116),
+    TIWI_PHONE_GAIN(117, "-500"),
+    TIWI_GPRS_LOGIN(118, ""),
+    TIWI_GPRS_PASSWORD(119, ""),
+    TIWI_GPRS_PIN(120, ""),
+    TIWI_FTP_UPLOAD_URL(121, "tiwiftp.tiwi.com"),
+    TIWI_FTP_USER_ID(122, "tiwibox"),
+    TIWI_FTP_PASSWORD(123, "Phohthed8sheighoh"),
+    TIWI_SEND_SUB_THRESH_CRASH(124, "1"),
+    TIWI_ENABLE_CRASH_TRACE(125),
+    TIWI_FORCE_MSP_FOR_IGN(126, "0"),
+    TIWI_EMU_UNAVAIL_WAIT_COUNT(127),
+    TIWI_AUDIO_FOLDER(128, "0"),
+    TIWI_SERIAL_NUMBER(129),
+    TIWI_CRASH_DATA_ENABLED(130),
+    TIWI_NO_DRIVER_ENABLED(132, "0"),
+    TIWI_CRASH_DATA(133, "1"),
+    TIWI_STAT_FREQ(135, "7"),
+    TIWI_AVG_SPD_AGMT(136, "20"),
+    TIWI_IND_SPD_AGMT(137, "10"),
+    TIWI_AUTOLOGOUT_SECONDS(138, "0"),
+    TIWI_ST_ENV_PADDING(139, "300"),
+    TIWI_ST_MAX_ANGLE(140, "60"),
+    TIWI_ST_WINDOW(141, "250"),
+    TIWI_AGPS_ENABLE(142, "1"),
+    TIWI_AGPS_PORT(143, "37433"),
+    TIWI_AGPS_URL(144, "symphony-usa.eride.com"),
+    TIWI_AGPS_REQ_INT(145, "10800"),
+    TIWI_AGPS_NUM_DLD(146, "2"),
+    TIWI_AGPS_NUM_CONN(147, "3"),
+    TIWI_NODRIVER_AUDIO_OVERRIDE(148, "0"),
+    TIWI_ROLLOVER_FILTER(149, "60"),
+    TIWI_DTC_THRESHOLD(150, "2"),
+    TIWI_GPS_DBG_INVL(152, "5"),
+    TIWI_FILTER_MAX_SPEED(154, "140"),
+    TIWI_RFID_ENABLE(155, "1"),
+    TIWI_RFID_SPEED_THRESH(156, "0"),
+    TIWI_HARDACCEL_SLIDER(157, "875 40 99"),
+    TIWI_HARDBRAKE_SLIDER(158, "2250 100 99"),
+    TIWI_HARDTURN_SLIDER(159, "999 52 99"),
+    TIWI_HARDBUMP_SLIDER(160, "1000 50 99 200"),
+    TIWI_CRASH_DELTAX(161, "314"),
+    TIWI_CRASH_DELTAY(162, "311"),
+    TIWI_CRASH_DELTAZ(163, "450"),
+    TIWI_CLEAR_SBSCHECK(164, "48"),
+    TIWI_DMM_ORIENT_STATUS(165),
+    TIWI_DMM_TEMP_U(166),
+    TIWI_DMM_TEMP_V(167),
+    TIWI_DMM_TEMP_W(168),
+    TIWI_INPUT_1_FUNCTION(169, "0"),
+    TIWI_INPUT_2_FUNCTION(170, "0"),
+    TIWI_INPUT_3_FUNCTION(171, "0"),
+    TIWI_GEN_INPUT_EVENTS(172, "0"),
+    TIWI_SIM_CCID(174),
+    TIWI_WHITELIST_ENABLED(175, "0"),
+    TIWI_SMTLS_STATE_DIAG(176, "0"),
+    
     KILL_COMMUNICATION( 1000, "0" ),
     MCM_ID( 1001, "MCM100343" ),
     VEHICLE_ID( 1002, "12578" ),
@@ -309,58 +481,60 @@ public enum WaysmartProps implements DeviceProperties {
     U_NUMERATOR( 1300 ),
     V_NUMERATOR( 1301 ),
     WITNESS_BOOTLOADER_REV( 1302 ),
-    STATIC,
+    STATIC;
 
     ;
 
-    private Integer value;
+    private int code;
     private String setting;
 
+    private static Map<Integer, DeviceProps> lookupByCode = new HashMap<Integer, DeviceProps>();
     
-    private WaysmartProps(){
-        
-    }
-    
-    private WaysmartProps(Integer value){
-        this.value=value;
-    }
-    
-    private WaysmartProps(Integer value, String setting) {
-        this.value = value;
-        this.setting=setting;
-    }
-
-    public Integer getValue() {
-        return value;
-    }
-    
-    public String getDefaultSetting(){
-        return setting;
-    }
-
-    private static HashMap<Integer, WaysmartProps> lookupByCode = new HashMap<Integer, WaysmartProps>();
+    private static Map<DeviceProps, String> waysmart = new HashMap<DeviceProps, String>();
+    private static Map<DeviceProps, String> tiwiPro = new HashMap<DeviceProps, String>();
 
     static {
-        for (WaysmartProps p : EnumSet.allOf(WaysmartProps.class)) {
+        for (DeviceProps p : EnumSet.allOf(DeviceProps.class)) {
             lookupByCode.put(p.getValue(), p);
-        }
-    }
-    
-    public WaysmartProps valueOf(Integer value) {
-        return lookupByCode.get(value);
-    }
-    
-    private static HashMap<WaysmartProps, String> propertiesFile = new HashMap<WaysmartProps, String>();
-
-    static {
-        for (WaysmartProps p : EnumSet.allOf(WaysmartProps.class)) {
             if (p.getDefaultSetting() != null){
-                propertiesFile.put(p, p.getDefaultSetting());
+                if (p.toString().startsWith("TIWI")){
+                    tiwiPro.put(p, p.getDefaultSetting());
+                } else {
+                    waysmart.put(p, p.getDefaultSetting());
+                }
             }
         }
     }
 
-    public HashMap<WaysmartProps, String> getDefaultProps() {
-        return propertiesFile;
+    private DeviceProps(){}
+    
+    private DeviceProps(int c) {
+        code = c;
     }
+
+    private DeviceProps(Integer code, String setting) {
+        this(code);
+        this.setting = setting;
+    }
+
+    public static Map<DeviceProps, String> getTiwiDefaults() {
+        return tiwiPro;
+    }
+    
+    public static Map<DeviceProps, String> getWaysmartDefaults(){
+        return waysmart;
+    }
+
+    public String getDefaultSetting() {
+        return setting;
+    }
+
+    public Integer getValue() {
+        return code;
+    }
+    
+    public static DeviceProps valueOf(Integer code){
+        return lookupByCode.get(code);
+    }
+
 }

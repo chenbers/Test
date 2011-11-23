@@ -2,6 +2,6 @@ package com.inthinc.pro.automation.interfaces;
 
 public interface DeviceTypes {
     
-    public Integer getValue();
+    public Integer getCode();
 
 }

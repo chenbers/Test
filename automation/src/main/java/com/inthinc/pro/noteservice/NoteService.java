@@ -156,7 +156,7 @@ public class NoteService {
     }
     
 
-    public void insertNote(Map<String, String> attribs)
+    public MutationResult insertNote(Map<String, String> attribs)
     {
         try {
         	Keyspace keyspaceOperator = HFactory.createKeyspace(keyspaceName, cluster);
@@ -178,10 +178,12 @@ public class NoteService {
             indexMutator.addInsertion(deviceId, "deviceNoteTimeTypeIndex", HFactory.createColumn(Composite.toByteBuffer(noteTime, noteType), noteId, byteBufferSerializer, uuidSerializer));
             indexMutator.addInsertion(deviceId, "deviceNoteTypeTimeIndex", HFactory.createColumn(Composite.toByteBuffer(noteType, noteTime), noteId, byteBufferSerializer, uuidSerializer));
             mr = indexMutator.execute();
+            return mr;
         } catch (Throwable e) {
 			logger.debug("EXCEPTION INSERTING NOTE: " + e);
             e.printStackTrace();
         }
+        return null;
     }
 
     public void insertRaw(long deviceId, byte[] in, byte[] out)

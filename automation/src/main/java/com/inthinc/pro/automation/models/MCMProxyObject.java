@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.log4j.Level;
 
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
@@ -14,6 +17,7 @@ import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
+import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.noteservice.NoteService;
@@ -22,6 +26,9 @@ import com.inthinc.pro.noteservice.NoteService;
 public class MCMProxyObject implements MCMProxy{
     
     private MCMProxy proxy;
+
+
+    private Addresses server;
 
 
     public static boolean regularNote = true;
@@ -37,6 +44,7 @@ public class MCMProxyObject implements MCMProxy{
     }
     
     public MCMProxyObject(Addresses server) {
+        this.server = server;
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
         MasterTest.print("MCM Server is " + server, Level.DEBUG);
         proxy = getHessian.getMcmProxy(server);
@@ -84,8 +92,9 @@ public class MCMProxyObject implements MCMProxy{
                 Map<String, String> temp = ((TiwiNote)note).packageToMap();
                 temp.put("32900", drivers.get(mcmID).toString());
                 try {
-                    notes.insertNote(temp);
-                    DeviceStatistics.addCall();
+                    if (notes.insertNote(temp) != null){
+                        DeviceStatistics.addCall();
+                    }
                 } catch (Exception e) {
                     MasterTest.print(StackToString.toString(e));
                 }
@@ -244,11 +253,23 @@ public class MCMProxyObject implements MCMProxy{
         return reply;
     }
     
-    public List<Map<String, Object>> notews(String mcmID, int connectType,
+    public List<Map<String, Object>> notews(String mcmID, Integer connectType,
             List<DeviceNote> noteList, boolean extra){
+        
+        HTTPCommands http = new HTTPCommands();
+        
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
         for (DeviceNote note : noteList){
-            temp.add(note.Package());
+            MasterTest.print(server.getPortalUrl());
+            HttpPost method = new HttpPost("http://" + server.getPortalUrl() + ":" + server.getWaysPort() + "/gprs_wifi/gprs.do?mcm_id=" +
+            		""+mcmID+"&commType="+connectType+"&sat_cmd="+note.getType().getCode()+"&event_time="+note.getTime());
+            MultipartEntity entity = new MultipartEntity();
+            entity.addPart("file", new ByteArrayBody(note.Package(), "temp"));
+            method.setEntity(entity);
+            http.httpRequest(method);
+            
+            
+//            temp.add(note.Package());
             printNote(note);
         }
         return note(mcmID, temp);

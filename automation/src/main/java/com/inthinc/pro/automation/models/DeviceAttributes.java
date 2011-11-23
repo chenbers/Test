@@ -4,49 +4,35 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 
-import com.inthinc.pro.automation.device_emulation.NoteManager.AttrTypes;
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+public class DeviceAttributes implements Iterable<DeviceAttrs>{
 
-public class DeviceAttributes implements Iterable<DeviceTypes>{
-
-    private final static Logger logger = Logger.getLogger(DeviceAttributes.class);
-    
-    private Map<DeviceTypes, Object> attrs;
-    private Map<DeviceTypes, Integer> size;
+    private Map<DeviceAttrs, Object> attrs;
 
     
     public DeviceAttributes(){
-        attrs = new HashMap<DeviceTypes, Object>();
-        size = new HashMap<DeviceTypes, Integer>();
+        attrs = new HashMap<DeviceAttrs, Object>();
     }
     
-    public DeviceAttributes addAttribute(DeviceTypes key, Object value, Integer byteSize){
+    public DeviceAttributes addAttribute(DeviceAttrs key, Object value){
         attrs.put(key, value);
-        this.size.put(key, byteSize);
-        logger.debug(attrs);
-        logger.debug(this.size);
         return this;
     }
     
-    public DeviceAttributes addAttribute(DeviceTypes key, Integer value){
-        return addAttribute(key, value, AttrTypes.getType(key).getSize());
+    public DeviceAttributes addAttribute(DeviceAttrs key){
+        return addAttribute(key);
     }
     
     @Override
-    public Iterator<DeviceTypes> iterator(){
+    public Iterator<DeviceAttrs> iterator(){
         return attrs.keySet().iterator();
     }
     
-    public Object getValue(DeviceTypes key){
+    public Object getValue(DeviceAttrs key){
         return attrs.get(key);
     }
-    
-    public Integer getSize(DeviceTypes key){
-        return size.get(key);
-    }
-    
+
     @Override
     public String toString(){
         return attrs.toString();
