@@ -29,6 +29,7 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.security.jsftaglib.SecurityJsfUtils;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
@@ -958,6 +959,16 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     }
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+    public boolean isUserInRoles(List<String> allowedRoles) {
+        boolean userInRole = false;
+        allowedRoles.add("ROLE_ADMIN");//Admin should see everything
+        for(String role: allowedRoles){
+            if(SecurityJsfUtils.isUserInRole(role))
+                return true;
+        }
+        return userInRole;
+
     }
     
 
