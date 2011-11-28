@@ -59,8 +59,11 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.model.phone.CellStatusType;
+import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
+import com.inthinc.pro.security.jsftaglib.SecurityJsfUtils;
+import com.inthinc.pro.security.userdetails.ProUser;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
@@ -724,6 +727,40 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         } 
         return valid;
     }
+    
+    public boolean isUserInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_USERSACCESS_USERINFO"); 
+        return !isUserInRoles(allowedRoles);
+    }
+    
+    public boolean isDriverInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_USERSACCESS_DRIVERINFO");
+        return !isUserInRoles(allowedRoles);
+    }
+    
+    public boolean isRfidInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_USERSACCESS_RFIDINFO");
+        return !isUserInRoles(allowedRoles);
+    }
+    public boolean isEmployeeInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_USERSACCESS_EMPLOYEEINFO");
+        return !isUserInRoles(allowedRoles);
+    }
+    public boolean isLoginInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_USERSACCESS_LOGININFO");
+        return !isUserInRoles(allowedRoles);
+    }
+    public boolean isNotificationsInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_USERSACCESS_NOTIFICATIONSINFO");
+        return !isUserInRoles(allowedRoles);
+    }
+    
     @Override
     protected boolean validateSaveItem(PersonView person) {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -950,7 +987,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (getGroupHierarchy().getTopGroup().getAccountID().equals(acctID)) {
             return Boolean.TRUE;
         }
-        return Boolean.FALSE;
+        return Boolean.FALSE; 
     }
 
     @Override
