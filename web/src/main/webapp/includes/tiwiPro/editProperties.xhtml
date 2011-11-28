@@ -19,7 +19,7 @@
 					</ui:include>
                   </td>
                   <td>
-                    <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="editVehicle-type" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+                    <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="editVehicle-type" onchange="checkMultiple(this)" converter="SimpleBeanConverter" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                       <f:selectItems value="#{vehiclesBean.tiwiProTypes}" />
                     </h:selectOneMenu>
                   </td>
@@ -38,7 +38,7 @@
                 <td>
                   <h:message for="editVehicle-ephone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" >
                   </h:message>
-                  <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.ephone}" id="editVehicle-ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
+                  <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.ephone}" id="editVehicle-ephone" onchange="checkMultiple(this)" styleClass="text" size="30" disabled="#{vehiclesBean.vehicleInfoDisabled}"
                     maxlength="22">  
                   </h:inputText>
                 </td>
@@ -59,7 +59,7 @@
                              value="#{vehiclesBean.item.editableVehicleSettings.autoLogoffSlider}" 
                              showToolTip="false" showBoundaryValues="false" 
                              handleSelectedClass="handleSelected"
-                             showInput="false" minValue="0" maxValue="30" 
+                             showInput="false" minValue="0" maxValue="30" disabled="#{vehiclesBean.vehicleInfoDisabled}"
                              onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('edit-form:autologoffLabel').innerHTML = getAutologoffLabel(this.value);adminSetCheckbox(this.mainTable.id,'style','autologoff','#{context}-update_','')"
                              onchange="if (checkMultiple) checkMultiple(this.mainTable.id);document.getElementById('edit-form:autologoffLabel').innerHTML = getAutologoffLabel(this.value);adminSetCheckbox(this.mainTable.id,'autologoff','#{context}-update_','')" >
 

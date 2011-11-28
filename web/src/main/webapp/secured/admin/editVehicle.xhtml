@@ -92,7 +92,7 @@
                                 </td>
                                 <td>
                                   <rich:message id="vin-message" for="editVehicle-vin" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.VIN}" id="editVehicle-vin" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.VIN}" id="editVehicle-vin" onchange="checkMultiple(this)" styleClass="text" size="30" disabled="#{vehiclesBean.vehicleInfoDisabled}"
                                     maxlength="17" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
                                     <f:validator validatorId="com.inthinc.pro.validators.VINValidator" />
                                     <f:attribute name="regex" value="[A-Za-z0-9]+" />
@@ -116,7 +116,7 @@
                                 
                                 <td>
                                   <rich:message for="editVehicle-make" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.make}" id="editVehicle-make" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.make}" id="editVehicle-make" onchange="checkMultiple(this)" styleClass="text" size="30" disabled="#{vehiclesBean.vehicleInfoDisabled}"
                                     maxlength="22" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
                                 </td>
                               </tr>
@@ -132,7 +132,7 @@
                                 </td>
                                 <td>
                                   <rich:message for="editVehicle-model" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.model}" id="editVehicle-model" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.model}" id="editVehicle-model" onchange="checkMultiple(this)" styleClass="text" size="30" disabled="#{vehiclesBean.vehicleInfoDisabled}"
                                     maxlength="22" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
                                 </td>
                               </tr>
@@ -147,7 +147,7 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.year}" id="editVehicle-year" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.year}" id="editVehicle-year" onchange="checkMultiple(this)" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                                     <f:selectItems value="#{vehiclesBean.years}" />
                                   </h:selectOneMenu>
                                 </td>
@@ -165,7 +165,7 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.item.color}" id="editVehicle-color" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="14" />
+                                  <h:inputText value="#{vehiclesBean.item.color}" id="editVehicle-color" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="14" disabled="#{vehiclesBean.vehicleInfoDisabled}" />
                                 </td>
                               </tr>
                               <tr>
@@ -181,7 +181,7 @@
                                 <td>
                                   <rich:message for="editVehicle-weight" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.weight}" id="editVehicle-weight" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="9"
-                                    converterMessage="#{messages.editVehicle_weightFormat}" validatorMessage="#{messages.editVehicle_weightFormat}">
+                                    converterMessage="#{messages.editVehicle_weightFormat}" validatorMessage="#{messages.editVehicle_weightFormat}" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                                     <f:validateLongRange minimum="1"  />
                                     <f:converter converterId="LbsToKgConverter"/>
                                   </h:inputText>
@@ -191,7 +191,7 @@
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editVehicle_license}" /></td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.item.license}" id="editVehicle-license" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" />
+                                  <h:inputText value="#{vehiclesBean.item.license}" id="editVehicle-license" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" disabled="#{vehiclesBean.vehicleInfoDisabled}" />
                                 </td>
                               </tr>
                               </ui:fragment>
@@ -207,7 +207,7 @@
                                 </td>
                                 <td>
                                   <rich:message for="editVehicle-state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:selectOneMenu value="#{vehiclesBean.item.state}" id="editVehicle-state" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.state}" id="editVehicle-state" onchange="checkMultiple(this)" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                                     <f:selectItem itemLabel="" />
 		                             <f:converter  converterId="StateConverter"/>
                                     <f:selectItems value="#{vehiclesBean.states}" />
@@ -229,7 +229,7 @@
                                 <td>                                       
                                   <rich:message for="editVehicle-odometer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.odometer}" id="editVehicle-odometer" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="8"
-                                    converterMessage="#{messages.editVehicle_odometerFormat}" validatorMessage="#{messages.editVehicle_odometerFormat}">
+                                    converterMessage="#{messages.editVehicle_odometerFormat}" validatorMessage="#{messages.editVehicle_odometerFormat}" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                                     <f:validateLongRange minimum="1"  />
                                     <f:converter converterId="MilesToKilometersConverterInput"/>
                                   </h:inputText>
@@ -263,7 +263,7 @@
                                 </td>
                                 <td>
                                   <rich:message for="editVehicle-name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.name}" id="editVehicle-name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.name}" id="editVehicle-name" onchange="checkMultiple(this)" styleClass="text" size="30" disabled="#{vehiclesBean.profileInfoDisabled}"
                                    style="text-transform: uppercase;" maxlength="20" converter="ForceUpperCaseConverter" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
                                 </td>
                               </tr>
@@ -280,7 +280,7 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="editVehicle-status" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="editVehicle-status" onchange="checkMultiple(this)" disabled="#{vehiclesBean.profileInfoDisabled}">
                                     <f:selectItems value="#{vehiclesBean.statuses}"/>
                                   </h:selectOneMenu>
                                 </td>
@@ -305,7 +305,7 @@
                                 <td>
                                 <rich:message for="editVehicle-groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 		  	 					<h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="editVehicle-groupID" style="width:200px;float:none;"
-										required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}">
+										required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" disabled="#{vehiclesBean.assignmentInfoDisabled}">
         	                        <a4j:support event="onchange" reRender="editVehicle-driverID,chooseDriverForm:chooseDriverTable" limitToList="true" 
         	                        		ajaxSingle="true" oncomplete="checkMultiple('edit-form:editVehicle-groupID')" />
  		    	        			<f:selectItem itemLabel="" />
@@ -322,7 +322,7 @@
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
                                 <td>
-                                  <h:panelGroup rendered="#{not empty vehiclesBean.item.deviceID}" id="driverID">
+                                  <h:panelGroup rendered="#{not empty vehiclesBean.item.deviceID and  not vehiclesBean.assignmentInfoDisabled}" id="driverID">
                                     <h:outputText value="#{vehiclesBean.item.driver.person.fullName}" /><h:outputText value=" " />
                                     <a id="editVehicle-chooseDriver" href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
                                   </h:panelGroup>
@@ -423,11 +423,13 @@
 	                             <ui:param name="cmd" value="#{vehiclesBean.item.wirelineKillMotor}" />
     	                         <ui:param name="label" value="#{messages.wirelineKillMotor}" />
         	                     <ui:param name="id" value="wirelineKillMotor" />
+        	                     <ui:param name="disabled" value="#{vehiclesBean.wirelineInfoDisabled}}" />
                              </ui:include>
 	                         <ui:include src="../../includes/admin/forwardCommandRow.xhtml">
 	                             <ui:param name="cmd" value="#{vehiclesBean.item.wirelineDoorAlarm}" />
     	                         <ui:param name="label" value="#{messages.wirelineDoorAlarm}" />
         	                     <ui:param name="id" value="wirelineDoorAlarm" />
+        	                     <ui:param name="disabled" value="#{vehiclesBean.wirelineInfoDisabled}}" />
                              </ui:include>
                       	</table>
                       </h:panelGroup>

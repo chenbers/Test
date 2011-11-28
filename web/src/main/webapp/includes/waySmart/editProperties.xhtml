@@ -18,7 +18,7 @@
 					</ui:include>
                   </td>
                   <td>
-                    <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="editVehicle-type" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+                    <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="editVehicle-type" onchange="checkMultiple(this)" converter="SimpleBeanConverter" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                       <f:selectItems value="#{vehiclesBean.waySmartTypes}" />
                     </h:selectOneMenu>
                   </td>
@@ -26,12 +26,12 @@
          <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
             <tr>
               <td width="100" valign="top">
-                <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-DOT" value="#{vehiclesBean.updateField['dot']}" />
+                <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-DOT" value="#{vehiclesBean.updateField['dot']}" disabled="#{vehiclesBean.vehicleInfoDisabled}"/>
                 <h:outputText value="#{messages.editVehicle_DOT}"/>
               </td>
               
               <td>                     
-				<h:selectOneMenu value="#{vehiclesBean.item.dotVehicleType}" id="editVehicle-DOT" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+				<h:selectOneMenu value="#{vehiclesBean.item.dotVehicleType}" id="editVehicle-DOT" onchange="checkMultiple(this)" converter="SimpleBeanConverter" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                       <f:selectItems value="#{vehiclesBean.dotTypes}" />
 				</h:selectOneMenu>
               </td>
@@ -39,13 +39,13 @@
         </ui:fragment>
    <tr>
      <td width="100" valign="top">
-       <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-ifta" value="#{vehiclesBean.updateField['ifta']}" />
+       <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-ifta" value="#{vehiclesBean.updateField['ifta']}" disabled="#{vehiclesBean.vehicleInfoDisabled}"/>
        <h:outputText value="#{messages.editVehicle_IFTA}"/>
      </td>
      <td>
      	<h:selectBooleanCheckbox
 		 	title="ifta" id="editVehicle-ifta" onchange="checkMultiple(this)" 
-		  	value="#{vehiclesBean.item.ifta}" >
+		  	value="#{vehiclesBean.item.ifta}" disabled="#{vehiclesBean.vehicleInfoDisabled}" >
 		</h:selectBooleanCheckbox>
      </td>
    </tr>

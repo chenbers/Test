@@ -85,7 +85,7 @@
                                        <h:outputText value="#{messages.WS820_maxSpeedSlider}" converter="MphToKphLabelConverter"/>
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
+                                    <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
                                           id="speedLimit" value="#{vehiclesBean.item.editableVehicleSettings.self.speedLimitInteger}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
@@ -102,7 +102,7 @@
                                        <h:outputText value="#{messages.WS820_speedBuffer}" converter="MphToKphLabelConverter"/>
                                       </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
+                                    <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
                                           id="speedBuffer" value="#{vehiclesBean.item.editableVehicleSettings.self.speedBufferInteger}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
@@ -119,7 +119,7 @@
                                        <h:outputText value="#{messages.WS820_severeSpeeding}" converter="MphToKphLabelConverter"/>
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px;">
-                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
+                                    <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
                                           id="severeSpeed" value="#{vehiclesBean.item.editableVehicleSettings.self.severeSpeedInteger}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
@@ -167,7 +167,7 @@
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <rich:inputNumberSlider id="#{context}-hardAcceleration" 
-                                             disabled="#{disabled}" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
                                              value="#{vehiclesBean.item.editableVehicleSettings.hardAcceleration}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
@@ -207,7 +207,7 @@
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <rich:inputNumberSlider id="#{context}-hardBrake" 
-                                             disabled="#{disabled}" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
                                              value="#{vehiclesBean.item.editableVehicleSettings.hardBrake}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
@@ -247,7 +247,7 @@
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <rich:inputNumberSlider id="#{context}-hardVertical" 
-                                             disabled="#{disabled}" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
                                              value="#{vehiclesBean.item.editableVehicleSettings.hardVertical}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
@@ -287,7 +287,7 @@
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <rich:inputNumberSlider id="#{context}-hardTurn" 
-                                             disabled="#{disabled}" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
                                              value="#{vehiclesBean.item.editableVehicleSettings.hardTurn}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"

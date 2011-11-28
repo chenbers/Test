@@ -24,7 +24,7 @@
         <td>
         	<rich:message for="wireline_killMotorPasscode" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
             <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.killMotorPasscode}" id="wireline_killMotorPasscode" onchange="checkMultiple(this)" styleClass="text" size="6"
-                             maxlength="4" validatorMessage="#{messages.wirelineInvalidPasscode}">
+                             maxlength="4" validatorMessage="#{messages.wirelineInvalidPasscode}" disabled="#{vehiclesBean.wirelineInfoDisabled}">
 					<f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
 	                <f:attribute name="regex" value="[1-9]{1}[0-9]{3}" />
 			</h:inputText>
@@ -43,7 +43,7 @@
         <td>
         	<rich:message for="wireline_doorAlarmPasscode" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
             <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.doorAlarmPasscode}" id="wireline_doorAlarmPasscode" 
-            				onchange="checkMultiple(this)" styleClass="text" size="6"
+            				onchange="checkMultiple(this)" styleClass="text" size="6" disabled="#{vehiclesBean.wirelineInfoDisabled}"
                             maxlength="4" validatorMessage="#{messages.wirelineInvalidPasscode}">
 					<f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
 	                <f:attribute name="regex" value="[1-9]{1}[0-9]{3}" />
@@ -62,7 +62,7 @@
 		</td>
         <td>
 			<rich:inputNumberSpinner value="#{vehiclesBean.item.editableVehicleSettings.autoArmTime}" id="wireline_autoArm" step="5"
-    				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;background:white;" 
+    				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;background:white;" disabled="#{vehiclesBean.wirelineInfoDisabled}"
     				minValue="0" maxValue="255" enableManualInput="true" validatorMessage="#{messages.wirelineInvalidAutoArmMin}"
     				onchange="checkMultiple('edit-form:wireline_autoArm')">
     				</rich:inputNumberSpinner>
