@@ -1,16 +1,24 @@
 package com.inthinc.pro.reports.performance;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.TimeZone;
 
-import org.junit.Ignore;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
@@ -18,6 +26,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 import com.inthinc.pro.reports.performance.model.PayrollData;
@@ -27,7 +36,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
 
     public static final String DATA_PATH = "violations/";
     public static final String testCaseName = "vtest_01H1_07012010_07072010"; 
-    
+
     static PayrollData payrollDataExpectedData[] = {
             new PayrollData("Norman Wells->Norman Wells - WS","123 Norman Wells - WS, City, UT, 12345",0,"Elias,  Calvin","01790856",new Date(1277964000000l),HOSStatus.OFF_DUTY,1440),
             new PayrollData("Norman Wells->Norman Wells - WS","123 Norman Wells - WS, City, UT, 12345",0,"Elias,  Calvin","01790856",new Date(1278050400000l),HOSStatus.OFF_DUTY,1440),
@@ -379,214 +388,224 @@ public class PayrollCriteriaTest extends BaseUnitTest {
             new PayrollData("Norman Wells->Norman Wells - WS","123 Norman Wells - WS, City, UT, 12345",7,"Venkataraman,  Ramanathan","02707354",new Date(1278482400000l),HOSStatus.OFF_DUTY,1440),
             //TODO:JWIMMER: add a row to check a total time%15 != 0
     };
-
-    String tabularPayrollDetailsExpectedData[][] = {
-            {"Elias,  Calvin", "07/01/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Elias,  Calvin", "07/02/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Elias,  Calvin", "07/03/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Elias,  Calvin", "07/04/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Elias,  Calvin", "07/05/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Elias,  Calvin", "07/06/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Elias,  Calvin", "07/07/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Francey,  David ", "07/01/2010", "16:30", "00:00", "00:00", "00:45", "06:45", "07:30",   },
-            {"Francey,  David ", "07/02/2010", "22:30", "00:00", "00:00", "00:15", "01:15", "01:30",   },
-            {"Francey,  David ", "07/03/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Francey,  David ", "07/04/2010", "12:15", "00:00", "00:00", "02:45", "09:00", "11:45",   },
-            {"Francey,  David ", "07/05/2010", "14:00", "00:00", "00:00", "04:00", "06:00", "10:00",   },
-            {"Francey,  David ", "07/06/2010", "13:30", "00:00", "00:00", "01:15", "09:15", "10:30",   },
-            {"Francey,  David ", "07/07/2010", "21:15", "00:00", "00:00", "00:45", "02:00", "02:45",   },
-            {"Giem,  Scott", "07/01/2010", "15:45", "00:00", "00:00", "03:30", "04:45", "08:15",   },
-            {"Giem,  Scott", "07/02/2010", "14:30", "00:00", "00:00", "00:00", "09:30", "09:30",   },
-            {"Giem,  Scott", "07/03/2010", "16:45", "00:00", "00:00", "01:00", "06:15", "07:15",   },
-            {"Giem,  Scott", "07/04/2010", "12:15", "00:00", "00:00", "00:30", "11:15", "11:45",   },
-            {"Giem,  Scott", "07/05/2010", "14:15", "00:00", "00:00", "00:00", "09:45", "09:45",   },
-            {"Giem,  Scott", "07/06/2010", "12:45", "00:00", "00:00", "00:45", "10:30", "11:15",   },
-            {"Giem,  Scott", "07/07/2010", "13:15", "00:00", "00:00", "00:45", "10:00", "10:45",   },
-            {"Harris,  Eugene", "07/01/2010", "15:15", "00:00", "00:00", "00:30", "08:15", "08:45",   },
-            {"Harris,  Eugene", "07/02/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Harris,  Eugene", "07/03/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Harris,  Eugene", "07/04/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Harris,  Eugene", "07/05/2010", "23:45", "00:00", "00:00", "00:15", "00:00", "00:15",   },
-            {"Harris,  Eugene", "07/06/2010", "08:00", "00:00", "00:00", "00:45", "15:15", "16:00",   },
-            {"Harris,  Eugene", "07/07/2010", "16:00", "00:00", "00:00", "00:00", "08:00", "08:00",   },
-            {"Johnson,  Jack ", "07/01/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Johnson,  Jack ", "07/02/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Johnson,  Jack ", "07/03/2010", "23:15", "00:00", "00:00", "00:15", "00:30", "00:45",   },
-            {"Johnson,  Jack ", "07/04/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Johnson,  Jack ", "07/05/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Johnson,  Jack ", "07/06/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Johnson,  Jack ", "07/07/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Pierrot,  Collin", "07/01/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Pierrot,  Collin", "07/02/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Pierrot,  Collin", "07/03/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Pierrot,  Collin", "07/04/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Pierrot,  Collin", "07/05/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Pierrot,  Collin", "07/06/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Pierrot,  Collin", "07/07/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Szpuniarski,  James", "07/01/2010", "15:30", "00:00", "00:00", "00:45", "07:45", "08:30",   },
-            {"Szpuniarski,  James", "07/02/2010", "13:45", "00:00", "00:00", "01:30", "08:45", "10:15",   },
-            {"Szpuniarski,  James", "07/03/2010", "16:30", "00:00", "00:00", "00:15", "07:15", "07:30",   },
-            {"Szpuniarski,  James", "07/04/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Szpuniarski,  James", "07/05/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Szpuniarski,  James", "07/06/2010", "14:15", "00:00", "00:00", "00:15", "09:30", "09:45",   },
-            {"Szpuniarski,  James", "07/07/2010", "11:15", "00:00", "00:00", "01:00", "11:45", "12:45",   },
-            {"Venkataraman,  Ramanathan", "07/01/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Venkataraman,  Ramanathan", "07/02/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Venkataraman,  Ramanathan", "07/03/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Venkataraman,  Ramanathan", "07/04/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Venkataraman,  Ramanathan", "07/05/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Venkataraman,  Ramanathan", "07/06/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Venkataraman,  Ramanathan", "07/07/2010", "24:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
+    static TimeZone timeZone = TimeZone.getTimeZone("US/Mountain");
+    public static HOSRecord[] dstRecs = {
+                                                                                                            // daylight savings ends on 11/06/2011 at 2am so extra hour that day
+            new HOSRecord(10, getUTCDate("11/05/2011 23:00:00", timeZone), timeZone, HOSStatus.DRIVING),   // 1 hr driving on 11/5 and 6 hrs on 11/6 
+            new HOSRecord(10, getUTCDate("11/06/2011 04:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 23:00:00", timeZone), timeZone, HOSStatus.DRIVING),  
+            new HOSRecord(10, getUTCDate("11/07/2011 01:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
     };
-    String tabularPayrollSignoffExpectedData[][] = {
-         
-            {"Giem,  Scott", "07/01/2010", "15:45", "00:00", "00:00", "03:30", "04:45", "08:15",   },
-            {"Giem,  Scott", "07/02/2010", "14:30", "00:00", "00:00", "00:00", "09:30", "09:30",   },
-            {"Giem,  Scott", "07/03/2010", "16:45", "00:00", "00:00", "01:00", "06:15", "07:15",   },
-            {"Giem,  Scott", "07/04/2010", "12:15", "00:00", "00:00", "00:30", "11:15", "11:45",   },
-            {"Giem,  Scott", "07/05/2010", "14:15", "00:00", "00:00", "00:00", "09:45", "09:45",   },
-            {"Giem,  Scott", "07/06/2010", "12:45", "00:00", "00:00", "00:45", "10:30", "11:15",   },
-            {"Giem,  Scott", "07/07/2010", "13:15", "00:00", "00:00", "00:45", "10:00", "10:45",   },
-            
-    };    
-    String tabularPayrollSummaryExpectedData[][] = {
-            {"Elias,  Calvin", "168:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Francey,  David ", "124:00", "00:00", "00:00", "09:45", "34:15", "44:00",   },
-            {"Giem,  Scott", "99:30", "00:00", "00:00", "06:30", "62:00", "68:30",   },
-            {"Harris,  Eugene", "135:00", "00:00", "00:00", "01:30", "31:30", "33:00",   },
-            {"Johnson,  Jack ", "167:15", "00:00", "00:00", "00:15", "00:30", "00:45",   },
-            {"Pierrot,  Collin", "168:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Szpuniarski,  James", "119:15", "00:00", "00:00", "03:45", "45:00", "48:45",   },
-            {"Venkataraman,  Ramanathan", "168:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
+    public static Map<HOSStatus, Integer> dstExpectedMin = new HashMap<HOSStatus, Integer> ();
+    static {
+            dstExpectedMin.put(HOSStatus.OFF_DUTY, 1140);
+            dstExpectedMin.put(HOSStatus.DRIVING, 360);
+    };
+    public static Map<HOSStatus, Integer> dstExpectedCompMin = new HashMap<HOSStatus, Integer> ();
+    static {
+        dstExpectedCompMin.put(HOSStatus.ON_DUTY, 360);
+    };
+    public String dstExpectedTabularData[] = {
+            "","11/06/2011","19:00","00:00","00:00","06:00","00:00","06:00"
+    };
+    public String dstExpectedSummTabularData[] = {
+            "","19:00","00:00","00:00","06:00","00:00","06:00"
     };
     
+    public static HOSRecord[] allStatusRecs = {
+            new HOSRecord(10, getUTCDate("11/05/2011 23:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 04:00:00", timeZone), timeZone, HOSStatus.DRIVING),  
+            new HOSRecord(10, getUTCDate("11/06/2011 04:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 05:00:00", timeZone), timeZone, HOSStatus.ON_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 05:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 06:00:00", timeZone), timeZone, HOSStatus.ON_DUTY_OCCUPANT),  
+            new HOSRecord(10, getUTCDate("11/06/2011 06:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 07:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY_OCCUPANT),  
+            new HOSRecord(10, getUTCDate("11/06/2011 07:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 08:00:00", timeZone), timeZone, HOSStatus.TRAVELTIME_OCCUPANT),  
+            new HOSRecord(10, getUTCDate("11/06/2011 08:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 09:00:00", timeZone), timeZone, HOSStatus.SLEEPER),  
+            new HOSRecord(10, getUTCDate("11/06/2011 09:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 10:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY_AT_WELL),  
+            new HOSRecord(10, getUTCDate("11/06/2011 10:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+            new HOSRecord(10, getUTCDate("11/06/2011 11:00:00", timeZone), timeZone, HOSStatus.HOS_PERSONALTIME),  
+            new HOSRecord(10, getUTCDate("11/06/2011 11:05:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+    };
+    public static Map<HOSStatus, Integer> allStatusExpectedMin = new HashMap<HOSStatus, Integer> ();
+    static {
+        allStatusExpectedMin.put(HOSStatus.OFF_DUTY, 1470);
+        allStatusExpectedMin.put(HOSStatus.DRIVING, 5);
+        allStatusExpectedMin.put(HOSStatus.SLEEPER, 5);
+        allStatusExpectedMin.put(HOSStatus.OFF_DUTY_AT_WELL, 5);
+        allStatusExpectedMin.put(HOSStatus.ON_DUTY, 15);
+    };
+    public static Map<HOSStatus, Integer> allStatusExpectedCompMin = new HashMap<HOSStatus, Integer> ();
+    static {
+        allStatusExpectedCompMin.put(HOSStatus.ON_DUTY, 30);
+    };
+    public String allStatusExpectedTabularData[] = {
+            "","11/06/2011","24:30","00:05","00:05","00:05","00:15","00:30"
+    };
+    public String allStatusExpectedSummTabularData[] = {
+            "","24:30","00:05","00:05","00:05","00:15","00:30"
+    };
 
-    @Test
-    @Ignore
-    public void gainDetailsTestCases() {
-        HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
+    public static HOSRecord[] roundRecs = {
+        new HOSRecord(10, getUTCDate("11/05/2011 23:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),   // 1 hr driving on 11/5 and 6 hrs on 11/6 
+        new HOSRecord(10, getUTCDate("11/06/2011 04:00:00", timeZone), timeZone, HOSStatus.DRIVING),  
+        new HOSRecord(10, getUTCDate("11/06/2011 04:29:29", timeZone), timeZone, HOSStatus.OFF_DUTY),   // 29 driving
+        new HOSRecord(10, getUTCDate("11/06/2011 05:00:00", timeZone), timeZone, HOSStatus.ON_DUTY),  
+        new HOSRecord(10, getUTCDate("11/06/2011 05:30:01", timeZone), timeZone, HOSStatus.OFF_DUTY),   // 30 on_duty, but 60 total compensated so add extra to driving because it is closest to minute  
+        new HOSRecord(10, getUTCDate("11/06/2011 23:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+        new HOSRecord(10, getUTCDate("11/07/2011 01:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+    };
+    public static Map<HOSStatus, Integer> roundExpectedMin = new HashMap<HOSStatus, Integer> ();
+    static {
+        roundExpectedMin.put(HOSStatus.OFF_DUTY, 1440);
+        roundExpectedMin.put(HOSStatus.DRIVING, 30);
+        roundExpectedMin.put(HOSStatus.ON_DUTY, 30);
+    };
+    public static Map<HOSStatus, Integer> roundExpectedCompMin = new HashMap<HOSStatus, Integer> ();
+    static {
+        roundExpectedCompMin.put(HOSStatus.ON_DUTY, 60);
+    };
+    public String roundExpectedTabularData[] = {
+            "","11/06/2011","24:00","00:00","00:00","00:30","00:30","01:00"
+    };
+    public String roundExpectedSummTabularData[] = {
+            "","24:00","00:00","00:00","00:30","00:30","01:00"
+    };
 
-        PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(Locale.US);
-        criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
-        List<PayrollData> dataList = criteria.getMainDataset();
-        int eCnt = 0;
-        dump("payrollDetailTest", 1, criteria, FormatType.PDF);
-        dump("payrollDetailTest", 1, criteria, FormatType.EXCEL);
+    public static HOSRecord[] roundRecs2 = {
+        new HOSRecord(10, getUTCDate("11/05/2011 23:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),   // 1 hr driving on 11/5 and 6 hrs on 11/6 
+        new HOSRecord(10, getUTCDate("11/06/2011 04:00:00", timeZone), timeZone, HOSStatus.DRIVING),  
+        new HOSRecord(10, getUTCDate("11/06/2011 04:29:31", timeZone), timeZone, HOSStatus.OFF_DUTY),   // 30 driving
+        new HOSRecord(10, getUTCDate("11/06/2011 05:00:00", timeZone), timeZone, HOSStatus.ON_DUTY),  
+        new HOSRecord(10, getUTCDate("11/06/2011 05:29:32", timeZone), timeZone, HOSStatus.OFF_DUTY),   // 30 on_duty, but 59 total compensated so delete 1 from driving because it has smallest # of secs into minute  
+        new HOSRecord(10, getUTCDate("11/06/2011 23:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+        new HOSRecord(10, getUTCDate("11/07/2011 01:00:00", timeZone), timeZone, HOSStatus.OFF_DUTY),  
+    };
+    public static Map<HOSStatus, Integer> roundExpectedMin2 = new HashMap<HOSStatus, Integer> ();
+    static {
+        roundExpectedMin2.put(HOSStatus.OFF_DUTY, 1441);
+        roundExpectedMin2.put(HOSStatus.DRIVING, 29);
+        roundExpectedMin2.put(HOSStatus.ON_DUTY, 30);
+    };
+    public static Map<HOSStatus, Integer> roundExpectedCompMin2 = new HashMap<HOSStatus, Integer> ();
+    static {
+        roundExpectedCompMin2.put(HOSStatus.ON_DUTY, 59);
+    };
+    
+    public String roundExpectedTabularData2[] = {
+            "","11/06/2011","24:01","00:00","00:00","00:29","00:30","00:59"
+    };
+    public String roundExpectedSummTabularData2[] = {
+            "","24:01","00:00","00:00","00:29","00:30","00:59"
+    };
 
-        for (PayrollData data : dataList) {
+    @Test 
+    public void daylightSavings() {
+        runTest("dst", dstRecs, dstExpectedMin, dstExpectedCompMin, dstExpectedTabularData, dstExpectedSummTabularData);
+    }
+    @Test 
+    public void allStatuses() {
+        runTest("allStatus", allStatusRecs, allStatusExpectedMin, allStatusExpectedCompMin, allStatusExpectedTabularData, allStatusExpectedSummTabularData);
+    }
+    @Test 
+    public void rounding() {
+        runTest("round", roundRecs, roundExpectedMin, roundExpectedCompMin, roundExpectedTabularData, roundExpectedSummTabularData);
+    }
+    @Test 
+    public void rounding2() {
+        runTest("round2", roundRecs2, roundExpectedMin2, roundExpectedCompMin2, roundExpectedTabularData2, roundExpectedSummTabularData2);
+    }
 
-            PayrollData expected = payrollDataExpectedData[eCnt++];
-            assertEquals(testCaseName + " groupName " + eCnt, expected.getGroupName(), data.getGroupName());
-            assertEquals(testCaseName + " groupAddress " + eCnt, expected.getGroupAddress(), data.getGroupAddress());
-            assertEquals(testCaseName + " driverName " + eCnt, expected.getDriverName(), data.getDriverName());
-            assertEquals(testCaseName + " day " + eCnt, expected.getDay(), data.getDay());
-            assertEquals(testCaseName + " status " + eCnt, expected.getStatus(), data.getStatus());
-            assertEquals(testCaseName + " minutes " + eCnt, expected.getTotalAdjustedMinutes(), data.getTotalAdjustedMinutes());
-            assertEquals(testCaseName + " employeeID " + eCnt, expected.getEmployeeID(), data.getEmployeeID());
+    private void runTest(String prefix, HOSRecord[] recList, Map<HOSStatus, Integer> expectedMin, Map<HOSStatus, Integer> expectedCompMin, 
+            String[] expectedTabularData, String[] expectedSummTabularData) {
+        PayrollDetailReportCriteria detailCriteria = new PayrollDetailReportCriteria(Locale.US);
+        HosRecordDataSet testData = initTestData(10, recList, "11/06/2011 00:00:00", "11/06/2011 23:59:59");
+        detailCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
+        checkData(prefix+"_detail", detailCriteria, detailCriteria.getMainDataset(), expectedMin, detailCriteria.getTableRows(), expectedTabularData);
+                
+        PayrollSummaryReportCriteria  summCriteria = new PayrollSummaryReportCriteria (Locale.US);
+        summCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
+        checkData(prefix+"_summ", summCriteria, summCriteria.getMainDataset(), expectedMin, summCriteria.getTableRows(), expectedSummTabularData);
+
+        PayrollSignoffReportCriteria  signoffCriteria = new PayrollSignoffReportCriteria (Locale.US);
+        signoffCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
+        checkData(prefix+"_signoff", signoffCriteria, signoffCriteria.getMainDataset(), expectedMin, signoffCriteria.getTableRows(), expectedTabularData);
+
+        PayrollReportCompensatedHoursCriteria compCriteria = new PayrollReportCompensatedHoursCriteria(Locale.US);
+        compCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
+        checkData(prefix+"_comp", compCriteria, compCriteria.getMainDataset(), expectedCompMin, compCriteria.getTableRows(), null);
+    }
+
+    private void checkData(String desc, ReportCriteria criteria, List<PayrollData> dataList, Map<HOSStatus, Integer> expectedMinutes, List<List<Result>> tabularData, String[] expectedTabularData) {
+//        System.out.println("--- check --- " + desc);
+        dump(desc, 1, criteria, FormatType.PDF);
+        dump(desc, 1, criteria, FormatType.EXCEL);
+        assertEquals("expected number of data items", expectedMinutes.size(), dataList.size());
+        for (PayrollData payrollData : dataList) {
+//            System.out.println(payrollData.getStatus() + " " + payrollData.getTotalAdjustedMinutes());
+            Integer expected = expectedMinutes.get(payrollData.getStatus());
+            assertNotNull(desc + " should have been an entry for " + payrollData.getStatus(), expected);
+            assertEquals(desc + " minutes match", expected.intValue(), payrollData.getTotalAdjustedMinutes());
         }
 
+    
         // tabular
-        List<List<Result>> tabularData = criteria.getTableRows();
-        assertEquals("tabular Data expected row count", tabularPayrollDetailsExpectedData.length, tabularData.size());
-        int rowCnt = 0;
+        if (expectedTabularData == null)
+            return;
+        
+        assertEquals("tabular Data expected row count", 1, tabularData.size());
         for (List<Result> row : tabularData) {
             int colCnt = 0;
             for (Result result : row) {
-                if (!tabularPayrollDetailsExpectedData[rowCnt][colCnt].equals(result.getDisplay()))
-                    System.out.println("(row,col): (" + rowCnt + "," + colCnt + "): " + tabularPayrollDetailsExpectedData[rowCnt][colCnt] + result.getDisplay());
-                assertEquals("(row,col): (" + rowCnt + "," + colCnt + "): ", tabularPayrollDetailsExpectedData[rowCnt][colCnt], result.getDisplay());
+                if (colCnt != 0) {
+//                    if (!expectedTabularData[colCnt].equals(result.getDisplay()))
+//                        System.out.println("(col): (" + colCnt + "): " + expectedTabularData[colCnt] +  " " + result.getDisplay());
+                    assertEquals("(col): (" + colCnt + "): ", expectedTabularData[colCnt], result.getDisplay());
+                }
                 colCnt++;
             }
-            rowCnt++;
         }
-    }
 
-    @Test
-    @Ignore
-    public void gainSignoffTestCases() {
+    }
+    
+
+    private HosRecordDataSet initTestData(int driverID, HOSRecord[] recArray, String startDate, String endDate) {
         HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
+        testData.interval = new Interval(getUTCDateTime(startDate,timeZone), getUTCDateTime(endDate,timeZone));
+        Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>>();
+        Driver driver = testData.driverHOSRecordMap.keySet().iterator().next();
+        driver.setDriverID(driverID);
+        List<HOSRecord> recList = new ArrayList<HOSRecord>();
+        for (HOSRecord rec : recArray) {
+            recList.add(rec);
+        }
+        Collections.reverse(recList);
+        driverHOSRecordMap.put(driver, recList);
+        testData.driverHOSRecordMap = driverHOSRecordMap;
         
-        PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(Locale.US);
-        
-        for (Entry<Driver, List<HOSRecord>> entry : testData.driverHOSRecordMap.entrySet()) {
-            Driver driver = entry.getKey();
-            
-            Map<Driver,List<HOSRecord>> oneDriverMap = new HashMap<Driver,List<HOSRecord>>();
-            oneDriverMap.put(driver, entry.getValue());
-            criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), oneDriverMap);
-
-            if (driver.getPerson().getLast().startsWith("Giem")) {
-                int eCnt = 0;
-                for (;eCnt < payrollDataExpectedData.length; eCnt++) {
-                    PayrollData expected = payrollDataExpectedData[eCnt];
-                    if (expected.getDriverName().startsWith("Giem"))
-                        break;
-                }
-                List<PayrollData> dataList = criteria.getMainDataset();
-                for (PayrollData data : dataList) {
-                    PayrollData expected = payrollDataExpectedData[eCnt++];
-                    assertEquals(testCaseName + " groupName " + eCnt, expected.getGroupName(), data.getGroupName());
-                    assertEquals(testCaseName + " groupAddress " + eCnt, expected.getGroupAddress(), data.getGroupAddress());
-                    assertEquals(testCaseName + " driverName " + eCnt, expected.getDriverName(), data.getDriverName());
-                    assertEquals(testCaseName + " day " + eCnt, expected.getDay(), data.getDay());
-                    assertEquals(testCaseName + " employeeID " + eCnt, expected.getEmployeeID(), data.getEmployeeID());
-                }
-            }
-            String prefix = "payrollSignoffTest "+entry.getKey().getPerson().getLast() + "_"; 
-            dump(prefix, 1, criteria, FormatType.PDF);
-            dump(prefix, 1, criteria, FormatType.EXCEL);
-
-            // tabular
-            if (driver.getPerson().getLast().startsWith("Giem")) {
-                List<List<Result>> tablularData = criteria.getTableRows();
-                assertEquals("tabular Data expected row count", tabularPayrollSignoffExpectedData.length, tablularData.size());
-                int rowCnt = 0;
-                for (List<Result> row : tablularData) {
-                    int colCnt = 0;
-                    for (Result result : row) {
-                        assertEquals("(row,col): (" + rowCnt + "," + colCnt + "): ", tabularPayrollSignoffExpectedData[rowCnt][colCnt], result.getDisplay());
-                        colCnt++;
-                    }
-                    rowCnt++;
-                }
-            }
-      }
+        return testData;
     }
 
-    @Test
-    @Ignore
-    public void gainSummaryTestCases() {
-        HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
+    private static DateTime getUTCDateTime(String dateString, TimeZone timeZone) {
         
-        PayrollSummaryReportCriteria criteria = new PayrollSummaryReportCriteria(Locale.US);
-        criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
-        List<PayrollData> dataList = criteria.getMainDataset();
-        int eCnt = 0;
-        for (PayrollData data : dataList) {
-            PayrollData expected = payrollDataExpectedData[eCnt++];
-            assertEquals(testCaseName + " groupName " + eCnt, expected.getGroupName(), data.getGroupName());
-            assertEquals(testCaseName+ " groupAddress " + eCnt, expected.getGroupAddress(), data.getGroupAddress());
-            assertEquals(testCaseName+ " driverName " + eCnt, expected.getDriverName(), data.getDriverName());
-            assertEquals(testCaseName+ " day " + eCnt, expected.getDay(), data.getDay());
-            assertEquals(testCaseName+ " employeeID " + eCnt, expected.getEmployeeID(), data.getEmployeeID());
-        }
+        return new DateTime(getUTCDate(dateString, timeZone));
+    }
+    private static Date getUTCDate(String dateString, TimeZone timeZone) {
         
-        dump("payrollSummaryTest", 1, criteria, FormatType.PDF);
-        dump("payrollSummaryTest", 1, criteria, FormatType.EXCEL);
-        
-        // tabular
-        List<List<Result>> tablularData = criteria.getTableRows();
-        assertEquals("tabular Data expected row count", tabularPayrollSummaryExpectedData.length, tablularData.size());
-        int rowCnt = 0;
-        for (List<Result> row : tablularData) {
-            int colCnt = 0;
-            for (Result result : row) {
-                assertEquals("(row,col): (" + rowCnt + "," + colCnt + "): ", tabularPayrollSummaryExpectedData[rowCnt][colCnt], result.getDisplay());
-                colCnt++;
-            }
-            rowCnt++;
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        dateFormat.setTimeZone(timeZone);
+        try {
+            return dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            return null;
         }
     }
+
+
 
     @Test
     public void getColumnHeaders_testForMissingColNames(){

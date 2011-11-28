@@ -55,15 +55,15 @@ public class Converter {
         }
     }
 
-    public static String convertMinutes(Long minutes) {
+    public static String convertMinutes(Number minutes) {
         
         if (minutes == null)
             minutes = 0L;
         
-        Long hours = minutes / 60;
-        minutes = minutes % 60;
+        Long hours = minutes.longValue() / 60;
+        minutes = minutes.longValue() % 60;
 
-        return  (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+        return  (hours < 10 ? "0" : "") + hours + ":" + (minutes.longValue() < 10 ? "0" : "") + minutes;
 
         
     }   

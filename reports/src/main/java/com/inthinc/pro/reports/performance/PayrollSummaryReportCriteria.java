@@ -124,9 +124,9 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
 
     private List<Result> fixRowDisplay(List<Result> summaryRow) {
         for (int i = 0; i < 5; i++) {
-            summaryRow.get(i+1).setDisplay(Converter.convertMinutesRound15((Integer)(summaryRow.get(i+1).getSort())));
+            summaryRow.get(i+1).setDisplay(Converter.convertMinutes((Integer)(summaryRow.get(i+1).getSort())));
         }
-        summaryRow.get(TOTAL_COL).setDisplay(Converter.convertMinutesRound15((Long)(summaryRow.get(TOTAL_COL).getSort())));
+        summaryRow.get(TOTAL_COL).setDisplay(Converter.convertMinutes((Long)(summaryRow.get(TOTAL_COL).getSort())));
         return summaryRow;
     }
 

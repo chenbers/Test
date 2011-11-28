@@ -44,7 +44,8 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
             if (rec.getStatus() == HOSStatus.DRIVING                        // 
                     || rec.getStatus() == HOSStatus.ON_DUTY                 // 
                     || rec.getStatus() == HOSStatus.ON_DUTY_OCCUPANT        //
-                    || rec.getStatus() == HOSStatus.DRIVING_NONDOT          //
+                    || rec.getStatus() == HOSStatus.SLEEPER 
+                    || rec.getStatus() == HOSStatus.OFF_DUTY_AT_WELL
                     || rec.getStatus() == HOSStatus.TRAVELTIME_OCCUPANT) {
                 compensatedRecords.get(rec.getDay()+"_"+rec.getDriverId()).addTotalAdjustedMinutes(rec.getTotalAdjustedMinutes());
             }

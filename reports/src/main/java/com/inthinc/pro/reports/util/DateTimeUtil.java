@@ -39,6 +39,16 @@ public class DateTimeUtil {
         return new Interval(startDate, endDate);
 
     }
+    public static Interval getStartEndIntervalInTimeZone(Interval interval, DateTimeZone dateTimeZone)
+    {
+        LocalDate localDate = new LocalDate(new DateMidnight(interval.getStart(), DateTimeZone.UTC));
+        DateTime startDate = localDate.toDateTimeAtStartOfDay(dateTimeZone);
+        localDate = new LocalDate(new DateMidnight(interval.getEnd(), DateTimeZone.UTC));
+        DateTime endDate = localDate.toDateTimeAtStartOfDay(dateTimeZone).plusDays(1).minusSeconds(1);
+
+        return new Interval(startDate, endDate);
+
+    }
 
     public static Interval getExpandedInterval(Interval interval, DateTimeZone dateTimeZone, int daysBack, int daysForward)
     {

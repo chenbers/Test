@@ -98,6 +98,14 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
         this.truckGallons = truckGallons;
         this.trailerGallons = trailerGallons;
     }
+
+    // minimal constructor mainly for unit tests
+    public HOSRecord(Integer driverID, Date logTime, TimeZone timeZone, HOSStatus status) {
+        this.driverID = driverID;
+        this.logTime = logTime;
+        this.timeZone = timeZone;
+        this.status = status;
+    }
     
     public Integer getChangedCnt() {
         return changedCnt;

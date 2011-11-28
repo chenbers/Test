@@ -317,7 +317,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_sleeperHours_1})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_sleeperHours_1})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-38" x="182" y="2" width="60" height="16"/>
@@ -330,7 +330,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_offDutyHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_offDutyHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-39" x="282" y="2" width="60" height="16"/>
@@ -343,7 +343,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_offDutyAtWellHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_offDutyAtWellHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-40" x="482" y="2" width="60" height="16"/>
@@ -356,7 +356,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_drivingHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_drivingHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-41" x="582" y="2" width="60" height="16"/>
@@ -369,7 +369,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_notDrivingHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_notDrivingHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="driverId" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-42" x="682" y="2" width="60" height="16"/>
@@ -382,7 +382,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{totalHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{totalHours})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-67" x="3" y="2" width="169" height="16"/>
@@ -513,7 +513,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_daily_offDutyHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_daily_offDutyHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="day" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-62" x="282" y="2" width="60" height="16"/>
@@ -526,7 +526,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_daily_offDutyAtWellHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_daily_offDutyAtWellHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="day" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-63" x="382" y="2" width="60" height="16"/>
@@ -539,7 +539,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_daily_sleeperHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_daily_sleeperHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="day" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-64" x="482" y="2" width="60" height="16"/>
@@ -552,7 +552,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_daily_drivingHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_daily_drivingHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="day" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-65" x="582" y="2" width="60" height="16"/>
@@ -565,7 +565,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{SUM_daily_notDrivingHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{SUM_daily_notDrivingHours})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="day" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-66" x="682" y="2" width="60" height="16"/>
@@ -578,7 +578,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement textAlignment="Right">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15($V{daily_totalHours})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutes($V{daily_totalHours})]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
