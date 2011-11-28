@@ -86,26 +86,23 @@
  							  <tr>
  							  <td>
  							  
- 							  <rich:dataTable value="#{customRolesBean.item.accessPointSelection}" var="accessPoint" rows="20"
+ 							 	<rich:dataTable value="#{customRolesBean.item.accessPointSelection}" var="accessPoint" rows="20"
  							  		id="accessPoints" rowKeyVar="index" styleClass="datagrid" 
         							rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
 
-              <rich:column>
-                <f:facet name="header">
-                  <h:selectBooleanCheckbox id="selectAllCustomRoles" />
-                </f:facet>
-                <h:selectBooleanCheckbox id="select" value="#{accessPoint.selected}"/>
-              </rich:column>
-  
-        <rich:column>
-
-                <f:facet name="header">#{messages.editCustomRole_accessPoints}</f:facet>
-				<ui:param name="accessPointMessage" value="#{accessPoint.msgKey}"/>
-                <h:outputText value="#{messages[accessPointMessage]}"/>
-
-
-        </rich:column>
-        </rich:dataTable>
+						          	<rich:column>
+						                <f:facet name="header">
+						                  <h:selectBooleanCheckbox id="selectAllCustomRoles" />
+						                </f:facet>
+						                <h:selectBooleanCheckbox id="select" value="#{accessPoint.selected}"/>
+						           	</rich:column>
+						  
+						        	<rich:column>
+						                <f:facet name="header">#{messages.editCustomRole_accessPoints}</f:facet>
+										<ui:param name="accessPointMessage" value="#{accessPoint.msgKey}"/>
+						                <h:outputText value="#{messages[accessPointMessage]}"/>
+						        	</rich:column>
+						        </rich:dataTable>
 
  							  </td>
  							  </tr>   
