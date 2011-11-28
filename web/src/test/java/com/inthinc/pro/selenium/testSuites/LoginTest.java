@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
+import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
@@ -210,5 +212,77 @@ public class LoginTest extends WebRallyTest {
         assertStringContains("login", pl.getCurrentLocation());
         pl._textField().userName().assertEquals("");
         pl._textField().password().assertEquals("");
+    }
+    
+    
+    
+    @Test
+    public void cucmberLike_enterKeyTest1243() {
+        //list/create pages that this test will interact with
+        PageLogin loginPage = new PageLogin();
+        PageTeamDashboardStatistics overviewPage = new PageTeamDashboardStatistics();
+        //list/create users that are needed for this test
+        AutomationUser validUser = AutomationUsers.getUsers().getOneBy(LoginCapabilities.StatusActive);
+        loginToUse = validUser;
+        String validUsername = validUser.getUsername();
+        String validPassword = validUser.getPassword();
+        
+        
+        //this is the part ANYONE can read/understand
+        givenI().amOnThe(loginPage);
+        whenI().enterUsernamePassword(validUsername, validPassword);
+        whenI().pressEnterKey();
+        thenI().endUpOnThe(overviewPage);
+    }
+    protected AutomationUser loginToUse = AutomationUsers.getUsers().getOneBy(LoginCapabilities.StatusActive);
+    public LoginActionSteps givenI(){
+        return new LoginActionSteps();
+    }
+    public LoginActionSteps whenI(){
+        return new LoginActionSteps();
+    }
+    public LoginVerifySteps thenI(){
+        return new LoginVerifySteps();
+    }
+    public class MasterVerifySteps {
+        
+    }
+    public class MasterActionSteps{
+        public void pressEnterKey() {
+            pressEnterKey();
+        }
+    }
+    public class PageVerifySteps extends MasterVerifySteps{
+        public void endUpOnThe(Page page){
+            page.validate();
+        }
+    }
+    public class PageActionSteps extends MasterActionSteps{
+        public void amOnThe(Page page){
+            page.load();
+            loginIfNecessary();
+            page.validate();
+        }
+        public void loginIfNecessary(){
+            loginIfNecessary(loginToUse);
+        }
+        public void loginIfNecessary(AutomationUser user){
+            PageLogin loginPage = new PageLogin();
+            if(loginPage._textField().userName().isPresent()){
+                loginPage.loginProcess(user);
+            }   
+        }
+    }
+    public class LoginActionSteps extends PageActionSteps{
+        public void enterUsernamePassword(String username, String password) {
+            PageLogin loginPage = new PageLogin();
+            if(!loginPage._textField().userName().isPresent())
+                loginPage.openLogout();
+            loginPage._textField().userName().type(username);
+            loginPage._textField().password().type(password);
+        }       
+    }
+    public class LoginVerifySteps extends PageVerifySteps{
+        
     }
 }
