@@ -30,9 +30,8 @@ public class AdminUsersEditTest extends WebRallyTest {
     }
 
     @Test
-    // @Ignore
     public void usersNameLink() {
-        set_test_case("TC764");// TODO: if this test is ready to run in hudson, uncomment this line; if not add @ignore
+        set_test_case("TC764");
 
         // 1- Login
         usersPage.loginProcess(login);
