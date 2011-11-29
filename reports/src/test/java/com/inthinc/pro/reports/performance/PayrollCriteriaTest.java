@@ -386,7 +386,6 @@ public class PayrollCriteriaTest extends BaseUnitTest {
             new PayrollData("Norman Wells->Norman Wells - WS","123 Norman Wells - WS, City, UT, 12345",7,"Venkataraman,  Ramanathan","02707354",new Date(1278309600000l),HOSStatus.OFF_DUTY,1440),
             new PayrollData("Norman Wells->Norman Wells - WS","123 Norman Wells - WS, City, UT, 12345",7,"Venkataraman,  Ramanathan","02707354",new Date(1278396000000l),HOSStatus.OFF_DUTY,1440),
             new PayrollData("Norman Wells->Norman Wells - WS","123 Norman Wells - WS, City, UT, 12345",7,"Venkataraman,  Ramanathan","02707354",new Date(1278482400000l),HOSStatus.OFF_DUTY,1440),
-            //TODO:JWIMMER: add a row to check a total time%15 != 0
     };
     static TimeZone timeZone = TimeZone.getTimeZone("US/Mountain");
     public static HOSRecord[] dstRecs = {
