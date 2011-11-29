@@ -88,7 +88,7 @@ public class AssetServiceImplTest {
     public void testGetsRedFlagCountFromBeginDateToEndDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
         // Start date will be 2010-11-25
-        final Date startDate = new DateTime(2010, 11, 25, 0, 0, 0, 0).toDate();
+        final Date startDate = new DateTime(2010, 11, 30, 0, 0, 0, 0).toDate();
         // End date will be 2010-12-31
         final Date endDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
 
