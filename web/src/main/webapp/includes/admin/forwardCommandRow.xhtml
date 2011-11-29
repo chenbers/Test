@@ -12,11 +12,15 @@
          cmd: An instance of CommandDef or null to display header row
          id: id to use
          label: label to show 
+         disabled: boolean indication of whether the controls should be disabled
 
   To use:
   ==============
   <ui:include src="/includes/admin/forwardCommandRow.xhtml">
     <ui:param name="cmd" value="#{myForwardCommandDef}" />
+    <ui:param name="label" value="labelToShow" />
+    <ui:param name="id" value="uniqueIdToUser" />
+    <ui:param name="disabled" value="boolean" />
   </ui:include>
 -->
     
@@ -47,7 +51,7 @@
     	<h:outputText value="#{label}:" />
 	</td>
 	<td width="100">
-    	<h:selectOneMenu value="#{cmd.selected}" id="#{id}_selectItems" converter="SimpleBeanConverter" >
+    	<h:selectOneMenu value="#{cmd.selected}" id="#{id}_selectItems" converter="SimpleBeanConverter" disabled="disabled">
         	<f:selectItems value="#{cmd.selectItems}"/>
         	<a4j:support event="onchange" reRender="#{id}_sentDescription,#{id}_recDescription" limitToList="true" ajaxSingle="true"/>
 		</h:selectOneMenu>
@@ -60,7 +64,7 @@
  -->		
  
 		<a4j:commandButton id="#{id}_sendButton" action="#{cmd.sendCommand}" style="border:3px outset #f0f0f0; padding:0" immediate="true" ajaxSingle="true" 
-			reRender="#{id}_sentDescription,#{id}_recDescription" >
+			reRender="#{id}_sentDescription,#{id}_recDescription"  disabled="disabled" >
 			<h:outputText value="#{messages.forwardCommandSend}"/>
 		</a4j:commandButton>
 	</td>

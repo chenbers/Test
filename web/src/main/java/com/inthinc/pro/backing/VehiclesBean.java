@@ -144,7 +144,36 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         setBatchEdit(false);
     }
 
-    
+    public boolean isVehicleInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_VEHICLESACCESS_VEHICLEINFO");
+        
+        return !isUserInRoles(allowedRoles);
+    }
+    public boolean isWirelineInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_VEHICLESACCESS_WIRELINEINFO");
+        
+        return !isUserInRoles(allowedRoles);
+    }
+    public boolean isProfileInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_VEHICLESACCESS_PROFILEINFO");
+        
+        return !isUserInRoles(allowedRoles);
+    }
+    public boolean isAssignmentInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_VEHICLESACCESS_ASSIGNMENTINFO");
+        
+        return !isUserInRoles(allowedRoles);
+    }
+    public boolean isSpeedInfoDisabled(){
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add("ROLE_VEHICLESACCESS_SPEEDINFO");
+        
+        return !isUserInRoles(allowedRoles);
+    }
     public boolean isFilterProductChoice(ProductType productType){
         
         return getFilterValues().get("productType") == null || getFilterValues().get("productType").equals(productType);

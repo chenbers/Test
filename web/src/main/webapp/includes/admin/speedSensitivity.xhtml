@@ -59,7 +59,7 @@
                                     <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
+                                    <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
                                           id="#{id}" value="#{editableVehicleSettings.speedSettings[index]}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
@@ -150,7 +150,7 @@
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                         <rich:inputNumberSlider id="#{context}-#{sensitivityItem}" 
-                                             disabled="#{disabled}" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
                                              value="#{editableVehicleSettings[sensitivityItem]}" 
                                              showToolTip="false" showBoundaryValues="false" 
                                              handleSelectedClass="handleSelected"
