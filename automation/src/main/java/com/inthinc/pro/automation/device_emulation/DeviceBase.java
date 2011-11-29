@@ -117,7 +117,6 @@ public abstract class DeviceBase {
 
     protected DeviceBase addNote(DeviceNote note){
         notes.addNote(note);
-        check_queue();
         return this;
     }
 
@@ -240,6 +239,10 @@ public abstract class DeviceBase {
 //            }
 //        }
         return this;
+    }
+    
+    public NoteManager getNotes(){
+        return notes;
     }
 
     public int getOdometer() {

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
@@ -37,6 +38,15 @@ public class NoteManager {
         return notes;
     }
     
+    public boolean replaceNotes(Queue<DeviceNote> notes){
+        this.notes.removeAll(this.notes);
+        if (!this.notes.isEmpty()){
+            return false;
+        }
+        this.notes.addAll(notes);
+        return true;
+    }
+    
     public int size(){
         return notes.size();
     }
@@ -57,10 +67,11 @@ public class NoteManager {
         return noteList;
     }
     
-    public interface DeviceNote{
+    public interface DeviceNote {
         public byte[] Package();
         public DeviceNoteTypes getType();
         public Long getTime();
+        public DeviceNote copy();
     }
     
     
@@ -120,7 +131,7 @@ public class NoteManager {
     }
     
     public static int concatenateTwoInts(int one, int two){
-        MasterTest.print(one + "   " + two);
+        MasterTest.print(one + "   " + two, Level.DEBUG);
         int value = (int)(  one << 4)  & 0xF0 | two & 0x0F;
         return value;
     }

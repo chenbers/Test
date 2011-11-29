@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
+import com.inthinc.pro.automation.interfaces.DeviceTypesUnique;
 
 public class DeviceAttributes implements Iterable<DeviceAttrs>{
 
@@ -16,12 +17,11 @@ public class DeviceAttributes implements Iterable<DeviceAttrs>{
     }
     
     public DeviceAttributes addAttribute(DeviceAttrs key, Object value){
+        if (value instanceof DeviceTypesUnique){
+            return addAttribute(key, ((DeviceTypesUnique)value).getCode());
+        }
         attrs.put(key, value);
         return this;
-    }
-    
-    public DeviceAttributes addAttribute(DeviceAttrs key){
-        return addAttribute(key);
     }
     
     @Override

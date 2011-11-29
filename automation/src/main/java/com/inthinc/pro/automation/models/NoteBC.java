@@ -10,17 +10,18 @@ import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteBC implements DeviceNote {
     
     private final DeviceNoteTypes nType;
-    private final int nVersion;
+    private final ProductType nVersion;
     private final AutomationCalendar nTime;
     private final Heading heading;
     private final int sats;
     private final int nSpeed;
     private final int nOdometer;
-    private final int nSpeedLimit;
+    private final Integer nSpeedLimit;
     private final int nLinkID;
     private final int nBoundaryID;
     private final int nDriverID;
@@ -69,7 +70,7 @@ public class NoteBC implements DeviceNote {
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
         NoteManager.longToByte(bos, nType.getCode(), 1);
-        NoteManager.longToByte(bos, nVersion, 1);
+        NoteManager.longToByte(bos, nVersion.getVersion(), 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
         NoteManager.longToByte(bos, location.getEncodedLat(), 4);
@@ -109,7 +110,7 @@ public class NoteBC implements DeviceNote {
     */
     public NoteBC(DeviceNoteTypes type, DeviceState state, GeoPoint location){
         nType = type;
-        nVersion = state.getProductVersion().getVersion();
+        nVersion = state.getProductVersion();
         nTime = state.copyTime();
         heading = state.getHeading();
         sats = state.getSats();
@@ -122,8 +123,8 @@ public class NoteBC implements DeviceNote {
         nDriverID = state.getDeviceDriverID();
         attrs = new DeviceAttributes();
     }
-
     
+       
     public void addAttr(DeviceAttrs id, Number value){
         try {
             attrs.addAttribute(id, value);
@@ -151,6 +152,12 @@ public class NoteBC implements DeviceNote {
     
     public void addAttr(DeviceAttrs id, String value){
         attrs.addAttribute(id, value);
+    }
+    
+    public void addAttrs(DeviceAttributes attrs){
+        for (DeviceAttrs key : attrs){
+            addAttr(key, attrs.getValue(key));
+        }
     }
     
     /**
@@ -188,5 +195,20 @@ public class NoteBC implements DeviceNote {
         return nTime.epochSeconds();
     }
     
-
+    @Override
+    public NoteBC copy(){
+        DeviceState state = new DeviceState(null, nVersion);
+        state.getTime().setDate(nTime);
+        state.setHeading(heading);
+        state.setSats(sats);
+        state.setSpeed(nSpeed);
+        state.setSpeed_limit(nSpeedLimit.doubleValue());
+        state.setLinkID(nLinkID);
+        state.setOdometer(nOdometer);
+        state.setBoundaryID(nBoundaryID);
+        state.setDriverID(nDriverID);
+        NoteBC temp = new NoteBC(nType, state, location);
+        temp.addAttrs(attrs);
+        return temp;
+    }
 }

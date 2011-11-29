@@ -77,12 +77,9 @@ public class TiwiNote implements DeviceNote {
         attrs.addAttribute(id, cast);
     }
         
-    public void addAttrs(Map<DeviceAttrs, Integer> atttrs){
-        DeviceAttrs attrID;
-        Iterator<DeviceAttrs> itr = atttrs.keySet().iterator();
-        while (itr.hasNext()){
-            attrID = itr.next();
-            addAttr(attrID, atttrs.get(attrID));
+    public void addAttrs(DeviceAttributes attrs){
+        for (DeviceAttrs key : attrs){
+            addAttr(key, attrs.getValue(key));
         }
     }
     
@@ -149,5 +146,16 @@ public class TiwiNote implements DeviceNote {
     public Long getTime() {
         return nTime.epochSeconds();
     }
-    
+
+    @Override
+    public DeviceNote copy() {
+        DeviceState state = new DeviceState(null, null);
+        state.setHeading(heading);
+        state.getTime().setDate(nTime);
+        state.setMapRev(maprev);
+        state.setSpeed(Speed);
+        state.setOdometer(odometer);
+        TiwiNote temp = new TiwiNote(nType, state, location);
+        return temp;
+    }
 }

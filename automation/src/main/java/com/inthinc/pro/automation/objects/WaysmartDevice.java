@@ -64,12 +64,6 @@ public class WaysmartDevice extends DeviceBase {
 	    note.addAttr(DeviceAttrs.DRIVER_STR, driverStr);
 	    note.addAttr(DeviceAttrs.MCM_RULESET, status.getCode());
 	    addNote(note);
-	    
-//	    Package_Waysmart_Note note = construct_note();
-//	    note.setHosStatus(status);
-//	    note.setDriverID(driverStr);
-//	    note.setSpeed(speed);
-//	    sendNote(note);
 	    return this;
 	}
 	
@@ -83,17 +77,26 @@ public class WaysmartDevice extends DeviceBase {
 	}
 	
 	public WaysmartDevice addInstallEvent(String vehicleID, int accountID){
-	    this.setVehicleID(vehicleID);
+	    this.setVehicleID(vehicleID.toUpperCase());
 	    this.setAccountID(accountID);
-	    this.setCompanyID(accountID);
+	    this.setCompanyID(1);
+	    NoteWS note = constructWSNote(DeviceNoteTypes.INSTALL, 0);
+	    note.addAttr(DeviceAttrs.VEHICLE_ID_STR, vehicleID.toUpperCase());
+	    note.addAttr(DeviceAttrs.MCM_ID_STR, state.getMcmID());
+	    note.addAttr(DeviceAttrs.COMPANY_ID, accountID);
 	    Direction temp = state.getWaysDirection();
 	    state.setWaysDirection(Direction.sat);
-	    Package_Waysmart_Note note = construct_note(DeviceNoteTypes.INSTALL);
-	    note.setVehicleID(vehicleID);
-	    note.setCompanyID(accountID);
-	    note.setAccountID(accountID);
-	    MasterTest.print(sendNote(note));
+	    addNote(note);
 	    state.setWaysDirection(temp);
+	    
+//	    Direction temp = state.getWaysDirection();
+//	    state.setWaysDirection(Direction.sat);
+//	    Package_Waysmart_Note note = construct_note(DeviceNoteTypes.INSTALL);
+//	    note.setVehicleID(vehicleID);
+//	    note.setCompanyID(accountID);
+//	    note.setAccountID(accountID);
+//	    MasterTest.print(sendNote(note));
+//	    state.setWaysDirection(temp);
 	    return this;
 	}
 	

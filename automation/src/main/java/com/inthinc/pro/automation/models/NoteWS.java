@@ -122,5 +122,24 @@ public class NoteWS implements DeviceNote {
         return nTime.epochSeconds();
     }
     
+    @Override
+    public NoteWS copy(){
+        DeviceState state = new DeviceState(null, nVersion);
+        state.getTime().setDate(nTime);
+        state.setHeading(heading);
+        state.setSats(sats);
+        state.setSpeed(nSpeed);
+        state.setOdometer(odometer);
+        NoteWS temp = new NoteWS(nType, state, location, duration);
+        temp.addAttrs(attrs);
+        return temp;
+    }
+
+    public void addAttrs(DeviceAttributes attrs2){
+        for (DeviceAttrs key : attrs2){
+            addAttr(key, attrs2.getValue(key));
+        }
+    }
+    
     
 }

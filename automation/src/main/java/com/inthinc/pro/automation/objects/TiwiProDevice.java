@@ -12,16 +12,17 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.caucho.hessian.client.HessianRuntimeException;
-import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceForwardCommands;
-import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
-import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.DeviceProps;
+import com.inthinc.pro.automation.deviceEnums.Heading;
+import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.Distance_Calc;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
@@ -37,7 +38,7 @@ public class TiwiProDevice extends DeviceBase {
 
     private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
 
-    private Map<DeviceAttrs, Integer> attrs;
+    private DeviceAttributes attrs;
     private AutomationCalendar trip_start, trip_stop;
 
     private ZoneManager zones;
@@ -59,17 +60,17 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     public TiwiProDevice add_location() {
-        attrs = new HashMap<DeviceAttrs, Integer>();
+        attrs = new DeviceAttributes();
         if (state.getSpeeding()) {
-            attrs.put(DeviceAttrs.VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SPEEDING.getCode());
+            attrs.addAttribute(DeviceAttrs.VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SPEEDING);
         }
 
         if (state.getRpm_violation()) {
-            attrs.put(DeviceAttrs.VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_RPM.getCode());
+            attrs.addAttribute(DeviceAttrs.VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_RPM);
         }
 
         if (state.getSeatbelt_violation()) {
-            attrs.put(DeviceAttrs.VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SEATBELT.getCode());
+            attrs.addAttribute(DeviceAttrs.VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SEATBELT);
         }
 
         construct_note(DeviceNoteTypes.LOCATION, attrs);
@@ -77,8 +78,8 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice add_lowBattery() {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 0);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 0);
         construct_note(DeviceNoteTypes.LOW_BATTERY, attrs);
         return this;
     }
@@ -89,43 +90,43 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.DELTAV_X, deltaX);
-        attrs.put(DeviceAttrs.DELTAV_Y, deltaY);
-        attrs.put(DeviceAttrs.DELTAV_Z, deltaZ);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.DELTAV_X, deltaX);
+        attrs.addAttribute(DeviceAttrs.DELTAV_Y, deltaY);
+        attrs.addAttribute(DeviceAttrs.DELTAV_Z, deltaZ);
         construct_note(DeviceNoteTypes.NOTE_EVENT, attrs);
         return this;
     }
 
     public TiwiProDevice add_seatBelt(Integer topSpeed, Integer avgSpeed, Integer distance) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.AVG_RPM, 500);
-        attrs.put(DeviceAttrs.VIOLATION_FLAGS, 2);
-        attrs.put(DeviceAttrs.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED, 50);
-        attrs.put(DeviceAttrs.TOP_SPEED, topSpeed);
-        attrs.put(DeviceAttrs.AVG_SPEED, avgSpeed);
-        attrs.put(DeviceAttrs.DISTANCE, distance);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.AVG_RPM, 500);
+        attrs.addAttribute(DeviceAttrs.VIOLATION_FLAGS, 2);
+        attrs.addAttribute(DeviceAttrs.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED, 50);
+        attrs.addAttribute(DeviceAttrs.TOP_SPEED, topSpeed);
+        attrs.addAttribute(DeviceAttrs.AVG_SPEED, avgSpeed);
+        attrs.addAttribute(DeviceAttrs.DISTANCE, distance);
         construct_note(DeviceNoteTypes.SEATBELT, attrs);
 
         return this;
     }
 
     public TiwiProDevice add_stats() {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.BASE_VER, 0);
-        attrs.put(DeviceAttrs.EMU_HASH_1, -1517168504);
-        attrs.put(DeviceAttrs.EMU_HASH_2, 154129909);
-        attrs.put(DeviceAttrs.EMU_HASH_3, 1825195881);
-        attrs.put(DeviceAttrs.EMU_HASH_4, 1627500918);
-        attrs.put(DeviceAttrs.TOTAL_AGPS_BYTES, 60000);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.BASE_VER, 0);
+        attrs.addAttribute(DeviceAttrs.EMU_HASH_1, -1517168504);
+        attrs.addAttribute(DeviceAttrs.EMU_HASH_2, 154129909);
+        attrs.addAttribute(DeviceAttrs.EMU_HASH_3, 1825195881);
+        attrs.addAttribute(DeviceAttrs.EMU_HASH_4, 1627500918);
+        attrs.addAttribute(DeviceAttrs.TOTAL_AGPS_BYTES, 60000);
         construct_note(DeviceNoteTypes.STATS, attrs);
         return this;
     }
 
     public TiwiProDevice addIdlingNote(int lowIdleTime, int highIdleTime) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.LOW_IDLE, lowIdleTime);
-        attrs.put(DeviceAttrs.HIGH_IDLE, highIdleTime);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.LOW_IDLE, lowIdleTime);
+        attrs.addAttribute(DeviceAttrs.HIGH_IDLE, highIdleTime);
 
         construct_note(DeviceNoteTypes.IDLING, attrs);
         increment_time(lowIdleTime + highIdleTime);
@@ -133,9 +134,9 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public void addIgnitionOffNote(int tripDuration, int percentPointsPassedFilter) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.TRIP_DURATION, tripDuration);
-        attrs.put(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, percentPointsPassedFilter);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.TRIP_DURATION, tripDuration);
+        attrs.addAttribute(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, percentPointsPassedFilter);
         construct_note(DeviceNoteTypes.IGNITION_OFF, attrs);
     }
 
@@ -144,35 +145,35 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public void addPowerOffNote(int lowPowerModeSeconds) {
-        attrs.put(DeviceAttrs.LOW_POWER_MODE_TIMEOUT, lowPowerModeSeconds);
+        attrs.addAttribute(DeviceAttrs.LOW_POWER_MODE_TIMEOUT, lowPowerModeSeconds);
         construct_note(DeviceNoteTypes.LOW_POWER_MODE, attrs);
         flushNotes();
     }
 
     public TiwiProDevice addPowerOnNote(int WMP, int MSP, int gpsLockTime) {
-        attrs.put(DeviceAttrs.FIRMWARE_VERSION, WMP);
-        attrs.put(DeviceAttrs.DMM_VERSION, MSP);
-        attrs.put(DeviceAttrs.GPS_LOCK_TIME, gpsLockTime);
+        attrs.addAttribute(DeviceAttrs.FIRMWARE_VERSION, WMP);
+        attrs.addAttribute(DeviceAttrs.DMM_VERSION, MSP);
+        attrs.addAttribute(DeviceAttrs.GPS_LOCK_TIME, gpsLockTime);
         construct_note(DeviceNoteTypes.POWER_ON, attrs);
         return this;
     }
 
     public TiwiProDevice addSpeedingNote(Integer distance, Integer topSpeed, Integer avgSpeed) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.DISTANCE, distance);
-        attrs.put(DeviceAttrs.TOP_SPEED, topSpeed);
-        attrs.put(DeviceAttrs.AVG_SPEED, avgSpeed);
-        attrs.put(DeviceAttrs.SPEED_ID, 9999);
-        attrs.put(DeviceAttrs.VIOLATION_FLAGS, 1);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.DISTANCE, distance);
+        attrs.addAttribute(DeviceAttrs.TOP_SPEED, topSpeed);
+        attrs.addAttribute(DeviceAttrs.AVG_SPEED, avgSpeed);
+        attrs.addAttribute(DeviceAttrs.SPEED_ID, 9999);
+        attrs.addAttribute(DeviceAttrs.VIOLATION_FLAGS, 1);
 
         construct_note(DeviceNoteTypes.SPEEDING_EX3, attrs);
         return this;
     }
 
     public void addTamperingNote(int percentPassedFilter) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, percentPassedFilter);
-        attrs.put(DeviceAttrs.BACKUP_BATTERY, 6748);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, percentPassedFilter);
+        attrs.addAttribute(DeviceAttrs.BACKUP_BATTERY, 6748);
 
         construct_note(DeviceNoteTypes.UNPLUGGED, attrs);
     }
@@ -184,14 +185,14 @@ public class TiwiProDevice extends DeviceBase {
 
     public TiwiProDevice construct_note(DeviceNoteTypes type) {
         if (state.getProductVersion() == ProductType.TIWIPRO_R74) {
-            attrs = new HashMap<DeviceAttrs, Integer>();
+            attrs = new DeviceAttributes();
             construct_note(type, attrs);
         }
         check_queue();
         return this;
     }
 
-    public TiwiProDevice construct_note(DeviceNoteTypes type, Map<DeviceAttrs, Integer> attrs) {
+    public TiwiProDevice construct_note(DeviceNoteTypes type, DeviceAttributes attrs) {
         TiwiNote note = new TiwiNote(type, state, tripTracker.currentLocation());
         note.addAttrs(attrs);
         try {
@@ -222,8 +223,9 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice enter_zone(Integer zoneID) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.ZONE_ID, zoneID);
+        
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.ZONE_ID, zoneID);
         construct_note(DeviceNoteTypes.WSZONES_ARRIVAL_EX, attrs);
         return this;
     }
@@ -244,20 +246,20 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice leave_zone(Integer zoneID) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.ZONE_ID, zoneID);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.ZONE_ID, zoneID);
         construct_note(DeviceNoteTypes.WSZONES_DEPARTURE_EX, attrs);
         return this;
     }
 
     public TiwiProDevice logout_driver(Integer RFID, Integer tripQuality, Integer MPG, Integer MPGOdometer) {
-        attrs = new HashMap<DeviceAttrs, Integer>();
-        attrs.put(DeviceAttrs.LOGOUT_TYPE, 4);
-        attrs.put(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, tripQuality);
-        attrs.put(DeviceAttrs.MPG, MPG);
-        attrs.put(DeviceAttrs.MPG_DISTANCE, MPGOdometer);
-        attrs.put(DeviceAttrs.RFID0, -536362939);
-        attrs.put(DeviceAttrs.RFID1, 1415806888);
+        attrs = new DeviceAttributes();
+        attrs.addAttribute(DeviceAttrs.LOGOUT_TYPE, 4);
+        attrs.addAttribute(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, tripQuality);
+        attrs.addAttribute(DeviceAttrs.MPG, MPG);
+        attrs.addAttribute(DeviceAttrs.MPG_DISTANCE, MPGOdometer);
+        attrs.addAttribute(DeviceAttrs.RFID0, -536362939);
+        attrs.addAttribute(DeviceAttrs.RFID1, 1415806888);
         construct_note(DeviceNoteTypes.STATS, attrs);
         return this;
     }
@@ -329,7 +331,7 @@ public class TiwiProDevice extends DeviceBase {
     @Override
     protected TiwiProDevice set_power() {
 
-        attrs = new HashMap<DeviceAttrs, Integer>();
+        attrs = new DeviceAttributes();
 
         state.setPower_state(!state.getPower_state()); // Change the power state between on and off
         if (state.getPower_state()) {
