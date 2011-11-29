@@ -74,8 +74,8 @@ public class AssetServiceImplTest {
                 systemClock.getNow();
                 result = today;
 
-                redflagDaoMock.getRedFlagCount(withEqual(77), withEqual(expectedStartDate), (Date)any, withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
-                        withEqual(new ArrayList<TableFilterField>()));
+                redflagDaoMock.getRedFlagCount(withEqual(SAMPLE_GROUP_ID), withEqual(expectedStartDate), (Date)any, withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
+                        withEqual(new ArrayList<TableFilterField>())); //NOTE: this expectation will fail if startDate is more than one year old
                 result = 200;
             }
         };
@@ -162,6 +162,7 @@ public class AssetServiceImplTest {
                 systemClock.getNow();
                 result = today;
 
+                //NOTE: this expectation will fail if startDate is more than one year old
                 redflagDaoMock.getRedFlagPage(withEqual(SAMPLE_GROUP_ID), withEqual(startDate), withEqual(expectedEndDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN), (PageParams) any);
                 result = new ArrayList();
                 forEachInvocation = new Object() {
