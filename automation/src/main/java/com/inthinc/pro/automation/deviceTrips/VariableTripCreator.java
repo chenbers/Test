@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
+
 import com.inthinc.pro.automation.CassandraPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.MCMProxyObject;
@@ -71,7 +73,7 @@ public class VariableTripCreator {
             trip.start();
             runningTime = (System.currentTimeMillis() - start) / 1000;
             while (Thread.activeCount() > maxThreads){
-                AutomationThread.pause(1);
+                AutomationThread.pause(10l);
             }
             if (totalTime == 0){
                 loop = itr.hasNext();
@@ -81,9 +83,9 @@ public class VariableTripCreator {
         }
         int count = Thread.activeCount();
         while (count > threads ){
-            MasterTest.print("Still running " + (count - threads) + " active threads");
+            MasterTest.print("Still running " + (count - threads) + " active threads", Level.INFO);
             count = Thread.activeCount();
-            AutomationThread.pause(2);
+            AutomationThread.pause(1);
         }
         
         try {

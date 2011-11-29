@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import me.prettyprint.hector.api.mutation.MutationResult;
+
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -19,7 +21,6 @@ import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.noteservice.NoteService;
 
 
@@ -91,13 +92,9 @@ public class MCMProxyObject implements MCMProxy{
             for (DeviceNote note : noteList){
                 Map<String, String> temp = ((TiwiNote)note).packageToMap();
                 temp.put("32900", drivers.get(mcmID).toString());
-                try {
-                    if (notes.insertNote(temp) != null){
-                        DeviceStatistics.addCall();
-                    }
-                } catch (Exception e) {
-                    MasterTest.print(StackToString.toString(e));
-                }
+                MutationResult mr = notes.insertNote(temp);
+                MasterTest.print(mr.getExecutionTimeMicro(), Level.DEBUG);
+                DeviceStatistics.addCall();
             }
         }
         return null;
@@ -266,10 +263,9 @@ public class MCMProxyObject implements MCMProxy{
             MultipartEntity entity = new MultipartEntity();
             entity.addPart("file", new ByteArrayBody(note.Package(), "temp"));
             method.setEntity(entity);
+            
             http.httpRequest(method);
             
-            
-//            temp.add(note.Package());
             printNote(note);
         }
         return note(mcmID, temp);

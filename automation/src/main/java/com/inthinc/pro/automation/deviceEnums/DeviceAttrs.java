@@ -263,7 +263,7 @@ public enum DeviceAttrs implements DeviceTypes{
     TOTAL_TEMP_COMP_SLOPE_ESTIMATES(16417),
     TOTAL_TEMP_COMP_SLOPE_UPDATES(16418),
     TRAILER_GALLONS(16419),
-    // TRANSMITTED_MESSAGE_COUNT(16420),
+//    TRANSMITTED_MESSAGE_COUNT(16420),
     VEHICLE_GALLONS(16420),
     WATCHDOG_COUNT(16421),
     WEI_COUNT(16422),
@@ -271,25 +271,27 @@ public enum DeviceAttrs implements DeviceTypes{
     ANALOG_SENSOR(16424),
     LOW_IDLE_2(16425),
     HIGH_IDLE_2(16426),
-    DATA(24576), // string length comes from ATTR_DATA_LENGTH
-    TEXT_MESSAGE(24577), // string length comes from ATTR_TEXT_LENGTH
-    DRIVER_STR(24578, 10, false), // string 10 fixed length, \0 filled
-    EMU_NAME_DEVICE(24579, 29, false), // string 29 fixed length, \0 filled
-    EMU_NAME_TRANSFORM(24580, 29, false), // string 29 fixed length, \0 filled
-    FILE_NAME(24581, 32, true), // string 32 max, variable length, \0 terminated
-    LOCATION(24582, 32, true), // string 32 max, variable length, \0 terminated
-    REPORT_ID(24583, 4, true), // string 4 max, variable length, \0 terminated
-    SERVICE_ID(24584, 20, true), // string 20 max, variable length, \0 terminated
-    SILICON_ID(24585, 17, false), // string 17 fixed length, \0 filled
-    SMTOOLS_FIRMWARE_REV(24586, 36, false), // string 36 fixed length, \0 filled
-    TRAILER_ID(24587, 20, true), // string 20 max, variable length, \0 terminated
-    VIN(24588, 18, false), // string 18 fixed length, \0 filled
-    WITNESS_ID(24589, 9, true), // string 9 max, variable length, \0 terminated
-    OCCUPANT_STR(24590, 10, false), // string 10 fixed length, \0 filled
-    EMP_ID(24591, 11, true), // string 11 max, variable length, \0 terminated
-    VEHICLE_NAME(24592, 20, true), // string 20 max, variable length, \0 terminated
-    IMEI(24593, 15, true), // string 15 max, variable length, \0 terminated
-    MCMID(24594, 9, true), // string 9 max, variable length, \0 terminated
+    DATA(24576),                            // string length comes from ATTR_DATA_LENGTH
+    TEXT_MESSAGE(24577),                    // string length comes from ATTR_TEXT_LENGTH
+    DRIVER_STR(24578, 10, false),           // string 10 fixed length,                      \0 filled
+    EMU_NAME_DEVICE(24579, 29, false),      // string 29 fixed length,                      \0 filled
+    EMU_NAME_TRANSFORM(24580, 29, false),   // string 29 fixed length,                      \0 filled
+    FILE_NAME(24581, 32, true),             // string 32 max, variable length,              \0 terminated
+    LOCATION(24582, 32, true),              // string 32 max, variable length,              \0 terminated
+    REPORT_ID(24583, 4, true),              // string 4 max, variable length,               \0 terminated
+    SERVICE_ID(24584, 20, true),            // string 20 max, variable length,              \0 terminated
+    SILICON_ID(24585, 17, false),           // string 17 fixed length,                      \0 filled
+    SMTOOLS_FIRMWARE_REV(24586, 36, false), // string 36 fixed length,                      \0 filled
+    TRAILER_ID(24587, 20, true),            // string 20 max, variable length,              \0 terminated
+    VIN(24588, 18, false),                  // string 18 fixed length,                      \0 filled
+    WITNESS_ID(24589, 9, true),             // string 9 max, variable length,               \0 terminated
+    OCCUPANT_STR(24590, 10, false),         // string 10 fixed length,                      \0 filled
+    EMP_ID(24591, 11, true),                // string 11 max, variable length,              \0 terminated
+    VEHICLE_NAME(24592, 20, true),          // string 20 max, variable length,              \0 terminated
+    IMEI(24593, 15, true),                  // string 15 max, variable length,              \0 terminated
+    MCMID(24594, 9, true),                  // string 9 max, variable length,               \0 terminated
+    
+    SKIP_INT(32000),
     AVERAGE_LOCK_TIME(32768),
     BATTERY_VOLTAGE(32769),
     BRAKE_RECEIVES(32770),
@@ -303,15 +305,15 @@ public enum DeviceAttrs implements DeviceTypes{
     DOWNLOAD_WEEKLY_TOTAL_PLACES_2_DAT(32778),
     DOWNLOAD_WEEKLY_TOTAL_QSI_FIRMWARE(32779),
     DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_CHECK_BYTES(32780),
-    DOWNLOAD_WEEKLY_TOTAL_SBS_EXMAPS_DOWNLOAD_BYTES(32781),
-    DOWNLOAD_WEEKLY_TOTAL_SBS_EXMAPS_DOWNLOAD_COUNT(32782),
+    DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_DOWNLOAD_BYTES(32781),
+    DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_DOWNLOAD_COUNT(32782),
     DOWNLOAD_WEEKLY_TOTAL_SMTOOLS_EMULATION(32783),
     DOWNLOAD_WEEKLY_TOTAL_SMTOOLS_FIRMWARE(32784),
     DOWNLOAD_WEEKLY_TOTAL_TRIAX_II_FIRMWARE(32785),
     DOWNLOAD_WEEKLY_TOTAL_WITNESS_II_FIRMWARE(32786),
     DOWNLOAD_WEEKLY_TOTAL_ZONES(32787),
     EMU_NAME_VERIFIED(32789),
-    // ERROR(32790),
+//    ERROR(32790),
     ERROR_CODE_CONF(32790),
     FILE_SIZES(32791),
     FLAGS(32792),

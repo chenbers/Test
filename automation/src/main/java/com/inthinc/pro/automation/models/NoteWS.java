@@ -2,6 +2,8 @@ package com.inthinc.pro.automation.models;
 
 import java.io.ByteArrayOutputStream;
 
+import org.apache.log4j.Level;
+
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
@@ -10,6 +12,7 @@ import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteWS implements DeviceNote {
@@ -54,12 +57,12 @@ public class NoteWS implements DeviceNote {
         NoteManager.longToByte(baos, nSpeed, 1);
         NoteManager.longToByte(baos, odometer, 3);
         NoteManager.longToByte(baos, duration, 2);
-        NoteManager.encodeAttributes(baos, attrs);
+        NoteManager.encodeAttributes(baos, attrs, nType.getAttributes());
         byte[] temp = baos.toByteArray();
         temp[0] = (byte) (temp.length & 0xFF);
-//        for (int i=0;i<temp.length;i++){
-//            MasterTest.print("Byte " + i + " = " + temp[i]);
-//        }
+        for (int i=0;i<temp.length;i++){
+            MasterTest.print("Byte " + i + " = " + temp[i], Level.DEBUG);
+        }
         return temp;
     }
 

@@ -309,7 +309,7 @@ public abstract class DeviceBase {
         } else {
             MasterTest.print("The device is already off.");
         }
-        MasterTest.print("Last note created at: " + state.getTime().epochSecondsInt());
+        MasterTest.print("Last note created at: " + state.getTime().epochSecondsInt(), Level.DEBUG);
         return this;
     }
 

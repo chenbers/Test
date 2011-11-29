@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.models.DeviceAttributes;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class NoteManager {
@@ -119,6 +120,7 @@ public class NoteManager {
     }
     
     public static int concatenateTwoInts(int one, int two){
+        MasterTest.print(one + "   " + two);
         int value = (int)(  one << 4)  & 0xF0 | two & 0x0F;
         return value;
     }
@@ -135,39 +137,48 @@ public class NoteManager {
         while( keys.hasNext()){
             DeviceAttrs key=null;
 
-            try {
-                key = keys.next();
-                if (key.getCode() < Math.pow(2, 1*Byte.SIZE)){
-                    longToByte(baos, key.getCode(), 1);    
-                } else if (key.getCode() < Math.pow(2, 2*Byte.SIZE)){
-                    longToByte(baos, key.getCode(), 2);   
-                } else if (key.getCode() < Math.pow(2, 3*Byte.SIZE)){
-                    longToByte(baos, key.getCode(), 3);   
-                }
-                
-                Object object = attrs.getValue(key);
-                if (object instanceof Number){
-                    if (object instanceof Integer){
-                        longToByte(baos, ((Integer)object).longValue(), key.getSize());
-                    } else if (object instanceof Long){
-                        longToByte(baos, (Long)object, key.getSize());    
-                    }
-                } else if (object instanceof String){
-                    byte[] str = ((String)object).getBytes();
-                    baos.write(str);
-                    baos.write(0x0);
-                }
-            } catch (NullPointerException e){
-                logger.info("Key: " + key + " had no value attached to it");
-                logger.error(StackToString.toString(e));
-                continue;
-            } catch (IOException e) {
-                logger.info("Key: " + key + " had an error when trying to add the string");
-                continue;
+            key = keys.next();
+            if (key.getCode() < Math.pow(2, 1*Byte.SIZE)){
+                longToByte(baos, key.getCode(), 1);    
+            } else if (key.getCode() < Math.pow(2, 2*Byte.SIZE)){
+                longToByte(baos, key.getCode(), 2);   
+            } else if (key.getCode() < Math.pow(2, 3*Byte.SIZE)){
+                longToByte(baos, key.getCode(), 3);   
             }
-            
+            encodeAttribute(baos, key, attrs.getValue(key));
         }
     }
     
-
+    private static void encodeAttribute(ByteArrayOutputStream baos, DeviceAttrs key, Object object) {
+        try {
+            if (object instanceof Number){
+                if (object instanceof Integer){
+                    longToByte(baos, ((Integer)object).longValue(), key.getSize());
+                } else if (object instanceof Long){
+                    longToByte(baos, (Long)object, key.getSize());    
+                }
+            } else if (object instanceof String){
+                byte[] str = ((String)object).getBytes();
+                int size = key.getSize();
+                baos.write(str, 0, str.length);
+                if (key.isZeroTerminated()){
+                    baos.write(0x0);
+                } else {
+                    size -= str.length;
+                    for (int i=0;i<size;i++){
+                        baos.write(0x0);
+                    }
+                }
+            }
+        } catch (NullPointerException e){
+            logger.info("Key: " + key + " Value: " + object);
+            logger.error(StackToString.toString(e));
+        }
+    }
+    
+    public static void encodeAttributes(ByteArrayOutputStream baos, DeviceAttributes attrs, DeviceAttrs[] attrList) {
+        for (DeviceAttrs attr : attrList){
+            encodeAttribute(baos, attr, attrs.getValue(attr));
+        }
+    }
 }

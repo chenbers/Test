@@ -62,7 +62,7 @@ public class WaysmartDevice extends DeviceBase {
 	    state.setEmployeeID(driverStr);
 	    NoteWS note = constructWSNote(DeviceNoteTypes.NEWDRIVER_HOSRULE, 0);
 	    note.addAttr(DeviceAttrs.DRIVER_STR, driverStr);
-	    note.addAttr(DeviceAttrs.MCM_RULESET, status.getCode()); 
+	    note.addAttr(DeviceAttrs.MCM_RULESET, status.getCode());
 	    addNote(note);
 	    
 //	    Package_Waysmart_Note note = construct_note();
@@ -167,7 +167,7 @@ public class WaysmartDevice extends DeviceBase {
 	}
 	
 	public WaysmartDevice logInOccupant(String occupantsDriverID) {
-        Package_Waysmart_Note note = construct_note(DeviceNoteTypes._A_AND_D_SPACE___HOS_CHANGE_STATE_NO_GPS_LOCK);
+        Package_Waysmart_Note note = construct_note(DeviceNoteTypes.A_AND_D_SPACE___HOS_CHANGE_STATE_NO_GPS_LOCK);
         note.setDriverID(occupantsDriverID);
         note.setHosStatus(HOSStatus.ON_DUTY_OCCUPANT);
         MasterTest.print(sendNote(note));

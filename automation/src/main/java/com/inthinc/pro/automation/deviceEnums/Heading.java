@@ -16,20 +16,20 @@ public enum Heading {
     NORTH_WEST(315),
     ;
     
-    private Integer direction;
     private Integer min, max;
+    private final Integer heading;
     
-    private Heading(int direction){
-        this.direction = direction;
-        min = direction - 15;
-        max = direction + 15;
+    private Heading(int heading){
+        this.heading = heading/45;
+        min = heading - 15;
+        max = heading + 15;
         if (min < 0){
             min = 360 - 15;
         }
     }
     
     public Integer getHeading(){
-        return direction;
+        return heading;
     }
 
     public static Heading getHeading(GeoPoint start, GeoPoint stop){
