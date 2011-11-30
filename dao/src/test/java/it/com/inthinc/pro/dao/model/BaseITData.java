@@ -314,14 +314,14 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
         redFlagAlertDAO.setSiloService(siloService);
 
-        // speeding alert (5 mph over any speed, WARNING level)
-        RedFlagAlert redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING);
-        redFlagAlert.setSpeedSettings(new Integer[] {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,});
+        // speeding alert (no setting if first bucket)
+        RedFlagAlert redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING, "speeding");
+        redFlagAlert.setSpeedSettings(new Integer[] {null,5,5,5,5,5,5,5,5,5,5,5,5,5,5,});
         redFlagAlert.setSeverityLevel(RedFlagLevel.WARNING);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
-
+        
         // aggressive driving all  (level 1)  CRITICAL
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_HARD_BUMP);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_HARD_BUMP, "hardBump");
         redFlagAlert.setHardAcceleration(Integer.valueOf(1));
         redFlagAlert.setSeverityLevel(RedFlagLevel.CRITICAL);
         redFlagAlert.setHardBrake(Integer.valueOf(1));
@@ -330,27 +330,27 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // seat belt INFO
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SEATBELT);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SEATBELT, "seatbelt");
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // crash CRITICAL
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_CRASH);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_CRASH, "crash");
         redFlagAlert.setSeverityLevel(RedFlagLevel.CRITICAL);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
         
         // tampering INFO
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_TAMPERING);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_TAMPERING, "tampering");
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
         
         // low battery INFO
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_LOW_BATTERY);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_LOW_BATTERY, "lowBattery");
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // no Driver INFO
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_NO_DRIVER);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_NO_DRIVER, "noDriver");
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
@@ -358,14 +358,14 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
     }
 
 
-    protected RedFlagAlert initRedFlagAlert(AlertMessageType type) {
+    protected RedFlagAlert initRedFlagAlert(AlertMessageType type, String name) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
         List<AlertMessageType> list = new ArrayList<AlertMessageType>();
         list.add(type);
         RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAccountID(),
             fleetUser.getUserID(),
-            type + " Red Flag", type + " Red Flag Description", 0,
+            name, type + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
             anyTeam(),
