@@ -5,10 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -16,6 +20,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.DriveTimeDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 
@@ -31,6 +36,8 @@ public class DriveTimeJDBCDAO extends GenericJDBCDAO implements DriveTimeDAO {
     private static final String FETCH_GROUP_DRIVE_TIME2 = ") and a.aggDate between ? and ? order by a.aggDate, a.driverID";
     
     private static final String FETCH_DRIVER_IDS = "select distinct driverID from groupDriverFlat g where g.groupID in (select groupID from groupGroupFlat where parentID=?)";
+
+    
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
@@ -167,5 +174,63 @@ System.out.println("statement:" + statement.toString());
         
         return driverIDs.toString();
     }
+
+    private static final String FETCH_DRIVER_LOGINS = "select v.driverId, t.tzName, v.start from vddlog v, timezone t where v.tzID = t.tzID and dgroupID = ? and start between ? and ?";
+
+    @Override
+    public Map<Integer, Integer> getDriverLoginCountsForGroup(Integer groupID, Interval interval) {
+        
+        Interval queryInterval = new Interval(interval.getStart().minusDays(1), interval.getEnd().plusDays(1));
+        
+        Map<Integer, Integer> driverIDLoginCount = new HashMap<Integer, Integer>();
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(FETCH_DRIVER_LOGINS);
+            statement.setInt(1, groupID);
+            statement.setDate(2, java.sql.Date.valueOf(dateFormatter.print(queryInterval.getStart())));
+            statement.setDate(3, java.sql.Date.valueOf(dateFormatter.print(queryInterval.getEnd())));
+System.out.println("statement:" + statement.toString());            
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Integer driverID = resultSet.getInt(1);
+                DateTimeZone dateTimeZone = DateTimeZone.forID(resultSet.getString(2));
+                DateTime dateTime = new DateTime(resultSet.getDate(3).getTime(), dateTimeZone);
+                
+                Integer count = driverIDLoginCount.get(driverID);
+                if (count == null) {
+                    count = new Integer(0);
+                    driverIDLoginCount.put(driverID, count);
+                }
+                
+                if (DateUtil.timeInInterval(dateTime, dateTimeZone, interval)) {
+                    count = count + 1;
+                    driverIDLoginCount.put(driverID, count);
+System.out.println("driverID: " + driverID + " count: " + driverIDLoginCount.get(driverID));            
+                }
+                    
+            }
+                
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally   
+        
+        return driverIDLoginCount;
+    }
+
+
     
 }

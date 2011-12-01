@@ -10,7 +10,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 
 public class DateUtil
 {
@@ -220,6 +224,27 @@ public class DateUtil
         return (endDate.getTime() - startTime.getTime())/60000l;
     }
 
+    
+    public static boolean timeInInterval(DateTime dateTime, DateTimeZone dateTimeZone, Interval utcInterval) {
+        Interval tzInterval = getIntervalInTimeZone(utcInterval, dateTimeZone);
+        return tzInterval.contains(dateTime);
+    }
+    
+    public static Interval getIntervalInTimeZone(Interval interval, DateTimeZone dateTimeZone)
+    {
+        LocalDate localDate = new LocalDate(new DateMidnight(interval.getStart(), DateTimeZone.UTC));
+        DateTime startDate = localDate.toDateTimeAtStartOfDay(dateTimeZone);
+        localDate = new LocalDate(new DateMidnight(interval.getEnd(), DateTimeZone.UTC));
+        DateTime endDate = localDate.toDateTimeAtStartOfDay(dateTimeZone);
+        System.out.println("local Interval: " + startDate + " " + endDate);        
+
+        return new Interval(startDate, endDate);
+
+    }
+
+
+    
+    
 }
 
 

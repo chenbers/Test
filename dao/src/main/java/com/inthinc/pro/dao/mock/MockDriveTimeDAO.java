@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.mock;
 
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.Interval;
 
@@ -18,6 +19,12 @@ public class MockDriveTimeDAO implements DriveTimeDAO {
 
     @Override
     public List<DriveTimeRecord> getDriveTimeRecordListForGroup(Integer groupID, Interval queryInterval) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<Integer, Integer> getDriverLoginCountsForGroup(Integer groupID, Interval interval) {
         // TODO Auto-generated method stub
         return null;
     }

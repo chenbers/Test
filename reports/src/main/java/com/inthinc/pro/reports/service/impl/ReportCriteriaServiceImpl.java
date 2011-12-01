@@ -80,6 +80,7 @@ import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
+import com.inthinc.pro.reports.performance.DriverPerformanceWeeklyReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollReportCompensatedHoursCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
@@ -1158,6 +1159,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
     }
 
+    @Override
+    public ReportCriteria getDriverPerformanceWeeklyReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Locale locale, MeasurementType measurementType) {
+        DriverPerformanceWeeklyReportCriteria criteria = new DriverPerformanceWeeklyReportCriteria (ReportType.DRIVER_PERFORMANCE, locale);
+        criteria.setDriverPerformanceDAO(driverPerformanceDAO);
+        criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
+        return criteria;
+    }
 
     
     public DriveTimeDAO getDriveTimeDAO() {
@@ -1368,6 +1376,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                             reportSchedule.getGroupID(), timeFrame.getInterval(),  
                             person.getLocale(), ryg));
                     break;
+                case DRIVER_PERFORMANCE:
+                    reportCriteriaList.add(getDriverPerformanceWeeklyReportCriteria(groupHierarchy, 
+                            reportSchedule.getGroupIDList(), timeFrame,  
+                            person.getLocale(), person.getMeasurementType()));
+                    break;
 
                 default:
                     break;
@@ -1376,5 +1389,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
         return reportCriteriaList;
     }
+
+
 
 }

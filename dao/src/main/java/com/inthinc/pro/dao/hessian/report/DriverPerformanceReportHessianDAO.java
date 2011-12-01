@@ -2,20 +2,26 @@ package com.inthinc.pro.dao.hessian.report;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.Interval;
 
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
+import com.inthinc.pro.model.aggregation.DriverPerformanceWeekly;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 
 public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
 
     GroupReportDAO groupReportDAO;
+    DriveTimeDAO driveTimeDAO;
     
+
     @Override
     public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
         return getFilteredDriverPerformanceListForGroup(groupID, groupName, driverIDList, interval);
@@ -93,4 +99,51 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
         
         return false;
     }
+
+    @Override
+    public List<DriverPerformanceWeekly> getDriverPerformanceWeeklyListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
+        
+        List<Interval> intervalList = timeFrame.getWeekEndIntervalList();
+        
+        List<DriverPerformanceWeekly> driverPerformanceList = new ArrayList<DriverPerformanceWeekly>();
+        for (Interval interval : intervalList) {
+            List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval);
+            
+            if (scoreList == null || scoreList.isEmpty())
+                continue;
+            
+            Map<Integer, Integer> driverLoginCountMap = driveTimeDAO.getDriverLoginCountsForGroup(groupID, interval);
+            for (DriverVehicleScoreWrapper score : scoreList) {
+                DriverPerformanceWeekly dp = new DriverPerformanceWeekly();
+                dp.setDriverName(score.getDriver().getPerson().getFullName());
+                dp.setDriverPosition(score.getDriver().getPerson().getTitle());
+                dp.setGroupName(divisionName);
+                dp.setTeamName(teamName);
+                dp.setWeekEndDate(interval.getEnd().toDate());
+                Score s = score.getScore();
+                Integer loginCount = driverLoginCountMap.get(score.getDriver().getDriverID());
+                dp.setLoginCount(loginCount == null ? 0 : loginCount);
+                dp.setTotalMiles(s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue());
+                dp.setOverallScore(s.getOverall()==null ? -1 : s.getOverall().intValue());
+                dp.setSpeedingScore(s.getSpeeding()==null ? -1 : s.getSpeeding().intValue());
+                dp.setStyleScore(s.getDrivingStyle()==null ? -1 : s.getDrivingStyle().intValue());
+                dp.setSeatbeltScore(s.getSeatbelt()==null ? -1 : s.getSeatbelt().intValue());
+                dp.setIdleViolationsCount((s.getIdleLoEvents() == null ? 0 : s.getIdleLoEvents().intValue()) + (s.getIdleHiEvents() == null ? 0 : s.getIdleHiEvents().intValue())); 
+                dp.setIdleViolationsMinutes(s.getIdleTotal() == null ? 0 : s.getIdleTotal().intValue());
+                driverPerformanceList.add(dp);
+            }
+        }
+        return driverPerformanceList;
+    }
+
+
+    public DriveTimeDAO getDriveTimeDAO() {
+        return driveTimeDAO;
+    }
+
+    public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
+        this.driveTimeDAO = driveTimeDAO;
+    }
+
+
 }

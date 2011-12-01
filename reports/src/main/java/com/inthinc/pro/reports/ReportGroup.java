@@ -164,6 +164,11 @@ public enum ReportGroup
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             EnumSet.of(ReportAccountType.WAYSMART),
             ReportType.DRIVER_HOURS),
+    DRIVER_PERFORMANCE("Driver Performance", 38, EntityType.ENTITY_GROUP_LIST,
+                    new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+                    new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+                    EnumSet.of(ReportAccountType.WAYSMART),
+                    ReportType.DRIVER_PERFORMANCE),
     DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)", 34, EntityType.ENTITY_GROUP,
                     new CriteriaType[]{CriteriaType.TIMEFRAME}, 
                     new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
@@ -316,6 +321,13 @@ public enum ReportGroup
     }
     public boolean isExcelSupport() {
         return (this != HOS_DAILY_DRIVER_LOG_REPORT);
+    }
+    public boolean isNonExcelSupport() {
+        boolean nonExcelSupport = false;
+        for (ReportType reportType : this.getReports())
+            if (reportType.getPrettyTemplate() != null)
+                nonExcelSupport = true;
+        return nonExcelSupport;
     }
     
     public String getMessageKey(){

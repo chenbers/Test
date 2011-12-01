@@ -1,12 +1,15 @@
 package com.inthinc.pro.model;
 
+import static org.junit.Assert.*;
+
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class TimeFrameTest {
 
 	   @Test
@@ -36,4 +39,24 @@ public class TimeFrameTest {
 	        int j=1;
 	   }
 
+	   @Test
+	   public void weekIntervalTest() {
+	       
+	       TimeFrame weekTimeFrame = TimeFrame.WEEK;
+	       System.out.println("weekTimeFrame: " + weekTimeFrame.getInterval());
+	       
+	       List<Interval> intervalList = weekTimeFrame.getWeekEndIntervalList();
+	       assertEquals("expect 1 entry in week interval list for timeFrame WEEK", 1, intervalList.size());
+	       for (Interval interval : intervalList)
+	           System.out.println("interval: " + interval);
+	       
+           TimeFrame monthTimeFrame = TimeFrame.MONTH;
+           System.out.println("monthTimeFrame: " + monthTimeFrame.getInterval());
+           
+           intervalList = monthTimeFrame.getWeekEndIntervalList();
+           assertEquals("expect 4 entries in week interval list for timeFrame MONTH", 4, intervalList.size());
+           for (Interval interval : intervalList)
+               System.out.println("interval: " + interval);
+	       
+	   }
 }

@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.jasper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,10 +95,19 @@ public class JasperReport implements Report
     {
         JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
         byte[] bytes;
+        String ext = ".pdf";
         try
         {
-            bytes = JasperExportManager.exportReportToPdf(jp);
-            ReportAttatchment reportAttatchment = new ReportAttatchment(FILE_NAME + ".pdf", bytes);
+            if (formatType == FormatType.EXCEL) {
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                exportToExcelStream(os, jp);
+                bytes = os.toByteArray();
+                ext = ".xls";
+            }
+            else {
+                bytes = JasperExportManager.exportReportToPdf(jp);
+            }
+            ReportAttatchment reportAttatchment = new ReportAttatchment(FILE_NAME + ext, bytes);
             List<ReportAttatchment> attachments = new ArrayList<ReportAttatchment>();
             attachments.add(reportAttatchment);
             String[] emails = email.split(",");

@@ -6,7 +6,9 @@ import java.util.List;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverPerformanceDAO;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
+import com.inthinc.pro.model.aggregation.DriverPerformanceWeekly;
 
 public class MockDriverPerformanceDAO implements DriverPerformanceDAO {
 
@@ -25,5 +27,11 @@ public class MockDriverPerformanceDAO implements DriverPerformanceDAO {
             list.add(new DriverPerformance(groupName, i, "Driver " + i, "Emp " + i, i*10+1, i*1000, i,i,i,i,i));
         }
         return list;
+    }
+
+    @Override
+    public List<DriverPerformanceWeekly> getDriverPerformanceWeeklyListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

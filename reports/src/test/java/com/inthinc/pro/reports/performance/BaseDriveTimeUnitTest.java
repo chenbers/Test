@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.performance;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -57,6 +58,11 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
                   list.add(new DriveTimeRecord(interval.getEnd(), i, "V" + i, i, (long)numHours * 3600l)); // should ignore this one
             }
             return list;
+        }
+        @Override
+        public Map<Integer, Integer> getDriverLoginCountsForGroup(Integer groupID, Interval interval) {
+            // TODO Auto-generated method stub
+            return null;
         }
     }
 }

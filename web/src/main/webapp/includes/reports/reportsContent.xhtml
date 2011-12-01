@@ -44,13 +44,13 @@
 			<span title="#{messages.reports_renderHTML}">
 				<a4j:commandLink id="#{context}_htmlIcon" action="#{reportsBean.htmlReport}"
 								reRender="#{context}_tableForm,#{context}_viewPanel" 
-								rendered="#{reportsBean.selected != null and reportsBean.params.valid}" styleClass="viewHTML"> 
+								rendered="#{reportsBean.selected != null and reportsBean.params.valid and reportsBean.params.reportGroup.nonExcelSupport}" styleClass="viewHTML"> 
     					<h:outputText value="#{messages.reports_renderHTMLLink}"/>
 				</a4j:commandLink>    
 			</span>	
 			<span title="#{messages.reports_exportPDF}">
 				<h:commandLink id="#{context}_pdfIcon" action="#{reportsBean.pdf}" ajaxSingle="true"  
-							rendered="#{reportsBean.selected != null and reportsBean.params.valid}" styleClass="exportPDF"> 
+							rendered="#{reportsBean.selected != null and reportsBean.params.valid and reportsBean.params.reportGroup.nonExcelSupport}" styleClass="exportPDF"> 
     					<h:outputText value="#{messages.reports_exportPDFLink}"/>
 				</h:commandLink>    
 			</span>	

@@ -62,14 +62,19 @@ public class ReportRendererImpl implements ReportRenderer
     public void exportReportToEmail(List<ReportCriteria> reportCriteriaList, String email, String noReplyEmailAddress)
     {
         Report report = reportCreator.getReport(reportCriteriaList);
-        report.exportReportToEmail(email, FormatType.PDF, noReplyEmailAddress);
+        FormatType format = FormatType.PDF;
+        for (ReportCriteria reportCriteria : reportCriteriaList)
+            if (reportCriteria.getReport().getPrettyTemplate() == null)
+                format = FormatType.EXCEL;
+        report.exportReportToEmail(email, format, noReplyEmailAddress);
     }
     
     @Override
     public void exportReportToEmail(ReportCriteria reportCriteria, String email, String noReplyEmailAddress)
     {
         Report report = reportCreator.getReport(reportCriteria);
-        report.exportReportToEmail(email, FormatType.PDF, noReplyEmailAddress);
+        FormatType format = (reportCriteria.getReport().getPrettyTemplate() == null) ? FormatType.EXCEL : FormatType.PDF;
+        report.exportReportToEmail(email, format, noReplyEmailAddress);
         
     }
     
