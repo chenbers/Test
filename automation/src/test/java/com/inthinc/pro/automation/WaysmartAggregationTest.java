@@ -1,6 +1,8 @@
 package com.inthinc.pro.automation;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
@@ -17,14 +19,16 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaysmartAggregationTest {
     
-    private LinkedList<DeviceNote> baseline;
+    private Map<String, LinkedList<Location>> baseline;
+    
+    
     
     public WaysmartAggregationTest(){
-        baseline = new LinkedList<DeviceNote>();
+        baseline = new HashMap<String, LinkedList<Location>>();
         populateBaseline();
     }
     
-    private class Location {
+    private class Location implements DeviceNote{
         
         private final DeviceNote note;
          
@@ -43,6 +47,26 @@ public class WaysmartAggregationTest {
             } else {
                 note = new NoteWS(type, state, location, duration);
             }
+        }
+
+        @Override
+        public byte[] Package() {
+            return note.Package();
+        }
+
+        @Override
+        public DeviceNoteTypes getType() {
+            return note.getType();
+        }
+
+        @Override
+        public Long getTime() {
+            return note.getTime();
+        }
+
+        @Override
+        public DeviceNote copy() {
+            return note.copy();
         }
     }
     
