@@ -40,6 +40,7 @@ public class TimeFrameTest {
 	   }
 
 	   @Test
+	   @Ignore
 	   public void weekIntervalTest() {
 	       
 	       TimeFrame weekTimeFrame = TimeFrame.WEEK;
