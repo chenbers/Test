@@ -79,8 +79,10 @@ public class ModelPropertyReplacer {
                                         compared.add(itemProperty);
                                         compareAndReplace(itemProperty, replaceProperty, compared);
                                     }
-                                    // replace the item property with replace property
-                                	itemWrite.invoke(item, replaceProperty);
+                                	else{
+	                                    // replace the item property with replace property
+	                                	itemWrite.invoke(item, replaceProperty);
+                                	}
                                 }
                             }
                         }
