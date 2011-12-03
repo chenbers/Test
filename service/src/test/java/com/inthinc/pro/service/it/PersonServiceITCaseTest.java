@@ -25,10 +25,12 @@ import org.junit.Test;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Vehicle;
 @Ignore
 public class PersonServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static final Logger logger = Logger.getLogger(PersonServiceITCaseTest.class);
     private static final int PERSON_ID = 30;
+    private static final int UPDATE_PERSON_ID=16491;
 
     @Before
     public void before() {
@@ -63,18 +65,39 @@ public class PersonServiceITCaseTest extends BaseEmbeddedServerITCase {
 
     @Test
     public void updatePerson() throws Exception {
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/person/" + PERSON_ID);
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/person/" + UPDATE_PERSON_ID);
         ClientResponse<Person> response = request.get();
         Person person = response.getEntity(Person.class);
+        System.out.println(person.toString());
+        System.out.println(person.getDriver().toString());
+        System.out.println(person.getUser().toString());
+       
+//        person.setFirst("test");
 
-        person.setFirst("test");
+        Person updatePerson = new Person();
+        updatePerson.setFirst("test");
+        updatePerson.setDriver(person.getDriver());
 
+        updatePerson.setPersonID(UPDATE_PERSON_ID);
         request = clientExecutor.createRequest("http://localhost:8080/service/api/person/");
 
-        request.accept("application/xml").body(MediaType.APPLICATION_XML, person);
+        request.accept("application/xml").body(MediaType.APPLICATION_XML, updatePerson);
 
         ClientResponse<String> responseString = request.put(String.class); // get response and automatically unmarshall to a string.
-        System.out.println(responseString);
+        System.out.println(responseString.getEntity().toString());
     }
+    @Test 
+    public void updatePersonDriverTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/person/");
+        //removed <dot>US_OIL</dot> from person
+        String xmlText = 
+        "<person><acctID>1</acctID><addressID>3989</addressID><crit>0</crit><driver><certifications></certifications><driverID>10936</driverID><expiration>1969-12-31T17:00:00-07:00</expiration><groupID>2</groupID><personID>16491</personID><status>ACTIVE</status></driver><empid>ROMANIAN</empid><first>test</first><fuelEfficiencyType>KMPL</fuelEfficiencyType><height>0</height><info>0</info><last>Jennings</last><locale>ro</locale><measurementType>METRIC</measurementType><middle></middle><personID>16491</personID><priEmail>romanian@test.com</priEmail><priPhone></priPhone><priText></priText><reportsTo></reportsTo><secEmail></secEmail><secPhone></secPhone><secText></secText><status>ACTIVE</status><suffix></suffix><timeZone>US/Mountain</timeZone><title></title><warn>0</warn><weight>0</weight></person>";
+
+        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
+
+        ClientResponse<Person> updatedPerson = request.put(Person.class); //get response.
+        Person  person = updatedPerson.getEntity();
+        System.out.println(person.toString());
+  }
 
 }
