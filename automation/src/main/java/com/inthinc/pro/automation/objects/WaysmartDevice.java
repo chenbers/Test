@@ -14,6 +14,7 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.AutomationNoteEvent;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.NoteBC;
@@ -52,17 +53,45 @@ public class WaysmartDevice extends DeviceBase {
 	public WaysmartDevice add_location() {
 	    addLocationNote(7, state.getSpeed(), hosStatus);
         return this;
-		
 	}
 	
 	/**
-	 * 116 {NEWDRIVER_HOSRULE, {driverStr, mcmRuleset}}
+	 * SPEEDING_EX3(93, DeviceAttrs.TOP_SPEED, DeviceAttrs.DISTANCE, DeviceAttrs.MAX_RPM, DeviceAttrs.SPEED_LIMIT, DeviceAttrs.AVG_SPEED, DeviceAttrs.AVG_RPM),
+	 */
+	public WaysmartDevice addSpeedingNote(Integer distance, Integer topSpeed, Integer avgSpeed) {
+	    NoteWS note = constructWSNote(DeviceNoteTypes.SPEEDING_EX3);
+	    note.addAttr(DeviceAttrs.DISTANCE, distance);
+	    note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
+	    note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
+	    note.addAttr(DeviceAttrs.SPEED_ID, 9999);
+	    note.addAttr(DeviceAttrs.VIOLATION_FLAGS, 1);
+	    addNote(note);
+        return this;
+    }
+	
+	/**
+	 * NOTE_EVENT(2, DeviceAttrs.DELTA_VS)
+	 */
+	public WaysmartDevice addNoteEvent(AutomationNoteEvent event){
+	    NoteWS note = constructWSNote(DeviceNoteTypes.NOTE_EVENT);
+	    note.addAttr(DeviceAttrs.DELTA_VS, event.packDeltaVS());
+	    addNote(note);
+//	    if (note!=null){
+//	        throw new NullPointerException();
+//	    }
+	    return this;
+	}
+	
+	 
+	
+	/**
+	 * NEWDRIVER_HOSRULE(116, DeviceAttrs.DRIVER_STR, DeviceAttrs.MCM_RULESET),
 	 **/
 	public WaysmartDevice addHosStateChange(String driverStr, HOSStatus status){
 	    state.setEmployeeID(driverStr);
-	    NoteWS note = constructWSNote(DeviceNoteTypes.NEWDRIVER_HOSRULE, 0);
+	    NoteWS note = constructWSNote(DeviceNoteTypes.NEWDRIVER_HOSRULE);
 	    note.addAttr(DeviceAttrs.DRIVER_STR, driverStr);
-	    note.addAttr(DeviceAttrs.MCM_RULESET, status.getCode());
+	    note.addAttr(DeviceAttrs.MCM_RULESET, status);
 	    addNote(note);
 	    return this;
 	}
@@ -80,23 +109,22 @@ public class WaysmartDevice extends DeviceBase {
 	    this.setVehicleID(vehicleID.toUpperCase());
 	    this.setAccountID(accountID);
 	    this.setCompanyID(1);
-	    NoteWS note = constructWSNote(DeviceNoteTypes.INSTALL, 0);
-	    note.addAttr(DeviceAttrs.VEHICLE_ID_STR, vehicleID.toUpperCase());
-	    note.addAttr(DeviceAttrs.MCM_ID_STR, state.getMcmID());
-	    note.addAttr(DeviceAttrs.COMPANY_ID, accountID);
-	    Direction temp = state.getWaysDirection();
-	    state.setWaysDirection(Direction.sat);
-	    addNote(note);
-	    state.setWaysDirection(temp);
-	    
+//	    NoteWS note = constructWSNote(DeviceNoteTypes.INSTALL);
+//	    note.addAttr(DeviceAttrs.VEHICLE_ID_STR, vehicleID.toUpperCase());
+//	    note.addAttr(DeviceAttrs.MCM_ID_STR, state.getMcmID());
+//	    note.addAttr(DeviceAttrs.COMPANY_ID, accountID);
 //	    Direction temp = state.getWaysDirection();
 //	    state.setWaysDirection(Direction.sat);
-//	    Package_Waysmart_Note note = construct_note(DeviceNoteTypes.INSTALL);
-//	    note.setVehicleID(vehicleID);
-//	    note.setCompanyID(accountID);
-//	    note.setAccountID(accountID);
-//	    MasterTest.print(sendNote(note));
+//	    addNote(note);
 //	    state.setWaysDirection(temp);
+	    
+	    Direction temp = state.getWaysDirection();
+	    state.setWaysDirection(Direction.sat);
+	    Package_Waysmart_Note note = construct_note(DeviceNoteTypes.INSTALL);
+	    note.setVehicleID(vehicleID);
+	    note.setCompanyID(accountID);
+	    note.setAccountID(accountID);
+	    state.setWaysDirection(temp);
 	    return this;
 	}
 	
@@ -124,8 +152,8 @@ public class WaysmartDevice extends DeviceBase {
 	    return new NoteBC(type, state, tripTracker.currentLocation());
 	}
 	
-	protected NoteWS constructWSNote(DeviceNoteTypes type, int duration){
-	    return new NoteWS(type, state, tripTracker.currentLocation(), duration);
+	protected NoteWS constructWSNote(DeviceNoteTypes type){
+	    return new NoteWS(type, state, tripTracker.currentLocation());
 	}
 
 	protected Package_Waysmart_Note construct_note( DeviceNoteTypes type){

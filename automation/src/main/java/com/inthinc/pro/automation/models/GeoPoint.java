@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.models;
 
+import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.Distance_Calc;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 
@@ -56,6 +57,10 @@ public class GeoPoint {
     
     public GeoPoint copy(){
         return new GeoPoint(lat, lng);
+    }
+    
+    public Heading getHeading(GeoPoint next){
+        return Heading.getHeading(this, next);
     }
     
 

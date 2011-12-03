@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import me.prettyprint.hector.api.mutation.MutationResult;
-
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -17,6 +15,7 @@ import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.interfaces.MCMProxy;
+import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.HTTPCommands;
@@ -89,13 +88,16 @@ public class MCMProxyObject implements MCMProxy{
             }
             return note(mcmID, temp);
         } else {
+            List<Map<String, String>> list = new ArrayList<Map<String, String>>();
             for (DeviceNote note : noteList){
                 Map<String, String> temp = ((TiwiNote)note).packageToMap();
                 temp.put("32900", drivers.get(mcmID).toString());
-                MutationResult mr = notes.insertNote(temp);
-                MasterTest.print(mr.getExecutionTimeMicro(), Level.DEBUG);
-                DeviceStatistics.addCall();
+                list.add(temp);
+//                MutationResult mr = notes.insertNote(temp);
+//                MasterTest.print(mr.getExecutionTimeMicro(), Level.DEBUG);
+//                DeviceStatistics.addCall();
             }
+            notes.insertNote(list);
         }
         return null;
     }
@@ -231,14 +233,14 @@ public class MCMProxyObject implements MCMProxy{
         return reply;
     }
     
-    public List<Map<String, Object>> notebc(String mcmID, int connectType,
+    public List<Map<String, Object>> notebc(String mcmID, Direction comType,
             List<DeviceNote> noteList, boolean extra){
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
         for (DeviceNote note : noteList){
             temp.add(note.Package());
             printNote(note);
         }
-        return note(mcmID, temp);
+        return notebc(mcmID, comType.getCode(), temp);
     }
 
     @Override
@@ -250,16 +252,20 @@ public class MCMProxyObject implements MCMProxy{
         return reply;
     }
     
-    public List<Map<String, Object>> notews(String mcmID, Integer connectType,
+    public List<Map<String, Object>> notews(String mcmID, Direction comType,
             List<DeviceNote> noteList, boolean extra){
         
         HTTPCommands http = new HTTPCommands();
+        MasterTest.print(mcmID);
         
-        List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
         for (DeviceNote note : noteList){
             MasterTest.print(server.getPortalUrl());
-            HttpPost method = new HttpPost("http://" + server.getPortalUrl() + ":" + server.getWaysPort() + "/gprs_wifi/gprs.do?mcm_id=" +
-            		""+mcmID+"&commType="+connectType+"&sat_cmd="+note.getType().getCode()+"&event_time="+note.getTime());
+            String uri = "http://" + server.getPortalUrl() + ":" + server.getWaysPort() + "/gprs_wifi/gprs.do?mcm_id=" +
+            ""+mcmID+"&commType="+comType.getCode()+"&sat_cmd="+note.getType().getCode()+"&event_time="+note.getTime();
+//            if (mcmID != null){
+//                return null;
+//            }
+            HttpPost method = new HttpPost(uri);
             MultipartEntity entity = new MultipartEntity();
             entity.addPart("file", new ByteArrayBody(note.Package(), "temp"));
             method.setEntity(entity);
@@ -268,7 +274,7 @@ public class MCMProxyObject implements MCMProxy{
             
             printNote(note);
         }
-        return note(mcmID, temp);
+        return null;
     }
     
     @Override

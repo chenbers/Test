@@ -30,7 +30,7 @@ public class NoteWS implements DeviceNote {
 
     
     public NoteWS(DeviceNoteTypes type, DeviceState state,
-            GeoPoint currentLocation, int duration) {
+            GeoPoint currentLocation) {
 
         this.nType = type;
         this.nVersion = state.getProductVersion();
@@ -40,7 +40,7 @@ public class NoteWS implements DeviceNote {
         this.location = currentLocation.copy();
         this.nSpeed = state.getSpeed();
         this.odometer = state.getOdometer();
-        this.duration = duration;
+        this.duration = 0;
         attrs = new DeviceAttributes();
     }
 
@@ -72,7 +72,6 @@ public class NoteWS implements DeviceNote {
         try {
             attrs.addAttribute(id, value);    
         } catch (Exception e) {
-            
             throw new NullPointerException("Cannot add " + id + " with value " + value);
         }
         
@@ -130,7 +129,7 @@ public class NoteWS implements DeviceNote {
         state.setSats(sats);
         state.setSpeed(nSpeed);
         state.setOdometer(odometer);
-        NoteWS temp = new NoteWS(nType, state, location, duration);
+        NoteWS temp = new NoteWS(nType, state, location);
         temp.addAttrs(attrs);
         return temp;
     }

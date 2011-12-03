@@ -112,4 +112,16 @@ public class TripTracker implements Iterable<GeoPoint> {
     public void addLocation(GeoPoint geoPoint) {
         trip.offer(geoPoint);
     }
+
+    public LinkedList<GeoPoint> getGeoPoints() {
+        return trip;
+    }
+
+    public int size() {
+        return trip.size();
+    }
+
+    public int currentCount() {
+        return currentPoint;
+    }
 }

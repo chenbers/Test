@@ -316,4 +316,12 @@ public class NoteService {
         	System.out.println("***************************************************************");
         }
     }
+
+    public List<MutationResult> insertNote(List<Map<String, String>> list) {
+        List<MutationResult> results = new ArrayList<MutationResult>();
+        for (Map<String, String> note : list){
+            results.add(insertNote(note));
+        }
+        return results;
+    }
 }

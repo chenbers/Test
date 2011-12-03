@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.device_emulation;
 
 import java.io.IOException;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.inthinc.hos.model.HOSStatus;
@@ -11,6 +12,7 @@ import com.inthinc.pro.automation.interfaces.NoteBuilder;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.CommandLine;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class Package_Waysmart_Note implements NoteBuilder {
@@ -98,10 +100,10 @@ public class Package_Waysmart_Note implements NoteBuilder {
     public String sendNote() {
         try {
             sendNote.runCommandWithArgs("send_note.exe");
-            logger.error(sendNote.getCommandError());
+            MasterTest.print(sendNote.getCommandError(), Level.ERROR);
             return sendNote.getCommandOutput();
         } catch (IOException e) {
-            logger.fatal(StackToString.toString(e));
+            MasterTest.print(e, Level.FATAL);
         } 
         return sendNote.getCommandError();
     }

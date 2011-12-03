@@ -12,6 +12,7 @@ import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.NoteBC;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.models.NoteWS;
+import com.inthinc.pro.automation.objects.TripTracker;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
@@ -19,12 +20,13 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaysmartAggregationTest {
     
-    private Map<String, LinkedList<Location>> baseline;
+    private Map<String, LinkedList<Location>> tripsMap;
+    private GeoPoint lastLocation;
     
     
     
     public WaysmartAggregationTest(){
-        baseline = new HashMap<String, LinkedList<Location>>();
+        tripsMap = new HashMap<String, LinkedList<Location>>();
         populateBaseline();
     }
     
@@ -32,22 +34,15 @@ public class WaysmartAggregationTest {
         
         private final DeviceNote note;
          
-        private Location(DeviceNoteTypes type, GeoPoint location, AutomationCalendar time, Heading heading, int sats, int speed, Integer speedLimit, int odometer, int driverID, int duration){
-            DeviceState state = new DeviceState(null, ProductType.WAYSMART);
-            state.getTime().setDate(time);
-            state.setHeading(heading);
-            state.setSats(sats);
-            state.setSpeed(speed);
-            state.setSpeed_limit(speedLimit.doubleValue());
-            state.setBoundaryID(0);
-            state.setDriverID(driverID);
-            state.setOdometer(odometer);
+        private Location(DeviceNoteTypes type, DeviceState state, GeoPoint location){
+            
             if (type.equals(DeviceNoteTypes.LOCATION)){
                 note = new NoteBC(type, state, location);
             } else {
-                note = new NoteWS(type, state, location, duration);
+                note = new NoteWS(type, state, location);
             }
         }
+        
 
         @Override
         public byte[] Package() {
@@ -71,7 +66,13 @@ public class WaysmartAggregationTest {
     }
     
     
+    
+    
     private void populateBaseline(){
+        LinkedList<DeviceNote> baseline = new LinkedList<DeviceNote>();
+        int speed=60;
+        DeviceState state = new DeviceState(null, ProductType.WAYSMART);
+        TripTracker trips = new TripTracker("100 Hurt St, Columbia, KY 42728", "Cs-1053/Diamond Ct, Prestonsburg, KY 41653", state);
         
     }
     
@@ -88,7 +89,7 @@ public class WaysmartAggregationTest {
 
     
     public static void main(String[] args){
-        WaysmartAggregationTest test = new WaysmartAggregationTest();
-        test.test(5);
+        
+        
     }
 }

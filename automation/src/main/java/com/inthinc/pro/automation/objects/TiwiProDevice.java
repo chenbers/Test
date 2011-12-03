@@ -387,30 +387,6 @@ public class TiwiProDevice extends DeviceBase {
         return null;
     }
 
-    protected TiwiProDevice was_speeding() {
-        Integer topSpeed = 0;
-        Integer avgSpeed = 0;
-        Double avg = 0.0;
-        Double speeding_distance = 0.0;
-        for (int i = 0; i < speed_points.size(); i++) {
-            int speed = speed_points.get(i);
-            avg += speed;
-            if (topSpeed < speed) {
-                topSpeed = speed;
-            }
-        }
-
-        avg = avg / (speed_points.size());
-        avgSpeed = avg.intValue();
-        for (int i = 1; i < speed_loc.size(); i++) {
-            GeoPoint last = speed_loc.get(i - 1);
-            GeoPoint loc = speed_loc.get(i);
-            speeding_distance += Math.abs(Distance_Calc.calc_distance(last, loc));
-        }
-        Integer distance = (int) (speeding_distance * 100);
-        addSpeedingNote(distance, topSpeed, avgSpeed);
-        return this;
-    }
     
     public boolean updateFirmware(int versionNumber){
         Map<String, Object> updateMap = new HashMap<String, Object>();
