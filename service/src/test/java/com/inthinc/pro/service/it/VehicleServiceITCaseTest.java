@@ -317,7 +317,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     public void updateVehicleTest() throws Exception{
         ClientRequest request = clientExecutor.createRequest(url+"/vehicle/");
 
-        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137749</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137750</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
 //        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>8</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
 
         //Test for lds church
