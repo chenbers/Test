@@ -25,7 +25,7 @@ public class MailDispatcher
     
     public boolean send(String emailAddress, String subjectText, String messageText)
     {
-        logger.debug("sendEmail: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]");
+        logger.info("sendEmail: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]");
         boolean ok = true;
         
         SimpleMailMessage message = new SimpleMailMessage();
