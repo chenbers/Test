@@ -3358,7 +3358,7 @@ Slider (Red Flag Driver Style Severity)
 .severity-slider-bar {
 	padding: 0px;
 	margin-left: -10px;
-	margin-right: -10px;
+	margin-right: -12px;
 	height: 28px;
 	background-image: url(../images/sev_bar_no_marker.png);
 }

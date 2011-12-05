@@ -21,8 +21,10 @@
       var map;
       function bodyLoad()
       {
+          loadSpeedElements();
     	  loadMap();
           document.getElementById("editRedFlag-timeframePickers").style.display = (document.getElementById("edit-form:editRedFlag-timeframe:0").checked ? 'none' : '');
+
 
         var elements = document.getElementById("edit-form").elements;
         for (var i = 0; i &lt; elements.length; i++)
@@ -32,6 +34,15 @@
               elements[i].focus();
               return;
             }
+      }
+      function loadSpeedElements()
+      {
+          if(document.getElementById("editRedFlag-bySpeedLimit") != null) {
+		  	document.getElementById('editRedFlag-bySpeedLimit').style.display = (document.getElementById("edit-form:editRedFlag-speedSel:0").checked ? '' : 'none');
+          }
+          if(document.getElementById("editRedFlag-byMaxSpeed") != null) {
+			  document.getElementById('editRedFlag-byMaxSpeed').style.display = (document.getElementById("edit-form:editRedFlag-speedSel:1").checked ? '' : 'none');
+          }
       }
       function loadMap(){
           if (GBrowserIsCompatible())
@@ -44,6 +55,8 @@
             map.disableInfoWindow();
             showZone();
           }
+
+
       }    
       function showZone()
       {
@@ -149,7 +162,7 @@
                         <h:selectOneMenu id="alertType" value="#{redFlagOrZoneAlertsBean.item.eventSubCategory}" 
                         	disabled="#{redFlagOrZoneAlertsBean.batchEdit}" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                         	<!-- disabled="#{redFlagOrZoneAlertsBean.batchEdit or !redFlagOrZoneAlertsBean.add}" onchange="checkMultiple(this)">   -->                      	
-                          <a4j:support event="onclick" reRender="editRedFlagType, zonePoints-panel" limitToList="true" oncomplete="loadMap()" />
+                          <a4j:support event="onclick" reRender="editRedFlagType, zonePoints-panel" limitToList="true" oncomplete="loadSpeedElements();loadMap()" />
                           <f:selectItems value="#{redFlagOrZoneAlertsBean.alertTypeSelectItems}" />
                         </h:selectOneMenu>
                       	</td>
@@ -318,7 +331,6 @@
                   </table>
 
                   <div class="spacer"></div>
-
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="650" valign="top">
@@ -326,18 +338,53 @@
 						<a4j:outputPanel id="editRedFlagType">
                         <a4j:outputPanel id="editRedFlag-speed">
                         
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'SPEED'}" id="speedPanel">
+                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'SPEED' and (!redFlagOrZoneAlertsBean.batchEdit or (redFlagOrZoneAlertsBean.batchEdit and redFlagOrZoneAlertsBean.item.useMaxSpeed != null))}" id="speedPanel">
                             <div class="add_section_title">
-                          
-							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+					           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
 							</div>
-                                <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
+	                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+	                             <ui:param name="required" value="TRUE"/>
+	                             <ui:param name="for" value="editRedFlag-speedSel"/>
+	                             <ui:param name="fieldName" value="useMaxSpeed"/>
+	                             <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+	                             <ui:param name="label" value="#{messages.editAlerts_speedingTypeSelect}"/>
+	        					 <ui:param name="context" value="editRedFlag-speedSel" />
+	                        </ui:include>
+                          
+                            <h:selectOneRadio id="editRedFlag-speedSel" value="#{redFlagOrZoneAlertsBean.item.useMaxSpeed}" 
+                            	enabledClass="radioitem" 
+	                            onclick="checkMultiple('editRedFlag-speedSel');document.getElementById('editRedFlag-bySpeedLimit').style.display = (this.value == 'true' ? 'none' : '');document.getElementById('editRedFlag-byMaxSpeed').style.display = (this.value == 'true' ? '' : 'none');" >
+                                <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_perLimit}" />
+                                <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_maxSpeed}" />
+                            </h:selectOneRadio>
+                  			<div class="spacer"></div>
+                  			<table id="editRedFlag-byMaxSpeed" width="100%" border="0" cellpadding="2" cellspacing="0">
+                  				<tr>
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
+			                        <ui:include src="../../includes/admin/inputLabel.xhtml">
+			                             <ui:param name="required" value="TRUE"/>
+			                             <ui:param name="for" value="editRedFlag-maxSpeed"/>
+			                             <ui:param name="fieldName" value="maxSpeed"/>
+			                             <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+			                             <ui:param name="label" value="#{messages.editAlerts_maxSpeedDesc}"/>
+			        					 <ui:param name="context" value="editRedFlag-maxSpeed" />
+			                        </ui:include>
+                                    <h:inputText id="editRedFlag-maxSpeed" value="#{redFlagOrZoneAlertsBean.item.maxSpeed}" 
+                                          width="100" showToolTip="false" onchange="checkMultiple('editRedFlag-maxSpeed')"
+                                          converter="MphToKphConverter" />
+                                     <h:outputText value=" " />
+                                     <h:outputText value="mph" converter="MeasurementTextConverter"/>
+                                  </td>
+                                  </tr>
+                  			</table>
+                  			<table id="editRedFlag-bySpeedLimit" width="100%" border="0" cellpadding="2" cellspacing="0">
+                  			<tr><td>
+                            <ui:fragment rendered="#{redFlagOrZoneAlertsBean.accountIsWaysmart}">
                             <div >
 							   <h:outputText value="#{messages.redFlagAlertSpeedingNote}"/>
 							</div>
 							</ui:fragment>
-                  <div class="spacer"></div>
-                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+							</td></tr>
                               <tr class="datagrid">
                                 <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
@@ -347,7 +394,7 @@
                                 <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagOrZoneAlertsBean.item.speedSelected[index]}" onchange="checkMultiple('type')" />
+                                    <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagOrZoneAlertsBean.item.speedSelected[index]}"/>
                                     <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
                                     <h:outputText value=" " />
                                     <h:outputText value="mph" converter="MeasurementTextConverter"/>
@@ -357,7 +404,7 @@
                                           width="250" onfocus="this.select();" showToolTip="false" 
                                           showBoundaryValues="false" minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
                                           converter="MphToKphConverter" onchange="adminSetCheckbox(this.mainTable.id,'redflag','','')"
-                                          convertonchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true" />
+                                          convertonchange="document.getElementById(this.mainTable.id + 'Selected').checked = true" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                      <h:outputText value=" " />

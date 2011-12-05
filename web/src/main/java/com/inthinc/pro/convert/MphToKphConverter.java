@@ -14,7 +14,7 @@ public class MphToKphConverter extends BaseConverter
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
     {
-        if(value != null){
+        if(value != null && !value.isEmpty()){
             if(getMeasurementType().equals(MeasurementType.METRIC))
             {
                 Integer speed = Integer.valueOf(value);

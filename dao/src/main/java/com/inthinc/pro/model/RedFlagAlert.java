@@ -88,6 +88,12 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     
     private Integer idlingThreshold;
     
+    
+    @Column(updateable = false)
+    private Boolean useMaxSpeed = Boolean.FALSE;
+    
+    
+    private Integer maxSpeed;
 
     public RedFlagAlert()
     {
@@ -484,4 +490,19 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
             }
         }
     }
+    public Integer getMaxSpeed() {
+        return maxSpeed;
+    }
+    public void setMaxSpeed(Integer maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+    public Boolean getUseMaxSpeed() {
+        return useMaxSpeed;
+    }
+    public void setUseMaxSpeed(Boolean useMaxSpeed) {
+        this.useMaxSpeed = useMaxSpeed;
+    }
+
+    
+
 }

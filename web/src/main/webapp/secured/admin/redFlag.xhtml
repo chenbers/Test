@@ -154,7 +154,20 @@
                       <td>
 
                         <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory== 'SPEED'}">
+                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.useMaxSpeed}">
+	                          <table width="100%" border="0" cellpadding="2" cellspacing="0">
+	                          <tr>
+	                          	<td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+	                            	<h:outputText value="#{messages.editAlerts_maxSpeedDesc}"/>
+                                    <h:outputText value="#{redFlagOrZoneAlertsBean.item.maxSpeed}"  converter="MphToKphConverter"/>
+                                    <h:outputText value=" " />
+                                    <h:outputText value="mph" converter="MeasurementTextConverter" />
+	                          	</td>
+	                          </tr>
+	                          </table>
+                          </h:panelGroup>
 
+                          <h:panelGroup rendered="#{!redFlagOrZoneAlertsBean.item.useMaxSpeed}">
                           <table width="100%" border="0" cellpadding="2" cellspacing="0">
                             <tr class="datagrid">
                               <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
@@ -189,6 +202,7 @@
                               </c:if>
                             </c:forEach>
                           </table>
+                          </h:panelGroup>
 
                         </h:panelGroup>
 

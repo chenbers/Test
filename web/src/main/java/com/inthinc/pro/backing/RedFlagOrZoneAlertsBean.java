@@ -320,7 +320,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     public RedFlagOrZoneAlertView getItem() {
         final RedFlagOrZoneAlertView item = super.getItem();
-        if (item.getSpeedSettings() == null){
+        if (item.getUseMaxSpeed() == null) {
+            item.setSpeedSettings(null);
+            item.setMaxSpeed(null);
+        }
+        else if (item.getSpeedSettings() == null){
             Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
             for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
                 speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
@@ -388,14 +392,27 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         // null out unselected items
         if (EventSubCategory.SPEED.equals(getItem().getEventSubCategory())) {
-            Boolean selected[]=this.getItem().getSpeedSelected();
-            Integer settings[]=this.getItem().getSpeedSettings();
-            for (int i=0; i<selected.length; i++)
-            {
-                if (!selected[i])
-                    settings[i]=null;
-            }
-            getItem().setSpeedSettings(settings);
+                Boolean useMaxSpeed = this.getItem().getUseMaxSpeed();
+                if (useMaxSpeed != null) {
+                    if (useMaxSpeed) {
+                        updateField.put("speedSettings", Boolean.FALSE);
+                    }
+                    else {
+                        updateField.put("speedSettings", Boolean.TRUE);
+                        Boolean selected[]=this.getItem().getSpeedSelected();
+                        Integer settings[]=this.getItem().getSpeedSettings();
+                        for (int i=0; i<selected.length; i++)
+                        {
+                            if (!selected[i])
+                                settings[i]=null;
+                        }
+                        getItem().setSpeedSettings(settings);
+                    }
+                }
+                else {
+                    updateField.put("speedSettings", Boolean.FALSE);
+                    updateField.put("maxSpeed", Boolean.FALSE);
+                }
         }
         else if (EventSubCategory.DRIVING_STYLE.equals(getItem().getEventSubCategory())) {
             if (!getItem().isHardAccelerationSelected())
@@ -468,17 +485,24 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         // only check the speed settings if they select the type
         if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory()) && checkSubTypes){
-            boolean speedValid = false;
-            for(int i=0;i< saveItem.getSpeedSelected().length; i++){
-                
-                speedValid=speedValid||saveItem.getSpeedSelected()[i];
+            if (saveItem.getUseMaxSpeed()) {
+                if (saveItem.getMaxSpeed() == null || saveItem.getMaxSpeed() == 0) {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeMaxSpeedingMessage"), null);
+                    FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+                    valid = false;
+                }
             }
-            if (!speedValid){
-                
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeSpeedingMessage"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
-                valid = false;
-                
+            else {
+            
+                boolean speedValid = false;
+                for(int i=0;i< saveItem.getSpeedSelected().length; i++){
+                    speedValid=speedValid||saveItem.getSpeedSelected()[i];
+                }
+                if (!speedValid){
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeSpeedingMessage"), null);
+                    FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+                    valid = false;
+                }
             }
         }
         
@@ -754,7 +778,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         @Column(updateable = false)
         private List<String> emailTos;
-        
+
         public RedFlagOrZoneAlertView() {
             super();
             phNumbers = new ArrayList<String>();
