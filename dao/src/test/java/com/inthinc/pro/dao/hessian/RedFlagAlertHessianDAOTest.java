@@ -48,7 +48,7 @@ public class RedFlagAlertHessianDAOTest
         List<Person> people = personHessianDAO.getPeopleInGroupHierarchy(1);
         Person admin = null;
         for(Person person:people){
-            if (person.getUser().getRoles().contains(2)) {
+            if (person.getUser().hasRoles() && person.getUser().getRoles().contains(2)) {
                 admin = person;
                 break;
             }

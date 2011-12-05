@@ -3,7 +3,6 @@ package com.inthinc.pro.dao.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Time;
@@ -196,9 +195,11 @@ public class ModelPropertyReplacerTest {
 	@Test
 	public void personTest(){
 		Integer [] roleArray = {1,2};
-		List<Integer> roles = new ArrayList<Integer>(Arrays.asList(roleArray));
+		List<Integer> originalRoles = new ArrayList<Integer>(Arrays.asList(roleArray));
 		Integer [] replaceRoleArray = {1,2,3};
-		List<Integer> replaceRoles = new ArrayList<Integer>(Arrays.asList(replaceRoleArray));
+//		List<Integer> replaceRoles = new ArrayList<Integer>(Arrays.asList(replaceRoleArray));
+//		List<Integer> replaceRoles = null;
+		List<Integer> replaceRoles = new ArrayList<Integer>();
 
 		//tests non-simple nested objects
 		Person controlPerson = new Person();
@@ -222,7 +223,7 @@ public class ModelPropertyReplacerTest {
 		controlDriver.setDot(RuleSetType.US_OIL);
 		
 		controlUser.setPerson(controlPerson);
-		controlUser.setRoles(replaceRoles);
+		controlUser.setRoles(originalRoles);
 		
 		originalDriver.setDot(RuleSetType.US_OIL);
 		originalDriver.setDriverID(1);
@@ -233,7 +234,7 @@ public class ModelPropertyReplacerTest {
 		originalPerson.setFirst("oldname");
 		
 		originalUser.setPerson(originalPerson);
-		originalUser.setRoles(roles);
+		originalUser.setRoles(originalRoles);
 
 		replacePerson.setPersonID(100);
 		replacePerson.setFirst("firstname");
@@ -250,7 +251,7 @@ public class ModelPropertyReplacerTest {
 		
 		assertEquals(controlPerson.getFirst(),replacePerson.getFirst());
 		assertEquals(controlDriver.getDot(),originalDriver.getDot());
-		assertEquals(controlUser.getRoles(),replaceUser.getRoles());
+		assertEquals(controlUser.getRoles(),originalUser.getRoles());
 	}
 	
 }

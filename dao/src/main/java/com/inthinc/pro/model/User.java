@@ -1,10 +1,8 @@
 package com.inthinc.pro.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -47,7 +45,7 @@ public class User extends BaseEntity {
 
     public User() {
         super();
-        roles = new ArrayList<Integer>();
+//        roles = new ArrayList<Integer>();
     }
 
     public Integer getUserID() {
@@ -112,7 +110,7 @@ public class User extends BaseEntity {
 
     @Override
     public String toString() {
-        return "User [groupID=" + groupID + ", password=" + password + ", personID=" + personID + ", role=" + roles.toString() + ", status=" + status + ", userID=" + userID + ", username="
+        return "User [groupID=" + groupID + ", password=" + password + ", personID=" + personID + ", role=" + roles==null?null:roles.toString() + ", status=" + status + ", userID=" + userID + ", username="
                 + username + "]";
     }
 
@@ -147,5 +145,8 @@ public class User extends BaseEntity {
 
     public Date getPasswordDT() {
         return passwordDT;
+    }
+    public boolean hasRoles(){
+    	return roles != null;
     }
 }

@@ -267,12 +267,14 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         List<GrantedAuthorityImpl> grantedAuthoritiesList = new ArrayList<GrantedAuthorityImpl>();		
 
 		//TODO put this somewhere else
-		List<Integer> userRoles = user.getRoles();
 		boolean hasAdmin=false;
-		for(Integer id:userRoles){
-			if (roles.getRoleById(id).getName().equals("Admin")){
-				hasAdmin=true;
-				break;
+		if (user.hasRoles()){
+			List<Integer> userRoles = user.getRoles();
+			for(Integer id:userRoles){
+				if (roles.getRoleById(id).getName().equals("Admin")){
+					hasAdmin=true;
+					break;
+				}
 			}
 		}
 		// this will take into account the site access points instead of the original roles as follows

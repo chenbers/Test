@@ -117,7 +117,8 @@ public class ProUserServiceImpl implements UserDetailsService
         Roles roles = new Roles();
         roles.setRoleDAO(roleDAO);
         roles.init(user.getPerson().getAcctID());
-
+        
+		if(!user.hasRoles()) return false;
 		List<Integer> userRoles = user.getRoles();
 
 		for(Integer id:userRoles){

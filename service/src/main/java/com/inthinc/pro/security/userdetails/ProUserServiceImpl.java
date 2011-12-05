@@ -116,7 +116,7 @@ public class ProUserServiceImpl implements UserDetailsService {
 		roles.init(user.getPerson().getAcctID());
 
 		List<Integer> userRoles = user.getRoles();
-
+		if(!user.hasRoles()) return false;
 		for (Integer id : userRoles) {
 
 			if (roles.getRoleById(id).getName().equals("Admin")) {

@@ -871,14 +871,15 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         
         Set<User> filteredUsers = new HashSet<User>();
         for(User user : users){
-            
-            for(int roleID :user.getRoles()){
-               
-                Role role = getRole(roleID);
-                if (canRedFlag(role)){
-                    filteredUsers.add(user);
-                    break;
-                }
+            if(user.hasRoles()){
+	            for(int roleID :user.getRoles()){
+	               
+	                Role role = getRole(roleID);
+	                if (canRedFlag(role)){
+	                    filteredUsers.add(user);
+	                    break;
+	                }
+	            }
             }
         }
         return new ArrayList<User>(filteredUsers);
@@ -909,7 +910,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public Boolean getRedFlagRole(){
         
         List<Integer> roles = this.getProUser().getUser().getRoles();
-        
+        if(roles == null) return false;
         for(Integer roleID:roles){
             Role role = getRole(roleID);
             if (canRedFlag(role)){

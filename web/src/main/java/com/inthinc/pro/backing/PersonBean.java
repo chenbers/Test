@@ -249,7 +249,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private List<SelectItem> getPicked()
     {
         final LinkedList<SelectItem> picked = new LinkedList<SelectItem>();
-        if(item.getUser()!=null){
+        if(item.getUser()!=null && item.getUser().hasRoles()){
         	
            for (Integer id:item.getUser().getRoles()){
 	    		
@@ -1411,7 +1411,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     	}
     	public String getRolesString(){
     		
-    		if ((getUser() != null) && (getUser().getRoles().size()>0)){
+    		if ((getUser() != null) && getUser().hasRoles() && (getUser().getRoles().size()>0)){
     			
         		if(bean.getAccountRoles() == null){
         			
