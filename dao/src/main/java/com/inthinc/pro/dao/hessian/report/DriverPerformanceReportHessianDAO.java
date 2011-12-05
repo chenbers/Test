@@ -12,7 +12,7 @@ import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
-import com.inthinc.pro.model.aggregation.DriverPerformanceWeekly;
+import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 
@@ -101,37 +101,35 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
     }
 
     @Override
-    public List<DriverPerformanceWeekly> getDriverPerformanceWeeklyListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
+        List<DriverPerformanceKeyMetrics> driverPerformanceList = new ArrayList<DriverPerformanceKeyMetrics>();
+        Interval interval = timeFrame.getInterval();
+        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval);
         
-        List<Interval> intervalList = timeFrame.getWeekEndIntervalList();
+        if (scoreList == null || scoreList.isEmpty())
+            return driverPerformanceList;
         
-        List<DriverPerformanceWeekly> driverPerformanceList = new ArrayList<DriverPerformanceWeekly>();
-        for (Interval interval : intervalList) {
-            List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval);
-            
-            if (scoreList == null || scoreList.isEmpty())
-                continue;
-            
-            Map<Integer, Integer> driverLoginCountMap = driveTimeDAO.getDriverLoginCountsForGroup(groupID, interval);
-            for (DriverVehicleScoreWrapper score : scoreList) {
-                DriverPerformanceWeekly dp = new DriverPerformanceWeekly();
-                dp.setDriverName(score.getDriver().getPerson().getFullName());
-                dp.setDriverPosition(score.getDriver().getPerson().getTitle());
-                dp.setGroupName(divisionName);
-                dp.setTeamName(teamName);
-                dp.setWeekEndDate(interval.getEnd().toDate());
-                Score s = score.getScore();
-                Integer loginCount = driverLoginCountMap.get(score.getDriver().getDriverID());
-                dp.setLoginCount(loginCount == null ? 0 : loginCount);
-                dp.setTotalMiles(s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue());
-                dp.setOverallScore(s.getOverall()==null ? -1 : s.getOverall().intValue());
-                dp.setSpeedingScore(s.getSpeeding()==null ? -1 : s.getSpeeding().intValue());
-                dp.setStyleScore(s.getDrivingStyle()==null ? -1 : s.getDrivingStyle().intValue());
-                dp.setSeatbeltScore(s.getSeatbelt()==null ? -1 : s.getSeatbelt().intValue());
-                dp.setIdleViolationsCount((s.getIdleLoEvents() == null ? 0 : s.getIdleLoEvents().intValue()) + (s.getIdleHiEvents() == null ? 0 : s.getIdleHiEvents().intValue())); 
-                dp.setIdleViolationsMinutes(s.getIdleTotal() == null ? 0 : s.getIdleTotal().intValue());
-                driverPerformanceList.add(dp);
-            }
+        Map<Integer, Integer> driverLoginCountMap = driveTimeDAO.getDriverLoginCountsForGroup(groupID, interval);
+        for (DriverVehicleScoreWrapper score : scoreList) {
+            DriverPerformanceKeyMetrics dp = new DriverPerformanceKeyMetrics();
+            dp.setDriverName(score.getDriver().getPerson().getFullName());
+            dp.setDriverPosition(score.getDriver().getPerson().getTitle());
+            dp.setGroupName(divisionName);
+            dp.setTeamName(teamName);
+            dp.setTimeFrame(timeFrame);
+            Score s = score.getScore();
+            Integer loginCount = driverLoginCountMap.get(score.getDriver().getDriverID());
+            dp.setLoginCount(loginCount == null ? 0 : loginCount);
+            dp.setTotalMiles(s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue());
+            dp.setOverallScore(s.getOverall()==null ? -1 : s.getOverall().intValue());
+            dp.setSpeedingScore(s.getSpeeding()==null ? -1 : s.getSpeeding().intValue());
+            dp.setStyleScore(s.getDrivingStyle()==null ? -1 : s.getDrivingStyle().intValue());
+            dp.setSeatbeltScore(s.getSeatbelt()==null ? -1 : s.getSeatbelt().intValue());
+            dp.setLoIdleViolationsCount(s.getIdleLoEvents() == null ? 0 : s.getIdleLoEvents().intValue());
+            dp.setHiIdleViolationsCount(s.getIdleHiEvents() == null ? 0 : s.getIdleHiEvents().intValue()); 
+            dp.setLoIdleViolationsMinutes(s.getIdleLo() == null ? 0 : s.getIdleLo().intValue());
+            dp.setHiIdleViolationsMinutes(s.getIdleHi() == null ? 0 : s.getIdleHi().intValue());
+            driverPerformanceList.add(dp);
         }
         return driverPerformanceList;
     }

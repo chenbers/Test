@@ -8,7 +8,7 @@ import org.joda.time.Interval;
 import com.inthinc.pro.dao.DriverPerformanceDAO;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
-import com.inthinc.pro.model.aggregation.DriverPerformanceWeekly;
+import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 
 public class MockDriverPerformanceDAO implements DriverPerformanceDAO {
 
@@ -30,7 +30,7 @@ public class MockDriverPerformanceDAO implements DriverPerformanceDAO {
     }
 
     @Override
-    public List<DriverPerformanceWeekly> getDriverPerformanceWeeklyListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
         // TODO Auto-generated method stub
         return null;
     }

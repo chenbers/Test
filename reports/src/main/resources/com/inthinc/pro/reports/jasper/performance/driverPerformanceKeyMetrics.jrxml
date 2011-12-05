@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="driverPerformanceRaw" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/driverPerformanceReport" isIgnorePagination="true">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="driverPerformanceKeyMetrics" pageWidth="942" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="942" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/driverPerformanceKeyMetrics" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
@@ -16,14 +16,16 @@
 	<field name="driverName" class="java.lang.String"/>
 	<field name="driverPosition" class="java.lang.String"/>
 	<field name="loginCount" class="java.lang.Integer"/>
-	<field name="weekEndDate" class="java.util.Date"/>
+	<field name="timeFrame" class="com.inthinc.pro.model.TimeFrame"/>
 	<field name="totalMiles" class="java.lang.Integer"/>
 	<field name="overallScore" class="java.lang.Integer"/>
 	<field name="speedingScore" class="java.lang.Integer"/>
 	<field name="styleScore" class="java.lang.Integer"/>
 	<field name="seatbeltScore" class="java.lang.Integer"/>
-	<field name="idleViolationsCount" class="java.lang.Integer"/>
-	<field name="idleViolationsMinutes" class="java.lang.Integer"/>
+	<field name="loIdleViolationsCount" class="java.lang.Integer"/>
+	<field name="loIdleViolationsMinutes" class="java.lang.Integer"/>
+	<field name="hiIdleViolationsCount" class="java.lang.Integer"/>
+	<field name="hiIdleViolationsMinutes" class="java.lang.Integer"/>
 	<columnHeader>
 		<band height="20">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -96,9 +98,19 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.12")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="790" y="0" width="52" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="790" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.13")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-77" mode="Opaque" x="840" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.14")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-77" mode="Opaque" x="890" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.15")]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -114,10 +126,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{teamName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="MM/dd/yyyy" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="180" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{weekEndDate}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrame($F{timeFrame},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-42" mode="Opaque" x="270" y="0" width="120" height="20" backcolor="#FFFFFF"/>
@@ -162,12 +174,22 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="740" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{idleViolationsCount}.toString()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{loIdleViolationsCount}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="790" y="0" width="52" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="790" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($F{idleViolationsMinutes}.intValue()/60) + ":" +new DecimalFormat("00").format($F{idleViolationsMinutes}.intValue()%60))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($F{loIdleViolationsMinutes}.intValue()/60) + ":" +new DecimalFormat("00").format($F{loIdleViolationsMinutes}.intValue()%60))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-77" mode="Opaque" x="840" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{hiIdleViolationsCount}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-77" mode="Opaque" x="890" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($F{hiIdleViolationsMinutes}.intValue()/60) + ":" +new DecimalFormat("00").format($F{hiIdleViolationsMinutes}.intValue()%60))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

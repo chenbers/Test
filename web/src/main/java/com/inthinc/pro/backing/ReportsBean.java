@@ -231,8 +231,8 @@ public abstract class ReportsBean extends BaseBean {
                 reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale(), true));
                 break;
-            case DRIVER_PERFORMANCE:
-                reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceWeeklyReportCriteria(getAccountGroupHierarchy(), 
+            case DRIVER_PERFORMANCE_KEY_METRICS:
+                reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsReportCriteria(getAccountGroupHierarchy(), 
                         params.getGroupIDList(), TimeFrame.WEEK,  
                         params.getLocale(), getUser().getPerson().getMeasurementType()));
                 break;

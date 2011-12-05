@@ -15,7 +15,7 @@ import com.inthinc.pro.dao.DriverPerformanceDAO;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
-import com.inthinc.pro.model.aggregation.DriverPerformanceWeekly;
+import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportType;
 
@@ -80,20 +80,20 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
     }
 
     @Test
-    public void weeklyPerformanceTest() {
+    public void keyMetricsPerformanceTest() {
         
-        DriverPerformanceWeeklyReportCriteria criteria = new DriverPerformanceWeeklyReportCriteria(ReportType.DRIVER_PERFORMANCE, Locale.US);
+        DriverPerformanceKeyMetricsReportCriteria criteria = new DriverPerformanceKeyMetricsReportCriteria(ReportType.DRIVER_PERFORMANCE_KEY_METRICS, Locale.US);
         Interval interval = initInterval();
 
         criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(GROUP_ID);
-        criteria.init(getMockGroupHierarchy(), groupIDList, TimeFrame.WEEK, MeasurementType.ENGLISH);
+        criteria.init(getMockGroupHierarchy(), groupIDList, TimeFrame.PAST_MONTH, MeasurementType.ENGLISH);
         
-        dump("DriverPerformanceWeekly_mi", 1, criteria, FormatType.EXCEL);
+        dump("DriverPerformanceKeyMetrics_mi", 1, criteria, FormatType.EXCEL);
 
         criteria.init(getMockGroupHierarchy(), groupIDList, TimeFrame.WEEK, MeasurementType.METRIC);
-        dump("DriverPerformanceWeekly_km", 1, criteria, FormatType.EXCEL);
+        dump("DriverPerformanceKeyMetrics_km", 1, criteria, FormatType.EXCEL);
 
     }
     
@@ -123,14 +123,14 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
             return list;
         }
         @Override
-        public List<DriverPerformanceWeekly> getDriverPerformanceWeeklyListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
-            List<DriverPerformanceWeekly> list = new ArrayList<DriverPerformanceWeekly>();
+        public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
+            List<DriverPerformanceKeyMetrics> list = new ArrayList<DriverPerformanceKeyMetrics>();
 
             DateTime weekEndDateTime = new DateMidnight(new DateTime().minusDays(1)).toDateTime();
             
-            list.add(new DriverPerformanceWeekly("Division", "Team", "Driver NA", "Position", 0, weekEndDateTime.toDate(), 0, 0, 0,0,0,0,0));
+            list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver NA", "Position", 0, timeFrame, 0, 0, 0,0,0,0,0, 0, 0));
             for (int i = 0; i < 5; i++) {
-                list.add(new DriverPerformanceWeekly("Division", "Team", "Driver " + i, "Position", i, weekEndDateTime.toDate(), i*1000, i*10,i*10,i*10,i*10,i,i*30));
+                list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver " + i, "Position", i, timeFrame, i*1000, i*10,i*10,i*10,i*10,i,i*30,i,i*60));
             }
             Collections.sort(list);
             return list;

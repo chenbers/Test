@@ -39,25 +39,4 @@ public class TimeFrameTest {
 	        int j=1;
 	   }
 
-	   @Test
-	   @Ignore
-	   public void weekIntervalTest() {
-	       
-	       TimeFrame weekTimeFrame = TimeFrame.WEEK;
-	       System.out.println("weekTimeFrame: " + weekTimeFrame.getInterval());
-	       
-	       List<Interval> intervalList = weekTimeFrame.getWeekEndIntervalList();
-	       assertEquals("expect 1 entry in week interval list for timeFrame WEEK", 1, intervalList.size());
-	       for (Interval interval : intervalList)
-	           System.out.println("interval: " + interval);
-	       
-           TimeFrame monthTimeFrame = TimeFrame.MONTH;
-           System.out.println("monthTimeFrame: " + monthTimeFrame.getInterval());
-           
-           intervalList = monthTimeFrame.getWeekEndIntervalList();
-           assertEquals("expect 4 entries in week interval list for timeFrame MONTH", 4, intervalList.size());
-           for (Interval interval : intervalList)
-               System.out.println("interval: " + interval);
-	       
-	   }
 }

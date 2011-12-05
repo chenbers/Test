@@ -1,45 +1,49 @@
 package com.inthinc.pro.model.aggregation;
 
-import java.util.Date;
+import com.inthinc.pro.model.TimeFrame;
 
 
 
-public class DriverPerformanceWeekly implements Comparable<DriverPerformanceWeekly> {
+public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformanceKeyMetrics> {
     
     private String groupName;
     private String teamName;
     private String driverName;
     private String driverPosition;
     private Integer loginCount;
-    private Date weekEndDate;
+    private TimeFrame timeFrame;
     private Integer totalMiles;
     private Integer overallScore;
     private Integer speedingScore;
     private Integer styleScore;
     private Integer seatbeltScore;
-    private Integer idleViolationsCount;
-    private Integer idleViolationsMinutes;
+    private Integer loIdleViolationsCount;
+    private Integer loIdleViolationsMinutes;
+    private Integer hiIdleViolationsCount;
+    private Integer hiIdleViolationsMinutes;
     
-    public DriverPerformanceWeekly()
+    public DriverPerformanceKeyMetrics()
     {
         
     }
-    public DriverPerformanceWeekly(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, Date weekEndDate, Integer totalMiles,
-            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer idleViolationsCount, Integer idleViolationsMinutes) {
+    public DriverPerformanceKeyMetrics(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, TimeFrame timeFrame, Integer totalMiles,
+            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer loIdleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsCount, Integer hiIdleViolationsMinutes) {
         super();
         this.groupName = groupName;
         this.teamName = teamName;
         this.driverName = driverName;
         this.driverPosition = driverPosition;
         this.loginCount = loginCount;
-        this.weekEndDate = weekEndDate;
+        this.timeFrame = timeFrame;
         this.totalMiles = totalMiles;
         this.overallScore = overallScore;
         this.speedingScore = speedingScore;
         this.styleScore = styleScore;
         this.seatbeltScore = seatbeltScore;
-        this.idleViolationsCount = idleViolationsCount;
-        this.idleViolationsMinutes = idleViolationsMinutes;
+        this.loIdleViolationsCount = loIdleViolationsCount;
+        this.loIdleViolationsMinutes = loIdleViolationsMinutes;
+        this.hiIdleViolationsCount = hiIdleViolationsCount;
+        this.hiIdleViolationsMinutes = hiIdleViolationsMinutes;
     }
     
     public String getGroupName() {
@@ -102,34 +106,44 @@ public class DriverPerformanceWeekly implements Comparable<DriverPerformanceWeek
     public void setSeatbeltScore(Integer seatbeltScore) {
         this.seatbeltScore = seatbeltScore;
     }
-    public Integer getIdleViolationsCount() {
-        return idleViolationsCount;
+    public Integer getLoIdleViolationsCount() {
+        return loIdleViolationsCount;
     }
-    public void setIdleViolationsCount(Integer idleViolationsCount) {
-        this.idleViolationsCount = idleViolationsCount;
+    public void setLoIdleViolationsCount(Integer loIdleViolationsCount) {
+        this.loIdleViolationsCount = loIdleViolationsCount;
     }
-    public Integer getIdleViolationsMinutes() {
-        return idleViolationsMinutes;
+    public Integer getLoIdleViolationsMinutes() {
+        return loIdleViolationsMinutes;
     }
-    public void setIdleViolationsMinutes(Integer idleViolationsMinutes) {
-        this.idleViolationsMinutes = idleViolationsMinutes;
+    public void setLoIdleViolationsMinutes(Integer loIdleViolationsMinutes) {
+        this.loIdleViolationsMinutes = loIdleViolationsMinutes;
     }
-    public Date getWeekEndDate() {
-        return weekEndDate;
+    public Integer getHiIdleViolationsCount() {
+        return hiIdleViolationsCount;
     }
-    public void setWeekEndDate(Date weekEndDate) {
-        this.weekEndDate = weekEndDate;
+    public void setHiIdleViolationsCount(Integer hiIdleViolationsCount) {
+        this.hiIdleViolationsCount = hiIdleViolationsCount;
+    }
+    public Integer getHiIdleViolationsMinutes() {
+        return hiIdleViolationsMinutes;
+    }
+    public void setHiIdleViolationsMinutes(Integer hiIdleViolationsMinutes) {
+        this.hiIdleViolationsMinutes = hiIdleViolationsMinutes;
+    }
+    public TimeFrame getTimeFrame() {
+        return timeFrame;
+    }
+    public void setTimeFrame(TimeFrame timeFrame) {
+        this.timeFrame = timeFrame;
     }
     @Override
-    public int compareTo(DriverPerformanceWeekly o) {
-        // sort order: division, team, driver, date ascending
+    public int compareTo(DriverPerformanceKeyMetrics o) {
+        // sort order: division, team, driver
         int cmp = groupName.compareToIgnoreCase(o.getGroupName());
         if (cmp == 0)
             cmp = teamName.compareToIgnoreCase(o.getTeamName());
         if (cmp == 0)
             cmp = driverName.compareToIgnoreCase(o.getDriverName());
-        if (cmp == 0)
-            cmp = weekEndDate.compareTo(o.getWeekEndDate());
         return cmp;
     }
 }

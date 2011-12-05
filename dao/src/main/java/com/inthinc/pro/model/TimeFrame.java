@@ -1,9 +1,7 @@
 package com.inthinc.pro.model;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateMidnight;
@@ -12,7 +10,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.joda.time.PeriodType;
 
 public enum TimeFrame implements BaseEnum {
 
@@ -92,6 +89,11 @@ public enum TimeFrame implements BaseEnum {
         public Interval getInterval(DateTimeZone dateTimeZone) {
             return new Interval(new DateMidnight(new DateTime().minusYears(1), dateTimeZone), new DateMidnight(new DateTime().plusDays(1), dateTimeZone));
         }
+    },
+    PAST_MONTH(AggregationDuration.ONE_MONTH, 15) {
+        public Interval getInterval(DateTimeZone dateTimeZone) {
+            return new Interval(new DateMidnight(new DateTime().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(new DateTime().monthOfYear().toInterval().getStart(), dateTimeZone));
+        }
     };
 
     private AggregationDuration driveQDuration;
@@ -136,22 +138,4 @@ public enum TimeFrame implements BaseEnum {
     {
         return codeLookup.get(code);
     }
-    
-    public List<Interval> getWeekEndIntervalList() {
-        List<Interval> intervalList = new ArrayList<Interval>();
-        
-        Interval interval = new Interval(getInterval().getStart().minusDays(1), getInterval().getEnd().minusDays(1));//.minusSeconds(1));
-        System.out.println("interval: " + interval);
-        Period period = interval.toPeriod(PeriodType.weeks());
-        
-        System.out.println("period: " + period.getWeeks());
-        DateTime weekEnd = interval.getEnd();
-        
-        for (int week = period.getWeeks()-1; week >= 0; week--) {
-            intervalList.add(new Interval(weekEnd.minusWeeks(week+1), weekEnd.minusWeeks(week)));
-        }
-        
-        return intervalList;
-    }
-
 }

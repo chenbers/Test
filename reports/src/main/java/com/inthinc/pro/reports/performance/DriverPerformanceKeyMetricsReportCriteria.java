@@ -16,12 +16,12 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
-import com.inthinc.pro.model.aggregation.DriverPerformanceWeekly;
+import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 
-public class DriverPerformanceWeeklyReportCriteria extends GroupListReportCriteria {
+public class DriverPerformanceKeyMetricsReportCriteria extends GroupListReportCriteria {
     
     private DriverPerformanceDAO driverPerformanceDAO;
     protected DateTimeFormatter dateTimeFormatter;
@@ -30,7 +30,7 @@ public class DriverPerformanceWeeklyReportCriteria extends GroupListReportCriter
 
 
     
-    public DriverPerformanceWeeklyReportCriteria(ReportType reportType, Locale locale) {
+    public DriverPerformanceKeyMetricsReportCriteria(ReportType reportType, Locale locale) {
         super(reportType, locale);
         
         dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
@@ -38,14 +38,14 @@ public class DriverPerformanceWeeklyReportCriteria extends GroupListReportCriter
     }
 
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, MeasurementType measurementType) {
-        List<DriverPerformanceWeekly> dataList = new ArrayList<DriverPerformanceWeekly>();
+        List<DriverPerformanceKeyMetrics> dataList = new ArrayList<DriverPerformanceKeyMetrics>();
 
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
 
         for (Group group : reportGroupList) {
             if (group.getGroupID() != null && group.getType() == GroupType.TEAM) {
                 String divisionName = accountGroupHierarchy.getFullGroupName(group.getParentID(), "->");
-                List<DriverPerformanceWeekly> groupList = driverPerformanceDAO.getDriverPerformanceWeeklyListForGroup(group.getGroupID(), divisionName, group.getName(), timeFrame);
+                List<DriverPerformanceKeyMetrics> groupList = driverPerformanceDAO.getDriverPerformanceKeyMetricsListForGroup(group.getGroupID(), divisionName, group.getName(), timeFrame);
                 Collections.sort(groupList);
                 dataList.addAll(groupList);
             }
