@@ -1,15 +1,36 @@
 package com.inthinc.pro.dao.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.BeanUtils;
 
+import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.ReferenceEntity;
+import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Zone;
 
 public class ModelPropertyReplacerTest {
 	private LatLng controlLatLng;
@@ -132,6 +153,104 @@ public class ModelPropertyReplacerTest {
 		ModelPropertyReplacer.compareAndReplace(originalVehicle, replaceVehicle);
 		
 		assertEquals(controlVehicle.getColor(),originalVehicle.getColor());
+	}
+	
+	@Test
+	public void notASimpleClassTest(){
+		assertTrue(!notASimpleClass(Person.class,String.class));
+		assertTrue(notASimpleClass(Person.class,Driver.class));
+		assertTrue(notASimpleClass(Driver.class,Person.class));
+		Integer array[] = {1,2,3,4};
+		assertTrue(!notASimpleClass(Person.class,array.getClass()));
+		Date date = new Date();
+		assertTrue(!notASimpleClass(Person.class,date.getClass()));
+		try {
+			URL url = new URL("http://hello.com");
+			assertTrue(!notASimpleClass(Person.class,url.getClass()));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Time time = new Time(1L);
+		assertTrue(!notASimpleClass(Person.class,time.getClass()));
+		State state = new State();
+		assertTrue(!notASimpleClass(Person.class,state.getClass()));
+		RedFlagAlert rfa = new RedFlagAlert();
+		Zone zone = new Zone();
+		assertTrue(!notASimpleClass(rfa.getClass(),zone.getClass()));
+		List<String> list = new ArrayList<String>();
+		assertTrue(!notASimpleClass(Person.class,list.getClass()));
+		Locale locale = Locale.getDefault();
+		assertTrue(!notASimpleClass(Person.class,locale.getClass()));
+		assertTrue(notASimpleClass(Person.class,Driver.class));
+	}
+	//Copy of 
+    private static boolean notASimpleClass(Class<?> itemClass, Class<?> propertyClass){
+    	return !BeanUtils.isSimpleProperty(propertyClass) && !propertyClass.isEnum() && !Collection.class.isAssignableFrom(propertyClass) && !Map.class.isAssignableFrom(propertyClass)
+        && !propertyClass.isArray() && !Date.class.isAssignableFrom(propertyClass) && !TimeZone.class.isAssignableFrom(propertyClass) 
+        && !ReferenceEntity.class.isAssignableFrom(propertyClass)
+        && !(SimpleType.valueOf(itemClass) != null && SimpleType.valueOf(itemClass).getSimpleTypes().contains(propertyClass))
+        && !Locale.class.isAssignableFrom(propertyClass);
+    }
+    //from ModelPropertyReplace
+	@Test
+	public void personTest(){
+		Integer [] roleArray = {1,2};
+		List<Integer> roles = new ArrayList<Integer>(Arrays.asList(roleArray));
+		Integer [] replaceRoleArray = {1,2,3};
+		List<Integer> replaceRoles = new ArrayList<Integer>(Arrays.asList(replaceRoleArray));
+
+		//tests non-simple nested objects
+		Person controlPerson = new Person();
+		Driver controlDriver = new Driver();
+		User controlUser = new User();
+		
+		Driver originalDriver = new Driver();
+		Person originalPerson = new Person();
+		User originalUser = new User();
+
+		Driver replaceDriver = new Driver();
+		Person replacePerson = new Person();
+		User replaceUser = new User();
+		
+		controlPerson.setPersonID(100);
+		controlPerson.setFirst("firstname");
+		
+		controlPerson.setDriver(controlDriver);
+		controlDriver.setDriverID(1);
+		controlDriver.setPerson(controlPerson);
+		controlDriver.setDot(RuleSetType.US_OIL);
+		
+		controlUser.setPerson(controlPerson);
+		controlUser.setRoles(replaceRoles);
+		
+		originalDriver.setDot(RuleSetType.US_OIL);
+		originalDriver.setDriverID(1);
+		originalDriver.setPerson(originalPerson);
+		
+		originalPerson.setDriver(originalDriver);
+		originalPerson.setPersonID(100);
+		originalPerson.setFirst("oldname");
+		
+		originalUser.setPerson(originalPerson);
+		originalUser.setRoles(roles);
+
+		replacePerson.setPersonID(100);
+		replacePerson.setFirst("firstname");
+		
+		replaceDriver.setPerson(replacePerson);
+		replaceDriver.setDot(RuleSetType.US_OIL);
+		replaceDriver.setDriverID(1);
+		replaceDriver.setDot(null);
+		
+		replaceUser.setPerson(replacePerson);
+		replaceUser.setRoles(replaceRoles);
+		
+		ModelPropertyReplacer.compareAndReplace(originalPerson, replacePerson);
+		
+		assertEquals(controlPerson.getFirst(),replacePerson.getFirst());
+		assertEquals(controlDriver.getDot(),originalDriver.getDot());
+		assertEquals(controlUser.getRoles(),replaceUser.getRoles());
 	}
 	
 }
