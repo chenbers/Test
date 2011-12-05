@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -48,7 +47,6 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
@@ -246,7 +244,8 @@ public abstract class BaseITData {
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
      
-        System.out.println(team.getGroupID() + " LOGIN NAME: " + username);
+        System.out.println(team.getGroupID() + " LOGIN NAME: " + username +  "  userID: " + userID);
+        
         return user;
         
     }
@@ -300,7 +299,6 @@ public abstract class BaseITData {
         
         account = new Account(null, Status.ACTIVE);
         String timeStamp = Calendar.getInstance().getTime().toString();
-System.out.println(timeStamp);        
         account.setAcctName("TEST " + timeStamp.substring(11));
         account.setHos(AccountHOSType.HOS_SUPPORT);
 System.out.println("acct name: " + "TEST " + timeStamp.substring(11));        
@@ -317,6 +315,12 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         // speeding alert (no setting if first bucket)
         RedFlagAlert redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING, "speeding");
         redFlagAlert.setSpeedSettings(new Integer[] {null,5,5,5,5,5,5,5,5,5,5,5,5,5,5,});
+        redFlagAlert.setSeverityLevel(RedFlagLevel.WARNING);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
+        
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING, "maxSpeeding");
+        redFlagAlert.setMaxSpeed(76);
+        redFlagAlert.setUseMaxSpeed(Boolean.TRUE);
         redFlagAlert.setSeverityLevel(RedFlagLevel.WARNING);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
         

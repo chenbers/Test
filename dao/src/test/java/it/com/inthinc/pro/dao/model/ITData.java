@@ -191,7 +191,7 @@ public class ITData extends BaseITData{
             	zone = getNext(xmlDecoder, Zone.class);
             	zoneAlert = getNext(xmlDecoder, RedFlagAlert.class);
             	redFlagAlertList = new ArrayList<RedFlagAlert>();
-            	for (int i = 0; i < 7; i++) {
+            	for (int i = 0; i < 8; i++) {
             		redFlagAlertList.add(getNext(xmlDecoder, RedFlagAlert.class));
             	}
             }

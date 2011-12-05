@@ -290,6 +290,30 @@ System.out.println("account id " + itData.account.getAccountID());
           assertTrue("Expect alert for speeding 16 mph in a 10 mph zone " + eventTypes.get(0), anyAlertsFound);
       }
   }
+    @Test
+//  us4832
+    public void redFlagMaxSpeedAlerts() {
+        // max speeding alert is set to 76 mph
+      GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
+      for (RedFlagAlert redFlagAlert : redFlagAlerts) {
+          List<EventType> eventTypes = getEventTypes(redFlagAlert);
+          if (!eventTypes.get(0).equals(EventType.SPEEDING))
+              continue;
+          boolean anyAlertsFound = false;
+          modRedFlagAlertPref(GROUPS, redFlagAlert);
+          String IMEI = groupData.device.getImei();
+          
+          Event event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
+                  new Double(40.704246f), new Double(-111.948613f), 77,77, 75, 100, 100);
+      
+          if (!genEvent(event, IMEI))
+              fail("Unable to generate event of type " + eventTypes.get(0));
+          if (pollForMessages("Red Flag Alert Groups Set"))
+              anyAlertsFound = true;
+          assertTrue("Expect alert for speeding  mph in any zone ",anyAlertsFound);
+
+      }
+  }
 
     @Test
     @Ignore
