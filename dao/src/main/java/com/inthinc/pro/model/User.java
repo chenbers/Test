@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -21,6 +23,7 @@ public class User extends BaseEntity {
     private Integer userID;
     private Integer personID;
     @Column(updateable = false)
+    @XmlTransient
     private Person person;
     private List<Integer> roles;
     private List<AccessPoint> accessPoints;
@@ -55,7 +58,7 @@ public class User extends BaseEntity {
         this.userID = userID;
     }
 
-    @XmlTransient //Prevent Circular Reference on XML rendering 
+//    @XmlTransient //Prevent Circular Reference on XML rendering 
     public Person getPerson() {
         return person;
     }
@@ -113,6 +116,7 @@ public class User extends BaseEntity {
                 + username + "]";
     }
 
+    @XmlElementWrapper
 	public List<Integer> getRoles() {
 		return roles;
 	}
