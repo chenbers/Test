@@ -15,6 +15,8 @@ public class TimeFrameUtil {
 	{
 		if (timeFrame.equals(TimeFrame.MONTH))
 			return getMonthItem(locale);
+        if (timeFrame.equals(TimeFrame.LAST_MONTH))
+            return getLastMonthItem(locale);
 
 		if (timeFrame.equals(TimeFrame.TWO_DAYS_AGO))
 			return getDayItem(2, locale);
@@ -44,4 +46,8 @@ public class TimeFrameUtil {
 	{
         return new DateTime().monthOfYear().getAsText(locale);
 	}
+    private static String getLastMonthItem(Locale locale)
+    {
+        return new DateTime().minusMonths(1).monthOfYear().getAsText(locale);
+    }
 }

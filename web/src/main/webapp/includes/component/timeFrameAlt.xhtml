@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+  		 timeFrameSelect : Instance of the com.inthinc.pro.backing.ui.TimeFrameSelect class. 
+
+  Optional Parameters:
+  ==============
+       context: If more than one timeFrame used on a page, must be a unique value for the timeFrame's ID.
+       reRenderList: comma separated list of components to reRerender on timeframe change
+
+  To use:
+  ==============
+  <ui:include src="/includes/component/timeFrameAlt.xhtml" >
+      <ui:param name="context" value="mypagename"/> 
+      <ui:param name="dateRange" value="#{backingBean.timeFrame}"/> 
+      <ui:param name="reRenderList" value="comp1,comp2"/> 
+  </ui:include>
+  
+-->
+
+<ui:composition>
+
+<table border="0" cellspacing="0" cellpadding="6">
+	<tr>
+		<td>								
+			<h:outputText value="#{messages.timeFrame_label} " />
+		</td>
+		<td>        
+			<h:selectOneMenu id="#{context}_reportTimeFrame" value="#{timeFrameSelect.timeFrame}" converter="SimpleBeanConverter" style="height:21px;">
+				<f:selectItems value="#{timeFrameSelect.altTimeFrames}"/> 
+			</h:selectOneMenu>
+		</td>
+	</tr>
+</table>
+
+</ui:composition>
+</html>

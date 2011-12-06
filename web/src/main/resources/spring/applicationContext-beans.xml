@@ -714,4 +714,8 @@
   <bean id="locateVehicleByTime" class="com.inthinc.pro.backing.model.LocateVehicleByTime">
   	<property name="googleAddressLookupBean" ref="googleAddressLookupBean"/>
   </bean>
+  <bean id="performanceReportsBean" class="com.inthinc.pro.backing.PerformanceReportsBean" scope="request" init-method="init">
+    <property name="reportCriteriaService" ref="reportCriteriaService" />
+    <property name="reportRenderer" ref="reportRenderer" />
+  </bean>
 </beans>

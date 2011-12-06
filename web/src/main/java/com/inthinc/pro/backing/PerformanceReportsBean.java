@@ -16,7 +16,7 @@ import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
 
 @KeepAlive
-public class WaysmartReportsBean extends ReportsBean {
+public class PerformanceReportsBean extends ReportsBean {
 
     private static final long serialVersionUID = 224700504785842562L;
 
@@ -52,11 +52,8 @@ public class WaysmartReportsBean extends ReportsBean {
 
         itemGroups.add(getBlankGroup());
         
-        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
-        
-        itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
-        		ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
+        itemGroups.add(new SelectItemGroup(ReportCategory.DriverPerformance.getLabel(), 
+        		ReportCategory.DriverPerformance.getLabel(), false, getItemsByCategory(ReportCategory.DriverPerformance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL, ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL)));
         
         return itemGroups;
     }
@@ -71,8 +68,6 @@ public class WaysmartReportsBean extends ReportsBean {
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
             if (!rt.isCategory(category)) continue;
-            if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
-                continue;
             
             boolean exclude = false;
             for(int i=0;i<excludeItem.length;i++)
@@ -89,56 +84,5 @@ public class WaysmartReportsBean extends ReportsBean {
         }
 		return items.toArray(new SelectItem[0]);
 	}
-	/*
-	 * {@inheritDoc}
-	 * Filter the Groups for WaySmart device. 
-	 * @see com.inthinc.pro.backing.BaseBean#getGroupHierarchy()
-	 */
-	/*// As decided - Tek removes the code filtering the group and show all the groups (because configuration can change)
-	@Override
-    public GroupHierarchy getGroupHierarchy() {
-        GroupHierarchy full = super.getGroupHierarchy();
-	    List<Group> filtered = checkGroupForWaysmart(full, full.getTopGroup());
-        return new GroupHierarchy(filtered);
-    }*/
-	
-    /*
-     * Returns a list of the group and its subgroups if have WaySmart device.
-     * @param hierarchy The GroupHierarchy to use to get children
-     * @param group The current group to check
-     * @return THe list with all the children and the parent having WaySmart device
-     * /
-    private List<Group> checkGroupForWaysmart(GroupHierarchy hierarchy, Group group) {
-        List<Group> checkedList = new ArrayList<Group>();
-        List<Group> children = hierarchy.getChildren(group);
-
-        if (children == null) { // we are on a leaf
-            if (hasWaysmartDevice(group)) {
-                checkedList.add(group);
-            }
-        } else { // we are on a non-leaf node
-            for (Group child : children) {
-                checkedList.addAll(checkGroupForWaysmart(hierarchy, child));
-            }
-            if (!checkedList.isEmpty() || (checkedList.isEmpty() && hasWaysmartDevice(group))) {
-                checkedList.add(group);
-            }
-        }
-        return checkedList;
-
-    }	
-	
-	private boolean hasWaysmartDevice(Group group) {
-	    if(group != null){    
-	        Integer accountID = group.getAccountID();
-    	    List<Device> devices = getDeviceDAO().getDevicesByAcctID(accountID);
-            for (Device device : devices) {
-                if (device.isWaySmart()) {
-                    return true;
-                }
-            }
-	    }
-        return false;
-	} */
 
 }

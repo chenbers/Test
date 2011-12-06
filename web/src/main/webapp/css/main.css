@@ -318,6 +318,10 @@ img {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_hos.png) no-repeat center left;
 }
+.panel_title span.performance {
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_overall.png) no-repeat center left;
+}
 .panel_title span.fuelStops {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_gas.png) no-repeat center left;

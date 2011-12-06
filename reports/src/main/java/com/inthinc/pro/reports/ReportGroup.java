@@ -164,42 +164,31 @@ public enum ReportGroup
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             EnumSet.of(ReportAccountType.WAYSMART),
             ReportType.DRIVER_HOURS),
-    DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance", 38, EntityType.ENTITY_GROUP_LIST,
-                    new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-                    new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
-                    EnumSet.of(ReportAccountType.WAYSMART),
-                    ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
+    DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", 38, EntityType.ENTITY_GROUP_LIST,
+            new CriteriaType[]{CriteriaType.TIMEFRAME_ALT}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.PERFORMANCE),
+            ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
     DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)", 34, EntityType.ENTITY_GROUP,
-                    new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-                    new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
-                    EnumSet.of(ReportAccountType.WAYSMART),
-                    ReportType.DRIVER_PERFORMANCE_TEAM),
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.PERFORMANCE),
+            ReportType.DRIVER_PERFORMANCE_TEAM),
      DRIVER_PERFORMANCE_INDIVIDUAL("Driver Performance (Individual)", 35, EntityType.ENTITY_INDIVIDUAL_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.TEAM}, ReportCategory.Performance,
-            EnumSet.of(ReportAccountType.WAYSMART),
+            new GroupType[]{GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_INDIVIDUAL),
      DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG (Team)", 36, EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
-            EnumSet.of(ReportAccountType.WAYSMART),
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_RYG_TEAM),
       DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver Performance RYG (Individual)", 37, EntityType.ENTITY_INDIVIDUAL_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.TEAM}, ReportCategory.Performance,
-            EnumSet.of(ReportAccountType.WAYSMART),
+            new GroupType[]{GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
-
-    /* VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_OR_DRIVER,
-            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
-            ReportType.VEHICLE_USAGE),  */
-            
-      // Asset
-//     WARRANTY_LIST("Warranty List", 26, EntityType.ENTITY_GROUP_AND_EXPIRED,   
-//            new CriteriaType[]{}, 
-//            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Asset,
-//            ReportType.WARRANTY_LIST);
 
     
     private ReportType[] reports;
@@ -290,7 +279,7 @@ public enum ReportGroup
     public Boolean getUseTimeFrame()
     {
     	for (CriteriaType criteria : criterias)
-    		if (criteria.equals(CriteriaType.TIMEFRAME))
+    		if (criteria.equals(CriteriaType.TIMEFRAME) || criteria.equals(CriteriaType.TIMEFRAME_ALT))
     			return true;
     	return false;
     }

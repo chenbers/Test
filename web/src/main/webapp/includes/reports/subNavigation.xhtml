@@ -24,6 +24,9 @@
                    <li class="#{devicesSelected}">
                          <pretty:link id="#{context}-devicesReport" mappingId="devicesReport"><span>#{messages.subNavigation_devices}</span></pretty:link>
                    </li>
+                   <li class="#{performanceSelected}">
+                         <pretty:link id="#{context}-performanceReport" mappingId="performanceReport"><span>#{messages.subNavigation_performance}</span></pretty:link>
+                   </li>
 					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WAYSMARTACCESS">
                    <li class="#{waysmartSelected}">
 						<h:panelGroup rendered="#{treeNavigationBean.accountIsWaysmart}">

@@ -14,7 +14,7 @@ public class TimeFrameConverter {
         if (TimeFrame.MONTH == timeFrame)
             return new DateTime().monthOfYear().getAsText(locale);
 
-        if (TimeFrame.PAST_MONTH == timeFrame)
+        if (TimeFrame.LAST_MONTH == timeFrame)
             return new DateTime().minusMonths(1).monthOfYear().getAsText(locale);
         
         return MessageUtil.getMessageString("timeFrame_" + timeFrame, locale);

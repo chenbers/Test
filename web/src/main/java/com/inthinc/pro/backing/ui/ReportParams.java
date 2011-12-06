@@ -24,6 +24,7 @@ import com.inthinc.pro.util.SelectItemUtil;
 public class ReportParams implements Cloneable {
     
     private DateRange dateRange;
+    private TimeFrameSelect timeFrameSelect;
     private Integer groupID;
     private List<String> groupIDSelectList;
     private Integer driverID;
@@ -43,6 +44,7 @@ public class ReportParams implements Cloneable {
     public ReportParams(Locale locale)
     {
         dateRange = new DateRange(locale);
+        timeFrameSelect = new TimeFrameSelect(locale);
         this.locale = locale;
     }
     
@@ -173,7 +175,6 @@ public class ReportParams implements Cloneable {
         
     }
     
-//    protected final static String BLANK_SELECTION = "&#160;";
     protected final static String BLANK_SELECTION = " ";
 
     protected static void sort(List<SelectItem> selectItemList) {
@@ -190,7 +191,6 @@ public class ReportParams implements Cloneable {
         List<SelectItem> groups = new ArrayList<SelectItem>();
         if (getGroupHierarchy() == null)
             return groups;
-//        groups.add(new SelectItem(null, BLANK_SELECTION));
         for (final Group group : getGroupHierarchy().getGroupList()) {
             String fullName = getGroupHierarchy().getFullGroupName(
                     group.getGroupID());
@@ -274,7 +274,6 @@ public class ReportParams implements Cloneable {
             e.printStackTrace();
             return null;
         }
-        
     }
 
     public Boolean getIsExpired() {
@@ -285,6 +284,13 @@ public class ReportParams implements Cloneable {
         this.isExpired = isExpired;
     }
 
+    public TimeFrameSelect getTimeFrameSelect() {
+        return timeFrameSelect;
+    }
+
+    public void setTimeFrameSelect(TimeFrameSelect timeFrameSelect) {
+        this.timeFrameSelect = timeFrameSelect;
+    }
 
 
 }

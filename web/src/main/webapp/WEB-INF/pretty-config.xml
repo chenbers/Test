@@ -165,14 +165,18 @@
         <view-id>/secured/pagingreports/devices.faces</view-id>
         <action onPostback="false">#{pagingDeviceReportBean.allAction}</action>
     </url-mapping>
-    <url-mapping id="waysmartReport">
-        <pattern>/app/reports/waysmartReport</pattern>
-        <view-id>/secured/pagingreports/waysmart.faces</view-id>
-    </url-mapping>
     <url-mapping id="devicesReportWithCriteria">
         <pattern>/app/reports/devicesReport/</pattern>
         <view-id>/secured/pagingreports/devices.faces</view-id>
         <action onPostback="false">#{pagingDeviceReportBean.searchAction}</action>
+    </url-mapping>
+    <url-mapping id="performanceReport">
+        <pattern>/app/reports/performanceReport</pattern>
+        <view-id>/secured/pagingreports/performance.faces</view-id>
+    </url-mapping>
+    <url-mapping id="waysmartReport">
+        <pattern>/app/reports/waysmartReport</pattern>
+        <view-id>/secured/pagingreports/waysmart.faces</view-id>
     </url-mapping>
     
     <!-- Notifications Section -->

@@ -25,6 +25,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.ui.TimeFrameSelect;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
@@ -72,6 +73,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private List<Driver> driverList;
     protected final static String BLANK_SELECTION = " ";
     public static final Integer ALL_DRIVERS_ID = Integer.valueOf(0);
+    private TimeFrameSelect timeFrameSelect;
+
 
     /*
      * Spring managed beans
@@ -90,7 +93,15 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("owner");     // only admins see this
     }
-    List<User> fullUserList; 
+    List<User> fullUserList;
+    
+    
+    public void initBean()
+    {
+        super.initBean();
+        timeFrameSelect = new TimeFrameSelect(getLocale());
+    }
+    
     public List<User> getFullUserList() {
         if (fullUserList == null) 
                 fullUserList = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
@@ -205,19 +216,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public List<SelectItem> getDurations() {
         return SelectItemUtil.toList(Duration.class, true);
     }
-    public List<SelectItem> getTimeFrames() {
-    	
-        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-        selectItemList.add(new SelectItem(TimeFrame.TODAY, TimeFrameUtil.getTimeFrameStr(TimeFrame.TODAY, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.ONE_DAY_AGO, TimeFrameUtil.getTimeFrameStr(TimeFrame.ONE_DAY_AGO, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.WEEK, TimeFrameUtil.getTimeFrameStr(TimeFrame.WEEK, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.LAST_THIRTY_DAYS, TimeFrameUtil.getTimeFrameStr(TimeFrame.LAST_THIRTY_DAYS, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.THREE_MONTHS, TimeFrameUtil.getTimeFrameStr(TimeFrame.THREE_MONTHS, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.SIX_MONTHS, TimeFrameUtil.getTimeFrameStr(TimeFrame.SIX_MONTHS, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.YEAR, TimeFrameUtil.getTimeFrameStr(TimeFrame.YEAR, getLocale())));
-        
-        return selectItemList;
-    }
     
     public String getReportTimeFrameStr() {
     	if (item != null && item.getReportTimeFrame() != null) {
@@ -235,24 +233,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
 
-//    @SuppressWarnings("unchecked")
-//    public Map<String, Integer> getDrivers() {
-//        Map<String, Integer> driverMap = new HashedMap();
-//        driverMap.put("", null);
-//    	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
-//    	User owner = null;
-//    	if (!ownerID.equals(getUserID()))
-//    		owner = userDAO.findByID(ownerID);
-//    	else owner = getUser();
-//
-////        List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
-//        List<Driver> driverList = driverDAO.getAllDrivers(owner.getGroupID());
-//        for (Driver driver : driverList) {
-//            driverMap.put(driver.getPerson().getFullName(), driver.getDriverID());
-//        }
-//        return driverMap;
-//    }
-    
+    public TimeFrameSelect getTimeFrameSelect() {
+        return timeFrameSelect;
+    }
+
+    public void setTimeFrameSelect(TimeFrameSelect timeFrameSelect) {
+        this.timeFrameSelect = timeFrameSelect;
+    }
+
     public List<SelectItem> getDrivers() {
         List<SelectItem> drivers = new ArrayList<SelectItem>();
         if (getDriverList() == null)

@@ -88,7 +88,7 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(GROUP_ID);
-        criteria.init(getMockGroupHierarchy(), groupIDList, TimeFrame.PAST_MONTH, MeasurementType.ENGLISH);
+        criteria.init(getMockGroupHierarchy(), groupIDList, TimeFrame.LAST_MONTH, MeasurementType.ENGLISH);
         
         dump("DriverPerformanceKeyMetrics_mi", 1, criteria, FormatType.EXCEL);
 

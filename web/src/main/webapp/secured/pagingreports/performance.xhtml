@@ -1,0 +1,51 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:c="http://java.sun.com/jstl/core"
+	  			xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="performanceSelected" value="current" />
+	<ui:param name="context" value="Waysmart" />
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml">
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</ui:define>
+	
+	<ui:param name="title" value="#{messages.navigation_reports} - #{messages.report_performance}"/>
+	<ui:define name="content">
+	<div id="wrapper">
+	<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+		<tr>
+			<td valign="top">
+				<div class="">
+					<div class="panel_nw">
+						<div class="panel_title">
+						    <span class="performance">#{messages.performance_reportsTitle}</span>
+				     	    <span class="panel_links">#{messages.performance_reportsTitle_description}</span>						
+						</div>
+					</div>
+					<div class="panel_w">
+	    				<div class="panel_content" style="min-height: 200px;">
+		   					<ui:include src="/includes/reports/reportsContent.xhtml">
+		   						<ui:param name="context" value="performanceReports"/> 
+		   						<ui:param name="reportsBean" value="#{performanceReportsBean}"/> 
+	   						</ui:include>
+	   					</div>
+					</div>
+   					<div class="panel_sw">
+						<div class="panel_statusbar"/>
+					</div>
+				</div>
+			</td>
+		  </tr>
+	</table>
+	</div>
+	</ui:define>
+</ui:composition>

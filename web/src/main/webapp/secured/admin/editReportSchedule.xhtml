@@ -242,7 +242,21 @@
 										<td>
 											<rich:message for="editReportSchedule-reportTimeFrame" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 											<h:selectOneMenu id="editReportSchedule-reportTimeFrame" value="#{reportScheduleBean.item.reportTimeFrame}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
-												<f:selectItems value="#{reportScheduleBean.timeFrames}"/> 
+												<f:selectItems value="#{reportScheduleBean.timeFrameSelect.timeFrames}"/> 
+											</h:selectOneMenu>
+										</td>
+									</tr>
+								</h:outputText>
+								<h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT'}">
+									<tr>
+										<td width="115" valign="top">
+											<h:outputText value="#{messages.reportSchedule_daysReported}"/>
+											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+										</td>
+										<td>
+											<rich:message for="editReportSchedule-reportTimeFrameAlt" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+											<h:selectOneMenu id="editReportSchedule-reportTimeFrameAlt" value="#{reportScheduleBean.item.reportTimeFrame}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
+												<f:selectItems value="#{reportScheduleBean.timeFrameSelect.altTimeFrames}"/> 
 											</h:selectOneMenu>
 										</td>
 									</tr>

@@ -81,6 +81,7 @@ public class EmailReportJob extends QuartzJobBean {
     }
 
     private List<ReportSchedule> getReportSchedules(){
+        List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         
         List<Account> accounts = accountDAO.getAllAcctIDs();
         logger.debug("Account Count: " + accounts.size());
@@ -88,7 +89,6 @@ public class EmailReportJob extends QuartzJobBean {
         initTextEncryptor();
 
 
-        List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         for (Account account : accounts) {
             if (isValidAccount(account)){
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAccountID()));
@@ -180,6 +180,7 @@ public class EmailReportJob extends QuartzJobBean {
             List<IndividualReportEmail> individualReportEmailList = new ArrayList<IndividualReportEmail>();
             for (int i = 0; i < reportGroup.getReports().length; i++) {
                 TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
+                
                 if (timeFrame == null) {
                     timeFrame = TimeFrame.TODAY;
                 }
@@ -265,12 +266,16 @@ public class EmailReportJob extends QuartzJobBean {
 
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
         // Set the current date of the reports
+        FormatType formatType = FormatType.PDF;
         for (ReportCriteria reportCriteria : reportCriteriaList) {
             reportCriteria.setReportDate(new DateTime().toDate(), person.getTimeZone());
             reportCriteria.setLocale(person.getLocale());
             reportCriteria.setUseMetric((person.getMeasurementType() != null && person.getMeasurementType().equals(MeasurementType.METRIC)));
             reportCriteria.setMeasurementType(person.getMeasurementType());
             reportCriteria.setFuelEfficiencyType(person.getFuelEfficiencyType());
+            
+            if (reportCriteria.getReport().getPrettyTemplate() == null)
+                formatType = FormatType.EXCEL;
         }
 
         Report report = reportCreator.getReport(reportCriteriaList);
@@ -291,7 +296,9 @@ public class EmailReportJob extends QuartzJobBean {
                 noReplyEmailAddress = acct.getProps().getNoReplyEmail();
             }
             
-            report.exportReportToEmail(address, FormatType.PDF, message, subject, noReplyEmailAddress);
+            
+            
+            report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
         }
     }
 

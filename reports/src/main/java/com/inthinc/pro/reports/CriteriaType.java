@@ -6,7 +6,8 @@ import com.inthinc.pro.model.TimeFrame;
 public enum CriteriaType
 {
     DURATION(Duration.class),
-    TIMEFRAME(TimeFrame.class);
+    TIMEFRAME(TimeFrame.class),
+    TIMEFRAME_ALT(TimeFrame.class);
     
     private Class clazz;
 
