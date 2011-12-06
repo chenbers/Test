@@ -228,7 +228,7 @@ public class EventServiceImpl implements EventService {
     }
     private List<NoteType> parseNoteTypes(String eventTypes) throws IllegalArgumentException{
         
-        String [] eventTypesArray = eventTypes.split("/");
+        String [] eventTypesArray = eventTypes.split(",");
         
         if("all".equals(eventTypesArray[0])){
             return new ArrayList<NoteType>(EnumSet.range(NoteType.FULLEVENT,NoteType.STRIPPED_ACKNOWLEDGE));

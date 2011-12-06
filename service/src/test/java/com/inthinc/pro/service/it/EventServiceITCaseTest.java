@@ -22,6 +22,9 @@ import com.inthinc.pro.service.pagination.EventPage;
 
 public class EventServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static final int GROUP_ID = 1;
+    private static final int DRIVER_ID = 3;
+    private static final int VEHICLE_ID = 2;
+    
     private static final String START_DATE = "20110201";
     private static final String END_DATE = "20110306";
     
@@ -112,4 +115,62 @@ public class EventServiceITCaseTest extends BaseEmbeddedServerITCase {
         		"/events/all/"+START_DATE+"/"+END_DATE+"/page;start=110;pageCount=20";
         assertEquals(prevRequestQuery, page.getPrevious());
     }
+    @Test
+    public void getEventsForGroupSingleEventTest() throws Exception{
+    	
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+
+        		"/events/speeding/"+START_DATE+"/"+END_DATE);
+
+        ClientResponse<EventPage> response = request.get();
+        EventPage page = response.getEntity(EventPage.class);
+        assertNotNull(page);
+        assertEquals(60,page.getTotalCount());
+        String nextRequestQuery= "http://localhost:8080/service/api/group/"+GROUP_ID+
+        		"/events/speeding/"+START_DATE+"/"+END_DATE+"/page;start=20;pageCount=20";
+        assertEquals(nextRequestQuery, page.getNext());
+    }
+    @Test
+    public void getEventsForGroupMultipleEventTest() throws Exception{
+    	
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+
+        		"/events/speeding,hard_turn/"+START_DATE+"/"+END_DATE);
+
+        ClientResponse<EventPage> response = request.get();
+        EventPage page = response.getEntity(EventPage.class);
+        assertNotNull(page);
+        assertEquals(124,page.getTotalCount());
+        String nextRequestQuery= "http://localhost:8080/service/api/group/"+GROUP_ID+
+        		"/events/speeding,hard_turn/"+START_DATE+"/"+END_DATE+"/page;start=20;pageCount=20";
+        assertEquals(nextRequestQuery, page.getNext());
+    }
+//    @Test
+//    public void getEventsForDriverSingleEventTest() throws Exception{
+//    	
+//        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/driver/"+DRIVER_ID+
+//        		"/events/speeding/"+START_DATE+"/"+END_DATE);
+//
+//        ClientResponse<EventPage> response = request.get();
+//        EventPage page = response.getEntity(EventPage.class);
+//        assertNotNull(page);
+//        assertEquals(60,page.getTotalCount());
+//        String nextRequestQuery= "http://localhost:8080/service/api/driver/"+DRIVER_ID+
+//        		"/events/speeding/"+START_DATE+"/"+END_DATE+"/page;start=20;pageCount=20";
+//        assertEquals(nextRequestQuery, page.getNext());
+//    }
+//
+//  @Test
+//  public void getEventsForVehicleSingleEventTest() throws Exception{
+//  	
+//      ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+
+//      		"/events/speeding/"+START_DATE+"/"+END_DATE);
+//
+//      ClientResponse<EventPage> response = request.get();
+//      EventPage page = response.getEntity(EventPage.class);
+//      assertNotNull(page);
+//      assertEquals(60,page.getTotalCount());
+//      String nextRequestQuery= "http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+
+//      		"/events/speeding/"+START_DATE+"/"+END_DATE+"/page;start=20;pageCount=20";
+//      assertEquals(nextRequestQuery, page.getNext());
+//  }
+//
 }
