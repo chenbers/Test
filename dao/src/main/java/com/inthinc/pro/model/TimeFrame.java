@@ -91,12 +91,12 @@ public enum TimeFrame implements BaseEnum {
     },
     LAST_WEEK(AggregationDuration.SEVEN_DAY, 15) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent(), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().minusDays(1), dateTimeZone));
         }
     },
     LAST_MONTH(AggregationDuration.ONE_MONTH, 16) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(getCurrent().monthOfYear().toInterval().getStart(), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusDays(1), dateTimeZone));
         }
     };
 
