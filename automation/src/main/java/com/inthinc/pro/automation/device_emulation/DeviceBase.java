@@ -15,6 +15,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Level;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceForwardCommands;
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
@@ -341,6 +342,7 @@ public abstract class DeviceBase {
     protected DeviceBase send_note() {
         while (notes.hasNext()) {
             Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = notes.getNotes(note_count);
+            DeviceNoteTypes[] typesSent = null;
             reply = null;
             int loop = 0;
             while (!sendingQueue.isEmpty()) {
@@ -355,6 +357,7 @@ public abstract class DeviceBase {
                         reply = mcmProxy.notebc(sendingImei, state.getWaysDirection(), sendingQueue.get(noteClass), true);
                     } else if (sendingQueue.containsKey(NoteWS.class)){
                         noteClass = NoteWS.class;
+                        typesSent = getTypes(sendingQueue);
                         reply = mcmProxy.notews(sendingImei, state.getWaysDirection(), sendingQueue.get(noteClass), true);
                     } else if (sendingQueue.containsKey(TiwiNote.class)){
                         noteClass = TiwiNote.class;
@@ -377,6 +380,8 @@ public abstract class DeviceBase {
 
                 if (reply instanceof ArrayList<?>) {
                     ackFwdCmds((List<HashMap<String, Object>>) reply);
+                } else if (reply instanceof String[]){
+                    ackFwdCmds((String[]) reply, typesSent);
                 } else {
                     MasterTest.print("Reply from Server: " + reply, Level.DEBUG);    
                 }
@@ -387,6 +392,17 @@ public abstract class DeviceBase {
     }
 
     
+    private DeviceNoteTypes[] getTypes(Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue) {
+        LinkedList<DeviceNote> noteWS = sendingQueue.get(NoteWS.class);
+        List<DeviceNoteTypes> list = new ArrayList<DeviceNoteTypes>();
+        for (DeviceNote note : noteWS){
+            list.add(note.getType());
+        }
+        return list.toArray(new DeviceNoteTypes[]{});
+    }
+
+    protected abstract void ackFwdCmds(String[] reply, DeviceNoteTypes[] typesSent);
+
     protected abstract DeviceBase set_ignition(Integer time_delta);//
 
     

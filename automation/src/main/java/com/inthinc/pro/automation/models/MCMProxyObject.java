@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.models;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.log4j.Level;
 
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
@@ -252,29 +255,41 @@ public class MCMProxyObject implements MCMProxy{
         return reply;
     }
     
-    public List<Map<String, Object>> notews(String mcmID, Direction comType,
+    public String[] notews(String mcmID, Direction comType,
             List<DeviceNote> noteList, boolean extra){
         
         HTTPCommands http = new HTTPCommands();
         MasterTest.print(mcmID);
+        List<String> reply = new ArrayList<String>();
         
         for (DeviceNote note : noteList){
             MasterTest.print(server.getPortalUrl());
-            String uri = "http://" + server.getPortalUrl() + ":" + server.getWaysPort() + "/gprs_wifi/gprs.do?mcm_id=" +
+            String uri = "http://" + server.getPortalUrl() + ":" + server.getWaysPort() + "/gprs_wifi/"+comType+".do?mcm_id=" +
             ""+mcmID+"&commType="+comType.getCode()+"&sat_cmd="+note.getType().getCode()+"&event_time="+note.getTime();
-//            if (mcmID != null){
-//                return null;
-//            }
-            HttpPost method = new HttpPost(uri);
-            MultipartEntity entity = new MultipartEntity();
-            entity.addPart("file", new ByteArrayBody(note.Package(), "temp"));
+            MasterTest.print(uri);
+            HttpPost method = new HttpPost(uri.toLowerCase());
+            MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            
+            try {
+                entity.addPart("mcm_id", new StringBody(mcmID, Charset.forName("UTF-8")));
+                entity.addPart("commType", new StringBody("" + comType.getCode(), Charset.forName("UTF-8")));
+                entity.addPart("event_time", new StringBody("" + note.getTime(), Charset.forName("UTF-8")));
+                entity.addPart("sat_cmd", new StringBody("" + note.getType(), Charset.forName("UTF-8")));
+                entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));
+            } catch (Exception e) {
+                
+            }
+          
+            
+            entity.addPart("filename", new ByteArrayBody(note.Package(), "filename"));
+//            entity.addPart("file", new ByteArrayBody(note.Package(), "file"));
             method.setEntity(entity);
             
-            http.httpRequest(method);
+            reply.add(http.httpRequest(method));
             
             printNote(note);
         }
-        return null;
+        return reply.toArray(new String[]{});
     }
     
     @Override

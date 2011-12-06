@@ -108,7 +108,7 @@ public class HTTPCommands {
             HttpResponse response = defaultClient.execute(method);
             MasterTest.print(response.getStatusLine());
             String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
-            MasterTest.print(returnResponse);
+            MasterTest.print(returnResponse, Level.INFO);
             return returnResponse;
         } catch (ClientProtocolException e) {
             MasterTest.print(e);

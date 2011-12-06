@@ -20,7 +20,6 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
-import com.inthinc.pro.automation.device_emulation.Distance_Calc;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.models.GeoPoint;
@@ -517,5 +516,10 @@ public class TiwiProDevice extends DeviceBase {
 
     public void setBaseVer(int baseVer) {
         this.baseVer = baseVer;
+    }
+
+    @Override
+    protected void ackFwdCmds(String[] reply, DeviceNoteTypes[] types) {
+        throw new IllegalAccessError("This is only for Waysmarts");
     }
 }

@@ -1,7 +1,9 @@
 package com.inthinc.pro.automation.objects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Level;
@@ -14,12 +16,14 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.AutomationBridgeFwdCmdParser;
 import com.inthinc.pro.automation.models.AutomationNoteEvent;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.NoteBC;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.models.NoteWS;
+import com.inthinc.pro.automation.models.WaysmartClasses.MultiForwardCmd;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
@@ -55,16 +59,24 @@ public class WaysmartDevice extends DeviceBase {
         return this;
 	}
 	
+
+    @Override
+    public DeviceBase addSpeedingNote(Integer distance, Integer topSpeed,
+            Integer avgSpeed) {
+        return addSpeedingNote(distance, topSpeed, avgSpeed, 500, 500, state.getSpeed_limit().intValue());
+    }
+	
 	/**
 	 * SPEEDING_EX3(93, DeviceAttrs.TOP_SPEED, DeviceAttrs.DISTANCE, DeviceAttrs.MAX_RPM, DeviceAttrs.SPEED_LIMIT, DeviceAttrs.AVG_SPEED, DeviceAttrs.AVG_RPM),
 	 */
-	public WaysmartDevice addSpeedingNote(Integer distance, Integer topSpeed, Integer avgSpeed) {
+	public WaysmartDevice addSpeedingNote(int distance, int topSpeed, int avgSpeed, int maxRpm, int avgRpm, int speedLimit) {
 	    NoteWS note = constructWSNote(DeviceNoteTypes.SPEEDING_EX3);
+        note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
 	    note.addAttr(DeviceAttrs.DISTANCE, distance);
-	    note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
+	    note.addAttr(DeviceAttrs.MAX_RPM, maxRpm);
+	    note.addAttr(DeviceAttrs.SPEED_LIMIT, speedLimit);
 	    note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
-	    note.addAttr(DeviceAttrs.SPEED_ID, 9999);
-	    note.addAttr(DeviceAttrs.VIOLATION_FLAGS, 1);
+	    note.addAttr(DeviceAttrs.AVG_RPM, avgRpm);
 	    addNote(note);
         return this;
     }
@@ -324,4 +336,11 @@ public class WaysmartDevice extends DeviceBase {
 	protected WaysmartDevice was_speeding() {
         return this;
 	}
+    @Override
+    protected void ackFwdCmds(String[] reply, DeviceNoteTypes[] typesSent) {
+        List<MultiForwardCmd> commands = new ArrayList<MultiForwardCmd>();
+        for (int i=0;i<reply.length;i++){
+            commands.addAll(AutomationBridgeFwdCmdParser.processCommands(reply[i], typesSent[i]));
+        }
+    }
 }

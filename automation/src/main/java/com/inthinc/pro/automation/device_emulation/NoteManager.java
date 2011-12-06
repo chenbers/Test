@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -93,6 +94,11 @@ public class NoteManager {
             number |= (ba[offset++] & 0xFF) << shift;
         }
         return number;
+    }
+    
+
+    public static Integer byteToInt(byte[] ba, int offset, int numOfBytes) {
+        return byteToLong(ba, offset, numOfBytes).intValue();
     }
     
     public static void longToByte(ByteArrayOutputStream baos, Long toAdd, int numOfBytes){
@@ -192,4 +198,13 @@ public class NoteManager {
             encodeAttribute(baos, attr, attrs.getValue(attr));
         }
     }
+
+    public static Object byteToInt(List<Byte> m_pData, int numOfBytes) {
+        byte[] temp = new byte[m_pData.size()];
+        for (int i=0;i<m_pData.size();i++){
+            temp[i] = m_pData.get(i);
+        }
+        return byteToInt(temp, 0, numOfBytes);
+    }
+
 }
