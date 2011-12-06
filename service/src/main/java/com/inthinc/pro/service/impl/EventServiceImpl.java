@@ -63,6 +63,20 @@ public class EventServiceImpl implements EventService {
             return BadDateRangeExceptionMapper.getResponse(bdre);
         }
     }
+    @Override
+    public Response getEventsFirstPage(String entity, Integer entityID, String eventTypes, Date startDate, UriInfo uriInfo) {
+        try {
+            Interval interval = DateUtil.getInterval(startDate,new Date());
+
+            int pageStart = 0;
+            int pageCount = 20;
+            
+            return getEventResponse(entity, entityID, eventTypes, interval, uriInfo, pageStart, pageCount );
+        }
+        catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+        }
+    }
     private Response getEventResponse(String entity, Integer entityID, String eventTypes, Interval interval, UriInfo uriInfo, int pageStart, int pageCount){
         try{
             List<NoteType> noteTypesList = parseNoteTypes(eventTypes);
@@ -77,7 +91,7 @@ public class EventServiceImpl implements EventService {
                 
             Integer totalCount = eventGetter.getEventCount(entity, entityID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
     
-            List<Link> links = getLinks(uriInfo,pageStart,pageCount,totalCount);
+            List<Link> links = getLinks(uriInfo,interval,pageStart,pageCount,totalCount);
     
             EventPage eventPage = createPage(pageOfEvents, pageStart, pageCount, totalCount, links);
             
@@ -89,11 +103,6 @@ public class EventServiceImpl implements EventService {
             return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start and pageCount parameter values must be numeric.").build();
         }
 
-    }
-    @Override
-    public Response getEvents(String entity, Integer entityID, String eventTypes, Date startDate,
-            PathSegment page, UriInfo uriInfo) {
-        return getEvents(entity, entityID, eventTypes,startDate, new Date(), page, uriInfo);
     }
 
     @Override
@@ -117,7 +126,7 @@ public class EventServiceImpl implements EventService {
                 
             Integer totalCount = eventGetter.getEventCount(entity, entityID,  noteTypesList, interval.getStart().toDate(), interval.getEnd().toDate());
 
-            List<Link> links = getLinks(uriInfo,start,pageCount,totalCount);
+            List<Link> links = getLinks(uriInfo,interval,start,pageCount,totalCount);
 
             EventPage eventPage = createPage(pageOfEvents, start, pageCount, totalCount, links);
             
@@ -163,10 +172,13 @@ public class EventServiceImpl implements EventService {
 
         return eventPage;
     }
-    private List<Link> getLinks(UriInfo uriInfo, int start, int size, int recordCount){
+    private List<Link> getLinks(UriInfo uriInfo, Interval interval, int start, int size, int recordCount){
         
         UriBuilder builder = uriInfo.getAbsolutePathBuilder();
         
+        if(hasNoEndDate(uriInfo)){
+        	builder.path(DateUtil.getFormattedDate(interval.getEnd()));
+        }
         if(!hasPage(uriInfo)){
            builder.path("page");
         }
@@ -185,6 +197,10 @@ public class EventServiceImpl implements EventService {
         }
         return false;
     }
+    private boolean hasNoEndDate(UriInfo uriInfo){
+    	return uriInfo.getPathParameters().get("endDate") == null;
+    }
+
     private Link getNextLink(int start, int size, int recordCount, UriBuilder builder){
 
         if (start + size < recordCount)

@@ -27,6 +27,13 @@ public interface EventService {
             @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate);
     
     @GET
+    @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}")
+    public Response getEventsFirstPage(@PathParam("entity") String entity,
+            @PathParam("entityID")Integer entityID,
+            @PathParam("eventTypes")String eventTypes,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @Context UriInfo uriInfo);
+    @GET
     @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{endDate}")
     public Response getEventsFirstPage(@PathParam("entity") String entity,
             @PathParam("entityID")Integer entityID,
@@ -45,12 +52,4 @@ public interface EventService {
             @PathParam("page") PathSegment page,
             @Context UriInfo uriInfo);
     
-    @GET
-    @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{page}")
-    public Response getEvents(@PathParam("entity") String entity,
-            @PathParam("entityID")Integer entityID,
-            @PathParam("eventTypes")String eventTypes,
-            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
-            @PathParam("page") PathSegment page,
-            @Context UriInfo uriInfo);
 }

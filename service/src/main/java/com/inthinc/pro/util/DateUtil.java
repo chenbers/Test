@@ -1,5 +1,6 @@
 package com.inthinc.pro.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.joda.time.DateMidnight;
@@ -11,8 +12,16 @@ import com.inthinc.pro.service.exceptions.BadDateRangeException;
 public class DateUtil {
 
     static final Integer DAYS_BACK = 7;
+    static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
-
+    
+    public static String getFormattedDate(DateTime date){
+    	
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
+        String formattedTime = dateFormatter.format(date.toDate());
+        
+        return formattedTime;
+    }
     public static Date getBeginningOfDay(Date day) {
         return new DateMidnight(day).toDate();
     }
