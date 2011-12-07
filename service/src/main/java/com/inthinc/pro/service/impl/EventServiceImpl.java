@@ -231,7 +231,9 @@ public class EventServiceImpl implements EventService {
         String [] eventTypesArray = eventTypes.split(",");
         
         if("all".equals(eventTypesArray[0])){
-            return new ArrayList<NoteType>(EnumSet.range(NoteType.FULLEVENT,NoteType.STRIPPED_ACKNOWLEDGE));
+            List<NoteType> noteTypes = new ArrayList<NoteType>(EnumSet.range(NoteType.FULLEVENT,NoteType.WAYSMART_THEFT));
+            noteTypes.addAll(EnumSet.range(NoteType.NEW_DRIVER,NoteType.STRIPPED_ACKNOWLEDGE));
+            return noteTypes;
         }
         return getRequestedNoteTypes(eventTypesArray);
     }

@@ -63,7 +63,7 @@ public class EventGetter{
         public List<Event> getEvents(Integer entityID, List<NoteType> noteTypes, Date start, Date end, int firstRow, int pageCount){
             
             events = eventDAO.getEventsForDriver(entityID, start, end, noteTypes, new Integer(1));
-            List<Event> pageOfEvents = new ArrayList<Event>(events.subList(firstRow, Math.min(firstRow+pageCount, events.size()-firstRow)));
+            List<Event> pageOfEvents = new ArrayList<Event>(events.subList(firstRow, Math.min(firstRow+pageCount, events.size())));
 
             return pageOfEvents;
         }
@@ -80,13 +80,13 @@ public class EventGetter{
        private List<Event> events;
        public List<Event> getEvents(Integer entityID, List<NoteType> noteTypes, Date start, Date end, int firstRow, int pageCount){
             events = eventDAO.getEventsForVehicle(entityID, start, end, noteTypes, new Integer(1));
-            List<Event> pageOfEvents = new ArrayList<Event>(events.subList(firstRow, Math.min(firstRow+pageCount, events.size()-firstRow)));
+            List<Event> pageOfEvents = new ArrayList<Event>(events.subList(firstRow, Math.min(firstRow+pageCount, events.size())));
 
             return pageOfEvents;
         }
         public Integer getEventCount(Integer entityID, List<NoteType> noteTypes, Date start, Date end){
             if (events == null) {
-                events = eventDAO.getEventsForDriver(entityID, start, end, noteTypes, new Integer(1));
+                events = eventDAO.getEventsForVehicle(entityID, start, end, noteTypes, new Integer(1));
              }
              return events.size();
         }
