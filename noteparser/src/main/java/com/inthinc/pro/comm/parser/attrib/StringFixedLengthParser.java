@@ -34,7 +34,7 @@ public class StringFixedLengthParser implements AttribParser {
 			
 		assert(data.length > offset + 2 + length);
 
-		attribMap.put(attrib.getCode(), ReadUtil.createString(data, offset, length));
+		attribMap.put(String.valueOf(attrib.getCode()), ReadUtil.createString(data, offset, length));
 
 		return offset+length;
 	}

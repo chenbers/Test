@@ -10,7 +10,7 @@ public class DoubleParser implements AttribParser {
 
 		assert data.length > (offset + 8);
 		
-		attribMap.put(attrib.getCode(), new Double(ReadUtil.readDouble(data, offset)));
+		attribMap.put(String.valueOf(attrib.getCode()), String.valueOf(ReadUtil.readDouble(data, offset)));
 
 		return offset+8;
 	}

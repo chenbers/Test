@@ -11,7 +11,7 @@ public class GpsLockFlagParser implements AttribParser {
 		
 		Boolean gpsLockFlag = new Boolean((data[offset] & SAT_FLAG_GPSLOCK) == SAT_FLAG_GPSLOCK);
 
-		attribMap.put(attrib.getCode(), new Byte(data[offset]));
+		attribMap.put(String.valueOf(attrib.getCode()), String.valueOf(data[offset]));
 		
 		return offset+1;
 	}

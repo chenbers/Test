@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 
 import com.inthinc.pro.comm.parser.util.ReadUtil;
-import com.inthinc.pro.model.LatLng;
+//import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.comm.parser.util.LatLngUtil;
 
 public class LatLongParser implements AttribParser {
@@ -68,9 +68,9 @@ public class LatLongParser implements AttribParser {
 			
 //		logger.debug("latitude: " + latitude);
 //		logger.debug("longitude: " + longitude);
-		LatLng latLng = new LatLng(latitude, longitude);
+//		LatLng latLng = new LatLng(latitude, longitude);
 		
-		attribMap.put(attrib.getCode(), latLng);
+		attribMap.put(String.valueOf(attrib.getCode()), String.valueOf(latitude) + "," + String.valueOf(longitude));
 
 		return offset+6;
 	}

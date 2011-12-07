@@ -317,6 +317,8 @@ public enum Attrib {
 	}
 	
 	public int getCode() { return code; }
+	public String getCodeString() { return String.valueOf(code); }
+
 	
 	public static Attrib get(int code) { 
 	     return lookup.get(code); 

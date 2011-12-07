@@ -27,7 +27,7 @@ public class StringVarLengthParser implements AttribParser {
 		
 		assert(data.length > offset + length);
 		
-		attribMap.put(attrib.getCode(), new String(data, offset, length));
+		attribMap.put(String.valueOf(attrib.getCode()), new String(data, offset, length));
 
 		return offset+(length+1);
 	}

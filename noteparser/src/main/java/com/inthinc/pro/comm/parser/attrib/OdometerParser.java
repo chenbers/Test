@@ -12,7 +12,7 @@ public class OdometerParser implements AttribParser {
 		
 		long odometer = ReadUtil.read(data, offset, 3);
 		odometer = odometer * 100L; //Multiply by 100 to match Version 3 notes.
-		attribMap.put(attrib.getCode(), new Long(odometer));
+		attribMap.put(String.valueOf(attrib.getCode()), String.valueOf(odometer));
 
 		return offset+3;
 	}

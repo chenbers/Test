@@ -10,7 +10,7 @@ public class IntegerParser implements AttribParser {
 
 		assert data.length > (offset + 4);
 		
-		attribMap.put(attrib.getCode(), new Integer(ReadUtil.read(data, offset, 4)));
+		attribMap.put(String.valueOf(attrib.getCode()), String.valueOf(ReadUtil.read(data, offset, 4)));
 
 		return offset+4;
 	}

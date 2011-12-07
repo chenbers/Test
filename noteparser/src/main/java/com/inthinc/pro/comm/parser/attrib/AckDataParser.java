@@ -60,7 +60,7 @@ public class AckDataParser implements AttribParser {
 				}
 				
 				if (value != null)
-					attribMap.put(attrib.getCode(), value);
+					attribMap.put(String.valueOf(attrib.getCode()), String.valueOf(value));
 			}
 		}
 		

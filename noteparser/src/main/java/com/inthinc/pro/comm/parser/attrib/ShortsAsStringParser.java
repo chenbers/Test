@@ -27,7 +27,7 @@ public class ShortsAsStringParser implements AttribParser {
 		
 		}
 			
-		attribMap.put(attrib.getCode(), value);
+		attribMap.put(String.valueOf(attrib.getCode()), value);
 
 		return offset+(2*length);
 	}
