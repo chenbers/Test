@@ -21,10 +21,10 @@ public enum Heading {
     
     private Heading(int heading){
         this.heading = heading/45;
-        min = heading - 15;
-        max = heading + 15;
+        min = heading - 22;
+        max = heading + 23;
         if (min < 0){
-            min = 360 - 15;
+            min = 0;
         }
     }
     
@@ -35,11 +35,16 @@ public enum Heading {
     public static Heading getHeading(GeoPoint start, GeoPoint stop){
         Integer direction = Distance_Calc.get_heading(start, stop);
         for (Heading heading : EnumSet.allOf(Heading.class)){
-            if (direction > heading.min && direction < heading.max){
+            if (direction >= heading.min && direction < heading.max){
                 return heading;
             }
         }
         return Heading.NORTH;
+    }
+    
+    @Override
+    public String toString(){
+        return name() + "(" + heading + ")";
     }
 
 }

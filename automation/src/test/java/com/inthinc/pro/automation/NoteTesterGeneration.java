@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -72,18 +73,18 @@ public class NoteTesterGeneration extends Thread{
 
         
         //Driving Style notes.
-        tiwi1.add_note_event(2, 100, 10);
-        tiwi2.add_note_event(-200, 37, 22);
-        tiwi3.add_note_event(10, 10, 1000);
-        tiwi4.add_note_event(750, 50, 600);
+        tiwi1.addNoteEvent(AutomationDeviceEvents.hardLeft(2, 100, 10));
+        tiwi2.addNoteEvent(AutomationDeviceEvents.hardBrake(200, 37, 22));
+        tiwi3.addNoteEvent(AutomationDeviceEvents.hardBump(10, 10, 1000));
+        tiwi4.addNoteEvent(AutomationDeviceEvents.hardAccel(750, 50, 600));
         
         //Speeding notes.
-        tiwi1.addSpeedingNote(100, 70, 55);
-        tiwi4.addSpeedingNote(6000, 100, 72);
+        tiwi1.addSpeedingNote(AutomationDeviceEvents.speeding(70, 100, 500, 65, 55, 495));
+        tiwi1.addSpeedingNote(AutomationDeviceEvents.speeding(100, 6000, 500, 65, 72, 495));
         
         //Seat Belt notes.
-        tiwi1.add_seatBelt(60, 40, 100);
-        tiwi3.add_seatBelt(50, 45, 50);
+        tiwi1.addSeatbeltEvent(AutomationDeviceEvents.seatbelt(500, 50, 60, 40, 100, 600));
+        tiwi3.addSeatbeltEvent(AutomationDeviceEvents.seatbelt(500, 50, 50, 45, 50, 600));
         
         //TODO Send Crash notes (USER STORY'D!).
         

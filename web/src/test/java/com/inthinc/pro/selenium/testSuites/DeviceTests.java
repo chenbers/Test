@@ -45,7 +45,7 @@ public class DeviceTests extends WebDeviceOnlyRallyTest {
                 TiwiProDevice tiwi = new TiwiProDevice(imei, server);
                 tiwi.nonTripNote(new AutomationCalendar(), 9, Heading.NORTH_EAST, new GeoPoint(55.0,
                         55.0), 5, 5);
-                tiwi.add_location();
+                tiwi.addLocation();
                 tiwi.flushNotes();
             } catch (Exception e) {
                 logger.info(StackToString.toString(e));

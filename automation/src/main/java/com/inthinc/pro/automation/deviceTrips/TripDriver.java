@@ -1,27 +1,47 @@
 package com.inthinc.pro.automation.deviceTrips;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Set;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
+import com.inthinc.pro.automation.device_emulation.DeviceState;
+import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
+import com.inthinc.pro.automation.models.NoteGenerator;
 import com.inthinc.pro.automation.objects.TripTracker;
+import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class TripDriver extends Thread {
     
     private DeviceBase device;
     private TripTracker tripTracker;
     private boolean interrupt = false;
-    private ArrayList<Map<DeviceAttrs, Integer>> events;
+    private AutomationEvents[] events;
+    private Set<Integer> positions;
+    private DeviceState state;
+    
+    private TripDriver(){
+        events = new AutomationEvents[100];
+        positions = new HashSet<Integer>();
+    }
 
     public TripDriver(DeviceBase device) {
+        this();
         this.device = device;
+        this.state = device.getState();
         tripTracker = device.getTripTracker();
-        events = new ArrayList<Map<DeviceAttrs, Integer>>();
+        
+    }
+    
+    public TripDriver(ProductType productVersion){
+        this();
+        state = new DeviceState(null, productVersion);
+        tripTracker = new TripTracker(state);
     }
     
     @Override
@@ -42,13 +62,25 @@ public class TripDriver extends Thread {
             device.turn_key_on(60);
         }
         int totalNotes = tripTracker.size()*100;
+        Double lastPercent=0.0;
+        Double currentPercent;
         while (itr.hasNext() && !interrupt){
-            int currentPercent = totalNotes / tripTracker.currentCount();
-            if (events.get(currentPercent)!=null){
-                executeEvent(events.get(currentPercent));
+            currentPercent = totalNotes / tripTracker.currentCount() * 1.0;
+            int speedLimit = device.getState().getSpeed_limit().intValue();
+            if (events[currentPercent.intValue()]!=null){
+                events[currentPercent.intValue()].addEvent(device);
+                positions.remove(currentPercent);
+            } else {
+                for (int event : positions){
+                    if (lastPercent < event && event < currentPercent){
+                        events[event].addEvent(device);
+                        positions.remove(event);
+                        break;
+                    }
+                }
             }
-            device.goToNextLocation(device.getState().getSpeed_limit().intValue(), false);
-            
+            device.goToNextLocation(speedLimit, false);
+            lastPercent = currentPercent;
         }
         if (!interrupt){
             device.turn_key_off(60);
@@ -56,10 +88,55 @@ public class TripDriver extends Thread {
         }
     }
     
-    private void executeEvent(Map<DeviceAttrs, Integer> map) {
-        
-    }
+    public LinkedList<DeviceNote> generateNotes(){
+        LinkedList<DeviceNote> notes = new LinkedList<DeviceNote>();
+        Iterator<GeoPoint> itr = tripTracker.iterator();
 
+        int totalNotes = tripTracker.size()*100;
+        Double lastPercent=0.0;
+        Double currentPercent;
+        int speed = 60;
+        while (itr.hasNext()){
+            currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
+            
+//            if (currentPercent.intValue() == 10){
+//                MasterTest.print(currentPercent);
+//                MasterTest.print(tripTracker.currentCount());
+//                MasterTest.print(totalNotes);
+//                throw new NullPointerException();
+//            }
+            if (events[currentPercent.intValue()]!=null){
+                AutomationEvents event = events[currentPercent.intValue()];
+                DeviceNote tripEvent = DeviceNote.constructNote(event.getNoteType(), tripTracker.currentLocation(), state);
+                NoteGenerator.addAttrs(tripEvent, event, state.getProductVersion());
+                notes.add(tripEvent);
+                MasterTest.print(tripEvent);
+                positions.remove(currentPercent);
+                events[currentPercent.intValue()] = null;
+            } else {
+                for (int eventPos : positions){
+                    if (lastPercent < eventPos && eventPos < currentPercent){
+                        AutomationEvents event = events[eventPos];
+                        DeviceNote tripEvent = DeviceNote.constructNote(event.getNoteType(), tripTracker.currentLocation(), state);
+                        NoteGenerator.addAttrs(tripEvent, event, state.getProductVersion());
+                        notes.add(tripEvent);
+                        positions.remove(eventPos);
+                        break;
+                    }
+                }
+            }
+            
+            notes.add(DeviceNote.constructNote(DeviceNoteTypes.LOCATION, tripTracker.getNextLocation(speed, false), state));
+
+            lastPercent = currentPercent;
+        }
+//        if (!interrupt){
+//            device.turn_key_off(60);
+//            device.power_off_device(60);   
+//        }
+        return notes;
+    }
+    
     @Override
     public void interrupt(){
         interrupt = true;
@@ -96,41 +173,9 @@ public class TripDriver extends Thread {
         tripTracker.addLocation(new GeoPoint(33.0104, -117.111));
     }
     
-    //addSpeedingNote(Integer distance, Integer topSpeed, Integer avgSpeed)
-    //SPEEDING_EX3(93, DeviceAttrs.TOP_SPEED, DeviceAttrs.DISTANCE, DeviceAttrs.MAX_RPM, DeviceAttrs.SPEED_LIMIT, DeviceAttrs.AVG_SPEED, DeviceAttrs.AVG_RPM),
-    public void addSpeedingSection(int percentTimeIn, int duration, int speedOverLimit, int speedLimit, int maxRpm, int avgRpm){
-        Map<DeviceAttrs, Integer> map = new HashMap<DeviceAttrs, Integer>();
-        map.put(DeviceAttrs.DURATION, duration);
-        map.put(DeviceAttrs.DWNLD_TYPE, DeviceNoteTypes.SPEEDING_EX3.getCode());
-        map.put(DeviceAttrs.MAX_SPEED_LIMIT, speedOverLimit);
-        map.put(DeviceAttrs.SPEED_LIMIT, speedLimit);
-        map.put(DeviceAttrs.MAX_RPM, maxRpm);
-        map.put(DeviceAttrs.AVG_RPM, avgRpm);
-        events.add(percentTimeIn, map);
+    
+    public void addEvent(int percentTimeIn, AutomationEvents event){
+        events[percentTimeIn] = event;
+        positions.add(percentTimeIn);
     }
-    
-    
-    //SEATBELT(3, DeviceAttrs.TOP_SPEED, DeviceAttrs.DISTANCE, DeviceAttrs.MAX_RPM)
-    //add_seatBelt(Integer topSpeed, Integer avgSpeed, Integer distance)
-    public void addSeatBeltViolation(int percentTimeIn, int duration, int speed){
-        Map<DeviceAttrs, Integer> map = new HashMap<DeviceAttrs, Integer>();
-        map.put(DeviceAttrs.DURATION, duration);
-        map.put(DeviceAttrs.DWNLD_TYPE, DeviceNoteTypes.SEATBELT.getCode());
-        map.put(DeviceAttrs.SPEED_ID, speed);
-        events.add(percentTimeIn, map);
-    }
-    
-    
-    //add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ)
-    //NOTE_EVENT(2, DeviceAttrs.DELTA_VS),
-    public void addEvent(int percentTimeIn, int speed, int deltaX, int deltaY, int deltaZ){
-        Map<DeviceAttrs, Integer> map = new HashMap<DeviceAttrs, Integer>();
-        map.put(DeviceAttrs.DWNLD_TYPE, DeviceNoteTypes.NOTE_EVENT.getCode());
-        map.put(DeviceAttrs.DELTAV_X, deltaX);
-        map.put(DeviceAttrs.DELTAV_Y, deltaY);
-        map.put(DeviceAttrs.DELTAV_Z, deltaZ);
-        events.add(percentTimeIn, map);
-    }
-    
-    
 }

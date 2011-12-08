@@ -12,7 +12,7 @@ import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.model.configurator.ProductType;
 
-public class NoteBC implements DeviceNote {
+public class NoteBC extends DeviceNote {
     
     private final DeviceNoteTypes nType;
     private final ProductType nVersion;
@@ -124,8 +124,8 @@ public class NoteBC implements DeviceNote {
         attrs = new DeviceAttributes();
     }
     
-       
-    public void addAttr(DeviceAttrs id, Number value){
+    @Override
+    public void addAttr(DeviceAttrs id, Integer value){
         try {
             attrs.addAttribute(id, value);
         } catch (Exception e) {
@@ -134,22 +134,17 @@ public class NoteBC implements DeviceNote {
         
     }
     
+    @Override
     public void addAttr(DeviceAttrs id, Object value){
-        if (value instanceof Number){
-            addAttr(id, (Number) value);
+        if (value instanceof Integer){
+            addAttr(id, (Integer) value);
         } else if (value instanceof DeviceTypes){
             addAttr(id, ((DeviceTypes) value).getCode());
+        } else if (value instanceof String){
+            addAttr(id, (String) value);
         }
     }
-    
-    public void addAttr(DeviceAttrs id, Object value, int size){
-        if (value instanceof Number){
-            addAttr(id, (Number) value, size);
-        } else if (value instanceof DeviceTypes){
-            addAttr(id, ((DeviceTypes) value).getCode(), size);
-        }
-    }
-    
+
     public void addAttr(DeviceAttrs id, String value){
         attrs.addAttribute(id, value);
     }
@@ -178,10 +173,10 @@ public class NoteBC implements DeviceNote {
     
     @Override
     public String toString(){
-        String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%d, sats=%d,\n" +
+        String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%s, sats=%d,\n" +
         		"lat=%.5f, lng=%.5f, speed=%d, odometer=%d, speedLimit=%d, linkID=%d, boundary=%d, driverID=%d,\n" +
         		"attrs={%s}", 
-                nType.toString(), nVersion, nTime, heading, sats, location.getLat(), location.getLng(), nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
+                nType.toString(), nVersion.getCode(), nTime, heading, sats, location.getLat(), location.getLng(), nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
         return temp;
     }
 

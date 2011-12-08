@@ -41,7 +41,7 @@ public enum DeviceNoteTypes implements DeviceTypes{
     CONF(31),
     ACKNOWLEDGE(33, DeviceAttrs.FORWARD_COMMAND_ID),
     TRACE(34),
-    INSTALL(35, DeviceAttrs.VEHICLE_ID_STR, DeviceAttrs.MCM_ID_STR, DeviceAttrs.COMPANY_ID),
+    INSTALL(35),//, DeviceAttrs.VEHICLE_ID_STR, DeviceAttrs.MCM_ID_STR, DeviceAttrs.COMPANY_ID),
     BASE_VERSION(36, DeviceAttrs.FIRMWARE_VERSION),
     MISSING_PARTS(37),
     HEADLIGHT(38, DeviceAttrs.TOP_SPEED, DeviceAttrs.DISTANCE, DeviceAttrs.MAX_RPM),
@@ -283,7 +283,7 @@ public enum DeviceNoteTypes implements DeviceTypes{
         }
     }
     
-    public DeviceNoteTypes valueOf(Integer code){
+    public static DeviceNoteTypes valueOf(Integer code){
         return lookupByCode.get(code);
     }
     
@@ -291,5 +291,5 @@ public enum DeviceNoteTypes implements DeviceTypes{
     public String toString(){
         return this.name() + "(" + code + ")";
     }
-
+    
 }

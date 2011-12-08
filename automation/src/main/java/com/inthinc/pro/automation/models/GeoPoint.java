@@ -34,7 +34,6 @@ public class GeoPoint {
     public int deltaT(Integer speedInMPH, GeoPoint nextLocation){
         Double delX = deltaX(nextLocation);
         Double v = speedInMPH.doubleValue() / 3600.0 ; //Miles/Seconds
-        
         return ((Double)(delX/v)).intValue();
     }
     

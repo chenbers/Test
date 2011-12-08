@@ -12,22 +12,22 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 public class DeviceState {
 
-    private int accountID;
+    private int accountID = 1;
 
-    private int boundaryID;
-    private int companyID;
+    private int boundaryID = 1;
+    private int companyID = 1;
 
-    private int deviceDriverID;
-    private int driverID;
-    private String employeeID;
+    private int deviceDriverID = 1;
+    private int driverID = 1;
+    private String employeeID = "";
 
     private Heading heading = Heading.NORTH;
 
     private Boolean ignition_state = false;
     private final String imei;
     private String lastDownload;
-    private int linkID;
-    private Integer mapRev;
+    private int linkID = 0;
+    private Integer mapRev = 0;
     private String mcmID;
 
     private int odometer = 0;
@@ -51,9 +51,9 @@ public class DeviceState {
 
     private Boolean speeding = false;
 
-    private int stateID;
+    private int stateID = 50;
 
-    private String stateName;
+    private String stateName = "UT";
 
     private final AutomationCalendar time;
     private final AutomationCalendar time_last;
@@ -65,6 +65,10 @@ public class DeviceState {
     private String vehicleID;
     private Direction waysDirection = Direction.wifi;
     private int WMP = 17013, MSP = 50;
+
+    private int maxRpm = 500;
+
+    private int avgRpm = 500;
 
     public DeviceState(String imei, ProductType type) {
         time = new AutomationCalendar();
@@ -84,6 +88,14 @@ public class DeviceState {
 
     public int getAccountID() {
         return accountID;
+    }
+
+    public int getAvgRpm() {
+        return avgRpm;
+    }
+
+    public void getAvgRpm(int avgRpm) {
+        this.avgRpm = avgRpm;
     }
 
     public int getBoundaryID() {
@@ -128,6 +140,14 @@ public class DeviceState {
 
     public Integer getMapRev() {
         return mapRev;
+    }
+
+    public int getMaxRpm() {
+        return maxRpm;
+    }
+
+    public void getMaxRpm(int maxRpm) {
+        this.maxRpm = maxRpm;
     }
 
     public String getMcmID() {
@@ -272,6 +292,9 @@ public class DeviceState {
     }
 
     public void setMcmID(String mcmID) {
+        if (mcmID != null && mcmID.length() > 9){
+            throw new IllegalArgumentException("MCMID has a max value of 9 characters.");
+        }
         this.mcmID = mcmID;
     }
 
@@ -347,7 +370,7 @@ public class DeviceState {
     public void setTimeSinceLastLoc(int timeSinceLastLoc) {
         this.timeSinceLastLoc = timeSinceLastLoc;
     }
-
+    
     public void setVehicleID(String vehicleID) {
         this.vehicleID = vehicleID;
     }
@@ -355,7 +378,7 @@ public class DeviceState {
     public void setWaysDirection(Direction waysDirection) {
         this.waysDirection = waysDirection;
     }
-
+    
     public void setWMP(int wMP) {
         WMP = wMP;
     }

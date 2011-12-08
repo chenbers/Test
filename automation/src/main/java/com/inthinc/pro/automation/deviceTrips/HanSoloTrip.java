@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
@@ -97,8 +98,8 @@ public class HanSoloTrip extends Thread{
         tiwi.update_location(new GeoPoint(33.0104, -117.113), 15);
 //        tiwi.add_noDriver();
         
-        tiwi.add_seatBelt(50, 50, 50);
-        tiwi.add_note_event(5, 105, 5);
+        tiwi.addSeatbeltEvent(AutomationDeviceEvents.seatbelt(500, 90, 50, 50, 50, 600));
+        tiwi.addNoteEvent(AutomationDeviceEvents.hardLeft(5, 105, 5));
 
         tiwi.update_location(new GeoPoint(33.01, -117.113), 15);
         tiwi.update_location(new GeoPoint(33.0097, -117.1153), 15);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceForwardCommands;
-import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.models.WaysmartClasses.EventHeader;
 import com.inthinc.pro.automation.models.WaysmartClasses.ForwardCommandEvent;
 import com.inthinc.pro.automation.models.WaysmartClasses.ForwardCommandEventEx;
@@ -21,7 +20,7 @@ public class AutomationBridgeFwdCmdParser {
     private static final int SENDER_SATELLITE = 109;
     private static final int EVENT_FORWARD_COMMAND = 0x0E;
     
-    public static List<MultiForwardCmd> processCommands(String fwdCmds, DeviceNoteTypes typeSent){
+    public static List<MultiForwardCmd> processCommands(String fwdCmds){
         List<MultiForwardCmd> commands = new ArrayList<MultiForwardCmd>();
         String[] strings = fwdCmds.split("FCMD");
         for (String string: strings){

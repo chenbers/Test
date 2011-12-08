@@ -15,10 +15,10 @@ import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
-public class NoteWS implements DeviceNote {
+public class NoteWS extends DeviceNote {
     
     private final DeviceNoteTypes nType;
-    private final ProductType nVersion;
+    private final int nVersion;
     private final AutomationCalendar nTime;
     private final Heading heading;
     private final int sats;
@@ -33,7 +33,7 @@ public class NoteWS implements DeviceNote {
             GeoPoint currentLocation) {
 
         this.nType = type;
-        this.nVersion = state.getProductVersion();
+        this.nVersion = 3;
         this.nTime = state.copyTime();
         this.heading = state.getHeading();
         this.sats = state.getSats();
@@ -49,7 +49,7 @@ public class NoteWS implements DeviceNote {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write(0);
         NoteManager.longToByte(baos, nType.getCode(), 1);
-        NoteManager.longToByte(baos, nVersion.getVersion(), 1);
+        NoteManager.longToByte(baos, nVersion, 1);
         NoteManager.longToByte(baos, nTime.toInt(), 4);
         NoteManager.longToByte(baos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
         NoteManager.longToByte(baos, location.getEncodedLat(), 3);
@@ -67,8 +67,8 @@ public class NoteWS implements DeviceNote {
     }
 
     
-
-    public void addAttr(DeviceAttrs id, Number value){
+    @Override
+    public void addAttr(DeviceAttrs id, Integer value){
         try {
             attrs.addAttribute(id, value);    
         } catch (Exception e) {
@@ -77,9 +77,10 @@ public class NoteWS implements DeviceNote {
         
     }
     
+    @Override
     public void addAttr(DeviceAttrs id, Object value){
-        if (value instanceof Number){
-            addAttr(id, (Number) value);
+        if (value instanceof Integer){
+            addAttr(id, (Integer) value);
         } else if (value instanceof DeviceTypes){
             addAttr(id, ((DeviceTypes) value).getCode());
         } else if (value instanceof String){
@@ -103,10 +104,10 @@ public class NoteWS implements DeviceNote {
     
     @Override
     public String toString(){
-        String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%d, sats=%d,\n" +
+        String temp = String.format("NoteWS(type=%s, version=%d, time=\"%s\", heading=%d, sats=%d,\n" +
                 "lat=%.5f, lng=%.5f, speed=%d, odometer=%d,\n" +
                 "attrs={%s}", 
-                nType.toString(), nVersion.getVersion(), nTime, heading.getHeading(), sats, location.getLat(), location.getLng(), nSpeed, odometer, attrs.toString());
+                nType.toString(), nVersion, nTime, heading.getHeading(), sats, location.getLat(), location.getLng(), nSpeed, odometer, attrs.toString());
         return temp;
     }
     
@@ -123,7 +124,7 @@ public class NoteWS implements DeviceNote {
     
     @Override
     public NoteWS copy(){
-        DeviceState state = new DeviceState(null, nVersion);
+        DeviceState state = new DeviceState(null, ProductType.WAYSMART);
         state.getTime().setDate(nTime);
         state.setHeading(heading);
         state.setSats(sats);
@@ -134,9 +135,10 @@ public class NoteWS implements DeviceNote {
         return temp;
     }
 
-    public void addAttrs(DeviceAttributes attrs2){
-        for (DeviceAttrs key : attrs2){
-            addAttr(key, attrs2.getValue(key));
+    @Override
+    public void addAttrs(DeviceAttributes attrs){
+        for (DeviceAttrs key : attrs){
+            addAttr(key, attrs.getValue(key));
         }
     }
     

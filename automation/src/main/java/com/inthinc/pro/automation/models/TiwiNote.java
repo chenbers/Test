@@ -17,7 +17,7 @@ import com.inthinc.pro.automation.interfaces.DeviceTypes;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.StackToString;
 
-public class TiwiNote implements DeviceNote {
+public class TiwiNote extends DeviceNote {
     
 
     private final static Logger logger = Logger.getLogger(TiwiNote.class);
@@ -62,7 +62,12 @@ public class TiwiNote implements DeviceNote {
     public TiwiNote(){
         this(DeviceNoteTypes.LOCATION);
     }
+    
+    public void addAttr(DeviceAttrs id, Integer value){
+        attrs.addAttribute(id, value);
+    }
 
+    @Override
     public void addAttr(DeviceAttrs id, Object value){
         int cast;
         if (value instanceof Integer){
@@ -77,6 +82,7 @@ public class TiwiNote implements DeviceNote {
         attrs.addAttribute(id, cast);
     }
         
+    @Override
     public void addAttrs(DeviceAttributes attrs){
         for (DeviceAttrs key : attrs){
             addAttr(key, attrs.getValue(key));

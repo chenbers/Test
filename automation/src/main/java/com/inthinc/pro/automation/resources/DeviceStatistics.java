@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.resources;
 
 import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class DeviceStatistics {
@@ -10,6 +11,7 @@ public class DeviceStatistics {
     private static int connectionResets = 0;
     private static AutomationCalendar start = new AutomationCalendar();
     private static AutomationCalendar stop = new AutomationCalendar();
+    private static AutomationCalendar last = new AutomationCalendar();
     
     public static boolean addTimeout(){
         connectionTimeouts++;
@@ -39,7 +41,12 @@ public class DeviceStatistics {
     }
     
     public static boolean updateStop(){
-        stop = new AutomationCalendar();
+        stop.setDate(System.currentTimeMillis());
+        if (stop.getDelta(last) > 60000){
+            MasterTest.print(String.format("Sent: %d, Time: %d, NotesPerMinute: %d",
+                    hessianCalls, getTimeDelta(), getCallsPerMinute()));
+            last.setDate(stop);
+        }
         return true;
     }
     

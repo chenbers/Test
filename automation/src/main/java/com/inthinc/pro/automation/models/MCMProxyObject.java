@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.log4j.Level;
 
+import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.AutomationCassandra;
@@ -23,6 +25,7 @@ import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.noteservice.NoteService;
 
 
@@ -237,7 +240,7 @@ public class MCMProxyObject implements MCMProxy{
     }
     
     public List<Map<String, Object>> notebc(String mcmID, Direction comType,
-            List<DeviceNote> noteList, boolean extra){
+            List<DeviceNote> noteList, String imei){
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
         for (DeviceNote note : noteList){
             temp.add(note.Package());
@@ -256,32 +259,49 @@ public class MCMProxyObject implements MCMProxy{
     }
     
     public String[] notews(String mcmID, Direction comType,
-            List<DeviceNote> noteList, boolean extra){
+            List<DeviceNote> noteList, String imei){
         
         HTTPCommands http = new HTTPCommands();
-        MasterTest.print(mcmID);
         List<String> reply = new ArrayList<String>();
         
         for (DeviceNote note : noteList){
             MasterTest.print(server.getPortalUrl());
-            String uri = "http://" + server.getPortalUrl() + ":" + server.getWaysPort() + "/gprs_wifi/"+comType+".do?mcm_id=" +
-            ""+mcmID+"&commType="+comType.getCode()+"&sat_cmd="+note.getType().getCode()+"&event_time="+note.getTime();
-            MasterTest.print(uri);
+            String uri = 
+                "http://" + server.getPortalUrl() + 
+                ":" + server.getWaysPort() + 
+                "/gprs_wifi/gprs.do?mcm_id=" +""+(comType.equals(Direction.sat) ? imei: mcmID )+
+                "&commType="+comType.getCode()+
+                "&sat_cmd="+note.getType().getCode()+
+                "&event_time="+note.getTime();
+            
             HttpPost method = new HttpPost(uri.toLowerCase());
             MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
             
             try {
                 entity.addPart("mcm_id", new StringBody(mcmID, Charset.forName("UTF-8")));
+                entity.addPart("imei", new StringBody(imei, Charset.forName("UTF-8")));
                 entity.addPart("commType", new StringBody("" + comType.getCode(), Charset.forName("UTF-8")));
                 entity.addPart("event_time", new StringBody("" + note.getTime(), Charset.forName("UTF-8")));
                 entity.addPart("sat_cmd", new StringBody("" + note.getType(), Charset.forName("UTF-8")));
                 entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));
+                entity.addPart("note", new StringBody(note.toString(), Charset.forName("UTF-8")));
+                entity.addPart("vehicle_id_str", new StringBody("654", Charset.forName("UTF-8")));
+                entity.addPart("company_id", new StringBody("3", Charset.forName("UTF-8")));
             } catch (Exception e) {
                 
             }
-          
+            byte[] packaged = note.Package();
             
-            entity.addPart("filename", new ByteArrayBody(note.Package(), "filename"));
+            entity.addPart("filename", new ByteArrayBody(packaged, "filename"));
+//            StringWriter writer = new StringWriter();
+//            int pos = 0;
+//            for (byte bits : packaged){
+//                writer.write(bits);
+//                MasterTest.print(Integer.toHexString(bits) + " " + pos++);
+//            }
+//            MasterTest.print(writer.toString());
+//            MasterTest.print(writer.toString().length());
+            
 //            entity.addPart("file", new ByteArrayBody(note.Package(), "file"));
             method.setEntity(entity);
             
@@ -308,5 +328,41 @@ public class MCMProxyObject implements MCMProxy{
     public static void setupCassandra(NoteService service) {
         notes = service;
         regularNote = false;
+    }
+    
+    public Object sendNotes(DeviceState state, Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue){
+        Object reply = null;
+        Class<?> noteClass = DeviceNote.class;
+        try {
+            if (sendingQueue.containsKey(NoteBC.class)) {
+                noteClass = NoteBC.class;
+                reply = notebc(state.getMcmID(),
+                        state.getWaysDirection(),
+                        sendingQueue.get(noteClass), state.getImei());
+            } else if (sendingQueue.containsKey(NoteWS.class)) {
+                noteClass = NoteWS.class;
+                reply = notews(state.getMcmID(),
+                        state.getWaysDirection(),
+                        sendingQueue.get(noteClass), state.getImei());
+            } else if (sendingQueue.containsKey(TiwiNote.class)) {
+                noteClass = TiwiNote.class;
+                reply = note(state.getImei(),
+                        sendingQueue.get(noteClass), true);
+            }
+            sendingQueue.remove(noteClass);
+        } catch (Exception e) {
+            MasterTest.print(
+                    "Error from Note with IMEI: " + state.getImei() + "  "
+                            + StackToString.toString(e) + "\n"
+                            + sendingQueue + "\nCurrent Note Count is "
+                            + DeviceStatistics.getHessianCalls()
+                            + "\nCurrent time is: "
+                            + System.currentTimeMillis()
+                            + "\nNotes Started at: "
+                            + DeviceStatistics.getStart().epochTime(),
+                    Level.DEBUG);
+        }
+        
+        return reply;
     }
 }

@@ -273,23 +273,23 @@ public enum DeviceAttrs implements DeviceTypes{
     HIGH_IDLE_2(16426),
     DATA(24576),                            // string length comes from ATTR_DATA_LENGTH
     TEXT_MESSAGE(24577),                    // string length comes from ATTR_TEXT_LENGTH
-    DRIVER_STR(24578, 10, false),           // string 10 fixed length,                      \0 filled
-    EMU_NAME_DEVICE(24579, 29, false),      // string 29 fixed length,                      \0 filled
-    EMU_NAME_TRANSFORM(24580, 29, false),   // string 29 fixed length,                      \0 filled
+    DRIVER_STR(24578, 10, false),           // string 10         fixed length,              \0 filled
+    EMU_NAME_DEVICE(24579, 29, false),      // string 29         fixed length,              \0 filled
+    EMU_NAME_TRANSFORM(24580, 29, false),   // string 29         fixed length,              \0 filled
     FILE_NAME(24581, 32, true),             // string 32 max, variable length,              \0 terminated
     LOCATION(24582, 32, true),              // string 32 max, variable length,              \0 terminated
-    REPORT_ID(24583, 4, true),              // string 4 max, variable length,               \0 terminated
+    REPORT_ID(24583, 4, true),              // string  4 max, variable length,              \0 terminated
     SERVICE_ID(24584, 20, true),            // string 20 max, variable length,              \0 terminated
-    SILICON_ID(24585, 17, false),           // string 17 fixed length,                      \0 filled
-    SMTOOLS_FIRMWARE_REV(24586, 36, false), // string 36 fixed length,                      \0 filled
+    SILICON_ID(24585, 17, false),           // string 17         fixed length,              \0 filled
+    SMTOOLS_FIRMWARE_REV(24586, 36, false), // string 36         fixed length,              \0 filled
     TRAILER_ID(24587, 20, true),            // string 20 max, variable length,              \0 terminated
-    VIN(24588, 18, false),                  // string 18 fixed length,                      \0 filled
-    WITNESS_ID(24589, 9, true),             // string 9 max, variable length,               \0 terminated
-    OCCUPANT_STR(24590, 10, false),         // string 10 fixed length,                      \0 filled
+    VIN(24588, 18, false),                  // string 18         fixed length,              \0 filled
+    WITNESS_ID(24589, 9, true),             // string  9 max, variable length,              \0 terminated
+    OCCUPANT_STR(24590, 10, false),         // string 10         fixed length,              \0 filled
     EMP_ID(24591, 11, true),                // string 11 max, variable length,              \0 terminated
-    VEHICLE_ID_STR(24592, 20, true),          // string 20 max, variable length,              \0 terminated
+    VEHICLE_ID_STR(24592, 20, true),        // string 20 max, variable length,              \0 terminated
     IMEI(24593, 15, true),                  // string 15 max, variable length,              \0 terminated
-    MCM_ID_STR(24594, 9, true),                  // string 9 max, variable length,               \0 terminated
+    MCM_ID_STR(24594, 9, true),             // string  9 max, variable length,              \0 terminated
     
     SKIP_INT(32000),
     AVERAGE_LOCK_TIME(32768),
@@ -403,7 +403,7 @@ public enum DeviceAttrs implements DeviceTypes{
             size = Integer.SIZE / Byte.SIZE;
         } else if (code >= 40960 && 49151 >= code) {// double value Attributes 40960 [0xA000] to 49151 [0xBFFF]
             size = Double.SIZE / Byte.SIZE;
-        } 
+        }
     }
 
     private DeviceAttrs(int code, int size) {

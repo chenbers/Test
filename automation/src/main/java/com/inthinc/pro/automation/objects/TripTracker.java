@@ -124,4 +124,8 @@ public class TripTracker implements Iterable<GeoPoint> {
     public int currentCount() {
         return currentPoint;
     }
+
+    public DeviceState getState() {
+        return state;
+    }
 }
