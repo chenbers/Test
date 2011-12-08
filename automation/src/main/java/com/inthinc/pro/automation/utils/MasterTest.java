@@ -115,6 +115,13 @@ public class MasterTest {
 
     private CoreMethodInterface selenium;
 
+    /**
+     * Adds an error for this test, WARNING: default ErrorLevel is set to FAIL.
+     * @param errorName
+     */
+    protected void addError(String errorName){
+        addError(errorName, ErrorLevel.FAIL);
+    }
     protected void addError(String errorName, ErrorLevel level) {
         selenium.getErrorCatcher().addError(errorName, Thread.currentThread().getStackTrace(), level);
     }
@@ -263,6 +270,9 @@ public class MasterTest {
 
     protected void setSelenium() {
         this.selenium = CoreMethodLib.getSeleniumThread();
+    }
+    protected void killSelenium() {
+        this.selenium = null;
     }
 
     protected void typeToElementWithFocus(String type) {

@@ -27,7 +27,8 @@ public class BrowserTest extends Test{
             } catch (Exception e) {
                 logger.fatal(StackToString.toString(e));
             }finally{
-                    CoreMethodLib.closeSeleniumThread();   
+                    CoreMethodLib.closeSeleniumThread();
+                    killSelenium();
             }
         } else {
             logger.info(" skip ");

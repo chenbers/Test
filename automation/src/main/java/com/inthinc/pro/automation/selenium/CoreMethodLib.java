@@ -555,6 +555,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodLib open(SeleniumEnumWrapper myEnum) {
         String element = myEnum.getURL();
+        System.out.println(seleniumByThread.get(getThreadID()));
         open(element);
         return this;
     }
@@ -783,12 +784,17 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public static CoreMethodInterface getSeleniumThread() {
         CoreMethodLib selenium;
         Long currentThread = getThreadID();
+        //System.out.println("getSeleniumThread() currentThread: "+currentThread);
         if (seleniumByThread.containsKey(currentThread)){
             return seleniumByThread.get(currentThread);
         }
         try {
             AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
             selenium = new CoreMethodLib(Browsers.getBrowserByName(apb.getBrowserName()), Addresses.getSilo(apb.getSilo()));
+//            selenium.open("http://www.google.com");
+//            selenium.open("http://www.inthinc.com");
+//            selenium.open("http://www.google.com");
+            
         } catch (BeansException e) {
             logger.error(StackToString.toString(e));
             selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);

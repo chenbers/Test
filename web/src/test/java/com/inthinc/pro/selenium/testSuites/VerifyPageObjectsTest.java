@@ -5,7 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
@@ -156,7 +156,7 @@ public class VerifyPageObjectsTest extends WebRallyTest {
         
 //		Click Add User.
         adminUsers._link().adminAddUser().click();
-        PageAddEditUser addUser = new PageAddEditUser();
+        PageAdminUserAddEdit addUser = new PageAdminUserAddEdit();
         addUser.validate();
         
 //		Click Vehicles.

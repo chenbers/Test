@@ -5,7 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.Unique;
@@ -22,7 +22,7 @@ public class AdminAddVehicleTest extends WebRallyTest {
     @Before
     public void before(){
         editVehicle = new PageAdminVehicleEdit();
-        login = users.getOneBy(LoginCapabilities.RoleAdmin);
+        login = users.getOneBy(LoginCapability.RoleAdmin);
         values = new Unique(Addresses.getSilo(getAutomationPropertiesBean().getSilo()));
     }
     

@@ -8,11 +8,11 @@ import java.util.Set;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.enums.AccountCapabilities;
+import com.inthinc.pro.automation.enums.AccountCapability;
 import com.inthinc.pro.automation.enums.AutoAccounts;
-import com.inthinc.pro.automation.enums.DriverCapabilities;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
-import com.inthinc.pro.automation.interfaces.Capabilities;
+import com.inthinc.pro.automation.enums.DriverCapability;
+import com.inthinc.pro.automation.enums.LoginCapability;
+import com.inthinc.pro.automation.interfaces.Capability;
 import com.inthinc.pro.automation.models.AutomationUser;
 
 public class AutomationUsers {
@@ -35,34 +35,37 @@ public class AutomationUsers {
     private static void createUsers(){
         AutomationUser temp;
         
-        temp = new AutomationUser(AutoAccounts.prime).setupPerson("Waysmart", "", "01", "").setupUser("waysmart01", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.HasWaySmart, LoginCapabilities.TeamLevelLogin, LoginCapabilities.IsDriver, LoginCapabilities.StatusActive, LoginCapabilities.HasVehicle, LoginCapabilities.RoleHOS);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("akumer", "password", "Top").addLoginCapabilities(LoginCapabilities.RoleAdmin, LoginCapabilities.FleetLevelLogin);        users.add(temp);        
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("autovehicle", "passw0rd", "AdminVehicleTests").addLoginCapabilities(LoginCapabilities.TeamLevelLogin);        users.add(temp);        
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("inactive", "password", "Test Group WR").addLoginCapabilities(LoginCapabilities.TeamLevelLogin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("CaptainNemo", "Muttley", "Test Group RW").addLoginCapabilities(LoginCapabilities.TeamLevelLogin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("noteTester01", "password", "Test Group WR").addLoginCapabilities(LoginCapabilities.NoteTesterData, LoginCapabilities.TeamLevelLogin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("Daisy1", "password", "Tina's Auto Team").addLoginCapabilities(LoginCapabilities.TeamLevelLogin, LoginCapabilities.IsDriver).addDriverCapabilities(DriverCapabilities.RuleSet_Texas);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.QA).setupUser("danniauto", "password", "Top").addAccountCapabilities(AccountCapabilities.PasswordExpire90, AccountCapabilities.PasswordRequireInitalChangeRequire, AccountCapabilities.HOSEnabled, AccountCapabilities.LoginExpire90);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("dastardly", "Muttley", "Test Group WR").setupDriver("Test Group WR").addLoginCapabilities(LoginCapabilities.NoteTesterData, LoginCapabilities.TeamLevelLogin, LoginCapabilities.RoleAdmin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("hosDriver00", "password", "Top").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.IsDriver, LoginCapabilities.FleetLevelLogin,LoginCapabilities.HasVehicle,LoginCapabilities.HasWaySmart,LoginCapabilities.RoleAdmin).addDriverCapabilities(DriverCapabilities.RuleSet_US8Day);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.QA).setupUser("hosDriver01", "password", "Top").addAccountCapabilities(AccountCapabilities.PasswordExpire90, AccountCapabilities.PasswordRequireInitalChangeRequire, AccountCapabilities.HOSEnabled, AccountCapabilities.LoginExpire90).addLoginCapabilities(LoginCapabilities.IsDriver, LoginCapabilities.FleetLevelLogin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("jesse1", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.TeamLevelLogin).addDriverCapabilities(DriverCapabilities.RuleSet_USOil8Day);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("pitstop", "Muttley", "Top").addLoginCapabilities(LoginCapabilities.NoteTesterData, LoginCapabilities.RoleAdmin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("tinaauto", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.RoleAdmin,LoginCapabilities.IsDriver, LoginCapabilities.TeamLevelLogin).addDriverCapabilities(DriverCapabilities.RuleSet_Canada2007_60DegreesOilFieldPermit);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("whiplash", "Muttley", "Test Group WR").addLoginCapabilities(LoginCapabilities.StatusInactive);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("passwordchanger00", "password", "Top").addLoginCapabilities(LoginCapabilities.PasswordChanging, LoginCapabilities.FleetLevelLogin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("passwordchanger01", "password", "Top").addLoginCapabilities(LoginCapabilities.PasswordChanging, LoginCapabilities.FleetLevelLogin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("passwordchanger02", "password", "Top").addLoginCapabilities(LoginCapabilities.PasswordChanging, LoginCapabilities.FleetLevelLogin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi00", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.HasTiwiPro, LoginCapabilities.TeamLevelLogin,LoginCapabilities.IsDriver,LoginCapabilities.HasVehicle,LoginCapabilities.RoleAdmin).addDriverCapabilities(DriverCapabilities.RuleSet_Canada2007_60DegreesOilFieldPermit);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi01", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.HasTiwiPro, LoginCapabilities.TeamLevelLogin,LoginCapabilities.IsDriver,LoginCapabilities.HasVehicle,LoginCapabilities.RoleAdmin);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi02", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.HasTiwiPro, LoginCapabilities.TeamLevelLogin,LoginCapabilities.IsDriver,LoginCapabilities.HasVehicle,LoginCapabilities.RoleAdmin).addDriverCapabilities(DriverCapabilities.RuleSet_Canada2007OilFieldPermit);        users.add(temp);
-        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi03", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapabilities.HasTiwiPro, LoginCapabilities.TeamLevelLogin,LoginCapabilities.IsDriver,LoginCapabilities.HasVehicle);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupPerson("Waysmart", "", "01", "").setupUser("waysmart01", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.HasWaySmart, LoginCapability.TeamLevelLogin, LoginCapability.IsDriver, LoginCapability.StatusActive, LoginCapability.HasVehicle, LoginCapability.RoleHOS);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("akumer", "password", "Top").addLoginCapabilities(LoginCapability.RoleAdmin, LoginCapability.FleetLevelLogin);        users.add(temp);        
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("autovehicle", "passw0rd", "AdminVehicleTests").addLoginCapabilities(LoginCapability.TeamLevelLogin);        users.add(temp);        
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("inactive", "password", "Test Group WR").addLoginCapabilities(LoginCapability.TeamLevelLogin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("CaptainNemo", "Muttley", "Test Group RW").addLoginCapabilities(LoginCapability.TeamLevelLogin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("noteTester01", "password", "Test Group WR").addLoginCapabilities(LoginCapability.NoteTesterData, LoginCapability.TeamLevelLogin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("Daisy1", "password", "Tina's Auto Team").addLoginCapabilities(LoginCapability.TeamLevelLogin, LoginCapability.IsDriver).addDriverCapabilities(DriverCapability.RuleSet_Texas);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.QA).setupUser("danniauto", "password", "Top").addAccountCapabilities(AccountCapability.PasswordExpire90, AccountCapability.PasswordRequireInitalChangeRequire, AccountCapability.HOSEnabled, AccountCapability.LoginExpire90);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("dastardly", "Muttley", "Test Group WR").setupDriver("Test Group WR").addLoginCapabilities(LoginCapability.NoteTesterData, LoginCapability.TeamLevelLogin, LoginCapability.RoleAdmin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("hosDriver00", "password", "Top").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.IsDriver, LoginCapability.FleetLevelLogin,LoginCapability.HasVehicle,LoginCapability.HasWaySmart,LoginCapability.RoleAdmin).addDriverCapabilities(DriverCapability.RuleSet_US8Day);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.QA).setupUser("hosDriver01", "password", "Top").addAccountCapabilities(AccountCapability.PasswordExpire90, AccountCapability.PasswordRequireInitalChangeRequire, AccountCapability.HOSEnabled, AccountCapability.LoginExpire90).addLoginCapabilities(LoginCapability.IsDriver, LoginCapability.FleetLevelLogin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("jesse1", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.TeamLevelLogin).addDriverCapabilities(DriverCapability.RuleSet_USOil8Day);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("pitstop", "Muttley", "Top").addLoginCapabilities(LoginCapability.NoteTesterData, LoginCapability.RoleAdmin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("tinaauto", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.RoleAdmin,LoginCapability.IsDriver, LoginCapability.TeamLevelLogin).addDriverCapabilities(DriverCapability.RuleSet_Canada2007_60DegreesOilFieldPermit);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("whiplash", "Muttley", "Test Group WR").addLoginCapabilities(LoginCapability.StatusInactive);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("passwordchanger00", "password", "Top").addLoginCapabilities(LoginCapability.PasswordChanging, LoginCapability.FleetLevelLogin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("passwordchanger01", "password", "Top").addLoginCapabilities(LoginCapability.PasswordChanging, LoginCapability.FleetLevelLogin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("passwordchanger02", "password", "Top").addLoginCapabilities(LoginCapability.PasswordChanging, LoginCapability.FleetLevelLogin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi00", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.HasTiwiPro, LoginCapability.TeamLevelLogin,LoginCapability.IsDriver,LoginCapability.HasVehicle,LoginCapability.RoleAdmin).addDriverCapabilities(DriverCapability.RuleSet_Canada2007_60DegreesOilFieldPermit);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi01", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.HasTiwiPro, LoginCapability.TeamLevelLogin,LoginCapability.IsDriver,LoginCapability.HasVehicle,LoginCapability.RoleAdmin);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi02", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.HasTiwiPro, LoginCapability.TeamLevelLogin,LoginCapability.IsDriver,LoginCapability.HasVehicle,LoginCapability.RoleAdmin).addDriverCapabilities(DriverCapability.RuleSet_Canada2007OilFieldPermit);        users.add(temp);
+        temp = new AutomationUser(AutoAccounts.prime).setupUser("tiwi03", "password", "Tina's Auto Team").setupDriver("Tina's Auto Team").addLoginCapabilities(LoginCapability.HasTiwiPro, LoginCapability.TeamLevelLogin,LoginCapability.IsDriver,LoginCapability.HasVehicle);        users.add(temp);
+        
+        users.add(new AutomationUser(AutoAccounts.prime).setupUser("invalidUsername", "invalidPassword", "").addLoginCapabilities(LoginCapability.PasswordInvalid));
+        users.add(new AutomationUser(AutoAccounts.prime).setupUser("noRoleUserInfo", "password", "Top").addLoginCapabilities(LoginCapability.NoAccessPointUserInfo, LoginCapability.NoAccessPointVehicleInfo));
     }
     
-    public List<AutomationUser> getAllBy(Capabilities... capabilities){
+    public List<AutomationUser> getAllBy(Capability... capabilities){
         ArrayList<AutomationUser> results = new ArrayList<AutomationUser>();
-        Set<Capabilities> setCapabilities = new HashSet<Capabilities>();
-        for(Capabilities c: capabilities){
+        Set<Capability> setCapabilities = new HashSet<Capability>();
+        for(Capability c: capabilities){
             setCapabilities.add(c);
         }
         
@@ -84,7 +87,7 @@ public class AutomationUsers {
         return results;
     }
     
-    public List<AutomationUser> getAllBy(String groupName, Capabilities ...abilities){
+    public List<AutomationUser> getAllBy(String groupName, Capability ...abilities){
         List<AutomationUser> byAbilities = getAllBy(abilities);
         List<AutomationUser> results = new ArrayList<AutomationUser>();
         for (AutomationUser user : byAbilities){
@@ -104,11 +107,11 @@ public class AutomationUsers {
         }
         return results;
     }
-    public List<AutomationUser> getAllBy(AutoAccounts account, Capabilities... capabilities){
+    public List<AutomationUser> getAllBy(AutoAccounts account, Capability... capabilities){
         List<AutomationUser> byAccount = getAllBy(account);
         List<AutomationUser> results = new ArrayList<AutomationUser>();
-        Set<Capabilities> setCapabilities = new HashSet<Capabilities>();
-        for(Capabilities c: capabilities)
+        Set<Capability> setCapabilities = new HashSet<Capability>();
+        for(Capability c: capabilities)
             setCapabilities.add(c);
         
         for(AutomationUser login: byAccount){
@@ -121,7 +124,7 @@ public class AutomationUsers {
     
     
     
-    public AutomationUser getOneBy(AutoAccounts account, Capabilities... capabilities){
+    public AutomationUser getOneBy(AutoAccounts account, Capability... capabilities){
         return getOneBy(getAllBy(account, capabilities));
     }
     
@@ -141,15 +144,15 @@ public class AutomationUsers {
         return getOneBy(getAllBy(groupName));
     }
     
-    public AutomationUser getOneBy(String groupName, Capabilities ...capabilities){
+    public AutomationUser getOneBy(String groupName, Capability ...capabilities){
         return getOneBy(getAllBy(groupName, capabilities));
     }
 
-    public AutomationUser getOneBy(Capabilities... capabilities) {
+    public AutomationUser getOneBy(Capability... capabilities) {
         return getOneBy(getAllBy(capabilities));
     }
     public AutomationUser getOne(){
-        return getOneBy(LoginCapabilities.StatusActive);
+        return getOneBy(LoginCapability.StatusActive);
     }
 
 }

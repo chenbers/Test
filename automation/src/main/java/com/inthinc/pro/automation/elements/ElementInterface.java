@@ -16,6 +16,7 @@ public interface ElementInterface {
     public Boolean hasFocus();
     public Boolean isPresent();
     public Boolean isVisible();
+    public Boolean isEditable();
     public void setMyEnum(SeleniumEnums anEnum);
     public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums);
     public Boolean validateElementsPresent(Object ...enums);
@@ -25,7 +26,7 @@ public interface ElementInterface {
     public void waitForElement(int i);
     public String getAttribute(String attributeToGet);
 
-    public interface Checkable extends Clickable {
+    public interface Checkable extends Editable,Clickable {
         public Boolean assertChecked(Boolean checked);
     	public Checkable check();
     	public Boolean isChecked();
@@ -33,8 +34,8 @@ public interface ElementInterface {
     	public Boolean validateChecked(Boolean checked);
     }
     
-    
-    public interface ClickableTextBased extends Clickable, TextBased {}
+    public interface Editable{}
+    public interface ClickableTextBased extends Editable, Clickable, TextBased {}
     
     public interface Clickable extends ElementInterface {
         public Clickable click();
@@ -43,7 +44,7 @@ public interface ElementInterface {
         public Boolean assertClickable(Boolean clickable);
     }
     
-    public interface Selectable extends ElementInterface {
+    public interface Selectable extends ElementInterface, Editable {
         
 	/**
          * Selects the optionNumber'th option in this Element's choices
@@ -124,12 +125,12 @@ public interface ElementInterface {
         public Boolean validateContains(String expectedPart);
     }
     
-    public interface TextFieldWithSuggestions extends TextBased {
+    public interface TextFieldWithSuggestions extends Editable,TextBased {
         public TextLink getSuggestion(Integer row);
         public TextLink getSuggestion(String fullName);
     }
     
-    public interface Typeable extends TextBased {
+    public interface Typeable extends Editable,TextBased {
         public Typeable type(Object inputText);
         public TextField clear();
     }

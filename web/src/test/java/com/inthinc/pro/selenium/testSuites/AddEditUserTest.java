@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.AutomationCalendar.TimeZones;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
@@ -15,7 +15,7 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 public class AddEditUserTest extends WebRallyTest {
 	
 	private PageMyAccount myAccount;
-	private PageAddEditUser myAddEditUser;
+	private PageAdminUserAddEdit myAddEditUser;
 	private PageAdminUserDetails myAdminUserDetails;
 	private PageAdminUsers myAdminUsers;
 	private RandomValues random;
@@ -24,7 +24,7 @@ public class AddEditUserTest extends WebRallyTest {
 	@Before
 	public void setupPage() {
 		random = new RandomValues();
-		myAddEditUser = new PageAddEditUser();
+		myAddEditUser = new PageAdminUserAddEdit();
 		myAccount = new PageMyAccount();
 		myAdminUsers = new PageAdminUsers();
 		myAdminUserDetails = new PageAdminUserDetails();

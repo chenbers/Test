@@ -6,26 +6,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.AccountCapabilities;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.enums.AccountCapability;
+import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 
 public class AdminUsersEditTest extends WebRallyTest {
 
     private PageAdminUsers usersPage = new PageAdminUsers();
-    private PageAddEditUser edituser = new PageAddEditUser();
+    private PageAdminUserAddEdit edituser = new PageAdminUserAddEdit();
     private PageAdminUserDetails details = new PageAdminUserDetails();
     private AutomationUser login;
 
     @Before
     public void beforeClass() {
-        login = users.getOneBy(LoginCapabilities.RoleAdmin, AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver);
+        login = users.getOneBy(LoginCapability.RoleAdmin, AccountCapability.HOSEnabled, LoginCapability.IsDriver);
         usersPage = new PageAdminUsers();
-        edituser = new PageAddEditUser();
+        edituser = new PageAdminUserAddEdit();
         details = new PageAdminUserDetails();
     }
 

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
@@ -25,8 +25,8 @@ public class LiveFleetTest extends WebRallyTest {
 
     @Before
     public void before(){
-        user = users.getOneBy(LoginCapabilities.StatusActive, LoginCapabilities.TeamLevelLogin, LoginCapabilities.RoleAdmin);
-        userTop = users.getOneBy(user.getAccount(), LoginCapabilities.FleetLevelLogin, LoginCapabilities.RoleAdmin);
+        user = users.getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin, LoginCapability.RoleAdmin);
+        userTop = users.getOneBy(user.getAccount(), LoginCapability.FleetLevelLogin, LoginCapability.RoleAdmin);
         pl = new PageLogin();
         pl.loginProcess(user);
         ptds = new PageTeamDashboardStatistics();

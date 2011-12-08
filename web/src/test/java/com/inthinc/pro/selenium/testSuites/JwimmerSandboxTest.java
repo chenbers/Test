@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
@@ -600,7 +600,7 @@ public void sometest() {
         // ((PageAdminUsers)instPage)._link().tableEntry(AdminUsersEntries.FULL_NAME).getText(1);
         // PageAdminUsers page = new PageAdminUsers();
         instPage = new PageAdminUserDetails();
-        instPage = new PageAddEditUser();
+        instPage = new PageAdminUserAddEdit();
        // instPage = new PageDriverReport();
         instPage = new PageVehiclePerformanceStyle();
         instPage = new PageVehiclePerformanceTrips();

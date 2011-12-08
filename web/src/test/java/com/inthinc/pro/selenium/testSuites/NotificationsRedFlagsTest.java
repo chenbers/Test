@@ -10,7 +10,7 @@ import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
@@ -30,7 +30,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     
     @Before
     public void before(){
-        List<AutomationUser> logins = users.getAllBy(LoginCapabilities.NoteTesterData);
+        List<AutomationUser> logins = users.getAllBy(LoginCapability.NoteTesterData);
         if(logins.size() > 1){
             user1 = logins.get(0);
             GROUP = user1.getGroupName();

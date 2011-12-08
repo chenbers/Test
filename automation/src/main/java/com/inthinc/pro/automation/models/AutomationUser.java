@@ -3,20 +3,20 @@ package com.inthinc.pro.automation.models;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.inthinc.pro.automation.enums.AccountCapabilities;
+import com.inthinc.pro.automation.enums.AccountCapability;
 import com.inthinc.pro.automation.enums.AutoAccounts;
-import com.inthinc.pro.automation.enums.DriverCapabilities;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
-import com.inthinc.pro.automation.interfaces.Capabilities;
+import com.inthinc.pro.automation.enums.DriverCapability;
+import com.inthinc.pro.automation.enums.LoginCapability;
+import com.inthinc.pro.automation.interfaces.Capability;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 
 public class AutomationUser{
     
-    private final Set<LoginCapabilities> loginSpecs;
-    private final Set<AccountCapabilities> accountSpecs;
-    private final Set<DriverCapabilities> driverSpecs;
+    private final Set<LoginCapability> loginSpecs;
+    private final Set<AccountCapability> accountSpecs;
+    private final Set<DriverCapability> driverSpecs;
     private final Person personPart;
     private final User userPart;
     private final Driver driverPart;
@@ -28,9 +28,9 @@ public class AutomationUser{
         personPart = new Person();
         userPart = new User();
         driverPart = new Driver();
-        loginSpecs = new HashSet<LoginCapabilities>();
-        accountSpecs = new HashSet<AccountCapabilities>();
-        driverSpecs = new HashSet<DriverCapabilities>();
+        loginSpecs = new HashSet<LoginCapability>();
+        accountSpecs = new HashSet<AccountCapability>();
+        driverSpecs = new HashSet<DriverCapability>();
     }
     
 
@@ -48,43 +48,43 @@ public class AutomationUser{
     
     public AutomationUser setUserStatus(boolean status){
         if (status){
-            loginSpecs.add(LoginCapabilities.StatusActive);
+            loginSpecs.add(LoginCapability.StatusActive);
         } else {
-            loginSpecs.add(LoginCapabilities.StatusInactive);
+            loginSpecs.add(LoginCapability.StatusInactive);
         }
         return this;
     }
     
-    public AutomationUser addLoginCapabilities(LoginCapabilities ...abilities){
-        for (LoginCapabilities ability : abilities){
+    public AutomationUser addLoginCapabilities(LoginCapability ...abilities){
+        for (LoginCapability ability : abilities){
             loginSpecs.add(ability);
         }
         return this;
     }
     
-    public AutomationUser addDriverCapabilities(DriverCapabilities ...abilities){
-        for (DriverCapabilities ability : abilities){
+    public AutomationUser addDriverCapabilities(DriverCapability ...abilities){
+        for (DriverCapability ability : abilities){
             driverSpecs.add(ability);
         }
         return this;
     }
     
-    public AutomationUser addAccountCapabilities(AccountCapabilities ...abilities){
-        for (AccountCapabilities ability : abilities){
+    public AutomationUser addAccountCapabilities(AccountCapability ...abilities){
+        for (AccountCapability ability : abilities){
             accountSpecs.add(ability);
         }
         return this;
     }
     
-    public AutomationUser removeLoginCapabilities(LoginCapabilities ...abilities){
-        for (LoginCapabilities ability : abilities){
+    public AutomationUser removeLoginCapabilities(LoginCapability ...abilities){
+        for (LoginCapability ability : abilities){
             loginSpecs.remove(ability);
         }
         return this;
     }
     
-    public Set<Capabilities> getAllCapabilities(){
-        Set<Capabilities> temp = new HashSet<Capabilities>();
+    public Set<Capability> getAllCapabilities(){
+        Set<Capability> temp = new HashSet<Capability>();
         temp.addAll(loginSpecs);
         temp.addAll(accountSpecs);
         temp.addAll(driverSpecs);

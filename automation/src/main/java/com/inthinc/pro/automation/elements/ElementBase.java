@@ -67,6 +67,11 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
 
     @Override
+    public Boolean isEditable() {
+        return selenium.isEditable(myEnum);
+    }
+    
+    @Override
     public Boolean assertVisibility(Boolean visible) {
         return assertTrue(visible == selenium.isVisible(myEnum), myEnum.toString());
     }

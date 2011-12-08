@@ -102,6 +102,22 @@ public abstract class Masthead extends AbstractPage {
 	    return loginProcess(login.getUsername(), login.getPassword());
 	}
 	
+	public boolean isLoggedIn(){
+	    //https://my.inthinc.com/tiwipro/app/dashboard/
+	    return assertStringContains("/app/", this.getCurrentLocation());  
+	}
+	
+	public Masthead verifyNotLoggedIn(){
+	    if(isLoggedIn())
+	        addError("<actual >browser is logged in, when <expected> browser is not logged in", ErrorLevel.FAIL);
+	    return this;
+	}
+   public Masthead verifyLoggedIn(){
+        if(!isLoggedIn())
+            addError("<actual >browser is not logged in, when <expected> browser is logged in", ErrorLevel.FAIL);
+        return this;
+    }
+	
 	public class MastheadButtons {
 	}
 
