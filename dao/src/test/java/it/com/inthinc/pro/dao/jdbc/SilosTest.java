@@ -22,7 +22,6 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.app.Silos;
 import com.inthinc.pro.model.silo.SiloDef;
 
-@Ignore
 public class SilosTest {
 
     @Test

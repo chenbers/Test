@@ -14,11 +14,8 @@ import com.inthinc.pro.model.silo.SiloDef;
 
 public class SiloJDBCDAO extends GenericJDBCDAO implements SiloDAO {
 
- // TODO: ADD AFTER DB ALTERS                
-// private static final String FETCH_SILO_DEF= "SELECT siloID, serverURL, host, port, proxyHost, proxyPort FROM centDB.silomap";
-// private static final String FETCH_SILO_DEF= "SELECT siloID, serverURL, host, port, proxyHost, proxyPort FROM centDB.silomap WHERE siloID = ?";
-    private static final String FETCH_SILO_DEFS= "SELECT siloID, serverURL, host, port FROM centDB.silomap";
-    private static final String FETCH_SILO_DEF_BY_ID = "SELECT siloID, serverURL, host, port FROM centDB.silomap WHERE siloID = ?";
+    private static final String FETCH_SILO_DEFS= "SELECT siloID, serverURL, host, port, proxyHost, proxyPort FROM centDB.silomap";
+    private static final String FETCH_SILO_DEF_BY_ID = "SELECT siloID, serverURL, host, port, proxyHost, proxyPort FROM centDB.silomap WHERE siloID = ?";
 
     @Override
     public List<SiloDef> getSiloDefs() {
@@ -39,9 +36,8 @@ public class SiloJDBCDAO extends GenericJDBCDAO implements SiloDAO {
                 siloDef.setUrl(resultSet.getString(2));
                 siloDef.setHost(resultSet.getString(3));
                 siloDef.setPort(resultSet.getInt(4));
-// TODO: ADD AFTER DB ALTERS                
-//                siloDef.setProxyHost(resultSet.getString(5));
-//                siloDef.setProxyPort(resultSet.getInt(4));
+                siloDef.setProxyHost(resultSet.getString(5));
+                siloDef.setProxyPort(resultSet.getInt(6));
                 siloDefList.add(siloDef);
             }
                 
@@ -79,9 +75,8 @@ public class SiloJDBCDAO extends GenericJDBCDAO implements SiloDAO {
                 siloDef.setUrl(resultSet.getString(2));
                 siloDef.setHost(resultSet.getString(3));
                 siloDef.setPort(resultSet.getInt(4));
-// TODO: ADD AFTER DB ALTERS                
-//                siloDef.setProxyHost(resultSet.getString(5));
-//                siloDef.setProxyPort(resultSet.getInt(4));
+                siloDef.setProxyHost(resultSet.getString(5));
+                siloDef.setProxyPort(resultSet.getInt(6));
                 return siloDef;
             }
                 
