@@ -56,7 +56,7 @@ public class User extends BaseEntity {
         this.userID = userID;
     }
 
-//    @XmlTransient //Prevent Circular Reference on XML rendering 
+    @XmlTransient //Prevent Circular Reference on XML rendering 
     public Person getPerson() {
         return person;
     }
