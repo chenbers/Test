@@ -17,6 +17,7 @@ import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.rally.PrettyJSON;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
@@ -241,6 +242,10 @@ public class MasterTest {
 
     protected void open(SeleniumEnums pageToOpen) {
         selenium.open(new SeleniumEnumWrapper(pageToOpen));
+    }
+    
+    protected void open(Page page){
+        selenium.open(page.getExpectedPath());
     }
 
     protected void open(SeleniumEnums pageToOpen, Integer replaceNumber) {
