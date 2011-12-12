@@ -48,7 +48,8 @@ public enum AlertMessageType implements BaseEnum
     ALERT_TYPE_ZONES_CURRENT(32),
     ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE(33),
     ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION(34),
-    ALERT_TYPE_IDLING(35); 
+    ALERT_TYPE_IDLING(35),
+    ALERT_TYPE_RF_SWITCH(36);
     
     private int code;
 
