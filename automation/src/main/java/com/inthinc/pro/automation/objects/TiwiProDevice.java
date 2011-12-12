@@ -344,6 +344,12 @@ public class TiwiProDevice extends DeviceBase {
         construct_note(DeviceNoteTypes.WSZONES_DEPARTURE_EX, attrs);
         return this;
     }
+    
+    public TiwiProDevice rf_kill(){
+        
+        construct_note(DeviceNoteTypes.SAT_EVENT_RF_KILL);
+        return this;
+    }
 
     public TiwiProDevice logout_driver(Integer RFID, Integer tripQuality,
             Integer MPG, Integer MPGOdometer) {
