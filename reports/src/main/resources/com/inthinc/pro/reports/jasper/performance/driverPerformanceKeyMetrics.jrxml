@@ -11,6 +11,7 @@
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="TIME_ZONE" class="java.util.TimeZone" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="teamName" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
@@ -129,7 +130,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="180" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrame($F{timeFrame},$P{REPORT_LOCALE})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrameInterval($F{timeFrame},$P{REPORT_LOCALE}, $P{TIME_ZONE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-42" mode="Opaque" x="270" y="0" width="120" height="20" backcolor="#FFFFFF"/>

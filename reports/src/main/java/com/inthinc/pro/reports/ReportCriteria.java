@@ -31,6 +31,7 @@ public class ReportCriteria
     private Boolean useMetric;
     private MeasurementType measurementType;
     private FuelEfficiencyType fuelEfficiencyType;
+    private TimeZone timeZone;
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -239,6 +240,14 @@ public class ReportCriteria
         paramMap.put("TIME_FRAME", TimeFrameUtil.getTimeFrameStr(timeFrame, locale));
 		this.timeFrame = timeFrame;
 	}
+
+    public TimeZone getTimeZone() {
+        return timeZone;
+    }
+    public void setTimeZone(TimeZone timeZone) {
+        paramMap.put("TIME_ZONE", timeZone);
+        this.timeZone = timeZone;
+    }
 
 
 }

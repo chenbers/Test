@@ -336,10 +336,10 @@ public class SiloServiceTest {
         configuratorDAO.setSiloService(siloService);
         VehicleSetting vs = configuratorDAO.getVehicleSettings(TESTING_VEHICLE_ID);
         assertEquals(ProductType.TIWIPRO_R74,vs.getProductType());
-        assertEquals(new Integer(19164),vs.getVehicleID());
+        assertEquals(new Integer(22339),vs.getVehicleID());
         assertTrue(vs.getActual()!= null);
         assertTrue(vs.getDesired()!=null);
-        assertEquals(new Integer(15641),vs.getDeviceID());
+        assertEquals(new Integer(18496),vs.getDeviceID());
     }
     @Test
     public void vehicleSettingsForGroup(){

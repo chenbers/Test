@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
@@ -89,14 +90,22 @@ public enum TimeFrame implements BaseEnum {
             return new Interval(new DateMidnight(getCurrent().minusYears(1), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
         }
     },
-    LAST_WEEK(AggregationDuration.SEVEN_DAY, 15) {
+    SUN_SAT_WEEK(AggregationDuration.SEVEN_DAY, 15) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().minusDays(1), dateTimeZone));
+            DateTime lastSat = new DateMidnight(getCurrent().minusDays(1),dateTimeZone).toDateTime();
+            while (lastSat.getDayOfWeek() != DateTimeConstants.SATURDAY)
+                lastSat = new DateTime(lastSat.minusDays(1),dateTimeZone);
+            return new Interval(new DateTime(lastSat.minusDays(6), dateTimeZone), lastSat);
         }
     },
     LAST_MONTH(AggregationDuration.ONE_MONTH, 16) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
             return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusDays(1), dateTimeZone));
+        }
+    },
+    PAST_SEVEN_DAYS(AggregationDuration.SEVEN_DAY, 17) {
+        public Interval getInterval(DateTimeZone dateTimeZone) {
+            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().minusDays(1), dateTimeZone));
         }
     };
 

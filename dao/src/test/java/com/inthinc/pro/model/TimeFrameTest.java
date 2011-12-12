@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -58,8 +59,9 @@ public class TimeFrameTest {
 	           "2011-09-05 00:00:00 UTC", "2011-12-07 00:00:00 UTC",// THREE_MONTHS
 	           "2011-06-05 00:00:00 UTC", "2011-12-07 00:00:00 UTC",// SIX_MONTHS
 	           "2010-12-06 00:00:00 UTC", "2011-12-07 00:00:00 UTC",// YEAR
-	           "2011-11-29 00:00:00 UTC", "2011-12-05 00:00:00 UTC",// LAST_WEEK
+	           "2011-11-27 00:00:00 UTC", "2011-12-03 00:00:00 UTC",// SUN_SAT WEEK
 	           "2011-11-01 00:00:00 UTC", "2011-11-30 00:00:00 UTC",// LAST_MONTH
+               "2011-11-29 00:00:00 UTC", "2011-12-05 00:00:00 UTC",// PAST 7 DAYS
 
 	   };
        public String[] expectedMountain = {
@@ -78,8 +80,9 @@ public class TimeFrameTest {
                "2011-09-05 00:00:00 MDT", "2011-12-06 00:00:00 MST",// THREE_MONTHS
                "2011-06-05 00:00:00 MDT", "2011-12-06 00:00:00 MST",// SIX_MONTHS
                "2010-12-05 00:00:00 MST", "2011-12-06 00:00:00 MST",// YEAR
-               "2011-11-28 00:00:00 MST", "2011-12-04 00:00:00 MST",// LAST_WEEK
+               "2011-11-27 00:00:00 MST", "2011-12-03 00:00:00 MST",// SUN_SAT WEEK
                "2011-11-01 00:00:00 MDT", "2011-11-30 00:00:00 MST",// LAST_MONTH
+               "2011-11-28 00:00:00 MST", "2011-12-04 00:00:00 MST",// PAST 7 DAYS
        };
        
        public static long TEST_TIME = 1323129600000l; // 2011-12-06 00:00:00 UTC
@@ -92,7 +95,7 @@ public class TimeFrameTest {
 	       
 	       int cnt = 0;
 	       for (TimeFrame timeFrame : TimeFrame.values()) {
-//	           System.out.println("\"" + formatter.print(timeFrame.getInterval().getStart()) + "\", \"" + formatter.print(timeFrame.getInterval().getEnd()) + "\"," + "// " + timeFrame);
+	           System.out.println("\"" + formatter.print(timeFrame.getInterval().getStart()) + "\", \"" + formatter.print(timeFrame.getInterval().getEnd()) + "\"," + "// " + timeFrame);
 	           StringBuffer startBuffer = new StringBuffer();
 	           StringBuffer endBuffer = new StringBuffer();
 	           formatter.printTo(startBuffer, timeFrame.getInterval().getStart());
@@ -104,7 +107,7 @@ public class TimeFrameTest {
            cnt = 0;
            for (TimeFrame timeFrame : TimeFrame.values()) {
                DateTimeZone dateTimeZone = DateTimeZone.forID("US/Mountain");
-//             System.out.println("\"" + formatter.print(timeFrame.getInterval(dateTimeZone).getStart()) + "\", \"" + formatter.print(timeFrame.getInterval(dateTimeZone).getEnd()) + "\"," + "// " + timeFrame);
+             System.out.println("\"" + formatter.print(timeFrame.getInterval(dateTimeZone).getStart()) + "\", \"" + formatter.print(timeFrame.getInterval(dateTimeZone).getEnd()) + "\"," + "// " + timeFrame);
                StringBuffer startBuffer = new StringBuffer();
                StringBuffer endBuffer = new StringBuffer();
                formatter.printTo(startBuffer, timeFrame.getInterval(dateTimeZone).getStart());

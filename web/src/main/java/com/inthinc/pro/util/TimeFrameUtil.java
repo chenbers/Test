@@ -15,8 +15,6 @@ public class TimeFrameUtil {
 	{
 		if (timeFrame.equals(TimeFrame.MONTH))
 			return getMonthItem(locale);
-        if (timeFrame.equals(TimeFrame.LAST_MONTH))
-            return getLastMonthItem(locale);
 
 		if (timeFrame.equals(TimeFrame.TWO_DAYS_AGO))
 			return getDayItem(2, locale);

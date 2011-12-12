@@ -38,8 +38,8 @@ public class TimeFrameSelect {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         selectItemList.add(new SelectItem(TimeFrame.TODAY, TimeFrameUtil.getTimeFrameStr(TimeFrame.TODAY, getLocale())));
         selectItemList.add(new SelectItem(TimeFrame.ONE_DAY_AGO, TimeFrameUtil.getTimeFrameStr(TimeFrame.ONE_DAY_AGO, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.LAST_WEEK, TimeFrameUtil.getTimeFrameStr(TimeFrame.LAST_WEEK, getLocale())));
-        selectItemList.add(new SelectItem(TimeFrame.WEEK, TimeFrameUtil.getTimeFrameStr(TimeFrame.WEEK, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.SUN_SAT_WEEK, TimeFrameUtil.getTimeFrameStr(TimeFrame.SUN_SAT_WEEK, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.PAST_SEVEN_DAYS, TimeFrameUtil.getTimeFrameStr(TimeFrame.PAST_SEVEN_DAYS, getLocale())));
         selectItemList.add(new SelectItem(TimeFrame.LAST_MONTH, TimeFrameUtil.getTimeFrameStr(TimeFrame.LAST_MONTH, getLocale())));
         selectItemList.add(new SelectItem(TimeFrame.LAST_THIRTY_DAYS, TimeFrameUtil.getTimeFrameStr(TimeFrame.LAST_THIRTY_DAYS, getLocale())));
         selectItemList.add(new SelectItem(TimeFrame.THREE_MONTHS, TimeFrameUtil.getTimeFrameStr(TimeFrame.THREE_MONTHS, getLocale())));

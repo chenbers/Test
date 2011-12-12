@@ -12,7 +12,7 @@ public class EventCategoryTest {
 
     Integer[] expectedNoteInCatCounts = {
             10,
-            16,
+            17,
             0,
             11,
             2,
@@ -37,7 +37,7 @@ public class EventCategoryTest {
     		3,	//  NONE
     		1,	//  TEXT
     		9,	//  VIOLATION
-    		15,	//  WARNING
+    		16,	//  WARNING
     		2	//  ZONE
     };
     
