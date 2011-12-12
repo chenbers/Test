@@ -33,7 +33,7 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP)),
             
     VEHICLE(5, 
-            EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.POTENTIAL_TAMPERING),
+            EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.POTENTIAL_TAMPERING, EventType.RF_SWITCH),
             EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_IDLING)), 
             
     WIRELINE(6, 
@@ -61,7 +61,9 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED)),
     DRIVER(12,
     		EnumSet.of(EventType.NEW_DRIVER, EventType.NEW_OCCUPANT, EventType.INVALID_DRIVER, EventType.INVALID_OCCUPANT),
-    		null);
+    		null),
+    RF_SWITCH(13,EnumSet.of(EventType.RF_SWITCH),EnumSet.of(AlertMessageType.ALERT_TYPE_RF_SWITCH));
+
     
     private int code;
     

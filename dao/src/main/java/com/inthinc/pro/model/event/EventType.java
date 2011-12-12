@@ -56,7 +56,9 @@ public enum EventType implements BaseEnum {
     NEW_DRIVER(40, EnumSet.of(EventAccountFilter.WAYSMART)),
     NEW_OCCUPANT(41, EnumSet.of(EventAccountFilter.WAYSMART)),
     INVALID_DRIVER(42,  EnumSet.of(EventAccountFilter.WAYSMART)),
-    INVALID_OCCUPANT(43,  EnumSet.of(EventAccountFilter.WAYSMART));
+    INVALID_OCCUPANT(43,  EnumSet.of(EventAccountFilter.WAYSMART)),
+    RF_SWITCH(44);
+
     
     private int code;
     private AggressiveDrivingEventType noteSubType;
