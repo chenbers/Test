@@ -34,7 +34,7 @@ public class MannyBikeRide extends Thread{
         tiwi = new TiwiProDevice(IMEI, server);
 
         tiwi.set_time( initialTime.addToSeconds(60));
-        tiwi.set_WMP(17116);
+        tiwi.getState().setWMP(17116);
         tiwi.firstLocation(new GeoPoint(40.7097, -111.9925));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);

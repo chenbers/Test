@@ -68,7 +68,7 @@ public class DeviceTests extends WebDeviceOnlyRallyTest {
             Addresses silo = Addresses.QA;
                 try{
                     tiwi = new TiwiProDevice("FAKEIMEIDEVICE", silo);
-                    tiwi.set_WMP(17207);
+                    tiwi.getState().setWMP(17207);
                     for (int i = 1; i <= 33; i++) {
         
                         String fileName = String.format("%02d.pcm", i);

@@ -2,9 +2,13 @@ package com.inthinc.pro.automation.models;
 
 import org.apache.log4j.Level;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
+import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
+import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
+import com.inthinc.pro.automation.objects.WaysmartDevice;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -31,6 +35,7 @@ public class AutomationDeviceEvents {
         public final int deltaY;
         public final int deltaZ;
         public final String type;
+        public final DeviceNoteTypes noteType = DeviceNoteTypes.NOTE_EVENT;
         
         private NoteEvent(int deltaX, int deltaY, int deltaZ, String type){
             this.deltaX = deltaX;
@@ -61,12 +66,20 @@ public class AutomationDeviceEvents {
 
         @Override
         public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
-            return NoteGenerator.noteEvent(note, this, productVersion);
+            if (productVersion.equals(ProductType.WAYSMART)) {
+                note.addAttr(DeviceAttrs.DELTA_VS, packDeltaVS());
+
+            } else {
+                note.addAttr(DeviceAttrs.DELTAV_X, deltaX);
+                note.addAttr(DeviceAttrs.DELTAV_Y, deltaY);
+                note.addAttr(DeviceAttrs.DELTAV_Z, deltaZ);
+            }
+            return note;
         }
 
         @Override
         public DeviceNoteTypes getNoteType() {
-            return DeviceNoteTypes.NOTE_EVENT;
+            return noteType;
         } 
     }
     
@@ -104,6 +117,7 @@ public class AutomationDeviceEvents {
         public final int speedLimit;
         public final int avgSpeed;
         public final int avgRpm;
+        public final DeviceNoteTypes noteType = DeviceNoteTypes.SPEEDING_EX3;
         
         private SpeedingEvent(int topSpeed, int distance, int maxRpm, int speedLimit, int avgSpeed, int avgRpm){
             this.topSpeed = Math.abs(topSpeed);
@@ -127,12 +141,27 @@ public class AutomationDeviceEvents {
 
         @Override
         public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
-            return NoteGenerator.speedingEvent(note, this, productVersion);
+            if (productVersion.equals(ProductType.WAYSMART)) {
+                note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
+                note.addAttr(DeviceAttrs.DISTANCE, distance);
+                note.addAttr(DeviceAttrs.MAX_RPM, maxRpm);
+                note.addAttr(DeviceAttrs.SPEED_LIMIT, speedLimit);
+                note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
+                note.addAttr(DeviceAttrs.AVG_RPM, avgRpm);
+
+            } else {
+                note.addAttr(DeviceAttrs.DISTANCE, distance);
+                note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
+                note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
+                note.addAttr(DeviceAttrs.SPEED_ID, 9999);
+                note.addAttr(DeviceAttrs.VIOLATION_FLAGS, SpeedingEvent.FLAG);
+            }
+            return note;
         }
 
         @Override
         public DeviceNoteTypes getNoteType() {
-            return DeviceNoteTypes.SPEEDING_EX3;
+            return noteType;
         }
     }
     
@@ -153,6 +182,7 @@ public class AutomationDeviceEvents {
         public final int avgSpeed;
         public final int distance;
         public final int maxRpm;
+        public final DeviceNoteTypes noteType = DeviceNoteTypes.SEATBELT;
         
         private SeatBeltEvent(int avgRpm, int gpsPercent, int topSpeed, int avgSpeed, int distance, int maxRpm){
             this.avgRpm = Math.abs(avgRpm);
@@ -176,12 +206,28 @@ public class AutomationDeviceEvents {
 
         @Override
         public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
-            return NoteGenerator.seatbeltEvent(note, this, productVersion);
+            if (productVersion.equals(ProductType.WAYSMART)) {
+                note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
+                note.addAttr(DeviceAttrs.DISTANCE, distance);
+                note.addAttr(DeviceAttrs.MAX_RPM, maxRpm);
+
+            } else {
+                note.addAttr(DeviceAttrs.AVG_RPM, avgRpm);
+                note.addAttr(DeviceAttrs.VIOLATION_FLAGS, violationFlag);
+                
+                note.addAttr(DeviceAttrs.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED,
+                        gpsPercent);
+                
+                note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
+                note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
+                note.addAttr(DeviceAttrs.DISTANCE, distance);
+            }
+            return note;
         }
 
         @Override
         public DeviceNoteTypes getNoteType() {
-            return DeviceNoteTypes.SEATBELT;
+            return noteType;
         }
         
     }
@@ -189,5 +235,88 @@ public class AutomationDeviceEvents {
     public static SeatBeltEvent seatbelt(int avgRpm, int gpsPercent, int topSpeed, int avgSpeed, int distance, int maxRpm){
         return classes.new SeatBeltEvent(avgRpm, gpsPercent, topSpeed, avgSpeed, distance, maxRpm);
     }
+    
+    public class InstallEvent implements AutomationEvents {
+        
+        public final String vehicleIDStr;
+        public final int acctID;
+        public final String mcmIDStr;
+        public final DeviceNoteTypes noteType = DeviceNoteTypes.INSTALL;
+        
+        
+        private InstallEvent(String vehicleIDStr, String mcmIDStr, int acctID){
+            this.vehicleIDStr = vehicleIDStr.toUpperCase();
+            this.mcmIDStr = mcmIDStr;
+            this.acctID = acctID;
+        }
+        
 
+        @Override
+        public DeviceNote addEvent(DeviceBase device) {
+            return ((WaysmartDevice)device).addInstallEvent(this);
+        }
+
+        @Override
+        public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
+            note.addAttr(DeviceAttrs.VEHICLE_ID_STR, vehicleIDStr);
+            note.addAttr(DeviceAttrs.MCM_ID_STR, mcmIDStr);
+            note.addAttr(DeviceAttrs.COMPANY_ID, acctID);
+            return note;
+        }
+
+        @Override
+        public DeviceNoteTypes getNoteType() {
+            return noteType;
+        }
+    }
+    
+    public static InstallEvent install(String vehicleIDStr, String mcmIDStr, int acctID){
+        return classes.new InstallEvent(vehicleIDStr, mcmIDStr, acctID);
+    }
+    
+    
+    public class LocationEvent implements AutomationEvents {
+        
+        public final ViolationFlags flag;
+        public final DeviceNoteTypes noteType = DeviceNoteTypes.LOCATION;
+        
+        public LocationEvent(DeviceState state){
+            if (state.getSpeeding()) {
+                flag = ViolationFlags.VIOLATION_MASK_SPEEDING;
+            } else if (state.getRpm_violation()) {
+                flag = ViolationFlags.VIOLATION_MASK_RPM;
+            } else if (state.getSeatbelt_violation()) {
+                flag = ViolationFlags.VIOLATION_MASK_SEATBELT;
+            } else {
+                flag = null;
+            }
+        }
+
+        @Override
+        public DeviceNote addEvent(DeviceBase device) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
+            if (productVersion.equals(ProductType.WAYSMART)){
+                
+            } else {
+                note.addAttr(DeviceAttrs.VIOLATION_FLAGS,flag);
+            }
+            return note;
+        }
+
+        @Override
+        public DeviceNoteTypes getNoteType() {
+            return noteType;
+        }
+        
+    }
+
+
+    public static LocationEvent location(DeviceState state) {
+        return classes.new LocationEvent(state);
+    }
 }

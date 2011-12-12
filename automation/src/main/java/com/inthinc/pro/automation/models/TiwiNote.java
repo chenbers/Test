@@ -100,8 +100,8 @@ public class TiwiNote extends DeviceNote {
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
         NoteManager.longToByte(bos, maprev, 1);
-        NoteManager.longToByte(bos, location.getEncodedLat(), 3);
-        NoteManager.longToByte(bos, location.getEncodedLng(), 3);
+        NoteManager.longToByte(bos, location.encodeLat(), 3);
+        NoteManager.longToByte(bos, location.encodeLng(), 3);
         NoteManager.longToByte(bos, Speed, 1);
         NoteManager.longToByte(bos, odometer, 2);
         

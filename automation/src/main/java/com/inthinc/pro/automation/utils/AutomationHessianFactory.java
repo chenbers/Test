@@ -5,8 +5,8 @@ import java.net.MalformedURLException;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
+import com.inthinc.pro.dao.hessian.proserver.MCMService;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
 public class AutomationHessianFactory {
@@ -14,7 +14,7 @@ public class AutomationHessianFactory {
     private final static Logger logger = Logger.getLogger(AutomationHessianFactory.class);
 
     private SiloService portalProxy;
-    private MCMProxy mcmProxy;
+    private MCMService mcmProxy;
 
     private Addresses server;
 
@@ -61,7 +61,7 @@ public class AutomationHessianFactory {
         logger.debug(server.toString());
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
-            mcmProxy = (MCMProxy) factory.create(MCMProxy.class, server.getMCMUrl(), server.getMCMPort());
+            mcmProxy = (MCMService) factory.create(MCMService.class, server.getMCMUrl(), server.getMCMPort());
         } catch (NumberFormatException e) {
             logger.fatal(StackToString.toString(e));
         } catch (MalformedURLException e) {
@@ -69,13 +69,13 @@ public class AutomationHessianFactory {
         }
     }
 
-    public MCMProxy getMcmProxy() {
+    public MCMService getMcmProxy() {
         if (mcmProxy == null)
             createMcmProxy();
         return mcmProxy;
     }
 
-    public MCMProxy getMcmProxy(Addresses server) {
+    public MCMService getMcmProxy(Addresses server) {
         setUrls(server, false);
         return mcmProxy;
     }

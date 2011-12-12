@@ -388,7 +388,7 @@ public class TiwiProDevice extends DeviceBase {
 
         if (fwdCmd == DeviceForwardCommands.ASSIGN_DRIVER) {
             String[] values = reply.get("data").toString().split(" ");
-            setDeviceDriverID(Integer.parseInt(values[0]));
+            state.setWMP(Integer.parseInt(values[0]));
         } else if (fwdCmd == DeviceForwardCommands.DUMP_CONFIGURATION)
             dump_settings();
         else if (fwdCmd == DeviceForwardCommands.CALL_REQ_SET)
@@ -396,7 +396,7 @@ public class TiwiProDevice extends DeviceBase {
         else if (fwdCmd == DeviceForwardCommands.DOWNLOAD_NEW_WITNESSII_FIRMWARE)
             set_MSP(reply.get("data"));
         else if (fwdCmd == DeviceForwardCommands.DOWNLOAD_NEW_FIRMWARE)
-            set_WMP(reply.get("data"));
+            state.setWMP((Integer) reply.get("data"));
         else if (fwdCmd == DeviceForwardCommands.SET_SPEED_BUFFER_VALUES) {
             changes.put(DeviceProps.TIWI_VARIABLE_SPEED_LIMITS,
                     reply.get("fwdData").toString());

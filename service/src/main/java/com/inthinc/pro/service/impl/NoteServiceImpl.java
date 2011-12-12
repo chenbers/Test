@@ -20,7 +20,6 @@ import com.inthinc.pro.service.note.CrashData;
 import com.inthinc.pro.service.note.Heading;
 import com.inthinc.pro.service.note.Note;
 
-@SuppressWarnings("unchecked")
 public class NoteServiceImpl implements NoteService {
     private MCMService mcmService;
     private CrashReportDAO crashReportDAO;
@@ -40,7 +39,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.SPEEDING, new Date(), latitude, longitude, speed, 10, 9, 1, speedLimitAttribute, averageSpeedAttribute, topSpeedAttribute, distanceAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -55,7 +54,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.SPEEDING, new Date(), latitude, longitude, speed, 10, 9, 1, speedLimitAttribute, averageSpeedAttribute, topSpeedAttribute, distanceAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -75,7 +74,7 @@ public class NoteServiceImpl implements NoteService {
                 deltaZAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -87,7 +86,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.IGNITION_ON, new Date(), latitude, longitude, speed, 10, 9, 1, boundaryAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -100,7 +99,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.IGNITION_OFF, new Date(), latitude, longitude, speed, 10, 9, 1, boundaryAttribute, mpgAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -114,7 +113,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.LOCATION, new Date(), latitude, longitude, speed, 10, 9, heading, speedLimitAttribute, boundaryAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -134,7 +133,7 @@ public class NoteServiceImpl implements NoteService {
                 deltaZAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             createCrashDataPoints(imei, latitude, longitude, speed, speedLimit);
             return mapList.get(0).get("data").toString();
@@ -177,7 +176,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.WSZONES_ARRIVAL_EX, new Date(), latitude, longitude, speed, 10, 9, heading, speedLimitAttribute, boundaryAttribute, zoneIdAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -192,7 +191,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.UNPLUGGED, new Date(), latitude, longitude, speed, 10, 9, heading, boundaryAttribute, backupBatteryAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -206,7 +205,7 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note(NoteType.LOW_BATTERY, new Date(), latitude, longitude, speed, 10, 9, heading, boundryAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }
@@ -225,7 +224,7 @@ public class NoteServiceImpl implements NoteService {
                 averageSpeedAttribute, topSpeedAttribute);
         List<byte[]> byteList = new ArrayList<byte[]>();
         byteList.add(note.getBytes());
-        List<Map> mapList = mcmService.note(imei, byteList);
+        List<Map<String, Object>> mapList = mcmService.note(imei, byteList);
         if (mapList.size() > 0) {
             return mapList.get(0).get("data").toString();
         }

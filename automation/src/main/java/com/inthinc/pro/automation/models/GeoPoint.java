@@ -1,8 +1,10 @@
 package com.inthinc.pro.automation.models;
 
+import java.io.ByteArrayOutputStream;
+
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.Distance_Calc;
-import com.inthinc.pro.automation.device_emulation.NoteManager;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 public class GeoPoint {
 
@@ -46,12 +48,49 @@ public class GeoPoint {
         return ("(" + lat + "," + lng + ")");
     }
     
-    public int getEncodedLat(){
-        return NoteManager.encodeLat(lat);
+    public int encodeLat(){
+        double latitude = ( 90.0 - lat ) / 180.0;
+        int val;
+        val  = (int)( latitude  * 0x00FFFFFF );
+        return val;
     }
     
-    public int getEncodedLng(){
-        return NoteManager.encodeLng(lng);
+
+//    public void encodeLat(ByteArrayOutputStream bos, int i) {
+//        long value = 0;
+//        double latitude;
+//        latitude = 90.0 - lat;
+//        latitude = latitude / 180.0;
+//        value = (long)(latitude * 0xffffffff);
+//        bos.write((int)(value >> 24) & 0x00ff);
+//        bos.write((int)(value >> 16) & 0x00ff);
+//        bos.write((int)(value >> 8)  & 0x00ff);
+//        bos.write((int)value        & 0x00ff);
+//    }
+//    
+    
+    public long encodeLatBC(){
+        double latitude = ( 90.0 - lat ) / 180.0;
+        long val;
+        val  = (long)( latitude  * 0x0FFFFFFFF );
+        MasterTest.print(90.0 - ((val / (float)0x0FFFFFFFF) * 180.0));
+        return val;
+    }
+    
+    public int encodeLng(){
+        double longitude = ( lng < 0.0 ? lng + 360.0 : lng / 360.0 );
+        int val;
+        val = (int)( longitude * 0x00FFFFFF );
+        return val;
+    }
+    
+    public long encodeLngBC(){
+        
+        double longitude = ( lng / 360.0 );
+        long val;
+        val = (long)( longitude * 0x0FFFFFFFF );
+        MasterTest.print((val / (float)0x0FFFFFFFF) * 360.0);
+        return val;
     }
     
     public GeoPoint copy(){
@@ -61,6 +100,7 @@ public class GeoPoint {
     public Heading getHeading(GeoPoint next){
         return Heading.getHeading(this, next);
     }
+
     
 
 }

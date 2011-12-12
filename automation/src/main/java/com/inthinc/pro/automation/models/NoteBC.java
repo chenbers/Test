@@ -73,8 +73,9 @@ public class NoteBC extends DeviceNote {
         NoteManager.longToByte(bos, nVersion.getVersion(), 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
-        NoteManager.longToByte(bos, location.getEncodedLat(), 4);
-        NoteManager.longToByte(bos, location.getEncodedLng(), 4);
+//        location.encodeLat(bos, 4);
+        NoteManager.longToByte(bos, location.encodeLatBC(), 4);
+        NoteManager.longToByte(bos, location.encodeLngBC(), 4);
         NoteManager.longToByte(bos, nSpeed, 1);
         NoteManager.longToByte(bos, nSpeedLimit, 1);
         NoteManager.longToByte(bos, nLinkID, 4);
@@ -120,7 +121,7 @@ public class NoteBC extends DeviceNote {
         nLinkID = state.getLinkID();
         nOdometer = state.getOdometer();
         nBoundaryID = state.getBoundaryID();
-        nDriverID = state.getDeviceDriverID();
+        nDriverID = state.getDriverID();
         attrs = new DeviceAttributes();
     }
     

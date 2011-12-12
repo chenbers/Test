@@ -145,20 +145,8 @@ public class NoteManager {
     public static void longToByte(ByteArrayOutputStream baos, Integer toAdd, int numOfBytes){
         longToByte(baos, toAdd.longValue(), numOfBytes);
     }
-    public static int encodeLat(double lat){
-        double latitude = ( 90.0 - lat ) / 180.0;
-        int val  = (int)( latitude  * 0x00FFFFFF );
-        return val;
-    }
     
-    public static int encodeLng(double lng){
-        if (lng < 0.0 ){
-            lng += 360.0;
-        }
-        double longitude = ( lng / 360.0 );
-        int val = (int)( longitude * 0x00FFFFFF );
-        return val;
-    }
+    
     
     public static int concatenateTwoInts(int one, int two){
         MasterTest.print(one + "   " + two, Level.DEBUG);

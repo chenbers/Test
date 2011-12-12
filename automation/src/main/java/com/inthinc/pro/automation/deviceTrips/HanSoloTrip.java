@@ -58,8 +58,8 @@ public class HanSoloTrip extends Thread{
         Addresses address=Addresses.QA; 
         tiwi = new TiwiProDevice(imei, address);
         tiwi.set_time(new AutomationCalendar());
-        tiwi.set_WMP(17116);
-        tiwi.setOdometer(67751-(99*1));
+        tiwi.getState().setWMP(17116);
+        tiwi.getState().setWMP(67751-(99*1));
         tiwi.firstLocation(new GeoPoint(40.74290000000001, -111.865340));
         tiwi.power_on_device();
         
@@ -89,7 +89,7 @@ public class HanSoloTrip extends Thread{
         tiwi = new TiwiProDevice(IMEI, server);
 
         tiwi.set_time( initialTime.addToSeconds(60));
-        tiwi.set_WMP(17116);
+        tiwi.getState().setWMP(17116);
         tiwi.firstLocation(new GeoPoint(33.0104, -117.111));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
@@ -237,7 +237,7 @@ public class HanSoloTrip extends Thread{
         waySmart.set_time(initialTime);
         waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
-        waySmart.addInstallEvent(vehicleID, accountID);
+        waySmart.addInstallEvent(AutomationDeviceEvents.install(vehicleID, mcmID, accountID));
         waySmart.power_on_device();
         waySmart.logInDriver(driverID);
         
@@ -255,7 +255,7 @@ public class HanSoloTrip extends Thread{
         waySmart.set_time(initialTime);
         waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
-        waySmart.addInstallEvent(vehicleID, accountID);
+        waySmart.addInstallEvent(AutomationDeviceEvents.install(vehicleID, mcmID, accountID));
         waySmart.power_on_device();
         waySmart.turn_key_on(15);
         waySmart.turn_key_off(15);

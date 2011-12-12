@@ -52,8 +52,8 @@ public class NoteWS extends DeviceNote {
         NoteManager.longToByte(baos, nVersion, 1);
         NoteManager.longToByte(baos, nTime.toInt(), 4);
         NoteManager.longToByte(baos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
-        NoteManager.longToByte(baos, location.getEncodedLat(), 3);
-        NoteManager.longToByte(baos, location.getEncodedLng(), 3);
+        NoteManager.longToByte(baos, location.encodeLat(), 3);
+        NoteManager.longToByte(baos, location.encodeLng(), 3);
         NoteManager.longToByte(baos, nSpeed, 1);
         NoteManager.longToByte(baos, odometer, 3);
         NoteManager.longToByte(baos, duration, 2);

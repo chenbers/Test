@@ -11,9 +11,7 @@ import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.models.NoteGenerator;
 import com.inthinc.pro.automation.objects.TripTracker;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class TripDriver extends Thread {
@@ -108,9 +106,8 @@ public class TripDriver extends Thread {
             if (events[currentPercent.intValue()]!=null){
                 AutomationEvents event = events[currentPercent.intValue()];
                 DeviceNote tripEvent = DeviceNote.constructNote(event.getNoteType(), tripTracker.currentLocation(), state);
-                NoteGenerator.addAttrs(tripEvent, event, state.getProductVersion());
+                event.getNote(tripEvent, state.getProductVersion());
                 notes.add(tripEvent);
-                MasterTest.print(tripEvent);
                 positions.remove(currentPercent);
                 events[currentPercent.intValue()] = null;
             } else {
@@ -118,7 +115,7 @@ public class TripDriver extends Thread {
                     if (lastPercent < eventPos && eventPos < currentPercent){
                         AutomationEvents event = events[eventPos];
                         DeviceNote tripEvent = DeviceNote.constructNote(event.getNoteType(), tripTracker.currentLocation(), state);
-                        NoteGenerator.addAttrs(tripEvent, event, state.getProductVersion());
+                        event.getNote(tripEvent, state.getProductVersion());
                         notes.add(tripEvent);
                         positions.remove(eventPos);
                         break;
@@ -177,5 +174,9 @@ public class TripDriver extends Thread {
     public void addEvent(int percentTimeIn, AutomationEvents event){
         events[percentTimeIn] = event;
         positions.add(percentTimeIn);
+    }
+
+    public DeviceState getdeviceState() {
+        return state;
     }
 }

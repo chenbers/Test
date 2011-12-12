@@ -15,9 +15,7 @@ public class DeviceState {
     private int accountID = 1;
 
     private int boundaryID = 1;
-    private int companyID = 1;
 
-    private int deviceDriverID = 1;
     private int driverID = 1;
     private String employeeID = "";
 
@@ -102,13 +100,6 @@ public class DeviceState {
         return boundaryID;
     }
 
-    public int getCompanyID() {
-        return companyID;
-    }
-
-    public int getDeviceDriverID() {
-        return deviceDriverID;
-    }
 
     public int getDriverID() {
         return driverID;
@@ -253,14 +244,6 @@ public class DeviceState {
 
     public void setBoundaryID(int boundaryID) {
         this.boundaryID = boundaryID;
-    }
-
-    public void setCompanyID(int companyID) {
-        this.companyID = companyID;
-    }
-
-    public void setDeviceDriverID(int deviceDriverID) {
-        this.deviceDriverID = deviceDriverID;
     }
 
     public void setDriverID(int driverID) {

@@ -21,13 +21,13 @@ import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.LocationEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.NoteEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SeatBeltEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SpeedingEvent;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
-import com.inthinc.pro.automation.models.NoteGenerator;
 import com.inthinc.pro.automation.objects.TripTracker;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
@@ -99,8 +99,10 @@ public abstract class DeviceBase {
     protected abstract void ackFwdCmds(String[] reply);
 
     public DeviceNote addLocation(){
-        DeviceNote note = constructNote(DeviceNoteTypes.LOCATION);
-        NoteGenerator.locationEvent(note, state);
+        LocationEvent event = AutomationDeviceEvents.location(state);
+        DeviceNote note = constructNote(event.noteType);
+        
+        event.getNote(note, state.getProductVersion());
         addNote(note);
         return note;
     }
@@ -112,8 +114,8 @@ public abstract class DeviceBase {
     }
 
     public DeviceNote addNoteEvent(NoteEvent event){
-        DeviceNote note = constructNote(DeviceNoteTypes.NOTE_EVENT);
-        NoteGenerator.noteEvent(note, event, state.getProductVersion());
+        DeviceNote note = constructNote(event.noteType);
+        event.getNote(note, state.getProductVersion());
         addNote(note);
         return note;
     }
@@ -122,16 +124,16 @@ public abstract class DeviceBase {
         return DeviceNote.constructNote(noteEvent, tripTracker.currentLocation(), state);
     }
 
-    public DeviceNote addSeatbeltEvent(SeatBeltEvent seatBeltEvent){
-        DeviceNote note = constructNote(DeviceNoteTypes.SEATBELT);
-        NoteGenerator.seatbeltEvent(note, seatBeltEvent, state.getProductVersion());
+    public DeviceNote addSeatbeltEvent(SeatBeltEvent event){
+        DeviceNote note = constructNote(event.noteType);
+        event.getNote(note, state.getProductVersion());
         addNote(note);
         return note;
     }
 
     public DeviceNote addSpeedingNote(SpeedingEvent event){
-        DeviceNote note = constructNote(DeviceNoteTypes.SPEEDING_EX3);
-        NoteGenerator.speedingEvent(note, event, state.getProductVersion());
+        DeviceNote note = constructNote(event.noteType);
+        event.getNote(note, state.getProductVersion());
         addNote(note);
         return note;
     }
@@ -414,25 +416,6 @@ public abstract class DeviceBase {
         state.getTime().setDate(time_now);
         MasterTest.print("Time = " + time_now, Level.DEBUG);
         return this;
-    }
-
-    public DeviceBase set_WMP(Integer version) {
-        state.setWMP(version);
-        return this;
-    }
-
-    public DeviceBase set_WMP(Object version) {
-        set_WMP((Integer) version);
-        return this;
-    }
-
-    public DeviceBase setDeviceDriverID(int deviceDriverID) {
-        state.setDeviceDriverID(deviceDriverID);
-        return this;
-    }
-
-    public void setOdometer(int odometer) {
-        state.setOdometer(odometer);
     }
 
     private void testFwdCmdLimit(int numOfCommands) {

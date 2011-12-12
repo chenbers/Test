@@ -15,23 +15,32 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.log4j.Level;
 
+import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.AutomationCassandra;
-import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.dao.hessian.proserver.MCMService;
 import com.inthinc.pro.noteservice.NoteService;
 
 
-public class MCMProxyObject implements MCMProxy{
+public class MCMProxyObject implements MCMService{
     
-    private MCMProxy proxy;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3563177742129607776L;
+
+
+
+    private MCMService proxy;
 
 
     private Addresses server;
@@ -58,15 +67,15 @@ public class MCMProxyObject implements MCMProxy{
     
 
     private void printReply(Object reply){
-        MasterTest.print(reply, Level.DEBUG);
+        MasterTest.print(reply, Level.DEBUG, 3);
     }
     
     private void printNote(DeviceNote note){
-        MasterTest.print(note, Level.DEBUG);
+        MasterTest.print(note, Level.INFO, 3);
     }
     
     private void printOther(Object other){
-        MasterTest.print(other, Level.DEBUG);
+        MasterTest.print(other, Level.DEBUG, 3);
     }
     
     public static void processDrivers(Map<Integer, Map<String, String>> driversMap, String cassandraNode, Integer poolSize, boolean autoDiscovery){
@@ -242,16 +251,28 @@ public class MCMProxyObject implements MCMProxy{
     public List<Map<String, Object>> notebc(String mcmID, Direction comType,
             List<DeviceNote> noteList, String imei){
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
+        
         for (DeviceNote note : noteList){
-            temp.add(note.Package());
+            if (note.getType() == DeviceNoteTypes.INSTALL){
+                List<byte[]> install = new ArrayList<byte[]> (1);
+                install.add(note.Package());
+                notebc(imei, Direction.sat.getCode(), install);
+            } else {
+                temp.add(note.Package());
+            }
             printNote(note);
         }
-        return notebc(mcmID, comType.getCode(), temp);
+        if (!temp.isEmpty()){
+            return notebc(mcmID, comType.getCode(), temp);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public List<Map<String, Object>> notebc(String mcmID, int connectType,
             List<byte[]> noteList) {
+        MasterTest.print("notebc(mcmID=%s, connectType=%d, noteList=%s)", Level.DEBUG, mcmID, connectType, noteList);
         List<Map<String, Object>> reply = proxy.notebc(mcmID, connectType, noteList);
         printReply(reply);
         DeviceStatistics.addCall();
@@ -360,9 +381,23 @@ public class MCMProxyObject implements MCMProxy{
                             + System.currentTimeMillis()
                             + "\nNotes Started at: "
                             + DeviceStatistics.getStart().epochTime(),
-                    Level.DEBUG);
+                    Level.FATAL);
         }
         
         return reply;
+    }
+
+    public Object sendNotes(DeviceState state, DeviceNote note) {
+        Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = new HashMap<Class<? extends DeviceNote>, LinkedList<DeviceNote>>();
+        LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
+        list.add(note);
+        sendingQueue.put(note.getClass(), list);
+        return sendNotes(state, sendingQueue);
+    }
+
+    @Override
+    public Integer crash(String mcmID, List<byte[]> crashDataList)
+            throws ProDAOException {
+        return proxy.crash(mcmID, crashDataList);
     }
 }

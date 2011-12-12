@@ -18,6 +18,7 @@ import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationBridgeFwdCmdParser;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
@@ -81,48 +82,17 @@ public class WaysmartDevice extends DeviceBase {
         MasterTest.print(sendNote(construct_note(DeviceNoteTypes.IGNITION_ON)),
                 Level.DEBUG);
     }
+    
 
-    public WaysmartDevice addInstallEvent(String vehicleID, int accountID) {
-        this.setVehicleID(vehicleID.toUpperCase());
-        this.setAccountID(accountID);
-        this.setCompanyID(1);
-        Direction temp = state.getWaysDirection();
-        state.setWaysDirection(Direction.sat);
-        DeviceNote note = constructNote(DeviceNoteTypes.INSTALL);
-        state.setWaysDirection(temp);
-        
-        note.addAttr(DeviceAttrs.VEHICLE_ID_STR, vehicleID.toUpperCase());
-        note.addAttr(DeviceAttrs.MCM_ID_STR, state.getMcmID());
-        note.addAttr(DeviceAttrs.COMPANY_ID, accountID);
-        
+    public DeviceNote addInstallEvent(InstallEvent event) {
+        DeviceNote note = constructNote(event.noteType);
+        event.getNote(note, productVersion);
+        state.setVehicleID(event.vehicleIDStr);
+        state.setAccountID(event.acctID);
+        assert(event.mcmIDStr.equals(state.getMcmID()));
         addNote(note);
-
-//         Direction temp = state.getWaysDirection();
-//         state.setWaysDirection(Direction.sat);
-//         Package_Waysmart_Note note = construct_note(DeviceNoteTypes.INSTALL);
-//         note.setVehicleID(vehicleID);
-//         note.setCompanyID(accountID);
-//         note.setAccountID(accountID);
-//         state.setWaysDirection(temp);
-        return this;
+        return note;
     }
-
-    public WaysmartDevice addLocationNote(int driverID, int speed,
-            HOSStatus hosStatus) {
-        DeviceNote note = constructNote(DeviceNoteTypes.LOCATION);
-        // note.addAttr(DeviceAttributes.DRIVERID, driverID);
-        // note.addAttr(DeviceAttributes.LINKID, 0);
-        // note.addAttr(DeviceAttributes.CONNECTTYPE, waysDirection);
-        addNote(note);
-
-        // Package_Waysmart_Note note = construct_note(DeviceNoteTypes.LOCATION, comMethod);
-        // // note.setDriverID(driverID);
-        // note.setSpeed(speed);
-        // note.setHosStatus(hosStatus);
-        // logger.info(sendNote(note));
-        return this;
-    }
-
 
     @Override
     protected DeviceBase construct_note() {
@@ -145,26 +115,6 @@ public class WaysmartDevice extends DeviceBase {
     @Override
     protected Integer get_note_count() {
         return note_count;
-    }
-
-    public int getAccountID() {
-        return state.getAccountID();
-    }
-
-    public int getCompanyID() {
-        return state.getCompanyID();
-    }
-
-    public int getDriverID() {
-        return state.getDriverID();
-    }
-
-    public int getStateID() {
-        return state.getStateID();
-    }
-
-    public String getVehicleID() {
-        return state.getVehicleID();
     }
 
     public WaysmartDevice logInDriver(String employeeID) {
@@ -271,9 +221,6 @@ public class WaysmartDevice extends DeviceBase {
         return this;
     }
 
-    public void setCompanyID(int companyID) {
-        state.setCompanyID(companyID);
-    }
 
     public void setEmployeeID(String employeeID) {
         state.setEmployeeID(employeeID);

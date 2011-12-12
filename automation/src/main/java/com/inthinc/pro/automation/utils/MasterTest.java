@@ -65,7 +65,7 @@ public class MasterTest {
         print(printToScreen, Level.INFO, 2);
     }
     
-    private static void print(Object printToScreen, Level level, int stepsBack){
+    public static void print(Object printToScreen, Level level, int stepsBack){
         String printStringToScreen = "";
         stepsBack ++;
         if (printToScreen == null){
@@ -95,6 +95,14 @@ public class MasterTest {
     
     public static void print(Object printToScreen, Level level){
         print(printToScreen, level, 3);
+    }
+    
+    public static void print(String printToScreen, Level level, Object ...objects){
+        print(String.format(printToScreen, objects), level, 3);
+    }
+    
+    public static void print(String printToScreen, Object ...objects){
+        print(String.format(printToScreen, objects), Level.INFO, 3);
     }
 
     protected void tabKey() {

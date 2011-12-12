@@ -8,38 +8,51 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceTrips.TripDriver;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.InstallEvent;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
+import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.BaseEntity;
+import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaysmartAggregationTest {
+    private static final int acctID = 398;
+    private static final int groupID = 5260;
+    private static final int unknownDriverID = 66462;
+    /* AccountID    =   398
+     * Account Name = WSAgg
+     * GroupID      =  5259
+     * PersonID     = 68781
+     * UserID       = 43469
+     * userName     = dtanner
+     * password     = password
+     */
+    
+    private final static State usState = new State(47, "Utah", "UT");
     
     private Map<DeviceState, List<DeviceNote>> tripsMap;
+    private Map<DeviceState, Vehicle> vehicleMap;
     
     
     public WaysmartAggregationTest(){
         tripsMap = new HashMap<DeviceState, List<DeviceNote>>();
+        vehicleMap = new HashMap<DeviceState, Vehicle>();
         populateBaseline();
         sendNotes();
     }
-    
-//    private List<BaseEntity> getAccount(){
-//        Map<Class<? extends BaseEntity>, ? extends BaseEntity> map = new HashMap<Class<? extends BaseEntity>, ? extends BaseEntity>();
-//        map(Account.class, new Account(398, "WSAgg", Status.ACTIVE));
-//        Person
-//        
-//        return acct;
-//    }
     
     
     private void populateBaseline(){
@@ -48,6 +61,7 @@ public class WaysmartAggregationTest {
         String start = "100 Hurt St, Columbia, KY 42728";
         String stop = "Cs-1053/Diamond Ct, Prestonsburg, KY 41653";
         TripDriver driver = new TripDriver(ProductType.WAYSMART);
+        driver.getdeviceState().setDriverID(unknownDriverID);
         driver.addToTrip(start, stop);
         driver.addToTrip(stop, start);
         driver.addEvent(10, AutomationDeviceEvents.speeding(75, 100, 600, 60, 65, 500));
@@ -62,18 +76,42 @@ public class WaysmartAggregationTest {
         for (DeviceNote note : baseline){
             randomized.add(note.copy());
         }
-        Collections.shuffle(randomized);
-        tripsMap.put(newState(i++), baseline);
-        tripsMap.put(newState(i++), randomized);
         
+        
+        AutomationSiloService portalProxy = new AutomationSiloService(Addresses.QA);
+        Collections.shuffle(randomized);
+        DeviceState state;
+        
+        state = newState(++i);
+        tripsMap.put(state, baseline);
+        createVehicle(i, portalProxy, state);
+
+        state = newState(++i);
+        tripsMap.put(state, randomized);
+        createVehicle(i, portalProxy, state);
+    }
+
+
+    private void createVehicle(int i, AutomationSiloService portalProxy,
+            DeviceState state) {
+        Vehicle vehicle;
+        vehicle = new Vehicle(null, groupID, Status.ACTIVE, String.format("VEHICLEFORW%05d", i), "Fake",
+                "Model", 2011, "White", VehicleType.HEAVY, String.format("VEHICLEFORW%05d", i), 9000, "ll33l", usState);
+        try {
+            vehicle = portalProxy.createVehicle(vehicle.getGroupID(), vehicle);
+        } catch (RemoteServerException e){
+            vehicle = portalProxy.getVehicle(vehicle.getVIN());
+        }
+        vehicleMap.put(state, vehicle);
     }
     
     private DeviceState newState(int number){
         String last = String.format("%05d", number);
-        MasterTest.print(last);
-        DeviceState state = new DeviceState("FAKEIMEI"+last, ProductType.WAYSMART);
-        state.setMcmID("FAKE" + last);
+        DeviceState state = new DeviceState("30023FKEWS"+last, ProductType.WAYSMART);
+        state.setMcmID("FKE" + last);
         state.setWaysDirection(Direction.wifi);
+        state.setDriverID(unknownDriverID);
+        MasterTest.print("Imei:%s, MCMID:%s, DriverID:%d", state.getImei(), state.getMcmID(), state.getDriverID());
         return state;
     }
     
@@ -81,13 +119,18 @@ public class WaysmartAggregationTest {
         Iterator<DeviceState> itr = tripsMap.keySet().iterator();
         MCMProxyObject proxy = new MCMProxyObject(Addresses.QA);
         while (itr.hasNext()){
-            int i = 0;
             DeviceState next = itr.next();
+            installEvent(next, proxy);
+            
             NoteManager manager = new NoteManager();
+            int i = 0;
             for (DeviceNote note : tripsMap.get(next)){
                 manager.addNote(note);
                 if (i==4){
                     proxy.sendNotes(next, manager.getNotes(i));
+                    if (proxy != null){
+                        throw new NullPointerException();
+                    }
                     i=0;
                 } else {
                     i++;
@@ -97,21 +140,20 @@ public class WaysmartAggregationTest {
     }
     
     
-    public void test(int numOfWaysmarts){
-        DeviceState[] states = new DeviceState[numOfWaysmarts];
-        for (int i=0;i<numOfWaysmarts;i++){
-            String last = String.format("%05d", i);
-            MasterTest.print(last);
-            DeviceState state = new DeviceState("FAKEIMEI"+last, ProductType.WAYSMART);
-            state.setMcmID("FAKE" + last);
-            state.setWaysDirection(Direction.wifi);
-            states[i] = state;
-            
+    private void installEvent(DeviceState state, MCMProxyObject proxy) {
+        Vehicle vehicle = vehicleMap.get(state);
+        if (vehicle.getDeviceID() != null){
+            MasterTest.print("Vehicle: %d, Device: %d", vehicle.getVehicleID(), vehicle.getDeviceID());
+            return;
         }
+        
+        DeviceNote install = DeviceNote.constructNote(DeviceNoteTypes.INSTALL, new GeoPoint(50.0, 50.0), state);
+        InstallEvent event = AutomationDeviceEvents.install(vehicle.getName(), state.getMcmID(), acctID);
+        event.getNote(install, state.getProductVersion());
+        proxy.sendNotes(state, install);
     }
-    
 
-    
+
     public static void main(String[] args){
         WaysmartAggregationTest test = new WaysmartAggregationTest();
     }

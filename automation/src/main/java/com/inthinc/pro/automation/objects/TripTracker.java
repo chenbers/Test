@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.GoogleTrips;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class TripTracker implements Iterable<GeoPoint> {
 
@@ -75,11 +76,17 @@ public class TripTracker implements Iterable<GeoPoint> {
         if (last == null){
             state.setHeading(Heading.NORTH);
             state.setSpeed(0);
-            state.setOdometer(0);
+            if (!state.getProductVersion().equals(ProductType.WAYSMART)){
+                state.setOdometer(0);
+            }
             return next;
         }
         state.setHeading(Heading.getHeading(next, last));
-        state.setOdometer(last.deltaX(next)*100);
+        if (state.getProductVersion().equals(ProductType.WAYSMART)){
+            state.setOdometer(state.getOdometer() + last.deltaX(next) * 100);
+        } else {
+            state.setOdometer(last.deltaX(next)*100);
+        }
         if (time){
             state.setSpeed(last.speed(value, next));
             state.incrementTime(value);

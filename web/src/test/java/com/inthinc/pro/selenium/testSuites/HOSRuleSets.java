@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
@@ -35,7 +36,7 @@ public class HOSRuleSets extends WebRallyTest {
         waySmart.set_time(initialTime);
         waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
-        waySmart.addInstallEvent(vehicleID, accountID);
+        waySmart.addInstallEvent(AutomationDeviceEvents.install(vehicleID, mcmID, accountID));
         waySmart.power_on_device();
         waySmart.logInDriver(driverID);
         

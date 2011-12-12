@@ -34,7 +34,7 @@ public class CaptainNemoTrip extends Thread{
         tiwi = new TiwiProDevice(IMEI, server);
 
         tiwi.set_time( initialTime.addToSeconds(60));
-        tiwi.set_WMP(17116);
+        tiwi.getState().setWMP(17116);
         tiwi.firstLocation(new GeoPoint(0, 0));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);

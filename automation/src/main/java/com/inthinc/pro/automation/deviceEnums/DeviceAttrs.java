@@ -439,5 +439,10 @@ public enum DeviceAttrs implements DeviceTypes{
     public static DeviceAttrs valueOf(Integer code) {
         return lookupByCode.get(code);
     }
+    
+    @Override
+    public String toString(){
+        return String.format("%s(%d)", name(), code);
+    }
 
 }
