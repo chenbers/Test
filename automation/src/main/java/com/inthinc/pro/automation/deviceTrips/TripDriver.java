@@ -63,7 +63,7 @@ public class TripDriver extends Thread {
         Double lastPercent=0.0;
         Double currentPercent;
         while (itr.hasNext() && !interrupt){
-            currentPercent = totalNotes / tripTracker.currentCount() * 1.0;
+            currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
             int speedLimit = device.getState().getSpeed_limit().intValue();
             if (events[currentPercent.intValue()]!=null){
                 events[currentPercent.intValue()].addEvent(device);
