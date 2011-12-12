@@ -235,6 +235,7 @@ public enum DeviceNoteTypes implements DeviceTypes{
     SUB_THRESHOLD_CRASH(212),
     UNPLUGGED_WHILE_ASLEEP(213),
     IDLE_FAKETIME(214),
+    SAT_EVENT_RF_KILL(219),
 
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
