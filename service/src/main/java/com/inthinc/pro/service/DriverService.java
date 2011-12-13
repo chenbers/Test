@@ -38,6 +38,13 @@ public interface DriverService {
     Response getScore(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
     @GET
+    @Path("/driver/{driverID}/score/month/{month}")
+    Response getScore(@PathParam("driverID") Integer driverID, @PathParam("month") String month);
+    
+    @GET
+    @Path("/driver/{driverID}/score/month")
+    Response getScore(@PathParam("driverID") Integer driverID);
+    @GET
     @Path("/driver/{driverID}/trend/{numberOfDays}")
     Response getTrend(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
     

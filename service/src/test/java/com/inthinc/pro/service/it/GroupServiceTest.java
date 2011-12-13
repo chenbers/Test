@@ -289,4 +289,38 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
         String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
         System.out.println(response);
     }
+    @Test
+    public void getGroupDriverScoresForMonthTest(){
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+"/scores/drivers/month/January");
+        try {
+            ClientResponse<List<DriverVehicleScoreWrapper>> response = request.get();
+            logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
+            assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+            
+            List<DriverVehicleScoreWrapper> list = response.getEntity();
+            assertNotNull(list);
+            assertFalse(list.isEmpty());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    	
+    }
+    @Test
+    public void getGroupDriverScoresForCurrentMonthTest(){
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+"/scores/drivers/month");
+        try {
+            ClientResponse<List<DriverVehicleScoreWrapper>> response = request.get();
+            logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
+            assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+            
+            List<DriverVehicleScoreWrapper> list = response.getEntity();
+            assertNotNull(list);
+            assertFalse(list.isEmpty());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    	
+    }
 }

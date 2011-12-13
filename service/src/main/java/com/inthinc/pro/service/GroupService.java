@@ -31,6 +31,13 @@ public interface GroupService {
     @Path("/group/{groupID}/scores/drivers/{numberOfDays}")
     public Response getDriverScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
+    @GET
+    @Path("/group/{groupID}/scores/drivers/month/{month}")
+    public Response getDriverScoresByMonth(@PathParam("groupID") Integer groupID, @PathParam("month") @DefaultValue("") String month);
+
+    @GET
+    @Path("/group/{groupID}/scores/drivers/month")
+    public Response getDriverScoresByMonth(@PathParam("groupID") Integer groupID);
     // @GET
     // @Path("/group/{groupID}/score/driver/{numberOfDays}")
     // public Response getDriverScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfdays);
@@ -59,6 +66,13 @@ public interface GroupService {
     @Path("/group/{groupID}/subgroups/scores/driver/{numberOfDays}")
     public Response getSubGroupsDriverScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
        
+    @GET
+    @Path("/group/{groupID}/subgroups/scores/driver/month/{month}")
+    public Response getSubGroupsDriverScores(@PathParam("groupID") Integer groupID, @PathParam("month") String month);
+
+    @GET
+    @Path("/group/{groupID}/subgroups/scores/driver/month")
+    public Response getSubGroupsDriverScores(@PathParam("groupID") Integer groupID);
     @POST
     @Consumes("application/xml")
     @Path("/group")

@@ -2,18 +2,19 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.DriverName;
-import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
@@ -56,12 +57,19 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
         return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, duration);
     }	
 
+    public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, Interval interval) {
+// TODO        return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, interval);
+    	return null;
+    }	
     public List<GroupTrendWrapper> getChildGroupsDriverTrends(Integer groupID, Duration duration) {
         return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, duration);
     }    
 
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
         return groupReportDAO.getDriverScores(groupID, duration);
+    }
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
+        return groupReportDAO.getDriverScores(groupID, interval);
     }
     
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {

@@ -15,6 +15,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
+import org.joda.time.Interval;
 import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
@@ -23,15 +24,17 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.service.DriverService;
 import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
+import com.inthinc.pro.util.DateUtil;
 
 public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter> implements DriverService {
-    private static final Logger logger = Logger.getLogger(DriverServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(DriverServiceImpl.class);
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     //2011-08-29T08:31:25-0600
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
@@ -83,6 +86,37 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
     }
 
     @Override
+	public Response getScore(Integer driverID, String month) {
+    	try {
+			Interval interval = DateUtil.getIntervalFromMonth(month);
+			//round about way of getting this with existing hessian methods
+			Driver driver = getDao().findByID(driverID);
+			List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(driver.getGroupID(), interval);
+			if (!list.isEmpty()){
+				Score score = extractScore(list, driverID);
+			    return Response.ok(score).build();
+			}
+		} catch (ParseException e) {
+	        return Response.status(Status.BAD_REQUEST).build();
+		}
+        
+        return Response.status(Status.NOT_FOUND).build();
+	}
+	private Score extractScore(List<DriverVehicleScoreWrapper> list, Integer driverID){
+		for(DriverVehicleScoreWrapper dvsw : list){
+			if (driverID.equals(dvsw.getDriver().getDriverID())){
+				return dvsw.getScore();
+			}
+		}
+		return null;
+	}
+
+    @Override
+	public Response getScore(Integer driverID) {
+		// TODO Auto-generated method stub
+		return getScore(driverID, "");
+	}
+	@Override
     public Response getTrend(Integer driverID, Integer numberOfDays) {
         Duration duration = Duration.getDurationByDays(numberOfDays);
         if (duration != null) {

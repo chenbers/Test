@@ -1,28 +1,32 @@
 package com.inthinc.pro.service.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
+
+import org.joda.time.Interval;
 
 import com.inthinc.pro.model.DriverName;
-import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 import com.inthinc.pro.service.GroupService;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
+import com.inthinc.pro.util.DateUtil;
 
 public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> implements GroupService {
     
-    @Override
+	@Override
     public Response getAll() {
         List<Group> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Group>>(list) {}).build();
@@ -56,6 +60,47 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     }
 
     @Override
+	public Response getDriverScoresByMonth(Integer groupID, String month) {
+    	
+    	try {
+			Interval interval = DateUtil.getIntervalFromMonth(month);
+			List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(groupID, interval);
+			if (!list.isEmpty())
+			    return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+			
+		} catch (ParseException e) {
+	        return Response.status(Status.BAD_REQUEST).build();
+		}
+        
+        return Response.status(Status.NOT_FOUND).build();
+	}
+	@Override
+	public Response getDriverScoresByMonth(Integer groupID) {
+    	
+		return getDriverScoresByMonth(groupID, "");
+	}
+
+    @Override
+	public Response getSubGroupsDriverScores(Integer groupID, String month) {
+    	try {
+			Interval interval = DateUtil.getIntervalFromMonth(month);
+			List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(groupID, interval);
+			if (!list.isEmpty())
+			    return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+			
+		} catch (ParseException e) {
+	        return Response.status(Status.BAD_REQUEST).build();
+		}
+        
+        return Response.status(Status.NOT_FOUND).build();
+	}
+
+	@Override
+	public Response getSubGroupsDriverScores(Integer groupID) {
+		return getSubGroupsDriverScores(groupID, "");
+	}
+
+	@Override
     public Response getVehicleScores(Integer groupID, Integer numberOfDays) {
         Duration duration = Duration.getDurationByDays(numberOfDays);
         if (duration != null) {

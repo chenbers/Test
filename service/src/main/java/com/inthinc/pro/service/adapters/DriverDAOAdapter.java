@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,13 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
+import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.model.event.Event;
@@ -32,6 +35,8 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 	private DriverDAO driverDAO;
     @Autowired
     private DriverReportDAO driverReportDAO;
+    @Autowired
+    private GroupReportDAO groupReportDAO;
     @Autowired
     private EventDAO eventDAO;
 	
@@ -75,6 +80,9 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 
     public Score getScore(Integer driverID, Duration duration) {
         return driverReportDAO.getScore(driverID, duration);
+    }
+    public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
+        return groupReportDAO.getDriverScores(groupID, interval);
     }
 
     public List<Event> getSpeedingEvents(Integer driverID) {
@@ -148,6 +156,14 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 	 */
 	public void setEventDAO(EventDAO eventDAO) {
 		this.eventDAO = eventDAO;
+	}
+
+	public GroupReportDAO getGroupReportDAO() {
+		return groupReportDAO;
+	}
+
+	public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
+		this.groupReportDAO = groupReportDAO;
 	}
 
 }
