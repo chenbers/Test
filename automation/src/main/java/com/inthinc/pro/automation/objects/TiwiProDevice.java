@@ -19,7 +19,6 @@ import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.models.GeoPoint;
@@ -180,11 +179,6 @@ public class TiwiProDevice extends DeviceBase {
         return true;
     }
 
-    @Override
-    public TiwiProDevice construct_note() {
-        return this;
-    }
-
     public TiwiProDevice construct_note(DeviceNoteTypes type) {
         attrs = new DeviceAttributes();
         construct_note(type, attrs);
@@ -206,12 +200,6 @@ public class TiwiProDevice extends DeviceBase {
         addNote(note);
 
         return this;
-    }
-
-    public DeviceNote constructNote(DeviceNoteTypes type) {
-        DeviceNote note = super.constructNote(type);
-        state.setOdometer(0);
-        return note;
     }
 
     @Override

@@ -24,8 +24,8 @@ public class AutomationDeviceEvents {
     private final static AutomationDeviceEvents classes = new AutomationDeviceEvents();
     
     public interface AutomationEvents{
-        public DeviceNote addEvent(DeviceBase device);
-        public DeviceNote getNote(DeviceNote note, ProductType productVersion);
+        public DeviceBase addEvent(DeviceBase device);
+        public DeviceNote getNote(GeoPoint location, DeviceState state);
         public DeviceNoteTypes getNoteType();
     }
     
@@ -60,13 +60,14 @@ public class AutomationDeviceEvents {
         }
 
         @Override
-        public DeviceNote addEvent(DeviceBase device) {
+        public DeviceBase addEvent(DeviceBase device) {
             return device.addNoteEvent(this);
         }
 
         @Override
-        public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
-            if (productVersion.equals(ProductType.WAYSMART)) {
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
                 note.addAttr(DeviceAttrs.DELTA_VS, packDeltaVS());
 
             } else {
@@ -135,13 +136,14 @@ public class AutomationDeviceEvents {
         }
 
         @Override
-        public DeviceNote addEvent(DeviceBase device) {
+        public DeviceBase addEvent(DeviceBase device) {
             return device.addSpeedingNote(this);
         }
 
         @Override
-        public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
-            if (productVersion.equals(ProductType.WAYSMART)) {
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
                 note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
                 note.addAttr(DeviceAttrs.DISTANCE, distance);
                 note.addAttr(DeviceAttrs.MAX_RPM, maxRpm);
@@ -194,7 +196,7 @@ public class AutomationDeviceEvents {
         }
 
         @Override
-        public DeviceNote addEvent(DeviceBase device) {
+        public DeviceBase addEvent(DeviceBase device) {
             return device.addSeatbeltEvent(this);
         }
         
@@ -205,8 +207,9 @@ public class AutomationDeviceEvents {
         }
 
         @Override
-        public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
-            if (productVersion.equals(ProductType.WAYSMART)) {
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
                 note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
                 note.addAttr(DeviceAttrs.DISTANCE, distance);
                 note.addAttr(DeviceAttrs.MAX_RPM, maxRpm);
@@ -252,12 +255,13 @@ public class AutomationDeviceEvents {
         
 
         @Override
-        public DeviceNote addEvent(DeviceBase device) {
+        public DeviceBase addEvent(DeviceBase device) {
             return ((WaysmartDevice)device).addInstallEvent(this);
         }
 
         @Override
-        public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
             note.addAttr(DeviceAttrs.VEHICLE_ID_STR, vehicleIDStr);
             note.addAttr(DeviceAttrs.MCM_ID_STR, mcmIDStr);
             note.addAttr(DeviceAttrs.COMPANY_ID, acctID);
@@ -293,14 +297,14 @@ public class AutomationDeviceEvents {
         }
 
         @Override
-        public DeviceNote addEvent(DeviceBase device) {
-            // TODO Auto-generated method stub
-            return null;
+        public DeviceBase addEvent(DeviceBase device) {
+            return device.addLocation();
         }
 
         @Override
-        public DeviceNote getNote(DeviceNote note, ProductType productVersion) {
-            if (productVersion.equals(ProductType.WAYSMART)){
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            if (state.getProductVersion().equals(ProductType.WAYSMART)){
                 
             } else {
                 note.addAttr(DeviceAttrs.VIOLATION_FLAGS,flag);
@@ -318,5 +322,84 @@ public class AutomationDeviceEvents {
 
     public static LocationEvent location(DeviceState state) {
         return classes.new LocationEvent(state);
+    }
+    
+    public static IgnitionOn ignitionOn(String employeeID, int driverID){
+        return classes.new IgnitionOn(employeeID, driverID);
+    }
+    
+    public class IgnitionOn implements AutomationEvents{
+        
+        private final DeviceNoteTypes noteType = DeviceNoteTypes.IGNITION_ON;
+        private final String employeeID;
+        private final int driverID;
+
+        private IgnitionOn(String employeeID, int driverID){
+            this.employeeID = employeeID;
+            this.driverID = driverID;
+        }
+
+        
+        
+        @Override
+        public DeviceBase addEvent(DeviceBase device) {
+            return device.addIgnitionOnEvent(this);
+        }
+
+        @Override
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            if (state.getProductVersion().equals(ProductType.WAYSMART)){
+//                note.addAttr(DeviceAttrs.DRIVER_STR, employeeID);
+//                note.addAttr(DeviceAttrs.DRIVER_ID, driverID);
+            } else {
+                
+            }
+            return note;
+        }
+
+        @Override
+        public DeviceNoteTypes getNoteType() {
+            return noteType;
+        }
+    }
+    
+    public class IgnitionOffEvent implements AutomationEvents{
+        
+        public final DeviceNoteTypes noteType = DeviceNoteTypes.IGNITION_OFF;
+
+        @Override
+        public DeviceBase addEvent(DeviceBase device) {
+            return device.addIgnitionOffEvent(this);
+        }
+
+        @Override
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            if (state.getProductVersion().equals(ProductType.WAYSMART)){
+                
+            } else {
+                
+            }
+            return note;
+        }
+
+        @Override
+        public DeviceNoteTypes getNoteType() {
+            return noteType;
+        }
+    }
+    
+    public DeviceNote addEndOfTripAttributes(DeviceNote note, DeviceState state){
+        if (state.getProductVersion().equals(ProductType.WAYSMART)){
+            
+        } else {
+            
+        }
+        return note;
+    }
+
+    public static IgnitionOffEvent ignitionOff() {
+        return classes.new IgnitionOffEvent();
     }
 }

@@ -21,7 +21,9 @@ import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.LocationEvent;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.IgnitionOffEvent;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.IgnitionOn;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.NoteEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SeatBeltEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SpeedingEvent;
@@ -98,13 +100,20 @@ public abstract class DeviceBase {
 
     protected abstract void ackFwdCmds(String[] reply);
 
-    public DeviceNote addLocation(){
-        LocationEvent event = AutomationDeviceEvents.location(state);
-        DeviceNote note = constructNote(event.noteType);
-        
-        event.getNote(note, state.getProductVersion());
-        addNote(note);
-        return note;
+    public DeviceBase addIgnitionOnEvent(IgnitionOn event) {
+        addNote(constructNote(event));
+        return this;
+    }
+    
+    public DeviceBase addIgnitionOffEvent(IgnitionOffEvent event) {
+        addNote(constructNote(event));
+        return this;
+    }
+
+
+    public DeviceBase addLocation(){
+        addNote(constructNote(AutomationDeviceEvents.location(state)));
+        return this;
     }
 
     protected DeviceBase addNote(DeviceNote note) {
@@ -113,29 +122,27 @@ public abstract class DeviceBase {
         return this;
     }
 
-    public DeviceNote addNoteEvent(NoteEvent event){
-        DeviceNote note = constructNote(event.noteType);
-        event.getNote(note, state.getProductVersion());
-        addNote(note);
-        return note;
+    public DeviceBase addNoteEvent(NoteEvent event){
+        addNote(constructNote(event));
+        return this;
     }
 
-    protected DeviceNote constructNote(DeviceNoteTypes noteEvent){
-        return DeviceNote.constructNote(noteEvent, tripTracker.currentLocation(), state);
+    protected DeviceNote constructNote(AutomationEvents event){
+        return event.getNote(tripTracker.currentLocation(), state);
     }
 
-    public DeviceNote addSeatbeltEvent(SeatBeltEvent event){
-        DeviceNote note = constructNote(event.noteType);
-        event.getNote(note, state.getProductVersion());
-        addNote(note);
-        return note;
+    public DeviceBase constructNote(DeviceNoteTypes type) {
+        return addNote(DeviceNote.constructNote(type, tripTracker.currentLocation(), state));
     }
 
-    public DeviceNote addSpeedingNote(SpeedingEvent event){
-        DeviceNote note = constructNote(event.noteType);
-        event.getNote(note, state.getProductVersion());
-        addNote(note);
-        return note;
+    public DeviceBase addSeatbeltEvent(SeatBeltEvent event){
+        addNote(constructNote(event));
+        return this;
+    }
+
+    public DeviceBase addSpeedingNote(SpeedingEvent event){
+        addNote(constructNote(event));
+        return this;
     }
 
     protected DeviceBase checkQueue() {
@@ -153,8 +160,6 @@ public abstract class DeviceBase {
         get_changes();
         return this;
     }
-
-    protected abstract DeviceBase construct_note();
 
     protected abstract DeviceBase createAckNote(Map<String, Object> reply);
 
@@ -529,5 +534,6 @@ public abstract class DeviceBase {
         }
         return false;
     }
+
 
 }

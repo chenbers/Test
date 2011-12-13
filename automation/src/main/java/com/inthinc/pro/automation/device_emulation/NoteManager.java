@@ -85,7 +85,7 @@ public class NoteManager {
         public static DeviceNote constructNote(DeviceNoteTypes type, GeoPoint location, DeviceState state) {
             DeviceNote note = null;
             if (state.getProductVersion().equals(ProductType.WAYSMART)){
-                if (type == DeviceNoteTypes.LOCATION || type == DeviceNoteTypes.INSTALL){
+                if (NoteBC.types.contains(type)){
                     note = new NoteBC(type, state, location);
                 } else {
                     note = new NoteWS(type, state, location);

@@ -9,12 +9,10 @@ import java.util.Map;
 import org.apache.log4j.Level;
 
 import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationBridgeFwdCmdParser;
@@ -64,41 +62,36 @@ public class WaysmartDevice extends DeviceBase {
     /**
      * NEWDRIVER_HOSRULE(116, DeviceAttrs.DRIVER_STR, DeviceAttrs.MCM_RULESET),
      **/
-    public WaysmartDevice addHosStateChange(String driverStr, HOSStatus status) {
-        state.setEmployeeID(driverStr);
-        DeviceNote note = constructNote(DeviceNoteTypes.NEWDRIVER_HOSRULE);
-        note.addAttr(DeviceAttrs.DRIVER_STR, driverStr);
-        note.addAttr(DeviceAttrs.MCM_RULESET, status);
-        addNote(note);
-        return this;
-    }
+//    public WaysmartDevice addHosStateChange(String driverStr, HOSStatus status) {
+//        state.setEmployeeID(driverStr);
+//        DeviceNote note = super.constructNote(DeviceNoteTypes.NEWDRIVER_HOSRULE);
+//        note.addAttr(DeviceAttrs.DRIVER_STR, driverStr);
+//        note.addAttr(DeviceAttrs.MCM_RULESET, status);
+//        addNote(note);
+//        return this;
+//    }
 
     public void addIgnitionOffNote() {
+        constructNote(DeviceNoteTypes.IGNITION_OFF);
         MasterTest.print(sendNote(construct_note(DeviceNoteTypes.IGNITION_OFF)),
                 Level.DEBUG);
     }
 
     public void addIgnitionOnNote() {
+        constructNote(DeviceNoteTypes.IGNITION_ON);
         MasterTest.print(sendNote(construct_note(DeviceNoteTypes.IGNITION_ON)),
                 Level.DEBUG);
     }
     
 
-    public DeviceNote addInstallEvent(InstallEvent event) {
-        DeviceNote note = constructNote(event.noteType);
-        event.getNote(note, productVersion);
+    public WaysmartDevice addInstallEvent(InstallEvent event) {
+        addNote(constructNote(event));
         state.setVehicleID(event.vehicleIDStr);
         state.setAccountID(event.acctID);
         assert(event.mcmIDStr.equals(state.getMcmID()));
-        addNote(note);
-        return note;
+        return this;
     }
 
-    @Override
-    protected DeviceBase construct_note() {
-        return null;
-    }
-    
 
     protected Package_Waysmart_Note construct_note(DeviceNoteTypes type) {
         return new Package_Waysmart_Note(type, state.getWaysDirection(),
@@ -109,7 +102,6 @@ public class WaysmartDevice extends DeviceBase {
     @Override
     protected WaysmartDevice createAckNote(Map<String, Object> reply) {
         return this;
-
     }
 
     @Override

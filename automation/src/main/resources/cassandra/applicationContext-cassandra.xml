@@ -23,9 +23,9 @@
 	</bean>
 	<bean id="cassandraPropertiesBean" class="com.inthinc.pro.automation.CassandraPropertiesBean"
 		scope="singleton">
-		<property name="defaultAddress" value="${cassandra.node.default}" />
-		<property name="ec2ip" value="${cassandra.node.ec2ip}" />
-		<property name="useDefaultNode" value="${cassandra.useDefaultNode}" />
+		<property name="address" value="${cassandra.node.address}" />
+		<property name="clusterName" value="${cassandra.node.clusterName}" />
+		<property name="keyspaceName" value="${cassandra.node.keyspaceName}" />
 		<property name="minutes" value="${cassandra.time.minutes}" />
 		<property name="seconds" value="${cassandra.time.seconds}" />
 		<property name="threads" value="${cassandra.maxThreads}" />

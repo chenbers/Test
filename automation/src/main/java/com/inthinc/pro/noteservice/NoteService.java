@@ -37,6 +37,11 @@ import me.prettyprint.hector.api.query.SliceQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.inthinc.pro.automation.CassandraPropertiesBean;
+import com.inthinc.pro.automation.resources.DeviceStatistics;
+import com.inthinc.pro.automation.utils.CassandraProperties;
+import com.inthinc.pro.automation.utils.MasterTest;
+
 public class NoteService {
     private static Logger logger = LoggerFactory.getLogger(NoteLoader.class);
 
@@ -52,6 +57,13 @@ public class NoteService {
     private String clusterName = "";
     private String keyspaceName = "";
     private String nodeAddress = "";
+    
+    public static NoteService createNode() {
+        CassandraPropertiesBean cpb = CassandraProperties.getPropertyBean();
+        MasterTest.print(cpb);
+        return new NoteService(cpb.getClusterName(), "note", 
+                cpb.getAddress(), cpb.getPoolSize(), cpb.isAutoDiscovery());
+    }
     
  
     public static void main(String[] args)
@@ -321,6 +333,7 @@ public class NoteService {
         List<MutationResult> results = new ArrayList<MutationResult>();
         for (Map<String, String> note : list){
             results.add(insertNote(note));
+            DeviceStatistics.addCall();
         }
         return results;
     }

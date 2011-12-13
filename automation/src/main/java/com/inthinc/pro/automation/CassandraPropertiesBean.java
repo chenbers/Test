@@ -2,30 +2,24 @@ package com.inthinc.pro.automation;
 
 public class CassandraPropertiesBean {
 
-    private String defaultAddress;
-    private String ec2ip;
+    private String address;
+    private String clusterName;
+    private String keyspaceName;
     private Integer minutes;
     private Integer seconds;
     private Integer threads;
     private Integer poolSize;
     private boolean autoDiscovery;
-    private boolean useDefaultNode;
     
     
-    public String getDefaultAddress() {
-        return defaultAddress;
+    public String getAddress() {
+        return address;
     }
-    public void setDefaultAddress(String defaultAddress) {
-        this.defaultAddress = defaultAddress;
-    }
-    public String getEc2ip() {
-        return ec2ip;
-    }
-    public void setEc2ip(String ec2ip) {
-        if (ec2ip.startsWith("ec2") && ec2ip.endsWith(".com")){
-            this.ec2ip = ec2ip;
+    public void setAddress(String address) {
+        if (address.endsWith(".com")){
+            this.address = address;
         } else {
-            this.ec2ip = "ec2-" + ec2ip + ".compute-1.amazonaws.com";
+            this.address = "ec2-" + address + ".compute-1.amazonaws.com";
         }
     }
     public Integer getMinutes() {
@@ -58,17 +52,23 @@ public class CassandraPropertiesBean {
     public boolean isAutoDiscovery() {
         return autoDiscovery;
     }
-    public void setUseDefaultNode(boolean useDefaultNode) {
-        this.useDefaultNode = useDefaultNode;
-    }
-    public boolean isUseDefaultNode() {
-        return useDefaultNode;
-    }
     
     @Override 
     public String toString(){
-        String toString = String.format("defaultAddress=%s\n ec2ip=%s\n useDefaultNod=%s\n runFor %d:%d\n maxThreads=%d\n poolSize=%d\n useAutoDiscovery=%s\n", 
-                defaultAddress,ec2ip,useDefaultNode,minutes,seconds,threads, poolSize, autoDiscovery);
+        String toString = String.format("\naddress=%s\n clusterName=%s\n keyspaceName=%s\n runFor %d:%d\n maxThreads=%d\n poolSize=%d\n useAutoDiscovery=%s\n", 
+                address,clusterName,keyspaceName,minutes,seconds,threads, poolSize, autoDiscovery);
         return toString;
+    }
+    public void setClusterName(String clusterName) {
+        this.clusterName = clusterName;
+    }
+    public String getClusterName() {
+        return clusterName;
+    }
+    public void setKeyspaceName(String keyspaceName) {
+        this.keyspaceName = keyspaceName;
+    }
+    public String getKeyspaceName() {
+        return keyspaceName;
     }
 }

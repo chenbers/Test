@@ -1,6 +1,8 @@
 package com.inthinc.pro.automation.models;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
@@ -27,6 +29,18 @@ public class NoteBC extends DeviceNote {
     private final int nDriverID;
     private final DeviceAttributes attrs;
     private final GeoPoint location;
+    
+    public final static List<DeviceNoteTypes> types = new ArrayList<DeviceNoteTypes>();
+    
+    static {
+        types.add(DeviceNoteTypes.INSTALL);
+        types.add(DeviceNoteTypes.IGNITION_ON);
+        types.add(DeviceNoteTypes.IGNITION_OFF);
+        
+        types.add(DeviceNoteTypes.LOCATION);
+        
+        types.add(DeviceNoteTypes.NEWDRIVER_HOSRULE);
+    }
     
     public static enum Direction implements DeviceTypes{
         wifi(3),
@@ -73,7 +87,6 @@ public class NoteBC extends DeviceNote {
         NoteManager.longToByte(bos, nVersion.getVersion(), 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
-//        location.encodeLat(bos, 4);
         NoteManager.longToByte(bos, location.encodeLatBC(), 4);
         NoteManager.longToByte(bos, location.encodeLngBC(), 4);
         NoteManager.longToByte(bos, nSpeed, 1);

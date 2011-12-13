@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TripTracker;
@@ -90,6 +91,8 @@ public class TripDriver extends Thread {
         LinkedList<DeviceNote> notes = new LinkedList<DeviceNote>();
         Iterator<GeoPoint> itr = tripTracker.iterator();
 
+        notes.add(AutomationDeviceEvents.ignitionOn(state.getEmployeeID(), state.getDriverID()).getNote(tripTracker.currentLocation(), state));
+        
         int totalNotes = tripTracker.size()*100;
         Double lastPercent=0.0;
         Double currentPercent;
@@ -97,26 +100,16 @@ public class TripDriver extends Thread {
         while (itr.hasNext()){
             currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
             
-//            if (currentPercent.intValue() == 10){
-//                MasterTest.print(currentPercent);
-//                MasterTest.print(tripTracker.currentCount());
-//                MasterTest.print(totalNotes);
-//                throw new NullPointerException();
-//            }
             if (events[currentPercent.intValue()]!=null){
                 AutomationEvents event = events[currentPercent.intValue()];
-                DeviceNote tripEvent = DeviceNote.constructNote(event.getNoteType(), tripTracker.currentLocation(), state);
-                event.getNote(tripEvent, state.getProductVersion());
-                notes.add(tripEvent);
+                notes.add(event.getNote(tripTracker.currentLocation(), state));
                 positions.remove(currentPercent);
                 events[currentPercent.intValue()] = null;
             } else {
                 for (int eventPos : positions){
                     if (lastPercent < eventPos && eventPos < currentPercent){
                         AutomationEvents event = events[eventPos];
-                        DeviceNote tripEvent = DeviceNote.constructNote(event.getNoteType(), tripTracker.currentLocation(), state);
-                        event.getNote(tripEvent, state.getProductVersion());
-                        notes.add(tripEvent);
+                        notes.add(event.getNote(tripTracker.currentLocation(), state));
                         positions.remove(eventPos);
                         break;
                     }
@@ -127,10 +120,7 @@ public class TripDriver extends Thread {
 
             lastPercent = currentPercent;
         }
-//        if (!interrupt){
-//            device.turn_key_off(60);
-//            device.power_off_device(60);   
-//        }
+        notes.add(AutomationDeviceEvents.ignitionOff().getNote(tripTracker.currentLocation(), state));
         return notes;
     }
     

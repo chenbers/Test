@@ -128,9 +128,9 @@ public class WaysmartAggregationTest {
                 manager.addNote(note);
                 if (i==4){
                     proxy.sendNotes(next, manager.getNotes(i));
-                    if (proxy != null){
-                        throw new NullPointerException();
-                    }
+//                    if (proxy != null){
+//                        throw new NullPointerException();
+//                    }
                     i=0;
                 } else {
                     i++;
@@ -147,10 +147,8 @@ public class WaysmartAggregationTest {
             return;
         }
         
-        DeviceNote install = DeviceNote.constructNote(DeviceNoteTypes.INSTALL, new GeoPoint(50.0, 50.0), state);
         InstallEvent event = AutomationDeviceEvents.install(vehicle.getName(), state.getMcmID(), acctID);
-        event.getNote(install, state.getProductVersion());
-        proxy.sendNotes(state, install);
+        proxy.sendNotes(state, event.getNote(new GeoPoint(50.0, 50.0), state));
     }
 
 

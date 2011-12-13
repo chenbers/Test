@@ -49,7 +49,7 @@ public class DeviceState {
 
     private Boolean speeding = false;
 
-    private int stateID = 50;
+    private int stateID = 47;
 
     private String stateName = "UT";
 

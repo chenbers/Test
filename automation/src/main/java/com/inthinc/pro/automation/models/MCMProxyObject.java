@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import me.prettyprint.hector.api.mutation.MutationResult;
+
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -20,7 +22,6 @@ import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.AutomationCassandra;
 import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
@@ -71,14 +72,14 @@ public class MCMProxyObject implements MCMService{
     }
     
     private void printNote(DeviceNote note){
-        MasterTest.print(note, Level.INFO, 3);
+        MasterTest.print(note, Level.DEBUG, 3);
     }
     
     private void printOther(Object other){
         MasterTest.print(other, Level.DEBUG, 3);
     }
     
-    public static void processDrivers(Map<Integer, Map<String, String>> driversMap, String cassandraNode, Integer poolSize, boolean autoDiscovery){
+    public static void processDrivers(Map<Integer, Map<String, String>> driversMap){
         drivers = new HashMap<String, String>();
         Iterator<Integer> itr = driversMap.keySet().iterator();
         while (itr.hasNext()){
@@ -86,7 +87,7 @@ public class MCMProxyObject implements MCMService{
             Map<String, String> map = driversMap.get(next);
             drivers.put(map.get("device"), map.get("deviceID"));
         }
-        notes = AutomationCassandra.createNode(cassandraNode, poolSize, autoDiscovery);
+        notes = NoteService.createNode();
     }
     
     public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){
@@ -108,9 +109,6 @@ public class MCMProxyObject implements MCMService{
                 Map<String, String> temp = ((TiwiNote)note).packageToMap();
                 temp.put("32900", drivers.get(mcmID).toString());
                 list.add(temp);
-//                MutationResult mr = notes.insertNote(temp);
-//                MasterTest.print(mr.getExecutionTimeMicro(), Level.DEBUG);
-//                DeviceStatistics.addCall();
             }
             notes.insertNote(list);
         }

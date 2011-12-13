@@ -34,10 +34,10 @@ public class VariableTripCreator {
     }
     
     @SuppressWarnings("unchecked")
-    public void readDrivers(String cassandraNode, Integer poolSize, boolean autoDiscovery){
+    public void readDrivers(){
         ObjectReadWrite reader = new ObjectReadWrite();
         drivers = (Map<Integer, Map<String, String>>) reader.readObject(address).get(0);
-        MCMProxyObject.processDrivers(drivers, cassandraNode, poolSize, autoDiscovery);
+        MCMProxyObject.processDrivers(drivers);
     }
     
     public void driveTiwis(Integer totalTime, Integer maxThreads){
@@ -101,21 +101,14 @@ public class VariableTripCreator {
         
     public static void main(String[] args){
         CassandraPropertiesBean cpb = CassandraProperties.getPropertyBean();
-        MasterTest.print(cpb.toString());
+        
         Integer totalTime = cpb.getMinutes() * 60 + cpb.getSeconds();
         VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
         if (totalTime == 0){
             test.once  = true;
         }
         MCMProxyObject.regularNote=false;
-        cpb.toString();
-        String node;
-        if (cpb.isUseDefaultNode()){
-            node = cpb.getDefaultAddress();
-        } else {
-            node = cpb.getEc2ip();
-        }
-        test.readDrivers(node, cpb.getPoolSize(), cpb.isAutoDiscovery());
+        test.readDrivers();
         test.driveTiwis(totalTime, cpb.getThreads());
     }
 }
