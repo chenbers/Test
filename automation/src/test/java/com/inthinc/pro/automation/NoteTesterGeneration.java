@@ -1,12 +1,11 @@
 package com.inthinc.pro.automation;
 
-import org.junit.Test;
-
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
+import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 public class NoteTesterGeneration extends Thread{
@@ -62,6 +61,7 @@ public class NoteTesterGeneration extends Thread{
         
         for(int i=0; i<4; i++){
             tiwiArray[i].set_time( initialTime.addToSeconds(60));
+            tiwiArray[i].getTripTracker().addLocation(new GeoPoint(0.0, -10.0));
             tiwiArray[i].power_on_device();
             tiwiArray[i].turn_key_on(15);
         }
@@ -116,12 +116,6 @@ public class NoteTesterGeneration extends Thread{
         }
     }
     
-    @Test
-    public void generateTestData() {
-        System.out.println("generateTestData() running");
-        main(null);
-    }
-    
     public static void main(String[] args){
         NoteTesterGeneration trip = new NoteTesterGeneration();
         AutomationCalendar initialTime = new AutomationCalendar();
@@ -131,8 +125,8 @@ public class NoteTesterGeneration extends Thread{
         imei2 = "999999000109742";
         imei3 = "999999000109743";
         imei4 = "999999000109744";
-        address=Addresses.QA;
-        
+        address = Addresses.getSilo(AutomationProperties.getPropertyBean().getSilo()); 
+        System.out.println("NoteTesterGeneration ran on address:"+address+"; address.webAddress:"+address.getWebAddress());
         
         trip.noteTesterFirstGeneration( imei1, imei2, imei3, imei4, address, initialTime);
     }
