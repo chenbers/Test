@@ -131,6 +131,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
 
             // violations
             addDriverViolations(interval, accountGroupHierarchy, violationDetailList, driver, driverTimeZone, driverDOTType, recListForViolationsCalc);
+            
 
         }
         Collections.sort(violationDetailList);
@@ -143,6 +144,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
 //        setUseMetric(true);
         
     }
+
 
 
     protected abstract void addDriverViolations(Interval interval, GroupHierarchy accountGroupHierarchy, List<ViolationsDetailRaw> violationDetailList, 
@@ -171,6 +173,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
             hosViolationsDetail.setGroupID(driver.getGroupID());
             hosViolationsDetail.setNotificationTime(violationData.getHosViolationRec().getLogTimeDate());
             hosViolationsDetail.setVehicleId(violationData.getHosViolationRec().getVehicleID());
+            hosViolationsDetail.setVehicleID(violationData.getHosViolationRec().getVehicleInternalID());
             hosViolationsDetail.setRuleType(violationData.getHosViolationRec().getRuleType());
             hosViolationsDetail.setTimeStr(displayDateTimeFormatter.print(new DateTime(violationData.getHosViolationRec().getLogTimeDate(), DateTimeZone.forTimeZone(violationData.getHosViolationRec().getLogTimeZone()))));
             hosViolationsDetail.setViolationsList(violationList);

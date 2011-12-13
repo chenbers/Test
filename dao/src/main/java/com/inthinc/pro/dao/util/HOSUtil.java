@@ -103,6 +103,7 @@ public class HOSUtil {
                     (hosRecord.getSingleDriver() == null) ? false : hosRecord.getSingleDriver(),
                     (hosRecord.getVehicleIsDOT() == null) ? false : hosRecord.getVehicleIsDOT() && !isDriverDOT);
             hosRec.setEndTimeDate(endDate);
+            hosRec.setVehicleInternalID(hosRecord.getVehicleID());
             endDate = hosRecord.getLogTime();
             
             recList.add(hosRec);
