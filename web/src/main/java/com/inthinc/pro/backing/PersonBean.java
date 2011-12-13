@@ -825,12 +825,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:editPerson-driver_status", message);
             }
-            if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date())
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.expiration")))) {
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
-                context.addMessage("edit-form:editPerson-driver_expiration", message);
-                valid = false;
-            }
             if (!isBatchEdit() && (person.getDriver().getBarcode() != null) && !person.getDriver().getBarcode().isEmpty()) {
             	
             	List<Long> rfids = driverDAO.getRfidsByBarcode(person.getDriver().getBarcode());
