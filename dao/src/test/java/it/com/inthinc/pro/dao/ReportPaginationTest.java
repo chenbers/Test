@@ -452,7 +452,7 @@ public class ReportPaginationTest {
     		assertEquals("Unexpected idling count for team " + teamIdx, countPerGroup, idlingCount);
 
     		Integer idlingSupportCount = reportDAO.getIdlingReportSupportsIdleStatsCount(team.group.getGroupID(), interval, null);
-    		assertEquals("Unexpected idling count for team " + teamIdx, countPerGroup, idlingSupportCount);
+    		assertEquals("Unexpected idling support stats count for team " + teamIdx, countPerGroup, idlingSupportCount);
 
     		// get all
     		PageParams pageParams = new PageParams();
