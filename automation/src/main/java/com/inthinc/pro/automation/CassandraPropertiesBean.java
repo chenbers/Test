@@ -16,11 +16,7 @@ public class CassandraPropertiesBean {
         return address;
     }
     public void setAddress(String address) {
-        if (address.endsWith(".com")){
-            this.address = address;
-        } else {
-            this.address = "ec2-" + address + ".compute-1.amazonaws.com";
-        }
+        this.address = address;
     }
     public Integer getMinutes() {
         return minutes;
