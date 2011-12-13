@@ -5,7 +5,7 @@ Meta:
 
 Narrative:
 
-In order to show the inthinc admin vehicle and admin users access points features
+In order to show the admin users access points features
 As varying levels of user capabilities
 I want to see all combinations of user capabilities
 
@@ -19,77 +19,96 @@ And I should be able to edit driver information
 And I should be able to edit employee information
 And I should be able to edit login information
 And I should be able to edit RFID information
-And I should be able to edit notification information
+And I should be able to edit notifications information
+And I should be able to save
 
-Scenario: All Access
-Given I am logged in as a Super User
-And I am on the Admin Users page
-When I click any user link
-And I click the edit button
-Then I should have access to all access points
-And I should be able to edit all access points 
-
-Scenario: No User Access
-Given I am logged in as an AllButUser user
-And I am on the Admin Users page
-When I click any user link
-And I click the edit button
-Then I should be able to see all access points
-And I cannot edit all access points
-
-Scenario: Partial User
-Given I am logged in as PartialUser user
-And I am on the Admin Users page	
-When I click any user link
-And I click the edit button
-Then I should be able to see all access points
-And I can only edit some access points
-And I cannot edit some access points
-
-Scenario: User Only
-Given I am logged in as a UserAccessOnly user
-And I am on the Admin Users page
+Scenario: Can view and edit all user info
+Given I am logged in as a user in a role that has all accesspoints
+And I am on the "Admin Users" page
 When I click any user link
 And I click the edit button
 Then I should be able to edit user information
-And I cannot edit any other access points
+And I should be able to edit driver information
+And I should be able to edit employee information
+And I should be able to edit login information
+And I should be able to edit RFID information
+And I should be able to edit notifications information
+And I should be able to save
 
-Scenario: Driver Only
-Given I am logged in as a DriverAccessOnly user
-And I am on the Admin Users page
-When I click on any user link
-And I click the edit button
-Then I should only be able to edit driver information
-And I cannot edit any other access points
-
-Scenario: Employee Only
-Given I am logged in as an EmployeeAccessOnly user
-And I am on the Admin Users page
+Scenario: Can edit user info only
+Given I am logged in as a user in a role that only has the UserInfo accesspoint
+And I am on the "Admin Users" page
 When I click any user link
 And I click the edit button
-Then I should be able to edit Employee information
-And I cannot edit any other access points
+Then I should be able to edit user information
+And I should not be able to edit driver information
+And I should not be able to edit employee information
+And I should not be able to edit login information
+And I should not be able to edit RFID information
+And I should not be able to edit notifications information
+And I should be able to save
 
-Scenario: RFID Only
-Given I am logged in as an RFIDAccessOnly user
-And I am on the Admin Users page
+Scenario: Can edit driver information only
+Given I am logged in as a user in a role that only has Driver accesspoint
+And I am on the "Admin Users" page
+When I click on any user link
+And I click the edit button
+Then I should be able to edit driver information
+And I should not be able to edit employee information
+And I should not be able to edit login information
+And I should not be able to edit RFID information
+And I should not be able to edit notifications information
+And I should not be able to edit user information
+And I should be able to save
+
+Scenario: Can edit employee information only
+Given I am logged in as a user in a role that only has employee accesspoint
+And I am on the "Admin Users" page
+When I click any user link
+And I click the edit button
+Then I should be able to edit employee information
+And I should not be able to edit driver information
+And I should not be able to edit login information
+And I should not be able to edit RFID information
+And I should not be able to edit notifications information
+And I should not be able to edit user information
+And I should be able to save
+
+Scenario: Can edit RFID information only
+Given I am logged in as a user in a role that only has RFID accesspoint
+And I am on the "Admin Users" page
 When I click any user link
 And I click the edit button
 Then I should be able to edit RFID information
-And I cannot edit any other access points
+And I should not be able to edit employee information
+And I should not be able to edit driver information
+And I should not be able to edit login information
+And I should not be able to edit notifications information
+And I should not be able to edit user information
+And I should be able to save
 
-Scenario: Login Only
-Given I am logged in as a LoginAccessOnly user
-And I am on the Admin Users page
+Scenario: Can edit Login information only
+Given I am logged in as a user in a role that only has Login accesspoint
+And I am on the "Admin Users" page
 When I click any user link
 And I click the edit button
 Then I should be able to edit Login information
-And I cannot edit any other access points
+And I should not be able to edit employee information
+And I should not be able to edit driver information
+And I should not be able to edit RFID information
+And I should not be able to edit notifications information
+And I should not be able to edit user information
+And I should be able to save
 
-Scenario: Notifications Only
-Given I am logged in as an NotificationsAccessOnly user
-And I am on the Admin Users page
+Scenario: Can edit Notifications information only
+Given I am logged in as an user in a role that only has Notifications accesspoint
+And I am on the "Admin Users" page
 When I click any user link
 And I click the edit button
 Then I should be able to edit Notifications information
-And I cannot edit any other access points
+And I should not be able to edit employee information
+And I should not be able to edit driver information
+And I should not be able to edit RFID information
+And I should not be able to edit login information
+And I should not be able to edit user information
+And I should be able to save
