@@ -198,7 +198,18 @@ public class ProUserServiceImpl implements UserDetailsService
 		
 		String adminAccessPointsArray[]
 		  = {"usersAccess",
+		        "usersAccess_userInfo",
+		        "usersAccess_driverInfo",
+		        "usersAccess_rfidInfo",
+		        "usersAccess_employeeInfo",
+		        "usersAccess_loginInfo",
+		        "usersAccess_notificationsInfo",
 			"vehiclesAccess",
+			    "vehiclesAccess_vehicleInfo",
+		        "vehiclesAccess_wirelineInfo",
+			    "vehiclesAccess_profileInfo",
+			    "vehiclesAccess_assignmentInfo",
+			    "vehiclesAccess_speedInfo",
 			"devicesAccess",
 			"zonesAccess",
 			"zoneAlertsAccess",
