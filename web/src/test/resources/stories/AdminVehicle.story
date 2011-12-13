@@ -1,3 +1,6 @@
+Meta:
+@page Vehicle Users
+
 Narrative:
 
 In order to show the inthinc admin vehicle access points features
@@ -16,7 +19,7 @@ And I should be able to edit Assignment information
 And I should be able to edit "Speed and Sensitivity" information
 And I should be able to save
 
-Scenario: Can't edit any vehicle informationNo Vehicle Access
+Scenario: Can't edit any vehicle information
 Given I am logged in as a user in a role
 And I am on the "Admin Users" page
 When I click any user link

@@ -1,5 +1,3 @@
-Test Cases for US4735/US4739
-
 Meta:
 @page Admin Users
 
