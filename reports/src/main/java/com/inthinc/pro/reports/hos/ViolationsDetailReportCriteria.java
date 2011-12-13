@@ -165,8 +165,10 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
                 continue;
             ViolationsDetailRaw hosViolationsDetail = new ViolationsDetailRaw();
             hosViolationsDetail.setDriverName(driver.getPerson().getFullNameLastFirst());
+            hosViolationsDetail.setDriverID(driver.getDriverID());
             hosViolationsDetail.setEmployeeId(driver.getPerson().getEmpid());
             hosViolationsDetail.setGroupName(getFullGroupName(groupHierarchy, driver.getGroupID()));
+            hosViolationsDetail.setGroupID(driver.getGroupID());
             hosViolationsDetail.setNotificationTime(violationData.getHosViolationRec().getLogTimeDate());
             hosViolationsDetail.setVehicleId(violationData.getHosViolationRec().getVehicleID());
             hosViolationsDetail.setRuleType(violationData.getHosViolationRec().getRuleType());

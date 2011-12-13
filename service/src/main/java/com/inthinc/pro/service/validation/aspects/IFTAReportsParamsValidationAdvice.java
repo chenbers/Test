@@ -73,6 +73,10 @@ public class IFTAReportsParamsValidationAdvice {
     @Pointcut("execution(* com.inthinc.pro.service.reports.impl.PerformanceServiceImpl.*(..))")
     private void isPerformanceService() {};
 
+    @SuppressWarnings("unused")
+    @Pointcut("execution(* com.inthinc.pro.service.reports.impl.HOSServiceImpl.*(..))")
+    private void isHOSService() {};
+
 	@SuppressWarnings("unused")
 	@Pointcut("@annotation(com.inthinc.pro.service.validation.annotations.ValidParams)")
 	private void validateParams() {};	
@@ -101,6 +105,10 @@ public class IFTAReportsParamsValidationAdvice {
 	@Pointcut("args(groupList, locale, measurementType)")
 	private void withoutDatesMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {}
 	
+    @SuppressWarnings("unused")
+    @Pointcut("args(groupID, startDate, endDate, locale)")
+    private void hosWithDates(Integer groupID, Date startDate, Date endDate, Locale locale) {}
+
 	
 	/*---------------------------------------------------------------------
 	 * Advice 
@@ -162,4 +170,11 @@ public class IFTAReportsParamsValidationAdvice {
         return pjp.proceed(new Object[] {params.getGroupIDListAsInteger().get(0), params.getLocale()});
     }   
 
+    @Around("isHOSService() && validateParams() && hosWithDates(groupID, startDate, endDate, locale)") 
+    public Object validateHOSWithDates(ProceedingJoinPoint pjp, Integer groupID, Date startDate, Date endDate, Locale locale) throws Throwable {
+
+        IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupID, startDate, endDate, locale);
+        violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
+        return pjp.proceed(new Object[] {params.getGroupIDListAsInteger().get(0), params.getStartDate(), params.getEndDate(), params.getLocale()});
+    }   
 }
