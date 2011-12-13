@@ -139,7 +139,7 @@
 
 					  <h:panelGroup id="driverInfoPanel" >
                       <div class="add_section_title">
-                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isDriver" value="#{personBean.item.driverSelected}" disabled="#{personBean.driverInfoDisabled}">
+                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isDriver" value="#{ personBean.item.driverSelected}" >
                   			<a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isDriver,driverInfoPanel" limitToList="true" />
                        	</h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
