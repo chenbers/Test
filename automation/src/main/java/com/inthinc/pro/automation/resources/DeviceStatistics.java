@@ -42,9 +42,9 @@ public class DeviceStatistics {
     
     public static boolean updateStop(){
         stop.setDate(System.currentTimeMillis());
-        if (stop.getDelta(last) > 60000){
-            MasterTest.print(String.format("Sent: %d, Time: %d, NotesPerMinute: %d",
-                    hessianCalls, getTimeDelta(), getCallsPerMinute()));
+        if (stop.getDelta(last) > 15000){
+            MasterTest.print("Sent: %d, Time: %d, NotesPerMinute: %d",
+                    hessianCalls, getTimeDelta(), getCallsPerMinute());
             last.setDate(stop);
         }
         return true;
