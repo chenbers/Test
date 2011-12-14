@@ -24,6 +24,7 @@ public class LatLng implements Serializable, Comparable<LatLng> {
     // Now i'm adding heading, speed, and time which turns it into something more than LatLng. For cleanness, this object should be refactored and renamed to something else. Not
     // now though.
     private Integer head;
+    @Column(name = "ntime")
     private Date time;
     private Integer speed;
 
