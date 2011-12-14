@@ -73,6 +73,7 @@ public interface GroupService {
     @GET
     @Path("/group/{groupID}/subgroups/scores/driver/month")
     public Response getSubGroupsDriverScores(@PathParam("groupID") Integer groupID);
+
     @POST
     @Consumes("application/xml")
     @Path("/group")

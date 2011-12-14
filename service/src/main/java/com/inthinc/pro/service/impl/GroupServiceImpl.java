@@ -83,10 +83,12 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     @Override
 	public Response getSubGroupsDriverScores(Integer groupID, String month) {
     	try {
+    		//round about way of getting scores for subgroups that just uses existing hessian methods
 			Interval interval = DateUtil.getIntervalFromMonth(month);
-			List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(groupID, interval);
+			
+			List<GroupScoreWrapper> list = getDao().getChildGroupsDriverScores(groupID, interval);
 			if (!list.isEmpty())
-			    return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+			    return Response.ok(new GenericEntity<List<GroupScoreWrapper>>(list) {}).build();
 			
 		} catch (ParseException e) {
 	        return Response.status(Status.BAD_REQUEST).build();

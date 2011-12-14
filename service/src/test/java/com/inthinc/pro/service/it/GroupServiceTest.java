@@ -25,11 +25,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.GroupStatus;
-import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
@@ -37,7 +33,7 @@ import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 /**
  * Integration test for Group Service Implementation.
  */
-@Ignore
+//@Ignore
 public class GroupServiceTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(GroupServiceTest.class);
     private static int GROUP_ID = 3;
@@ -297,7 +293,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
             assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             
-            List<DriverVehicleScoreWrapper> list = response.getEntity();
+            List<DriverVehicleScoreWrapper> list = response.getEntity(new GenericType<List<DriverVehicleScoreWrapper>>() {});
             assertNotNull(list);
             assertFalse(list.isEmpty());
         } catch (Exception e) {
@@ -314,7 +310,41 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
             assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             
-            List<DriverVehicleScoreWrapper> list = response.getEntity();
+            List<DriverVehicleScoreWrapper> list = response.getEntity(new GenericType<List<DriverVehicleScoreWrapper>>() {});
+            assertNotNull(list);
+            assertFalse(list.isEmpty());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    	
+    }
+    @Test
+    public void getSubGroupDriverScoresForMonthTest(){
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+"/subgroups/scores/driver/month/January");
+        try {
+            ClientResponse<List<GroupScoreWrapper>> response = request.get();
+            logger.info("Get GroupScoreWrapper response: " + response.getStatus());
+            assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+            
+            List<GroupScoreWrapper> list = response.getEntity(new GenericType<List<GroupScoreWrapper>>() {});
+            assertNotNull(list);
+            assertFalse(list.isEmpty());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    	
+    }
+    @Test
+    public void getSubGroupDriverScoresForCurrentMonthTest(){
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+"/subgroups/scores/driver/month");
+        try {
+            ClientResponse<List<GroupScoreWrapper>> response = request.get();
+            logger.info("Get GroupScoreWrapper response: " + response.getStatus());
+            assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+            
+            List<GroupScoreWrapper> list = response.getEntity(new GenericType<List<GroupScoreWrapper>>() {});
             assertNotNull(list);
             assertFalse(list.isEmpty());
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -393,7 +394,6 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
     public void setDob(Date dob) {
         this.dob = dob;
     }
-
     public User getUser() {
         return user;
     }

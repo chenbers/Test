@@ -3,6 +3,7 @@ package com.inthinc.pro.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -115,6 +116,7 @@ public class User extends BaseEntity {
     }
 
     @XmlElementWrapper
+    @XmlElement(name="role")
 	public List<Integer> getRoles() {
 		return roles;
 	}

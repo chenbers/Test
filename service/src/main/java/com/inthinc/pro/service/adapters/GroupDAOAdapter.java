@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.Interval;
@@ -18,6 +19,7 @@ import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
+import com.inthinc.pro.model.aggregation.Score;
 
 /**
  * Adapter for the Driver resources.
@@ -53,14 +55,39 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
 
 	// Specialized methods ----------------------------------------------------
 
+	public List<Group> getSubGroups(Integer parentGroupID){
+		List<Group> subGroups = groupDAO.getGroupHierarchy(getAccountID(), parentGroupID);
+		return extractSubGroupIDs(parentGroupID,subGroups);
+	}
+	private List<Group> extractSubGroupIDs(Integer parentGroupID, List<Group> subGroups){
+		
+		List<Group> subGroupIDs = new ArrayList<Group>();
+		for(Group group : subGroups){
+			if(parentGroupID.equals(group.getParentID())){
+				subGroupIDs.add(group);
+			}
+		}
+		return subGroupIDs;
+	}
+	public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, Interval interval) {
+		List<Group> subGroups = getSubGroups(groupID);
+		List<GroupScoreWrapper> list = new ArrayList<GroupScoreWrapper>();
+		for(Group subGroup : subGroups){
+			Score score = getAggregateDriverScore(subGroup.getGroupID(), interval);
+			GroupScoreWrapper gsw = new GroupScoreWrapper();
+			gsw.setGroup(subGroup);
+			gsw.setScore(score);
+			list.add(gsw);
+		}
+		return list;
+	}
+    public Score getAggregateDriverScore(Integer groupID, Interval interval) {
+    	 return groupReportDAO.getAggregateDriverScore(groupID, interval);
+	}
     public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, Duration duration) {
         return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, duration);
     }	
 
-    public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, Interval interval) {
-// TODO        return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, interval);
-    	return null;
-    }	
     public List<GroupTrendWrapper> getChildGroupsDriverTrends(Integer groupID, Duration duration) {
         return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, duration);
     }    
@@ -84,6 +111,7 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
     	return vehicleDAO.getVehicleNames(groupID);
     }
 
+    
 	// Getters and setters -----------------------------------------------------
     
 	/**
