@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.reports.hos.model.ViolationsDetail;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.HOSService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
@@ -23,11 +25,11 @@ import com.inthinc.pro.util.DateUtil;
 @Component
 public class HOSServiceImpl extends BaseReportServiceImpl implements HOSService {
     private static Logger logger = Logger.getLogger(HOSServiceImpl.class);
+    
 
     @Autowired
     public HOSServiceImpl(ReportsFacade reportsFacade) {
         super(reportsFacade);
-        // TODO Auto-generated constructor stub
     }
 
     @Override 
@@ -43,6 +45,8 @@ public class HOSServiceImpl extends BaseReportServiceImpl implements HOSService 
             List<Integer> groupIDList = new ArrayList<Integer>();
             groupIDList.add(groupID);
             violationsList = reportsFacade.getHosViolationsDetail(groupIDList, interval, locale);
+        } catch (BadDateRangeException ex) {
+            return BadDateRangeExceptionMapper.getResponse(ex);
         } catch (Exception e) {
             logger.error(e.toString(), e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
