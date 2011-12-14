@@ -44,8 +44,13 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
                 List<String> nonTranslatedList = NonTranslated.getList(lang, keyPath);
                 
                 List<String> toTranslateList = null;
-                if (all == null) 
-                    toTranslateList = getToTranslateList(propFile, getLangPropFile(propFile, lang), lang, nonTranslatedList);
+                if (all == null) {
+                    File langPropFile = getLangPropFile(propFile, lang);
+                    if (!langPropFile.exists()) {
+                        toTranslateList = getAllToTranslateList(propFile);
+                    }
+                    else toTranslateList = getToTranslateList(propFile, getLangPropFile(propFile, lang), lang, nonTranslatedList);
+                }
                 else toTranslateList = getAllToTranslateList(propFile);
                 if (toTranslateList.size() > 0) {
                     toTranslateWriter.println(BaseTranslationUtil.PROPERTIES_MARKER + " " + keyPath + " " + BaseTranslationUtil.PROPERTIES_MARKER);
@@ -82,6 +87,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
                 name.contains("googlemapkeys") ||
                 name.contains("helpconfig") ||
                 name.contains("integrationtest") ||
+                name.contains("cassandra") ||
                 name.contains("dbutil.properties"))
             return toTranslate;
         

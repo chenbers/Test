@@ -623,6 +623,10 @@ public class NonTranslated {
         nonTranslatedList.add("report.mph.metric");
         nonTranslatedList.add("shortDateFormat");
         nonTranslatedList.add("timeFormat");
+        nonTranslatedList.add("dateFormat");
+        nonTranslatedList.add("dateTimeFormat");
+        nonTranslatedList.add("report.hos.dateTimeFormat");
+        nonTranslatedList.add("simpleDateFormat");
         nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/ReportMessages", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
@@ -686,10 +690,25 @@ public class NonTranslated {
         nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/asset/i18n/warrantyList", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.1.raw");
+        nonTranslatedList.add("column.2.raw");
+        nonTranslatedList.add("column.3.raw");
+        nonTranslatedList.add("column.4.raw");
+        nonTranslatedList.add("column.5.raw");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/payrollReportCompensatedHours", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("title");
         nonTranslated_es.put("/webutil/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
 
+
+        
         nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("dateFormat");
+        nonTranslatedList.add("dateTimeFormat");
+        nonTranslatedList.add("longDateTimeFormat");
+        nonTranslatedList.add("simpleDateFormat");
+        nonTranslatedList.add("stopsDateTimeFormat");
         nonTranslatedList.add("dateFormatNoTimezone");
         nonTranslatedList.add("AlertMessageType.ALERT_TYPE_HOS");
         nonTranslatedList.add("FuelEfficiencyType.KMPL_MPG");
@@ -867,6 +886,14 @@ public class NonTranslated {
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/asset/i18n/warrantyList", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.1.raw");
+        nonTranslatedList.add("column.2.raw");
+        nonTranslatedList.add("column.3.raw");
+        nonTranslatedList.add("column.4.raw");
+        nonTranslatedList.add("column.5.raw");
+        nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/payrollReportCompensatedHours", nonTranslatedList);
+        
+        nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("column.6.raw");
         nonTranslatedList.add("column.9.raw");
         nonTranslatedList.add("dot.10");
@@ -975,6 +1002,13 @@ public class NonTranslated {
         nonTranslatedList.add("column.11.raw");
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/vehicleUsageReport", nonTranslatedList);
 
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.7.english");
+        nonTranslatedList.add("column.7.metric");
+        nonTranslatedList.add("column.5");
+        nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverPerformanceKeyMetrics", nonTranslatedList);
+
+        
         nonTranslatedList = new ArrayList<String>();
     
         
@@ -1194,7 +1228,9 @@ public class NonTranslated {
         nonTranslatedList.add("fuelStop_dot");
         nonTranslatedList.add("fuelStop_service");
         nonTranslatedList.add("fuelStops_service");
-        
+        nonTranslatedList.add("subNavigation_performance");
+        nonTranslatedList.add("report_performance");
+      
         
         nonTranslated_fr.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
 
