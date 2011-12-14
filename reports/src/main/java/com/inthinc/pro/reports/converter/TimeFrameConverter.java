@@ -24,7 +24,7 @@ public class TimeFrameConverter {
     }
     public static String convertTimeFrameInterval(TimeFrame timeFrame, Locale locale, TimeZone timeZone) {
         
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(MessageUtil.getMessageString("simpleDateFormat", locale));
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(MessageUtil.getMessageString("simpleDateFormat", locale)).withLocale(locale);
         
         DateTimeZone dateTimeZone = timeZone == null ? DateTimeZone.UTC : DateTimeZone.forTimeZone(timeZone);
         
