@@ -85,6 +85,8 @@ public class HessianExceptionConverter
         REMOTESERVER_EXCEPTION_MAP.put(333, "TSCodeDuplicateAcct..   An attempt to use an existing acct name.");
         REMOTESERVER_EXCEPTION_MAP.put(334, "TSCodeDuplicateSerial   An attempt to use an existing serial number.");
         REMOTESERVER_EXCEPTION_MAP.put(335, "TSCodeDuplicateVin...   An attempt to use an existing vin.");
+        REMOTESERVER_EXCEPTION_MAP.put(343, "TSCodeHasDriver......   An attempt delete a person with a driver record.");
+        REMOTESERVER_EXCEPTION_MAP.put(344, "TSCodeHasUser........   An attempt delete a person with a user record.");
         REMOTESERVER_EXCEPTION_MAP.put(345, "TSCodeDuplicateEmpid...   An attempt to use an existing employee id.");
         
         
