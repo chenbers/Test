@@ -128,9 +128,9 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
 
             DateTime weekEndDateTime = new DateMidnight(new DateTime().minusDays(1)).toDateTime();
             
-            list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver NA", "Position", 0, timeFrame, 0, 0, 0,0,0,0,0, 0, 0));
+            list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver NA", "Position", 0, timeFrame, 0, 0, 0,0,0,0,0,0));
             for (int i = 0; i < 5; i++) {
-                list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver " + i, "Position", i, timeFrame, i*1000, i*10,i*10,i*10,i*10,i,i*30,i,i*60));
+                list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver " + i, "Position", i, timeFrame, i*1000, i*10,i*10,i*10,i*10,i,i*30,i*60));
             }
             Collections.sort(list);
             return list;

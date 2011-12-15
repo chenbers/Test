@@ -23,9 +23,8 @@
 	<field name="speedingScore" class="java.lang.Integer"/>
 	<field name="styleScore" class="java.lang.Integer"/>
 	<field name="seatbeltScore" class="java.lang.Integer"/>
-	<field name="loIdleViolationsCount" class="java.lang.Integer"/>
+	<field name="idleViolationsCount" class="java.lang.Integer"/>
 	<field name="loIdleViolationsMinutes" class="java.lang.Integer"/>
-	<field name="hiIdleViolationsCount" class="java.lang.Integer"/>
 	<field name="hiIdleViolationsMinutes" class="java.lang.Integer"/>
 	<columnHeader>
 		<band height="20">
@@ -108,11 +107,6 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.14")]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="890" y="0" width="50" height="20" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.15")]]></textFieldExpression>
-			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -175,7 +169,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="740" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{loIdleViolationsCount}.toString()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{idleViolationsCount}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="790" y="0" width="50" height="20" backcolor="#FFFFFF"/>
@@ -184,11 +178,6 @@
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="840" y="0" width="50" height="20" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{hiIdleViolationsCount}.toString()]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="890" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($F{hiIdleViolationsMinutes}.intValue()/60) + ":" +new DecimalFormat("00").format($F{hiIdleViolationsMinutes}.intValue()%60))]]></textFieldExpression>
 			</textField>

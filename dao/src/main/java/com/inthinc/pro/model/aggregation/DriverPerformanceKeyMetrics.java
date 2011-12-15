@@ -17,9 +17,8 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private Integer speedingScore;
     private Integer styleScore;
     private Integer seatbeltScore;
-    private Integer loIdleViolationsCount;
+    private Integer idleViolationsCount;
     private Integer loIdleViolationsMinutes;
-    private Integer hiIdleViolationsCount;
     private Integer hiIdleViolationsMinutes;
     
     public DriverPerformanceKeyMetrics()
@@ -27,7 +26,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
         
     }
     public DriverPerformanceKeyMetrics(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, TimeFrame timeFrame, Integer totalMiles,
-            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer loIdleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsCount, Integer hiIdleViolationsMinutes) {
+            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer idleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsMinutes) {
         super();
         this.groupName = groupName;
         this.teamName = teamName;
@@ -40,9 +39,8 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
         this.speedingScore = speedingScore;
         this.styleScore = styleScore;
         this.seatbeltScore = seatbeltScore;
-        this.loIdleViolationsCount = loIdleViolationsCount;
+        this.idleViolationsCount = idleViolationsCount;
         this.loIdleViolationsMinutes = loIdleViolationsMinutes;
-        this.hiIdleViolationsCount = hiIdleViolationsCount;
         this.hiIdleViolationsMinutes = hiIdleViolationsMinutes;
     }
     
@@ -106,23 +104,11 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     public void setSeatbeltScore(Integer seatbeltScore) {
         this.seatbeltScore = seatbeltScore;
     }
-    public Integer getLoIdleViolationsCount() {
-        return loIdleViolationsCount;
-    }
-    public void setLoIdleViolationsCount(Integer loIdleViolationsCount) {
-        this.loIdleViolationsCount = loIdleViolationsCount;
-    }
     public Integer getLoIdleViolationsMinutes() {
         return loIdleViolationsMinutes;
     }
     public void setLoIdleViolationsMinutes(Integer loIdleViolationsMinutes) {
         this.loIdleViolationsMinutes = loIdleViolationsMinutes;
-    }
-    public Integer getHiIdleViolationsCount() {
-        return hiIdleViolationsCount;
-    }
-    public void setHiIdleViolationsCount(Integer hiIdleViolationsCount) {
-        this.hiIdleViolationsCount = hiIdleViolationsCount;
     }
     public Integer getHiIdleViolationsMinutes() {
         return hiIdleViolationsMinutes;
@@ -135,6 +121,12 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     }
     public void setTimeFrame(TimeFrame timeFrame) {
         this.timeFrame = timeFrame;
+    }
+    public Integer getIdleViolationsCount() {
+        return idleViolationsCount;
+    }
+    public void setIdleViolationsCount(Integer idleViolationsCount) {
+        this.idleViolationsCount = idleViolationsCount;
     }
     @Override
     public int compareTo(DriverPerformanceKeyMetrics o) {

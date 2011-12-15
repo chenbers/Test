@@ -125,8 +125,8 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
             dp.setSpeedingScore(s.getSpeeding()==null ? -1 : s.getSpeeding().intValue());
             dp.setStyleScore(s.getDrivingStyle()==null ? -1 : s.getDrivingStyle().intValue());
             dp.setSeatbeltScore(s.getSeatbelt()==null ? -1 : s.getSeatbelt().intValue());
-            dp.setLoIdleViolationsCount(s.getIdleLoEvents() == null ? 0 : s.getIdleLoEvents().intValue());
-            dp.setHiIdleViolationsCount(s.getIdleHiEvents() == null ? 0 : s.getIdleHiEvents().intValue()); 
+            // note: lo and hi idle event counts are the same and represent the total violations
+            dp.setIdleViolationsCount(s.getIdleLoEvents() == null ? 0 : s.getIdleLoEvents().intValue());
             dp.setLoIdleViolationsMinutes(s.getIdleLo() == null ? 0 : s.getIdleLo().intValue());
             dp.setHiIdleViolationsMinutes(s.getIdleHi() == null ? 0 : s.getIdleHi().intValue());
             driverPerformanceList.add(dp);
