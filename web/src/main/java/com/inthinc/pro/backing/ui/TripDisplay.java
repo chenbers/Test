@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.util.DateUtil;
@@ -31,15 +32,16 @@ public class TripDisplay implements Comparable<TripDisplay>
     boolean inProgress = false;
  //   private static final int MINUTES_BUFFER = 5;    
 	private static DateFormat dateFormatter;
-    
-    public TripDisplay(Trip trip, TimeZone timeZone, AddressLookup addressLookup,List<Zone> zones)
+    private Locale locale;
+    public TripDisplay(Trip trip, TimeZone timeZone, AddressLookup addressLookup,List<Zone> zones, Locale locale)
     {
         this.trip = trip;
         this.timeZone = timeZone;
+        this.locale = locale;
         
         route = trip.getRoute();
         
-        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("timeFormat"));
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("timeFormat"), locale);
         dateFormatter.setTimeZone(timeZone);
         setTimeStartShort(dateFormatter.format(trip.getStartTime() ));
         setTimeEndShort(dateFormatter.format(trip.getEndTime() ));
@@ -67,18 +69,18 @@ public class TripDisplay implements Comparable<TripDisplay>
     }
     public String getStartDateString()
     {
-        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), locale);
         dateFormatter.setTimeZone(timeZone);
         return dateFormatter.format(trip.getStartTime());
     }
     public String getEndDateString()
     {
-        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), locale);
         dateFormatter.setTimeZone(timeZone);
         return dateFormatter.format(trip.getEndTime());
     }
     public String getDateString(){
-        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat"));
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat"), locale);
         dateFormatter.setTimeZone(timeZone);
         return dateFormatter.format(trip.getEndTime());    	
     }

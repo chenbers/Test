@@ -46,7 +46,7 @@
 							<ul id="grid_nav">
 								<li class="l grid_icon"><h:graphicImage
 									value="/images/ico_building.png" /></li>
-								<li class="l grid_title">#{organizationBean.accountName}</li>
+								<li class="l grid_title" style="width: 160px">#{organizationBean.accountName}</li>
 								<li class="r grid_icon">
 									<a4j:status	id="overview_ajax_status" for="treeViewRegion">
 										<f:facet name="start">
@@ -66,7 +66,7 @@
       										id="tree"
       										switchType="ajax" 
       										selectedClass="selectedNode"
-      										style="overflow: auto;width:210px;height:740px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px"
+      										style="overflow: auto;width:210px;height:740px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px;clear:both;"
       										value="#{organizationBean.rootGroupNode}" 
       										var="item"
       										nodeFace="#{item.data.treeNodeType}"

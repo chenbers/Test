@@ -215,7 +215,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), getAddressLookup(),getProUser().getZones());
+                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), getAddressLookup(),getProUser().getZones(), getLocale());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }

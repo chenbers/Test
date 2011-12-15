@@ -344,7 +344,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         
         AlertMessageBuilder alertMessageBuilder = createBuilder(alertMessage, person, messageType);
         
-        List<String> parameterList = new  ParameterList(event, person, alertMessage).getParameterList();
+        List<String> parameterList = new  ParameterList(event, person, alertMessage, person.getLocale()).getParameterList();
         alertMessageBuilder.setParamterList(parameterList);
         
         return alertMessageBuilder;
@@ -495,9 +495,11 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
     
     public class ParameterList {
         private List<String> parameterList;
+        private Locale locale;
 
-        public ParameterList(Event event,Person person, AlertMessage alertMessage) {
+        public ParameterList(Event event,Person person, AlertMessage alertMessage, Locale locale) {
             super();
+            this.locale = locale;
             parameterList = new ArrayList<String>();
             addDriverRelatedData(event);
             addVehicleRelatedData(event);
@@ -518,7 +520,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         }
         private SimpleDateFormat getDriverDate(Driver driver){
             
-            SimpleDateFormat driverDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+            SimpleDateFormat driverDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)", locale);
             
             if ( (driver != null) && (driver.getPerson() != null) ) {
                 driverDateFormat.setTimeZone(driver.getPerson().getTimeZone());

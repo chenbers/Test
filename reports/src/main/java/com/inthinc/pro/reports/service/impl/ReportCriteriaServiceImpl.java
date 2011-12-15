@@ -157,9 +157,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             Number heavyValue = entity.getHeavyValue();
             Number mediumValue = entity.getMediumValue();
             Number lightValue = entity.getLightValue();
-            seriesData.add(new CategorySeriesData("Light", seriesID, lightValue, seriesID));
-            seriesData.add(new CategorySeriesData("Medium", seriesID, mediumValue, seriesID));
-            seriesData.add(new CategorySeriesData("Heavy", seriesID, heavyValue, seriesID));
+            seriesData.add(new CategorySeriesData(MessageUtil.getMessageString("report.mpg.light", locale), seriesID, lightValue, seriesID));
+            seriesData.add(new CategorySeriesData(MessageUtil.getMessageString("report.mpg.medium", locale), seriesID, mediumValue, seriesID));
+            seriesData.add(new CategorySeriesData(MessageUtil.getMessageString("report.mpg.heavy", locale), seriesID, heavyValue, seriesID));
         }
 
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP, group.getName(), locale);

@@ -85,13 +85,13 @@
 				<reportElement x="341" y="0" width="155" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{address} == null)? "":
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{departTime})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{departTime}, $P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="186" y="0" width="155" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{address} == null)? "":
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{arriveTime})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{arriveTime}, $P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="1" y="0" width="73" height="20"/>

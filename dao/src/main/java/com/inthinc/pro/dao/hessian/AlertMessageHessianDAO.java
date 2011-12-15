@@ -142,7 +142,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         alertMessageBuilder.setMessageID(alertMessage.getMessageID());
         alertMessageBuilder.setAlertMessageType(alertMessage.getAlertMessageType());
         List<String> parameterList = new ArrayList<String>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)", locale);
         
         // Check for unknown driver
         if ( (driver != null) && (driver.getPerson() != null) ) {

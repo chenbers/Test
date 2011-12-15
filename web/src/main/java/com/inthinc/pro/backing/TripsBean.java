@@ -99,7 +99,7 @@ public class TripsBean extends BaseBean {
             
             for (Trip trip : tempTrips) {
             	            	
-                TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), getAddressLookup(), getProUser().getZones());
+                TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), getAddressLookup(), getProUser().getZones(), getLocale());
                 
                 trips.add(td);
             }

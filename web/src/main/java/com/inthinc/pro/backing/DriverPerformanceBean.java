@@ -200,7 +200,7 @@ public class DriverPerformanceBean extends BasePerformanceBean {
             if (tempTrip != null){
                 emptyLastTrip = (tempTrip.getRoute() == null)||(tempTrip.getRoute().size() == 0);
                 
-                TripDisplay tripDisplay = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup(),this.getProUser().getZones());
+                TripDisplay tripDisplay = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup(),this.getProUser().getZones(), getLocale());
                 setLastTrip(tripDisplay);
                 initViolations(tripDisplay.getTrip().getStartTime(), tripDisplay.getTrip().getEndTime());
             }

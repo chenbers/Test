@@ -2,6 +2,7 @@ package com.inthinc.pro.reports.converter;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import com.inthinc.pro.dao.util.DateUtil;
 
@@ -24,7 +25,7 @@ public class TimeToStringConverter {
         return DateUtil.getDurationFromSeconds(seconds.intValue());
     }	
     
-    public static String convertSecondsToDate(Long seconds) {
+    public static String convertSecondsToDate(Long seconds, Locale locale) {
                 
         if (seconds != null && seconds == 0L) {
             return "";            
@@ -37,7 +38,7 @@ public class TimeToStringConverter {
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTimeInMillis(seconds*1000L);
         
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a (z)");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a (z)", locale);
         
         return sdf.format(gc.getTime());
     }
