@@ -127,6 +127,8 @@ public class User extends BaseEntity {
 	}
 
 	public List<AccessPoint> getAccessPoints() {
+	    if(accessPoints == null)
+	        return Collections.emptyList();
 		return accessPoints;
 	}
 
