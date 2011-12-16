@@ -46,7 +46,7 @@ public class WaysmartAggregationTest {
     
     private Map<DeviceState, LinkedList<DeviceNote>> tripsMap;
     private Map<DeviceState, Vehicle> vehicleMap;
-    private final static int startingOdometer = 25416;
+    private final static int startingOdometer = 73919;
     
     
     public WaysmartAggregationTest(){
@@ -60,11 +60,15 @@ public class WaysmartAggregationTest {
     private void populateBaseline(){
         int i=0;
         LinkedList<DeviceNote> baseline = new LinkedList<DeviceNote>();
-        String start = "3579 NE 100 Ave, Murdock, KS 67111";
-        String stop = "250 W Elm St, Madison, KS 66860";
+        String start = "4225 W Lake Blvd, West Valley City, UT 84120";
+        String stop = "366 Mc Cormick Road, Wamsutter, Wyoming, 82336";
         TripDriver driver = new TripDriver(ProductType.WAYSMART);
-        driver.getdeviceState().setDriverID(unknownDriverID);
-        driver.getdeviceState().setOdometer(startingOdometer);
+        
+        DeviceState state = driver.getdeviceState();
+        
+        state.setDriverID(unknownDriverID);
+        state.setOdometer(startingOdometer);
+        state.getTime().setDate(1324110774);
         driver.addToTrip(start, stop);
         driver.addToTrip(stop, start);
         driver.addEvent(10, AutomationDeviceEvents.speeding(75, 100, 600, 60, 65, 500));
@@ -74,16 +78,21 @@ public class WaysmartAggregationTest {
         driver.addEvent(50, AutomationDeviceEvents.seatbelt(700, 90, 25, 20, 100, 600));
         driver.addEvent(60, AutomationDeviceEvents.hardDip(10, 20, 110));
         baseline = driver.generateNotes();
+        
         installLocation = baseline.get(0).getLocation();
         LinkedList<DeviceNote> randomized = new LinkedList<DeviceNote>();
         MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)baseline.getLast()).nOdometer);
+        
+        MasterTest.print("Final noteTime is: %d", Level.INFO, state.getTime().epochSeconds());
+        
         for (DeviceNote note : baseline){
             randomized.add(note.copy());
         }
         
         AutomationSiloService portalProxy = new AutomationSiloService(Addresses.QA);
-        Collections.shuffle(randomized);
-        DeviceState state;
+        for (int j=0;j<20;j++){
+        	Collections.shuffle(randomized);
+        }
         
         state = newState(++i);
         tripsMap.put(state, baseline);
