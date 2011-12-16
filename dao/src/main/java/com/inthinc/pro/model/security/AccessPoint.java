@@ -3,7 +3,7 @@ package com.inthinc.pro.model.security;
 import java.io.Serializable;
 
 
-public class AccessPoint implements Serializable{
+public class AccessPoint implements Comparable<AccessPoint>, Serializable{
 		
     private static final long serialVersionUID = 1L;
     private Integer accessPtID;
@@ -40,5 +40,13 @@ public class AccessPoint implements Serializable{
 
 		return (accessPtID.intValue() == ((AccessPoint)obj).accessPtID.intValue());
 	}
+	public String toString() {
+	    return "AccessPoint[accessPtID:"+accessPtID+"; mode:"+mode+"]";
+	}
+
+    @Override
+    public int compareTo(AccessPoint o) {
+        return o != null ? this.getAccessPtID().compareTo(o.getAccessPtID()) : 0;
+    }
 	
 }

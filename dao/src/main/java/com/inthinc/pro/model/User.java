@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -130,6 +131,7 @@ public class User extends BaseEntity {
 	}
 
 	public void setAccessPoints(List<AccessPoint> accessPoints) {
+	    Collections.sort(accessPoints);
 		this.accessPoints = accessPoints;
 	}
 
