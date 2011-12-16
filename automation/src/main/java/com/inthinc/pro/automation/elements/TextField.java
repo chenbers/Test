@@ -25,6 +25,9 @@ public class TextField extends TextObject implements Typeable {
         super(anEnum, replaceWord, replaceNumber);
     }
     
+    public TextField(SeleniumEnums anEnum, TextEnum column, int row) {
+        this (anEnum, column.getText(),row);
+    }
     @Override
     public TextField clear() {
         type("");
