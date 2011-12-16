@@ -730,35 +730,29 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     
     public boolean isUserInfoDisabled(){
         List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_USERSACCESS_USERINFO"); 
+        allowedRoles.add("ROLE_USEREDITINFO");
+        allowedRoles.add("ROLE_DRIVEREDITINFO");
         return !isUserInRoles(allowedRoles);
     }
     
     public boolean isDriverInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_USERSACCESS_DRIVERINFO");
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_DRIVEREDITINFO");
     }
     
     public boolean isRfidInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_USERSACCESS_RFIDINFO");
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_RFIDINFO");
     }
     public boolean isEmployeeInfoDisabled(){
         List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_USERSACCESS_EMPLOYEEINFO");
+        allowedRoles.add("ROLE_USEREDITINFO");
+        allowedRoles.add("ROLE_DRIVEREDITINFO");
         return !isUserInRoles(allowedRoles);
     }
     public boolean isLoginInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_USERSACCESS_LOGININFO");
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_USEREDITINFO");
     }
     public boolean isNotificationsInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_USERSACCESS_NOTIFICATIONSINFO");
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_USEREDITINFO");
     }
     
     @Override

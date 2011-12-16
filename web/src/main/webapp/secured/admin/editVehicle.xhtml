@@ -263,7 +263,7 @@
                                 </td>
                                 <td>
                                   <rich:message for="editVehicle-name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{vehiclesBean.item.name}" id="editVehicle-name" onchange="checkMultiple(this)" styleClass="text" size="30" disabled="#{vehiclesBean.profileInfoDisabled}"
+                                  <h:inputText value="#{vehiclesBean.item.name}" id="editVehicle-name" onchange="checkMultiple(this)" styleClass="text" size="30" disabled="#{vehiclesBean.vehicleInfoDisabled}"
                                    style="text-transform: uppercase;" maxlength="20" converter="ForceUpperCaseConverter" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
                                 </td>
                               </tr>
@@ -280,7 +280,7 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="editVehicle-status" onchange="checkMultiple(this)" disabled="#{vehiclesBean.profileInfoDisabled}">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="editVehicle-status" onchange="checkMultiple(this)" disabled="#{vehiclesBean.vehicleInfoDisabled}">
                                     <f:selectItems value="#{vehiclesBean.statuses}"/>
                                   </h:selectOneMenu>
                                 </td>
@@ -305,7 +305,7 @@
                                 <td>
                                 <rich:message for="editVehicle-groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 		  	 					<h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="editVehicle-groupID" style="width:200px;float:none;"
-										required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" disabled="#{vehiclesBean.assignmentInfoDisabled}">
+										required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" disabled="#{vehiclesBean.vehicleInfoDisabled}">
         	                        <a4j:support event="onchange" reRender="editVehicle-driverID,chooseDriverForm:chooseDriverTable" limitToList="true" 
         	                        		ajaxSingle="true" oncomplete="checkMultiple('edit-form:editVehicle-groupID')" />
  		    	        			<f:selectItem itemLabel="" />
@@ -313,6 +313,7 @@
 								</h:selectOneMenu>
 								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
      			 					<ui:param name="selectBoxID" value="edit-form:editVehicle-groupID" />
+     			 					<ui:param name="disabled" value="#{vehiclesBean.vehicleInfoDisabled}" />
 								</ui:include>
                             
 							
@@ -322,9 +323,11 @@
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
                                 <td>
-                                  <h:panelGroup rendered="#{not empty vehiclesBean.item.deviceID and  not vehiclesBean.assignmentInfoDisabled}" id="driverID">
+                                  <h:panelGroup rendered="#{not empty vehiclesBean.item.deviceID}" id="driverID">
                                     <h:outputText value="#{vehiclesBean.item.driver.person.fullName}" /><h:outputText value=" " />
-                                    <a id="editVehicle-chooseDriver" href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
+	                                    <h:panelGroup rendered="#{  not vehiclesBean.assignmentInfoDisabled}">
+	                                    	<a id="editVehicle-chooseDriver" href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
+	                                    </h:panelGroup>
                                   </h:panelGroup>
                                   <h:outputText rendered="#{empty vehiclesBean.item.deviceID}" value="#{messages.vehicle_assignDevice}" />
                                 </td>

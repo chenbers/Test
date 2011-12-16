@@ -145,34 +145,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
 
     public boolean isVehicleInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_VEHICLESACCESS_VEHICLEINFO");
-        
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_VEHICLESCREATE");
     }
     public boolean isWirelineInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_VEHICLESACCESS_WIRELINEINFO");
-        
-        return !isUserInRoles(allowedRoles);
-    }
-    public boolean isProfileInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_VEHICLESACCESS_PROFILEINFO");
-        
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_VEHICLESWIRELINE");
     }
     public boolean isAssignmentInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_VEHICLESACCESS_ASSIGNMENTINFO");
-        
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_VEHICLESDRIVER");
     }
     public boolean isSpeedInfoDisabled(){
-        List<String> allowedRoles = new ArrayList<String>();
-        allowedRoles.add("ROLE_VEHICLESACCESS_SPEEDINFO");
-        
-        return !isUserInRoles(allowedRoles);
+        return !isUserInRole("ROLE_VEHICLES");
     }
     public boolean isFilterProductChoice(ProductType productType){
         
