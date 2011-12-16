@@ -6,26 +6,10 @@ import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextLinkTableHeader extends TextLink {
 
-    public TextLinkTableHeader(SeleniumEnums anEnum) {
-        super(anEnum);
+    public TextLinkTableHeader(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
-    public TextLinkTableHeader(SeleniumEnums anEnum, TextEnum replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextLinkTableHeader(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TextLinkTableHeader(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextLinkTableHeader(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-    }
 
     public TextLinkTableHeader(SeleniumEnums anEnum, String replaceWord,
             TextEnum column) {

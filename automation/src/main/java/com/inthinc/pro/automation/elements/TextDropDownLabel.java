@@ -5,21 +5,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextDropDownLabel extends Text {
 
-    public TextDropDownLabel(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
-
-    public TextDropDownLabel(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TextDropDownLabel(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextDropDownLabel(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+    public TextDropDownLabel(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
     
     @Override

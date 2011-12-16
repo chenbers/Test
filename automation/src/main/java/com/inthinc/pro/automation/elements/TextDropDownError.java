@@ -5,21 +5,10 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextDropDownError extends Text {
 
-    public TextDropDownError(SeleniumEnums anEnum) {
-        super(anEnum);
+    public TextDropDownError(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
-    public TextDropDownError(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TextDropDownError(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextDropDownError(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-    }
     
     @Override
     public void setMyEnum(SeleniumEnums anEnum){

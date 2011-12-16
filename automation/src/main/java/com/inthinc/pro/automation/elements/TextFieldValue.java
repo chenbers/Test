@@ -5,21 +5,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextFieldValue extends Text {
 
-    public TextFieldValue(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
-
-    public TextFieldValue(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TextFieldValue(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextFieldValue(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+    public TextFieldValue(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
     

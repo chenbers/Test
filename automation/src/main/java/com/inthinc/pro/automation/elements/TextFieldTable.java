@@ -11,35 +11,15 @@ import com.inthinc.pro.automation.interfaces.TextEnum;
 public class TextFieldTable implements TableBased<TextField>{
     protected SeleniumEnumWrapper myEnum;
 
-    public TextFieldTable(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
+    public TextFieldTable(SeleniumEnums anEnum, Object ...objects) {
         myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-        myEnum.replaceWord(replaceWord);
+        myEnum.makeReplacements(objects);
     }
 
-    public TextFieldTable(SeleniumEnums anEnum) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-    }
 
-    public TextFieldTable(SeleniumEnums anEnum, Integer replaceNumber) {
+    public TextFieldTable(SeleniumEnums anEnum, String page, TextEnum column, Object ...objects) {
         myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-    }
-
-    public TextFieldTable(SeleniumEnums anEnum, String replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord);
-    }
-
-    public TextFieldTable(SeleniumEnums anEnum, TextEnum replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord.getText());
-    }
-
-    public TextFieldTable(SeleniumEnums anEnum, String page, TextEnum column) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(page);
+        myEnum.makeReplacements(objects);
         myEnum.replaceOldWithNew("*column*", column.getText());
     }
     

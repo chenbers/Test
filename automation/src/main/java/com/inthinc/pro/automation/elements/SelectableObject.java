@@ -11,20 +11,8 @@ import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public class SelectableObject extends Text implements Selectable {
-    public SelectableObject(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
-
-    public SelectableObject(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public SelectableObject(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public SelectableObject(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+    public SelectableObject(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
     @Override

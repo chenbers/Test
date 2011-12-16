@@ -10,8 +10,9 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class NavTree extends TextLink implements Clickable, TextBased {
-    public NavTree(SeleniumEnums anEnum) {
-        super(anEnum);
+	
+    public NavTree(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
     
     @Override
@@ -45,7 +46,7 @@ public class NavTree extends TextLink implements Clickable, TextBased {
     public NavTree click(String groupNameToMatch, Integer matchNumber){
         matchNumber--;
         String xpath = "//a[text()='" + groupNameToMatch + "']";
-        List<WebElement> elements = webDriver.findElements(By.xpath(xpath));
+        List<WebElement> elements = selenium.getWrappedDriver().findElements(By.xpath(xpath));
         String href = elements.get(matchNumber).getAttribute("href");//.replace("/tiwipro", "");//TODO: jwimmer: provide method to save the String higher up
         selenium.open(href);
         return this;

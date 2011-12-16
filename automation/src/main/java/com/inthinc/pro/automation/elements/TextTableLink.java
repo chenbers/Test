@@ -14,30 +14,9 @@ public class TextTableLink implements TableBased<ClickableTextBased> {
 
     protected SeleniumEnumWrapper myEnum;
 
-    public TextTableLink(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
+    public TextTableLink(SeleniumEnums anEnum, Object ...objects) {
         myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-        myEnum.replaceWord(replaceWord);
-    }
-
-    public TextTableLink(SeleniumEnums anEnum) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-    }
-
-    public TextTableLink(SeleniumEnums anEnum, Integer replaceNumber) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-    }
-
-    public TextTableLink(SeleniumEnums anEnum, String replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord);
-    }
-
-    public TextTableLink(SeleniumEnums anEnum, TextEnum replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord.getText());
+        myEnum.makeReplacements(objects);
     }
 
     public TextTableLink(SeleniumEnums anEnum, String page, TextEnum column) {

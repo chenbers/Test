@@ -7,36 +7,14 @@ import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class ClickableTableObject implements TableBased<Clickable> {
     private SeleniumEnumWrapper myEnum;
 
-    public ClickableTableObject(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+    public ClickableTableObject(SeleniumEnums anEnum, Object ...objects) {
         myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-        myEnum.replaceWord(replaceWord);
+        myEnum.makeReplacements(objects);
     }
-
-    public ClickableTableObject(SeleniumEnums anEnum) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-    }
-
-    public ClickableTableObject(SeleniumEnums anEnum, Integer replaceNumber) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-    }
-
-    public ClickableTableObject(SeleniumEnums anEnum, String replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord);
-    }
-
-    public ClickableTableObject(SeleniumEnums anEnum, TextEnum replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord.getText());
-    }
-
 
     @Override
     public Iterator<Clickable> iterator() {

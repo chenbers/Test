@@ -6,22 +6,9 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextFieldError extends Text implements TextBased {
-	public TextFieldError(SeleniumEnums anEnum) {
-        super(anEnum);
+	public TextFieldError(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
-    public TextFieldError(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-    public TextFieldError(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-    public TextFieldError(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-    }
-    
-    public TextFieldError(SeleniumEnums anEnum, TextEnum replaceWord){
-		super(anEnum, replaceWord.getText());
-	}
 	
 	public TextFieldError(SeleniumEnums anEnum, String prefix, TextEnum replaceWord){
 		super(anEnum, prefix + replaceWord.getText());

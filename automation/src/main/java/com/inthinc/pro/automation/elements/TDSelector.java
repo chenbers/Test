@@ -15,20 +15,8 @@ import com.inthinc.pro.automation.utils.RandomValues;
 public class TDSelector extends SelectableObject implements Selectable {
     
 
-    public TDSelector(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-    }
-
-    public TDSelector(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TDSelector(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TDSelector(SeleniumEnums anEnum) {
-        super(anEnum);
+    public TDSelector(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
     
     @Override

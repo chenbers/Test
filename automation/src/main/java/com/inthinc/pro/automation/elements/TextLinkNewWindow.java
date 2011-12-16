@@ -22,10 +22,10 @@ public class TextLinkNewWindow extends TextLink implements Clickable, TextBased 
     @Override
     public TextLinkNewWindow click(){ 
         super.click();
-        String[] handles = webDriver.getWindowHandles().toArray(new String[2]);
-        webDriver.switchTo().window(handles[handles.length-1]);
+        String[] handles = selenium.getWrappedDriver().getWindowHandles().toArray(new String[2]);
+        selenium.getWrappedDriver().switchTo().window(handles[handles.length-1]);
         selenium.close();
-        webDriver.switchTo().window(handles[0]);
+        selenium.getWrappedDriver().switchTo().window(handles[0]);
         return this;
     }
 

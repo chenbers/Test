@@ -7,26 +7,13 @@ import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextFieldLabel extends Text implements TextBased {
 	
-	public TextFieldLabel(SeleniumEnums anEnum) {
-        super(anEnum);
+	public TextFieldLabel(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
-	
-	public TextFieldLabel(SeleniumEnums anEnum, TextEnum replaceWord){
-		super(anEnum, replaceWord.getText());
-	}
 	
 	public TextFieldLabel(SeleniumEnums anEnum, String prefix, TextEnum replaceWord){
 		super(anEnum, prefix + replaceWord.getText());
 	}
-    public TextFieldLabel(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-    public TextFieldLabel(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-    public TextFieldLabel(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-    }
    
     @Override
     public void setMyEnum(SeleniumEnums anEnum){

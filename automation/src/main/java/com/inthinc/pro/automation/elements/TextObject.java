@@ -6,24 +6,8 @@ import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextObject extends ElementBase implements TextBased {
 
-    public TextObject(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
-
-    public TextObject(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TextObject(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextObject(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-    }
-
-    public TextObject(SeleniumEnums anEnum, TextEnum replaceWord) {
-        super(anEnum, replaceWord);
+    public TextObject(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
     @Override

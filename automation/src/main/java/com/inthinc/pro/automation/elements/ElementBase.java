@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.utils.MasterTest;
 
@@ -18,7 +16,6 @@ public class ElementBase extends MasterTest implements ElementInterface {
 
     protected final static Logger logger = Logger.getLogger(ElementBase.class);
     protected CoreMethodInterface selenium;
-    protected WebDriver webDriver;
 
     protected SeleniumEnumWrapper myEnum;
 
@@ -28,34 +25,12 @@ public class ElementBase extends MasterTest implements ElementInterface {
         selenium = super.getSelenium();
     }
 
-    public ElementBase(SeleniumEnums anEnum) {
-        this(anEnum, null, null);
+    public ElementBase(SeleniumEnums anEnum, Object ...objects){
+    	setMyEnum(anEnum);
+    	myEnum.makeReplacements(objects);
+		selenium = super.getSelenium();
     }
-
-    public ElementBase(SeleniumEnums anEnum, String replaceWord) {
-        this(anEnum, replaceWord, null);
-    }
-
-    public ElementBase(SeleniumEnums anEnum, TextEnum replaceWord) {
-        this(anEnum, replaceWord.getText(), null);
-    }
-
-    public ElementBase(SeleniumEnums anEnum, Integer replaceNumber) {
-        this(anEnum, null, replaceNumber);
-    }
-
-    public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        setMyEnum(anEnum);
-        if (replaceNumber != null) {
-            myEnum.replaceNumber(replaceNumber);
-        }
-        if (replaceWord != null) {
-            myEnum.replaceWord(replaceWord);
-        }
-        selenium = super.getSelenium();
-        webDriver = selenium.getWrappedDriver();
-    }
-
+    
     @Override
     public Boolean isPresent() {
         return selenium.isElementPresent(myEnum);

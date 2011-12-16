@@ -6,20 +6,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextCheckboxLabel extends TextTableLink implements TableBased<ClickableTextBased> {
 	
-	public TextCheckboxLabel(SeleniumEnums anEnum) {
-        super(anEnum);
-        setMyEnum();
-    }
-    public TextCheckboxLabel(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-        setMyEnum();
-    }
-    public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-        setMyEnum();
-    }
-    public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+	public TextCheckboxLabel(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
         setMyEnum();
     }
     

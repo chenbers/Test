@@ -6,35 +6,14 @@ import java.util.List;
 import com.inthinc.pro.automation.elements.ElementInterface.TextFieldWithSuggestions;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.Id;
 
 public class TextFieldSuggestions extends TextField implements TextFieldWithSuggestions {
 
     private SeleniumEnums suggestionBox;
 
-    public TextFieldSuggestions(SeleniumEnums anEnum, SeleniumEnums suggestionBox) {
-        super(anEnum);
-        this.suggestionBox = new SeleniumEnumWrapper(suggestionBox);
-    }
-
-    public TextFieldSuggestions(SeleniumEnums anEnum, SeleniumEnums suggestionBox, TextEnum replacement) {
-        super(anEnum, replacement);
-        this.suggestionBox = new SeleniumEnumWrapper(suggestionBox);
-    }
-
-    public TextFieldSuggestions(SeleniumEnums anEnum, SeleniumEnums suggestionBox, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-        this.suggestionBox = new SeleniumEnumWrapper(suggestionBox);
-    }
-
-    public TextFieldSuggestions(SeleniumEnums anEnum, SeleniumEnums suggestionBox, String replaceWord) {
-        super(anEnum, replaceWord);
-        this.suggestionBox = new SeleniumEnumWrapper(suggestionBox);
-    }
-
-    public TextFieldSuggestions(SeleniumEnums anEnum, SeleniumEnums suggestionBox, String prefix, TextEnum replacement) {
-        super(anEnum, prefix, replacement);
+    public TextFieldSuggestions(SeleniumEnums anEnum, SeleniumEnums suggestionBox, Object ...objects) {
+        super(anEnum, objects);
         this.suggestionBox = new SeleniumEnumWrapper(suggestionBox);
     }
 

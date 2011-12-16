@@ -6,17 +6,10 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class CheckBox extends ClickableObject implements Checkable, Clickable {
 
-    public CheckBox(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
+    public CheckBox(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
     
-    public CheckBox(SeleniumEnums anEnum, Integer replaceNumber){
-        super(anEnum, replaceNumber);
-    }
-
-    public CheckBox(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
 
     @Override
     public CheckBox check() {

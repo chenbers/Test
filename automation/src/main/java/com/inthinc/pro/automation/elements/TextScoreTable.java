@@ -7,28 +7,8 @@ import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextScoreTable extends TextTable implements TableBased<TextBased> {
 
-    public TextScoreTable(SeleniumEnums anEnum) {
-        super(anEnum);
-        setMyEnum();
-    }
-
-    public TextScoreTable(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-        setMyEnum();
-    }
-
-    public TextScoreTable(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-        setMyEnum();
-    }
-
-    public TextScoreTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-        setMyEnum();
-    }
-
-    public TextScoreTable(SeleniumEnums anEnum, TextEnum replaceWord) {
-        super(anEnum, replaceWord);
+    public TextScoreTable(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
         setMyEnum();
     }
 

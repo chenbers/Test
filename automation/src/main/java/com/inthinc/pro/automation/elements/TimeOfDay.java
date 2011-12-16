@@ -7,6 +7,13 @@ import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public class TimeOfDay extends MasterTest{
+	
+	private final static String hours = "hh";
+	private final static String minutes = "mm";
+	private final static String seconds = "ss";
+	private final static String am_pm = "am_pm";
+	private final static String label = "timeValue";
+	
 
     private SeleniumEnumWrapper myEnum;
     
@@ -23,23 +30,23 @@ public class TimeOfDay extends MasterTest{
 
     
     public TextFieldWithSpinner hours(){
-        return new TextFieldWithSpinner(setID(), "hh");
+        return new TextFieldWithSpinner(setID(), hours);
     }
     
     public TextFieldWithSpinner minutes(){
-        return new TextFieldWithSpinner(setID(), "mm");
+        return new TextFieldWithSpinner(setID(), minutes);
     }
     
     public TextFieldWithSpinner seconds(){
-        return new TextFieldWithSpinner(setID(), "ss");
+        return new TextFieldWithSpinner(setID(), seconds);
     }
     
     public DropDown amPm(){
-        return new DropDown(myEnum, "am_pm");
+        return new DropDown(myEnum, am_pm);
     }
     
     public Text label(){
-        return new TextFieldLabel(myEnum, "timeValue");
+        return new TextFieldLabel(myEnum, label);
     }
     
     public Text timeZone(){
@@ -48,7 +55,7 @@ public class TimeOfDay extends MasterTest{
     
     private SeleniumEnumWrapper setTimeZoneEnum(){
         SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
-        temp.replaceWord("timeValue");
+        temp.replaceWord(label);
         String[] newIds = new String[myEnum.getIDs().length];
         String oneUpFirstTd = ElementBase.parentXpath+"/div/span[5]";
         for (int i=0;i<myEnum.getIDs().length;i++){

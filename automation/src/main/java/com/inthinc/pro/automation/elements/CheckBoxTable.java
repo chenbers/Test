@@ -12,13 +12,9 @@ public class CheckBoxTable implements TableBased<Checkable> {
 
     private final SeleniumEnumWrapper myEnum;
     
-    public CheckBoxTable(SeleniumEnums anEnum) {
+    public CheckBoxTable(SeleniumEnums anEnum, Object ...objects) {
         myEnum = new SeleniumEnumWrapper(anEnum);
-    }
-
-    public CheckBoxTable(SeleniumEnums anEnum, String replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord);
+        myEnum.makeReplacements(objects);
     }
 
     @Override

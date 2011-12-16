@@ -11,27 +11,11 @@ public class SortHeader extends TextButton {
     
     private final static String regex = "@id\\='.*'";
 
-    public SortHeader(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+
+    public SortHeader(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
-    public SortHeader(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
-
-    public SortHeader(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public SortHeader(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public SortHeader(SeleniumEnums anEnum, TextEnum replaceWord) {
-        super(anEnum, replaceWord);
-    }
-    
     @Override
     public void setMyEnum(SeleniumEnums anEnum){
         myEnum = new SeleniumEnumWrapper(anEnum);

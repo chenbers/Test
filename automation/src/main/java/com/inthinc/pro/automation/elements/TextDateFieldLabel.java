@@ -5,21 +5,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextDateFieldLabel extends Text {
 
-    public TextDateFieldLabel(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
-
-    public TextDateFieldLabel(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TextDateFieldLabel(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextDateFieldLabel(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+    public TextDateFieldLabel(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
     

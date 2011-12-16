@@ -13,31 +13,11 @@ public class TextTable implements TableBased<TextBased> {
 
     protected SeleniumEnumWrapper myEnum;
 
-    public TextTable(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
+    public TextTable(SeleniumEnums anEnum, Object ...objects) {
         myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-        myEnum.replaceWord(replaceWord);
+        myEnum.makeReplacements(objects);
     }
 
-    public TextTable(SeleniumEnums anEnum) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-    }
-
-    public TextTable(SeleniumEnums anEnum, Integer replaceNumber) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceNumber(replaceNumber);
-    }
-
-    public TextTable(SeleniumEnums anEnum, String replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord);
-    }
-
-    public TextTable(SeleniumEnums anEnum, TextEnum replaceWord) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.replaceWord(replaceWord.getText());
-    }
 
     public TextTable(SeleniumEnums anEnum, String page, TextEnum column) {
         myEnum = new SeleniumEnumWrapper(anEnum);

@@ -5,23 +5,10 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextRadioButtonLabel extends Text {
 
-    public TextRadioButtonLabel(SeleniumEnums anEnum) {
-        super(anEnum);
+    public TextRadioButtonLabel(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
 
-    public TextRadioButtonLabel(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-
-    public TextRadioButtonLabel(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-
-    public TextRadioButtonLabel(SeleniumEnums anEnum, String replaceWord,
-            Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
-    }
-    
     
     @Override
     public void setMyEnum(SeleniumEnums anEnum){

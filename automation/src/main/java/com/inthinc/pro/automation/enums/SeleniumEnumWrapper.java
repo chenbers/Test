@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
@@ -34,6 +35,20 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
         if (myEnum.getText() != null) {
             text = new String(myEnum.getText());
         }
+    }
+    
+    public void makeReplacements(Object ...objects){
+    	for (Object object : objects){
+    		if (object instanceof TextEnum){
+    			replaceWord(((TextEnum)object).getText());
+    		} else if (object instanceof String){
+    			replaceWord((String)object);
+    		} else if (object instanceof IndexEnum){
+    			replaceNumber(((IndexEnum)object).getIndex());
+    		} else if (object instanceof Integer){
+    			replaceNumber((Integer)object);
+    		}
+    	}
     }
     
     public SeleniumEnumWrapper(TextEnum myEnum){
