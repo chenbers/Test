@@ -3,9 +3,9 @@ package com.inthinc.pro.automation.deviceEnums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 
-public enum DeviceForwardCommands implements DeviceTypes {
+public enum DeviceForwardCommands implements IndexEnum {
 
     NO_COMMAND(0),
 
@@ -1240,7 +1240,8 @@ public enum DeviceForwardCommands implements DeviceTypes {
         this.code = code;
     }
 
-    public Integer getCode() {
+    @Override
+    public Integer getIndex() {
         return code;
     }
 
@@ -1249,7 +1250,7 @@ public enum DeviceForwardCommands implements DeviceTypes {
     static {
         for (DeviceForwardCommands p : EnumSet
                 .allOf(DeviceForwardCommands.class)) {
-            lookupByCode.put(p.getCode(), p);
+            lookupByCode.put(p.getIndex(), p);
         }
     }
 
@@ -1258,7 +1259,12 @@ public enum DeviceForwardCommands implements DeviceTypes {
     }
 
     public final boolean isEqual(int code) {
-        return code == this.getCode();
+        return code == this.getIndex();
+    }
+    
+    @Override
+    public String toString(){
+    	return String.format("%s(%d)", name(), code);
     }
 
 }

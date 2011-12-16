@@ -45,7 +45,8 @@ public class DeviceState {
 
     private int speed;
 
-    private Double speed_limit = 75.0;
+    private Double speedLimit = 75.0;
+    private int speedingSpeedLimit;
 
     private Boolean speeding = false;
 
@@ -190,12 +191,16 @@ public class DeviceState {
     }
 
     public Double getSpeed_limit() {
-        return speed_limit;
+        return speedLimit;
     }
 
     public Boolean getSpeeding() {
         return speeding;
     }
+
+    public int getSpeedingSpeedLimit() {
+		return speedingSpeedLimit;
+	}
 
     public int getStateID() {
         return stateID;
@@ -331,12 +336,16 @@ public class DeviceState {
     }
 
     public void setSpeed_limit(Double speed_limit) {
-        this.speed_limit = speed_limit;
+        this.speedLimit = speed_limit;
     }
 
     public void setSpeeding(Boolean speeding) {
         this.speeding = speeding;
     }
+
+    public void setSpeedingSpeedLimit(int speedingSpeedLimit) {
+		this.speedingSpeedLimit = speedingSpeedLimit;
+	}
 
     public void setStateID(int stateID) {
         this.stateID = stateID;
@@ -345,7 +354,7 @@ public class DeviceState {
     public void setStateName(String stateName) {
         this.stateName = stateName;
     }
-
+    
     public void setTimeBetweenNotes(int timeBetweenNotes) {
         this.timeBetweenNotes = timeBetweenNotes;
     }
@@ -358,11 +367,11 @@ public class DeviceState {
         this.vehicleID = vehicleID;
     }
 
-    public void setWaysDirection(Direction waysDirection) {
+	public void setWaysDirection(Direction waysDirection) {
         this.waysDirection = waysDirection;
     }
-    
-    public void setWMP(int wMP) {
+
+	public void setWMP(int wMP) {
         WMP = wMP;
     }
 }

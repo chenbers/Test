@@ -42,7 +42,6 @@ public class AutomationDeviceEvents {
             this.deltaY = deltaY;
             this.deltaZ = deltaZ;
             this.type = type;
-            MasterTest.print(this);
         }
         
         @Override
@@ -307,7 +306,9 @@ public class AutomationDeviceEvents {
             if (state.getProductVersion().equals(ProductType.WAYSMART)){
                 
             } else {
-                note.addAttr(DeviceAttrs.VIOLATION_FLAGS,flag);
+            	if (flag != null){
+            		note.addAttr(DeviceAttrs.VIOLATION_FLAGS,flag);
+            	}
             }
             return note;
         }
@@ -324,20 +325,15 @@ public class AutomationDeviceEvents {
         return classes.new LocationEvent(state);
     }
     
-    public static IgnitionOn ignitionOn(String employeeID, int driverID){
-        return classes.new IgnitionOn(employeeID, driverID);
+    public static IgnitionOn ignitionOn(){
+        return classes.new IgnitionOn();
     }
     
     public class IgnitionOn implements AutomationEvents{
         
         private final DeviceNoteTypes noteType = DeviceNoteTypes.IGNITION_ON;
-        private final String employeeID;
-        private final int driverID;
 
-        private IgnitionOn(String employeeID, int driverID){
-            this.employeeID = employeeID;
-            this.driverID = driverID;
-        }
+        private IgnitionOn(){        }
 
         
         
@@ -367,6 +363,13 @@ public class AutomationDeviceEvents {
     public class IgnitionOffEvent implements AutomationEvents{
         
         public final DeviceNoteTypes noteType = DeviceNoteTypes.IGNITION_OFF;
+		private final int tripDuration;
+		private final int percentPointsPassedFilter;
+		
+		public IgnitionOffEvent(int tripDuration, int percentPointsPassedFilter){
+			this.tripDuration = tripDuration;
+			this.percentPointsPassedFilter = percentPointsPassedFilter;
+		}
 
         @Override
         public DeviceBase addEvent(DeviceBase device) {
@@ -379,7 +382,9 @@ public class AutomationDeviceEvents {
             if (state.getProductVersion().equals(ProductType.WAYSMART)){
                 
             } else {
-                
+                note.addAttr(DeviceAttrs.TRIP_DURATION, tripDuration);
+                note.addAttr(DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
+                        percentPointsPassedFilter);
             }
             return note;
         }
@@ -399,7 +404,11 @@ public class AutomationDeviceEvents {
         return note;
     }
 
-    public static IgnitionOffEvent ignitionOff() {
-        return classes.new IgnitionOffEvent();
+    public static IgnitionOffEvent ignitionOff(int tripDuration, int percentPointsPassedFilter) {
+        return classes.new IgnitionOffEvent(tripDuration, percentPointsPassedFilter);
+    }
+    
+    public static IgnitionOffEvent ignitionOff(Long tripDuration, int percentPointsPassedFilter) {
+        return ignitionOff(tripDuration.intValue(), percentPointsPassedFilter);
     }
 }

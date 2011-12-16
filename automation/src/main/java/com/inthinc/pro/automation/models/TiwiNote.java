@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
@@ -13,24 +13,22 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 public class TiwiNote extends DeviceNote {
     
 
-    private final static Logger logger = Logger.getLogger(TiwiNote.class);
-
-    private final Integer sats;
-    private final Integer maprev;
-    private final Integer Speed;
-    private final Integer odometer;
-    private final Heading heading;
-    private final AutomationCalendar nTime;
-    private final GeoPoint location;
-    private final DeviceAttributes attrs;
-    private final DeviceNoteTypes nType;
+    public final Integer sats;
+    public final Integer maprev;
+    public final Integer Speed;
+    public final Integer odometer;
+    public final Heading heading;
+    public final AutomationCalendar nTime;
+    public final GeoPoint location;
+    public final DeviceAttributes attrs;
+    public final DeviceNoteTypes nType;
     
 
     public TiwiNote(DeviceNoteTypes type, DeviceState state, GeoPoint location){
@@ -72,8 +70,10 @@ public class TiwiNote extends DeviceNote {
         int cast;
         if (value instanceof Integer){
             cast = (Integer) value;
-        } else if (value instanceof DeviceTypes){
-            cast = ((DeviceTypes) value).getCode();
+        } else if (value instanceof Double){
+        	cast = ((Double) value).intValue();
+        } else if (value instanceof IndexEnum){
+            cast = ((IndexEnum) value).getIndex();
         } else  if (value == null){
             cast = 0;
         } else {
@@ -91,12 +91,12 @@ public class TiwiNote extends DeviceNote {
     
     @Override
     public byte[] Package(){
-        logger.debug(toString());
+        MasterTest.print(toString(), Level.INFO);
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        NoteManager.longToByte(bos, nType.getCode(), 1);
+        NoteManager.longToByte(bos, nType.getIndex(), 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
         NoteManager.longToByte(bos, maprev, 1);
@@ -112,7 +112,7 @@ public class TiwiNote extends DeviceNote {
     
     public Map<String, String> packageToMap(){
         Map<String, String> map = new HashMap<String, String>();
-        map.put("10", nType.getCode() + "");
+        map.put("10", nType.getIndex() + "");
         map.put("11", nTime.toInt() + "");
         map.put("12", heading + ", " + sats);
         map.put("20", maprev + "");
@@ -123,7 +123,7 @@ public class TiwiNote extends DeviceNote {
         while (itr.hasNext()){
             DeviceAttrs next = itr.next();
             Object value = attrs.getValue(next);
-            map.put(next.getCode().toString(), value.toString());
+            map.put(next.getIndex().toString(), value.toString());
         }
         return map;
     }
@@ -131,14 +131,9 @@ public class TiwiNote extends DeviceNote {
     @Override
     public String toString(){
         String note = "";
-        try{
-            note = String.format("TiwiNote(nType=%s, nTime=\"%s\", sats=%d, heading=%s, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d, attrs=%s)", 
-                    nType, nTime, sats, heading, maprev, location.getLat(), location.getLng(), Speed, odometer, attrs);
-        }catch(Exception e){
-            logger.info(StackToString.toString(e));
-            e.printStackTrace();
-        }
-        logger.debug(note);
+        note = String.format("TiwiNote(nType=%s, nTime=\"%s\", sats=%d, heading=%s, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d, attrs=%s)", 
+                nType, nTime, sats, heading, maprev, location.getLat(), location.getLng(), Speed, odometer, attrs);
+        MasterTest.print(note, Level.DEBUG);
         return note;
     }
 
@@ -164,4 +159,9 @@ public class TiwiNote extends DeviceNote {
         TiwiNote temp = new TiwiNote(nType, state, location);
         return temp;
     }
+
+	@Override
+	public GeoPoint getLocation() {
+		return location.copy();
+	}
 }

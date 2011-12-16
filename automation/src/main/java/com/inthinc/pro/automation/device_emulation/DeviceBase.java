@@ -50,7 +50,7 @@ public abstract class DeviceBase {
     protected final TripTracker tripTracker;
     protected MCMProxyObject mcmProxy;
     protected Object reply;
-
+    
     protected String lastDownload;
 
     protected Addresses portal;
@@ -69,8 +69,8 @@ public abstract class DeviceBase {
     private DeviceBase(String IMEI, ProductType version,
             Map<DeviceProps, String> settings) {
         state = new DeviceState(IMEI, version);
-        tripTracker = new TripTracker(state);
         state.setSettings(settings);
+        tripTracker = new TripTracker(state);
         sbsModule = new HashMap<Integer, MapSection>();
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<GeoPoint>();
@@ -128,6 +128,7 @@ public abstract class DeviceBase {
     }
 
     protected DeviceNote constructNote(AutomationEvents event){
+    	MasterTest.print(state);
         return event.getNote(tripTracker.currentLocation(), state);
     }
 
@@ -284,15 +285,19 @@ public abstract class DeviceBase {
             state.setSpeeding(true);
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
+            state.setSpeedingSpeedLimit(state.getSpeed_limit().intValue());
+            MasterTest.print("Started Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
         } else if (state.getSpeed() > state.getSpeed_limit()
                 && state.getSpeeding()) {
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
+            MasterTest.print("Still Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
         } else if (state.getSpeed() < state.getSpeed_limit()
                 && state.getSpeeding()) {
             state.setSpeeding(false);
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
+            MasterTest.print("Stopped Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
             was_speeding();
         }
         return this;
@@ -313,7 +318,7 @@ public abstract class DeviceBase {
         Iterator<?> itr = state.getSettings().keySet().iterator();
         while (itr.hasNext()) {
             DeviceProps next = (DeviceProps) itr.next();
-            map.put(next.getValue(), state.getSettings().get(next));
+            map.put(next.getIndex(), state.getSettings().get(next));
         }
 
         return map;
@@ -497,7 +502,7 @@ public abstract class DeviceBase {
         }
         Integer distance = (int) (speeding_distance * 100);
         SpeedingEvent event = AutomationDeviceEvents.speeding(topSpeed,
-                distance, state.getMaxRpm(), state.getSpeed_limit(), avgSpeed,
+                distance, state.getMaxRpm(), state.getSpeedingSpeedLimit(), avgSpeed,
                 state.getAvgRpm());
         addSpeedingNote(event);
         return this;

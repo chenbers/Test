@@ -17,4 +17,12 @@ public class StackToString {
 		stack.printStackTrace(printWriter);
 		return result.toString();
 	}
+
+	public static <T> String toString(T[] printToScreen) {
+		StringWriter writer = new StringWriter();
+		for (Object object : printToScreen){
+			writer.write(object.toString() + "\n");
+		}
+		return writer.toString();
+	}
 }

@@ -138,7 +138,8 @@ public enum TiwiWmpMsp implements DeviceTypesUnique {
         code = c;
     }
 
-    public Integer getCode() {
+    @Override
+    public Integer getIndex() {
         return code;
     }
 
@@ -146,7 +147,7 @@ public enum TiwiWmpMsp implements DeviceTypesUnique {
 
     static {
         for (TiwiWmpMsp p : EnumSet.allOf(TiwiWmpMsp.class)) {
-            lookupByCode.put(p.getCode(), p);
+            lookupByCode.put(p.getIndex(), p);
         }
     }
 

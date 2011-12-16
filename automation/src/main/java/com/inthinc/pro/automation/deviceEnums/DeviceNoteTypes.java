@@ -3,9 +3,9 @@ package com.inthinc.pro.automation.deviceEnums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 
-public enum DeviceNoteTypes implements DeviceTypes{
+public enum DeviceNoteTypes implements IndexEnum{
     
 
     FULLEVENT(1, DeviceAttrs.DELTA_VS),
@@ -267,7 +267,8 @@ public enum DeviceNoteTypes implements DeviceTypes{
         this.attributes = attributes;
     }
     
-    public Integer getCode() {
+    @Override
+    public Integer getIndex() {
         return code;
     }
     
@@ -280,7 +281,7 @@ public enum DeviceNoteTypes implements DeviceTypes{
     static {
         for (DeviceNoteTypes p : EnumSet.allOf(DeviceNoteTypes.class))
         {
-            lookupByCode.put(p.getCode(), p);
+            lookupByCode.put(p.getIndex(), p);
         }
     }
     

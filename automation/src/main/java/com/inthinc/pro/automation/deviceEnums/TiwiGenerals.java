@@ -25,7 +25,9 @@ public class TiwiGenerals {
 	    private FwdCmdStatus(int c) {
 	    	code = c;
 	    }
-	    public Integer getCode() {
+	    
+	    @Override
+	    public Integer getIndex() {
 	    	return code;
 	    } 
 	    
@@ -34,7 +36,7 @@ public class TiwiGenerals {
 	    static {
 	        for (FwdCmdStatus p : EnumSet.allOf(FwdCmdStatus.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getIndex(), p);
 	        }
 	    }
 	    public FwdCmdStatus valueOf(Integer code){
@@ -57,7 +59,9 @@ public class TiwiGenerals {
 	    private MSPPower(int c) {
 	    	code = c;
 	    }
-	    public Integer getCode() {
+	    
+	    @Override
+	    public Integer getIndex() {
 	    	return code;
 	    } 
 	    
@@ -66,7 +70,7 @@ public class TiwiGenerals {
 	    static {
 	        for (MSPPower p : EnumSet.allOf(MSPPower.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getIndex(), p);
 	        }
 	    }
 	    public MSPPower valueOf(Integer code){
@@ -93,7 +97,9 @@ public class TiwiGenerals {
 	    private IgnitionState(int c) {
 	    	code = c;
 	    }
-	    public Integer getCode() {
+	    
+	    @Override
+	    public Integer getIndex() {
 	    	return code;
 	    } 
 	    
@@ -102,7 +108,7 @@ public class TiwiGenerals {
 	    static {
 	        for (IgnitionState p : EnumSet.allOf(IgnitionState.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getIndex(), p);
 	        }
 	    }
 	    public IgnitionState valueOf(Integer code){
@@ -144,7 +150,9 @@ public class TiwiGenerals {
 	    private WarningTypes(int c) {
 	    	code = c;
 	    }
-	    public Integer getCode() {
+	    
+	    @Override
+	    public Integer getIndex() {
 	    	return code;
 	    } 
 	    
@@ -153,7 +161,7 @@ public class TiwiGenerals {
 	    static {
 	        for (WarningTypes p : EnumSet.allOf(WarningTypes.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getIndex(), p);
 	        }
 	    }
 	    public WarningTypes valueOf(Integer code){
@@ -173,7 +181,9 @@ public class TiwiGenerals {
 	    private ViolationFlags(int c) {
 	    	code = c;
 	    }
-	    public Integer getCode() {
+	    
+	    @Override
+	    public Integer getIndex() {
 	    	return code;
 	    } 
 	    
@@ -182,7 +192,7 @@ public class TiwiGenerals {
 	    static {
 	        for (ViolationFlags p : EnumSet.allOf(ViolationFlags.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getIndex(), p);
 	        }
 	    }
 	    public ViolationFlags valueOf(Integer code){

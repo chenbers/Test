@@ -8,8 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import me.prettyprint.hector.api.mutation.MutationResult;
-
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -93,13 +91,14 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){
         if (regularNote ){
             List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
+            MasterTest.print("\nnote(mcmID=%s, noteList=%s)", Level.DEBUG, mcmID, noteList);
             for (DeviceNote note : noteList){
                 byte[] array = note.Package();
                 temp.add(array);
                 printNote(note);
                 
                 if (array.length <=17){
-                    throw new IllegalArgumentException("Note cannot be 17 bytes long");
+                    throw new IllegalArgumentException("Note cannot be 17 bytes long: " + note);
                 }
             }
             return note(mcmID, temp);
@@ -249,19 +248,20 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> notebc(String mcmID, Direction comType,
             List<DeviceNote> noteList, String imei){
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
+        MasterTest.print("\nnotebc(mcmID=%s, connectType=%s, noteList=%s)", Level.DEBUG, mcmID, comType, noteList);
         
         for (DeviceNote note : noteList){
             if (note.getType() == DeviceNoteTypes.INSTALL){
                 List<byte[]> install = new ArrayList<byte[]> (1);
                 install.add(note.Package());
-                notebc(imei, Direction.sat.getCode(), install);
+                notebc(imei, Direction.sat.getIndex(), install);
             } else {
                 temp.add(note.Package());
             }
             printNote(note);
         }
         if (!temp.isEmpty()){
-            return notebc(mcmID, comType.getCode(), temp);
+            return notebc(mcmID, comType.getIndex(), temp);
         } else {
             return null;
         }
@@ -270,7 +270,6 @@ public class MCMProxyObject implements MCMService{
     @Override
     public List<Map<String, Object>> notebc(String mcmID, int connectType,
             List<byte[]> noteList) {
-        MasterTest.print("notebc(mcmID=%s, connectType=%d, noteList=%s)", Level.DEBUG, mcmID, connectType, noteList);
         List<Map<String, Object>> reply = proxy.notebc(mcmID, connectType, noteList);
         printReply(reply);
         DeviceStatistics.addCall();
@@ -289,8 +288,8 @@ public class MCMProxyObject implements MCMService{
                 "http://" + server.getPortalUrl() + 
                 ":" + server.getWaysPort() + 
                 "/gprs_wifi/gprs.do?mcm_id=" +""+(comType.equals(Direction.sat) ? imei: mcmID )+
-                "&commType="+comType.getCode()+
-                "&sat_cmd="+note.getType().getCode()+
+                "&commType="+comType.getIndex()+
+                "&sat_cmd="+note.getType().getIndex()+
                 "&event_time="+note.getTime();
             
             HttpPost method = new HttpPost(uri.toLowerCase());
@@ -299,7 +298,7 @@ public class MCMProxyObject implements MCMService{
             try {
                 entity.addPart("mcm_id", new StringBody(mcmID, Charset.forName("UTF-8")));
                 entity.addPart("imei", new StringBody(imei, Charset.forName("UTF-8")));
-                entity.addPart("commType", new StringBody("" + comType.getCode(), Charset.forName("UTF-8")));
+                entity.addPart("commType", new StringBody("" + comType.getIndex(), Charset.forName("UTF-8")));
                 entity.addPart("event_time", new StringBody("" + note.getTime(), Charset.forName("UTF-8")));
                 entity.addPart("sat_cmd", new StringBody("" + note.getType(), Charset.forName("UTF-8")));
                 entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));

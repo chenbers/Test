@@ -10,25 +10,25 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteBC extends DeviceNote {
     
-    private final DeviceNoteTypes nType;
-    private final ProductType nVersion;
-    private final AutomationCalendar nTime;
-    private final Heading heading;
-    private final int sats;
-    private final int nSpeed;
-    private final int nOdometer;
-    private final Integer nSpeedLimit;
-    private final int nLinkID;
-    private final int nBoundaryID;
-    private final int nDriverID;
-    private final DeviceAttributes attrs;
-    private final GeoPoint location;
+    public final DeviceNoteTypes nType;
+    public final ProductType nVersion;
+    public final AutomationCalendar nTime;
+    public final Heading heading;
+    public final int sats;
+    public final int nSpeed;
+    public final int nOdometer;
+    public final Integer nSpeedLimit;
+    public final int nLinkID;
+    public final int nBoundaryID;
+    public final int nDriverID;
+    public final DeviceAttributes attrs;
+    public final GeoPoint location;
     
     public final static List<DeviceNoteTypes> types = new ArrayList<DeviceNoteTypes>();
     
@@ -42,7 +42,7 @@ public class NoteBC extends DeviceNote {
         types.add(DeviceNoteTypes.NEWDRIVER_HOSRULE);
     }
     
-    public static enum Direction implements DeviceTypes{
+    public static enum Direction implements IndexEnum{
         wifi(3),
         gprs(2),
         sat(1)
@@ -55,7 +55,7 @@ public class NoteBC extends DeviceNote {
         }
         
         @Override
-        public Integer getCode() {
+        public Integer getIndex() {
             return direction;
         }
     };
@@ -83,7 +83,7 @@ public class NoteBC extends DeviceNote {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        NoteManager.longToByte(bos, nType.getCode(), 1);
+        NoteManager.longToByte(bos, nType.getIndex(), 1);
         NoteManager.longToByte(bos, nVersion.getVersion(), 1);
         NoteManager.longToByte(bos, nTime.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
@@ -152,8 +152,8 @@ public class NoteBC extends DeviceNote {
     public void addAttr(DeviceAttrs id, Object value){
         if (value instanceof Integer){
             addAttr(id, (Integer) value);
-        } else if (value instanceof DeviceTypes){
-            addAttr(id, ((DeviceTypes) value).getCode());
+        } else if (value instanceof IndexEnum){
+            addAttr(id, ((IndexEnum) value).getIndex());
         } else if (value instanceof String){
             addAttr(id, (String) value);
         }
@@ -189,7 +189,7 @@ public class NoteBC extends DeviceNote {
     public String toString(){
         String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%s, sats=%d,\n" +
         		"lat=%.5f, lng=%.5f, speed=%d, odometer=%d, speedLimit=%d, linkID=%d, boundary=%d, driverID=%d,\n" +
-        		"attrs={%s}", 
+        		"attrs=%s", 
                 nType.toString(), nVersion.getCode(), nTime, heading, sats, location.getLat(), location.getLng(), nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
         return temp;
     }
@@ -220,4 +220,9 @@ public class NoteBC extends DeviceNote {
         temp.addAttrs(attrs);
         return temp;
     }
+
+	@Override
+	public GeoPoint getLocation() {
+		return location.copy();
+	}
 }

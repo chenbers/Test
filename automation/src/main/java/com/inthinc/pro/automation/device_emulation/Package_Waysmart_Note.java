@@ -13,7 +13,6 @@ import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.CommandLine;
 import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.automation.utils.StackToString;
 
 public class Package_Waysmart_Note implements NoteBuilder {
 
@@ -33,7 +32,7 @@ public class Package_Waysmart_Note implements NoteBuilder {
         sendNote = new CommandLine();
         sendNote.setWorkingDirectory("src/main/resources/waysNote");
 
-        sendNote.setArgs("type", type.getCode());
+        sendNote.setArgs("type", type.getIndex());
         sendNote.setArgs("direction", method);
         sendNote.setArgs("sat_server", server.getMCMUrl());
         sendNote.setArgs("sat_port", server.getSatPort());

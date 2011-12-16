@@ -3,9 +3,9 @@ package com.inthinc.pro.automation.deviceEnums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 
-public enum DeviceAttrs implements DeviceTypes{
+public enum DeviceAttrs implements IndexEnum{
 
     TOP_SPEED(1),
     AVG_SPEED(2),
@@ -416,7 +416,8 @@ public enum DeviceAttrs implements DeviceTypes{
         this.zeroTerminated = zeroTerminated;
     }
 
-    public Integer getCode() {
+    @Override
+    public Integer getIndex() {
         return code;
     }
 
@@ -432,7 +433,7 @@ public enum DeviceAttrs implements DeviceTypes{
 
     static {
         for (DeviceAttrs p : EnumSet.allOf(DeviceAttrs.class)) {
-            lookupByCode.put(p.getCode(), p);
+            lookupByCode.put(p.getIndex(), p);
         }
     }
 

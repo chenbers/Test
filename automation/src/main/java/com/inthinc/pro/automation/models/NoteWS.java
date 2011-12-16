@@ -10,23 +10,23 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
-import com.inthinc.pro.automation.interfaces.DeviceTypes;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteWS extends DeviceNote {
     
-    private final DeviceNoteTypes nType;
-    private final int nVersion;
-    private final AutomationCalendar nTime;
-    private final Heading heading;
-    private final int sats;
-    private final GeoPoint location;
-    private final int nSpeed;
-    private final int odometer;
-    private final int duration;
-    private final DeviceAttributes attrs;
+    public final DeviceNoteTypes nType;
+    public final int nVersion;
+    public final AutomationCalendar nTime;
+    public final Heading heading;
+    public final int sats;
+    public final GeoPoint location;
+    public final int nSpeed;
+    public final int odometer;
+    public final int duration;
+    public final DeviceAttributes attrs;
 
     
     public NoteWS(DeviceNoteTypes type, DeviceState state,
@@ -48,7 +48,7 @@ public class NoteWS extends DeviceNote {
     public byte[] Package() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write(0);
-        NoteManager.longToByte(baos, nType.getCode(), 1);
+        NoteManager.longToByte(baos, nType.getIndex(), 1);
         NoteManager.longToByte(baos, nVersion, 1);
         NoteManager.longToByte(baos, nTime.toInt(), 4);
         NoteManager.longToByte(baos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
@@ -81,8 +81,8 @@ public class NoteWS extends DeviceNote {
     public void addAttr(DeviceAttrs id, Object value){
         if (value instanceof Integer){
             addAttr(id, (Integer) value);
-        } else if (value instanceof DeviceTypes){
-            addAttr(id, ((DeviceTypes) value).getCode());
+        } else if (value instanceof IndexEnum){
+            addAttr(id, ((IndexEnum) value).getIndex());
         } else if (value instanceof String){
             attrs.addAttribute(id, value);
         }
@@ -141,6 +141,11 @@ public class NoteWS extends DeviceNote {
             addAttr(key, attrs.getValue(key));
         }
     }
+
+	@Override
+	public GeoPoint getLocation() {
+		return location.copy();
+	}
     
     
 }

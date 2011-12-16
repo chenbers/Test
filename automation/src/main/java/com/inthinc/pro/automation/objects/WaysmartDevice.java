@@ -16,6 +16,7 @@ import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationBridgeFwdCmdParser;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MCMProxyObject;
@@ -72,9 +73,10 @@ public class WaysmartDevice extends DeviceBase {
 //    }
 
     public void addIgnitionOffNote() {
-        constructNote(DeviceNoteTypes.IGNITION_OFF);
-        MasterTest.print(sendNote(construct_note(DeviceNoteTypes.IGNITION_OFF)),
-                Level.DEBUG);
+    	constructNote(AutomationDeviceEvents.ignitionOff(50, 900));
+//        constructNote(DeviceNoteTypes.IGNITION_OFF);
+//        MasterTest.print(sendNote(construct_note(DeviceNoteTypes.IGNITION_OFF)),
+//                Level.DEBUG);
     }
 
     public void addIgnitionOnNote() {

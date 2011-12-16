@@ -74,6 +74,8 @@ public class MasterTest {
             printStringToScreen = StackToString.toString((Throwable) printToScreen);
         } else if (printToScreen instanceof JSONObject){
             printStringToScreen = PrettyJSON.toString(printToScreen);
+        } else if (printToScreen instanceof StackTraceElement[]){
+        	printStringToScreen = StackToString.toString((StackTraceElement[]) printToScreen);
         } else {
             printStringToScreen = printToScreen.toString();
         }

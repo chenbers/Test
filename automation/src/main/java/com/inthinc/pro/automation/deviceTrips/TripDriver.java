@@ -13,6 +13,7 @@ import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TripTracker;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class TripDriver extends Thread {
@@ -90,8 +91,8 @@ public class TripDriver extends Thread {
     public LinkedList<DeviceNote> generateNotes(){
         LinkedList<DeviceNote> notes = new LinkedList<DeviceNote>();
         Iterator<GeoPoint> itr = tripTracker.iterator();
-
-        notes.add(AutomationDeviceEvents.ignitionOn(state.getEmployeeID(), state.getDriverID()).getNote(tripTracker.currentLocation(), state));
+        AutomationCalendar start = tripTracker.getState().getTime();
+        notes.add(AutomationDeviceEvents.ignitionOn().getNote(tripTracker.currentLocation(), state));
         
         int totalNotes = tripTracker.size()*100;
         Double lastPercent=0.0;
@@ -117,10 +118,12 @@ public class TripDriver extends Thread {
             }
             
             notes.add(DeviceNote.constructNote(DeviceNoteTypes.LOCATION, tripTracker.getNextLocation(speed, false), state));
-
+            
             lastPercent = currentPercent;
         }
-        notes.add(AutomationDeviceEvents.ignitionOff().getNote(tripTracker.currentLocation(), state));
+        AutomationCalendar stop = tripTracker.getState().getTime();
+        notes.add(AutomationDeviceEvents.ignitionOff(stop.getDelta(start), 90).getNote(tripTracker.currentLocation(), state));
+        
         return notes;
     }
     

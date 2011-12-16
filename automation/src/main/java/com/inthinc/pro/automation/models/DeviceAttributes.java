@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
-import com.inthinc.pro.automation.interfaces.DeviceTypesUnique;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 
 public class DeviceAttributes implements Iterable<DeviceAttrs>{
 
@@ -17,8 +17,8 @@ public class DeviceAttributes implements Iterable<DeviceAttrs>{
     }
     
     public DeviceAttributes addAttribute(DeviceAttrs key, Object value){
-        if (value instanceof DeviceTypesUnique){
-            return addAttribute(key, ((DeviceTypesUnique)value).getCode());
+        if (value instanceof IndexEnum){
+            return addAttribute(key, ((IndexEnum)value).getIndex());
         }
         attrs.put(key, value);
         return this;

@@ -75,6 +75,7 @@ public class NoteManager {
     
     public static abstract class DeviceNote {
         public abstract byte[] Package();
+		public abstract GeoPoint getLocation();
         public abstract DeviceNoteTypes getType();
         public abstract Long getTime();
         public abstract DeviceNote copy();
@@ -94,6 +95,7 @@ public class NoteManager {
                 note = new TiwiNote(type);
             } else {
                 note = new TiwiNote(type, state, location);
+                note.addAttr(DeviceAttrs.SPEED_LIMIT, state.getSpeed_limit());
             }
             return note;
         }
@@ -167,12 +169,13 @@ public class NoteManager {
             DeviceAttrs key=null;
 
             key = keys.next();
-            if (key.getCode() < Math.pow(2, 1*Byte.SIZE)){
-                longToByte(baos, key.getCode(), 1);    
-            } else if (key.getCode() < Math.pow(2, 2*Byte.SIZE)){
-                longToByte(baos, key.getCode(), 2);   
-            } else if (key.getCode() < Math.pow(2, 3*Byte.SIZE)){
-                longToByte(baos, key.getCode(), 3);   
+            int keyCode = key.getIndex();
+            if (keyCode < Math.pow(2, 1*Byte.SIZE)){
+                longToByte(baos, keyCode, 1);    
+            } else if (keyCode < Math.pow(2, 2*Byte.SIZE)){
+                longToByte(baos, keyCode, 2);   
+            } else if (keyCode < Math.pow(2, 3*Byte.SIZE)){
+                longToByte(baos, keyCode, 3);   
             }
             encodeAttribute(baos, key, attrs.getValue(key));
         }

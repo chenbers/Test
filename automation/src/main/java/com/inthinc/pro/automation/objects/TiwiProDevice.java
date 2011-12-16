@@ -106,11 +106,6 @@ public class TiwiProDevice extends DeviceBase {
         construct_note(DeviceNoteTypes.IGNITION_OFF, attrs);
     }
 
-    public void addIgnitionOnNote() {
-        construct_note(DeviceNoteTypes.IGNITION_ON);
-    }
-
-
     public void addPowerOffNote(int lowPowerModeSeconds) {
         attrs.addAttribute(DeviceAttrs.LOW_POWER_MODE_TIMEOUT,
                 lowPowerModeSeconds);

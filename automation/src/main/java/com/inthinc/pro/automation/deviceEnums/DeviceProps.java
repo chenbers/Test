@@ -4,8 +4,10 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 
-public enum DeviceProps {
+
+public enum DeviceProps implements IndexEnum{
 
     /* Properties */
 
@@ -495,7 +497,7 @@ public enum DeviceProps {
 
     static {
         for (DeviceProps p : EnumSet.allOf(DeviceProps.class)) {
-            lookupByCode.put(p.getValue(), p);
+            lookupByCode.put(p.getIndex(), p);
             if (p.getDefaultSetting() != null){
                 if (p.toString().startsWith("TIWI")){
                     tiwiPro.put(p, p.getDefaultSetting());
@@ -528,13 +530,14 @@ public enum DeviceProps {
     public String getDefaultSetting() {
         return setting;
     }
-
-    public Integer getValue() {
-        return code;
-    }
     
     public static DeviceProps valueOf(Integer code){
         return lookupByCode.get(code);
     }
+
+	@Override
+	public Integer getIndex() {
+		return code;
+	}
 
 }

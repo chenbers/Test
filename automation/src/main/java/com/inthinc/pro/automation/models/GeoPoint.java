@@ -1,7 +1,10 @@
 package com.inthinc.pro.automation.models;
 
+import org.apache.log4j.Level;
+
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.Distance_Calc;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 public class GeoPoint {
 
@@ -37,7 +40,10 @@ public class GeoPoint {
     }
     
     public int speed(Integer deltaT, GeoPoint nextPoint){
-        return ((Double)(deltaX(nextPoint) / deltaT)).intValue();
+    	Double delX = deltaX(nextPoint);
+    	double delT = deltaT / (60.0 * 60.0);
+    	MasterTest.print("delX:%f, delT:%f", Level.DEBUG, delX, delT);
+        return ((Double)(delX / delT)).intValue();
     }
     
     @Override
@@ -61,7 +67,7 @@ public class GeoPoint {
     }
     
     public int encodeLng(){
-        double longitude = ( lng < 0.0 ? lng + 360.0 : lng / 360.0 );
+        double longitude = lng;
         int val;
         val = (int)( longitude * 0x00FFFFFF );
         return val;
