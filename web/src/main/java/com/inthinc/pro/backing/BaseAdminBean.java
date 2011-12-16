@@ -971,6 +971,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         return userInRole;
 
     }
+    public boolean isUserInRole(String allowedRole) {
+        List<String> allowedRoles = new ArrayList<String>();
+        allowedRoles.add(allowedRole);
+        return isUserInRoles(allowedRoles);
+    }
     
 
 }
