@@ -291,7 +291,7 @@
          					</ui:include>
 						  </td>
                           <td>
-                           <rich:message for="editPerson-driver_barcode" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                           <rich:message for="editPerson-driver_barcode" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />#{personBean.rfidInfoDisabled}
                             <h:inputText value="#{personBean.item.driver.barcode}" id="editPerson-driver_barcode" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" disabled="#{personBean.rfidInfoDisabled}" />
                           </td>
                         </tr>

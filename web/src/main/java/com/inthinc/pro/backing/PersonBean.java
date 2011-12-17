@@ -740,6 +740,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
     
     public boolean isRfidInfoDisabled(){
+        for(AccessPoint pt : getUser().getAccessPoints())
+            System.out.println("pt: "+pt);
+        
         return !isUserInRole("ROLE_RFIDINFO");
     }
     public boolean isEmployeeInfoDisabled(){
