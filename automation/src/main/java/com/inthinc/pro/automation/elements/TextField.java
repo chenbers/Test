@@ -6,14 +6,27 @@ import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextField extends TextObject implements Typeable {
     
-    public TextField(SeleniumEnums anEnum, Object ...objects) {
-        super(anEnum, objects);
+    public TextField(SeleniumEnums anEnum) {
+        super(anEnum);
     }
-    
+    public TextField(SeleniumEnums anEnum, TextEnum replacement){
+    	super(anEnum, replacement.getText());
+    }
+    public TextField(SeleniumEnums anEnum, Integer replaceNumber) {
+        super(anEnum, replaceNumber);
+    }
+    public TextField(SeleniumEnums anEnum, String replaceWord) {
+        super(anEnum, replaceWord);
+    }
     public TextField(SeleniumEnums anEnum, String prefix, TextEnum replacement) {
         super(anEnum, prefix + replacement.getText());
     }
-
+    public TextField(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        super(anEnum, replaceWord, replaceNumber);
+    }
+    public TextField(SeleniumEnums anEnum, TextEnum column, int row) {
+        this (anEnum, column.getText(),row);
+    }
     @Override
     public TextField clear() {
         type("");
