@@ -529,7 +529,7 @@ public class SiloServiceTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void trips() {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
