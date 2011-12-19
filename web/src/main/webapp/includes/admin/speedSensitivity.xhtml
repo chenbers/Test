@@ -71,7 +71,7 @@
                                   </td>
                                 </tr>
                               </c:forEach>
-                              <ui:fragment rendered="#{not disabled}">
+                              <ui:fragment rendered="#{not disabled and not vehiclesBean.speedInfoDisabled}">
                                 <tr class="tableEven">
                                   <td colspan="3" align="right" style="border-bottom: 1px solid #8BAD37">
                                     <h:outputText value="#{messages.editDevice_speedAdjustAll}" />

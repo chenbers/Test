@@ -84,7 +84,7 @@
                                        <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_speedLimit" value="#{updateField['editableVehicleSettings.speedLimit']}" />
                                        <h:outputText value="#{messages.WS820_maxSpeedSlider}" converter="MphToKphLabelConverter"/>
                                      </td>
-                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">both: #{disabled or vehiclesBean.speedInfoDisabled}; disabled: #{disabled}; speedInfoDisabled: #{vehiclesBean.speedInfoDisabled}
                                     <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
                                           id="speedLimit" value="#{vehiclesBean.item.editableVehicleSettings.self.speedLimitInteger}" width="250"
                                           converter="MphToKphConverter"
