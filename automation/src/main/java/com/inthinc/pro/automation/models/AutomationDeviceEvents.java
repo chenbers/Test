@@ -54,7 +54,7 @@ public class AutomationDeviceEvents {
                              ((deltaY) + 600l) * 1210l +
                              ((deltaZ) + 600l);
             
-            MasterTest.print(this, Level.DEBUG);
+            MasterTest.print(packedDeltaV, Level.DEBUG);
             return packedDeltaV;
         }
 
@@ -74,6 +74,7 @@ public class AutomationDeviceEvents {
                 note.addAttr(DeviceAttrs.DELTAV_Y, deltaY);
                 note.addAttr(DeviceAttrs.DELTAV_Z, deltaZ);
             }
+            MasterTest.print(note, Level.DEBUG);
             return note;
         }
 

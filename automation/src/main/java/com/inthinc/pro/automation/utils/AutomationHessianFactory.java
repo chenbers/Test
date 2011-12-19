@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.utils;
 
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
@@ -58,14 +59,14 @@ public class AutomationHessianFactory {
     }
 
     private void createMcmProxy() {
-        logger.debug(server.toString());
+    	MasterTest.print("%s:%d", Level.INFO, server.getMCMUrl(), server.getMCMPort());
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
             mcmProxy = (MCMService) factory.create(MCMService.class, server.getMCMUrl(), server.getMCMPort());
         } catch (NumberFormatException e) {
-            logger.fatal(StackToString.toString(e));
+        	MasterTest.print(e, Level.FATAL);
         } catch (MalformedURLException e) {
-            StackToString.toString(e);
+        	MasterTest.print(e, Level.FATAL);
         }
     }
 

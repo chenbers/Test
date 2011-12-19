@@ -30,6 +30,7 @@ public class TiwiNote extends DeviceNote {
     public final DeviceAttributes attrs;
     public final DeviceNoteTypes nType;
     
+    
 
     public TiwiNote(DeviceNoteTypes type, DeviceState state, GeoPoint location){
         nType = type;
@@ -164,4 +165,17 @@ public class TiwiNote extends DeviceNote {
 	public GeoPoint getLocation() {
 		return location.copy();
 	}
+	
+    @Override
+    public boolean equals(Object obj){
+    	if (obj instanceof TiwiNote){
+    		TiwiNote other = (TiwiNote) obj;
+    		return sats == other.sats && maprev == other.maprev &&
+    				Speed == other.Speed && odometer == other.odometer &&
+    				heading.equals(other.heading) && nTime.equals(other.nTime) &&
+    				location.equals(other.location) && nType.equals(other.nType);
+    	} else {
+    		return false;
+    	}
+    }
 }

@@ -62,6 +62,7 @@ public abstract class DeviceBase {
     public DeviceBase(String IMEI, Addresses server,
             Map<DeviceProps, String> map, ProductType version) {
         this(IMEI, version, map);
+        MasterTest.print(server, Level.DEBUG);
         portal = server;
         initiate_device();
     }
@@ -128,7 +129,6 @@ public abstract class DeviceBase {
     }
 
     protected DeviceNote constructNote(AutomationEvents event){
-    	MasterTest.print(state);
         return event.getNote(tripTracker.currentLocation(), state);
     }
 

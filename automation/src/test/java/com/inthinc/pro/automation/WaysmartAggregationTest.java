@@ -46,7 +46,8 @@ public class WaysmartAggregationTest {
     
     private Map<DeviceState, LinkedList<DeviceNote>> tripsMap;
     private Map<DeviceState, Vehicle> vehicleMap;
-    private final static int startingOdometer = 73919;
+    private final static int startingOdometer = 265287;
+    private final static int startingTime = 1324221536;
     
     
     public WaysmartAggregationTest(){
@@ -61,14 +62,14 @@ public class WaysmartAggregationTest {
         int i=0;
         LinkedList<DeviceNote> baseline = new LinkedList<DeviceNote>();
         String start = "4225 W Lake Blvd, West Valley City, UT 84120";
-        String stop = "366 Mc Cormick Road, Wamsutter, Wyoming, 82336";
+        String stop = "6450 E Golf Links Rd, Tucson, AZ 85730";
         TripDriver driver = new TripDriver(ProductType.WAYSMART);
         
         DeviceState state = driver.getdeviceState();
         
         state.setDriverID(unknownDriverID);
         state.setOdometer(startingOdometer);
-        state.getTime().setDate(1324110774);
+        state.getTime().setDate(startingTime);
         driver.addToTrip(start, stop);
         driver.addToTrip(stop, start);
         driver.addEvent(10, AutomationDeviceEvents.speeding(75, 100, 600, 60, 65, 500));
@@ -84,6 +85,7 @@ public class WaysmartAggregationTest {
         MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)baseline.getLast()).nOdometer);
         
         MasterTest.print("Final noteTime is: %d", Level.INFO, state.getTime().epochSeconds());
+        MasterTest.print("Final noteTime is: %s", Level.INFO, state.getTime());
         
         for (DeviceNote note : baseline){
             randomized.add(note.copy());
@@ -93,6 +95,14 @@ public class WaysmartAggregationTest {
         for (int j=0;j<20;j++){
         	Collections.shuffle(randomized);
         }
+        
+//        for (int j=0;j<baseline.size();j++){
+//        	MasterTest.print("\n%s\n%s", baseline.get(j), randomized.get(j));
+//        }
+//        
+//        if (true){
+//        	throw new NullPointerException();
+//        }
         
         state = newState(++i);
         tripsMap.put(state, baseline);

@@ -225,4 +225,20 @@ public class NoteBC extends DeviceNote {
 	public GeoPoint getLocation() {
 		return location.copy();
 	}
+
+	@Override
+	public boolean equals(Object obj){
+		if (obj instanceof NoteBC){
+			NoteBC other = (NoteBC) obj;
+			return nType.equals(other.nType) && nVersion.equals(other.nVersion) &&
+					nTime.equals(other.nTime) && heading.equals(other.heading) &&
+					sats == other.sats && nSpeed == other.nSpeed && 
+					nOdometer == other.nOdometer && nSpeedLimit == other.nSpeedLimit &&
+					location.equals(other.location);
+			
+		}else {
+			return false;	
+		}
+		
+	}
 }

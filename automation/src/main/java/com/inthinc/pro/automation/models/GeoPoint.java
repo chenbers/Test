@@ -11,6 +11,9 @@ public class GeoPoint {
     private final double lat;
     private final double lng;
     
+    private final static long notebc = 4294967295L;
+    private final static int note = 0x00FFFFFF;
+    
     public GeoPoint(final double lat, final double lng) {
         this.lat = lat;
         this.lng = lng;
@@ -51,34 +54,28 @@ public class GeoPoint {
         return ("(" + lat + "," + lng + ")");
     }
     
+    private double partiallyEncodedLat(){
+    	return (90.0 - lat ) / 180.0;
+    }
+    
+    private double partiallyEncodedLng(){
+    	return lng / 360.0;
+    }
+    
     public int encodeLat(){
-        double latitude = ( 90.0 - lat ) / 180.0;
-        int val;
-        val  = (int)( latitude  * 0x00FFFFFF );
-        return val;
+        return (int)( partiallyEncodedLat() * note );
     }
     
     public long encodeLatBC(){
-        Double latitude = 90.0 - lat;
-        latitude = latitude / 180.0;
-        int val = 0;
-        val  = (int)( latitude  * 4294967295L );
-        return val;
+        return (int)( partiallyEncodedLat() * notebc );
     }
     
     public int encodeLng(){
-        double longitude = lng;
-        int val;
-        val = (int)( longitude * 0x00FFFFFF );
-        return val;
+        return (int)( partiallyEncodedLng() * note );
     }
     
     public long encodeLngBC(){
-        
-        double longitude = ( lng / 360.0 );
-        long val;
-        val = (long)( longitude * 4294967295L );
-        return val;
+        return (long)( partiallyEncodedLng() * notebc );
     }
     
     public GeoPoint copy(){
@@ -87,6 +84,16 @@ public class GeoPoint {
     
     public Heading getHeading(GeoPoint next){
         return Heading.getHeading(this, next);
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+    	if (obj instanceof GeoPoint){
+    		GeoPoint other = (GeoPoint) obj;
+    		return lat == other.lat && lng == other.lng;
+    	} else {
+    		return false;
+    	}
     }
     
 

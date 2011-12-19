@@ -33,7 +33,7 @@ public class NoteWS extends DeviceNote {
             GeoPoint currentLocation) {
 
         this.nType = type;
-        this.nVersion = 3;
+        this.nVersion = 2;
         this.nTime = state.copyTime();
         this.heading = state.getHeading();
         this.sats = state.getSats();
@@ -79,12 +79,10 @@ public class NoteWS extends DeviceNote {
     
     @Override
     public void addAttr(DeviceAttrs id, Object value){
-        if (value instanceof Integer){
-            addAttr(id, (Integer) value);
+        if (value instanceof Number || value instanceof String){
+        	attrs.addAttribute(id, value);
         } else if (value instanceof IndexEnum){
             addAttr(id, ((IndexEnum) value).getIndex());
-        } else if (value instanceof String){
-            attrs.addAttribute(id, value);
         }
     }
     
