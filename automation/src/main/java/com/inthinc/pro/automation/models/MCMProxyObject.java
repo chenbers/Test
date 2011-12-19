@@ -66,7 +66,7 @@ public class MCMProxyObject implements MCMService{
     
 
     private void printReply(Object reply){
-        MasterTest.print(reply, Level.INFO, 3);
+        MasterTest.print(reply, Level.DEBUG, 3);
     }
     
     private void printNote(DeviceNote note){
