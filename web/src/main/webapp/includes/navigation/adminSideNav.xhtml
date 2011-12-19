@@ -39,7 +39,7 @@
                </ui:include>
           </td>
         </tr>
-        <ui:fragment rendered="#{parentAction == 'go_adminPeople'}">
+        <ui:fragment rendered="#{(parentAction == 'go_adminPeople') and (personBean.userAbleToCreate)}">
           <tr>
             <td valign="top" class="sub_wrapper">
                <ui:include src="verticalLeftSubTab.xhtml">
@@ -68,7 +68,7 @@
            </ui:include>
           </td>
         </tr>
-        <ui:fragment rendered="#{parentAction == 'go_adminVehicles'}">
+        <ui:fragment rendered="#{(parentAction == 'go_adminVehicles') and (vehiclesBean.userAbleToCreate)}">
           <tr>
             <td valign="top" class="sub_wrapper">
               <ui:include src="verticalLeftSubTab.xhtml">

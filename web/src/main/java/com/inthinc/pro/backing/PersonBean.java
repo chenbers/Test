@@ -738,11 +738,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public boolean isDriverInfoDisabled(){
         return !isUserInRole("ROLE_DRIVEREDITINFO");
     }
-    
+    public boolean isUserAbleToCreate(){
+        List<String> anyRoles = new ArrayList<String>();
+        anyRoles.add("ROLE_USEREDITINFO");
+        anyRoles.add("ROLE_DRIVEREDITINFO");
+        return isUserInRoles(anyRoles);
+    }
     public boolean isRfidInfoDisabled(){
-        for(AccessPoint pt : getUser().getAccessPoints())
-            System.out.println("pt: "+pt);
-        
         return !isUserInRole("ROLE_RFIDEDITINFO");
     }
     public boolean isEmployeeInfoDisabled(){

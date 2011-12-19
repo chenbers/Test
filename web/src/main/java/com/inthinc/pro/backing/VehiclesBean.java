@@ -143,7 +143,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         super.refreshItems();
         setBatchEdit(false);
     }
-
+    public boolean isUserAbleToCreate(){
+        return isUserInRole("ROLE_VEHICLESCREATE");
+    }
     public boolean isVehicleInfoDisabled(){
         return !isUserInRole("ROLE_VEHICLESCREATE");
     }
