@@ -402,6 +402,7 @@ public class EventGenerator
         		else event = new Event(0l, 0, NoteType.COACHING_SEATBELT,
         				new Date(eventTime.getTime() + 2000l), 60, odometer,  locations[i].getLat(), locations[i].getLng());
 	            event.setSats(7);
+	            event.setSpeedLimit(55);
 	            eventList.add(event);
 				realEventCnt++;
 	            System.out.print(".");
@@ -683,8 +684,15 @@ public class EventGenerator
         }
         else if (event.getType().equals(NoteType.COACHING_SPEEDING))
         {
+            eventBytes[idx++] = (byte) (ATTR_TYPE_SPEED_LIMIT & 0x000000FF);
+            eventBytes[idx++] = (byte) (event.getSpeedLimit() & 0x000000FF);
             eventBytes[idx++] = (byte) (ATTR_SPEED_ID & 0x000000FF);
             idx = puti4(eventBytes, idx, 2); //DateUtil.convertMillisecondsToSeconds(event.getTime().getTime()));
+        }
+        else if (event.getType().equals(NoteType.COACHING_SEATBELT))
+        {
+            eventBytes[idx++] = (byte) (ATTR_TYPE_SPEED_LIMIT & 0x000000FF);
+            eventBytes[idx++] = (byte) (event.getSpeedLimit() & 0x000000FF);
         }
        // TODO: These are actually waysmart events
 /*        
