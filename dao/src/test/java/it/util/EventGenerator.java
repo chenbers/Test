@@ -78,6 +78,7 @@ public class EventGenerator
     private final static int ATTR_TYPE_STRING    255
     */
     public static final long FIFTEEN_SECONDS = 15000;
+    public static final int DEFAULT_SPEED_LIMIT = 55;
     
     private static final LatLng locations[] =
     {
@@ -599,6 +600,10 @@ public class EventGenerator
         idx = putlng(eventBytes, idx, event.getLongitude());
         eventBytes[idx++] = (byte) (event.getSpeed() & 0x000000FF);
         idx = puti2(eventBytes, idx, event.getOdometer());
+        if (event.getSpeedLimit() == null || event.getSpeedLimit() == 0) {
+            eventBytes[idx++] = (byte) (ATTR_TYPE_SPEED_LIMIT & 0x000000FF);
+            eventBytes[idx++] = (byte) (DEFAULT_SPEED_LIMIT & 0x000000FF);
+        }
 
         
         if (event instanceof SpeedingEvent)
