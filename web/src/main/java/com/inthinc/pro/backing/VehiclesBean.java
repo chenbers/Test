@@ -156,7 +156,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return !isUserInRole("ROLE_VEHICLESDRIVER");
     }
     public boolean isSpeedInfoDisabled(){
-        return !isUserInRole("ROLE_VEHICLES");
+        return !isUserInRole("ROLE_VEHICLESSpeed");
     }
     public boolean isFilterProductChoice(ProductType productType){
         
