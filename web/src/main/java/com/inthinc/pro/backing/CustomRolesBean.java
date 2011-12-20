@@ -17,8 +17,6 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.CustomRolesBean.CustomRoleView.AccessPointView;
-import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.TableType;
