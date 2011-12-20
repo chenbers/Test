@@ -61,7 +61,7 @@
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l text"><a4j:htmlCommandLink id="vehicleCancel1" action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
                         <li class="r">
-                          <a4j:commandButton id="vehicleDelete1"  styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                          <a4j:commandButton id="vehicleDelete1"  styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;" rendered="#{vehiclesBean.userAllowedDeleteAccess}"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
                           <h:outputText value=" " /><h:commandButton id="vehicleEdit1" action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                         </li>
                       </ul>
