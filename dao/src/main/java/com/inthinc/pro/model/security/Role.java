@@ -72,6 +72,23 @@ public class Role extends BaseEntity implements Comparable<Role>{
 	    
 	     return accessPointsMap.containsKey(accessPointID);
 	}
+	public void addAccessPt(AccessPoint accessPoint){
+	    this.accessPts.add(accessPoint);
+	    accessPointsMap.put(accessPoint.getAccessPtID(), accessPoint);
+	}
+
+    public void addAccessPts(List<AccessPoint> accessPoints) {
+        this.accessPts.addAll(accessPoints);
+        if (accessPoints == null) {
+            accessPoints = new ArrayList<AccessPoint>();
+        }
+        
+        accessPointsMap = new HashMap<Integer, AccessPoint>();
+        for (AccessPoint ap : accessPoints) {
+
+            accessPointsMap.put(ap.getAccessPtID(), ap);
+        }
+    }
 	public void setAccessPts(List<AccessPoint> accessPoints) {
 		
 		this.accessPts = accessPoints;
