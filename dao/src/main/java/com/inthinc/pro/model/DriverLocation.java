@@ -16,6 +16,8 @@ public class DriverLocation
     private String addressStr;
     private Double dist;
     private Device device;
+    private Integer speed;
+    private Integer head;
     
     @Column(updateable = false)
     private Integer position;
@@ -95,5 +97,17 @@ public class DriverLocation
     {
         this.device = device;
     }
+	public Integer getSpeed() {
+		return speed;
+	}
+	public void setSpeed(Integer speed) {
+		this.speed = speed;
+	}
+	public Integer getHead() {
+		return head;
+	}
+	public void setHead(Integer head) {
+		this.head = head;
+	}
 
 }
