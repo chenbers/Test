@@ -5,6 +5,7 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -16,6 +17,8 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.CustomRolesBean.CustomRoleView.AccessPointView;
+import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.TableType;
@@ -133,9 +136,9 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
     public String save() {
         if (isBatchEdit()) {
         }
-         
-         final String result = super.save();
-       // revert partial-edit changes if user editable
+        
+        final String result = super.save();
+        // revert partial-edit changes if user editable
         if (result != null) {
             items = null;
             getItems();
@@ -175,6 +178,18 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final CustomRoleView customRole : saveItems) {
 
+            //List<Integer, List<Integer>> dependencies = new ArrayList<Integer, List<Integer>>();
+            //customRole.contains(accessPointID);
+            List<AccessPoint> parentPoints = new ArrayList<AccessPoint>();
+            for(AccessPoint as: customRole.getAccessPts()){
+                Integer parent = AccessPointEnum.getParent(as.getAccessPtID());
+                if(parent != null && !customRole.contains(parent)){
+                    AccessPoint parentPoint = new AccessPoint(parent, 15);
+                    parentPoints.add(parentPoint);
+                }       
+            }
+            customRole.addAccessPts(parentPoints);
+            
             // insert or update
             if (create){
             	
@@ -182,12 +197,67 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
             }
            else {
                 
-        	   roleDAO.update(customRole);
+        	   roleDAO.update(customRole); 
             }
 
             final String summary = MessageUtil.formatMessageString(create ? "customRole_added" : "customRole_updated", customRole.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
+        }
+    }
+    public  enum AccessPointEnum{
+        USERSACCESS(null, 2),
+        VEHICLESACCESS(null, 3),   
+        DEVICESACCESS(null, 4),   
+        ZONESACCESS(null, 5),   
+        REDFLAGSACCESS(null, 7),   
+        REPORTSACCESS(null, 8),   
+        ORGANIZATIONACCESS(null, 9),   
+        SPEEDBYSTREETACCESS(null, 10),  
+        LIVEFLEETACCESS(null, 11),  
+        CRASHREPORTACCESS(null, 12),  
+        FORGIVEACCESS(null, 13),  
+        HOSACCESS(null, 14),  
+        WAYSMARTACCESS(null, 15),  
+        USEREDITINFO(2,16),  
+        DRIVEREDITINFO(2,17),  
+        RFIDEDITINFO(2,18),  
+        VEHICLESCREATE(3,19),  
+        VEHICLESDRIVER(3,20),  
+        VEHICLESWIRELINE(3,21),  
+        VEHICLESSPEED(3,22);  
+
+        
+        private Integer id;
+        private Integer parent;
+        private AccessPointEnum(Integer parent, Integer id){
+            this.parent = parent;
+            this.id = id;
+        }
+        public Integer getID() {
+            return id;
+        }
+        public Integer getParent() {
+            return parent;
+        }
+        private static final Map<Integer, AccessPointEnum> lookup = new HashMap<Integer, AccessPointEnum>();
+        static
+        {
+            for (AccessPointEnum p : EnumSet.allOf(AccessPointEnum.class))
+            {
+                lookup.put(p.id, p);
+            }
+        }
+
+        public static Integer getParent(Integer code)
+        {
+            System.out.println("getParent(Integer "+code+")");
+            AccessPointEnum parent =  lookup.get(code);
+            if(parent == null){
+                logger.error("getParent("+code+") couldn't locate a parent");
+                return null;
+            }
+            return parent.parent;
         }
     }
 
