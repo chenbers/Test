@@ -976,6 +976,15 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         allowedRoles.add(allowedRole);
         return isUserInRoles(allowedRoles);
     }
+    public boolean isUserInAllRoles(List<String> requiredRoles) {
+        if(SecurityJsfUtils.isUserInRole("ROLE_ADMIN"))
+            return true; //Admin should see everything
+        for(String role: requiredRoles){
+            if(!SecurityJsfUtils.isUserInRole(role))
+                return false;
+        }
+        return true;
+    }
     
 
 }
