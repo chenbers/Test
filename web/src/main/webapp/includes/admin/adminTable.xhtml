@@ -74,7 +74,7 @@
           <ul id="grid_nav" style="margin: 0;">
             <li class="l">
             <!-- this rendered check should probably be re-factored? -->
-            	<a4j:commandButton id="#{context}-adminTableDelete" styleClass="left" rendered="#{editorBean.tableType != 'ADMIN_DEVICES'}"
+            	<a4j:commandButton id="#{context}-adminTableDelete" styleClass="left" rendered="#{(editorBean.tableType != 'ADMIN_DEVICES') and editorBean.userAllowedDeleteAccess}"
             		action="#{editorBean['waitForSelects']}"
             		eventsQueue="itemSelectQueue" oncomplete="Richfaces.showModalPanel('confirmDelete'); return false;">
             		<span class="delete">

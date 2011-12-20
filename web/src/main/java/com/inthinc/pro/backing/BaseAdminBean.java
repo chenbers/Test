@@ -16,6 +16,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.security.AccessDeniedException;
 
+import com.inthinc.pro.backing.CustomRolesBean.AccessPointEnum;
 import com.inthinc.pro.backing.filtering.ColumnFiltering;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.GroupDAO;
@@ -984,6 +985,27 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                 return false;
         }
         return true;
+    }
+    public boolean isUserAllowedDeleteAccess() {
+        if(SecurityJsfUtils.isUserInRole("ROLE_ADMIN"))
+            return true; //Admin should see everything
+        System.out.println(this.getClass());
+        List<String> allowedRoles = new ArrayList<String>();
+        
+        if(this instanceof PersonBean){
+            allowedRoles.add("ROLE_"+AccessPointEnum.USEREDITINFO);
+            allowedRoles.add("ROLE_"+AccessPointEnum.DRIVEREDITINFO);
+        } else if(this instanceof VehiclesBean){
+            allowedRoles.add("ROLE_"+AccessPointEnum.VEHICLESCREATE);
+        } else {
+            return true;
+        }
+        
+        for(String role: allowedRoles){
+            if(SecurityJsfUtils.isUserInRole(role))
+                return true;
+        }
+        return false;
     }
     
 
