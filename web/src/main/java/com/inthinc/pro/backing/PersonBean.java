@@ -566,8 +566,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setFuelEfficiencyType(FuelEfficiencyType.MPG_US);
         person.setDriver(new Driver());
         person.setCellblock(new Cellblock());
-        person.setUserSelected(true);
-        person.setDriverSelected(true);
+        person.setUserSelected(!isLoginInfoDisabled());
+        person.setDriverSelected(!isDriverInfoDisabled());
         person.setProviderInfoSelected(false);
         person.setProviderInfoExists(false);
         person.setAcctID(getAccountID());
@@ -732,7 +732,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         List<String> allowedRoles = new ArrayList<String>();
         allowedRoles.add("ROLE_USEREDITINFO");
         allowedRoles.add("ROLE_DRIVEREDITINFO");
-        return !isUserInRoles(allowedRoles);
+        boolean result = !isUserInRoles(allowedRoles);
+        return result;
     }
     
     public boolean isDriverInfoDisabled(){
