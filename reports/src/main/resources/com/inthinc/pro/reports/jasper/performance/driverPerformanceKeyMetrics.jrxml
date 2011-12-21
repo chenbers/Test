@@ -174,12 +174,12 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="790" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($F{loIdleViolationsMinutes}.intValue()/60) + ":" +new DecimalFormat("00").format($F{loIdleViolationsMinutes}.intValue()%60))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{loIdleViolationsMinutes})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="840" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[new String(new DecimalFormat("00").format($F{hiIdleViolationsMinutes}.intValue()/60) + ":" +new DecimalFormat("00").format($F{hiIdleViolationsMinutes}.intValue()%60))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{hiIdleViolationsMinutes})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
