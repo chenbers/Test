@@ -21,7 +21,7 @@ import org.w3c.dom.NodeList;
 
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
-import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.EventReportItem;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
@@ -96,7 +96,7 @@ public class ReportTypeTest {
             new ReportTypeData(ReportType.STATE_MILEAGE_COMPARE_BY_GROUP, StateMileageCompareByGroup.class),
             new ReportTypeData(ReportType.STATE_MILEAGE_FUEL_BY_VEHICLE, StateMileageFuelByVehicle.class),
             new ReportTypeData(ReportType.TEAM_STATISTICS_REPORT, DriverVehicleScoreWrapper.class),
-            new ReportTypeData(ReportType.TEAM_STOPS_REPORT, DriverStops.class),
+            new ReportTypeData(ReportType.TEAM_STOPS_REPORT, DriverStopReport.class),
             new ReportTypeData(ReportType.TEN_HOUR_DAY_VIOLATIONS, TenHoursViolation.class),
             new ReportTypeData(ReportType.TREND, ScoreableEntity.class),
             new ReportTypeData(ReportType.VEHICLE_REPORT, VehicleReportItem.class),
