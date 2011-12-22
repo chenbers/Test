@@ -66,8 +66,8 @@ public class TeamStopsTest {
     
     Integer expectedIdleLoTotal = 464;
     Integer expectedIdleHiTotal = 18;
-    Integer expectedWaitTotal = 482;
-    Long expectedDriveTimeTotal = 864l;
+    Integer expectedWaitTotal = 0;
+    Long expectedDriveTimeTotal = 1211l;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
