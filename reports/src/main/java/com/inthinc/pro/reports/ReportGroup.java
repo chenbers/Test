@@ -279,7 +279,7 @@ public enum ReportGroup
     public Boolean getUseTimeFrame()
     {
     	for (CriteriaType criteria : criterias)
-    		if (criteria.equals(CriteriaType.TIMEFRAME) || criteria.equals(CriteriaType.TIMEFRAME_ALT))
+    		if (criteria.equals(CriteriaType.TIMEFRAME) || criteria.equals(CriteriaType.TIMEFRAME_ALT) || criteria.equals(CriteriaType.TIMEFRAME_ALT_DAYS))
     			return true;
     	return false;
     }
