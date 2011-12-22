@@ -21,6 +21,7 @@ import com.caucho.hessian.io.HessianDebugInputStream;
 import com.caucho.hessian.io.HessianDebugOutputStream;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianExceptionConverter;
+import com.inthinc.pro.dao.hessian.proserver.MCMService;
 import com.inthinc.pro.dao.util.UserLogUtil;
 
 public class HessianTCPProxy implements InvocationHandler
@@ -178,7 +179,7 @@ public class HessianTCPProxy implements InvocationHandler
             // If return value is an integer, then we have an error condition
             if (value instanceof Integer)
             {
-                if (value.equals(0) && method.getName().contains("notebc")){
+                if (value.equals(0) && method.getDeclaringClass().equals(MCMService.class)){
                     return null;
                 }
                 throw HessianExceptionConverter.convert(methodName, args, (Integer) value);
