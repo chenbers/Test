@@ -161,8 +161,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<classifier>tests</classifier>
+			<artifactId>spring-security-core-test</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
