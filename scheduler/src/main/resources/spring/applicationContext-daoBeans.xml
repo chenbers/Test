@@ -54,5 +54,7 @@
   <bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
     <property name="googleMapGeoUrl" value="${google.map.geo.url}"/>
   </bean>
+  
+  <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean"/>
 
 </beans>
