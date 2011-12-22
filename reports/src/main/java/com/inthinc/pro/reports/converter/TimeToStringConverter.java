@@ -42,4 +42,14 @@ public class TimeToStringConverter {
         
         return sdf.format(gc.getTime());
     }
+
+
+    public static String deltaSeconds(Long start, Long end) {
+        if (start == null || start == 0l || end == null || end == 0l)
+            return "  ----";
+        Long delta = end-start;
+        
+        return DateUtil.getDurationFromSeconds(delta.intValue());
+    }   
+
 }

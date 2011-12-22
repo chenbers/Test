@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.DriverStops;
 
 public class TeamStopsBeanTest extends BaseBeanTest  {
@@ -48,7 +49,7 @@ public class TeamStopsBeanTest extends BaseBeanTest  {
         if ( d.size() > 0 ) {
             bean.setSelectedDriverID(d.get(0).getDriverID());
         }
-        List<DriverStops> ds = bean.getDriverStopsSummary();
+        DriverStopReport ds = bean.getDriverStopReport();
         assertNotNull(ds);
     }
 }

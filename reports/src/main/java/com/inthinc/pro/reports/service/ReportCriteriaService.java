@@ -6,6 +6,8 @@ import java.util.Locale;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
+import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
@@ -32,7 +34,7 @@ public interface ReportCriteriaService
     ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
     ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
-    ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
+    ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, AddressLookup addressLookup, DriverStopReport driverStopReport);
     
     // DOT IFTA
     ReportCriteria getMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);

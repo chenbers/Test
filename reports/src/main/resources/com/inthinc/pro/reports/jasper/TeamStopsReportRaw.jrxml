@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Team Statistics Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Team Stops Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="driverStops">
+		<field name="waitTime" class="java.lang.Integer"/>
+		<field name="driveTime" class="java.lang.Long"/>
+		<field name="zoneName" class="java.lang.String"/>
+		<field name="arriveTime" class="java.lang.Long"/>
+		<field name="vehicleName" class="java.lang.String"/>
+		<field name="departTime" class="java.lang.Long"/>
+		<field name="idleLo" class="java.lang.Integer"/>
+		<field name="idleHi" class="java.lang.Integer"/>
+		<field name="address" class="java.lang.String"/>
+		<field name="totalTime" class="java.lang.Integer"/>
+	</subDataset>
 	<parameter name="ACCOUNT_NAME" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
@@ -17,112 +32,156 @@
 	<parameter name="REPORT_NAME" class="java.lang.String"/>
 	<parameter name="FUEL_EFFICIENCY_TYPE" class="com.inthinc.pro.model.FuelEfficiencyType" isForPrompting="false"/>
 	<parameter name="MEASUREMENT_TYPE" class="com.inthinc.pro.model.MeasurementType"/>
-	<field name="summary" class="java.lang.Boolean"/>
-	<field name="zoneName" class="java.lang.String"/>
-	<field name="arriveTime" class="java.lang.Long"/>
-	<field name="departTime" class="java.lang.Long"/>
-	<field name="idleLo" class="java.lang.Integer"/>
-	<field name="idleHi" class="java.lang.Integer"/>
-	<field name="driveTime" class="java.lang.Long"/>
-	<field name="address" class="java.lang.String"/>
+	<field name="driverID" class="java.lang.Integer"/>
+	<field name="driverName" class="java.lang.String"/>
+	<field name="driverStops" class="java.util.List"/>
+	<field name="idleLoTotal" class="java.lang.Integer"/>
+	<field name="idleHiTotal" class="java.lang.Integer"/>
+	<field name="driveTimeTotal" class="java.lang.Long"/>
+	<field name="waitTotal" class="java.lang.Integer"/>
+	<field name="total" class="java.lang.Integer"/>
+	<background>
+		<band/>
+	</background>
 	<columnHeader>
-		<band height="35">
+		<band height="18">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="1" y="10" width="73" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.zone_arrival}]]></textFieldExpression>
+				<reportElement key="textField-2" x="0" y="0" width="74" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.vehicle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="231" y="10" width="91" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<reportElement key="textField-2" x="74" y="0" width="61" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.zone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="135" y="0" width="105" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.stop_location}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="240" y="0" width="125" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.arrive}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-5" x="388" y="10" width="67" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement key="textField-5" x="365" y="0" width="127" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.depart}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-8" x="559" y="10" width="40" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement key="textField-5" x="492" y="0" width="60" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.total}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-8" x="552" y="0" width="55" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.low_idle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-9" x="613" y="10" width="43" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement key="textField-9" x="605" y="0" width="60" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.high_idle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-11" x="728" y="10" width="45" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.drive_time}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-5" x="507" y="10" width="33" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.total_time_at_stop}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-9" x="672" y="10" width="45" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement key="textField-9" x="665" y="0" width="57" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.wait}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="95" y="10" width="91" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.stop_location}]]></textFieldExpression>
+				<reportElement key="textField-11" x="721" y="0" width="60" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstops.drive_time}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="22">
-			<textField>
-				<reportElement x="559" y="0" width="54" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{idleLo})]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="341" y="0" width="155" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{address} == null)? "":
+		<band height="23">
+			<componentElement>
+				<reportElement x="0" y="0" width="782" height="21"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="driverStops">
+						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{driverStops})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="21" width="782">
+						<textField>
+							<reportElement x="552" y="1" width="55" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{idleLo})]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="false">
+							<reportElement x="365" y="1" width="127" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[($F{departTime} == null) ?  "  ----":
 com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{departTime}, $P{REPORT_LOCALE})]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="186" y="0" width="155" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{address} == null)? "":
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="240" y="1" width="125" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[($F{arriveTime} == null) ?  "  ----" :
 com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{arriveTime}, $P{REPORT_LOCALE})]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="1" y="0" width="73" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{zoneName}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="728" y="0" width="53" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{driveTime})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="613" y="0" width="59" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{idleHi})]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="496" y="0" width="57" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds(Long.valueOf($F{departTime}.longValue()-$F{arriveTime}.longValue()))]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="672" y="0" width="56" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds(Long.valueOf($F{departTime}.longValue() - $F{arriveTime}.longValue() - $F{idleHi}.longValue() - $F{idleLo}.longValue()))]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="0" width="112" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
-			</textField>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="74" y="1" width="61" height="20"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{zoneName}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="722" y="1" width="60" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[($F{driveTime} == null) ? "----" : com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{driveTime})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="605" y="1" width="60" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{idleHi})]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="492" y="1" width="60" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[($F{totalTime} == null) ? "----" : com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{totalTime})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="665" y="1" width="57" height="20"/>
+							<textElement textAlignment="Center"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[($F{waitTime} == null) ? "----" : com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{waitTime})]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="135" y="1" width="105" height="20"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="0" y="1" width="74" height="20"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 		</band>
 	</detail>
 </jasperReport>

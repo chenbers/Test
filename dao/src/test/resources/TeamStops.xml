@@ -498,11 +498,6 @@
   <void property="color"> 
    <string>Red</string> 
   </void> 
-  <void property="dot"> 
-   <object id="VehicleDOTType0" class="com.inthinc.pro.model.VehicleDOTType" method="valueOf"> 
-    <string>DOT</string> 
-   </object> 
-  </void> 
   <void property="fullName"> 
    <string>2000 Make Model</string> 
   </void> 
@@ -719,9 +714,6 @@
   <void property="color"> 
    <string>Red</string> 
   </void> 
-  <void property="dot"> 
-   <object idref="VehicleDOTType0"/> 
-  </void> 
   <void property="fullName"> 
    <string>2000 Make Model</string> 
   </void> 
@@ -935,9 +927,6 @@
   </void> 
   <void property="color"> 
    <string>Red</string> 
-  </void> 
-  <void property="dot"> 
-   <object idref="VehicleDOTType0"/> 
   </void> 
   <void property="fullName"> 
    <string>2000 Make Model</string> 

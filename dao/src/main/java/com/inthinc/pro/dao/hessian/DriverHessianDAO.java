@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.hessian;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DriverName;
@@ -18,6 +20,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.Vehicle;
 
 public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> implements DriverDAO
 {
@@ -27,6 +30,9 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
 
     private static final String BARCODE_KEY = "barcode";
     
+    private VehicleDAO vehicleDAO;
+    
+
     @Override
     public List<Driver> getAllDrivers(Integer groupID)
     {
@@ -181,14 +187,37 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         try {
             Date start = interval.getStart().toDateTime().toDate();
             Date end   = interval.getEnd().toDateTime().toDate();
-            return getMapper().convertToModelObject(this.getSiloService().getStops(
+            List<DriverStops> driverStopsList = getMapper().convertToModelObject(this.getSiloService().getStops(
                     driverID,
                     DateUtil.convertDateToSeconds(start),
                     DateUtil.convertDateToSeconds(end)), 
                     DriverStops.class);
+            
+            
+            // TODO: CJ Add this to the hessian response instead of doing it this bogus way
+            Map<Integer, String> vehicleMap = new HashMap<Integer, String>();
+            for (DriverStops driverStop : driverStopsList) {
+                String vehicleName = vehicleMap.get(driverStop.getVehicleID());
+                if (vehicleName == null) {
+                    Vehicle vehicle = vehicleDAO.findByID(driverStop.getVehicleID());
+                    vehicleName = vehicle == null ? "" : vehicle.getName();
+                    vehicleMap.put(driverStop.getVehicleID(), vehicleName);
+                }
+                driverStop.setVehicleName(vehicleName);
+            }
+            
+            
+            return driverStopsList;
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }	    
 	    
 	}
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
 }

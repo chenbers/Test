@@ -14,6 +14,7 @@ import org.richfaces.json.JSONArray;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -27,9 +28,6 @@ public class TeamStopsBean extends BaseBean {
     private static final EnumSet<TimeFrame> validTimeFrames = 
         EnumSet.range(TimeFrame.TODAY,TimeFrame.SIX_DAYS_AGO);    
 
-    /**
-     * Backing bean for the TeamStops tab of the new team page
-     */
     private static final long serialVersionUID = 1L;
     
     private DriverDAO driverDAO;
@@ -41,15 +39,16 @@ public class TeamStopsBean extends BaseBean {
     private List<String> labels;    
     
     private List<Driver> drivers;
-    private List<DriverStops> driverStops;
-    private List<DriverStops> driverStopsSummary;  
+    private DriverStopReport driverStopReport;
+
     private Integer selectedDriverID;  
     private TimeZone timeZone;
     private String errorMessage;
         
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-
+    private ReportAddressLookupBean reportAddressLookupBean;
+    
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
@@ -70,38 +69,16 @@ public class TeamStopsBean extends BaseBean {
         if ( drivers == null || drivers.size() == 0 ) {
             initDrivers();
         }
-        
         return drivers;
     }  
     
-    public List<DriverStops> getDriverStops() { 
-//        if ( selectedDriverID != null ) {
-//            initDriverStops();
-//        }
-        
-        return driverStops;
-    }
-    
-    public List<DriverStops> getDriverStopsSummary() {
-        if ( selectedDriverID != null ) {
-            initDriverStopsSummary();
-        } else {
-            addInfoMessage(MessageUtil.getMessageString("team_timeframe_and_driver_msg", getLocale())); 
-        }
-        
-        return driverStopsSummary;
-    }   
-    
+   
     public Integer getSelectedDriverID() {
         return selectedDriverID;
     }
 
     public void setSelectedDriverID(Integer selectedDriverID) {
         this.selectedDriverID = selectedDriverID;
-
-        // Have the new driver Id, find the info
-//        initDriverStops();
-//        initDriverStopsSummary();
     }
     
     public List<String> getColors() {
@@ -137,13 +114,6 @@ public class TeamStopsBean extends BaseBean {
     }    
 
     public String getErrorMessage() {
-//        if ( !isValidTimeFrame() && selectedDriverID == null ) {
-//            addInfoMessage(MessageUtil.getMessageString("team_timeframe_and_driver_msg", getLocale()));     
-//        } else if ( !isValidTimeFrame() ) {
-//            addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale())); 
-//        } else if ( selectedDriverID == null ) {
-//            addInfoMessage(MessageUtil.getMessageString("team_driver_msg", getLocale())); 
-//        }
         if ( !isValidTimeFrame() ) {
             addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale())); 
         } 
@@ -172,92 +142,36 @@ public class TeamStopsBean extends BaseBean {
         Collections.sort(drivers);
     }
 
-    private void initDriverStops() {
-        driverStops = new ArrayList<DriverStops>();
-        
-        // Grab all the data here
-        if (isValidTimeFrame()){
-            driverStops =                        
-                driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
-            
-            // Till we figure-out how to get the address back, set to something, for the report
-            for ( DriverStops ds: driverStops ) {
-                ds.setAddress("Set this");
+    private void initDriverStopReport() {
+System.out.println("!!!initDriverStopReport " + selectedDriverID);    
+        if (driverStopReport != null) {
+            if (driverStopReport.getDriverID().equals(selectedDriverID) && driverStopReport.getTimeFrame() == teamCommonBean.getTimeFrame()) {
+                System.out.println("already initialized");
+                return;
             }
-        } else {
-            addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale()));            
-        }      
-        
-        // If no data, return
-        if ( driverStops.size() == 0 ) {
-            return;
-        }                
-        
-        // Lastly, the first and last stops can have some un-savory info in them, alter
-        DriverStops ds = driverStops.get(0);
-        ds.setArriveTime(0L);
-        ds.setIdleHi(0);
-        ds.setIdleLo(0);
-        driverStops.set(0, ds);
-        
-        ds = driverStops.get(driverStops.size()-1);
-        ds.setDepartTime(0L);  
-        ds.setIdleHi(0);
-        ds.setIdleLo(0);
-        driverStops.set(driverStops.size()-1, ds);        
+        }
+        List<DriverStops> driverStops = driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+        driverStopReport = new DriverStopReport(selectedDriverID, getSelectedDriverName(), teamCommonBean.getTimeFrame(), driverStops);
     }
     
-    public void initDriverStopsSummary() {
-        
-        driverStopsSummary = new ArrayList<DriverStops>();
-        initDriverStops();
-        
-        if ( driverStops.size() == 0 ) {
-            return;
+    private String getSelectedDriverName() {
+        for (Driver driver : getDrivers()) {
+            if (driver.getDriverID().equals(selectedDriverID))
+                return driver.getPerson().getFullName();
+                
         }
-        
-        // Re-init values
-        DriverStops d = new DriverStops();
-        driverStopsSummary = new ArrayList<DriverStops>();
-        
-        // Extract from model method
-        d = DriverStops.summarize(driverStops);
-        
-        // Till we figure-out how to get the address back, set to something 
-        d.setAddress(null);
-        
-        driverStopsSummary.add(d);
+        return "";
     }
 
+    // TODO: CJ should this be driver's timezone????
+    // called from xhtml
     public TimeZone getTimeZone() {
-        
-        // Return TimeZone if this driver is known.
-//        if (tripsDrivers.containsKey(driverID))
-//            return tripsDrivers.get(driverID).getPerson().getTimeZone();
-        // Lookup driver, save Driver for repeat requests. 
-        
-        // Find by driver
-//        Driver driver = driverDAO.findByID(selectedDriverID);
-        
-//        if (driver != null && driver.getPerson() != null && driver.getPerson().getTimeZone() != null) {
-//            tripsDrivers.put(driver.getDriverID(), driver);
-//            timeZone = driver.getPerson().getTimeZone();
-//        }
-//        else {
-            // Use GMT for default if no driver associated.
-//            timeZone = TimeZone.getTimeZone("GMT");
-//        }
-        
-        // Find by logged-in user
         if (getPerson() != null && getPerson().getTimeZone() != null) {
-//            tripsDrivers.put(driver.getDriverID(), driver);
             timeZone = getPerson().getTimeZone();
         }
         else {
-            // Use GMT for default if no driver associated.
             timeZone = TimeZone.getTimeZone("GMT");
         }        
-        
         return timeZone;
     }
 
@@ -278,38 +192,27 @@ public class TeamStopsBean extends BaseBean {
 
     protected ReportCriteria buildReportCriteria()
     {
-        ReportCriteria reportCriteria = getReportCriteria();
-        reportCriteria.setReportDate(new Date(), getTimeZone());
-        List<DriverStops> reportDataSet = new ArrayList<DriverStops>(); 
+        if (selectedDriverID == null)
+            return null;
         
-        // Compute some here to get the correct report look
-        ArrayList<DriverStops> tmp = new ArrayList<DriverStops>();
+        ReportCriteria reportCriteria = getReportCriteriaService().getTeamStopsReportCriteria(selectedDriverID, teamCommonBean.getTimeFrame(), 
+                getDateTimeZone(), getLocale(), reportAddressLookupBean.getAddressLookup(), driverStopReport);
         
-        // This gets a net zero for the start location
-//        DriverStops ds = driverStart.get(0);        
-//        ds.setDepartTime(ds.getArriveTime());
-//        tmp.add(ds);
-//        reportDataSet.addAll(tmp); 
-        
-        // This gets a net zero for the last location
-//        ds = driverStops.get(driverStops.size()-1);
-//        ds.setDepartTime(ds.getArriveTime());
-//        driverStops.set(driverStops.size()-1, ds);
-        
-        reportDataSet.addAll(driverStops);
-        reportDataSet.addAll(driverStopsSummary);
-        
-        reportCriteria.setMainDataset(reportDataSet);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         
         return reportCriteria;
+
     }
-    
-    protected ReportCriteria getReportCriteria()
-    {
-        return getReportCriteriaService().getTeamStopsReportCriteria(selectedDriverID, teamCommonBean.getTimeFrame(), 
-                getDateTimeZone(), getLocale(), false);
+    public DriverStopReport getDriverStopReport() {
+        if ( selectedDriverID != null ) {
+                initDriverStopReport();
+        } 
+        return driverStopReport;
     }
 
+    public void setDriverStopReport(DriverStopReport driverStopReport) {
+        this.driverStopReport = driverStopReport;
+    }
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
         this.reportRenderer = reportRenderer;
@@ -329,5 +232,13 @@ public class TeamStopsBean extends BaseBean {
     {
         return reportCriteriaService;
     }
+    public ReportAddressLookupBean getReportAddressLookupBean() {
+        return reportAddressLookupBean;
+    }
+
+    public void setReportAddressLookupBean(ReportAddressLookupBean reportAddressLookupBean) {
+        this.reportAddressLookupBean = reportAddressLookupBean;
+    }
+
 
 }

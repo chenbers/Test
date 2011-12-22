@@ -83,10 +83,13 @@
               font: 10px Verdana,Tahoma,Arial,sans-serif;
               text-align: center;
             }
+       		.smsection {
+       			padding: 2px 4px;
+       		}
         </style>		    
  
     <rich:tab id="teamStops" oncomplete="Team.tabChange();" reRender="headerForm:contextSensitiveHelp">
-<f:setPropertyActionListener value="teamStops" target="#{helpBean.subID}" /> 		
+	<f:setPropertyActionListener value="teamStops" target="#{helpBean.subID}" /> 		
    	   
 	 	<ui:param name="context" value="teamStops" />   	   
    	   
@@ -96,7 +99,7 @@
 			</h:panelGroup>
 		</f:facet> 				
 				
-		<a4j:outputPanel id="stopsPanel" ajaxRendered="true" styleClass="section">
+		<a4j:outputPanel id="stopsPanel" ajaxRendered="true" styleClass="smsection">
 		
 			<!-- The following is a trick to provide error info -->
 			<h:inputHidden id="hidnMsg" value="#{teamStopsBean.errorMessage}">
@@ -104,20 +107,15 @@
 							
 			<rich:messages globalOnly="true" errorClass="error" 
 				fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
-					   					
-<!-- Report stuff, for another day. CHECK OUT THE DRIVER AND VEHICLE PERFORMANCE PAGES
-		FOR HOW TO GET THE ADDRESS BACK INTO THE BEAN FOR THE REPORT.  
-		<h:form id="stopsReport">
-			<ul id="grid_nav" style="margin: 0;">            							
-     			<li class="r grid_icon">
-     				<h:panelGroup id="#{context}_reportToolImageId">
-						<h:graphicImage value="/images/ico_tools.png"/>
-					</h:panelGroup>
-				</li>
-				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-				</li>
-			</ul>
-			
+		
+		<ui:fragment rendered="#{teamStopsBean.driverStopReport != null}">			   					
+		<h:form id="stopsReport"  >
+			<h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
+				<span style="cursor:pointer;">
+					<h:graphicImage value="/images/ico_tools.png"/>
+				</span>
+			</h:panelGroup>
+
             <ui:include src="/includes/reportsContextMenu.xhtml">	            
 				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
 				<ui:param  name="reportBean" value="#{teamStopsBean}"/>
@@ -133,18 +131,16 @@
 					<ui:param name="context" value="#{context}" />
 				</ui:include>
 			</h:outputText>
-		</h:form>
--->
-			
-		<table>
+		</h:form>			
+		</ui:fragment>
+		<table style="clear:both;">
 		<tr>
 		<td valign="top" align="left">
 		    
-   			<div class="section">
+   			<div class="smsection">
      	  		<h:form id="stopsTableForm">
-     	  		
 	 	        	<div id="stopsDriverTable" >
-	        			        	
+	 	        	
 	 	        		<rich:dataTable	value="#{teamStopsBean.drivers}" 
 					       		id="stopsDrivers" 
 					       		var="drivers"
@@ -195,25 +191,25 @@
 		</td>
 		<td valign="top">
 			
-			<div class="section">
+			<div class="smsection">
 				<h:form id="stopsTripsTableForm">
 					<div id="stopsTripsTable" >
 										
 						<table>
 							<tr>
 								<td>
-																
-	 	        			<rich:dataTable	value="#{teamStopsBean.driverStopsSummary}" 
+	 	        			<rich:dataTable	value="#{teamStopsBean.driverStopReport}" 
 					       			id="stopsTripsSummary" 
 					       			var="stopsSummary"					       
 									styleClass="datagrid alt_datagrid" 
 									rowClasses="tableOdd,tableEven"
 									rows="10"
 									width="625px"
-									columnsWidth="50px,100px,75px,75px,100px,75px,50px,50px,50px">
+									columnsWidth="50px,50px,100px,50px,50px,50px,50px,50px,50px,50px">
 								
 	                			<f:facet name="header">
 	                    			<rich:columnGroup>
+	                        			<rich:column rowspan="2"></rich:column>
 	                        			<rich:column rowspan="2"></rich:column>
 	                        			<rich:column rowspan="2"></rich:column>
 	                        			<rich:column rowspan="2"></rich:column>
@@ -226,76 +222,65 @@
 	                        			<rich:column>#{messages.team_wait}</rich:column>	                        	                        			                        			                        		
 	                    			</rich:columnGroup>	
 	                			</f:facet>
-	                		
 	                			<rich:column>
-	                			
+									<h:outputText value=" " style="width:50px;display:inline-block;"/>
 	                			</rich:column>
-	                		
+	                			<rich:column>
+									<h:outputText value=" " style="width:50px;display:inline-block;overflow:hidden;"/>
+	                			</rich:column>
 	                			<rich:column id="address_column_sum">
-	                			
+									<h:outputText value=" " style="width:100px;display:inline-block;"/>
 	                			</rich:column>
-	                		
 	                			<rich:column>
-	                			
+									<h:outputText value=" " style="width:50px;display:inline-block;"/>
 	                			</rich:column>	   
-	                		
 	                			<rich:column>
-	                			
+									<h:outputText value=" " style="width:50px;display:inline-block;"/>
 	                			</rich:column>
-	                		
 	                			<rich:column>
                     				<h:outputFormat value="#{messages.reports_time}">
-                    					<a4j:actionparam value="#{stopsSummary.totalTime}" 
+                    					<a4j:actionparam value="#{stopsSummary.total}" 
                     						converter="TimeToStringConverter"/>                    
                     				</h:outputFormat>										
-                    			        			                			
 	                			</rich:column>
-	                			         
 	                			<rich:column>
                     				<h:outputFormat value="#{messages.reports_time}">
-                    					<a4j:actionparam value="#{stopsSummary.idleLo}" converter="TimeToStringConverter"/>                    
+                    					<a4j:actionparam value="#{stopsSummary.idleLoTotal}" converter="TimeToStringConverter"/>                    
                     				</h:outputFormat>										
-                    			    	                			                			
 	                			</rich:column>
-	                			   	                	
 	                			<rich:column>
                     				<h:outputFormat value="#{messages.reports_time}">
-                    					<a4j:actionparam value="#{stopsSummary.idleHi}" converter="TimeToStringConverter"/>                    
+                    					<a4j:actionparam value="#{stopsSummary.idleHiTotal}" converter="TimeToStringConverter"/>                    
                     				</h:outputFormat>										
-                    			      	                			                			
 	                			</rich:column>	    
-	                			                
 	                			<rich:column>
                     				<h:outputFormat value="#{messages.reports_time}" >
-                    					<a4j:actionparam value="#{stopsSummary.waitTime}" converter="TimeToStringConverter"/>                    
+                    					<a4j:actionparam value="#{stopsSummary.waitTotal}" converter="TimeToStringConverter"/>                    
                     				</h:outputFormat>										
-                    			     	                			                			
 	                			</rich:column>	
-	                			                	
 	                			<rich:column>
                     				<h:outputFormat value="#{messages.reports_time}">
-                    					<a4j:actionparam value="#{stopsSummary.driveTime}" converter="TimeToStringConverter"/>                    
+                    					<a4j:actionparam value="#{stopsSummary.driveTimeTotal}" converter="TimeToStringConverter"/>                    
                     				</h:outputFormat>										
-                    			 	                			                			
 	                			</rich:column>	      	                		            		             		       		
 							</rich:dataTable> 	
-							
 							</td>
 							</tr>
 							<tr>
 							<td>				
-	 	        					<rich:dataTable	value="#{teamStopsBean.driverStops}" 
+	 	        					<rich:dataTable	value="#{teamStopsBean.driverStopReport.driverStops}" 
 					       				id="stopsTrips" 
 					       				var="stops"									       		
 										styleClass="datagrid alt_datagrid" 
 										rowClasses="tableOdd,tableEven"
 										rows="10"
 										width="625px"
-										columnsWidth="50px,100px,75px,75px,100px,75px,50px,50px,50px">
+										columnsWidth="50px,50px,100px,50px,50px,50px,50px,50px,50px,50px">
 								
 	                					<f:facet name="header">
 	                    					<rich:columnGroup>
 	                        					<rich:column rowspan="2">#{messages.team_zone_arrival}</rich:column>
+	                        					<rich:column rowspan="2">#{messages.team_vehicle}</rich:column>
 	                        					<rich:column rowspan="2">#{messages.team_stop_location}</rich:column>
 	                        					<rich:column rowspan="2">#{messages.team_arrive}</rich:column>
 	                        					<rich:column rowspan="2">#{messages.team_depart}</rich:column>
@@ -309,35 +294,42 @@
 	                					</f:facet>
 	                		
 	                					<rich:column>
-	                						#{stops.zoneName}
+	                						<h:outputText value="#{stops.zoneName}" style="width:50px;display:inline-block;"/>
+	                					</rich:column>
+	                					<rich:column>
+	                						<pretty:link id="vehiclesVehiclePerformance" mappingId="vehiclePerformance">
+                                               	<h:outputText value="#{stops.vehicleName}" title="#{stops.vehicleName}" 
+                                               			style="width:50px;display:inline-block;overflow:hidden;text-decoration: underline;cursor:hand;"/>
+                                               	<f:param value="#{stops.vehicleID}"/>
+                                            </pretty:link>                        
 	                					</rich:column>
 	                		
 	                					<rich:column id="address_column">
 	                						<h:inputHidden id="lat" value="#{stops.lat}"/>
 											<h:inputHidden id="lng" value="#{stops.lng}"/>								
- 											<h:outputText id="address"/>
+ 											<h:outputText id="address" style="width:100px;display:inline-block;"/>
 	                					</rich:column>
 	                		
 	                					<rich:column>	                			
-                            				<h:outputText value="#{stops.arriveTime * 1000}" rendered="#{stops.arriveTime != 0}">
-                                				<f:convertDateTime pattern="#{messages.stopsDateTimeFormat}" timeZone="#{teamStopsBean.timeZone}" />
+                            				<h:outputText value="#{stops.arriveTime * 1000}" rendered="#{stops.arriveTime != null}"  style="width:50px;display:inline-block;">
+                                				<f:convertDateTime pattern="M/d h:mm a (z)" timeZone="#{teamStopsBean.timeZone}" />
                             				</h:outputText>  
-											<h:outputText value="---" rendered="#{stops.arriveTime == 0}"/>                            				   	                			
+											<h:outputText value="---" rendered="#{stops.arriveTime == null}" style="width:50px;display:inline-block;"/>                            				   	                			
 	                					</rich:column>	   
 	                		
 	                					<rich:column>	                			
-                            				<h:outputText value="#{stops.departTime * 1000}" rendered="#{stops.departTime != 0}">
-                                				<f:convertDateTime pattern="#{messages.stopsDateTimeFormat}" timeZone="#{teamStopsBean.timeZone}" />
+                            				<h:outputText value="#{stops.departTime * 1000}" rendered="#{stops.departTime != null}"  style="width:50px;display:inline-block;">
+                                				<f:convertDateTime pattern="M/d h:mm a (z)" timeZone="#{teamStopsBean.timeZone}" />
                             				</h:outputText>  
-                            				<h:outputText value="---" rendered="#{stops.departTime == 0}"/>	                			
+                            				<h:outputText value="---" rendered="#{stops.departTime == null}" style="width:50px;display:inline-block;"/>	                			
 	                					</rich:column>
 	                		
 	                					<rich:column>
-                    						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.departTime != 0 and stops.arriveTime != 0}">
+                    						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.totalTime != null}">
                     							<a4j:actionparam value="#{stops.totalTime}" 
                     								converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>										
-                    			        	<h:outputText value="---" rendered="#{stops.departTime == 0 or stops.arriveTime == 0}"/>		                			
+                    			        	<h:outputText value="---" rendered="#{stops.totalTime == null}"/>		                			
 	                					</rich:column>
 	                			         
 	                					<rich:column>
@@ -345,7 +337,6 @@
                     							<a4j:actionparam value="#{stops.idleLo}" converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>										
                     						<h:outputText value="00:00:00" rendered="#{stops.idleLo == null}"/>	
-                    						<h:outputText value="" rendered="#{stops.idleLo == 0}"/>      	                			                			
 	                					</rich:column>
 	                			   	                	
 	                					<rich:column>
@@ -353,31 +344,25 @@
                     							<a4j:actionparam value="#{stops.idleHi}" converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>										
                     						<h:outputText value="00:00:00" rendered="#{stops.idleHi == null}"/>	 
-                    						<h:outputText value="" rendered="#{stops.idleHi == 0}"/>     	                			                			
 	                					</rich:column>	    
 	                			                
 	                					<rich:column>
-                    						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.departTime != 0 and stops.arriveTime != 0}">
+                    						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.waitTime != null}">
                     							<a4j:actionparam value="#{stops.waitTime}" converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>										
-											<h:outputText value="---" rendered="#{stops.departTime == 0 or stops.arriveTime == 0}"/>                    			     	                			                			
+											<h:outputText value="---" rendered="#{stops.waitTime == null}"/>                    			     	                			                			
 	                					</rich:column>	
 	                			                	
 	                					<rich:column>
-                    						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.departTime != 0 and stops.arriveTime != 0}">
+                    						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.driveTime != null}">
                     							<a4j:actionparam value="#{stops.driveTime}" converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>	
-                    						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.departTime == 0 and stops.arriveTime != 0}">
-                    							<a4j:actionparam value="#{stops.driveTime}" converter="TimeToStringConverter"/>                    
-                    						</h:outputFormat>                    															
-          									<h:outputText value="---" rendered="#{stops.departTime != 0 and stops.arriveTime == 0}"/>                    							                			                			
+          									<h:outputText value="---" rendered="#{stops.driveTime == null}"/>                    							                			                			
 	                					</rich:column>	  
 	                					<f:facet name="footer">  
-	                						<rich:datascroller 	align="center" for="stopsTrips" 
+	                						<rich:datascroller 	align="center" 
 	                							oncomplete="getAddresses();initStopTimeFrameChangeListener();"							
-            			 						styleClass="dataScrollerSmall" 
-            			 						id="stopsTripsTableScroller">
-            								</rich:datascroller>
+            			 						id="stopsTripsTableScroller"/>
             							</f:facet>            		                		            		             		       		
 									</rich:dataTable>	
 																																                                           										            											

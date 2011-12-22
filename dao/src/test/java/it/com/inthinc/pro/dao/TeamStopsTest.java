@@ -32,13 +32,16 @@ import org.junit.Test;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
+import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
@@ -54,12 +57,17 @@ public class TeamStopsTest {
     private static final String BASE_DATA_XML = "TeamStops.xml";
 
     DriverStops[] expectedDriverStops = {
-        new DriverStops(11771, 12750, 34.66848d, -92.340576d, 0l, null, 1314706917l, 0, 0, null),
-        new DriverStops(11771, 12750, 34.66848d, -92.340576d, 0l, 1314706917l, 1314706980l, 68, 18, null),
-        new DriverStops(11771, 12750, 34.670361d, -92.377899d, 328l, 1314707308l, 1314707640l, 332, 0, null),
-        new DriverStops(11771, 12750, 34.62093d, -92.49765d, 536l, 1314708176l, 1314708240l, 64, 0, null),
-        new DriverStops(11771, 12750, 34.623398d, -92.499512d, 347l, 1314708587l, null, 73, 0, "Zone With Alerts")
+        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.66848d, -92.340576d, 0l, null, 1314706917l, 0, 0, null),
+        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.66848d, -92.340576d, 0l, 1314706917l, 1314706980l, 68, 18, null),
+        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.670361d, -92.377899d, 328l, 1314707308l, 1314707640l, 332, 0, null),
+        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.62093d, -92.49765d, 536l, 1314708176l, 1314708240l, 64, 0, null),
+        new DriverStops(11771, 12750, "VehicleINTERMEDIATE", 34.623398d, -92.499512d, 347l, 1314708587l, null, 73, 0, "Zone With Alerts")
     };
+    
+    Integer expectedIdleLoTotal = 464;
+    Integer expectedIdleHiTotal = 18;
+    Integer expectedWaitTotal = 482;
+    Long expectedDriveTimeTotal = 864l;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -100,6 +108,9 @@ public class TeamStopsTest {
         driverDAO.setSiloService(siloService);
         EventHessianDAO eventDAO = new EventHessianDAO();
         eventDAO.setSiloService(siloService);
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+        driverDAO.setVehicleDAO(vehicleDAO);
         
         // generate data
         GroupData team = itData.teamGroupData.get(ITData.INTERMEDIATE);
@@ -126,6 +137,15 @@ public class TeamStopsTest {
             assertEquals(cnt + " VehicleID", expected.getVehicleID(), stop.getVehicleID());
             assertEquals(cnt + " ZoneName", expected.getZoneName(), stop.getZoneName());
         }
+        
+        
+        DriverStopReport driverStopReport = new DriverStopReport(team.driver.getDriverID(), "", TimeFrame.ONE_DAY_AGO, stopsList);
+        
+        assertEquals("Total DriveTime", expectedDriveTimeTotal, driverStopReport.getDriveTimeTotal());
+        assertEquals("Total IdleHi", expectedIdleHiTotal,driverStopReport.getIdleHiTotal());
+        assertEquals("Total IdleLo", expectedIdleLoTotal, driverStopReport.getIdleLoTotal());
+        assertEquals("Total Wait", expectedWaitTotal, driverStopReport.getWaitTotal());
+        
     }
 
 
@@ -319,14 +339,14 @@ public class TeamStopsTest {
         idx = putlng(eventBytes, idx, lng);
         eventBytes[idx++] = (byte) (speed & 0x000000FF);
         idx = puti2(eventBytes, idx, odometer);
+        eventBytes[idx++] = (byte) (ATTR_TYPE_SPEED_LIMIT & 0x000000FF);
+        eventBytes[idx++] = (byte) ((speedLimit==null ? 55 : speedLimit) & 0x000000FF);
         
         Map<Integer, String> attrMap = parseAttrMap(values[ATTR_MAP_COL]);
 
         
         if (noteType == NoteType.SPEEDING_EX3)
         {
-            eventBytes[idx++] = (byte) (ATTR_TYPE_SPEED_LIMIT & 0x000000FF);
-            eventBytes[idx++] = (byte) (speedLimit & 0x000000FF);
             eventBytes[idx++] = (byte) (ATTR_TYPE_AVG_SPEED & 0x000000FF);
             eventBytes[idx++] = (byte) (avgSpeed & 0x000000FF);
             eventBytes[idx++] = (byte) (ATTR_TYPE_TOP_SPEED & 0x000000FF);
