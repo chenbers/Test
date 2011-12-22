@@ -50,11 +50,6 @@
 				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-16" x="55" y="5" width="122" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["tiwiPRO - Portal"]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="428" y="1" width="353" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
@@ -258,13 +253,13 @@
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{idleLo})]]></textFieldExpression>
 						</textField>
-						<textField isBlankWhenNull="false">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement x="365" y="0" width="127" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{departTime} == null) ?  "  ----":
 com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{departTime}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
-						<textField isBlankWhenNull="true">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement x="240" y="0" width="125" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{arriveTime} == null) ?  "  ----" :
@@ -304,6 +299,11 @@ com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{
 							<reportElement x="0" y="0" width="74" height="20"/>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="false">
+							<reportElement key="textField-10" x="55" y="-138" width="122" height="16" isPrintWhenDetailOverflows="true"/>
+							<textElement textAlignment="Left" verticalAlignment="Top"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
