@@ -45,6 +45,11 @@
 	</background>
 	<title>
 		<band height="50">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-10" x="55" y="5" width="122" height="16" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
+			</textField>
 			<image scaleImage="RetainShape" vAlign="Top">
 				<reportElement key="image-1" x="1" y="2" width="51" height="47"/>
 				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
@@ -299,11 +304,6 @@ com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{
 							<reportElement x="0" y="0" width="74" height="20"/>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
-						</textField>
-						<textField isBlankWhenNull="false">
-							<reportElement key="textField-10" x="55" y="-138" width="122" height="16" isPrintWhenDetailOverflows="true"/>
-							<textElement textAlignment="Left" verticalAlignment="Top"/>
-							<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
