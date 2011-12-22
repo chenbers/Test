@@ -7,7 +7,8 @@ public enum CriteriaType
 {
     DURATION(Duration.class),
     TIMEFRAME(TimeFrame.class),
-    TIMEFRAME_ALT(TimeFrame.class);
+    TIMEFRAME_ALT(TimeFrame.class),
+    TIMEFRAME_ALT_DAYS(TimeFrame.class);
     
     private Class clazz;
 

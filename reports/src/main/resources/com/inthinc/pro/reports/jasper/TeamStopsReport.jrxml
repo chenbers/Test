@@ -73,9 +73,6 @@
 			</textField>
 		</band>
 	</title>
-	<pageHeader>
-		<band/>
-	</pageHeader>
 	<detail>
 		<band height="118">
 			<textField isStretchWithOverflow="true">
@@ -317,7 +314,7 @@ com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="21">
+		<band height="23">
 			<line>
 				<reportElement key="line-1" x="0" y="3" width="781" height="1"/>
 			</line>
@@ -330,6 +327,13 @@ com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{
 				<reportElement key="textField-15" x="0" y="5" width="198" height="14"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="5" width="227" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

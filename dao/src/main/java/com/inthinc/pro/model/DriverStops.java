@@ -115,7 +115,9 @@ public class DriverStops extends BaseEntity {
         
         if (departTime == null || arriveTime == null)
             return null;
+        
         Integer waitTime = (int)(departTime - arriveTime) - idleHi - idleLo;
+        
         if (waitTime < 0)
             return 0;
         

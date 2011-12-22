@@ -63,4 +63,11 @@ public class TimeFrameSelect {
         return selectItemList;
     }
 
+    public List<SelectItem> getAltDaysTimeFrames() {
+        
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.add(new SelectItem(TimeFrame.TODAY, TimeFrameUtil.getTimeFrameStr(TimeFrame.TODAY, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.ONE_DAY_AGO, TimeFrameUtil.getTimeFrameStr(TimeFrame.ONE_DAY_AGO, getLocale())));
+        return selectItemList;
+    }
 }

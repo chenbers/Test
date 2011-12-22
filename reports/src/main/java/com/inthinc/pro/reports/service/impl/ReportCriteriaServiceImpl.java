@@ -15,6 +15,7 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.map.ReportAddressLookupBean;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -115,10 +116,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private DriveTimeDAO driveTimeDAO;
     private DriverPerformanceDAO driverPerformanceDAO;
     private UserDAO userDAO;
-
-
-
     private Locale locale;
+    private ReportAddressLookupBean reportAddressLookupBean;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
     private static final long ONE_MINUTE = 60000L;
@@ -544,7 +543,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	}
 
     @Override
-    public ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, AddressLookup addressLookup, DriverStopReport driverStopReport) {
+    public ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, DriverStopReport driverStopReport) {
         
         if (driverStopReport == null) {
             Driver driver = driverDAO.findByID(driverID);
@@ -555,6 +554,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             driverStopReport = new DriverStopReport(driverID, driverName, timeFrame, driverStops);
         }
         
+        AddressLookup addressLookup = (reportAddressLookupBean == null) ? null : reportAddressLookupBean.getAddressLookup();
         if (addressLookup != null) {
             String noAddressFound = MessageUtil.getMessageString("report.no_address_found", locale);
             for (DriverStops driverStop : driverStopReport.getDriverStops()) {
@@ -572,6 +572,41 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.setMainDataset(teamStopsCriteriaList);
         return reportCriteria;
     }    
+    @Override
+    public List<ReportCriteria> getTeamStopsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
+
+        AddressLookup addressLookup = (reportAddressLookupBean == null) ? null : reportAddressLookupBean.getAddressLookup();
+        List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria> ();
+        Group group = groupDAO.findByID(groupID);
+        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        for (Driver driver : driverList) {
+            ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STOPS_REPORT, group.getName(), locale);
+            reportCriteria.setTimeFrame(timeFrame);
+
+            String driverName = driver.getPerson().getFullName();
+            
+            // TODO: DRIVER TIMEZONE???
+            List<DriverStops> driverStops = driverDAO.getStops(driver.getDriverID(), timeFrame.getInterval(timeZone));
+
+            DriverStopReport driverStopReport = new DriverStopReport(driver.getDriverID(), driverName, timeFrame, driverStops);
+            if (addressLookup != null) {
+                String noAddressFound = MessageUtil.getMessageString("report.no_address_found", locale);
+                for (DriverStops driverStop : driverStopReport.getDriverStops()) {
+                    try {
+                        driverStop.setAddress(addressLookup.getAddress(driverStop.getLat(), driverStop.getLng()));
+                    } catch (NoAddressFoundException e) {
+                        driverStop.setAddress(noAddressFound);
+                    }
+                }
+            }
+            List<DriverStopReport> teamStopsCriteriaList = new ArrayList<DriverStopReport>();
+            teamStopsCriteriaList.add(driverStopReport);
+            reportCriteria.setMainDataset(teamStopsCriteriaList);
+            reportCriteriaList.add(reportCriteria);
+        }
+        return reportCriteriaList;
+    }    
+
 
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric) {
@@ -1197,6 +1232,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         this.driverPerformanceDAO = driverPerformanceDAO;
     }
 
+    public ReportAddressLookupBean getReportAddressLookupBean() {
+        return reportAddressLookupBean;
+    }
+
+    public void setReportAddressLookupBean(ReportAddressLookupBean reportAddressLookupBean) {
+        this.reportAddressLookupBean = reportAddressLookupBean;
+    }
+
     public List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person) {
         ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
         if (reportGroup == null) {
@@ -1246,8 +1289,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                             DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale(), true));
                     break;
                 case TEAM_STOPS_REPORT:
-                    reportCriteriaList.add(getTeamStopsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
-                            DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale(), null, null));
+                    reportCriteriaList.addAll(getTeamStopsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
+                            DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale()));
                     break;     
                 case HOS_DAILY_DRIVER_LOG_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER )

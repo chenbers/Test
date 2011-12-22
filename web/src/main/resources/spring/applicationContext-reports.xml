@@ -29,6 +29,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="driveTimeDAO" ref="driveTimeDAO" />
     <property name="driverPerformanceDAO" ref="driverPerformanceDAO" />
     <property name="userDAO" ref="userDAO" />
+    <property name="reportAddressLookupBean" ref="reportAddressLookupBean" />
   </bean>
 
 </beans>

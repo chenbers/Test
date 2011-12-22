@@ -34,8 +34,9 @@ public interface ReportCriteriaService
     ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale);
     ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
     ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
-    ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, AddressLookup addressLookup, DriverStopReport driverStopReport);
-    
+    ReportCriteria getTeamStopsReportCriteria(Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, DriverStopReport driverStopReport);
+    List<ReportCriteria> getTeamStopsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale);
+
     // DOT IFTA
     ReportCriteria getMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
     ReportCriteria getStateMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);

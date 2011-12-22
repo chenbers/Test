@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing;
+package com.inthinc.pro.map;
 
 import com.inthinc.pro.map.AddressLookup;
 

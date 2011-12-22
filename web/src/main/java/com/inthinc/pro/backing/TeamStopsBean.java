@@ -47,7 +47,6 @@ public class TeamStopsBean extends BaseBean {
         
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-    private ReportAddressLookupBean reportAddressLookupBean;
     
     public DriverDAO getDriverDAO() {
         return driverDAO;
@@ -196,7 +195,7 @@ System.out.println("!!!initDriverStopReport " + selectedDriverID);
             return null;
         
         ReportCriteria reportCriteria = getReportCriteriaService().getTeamStopsReportCriteria(selectedDriverID, teamCommonBean.getTimeFrame(), 
-                getDateTimeZone(), getLocale(), reportAddressLookupBean.getAddressLookup(), driverStopReport);
+                getDateTimeZone(), getLocale(), driverStopReport);
         
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         
@@ -232,13 +231,5 @@ System.out.println("!!!initDriverStopReport " + selectedDriverID);
     {
         return reportCriteriaService;
     }
-    public ReportAddressLookupBean getReportAddressLookupBean() {
-        return reportAddressLookupBean;
-    }
-
-    public void setReportAddressLookupBean(ReportAddressLookupBean reportAddressLookupBean) {
-        this.reportAddressLookupBean = reportAddressLookupBean;
-    }
-
 
 }

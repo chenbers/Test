@@ -1,7 +1,6 @@
 package com.inthinc.pro.reports;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -12,15 +11,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.GoogleAddressLookup;
+import com.inthinc.pro.map.ReportAddressLookupBean;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Trip;
@@ -29,13 +30,14 @@ import com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl;
 
 public class TeamStopsReportCriteriaTest extends BaseUnitTest {
     
-    AddressLookup addressLookup;
+    ReportAddressLookupBean reportAddressLookup;
     
     @Before
     public void setup() {
-        addressLookup = new GoogleAddressLookup();
+        AddressLookup addressLookup = new GoogleAddressLookup();
         ((GoogleAddressLookup)addressLookup).setGoogleMapGeoUrl("https://maps-api-ssl.google.com/maps/geo?client=gme-inthinc&sensor=false&q=");
-
+        reportAddressLookup = new ReportAddressLookupBean();
+        reportAddressLookup.setReportAddressLookupBean(addressLookup);
     }
     
     @Test
@@ -44,7 +46,8 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         ReportCriteriaServiceImpl  reportCriteriaService = new ReportCriteriaServiceImpl();
        
         reportCriteriaService.setDriverDAO(new MockDriverDAO());
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, addressLookup, null );
+        reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null );
 
         dump("teamStops1", 0, reportCriteria, FormatType.PDF);
         dump("teamStops1", 0, reportCriteria, FormatType.EXCEL);
@@ -57,11 +60,74 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         ReportCriteriaServiceImpl  reportCriteriaService = new ReportCriteriaServiceImpl();
        
         reportCriteriaService.setDriverDAO(new MockDriverDAO());
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(11771, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, addressLookup, null);
+        reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(11771, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null);
 
         dump("teamStops2", 0, reportCriteria, FormatType.PDF);
         dump("teamStops2", 0, reportCriteria, FormatType.EXCEL);
 
+    }
+    
+    @Test
+    public void testGroupData() {
+        
+        ReportCriteriaServiceImpl  reportCriteriaService = new ReportCriteriaServiceImpl();
+       
+        reportCriteriaService.setDriverDAO(new MockDriverDAO());
+        reportCriteriaService.setGroupDAO(new MockGroupDAO());
+        reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
+        
+        List<ReportCriteria> reportCriteriaList = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
+
+        dump("teamStopsGroup", 0, reportCriteriaList, FormatType.PDF);
+        dump("teamStopsGroup", 0, reportCriteriaList, FormatType.EXCEL);
+
+    }
+
+    class MockGroupDAO implements GroupDAO {
+
+        @Override
+        public Integer delete(Group group) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<Group> getGroupHierarchy(Integer acctID, Integer groupID) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<Group> getGroupsByAcctID(Integer acctID) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Integer create(Integer id, Group entity) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Integer deleteByID(Integer id) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Group findByID(Integer id) {
+            if (id.intValue() == 1)
+                return new Group(1, 1, "Test Stops Group", 0);
+            return null;
+        }
+
+        @Override
+        public Integer update(Group entity) {
+            // TODO Auto-generated method stub
+            return null;
+        }
     }
 
     class MockDriverDAO implements DriverDAO {
@@ -83,7 +149,12 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
 
         @Override
         public List<Driver> getAllDrivers(Integer groupID) {
-            // TODO Auto-generated method stub
+            if (groupID.intValue() == 1) {
+                List<Driver> driverList = new ArrayList<Driver>();
+                driverList.add(this.findByID(1));
+                driverList.add(this.findByID(11771));
+                return driverList;
+            }
             return null;
         }
 

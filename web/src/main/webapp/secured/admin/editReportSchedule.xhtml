@@ -261,6 +261,20 @@
 										</td>
 									</tr>
 								</h:outputText>
+								<h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT_DAYS'}">
+									<tr>
+										<td width="115" valign="top">
+											<h:outputText value="#{messages.reportSchedule_daysReported}"/>
+											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+										</td>
+										<td>
+											<rich:message for="editReportSchedule-reportTimeFrameAltDays" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+											<h:selectOneMenu id="editReportSchedule-reportTimeFrameAltDays" value="#{reportScheduleBean.item.reportTimeFrame}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
+												<f:selectItems value="#{reportScheduleBean.timeFrameSelect.altDaysTimeFrames}"/> 
+											</h:selectOneMenu>
+										</td>
+									</tr>
+								</h:outputText>
 							</ui:repeat>
 							<h:outputText id="reportOnInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' }">
 								<tr>

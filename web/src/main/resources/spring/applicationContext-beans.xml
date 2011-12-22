@@ -720,7 +720,7 @@
   </bean>
 
 
-  <bean id="reportAddressLookupBean" class="com.inthinc.pro.backing.ReportAddressLookupBean">
+  <bean id="reportAddressLookupBean" class="com.inthinc.pro.map.ReportAddressLookupBean">
     <property name="enableGoogleMapsInReports" value="${enableGoogleMapsInReports}"/>
     <property name="reportAddressLookupBean" ref="${reportAddressLookup}"></property>
     <property name="disabledGoogleMapsInReportsAddressLookupBean" ref="${disabledGoogleMapsInReportsAddressLookup}"></property>
