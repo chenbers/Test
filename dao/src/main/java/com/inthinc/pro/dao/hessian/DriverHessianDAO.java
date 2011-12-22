@@ -194,7 +194,6 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
                     DriverStops.class);
             
             
-            // TODO: CJ Add this to the hessian response instead of doing it this bogus way
             Map<Integer, String> vehicleMap = new HashMap<Integer, String>();
             for (DriverStops driverStop : driverStopsList) {
                 String vehicleName = vehicleMap.get(driverStop.getVehicleID());
