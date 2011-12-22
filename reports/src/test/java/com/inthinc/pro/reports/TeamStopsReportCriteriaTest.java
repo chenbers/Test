@@ -47,6 +47,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, addressLookup, null );
 
         dump("teamStops1", 0, reportCriteria, FormatType.PDF);
+        dump("teamStops1", 0, reportCriteria, FormatType.EXCEL);
 
     }
 
@@ -59,6 +60,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(11771, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, addressLookup, null);
 
         dump("teamStops2", 0, reportCriteria, FormatType.PDF);
+        dump("teamStops2", 0, reportCriteria, FormatType.EXCEL);
 
     }
 
