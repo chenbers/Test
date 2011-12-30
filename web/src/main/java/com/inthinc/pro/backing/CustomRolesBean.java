@@ -181,8 +181,8 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
             List<AccessPoint> parentPoints = new ArrayList<AccessPoint>();
             for(AccessPoint as: customRole.getAccessPts()){
                 Integer parent = AccessPointEnum.getParent(as.getAccessPtID());
-                if(parent != null && !customRole.contains(parent)){
-                    AccessPoint parentPoint = new AccessPoint(parent, 15);
+                AccessPoint parentPoint = new AccessPoint(parent, 15);
+                if(parent != null && !customRole.contains(parent) && !parentPoints.contains(parentPoint)){
                     parentPoints.add(parentPoint);
                 }       
             }
@@ -249,7 +249,6 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 
         public static Integer getParent(Integer code)
         {
-            System.out.println("getParent(Integer "+code+")");
             AccessPointEnum parent =  lookup.get(code);
             if(parent == null){
                 logger.error("getParent("+code+") couldn't locate a parent");
