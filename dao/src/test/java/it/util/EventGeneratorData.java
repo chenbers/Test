@@ -48,13 +48,14 @@ public class EventGeneratorData {
 			allIndexes.add(Integer.valueOf(ReportTestConst.TAMPER2_EVENT_IDX));
 			allIndexes.add(Integer.valueOf(ReportTestConst.LOW_BATTERY_EVENT_IDX));
 			allIndexes.add(Integer.valueOf(3));	// ignition on
+			allIndexes.add(Integer.valueOf(4));  // driver logon
 			allIndexes.add(Integer.valueOf(ReportTestConst.ZONE_ENTER_EVENT_IDX));
 			allIndexes.add(Integer.valueOf(ReportTestConst.ZONE_EXIT_EVENT_IDX));
 			
 		}
 		else {
 			allIndexes.add(Integer.valueOf(0));	// ignition on
-			
+            allIndexes.add(Integer.valueOf(1));  // driver logon
 		}
 		allIndexes.add(Integer.valueOf(numLocs-1));	// ignition off
 		crashIndexes = new ArrayList<Integer>();

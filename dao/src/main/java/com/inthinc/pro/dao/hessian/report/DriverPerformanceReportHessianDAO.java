@@ -2,25 +2,39 @@ package com.inthinc.pro.dao.hessian.report;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.TimeZone;
 
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverPerformanceDAO;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 
 public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
 
-    GroupReportDAO groupReportDAO;
-    DriveTimeDAO driveTimeDAO;
-    
+    private GroupReportDAO groupReportDAO;
+    private EventDAO eventDAO;
+    private static List<NoteType> loginNoteType = new ArrayList<NoteType>();
+    static {
+        // tiwipro
+        loginNoteType.add(NoteType.NEW_DRIVER);
+        // waysmart
+        loginNoteType.add(NoteType.WAYSMART_INVALID_DRIVER);
+        loginNoteType.add(NoteType.WAYSMART_INVALID_OCCUPANT);
+        loginNoteType.add(NoteType.WAYSMART_VALID_OCCUPANT);
+        loginNoteType.add(NoteType.WAYSMART_NEWDRIVER_HOSRULE);
+    }    
 
     @Override
     public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
@@ -55,7 +69,7 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
             dp.setHardVerticalCount(s.getAggressiveBumpEvents() == null ? 0 : s.getAggressiveBumpEvents().intValue());
             dp.setScore(s.getOverall()==null ? -1 : s.getOverall().intValue());
             dp.setSeatbeltCount(s.getSeatbeltEvents() == null ? 0 : s.getSeatbeltEvents().intValue());
-            dp.setTotalMiles(s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue());
+            dp.setTotalMiles(s.getOdometer6() == null ? 0 : s.getOdometer6().intValue());
             dp.setSpeedCount0to7Over(s.getSpeedEvents1To7MphOver() == null ? 0 : s.getSpeedEvents1To7MphOver().intValue());
             dp.setSpeedCount8to14Over(s.getSpeedEvents8To14MphOver() == null ? 0 : s.getSpeedEvents8To14MphOver().intValue());
             dp.setSpeedCount15Over(s.getSpeedEvents15PlusMphOver() == null ? 0 : s.getSpeedEvents15PlusMphOver().intValue());
@@ -85,7 +99,7 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
         // do not include drivers with no score or no miles driven when getting for individual drivers
         if (individualDrivers) {
             Score s = scoreWrapper.getScore();
-            Integer totalMiles = s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue();
+            Integer totalMiles = s.getOdometer6() == null ? 0 : s.getOdometer6().intValue();
             if (totalMiles.intValue() == 0)
                 return false;
             for (Integer driverID : driverIDList) 
@@ -108,8 +122,6 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
         
         if (scoreList == null || scoreList.isEmpty())
             return driverPerformanceList;
-        
-        Map<Integer, Integer> driverLoginCountMap = driveTimeDAO.getDriverLoginCountsForGroup(groupID, interval);
         for (DriverVehicleScoreWrapper score : scoreList) {
             DriverPerformanceKeyMetrics dp = new DriverPerformanceKeyMetrics();
             dp.setDriverName(score.getDriver().getPerson().getFullName());
@@ -118,9 +130,8 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
             dp.setTeamName(teamName);
             dp.setTimeFrame(timeFrame);
             Score s = score.getScore();
-            Integer loginCount = driverLoginCountMap.get(score.getDriver().getDriverID());
-            dp.setLoginCount(loginCount == null ? 0 : loginCount);
-            dp.setTotalMiles(s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue());
+            dp.setLoginCount(getDriverLoginCount(score.getDriver().getDriverID(), score.getDriver().getPerson().getTimeZone(), interval));
+            dp.setTotalMiles(s.getOdometer6() == null ? 0 : s.getOdometer6().intValue());
             dp.setOverallScore(s.getOverall()==null ? -1 : s.getOverall().intValue());
             dp.setSpeedingScore(s.getSpeeding()==null ? -1 : s.getSpeeding().intValue());
             dp.setStyleScore(s.getDrivingStyle()==null ? -1 : s.getDrivingStyle().intValue());
@@ -134,13 +145,21 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
         return driverPerformanceList;
     }
 
+        
+    private Integer getDriverLoginCount(Integer driverID, TimeZone timeZone, Interval interval) {
+        
+        Interval tzInterval = DateUtil.getIntervalInTimeZone(interval, DateTimeZone.forTimeZone(timeZone));
 
-    public DriveTimeDAO getDriveTimeDAO() {
-        return driveTimeDAO;
+        List<Event> logins = eventDAO.getEventsForDriver(driverID, tzInterval.getStart().toDate(), tzInterval.getEnd().minusMillis(1).toDate(), loginNoteType, 1); 
+        return logins == null ? 0 : logins.size();
     }
 
-    public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
-        this.driveTimeDAO = driveTimeDAO;
+    public EventDAO getEventDAO() {
+        return eventDAO;
+    }
+
+    public void setEventDAO(EventDAO eventDAO) {
+        this.eventDAO = eventDAO;
     }
 
 

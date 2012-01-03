@@ -221,6 +221,7 @@ public class EventGenerator
         int locCnt = ReportTestConst.EVENTS_PER_DAY;
         eventCount = 0;
 		boolean ignitionOn = false;
+        boolean driverLogon = false;
 		boolean badSpeeding = false;
 		int adCnt = 0;
 		int realEventCnt = 0;
@@ -313,6 +314,13 @@ public class EventGenerator
                 ignitionOn = true;
         		
         	}
+            else if (!driverLogon)
+            {
+                event = new Event(0l, 0, NoteType.NEW_DRIVER,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
+                driverLogon = true;
+                
+            }
         	else if (i == (locCnt-1))
         	{
 //System.out.println("ignition off event count = " + realEventCnt);        		

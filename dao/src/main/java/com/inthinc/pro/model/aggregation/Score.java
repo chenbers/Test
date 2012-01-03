@@ -44,6 +44,7 @@ public class Score {
     private Number odometer3;
     private Number odometer4;
     private Number odometer5;
+    private Number odometer6;
     private Number overall;
     private Number rpmEvents;
     private Number seatbelt;
@@ -383,6 +384,14 @@ public class Score {
 
     public void setOdometer5(Number odometer5) {
         this.odometer5 = odometer5;
+    }
+    
+    public Number getOdometer6() {
+        return odometer6;
+    }
+
+    public void setOdometer6(Number odometer6) {
+        this.odometer6 = odometer6;
     }
 
     public Number getOverall() {

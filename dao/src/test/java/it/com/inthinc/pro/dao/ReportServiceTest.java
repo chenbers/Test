@@ -26,6 +26,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
+import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.MpgHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
@@ -34,6 +35,7 @@ import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.hessian.report.DriverPerformanceReportHessianDAO;
 import com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
@@ -43,6 +45,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
@@ -111,6 +114,17 @@ public class ReportServiceTest {
             10, // 5 seat belt and 5 speeding
     };
 
+    int expectedIdleViolationCount[] = { 
+            0, // ITData.GOOD
+            1,
+            5
+    };
+    int expectedLoginCount[] = { 
+            1, // ITData.GOOD
+            1,
+            1
+            
+    };
     long expectedDailyLoIdle[] = { 0l, // ITData.GOOD
             ReportTestConst.LO_IDLE_TIME, // INTERMEDIATE
             ReportTestConst.LO_IDLE_TIME * 5l // BAD
@@ -884,8 +898,34 @@ public class ReportServiceTest {
         	assertEquals("total miles should match total light, med, heavy miles", totalMiles, totalLMHMiles);
 
         }
+    }
+    
+    
+    @Test
+    public void driverPerformanceMetrics() {
+        DriverPerformanceReportHessianDAO driverPerformanceReportHessianDAO = new DriverPerformanceReportHessianDAO();
+        GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
+        groupReportHessianDAO.setReportService(reportService);
+        driverPerformanceReportHessianDAO.setGroupReportDAO(groupReportHessianDAO);
+        EventHessianDAO eventHessianDAO = new EventHessianDAO();
+        eventHessianDAO.setSiloService(siloService);
+        driverPerformanceReportHessianDAO.setEventDAO(eventHessianDAO);
         
+        for (int groupIdx = ITData.GOOD; groupIdx <= ITData.BAD; groupIdx++) {
+            Group group = itData.teamGroupData.get(groupIdx).group;
+            List<DriverPerformanceKeyMetrics> list = driverPerformanceReportHessianDAO.getDriverPerformanceKeyMetricsListForGroup(
+                    group.getGroupID(), "test division", group.getName(), TimeFrame.TODAY);
+            assertEquals("1 item in key metrics list", 1, list.size());
+            DriverPerformanceKeyMetrics metrics = list.get(0);
+            assertEquals("total miles", expectedDailyMileagePerGroup[groupIdx], metrics.getTotalMiles().longValue());
+            assertEquals("driver", itData.teamGroupData.get(groupIdx).driver.getPerson().getFullName(), metrics.getDriverName());
+            assertEquals("team name", group.getName(), metrics.getTeamName());
+            assertEquals("Lo idle time", expectedDailyLoIdle[groupIdx], metrics.getLoIdleViolationsMinutes().intValue());
+            assertEquals("Hi idle time", expectedDailyHiIdle[groupIdx], metrics.getHiIdleViolationsMinutes().intValue());
+            assertEquals("idle violations count", expectedIdleViolationCount[groupIdx], metrics.getIdleViolationsCount().intValue());
+            assertEquals("Login count", expectedLoginCount[groupIdx], metrics.getLoginCount().intValue());
+            assertEquals("Overall Score", expectedTeamOverall[groupIdx], metrics.getOverallScore());
+        }
         
-
     }
 }

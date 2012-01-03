@@ -59,10 +59,5 @@ public class BaseDriveTimeUnitTest extends BasePerformanceUnitTest {
             }
             return list;
         }
-        @Override
-        public Map<Integer, Integer> getDriverLoginCountsForGroup(Integer groupID, Interval interval) {
-            // TODO Auto-generated method stub
-            return null;
-        }
     }
 }
