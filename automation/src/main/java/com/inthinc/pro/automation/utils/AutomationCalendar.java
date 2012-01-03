@@ -326,7 +326,8 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         TIME("HH:mm a (z)"),
         
         DURATION("HH:mm:ss"),
-        
+
+        LAST_NOTE_CONFIGURATOR("yyyy-MM-dd HH:mm:ss z"),
         
         RALLY_DATE_FORMAT("yyyy-MM-dd'T'HH:mm:ssZ"),
         
