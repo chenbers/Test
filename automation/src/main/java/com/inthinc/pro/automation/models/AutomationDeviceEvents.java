@@ -3,11 +3,10 @@ package com.inthinc.pro.automation.models;
 import org.apache.log4j.Level;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
+import com.inthinc.pro.automation.deviceEnums.DeviceEnums.ViolationFlags;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
-import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -119,6 +118,7 @@ public class AutomationDeviceEvents {
         public final int avgSpeed;
         public final int avgRpm;
         public final DeviceNoteTypes noteType = DeviceNoteTypes.SPEEDING_EX3;
+        public final DeviceNoteTypes noteWSType = DeviceNoteTypes.SPEEDING_EX4;
         
         private SpeedingEvent(int topSpeed, int distance, int maxRpm, int speedLimit, int avgSpeed, int avgRpm){
             this.topSpeed = Math.abs(topSpeed);
@@ -128,6 +128,8 @@ public class AutomationDeviceEvents {
             this.avgSpeed = Math.abs(avgSpeed);
             this.avgRpm = Math.abs(avgRpm);
         }
+        
+
         
         @Override
         public String toString(){
@@ -142,16 +144,38 @@ public class AutomationDeviceEvents {
 
         @Override
         public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            DeviceNote note;
             if (state.getProductVersion().equals(ProductType.WAYSMART)) {
-                note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
-                note.addAttr(DeviceAttrs.DISTANCE, distance);
-                note.addAttr(DeviceAttrs.MAX_RPM, maxRpm);
-                note.addAttr(DeviceAttrs.SPEED_LIMIT, speedLimit);
-                note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
-                note.addAttr(DeviceAttrs.AVG_RPM, avgRpm);
+            	note = DeviceNote.constructNote(noteWSType, location, state);
+            	
+            	note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
+            	note.addAttr(DeviceAttrs.DISTANCE, distance / 10);
+            	note.addAttr(DeviceAttrs.MAX_RPM, maxRpm);
+            	note.addAttr(DeviceAttrs.SPEED_LIMIT, speedLimit);
+            	note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
+            	note.addAttr(DeviceAttrs.AVG_RPM, avgRpm);
+            	
+            	note.addAttr(DeviceAttrs.SBS_LINK_ID, state.getSbsLinkID());
+            	note.addAttr(DeviceAttrs.ZONE_ID, state.getZoneID());
+            	note.addAttr(DeviceAttrs.SPEEDING_TYPE, 3);
+            	note.addAttr(DeviceAttrs.SEATBELT_ENGAGED, state.isSeatbeltEngaged());
+            	note.addAttr(DeviceAttrs.START_TIME, state.getSpeedingStartTime());
+            	note.addAttr(DeviceAttrs.STOP_TIME, state.getSpeedingStopTime());
+            	note.addAttr(DeviceAttrs.MAX_TIME, state.getSpeedingStopTime().getDelta(state.getSpeedingStartTime()));
+            	note.addAttr(DeviceAttrs.COURSE, state.getCourse());
+            	note.addAttr(DeviceAttrs.MAX_SPEED_LIMIT, state.getMaxSpeedLimit());
+            	note.addAttr(DeviceAttrs.SBS_SPEED_LIMIT, state.getSbsSpeedLimit());
+            	note.addAttr(DeviceAttrs.ZONE_SPEED_LIMIT, state.getZoneSpeedLimit());
+            	note.addAttr(DeviceAttrs.WEATHER_SPEED_LIMIT_PERCENT, state.getWeatherSpeedLimitPercent());
+            	note.addAttr(DeviceAttrs.SEVERE_SPEED_THRESHOLD, state.getSevereSpeedThreshold());
+            	note.addAttr(DeviceAttrs.SPEEDING_BUFFER, state.getSpeedingBuffer());
+            	note.addAttr(DeviceAttrs.SPEEDING_GRACE_PERIOD, state.getGracePeriod());
+            	note.addAttr(DeviceAttrs.SEVERE_SPEED_SECONDS, state.getSeverSpeedSeconds());
+            	note.addAttr(DeviceAttrs.SPEED_MODULE_ENABLED, state.isSpeedModuleEnabled());
+            	note.addAttr(DeviceAttrs.SPEED_SOURCE, 1);
 
             } else {
+            	note = DeviceNote.constructNote(noteType, location, state);
                 note.addAttr(DeviceAttrs.DISTANCE, distance);
                 note.addAttr(DeviceAttrs.TOP_SPEED, topSpeed);
                 note.addAttr(DeviceAttrs.AVG_SPEED, avgSpeed);
@@ -175,6 +199,7 @@ public class AutomationDeviceEvents {
         return speeding(topSpeed, distance, maxRpm, speedLimit.intValue(), avgSpeed, avgRpm);
     }
     
+
     public class SeatBeltEvent implements AutomationEvents {
 
         public final int avgRpm;
@@ -278,6 +303,10 @@ public class AutomationDeviceEvents {
         return classes.new InstallEvent(vehicleIDStr, mcmIDStr, acctID);
     }
     
+    public static InstallEvent install(DeviceState state){
+    	return classes.new InstallEvent(state.getVehicleID(), state.getMcmID(), state.getAccountID());
+    }
+    
     
     public class LocationEvent implements AutomationEvents {
         
@@ -285,11 +314,11 @@ public class AutomationDeviceEvents {
         public final DeviceNoteTypes noteType = DeviceNoteTypes.LOCATION;
         
         public LocationEvent(DeviceState state){
-            if (state.getSpeeding()) {
+            if (state.isSpeeding()) {
                 flag = ViolationFlags.VIOLATION_MASK_SPEEDING;
-            } else if (state.getRpm_violation()) {
+            } else if (state.isExceedingRPMLimit()) {
                 flag = ViolationFlags.VIOLATION_MASK_RPM;
-            } else if (state.getSeatbelt_violation()) {
+            } else if (state.isSeatbeltEngaged()) {
                 flag = ViolationFlags.VIOLATION_MASK_SEATBELT;
             } else {
                 flag = null;

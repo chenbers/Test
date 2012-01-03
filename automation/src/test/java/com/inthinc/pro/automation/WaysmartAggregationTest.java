@@ -11,14 +11,14 @@ import org.apache.log4j.Level;
 import com.inthinc.pro.automation.deviceTrips.TripDriver;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.InstallEvent;
+import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.models.MCMProxyObject;
-import com.inthinc.pro.automation.models.NoteBC;
-import com.inthinc.pro.automation.models.NoteBC.Direction;
+import com.inthinc.pro.automation.objects.MCMProxyObject;
+import com.inthinc.pro.automation.objects.NoteBC;
+import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
 import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
@@ -32,6 +32,7 @@ public class WaysmartAggregationTest {
     private static final int acctID = 398;
     private static final int groupID = 5260;
     private static final int unknownDriverID = 66462;
+    private static final Addresses server = Addresses.QA;
     /* AccountID    =   398
      * Account Name = WSAgg
      * GroupID      =  5259
@@ -41,13 +42,19 @@ public class WaysmartAggregationTest {
      * password     = password
      */
     
+
+//    private static final int acctID = 1;
+//    private static final int groupID = 2;
+//    private static final int unknownDriverID = 1;
+//    private final static Addresses server = Addresses.DEV;
+    
     private final static State usState = new State(47, "Utah", "UT");
     private GeoPoint installLocation;
     
     private Map<DeviceState, LinkedList<DeviceNote>> tripsMap;
     private Map<DeviceState, Vehicle> vehicleMap;
-    private final static int startingOdometer = 265287;
-    private final static int startingTime = 1324221536;
+    private final static int startingOdometer = 466183;
+    private final static int startingTime = 1324339137;
     
     
     public WaysmartAggregationTest(){
@@ -62,7 +69,7 @@ public class WaysmartAggregationTest {
         int i=0;
         LinkedList<DeviceNote> baseline = new LinkedList<DeviceNote>();
         String start = "4225 W Lake Blvd, West Valley City, UT 84120";
-        String stop = "6450 E Golf Links Rd, Tucson, AZ 85730";
+        String stop = "402 S Leroux St, Flagstaff, AZ 86001";
         TripDriver driver = new TripDriver(ProductType.WAYSMART);
         
         DeviceState state = driver.getdeviceState();
@@ -83,7 +90,7 @@ public class WaysmartAggregationTest {
         installLocation = baseline.get(0).getLocation();
         LinkedList<DeviceNote> randomized = new LinkedList<DeviceNote>();
         MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)baseline.getLast()).nOdometer);
-        
+        state.getTime().addToMinutes(15);
         MasterTest.print("Final noteTime is: %d", Level.INFO, state.getTime().epochSeconds());
         MasterTest.print("Final noteTime is: %s", Level.INFO, state.getTime());
         
@@ -91,19 +98,11 @@ public class WaysmartAggregationTest {
             randomized.add(note.copy());
         }
         
-        AutomationSiloService portalProxy = new AutomationSiloService(Addresses.QA);
+        AutomationSiloService portalProxy = new AutomationSiloService(server);
         for (int j=0;j<20;j++){
         	Collections.shuffle(randomized);
         }
-        
-//        for (int j=0;j<baseline.size();j++){
-//        	MasterTest.print("\n%s\n%s", baseline.get(j), randomized.get(j));
-//        }
-//        
-//        if (true){
-//        	throw new NullPointerException();
-//        }
-        
+
         state = newState(++i);
         tripsMap.put(state, baseline);
         createVehicle(i, portalProxy, state);
@@ -117,10 +116,14 @@ public class WaysmartAggregationTest {
     private void createVehicle(int i, AutomationSiloService portalProxy,
             DeviceState state) {
         Vehicle vehicle;
-        vehicle = new Vehicle(null, groupID, Status.ACTIVE, String.format("VEHICLEFORW%05d", i), "Fake",
-                "Model", 2011, "White", VehicleType.HEAVY, String.format("VEHICLEFORW%05d", i), 9000, "ll33l", usState);
+        String vin = String.format("VEHICLEFORW%05d", i);
+        vehicle = new Vehicle(null, groupID, Status.ACTIVE, vin, "Fake",
+                "Model", 2011, "White", VehicleType.HEAVY, vin, 9000, "ll33l", usState);
         try {
             vehicle = portalProxy.createVehicle(vehicle.getGroupID(), vehicle);
+            if (vehicle.getVIN() == null){
+            	vehicle = portalProxy.getVehicle(vin);
+            }
         } catch (RemoteServerException e){
             vehicle = portalProxy.getVehicle(vehicle.getVIN());
         }
@@ -139,7 +142,7 @@ public class WaysmartAggregationTest {
     
     private void sendNotes(){
         Iterator<DeviceState> itr = tripsMap.keySet().iterator();
-        MCMProxyObject proxy = new MCMProxyObject(Addresses.QA);
+        MCMProxyObject proxy = new MCMProxyObject(server);
         while (itr.hasNext()){
             DeviceState next = itr.next();
             installEvent(next, proxy);
@@ -153,9 +156,11 @@ public class WaysmartAggregationTest {
                 manager.addNote(note);
             }
             while (manager.hasNext()){
-        		proxy.sendNotes(next, manager.getNotes(noteSize));
+            	Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> list = manager.getNotes(noteSize);
+            	while (!list.isEmpty()){
+            		proxy.sendNotes(next, list);
+            	}
         	}
-
         }
     }
     
@@ -166,7 +171,7 @@ public class WaysmartAggregationTest {
             MasterTest.print("Vehicle: %d, Device: %d", vehicle.getVehicleID(), vehicle.getDeviceID());
             return;
         }
-        MasterTest.print(vehicle);
+        MasterTest.print(vehicle, Level.DEBUG);
         InstallEvent event = AutomationDeviceEvents.install(vehicle.getName(), state.getMcmID(), acctID);
         proxy.sendNotes(state, event.getNote(installLocation, state));
     }

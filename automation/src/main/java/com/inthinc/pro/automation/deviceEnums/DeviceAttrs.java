@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.interfaces.IndexEnum;
 
 public enum DeviceAttrs implements IndexEnum{
 
-    TOP_SPEED(1),
+	TOP_SPEED(1),
     AVG_SPEED(2),
     SPEED_LIMIT(3),
     AVG_RPM(4),
@@ -16,6 +16,7 @@ public enum DeviceAttrs implements IndexEnum{
     FWDCMD_STATUS(7),
     VIOLATION_FLAGS(8),
     ENG_TEMP(9),
+    
     FUEL_LEVEL(10),
     THROTTLE(11),
     GPS_SATS_SNR_COUNT(12),
@@ -26,6 +27,7 @@ public enum DeviceAttrs implements IndexEnum{
     DMM_MONITOR_X67(17),
     DMM_MONITOR_Y30(18),
     DMM_MONITOR_Y50(19),
+    
     DMM_MONITOR_Y67(20),
     GPS_SATS_SNR_MEDIAN(21),
     GPS_SATS_PDOP_10X(22),
@@ -36,6 +38,7 @@ public enum DeviceAttrs implements IndexEnum{
     DMM_DVX(27),
     DMM_YLEVEL(28),
     DMM_ZLEVEL(29),
+    
     SMTLS_ENABLED(30),
     SMTLS_SECURITY_DISABLED(31),
     SMTLS_DEACTIVATE_OVERRIDE(32),
@@ -46,6 +49,7 @@ public enum DeviceAttrs implements IndexEnum{
     OBD_SEATBELT_STATUS(37),
     OBD_SEATBELT_AVAIL(38),
     SPEED_IN_EXCEPTION_MAP(39),
+    
     GPS_MOST_LIKELY_LOCKED(40),
     GGA_GPS_QUALITY(41),
     GPS_SPEED(42),
@@ -56,6 +60,7 @@ public enum DeviceAttrs implements IndexEnum{
     CURRENT_IGN(47),
     NUMBER_OF_GPS_REBOOTS(48),
     PERCENTAGE_OF_TIME_SPEED_FROM_OBD_USED(49),
+    
     PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED(50),
     STATS(51),
     AGPS_ERROR_CODE(52),
@@ -66,11 +71,24 @@ public enum DeviceAttrs implements IndexEnum{
     GPINPUT_STATE(57),
     SEATBELT_SRC(58),
     VBCPU_BOOTMODE(59),
+    
     DWNLD_TYPE(60),
     NUM_CONFIG_DUMPS(61),
     NUM_REQSET(62),
     BASE_VER(63),
+    ATTR_SBS_UPDATE_TYPE(64),
+	ATTR_SPEEDING_TYPE(65),
+	ATTR_RPM_PCT(66),
+	ATTR_SEATBELT_PCT(67),
+	ATTR_FUEL_RATE_PCT(68),
+	ATTR_HIGH_LOAD_PCT(69),
+
+	ATTR_LOW_LOAD_PCT(70),
+	ATTR_SOURCE(71),
+
+    
     DISTANCE(129),
+    
     MAX_RPM(130),
     DELTAV_X(131),
     DELTAV_Y(132),
@@ -81,6 +99,7 @@ public enum DeviceAttrs implements IndexEnum{
     GPS_SATS_SNR_STDDEV_100X(137),
     GPS_LOCK_TIME(138),
     SMTLS_FIRMWARE_REV(139),
+    
     COURSE(140),
     OBD_RPM(141),
     OBD_SPEED(142),
@@ -91,10 +110,29 @@ public enum DeviceAttrs implements IndexEnum{
     APPLICATION_SPACE(147),
     BOUNDARY_ID(148),
     MPG(149),
+    
     LOW_POWER_MODE_TIMEOUT(150),
+    MSP_CRASH_X(151),
+    MSP_CRASH_Y(152),
+    MSP_CRASH_Z(153),
+    MSP_HARD_ACCEL_LEVEL(154),
+    MSP_HARD_ACCEL_DV(155),
+    MSP_HARD_BRAKE_LEVEL(156),
+    MSP_HARD_BRAKE_DV(157),
+    MSP_HARD_TURN_LEVEL(158),
+    MSP_HARD_TURN_DV(159),
+
+    MSP_HARD_BUMP_RMSLEV(160),
     HARD_VERT_DMM_PEAK_TO_PEAK_LEVEL(161),
+    MSP_TEMPSLOPE_U(162),
+    MSP_TEMPSLOPE_V(163),
+    MSP_TEMPSLOPE_W(164),
     NUMBER_OF_TIMES_A_SPEEDING_VIOLATION_WAS_EITHER_PREVENTED_OR_SQUELCHED_(165),
     PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_(166),
+    GPS_WEEK(167),
+    LOOPCOUNT_DEFERRED_LOGIN(168),
+    NUM_REBOOTS(169),
+    
     ZONE_ID(192),
     FIRMWARE_VERSION(193),
     FWDCMD_ID(194),
@@ -103,6 +141,7 @@ public enum DeviceAttrs implements IndexEnum{
     SMTLS_TX_ATTEMPTS(197),
     LAT_VERB(198),
     LONG_VERB(199),
+    
     STREET_ID(200),
     SPEED_ID(201),
     EMU_HASH_1(202),
@@ -113,6 +152,7 @@ public enum DeviceAttrs implements IndexEnum{
     OBD_X5_TO_X8(207),
     OBD_X9_TO_X12(208),
     OBD_X13_TO_X16(209),
+    
     OBD_X17_TO_X20(210),
     OBD_X21_TO_X24(211),
     OBD_X25_TO_X28(212),
@@ -122,6 +162,7 @@ public enum DeviceAttrs implements IndexEnum{
     OBD_VIN_DIGIT_10_TO_13(216),
     OBD_VIN_DIGIT_14_TO_17(217),
     LOW_IDLE(219),
+    
     HIGH_IDLE(220),
     RFID0(222),
     RFID1(223),
@@ -130,12 +171,23 @@ public enum DeviceAttrs implements IndexEnum{
     STRING(255),
     BAD_ERROR(226), // Errors that we want the portal to track
     DRIVER_ID(227),
-
     TOTAL_AGPS_BYTES(228),
     MAP_HASH(229),
+    
     TOTAL_BYTES_DUMPSET(230),
     SBS_LINK_ID(231),
     CLOSEST_SBS_LINK_ID(232),
+    VEH_ODO(233),
+    SBS_WARNING_GID(234),
+    MPG_DISTANCE_FILTERED(235),
+    FUEL_PER_SEC(236),
+    TOTAL_VB_UPTIME_SAMPLES(237),
+    VB_UPTIME_SMTLS_STATES(238),
+    VB_UPTIME_SUMMARY_ADJ(239),
+    
+    ENGINE_HOURS_X100(240),
+    
+    STRING_TIWIPRO(255),
 
     BASELINE_VERSION(8192),
     BOOTLOADER_REV(8193),
@@ -377,15 +429,12 @@ public enum DeviceAttrs implements IndexEnum{
     CRASH_TRACE(49168, 16384),                      //binary approximately 16K bytes (not in DB attr) 16384
     ATTR_WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  //binary approximately 1k bytes (not in db attr)
 
-    STATIC,
-
     ;
 
     private int code;
     private int size;
     private boolean zeroTerminated;
 
-    private DeviceAttrs() {}
 
     private DeviceAttrs(int code) {
         this.code = code;
@@ -416,7 +465,6 @@ public enum DeviceAttrs implements IndexEnum{
         this.zeroTerminated = zeroTerminated;
     }
 
-    @Override
     public Integer getIndex() {
         return code;
     }
@@ -445,5 +493,6 @@ public enum DeviceAttrs implements IndexEnum{
     public String toString(){
         return String.format("%s(%d)", name(), code);
     }
+
 
 }

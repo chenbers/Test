@@ -15,12 +15,11 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.models.AutomationBridgeFwdCmdParser;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.models.MCMProxyObject;
-import com.inthinc.pro.automation.models.NoteBC.Direction;
 import com.inthinc.pro.automation.models.WaysmartClasses.MultiForwardCmd;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
@@ -28,6 +27,24 @@ import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaysmartDevice extends DeviceBase {
+	
+	public static enum Direction implements IndexEnum{
+        wifi(3),
+        gprs(2),
+        sat(1)
+        ;
+        
+        private int direction;
+        
+        private Direction(int direction){
+            this.direction = direction;
+        }
+        
+        @Override
+        public Integer getIndex() {
+            return direction;
+        }
+    };
 
     protected final static ProductType productVersion = ProductType.WAYSMART;
 

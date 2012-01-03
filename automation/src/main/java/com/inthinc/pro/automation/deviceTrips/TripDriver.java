@@ -8,9 +8,9 @@ import java.util.Set;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
+import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TripTracker;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -66,7 +66,7 @@ public class TripDriver extends Thread {
         Double currentPercent;
         while (itr.hasNext() && !interrupt){
             currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
-            int speedLimit = device.getState().getSpeed_limit().intValue();
+            int speedLimit = device.getState().getSpeedLimit().intValue();
             if (events[currentPercent.intValue()]!=null){
                 events[currentPercent.intValue()].addEvent(device);
                 positions.remove(currentPercent);

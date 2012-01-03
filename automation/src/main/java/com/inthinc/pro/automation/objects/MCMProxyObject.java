@@ -1,5 +1,9 @@
-package com.inthinc.pro.automation.models;
+package com.inthinc.pro.automation.objects;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,15 +22,16 @@ import org.apache.log4j.Level;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.NoteBC.Direction;
+import com.inthinc.pro.automation.models.DeviceNote;
+import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.dao.hessian.proserver.MCMService;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.noteservice.NoteService;
 
 
@@ -127,18 +132,19 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> dumpSet(String mcmID, Integer version,
             Map<Integer, String> settings) {
         printOther(settings);
+        MasterTest.print("IMEI:%s, Version:%d", Level.DEBUG, mcmID, version);
         List<Map<String, Object>> reply = proxy.dumpSet(mcmID, version, settings);
         printReply(reply);
-        DeviceStatistics.addCall();
         return reply;
+//        return null;
     }
 
     @Override
     public List<Map<Integer, String>> reqSet(String imei) {
         List<Map<Integer, String>> reply = proxy.reqSet(imei);
         printReply(reply);
-        DeviceStatistics.addCall();
         return reply;
+//    	return null;
     }
 
     @Override
@@ -251,7 +257,7 @@ public class MCMProxyObject implements MCMService{
         MasterTest.print("\nnotebc(mcmID=%s, connectType=%s, noteList=%s)", Level.DEBUG, mcmID, comType, noteList);
         
         for (DeviceNote note : noteList){
-            if (note.getType() == DeviceNoteTypes.INSTALL){
+            if (note.getType() == DeviceNoteTypes.INSTALL || comType.equals(Direction.sat)){
                 List<byte[]> install = new ArrayList<byte[]> (1);
                 install.add(note.Package());
                 notebc(imei, Direction.sat.getIndex(), install);
@@ -274,60 +280,80 @@ public class MCMProxyObject implements MCMService{
         printReply(reply);
         DeviceStatistics.addCall();
         return reply;
+//        return null;
+    }
+    
+    private void sendSatNote(String imei, List<DeviceNote> sendingQueue){
+    	for (DeviceNote note: sendingQueue){
+	    	byte[] packaged = new SatNote(note, imei).Package();
+	    	try {
+	    		MasterTest.print("Sending " + note);
+	    		MasterTest.print("Creating socket");
+	        	Socket socket =  new Socket(server.getMCMUrl(), server.getSatPort());
+	    		ByteArrayOutputStream out =  new ByteArrayOutputStream(); 
+	    		out.write(packaged, 0, packaged.length);
+	    		MasterTest.print("Writing to socket");
+	    		out.writeTo(socket.getOutputStream());
+	    		out.flush();
+	    		out.close();
+	    		
+	    		socket.getOutputStream().flush();
+	    		socket.close();
+	    		
+			} catch (UnknownHostException e) {
+				MasterTest.print(e, Level.FATAL);
+			} catch (IOException e) {
+				MasterTest.print(e, Level.FATAL);
+			}
+    	}
     }
     
     public String[] notews(String mcmID, Direction comType,
-            List<DeviceNote> noteList, String imei){
+            List<DeviceNote> sendingQueue, String imei){
         
         HTTPCommands http = new HTTPCommands();
         List<String> reply = new ArrayList<String>();
-        
-        for (DeviceNote note : noteList){
-            MasterTest.print(server.getPortalUrl());
-            String uri = 
-                "http://" + server.getPortalUrl() + 
-                ":" + server.getWaysPort() + 
-                "/gprs_wifi/gprs.do?mcm_id=" +""+(comType.equals(Direction.sat) ? imei: mcmID )+
-                "&commType="+comType.getIndex()+
-                "&sat_cmd="+note.getType().getIndex()+
-                "&event_time="+note.getTime();
-            
-            HttpPost method = new HttpPost(uri.toLowerCase());
-            MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-            
-            try {
-                entity.addPart("mcm_id", new StringBody(mcmID, Charset.forName("UTF-8")));
-                entity.addPart("imei", new StringBody(imei, Charset.forName("UTF-8")));
-                entity.addPart("commType", new StringBody("" + comType.getIndex(), Charset.forName("UTF-8")));
-                entity.addPart("event_time", new StringBody("" + note.getTime(), Charset.forName("UTF-8")));
-                entity.addPart("sat_cmd", new StringBody("" + note.getType(), Charset.forName("UTF-8")));
-                entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));
-                entity.addPart("note", new StringBody(note.toString(), Charset.forName("UTF-8")));
-                entity.addPart("vehicle_id_str", new StringBody("654", Charset.forName("UTF-8")));
-                entity.addPart("company_id", new StringBody("3", Charset.forName("UTF-8")));
-            } catch (Exception e) {
-                
-            }
-            byte[] packaged = note.Package();
-            
-            entity.addPart("filename", new ByteArrayBody(packaged, "filename"));
-//            StringWriter writer = new StringWriter();
-//            int pos = 0;
-//            for (byte bits : packaged){
-//                writer.write(bits);
-//                MasterTest.print(Integer.toHexString(bits) + " " + pos++);
-//            }
-//            MasterTest.print(writer.toString());
-//            MasterTest.print(writer.toString().length());
-            
-//            entity.addPart("file", new ByteArrayBody(note.Package(), "file"));
-            method.setEntity(entity);
-            
-            reply.add(http.httpRequest(method));
-            
-            printNote(note);
+        if (comType.equals(Direction.sat)){
+        	sendSatNote(imei, sendingQueue);
+        	return null;
+        } else {
+	        for (DeviceNote note : sendingQueue){
+	        	byte[] packaged = note.Package();
+	        	String uri = 
+	                    "http://" + server.getPortalUrl() + 
+	                    ":" + server.getWaysPort() + 
+	                    "/gprs_wifi/gprs.do?mcm_id=" +""+(comType.equals(Direction.sat) ? imei: mcmID )+
+	                    "&commType="+comType.getIndex()+
+	                    "&sat_cmd="+note.getType().getIndex()+
+	                    "&event_time="+note.getTime();
+	                
+	            HttpPost method = new HttpPost(uri.toLowerCase());
+	            MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+	            
+	            try {
+	                entity.addPart("mcm_id", new StringBody(mcmID, Charset.forName("UTF-8")));
+	                entity.addPart("imei", new StringBody(imei, Charset.forName("UTF-8")));
+	                entity.addPart("commType", new StringBody("" + comType.getIndex(), Charset.forName("UTF-8")));
+	                entity.addPart("event_time", new StringBody("" + note.getTime(), Charset.forName("UTF-8")));
+	                entity.addPart("sat_cmd", new StringBody("" + note.getType(), Charset.forName("UTF-8")));
+	                entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));
+	                entity.addPart("note", new StringBody(note.toString(), Charset.forName("UTF-8")));
+	                entity.addPart("vehicle_id_str", new StringBody("654", Charset.forName("UTF-8")));
+	                entity.addPart("company_id", new StringBody("3", Charset.forName("UTF-8")));
+	            } catch (Exception e) {
+	                
+	            }
+	            
+	            
+	            entity.addPart("filename", new ByteArrayBody(packaged, "filename"));
+	            method.setEntity(entity);
+	                
+	        	reply.add(http.httpRequest(method));
+	            
+	            printNote(note);
+	        }
+	        return reply.toArray(new String[]{});
         }
-        return reply.toArray(new String[]{});
     }
     
     @Override
@@ -357,8 +383,8 @@ public class MCMProxyObject implements MCMService{
                 reply = notebc(state.getMcmID(),
                         state.getWaysDirection(),
                         sendingQueue.get(noteClass), state.getImei());
-            } else if (sendingQueue.containsKey(NoteWS.class)) {
-                noteClass = NoteWS.class;
+            } else if (sendingQueue.containsKey(WSNoteVersion2.class)) {
+                noteClass = WSNoteVersion2.class;
                 reply = notews(state.getMcmID(),
                         state.getWaysDirection(),
                         sendingQueue.get(noteClass), state.getImei());
@@ -366,6 +392,10 @@ public class MCMProxyObject implements MCMService{
                 noteClass = TiwiNote.class;
                 reply = note(state.getImei(),
                         sendingQueue.get(noteClass), true);
+            } else if (sendingQueue.containsKey(WSNoteVersion3.class)){
+            	noteClass = WSNoteVersion3.class;
+            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+            	reply = null;
             }
             sendingQueue.remove(noteClass);
         } catch (Exception e) {
@@ -379,6 +409,7 @@ public class MCMProxyObject implements MCMService{
                             + "\nNotes Started at: "
                             + DeviceStatistics.getStart().epochTime(),
                     Level.FATAL);
+            throw new NullPointerException();
         }
         
         return reply;
@@ -397,4 +428,20 @@ public class MCMProxyObject implements MCMService{
             throws ProDAOException {
         return proxy.crash(mcmID, crashDataList);
     }
+
+	public Object dumpSet(DeviceState state, Map<Integer, String> settings) {
+		if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			return dumpSet(state.getMcmID(), state.getProductVersion().getVersion(), settings);
+		} else {
+			return dumpSet(state.getImei(), state.getProductVersion().getVersion(), settings);
+		}
+	}
+
+	public Object reqSet(DeviceState state) {
+		if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			return reqSet(state.getMcmID());
+		} else {
+			return reqSet(state.getImei());
+		}
+	}
 }

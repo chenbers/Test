@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import com.inthinc.pro.automation.interfaces.DeviceTypesUnique;
 
-public class TiwiGenerals {
+public class DeviceEnums {
 
 	
 	public static enum FwdCmdStatus implements DeviceTypesUnique {
@@ -199,4 +199,42 @@ public class TiwiGenerals {
 	    	return lookupByCode.get(code);
 	    }
 	}
+	
+	public static enum WSHOSState implements DeviceTypesUnique {
+		OFF_DUTY(0),
+		OFF_DUTY_AT_WELL_SITE(1),
+		SLEEPER_BERTH(2),
+		PERSONAL_USE(3),
+		DRIVING(4),
+		ON_DUTY_NOT_DRIVING(5),
+		
+		;
+		
+		private final int index;
+		
+		private WSHOSState(int index){
+			this.index = index;
+		}
+		
+		private static HashMap<Integer, WSHOSState> lookupByCode = new HashMap<Integer, WSHOSState>();
+	    
+	    static {
+	        for (WSHOSState p : EnumSet.allOf(WSHOSState.class))
+	        {
+	            lookupByCode.put(p.getIndex(), p);
+	        }
+	    }
+
+		@Override
+		public Integer getIndex() {
+			return index;
+		}
+
+		@Override
+		public DeviceTypesUnique valueOf(Integer code) {
+			return lookupByCode.get(code);
+		}
+		
+	}
+	
 }

@@ -12,7 +12,7 @@ import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
-import com.inthinc.pro.automation.models.MCMProxyObject;
+import com.inthinc.pro.automation.objects.MCMProxyObject;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationCalendar;

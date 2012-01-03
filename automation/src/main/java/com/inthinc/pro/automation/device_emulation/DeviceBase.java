@@ -17,7 +17,6 @@ import org.apache.log4j.Level;
 import com.inthinc.pro.automation.deviceEnums.DeviceForwardCommands;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.DeviceProps;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
@@ -27,9 +26,10 @@ import com.inthinc.pro.automation.models.AutomationDeviceEvents.IgnitionOn;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.NoteEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SeatBeltEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SpeedingEvent;
+import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
+import com.inthinc.pro.automation.objects.MCMProxyObject;
 import com.inthinc.pro.automation.objects.TripTracker;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
@@ -119,6 +119,7 @@ public abstract class DeviceBase {
 
     protected DeviceBase addNote(DeviceNote note) {
         notes.addNote(note);
+        MasterTest.print(note);
         checkQueue();
         return this;
     }
@@ -165,23 +166,22 @@ public abstract class DeviceBase {
     protected abstract DeviceBase createAckNote(Map<String, Object> reply);
 
     public DeviceBase dump_settings() {
-        // if (portal==Addresses.TEEN_PROD){
-        // return this;
-        // }
-        //
-        // if (WMP >= 17013) {
-        // reply = null;
-        // try {
-        // MasterTest.print("dumping settings", Level.DEBUG);
-        // reply = mcmProxy.dumpSet(imei, productVersion.getVersion(), oursToThiers());
-        // MasterTest.print(reply, Level.DEBUG);
-        // } catch (Exception e){
-        // MasterTest.print("Error from DumpSet: " + StackToString.toString(e), Level.ERROR);
-        // MasterTest.print("Current Note Count is " + DeviceStatistics.getHessianCalls(), Level.ERROR);
-        // MasterTest.print("Current time is: " + System.currentTimeMillis(), Level.ERROR);
-        // MasterTest.print("Notes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
-        // }
-        // }
+		if (portal == Addresses.TEEN_PROD) {
+			return this;
+		}
+
+		if (state.getWMP() >= 17013) {
+			reply = null;
+			try {
+				MasterTest.print("dumping settings", Level.DEBUG);
+				reply = mcmProxy.dumpSet(state,	oursToThiers());
+				MasterTest.print(reply, Level.DEBUG);
+			} catch (Exception e) {
+				MasterTest.print(
+						"Error from DumpSet: " + StackToString.toString(e),
+						Level.ERROR);
+			}
+		}
         return this;
     }
 
@@ -196,22 +196,19 @@ public abstract class DeviceBase {
     }
 
     protected DeviceBase get_changes() {
-        // if (portal==Addresses.TEEN_PROD){
-        // return this;
-        // }
-        // if (WMP >= 17013) {
-        // try {
-        // reply = mcmProxy.reqSet(imei);
-        // } catch (Exception e){
-        // MasterTest.print("Error from ReqSet[289]: " + e.getCause(), Level.ERROR);
-        // MasterTest.print("Current Note Count is " + DeviceStatistics.getHessianCalls(), Level.ERROR);
-        // MasterTest.print("Current time is: " + System.currentTimeMillis(), Level.ERROR);
-        // MasterTest.print("Notes Started at: " + DeviceStatistics.getStart().epochTime(), Level.ERROR);
-        // }
-        // if (reply instanceof HashMap<?, ?>) {
-        // set_settings( theirsToOurs((HashMap<?, ?>) reply));
-        // }
-        // }
+		if (portal == Addresses.TEEN_PROD) {
+			return this;
+		}
+		if (state.getWMP() >= 17013) {
+			try {
+				reply = mcmProxy.reqSet(state);
+			} catch (Exception e) {
+				MasterTest.print(e, Level.ERROR);
+			}
+			if (reply instanceof HashMap<?, ?>) {
+				set_settings(theirsToOurs((HashMap<?, ?>) reply));
+			}
+		}
         return this;
     }
 
@@ -269,8 +266,8 @@ public abstract class DeviceBase {
         state.setIgnition_state(false);
         state.setPower_state(false);
         state.setSpeeding(false);
-        state.setRpm_violation(false);
-        state.setSeatbelt_violation(false);
+        state.setExceedingRPMLimit(false);
+        state.setSeatbeltEngaged(false);
 
         // clear_internal_settings();
 
@@ -281,19 +278,25 @@ public abstract class DeviceBase {
 
     private DeviceBase is_speeding() {
         GeoPoint point = tripTracker.currentLocation();
-        if (state.getSpeed() > state.getSpeed_limit() && !state.getSpeeding()) {
+        if (state.getSpeed() > state.getSpeedLimit() && !state.isSpeeding()) {
             state.setSpeeding(true);
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
-            state.setSpeedingSpeedLimit(state.getSpeed_limit().intValue());
+            state.setTopSpeed(state.getSpeed());
+            state.getSpeedingStartTime().setDate(state.getTime());
+            state.setSpeedingSpeedLimit(state.getSpeedLimit().intValue());
             MasterTest.print("Started Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
-        } else if (state.getSpeed() > state.getSpeed_limit()
-                && state.getSpeeding()) {
+        } else if (state.getSpeed() > state.getSpeedLimit()
+                && state.isSpeeding()) {
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
+            if (state.getSpeed() > state.getTopSpeed()){
+            	state.setTopSpeed(state.getSpeed());
+            }
             MasterTest.print("Still Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
-        } else if (state.getSpeed() < state.getSpeed_limit()
-                && state.getSpeeding()) {
+        } else if (state.getSpeed() < state.getSpeedLimit()
+                && state.isSpeeding()) {
+        	state.getSpeedingStopTime().setDate(state.getTime());
             state.setSpeeding(false);
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
@@ -331,8 +334,8 @@ public abstract class DeviceBase {
         } else {
             MasterTest.print("The device is already off.");
         }
-        MasterTest.print("Last note created at: "
-                + state.getTime().epochSecondsInt(), Level.DEBUG);
+        MasterTest.print("Power Off note created at: "
+                + state.getTime().epochSecondsInt(), Level.INFO);
         return this;
     }
 
@@ -480,16 +483,12 @@ public abstract class DeviceBase {
     }
 
     protected DeviceBase was_speeding() {
-        Integer topSpeed = 0;
         Integer avgSpeed = 0;
         Double avg = 0.0;
         Double speeding_distance = 0.0;
         for (int i = 0; i < speed_points.size(); i++) {
             int speed = speed_points.get(i);
             avg += speed;
-            if (topSpeed < speed) {
-                topSpeed = speed;
-            }
         }
 
         avg = avg / (speed_points.size());
@@ -500,10 +499,13 @@ public abstract class DeviceBase {
             speeding_distance += Math.abs(Distance_Calc
                     .calc_distance(last, loc));
         }
+        
         Integer distance = (int) (speeding_distance * 100);
-        SpeedingEvent event = AutomationDeviceEvents.speeding(topSpeed,
+        
+        SpeedingEvent event = AutomationDeviceEvents.speeding(state.getTopSpeed(),
                 distance, state.getMaxRpm(), state.getSpeedingSpeedLimit(), avgSpeed,
                 state.getAvgRpm());
+        
         addSpeedingNote(event);
         return this;
     }

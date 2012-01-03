@@ -13,18 +13,16 @@ import org.apache.log4j.Logger;
 
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
+import com.inthinc.pro.automation.deviceEnums.DeviceEnums.FwdCmdStatus;
 import com.inthinc.pro.automation.deviceEnums.DeviceForwardCommands;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.deviceEnums.Heading;
-import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.models.MCMProxyObject;
 import com.inthinc.pro.automation.models.MapSection;
-import com.inthinc.pro.automation.models.TiwiNote;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.utils.MasterTest;
@@ -185,7 +183,7 @@ public class TiwiProDevice extends DeviceBase {
         TiwiNote note = new TiwiNote(type, state, tripTracker.currentLocation());
         note.addAttrs(attrs);
         try {
-            note.addAttr(DeviceAttrs.SPEED_LIMIT, state.getSpeed_limit()
+            note.addAttr(DeviceAttrs.SPEED_LIMIT, state.getSpeedLimit()
                     .intValue());
         } catch (Exception e) {
             logger.debug(StackToString.toString(e));
@@ -330,7 +328,7 @@ public class TiwiProDevice extends DeviceBase {
     
     public TiwiProDevice rf_kill(){
         
-        construct_note(DeviceNoteTypes.SAT_EVENT_RF_KILL);
+        construct_note(DeviceNoteTypes.RF_KILL);
         return this;
     }
 

@@ -144,7 +144,7 @@ public enum Addresses implements AddressInterface {
                 + "\n\tSatelite Port = " + satPort + "\n\n";
     }
 
-    public Object getSatPort() {
+    public Integer getSatPort() {
         return satPort;
     }
 

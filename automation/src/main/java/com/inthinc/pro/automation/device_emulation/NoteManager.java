@@ -15,15 +15,10 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
-import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.models.DeviceAttributes;
-import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.models.NoteBC;
-import com.inthinc.pro.automation.models.NoteWS;
-import com.inthinc.pro.automation.models.TiwiNote;
+import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
-import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteManager {
     
@@ -72,35 +67,6 @@ public class NoteManager {
         }
         return noteList;
     }
-    
-    public static abstract class DeviceNote {
-        public abstract byte[] Package();
-		public abstract GeoPoint getLocation();
-        public abstract DeviceNoteTypes getType();
-        public abstract Long getTime();
-        public abstract DeviceNote copy();
-        public abstract void addAttr(DeviceAttrs attr, Integer value);
-        public abstract void addAttrs(DeviceAttributes attrs);
-        public abstract void addAttr(DeviceAttrs id, Object value);
-        
-        public static DeviceNote constructNote(DeviceNoteTypes type, GeoPoint location, DeviceState state) {
-            DeviceNote note = null;
-            if (state.getProductVersion().equals(ProductType.WAYSMART)){
-                if (NoteBC.types.contains(type)){
-                    note = new NoteBC(type, state, location);
-                } else {
-                    note = new NoteWS(type, state, location);
-                }
-            } else if (state == null || location == null){
-                note = new TiwiNote(type);
-            } else {
-                note = new TiwiNote(type, state, location);
-                note.addAttr(DeviceAttrs.SPEED_LIMIT, state.getSpeed_limit());
-            }
-            return note;
-        }
-    }
-    
     
     public static Integer byteToInt(ByteArrayInputStream bais, int numOfBytes) {
         return byteToLong(bais, numOfBytes).intValue();

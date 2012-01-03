@@ -1,24 +1,19 @@
-package com.inthinc.pro.automation.models;
+package com.inthinc.pro.automation.objects;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
-import com.inthinc.pro.automation.device_emulation.NoteManager.DeviceNote;
-import com.inthinc.pro.automation.interfaces.IndexEnum;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.models.DeviceNote;
+import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class NoteBC extends DeviceNote {
     
-    public final DeviceNoteTypes nType;
-    public final ProductType nVersion;
-    public final AutomationCalendar nTime;
     public final Heading heading;
     public final int sats;
     public final int nSpeed;
@@ -27,13 +22,11 @@ public class NoteBC extends DeviceNote {
     public final int nLinkID;
     public final int nBoundaryID;
     public final int nDriverID;
-    public final DeviceAttributes attrs;
-    public final GeoPoint location;
     
     public final static List<DeviceNoteTypes> types = new ArrayList<DeviceNoteTypes>();
     
     static {
-        types.add(DeviceNoteTypes.INSTALL);
+//        types.add(DeviceNoteTypes.INSTALL);
         types.add(DeviceNoteTypes.IGNITION_ON);
         types.add(DeviceNoteTypes.IGNITION_OFF);
         
@@ -41,24 +34,6 @@ public class NoteBC extends DeviceNote {
         
         types.add(DeviceNoteTypes.NEWDRIVER_HOSRULE);
     }
-    
-    public static enum Direction implements IndexEnum{
-        wifi(3),
-        gprs(2),
-        sat(1)
-        ;
-        
-        private int direction;
-        
-        private Direction(int direction){
-            this.direction = direction;
-        }
-        
-        @Override
-        public Integer getIndex() {
-            return direction;
-        }
-    };
     
     
     /***
@@ -83,9 +58,9 @@ public class NoteBC extends DeviceNote {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        NoteManager.longToByte(bos, nType.getIndex(), 1);
-        NoteManager.longToByte(bos, nVersion.getVersion(), 1);
-        NoteManager.longToByte(bos, nTime.toInt(), 4);
+        NoteManager.longToByte(bos, type.getIndex(), 1);
+        NoteManager.longToByte(bos, 2, 1);
+        NoteManager.longToByte(bos, time.toInt(), 4);
         NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
         NoteManager.longToByte(bos, location.encodeLatBC(), 4);
         NoteManager.longToByte(bos, location.encodeLngBC(), 4);
@@ -123,51 +98,17 @@ public class NoteBC extends DeviceNote {
     * 4-driverID
     */
     public NoteBC(DeviceNoteTypes type, DeviceState state, GeoPoint location){
-        nType = type;
-        nVersion = state.getProductVersion();
-        nTime = state.copyTime();
+    	super(type, state.getTime(), location);
         heading = state.getHeading();
         sats = state.getSats();
-        this.location = location.copy();
         nSpeed = state.getSpeed();
-        nSpeedLimit = state.getSpeed_limit().intValue();
+        nSpeedLimit = state.getSpeedLimit().intValue();
         nLinkID = state.getLinkID();
         nOdometer = state.getOdometer();
         nBoundaryID = state.getBoundaryID();
         nDriverID = state.getDriverID();
-        attrs = new DeviceAttributes();
-    }
-    
-    @Override
-    public void addAttr(DeviceAttrs id, Integer value){
-        try {
-            attrs.addAttribute(id, value);
-        } catch (Exception e) {
-            throw new NullPointerException("Cannot add " + id + " with value " + value);
-        }
-        
-    }
-    
-    @Override
-    public void addAttr(DeviceAttrs id, Object value){
-        if (value instanceof Integer){
-            addAttr(id, (Integer) value);
-        } else if (value instanceof IndexEnum){
-            addAttr(id, ((IndexEnum) value).getIndex());
-        } else if (value instanceof String){
-            addAttr(id, (String) value);
-        }
     }
 
-    public void addAttr(DeviceAttrs id, String value){
-        attrs.addAttribute(id, value);
-    }
-    
-    public void addAttrs(DeviceAttributes attrs){
-        for (DeviceAttrs key : attrs){
-            addAttr(key, attrs.getValue(key));
-        }
-    }
     
     /**
      * private final DeviceNoteTypes nType;
@@ -187,51 +128,38 @@ public class NoteBC extends DeviceNote {
     
     @Override
     public String toString(){
-        String temp = String.format("NoteBC(type=%s, version=%d, time=\"%s\", heading=%s, sats=%d,\n" +
+        String temp = String.format("NoteBC(type=%s, time=\"%s\", heading=%s, sats=%d,\n" +
         		"lat=%.5f, lng=%.5f, speed=%d, odometer=%d, speedLimit=%d, linkID=%d, boundary=%d, driverID=%d,\n" +
         		"attrs=%s", 
-                nType.toString(), nVersion.getCode(), nTime, heading, sats, location.getLat(), location.getLng(), nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
+                type.toString(), time, heading, sats, location.getLat(), location.getLng(), nSpeed, nOdometer, nSpeedLimit, nLinkID, nBoundaryID, nDriverID, attrs.toString());
         return temp;
     }
 
-    @Override
-    public DeviceNoteTypes getType() {
-        return nType;
-    }
-
-    @Override
-    public Long getTime() {
-        return nTime.epochSeconds();
-    }
     
     @Override
     public NoteBC copy(){
-        DeviceState state = new DeviceState(null, nVersion);
-        state.getTime().setDate(nTime);
+        DeviceState state = new DeviceState(null, ProductType.WAYSMART);
+        state.getTime().setDate(time);
         state.setHeading(heading);
         state.setSats(sats);
         state.setSpeed(nSpeed);
-        state.setSpeed_limit(nSpeedLimit.doubleValue());
+        state.setSpeedLimit(nSpeedLimit.doubleValue());
         state.setLinkID(nLinkID);
         state.setOdometer(nOdometer);
         state.setBoundaryID(nBoundaryID);
         state.setDriverID(nDriverID);
-        NoteBC temp = new NoteBC(nType, state, location);
+        NoteBC temp = new NoteBC(type, state, location);
         temp.addAttrs(attrs);
         return temp;
     }
 
-	@Override
-	public GeoPoint getLocation() {
-		return location.copy();
-	}
 
 	@Override
 	public boolean equals(Object obj){
 		if (obj instanceof NoteBC){
 			NoteBC other = (NoteBC) obj;
-			return nType.equals(other.nType) && nVersion.equals(other.nVersion) &&
-					nTime.equals(other.nTime) && heading.equals(other.heading) &&
+			return type.equals(other.type) &&
+					time.equals(other.time) && heading.equals(other.heading) &&
 					sats == other.sats && nSpeed == other.nSpeed && 
 					nOdometer == other.nOdometer && nSpeedLimit == other.nSpeedLimit &&
 					location.equals(other.location);

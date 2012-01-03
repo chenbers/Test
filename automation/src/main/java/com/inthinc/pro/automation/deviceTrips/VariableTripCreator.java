@@ -9,7 +9,7 @@ import org.apache.log4j.Level;
 
 import com.inthinc.pro.automation.CassandraPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.MCMProxyObject;
+import com.inthinc.pro.automation.objects.MCMProxyObject;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;

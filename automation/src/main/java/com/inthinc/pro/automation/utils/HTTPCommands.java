@@ -111,9 +111,9 @@ public class HTTPCommands {
             MasterTest.print(returnResponse, Level.INFO);
             return returnResponse;
         } catch (ClientProtocolException e) {
-            MasterTest.print(e);
+            MasterTest.print(e, Level.FATAL);
         } catch (IOException e) {
-            MasterTest.print(e);
+            MasterTest.print(e, Level.FATAL);
         }
         return "";
     }

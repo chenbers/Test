@@ -9,7 +9,7 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.NoteBuilder;
-import com.inthinc.pro.automation.models.NoteBC.Direction;
+import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.CommandLine;
 import com.inthinc.pro.automation.utils.MasterTest;
