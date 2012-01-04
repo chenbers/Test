@@ -163,9 +163,9 @@ System.out.println(interval);
             List<DriveTimeRecord>driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(testGroupData.group.getGroupID(), interval);
             assertEquals("record count", numDays, driveTimeRecordList.size());
 
-            long expectedDriveTime = 1410;
+            long expectedDriveTime = 1395;
             if (testGroupData.group.getName().contains("BAD"))
-                expectedDriveTime = 1395; 
+                expectedDriveTime = 1380; 
             
             DateTime startDate = start.toDateTime();
             for (DriveTimeRecord rec : driveTimeRecordList) {
