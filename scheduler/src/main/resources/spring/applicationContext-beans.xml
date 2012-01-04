@@ -156,11 +156,12 @@
 	</bean>
 
 	<!-- QUARTZ END -->
-
+<!-- 
 	<bean id="googleMapFinderBean" class="com.inthinc.pro.map.SimpleGoogleMapKeyFinder">
 		<property name="key" value="${googleMapKey}" />
 	</bean>
-
+ -->
+ 
   <bean id="reportAddressLookupBean" class="com.inthinc.pro.map.ReportAddressLookupBean">
     <property name="enableGoogleMapsInReports" value="${enableGoogleMapsInReports}"/>
     <property name="reportAddressLookupBean" ref="${reportAddressLookup}"></property>
