@@ -29,10 +29,10 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaysmartAggregationTest {
-    private static final int acctID = 398;
-    private static final int groupID = 5260;
-    private static final int unknownDriverID = 66462;
-    private static final Addresses server = Addresses.QA;
+//    private static final int acctID = 398;
+//    private static final int groupID = 5260;
+//    private static final int unknownDriverID = 66462;
+//    private static final Addresses server = Addresses.QA;
     /* AccountID    =   398
      * Account Name = WSAgg
      * GroupID      =  5259
@@ -43,58 +43,83 @@ public class WaysmartAggregationTest {
      */
     
 
-//    private static final int acctID = 1;
-//    private static final int groupID = 2;
-//    private static final int unknownDriverID = 1;
-//    private final static Addresses server = Addresses.DEV;
+    private static final int acctID = 1;
+    private static final int groupID = 2;
+    private static final int unknownDriverID = 1;
+    private final static Addresses server = Addresses.DEV;
     
     private final static State usState = new State(47, "Utah", "UT");
     private GeoPoint installLocation;
     
     private Map<DeviceState, LinkedList<DeviceNote>> tripsMap;
     private Map<DeviceState, Vehicle> vehicleMap;
-    private final static int startingOdometer = 466183;
-    private final static int startingTime = 1324339137;
+    private final static int startingOdometer = 96020;
+    private final static int startingTime = 1325644704;
+    
+    private final static ProductType type = ProductType.WAYSMART;
     
     
     public WaysmartAggregationTest(){
         tripsMap = new HashMap<DeviceState, LinkedList<DeviceNote>>();
         vehicleMap = new HashMap<DeviceState, Vehicle>();
-        populateBaseline();
+        notesOutOfOrder();
         sendNotes();
     }
     
-    
-    private void populateBaseline(){
-        int i=0;
-        LinkedList<DeviceNote> baseline = new LinkedList<DeviceNote>();
-        String start = "4225 W Lake Blvd, West Valley City, UT 84120";
-        String stop = "402 S Leroux St, Flagstaff, AZ 86001";
-        TripDriver driver = new TripDriver(ProductType.WAYSMART);
+    private void missingNotes(){
+    	TripDriver driver = new TripDriver(type);
+    	String start = "";
+    	String stop = "";
+    	
+    	driver.addToTrip(start, stop);
+        driver.addToTrip(stop, start);
         
         DeviceState state = driver.getdeviceState();
         
         state.setDriverID(unknownDriverID);
         state.setOdometer(startingOdometer);
         state.getTime().setDate(startingTime);
+        
+        driver.addEvent(25, AutomationDeviceEvents.ignitionOff(50, 95));
+    }
+    
+    
+    private void notesOutOfOrder(){
+        int i=0;
+        
+        TripDriver driver = new TripDriver(type);
+        
+        String start = "4225 W Lake Blvd, West Valley City, UT 84120";
+        String stop = "5000 W Lake Blvd, West Valley City, UT 84120";
         driver.addToTrip(start, stop);
         driver.addToTrip(stop, start);
+        
+        
+        DeviceState state = driver.getdeviceState();
+        
+        state.setDriverID(unknownDriverID);
+        state.setOdometer(startingOdometer);
+        state.getTime().setDate(startingTime);
+        
         driver.addEvent(10, AutomationDeviceEvents.speeding(75, 100, 600, 60, 65, 500));
         driver.addEvent(20, AutomationDeviceEvents.speeding(80, 200, 700, 40, 75, 600));
         driver.addEvent(30, AutomationDeviceEvents.hardAccel(100, 20, 10));
         driver.addEvent(40, AutomationDeviceEvents.hardBrake(100, 20, 10));
         driver.addEvent(50, AutomationDeviceEvents.seatbelt(700, 90, 25, 20, 100, 600));
         driver.addEvent(60, AutomationDeviceEvents.hardDip(10, 20, 110));
-        baseline = driver.generateNotes();
         
-        installLocation = baseline.get(0).getLocation();
-        LinkedList<DeviceNote> randomized = new LinkedList<DeviceNote>();
-        MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)baseline.getLast()).nOdometer);
+        LinkedList<DeviceNote> inOrder = driver.generateNotes();
+        
+        installLocation = inOrder.get(0).getLocation();
+        
+        MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)inOrder.getLast()).nOdometer);
         state.getTime().addToMinutes(15);
         MasterTest.print("Final noteTime is: %d", Level.INFO, state.getTime().epochSeconds());
         MasterTest.print("Final noteTime is: %s", Level.INFO, state.getTime());
         
-        for (DeviceNote note : baseline){
+
+        LinkedList<DeviceNote> randomized = new LinkedList<DeviceNote>();
+        for (DeviceNote note : inOrder){
             randomized.add(note.copy());
         }
         
@@ -102,14 +127,19 @@ public class WaysmartAggregationTest {
         for (int j=0;j<20;j++){
         	Collections.shuffle(randomized);
         }
-
+        
         state = newState(++i);
-        tripsMap.put(state, baseline);
+        tripsMap.put(state, inOrder);
         createVehicle(i, portalProxy, state);
 
         state = newState(++i);
         tripsMap.put(state, randomized);
         createVehicle(i, portalProxy, state);
+        
+
+        if (true){
+        	throw new NullPointerException();
+        }
     }
 
 
@@ -132,7 +162,7 @@ public class WaysmartAggregationTest {
     
     private DeviceState newState(int number){
         String last = String.format("%05d", number);
-        DeviceState state = new DeviceState("30023FKEWS"+last, ProductType.WAYSMART);
+        DeviceState state = new DeviceState("30023FKEWS"+last, type);
         state.setMcmID("FKE" + last);
         state.setWaysDirection(Direction.wifi);
         state.setDriverID(unknownDriverID);

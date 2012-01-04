@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.log4j.Level;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
@@ -16,6 +15,7 @@ import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.model.event.EventAttr;
 
 public class TiwiNote extends DeviceNote {
     
@@ -89,9 +89,9 @@ public class TiwiNote extends DeviceNote {
         map.put("13", location.toString());
         map.put("15", Speed.toString());
         map.put("16", odometer.toString());
-        Iterator<DeviceAttrs> itr = attrs.iterator();
+        Iterator<EventAttr> itr = attrs.iterator();
         while (itr.hasNext()){
-            DeviceAttrs next = itr.next();
+            EventAttr next = itr.next();
             Object value = attrs.getValue(next);
             map.put(next.getIndex().toString(), value.toString());
         }

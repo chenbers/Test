@@ -12,7 +12,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.caucho.hessian.client.HessianRuntimeException;
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceEnums.FwdCmdStatus;
 import com.inthinc.pro.automation.deviceEnums.DeviceForwardCommands;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
@@ -29,6 +28,7 @@ import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.event.EventAttr;
 
 public class TiwiProDevice extends DeviceBase {
 
@@ -62,7 +62,7 @@ public class TiwiProDevice extends DeviceBase {
     public TiwiProDevice add_lowBattery() {
         attrs = new DeviceAttributes();
         attrs.addAttribute(
-                DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 0);
+                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 0);
         construct_note(DeviceNoteTypes.LOW_BATTERY, attrs);
         return this;
     }
@@ -74,20 +74,20 @@ public class TiwiProDevice extends DeviceBase {
 
     public TiwiProDevice add_stats() {
         attrs = new DeviceAttributes();
-        attrs.addAttribute(DeviceAttrs.BASE_VER, 0);
-        attrs.addAttribute(DeviceAttrs.EMU_HASH_1, -1517168504);
-        attrs.addAttribute(DeviceAttrs.EMU_HASH_2, 154129909);
-        attrs.addAttribute(DeviceAttrs.EMU_HASH_3, 1825195881);
-        attrs.addAttribute(DeviceAttrs.EMU_HASH_4, 1627500918);
-        attrs.addAttribute(DeviceAttrs.TOTAL_AGPS_BYTES, 60000);
+        attrs.addAttribute(EventAttr.BASE_VER, 0);
+        attrs.addAttribute(EventAttr.EMU_HASH_1, -1517168504);
+        attrs.addAttribute(EventAttr.EMU_HASH_2, 154129909);
+        attrs.addAttribute(EventAttr.EMU_HASH_3, 1825195881);
+        attrs.addAttribute(EventAttr.EMU_HASH_4, 1627500918);
+        attrs.addAttribute(EventAttr.TOTAL_AGPS_BYTES, 60000);
         construct_note(DeviceNoteTypes.STATS, attrs);
         return this;
     }
 
     public TiwiProDevice addIdlingNote(int lowIdleTime, int highIdleTime) {
         attrs = new DeviceAttributes();
-        attrs.addAttribute(DeviceAttrs.LOW_IDLE, lowIdleTime);
-        attrs.addAttribute(DeviceAttrs.HIGH_IDLE, highIdleTime);
+        attrs.addAttribute(EventAttr.LOW_IDLE, lowIdleTime);
+        attrs.addAttribute(EventAttr.HIGH_IDLE, highIdleTime);
 
         construct_note(DeviceNoteTypes.IDLING, attrs);
         increment_time(lowIdleTime + highIdleTime);
@@ -97,24 +97,24 @@ public class TiwiProDevice extends DeviceBase {
     public void addIgnitionOffNote(int tripDuration,
             int percentPointsPassedFilter) {
         attrs = new DeviceAttributes();
-        attrs.addAttribute(DeviceAttrs.TRIP_DURATION, tripDuration);
+        attrs.addAttribute(EventAttr.TRIP_DURATION, tripDuration);
         attrs.addAttribute(
-                DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
+                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
                 percentPointsPassedFilter);
         construct_note(DeviceNoteTypes.IGNITION_OFF, attrs);
     }
 
     public void addPowerOffNote(int lowPowerModeSeconds) {
-        attrs.addAttribute(DeviceAttrs.LOW_POWER_MODE_TIMEOUT,
+        attrs.addAttribute(EventAttr.LOW_POWER_MODE_TIMEOUT,
                 lowPowerModeSeconds);
         construct_note(DeviceNoteTypes.LOW_POWER_MODE, attrs);
         flushNotes();
     }
 
     public TiwiProDevice addPowerOnNote(int WMP, int MSP, int gpsLockTime) {
-        attrs.addAttribute(DeviceAttrs.FIRMWARE_VERSION, WMP);
-        attrs.addAttribute(DeviceAttrs.DMM_VERSION, MSP);
-        attrs.addAttribute(DeviceAttrs.GPS_LOCK_TIME, gpsLockTime);
+        attrs.addAttribute(EventAttr.FIRMWARE_VERSION, WMP);
+        attrs.addAttribute(EventAttr.DMM_VERSION, MSP);
+        attrs.addAttribute(EventAttr.GPS_LOCK_TIME, gpsLockTime);
         construct_note(DeviceNoteTypes.POWER_ON, attrs);
         return this;
     }
@@ -124,9 +124,9 @@ public class TiwiProDevice extends DeviceBase {
     public void addTamperingNote(int percentPassedFilter) {
         attrs = new DeviceAttributes();
         attrs.addAttribute(
-                DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
+                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
                 percentPassedFilter);
-        attrs.addAttribute(DeviceAttrs.BACKUP_BATTERY, 6748);
+        attrs.addAttribute(EventAttr.BACKUP_BATTERY, 6748);
 
         construct_note(DeviceNoteTypes.UNPLUGGED, attrs);
     }
@@ -183,7 +183,7 @@ public class TiwiProDevice extends DeviceBase {
         TiwiNote note = new TiwiNote(type, state, tripTracker.currentLocation());
         note.addAttrs(attrs);
         try {
-            note.addAttr(DeviceAttrs.SPEED_LIMIT, state.getSpeedLimit()
+            note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedLimit()
                     .intValue());
         } catch (Exception e) {
             logger.debug(StackToString.toString(e));
@@ -201,8 +201,8 @@ public class TiwiProDevice extends DeviceBase {
         if (((Integer) reply.get("fwdID")) > 100) {
             TiwiNote ackNote = new TiwiNote(
                     DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
-            ackNote.addAttr(DeviceAttrs.FWDCMD_ID, (Integer) reply.get("fwdID"));
-            ackNote.addAttr(DeviceAttrs.FWDCMD_STATUS,
+            ackNote.addAttr(EventAttr.FWDCMD_ID, (Integer) reply.get("fwdID"));
+            ackNote.addAttr(EventAttr.FWDCMD_STATUS,
                     FwdCmdStatus.FWDCMD_RECEIVED);
             notes.addNote(ackNote);
             addNote(ackNote);
@@ -215,7 +215,7 @@ public class TiwiProDevice extends DeviceBase {
     public TiwiProDevice enter_zone(Integer zoneID) {
 
         attrs = new DeviceAttributes();
-        attrs.addAttribute(DeviceAttrs.ZONE_ID, zoneID);
+        attrs.addAttribute(EventAttr.ZONE_ID, zoneID);
         construct_note(DeviceNoteTypes.WSZONES_ARRIVAL_EX, attrs);
         return this;
     }
@@ -321,7 +321,7 @@ public class TiwiProDevice extends DeviceBase {
 
     public TiwiProDevice leave_zone(Integer zoneID) {
         attrs = new DeviceAttributes();
-        attrs.addAttribute(DeviceAttrs.ZONE_ID, zoneID);
+        attrs.addAttribute(EventAttr.ZONE_ID, zoneID);
         construct_note(DeviceNoteTypes.WSZONES_DEPARTURE_EX, attrs);
         return this;
     }
@@ -335,14 +335,14 @@ public class TiwiProDevice extends DeviceBase {
     public TiwiProDevice logout_driver(Integer RFID, Integer tripQuality,
             Integer MPG, Integer MPGOdometer) {
         attrs = new DeviceAttributes();
-        attrs.addAttribute(DeviceAttrs.LOGOUT_TYPE, 4);
+        attrs.addAttribute(EventAttr.LOGOUT_TYPE, 4);
         attrs.addAttribute(
-                DeviceAttrs.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
+                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
                 tripQuality);
-        attrs.addAttribute(DeviceAttrs.MPG, MPG);
-        attrs.addAttribute(DeviceAttrs.MPG_DISTANCE, MPGOdometer);
-        attrs.addAttribute(DeviceAttrs.RFID0, -536362939);
-        attrs.addAttribute(DeviceAttrs.RFID1, 1415806888);
+        attrs.addAttribute(EventAttr.MPG, MPG);
+        attrs.addAttribute(EventAttr.MPG_DISTANCE, MPGOdometer);
+        attrs.addAttribute(EventAttr.RFID0, -536362939);
+        attrs.addAttribute(EventAttr.RFID1, 1415806888);
         construct_note(DeviceNoteTypes.STATS, attrs);
         return this;
     }
@@ -388,8 +388,8 @@ public class TiwiProDevice extends DeviceBase {
         if (reply.get("fwdID").equals(100) || reply.get("fwdID").equals(1))
             return 1;
 
-        ackNote.addAttr(DeviceAttrs.FWDCMD_ID, reply.get("fwdID"));
-        ackNote.addAttr(DeviceAttrs.FWDCMD_STATUS,
+        ackNote.addAttr(EventAttr.FWDCMD_ID, reply.get("fwdID"));
+        ackNote.addAttr(EventAttr.FWDCMD_STATUS,
                 FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
         MasterTest.print(ackNote, Level.DEBUG);
         notes.addNote(ackNote);

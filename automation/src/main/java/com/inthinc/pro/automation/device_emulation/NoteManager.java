@@ -14,11 +14,11 @@ import java.util.Queue;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.model.event.EventAttr;
 
 public class NoteManager {
     
@@ -129,10 +129,10 @@ public class NoteManager {
      * @param attrs 
      */
     public static void encodeAttributes(ByteArrayOutputStream baos, DeviceAttributes attrs) {
-        Iterator<DeviceAttrs> keys = attrs.iterator();
+        Iterator<EventAttr> keys = attrs.iterator();
         
         while( keys.hasNext()){
-            DeviceAttrs key=null;
+            EventAttr key=null;
 
             key = keys.next();
             int keyCode = key.getIndex();
@@ -147,7 +147,7 @@ public class NoteManager {
         }
     }
     
-    private static void encodeAttribute(ByteArrayOutputStream baos, DeviceAttrs key, Object object) {
+    private static void encodeAttribute(ByteArrayOutputStream baos, EventAttr key, Object object) {
         try {
             if (object instanceof Number){
                 if (object instanceof Integer){
@@ -174,8 +174,8 @@ public class NoteManager {
         }
     }
     
-    public static void encodeAttributes(ByteArrayOutputStream baos, DeviceAttributes attrs, DeviceAttrs[] attrList) {
-        for (DeviceAttrs attr : attrList){
+    public static void encodeAttributes(ByteArrayOutputStream baos, DeviceAttributes attrs, EventAttr[] attrList) {
+        for (EventAttr attr : attrList){
             encodeAttribute(baos, attr, attrs.getValue(attr));
         }
     }

@@ -26,7 +26,7 @@ public class NoteBC extends DeviceNote {
     public final static List<DeviceNoteTypes> types = new ArrayList<DeviceNoteTypes>();
     
     static {
-//        types.add(DeviceNoteTypes.INSTALL);
+        types.add(DeviceNoteTypes.INSTALL);
         types.add(DeviceNoteTypes.IGNITION_ON);
         types.add(DeviceNoteTypes.IGNITION_OFF);
         

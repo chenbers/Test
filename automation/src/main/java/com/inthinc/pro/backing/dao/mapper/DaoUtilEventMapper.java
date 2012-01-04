@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.NoteType;
 
 public class DaoUtilEventMapper extends DaoUtilMapper {
@@ -27,7 +27,7 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
 			Map<Integer, Object> attrMap = (Map<Integer, Object>) value;
 			Map<String, String> attrValueMap = new HashMap<String, String>();
 			for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet()) {
-				String propertyName = DeviceAttrs.valueOf(attrEntry.getKey()).toString();
+				String propertyName = EventAttr.valueOf(attrEntry.getKey()).toString();
 				Object propertyData = attrEntry.getValue();
 				if (propertyName == null || propertyData == null)
 					continue;

@@ -2,13 +2,13 @@ package com.inthinc.pro.automation.objects;
 
 import java.io.ByteArrayOutputStream;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.model.event.EventAttr;
 
 public class SatNote extends DeviceNote {
 
@@ -107,7 +107,7 @@ public class SatNote extends DeviceNote {
 	}
 
 	@Override
-	public void addAttr(DeviceAttrs attr, Integer value) {
+	public void addAttr(EventAttr attr, Integer value) {
 		payload.addAttr(attr, value);
 	}
 
@@ -117,7 +117,7 @@ public class SatNote extends DeviceNote {
 	}
 
 	@Override
-	public void addAttr(DeviceAttrs id, Object value) {
+	public void addAttr(EventAttr id, Object value) {
 		payload.addAttr(id, value);
 	}
 	

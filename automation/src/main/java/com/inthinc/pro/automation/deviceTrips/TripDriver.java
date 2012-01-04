@@ -1,9 +1,10 @@
 package com.inthinc.pro.automation.deviceTrips;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
+import java.util.List;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
@@ -21,13 +22,15 @@ public class TripDriver extends Thread {
     private DeviceBase device;
     private TripTracker tripTracker;
     private boolean interrupt = false;
-    private AutomationEvents[] events;
-    private Set<Integer> positions;
+    private LinkedList<AutomationEvents>[] events2;
+    private List<Integer> positions;
     private DeviceState state;
     
-    private TripDriver(){
-        events = new AutomationEvents[100];
-        positions = new HashSet<Integer>();
+
+    @SuppressWarnings("unchecked")
+	private TripDriver(){
+        events2 = new LinkedList[100];
+        positions = new ArrayList<Integer>();
     }
 
     public TripDriver(DeviceBase device) {
@@ -62,25 +65,29 @@ public class TripDriver extends Thread {
             device.turn_key_on(60);
         }
         int totalNotes = tripTracker.size()*100;
-        Double lastPercent=0.0;
         Double currentPercent;
         while (itr.hasNext() && !interrupt){
             currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
+            int currentPoint = currentPercent.intValue();
             int speedLimit = device.getState().getSpeedLimit().intValue();
-            if (events[currentPercent.intValue()]!=null){
-                events[currentPercent.intValue()].addEvent(device);
-                positions.remove(currentPercent);
+            if (events2[currentPoint] != null){
+            	while (!events2[currentPoint].isEmpty()){
+                    events2[currentPoint].poll().addEvent(device);
+            	}
+        		positions.remove(currentPercent);
+        		events2[currentPoint] = null;
             } else {
-                for (int event : positions){
-                    if (lastPercent < event && event < currentPercent){
-                        events[event].addEvent(device);
-                        positions.remove(event);
-                        break;
-                    }
-                }
+            	int wouldBePosition = Collections.binarySearch(positions, currentPoint); 
+            	if ( wouldBePosition < -1 ){
+            		int noteN = positions.get(0);
+            		events2[noteN].poll().addEvent(device);
+            		if (events2[noteN].isEmpty()){
+            			positions.remove(0);
+            			events2[noteN] = null;
+            		}
+            	}
             }
             device.goToNextLocation(speedLimit, false);
-            lastPercent = currentPercent;
         }
         if (!interrupt){
             device.turn_key_off(60);
@@ -95,32 +102,36 @@ public class TripDriver extends Thread {
         notes.add(AutomationDeviceEvents.ignitionOn().getNote(tripTracker.currentLocation(), state));
         
         int totalNotes = tripTracker.size()*100;
-        Double lastPercent=0.0;
         Double currentPercent;
         int speed = 60;
         while (itr.hasNext()){
             currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
-            
-            if (events[currentPercent.intValue()]!=null){
-                AutomationEvents event = events[currentPercent.intValue()];
-                notes.add(event.getNote(tripTracker.currentLocation(), state));
-                positions.remove(currentPercent);
-                events[currentPercent.intValue()] = null;
+            int currentPoint = currentPercent.intValue();
+            if (events2[currentPoint] != null){
+            	while (!events2[currentPoint].isEmpty()){
+                    AutomationEvents event = events2[currentPoint].poll();
+                    notes.add(event.getNote(tripTracker.currentLocation(), state));
+            	}
+        		positions.remove((Object)currentPoint);
+        		events2[currentPoint] = null;
             } else {
-                for (int eventPos : positions){
-                    if (lastPercent < eventPos && eventPos < currentPercent){
-                        AutomationEvents event = events[eventPos];
-                        notes.add(event.getNote(tripTracker.currentLocation(), state));
-                        positions.remove(eventPos);
-                        break;
-                    }
-                }
+            	int wouldBePosition = Collections.binarySearch(positions, currentPoint); 
+            	if ( wouldBePosition < -1 ){
+            		int noteN = positions.get(0);
+
+            		AutomationEvents event = events2[noteN].poll();
+                    notes.add(event.getNote(tripTracker.currentLocation(), state));
+                    
+            		if (events2[noteN].isEmpty()){
+            			positions.remove(0);
+            			events2[noteN] = null;
+            		}
+            	}
             }
             
             notes.add(DeviceNote.constructNote(DeviceNoteTypes.LOCATION, tripTracker.getNextLocation(speed, false), state));
-            
-            lastPercent = currentPercent;
         }
+        
         AutomationCalendar stop = tripTracker.getState().getTime();
         notes.add(AutomationDeviceEvents.ignitionOff(stop.getDelta(start), 90).getNote(tripTracker.currentLocation(), state));
         
@@ -165,10 +176,16 @@ public class TripDriver extends Thread {
     
     
     public void addEvent(int percentTimeIn, AutomationEvents event){
-        events[percentTimeIn] = event;
-        positions.add(percentTimeIn);
+    	if (events2[percentTimeIn] == null){
+    		events2[percentTimeIn] = new LinkedList<AutomationEvents>();
+    	}
+        events2[percentTimeIn].add(event);
+        
+        if (!positions.contains(percentTimeIn)){
+        	positions.add(Math.abs(Collections.binarySearch(positions, percentTimeIn))-1,percentTimeIn);	
+        }
     }
-
+    
     public DeviceState getdeviceState() {
         return state;
     }

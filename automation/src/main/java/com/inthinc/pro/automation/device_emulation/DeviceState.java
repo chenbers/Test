@@ -53,7 +53,7 @@ public class DeviceState {
 
     private Object reply;
 
-    private int sats = 9;
+    private int sats = 15;
     private int sbsLinkID = 0;
 
     private Map<Integer, MapSection> sbsModule;
@@ -116,9 +116,6 @@ public class DeviceState {
         time_last = new AutomationCalendar();
         speedingStartTime = new AutomationCalendar();
         speedingStopTime = new AutomationCalendar();
-        if (type.equals(ProductType.WAYSMART) && !imei.startsWith("300")){
-        	imei = "400" + imei.substring(3, imei.length());
-        }
         this.imei = imei;
         this.productVersion = type;
         settings = new HashMap<DeviceProps, String>();

@@ -4,19 +4,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.model.event.EventAttr;
 
-public class DeviceAttributes implements Iterable<DeviceAttrs>{
+public class DeviceAttributes implements Iterable<EventAttr>{
 
-    private Map<DeviceAttrs, Object> attrs;
+    private Map<EventAttr, Object> attrs;
 
     
     public DeviceAttributes(){
-        attrs = new HashMap<DeviceAttrs, Object>();
+        attrs = new HashMap<EventAttr, Object>();
     }
     
-    public DeviceAttributes addAttribute(DeviceAttrs key, Object value){
+    public DeviceAttributes addAttribute(EventAttr key, Object value){
         if (value instanceof IndexEnum){
             return addAttribute(key, ((IndexEnum)value).getIndex());
         }
@@ -25,11 +25,11 @@ public class DeviceAttributes implements Iterable<DeviceAttrs>{
     }
     
     @Override
-    public Iterator<DeviceAttrs> iterator(){
+    public Iterator<EventAttr> iterator(){
         return attrs.keySet().iterator();
     }
     
-    public Object getValue(DeviceAttrs key){
+    public Object getValue(EventAttr key){
         return attrs.get(key);
     }
 

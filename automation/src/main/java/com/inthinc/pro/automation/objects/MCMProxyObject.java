@@ -325,7 +325,7 @@ public class MCMProxyObject implements MCMService{
 	                    "/gprs_wifi/gprs.do?mcm_id=" +""+(comType.equals(Direction.sat) ? imei: mcmID )+
 	                    "&commType="+comType.getIndex()+
 	                    "&sat_cmd="+note.getType().getIndex()+
-	                    "&event_time="+note.getTime();
+	                    "&event_time="+note.getTime().toInt();
 	                
 	            HttpPost method = new HttpPost(uri.toLowerCase());
 	            MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -419,6 +419,7 @@ public class MCMProxyObject implements MCMService{
         Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = new HashMap<Class<? extends DeviceNote>, LinkedList<DeviceNote>>();
         LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
         list.add(note);
+        MasterTest.print(note);
         sendingQueue.put(note.getClass(), list);
         return sendNotes(state, sendingQueue);
     }

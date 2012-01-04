@@ -60,8 +60,9 @@ public class WSNoteVersion3 extends DeviceNote {
 	}
 	
 	private int packFlags(){
-		int first = (b2i(offRoad) << 0) | (b2i(heavyDuty) << 1) | (hosState.getIndex() << 2) |
-				(b2i(speedingViolation) << 5) | (b2i(seatBeltViolation) << 6) | (b2i(rpmViolation) << 7);
+		int first = ((b2i(offRoad) << 0) & 0x01) | ((b2i(heavyDuty) & 0x01) << 2) | 
+				((hosState.getIndex() & 0x0C) << 2) | ((b2i(speedingViolation) << 5) & 0x10) | 
+				((b2i(seatBeltViolation) & 0x20) << 6) | ((b2i(rpmViolation) & 0x40) << 7);
 		int second = NoteManager.concatenateTwoInts(heading.getHeading(), sats);
 		return ((first << Byte.SIZE) | second) & 0xFFFF;
 	}

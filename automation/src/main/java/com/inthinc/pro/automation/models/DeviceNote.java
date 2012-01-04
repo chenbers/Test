@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.models;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceAttrs;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
@@ -11,6 +10,7 @@ import com.inthinc.pro.automation.objects.WSNoteVersion3;
 import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.event.EventAttr;
 
 public abstract class DeviceNote {
 	
@@ -44,7 +44,7 @@ public abstract class DeviceNote {
     }
     
 
-	public void addAttr(DeviceAttrs id, Integer value) {
+	public void addAttr(EventAttr id, Integer value) {
 		try {
 			attrs.addAttribute(id, value);    
         } catch (Exception e) {
@@ -53,19 +53,21 @@ public abstract class DeviceNote {
 	}
 
 	public void addAttrs(DeviceAttributes attrs) {
-		for (DeviceAttrs key : attrs){
+		for (EventAttr key : attrs){
             addAttr(key, attrs.getValue(key));
         }
 	}
 	
 
-	public void addAttr(DeviceAttrs id, Object value) {
+	public void addAttr(EventAttr id, Object value) {
 		if (value instanceof Number || value instanceof String){
         	attrs.addAttribute(id, value);
         } else if (value instanceof IndexEnum){
             addAttr(id, ((IndexEnum) value).getIndex());
         } else if (value instanceof Boolean){
         	addAttr(id, (Boolean) value ? 1:0);
+        } else if (value instanceof AutomationCalendar){
+        	addAttr(id, ((AutomationCalendar)value).toInt());
         } else if (value == null){
         	addAttr(id, 0);
         } else {
@@ -89,7 +91,7 @@ public abstract class DeviceNote {
             note = new TiwiNote(type);
         } else {
             note = new TiwiNote(type, state, location);
-            note.addAttr(DeviceAttrs.SPEED_LIMIT, state.getSpeedLimit());
+            note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedLimit());
         }
         return note;
     }
