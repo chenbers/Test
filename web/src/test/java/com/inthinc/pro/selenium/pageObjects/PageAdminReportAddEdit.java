@@ -1,6 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
