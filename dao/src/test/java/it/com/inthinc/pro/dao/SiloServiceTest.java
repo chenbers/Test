@@ -141,6 +141,7 @@ public class SiloServiceTest {
     private static Integer TESTING_DRIVER_ID; 
     private static Integer TESTING_VEHICLE_ID;
     private static Integer TESTING_GROUP_ID;
+    private static Integer TESTING_DEVICE_ID;
 
     private static final String REPORT_BASE_DATA_XML = "ReportTest.xml";
 
@@ -161,6 +162,7 @@ public class SiloServiceTest {
         TESTING_GROUP_ID = itData.teamGroupData.get(ITData.BAD).group.getGroupID();
         TESTING_DRIVER_ID = itData.teamGroupData.get(ITData.BAD).driver.getDriverID();
         TESTING_VEHICLE_ID = itData.teamGroupData.get(ITData.BAD).vehicle.getVehicleID();
+        TESTING_DEVICE_ID = itData.teamGroupData.get(ITData.BAD).device.getDeviceID();
     }
     
     @AfterClass
@@ -336,10 +338,10 @@ public class SiloServiceTest {
         configuratorDAO.setSiloService(siloService);
         VehicleSetting vs = configuratorDAO.getVehicleSettings(TESTING_VEHICLE_ID);
         assertEquals(ProductType.TIWIPRO_R74,vs.getProductType());
-        assertEquals(new Integer(22339),vs.getVehicleID());
+        assertEquals(TESTING_VEHICLE_ID,vs.getVehicleID());
         assertTrue(vs.getActual()!= null);
         assertTrue(vs.getDesired()!=null);
-        assertEquals(new Integer(18496),vs.getDeviceID());
+        assertEquals(TESTING_DEVICE_ID,vs.getDeviceID());
     }
     @Test
     public void vehicleSettingsForGroup(){
