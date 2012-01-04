@@ -25,7 +25,7 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
             Map<String, String> attrValueMap = new HashMap<String, String>();
             for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet())
             {
-                String propertyName = (EventAttr.getFieldName(attrEntry.getKey()) == null ? "" : EventAttr.getFieldName(attrEntry.getKey())) + "(" + attrEntry.getKey() + ")";
+                String propertyName = EventAttr.valueOf(attrEntry.getKey()).toString();  //(EventAttr.getFieldName(attrEntry.getKey()) == null ? "" : EventAttr.getFieldName(attrEntry.getKey())) + "(" + attrEntry.getKey() + ")";
                 Object propertyData = attrEntry.getValue();
                 if (propertyName == null || propertyData == null)
                     continue;

@@ -30,7 +30,7 @@ public class EventHessianMapper extends AbstractMapper
             Map<String, String> attrValueMap = new HashMap<String, String>();
             for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet())
             {
-                String propertyName = EventAttr.getFieldName(attrEntry.getKey());
+                String propertyName = EventAttr.valueOf(attrEntry.getKey()).toString();
                 Object propertyData = attrEntry.getValue();
                 if (propertyName == null || propertyData == null)
                     continue;
