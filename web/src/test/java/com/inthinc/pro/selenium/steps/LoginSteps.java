@@ -9,7 +9,20 @@ import org.jbehave.core.annotations.When;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAccountDetails;
+import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
+import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlagAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoleAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoles;
+import com.inthinc.pro.selenium.pageObjects.PageAdminDevices;
+import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlagDetails;
+import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlags;
+import com.inthinc.pro.selenium.pageObjects.PageAdminReports;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
+import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
+import com.inthinc.pro.selenium.pageObjects.PageAdminZones;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
@@ -20,15 +33,11 @@ public class LoginSteps extends RallySteps {
     PageLogin loginPage = new PageLogin();
     AutomationUser login;
     
-    @Given("I am logged in as a $LoginAccessOnly user")
-    @Pending
-    public void givenIAmLoggedInAsALoginAccessOnlyUser(){
-      // PENDING
-    }
+
 
     
     
-    @Given("I am logged in as a user in a role that does have the $UserInfo accesspoint")
+    @Given("I am logged in as a user in a role that does have the $accessPointName accesspoint")
     public void loginAsUserWithAccesspoint(String accesspointName){
         //LoginCapabilities.NoAccessPointUserInfo;
         LoginCapability hasThisCapability = null;
@@ -41,6 +50,24 @@ public class LoginSteps extends RallySteps {
         login.loginProcess(user);
     }
     
+    @Given("I am logged in as a \"$roleName\" user")
+    public void loginAsAUserofRole(String roleName) {
+        LoginCapability hasThisCapability = null;
+        
+        if(roleName.equals("Admin"))
+            hasThisCapability = LoginCapability.RoleAdmin;
+        else if(roleName.equals("HOS"))
+            hasThisCapability = LoginCapability.RoleHOS;
+        else if(roleName.equals("Live Fleet"))
+            hasThisCapability = LoginCapability.RoleLiveFleet;
+        else
+            addError("there is no defined role of "+roleName, ErrorLevel.ERROR);
+        
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(hasThisCapability);
+        
+        PageLogin login = new PageLogin();
+        login.loginProcess(user);  
+    }
     @Given("I am logged in as a user in a role that does not have the $accesspointName accesspoint")
     public void loginAsUserWithoutAccesspoint(String accesspointName){
         logger.error("I am logged in as a user in a role that does not have "+ accesspointName+" accesspoint");
@@ -64,8 +91,47 @@ public class LoginSteps extends RallySteps {
             matched = true;
             PageAdminUsers adminUsersPage = new PageAdminUsers();
             adminUsersPage.load();
-            
         }
+        if(pageDescription.startsWith("Admin -")){
+            matched = true;
+            if(pageDescription.endsWith("- Users"))
+                new PageAdminCustomRoleAddEdit().load();
+            else if(pageDescription.endsWith("- Add User"))
+                new PageAdminUserAddEdit();
+            else if(pageDescription.endsWith("- Vehicles"))
+                new PageAdminVehicles();
+            else if(pageDescription.endsWith("- Add Vehicle"))
+                new PageAdminVehicleEdit().load();
+            else if(pageDescription.endsWith("- Devices"))
+                new PageAdminDevices().load();
+            else if(pageDescription.endsWith("- Zones"))
+                new PageAdminZones().load();
+            else if(pageDescription.endsWith("- Red Flags"))
+                new PageAdminRedFlags().load();
+            else if(pageDescription.endsWith("- Add Red Flag"))
+                new PageAdminRedFlagAddEdit().load();
+            else if(pageDescription.endsWith("- Reports"))
+                new PageAdminReports().load();
+            else if(pageDescription.endsWith("- Add Report")){
+                matched = false;
+                addError("Admin - Add Report does not have a PageObject ???");
+            }
+            else if(pageDescription.endsWith("- Organization"))
+                new PageAdminOrganization().load();
+            else if(pageDescription.endsWith("- Custom Roles"))
+                 new PageAdminCustomRoles().load();
+            else if(pageDescription.endsWith("- Add Custom Role"))
+                new PageAdminCustomRoleAddEdit().load();            
+            else if(pageDescription.endsWith("- Speed By Street")){
+                matched = false;
+                addError("Admin - Speed by Street does not have a PageObject ???");
+            }
+            else if(pageDescription.endsWith("- Account Details"))
+                new PageAdminAccountDetails().load();
+            else
+                matched = false;
+        }
+            
         if(!matched)
             addError("Automation Framework does not know about the '"+pageDescription+"' page");
         

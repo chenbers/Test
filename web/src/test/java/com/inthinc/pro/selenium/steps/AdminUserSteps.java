@@ -9,7 +9,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 
-public class AdminUserSteps extends LoginSteps { 
+public class AdminUserSteps extends AdminSteps { 
     
     private PageAdminUsers users = new PageAdminUsers();
     private PageAdminUserDetails userDetails = new PageAdminUserDetails();
