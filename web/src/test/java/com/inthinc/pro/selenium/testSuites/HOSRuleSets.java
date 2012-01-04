@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.WaysmartDevice;
-import com.inthinc.pro.automation.objects.NoteBC.Direction;
+import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 @Ignore
