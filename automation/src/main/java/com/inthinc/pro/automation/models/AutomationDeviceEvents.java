@@ -389,7 +389,29 @@ public class AutomationDeviceEvents {
             return noteType;
         }
     }
-    
+    public class RFKillEvent implements AutomationEvents{
+        public final DeviceNoteTypes noteType = DeviceNoteTypes.RF_KILL;
+        @Override
+        public DeviceBase addEvent(DeviceBase device) {
+            return device.addRFKillEvent(this);
+        }
+
+        @Override
+        public DeviceNote getNote(GeoPoint location, DeviceState state) {
+            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
+            addEndOfTripAttributes(note, state);
+            return note;
+        }
+
+        @Override
+        public DeviceNoteTypes getNoteType() {
+            return noteType;
+        }
+        
+    }
+    public static RFKillEvent rfKill(){
+        return classes.new RFKillEvent();
+    }
     public class IgnitionOffEvent implements AutomationEvents{
         
         public final DeviceNoteTypes noteType = DeviceNoteTypes.IGNITION_OFF;
