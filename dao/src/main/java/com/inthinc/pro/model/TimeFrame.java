@@ -95,17 +95,17 @@ public enum TimeFrame implements BaseEnum {
             DateTime lastSat = new DateMidnight(getCurrent().minusDays(1),dateTimeZone).toDateTime();
             while (lastSat.getDayOfWeek() != DateTimeConstants.SATURDAY)
                 lastSat = new DateTime(lastSat.minusDays(1),dateTimeZone);
-            return new Interval(new DateTime(lastSat.minusDays(6), dateTimeZone), lastSat);
+            return new Interval(new DateTime(lastSat.minusDays(6), dateTimeZone), new DateMidnight(lastSat.plusDays(1),dateTimeZone).toDateTime());
         }
     },
     LAST_MONTH(AggregationDuration.ONE_MONTH, 16) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().monthOfYear().toInterval().getStart().minusMonths(1), dateTimeZone), new DateMidnight(getCurrent().monthOfYear().toInterval().getStart(), dateTimeZone));
         }
     },
     PAST_SEVEN_DAYS(AggregationDuration.SEVEN_DAY, 17) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
-            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().minusDays(1), dateTimeZone));
+            return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
         }
     };
 

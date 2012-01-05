@@ -28,7 +28,12 @@ public class TimeFrameConverter {
         
         DateTimeZone dateTimeZone = timeZone == null ? DateTimeZone.UTC : DateTimeZone.forTimeZone(timeZone);
         
-        return dateTimeFormatter.print(timeFrame.getInterval(dateTimeZone).getStart()) + " - " + dateTimeFormatter.print(timeFrame.getInterval(dateTimeZone).getEnd());
+        DateTime start = timeFrame.getInterval(dateTimeZone).getStart();
+        DateTime end = timeFrame.getInterval(dateTimeZone).getEnd().minusDays(1);
+        
+        if (start.isEqual(end)) 
+            return dateTimeFormatter.print(start);
+        return dateTimeFormatter.print(start) + " - " + dateTimeFormatter.print(end);
 
         
     }

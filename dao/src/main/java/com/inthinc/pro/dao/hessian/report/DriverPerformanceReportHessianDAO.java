@@ -118,7 +118,7 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
     public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
         List<DriverPerformanceKeyMetrics> driverPerformanceList = new ArrayList<DriverPerformanceKeyMetrics>();
         Interval interval = timeFrame.getInterval();
-        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval);
+        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd().minusDays(1));
         
         if (scoreList == null || scoreList.isEmpty())
             return driverPerformanceList;
