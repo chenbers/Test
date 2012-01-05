@@ -6,17 +6,19 @@ import java.util.HashMap;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public enum EventAttr
-{
+public enum EventAttr {
+	
+	// Attribute Id (1-127 have one byte values)
 	TOP_SPEED(1),
     AVG_SPEED(2),
     SPEED_LIMIT(3),
-    AVG_RPM(4),
+    AVG_RPM(4), // rpm / 100
     RESET_REASON(5),
     MANUAL_RESET_REASON(6),
     FWDCMD_STATUS(7),
     VIOLATION_FLAGS(8),
-    ENG_TEMP(9),
+    ENG_TEMP(9), // Engine Coolant Temp has an offset of -40,  This value comes 
+    			 // from the OBDII specification and will be consistant regardless of the data source
     
     FUEL_LEVEL(10),
     THROTTLE(11),
@@ -33,7 +35,7 @@ public enum EventAttr
     GPS_SATS_SNR_MEDIAN(21),
     GPS_SATS_PDOP_10X(22),
     GPS_SATS_HDOP_10X(23),
-    SEVERITY(24),
+    SEVERITY(24), // cmd on portal - do not nuke
     DMM_VERSION(25),
     DMM_ORIENTATION(26),
     DMM_DVX(27),
@@ -87,10 +89,10 @@ public enum EventAttr
 	ATTR_LOW_LOAD_PCT(70),
 	ATTR_SOURCE(71),
 
-    
+	// Attribute Id (128->191 have two byte values)
     DISTANCE(129),
     
-    MAX_RPM(130),
+    MAX_RPM(130), // true rpm
     DELTAV_X(131),
     DELTAV_Y(132),
     DELTAV_Z(133),
@@ -103,9 +105,9 @@ public enum EventAttr
     
     COURSE(140),
     OBD_RPM(141),
-    OBD_SPEED(142),
+    OBD_SPEED(142), // speed x10
     SMTLS_LOGGED_TX_COUNT(143),
-    SMTLS_OP_MODE(144),
+    SMTLS_OP_MODE(144), //If this is sent with a type 200, it represents the last EMU download error code
     ODOMETER_BY_COORDINATES(145),
     A_AND_D_SPACE(146),
     APPLICATION_SPACE(147),
@@ -134,6 +136,7 @@ public enum EventAttr
     LOOPCOUNT_DEFERRED_LOGIN(168),
     NUM_REBOOTS(169),
     
+    // Attribute id (192->254) have four byte values)
     ZONE_ID(192),
     FIRMWARE_VERSION(193),
     FWDCMD_ID(194),
@@ -149,10 +152,10 @@ public enum EventAttr
     EMU_HASH_2(203),
     EMU_HASH_3(204),
     EMU_HASH_4(205),
-    OBD_X1_TO_X4(206),
-    OBD_X5_TO_X8(207),
-    OBD_X9_TO_X12(208),
-    OBD_X13_TO_X16(209),
+    OBD_X1_TO_X4(206),   // x1,  x2,  x3,  x4
+    OBD_X5_TO_X8(207),   // x5,  x6,  x7,  x8
+    OBD_X9_TO_X12(208),  // x9,  x10, x11, x12
+    OBD_X13_TO_X16(209), // x13, x14, x15, x16
     
     OBD_X17_TO_X20(210),
     OBD_X21_TO_X24(211),
@@ -165,11 +168,10 @@ public enum EventAttr
     LOW_IDLE(219),
     
     HIGH_IDLE(220),
-    RFID0(222),
-    RFID1(223),
+    RFID0(222), // high
+    RFID1(223), // low
     MPG_DISTANCE(224),
-    TRIP_DURATION(225),
-    STRING(255),
+    TRIP_DURATION(225), // trip time in seconds
     BAD_ERROR(226), // Errors that we want the portal to track
     DRIVER_ID(227),
     TOTAL_AGPS_BYTES(228),
@@ -188,8 +190,12 @@ public enum EventAttr
     
     ENGINE_HOURS_X100(240),
     
+    // Attribute Id (255) has a stringId byte,
+ 	// followed by a null terminate string.
     STRING_TIWIPRO(255),
 
+    // one byte value attributes 8192 [0x2000] to 16383 [0x3FFF]
+    
     BASELINE_VERSION(8192),
     BOOTLOADER_REV(8193),
     BRAKE_COLLECTED(8194),
@@ -198,6 +204,7 @@ public enum EventAttr
     CALLING_FILE(8197),
     CLEAR_DRIVER_FLAG(8198),
     CONFIDENCE_LEVEL(8199),
+    
     DIAGNOSTIC(8200),
     DRIVER_FLAG(8201),
     DRIVER_STATUS(8202),
@@ -209,6 +216,7 @@ public enum EventAttr
     FILTERED_SPEED(8208),
     FIRMWARE_REV_PREVIOUS(8209),
     FIRMWARE_VERSION_WAYS(8210),
+    
     FLAG(8211),
     IGNITION_OFF_FULL_EVENTS_ENABLED(8212),
     GPS_CONFIDENCE_PERCENT(8213),
@@ -218,6 +226,7 @@ public enum EventAttr
     HARD_ACCEL_LEVEL(8217),
     HARD_VERT_DMM_TO_CRASH_RATIO_THRES(8218),
     IGNITIONON_PERCENTAGE(8219),
+    
     LOCK_PERCENTAGE(8220),
     MAGICA(8221),
     MAPS_MOUNTED_PERCENTAGE(8222),
@@ -228,6 +237,7 @@ public enum EventAttr
     OBD_CONFIDENCE_PERCENT(8227),
     OBD_SPEED_WAYS(8228),
     ODOMETER_COLLECTED(8229),
+    
     ORIENTATION_TRIAX(8230),
     PERCENT_MEMORY_AVAILABLE(8231),
     PRE_INSTALL_FULL_EVENTS_ENABLED(8232),
@@ -238,6 +248,7 @@ public enum EventAttr
     RMS_WINDOW(8237),
     RPM_COLLECTED(8238),
     SBS_DB_UPDATE_RESULT(8239),
+    
     SBS_EX_MAP_UPDATE_RESULT(8240),
     SBS_SPEED_LIMIT(8241),
     SEATBELT_ENGAGED(8242),
@@ -247,15 +258,17 @@ public enum EventAttr
     SLOPE(8247),
     SPEED_COLLECTED(8248),
     SPEED_MODULE_ENABLED(8249),
+    
     SPEED_SOURCE(8250),
     SPEEDING_BUFFER(8251),
-    SPEEDING_TYPE(8253),
+    SPEEDING_TYPE(8253),  // removing here since defined at 65 for vehicle bus uptime
     STATE(8254),
     STATUS(8255),
     TEMP_COMP_ENABLED(8256),
     TEMP_COMP_SLOPES_IN_BUFFER(8257),
     TRIP_INSPECTION_FLAG(8258),
     TRIP_REPORT_FLAG(8259),
+    
     UP_TO_DATE_STATUS(8260),
     VERSION_BASELINE_1(8261),
     VERSION_BASELINE_2(8262),
@@ -266,6 +279,7 @@ public enum EventAttr
     VERSION_EXCEPTION_3(8267),
     VERSION_EXCEPTION_4(8268),
     WEATHER_SPEED_LIMIT_PERCENT(8269),
+    
     X_ACCEL(8270),
     X_WINDOW(8271),
     X_CAT_DATA(8272),
@@ -276,15 +290,21 @@ public enum EventAttr
     Z_WINDOW(8277),
     ZONE_SPEED_LIMIT(8278),
     HAZMAT_FLAG(8279),
+    
     STRUCT_VERSION(8280),
     SENDER(8281),
     CONNECT_TYPE(8282),
+    
+
+    // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
+    
     ACCELERATION(16384),
     ACKNOWLEDGED_COMMAND_ID(16385),
     BELOW_THRESHOLD_FULL_EVENT_COUNT(16386),
     CONFIRMED_NOTE_EVENT_COUNT(16387),
     CPU_PERCENTAGE(16388),
     DATA_LENGTH(16389),
+    
     DIGITAL_INPUT_STATUS(16390),
     DIGITAL_OUTPUT_STATUS(16391),
     DURATION(16392),
@@ -295,6 +315,7 @@ public enum EventAttr
     G_TRIGGER_LEVEL(16397),
     GPS_DISTANCE(16398),
     LAT_LONG_DIST(16399),
+    
     // LOGGED_MESSAGE_COUNT(16400),
     MAX_TIME(16400),
     MESSAGES_LATENT(16401),
@@ -306,6 +327,7 @@ public enum EventAttr
     SMTOOLS_HARDWARE_REV(16407),
     SOFTWARE_RESET_COUNT(16408),
     STATUS_DELTAV_X(16409),
+    
     STATUS_DELTAV_Y(16410),
     STATUS_DELTAV_Z(16411),
     STOP_TIME(16412),
@@ -316,14 +338,44 @@ public enum EventAttr
     TOTAL_TEMP_COMP_SLOPE_ESTIMATES(16417),
     TOTAL_TEMP_COMP_SLOPE_UPDATES(16418),
     TRAILER_GALLONS(16419),
+    
 //    TRANSMITTED_MESSAGE_COUNT(16420),
     VEHICLE_GALLONS(16420),
     WATCHDOG_COUNT(16421),
     WEI_COUNT(16422),
     WIGGLE_TRIGGER_COUNT_TOTAL(16423),
     ANALOG_SENSOR(16424),
-    LOW_IDLE_2(16425),
-    HIGH_IDLE_2(16426),
+    LOW_IDLE_2(16425),	//actually stored in DB as ATTR_lowIdle
+    HIGH_IDLE_2(16426), //actually stored in DB as ATTR_highIdle
+    SPEEDING_START(16427),
+	SPEEDING_STOP(16428),
+	SPEEDING_MAX30(16429),
+	
+	SPEEDING_MAX15(16430),
+	SPEEDING_MAX5(16431),
+	SPEEDING_MAX4(16432),
+	SPEEDING_MAX3(16433),
+	SPEEDING_MAX2(16434),
+	SPEEDING_MAX1(16435),
+	SPEEDING_MAX0(16436),
+	SEATBELT_OUT_DISTANCE(16437),
+	HEADLIGHT_OFF_DISTANCE(16438),
+	NO_DRIVER_DISTANCE(16439),
+	
+	NO_TRAILER_DISTANCE(16440),
+	RF_OFF_DISTANCE(16441),
+	SPEED_LIMIT_1_TO_30_DISTANCE(16442),
+	SPEED_LIMIT_31_TO_40_DISTANCE(16443),
+	SPEED_LIMIT_41_TO_54_DISTANCE(16444),
+	SPEED_LIMIT_55_TO_64_DISTANCE(16445),
+	SPEED_LIMIT_65_TO_80_DISTANCE(16446),
+    
+
+	
+////////////////////////////////////////////////////////////////////////////////////
+//	string Attributes 24576 [0x6000] to 32767 [0x7FFF],
+////////////////////////////////////////////////////////////////////////////////////
+	
     DATA(24576),                            // string length comes from ATTR_DATA_LENGTH
     TEXT_MESSAGE(24577),                    // string length comes from ATTR_TEXT_LENGTH
     DRIVER_STR(24578, 10, false),           // string 10         fixed length,              \0 filled
@@ -345,8 +397,15 @@ public enum EventAttr
     MCM_ID_STR(24594, 9, true),             // string  9 max, variable length,              \0 terminated
     
     SKIP_INT(32000),
+    
+
+////////////////////////////////////////////////////////////////////////////////////
+//	Attribute ids 32768  [0x8000] to  40959 [0x9FFF] have four byte values,
+////////////////////////////////////////////////////////////////////////////////////
+    
     AVERAGE_LOCK_TIME(32768),
     BATTERY_VOLTAGE(32769),
+    
     BRAKE_RECEIVES(32770),
     BRAKE_REQUESTS(32771),
     DATA_CURRENT(32772),
@@ -357,6 +416,7 @@ public enum EventAttr
     DOWNLOAD_WEEKLY_TOTAL_MAPS(32777),
     DOWNLOAD_WEEKLY_TOTAL_PLACES_2_DAT(32778),
     DOWNLOAD_WEEKLY_TOTAL_QSI_FIRMWARE(32779),
+    
     DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_CHECK_BYTES(32780),
     DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_DOWNLOAD_BYTES(32781),
     DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_DOWNLOAD_COUNT(32782),
@@ -366,6 +426,7 @@ public enum EventAttr
     DOWNLOAD_WEEKLY_TOTAL_WITNESS_II_FIRMWARE(32786),
     DOWNLOAD_WEEKLY_TOTAL_ZONES(32787),
     EMU_NAME_VERIFIED(32789),
+    
 //    ERROR(32790),
     ERROR_CODE_CONF(32790),
     FILE_SIZES(32791),
@@ -376,6 +437,7 @@ public enum EventAttr
     MAX_POSGS(32797),
     MAX_NEGGS(32798),
     MESSAGES_SIZE(32799),
+    
     NOPT_WEEKLY_WRITE_COUNT(32800),
     ODOMETER(32801),
     ODOMETER_GPS_COUNT(32802),
@@ -386,6 +448,7 @@ public enum EventAttr
     RPM_RECEIVES(32807),
     RPM_REQUESTS(32808),
     SEATBELT_RECEIVES(32809),
+    
     SEATBELT_REQUESTS(32810),
     SMTOOLS_RESET_STATUS(32812),
     SMTOOLSTIMERRUNNING(32813),
@@ -395,6 +458,7 @@ public enum EventAttr
     SUBMITTED_TIME(32817),
     TIME(32818),
     TIME_CALIBRATED(32819),
+    
     TIME_LAST_CHECKED(32821),
     TIME_LAST_VISTED(32822),
     TIME_RTC(32823),
@@ -404,12 +468,50 @@ public enum EventAttr
     WIRELINE_FLAGS(32827),
     SEVERE_SPEED_SECONDS(32828),
     SPEEDING_GRACE_PERIOD(32829),
+    
     COMPANY_ID(32830),
     EVENT_CODE_INT(32831),
+    ATTR_SPEED_LONG_START(32832),
+    ATTR_SPEED_LAT_STOP(32833),
+    ATTR_SPEED_LONG_STOP(32834),
+    ATTR_SPEED_LAT_MAX30(32835),
+    ATTR_SPEED_LONG_MAX30(32836),
+    ATTR_SPEED_LAT_MAX15(32837),
+    ATTR_SPEED_LONG_MAX15(32838),
+    ATTR_SPEED_LAT_MAX5(32839),
+	
+    ATTR_SPEED_LONG_MAX5(32840),
+    ATTR_SPEED_LAT_MAX4(32841),
+    ATTR_SPEED_LONG_MAX4(32842),
+    ATTR_SPEED_LAT_MAX3(32843),
+    ATTR_SPEED_LONG_MAX3(32844),
+    ATTR_SPEED_LAT_MAX2(32845),
+    ATTR_SPEED_LONG_MAX2(32846),
+    ATTR_SPEED_LAT_MAX1(32847),
+    ATTR_SPEED_LONG_MAX1(32848),
+    ATTR_SPEED_LAT_MAX0(32849),
+	
+    ATTR_SPEED_LONG_MAX0(32850),
+    ATTR_SPEED_START_TIME(32851),
+	ATTR_SPEED_STOP_TIME_OS(32852),
+	ATTR_SPEED_MAX_TIME_OS(32853),
+	ATTR_LINK_ID(32854),
+
+		    
+////////////////////////////////////////////////////////////////////////////////////
+//	double value Attributes 40960 [0xA000] to 49151 [0xBFFF]
+////////////////////////////////////////////////////////////////////////////////////
+    
     MAX_LATITUDE(40960),
     MAX_LONGITUDE(40961),
     MIN_LATITUDE(40962),
     MIN_LONGITUDE(40963),
+
+	
+////////////////////////////////////////////////////////////////////////////////////
+//	these attributes are binary data values 0xC000 [49152] to 0XDFFF	[57343] (specially parsed data from old style notifications)
+////////////////////////////////////////////////////////////////////////////////////
+    
     DELTA_VS(49152, 4),                             //binary   4 bytes
     DENOMINATOR(49153, 6),                          //binary   6 bytes
     IDLE_TIMES(49154, 4),                           //binary   4 bytes
@@ -430,6 +532,10 @@ public enum EventAttr
     CRASH_TRACE(49168, 16384),                      //binary approximately 16K bytes (not in DB attr) 16384
     ATTR_WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  //binary approximately 1k bytes (not in db attr)
 
+
+    // Attribute Id (255) has a stringId byte,
+    // followed by a null terminate string.
+    ATTR_STRING_WAYSMART(65535),
     ;
 
     private int code;
