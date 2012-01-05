@@ -79,15 +79,15 @@ public enum EventAttr {
     NUM_CONFIG_DUMPS(61),
     NUM_REQSET(62),
     BASE_VER(63),
-    ATTR_SBS_UPDATE_TYPE(64),
-	ATTR_SPEEDING_TYPE(65),
-	ATTR_RPM_PCT(66),
-	ATTR_SEATBELT_PCT(67),
-	ATTR_FUEL_RATE_PCT(68),
-	ATTR_HIGH_LOAD_PCT(69),
+    SBS_UPDATE_TYPE(64),
+	SPEEDING_TYPE(65),
+	RPM_PCT(66),
+	SEATBELT_PCT(67),
+	FUEL_RATE_PCT(68),
+	HIGH_LOAD_PCT(69),
 
-	ATTR_LOW_LOAD_PCT(70),
-	ATTR_SOURCE(71),
+	LOW_LOAD_PCT(70),
+	SOURCE(71),
 
 	// Attribute Id (128->191 have two byte values)
     DISTANCE(129),
@@ -215,8 +215,8 @@ public enum EventAttr {
     EXCEPTION_VERSION(8207),
     FILTERED_SPEED(8208),
     FIRMWARE_REV_PREVIOUS(8209),
-    FIRMWARE_VERSION_WAYS(8210),
     
+    FIRMWARE_VERSION_WAYS(8210),
     FLAG(8211),
     IGNITION_OFF_FULL_EVENTS_ENABLED(8212),
     GPS_CONFIDENCE_PERCENT(8213),
@@ -261,7 +261,7 @@ public enum EventAttr {
     
     SPEED_SOURCE(8250),
     SPEEDING_BUFFER(8251),
-    SPEEDING_TYPE(8253),  // removing here since defined at 65 for vehicle bus uptime
+    ATTR_SPEEDING_TYPE(8253), // removing here since defined at 65 for vehicle bus uptime
     STATE(8254),
     STATUS(8255),
     TEMP_COMP_ENABLED(8256),
@@ -294,6 +294,10 @@ public enum EventAttr {
     STRUCT_VERSION(8280),
     SENDER(8281),
     CONNECT_TYPE(8282),
+	TEMPERATURE(8283),
+	TRIP_KIOSK_MODE(8284),
+	SEATBELT_TOP_SPEED(8285),
+	DRIVER_HISTOGRAM_STATS_VERSION(8286),
     
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
@@ -471,31 +475,31 @@ public enum EventAttr {
     
     COMPANY_ID(32830),
     EVENT_CODE_INT(32831),
-    ATTR_SPEED_LONG_START(32832),
-    ATTR_SPEED_LAT_STOP(32833),
-    ATTR_SPEED_LONG_STOP(32834),
-    ATTR_SPEED_LAT_MAX30(32835),
-    ATTR_SPEED_LONG_MAX30(32836),
-    ATTR_SPEED_LAT_MAX15(32837),
-    ATTR_SPEED_LONG_MAX15(32838),
-    ATTR_SPEED_LAT_MAX5(32839),
+    SPEED_LONG_START(32832),
+    SPEED_LAT_STOP(32833),
+    SPEED_LONG_STOP(32834),
+    SPEED_LAT_MAX30(32835),
+    SPEED_LONG_MAX30(32836),
+    SPEED_LAT_MAX15(32837),
+    SPEED_LONG_MAX15(32838),
+    SPEED_LAT_MAX5(32839),
 	
-    ATTR_SPEED_LONG_MAX5(32840),
-    ATTR_SPEED_LAT_MAX4(32841),
-    ATTR_SPEED_LONG_MAX4(32842),
-    ATTR_SPEED_LAT_MAX3(32843),
-    ATTR_SPEED_LONG_MAX3(32844),
-    ATTR_SPEED_LAT_MAX2(32845),
-    ATTR_SPEED_LONG_MAX2(32846),
-    ATTR_SPEED_LAT_MAX1(32847),
-    ATTR_SPEED_LONG_MAX1(32848),
-    ATTR_SPEED_LAT_MAX0(32849),
+    SPEED_LONG_MAX5(32840),
+    SPEED_LAT_MAX4(32841),
+    SPEED_LONG_MAX4(32842),
+    SPEED_LAT_MAX3(32843),
+    SPEED_LONG_MAX3(32844),
+    SPEED_LAT_MAX2(32845),
+    SPEED_LONG_MAX2(32846),
+    SPEED_LAT_MAX1(32847),
+    SPEED_LONG_MAX1(32848),
+    SPEED_LAT_MAX0(32849),
 	
-    ATTR_SPEED_LONG_MAX0(32850),
-    ATTR_SPEED_START_TIME(32851),
-	ATTR_SPEED_STOP_TIME_OS(32852),
-	ATTR_SPEED_MAX_TIME_OS(32853),
-	ATTR_LINK_ID(32854),
+    SPEED_LONG_MAX0(32850),
+    SPEED_START_TIME(32851),
+	SPEED_STOP_TIME_OS(32852),
+	SPEED_MAX_TIME_OS(32853),
+	LINK_ID(32854),
 
 		    
 ////////////////////////////////////////////////////////////////////////////////////
@@ -530,12 +534,12 @@ public enum EventAttr {
     WITNESS_II_ARCHIVE_HEADER(49166, 17),           //binary  17 bytes
     ACK_DATA(49167, 1024),                          //binary max 1024 bytes, variable length 
     CRASH_TRACE(49168, 16384),                      //binary approximately 16K bytes (not in DB attr) 16384
-    ATTR_WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  //binary approximately 1k bytes (not in db attr)
+    WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  //binary approximately 1k bytes (not in db attr)
 
 
     // Attribute Id (255) has a stringId byte,
     // followed by a null terminate string.
-    ATTR_STRING_WAYSMART(65535),
+    STRING_WAYSMART(65535),
     ;
 
     private int code;
