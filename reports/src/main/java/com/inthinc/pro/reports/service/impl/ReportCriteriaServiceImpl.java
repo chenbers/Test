@@ -554,28 +554,32 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             driverStopReport = new DriverStopReport(driverID, driverName, timeFrame, driverStops);
         }
         
-        AddressLookup addressLookup = (reportAddressLookupBean == null) ? null : reportAddressLookupBean.getAddressLookup();
-        if (addressLookup != null) {
-            String noAddressFound = MessageUtil.getMessageString("report.no_address_found", locale);
-            for (DriverStops driverStop : driverStopReport.getDriverStops()) {
-                try {
-                    driverStop.setAddress(addressLookup.getAddress(driverStop.getLat(), driverStop.getLng()));
-                } catch (NoAddressFoundException e) {
-                    driverStop.setAddress(noAddressFound);
-                }
-            }
-        }
+        fillInDriverStopAddresses(locale, driverStopReport);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STOPS_REPORT, driverStopReport.getDriverName(), locale);
         reportCriteria.setTimeFrame(timeFrame);
         List<DriverStopReport> teamStopsCriteriaList = new ArrayList<DriverStopReport>();
         teamStopsCriteriaList.add(driverStopReport);
         reportCriteria.setMainDataset(teamStopsCriteriaList);
         return reportCriteria;
+    }
+
+    private void fillInDriverStopAddresses(Locale locale, DriverStopReport driverStopReport) {
+        AddressLookup addressLookup = (reportAddressLookupBean == null) ? null : reportAddressLookupBean.getAddressLookup();
+        String noAddressFound = MessageUtil.getMessageString("report.no_address_found", locale);
+        if (addressLookup != null) {
+            for (DriverStops driverStop : driverStopReport.getDriverStops()) {
+                driverStop.setAddress(noAddressFound);
+                try {
+                    if (driverStop.getLat() != null && driverStop.getLng() != null)
+                        driverStop.setAddress(addressLookup.getAddress(driverStop.getLat(), driverStop.getLng()));
+                } catch (NoAddressFoundException e) {
+                }
+            }
+        }
     }    
     @Override
     public List<ReportCriteria> getTeamStopsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
 
-        AddressLookup addressLookup = (reportAddressLookupBean == null) ? null : reportAddressLookupBean.getAddressLookup();
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria> ();
         Group group = groupDAO.findByID(groupID);
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
@@ -589,16 +593,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             List<DriverStops> driverStops = driverDAO.getStops(driver.getDriverID(), timeFrame.getInterval(timeZone));
 
             DriverStopReport driverStopReport = new DriverStopReport(driver.getDriverID(), driverName, timeFrame, driverStops);
-            if (addressLookup != null) {
-                String noAddressFound = MessageUtil.getMessageString("report.no_address_found", locale);
-                for (DriverStops driverStop : driverStopReport.getDriverStops()) {
-                    try {
-                        driverStop.setAddress(addressLookup.getAddress(driverStop.getLat(), driverStop.getLng()));
-                    } catch (NoAddressFoundException e) {
-                        driverStop.setAddress(noAddressFound);
-                    }
-                }
-            }
+            fillInDriverStopAddresses(locale, driverStopReport);
             List<DriverStopReport> teamStopsCriteriaList = new ArrayList<DriverStopReport>();
             teamStopsCriteriaList.add(driverStopReport);
             reportCriteria.setMainDataset(teamStopsCriteriaList);
