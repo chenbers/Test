@@ -143,7 +143,6 @@ public class TeamStopsBean extends BaseBean {
     private void initDriverStopReport() {
         if (driverStopReport != null) {
             if (driverStopReport.getDriverID().equals(selectedDriverID) && driverStopReport.getTimeFrame() == teamCommonBean.getTimeFrame()) {
-                System.out.println("already initialized");
                 return;
             }
         }
