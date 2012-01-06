@@ -24,6 +24,7 @@ import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.IgnitionOffEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.IgnitionOn;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.NoteEvent;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents.RFKillEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SeatBeltEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SpeedingEvent;
 import com.inthinc.pro.automation.models.DeviceNote;
@@ -110,7 +111,10 @@ public abstract class DeviceBase {
         addNote(constructNote(event));
         return this;
     }
-
+    public DeviceBase addRFKillEvent(RFKillEvent event) {
+        addNote(constructNote(event));
+        return this;
+    }
 
     public DeviceBase addLocation(){
         addNote(constructNote(AutomationDeviceEvents.location(state)));
@@ -540,6 +544,12 @@ public abstract class DeviceBase {
             MasterTest.print(StackToString.toString(e), Level.ERROR);
         }
         return false;
+    }
+    
+    public void firstLocation(String searchStringForGoogleMapsAPI) {
+        
+        
+        
     }
 
 
