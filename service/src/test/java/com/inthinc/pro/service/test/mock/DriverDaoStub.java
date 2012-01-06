@@ -56,7 +56,7 @@ public class DriverDaoStub implements DriverDAO {
     }
 
     @Override
-    public List<DriverStops> getStops(Integer driverID, Interval interval) {
+    public List<DriverStops> getStops(Integer driverID, String driverName, Interval interval) {
         return Collections.emptyList();
     }
 
