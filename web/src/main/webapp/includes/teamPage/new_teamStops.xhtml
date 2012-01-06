@@ -109,30 +109,30 @@
 				fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 		
 		<ui:fragment rendered="#{teamStopsBean.driverStopReport != null}">			   					
-		<h:form id="stopsReport"  >
-			<h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
-				<span style="cursor:pointer;">
-					<h:graphicImage value="/images/ico_tools.png"/>
-				</span>
-			</h:panelGroup>
-
-            <ui:include src="/includes/reportsContextMenu.xhtml">	            
-				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
-				<ui:param  name="reportBean" value="#{teamStopsBean}"/>
-				<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
-				<ui:param  name="exportExcel" value="TRUE"/>
-				<ui:param name="context" value="#{context}" />
-			</ui:include>
+			<h:form id="stopsReport"  >
+				<h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
+					<span style="cursor:pointer;">
+						<h:graphicImage value="/images/ico_tools.png"/>
+					</span>
+				</h:panelGroup>
+	
+	            <ui:include src="/includes/reportsContextMenu.xhtml">	            
+					<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+					<ui:param  name="reportBean" value="#{teamStopsBean}"/>
+					<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+					<ui:param  name="exportExcel" value="TRUE"/>
+					<ui:param name="context" value="#{context}" />
+				</ui:include>
 			
+			</h:form>			
 			<h:outputText id="#{context}_email_modalPanel">
 				<ui:include src="/includes/emailReportPopup.xhtml">	
 					<ui:param  name="id" value="#{context}_reportEmailModal" />
 					<ui:param  name="reportBean" value="#{teamStopsBean}"/>
 					<ui:param name="context" value="#{context}" />
-					<ui:param name = "onemail" value="initStopTimeFrameChangeListener();"/>
+					<ui:param name = "onemail" value="getAddresses();initStopTimeFrameChangeListener();"/>
 				</ui:include>
 			</h:outputText>
-		</h:form>			
 		</ui:fragment>
 		<table style="clear:both;">
 		<tr>
