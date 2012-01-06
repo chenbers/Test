@@ -183,7 +183,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
 	}
 	
 	@Override
-    public List<DriverStops> getStops(Integer driverID, Interval interval) {
+    public List<DriverStops> getStops(Integer driverID, String driverName, Interval interval) {
         try {
             Date start = interval.getStart().toDateTime().toDate();
             Date end   = interval.getEnd().toDateTime().toDate();
@@ -196,6 +196,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
             
             Map<Integer, String> vehicleMap = new HashMap<Integer, String>();
             for (DriverStops driverStop : driverStopsList) {
+                driverStop.setDriverName(driverName);
                 String vehicleName = vehicleMap.get(driverStop.getVehicleID());
                 if (vehicleName == null) {
                     Vehicle vehicle = vehicleDAO.findByID(driverStop.getVehicleID());

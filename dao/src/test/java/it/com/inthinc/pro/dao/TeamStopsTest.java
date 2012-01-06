@@ -124,7 +124,7 @@ public class TeamStopsTest {
         if (eventList == null || eventList.size() == 0) 
             generateNotes("stops" + File.separator + "driverNotes.csv", team.device.getImei());
         
-        List<DriverStops> stopsList = driverDAO.getStops(team.driver.getDriverID(), interval);
+        List<DriverStops> stopsList = driverDAO.getStops(team.driver.getDriverID(), team.driver.getPerson().getFullName(), interval);
 
         assertEquals("Unexpected number of driverStops records.", expectedDriverStops.length, stopsList.size());
         int cnt = 0;

@@ -109,7 +109,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      *            The time interval to consider.              
      * @return List of DriverStopsReportItem or empty map if none found.
      */
-    List<DriverStops> getStops(Integer driverID,  Interval interval);
+    List<DriverStops> getStops(Integer driverID, String driverName, Interval interval);
 
     List<DriverName> getDriverNames(Integer groupID);
 }

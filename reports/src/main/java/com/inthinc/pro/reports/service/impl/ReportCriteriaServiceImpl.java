@@ -549,7 +549,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             Driver driver = driverDAO.findByID(driverID);
             String driverName = driver.getPerson().getFullName();
             
-            List<DriverStops> driverStops = driverDAO.getStops(driverID, timeFrame.getInterval(timeZone));
+            List<DriverStops> driverStops = driverDAO.getStops(driverID, driverName, timeFrame.getInterval(timeZone));
 
             driverStopReport = new DriverStopReport(driverID, driverName, timeFrame, driverStops);
         }
@@ -577,31 +577,26 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             }
         }
     }    
-    @Override
-    public List<ReportCriteria> getTeamStopsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
 
-        List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria> ();
+    @Override
+    public ReportCriteria getTeamStopsReportCriteriaByGroup(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale) {
+
         Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STOPS_REPORT, group.getName(), locale);
+        reportCriteria.setTimeFrame(timeFrame);
+        List<DriverStopReport> teamStopsCriteriaList = new ArrayList<DriverStopReport>();
+        reportCriteria.setMainDataset(teamStopsCriteriaList);
+
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
         for (Driver driver : driverList) {
-            ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STOPS_REPORT, group.getName(), locale);
-            reportCriteria.setTimeFrame(timeFrame);
-
             String driverName = driver.getPerson().getFullName();
-            
-            // TODO: DRIVER TIMEZONE???
-            List<DriverStops> driverStops = driverDAO.getStops(driver.getDriverID(), timeFrame.getInterval(timeZone));
-
+            List<DriverStops> driverStops = driverDAO.getStops(driver.getDriverID(), driverName, timeFrame.getInterval(timeZone));
             DriverStopReport driverStopReport = new DriverStopReport(driver.getDriverID(), driverName, timeFrame, driverStops);
             fillInDriverStopAddresses(locale, driverStopReport);
-            List<DriverStopReport> teamStopsCriteriaList = new ArrayList<DriverStopReport>();
             teamStopsCriteriaList.add(driverStopReport);
-            reportCriteria.setMainDataset(teamStopsCriteriaList);
-            reportCriteriaList.add(reportCriteria);
         }
-        return reportCriteriaList;
+        return reportCriteria;
     }    
-
 
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric) {
@@ -1284,7 +1279,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                             DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale(), true));
                     break;
                 case TEAM_STOPS_REPORT:
-                    reportCriteriaList.addAll(getTeamStopsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
+                    reportCriteriaList.add(getTeamStopsReportCriteriaByGroup(reportSchedule.getGroupID(), timeFrame, 
                             DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale()));
                     break;     
                 case HOS_DAILY_DRIVER_LOG_REPORT:

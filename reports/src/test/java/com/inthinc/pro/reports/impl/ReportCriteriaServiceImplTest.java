@@ -232,7 +232,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
 
         @Override
-        public List<DriverStops> getStops(Integer driverID, Interval interval) {
+        public List<DriverStops> getStops(Integer driverID,  String driverName, Interval interval) {
             return null;
         }
 

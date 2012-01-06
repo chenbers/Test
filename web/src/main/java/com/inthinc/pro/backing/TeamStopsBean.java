@@ -42,7 +42,6 @@ public class TeamStopsBean extends BaseBean {
     private DriverStopReport driverStopReport;
 
     private Integer selectedDriverID;  
-    private TimeZone timeZone;
     private String errorMessage;
         
     private ReportRenderer reportRenderer;
@@ -142,36 +141,31 @@ public class TeamStopsBean extends BaseBean {
     }
 
     private void initDriverStopReport() {
-System.out.println("!!!initDriverStopReport " + selectedDriverID);    
         if (driverStopReport != null) {
             if (driverStopReport.getDriverID().equals(selectedDriverID) && driverStopReport.getTimeFrame() == teamCommonBean.getTimeFrame()) {
                 System.out.println("already initialized");
                 return;
             }
         }
-        List<DriverStops> driverStops = driverDAO.getStops(selectedDriverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
-        driverStopReport = new DriverStopReport(selectedDriverID, getSelectedDriverName(), teamCommonBean.getTimeFrame(), driverStops);
+       
+        String selectedDriverName = getSelectedDriverName();
+        List<DriverStops> driverStops = driverDAO.getStops(selectedDriverID, selectedDriverName, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+        driverStopReport = new DriverStopReport(selectedDriverID, selectedDriverName, teamCommonBean.getTimeFrame(), driverStops);
     }
     
     private String getSelectedDriverName() {
         for (Driver driver : getDrivers()) {
             if (driver.getDriverID().equals(selectedDriverID))
                 return driver.getPerson().getFullName();
-                
         }
         return "";
     }
 
-    // TODO: CJ should this be driver's timezone????
-    // called from xhtml
     public TimeZone getTimeZone() {
         if (getPerson() != null && getPerson().getTimeZone() != null) {
-            timeZone = getPerson().getTimeZone();
+            return getPerson().getTimeZone();
         }
-        else {
-            timeZone = TimeZone.getTimeZone("GMT");
-        }        
-        return timeZone;
+        return TimeZone.getTimeZone("GMT");
     }
 
     public void exportReportToPdf()

@@ -17,6 +17,7 @@ public class DriverStops extends BaseEntity {
     private String zoneName;  
     private String address;
     private String vehicleName;
+    private String driverName;
 
     public DriverStops()
     {
@@ -136,6 +137,12 @@ public class DriverStops extends BaseEntity {
     }
     public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
+    }
+    public String getDriverName() {
+        return driverName;
+    }
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
     public void dump() {
         

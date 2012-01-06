@@ -77,10 +77,11 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         reportCriteriaService.setGroupDAO(new MockGroupDAO());
         reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
         
-        List<ReportCriteria> reportCriteriaList = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
+//        List<ReportCriteria> reportCriteriaList = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteriaByGroup(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
 
-        dump("teamStopsGroup", 0, reportCriteriaList, FormatType.PDF);
-        dump("teamStopsGroup", 0, reportCriteriaList, FormatType.EXCEL);
+        dump("teamStopsGroup", 0, reportCriteria, FormatType.PDF);
+        dump("teamStopsGroup", 0, reportCriteria, FormatType.EXCEL);
 
     }
 
@@ -201,14 +202,16 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         }
 
         @Override
-        public List<DriverStops> getStops(Integer driverID, Interval interval) {
+        public List<DriverStops> getStops(Integer driverID, String driverName, Interval interval) {
             if (driverID == 1) {
                 return new ArrayList<DriverStops>();
             }
             if (driverID == 11771) {
                 List<DriverStops> list = new ArrayList<DriverStops>();
-                for (DriverStops driverStop : driverStops)
+                for (DriverStops driverStop : driverStops) {
+                    driverStop.setDriverName(driverName);
                     list.add(driverStop);
+                }
                 return list;
             }
             
