@@ -10,6 +10,8 @@ import java.net.URLEncoder;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
+import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
@@ -18,6 +20,7 @@ import com.inthinc.pro.automation.objects.WaysmartDevice;
 import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.HTTPCommands;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class HanSoloTrip extends Thread{
     private final static Logger logger = Logger.getLogger(HanSoloTrip.class);
@@ -48,6 +51,31 @@ public class HanSoloTrip extends Thread{
         this.server=server;
         this.initialTime = initialTime.copy();
         hanSolosFirstTrip();
+    }
+    
+    public void rfSwitchTestTrip() {
+        String imei = "FAKEIMEIDEVICE"; 
+        Addresses address=Addresses.QA; 
+        tiwi = new TiwiProDevice(imei, address);
+        tiwi.set_time(new AutomationCalendar());
+        
+        String start = "980 N 1050 E, Pleasant Grove, UT 84062";
+        String mid = "815 N 1020 E, Pleasant Grove, UT 84062";
+        String stop = "1002 N 1020 E, Pleasant Grove, UT 84062";
+       
+        TripDriver driver = new TripDriver(tiwi);
+        
+        driver.addToTrip(start, mid);
+        driver.addToTrip(mid, stop);
+        driver.addToTrip(stop, start);
+
+        //driver.addEvent(29, AutomationDeviceEvents.speeding(80, 200, 700, 40, 75, 600));
+        driver.addEvent(30, AutomationDeviceEvents.rfKill());
+        driver.addEvent(35, AutomationDeviceEvents.speeding(80, 200, 700, 40, 75, 600));
+
+        driver.run();
+        
+
     }
     
     public void de6739_funkyTrip() {
@@ -288,6 +316,7 @@ public class HanSoloTrip extends Thread{
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.LDS;       initialTime.setDate(1323817719);  // vehicleID=100663298   deviceID=100663298
         trip.hanSolosFirstTrip( imei, address, initialTime);
+        //trip.rfSwitchTestTrip();
         
         
         
