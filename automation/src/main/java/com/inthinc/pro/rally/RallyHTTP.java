@@ -13,12 +13,14 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.utils.HTTPCommands;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class RallyHTTP extends HTTPCommands {
@@ -30,6 +32,8 @@ public class RallyHTTP extends HTTPCommands {
     private String query;
 
     private RallyWebServices workingSpace;
+
+    private JSONObject results;
     
     public interface RallyFields{}
 
@@ -66,14 +70,14 @@ public class RallyHTTP extends HTTPCommands {
                 "start", startPosition.toString(), 
                 "pageSize", pageSize.toString(),
                 "fetch", fetch.toString());
-        logger.debug(query);
+        MasterTest.print(query, Level.DEBUG);
     }
 
     public String constructFilter(String filterString) throws URIException {
         if (filterString == null || filterString.equals(""))
             return "";
         String filter = encodeURLQuery(filterString);
-        logger.debug(filter);
+        MasterTest.print(filter, Level.INFO);
         return filter;
     }
 
@@ -98,6 +102,7 @@ public class RallyHTTP extends HTTPCommands {
             throws URIException {
         String formatted = "( " + pair.getName() + " = \"" + pair.getValue()
                 + "\" )";
+        MasterTest.print(formatted, Level.DEBUG);
         if (encode)
             return encodeURLQuery(formatted);
         else
@@ -109,8 +114,8 @@ public class RallyHTTP extends HTTPCommands {
             GetMethod getRequest = new GetMethod(request.getMethod());
             getRequest.setQueryString(query);
             httpRequest(getRequest);
-            JSONObject workspace = new JSONObject(response);
-            setQueryResult(workspace.getJSONObject("QueryResult"));
+            results = new JSONObject(response);
+            setQueryResult(results.getJSONObject("QueryResult"));
         } catch (JSONException e) {
             logger.fatal(StackToString.toString(e));
         } catch (UnsupportedEncodingException e) {
@@ -255,6 +260,10 @@ public class RallyHTTP extends HTTPCommands {
         } catch (Exception e){
             return null;
         }
+    }
+    
+    public JSONObject getFullResults(){
+        return results;
     }
 
     public JSONArray getErrors() throws JSONException {

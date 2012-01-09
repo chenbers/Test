@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
@@ -209,23 +211,18 @@ public class TestCase extends RallyObject {
 
     public JSONObject getTestCase(NameValuePair searchParams, Boolean fetch) {
         try {
-            String filter = http.constructFilter(searchParams);
-            if (fetch)
-                http.constructQuery(filter, 1, 200, fetch);
-            else
-                http.constructQuery(filter, 1, 200);
+            String filter = http.constructFilter(searchParams, false);
+            MasterTest.print(filter, Level.DEBUG);
+            http.constructQuery(filter, 1, 200, fetch);
 
             http.getObjects(RallyWebServices.TEST_CASE);
             return http.getResults().getJSONObject(0);
         } catch (HttpException e) {
-            logger.fatal(StackToString.toString(e));
+            MasterTest.print(e, Level.FATAL);
         } catch (JSONException e) {
-            try {
-                logger.fatal(PrettyJSON.toString((http.getErrors().getJSONObject(0))));
-            } catch (JSONException e1) {
-                logger.fatal(StackToString.toString(e1));
-            }
-            logger.fatal(StackToString.toString(e));
+            MasterTest.print(http.getQuery(), Level.FATAL);
+            MasterTest.print(http.getFullResults(), Level.FATAL);
+            MasterTest.print(e, Level.FATAL);
         }
         return null;
     }
