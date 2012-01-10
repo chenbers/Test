@@ -1,14 +1,29 @@
 package com.inthinc.pro.backing;
 
+import java.util.Map;
+
+import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.util.MessageUtil;
 
 public class UnknownEditableVehicleSettings extends EditableVehicleSettings {
 
-    public UnknownEditableVehicleSettings() {
-        super(null, ProductType.UNKNOWN,"");
+    @Override
+	public ProductType getProductType() {
+		return ProductType.UNKNOWN;
+	}
+
+	@Override
+	public String getProductDisplayName() {
+    	return MessageUtil.getMessageString(ProductType.UNKNOWN.getDescription().getMessageKey());
+	}
+
+	public UnknownEditableVehicleSettings() {
     }
 
-    public UnknownEditableVehicleSettings(Integer vehicleID) {
-        super(vehicleID, ProductType.UNKNOWN,"");
-    }
+	@Override
+	public void dealWithSpecialSettings(VehicleView vehicle,
+			VehicleView batchItem, Map<String, Boolean> updateField) {
+	}
+
 }

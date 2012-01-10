@@ -36,12 +36,10 @@ public abstract class VehicleSettingManager {
     
     protected VehicleSettingManager(ConfiguratorDAO configuratorDAO,SensitivitySliders sensitivitySliders,
                                     ProductType productType, Integer vehicleID, Integer deviceID) {
-
-        this.configuratorDAO = configuratorDAO;
-        this.vehicleSetting = new VehicleSetting(vehicleID,deviceID,productType);
-        createVehicleSensitivitySliders(sensitivitySliders,productType, 0, 1000000);
+    	this(configuratorDAO,sensitivitySliders,productType,new VehicleSetting(vehicleID,deviceID,productType));
     }
-    private void createVehicleSensitivitySliders(SensitivitySliders sensitivitySliders,
+    
+    protected void createVehicleSensitivitySliders(SensitivitySliders sensitivitySliders,
                                     ProductType productType, int minFirmwareVersion, int maxFirmwareVersion){
         if (productType == null) return; 
         
@@ -52,14 +50,17 @@ public abstract class VehicleSettingManager {
        
     }
     public abstract void init();
-    public abstract Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings);
-    public abstract Map<Integer, String> evaluateChangedSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings);
-    public abstract void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason);
-//    public abstract void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason);
+    public abstract Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings,Map<String, Boolean> updateField);
+    public abstract void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, 
+    										Integer userID, String reason,
+			  								Map<String, Boolean> updateField);
 
-    public void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason) {
+    public void updateVehicleSettings(Integer vehicleID, 
+    								  EditableVehicleSettings editableVehicleSettings, 
+    								  Integer userID, String reason,
+    								  Map<String, Boolean> updateField) {
         
-        Map<Integer, String> setMap = evaluateChangedSettings(vehicleID,editableVehicleSettings);
+        Map<Integer, String> setMap = evaluateSettings(vehicleID,editableVehicleSettings,updateField);
         configuratorDAO.updateVehicleSettings(vehicleID, setMap, userID, reason);
     }
 
@@ -70,7 +71,7 @@ public abstract class VehicleSettingManager {
 	public EditableVehicleSettings associateSettings(Integer vehicleID) {
 	    
 	    if (vehicleSetting == null){
-	        
+	        //TODO need to change to no values if there are no actuals or desireds until there is editing
 	        return createDefaultValues(vehicleID); 
 	    }
 	    else {
@@ -123,7 +124,7 @@ public abstract class VehicleSettingManager {
         
         for(Integer settingID :settingIDs){
             
-            vehicleSettings.put(settingID, vehicleSetting.getCombined(settingID));
+            vehicleSettings.put(settingID, vehicleSetting.getBestOption(settingID));
         }
         return vehicleSettings;
     }
@@ -135,7 +136,7 @@ public abstract class VehicleSettingManager {
         hardTurnSlider.adjustSettingCountToAllowForCustomValues(hardTurn);
         hardVerticalSlider.adjustSettingCountToAllowForCustomValues(hardVertical);
     }
-    public abstract class DesiredSettings{
+    public class DesiredSettings{
 
         protected Map<Integer, String> desiredSettings;
 
@@ -154,54 +155,22 @@ public abstract class VehicleSettingManager {
            if((oldValue == null)||(newValue == null)) return true;
            return !oldValue.equals(newValue);
         }
-        public abstract void addSettingIfNeeded(SettingType setting,String newValue, String oldValue);
-        public abstract void addSliderIfNeeded(SettingType setting,String newValue, String oldValue);
-      }
-      public class ChangedSettings extends DesiredSettings{
-          
-         public ChangedSettings() {
-    
-            super();
-         }
-    
-         @Override
-         public void addSettingIfNeeded(SettingType setting,String newValue, String oldValue){
+        public void addSettingIfNeeded(SettingType setting,String newValue, String oldValue, Boolean updateField){
               
-             if(isDifferent(newValue,oldValue)){
-               
-                 desiredSettings.put(setting.getSettingID(), newValue);
-             }
-         }
-         @Override
-         public void addSliderIfNeeded(SettingType setting, String newValue, String oldValue) {
-
-             if(newValue!=null && isDifferent(newValue,oldValue)){
-                 
-                 desiredSettings.put(setting.getSettingID(), newValue);
-             }
-              
-         }
-       }
-      public class NewSettings extends DesiredSettings{
-
-        @Override
-        public void addSettingIfNeeded(SettingType setting,String newValue, String oldValue){
-              
-            if(isDifferent(newValue,oldValue)){
+        	if(updateField && (newValue!=null) /* && isDifferent(newValue,oldValue)*/){
                
                desiredSettings.put(setting.getSettingID(), newValue);
             }
          }
-      @Override
-      public void addSliderIfNeeded(SettingType setting, String newValue, String oldValue) {
-
-          if(newValue!=null && isDifferent(newValue,oldValue)){
-              
-              desiredSettings.put(setting.getSettingID(), newValue);
-          }
-           
+	     public void addSliderIfNeeded(SettingType setting, String newValue, String oldValue,Boolean updateField) {
+	
+	    	if(updateField && (newValue!=null) /* && isDifferent(newValue,oldValue)*/){
+	              
+	           desiredSettings.put(setting.getSettingID(), newValue);
+	        }
+	           
+	     }
       }
-   }
       public Integer getAdjustedHardAccelerationSetting() {
           return hardAccelerationSlider.getAdjustedSetting();
       }
@@ -217,4 +186,11 @@ public abstract class VehicleSettingManager {
       public Integer getAdjustedHardTurnSetting() {
           return hardTurnSlider.getAdjustedSetting();
       }
+	protected boolean fieldIsIncludedInBatchEditOrNotBatchEdit(Map<String, Boolean> updateField,
+			String property) {
+				return notBatchEdit(updateField) || updateField.get(property);
+			}
+	private boolean notBatchEdit(Map<String, Boolean> updateField) {
+		return updateField == null;
+	}
 }

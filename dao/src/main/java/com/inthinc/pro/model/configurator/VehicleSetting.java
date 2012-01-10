@@ -15,20 +15,23 @@ public class VehicleSetting {
     private Map<Integer, String> actual;
     @Column(updateable=false)
     private Map<Integer, String> combinedSettings;
-       
+    
 	public VehicleSetting() {
-	    
-        combinedSettings = new HashMap<Integer,String>();
-    }
-	
+	}
+
     public VehicleSetting(Integer vehicleID, Integer deviceID, ProductType productType) {
-        super();
         this.vehicleID = vehicleID;
         this.deviceID = deviceID;
         this.productType = productType;
 
-        combinedSettings = new HashMap<Integer,String>();
-}
+        desired = new HashMap<Integer,String>();
+        actual  = new HashMap<Integer,String>();
+//        combinedSettings = new HashMap<Integer,String>();
+    }
+	public VehicleSetting(Integer vehicleID,ProductType productType) {
+		this(vehicleID,null,productType);
+    }
+	
     public Integer getVehicleID() {
         return vehicleID;
     }
@@ -63,8 +66,8 @@ public class VehicleSetting {
     	
     	return (actual != null) || (desired != null);
     }
-    public String getCombined(Integer settingID){
-        
+    
+    public String getBestOption(Integer settingID){
         if ((desired != null) && desired.containsKey(settingID)) return desired.get(settingID);
         if (actual != null) return actual.get(settingID);
         return null;
@@ -78,7 +81,7 @@ public class VehicleSetting {
     		combinedSettings.putAll(actual);
     	}
     	if (desired != null){
-    		
+    		//Desired will overwrite actuals
     		combinedSettings.putAll(desired);   		
     	}
     }

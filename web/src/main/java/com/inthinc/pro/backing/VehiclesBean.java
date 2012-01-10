@@ -205,33 +205,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
        // Get all the settings 
         
-        vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID());
+        vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), plainVehicles);
         
         // Wrap Vehicles and Devices
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
         for (final Vehicle vehicle : plainVehicles)
         {
             VehicleView vehicleView = createVehicleView(vehicle);
-            checkForSettings(vehicle.getVehicleID());
             vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
 
             items.add(vehicleView);   
         }
 
         return items;
-    }
-    private void checkForSettings(Integer vehicleID){
-        
-        if(vehicleSettingManagers.get(vehicleID) == null){
-            if (!isBatchEdit()){
-            
-                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getUnknownSettingManager(vehicleID));
-            }
-            else {
-                
-                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,vehicleID));
-            }
-        }
     }
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
@@ -424,7 +410,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     private void createSettingManagerForCreateItem(){
                         
-        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,-1));
+        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManagerForBatchEditing(batchEditProductChoice));
     }
     @Override
     public String cancelEdit()
@@ -603,10 +589,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected VehicleView revertItem(VehicleView vehicleView)
     {
-        //TODO decide how to revert an item
-
         VehicleView view = createVehicleView(vehicleDAO.findByID(vehicleView.getVehicleID()));
-        checkForSettings(vehicleView.getVehicleID());
+        vehicleSettingsFactory.resetToSettingManager(vehicleSettingManagers, vehicleView);
         view.setEditableVehicleSettings(vehicleSettingManagers.get(vehicleView.getVehicleID()).associateSettings(vehicleView.getVehicleID()));
         return view;
     }
@@ -626,9 +610,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 
                 vehicleDAO.update(vehicle);
                 
-                dealWithSpeedSettings(vehicle);
+                dealWithSpecialSettings(vehicle);
                 vehicleSettingManagers.get(vehicle.getVehicleID()).updateVehicleSettings(vehicle.getVehicleID(),vehicle.getEditableVehicleSettings(),
-                                                            this.getUserID(), "portal update");
+                                                            this.getUserID(), "portal update", isBatchEdit()?getUpdateField():null);
             }
             vehicle.setOldGroupID(vehicle.getGroupID());
 
@@ -643,18 +627,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         drivers = null;
     }
-    private void dealWithSpeedSettings(VehicleView vehicle){
+    private void dealWithSpecialSettings(VehicleView vehicle){
         
-        if (isBatchEdit() && vehicle.getEditableVehicleSettings() instanceof TiwiproEditableVehicleSettings){
-            final Map<String, Boolean> updateField = getUpdateField();
-            String keyBase = "speed";
-            for (int i=0; i< 15;i++){
-                Boolean isSpeedFieldUpdated = updateField.get(keyBase+i);
-                if(isSpeedFieldUpdated != null && isSpeedFieldUpdated){
-                    ((TiwiproEditableVehicleSettings)vehicle.getEditableVehicleSettings()).getSpeedSettings()[i] = 
-                        ((TiwiproEditableVehicleSettings)getItem().getEditableVehicleSettings()).getSpeedSettings()[i];
-                }
-            }
+        if (isBatchEdit()){
+        	vehicle.getEditableVehicleSettings().dealWithSpecialSettings(vehicle, item, getUpdateField());
         }
     }
     private void assignDriver(final VehicleView vehicleView)
@@ -798,11 +774,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         public String getProductTypeName() {
-            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN.getDescription().getProductName();
-            return editableVehicleSettings.getProductType().getDescription().getProductName();
+            if(editableVehicleSettings == null) return ProductType.UNKNOWN.getDescription().getProductName();
+//            return editableVehicleSettings.getProductType().getDescription().getProductName();
+            return editableVehicleSettings.getProductDisplayName();
         }
         public ProductType getProductType() {
-            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN;
+            if(editableVehicleSettings == null) return ProductType.UNKNOWN;
             return editableVehicleSettings.getProductType();
         }
         @Override

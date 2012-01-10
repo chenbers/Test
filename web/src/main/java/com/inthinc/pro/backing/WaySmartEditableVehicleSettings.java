@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.util.Map;
+
+import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
@@ -167,6 +170,13 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     public void setDotVehicleType(Integer dotVehicleType) {
         this.dotVehicleType = dotVehicleType;
     }
+
+
+	@Override
+	public void dealWithSpecialSettings(VehicleView vehicle,
+			VehicleView batchItem, Map<String, Boolean> updateField) {
+		//special processing
+	}
 
 
 }

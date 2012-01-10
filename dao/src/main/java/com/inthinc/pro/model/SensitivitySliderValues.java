@@ -12,7 +12,7 @@ import com.inthinc.pro.model.configurator.SliderType;
 @XmlRootElement
 public class SensitivitySliderValues {
 	
-    //SensitivitySlider values from the database
+	//SensitivitySlider values from the database
     //These four fields uniquely key a set of slider values
     @Column (name="sensitivityType")
     private SliderType sliderType;
@@ -95,5 +95,16 @@ public class SensitivitySliderValues {
         
         return new SliderKey(sliderType,productType,minFirmwareVersion,maxFirmwareVersion);
     }
+    @Override
+	public String toString() {
+		return "SensitivitySliderValues [sliderType=" + sliderType
+				+ ", productType=" + productType + ", minFirmwareVersion="
+				+ minFirmwareVersion + ", maxFirmwareVersion="
+				+ maxFirmwareVersion + ", sensitivitySubtype="
+				+ sensitivitySubtype + ", settingID=" + settingID
+				+ ", forwardCommand=" + forwardCommand
+				+ ", forwardCommandName=" + forwardCommandName + ", values="
+				+ values + ", defaultValueIndex=" + defaultValueIndex + "]";
+	}
 
 }

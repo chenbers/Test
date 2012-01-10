@@ -48,7 +48,7 @@ public class VehicleSensitivitySlider {
         Set<Integer> settingIDs = sensitivitySlider.getSettingIDsForThisSlider();
         
         for(Integer settingID :settingIDs){
-            vehicleSettings.put(settingID, vehicleSetting.getCombined(settingID));
+            vehicleSettings.put(settingID, vehicleSetting.getBestOption(settingID));
         }
         return vehicleSettings;
     }

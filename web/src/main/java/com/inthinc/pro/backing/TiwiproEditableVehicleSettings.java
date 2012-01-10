@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.AutologoffSetting;
 import com.inthinc.pro.backing.ui.IdlingSetting;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -15,11 +16,7 @@ import com.inthinc.pro.util.MiscUtil;
 
 public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-//    private String ephone;
+    //    private String ephone;
     private Integer autologoffSeconds;
     private Integer idlingSeconds;
     private boolean idleBuzzer;
@@ -224,6 +221,18 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
             return false;
         }
        return true;
+    }
+    @Override
+    public void dealWithSpecialSettings(VehicleView vehicle, VehicleView batchItem, Map<String, Boolean> updateField){
+        
+        String keyBase = "speed";
+        for (int i=0; i< 15;i++){
+            Boolean isSpeedFieldUpdated = updateField.get(keyBase+i);
+            if(isSpeedFieldUpdated != null && isSpeedFieldUpdated){
+                ((TiwiproEditableVehicleSettings)vehicle.getEditableVehicleSettings()).getSpeedSettings()[i] = 
+                    ((TiwiproEditableVehicleSettings)batchItem.getEditableVehicleSettings()).getSpeedSettings()[i];
+            }
+        }
     }
     private void addErrorMessage(FacesContext context, String field, String errorMessage){
         

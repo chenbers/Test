@@ -392,7 +392,7 @@ public class FuelStopsBean extends BaseBean {
     	Map<Integer, VehicleDOTType> vehicleDOTTypes = new HashMap<Integer, VehicleDOTType>();
         List<VehicleSetting> vehicleSettings = configuratorDAO.getVehicleSettingsByGroupIDDeep(this.getUser().getGroupID());
         for(VehicleSetting vs : vehicleSettings){
-        	Integer dotVehicleType = NumberUtil.convertString(vs.getCombined(SettingType.DOT_VEHICLE_TYPE.getSettingID()));
+        	Integer dotVehicleType = NumberUtil.convertString(vs.getBestOption(SettingType.DOT_VEHICLE_TYPE.getSettingID()));
         	vehicleDOTTypes.put(vs.getVehicleID(), VehicleDOTType.getFromSetting(dotVehicleType));
         }
     	return vehicleDOTTypes;

@@ -65,7 +65,7 @@ public class WaysmartSettingManagerTest {
     @Test
     public void createDefaultValues(){
         
-        WaySmartSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(), 
+        VehicleSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(), 
                 sensitivitySlidersMockDataCreator.getSensitivitySliders(),
                 ProductType.WAYSMART, 1,1);
         
@@ -75,7 +75,7 @@ public class WaysmartSettingManagerTest {
     @Test
     public void createFromExistingCustomValues(){
         
-        WaySmartSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(),  
+        VehicleSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(),  
                 sensitivitySlidersMockDataCreator.getSensitivitySliders(),
                 ProductType.WAYSMART,vehicleSettingCustom);
        
@@ -90,7 +90,7 @@ public class WaysmartSettingManagerTest {
     @Test
     public void createFromExistingSliderValues(){
         
-        WaySmartSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(),  
+        VehicleSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(),  
                 sensitivitySlidersMockDataCreator.getSensitivitySliders(),
                 ProductType.WAYSMART,vehicleSettingSlider);
         EditableVehicleSettings editableVehicleSettings = waySmartSettingManager.associateSettings(1);

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.model.SensitivitySliderValues;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -14,6 +16,7 @@ import com.inthinc.pro.model.configurator.SliderType;
 
 public class SensitivitySliders {
 
+    private static final Logger logger = Logger.getLogger(SensitivitySliders.class);
     private Map<SliderKey,SensitivitySlider> sensitivitySliders;
     private ConfiguratorDAO     configuratorDAO;
     
@@ -31,15 +34,18 @@ public class SensitivitySliders {
     public void buildSliders(List<SensitivitySliderValues> sensitivitySliderValuesList){
         sensitivitySliders = new HashMap<SliderKey, SensitivitySlider>();
         for (SensitivitySliderValues sensitivitySliderValues : sensitivitySliderValuesList){
-            
-            if(ignoreThisSetting(sensitivitySliderValues)) continue;
+            logger.debug(sensitivitySliderValues.toString());
+            if(ignoreThisSetting(sensitivitySliderValues)){
+            	logger.debug("ignored");
+            	continue;
+            }
             
             addSettingToSlider(sensitivitySliderValues);
         }
     }
     private boolean ignoreThisSetting(SensitivitySliderValues sensitivitySliderValues){
         //Ignore setting 1225 which is already included in the hard bump multi part settings for tiwipro and shouldn't be in there anyway
-        return EnumSet.of(ProductType.TIWIPRO_R74,ProductType.TIWIPRO_R74).contains(sensitivitySliderValues.getProductType()) && 
+        return EnumSet.of(ProductType.TIWIPRO_R71,ProductType.TIWIPRO_R74).contains(sensitivitySliderValues.getProductType()) && 
                         sensitivitySliderValues.getSettingID()==1225;
     }
     private void addSettingToSlider(SensitivitySliderValues sensitivitySliderValues){

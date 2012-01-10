@@ -206,33 +206,24 @@ public class VehicleSettingsFactoryTest {
     public void vehicleSettingsFactory(){
         VehicleSettingsFactory vehicleSettingsFactory = new VehicleSettingsFactory();
         vehicleSettingsFactory.setConfiguratorDAO(new ConfiguratorHessianDAO());
-        vehicleSettingsFactory.setsensitivitySliders(sensitivitySliders);
+        vehicleSettingsFactory.setSensitivitySliders(sensitivitySliders);
         
-        VehicleSettingManager vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.TIWIPRO_R74, 1);
+        VehicleSettingManager vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForBatchEditing(ProductType.TIWIPRO_R74);
         assertTrue(vehicleSettingManager instanceof TiwiproSettingManager);
         
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.WAYSMART, 1);
+        vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForBatchEditing(ProductType.WAYSMART);
         assertTrue(vehicleSettingManager instanceof WaySmartSettingManager);
         
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.UNKNOWN, 1);
+        vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForBatchEditing(ProductType.UNKNOWN);
         assertTrue(vehicleSettingManager instanceof UnknownSettingManager);
 
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.TIWIPRO_R74, new VehicleSetting());
+        vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForNewSettingWithKnownDevice(ProductType.TIWIPRO_R74, 1,1);
         assertTrue(vehicleSettingManager instanceof TiwiproSettingManager);
         
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.WAYSMART, new VehicleSetting());
+        vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForNewSettingWithKnownDevice(ProductType.WAYSMART, 1,1);
         assertTrue(vehicleSettingManager instanceof WaySmartSettingManager);
         
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.UNKNOWN, new VehicleSetting());
-        assertTrue(vehicleSettingManager instanceof UnknownSettingManager);
-
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.TIWIPRO_R74, 1,1);
-        assertTrue(vehicleSettingManager instanceof TiwiproSettingManager);
-        
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.WAYSMART, 1,1);
-        assertTrue(vehicleSettingManager instanceof WaySmartSettingManager);
-        
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManager(ProductType.UNKNOWN, 1,1);
+        vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForNewSettingWithKnownDevice(ProductType.UNKNOWN, 1,1);
         assertTrue(vehicleSettingManager instanceof UnknownSettingManager);
     }
 

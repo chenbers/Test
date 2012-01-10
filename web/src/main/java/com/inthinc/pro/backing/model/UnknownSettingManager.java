@@ -4,32 +4,21 @@ import java.util.Map;
 
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.backing.UnknownEditableVehicleSettings;
-import com.inthinc.pro.dao.ConfiguratorDAO;
-import com.inthinc.pro.model.configurator.SensitivitySlider;
 import com.inthinc.pro.model.configurator.VehicleSetting;
-//Has no special settings
-@SuppressWarnings("serial")
+
 public class UnknownSettingManager extends VehicleSettingManager {
 
-	protected UnknownSettingManager(ConfiguratorDAO configuratorDAO, VehicleSetting vehicleSetting) {
-	    
-        super();
-    }
-    protected UnknownSettingManager(ConfiguratorDAO configuratorDAO) {
-        
-        super();
-    }
 
 
     @Override
     public EditableVehicleSettings associateSettings(Integer vehicleID) {
-        return new UnknownEditableVehicleSettings(vehicleID);
+        return new UnknownEditableVehicleSettings();
     }
 
 
     @Override
     protected Map<Integer, String> getVehicleSettingsForSliderSettingIDs(VehicleSetting vehicleSetting, VehicleSensitivitySlider slider) {
-        return super.getVehicleSettingsForSliderSettingIDs(vehicleSetting, slider);
+        return null;
     }
 
  
@@ -44,13 +33,8 @@ public class UnknownSettingManager extends VehicleSettingManager {
 	}
 
     @Override
-    public Map<Integer, String> evaluateChangedSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings) {
-
-         return null;
-    }
-
-    @Override
-    public Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings) {
+    public Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings,
+				 Map<String, Boolean> updateField) {
         return null;
     }
 
@@ -61,12 +45,14 @@ public class UnknownSettingManager extends VehicleSettingManager {
     }
 
     @Override
-    public void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason) {
+    public void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason,
+				 Map<String, Boolean> updateField) {
         //No settings - so can't create the record 
     }
 
     @Override
-    public void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason) {
+    public void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason,
+				 Map<String, Boolean> updateField) {
         //Can't edit unknown settings
     }
     
