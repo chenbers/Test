@@ -10,7 +10,6 @@ import java.net.URLEncoder;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
@@ -53,6 +52,7 @@ public class HanSoloTrip extends Thread{
         hanSolosFirstTrip();
     }
     
+
     public void rfSwitchTestTrip() {
         String imei = "FAKEIMEIDEVICE"; 
         Addresses address=Addresses.QA; 
@@ -69,14 +69,19 @@ public class HanSoloTrip extends Thread{
         driver.addToTrip(mid, stop);
         driver.addToTrip(stop, start);
 
-        //driver.addEvent(29, AutomationDeviceEvents.speeding(80, 200, 700, 40, 75, 600));
-        driver.addEvent(30, AutomationDeviceEvents.rfKill());
-        driver.addEvent(35, AutomationDeviceEvents.speeding(80, 200, 700, 40, 75, 600));
+        DeviceState state = new DeviceState(null, ProductType.TIWIPRO_R74);
+
+//        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
+//        driver.addEvent(29, AutomationDeviceEvents.speeding(state, null));
+        driver.addEvent(30, AutomationDeviceEvents.rfKill(state, null));
+        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
+        driver.addEvent(35, AutomationDeviceEvents.speeding(state, null));
 
         driver.run();
         
 
     }
+    
     
     public void de6739_funkyTrip() {
         String imei = "FAKEIMEIDEVICE"; 
@@ -103,7 +108,7 @@ public class HanSoloTrip extends Thread{
         tiwi.update_location(new GeoPoint(40.71832000000001,-111.985770), 185);
         tiwi.update_location(new GeoPoint(40.71089000000001,-111.994450), 113);
         
-        tiwi.add_stats();
+        AutomationDeviceEvents.statistics(tiwi);
         tiwi.logout_driver(null, 890, 204, 200);
         tiwi.turn_key_off(30);
         tiwi.power_off_device(900);
@@ -111,26 +116,29 @@ public class HanSoloTrip extends Thread{
 
     private void hanSolosFirstTrip() {
         tiwi = new TiwiProDevice(IMEI, server);
+        DeviceState state = tiwi.getState();
 
         tiwi.set_time( initialTime.addToSeconds(60));
         tiwi.getState().setWMP(17116);
         tiwi.firstLocation(new GeoPoint(33.0104, -117.111));
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
-        tiwi.addIdlingNote(300, 300);
-        tiwi.getState().setSpeedLimit(5.0);
+        tiwi.getState().setLowIdle(300).setHighIdle(300);
+        AutomationDeviceEvents.idling(tiwi);
+        tiwi.getState().setSpeedLimit(5);
         
         tiwi.update_location(new GeoPoint(33.0104, -117.111), 15);
         tiwi.update_location(new GeoPoint(33.0104, -117.113), 15);
         
-        tiwi.addSeatbeltEvent(AutomationDeviceEvents.seatbelt(500, 90, 50, 50, 50, 600));
-        tiwi.addNoteEvent(AutomationDeviceEvents.hardLeft(5, 105, 5));
+        state.setSeatbeltViolationDistanceX100(500);
+        AutomationDeviceEvents.seatbelt(tiwi);
+        AutomationDeviceEvents.hardLeft(tiwi, 105);
 
         tiwi.update_location(new GeoPoint(33.01, -117.113), 15);
         tiwi.update_location(new GeoPoint(33.0097, -117.1153), 15);
         tiwi.update_location(new GeoPoint(33.015, -117.116), 15);
         
-        tiwi.getState().setSpeedLimit(75.0);
+        tiwi.getState().setSpeedLimit(75);
         tiwi.enter_zone(2);
         
         tiwi.update_location(new GeoPoint(33.0163, -117.1159), 15);
@@ -161,10 +169,10 @@ public class HanSoloTrip extends Thread{
         tiwi.update_location(new GeoPoint(33.0106, -117.11), 15);
         tiwi.last_location(new GeoPoint(33.0104, -117.111), 15);
         
-        tiwi.add_stats();
+        AutomationDeviceEvents.statistics(tiwi);
         tiwi.logout_driver(null, 890, 204, 200);
         tiwi.turn_key_off(30);
-        tiwi.add_lowBattery();
+        AutomationDeviceEvents.lowBattery(tiwi);
         tiwi.power_off_device(900);
     }
     
@@ -254,7 +262,8 @@ public class HanSoloTrip extends Thread{
         waySmart.set_time(initialTime);
         waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
-        waySmart.addInstallEvent(AutomationDeviceEvents.install(vehicleID, mcmID, accountID));
+        waySmart.setVehicleID(vehicleID); waySmart.setAccountID(accountID);
+        AutomationDeviceEvents.install(waySmart);
         waySmart.power_on_device();
         waySmart.logInDriver(driverID);
         
@@ -272,7 +281,10 @@ public class HanSoloTrip extends Thread{
         waySmart.set_time(initialTime);
         waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
-        waySmart.addInstallEvent(AutomationDeviceEvents.install(vehicleID, mcmID, accountID));
+        waySmart.setVehicleID(vehicleID);
+        waySmart.setAccountID(accountID);
+        AutomationDeviceEvents.install(waySmart);
+        
         waySmart.power_on_device();
         waySmart.turn_key_on(15);
         waySmart.turn_key_off(15);
@@ -297,12 +309,12 @@ public class HanSoloTrip extends Thread{
 //        imei = "500000000007272"; address=Addresses.DEV;// initialTime.setDate(time)
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1324155471);  // vehicleID=37706       deviceID=34506
-//        address=Addresses.QA;           initialTime.setDate(1323834000);  // vehicleID=7293        deviceID=3753
+        address=Addresses.QA;           initialTime.setDate(1323834000);  // vehicleID=7293        deviceID=3753
 //          address=Addresses.DEV;		initialTime.setDate(1323817719);
 //        address=Addresses.STAGE;        initialTime.setDate(1323817719);  // vehicleID=117441441   deviceID=117441936 
 //        address=Addresses.PROD;         initialTime.setDate(1323819788);  // vehicleID=1           deviceID=1
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.CHEVRON;      initialTime.setDate(1323823926);  // vehicleID=117441441   deviceID=117441936
+//        address=Addresses.CHEVRON;      initialTime.setDate(1323823926);  // vehicleID=117441441   deviceID=117441936
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.SCHLUMBERGER; initialTime.setDate(1323821857);  // vehicleID=150994955   deviceID=150994955
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
@@ -316,7 +328,6 @@ public class HanSoloTrip extends Thread{
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.LDS;       initialTime.setDate(1323817719);  // vehicleID=100663298   deviceID=100663298
         trip.hanSolosFirstTrip( imei, address, initialTime);
-        //trip.rfSwitchTestTrip();
         
         
         

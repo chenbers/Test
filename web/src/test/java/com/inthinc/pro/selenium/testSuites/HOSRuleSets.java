@@ -36,7 +36,9 @@ public class HOSRuleSets extends WebRallyTest {
         waySmart.set_time(initialTime);
         waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
         waySmart.setBaseOdometer(5000);
-        waySmart.addInstallEvent(AutomationDeviceEvents.install(vehicleID, mcmID, accountID));
+        waySmart.setVehicleID(vehicleID);
+        waySmart.setAccountID(accountID);
+        AutomationDeviceEvents.install(waySmart);
         waySmart.power_on_device();
         waySmart.logInDriver(driverID);
         

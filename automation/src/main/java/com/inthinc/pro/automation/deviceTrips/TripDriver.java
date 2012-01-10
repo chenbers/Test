@@ -10,7 +10,6 @@ import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TripTracker;
@@ -22,7 +21,7 @@ public class TripDriver extends Thread {
     private DeviceBase device;
     private TripTracker tripTracker;
     private boolean interrupt = false;
-    private LinkedList<AutomationEvents>[] events2;
+    private LinkedList<AutomationDeviceEvents>[] events2;
     private List<Integer> positions;
     private DeviceState state;
     
@@ -72,7 +71,10 @@ public class TripDriver extends Thread {
             int speedLimit = device.getState().getSpeedLimit().intValue();
             if (events2[currentPoint] != null){
             	while (!events2[currentPoint].isEmpty()){
-                    events2[currentPoint].poll().addEvent(device);
+            		AutomationDeviceEvents event = events2[currentPoint].poll();
+            		event.updateLocation(tripTracker.currentLocation());
+            		event.getNote().getTime().setDate(state.getTime());
+                    device.addEvent(event);
             	}
         		positions.remove(currentPercent);
         		events2[currentPoint] = null;
@@ -80,7 +82,10 @@ public class TripDriver extends Thread {
             	int wouldBePosition = Collections.binarySearch(positions, currentPoint); 
             	if ( wouldBePosition < -1 ){
             		int noteN = positions.get(0);
-            		events2[noteN].poll().addEvent(device);
+            		AutomationDeviceEvents event = events2[currentPoint].poll();
+            		event.updateLocation(tripTracker.currentLocation());
+            		event.getNote().getTime().setDate(state.getTime());
+            		device.addEvent(event);
             		if (events2[noteN].isEmpty()){
             			positions.remove(0);
             			events2[noteN] = null;
@@ -99,7 +104,7 @@ public class TripDriver extends Thread {
         LinkedList<DeviceNote> notes = new LinkedList<DeviceNote>();
         Iterator<GeoPoint> itr = tripTracker.iterator();
         AutomationCalendar start = tripTracker.getState().getTime();
-        notes.add(AutomationDeviceEvents.ignitionOn().getNote(tripTracker.currentLocation(), state));
+        notes.add(AutomationDeviceEvents.ignitionOn(state, tripTracker.currentLocation()).getNote());
         
         int totalNotes = tripTracker.size()*100;
         Double currentPercent;
@@ -109,8 +114,10 @@ public class TripDriver extends Thread {
             int currentPoint = currentPercent.intValue();
             if (events2[currentPoint] != null){
             	while (!events2[currentPoint].isEmpty()){
-                    AutomationEvents event = events2[currentPoint].poll();
-                    notes.add(event.getNote(tripTracker.currentLocation(), state));
+                    AutomationDeviceEvents event = events2[currentPoint].poll();
+                    event.updateLocation(tripTracker.currentLocation());
+            		event.getNote().getTime().setDate(state.getTime());
+                    notes.add(event.getNote());
             	}
         		positions.remove((Object)currentPoint);
         		events2[currentPoint] = null;
@@ -119,8 +126,10 @@ public class TripDriver extends Thread {
             	if ( wouldBePosition < -1 ){
             		int noteN = positions.get(0);
 
-            		AutomationEvents event = events2[noteN].poll();
-                    notes.add(event.getNote(tripTracker.currentLocation(), state));
+            		AutomationDeviceEvents event = events2[noteN].poll();
+            		event.updateLocation(tripTracker.currentLocation());
+            		event.getNote().getTime().setDate(state.getTime());
+                    notes.add(event.getNote());
                     
             		if (events2[noteN].isEmpty()){
             			positions.remove(0);
@@ -133,7 +142,9 @@ public class TripDriver extends Thread {
         }
         
         AutomationCalendar stop = tripTracker.getState().getTime();
-        notes.add(AutomationDeviceEvents.ignitionOff(stop.getDelta(start), 90).getNote(tripTracker.currentLocation(), state));
+        state.setTripDuration(stop.getDelta(start));
+        state.setPointsPassedTheFilter(90);
+        notes.add(AutomationDeviceEvents.ignitionOff(state, tripTracker.currentLocation()).getNote());
         
         return notes;
     }
@@ -175,9 +186,9 @@ public class TripDriver extends Thread {
     }
     
     
-    public void addEvent(int percentTimeIn, AutomationEvents event){
+    public void addEvent(int percentTimeIn, AutomationDeviceEvents event){
     	if (events2[percentTimeIn] == null){
-    		events2[percentTimeIn] = new LinkedList<AutomationEvents>();
+    		events2[percentTimeIn] = new LinkedList<AutomationDeviceEvents>();
     	}
         events2[percentTimeIn].add(event);
         

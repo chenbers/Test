@@ -73,27 +73,33 @@ public class NoteTesterGeneration extends Thread{
 
         
         //Driving Style notes.
-        tiwi1.addNoteEvent(AutomationDeviceEvents.hardLeft(2, 100, 10));
-        tiwi2.addNoteEvent(AutomationDeviceEvents.hardBrake(200, 37, 22));
-        tiwi3.addNoteEvent(AutomationDeviceEvents.hardBump(10, 10, 1000));
-        tiwi4.addNoteEvent(AutomationDeviceEvents.hardAccel(750, 50, 600));
+        AutomationDeviceEvents.hardLeft(tiwi1, 100);
+        AutomationDeviceEvents.hardBrake(tiwi2, 37);
+        AutomationDeviceEvents.hardBump(tiwi3, 1000);
+        AutomationDeviceEvents.hardAccel(tiwi4, 750);
         
         //Speeding notes.
-        tiwi1.addSpeedingNote(AutomationDeviceEvents.speeding(70, 100, 500, 65, 55, 495));
-        tiwi1.addSpeedingNote(AutomationDeviceEvents.speeding(100, 6000, 500, 65, 72, 495));
+        tiwi1.getState().setTopSpeed(70).setSpeedingDistanceX100(100).setSpeedingSpeedLimit(65);
+        AutomationDeviceEvents.speeding(tiwi1);
+        tiwi1.getState().setTopSpeed(100).setSpeedingDistanceX100(6000).setSpeedingSpeedLimit(65);
+        AutomationDeviceEvents.speeding(tiwi1);
         
         //Seat Belt notes.
-        tiwi1.addSeatbeltEvent(AutomationDeviceEvents.seatbelt(500, 50, 60, 40, 100, 600));
-        tiwi3.addSeatbeltEvent(AutomationDeviceEvents.seatbelt(500, 50, 50, 45, 50, 600));
+        tiwi1.getState().setTopSpeed(60).setAvgSpeed(40).setSeatbeltDistanceX100(100);
+        AutomationDeviceEvents.seatbelt(tiwi1);
+        tiwi3.getState().setTopSpeed(50).setAvgSpeed(45).setSeatbeltDistanceX100(50);
+        AutomationDeviceEvents.seatbelt(tiwi3);
         
         //TODO Send Crash notes (USER STORY'D!).
         
         //Tampering notes.
         tiwi4.tampering(15);
         tiwi2.tampering(15);
+        tiwi2.getState().setLowIdle(10).setHighIdle(20);
+        AutomationDeviceEvents.idling(tiwi2);
         
-        tiwi2.addIdlingNote(10, 20);
-        tiwi3.addIdlingNote(23, 19);
+        tiwi3.getState().setLowIdle(23).setHighIdle(19);
+        AutomationDeviceEvents.idling(tiwi3);
 
         //Zone notes.
         //Pac Man is 915, Kazakhstan is 916, Tasmania is 917.
@@ -110,7 +116,7 @@ public class NoteTesterGeneration extends Thread{
         tiwi4.update_location(new GeoPoint(0, -10), 15);
         
         for(int i=0; i<4; i++){
-            tiwiArray[i].add_stats();
+        	AutomationDeviceEvents.statistics(tiwiArray[i]);
             tiwiArray[i].turn_key_off(30);
             tiwiArray[i].power_off_device(900);
         }

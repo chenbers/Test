@@ -73,20 +73,22 @@ public class TripTracker implements Iterable<GeoPoint> {
     public GeoPoint getNextLocation(int value, boolean time){
         GeoPoint next = trip.get(++currentPoint);
         GeoPoint last = lastLocation();
+        
         if (last == null){
             state.setHeading(Heading.NORTH);
             state.setSpeed(0);
             if (!state.getProductVersion().equals(ProductType.WAYSMART)){
-                state.setOdometer(0);
+                state.setOdometerX100(0);
             }
             return next;
         }
+        
         state.setHeading(Heading.getHeading(next, last));
-        if (state.getProductVersion().equals(ProductType.WAYSMART)){
-            state.setOdometer(state.getOdometer() + last.deltaX(next) * 100);
-        } else {
-            state.setOdometer(last.deltaX(next)*100);
-        }
+        
+        int distTraveled = ((Double)(last.deltaX(next) * 100)).intValue();
+        
+        state.incrementTripDistanceX100(distTraveled);
+        
         if (time){
             state.setSpeed(last.speed(value, next));
             state.incrementTime(value);
@@ -98,6 +100,7 @@ public class TripTracker implements Iterable<GeoPoint> {
         return next;
     }
 
+
     public void setNextLocation(GeoPoint next, int value, boolean time) {
         trip.offer(next);
         getNextLocation(value, time);
@@ -108,7 +111,7 @@ public class TripTracker implements Iterable<GeoPoint> {
         state.setSats(sats);
         state.setHeading(heading);
         state.setSpeed(speed);
-        state.setOdometer(odometer);
+        state.setOdometerX100(odometer);
         trip.offer(location);
     }
 

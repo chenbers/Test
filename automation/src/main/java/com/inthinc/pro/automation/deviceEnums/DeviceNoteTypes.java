@@ -447,7 +447,7 @@ public enum DeviceNoteTypes implements IndexEnum{
 	/**
 	 * Internal event on portal
 	 */
-    ZONE_ALERTED(247),
+    STRIPPED_CONFIGURATOR(247),
 
 	/**
 	 * Internal event on portal
@@ -486,7 +486,7 @@ public enum DeviceNoteTypes implements IndexEnum{
         return attributes;
     }
     
-    private static HashMap<Integer, DeviceNoteTypes> lookupByCode = new HashMap<Integer, DeviceNoteTypes>();
+    private final static HashMap<Integer, DeviceNoteTypes> lookupByCode = new HashMap<Integer, DeviceNoteTypes>();
     
     static {
         for (DeviceNoteTypes p : EnumSet.allOf(DeviceNoteTypes.class))

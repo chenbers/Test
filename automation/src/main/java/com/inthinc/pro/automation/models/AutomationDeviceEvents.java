@@ -2,50 +2,177 @@ package com.inthinc.pro.automation.models;
 
 import org.apache.log4j.Level;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceEnums.ViolationFlags;
+import com.inthinc.pro.automation.deviceEnums.DeviceEnums.LogoutMethod;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.objects.WaysmartDevice;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.EventAttr;
 
 public class AutomationDeviceEvents {
-    
-    private final static String brake = "Hard Brake";
-    private final static String accel = "Hard Accel";
-    private final static String left = "Hard Turn Left";
-    private final static String right = "Hard Turn Right";
-    private final static String dip = "Hard Dip";
-    private final static String bump = "Hard Bump";
-    
-    private final static AutomationDeviceEvents classes = new AutomationDeviceEvents();
-    
-    public interface AutomationEvents{
-        public DeviceBase addEvent(DeviceBase device);
-        public DeviceNote getNote(GeoPoint location, DeviceState state);
-        public DeviceNoteTypes getNoteType();
+	
+	public class EnterZoneEvent extends AutomationDeviceEvents {
+		private EnterZoneEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.WSZONES_ARRIVAL_EX, state, location);
+
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
+			}
+		}
+	}
+	
+	public class IdlingEvent extends AutomationDeviceEvents {
+		private IdlingEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.IDLING, state, location);
+
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				note.addAttr(EventAttr.LOW_IDLE, state.getLowIdle());
+				note.addAttr(EventAttr.HIGH_IDLE, state.getHighIdle());
+			}
+			state.setLowIdle(0).setHighIdle(0);
+		}
+	}
+	
+	public class IgnitionOffEvent extends AutomationDeviceEvents {
+        
+		private IgnitionOffEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.IGNITION_OFF, state, location);
+
+			endOfTripAttrs(state, note);
+			
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+                
+            } else {
+            	
+            }
+		}
     }
-    
-    public class NoteEvent implements AutomationEvents{
+	
+	public class IgnitionOnEvent extends AutomationDeviceEvents{
         
-        public final int deltaX;
-        public final int deltaY;
-        public final int deltaZ;
-        public final String type;
-        public final DeviceNoteTypes noteType = DeviceNoteTypes.NOTE_EVENT;
-        
-        private NoteEvent(int deltaX, int deltaY, int deltaZ, String type){
-            this.deltaX = deltaX;
-            this.deltaY = deltaY;
-            this.deltaZ = deltaZ;
-            this.type = type;
+        private IgnitionOnEvent(DeviceState state, GeoPoint location){
+        	super(DeviceNoteTypes.IGNITION_ON, state, location);
+        	
+        	if (state.getProductVersion().equals(ProductType.WAYSMART)){
+//              note.addAttr(EventAttr.DRIVER_STR, employeeID);
+//              note.addAttr(EventAttr.DRIVER_ID, driverID);
+          } else {
+              
+          }
         }
+    }
+	
+	public class InstallEvent extends AutomationDeviceEvents {
         
-        @Override
-        public String toString(){
-            return String.format("%s(DeltaX:%4d, DeltaY:%4d, DeltaZ:%4d)", type, deltaX, deltaY, deltaZ);
+        private InstallEvent(DeviceState state, GeoPoint location){
+        	super(DeviceNoteTypes.INSTALL, state, location);
+        	
+            note.addAttr(EventAttr.VEHICLE_ID_STR, state.getVehicleID());
+            note.addAttr(EventAttr.MCM_ID_STR, state.getMcmID());
+            note.addAttr(EventAttr.COMPANY_ID, state.getAccountID());
+        }
+    }
+	
+	public class LeaveZoneEvent extends AutomationDeviceEvents {
+		private LeaveZoneEvent (DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.WSZONES_ARRIVAL, state, location);
+
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
+			}
+			state.setZoneID(0);
+		}
+	}
+		
+	public class LocationEvent extends AutomationDeviceEvents {
+        
+        private LocationEvent(DeviceState state, GeoPoint location){
+        	super(DeviceNoteTypes.LOCATION, state, location);
+            
+            if (state.getProductVersion().equals(ProductType.WAYSMART)){
+                
+            } else {
+            	
+            }
+        }
+    }
+	
+	public class LogoutEvent extends AutomationDeviceEvents {
+    	
+		public LogoutEvent (DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.CLEAR_DRIVER, state, location);
+
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				note.addAttr(EventAttr.LOGOUT_TYPE, LogoutMethod.RFID_LOGOUT.getIndex());
+				note.addAttr(
+		                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
+		                state.getPointsPassedTheFilter());
+				note.addAttr(EventAttr.MPG, state.getMpg());
+				note.addAttr(EventAttr.MPG_DISTANCE, state.getMpgDistanceX100());
+				note.addAttr(EventAttr.RFID0, state.getRfidHigh());
+				note.addAttr(EventAttr.RFID1, state.getRfidLow());
+			}
+		}
+	}
+	
+	public class LowBatteryEvent extends AutomationDeviceEvents {
+		private LowBatteryEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.LOW_BATTERY, state, location);
+
+			endOfTripAttrs(state, note);
+			
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				
+			}
+		}
+	}
+	
+	
+	public class NoDriverEvent extends AutomationDeviceEvents {
+    	private NoDriverEvent(DeviceState state, GeoPoint location){
+    		super(DeviceNoteTypes.NO_DRIVER, state, location);
+
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				
+			}
+    	}
+    }
+	
+	public class NoteEvent extends AutomationDeviceEvents{
+        
+    	private final int deltaX;
+    	private final int deltaY;
+    	private final int deltaZ;
+    	private final NoteEventTypes eventType;
+    	
+        private NoteEvent(DeviceState state, GeoPoint location, int deltaX, int deltaY, int deltaZ, NoteEventTypes eventType){
+        	super(DeviceNoteTypes.NOTE_EVENT, state, location);
+        	this.deltaX = deltaX;
+        	this.deltaY = deltaY;
+        	this.deltaZ = deltaZ;
+            this.eventType = eventType;
+            
+            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
+                note.addAttr(EventAttr.DELTA_VS, packDeltaVS());
+
+            } else {
+                note.addAttr(EventAttr.DELTAV_X, deltaX);
+                note.addAttr(EventAttr.DELTAV_Y, deltaY);
+                note.addAttr(EventAttr.DELTAV_Z, deltaZ);
+            }
         }
         
         public long packDeltaVS(){
@@ -56,104 +183,105 @@ public class AutomationDeviceEvents {
             MasterTest.print(packedDeltaV, Level.DEBUG);
             return packedDeltaV;
         }
-
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return device.addNoteEvent(this);
-        }
-
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
-            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
-                note.addAttr(EventAttr.DELTA_VS, packDeltaVS());
-
-            } else {
-                note.addAttr(EventAttr.DELTAV_X, deltaX);
-                note.addAttr(EventAttr.DELTAV_Y, deltaY);
-                note.addAttr(EventAttr.DELTAV_Z, deltaZ);
-            }
-            MasterTest.print(note, Level.DEBUG);
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
-        } 
-    }
-    
-    
-    public static NoteEvent hardBrake(int deltaX, int deltaY, int deltaZ){
-        return classes.new NoteEvent(-Math.abs(deltaX), Math.abs(deltaY), Math.abs(deltaZ), brake);
-    }
-    
-    public static NoteEvent hardAccel(int deltaX, int deltaY, int deltaZ){
-        return classes.new NoteEvent(Math.abs(deltaX), Math.abs(deltaY), Math.abs(deltaZ), accel);
-    }
-
-    public static NoteEvent hardRight(int deltaX, int deltaY, int deltaZ){
-        return classes.new NoteEvent(Math.abs(deltaX), -Math.abs(deltaY), Math.abs(deltaZ), right);
-    }
-    
-    public static NoteEvent hardLeft(int deltaX, int deltaY, int deltaZ){
-        return classes.new NoteEvent(Math.abs(deltaX), Math.abs(deltaY), Math.abs(deltaZ), left);
-    }
-    
-    public static NoteEvent hardBump(int deltaX, int deltaY, int deltaZ){
-        return classes.new NoteEvent(Math.abs(deltaX), Math.abs(deltaY), -Math.abs(deltaZ), bump);
-    }
-    
-    public static NoteEvent hardDip(int deltaX, int deltaY, int deltaZ){
-        return classes.new NoteEvent(Math.abs(deltaX), Math.abs(deltaY), Math.abs(deltaZ), dip);
-    }
-    
-    
-    public class SpeedingEvent implements AutomationEvents{
-        public static final int FLAG = 1;
-        public final int topSpeed;
-        public final int distance;
-        public final int maxRpm;
-        public final int speedLimit;
-        public final int avgSpeed;
-        public final int avgRpm;
-        public final DeviceNoteTypes noteType = DeviceNoteTypes.SPEEDING_EX3;
-        public final DeviceNoteTypes noteWSType = DeviceNoteTypes.SPEEDING_EX4;
-        
-        private SpeedingEvent(int topSpeed, int distance, int maxRpm, int speedLimit, int avgSpeed, int avgRpm){
-            this.topSpeed = Math.abs(topSpeed);
-            this.distance = Math.abs(distance);
-            this.maxRpm = Math.abs(maxRpm);
-            this.speedLimit = Math.abs(speedLimit);
-            this.avgSpeed = Math.abs(avgSpeed);
-            this.avgRpm = Math.abs(avgRpm);
-        }
-        
-
         
         @Override
         public String toString(){
-            return String.format("TopSpeed: %d, Distance: %d, MaxRpm: %d, SpeedLimit: %d, AverageSpeed: %d, AverageRpm: %d",
-                    topSpeed, distance, maxRpm, speedLimit, avgSpeed, avgRpm);
+        	return String.format("%s(DeltaX:%4d, DeltaY:%4d, DeltaZ:%4d)\n%s", eventType, deltaX, deltaY, deltaZ, super.toString());
         }
 
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return device.addSpeedingNote(this);
-        }
+    }
+	
+	public static enum NoteEventTypes {
+	    Hard_Accel,
+	    Hard_Brake,
+	    Hard_Bump,
+	    Hard_Dip,
+	    Hard_Turn_Left,
+	    Hard_Turn_Right,
+    }
+	
+	public class PowerOffEvent extends AutomationDeviceEvents {
+		private PowerOffEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.LOW_POWER_MODE, state, location);
 
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note;
-            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
-            	note = DeviceNote.constructNote(noteWSType, location, state);
+			endOfTripAttrs(state, note);
+
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				note.addAttr(EventAttr.FIRMWARE_VERSION, state.getWMP());
+				note.addAttr(EventAttr.DMM_VERSION, state.getMSP());
+				note.addAttr(EventAttr.GPS_LOCK_TIME, state.getGpsLockTime());
+			}
+		}
+	}
+	
+	public class PowerOnEvent extends AutomationDeviceEvents {
+    	
+    	private PowerOnEvent(DeviceState state, GeoPoint location){
+    		super(DeviceNoteTypes.POWER_ON, state, location);
+			
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+                
+            } else {
             	
-            	note.addAttr(EventAttr.TOP_SPEED, topSpeed);
-            	note.addAttr(EventAttr.DISTANCE, distance / 10);
-            	note.addAttr(EventAttr.MAX_RPM, maxRpm);
-            	note.addAttr(EventAttr.SPEED_LIMIT, speedLimit);
-            	note.addAttr(EventAttr.AVG_SPEED, avgSpeed);
-            	note.addAttr(EventAttr.AVG_RPM, avgRpm);
+            }
+    	}
+    }
+	
+	
+    public class RFKillEvent extends AutomationDeviceEvents {
+        
+        private RFKillEvent(DeviceState state, GeoPoint location){
+        	super(DeviceNoteTypes.RF_KILL, state, location);
+
+        	endOfTripAttrs(state, note);
+        }
+    }
+    
+    public class SeatBeltEvent extends AutomationDeviceEvents {
+
+        private SeatBeltEvent(DeviceState state, GeoPoint location){
+        	super(DeviceNoteTypes.SEATBELT, state, location);
+            
+            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
+                note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
+                note.addAttr(EventAttr.DISTANCE, state.getSeatbeltViolationDistanceX100());
+                note.addAttr(EventAttr.MAX_RPM, state.getMaxRpm());
+
+            } else {
+                note.addAttr(EventAttr.AVG_RPM, state.getAvgRpm());
+                
+                note.addAttr(EventAttr.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED,
+                        state.getGPSPercent());
+                
+                note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
+                note.addAttr(EventAttr.AVG_SPEED, state.getAvgSpeed());
+                note.addAttr(EventAttr.DISTANCE, state.getSeatbeltViolationDistanceX100());
+            }
+            state.setSeatbeltViolationDistanceX100(0);
+        }
+
+    }
+    
+    
+    public class SpeedingEvent extends AutomationDeviceEvents {
+    	private static final int FLAG = 1;
+        
+        private SpeedingEvent(DeviceState state, GeoPoint location){
+        	super(state.getProductVersion().equals(ProductType.WAYSMART) ? 
+        			DeviceNoteTypes.SPEEDING_EX4 : DeviceNoteTypes.SPEEDING_EX3, 
+        			state, location);
+        	
+        	if (state.getProductVersion().equals(ProductType.WAYSMART)) {
+            	
+            	
+            	note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
+            	note.addAttr(EventAttr.DISTANCE, state.getSpeedingDistanceX100() / 10);
+            	note.addAttr(EventAttr.MAX_RPM, state.getMaxRpm());
+            	note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedingSpeedLimit());
+            	note.addAttr(EventAttr.AVG_SPEED, state.getAvgSpeed());
+            	note.addAttr(EventAttr.AVG_RPM, state.getAvgRpm());
             	
             	note.addAttr(EventAttr.SBS_LINK_ID, state.getSbsLinkID());
             	note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
@@ -175,314 +303,328 @@ public class AutomationDeviceEvents {
             	note.addAttr(EventAttr.SPEED_SOURCE, 1);
 
             } else {
-            	note = DeviceNote.constructNote(noteType, location, state);
-                note.addAttr(EventAttr.DISTANCE, distance);
-                note.addAttr(EventAttr.TOP_SPEED, topSpeed);
-                note.addAttr(EventAttr.AVG_SPEED, avgSpeed);
+                note.addAttr(EventAttr.DISTANCE, state.getSpeedingDistanceX100());
+                note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
+                note.addAttr(EventAttr.AVG_SPEED, state.getAvgSpeed());
                 note.addAttr(EventAttr.SPEED_ID, 9999);
                 note.addAttr(EventAttr.VIOLATION_FLAGS, SpeedingEvent.FLAG);
             }
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
         }
     }
-    
-    public static SpeedingEvent speeding(int topSpeed, int distance, int maxRpm, int speedLimit, int avgSpeed, int avgRpm){
-        return classes.new SpeedingEvent(topSpeed, distance, maxRpm, speedLimit, avgSpeed, avgRpm);
-    }
-    
-    public static SpeedingEvent speeding(int topSpeed, int distance, int maxRpm, Double speedLimit, int avgSpeed, int avgRpm){
-        return speeding(topSpeed, distance, maxRpm, speedLimit.intValue(), avgSpeed, avgRpm);
-    }
-    
+	public class StatisticsEvent extends AutomationDeviceEvents {
+		private StatisticsEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.STATS, state, location);
 
-    public class SeatBeltEvent implements AutomationEvents {
-
-        public final int avgRpm;
-        public final static int violationFlag = 2;
-        public final int gpsPercent;
-        public final int topSpeed;
-        public final int avgSpeed;
-        public final int distance;
-        public final int maxRpm;
-        public final DeviceNoteTypes noteType = DeviceNoteTypes.SEATBELT;
-        
-        private SeatBeltEvent(int avgRpm, int gpsPercent, int topSpeed, int avgSpeed, int distance, int maxRpm){
-            this.avgRpm = Math.abs(avgRpm);
-            this.gpsPercent = Math.abs(gpsPercent);
-            this.topSpeed = Math.abs(topSpeed);
-            this.avgSpeed = Math.abs(avgSpeed);
-            this.distance = Math.abs(distance);
-            this.maxRpm = Math.abs(maxRpm);
-        }
-
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return device.addSeatbeltEvent(this);
-        }
-        
-        @Override
-        public String toString(){
-            return String.format("AverageRpm: %d, GPS PercentUsed: %d, Top Speed: %d, Average Speed: %d, Distance: %d, MaxRPM: %d\n"
-                    , avgRpm, gpsPercent, topSpeed, avgSpeed, distance, maxRpm);
-        }
-
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
-            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
-                note.addAttr(EventAttr.TOP_SPEED, topSpeed);
-                note.addAttr(EventAttr.DISTANCE, distance);
-                note.addAttr(EventAttr.MAX_RPM, maxRpm);
-
-            } else {
-                note.addAttr(EventAttr.AVG_RPM, avgRpm);
-                note.addAttr(EventAttr.VIOLATION_FLAGS, violationFlag);
-                
-                note.addAttr(EventAttr.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED,
-                        gpsPercent);
-                
-                note.addAttr(EventAttr.TOP_SPEED, topSpeed);
-                note.addAttr(EventAttr.AVG_SPEED, avgSpeed);
-                note.addAttr(EventAttr.DISTANCE, distance);
-            }
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
-        }
-        
-    }
-    
-    public static SeatBeltEvent seatbelt(int avgRpm, int gpsPercent, int topSpeed, int avgSpeed, int distance, int maxRpm){
-        return classes.new SeatBeltEvent(avgRpm, gpsPercent, topSpeed, avgSpeed, distance, maxRpm);
-    }
-    
-    public class InstallEvent implements AutomationEvents {
-        
-        public final String vehicleIDStr;
-        public final int acctID;
-        public final String mcmIDStr;
-        public final DeviceNoteTypes noteType = DeviceNoteTypes.INSTALL;
-        
-        
-        private InstallEvent(String vehicleIDStr, String mcmIDStr, int acctID){
-            this.vehicleIDStr = vehicleIDStr.toUpperCase();
-            this.mcmIDStr = mcmIDStr;
-            this.acctID = acctID;
-        }
-        
-
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return ((WaysmartDevice)device).addInstallEvent(this);
-        }
-
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
-            note.addAttr(EventAttr.VEHICLE_ID_STR, vehicleIDStr);
-            note.addAttr(EventAttr.MCM_ID_STR, mcmIDStr);
-            note.addAttr(EventAttr.COMPANY_ID, acctID);
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
-        }
-    }
-    
-    public static InstallEvent install(String vehicleIDStr, String mcmIDStr, int acctID){
-        return classes.new InstallEvent(vehicleIDStr, mcmIDStr, acctID);
-    }
-    
-    public static InstallEvent install(DeviceState state){
-    	return classes.new InstallEvent(state.getVehicleID(), state.getMcmID(), state.getAccountID());
-    }
-    
-    
-    public class LocationEvent implements AutomationEvents {
-        
-        public final ViolationFlags flag;
-        public final DeviceNoteTypes noteType = DeviceNoteTypes.LOCATION;
-        
-        public LocationEvent(DeviceState state){
-            if (state.isSpeeding()) {
-                flag = ViolationFlags.VIOLATION_MASK_SPEEDING;
-            } else if (state.isExceedingRPMLimit()) {
-                flag = ViolationFlags.VIOLATION_MASK_RPM;
-            } else if (state.isSeatbeltEngaged()) {
-                flag = ViolationFlags.VIOLATION_MASK_SEATBELT;
-            } else {
-                flag = null;
-            }
-        }
-
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return device.addLocation();
-        }
-
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
-            if (state.getProductVersion().equals(ProductType.WAYSMART)){
-                
-            } else {
-            	if (flag != null){
-            		note.addAttr(EventAttr.VIOLATION_FLAGS,flag);
-            	}
-            }
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
-        }
-        
-    }
-
-
-    public static LocationEvent location(DeviceState state) {
-        return classes.new LocationEvent(state);
-    }
-    
-    public static IgnitionOn ignitionOn(){
-        return classes.new IgnitionOn();
-    }
-    
-    public class IgnitionOn implements AutomationEvents{
-        
-        private final DeviceNoteTypes noteType = DeviceNoteTypes.IGNITION_ON;
-
-        private IgnitionOn(){        }
-
-        
-        
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return device.addIgnitionOnEvent(this);
-        }
-
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
-            if (state.getProductVersion().equals(ProductType.WAYSMART)){
-//                note.addAttr(EventAttr.DRIVER_STR, employeeID);
-//                note.addAttr(EventAttr.DRIVER_ID, driverID);
-            } else {
-                
-            }
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
-        }
-    }
-    public class RFKillEvent implements AutomationEvents{
-        public final DeviceNoteTypes noteType = DeviceNoteTypes.RF_KILL;
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return device.addRFKillEvent(this);
-        }
-
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
-            addEndOfTripAttributes(note, state);
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
-        }
-        
-    }
-    public static RFKillEvent rfKill(){
-        return classes.new RFKillEvent();
-    }
-    public class IgnitionOffEvent implements AutomationEvents{
-        
-        public final DeviceNoteTypes noteType = DeviceNoteTypes.IGNITION_OFF;
-		private final int tripDuration;
-		private final int percentPointsPassedFilter;
-		
-		public IgnitionOffEvent(int tripDuration, int percentPointsPassedFilter){
-			this.tripDuration = tripDuration;
-			this.percentPointsPassedFilter = percentPointsPassedFilter;
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				note.addAttr(EventAttr.BASE_VER, 0);
+				note.addAttr(EventAttr.EMU_HASH_1, -1517168504);
+				note.addAttr(EventAttr.EMU_HASH_2, 154129909);
+				note.addAttr(EventAttr.EMU_HASH_3, 1825195881);
+				note.addAttr(EventAttr.EMU_HASH_4, 1627500918);
+				note.addAttr(EventAttr.TOTAL_AGPS_BYTES, 60000);
+			}
 		}
-
-        @Override
-        public DeviceBase addEvent(DeviceBase device) {
-            return device.addIgnitionOffEvent(this);
-        }
-
-        @Override
-        public DeviceNote getNote(GeoPoint location, DeviceState state) {
-            DeviceNote note = DeviceNote.constructNote(noteType, location, state);
-            if (state.getProductVersion().equals(ProductType.WAYSMART)){
-                
-            } else {
-                note.addAttr(EventAttr.TRIP_DURATION, tripDuration);
-                note.addAttr(EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
-                        percentPointsPassedFilter);
-            }
-            return note;
-        }
-
-        @Override
-        public DeviceNoteTypes getNoteType() {
-            return noteType;
-        }
-    }
+	}
     
-    public DeviceNote addEndOfTripAttributes(DeviceNote note, DeviceState state){
-        if (state.getProductVersion().equals(ProductType.WAYSMART)){
-            
-        } else {
-            
-        }
-        return note;
-    }
-
-    public static IgnitionOffEvent ignitionOff(int tripDuration, int percentPointsPassedFilter) {
-        return classes.new IgnitionOffEvent(tripDuration, percentPointsPassedFilter);
-    }
-    
-    public static IgnitionOffEvent ignitionOff(Long tripDuration, int percentPointsPassedFilter) {
-        return ignitionOff(tripDuration.intValue(), percentPointsPassedFilter);
-    }
-    
-    public class Tampering implements AutomationEvents {
-
-		@Override
-		public DeviceBase addEvent(DeviceBase device) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public DeviceNote getNote(GeoPoint location, DeviceState state) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public DeviceNoteTypes getNoteType() {
-			// TODO Auto-generated method stub
-			return null;
-		}
+	public class TamperingEvent extends AutomationDeviceEvents {
     	
+    	public TamperingEvent(DeviceState state, GeoPoint location){
+    		super(DeviceNoteTypes.UNPLUGGED, state, location);
+    		endOfTripAttrs(state, note);
+    		
+    		if (state.getProductVersion().equals(ProductType.WAYSMART)){
+    			
+    		} else {
+    			note.addAttr(EventAttr.BACKUP_BATTERY, 6748);
+    		}
+    	}
     }
+	
+    private final static AutomationDeviceEvents classes = new AutomationDeviceEvents();
+
+    public static EnterZoneEvent enterZone(DeviceState state, GeoPoint location) {
+		return classes.new EnterZoneEvent(state, location);
+	}
+    
+    public static void hardAccel(DeviceBase device, int deltaX){
+    	device.addEvent(hardAccel(device.getState(), device.getCurrentLocation(), Math.abs(deltaX)));
+    }
+    
+    public static NoteEvent hardAccel(DeviceState state, GeoPoint location, int deltaX){
+        return classes.new NoteEvent(state, location, Math.abs(deltaX), 5, 5, NoteEventTypes.Hard_Accel);
+    }
+    
+    public static void hardBrake(DeviceBase device, int deltaX){
+    	device.addEvent(hardBrake(device.getState(), device.getCurrentLocation(), -Math.abs(deltaX)));
+    }
+    
+    public static NoteEvent hardBrake(DeviceState state, GeoPoint location, int deltaX){
+        return classes.new NoteEvent(state, location, -Math.abs(deltaX), 5, 5, NoteEventTypes.Hard_Brake);
+    }
+    
+
+    public static void hardBump(DeviceBase device, int deltaZ){
+    	device.addEvent(hardBump(device.getState(), device.getCurrentLocation(), -Math.abs(deltaZ)));
+    }
+
+    
+    public static NoteEvent hardBump(DeviceState state, GeoPoint location, int deltaZ){
+        return classes.new NoteEvent(state, location, 5, 5, -Math.abs(deltaZ), NoteEventTypes.Hard_Bump);
+    }
+    
+    public static void hardDip(DeviceBase device, int deltaZ){
+    	device.addEvent(hardDip(device.getState(), device.getCurrentLocation(), Math.abs(deltaZ)));
+    }
+    
+    public static NoteEvent hardDip(DeviceState state, GeoPoint location, int deltaZ){
+        return classes.new NoteEvent(state, location, 5, 5, Math.abs(deltaZ), NoteEventTypes.Hard_Dip);
+    }
+    
+    public static void hardLeft(DeviceBase device, int deltaY){
+    	device.addEvent(hardLeft(device.getState(), device.getCurrentLocation(), Math.abs(deltaY)));
+    }
+    
+    public static NoteEvent hardLeft(DeviceState state, GeoPoint location, int deltaY){
+        return classes.new NoteEvent(state, location, 5, Math.abs(deltaY), 5, NoteEventTypes.Hard_Turn_Left);
+    }
+    
+    public static void hardRight(DeviceBase device, int deltaY){
+    	device.addEvent(hardRight(device.getState(), device.getCurrentLocation(),-Math.abs(deltaY)));
+    }
+    
+    public static NoteEvent hardRight(DeviceState state, GeoPoint location, int deltaY){
+        return classes.new NoteEvent(state, location, 5, -Math.abs(deltaY), 5, NoteEventTypes.Hard_Turn_Right);
+    }
+    
+    public static void idling(DeviceBase device){
+		device.addEvent(idling(device.getState(), device.getCurrentLocation()));
+	}
+    
+    public static IdlingEvent idling(DeviceState state, GeoPoint location){
+		return classes.new IdlingEvent(state, location);
+	}
+    
+    public static void ignitionOff(DeviceBase device){
+    	device.addEvent(ignitionOff(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static IgnitionOffEvent ignitionOff(DeviceState state, GeoPoint location){
+    	return classes.new IgnitionOffEvent(state, location);
+    }
+    
+    public static void ignitionOn(DeviceBase device){
+    	device.addEvent(ignitionOn(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static IgnitionOnEvent ignitionOn(DeviceState state, GeoPoint location){
+    	return classes.new IgnitionOnEvent(state, location);
+    }
+    
+    public static void install(DeviceBase device){
+    	device.addEvent(install(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static InstallEvent install(DeviceState state, GeoPoint location){
+    	return classes.new InstallEvent(state, location);
+    }
+    
+    
+
+    public static LeaveZoneEvent leaveZone(DeviceState state, GeoPoint location){
+		return classes.new LeaveZoneEvent(state, location);
+	}
+    
+    public static void location(DeviceBase device){
+    	device.addEvent(location(device.getState(), device.getCurrentLocation()));
+    }
+
+    public static LocationEvent location(DeviceState state, GeoPoint location){
+    	return classes.new LocationEvent(state, location);
+    }
+    
+    public static void logout(DeviceBase device){
+    	device.addEvent(logout(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static LogoutEvent logout(DeviceState state, GeoPoint location){
+		return classes.new LogoutEvent(state, location);
+	}
+    
+    public static void lowBattery(DeviceBase device){
+		device.addEvent(lowBattery(device.getState(), device.getCurrentLocation()));
+	}
+    
+    public static LowBatteryEvent lowBattery(DeviceState state, GeoPoint location){
+		return classes.new LowBatteryEvent(state, location);
+	}
+    
+    public static void noDriver(DeviceBase device){
+    	device.addEvent(noDriver(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static NoDriverEvent noDriver(DeviceState state, GeoPoint location){
+    	return classes.new NoDriverEvent(state, location);
+    }
+    
+    public static void noteEvent(DeviceBase device, int deltaX, int deltaY, int deltaZ, 
+    		NoteEventTypes expectedType){
+    	device.addEvent(noteEvent(device.getState(), device.getCurrentLocation(), deltaX, deltaY, deltaZ, expectedType));
+    }
+    
+    public static NoteEvent noteEvent(DeviceState state, GeoPoint location, int deltaX, int deltaY, int deltaZ, 
+    		NoteEventTypes expectedType){
+    	return classes.new NoteEvent(state, location, deltaX, deltaY, deltaZ, expectedType);
+    }
+    
+    public static void powerOff(DeviceBase device){
+		device.addEvent(powerOff(device.getState(), device.getCurrentLocation()));
+	}
+    
+    public static PowerOffEvent powerOff(DeviceState state, GeoPoint location){
+		return classes.new PowerOffEvent(state, location);
+	}
+    
+    public static void powerOn(DeviceBase device){
+		device.addEvent(powerOn(device.getState(), device.getCurrentLocation()));
+	}
+    
+    public static PowerOnEvent powerOn(DeviceState state, GeoPoint location){
+		return classes.new PowerOnEvent(state, location);
+	}
+    
+    public static void rfKill(DeviceBase device){
+    	device.addEvent(rfKill(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static RFKillEvent rfKill(DeviceState state, GeoPoint location){
+        return classes.new RFKillEvent(state, location);
+    }
+    
+
+    public static void seatbelt(DeviceBase device){
+    	device.addEvent(seatbelt(device.getState(), device.getCurrentLocation()));
+    }
+    
+    
+    public static SeatBeltEvent seatbelt(DeviceState state, GeoPoint location){
+    	return classes.new SeatBeltEvent(state, location);
+    }
+    
+    
+    public static void speeding(DeviceBase device){
+    	device.addEvent(speeding(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static SpeedingEvent speeding(DeviceState state, GeoPoint location){
+    	return classes.new SpeedingEvent(state, location);
+    }
+    
+    public static void statistics(DeviceBase device){
+		device.addEvent(statistics(device.getState(), device.getCurrentLocation()));
+	}
+    
+    public static StatisticsEvent statistics(DeviceState state, GeoPoint location){
+		return classes.new StatisticsEvent(state, location);
+	}
+    
+    public static void tampering(DeviceBase device){
+    	device.addEvent(tampering(device.getState(), device.getCurrentLocation()));
+    }
+    
+    public static TamperingEvent tampering(DeviceState state, GeoPoint location){
+    	return classes.new TamperingEvent(state, location);
+    }
+    
+
+    protected DeviceNote note;
+
+    
+    
+    protected final DeviceNoteTypes type;
+
+	private AutomationDeviceEvents() {
+		this.type = DeviceNoteTypes.STATS;
+	}
+	
+	private AutomationDeviceEvents(DeviceNoteTypes type, DeviceState state, GeoPoint location){
+		this.type = type;
+		note = DeviceNote.constructNote(type, location, state);
+	}
+	
+	/***
+    *
+    * Add the attrs that need to be sent with an end of trip.  End of trip notes are types: 20,66,1,209,202<br />
+    *  - elapsed time<br />
+    *  - mpg<br />
+    *  - mpg distance<br />
+    *  - GPS filter %<br />
+    **/
+    private void endOfTripAttrs(DeviceState state, DeviceNote note){
+    	
+    	note.addAttr(EventAttr.MPG, state.getMpg());
+    	note.addAttr(EventAttr.MPG_DISTANCE, state.getMpgDistanceX100());
+    	
+    	note.addAttr(EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, state.getPointsPassedTheFilter() * 10);
+    	note.addAttr(EventAttr.PERCENTAGE_OF_TIME_SPEED_FROM_OBD_USED, state.getOBDPercent() * 10);
+    	note.addAttr(EventAttr.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED, state.getGPSPercent() * 10);
+    	
+    	note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
+    	note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
+    	
+		note.addAttr(EventAttr.NO_DRIVER_DISTANCE, state.getNoDriverDistanceX100());
+    	
+    	if (state.getProductVersion().equals(ProductType.WAYSMART)){
+    		note.addAttr(EventAttr.HEADLIGHT_OFF_DISTANCE, state.getHeadlightOffDistanceX100());
+    		note.addAttr(EventAttr.NO_TRAILER_DISTANCE, state.getNoTrailerDistanceX100());
+    		note.addAttr(EventAttr.RF_OFF_DISTANCE, state.getRFOffDistanceX100());
+    		
+    		note.addAttr(EventAttr.SPEED_LIMIT_1_TO_30_DISTANCE,  state.getnSpeedLimit1to30MilesX100());
+    		note.addAttr(EventAttr.SPEED_LIMIT_31_TO_40_DISTANCE, state.getnSpeedLimit31to40MilesX100());
+    		note.addAttr(EventAttr.SPEED_LIMIT_41_TO_54_DISTANCE, state.getnSpeedLimit41to54MilesX100());
+    		note.addAttr(EventAttr.SPEED_LIMIT_55_TO_64_DISTANCE, state.getnSpeedLimit55to64MilesX100());
+    		note.addAttr(EventAttr.SPEED_LIMIT_65_TO_80_DISTANCE, state.getnSpeedLimit65to80MilesX100());
+    	} else {
+    		note.addAttr(EventAttr.LOW_POWER_MODE_TIMEOUT, state.getLowPowerTimeout());
+    	}
+    	
+    	
+    	state.setMpgDistanceX100(0);
+    	
+    	state.setSeatbeltDistanceX100(0);
+    	state.setSeatBeltTopSpeed(0);
+    	
+    	state.setNoDriverDistanceX100(0);
+    	state.setNoTrailerDistanceX100(0);
+    	
+    	state.setHeadlightOffDistanceX100(0);
+    	state.setRFOffDistanceX100(0);
+    	
+    	state.setnSpeedLimit1to30MilesX100(0);
+		state.setnSpeedLimit31to40MilesX100(0);
+		state.setnSpeedLimit41to54MilesX100(0);
+		state.setnSpeedLimit55to64MilesX100(0);
+		state.setnSpeedLimit65to80MilesX100(0);
+    }
+
+	public DeviceNote getNote(){
+    	return note;
+    }
+	
+	public DeviceNoteTypes getNoteType(){
+    	return note.getType();
+    }
+	
+	@Override
+    public String toString(){
+    	return note.toString();
+    }
+	
+	public void updateLocation(GeoPoint location){
+    	note.location.changeLocation(location);
+    }
+
+
+
 }

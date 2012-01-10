@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.deviceTrips;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -61,7 +62,7 @@ public class CaptainNemoTrip extends Thread{
         tiwi.update_location(new GeoPoint(0, 0), 180);
         tiwi.last_location(new GeoPoint(0, 0), 180);
         
-        tiwi.add_stats();
+        AutomationDeviceEvents.statistics(tiwi);
         tiwi.turn_key_off(30);
         tiwi.power_off_device(900);
     }

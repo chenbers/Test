@@ -19,7 +19,7 @@ import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceBase;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.DeviceAttributes;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -34,7 +34,6 @@ public class TiwiProDevice extends DeviceBase {
 
     private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
 
-    private DeviceAttributes attrs;
     private AutomationCalendar trip_start, trip_stop;
 
     private ZoneManager zones;
@@ -59,77 +58,6 @@ public class TiwiProDevice extends DeviceBase {
         throw new IllegalAccessError("This is only for Waysmarts");
     }
 
-    public TiwiProDevice add_lowBattery() {
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(
-                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 0);
-        construct_note(DeviceNoteTypes.LOW_BATTERY, attrs);
-        return this;
-    }
-
-    public TiwiProDevice add_noDriver() {
-        construct_note(DeviceNoteTypes.NO_DRIVER);
-        return this;
-    }
-
-    public TiwiProDevice add_stats() {
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(EventAttr.BASE_VER, 0);
-        attrs.addAttribute(EventAttr.EMU_HASH_1, -1517168504);
-        attrs.addAttribute(EventAttr.EMU_HASH_2, 154129909);
-        attrs.addAttribute(EventAttr.EMU_HASH_3, 1825195881);
-        attrs.addAttribute(EventAttr.EMU_HASH_4, 1627500918);
-        attrs.addAttribute(EventAttr.TOTAL_AGPS_BYTES, 60000);
-        construct_note(DeviceNoteTypes.STATS, attrs);
-        return this;
-    }
-
-    public TiwiProDevice addIdlingNote(int lowIdleTime, int highIdleTime) {
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(EventAttr.LOW_IDLE, lowIdleTime);
-        attrs.addAttribute(EventAttr.HIGH_IDLE, highIdleTime);
-
-        construct_note(DeviceNoteTypes.IDLING, attrs);
-        increment_time(lowIdleTime + highIdleTime);
-        return this;
-    }
-
-    public void addIgnitionOffNote(int tripDuration,
-            int percentPointsPassedFilter) {
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(EventAttr.TRIP_DURATION, tripDuration);
-        attrs.addAttribute(
-                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
-                percentPointsPassedFilter);
-        construct_note(DeviceNoteTypes.IGNITION_OFF, attrs);
-    }
-
-    public void addPowerOffNote(int lowPowerModeSeconds) {
-        attrs.addAttribute(EventAttr.LOW_POWER_MODE_TIMEOUT,
-                lowPowerModeSeconds);
-        construct_note(DeviceNoteTypes.LOW_POWER_MODE, attrs);
-        flushNotes();
-    }
-
-    public TiwiProDevice addPowerOnNote(int WMP, int MSP, int gpsLockTime) {
-        attrs.addAttribute(EventAttr.FIRMWARE_VERSION, WMP);
-        attrs.addAttribute(EventAttr.DMM_VERSION, MSP);
-        attrs.addAttribute(EventAttr.GPS_LOCK_TIME, gpsLockTime);
-        construct_note(DeviceNoteTypes.POWER_ON, attrs);
-        return this;
-    }
-
-
-
-    public void addTamperingNote(int percentPassedFilter) {
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(
-                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
-                percentPassedFilter);
-        attrs.addAttribute(EventAttr.BACKUP_BATTERY, 6748);
-
-        construct_note(DeviceNoteTypes.UNPLUGGED, attrs);
-    }
 
     public boolean checkSbsEdit(int fileHash, int currentVersion) {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -172,28 +100,6 @@ public class TiwiProDevice extends DeviceBase {
         return true;
     }
 
-    public TiwiProDevice construct_note(DeviceNoteTypes type) {
-        attrs = new DeviceAttributes();
-        construct_note(type, attrs);
-        return this;
-    }
-
-    public TiwiProDevice construct_note(DeviceNoteTypes type,
-            DeviceAttributes attrs) {
-        TiwiNote note = new TiwiNote(type, state, tripTracker.currentLocation());
-        note.addAttrs(attrs);
-        try {
-            note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedLimit()
-                    .intValue());
-        } catch (Exception e) {
-            logger.debug(StackToString.toString(e));
-        }
-        MasterTest.print(note.toString(), Level.DEBUG);
-        state.setOdometer(0);
-        addNote(note);
-
-        return this;
-    }
 
     @Override
     public TiwiProDevice createAckNote(Map<String, Object> reply) {
@@ -213,10 +119,8 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice enter_zone(Integer zoneID) {
-
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(EventAttr.ZONE_ID, zoneID);
-        construct_note(DeviceNoteTypes.WSZONES_ARRIVAL_EX, attrs);
+    	state.setZoneID(zoneID);
+    	addEvent(AutomationDeviceEvents.enterZone(state, tripTracker.currentLocation()));
         return this;
     }
 
@@ -320,30 +224,15 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice leave_zone(Integer zoneID) {
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(EventAttr.ZONE_ID, zoneID);
-        construct_note(DeviceNoteTypes.WSZONES_DEPARTURE_EX, attrs);
+    	state.setZoneID(zoneID);
+    	addEvent(AutomationDeviceEvents.leaveZone(state, tripTracker.currentLocation()));
         return this;
     }
     
-    public TiwiProDevice rf_kill(){
-        
-        construct_note(DeviceNoteTypes.RF_KILL);
-        return this;
-    }
 
     public TiwiProDevice logout_driver(Integer RFID, Integer tripQuality,
             Integer MPG, Integer MPGOdometer) {
-        attrs = new DeviceAttributes();
-        attrs.addAttribute(EventAttr.LOGOUT_TYPE, 4);
-        attrs.addAttribute(
-                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
-                tripQuality);
-        attrs.addAttribute(EventAttr.MPG, MPG);
-        attrs.addAttribute(EventAttr.MPG_DISTANCE, MPGOdometer);
-        attrs.addAttribute(EventAttr.RFID0, -536362939);
-        attrs.addAttribute(EventAttr.RFID1, 1415806888);
-        construct_note(DeviceNoteTypes.STATS, attrs);
+    	AutomationDeviceEvents.logout(this);
         return this;
     }
 
@@ -405,12 +294,13 @@ public class TiwiProDevice extends DeviceBase {
         state.incrementTime(time_delta);
 
         if (state.getIgnition_state()) {
-            construct_note(DeviceNoteTypes.IGNITION_ON);
+            AutomationDeviceEvents.ignitionOn(this);
             trip_start = state.getTime().copy();
         } else {
             trip_stop = state.getTime().copy();
             Long tripTime = trip_stop.getDelta(trip_start) / 1000;
-            addIgnitionOffNote(tripTime.intValue(), 980);
+            state.setTripDuration(tripTime);
+            AutomationDeviceEvents.ignitionOff(this);
         }
         return this;
     }
@@ -418,14 +308,12 @@ public class TiwiProDevice extends DeviceBase {
     @Override
     protected TiwiProDevice set_power() {
 
-        attrs = new DeviceAttributes();
-
         state.setPower_state(!state.getPower_state()); // Change the power state between on and off
         if (state.getPower_state()) {
-            addPowerOnNote(state.getWMP(), state.getMSP(), 10);
-
+        	AutomationDeviceEvents.powerOn(this);
         } else if (!state.getPower_state()) {
-            addPowerOffNote(get_setting_int(DeviceProps.TIWI_LOW_POWER_MODE_SECONDS));
+        	state.setLowPowerTimeout(get_setting_int(DeviceProps.TIWI_LOW_POWER_MODE_SECONDS));
+        	AutomationDeviceEvents.powerOff(this);
             flushNotes();
         }
         return this;
@@ -459,8 +347,7 @@ public class TiwiProDevice extends DeviceBase {
         state.setPower_state(false);
         state.setIgnition_state(false);
         increment_time(timeDelta);
-
-        addTamperingNote(850);
+        AutomationDeviceEvents.tampering(this);
 
         power_on_device(state.getTime());
         turn_key_on(10);

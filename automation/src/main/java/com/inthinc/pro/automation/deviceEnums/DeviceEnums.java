@@ -6,6 +6,38 @@ import java.util.HashMap;
 import com.inthinc.pro.automation.interfaces.DeviceTypesUnique;
 
 public class DeviceEnums {
+	
+	public static enum LogoutMethod implements DeviceTypesUnique {
+		RFID_LOGOUT(0x4),
+		AUTO_LOGOUT(0x6),
+		CLEAR_PORTAL_LOGIN(0x8),
+		;
+		
+		private int index;
+		
+		private LogoutMethod(int index){
+			this.index = index;
+		}
+
+		@Override
+		public Integer getIndex() {
+			return index;
+		}
+		
+		 private static HashMap<Integer, LogoutMethod> lookupByCode = new HashMap<Integer, LogoutMethod>();
+		    
+		    static {
+		        for (LogoutMethod p : EnumSet.allOf(LogoutMethod.class))
+		        {
+		            lookupByCode.put(p.getIndex(), p);
+		        }
+		    }
+
+		@Override
+		public DeviceTypesUnique valueOf(Integer code) {
+			return lookupByCode.get(code);
+		}
+	}
 
 	
 	public static enum FwdCmdStatus implements DeviceTypesUnique {
@@ -172,9 +204,9 @@ public class DeviceEnums {
 	public static enum ViolationFlags implements DeviceTypesUnique{
 		 /* Violation Flags */
 
-	    VIOLATION_MASK_SPEEDING(1),
-	    VIOLATION_MASK_SEATBELT(2),
-	    VIOLATION_MASK_RPM(4);
+	    SPEEDING(0x1),
+	    SEATBELT(0x2),
+	    RPM(0x4);
 	    
 	    private int code;
 
@@ -200,6 +232,23 @@ public class DeviceEnums {
 	    }
 	}
 	
+	/**
+	 * value: state <br />
+	 * 0: Off-Duty <br />
+	 * 1: Off-Duty Well Site (otherwise known as waiting) <br />
+	 * 2: Sleeper Berth <br />
+	 * 3: Personal Use <br />
+	 * 4: Driving <br />
+	 * 5: On-Duty Not Driving <br />
+	 * 
+	 *  
+	 * @file notifications.h
+	 * @author Jason Litzinger <jlitzinger@inthinc.com>
+	 * @author Steve Lawrence <slawrence@inthinc.com>
+	 * @author Anthony Best <abest@inthinc.com>
+	 * @author Eric Capps <ecapps@inthinc.com>
+	 *
+	 */
 	public static enum WSHOSState implements DeviceTypesUnique {
 		OFF_DUTY(0),
 		OFF_DUTY_AT_WELL_SITE(1),

@@ -18,7 +18,6 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.models.AutomationBridgeFwdCmdParser;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.models.WaysmartClasses.MultiForwardCmd;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -89,25 +88,10 @@ public class WaysmartDevice extends DeviceBase {
 //        return this;
 //    }
 
-    public void addIgnitionOffNote() {
-    	constructNote(AutomationDeviceEvents.ignitionOff(50, 900));
-//        constructNote(DeviceNoteTypes.IGNITION_OFF);
-//        MasterTest.print(sendNote(construct_note(DeviceNoteTypes.IGNITION_OFF)),
-//                Level.DEBUG);
-    }
 
-    public void addIgnitionOnNote() {
-        constructNote(DeviceNoteTypes.IGNITION_ON);
-        MasterTest.print(sendNote(construct_note(DeviceNoteTypes.IGNITION_ON)),
-                Level.DEBUG);
-    }
-    
 
-    public WaysmartDevice addInstallEvent(InstallEvent event) {
-        addNote(constructNote(event));
-        state.setVehicleID(event.vehicleIDStr);
-        state.setAccountID(event.acctID);
-        assert(event.mcmIDStr.equals(state.getMcmID()));
+    public WaysmartDevice addInstallEvent() {
+        addEvent(AutomationDeviceEvents.install(state, tripTracker.currentLocation()));
         return this;
     }
 
@@ -146,7 +130,7 @@ public class WaysmartDevice extends DeviceBase {
             int odometer) {
         tripTracker.fakeLocationNote(location, time, sats, heading, speed,
                 odometer);
-        state.setOdometer(odometer);
+        state.setOdometerX100(odometer);
         return this;
     }
 
@@ -159,7 +143,7 @@ public class WaysmartDevice extends DeviceBase {
         GeoPoint current = tripTracker.currentLocation();
         note.setLatitude(current.getLat());
         note.setLongitude(current.getLng());
-        note.setOdometer(state.getOdometer());
+        note.setOdometer(state.getOdometerX100());
         note.setTime(state.getTime());
         MasterTest.print(note.sendNote());
         return this;
@@ -171,9 +155,9 @@ public class WaysmartDevice extends DeviceBase {
         state.getTime_last().setDate(state.getTime());
         state.getTime().addToSeconds(time_delta);
         if (state.getIgnition_state()) {
-            addIgnitionOnNote();
+            addEvent(AutomationDeviceEvents.ignitionOn(state, tripTracker.currentLocation()));
         } else {
-            addIgnitionOffNote();
+        	addEvent(AutomationDeviceEvents.ignitionOff(state, tripTracker.currentLocation()));
         }
         return this;
 
@@ -228,7 +212,7 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     public WaysmartDevice setBaseOdometer(double odometer) {
-        state.setOdometer(odometer);
+        state.setOdometerX100(odometer);
         return this;
     }
 

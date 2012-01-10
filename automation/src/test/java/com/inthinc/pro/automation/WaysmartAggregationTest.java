@@ -77,10 +77,10 @@ public class WaysmartAggregationTest {
         DeviceState state = driver.getdeviceState();
         
         state.setDriverID(unknownDriverID);
-        state.setOdometer(startingOdometer);
+        state.setOdometerX100(startingOdometer);
         state.getTime().setDate(startingTime);
         
-        driver.addEvent(25, AutomationDeviceEvents.ignitionOff(50, 95));
+        driver.addEvent(25, AutomationDeviceEvents.ignitionOff(state, null));
     }
     
     
@@ -98,19 +98,24 @@ public class WaysmartAggregationTest {
         DeviceState state = driver.getdeviceState();
         
         state.setDriverID(unknownDriverID);
-        state.setOdometer(startingOdometer);
+        state.setOdometerX100(startingOdometer);
         state.getTime().setDate(startingTime);
         
-        driver.addEvent(10, AutomationDeviceEvents.speeding(75, 100, 600, 60, 65, 500));
-        driver.addEvent(20, AutomationDeviceEvents.speeding(80, 200, 700, 40, 75, 600));
-        driver.addEvent(30, AutomationDeviceEvents.hardAccel(100, 20, 10));
-        driver.addEvent(40, AutomationDeviceEvents.hardBrake(100, 20, 10));
-        driver.addEvent(50, AutomationDeviceEvents.seatbelt(700, 90, 25, 20, 100, 600));
-        driver.addEvent(60, AutomationDeviceEvents.hardDip(10, 20, 110));
-        
+        state.setTopSpeed(75).setSpeedingDistanceX100(100).setSpeedingSpeedLimit(60).setAvgSpeed(65);
+        driver.addEvent(10, AutomationDeviceEvents.speeding(state, null));
+        state.setTopSpeed(80).setSpeedingDistanceX100(200).setSpeedingSpeedLimit(40).setAvgSpeed(75);
+        driver.addEvent(20, AutomationDeviceEvents.speeding(state, null));
+        driver.addEvent(30, AutomationDeviceEvents.hardAccel(state, null, 100));
+        driver.addEvent(40, AutomationDeviceEvents.hardBrake(state, null, 100));
+        state.setTopSpeed(25).setAvgSpeed(20).setSeatbeltViolationDistanceX100(100);
+        driver.addEvent(50, AutomationDeviceEvents.seatbelt(state, null));
+        driver.addEvent(60, AutomationDeviceEvents.hardDip(state, null, 110));
         LinkedList<DeviceNote> inOrder = driver.generateNotes();
         
         installLocation = inOrder.get(0).getLocation();
+        if (true){
+        	throw new NullPointerException();
+        }
         
         MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)inOrder.getLast()).nOdometer);
         state.getTime().addToMinutes(15);
@@ -202,8 +207,8 @@ public class WaysmartAggregationTest {
             return;
         }
         MasterTest.print(vehicle, Level.DEBUG);
-        InstallEvent event = AutomationDeviceEvents.install(vehicle.getName(), state.getMcmID(), acctID);
-        proxy.sendNotes(state, event.getNote(installLocation, state));
+        InstallEvent event = AutomationDeviceEvents.install(state, installLocation);
+        proxy.sendNotes(state, event.getNote());
     }
 
 

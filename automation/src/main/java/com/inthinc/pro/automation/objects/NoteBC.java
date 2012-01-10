@@ -102,9 +102,9 @@ public class NoteBC extends DeviceNote {
         heading = state.getHeading();
         sats = state.getSats();
         nSpeed = state.getSpeed();
-        nSpeedLimit = state.getSpeedLimit().intValue();
+        nSpeedLimit = state.getSpeedLimit();
         nLinkID = state.getLinkID();
-        nOdometer = state.getOdometer();
+        nOdometer = state.getOdometerX100();
         nBoundaryID = state.getBoundaryID();
         nDriverID = state.getDriverID();
     }
@@ -143,9 +143,9 @@ public class NoteBC extends DeviceNote {
         state.setHeading(heading);
         state.setSats(sats);
         state.setSpeed(nSpeed);
-        state.setSpeedLimit(nSpeedLimit.doubleValue());
+        state.setSpeedLimit(nSpeedLimit);
         state.setLinkID(nLinkID);
-        state.setOdometer(nOdometer);
+        state.setOdometerX100(nOdometer);
         state.setBoundaryID(nBoundaryID);
         state.setDriverID(nDriverID);
         NoteBC temp = new NoteBC(type, state, location);

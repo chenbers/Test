@@ -34,7 +34,7 @@ public class TiwiNote extends DeviceNote {
         this.heading = state.getHeading();
         this.maprev = state.getMapRev();
         this.Speed = state.getSpeed();
-        this.odometer = state.getOdometer();
+        this.odometer = state.getOdometerX100();
     }
     
     
@@ -116,8 +116,9 @@ public class TiwiNote extends DeviceNote {
         state.getTime().setDate(time);
         state.setMapRev(maprev);
         state.setSpeed(Speed);
-        state.setOdometer(odometer);
+        state.setOdometerX100(odometer);
         TiwiNote temp = new TiwiNote(type, state, location);
+        temp.addAttrs(attrs);
         return temp;
     }
 

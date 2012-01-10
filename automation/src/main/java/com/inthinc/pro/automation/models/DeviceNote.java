@@ -78,7 +78,14 @@ public abstract class DeviceNote {
     
     public static DeviceNote constructNote(DeviceNoteTypes type, GeoPoint location, DeviceState state) {
         DeviceNote note = null;
-        if (state.getProductVersion().equals(ProductType.WAYSMART)){
+        
+        if (location == null){
+        	location = new GeoPoint(0.0, 0.0);
+        }
+        
+        if (state == null){
+        	note = new TiwiNote(type);        	
+        } else if (state.getProductVersion().equals(ProductType.WAYSMART)){
         	if (state.getWaysDirection().equals(Direction.sat)){
         		note = new WSNoteVersion3(type, state, location);
         	}
@@ -87,12 +94,16 @@ public abstract class DeviceNote {
             } else {
                 note = new WSNoteVersion2(type, state, location);
             }
-        } else if (state == null || location == null){
-            note = new TiwiNote(type);
         } else {
             note = new TiwiNote(type, state, location);
             note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedLimit());
+            state.setOdometerX100(0);
         }
+        
+        if (state.getViolationFlags() != 0x00){
+        	note.addAttr(EventAttr.VIOLATION_FLAGS, state.getViolationFlags());	
+        }
+        
         return note;
     }
 

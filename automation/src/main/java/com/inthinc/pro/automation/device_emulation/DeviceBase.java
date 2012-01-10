@@ -20,12 +20,6 @@ import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.AutomationEvents;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.IgnitionOffEvent;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.IgnitionOn;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.NoteEvent;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.RFKillEvent;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.SeatBeltEvent;
 import com.inthinc.pro.automation.models.AutomationDeviceEvents.SpeedingEvent;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
@@ -44,21 +38,21 @@ import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public abstract class DeviceBase {
 
-    protected final NoteManager notes;
-    protected final ArrayList<Integer> speed_points;
-    protected final ArrayList<GeoPoint> speed_loc;
     protected final Distance_Calc calculator;
-    protected final TripTracker tripTracker;
+    protected String lastDownload;
     protected MCMProxyObject mcmProxy;
+    protected int note_count = 4;
+    protected final NoteManager notes;
+    protected Addresses portal;
     protected Object reply;
     
-    protected String lastDownload;
-
-    protected Addresses portal;
     protected Map<Integer, MapSection> sbsModule;
 
+    protected final ArrayList<GeoPoint> speed_loc;
+    protected final ArrayList<Integer> speed_points;
+
     protected DeviceState state;
-    protected int note_count = 4;
+    protected final TripTracker tripTracker;
 
     public DeviceBase(String IMEI, Addresses server,
             Map<DeviceProps, String> map, ProductType version) {
@@ -102,61 +96,31 @@ public abstract class DeviceBase {
 
     protected abstract void ackFwdCmds(String[] reply);
 
-    public DeviceBase addIgnitionOnEvent(IgnitionOn event) {
-        addNote(constructNote(event));
-        return this;
-    }
-    
-    public DeviceBase addIgnitionOffEvent(IgnitionOffEvent event) {
-        addNote(constructNote(event));
-        return this;
-    }
-    public DeviceBase addRFKillEvent(RFKillEvent event) {
-        addNote(constructNote(event));
-        return this;
+
+    public DeviceBase addEvent(AutomationDeviceEvents event){
+    	addNote(event.getNote());
+    	return this;
     }
 
     public DeviceBase addLocation(){
-        addNote(constructNote(AutomationDeviceEvents.location(state)));
+        addEvent(AutomationDeviceEvents.location(state, tripTracker.currentLocation()));
         return this;
     }
-
+    
     protected DeviceBase addNote(DeviceNote note) {
         notes.addNote(note);
-        MasterTest.print(note);
         checkQueue();
         return this;
     }
 
-    public DeviceBase addNoteEvent(NoteEvent event){
-        addNote(constructNote(event));
-        return this;
-    }
 
-    protected DeviceNote constructNote(AutomationEvents event){
-        return event.getNote(tripTracker.currentLocation(), state);
-    }
-
-    public DeviceBase constructNote(DeviceNoteTypes type) {
-        return addNote(DeviceNote.constructNote(type, tripTracker.currentLocation(), state));
-    }
-
-    public DeviceBase addSeatbeltEvent(SeatBeltEvent event){
-        addNote(constructNote(event));
-        return this;
-    }
-
-    public DeviceBase addSpeedingNote(SpeedingEvent event){
-        addNote(constructNote(event));
-        return this;
-    }
-
-    protected DeviceBase checkQueue() {
+	protected DeviceBase checkQueue() {
         if (notes.size() >= get_note_count()) {
             send_note();
         }
         return this;
     }
+
 
     private DeviceBase configurate_device() {
         if (portal == Addresses.TEEN_PROD) {
@@ -165,6 +129,10 @@ public abstract class DeviceBase {
         dump_settings();
         get_changes();
         return this;
+    }
+
+    protected DeviceBase constructNote(DeviceNoteTypes type) {
+        return addNote(DeviceNote.constructNote(type, tripTracker.currentLocation(), state));
     }
 
     protected abstract DeviceBase createAckNote(Map<String, Object> reply);
@@ -232,12 +200,16 @@ public abstract class DeviceBase {
                 mcmProxy.audioUpdate(state.getImei(), map));
     }
 
+    public GeoPoint getCurrentLocation() {
+		return tripTracker.currentLocation();
+	}
+
     public NoteManager getNotes() {
         return notes;
     }
 
     public int getOdometer() {
-        return state.getOdometer();
+        return state.getOdometerX100();
     }
 
     public DeviceState getState() {
@@ -279,6 +251,8 @@ public abstract class DeviceBase {
 
         return this;
     }
+    
+    
 
     private DeviceBase is_speeding() {
         GeoPoint point = tripTracker.currentLocation();
@@ -290,6 +264,7 @@ public abstract class DeviceBase {
             state.getSpeedingStartTime().setDate(state.getTime());
             state.setSpeedingSpeedLimit(state.getSpeedLimit().intValue());
             MasterTest.print("Started Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
+            
         } else if (state.getSpeed() > state.getSpeedLimit()
                 && state.isSpeeding()) {
             speed_loc.add(point);
@@ -298,6 +273,7 @@ public abstract class DeviceBase {
             	state.setTopSpeed(state.getSpeed());
             }
             MasterTest.print("Still Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
+            
         } else if (state.getSpeed() < state.getSpeedLimit()
                 && state.isSpeeding()) {
         	state.getSpeedingStopTime().setDate(state.getTime());
@@ -305,6 +281,7 @@ public abstract class DeviceBase {
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
             MasterTest.print("Stopped Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
+            
             was_speeding();
         }
         return this;
@@ -412,6 +389,9 @@ public abstract class DeviceBase {
         Map<DeviceProps, String> change = new HashMap<DeviceProps, String>();
         change.put(key, value);
         set_settings(change);
+        if (key.equals(DeviceProps.SPEED_LIMIT) || key.equals(DeviceProps.TIWI_SPEED_LIMIT)){
+        	state.setSpeedLimit(((Double)Double.parseDouble(value)).intValue());
+        }
         return this;
     }
 
@@ -504,17 +484,17 @@ public abstract class DeviceBase {
                     .calc_distance(last, loc));
         }
         
-        Integer distance = (int) (speeding_distance * 100);
         
-        SpeedingEvent event = AutomationDeviceEvents.speeding(state.getTopSpeed(),
-                distance, state.getMaxRpm(), state.getSpeedingSpeedLimit(), avgSpeed,
-                state.getAvgRpm());
+        state.setSpeedingDistanceX100((int) (speeding_distance * 100));
+        state.setAvgSpeed(avgSpeed);
         
-        addSpeedingNote(event);
+        SpeedingEvent event = AutomationDeviceEvents.speeding(state, tripTracker.currentLocation());
+        
+        addEvent(event);
         return this;
     }
 
-    protected boolean writeTiwiFile(String fileName, Map<String, Object> reply) {
+	protected boolean writeTiwiFile(String fileName, Map<String, Object> reply) {
         MasterTest.print(reply, Level.DEBUG);
         if (!fileName.startsWith("target")) {
             String resourceFile = "target/test/resources/" + state.getImei()
@@ -544,12 +524,6 @@ public abstract class DeviceBase {
             MasterTest.print(StackToString.toString(e), Level.ERROR);
         }
         return false;
-    }
-    
-    public void firstLocation(String searchStringForGoogleMapsAPI) {
-        
-        
-        
     }
 
 

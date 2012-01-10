@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.LoginCapability;
+import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.objects.TiwiProDevice;
@@ -399,8 +400,8 @@ public class LiveFleetTest extends WebRallyTest {
         tiwi.set_time(initialTime.addToSeconds(60));
         tiwi.update_location(new GeoPoint(60, 0), 15);
         tiwi.last_location(new GeoPoint(60, 0), 15);
-        
-        tiwi.add_stats();
+
+        AutomationDeviceEvents.statistics(tiwi);
         tiwi.turn_key_off(30);
         tiwi.power_off_device(900);
         
@@ -417,7 +418,7 @@ public class LiveFleetTest extends WebRallyTest {
         tiwi.update_location(new GeoPoint(40.7097, -111.9925), 15);
         tiwi.last_location(new GeoPoint(40.7097, -111.9925), 15);
         
-        tiwi.add_stats();
+        AutomationDeviceEvents.statistics(tiwi);
         tiwi.turn_key_off(30);
         tiwi.power_off_device(900);
         

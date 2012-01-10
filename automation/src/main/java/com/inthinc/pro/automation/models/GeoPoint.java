@@ -8,8 +8,8 @@ import com.inthinc.pro.automation.utils.MasterTest;
 
 public class GeoPoint {
 
-    private final double lat;
-    private final double lng;
+    private double lat;
+    private double lng;
     
     private final static long notebc = 4294967295L;
     private final static int note = 0x00FFFFFF;
@@ -95,6 +95,11 @@ public class GeoPoint {
     		return false;
     	}
     }
+
+	public void changeLocation(GeoPoint location) {
+		lat = location.lat;
+		lng = location.lng;
+	}
     
 
 }

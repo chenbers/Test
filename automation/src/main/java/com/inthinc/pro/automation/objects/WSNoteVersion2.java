@@ -30,7 +30,7 @@ public class WSNoteVersion2 extends DeviceNote {
         this.heading = state.getHeading();
         this.sats = state.getSats();
         this.nSpeed = state.getSpeed();
-        this.odometer = state.getOdometer() / 100;
+        this.odometer = state.getOdometerX100() / 100;
         this.duration = 0;
     }
 
@@ -88,7 +88,7 @@ public class WSNoteVersion2 extends DeviceNote {
         state.setHeading(heading);
         state.setSats(sats);
         state.setSpeed(nSpeed);
-        state.setOdometer(odometer);
+        state.setOdometerX100(odometer);
         WSNoteVersion2 temp = new WSNoteVersion2(type, state, location);
         temp.addAttrs(attrs);
         return temp;

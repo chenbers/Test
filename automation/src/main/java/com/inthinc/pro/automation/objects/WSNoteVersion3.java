@@ -50,7 +50,7 @@ public class WSNoteVersion3 extends DeviceNote {
 		m_nSpeed = state.getSpeed();
 		m_nSpeedLimit = state.getSpeedLimit().intValue();
 		m_nLinkID = state.getLinkID();
-		m_nOdometer100x = state.getOdometer();
+		m_nOdometer100x = state.getOdometerX100();
 		m_nBoundaryID = state.getStateID();
 		m_nDriverIdSiloDbVersion = state.getDriverID();
 	}
@@ -111,7 +111,7 @@ public class WSNoteVersion3 extends DeviceNote {
 		state.setSpeed(m_nSpeed);
 		state.setSpeedLimit(m_nSpeedLimit);
 		state.setLinkID(m_nLinkID);
-		state.setOdometer(m_nOdometer100x);
+		state.setOdometerX100(m_nOdometer100x);
 		state.setBoundaryID(m_nBoundaryID);
 		state.setDriverID(m_nDriverIdSiloDbVersion);
 		
