@@ -1,5 +1,7 @@
 package com.inthinc.pro.model.aggregation;
 
+import java.util.List;
+
 public class DriverPerformance implements Comparable<DriverPerformance> {
     
     private String groupName;
@@ -17,6 +19,8 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     private Integer speedCount8to14Over;
     private Integer speedCount15Over;
     private Boolean ryg;
+    
+    List<VehiclePerformance> vehiclePerformanceBreakdown;
     
     public DriverPerformance()
     {
@@ -184,5 +188,33 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     
     private boolean naScore(Integer score) {
         return score == null || score.intValue() == -1;
+    }
+
+    public List<VehiclePerformance> getVehiclePerformanceBreakdown() {
+        return vehiclePerformanceBreakdown;
+    }
+    public void setVehiclePerformanceBreakdown(List<VehiclePerformance> vehiclePerformanceBreakdown) {
+        this.vehiclePerformanceBreakdown = vehiclePerformanceBreakdown;
+    }
+    
+    public String dump() {
+        
+        return "new DriverPerformance(" +
+               "\"" + groupName + "\"," +
+                      driverID + "," +
+                      "\"" + driverName + "\"," +
+                      "\"" + employeeID + "\"," +
+                      score + "," +
+                      totalMiles + "," +
+                      hardAccelCount + "," +
+                      hardBrakeCount + "," +
+                      hardTurnCount + "," +
+                      hardVerticalCount + "," +
+                      seatbeltCount + ", " +
+        speedCount0to7Over + "," +
+        speedCount8to14Over + "," +
+        speedCount15Over + ");";
+        
+
     }
 }

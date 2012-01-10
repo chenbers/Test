@@ -7,9 +7,9 @@ import java.util.TimeZone;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverPerformanceDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.VehiclePerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
@@ -18,6 +18,7 @@ import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.VehiclePerformance;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 
@@ -25,6 +26,8 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
 
     private GroupReportDAO groupReportDAO;
     private EventDAO eventDAO;
+    private VehiclePerformanceDAO vehiclePerformanceDAO;
+    
     private static List<NoteType> loginNoteType = new ArrayList<NoteType>();
     static {
         // tiwipro
@@ -73,6 +76,10 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
             dp.setSpeedCount0to7Over(s.getSpeedEvents1To7MphOver() == null ? 0 : s.getSpeedEvents1To7MphOver().intValue());
             dp.setSpeedCount8to14Over(s.getSpeedEvents8To14MphOver() == null ? 0 : s.getSpeedEvents8To14MphOver().intValue());
             dp.setSpeedCount15Over(s.getSpeedEvents15PlusMphOver() == null ? 0 : s.getSpeedEvents15PlusMphOver().intValue());
+            
+            List<VehiclePerformance> vehiclePerformanceBreakdown = vehiclePerformanceDAO.getVehiclePerformance(score.getDriver().getDriverID(), interval);
+            if (vehiclePerformanceBreakdown != null && vehiclePerformanceBreakdown.size() > 0) 
+                dp.setVehiclePerformanceBreakdown(vehiclePerformanceBreakdown);
             driverPerformanceList.add(dp);
         }
         
@@ -160,6 +167,14 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
 
     public void setEventDAO(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
+    }
+
+    public VehiclePerformanceDAO getVehiclePerformanceDAO() {
+        return vehiclePerformanceDAO;
+    }
+
+    public void setVehiclePerformanceDAO(VehiclePerformanceDAO vehiclePerformanceDAO) {
+        this.vehiclePerformanceDAO = vehiclePerformanceDAO;
     }
 
 

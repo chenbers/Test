@@ -25,5 +25,7 @@ default-autowire="byName">
   <bean id="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO"/>
   <bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO" parent="genericJDBCDAO"/>
   <bean id="fwdCmdSpoolWS" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS"/>
+
+  <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO"/>
 	
 </beans>

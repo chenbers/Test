@@ -22,5 +22,6 @@ default-autowire="byName">
     	<property name="addressLookup" ref="${reportAddressLookup}"></property>
   </bean>
   <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
+    <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO"/>
   
 </beans>

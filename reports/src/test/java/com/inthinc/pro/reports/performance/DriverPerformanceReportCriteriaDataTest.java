@@ -2,7 +2,6 @@ package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,6 +15,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
+import com.inthinc.pro.model.aggregation.VehiclePerformance;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportType;
 
@@ -49,6 +49,11 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         dump("TeamDriverPerformance_ryg", 1, criteria, FormatType.PDF);
         dump("TeamDriverPerformance_ryg", 1, criteria, FormatType.HTML);
 
+        criteria.addParameter("USE_METRIC", Boolean.TRUE);
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, initInterval(), true);
+        
+        dump("TeamDriverPerformanceMetric_ryg", 1, criteria, FormatType.PDF);
+        dump("TeamDriverPerformanceMetric_ryg", 1, criteria, FormatType.HTML);
     }
     @Test
     public void individualDriverTest() {
@@ -118,7 +123,14 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
 
             list.add(new DriverPerformance("Group", 100, "Driver NA", "Emp NA", -1, 0, 0,0,0,0,0));
             for (int i = 0; i < 5; i++) {
-                list.add(new DriverPerformance("Group", i, "Driver " + i, "Emp " + i, i*10+1, i*1000, i,i,i,i,i));
+                DriverPerformance driverPerformance = new DriverPerformance("Group", i, "Driver " + i, "Emp " + i, i*10+1, i*1000, i,i,i,i,i);
+                List<VehiclePerformance> vehiclePerformanceBreakdown = new ArrayList<VehiclePerformance>();
+                for (int j = 0; j < i+1; j++) {
+                    vehiclePerformanceBreakdown.add(new VehiclePerformance("Vehicle " + i + "_" + j, i*10+1, i*1000, i,i,i,i,i, 0,0,0));
+                }
+                driverPerformance.setVehiclePerformanceBreakdown(vehiclePerformanceBreakdown);
+                
+                list.add(driverPerformance);
             }
             return list;
         }
