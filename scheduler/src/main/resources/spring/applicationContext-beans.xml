@@ -168,4 +168,7 @@
     <property name="disabledGoogleMapsInReportsAddressLookupBean" ref="${disabledGoogleMapsInReportsAddressLookup}"></property>
   </bean>
 
+
+    <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.report.impl.DriverPerformanceDAOImpl"/>
+
 </beans>

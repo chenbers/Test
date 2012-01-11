@@ -47,7 +47,7 @@ public class VehiclePerformanceJDBCDAO  extends GenericJDBCDAO implements Vehicl
             statement.setInt(1, driverID);
             statement.setDate(2, java.sql.Date.valueOf(dateFormatter.print(interval.getStart())));
             statement.setDate(3, java.sql.Date.valueOf(dateFormatter.print(interval.getEnd())));
-System.out.println("statement:" + statement.toString());            
+            //System.out.println("statement:" + statement.toString());            
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -67,9 +67,11 @@ System.out.println("statement:" + statement.toString());
                 vehiclePerformanceRecord.setVehicleName(resultSet.getString(13));
                 
                 double totalMiles = vehiclePerformanceRecord.getTotalMiles();
-                double score = scoreCalculator.getOverall(scoreCalculator.getSeatBeltScore(totalMiles, seatbeltPenalty), scoreCalculator.getStyleScore(totalMiles, stylePenalty), scoreCalculator.getSpeedingScore(totalMiles, speedPenalty));
-                vehiclePerformanceRecord.setScore((int)score);
-                vehiclePerformanceRecordList.add(vehiclePerformanceRecord);
+                if (totalMiles > 0.0) {
+                    double score = scoreCalculator.getOverallFromPenalty(totalMiles, seatbeltPenalty, stylePenalty, speedPenalty);
+                    vehiclePerformanceRecord.setScore((int)score);
+                    vehiclePerformanceRecordList.add(vehiclePerformanceRecord);
+                }
             }
                 
 

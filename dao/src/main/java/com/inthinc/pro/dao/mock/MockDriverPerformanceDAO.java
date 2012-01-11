@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.DriverPerformanceDAO;
+import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;

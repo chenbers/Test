@@ -10,7 +10,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.DriverPerformanceDAO;
+import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;

@@ -35,8 +35,8 @@ import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.hessian.report.DriverPerformanceReportHessianDAO;
 import com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO;
+import com.inthinc.pro.dao.report.impl.DriverPerformanceDAOImpl;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.DriverScore;
@@ -903,7 +903,7 @@ public class ReportServiceTest {
     
     @Test
     public void driverPerformanceMetrics() {
-        DriverPerformanceReportHessianDAO driverPerformanceReportHessianDAO = new DriverPerformanceReportHessianDAO();
+        DriverPerformanceDAOImpl driverPerformanceReportHessianDAO = new DriverPerformanceDAOImpl();
         GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
         groupReportHessianDAO.setReportService(reportService);
         driverPerformanceReportHessianDAO.setGroupReportDAO(groupReportHessianDAO);

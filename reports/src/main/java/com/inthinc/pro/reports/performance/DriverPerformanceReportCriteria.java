@@ -9,7 +9,7 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.inthinc.pro.dao.DriverPerformanceDAO;
+import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;

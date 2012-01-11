@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.hessian.report;
+package com.inthinc.pro.dao.report.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.TimeZone;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.DriverPerformanceDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehiclePerformanceDAO;
+import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
@@ -22,7 +22,7 @@ import com.inthinc.pro.model.aggregation.VehiclePerformance;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 
-public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
+public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
 
     private GroupReportDAO groupReportDAO;
     private EventDAO eventDAO;

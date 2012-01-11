@@ -53,7 +53,7 @@ default-autowire="byName">
 
 	
   <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"/>
-  <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.hessian.report.DriverPerformanceReportHessianDAO"/>
+  
   
    
 </beans>

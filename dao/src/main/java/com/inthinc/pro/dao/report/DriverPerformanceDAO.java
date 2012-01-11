@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao;
+package com.inthinc.pro.dao.report;
 
 import java.util.List;
 

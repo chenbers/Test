@@ -1,7 +1,7 @@
 package it.com.inthinc.pro.dao;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import it.com.inthinc.pro.dao.model.GroupListData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.com.inthinc.pro.dao.model.ITDataExt;
@@ -13,8 +13,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
@@ -27,10 +25,9 @@ import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.hessian.report.DriverPerformanceReportHessianDAO;
 import com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO;
 import com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO;
-import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.dao.report.impl.DriverPerformanceDAOImpl;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
@@ -92,7 +89,7 @@ public class DriverPerformanceTest {
     
     @Test
     public void driverPerformance() {
-        DriverPerformanceReportHessianDAO driverPerformanceReportHessianDAO = new DriverPerformanceReportHessianDAO();
+        DriverPerformanceDAOImpl driverPerformanceReportHessianDAO = new DriverPerformanceDAOImpl();
         GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
         groupReportHessianDAO.setReportService(reportService);
         VehiclePerformanceJDBCDAO vehiclePerformanceDAO = new VehiclePerformanceJDBCDAO();
