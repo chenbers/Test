@@ -1,6 +1,7 @@
 package it.com.inthinc.pro.dao;
 
 
+import static org.junit.Assert.*;
 import it.com.inthinc.pro.dao.model.GroupListData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.com.inthinc.pro.dao.model.ITDataExt;
@@ -58,9 +59,6 @@ public class DriverPerformanceTest {
 
         reportService = new ReportServiceCreator(host, port).getService();
         siloService = new SiloServiceCreator(host, port).getService();
-        // HessianDebug.debugIn = true;
-        // HessianDebug.debugOut = true;
-        // HessianDebug.debugRequest = true;
 
         initApp();
         itData = new ITDataExt();
@@ -74,14 +72,7 @@ public class DriverPerformanceTest {
         
         TimeZone timeZone = TimeZone.getTimeZone(ReportTestConst.TIMEZONE_STR);
         dateTimeZone = DateTimeZone.forTimeZone(timeZone);
-        Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
         
-        DateMidnight start = new DateMidnight(new DateTime(((long)itData.startDateInSec * 1000l), dateTimeZone), dateTimeZone);
-        DateTime end = new DateMidnight(((long)todayInSec * 1000l), dateTimeZone).toDateTime().plusDays(1).minus(6000);
-        Interval interval  = new Interval(start, end);
-//        totalDays = interval.toPeriod(PeriodType.days()).getDays();
-//          if (totalDays > MAX_TOTAL_DAYS)
-//              totalDays = MAX_TOTAL_DAYS;
   }
 
     private static void initApp() throws Exception {
@@ -112,40 +103,46 @@ public class DriverPerformanceTest {
         
         
         Interval interval = TimeFrame.TODAY.getInterval(dateTimeZone);
-System.out.println("Interval: " + interval);        
-//        for (int groupIdx = ITData.GOOD; groupIdx <= ITData.BAD; groupIdx++) {
-      int groupIdx = ITData.GOOD;  {
-            GroupListData groupListData = itData.teamGroupListData.get(groupIdx);
-            Group group = groupListData.group;
-            List<DriverPerformance> driverPerformanceList = driverPerformanceReportHessianDAO.getDriverPerformanceListForGroup(group.getGroupID(), group.getName(), interval);
-            for (DriverPerformance dp : driverPerformanceList) {
-                System.out.println(dp.dump());
-                if (dp.getVehiclePerformanceBreakdown() != null) {
-                    for (VehiclePerformance vehiclePerformance : dp.getVehiclePerformanceBreakdown()) {
-                        System.out.println("   " + vehiclePerformance.dump());
-                        
-                    }
-                }
-
+        int groupIdx = ITData.GOOD;  
+        GroupListData groupListData = itData.teamGroupListData.get(groupIdx);
+        Group group = groupListData.group;
+        List<DriverPerformance> driverPerformanceList = driverPerformanceReportHessianDAO.getDriverPerformanceListForGroup(group.getGroupID(), group.getName(), interval);
+        boolean first = true;
+        for (DriverPerformance dp : driverPerformanceList) {
+            if (first) {
+                assertEquals("1st Driver Score", 27, dp.getScore().intValue());
+                assertEquals("1st Driver Mileage", 29700, dp.getTotalMiles().intValue());
             }
-            
-            
-            
-//            List<DriverPerformanceKeyMetrics> list = driverPerformanceReportHessianDAO.getDriverPerformanceKeyMetricsListForGroup(
-//                    group.getGroupID(), "test division", group.getName(), TimeFrame.TODAY);
-//            assertEquals("1 item in key metrics list", 1, list.size());
-//            DriverPerformanceKeyMetrics metrics = list.get(0);
-//            assertEquals("total miles", expectedDailyMileagePerGroup[groupIdx], metrics.getTotalMiles().longValue());
-//            assertEquals("driver", itData.teamGroupData.get(groupIdx).driver.getPerson().getFullName(), metrics.getDriverName());
-//            assertEquals("team name", group.getName(), metrics.getTeamName());
-//            assertEquals("Lo idle time", expectedDailyLoIdle[groupIdx], metrics.getLoIdleViolationsMinutes().intValue());
-//            assertEquals("Hi idle time", expectedDailyHiIdle[groupIdx], metrics.getHiIdleViolationsMinutes().intValue());
-//            assertEquals("idle violations count", expectedIdleViolationCount[groupIdx], metrics.getIdleViolationsCount().intValue());
-//            assertEquals("Login count", expectedLoginCount[groupIdx], metrics.getLoginCount().intValue());
-//            assertEquals("Overall Score", expectedTeamOverall[groupIdx], metrics.getOverallScore());
+            else {
+                assertEquals("2nd/3rd Driver Score", -1, dp.getScore().intValue());
+                assertEquals("2nd/3rd Driver Mileage", 0, dp.getTotalMiles().intValue());
+            }
+            first = false;
+            VehiclePerformance vpTotals = new VehiclePerformance("", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); 
+            if (dp.getVehiclePerformanceBreakdown() != null) {
+                for (VehiclePerformance vp : dp.getVehiclePerformanceBreakdown()) {
+                    vpTotals.setHardAccelCount(vpTotals.getHardAccelCount() + vp.getHardAccelCount());
+                    vpTotals.setHardVerticalCount(vpTotals.getHardVerticalCount() + vp.getHardVerticalCount());
+                    vpTotals.setHardBrakeCount(vpTotals.getHardBrakeCount() + vp.getHardBrakeCount());
+                    vpTotals.setHardTurnCount(vpTotals.getHardTurnCount() + vp.getHardTurnCount());
+                    vpTotals.setSeatbeltCount(vpTotals.getSeatbeltCount() + vp.getSeatbeltCount());
+                    vpTotals.setSpeedCount0to7Over(vpTotals.getSpeedCount0to7Over() + vp.getSpeedCount0to7Over());
+                    vpTotals.setSpeedCount15Over(vpTotals.getSpeedCount15Over() + vp.getSpeedCount15Over());
+                    vpTotals.setSpeedCount8to14Over(vpTotals.getSpeedCount8to14Over() + vp.getSpeedCount8to14Over());
+                    vpTotals.setTotalMiles(vpTotals.getTotalMiles() + vp.getTotalMiles());
+                }
+                
+                assertEquals("HardAccelCount", dp.getHardAccelCount(), vpTotals.getHardAccelCount());
+                assertEquals("HardVerticalCount", dp.getHardVerticalCount(), vpTotals.getHardVerticalCount());
+                assertEquals("HardBrakeCount", dp.getHardBrakeCount(), vpTotals.getHardBrakeCount());
+                assertEquals("HardTurnCount", dp.getHardTurnCount(), vpTotals.getHardTurnCount());
+                assertEquals("SeatbeltCount", dp.getSeatbeltCount(), vpTotals.getSeatbeltCount());
+                assertEquals("SpeedCount0to7Over", dp.getSpeedCount0to7Over(), vpTotals.getSpeedCount0to7Over());
+                assertEquals("SpeedCount15Over", dp.getSpeedCount15Over(), vpTotals.getSpeedCount15Over());
+                assertEquals("SpeedCount8to14Over", dp.getSpeedCount8to14Over(), vpTotals.getSpeedCount8to14Over());
+                assertEquals("HardAccelCount", dp.getHardAccelCount(), vpTotals.getHardAccelCount());
+                assertEquals("TotalMiles", dp.getTotalMiles(), vpTotals.getTotalMiles());
+            }
         }
-        
     }
-
-    
 }
