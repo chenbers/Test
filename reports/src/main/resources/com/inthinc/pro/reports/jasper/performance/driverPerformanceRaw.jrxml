@@ -10,6 +10,45 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="vehiclePerformanceBreakdown">
+		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="hardAccelCount" class="java.lang.Integer">
+			<fieldDescription><![CDATA[hardAccelCount]]></fieldDescription>
+		</field>
+		<field name="hardBrakeCount" class="java.lang.Integer">
+			<fieldDescription><![CDATA[hardBrakeCount]]></fieldDescription>
+		</field>
+		<field name="hardTurnCount" class="java.lang.Integer">
+			<fieldDescription><![CDATA[hardTurnCount]]></fieldDescription>
+		</field>
+		<field name="hardVerticalCount" class="java.lang.Integer">
+			<fieldDescription><![CDATA[hardVerticalCount]]></fieldDescription>
+		</field>
+		<field name="score" class="java.lang.Integer">
+			<fieldDescription><![CDATA[score]]></fieldDescription>
+		</field>
+		<field name="seatbeltCount" class="java.lang.Integer">
+			<fieldDescription><![CDATA[seatbeltCount]]></fieldDescription>
+		</field>
+		<field name="speedCount0to7Over" class="java.lang.Integer">
+			<fieldDescription><![CDATA[speedCount0to7Over]]></fieldDescription>
+		</field>
+		<field name="speedCount15Over" class="java.lang.Integer">
+			<fieldDescription><![CDATA[speedCount15Over]]></fieldDescription>
+		</field>
+		<field name="speedCount8to14Over" class="java.lang.Integer">
+			<fieldDescription><![CDATA[speedCount8to14Over]]></fieldDescription>
+		</field>
+		<field name="totalMiles" class="java.lang.Integer">
+			<fieldDescription><![CDATA[totalMiles]]></fieldDescription>
+		</field>
+		<field name="vehicleName" class="java.lang.String">
+			<fieldDescription><![CDATA[vehicleName]]></fieldDescription>
+		</field>
+	</subDataset>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
 	<field name="driverID" class="java.lang.Integer"/>
@@ -26,6 +65,7 @@
 	<field name="speedCount0to7Over" class="java.lang.Integer"/>
 	<field name="speedCount8to14Over" class="java.lang.Integer"/>
 	<field name="speedCount15Over" class="java.lang.Integer"/>
+	<field name="vehiclePerformanceBreakdown" class="java.util.List"/>
 	<columnHeader>
 		<band height="20">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -49,86 +89,91 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="200" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-53" mode="Opaque" x="200" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.4a.raw")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-77" mode="Opaque" x="250" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.5.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="250" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="300" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw.english")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="250" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="300" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[$P{USE_METRIC}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw.metric")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="300" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.7.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="500" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.10.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="500" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="550" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.11.raw")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="550" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="600" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.12.raw.english")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="550" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="600" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[$P{USE_METRIC}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.12.raw.metric")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="600" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="650" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.13.raw.english")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="600" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="650" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[$P{USE_METRIC}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.13.raw.metric")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="650" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="700" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{USE_METRIC}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.14.raw.english")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="650" y="0" width="50" height="20" backcolor="#FFFFFF">
+				<reportElement key="textField-77" mode="Opaque" x="700" y="0" width="50" height="20" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[$P{USE_METRIC}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -137,7 +182,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="21">
+		<band height="41">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-51" mode="Opaque" x="0" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -158,56 +203,127 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="200" y="0" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[~]]></text>
+			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="200" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="250" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{score},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="250" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="300" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="300" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{seatbeltCount}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hardAccelCount}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hardBrakeCount}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="500" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hardTurnCount}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="500" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="550" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{hardVerticalCount}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="550" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="600" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{speedCount0to7Over}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="600" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="650" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{speedCount8to14Over}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="650" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="700" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{speedCount15Over}.toString()]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement x="200" y="20" width="550" height="21"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="vehiclePerformanceBreakdown">
+						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{vehiclePerformanceBreakdown})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="21" width="550">
+						<textField isStretchWithOverflow="true">
+							<reportElement x="0" y="0" width="50" height="20"/>
+							<textElement/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="50" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{score},$P{REPORT_LOCALE})]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="100" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="150" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{seatbeltCount}.toString()]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="200" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{hardAccelCount}.toString()]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="250" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{hardBrakeCount}.toString()]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="300" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{hardTurnCount}.toString()]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{hardVerticalCount}.toString()]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{speedCount0to7Over}.toString()]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{speedCount8to14Over}.toString()]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="textField-77" mode="Opaque" x="500" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{speedCount15Over}.toString()]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 		</band>
 	</detail>
 </jasperReport>

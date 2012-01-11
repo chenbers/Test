@@ -48,12 +48,14 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         
         dump("TeamDriverPerformance_ryg", 1, criteria, FormatType.PDF);
         dump("TeamDriverPerformance_ryg", 1, criteria, FormatType.HTML);
+        dump("TeamDriverPerformance_ryg", 1, criteria, FormatType.EXCEL);
 
         criteria.addParameter("USE_METRIC", Boolean.TRUE);
         criteria.init(getMockGroupHierarchy(), GROUP_ID, initInterval(), true);
         
         dump("TeamDriverPerformanceMetric_ryg", 1, criteria, FormatType.PDF);
         dump("TeamDriverPerformanceMetric_ryg", 1, criteria, FormatType.HTML);
+        dump("TeamDriverPerformanceMetric_ryg", 1, criteria, FormatType.EXCEL);
     }
     @Test
     public void individualDriverTest() {
@@ -81,6 +83,7 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         
         dump("TeamDriverPerformance", 1, criteria, FormatType.PDF);
         dump("TeamDriverPerformance", 1, criteria, FormatType.HTML);
+        dump("TeamDriverPerformance", 1, criteria, FormatType.EXCEL);
 
     }
 
