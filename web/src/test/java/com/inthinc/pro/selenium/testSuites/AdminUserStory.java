@@ -47,7 +47,7 @@ public class AdminUserStory extends JUnitStories {
 	public Configuration configuration() {
 		return new MostUsefulConfiguration()
 			// where to find the stories
-			.useStoryLoader(new LoadFromRelativeFile(codeLocationFromClass(this.getClass()), new StoryFilePath("/target/test-classes","/src/test/resources/stories")))
+			.useStoryLoader(new LoadFromRelativeFile(codeLocationFromClass(this.getClass()), new StoryFilePath("/target/test-classes/stories","/src/test/resources/stories")))
 			// CONSOLE and TXT reporting
 			.useStoryReporterBuilder(
 					new StoryReporterBuilder()

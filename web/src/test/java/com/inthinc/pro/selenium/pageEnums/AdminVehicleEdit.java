@@ -59,7 +59,21 @@ public enum AdminVehicleEdit implements SeleniumEnums {
     TEXT_VALUE_ASSIGNED_DEVICE("Assigned Device:", "//div[@class='spacer']/../table[3]/tbody/tr[2]/td[2]"),
     
     CHECKBOX_IDLE_MENTOR("","vehicleForm:vehicle-idleBuzzer","edit-form:editVehicle-idleBuzzer"),
-
+    DOT_DROPDOWN(null, "edit-form:editVehicle-DOT"),
+    IFTA_CHECKBOX(null, "edit-form:editVehicle-ifta"),
+    
+    KILL_MOTOR_PASS(null, "edit-form:wireline_killMotorPasscode"),
+    DOOR_ALARM_PASS(null, "edit-form:wireline_doorAlarmPasscode"),
+    AUTO_ARM_TIME(null, "edit-form:wireline_autoArm"),
+    
+    KILL_MOTOR_DROPDOWN(null, "edit-form:wirelineKillMotor_selectItems"),
+    KILL_MOTOR_SEND(null, "edit-form:wirelineKillMotor_sendButton"),
+    DOOR_ALARM_DROPDOWN(null, "edit-form:wirelineDoorAlarm_selectItems"),
+    DOOR_ALARM_SEND(null, "edit-form:wirelineDoorAlarm_sendButton"),
+    
+    MAX_SPEED(null, "edit-form:speedLimitInput"),
+    SPEED_BUFFER(null, "edit-form:speedBufferInput"),
+    SEVERE_SPEEDING(null, "edit-form:severeSpeedInput")
     ;
     private String text, url;
     private String[] IDs;

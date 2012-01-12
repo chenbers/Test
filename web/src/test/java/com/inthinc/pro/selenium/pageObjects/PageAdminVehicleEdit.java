@@ -9,10 +9,10 @@ import com.inthinc.pro.automation.elements.TextDropDownLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.AdminVehicleEdit;
-import com.inthinc.pro.selenium.pageEnums.AdminVehicleViewEnum;
 
 
 public class PageAdminVehicleEdit extends AdminBar {
@@ -37,6 +37,8 @@ public class PageAdminVehicleEdit extends AdminBar {
         public TextButton saveTop() {      return new TextButton(AdminVehicleEdit.BTN_SAVE_TOP);   }
         public TextButton cancelBottom() { return new TextButton(AdminVehicleEdit.BTN_CANCEL_BOTTOM); }
         public TextButton saveBottom() {   return new TextButton(AdminVehicleEdit.BTN_SAVE_BOTTOM);   }
+        public TextButton killButton() {   return new TextButton(AdminVehicleEdit.KILL_MOTOR_SEND);   }
+        public TextButton doorButton() {   return new TextButton(AdminVehicleEdit.DOOR_ALARM_SEND);   }
         
 	}
 
@@ -46,6 +48,9 @@ public class PageAdminVehicleEdit extends AdminBar {
         public DropDown state(){    return new DropDown(AdminVehicleEdit.DROPDOWN_STATE);      }
         public DropDown zone(){     return new DropDown(AdminVehicleEdit.DROPDOWN_ZONE);       }
         public DropDown status(){   return new DropDown(AdminVehicleEdit.DROPDOWN_STATUS);     }
+        public DropDown DOT(){      return new DropDown(AdminVehicleEdit.DOT_DROPDOWN);        }
+        public DropDown killMotor(){return new DropDown(AdminVehicleEdit.KILL_MOTOR_DROPDOWN); }
+        public DropDown doorAlarm(){return new DropDown(AdminVehicleEdit.DOOR_ALARM_DROPDOWN); }
 
 	}
 
@@ -57,7 +62,8 @@ public class PageAdminVehicleEdit extends AdminBar {
 	
 	
 	public class AdminVehicleCheckBoxes {
-	    public CheckBox idleMentoring() {return new CheckBox(AdminVehicleViewEnum.CHECKBOX_IDLE_MENTOR);}
+	    public CheckBox idleMentoring() {return new CheckBox(AdminVehicleEdit.CHECKBOX_IDLE_MENTOR);}
+	    public CheckBox iftaCheckbox()  {return new CheckBox(AdminVehicleEdit.IFTA_CHECKBOX);}
 	}
 
 	public class AdminVehicleEditTextFields extends AdminBarTextFields {
@@ -95,8 +101,16 @@ public class PageAdminVehicleEdit extends AdminBar {
         public TextField eCallPhone(){   return new TextField(AdminVehicleEdit.TXTFIELD_ECALLPHONE); }
         public TextField autoLogOff(){   return new TextField(AdminVehicleEdit.TXTFIELD_AUTOLOGOFF); }
         
-        public TextField vehicleID(){  return new TextField(AdminVehicleEdit.TXTFIELD_VEHICLEID);  }
+        public TextField vehicleID(){    return new TextField(AdminVehicleEdit.TXTFIELD_VEHICLEID);  }  
         
+        public TextField killMotorPass(){   return new TextField(AdminVehicleEdit.KILL_MOTOR_PASS);  }
+        public TextField doorAlarmPass(){   return new TextField(AdminVehicleEdit.DOOR_ALARM_PASS);  }
+        
+        public TextFieldWithSpinner autoArmTime(){ return new TextFieldWithSpinner(AdminVehicleEdit.AUTO_ARM_TIME);} 
+        
+        public TextField maxSpeed(){   return new TextField(AdminVehicleEdit.MAX_SPEED); }
+        public TextField speedBuffer(){return new TextField(AdminVehicleEdit.SPEED_BUFFER);}
+        public TextField severeSpeeding(){return new TextField(AdminVehicleEdit.SEVERE_SPEEDING);}
 		
 	}
 
