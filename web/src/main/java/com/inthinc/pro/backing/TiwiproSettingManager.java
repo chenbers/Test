@@ -149,6 +149,11 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 	                                  tiwiproEditableVehicleSettings.getSpeedSettingsString(), 
 	                                  vehicleSetting.getBestOption(SettingType.SPEED_SETTING.getSettingID()), 
 	                                  updateSpeedSettings(updateField));
+	       
+	       newSettings.addSettingIfNeeded(SettingType.IDLING_TIMEOUT, 
+                   tiwiproEditableVehicleSettings.getIdlingSeconds().toString(), 
+                   vehicleSetting.getBestOption(SettingType.IDLING_TIMEOUT.getSettingID()), 
+                   updateSpeedSettings(updateField));
 
 	       return newSettings.getDesiredSettings();
        }
