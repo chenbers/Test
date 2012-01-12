@@ -2,6 +2,7 @@ package it.com.inthinc.pro.dao.jdbc;
 
 // The tests in this file  can fail sporadically when the scheduler is running on the same
 // server that is is hitting (usually dev).  If this becomes a problem, we can mark them as Ignore.  
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -314,6 +315,39 @@ System.out.println("account id " + itData.account.getAccountID());
 
       }
   }
+    
+    @Test 
+    public void panicAlert() {
+        GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
+        for (RedFlagAlert redFlagAlert : redFlagAlerts) {
+            List<EventType> eventTypes = getEventTypes(redFlagAlert);
+            if (!eventTypes.get(0).equals(EventType.PANIC))
+                continue;
+            boolean anyAlertsFound = false;
+            modRedFlagAlertPref(GROUPS, redFlagAlert);
+            String IMEI = groupData.device.getImei();
+            
+            Event event = new Event(0l, 0, NoteType.WAYSMART_PANIC, new Date(), 100, 1000, 
+                    new Double(40.704246f), new Double(-111.948613f));
+        
+            if (!genEvent(event, IMEI))
+                fail("Unable to generate event of type " + eventTypes.get(0));
+            AlertMessageBuilder msg = pollForMessagesBuilder("Red Flag Alert Groups Set");
+            if (msg != null && msg.getAlertMessageType() == AlertMessageType.ALERT_TYPE_PANIC) {
+                anyAlertsFound = true;
+                
+                List<String> params = msg.getParamterList();
+                assertEquals("number of params", 4, params.size());
+                assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
+                assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
+                String[] latLng = params.get(3).split(",");
+                assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
+                assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
+            }
+            assertTrue("Expected alert for PANIC ",anyAlertsFound);
+        }
+        
+    }
 
     @Test
     @Ignore
@@ -374,6 +408,9 @@ System.out.println("account id " + itData.account.getAccountID());
                     break;
                 case ALERT_TYPE_EXIT_ZONE:
                     eventTypes.add(EventType.ZONES_DEPARTURE); 
+                    break;
+                case ALERT_TYPE_PANIC:
+                    eventTypes.add(EventType.PANIC); 
                     break;
                 default:
                     eventTypes.add(EventType.SPEEDING);
@@ -723,13 +760,18 @@ System.out.println("genEvent: " + eventType);
     }
     
     private boolean pollForMessages(String description) {
+        
+        return pollForMessagesBuilder(description) != null;
+    }
+
+    private AlertMessageBuilder pollForMessagesBuilder(String description) {
         int secondsToWait = 10;
         for (int i = 0; i < secondsToWait; i++) {
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
             if (msgList.size() == 0) {
                 if (i == (secondsToWait-1)) {
-                	System.out.println();
-                	logger.error(description + " getMessages failed even after waiting " + secondsToWait + " sec -- most likely the scheduler picked them up");
+                    System.out.println();
+                    logger.error(description + " getMessages failed even after waiting " + secondsToWait + " sec -- most likely the scheduler picked them up");
                 }
                 try {
                     Thread.sleep(1000l);
@@ -752,10 +794,11 @@ System.out.println("genEvent: " + eventType);
                     alertMessageDAO.acknowledgeMessage(amb.getMessageID());
                 }
 System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
-                return true;
+                return msg;
             }
         }
         
-        return false;
+        return null;
     }
+
 }

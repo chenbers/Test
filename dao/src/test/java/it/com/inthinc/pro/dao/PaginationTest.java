@@ -73,7 +73,7 @@ public class PaginationTest {
     	Integer.valueOf(8),
     	Integer.valueOf(8),
         Integer.valueOf(21),
-        Integer.valueOf(41),        // 4 from WS Group -- we are using the regular note() method in generating notifications so ws
+        Integer.valueOf(42),        // 4 from WS Group -- we are using the regular note() method in generating notifications so ws
                                     // and tiwi notes are processed with same code -- we might want to make this more realistic and use
                                     // the notews and notebc methods
 

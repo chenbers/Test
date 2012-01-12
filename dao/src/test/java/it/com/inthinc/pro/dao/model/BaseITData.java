@@ -358,6 +358,10 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
+        // panic
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_PANIC, "panic");
+        redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
+        addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
     
     }
 
