@@ -670,6 +670,9 @@ System.out.println("genEvent: " + eventType);
     	else if (eventType.equals(EventType.SPEEDING) )
 			event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 100, 80, 70, 100, 100);
+        else if (eventType.equals(EventType.PANIC) )
+            event = new Event(0l, 0, NoteType.WAYSMART_PANIC, new Date(), 100, 1000, 
+                    new Double(40.704246f), new Double(-111.948613f));
     	
     	return genEvent(event, imei);
     }
