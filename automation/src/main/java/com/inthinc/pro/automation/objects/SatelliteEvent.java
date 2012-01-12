@@ -7,13 +7,12 @@ import org.apache.log4j.Level;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
-public class WSNoteVersion2 extends DeviceNote {
+public class SatelliteEvent extends DeviceNote {
     
     public final static int nVersion = 2;
     public final Heading heading;
@@ -23,7 +22,7 @@ public class WSNoteVersion2 extends DeviceNote {
     public final int duration;
 
     
-    public WSNoteVersion2(DeviceNoteTypes type, DeviceState state,
+    public SatelliteEvent(DeviceNoteTypes type, DeviceState state,
             GeoPoint location) {
 
     	super(type, state.getTime(), location);
@@ -33,21 +32,22 @@ public class WSNoteVersion2 extends DeviceNote {
         this.odometer = state.getOdometerX100() / 100;
         this.duration = 0;
     }
-
+    
+	
     @Override
     public byte[] Package() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write(0);
-        NoteManager.longToByte(baos, type.getIndex(), 1);
-        NoteManager.longToByte(baos, nVersion, 1);
-        NoteManager.longToByte(baos, time.toInt(), 4);
-        NoteManager.longToByte(baos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
-        NoteManager.longToByte(baos, location.encodeLat(), 3);
-        NoteManager.longToByte(baos, location.encodeLng(), 3);
-        NoteManager.longToByte(baos, nSpeed, 1);
-        NoteManager.longToByte(baos, odometer, 3);
-        NoteManager.longToByte(baos, duration, 2);
-        NoteManager.encodeAttributes(baos, attrs, type.getAttributes());
+        longToByte(baos, type.getIndex(), 1);
+        longToByte(baos, nVersion, 1);
+        longToByte(baos, time.toInt(), 4);
+        longToByte(baos, concatenateTwoInts(heading.getHeading(), sats), 1);
+        longToByte(baos, location.encodeLat(), 3);
+        longToByte(baos, location.encodeLng(), 3);
+        longToByte(baos, nSpeed, 1);
+        longToByte(baos, odometer, 3);
+        longToByte(baos, duration, 2);
+		encodeAttributes(baos, attrs, type.getAttributes());
         byte[] temp = baos.toByteArray();
         temp[0] = (byte) (temp.length & 0xFF);
         for (int i=0;i<temp.length;i++){
@@ -82,14 +82,14 @@ public class WSNoteVersion2 extends DeviceNote {
 
     
     @Override
-    public WSNoteVersion2 copy(){
+    public SatelliteEvent copy(){
         DeviceState state = new DeviceState(null, ProductType.WAYSMART);
         state.getTime().setDate(time);
         state.setHeading(heading);
         state.setSats(sats);
         state.setSpeed(nSpeed);
         state.setOdometerX100(odometer);
-        WSNoteVersion2 temp = new WSNoteVersion2(type, state, location);
+        SatelliteEvent temp = new SatelliteEvent(type, state, location);
         temp.addAttrs(attrs);
         return temp;
     }

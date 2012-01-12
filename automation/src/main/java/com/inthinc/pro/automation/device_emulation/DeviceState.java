@@ -17,6 +17,7 @@ import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -172,11 +173,11 @@ public class DeviceState {
 	private int zoneSpeedLimit = 50;
 	
 	public DeviceState(String imei, ProductType type) {
-        time = new AutomationCalendar();
-        time_last = new AutomationCalendar();
-        speedingStartTime = new AutomationCalendar();
-        speedingStopTime = new AutomationCalendar();
-        gpsLockTime = new AutomationCalendar();
+        time = new AutomationCalendar(WebDateFormat.NOTE_PRECISE_TIME);
+        time_last = new AutomationCalendar(WebDateFormat.NOTE_PRECISE_TIME);
+        speedingStartTime = new AutomationCalendar(WebDateFormat.NOTE_PRECISE_TIME);
+        speedingStopTime = new AutomationCalendar(WebDateFormat.NOTE_PRECISE_TIME);
+        gpsLockTime = new AutomationCalendar(WebDateFormat.NOTE_PRECISE_TIME);
         this.imei = imei;
         this.productVersion = type;
         settings = new HashMap<DeviceProps, String>();

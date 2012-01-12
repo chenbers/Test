@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 
-import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public final class WaysmartClasses {
@@ -21,9 +20,9 @@ public final class WaysmartClasses {
                 / Byte.SIZE;
 
         public MultiForwardCmd(ByteArrayInputStream bais) {
-            this.m_ID = NoteManager.byteToInt(bais, 4);
+            this.m_ID = DeviceNote.byteToInt(bais, 4);
             this.m_version = (byte) bais.read();
-            this.m_nCount = NoteManager.byteToInt(bais, 4);
+            this.m_nCount = DeviceNote.byteToInt(bais, 4);
             MasterTest.print(
                     String.format("Got %d forward commands", m_nCount),
                     Level.INFO);
@@ -46,13 +45,13 @@ public final class WaysmartClasses {
             nForwardCommand = (byte) bais.read();
             m_data = new byte[] { (byte) bais.read(), (byte) bais.read(),
                     (byte) bais.read(), (byte) bais.read() };
-            exFwdCmdID = NoteManager.byteToInt(m_data, 0, 4);
+            exFwdCmdID = DeviceNote.byteToInt(m_data, 0, 4);
             if (exFwdCmdID == -1){
                 nVersion = 0;
                 nLength = 0;
             } else {            
                 nVersion = (byte) bais.read();
-                nLength = NoteManager.byteToInt(bais, 4);
+                nLength = DeviceNote.byteToInt(bais, 4);
             }
 
             MasterTest.print(toString(), Level.INFO);

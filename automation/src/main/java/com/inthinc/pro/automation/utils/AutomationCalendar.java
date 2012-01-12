@@ -326,6 +326,8 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         TIME("HH:mm a (z)"),
         
         DURATION("HH:mm:ss"),
+        
+        NOTE_PRECISE_TIME("yyyy-MM-dd HH:mm:ss,SSS"),
 
         LAST_NOTE_CONFIGURATOR("yyyy-MM-dd HH:mm:ss z"),
         
@@ -702,7 +704,7 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     }
 
     public AutomationCalendar copy() {
-        return new AutomationCalendar(date);
+        return new AutomationCalendar(date, rawEnum);
     }
 
     public Long getDelta(AutomationCalendar time_last) {

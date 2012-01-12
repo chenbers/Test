@@ -130,7 +130,6 @@ public class TripDriver extends Thread {
             		event.updateLocation(tripTracker.currentLocation());
             		event.getNote().getTime().setDate(state.getTime());
                     notes.add(event.getNote());
-                    
             		if (events2[noteN].isEmpty()){
             			positions.remove(0);
             			events2[noteN] = null;

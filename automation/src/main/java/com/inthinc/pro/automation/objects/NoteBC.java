@@ -7,7 +7,6 @@ import java.util.List;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -58,20 +57,20 @@ public class NoteBC extends DeviceNote {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        NoteManager.longToByte(bos, type.getIndex(), 1);
-        NoteManager.longToByte(bos, 2, 1);
-        NoteManager.longToByte(bos, time.toInt(), 4);
-        NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 2);
-        NoteManager.longToByte(bos, location.encodeLatBC(), 4);
-        NoteManager.longToByte(bos, location.encodeLngBC(), 4);
-        NoteManager.longToByte(bos, nSpeed, 1);
-        NoteManager.longToByte(bos, nSpeedLimit, 1);
-        NoteManager.longToByte(bos, nLinkID, 4);
-        NoteManager.longToByte(bos, nOdometer, 4);
-        NoteManager.longToByte(bos, nBoundaryID, 2);
-        NoteManager.longToByte(bos, nDriverID, 4);
+        longToByte(bos, type.getIndex(), 1);
+        longToByte(bos, 2, 1);
+        longToByte(bos, time.toInt(), 4);
+        longToByte(bos, concatenateTwoInts(heading.getHeading(), sats), 2);
+        longToByte(bos, location.encodeLatBC(), 4);
+        longToByte(bos, location.encodeLngBC(), 4);
+        longToByte(bos, nSpeed, 1);
+        longToByte(bos, nSpeedLimit, 1);
+        longToByte(bos, nLinkID, 4);
+        longToByte(bos, nOdometer, 4);
+        longToByte(bos, nBoundaryID, 2);
+        longToByte(bos, nDriverID, 4);
         
-        NoteManager.encodeAttributes(bos, attrs);
+        encodeAttributes(bos, attrs);
         
         return bos.toByteArray();
     }

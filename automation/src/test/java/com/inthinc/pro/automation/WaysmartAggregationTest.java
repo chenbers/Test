@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Level;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceTrips.TripDriver;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
 import com.inthinc.pro.automation.device_emulation.NoteManager;
@@ -58,34 +59,72 @@ public class WaysmartAggregationTest {
     
     private final static ProductType type = ProductType.WAYSMART;
     
+    private int deviceNumber = 0;
+	private AutomationSiloService portalProxy;
+    
     
     public WaysmartAggregationTest(){
         tripsMap = new HashMap<DeviceState, LinkedList<DeviceNote>>();
         vehicleMap = new HashMap<DeviceState, Vehicle>();
-        notesOutOfOrder();
-        sendNotes();
+        portalProxy = new AutomationSiloService(server);
+//        notesOutOfOrder();
+//        sendNotes();
+//        missingNotes();
     }
     
     private void missingNotes(){
-    	TripDriver driver = new TripDriver(type);
-    	String start = "";
-    	String stop = "";
     	
-    	driver.addToTrip(start, stop);
-        driver.addToTrip(stop, start);
+    	TripDriver driver1 = new TripDriver(type);
+    	TripDriver driver2 = new TripDriver(type);
+    	
+    	String start = "4225 W Lake Blvd, West Valley City, UT 84120";
+    	String stop = "5000 W Lake Blvd, West Valley City, UT 84120";
+    	
+    	driver1.addToTrip(start, stop);
+    	driver2.addToTrip(start, stop);
+    	
+        driver1.addToTrip(stop, start);
+        driver2.addToTrip(stop, start);
         
-        DeviceState state = driver.getdeviceState();
+        DeviceState state = driver1.getdeviceState();
         
         state.setDriverID(unknownDriverID);
         state.setOdometerX100(startingOdometer);
         state.getTime().setDate(startingTime);
         
-        driver.addEvent(25, AutomationDeviceEvents.ignitionOff(state, null));
+        driver1.addEvent(25, AutomationDeviceEvents.ignitionOff(state, null));
+        driver1.addEvent(25, AutomationDeviceEvents.ignitionOn(state, null));
+
+        state.setTopSpeed(60).setSpeed(55);
+        driver1.addEvent(30, AutomationDeviceEvents.hardBump(state, null, 120));
+        
+        
+        driver2.addEvent(25, AutomationDeviceEvents.ignitionOff(state, null));
+        
+        LinkedList<DeviceNote> notes1 = driver1.generateNotes();
+        LinkedList<DeviceNote> notes2 = driver2.generateNotes();
+        
+        double percent = notes2.size() / 100.0;
+        Double delFrom = percent * 36;
+        Double delTo = percent * 50;
+        for (int i = delTo.intValue();i>delFrom;i--){
+        	notes2.remove(i);
+        }
+                
+        state = newState(++deviceNumber);
+        tripsMap.put(state, notes1);
+        createVehicle(deviceNumber, portalProxy, state);
+
+        state = newState(++deviceNumber);
+        tripsMap.put(state, notes2);
+        createVehicle(deviceNumber, portalProxy, state);
+        
     }
     
     
+    
+    
     private void notesOutOfOrder(){
-        int i=0;
         
         TripDriver driver = new TripDriver(type);
         
@@ -128,18 +167,17 @@ public class WaysmartAggregationTest {
             randomized.add(note.copy());
         }
         
-        AutomationSiloService portalProxy = new AutomationSiloService(server);
         for (int j=0;j<20;j++){
         	Collections.shuffle(randomized);
         }
         
-        state = newState(++i);
+        state = newState(++deviceNumber);
         tripsMap.put(state, inOrder);
-        createVehicle(i, portalProxy, state);
+        createVehicle(deviceNumber, portalProxy, state);
 
-        state = newState(++i);
+        state = newState(++deviceNumber);
         tripsMap.put(state, randomized);
-        createVehicle(i, portalProxy, state);
+        createVehicle(deviceNumber, portalProxy, state);
         
 
         if (true){

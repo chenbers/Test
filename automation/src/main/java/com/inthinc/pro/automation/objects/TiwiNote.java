@@ -10,7 +10,6 @@ import org.apache.log4j.Level;
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.Heading;
 import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -60,16 +59,16 @@ public class TiwiNote extends DeviceNote {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         
         //Headers  Convert the value to an integer, then pack it as a byte in the stream
-        NoteManager.longToByte(bos, type.getIndex(), 1);
-        NoteManager.longToByte(bos, time.toInt(), 4);
-        NoteManager.longToByte(bos, NoteManager.concatenateTwoInts(heading.getHeading(), sats), 1);
-        NoteManager.longToByte(bos, maprev, 1);
-        NoteManager.longToByte(bos, location.encodeLat(), 3);
-        NoteManager.longToByte(bos, location.encodeLng(), 3);
-        NoteManager.longToByte(bos, Speed, 1);
-        NoteManager.longToByte(bos, odometer, 2);
+        longToByte(bos, type.getIndex(), 1);
+        longToByte(bos, time.toInt(), 4);
+        longToByte(bos, concatenateTwoInts(heading.getHeading(), sats), 1);
+        longToByte(bos, maprev, 1);
+        longToByte(bos, location.encodeLat(), 3);
+        longToByte(bos, location.encodeLng(), 3);
+        longToByte(bos, Speed, 1);
+        longToByte(bos, odometer, 2);
         
-        NoteManager.encodeAttributes(bos, attrs);
+        encodeAttributes(bos, attrs);
         
         if (type.equals(DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA)){
         	for (byte bits: bos.toByteArray()){

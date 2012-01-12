@@ -383,8 +383,8 @@ public class MCMProxyObject implements MCMService{
                 reply = notebc(state.getMcmID(),
                         state.getWaysDirection(),
                         sendingQueue.get(noteClass), state.getImei());
-            } else if (sendingQueue.containsKey(WSNoteVersion2.class)) {
-                noteClass = WSNoteVersion2.class;
+            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
+                noteClass = SatelliteEvent.class;
                 reply = notews(state.getMcmID(),
                         state.getWaysDirection(),
                         sendingQueue.get(noteClass), state.getImei());
@@ -392,8 +392,12 @@ public class MCMProxyObject implements MCMService{
                 noteClass = TiwiNote.class;
                 reply = note(state.getImei(),
                         sendingQueue.get(noteClass), true);
-            } else if (sendingQueue.containsKey(WSNoteVersion3.class)){
-            	noteClass = WSNoteVersion3.class;
+            } else if (sendingQueue.containsKey(SatelliteEvent_t.class)){
+            	noteClass = SatelliteEvent_t.class;
+            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+            	reply = null;
+            } else if (sendingQueue.containsKey(SatelliteStrippedConfigurator.class)){
+            	noteClass = SatelliteStrippedConfigurator.class;
             	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
             	reply = null;
             }

@@ -107,7 +107,7 @@ public abstract class DeviceBase {
         return this;
     }
     
-    protected DeviceBase addNote(DeviceNote note) {
+    public DeviceBase addNote(DeviceNote note) {
         notes.addNote(note);
         checkQueue();
         return this;
@@ -347,12 +347,11 @@ public abstract class DeviceBase {
                     .getNotes(note_count);
             while (!sendingQueue.isEmpty()){
                 reply = mcmProxy.sendNotes(state, sendingQueue);
-                
                 if (reply instanceof ArrayList<?>) {
                     ackFwdCmds((List<HashMap<String, Object>>) reply);
                 } else if (reply instanceof String[]) {
                     ackFwdCmds((String[]) reply);
-                } else {
+                } else if (reply != null) {
                     MasterTest.print("Reply from Server: " + reply, Level.DEBUG);
                 }
             }

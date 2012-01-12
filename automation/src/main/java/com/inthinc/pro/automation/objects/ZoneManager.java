@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.inthinc.pro.automation.device_emulation.NoteManager;
+import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.DeviceZone;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
@@ -26,12 +26,12 @@ public class ZoneManager implements Iterable<DeviceZone> {
         zones = new HashMap<Integer, DeviceZone>();
 
         ByteArrayInputStream bab = new ByteArrayInputStream(zoneArray);
-        fileFormatVersion = NoteManager.byteToInt(bab, 4);
-        fileVersion = NoteManager.byteToInt(bab, 4);
-        int nZones = NoteManager.byteToInt(bab, 4);
+        fileFormatVersion = DeviceNote.byteToInt(bab, 4);
+        fileVersion = DeviceNote.byteToInt(bab, 4);
+        int nZones = DeviceNote.byteToInt(bab, 4);
         for (int i = 0; i < nZones; i++) {
             DeviceZone zone = new DeviceZone();
-            zone.setZoneID(NoteManager.byteToInt(bab, 4));
+            zone.setZoneID(DeviceNote.byteToInt(bab, 4));
             bab.skip(4 * 3);
             zone.setPoints(parseVertices(bab));
             zone.setOptions(parseAttributes(bab));
@@ -41,7 +41,7 @@ public class ZoneManager implements Iterable<DeviceZone> {
     }
 
     private List<LatLng> parseVertices(ByteArrayInputStream bais) {
-        int nVertices = NoteManager.byteToInt(bais, 2);
+        int nVertices = DeviceNote.byteToInt(bais, 2);
         List<LatLng> pointList = new ArrayList<LatLng>();
         double lat = 0.0;
         double lng = 0.0;
@@ -73,10 +73,10 @@ public class ZoneManager implements Iterable<DeviceZone> {
     }
 
     private List<ZoneOption> parseAttributes(ByteArrayInputStream bais) {
-        int nAttributes = NoteManager.byteToInt(bais, 2);
+        int nAttributes = DeviceNote.byteToInt(bais, 2);
         List<ZoneOption> attributes = new ArrayList<ZoneOption>();
         for (; nAttributes > 0; nAttributes--) {
-            int id = NoteManager.byteToInt(bais, 1);
+            int id = DeviceNote.byteToInt(bais, 1);
             int size = 0;
             if (id < 128) {
                 size = 1;
@@ -88,7 +88,7 @@ public class ZoneManager implements Iterable<DeviceZone> {
                 throw new IllegalArgumentException("No such ID as " + id);
             }
             
-            int attribute = NoteManager.byteToInt(bais, size);
+            int attribute = DeviceNote.byteToInt(bais, size);
             ZoneAvailableOption attributeType = ZoneAvailableOption.valueOf(id);
             if (attributeType == null){
                 continue;

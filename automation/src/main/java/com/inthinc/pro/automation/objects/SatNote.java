@@ -3,7 +3,6 @@ package com.inthinc.pro.automation.objects;
 import java.io.ByteArrayOutputStream;
 
 import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
-import com.inthinc.pro.automation.device_emulation.NoteManager;
 import com.inthinc.pro.automation.models.DeviceAttributes;
 import com.inthinc.pro.automation.models.DeviceNote;
 import com.inthinc.pro.automation.models.GeoPoint;
@@ -33,18 +32,18 @@ public class SatNote extends DeviceNote {
 		byte[] payload = this.payload.Package();
 		int messageLength = headerLength + payload.length;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        NoteManager.longToByte(baos, 1, 1);    					// protocol revision number
-        NoteManager.longToByte(baos, messageLength, 2); 		// Message Length
-		NoteManager.longToByte(baos, 1, 1);    					// IEI
-		NoteManager.longToByte(baos, headerLength, 2);			// Header Length
-		NoteManager.longToByte(baos, 1234, 4); 					// CDR
+        longToByte(baos, 1, 1);    					// protocol revision number
+        longToByte(baos, messageLength, 2); 		// Message Length
+		longToByte(baos, 1, 1);    					// IEI
+		longToByte(baos, headerLength, 2);			// Header Length
+		longToByte(baos, 1234, 4); 					// CDR
 		baos.write(satIMEI.getBytes(), 0, imeiLength);			// IMEI goes here 10-24
-		NoteManager.longToByte(baos, 1, 1); 					// status
-		NoteManager.longToByte(baos, 2, 2); 					// momsn
-		NoteManager.longToByte(baos, 3, 2); 					// mtmsn
-		NoteManager.longToByte(baos, sessionTime.toInt(), 4);	// session time
-		NoteManager.longToByte(baos, 1, 1); 					// payload iei
-		NoteManager.longToByte(baos, payload.length, 2);		// Payload Length
+		longToByte(baos, 1, 1); 					// status
+		longToByte(baos, 2, 2); 					// momsn
+		longToByte(baos, 3, 2); 					// mtmsn
+		longToByte(baos, sessionTime.toInt(), 4);	// session time
+		longToByte(baos, 1, 1); 					// payload iei
+		longToByte(baos, payload.length, 2);		// Payload Length
 		baos.write(payload, 0, payload.length);					// Payload
 		
 		return baos.toByteArray();

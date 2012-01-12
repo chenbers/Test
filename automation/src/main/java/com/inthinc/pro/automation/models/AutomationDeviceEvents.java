@@ -12,6 +12,33 @@ import com.inthinc.pro.model.event.EventAttr;
 
 public class AutomationDeviceEvents {
 	
+	public static FuelStopEvent fuelStop(DeviceState state, GeoPoint location, int vehicleGallons, int odometerX100, int trailerGallons, String locationS){
+		return classes.new FuelStopEvent(state, location, vehicleGallons, odometerX100, trailerGallons, locationS);
+	}
+	
+	public static void fuelStop(DeviceBase device, int vehicleGallons, int odometerX100, int trailerGallons, String locationS){
+		device.addEvent(fuelStop(device.getState(), device.getCurrentLocation(), vehicleGallons, odometerX100, trailerGallons, locationS));
+	}
+	
+	/**
+	 * FUEL_STOP(73, EventAttr.VEHICLE_GALLONS, EventAttr.ODOMETER, EventAttr.TRAILER_GALLONS, EventAttr.LOCATION),
+	 * @author dtanner
+	 *
+	 */
+	public class FuelStopEvent extends AutomationDeviceEvents {
+		private FuelStopEvent(DeviceState state, GeoPoint location, int vehicleGallons, int odometerX100, int trailerGallons, String locationS){
+			super(DeviceNoteTypes.FUEL_STOP, state, location);
+			
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				note.addAttr(EventAttr.VEHICLE_GALLONS, vehicleGallons);
+				note.addAttr(EventAttr.ODOMETER, odometerX100);
+				note.addAttr(EventAttr.TRAILER_GALLONS, trailerGallons);
+				note.addAttr(EventAttr.LOCATION, locationS);
+			}
+		}
+	}
+	
+	
 	public class EnterZoneEvent extends AutomationDeviceEvents {
 		private EnterZoneEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.WSZONES_ARRIVAL_EX, state, location);
