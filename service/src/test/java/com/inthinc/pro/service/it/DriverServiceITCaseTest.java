@@ -258,13 +258,33 @@ public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
     public void createDriverTest() throws Exception{
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/driver/");
 
-        String xmlText = "<driver><dot>NON_DOT</dot><expiration>2012-03-20T18:00:00-06:00</expiration><groupID>276</groupID><license>2111111111</license><licenseClass>A</licenseClass><state><stateID>3</stateID></state><status>ACTIVE</status></driver>";
+//        String xmlText = "<driver><dot>NON_DOT</dot><expiration>2012-03-20T18:00:00-06:00</expiration><groupID>276</groupID><license>2111111111</license><licenseClass>A</licenseClass><state><stateID>3</stateID></state><status>ACTIVE</status></driver>";
+        String xmlText = "<driver><expiration>2012-03-20T18:00:00-06:00</expiration><groupID>276</groupID><license>2111111111</license><licenseClass>A</licenseClass><state><stateID>3</stateID></state><status>ACTIVE</status></driver>";
 
         request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
 
         String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
         System.out.println(response);
     }
+    @Test
+    @Ignore 
+    public void updateDriverTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/driver/");
+
+        String xmlText = "<driver><dot>US_OIL</dot><expiration>2012-03-20T18:00:00-06:00</expiration><groupID>276</groupID><license>2111111111</license><licenseClass>A</licenseClass><state><stateID>3</stateID></state><status>ACTIVE</status></driver>";
+
+        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
+
+        Driver driver = request.postTarget( Driver.class); //get response and automatically unmarshall to a string.
+        System.out.println(driver);
+        String updateText = "<driver><driverID>"+driver.getDriverID()+"</driver><expiration>2012-03-20T18:00:00-06:00</expiration><groupID>276</groupID><license>2111111111</license><licenseClass>A</licenseClass><state><stateID>3</stateID></state><status>ACTIVE</status></driver>";
+        ClientRequest updateRequest = clientExecutor.createRequest("http://localhost:8080/service/api/driver");
+        updateRequest.accept("application/xml").body( MediaType.APPLICATION_XML, updateText);
+        ClientResponse<Driver> updatedDriver = updateRequest.put(Driver.class); //get response.
+        Driver driver2 = updatedDriver.getEntity();
+        System.out.println(driver2.toString());
+    }
+
     @Test 
     public void createTestThing() throws Exception{
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/test/add");

@@ -23,6 +23,9 @@
 	<li>3.6 <a href="#uris-device">Device</a></li>
 	<li>3.7 <a href="#uris-groups">Group</a></li>
 	<li>3.8 <a href="#uris-event">Event</a></li>
+	<li>3.9 <a href="#uris-redFlags">Red Flags</a></li>
+	<li>3.10 <a href="#uris-hos">HOS</a></li>
+	<li>3.11 <a href="#uris-ifta">IFTA</a></li>
 	</ul>
 </li>
 <li>4 <a href="#status_codes">Status Codes</a></li>
@@ -55,7 +58,10 @@
 	<li>5.20 <a href="#data-eventType">Event Types</a></li>	
 	<li>5.21 <a href="#data-eventByCategory">Events By Category</a></li>
 	<li>5.22 <a href="#data-rels">Rels</a></li>
-	</ul>
+	<li>5.23 <a href="#data-redflags">Red Flags</a></li>
+	<li>5.24 <a href="#data-redflagLevel">Red Flag Level</a></li>
+	<li>5.25 <a href="#data-alertSentStatus">Red Flag Sent Status</a></li>
+</ul>
 </li>
 
 </ul>
@@ -120,6 +126,11 @@
 <td>Event collection</td>
 <td>GET</td>
 <td>View events. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Red Flag collection</td>
+<td>GET</td>
+<td>View red flags. Media types: application/xml</td>
 </tr>
 </tbody>
 </table>
@@ -1005,6 +1016,53 @@
 </tr>
 </tbody>
 </table>
+<h3>3.9 <a name="uris-redflags">Red Flags</a></h3>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Get red flag counts</td>
+<td>
+/service/api/group/{groupID}/redflags/count <br/>
+/service/api/group/{groupID}/redflags/count/{startDate} <br/>
+/service/api/group/{groupID}/redflags/count/{startDate}/{endDate}
+</td>
+<td>GET</td>
+<td><dl><dt>text/*</dt></dl></td>
+<td></td><td>Integer</td>
+
+<td>
+http://my.inthinc.com/service/api/group/1/redflags/count <br />
+http://my.inthinc.com/service/api/group/1/redflags/count/20110717 <br />
+http://my.inthinc.com/service/api/group/1/redflags/count/20110717/20110815 
+</td>
+</tr>
+<tr>
+<td>Get red flags</td>
+<td>
+/service/api/group/{groupID}/redflags/{firstRecord}/{lastRecord}<br/>
+/service/api/group/{groupID}/redflags/{firstRecord}/{lastRecord}/{startDate} <br/>
+/service/api/group/{groupID}/redflags/{firstRecord}/{lastRecord}/{startDate}/{endDate}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt></dl></td>
+<td></td><td>Collection of Red Flags</td>
+
+<td>
+http://my.inthinc.com/service/api/group/1/redflags/1/20 <br />
+http://my.inthinc.com/service/api/group/1/redflags/redflags/1/20/20110717 <br />
+http://my.inthinc.com/service/api/group/1/redflags/redflags/1/20/20110717/20110815 
+</td>
+</tr>
+</tbody>
+</table>
 
 <h2>4 <a name="status_codes">Status Codes</a></h2>
 <h3>4.1 <a name="success_codes">Success Codes</a></h3>
@@ -1012,7 +1070,7 @@
 <p>
 The request was successful.
 </p>
-<h4>4.1.2 Created</h4>
+<h4>4.1.2 201 Created</h4>
 <p>
 The request was successful and a new resource has been created.  The response entity should contain either the created resource or a link to the created resource or resources.
 </p>
