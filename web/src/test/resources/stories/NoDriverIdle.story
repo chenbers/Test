@@ -19,4 +19,4 @@ Given I am logged in as user who can view an idling report with a driverless veh
 And I am on the "Idling Report" page
 When I specify a date range in the last 365 days
 And I click refresh
-Then I should be able to view a column with vehicles that have an idle time with no driver
+Then I should be able to view a column with vehicles that have an idle time
