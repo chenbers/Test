@@ -61,3 +61,23 @@ Example:
 |Today|
 |Yesterday|
 
+Scenario: TC6018: Portal Stops Page display report in E-Mail
+Given I am logged into the portal 
+And I have selected an active team from the Home page drop-down
+And I have clicked on the Stops tab
+And I click on a radio button for a driver with a recent trip
+Then the stop page displays with data in columns 
+When I click on the icon drop-down 
+And Select "E-mail This Report"
+Then the E-mail pop-up opens
+And I clear any existing E-mails
+And I enter my email address
+And click on the E-mail button
+Then login to my E-mail
+And open my E-mail
+And click on the report link
+Then the stop page displays in the with data in columns for Driver Name.Vehicle ID,Stop Location, Arrival Time
+Departure Time, Duration of stop, Low Idle Time, High Idle Time, Drive Time from 1st stop to next, 
+continuous times between stops, End of Day Stop show Time and Location (End Trip), 
+Start of Day show Time and location (Start Trip).
+
