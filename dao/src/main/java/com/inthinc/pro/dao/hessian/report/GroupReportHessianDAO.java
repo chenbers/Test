@@ -143,8 +143,18 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
 
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {
+    	return getVehicleScores(groupID, duration.getCode());
+    }
+    
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, AggregationDuration aggregationDuration) {
+    	return getVehicleScores(groupID, aggregationDuration.getCode());
+    }   
+    
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, int aggregationDurationCode) {
         try {
-            return mapper.convertToModelObject(reportService.getVDScoresByGT(groupID, duration.getCode()), DriverVehicleScoreWrapper.class);
+            return mapper.convertToModelObject(reportService.getVDScoresByGT(groupID, aggregationDurationCode), DriverVehicleScoreWrapper.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }

@@ -203,11 +203,10 @@
 					<f:facet name="header">
 						#{messages.team_driver}
 					</f:facet>
-
-                        <pretty:link mappingId="driverPerformance">
-							  #{item.driver.person.fullName}
-                              <f:param value="#{item.driver.driverID}"/>
-                        </pretty:link>
+					<pretty:link mappingId="driverPerformance" rendered="#{item.driver ne null and item.driver.driverID ne null}">
+						#{item.driver.person.fullName}
+                   		<f:param value="#{item.driver.driverID}"/>
+                   	</pretty:link>
 				</rich:column>
 				<rich:column rendered="#{tableColumns['score'].visible}" sortOrder="ASCENDING" 
 					sortBy="#{item.score.overall}" id="newTeamStatsTab-overallScore">
@@ -215,7 +214,7 @@
 						#{messages.team_score}
 					</f:facet>
 					<div class="scoreBox">
-						<pretty:link mappingId="driverPerformance">
+						<pretty:link mappingId="driverPerformance" rendered="#{item.driver.driverID ne null}">
 							<h:outputText value="#{item.score.overall}" converter="ScoreConverter" />
 							<f:param value="#{item.driver.driverID}"/>
 						</pretty:link>
@@ -324,7 +323,7 @@
 					<f:facet name="header">
 						#{messages.team_safety}
 					</f:facet>
-                    <pretty:link id="safetyDriverLink" mappingId="safetyDriverLink" rendered="#{item.score.safetyTotal ne 0}">
+                    <pretty:link id="safetyDriverLink" mappingId="safetyDriverLink" rendered="#{item.score.safetyTotal ne 0  and  item.driver.driverID ne null}">
 	                   	<h:outputText value="#{item.score.safetyTotal}"/>
 	                    <f:param value="#{teamCommonBean.groupID}"/>
 	                    <f:param value="#{teamCommonBean.timeFrame}"/>

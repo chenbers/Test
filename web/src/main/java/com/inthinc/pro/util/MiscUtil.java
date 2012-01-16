@@ -148,6 +148,9 @@ public class MiscUtil
         // Assume daily value (0)
         int rc = 0;
     
+        if(("teamVehicleStatistics").equals(teamCommonBean.getSelectedTabId()))
+        	return 3;
+        
         // Not daily?
         if (        teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) ) {
             return 1;
