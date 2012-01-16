@@ -218,4 +218,14 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
 		return group.getGroupID();
 	}
 
+	@Override
+	public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, int aggregationDurationCode) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, AggregationDuration aggregationDuration) {
+		return Collections.emptyList();
+	}
+
 }
