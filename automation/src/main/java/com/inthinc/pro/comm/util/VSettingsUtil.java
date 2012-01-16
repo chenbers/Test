@@ -11,8 +11,11 @@ import java.util.Map;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import org.apache.log4j.Level;
+
 import com.inthinc.pro.automation.deviceEnums.DeviceProps;
 import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.utils.StackToString;
 
 
 
@@ -24,17 +27,18 @@ public class VSettingsUtil {
 		Map<DeviceProps, String> settingsMap = new HashMap<DeviceProps, String>();
 		byte[] decompressedData = decompressData(data);
 		InputStream settingsStream = new ByteArrayInputStream(decompressedData);
-		
+		int num = 0;
 		try {
 			while (settingsStream.available() > 0)
 			{
-				Long key = decodeUnsignedInteger(settingsStream) + 1000;
+				DeviceProps key = DeviceProps.valueOf(((Long)(decodeUnsignedInteger(settingsStream) + 1000)).intValue());
 				String value = getString(settingsStream);
-				settingsMap.put(DeviceProps.valueOf(key.intValue()), value);
+				MasterTest.print("Setting # %d, %s = %s", ++num, key, value);
+				settingsMap.put(key, value);
 			}
 		} catch (IOException exception)
 		{
-			MasterTest.print("IOException reading compressed settings: " + exception);
+			MasterTest.print("IOException reading compressed settings: %s", StackToString.toString(exception));
 		}
 		return settingsMap;
 	}
@@ -60,8 +64,8 @@ public class VSettingsUtil {
 				}
 			}
 
-			MasterTest.print("packetList.size(): " + packetList.size());
-			MasterTest.print("increasePacketSize: " + increasePacketSize);
+			MasterTest.print("packetList.size(): " + packetList.size(), Level.DEBUG);
+			MasterTest.print("increasePacketSize: " + increasePacketSize, Level.DEBUG);
 			
 			if (increasePacketSize)
 				packets = packetList.size() + 1;
@@ -82,15 +86,15 @@ public class VSettingsUtil {
 			if (packets == 0)
 				packets = (int)Math.ceil(compressedData.length/PACKET_SIZE); 
 
-			MasterTest.print("Compressed data length: " + compressedData.length);
-			MasterTest.print("Packets: " + packets);
+			MasterTest.print("Compressed data length: " + compressedData.length, Level.DEBUG);
+			MasterTest.print("Packets: " + packets, Level.DEBUG);
 			
 			if (packets == 1)
 				packetList.add(compressedData);
 			else
 			{
 				int settingsPerPacket = (int) Math.ceil((double)(map.size()/packets));
-				MasterTest.print("settingsPerPacket: " + settingsPerPacket);
+				MasterTest.print("settingsPerPacket: " + settingsPerPacket, Level.DEBUG);
 				Map<DeviceProps, String> partialMap = new HashMap<DeviceProps, String>();
 				int totalCounter = 0;
 				int packetCounter = 0;
@@ -107,13 +111,13 @@ public class VSettingsUtil {
 						packetCounter = 0;
 					}
 						
-//					MasterTest.print(setting.getKey() + " = " + setting.getValue());
+					MasterTest.print(setting.getKey() + " = " + setting.getValue(), Level.DEBUG);
 				}
 				
 			}
 		} catch (IOException e)
 		{
-			MasterTest.print("compressSettings IO error: " + e);
+			MasterTest.print("compressSettings IO error: " + StackToString.toString(e));
 		}
 		return packetList;
 	}
@@ -156,15 +160,15 @@ public class VSettingsUtil {
 		 }
 		 catch(IOException ioe)
 		 {
-			 MasterTest.print("Error while closing the stream : " + ioe);
+			 MasterTest.print("Error while closing the stream : " + StackToString.toString(ioe));
 		 }
 		  
 		 //get the compressed byte array from output stream
 		 byte[] compressedArray = bos.toByteArray();
 		  
-		 MasterTest.print("Byte array has been compressed!");
-		 MasterTest.print("Size of original array is:" + bytes.length);
-		 MasterTest.print("Size of compressed array is:" + compressedArray.length);
+		 MasterTest.print("Byte array has been compressed!", Level.DEBUG);
+		 MasterTest.print("Size of original array is:" + bytes.length, Level.DEBUG);
+		 MasterTest.print("Size of compressed array is:" + compressedArray.length, Level.DEBUG);
 		  
 		return compressedArray;
 	}

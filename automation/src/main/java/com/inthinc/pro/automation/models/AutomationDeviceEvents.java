@@ -653,5 +653,20 @@ public class AutomationDeviceEvents {
     }
 
 
+	public PanicEvent panic(DeviceState state, GeoPoint location){
+		return classes.new PanicEvent(state, location);
+	}
+	
+	public void panic(DeviceBase device){
+		device.addEvent(panic(device.getState(), device.getCurrentLocation()));
+	}
+	
+	public class PanicEvent extends AutomationDeviceEvents {
+		
+		private PanicEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.PANIC, state, location);
+		}
+		
+	}
 
 }
