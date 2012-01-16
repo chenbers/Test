@@ -1,6 +1,6 @@
 Narrative:
 
-In order view trips for tiwis Stops for each day
+In order view trips for Tiwi Stops for each day
 As an Administrator
 I need a report that displays by team level
 
@@ -42,14 +42,14 @@ Then the Vehicle Performance page opens and displays
 
 Scenario: TC6017: Schedule Stops Reports by Group
 Given I am logged into the portal 
-And I am on the Admin page
+And I am on the Administrator page
 And have clicked on the Add Reports tab 
 When I Add a name "Daily Stops Report"
 And Select "Active" from Status drop-down
 And enter "Time of Day"
-And select "Daily" from Occurrence
+And select <occurrence> from Occurrence
 And select "Stop Report" from Report drop-down
-And select <type> from Days Reported drop-down
+And select <daysreported> from Days Reported drop-down
 And select a group from the Group drop-down
 And select an Owner from the Owner drop-down
 And enter a valid email address
@@ -57,9 +57,14 @@ And click on Save button
 Then the report will appear as scheduled in the email displaying all vehicles and drivers in the date range
 
 Example:
-|value|
-|Today|
-|Yesterday|
+|occurrence|daysreported|
+|daily|today|
+|daily|yesterday|
+|weekly|today|
+|weekly|yesterday|
+|monthly|today|
+|monthly|yesterday|
+
 
 Scenario: TC6018: Portal Stops Page display report in E-Mail
 Given I am logged into the portal 
