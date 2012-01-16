@@ -1,0 +1,349 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+	<rich:tab  id="teamVehicleStatistics" oncomplete="Team.tabChange();decorateScoreBox();" reRender="headerForm:contextSensitiveHelp">
+		<f:setPropertyActionListener value="teamStatistics" target="#{helpBean.subID}" /> 
+		<a4j:loadStyle src="/css/jquery.scorebox.css"/>
+ 		<a4j:loadScript src="/js/jquery.scorebox.js"/>
+		<a4j:keepAlive beanName="teamStatisticsTableColumns" />
+	 	<ui:param name="tableColumns" value="#{teamStatisticsTableColumns.tableColumns}" />
+	 	<ui:param name="context" value="teamVehicleStatistics" />
+	
+	 	<f:facet name="label">
+	 		<h:panelGroup>
+	 			<h:graphicImage value="/images/ico_vehicle.png" /><rich:spacer width="10"/>#{messages.team_vehicle_statistics}
+	 		</h:panelGroup>
+	 	</f:facet>
+	
+	<!-- Driver Statistics -->
+	<a4j:outputPanel id="statisticsVehicleTab" ajaxRendered="true" styleClass="section" layout="block">
+		<h:form id="teamStatisticsVehicleForm">	  
+			<!--<ul id="grid_nav" style="margin: 0;">            							
+     			<li class="l text">
+     				<a4j:commandLink 
+     					id="#{context}EditColumns" 
+						reRender="editColumnsForm:editColumnGrid"
+     					action="#"
+     					styleClass="ls_tab_edit_columns"
+     					onclick="Richfaces.showModalPanel('editColumns');">            									
+     						<h:outputText value="#{messages.button_editColumns}" />
+					</a4j:commandLink>            									
+     			</li>
+     			<li class="r grid_icon">
+     				<h:panelGroup id="#{context}_reportToolImageId">
+						<h:graphicImage value="/images/ico_tools.png"/>
+					</h:panelGroup>
+				</li>
+				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+				</li>
+			</ul>-->
+            <ui:include src="/includes/reportsContextMenu.xhtml">	
+				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+				<ui:param  name="reportBean" value="#{teamStatisticsBean}"/>
+				<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+				<ui:param  name="exportExcel" value="TRUE"/>
+				<ui:param name="context" value="#{context}" />
+			</ui:include>
+			<h:outputText id="#{context}_email_modalPanel">
+				<ui:include src="/includes/emailReportPopup.xhtml">	
+					<ui:param  name="id" value="#{context}_reportEmailModal" />
+					<ui:param  name="reportBean" value="#{teamStatisticsBean}"/>
+					<ui:param name="context" value="#{context}" />
+				</ui:include>
+			</h:outputText>
+			
+	       <div class="datagrid_panel" style="width: 900px;">
+	       
+	       <!-- Summary -->
+			     <h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
+					<span title="#{messages.button_editColumns}">
+						<a4j:commandLink 
+	     					id="#{context}EditColumns" 
+							reRender="editColumnsForm:editColumnGrid"
+	     					action="#"
+	     					onclick="Richfaces.showModalPanel('editColumns');"> 
+	     					<h:graphicImage value="/images/ico_edit_columns.png"/>
+						</a4j:commandLink>    
+					</span>	
+					<span style="cursor:pointer;">
+						<h:graphicImage value="/images/ico_tools.png"/>
+					</span>
+				</h:panelGroup>
+				
+				<rich:dataTable value="#{teamStatisticsBean.driverStatistics}" 
+	       		id="drivers" 
+	       		var="item"
+				styleClass="datatable" 
+				rowClasses="tableOdd,tableEven"
+				width="100%"
+				rows="#{teamStatisticsBean.numRowsPerPg}">
+
+				<f:facet name="header" >			
+	       		<rich:subTable	value="#{teamStatisticsBean.driverTotals}" 
+	       		id="driverTotals" 
+	       		var="total"
+				styleClass="datatable" 
+				rowClasses="tableOdd,tableEven"
+				width="100%"				
+				rows="10">				
+				<rich:column rendered="#{tableColumns['driver_team'].visible}" id="newTeamStatsTab-totalsTeamName">
+					<f:facet name="header">
+						#{messages.team_team}	
+					</f:facet>
+					#{total.driver.person.fullName} #{item.vehicle.name}
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['score'].visible}" id="newTeamStatsTab-totalsOverallScore">
+					<f:facet name="header">
+						#{messages.team_score}	
+					</f:facet>					 
+					<div class="scoreBox">
+						<h:outputText value="#{total.score.overall}" converter="ScoreConverter" />
+			        </div> 
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['vehicle'].visible}" id="newTeamStatsTab-totalsVehicle-empty">  
+					<h:outputText value=""/>
+				</rich:column>
+				<rich:column rendered="#{tableColumns['trips'].visible}" >
+					<f:facet name="header" id="newTeamStatsTab-totalsTrips">
+						#{messages.team_trips}
+					</f:facet>
+					#{total.score.trips}
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['stops'].visible}" id="newTeamStatsTab-totalsTripStops">
+					<f:facet name="header">
+						#{messages.team_stops}
+					</f:facet>
+					#{total.score.idleHiEvents + total.score.trips}
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['dist_driven'].visible}" id="newTeamStatsTab-totalsMilesDriven">
+					<f:facet name="header">
+						#{messages.team_dist_driven}
+					</f:facet>
+                    <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
+                    	<a4j:actionparam value="#{(total.score.endingOdometer - total.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
+                    	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+                    </h:outputFormat>										
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['drive_time'].visible}" id="newTeamStatsTab-totalsDriveTime">
+					<f:facet name="header">
+						#{messages.team_drive_time}
+					</f:facet>
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{total.score.driveTime}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['idle_time'].visible}" id="newTeamStatsTab-totalsIdleTime">
+					<f:facet name="header">
+						#{messages.team_idle_time}
+					</f:facet>
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{(total.score.idleLo + total.score.idleHi)}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['low_idle'].visible}" id="newTeamStatsTab-totalsLoIdle">
+					<f:facet name="header">
+						#{messages.team_low_idle}
+					</f:facet>
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{total.score.idleLo}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>					
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['high_idle'].visible}" id="newTeamStatsTab-totalsHiIdle">
+					<f:facet name="header">
+						#{messages.team_high_idle}
+					</f:facet>
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{total.score.idleHi}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['idle_percentage'].visible}" id="newTeamStatsTab-totalsIdlePercentage">
+					<f:facet name="header">
+						#{messages.team_idle_percentage}
+					</f:facet>
+					<h:outputText id="idlePercentageNonZero" rendered="#{total.score.driveTime != 0 and total.score.driveTime != null}" 
+						value="#{(total.score.idleHi+total.score.idleLo)*100/total.score.driveTime}" converter="DoubleConverter"/>
+					<h:outputText id="idlePercentageZero" rendered="#{total.score.driveTime == 0 or total.score.driveTime == null}" 
+						value="0.00"/>																				
+				</rich:column>
+				<rich:column rendered="#{tableColumns['mpg'].visible}" id="newTeamStatsTab-totalsMpg">
+					<f:facet name="header">
+						#{messages.team_mpg}
+					</f:facet>
+					<h:outputText id="summaryMpg" value="#{total.score.weightedMpg}" converter="MpgToKplConverter"/>                  					
+				</rich:column>
+				<rich:column rendered="#{tableColumns['crashes'].visible}" id="newTeamStatsTab-totalsCrashes">
+					<f:facet name="header">
+						#{messages.team_crashes}
+					</f:facet>
+					#{total.score.crashEvents}
+				</rich:column>
+				<rich:column  rendered="#{tableColumns['safety'].visible}" id="newTeamStatsTab-totalsSafety">
+					<f:facet name="header">
+						#{messages.team_safety}
+					</f:facet>
+                    <pretty:link id="safetyGroupLink" mappingId="safetyGroupLink" rendered="#{total.score.safetyTotal ne 0}">
+	                   	<h:outputText value="#{total.score.safetyTotal}"/>
+	                    <f:param value="#{teamCommonBean.groupID}"/>
+				        <f:param value="#{teamCommonBean.timeFrame}"/>
+					</pretty:link>
+                   	<h:outputText value="#{total.score.safetyTotal}" rendered="#{total.score.safetyTotal eq 0}"/>
+				</rich:column>
+				</rich:subTable>
+				</f:facet>
+				<rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicle.name}" id="newTeamStatsTab-vehicle">
+					<f:facet name="header">
+						#{messages.team_vehicle}
+					</f:facet>
+
+                    <pretty:link id="driversVehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle.name ne messages.reports_none_assigned}">
+                    	<h:outputText value="#{item.vehicle.name}"/>
+                        <f:param value="#{item.vehicle.vehicleID}"/>
+                    </pretty:link>					
+					<h:outputText id="noDriversVehiclePerformance" value="#{item.vehicle.name}" rendered="#{item.vehicle.name eq messages.reports_none_assigned}"></h:outputText>
+				</rich:column>
+				<rich:column rendered="#{tableColumns['score'].visible}" sortOrder="ASCENDING" 
+					sortBy="#{item.score.overall}" id="newTeamStatsTab-overallScore">
+					<f:facet name="header">
+						#{messages.team_score}
+					</f:facet>
+					<div class="scoreBox">
+						<pretty:link mappingId="vehiclePerformance" rendered="#{item.vehicle.vehicleID ne null}">
+							<h:outputText value="#{item.score.overall}" converter="ScoreConverter" />
+							<f:param value="#{item.vehicle.vehicleID}"/>
+						</pretty:link>
+					</div>
+				</rich:column>			
+				<rich:column rendered="#{tableColumns['driver_team'].visible}" sortBy="#{item.driver.person.first}" id="newTeamStatsTab-driverName">
+					<f:facet name="header">
+						#{messages.team_driver}
+					</f:facet>
+					#{item.driver.person.fullName}
+                    
+				</rich:column>
+				<rich:column rendered="#{tableColumns['trips'].visible}" sortBy="#{item.score.trips}" id="newTeamStatsTab-trips">
+					<f:facet name="header">
+						#{messages.team_trips}
+					</f:facet>
+
+					#{item.score.trips}
+				</rich:column>
+				<rich:column rendered="#{tableColumns['stops'].visible}" sortBy="#{item.score.idleHiEvents+item.score.trips}" id="newTeamStatsTab-tripStops">
+					<f:facet name="header">
+						#{messages.team_stops}
+					</f:facet>
+
+					#{item.score.idleHiEvents + item.score.trips}
+				</rich:column>
+				<rich:column rendered="#{tableColumns['dist_driven'].visible}" sortBy="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" id="newTeamStatsTab-milesDriven">
+					<f:facet name="header">
+						#{messages.team_dist_driven}
+					</f:facet>
+
+                    <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
+                    	<a4j:actionparam value="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
+                    	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+                    </h:outputFormat>										
+				</rich:column>
+				<rich:column rendered="#{tableColumns['drive_time'].visible}" sortBy="#{item.score.driveTime}" id="newTeamStatsTab-driveTime">
+					<f:facet name="header">
+						#{messages.team_drive_time}
+					</f:facet>
+
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.driveTime != null}">
+                    	<a4j:actionparam value="#{item.score.driveTime}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
+                    <h:outputText value="00:00:00" rendered="#{item.score.driveTime == null}"/>
+				</rich:column>
+				<rich:column rendered="#{tableColumns['idle_time'].visible}" sortBy="#{(item.score.idleLo + item.score.idleHi)}" id="newTeamStatsTab-idleTime">
+					<f:facet name="header">
+						#{messages.team_idle_time}
+					</f:facet>
+
+                    <h:outputFormat value="#{messages.reports_time}" >
+                    	<a4j:actionparam value="#{(item.score.idleLo + item.score.idleHi)}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>										
+				</rich:column>
+				<rich:column rendered="#{tableColumns['low_idle'].visible}" sortBy="#{item.score.idleLo}" id="newTeamStatsTab-loIdle">
+					<f:facet name="header">
+						#{messages.team_low_idle}
+					</f:facet>
+
+                    <h:outputFormat value="#{messages.reports_time}"  rendered="#{item.score.idleLo != null}">
+                    	<a4j:actionparam value="#{item.score.idleLo}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>	
+                    <h:outputText value="00:00:00" rendered="#{item.score.idleLo == null}"/>					
+				</rich:column>
+				<rich:column rendered="#{tableColumns['high_idle'].visible}" sortBy="#{item.score.idleHi}" id="newTeamStatsTab-hiIdle">
+					<f:facet name="header">
+						#{messages.team_high_idle}
+					</f:facet>
+
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.idleHi != null}">
+                    	<a4j:actionparam value="#{item.score.idleHi}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>	
+                    <h:outputText value="00:00:00" rendered="#{item.score.idleHi == null}"/>								
+				</rich:column>
+				<rich:column rendered="#{tableColumns['idle_percentage'].visible}" sortBy="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" id="newTeamStatsTab-idlePercentage">
+					<f:facet name="header">
+						#{messages.team_idle_percentage}
+					</f:facet>
+
+					<h:outputText id="idlePercentageNonZero" rendered="#{item.score.driveTime != 0 and item.score.driveTime != null}" 
+						value="#{((item.score.idleHi+item.score.idleLo)*100)/(item.score.driveTime)}" converter="DoubleConverter"/>
+					<h:outputText id="idlePercentageZero" rendered="#{item.score.driveTime == 0 or item.score.driveTime == null}" 
+						value="0.00"/>																				
+				</rich:column>
+				<rich:column rendered="#{tableColumns['mpg'].visible}" sortBy="#{item.score.weightedMpg}" id="newTeamStatsTab-mpg">
+					<f:facet name="header">
+						#{messages.team_mpg}
+					</f:facet>
+					<h:outputFormat value="#{messages.reports_time}">
+						<a4j:actionparam value="#{item.score.weightedMpg}" converter="MpgToKplConverter"/>
+					</h:outputFormat>
+				</rich:column>
+				<rich:column rendered="#{tableColumns['crashes'].visible}" sortBy="#{item.score.crashEvents}" id="newTeamStatsTab-crashes">
+					<f:facet name="header">
+						#{messages.team_crashes}
+					</f:facet>
+		
+					#{item.score.crashEvents}
+				</rich:column>
+				<rich:column rendered="#{tableColumns['safety'].visible}" sortBy="#{item.score.safetyTotal}" id="newTeamStatsTab-safety">
+					<f:facet name="header">
+						#{messages.team_safety}
+					</f:facet>
+<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal ne 0}"/>
+                   	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
+				</rich:column>							
+				<f:facet name="footer">				
+					<h:panelGroup>
+						<rich:datascroller align="center" id="driverScroller" />
+	 					<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'xx_sm'})" />
+ 					</h:panelGroup>
+				</f:facet>
+				
+				
+			</rich:dataTable>		       
+		
+
+			</div>
+			</h:form>
+			</a4j:outputPanel>
+    <!-- End Driver Statistics Table -->
+		 <!-- <ui:include src="/includes/columnSelectionPopup.xhtml">
+			<ui:param name="bean" value="#{teamStatisticsTableColumns}"/>	
+			<ui:param name="reRender" value="#{context}Form:driver,#{context}Form:driverTotals" />
+			<ui:param name="context" value="#{context}" />
+		</ui:include>   -->
+    </rich:tab>
+
+</ui:composition>
