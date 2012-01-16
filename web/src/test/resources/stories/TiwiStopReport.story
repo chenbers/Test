@@ -86,3 +86,13 @@ Departure Time, Duration of stop, Low Idle Time, High Idle Time, Drive Time from
 continuous times between stops, End of Day Stop show Time and Location (End Trip), 
 Start of Day show Time and location (Start Trip).
 
+Scenario: TC6019 Schedule Stops Report Change to InActive
+Given I am logged into the portal 
+And I am on the Administrator page
+And I have clicked on the Reports tab
+And have clicked on the existing Tiwi Stops Report
+When Select "InActive" from Status drop-down
+And I click on Save button
+Then the scheduled report no longer e-mails the Tiwi Stops report
+
+
