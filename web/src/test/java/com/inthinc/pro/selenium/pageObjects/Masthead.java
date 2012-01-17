@@ -11,6 +11,7 @@ import com.inthinc.pro.automation.elements.PageScroller;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkNewWindow;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.selenium.AbstractPage;

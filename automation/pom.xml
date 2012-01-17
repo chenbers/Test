@@ -88,11 +88,6 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>com.inthinc.device</groupId>
-			<artifactId>emulation</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

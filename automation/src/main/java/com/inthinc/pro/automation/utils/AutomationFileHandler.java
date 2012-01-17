@@ -21,7 +21,6 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-import com.inthinc.device.emulation.utils.SHA1Checksum;
 import com.inthinc.pro.rally.RallyWebServices;
 
 public class AutomationFileHandler {

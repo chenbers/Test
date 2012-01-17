@@ -7,16 +7,12 @@ import java.util.List;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
-import com.inthinc.pro.rally.PrettyJSON;
-import com.inthinc.pro.rally.Project;
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCase;
 import com.inthinc.pro.rally.TestFolder;

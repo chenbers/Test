@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 /****************************************************************************************

@@ -1,15 +1,11 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
@@ -17,7 +13,6 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
-import com.inthinc.pro.reports.ReportCriteria;
 
 public class TeamOverallBeanTest extends BaseBeanTest {
 

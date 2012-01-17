@@ -1,10 +1,6 @@
 package com.inthinc.pro.selenium.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Vector;
-
-import org.joda.time.DateTime;
 
 public class DataSummary extends XAxisInfo{
     

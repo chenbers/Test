@@ -8,14 +8,15 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.inthinc.device.devices.TiwiProDevice;
-import com.inthinc.device.emulation.enums.Addresses;
 import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.emulation.interfaces.SiloService;
-import com.inthinc.device.emulation.utils.AutomationCalendar;
-import com.inthinc.device.emulation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.emulation.hessian.AutomationHessianFactory;
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.utils.StackToString;
 

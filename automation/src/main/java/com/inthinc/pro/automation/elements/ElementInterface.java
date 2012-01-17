@@ -2,9 +2,9 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.IndexEnum;
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 
 public interface ElementInterface {

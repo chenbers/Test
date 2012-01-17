@@ -1,7 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -11,7 +9,6 @@ import org.junit.Test;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverStopReport;
-import com.inthinc.pro.model.DriverStops;
 
 public class TeamStopsBeanTest extends BaseBeanTest  {
     

@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.RandomValues;
 
 public class TDSelector extends SelectableObject implements Selectable {

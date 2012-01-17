@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
@@ -31,10 +32,10 @@ public class DriverStatisticsTest extends WebRallyTest {
 
     @BeforeClass
     public static void beforeClass() {
-        AutomationUser login = users.getOneBy(LoginCapability.NoteTesterData);
+        AutomationUser login = AutomationUsers.getUsers().getOneBy(LoginCapability.NoteTesterData);
         CORRECT_USERNAME = login.getUsername();
         CORRECT_PASSWORD = login.getPassword();
-        AutomationUser admin = users.getOneBy(LoginCapability.RoleAdmin);
+        AutomationUser admin = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin);
         CORRECT_ADMIN_USERNAME = admin.getUsername();
         CORRECT_ADMIN_PASSWORD = admin.getPassword();
     }

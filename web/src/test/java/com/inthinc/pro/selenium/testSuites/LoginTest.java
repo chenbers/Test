@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
@@ -27,7 +28,7 @@ public class LoginTest extends WebRallyTest {
     public void accessBlockedTest1240() {
         set_defect("DE6705");
         set_test_case("TC1240");
-        AutomationUser login = users.getOneBy(LoginCapability.StatusInactive);
+        AutomationUser login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusInactive);
         pl.loginProcess(login);
         pl._popUp().loginError()._text().message().assertEquals(BLOCK_TEXT);
         pl._popUp().loginError()._button().ok().click();
@@ -53,7 +54,7 @@ public class LoginTest extends WebRallyTest {
     @Test
     public void bookmarkPageTest1242() {
         set_test_case("TC1242");
-        AutomationUser user = users.getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin);
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin);
         pl.loginProcess(user);
         savePageLink();
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
@@ -76,7 +77,7 @@ public class LoginTest extends WebRallyTest {
         set_test_case("TC1243");
         //NOTE!  This test must be the main window!
         pl.openLogout();
-        AutomationUser user = users.getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin);
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin);
         pl._textField().userName().type(user.getUsername());// Type valid username
         pl._textField().password().type(user.getPassword());// Type valid password
         pl._textField().userName().focus();
@@ -97,7 +98,7 @@ public class LoginTest extends WebRallyTest {
 
         set_test_case("TC1245");
 
-        AutomationUser user = users.getOneBy(LoginCapability.StatusActive);
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
         pl.loginProcess(user.getUsername(), INCORRECT_PASSWORD);
         pl._popUp().loginError()._text().message().assertEquals();
         pl._popUp().loginError()._button().ok().click();
@@ -111,7 +112,7 @@ public class LoginTest extends WebRallyTest {
 
         set_test_case("TC1246");
 
-        AutomationUser user = users.getOneBy(LoginCapability.StatusActive);
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
         pl.loginProcess(INCORRECT_USERNAME, user.getPassword());
         pl._popUp().loginError()._text().message().assertEquals();
         pl._popUp().loginError()._button().ok().click();
@@ -125,7 +126,7 @@ public class LoginTest extends WebRallyTest {
         set_test_case("TC1247");
 
         pl.openLogout();
-        AutomationUser user = users.getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin);
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin);
         pl._textField().userName().type(user.getUsername());// Type valid username
         pl._textField().password().type(user.getPassword());// Type valid password
         pl._button().logIn().click();
@@ -144,7 +145,7 @@ public class LoginTest extends WebRallyTest {
     public void passwordIncorrectCaseTest1248() {
 
         set_test_case("TC1248");
-        AutomationUser user = users.getOneBy(LoginCapability.StatusActive);
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
         pl.loginProcess(user.getUsername(), switchCase(user.getPassword()));
         pl._popUp().loginError()._text().message().assertEquals();
         pl._popUp().loginError()._button().ok().click();
@@ -204,7 +205,7 @@ public class LoginTest extends WebRallyTest {
     public void usernameIncorrectCaseTest1251() {
 
         set_test_case("TC1251");
-        AutomationUser user = users.getOneBy(LoginCapability.StatusActive);
+        AutomationUser user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
         pl.loginProcess(switchCase(user.getUsername()), user.getPassword());        
        
         pl._popUp().loginError()._text().message().assertEquals();

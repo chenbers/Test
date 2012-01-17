@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.IndexEnum;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public enum EditColumnsEnums implements IndexEnum {

@@ -7,15 +7,17 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.device.emulation.utils.AutomationCalendar;
-import com.inthinc.device.emulation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.elements.ClickableText;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
@@ -32,7 +34,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
 
     @Before
     public void before(){
-        List<AutomationUser> logins = users.getAllBy(LoginCapability.NoteTesterData);
+        List<AutomationUser> logins = AutomationUsers.getUsers().getAllBy(LoginCapability.NoteTesterData);
         if(logins.size() > 1){
             user1 = logins.get(0);
             GROUP = user1.getGroupName();

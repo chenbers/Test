@@ -1,19 +1,15 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Level;
 
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
-import com.inthinc.device.emulation.enums.Addresses;
-import com.inthinc.device.emulation.enums.DeviceEnums.ProductType;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.notes.NoteBC;
 import com.inthinc.device.emulation.utils.DeviceState;
@@ -24,6 +20,8 @@ import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.objects.TripTracker;
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.model.State;
@@ -63,6 +61,10 @@ public class WaysmartAggregationTest {
     
     private int deviceNumber = 0;
 	private AutomationSiloService portalProxy;
+	
+
+	private final static String start = "4225 W Lake Park Blvd, West Valley City, UT";
+	private final static String stop = "350 N 700 W, Springville, UT";
     
     
     public WaysmartAggregationTest(){
@@ -126,16 +128,38 @@ public class WaysmartAggregationTest {
     
     
     private void backwardOdometer(){
-    	// TODO: dtanner
     	
     	String start = "4225 W Lake Park Blvd, West Valley City, UT";
     	String stop = "350 N 700 W, Springville, UT";
-    	List<DeviceNote> list = new ArrayList<DeviceNote>();
+    	LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
     	DeviceState state = newState(++deviceNumber);
     	state.setOdometerX100(10000);
     	TripTracker trips = new TripTracker(state);
-    	TripDriver driver = new TripDriver(trips);
+    	trips.getTrip(start, stop);
+    	trips.getTrip(stop, start);
     	
+    	int lastOdo = 0;
+    	list.add(AutomationDeviceEvents.powerOn(state, trips.currentLocation()).getNote());
+    	state.incrementTime(90);
+    	list.add(AutomationDeviceEvents.ignitionOn(state, trips.currentLocation()).getNote());
+    	
+    	Iterator<GeoPoint> itr = trips.iterator();
+    	
+    	while (itr.hasNext()){
+	    	lastOdo = state.getOdometerX100();
+	    	trips.getNextLocation(65, false);
+	    	list.add(AutomationDeviceEvents.location(state, trips.currentLocation()).getNote());
+	    	reverseOdo(state, lastOdo);
+    	}
+    	
+    	state.incrementTime(60);
+    	list.add(AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()).getNote());
+    	state.incrementTime(900);
+    	list.add(AutomationDeviceEvents.powerOff(state, trips.currentLocation()).getNote());
+    	
+
+        tripsMap.put(state, list);
+        createVehicle(deviceNumber, portalProxy, state);
     }
     
     private void reverseOdo(DeviceState state, int lastOdo){
@@ -148,8 +172,10 @@ public class WaysmartAggregationTest {
     	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
-    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
-    	
+    	WaysmartDevice ways = new WaysmartDevice(state, server);
+    	ways.getTripTracker().addLocation(new GeoPoint("4225 W Lake Park Blvd, West Valley City, UT"));
+    	ways.power_on_device();
+    	ways.turn_key_on(60);
     	
     }
     
@@ -158,8 +184,31 @@ public class WaysmartAggregationTest {
     	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
-    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
+    	TripTracker trips = new TripTracker(state);
+    	TripDriver driver = new TripDriver(trips);
+    	driver.isLocationOn(false);
     	
+    	trips.getTrip(start, stop);
+    	trips.getTrip(stop, start);
+    	
+    	driver.addEvent(1, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	state.setSpeedingBuffer(5);
+    	state.setSpeedingDistanceX100(200);
+    	state.setSpeedingSpeedLimit(55);
+    	
+    	driver.addEvent(5, AutomationDeviceEvents.speeding(state, trips.currentLocation()));
+    	
+    	driver.addEvent(10, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	driver.addEvent(16, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	
+    	driver.addEvent(20, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	driver.addEvent(28, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	
+    	driver.addEvent(50, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	driver.addEvent(62, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+
+    	driver.addEvent(80, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	driver.addEvent(92, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
     	
     }
     

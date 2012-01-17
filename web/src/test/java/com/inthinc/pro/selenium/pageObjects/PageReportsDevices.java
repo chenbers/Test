@@ -2,16 +2,16 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.DHXDropDown;
-import com.inthinc.pro.automation.elements.TextTable;
-import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.DeviceReportEnum;
-import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
 
 public class PageReportsDevices extends ReportsBar {
 	private String page = "devices";

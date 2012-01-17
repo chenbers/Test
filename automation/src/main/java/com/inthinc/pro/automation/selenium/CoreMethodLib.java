@@ -25,14 +25,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.inthinc.device.emulation.enums.Addresses;
 import com.inthinc.pro.automation.AutomationPropertiesBean;
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Browsers;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.KeyCommands;
-import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;

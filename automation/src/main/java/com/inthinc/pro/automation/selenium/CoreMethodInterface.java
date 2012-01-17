@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.thoughtworks.selenium.Selenium;

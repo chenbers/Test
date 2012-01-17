@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.IndexEnum;
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class AdminTables {
     

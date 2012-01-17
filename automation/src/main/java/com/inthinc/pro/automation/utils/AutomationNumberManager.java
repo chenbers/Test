@@ -1,8 +1,5 @@
 package com.inthinc.pro.automation.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
 import org.apache.log4j.Logger;
 
 public class AutomationNumberManager {

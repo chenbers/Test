@@ -3,7 +3,9 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -28,7 +30,7 @@ public class ReportsDriverTest extends WebRallyTest {
 
     @Before
     public void before() {
-        login = users.getOne();
+        login = AutomationUsers.getUsers().getOne();
     }
 
     @Test

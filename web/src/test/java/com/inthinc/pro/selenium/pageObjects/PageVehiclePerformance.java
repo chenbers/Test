@@ -3,10 +3,9 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
-import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
+import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 
 public class PageVehiclePerformance extends NavigationBar {
 private String page = "vehicle";

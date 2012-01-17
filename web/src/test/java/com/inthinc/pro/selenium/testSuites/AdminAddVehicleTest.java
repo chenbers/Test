@@ -4,11 +4,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.utils.Unique;
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.utils.Unique;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
 
 //@Ignore
@@ -22,7 +23,7 @@ public class AdminAddVehicleTest extends WebRallyTest {
     @Before
     public void before(){
         editVehicle = new PageAdminVehicleEdit();
-        login = users.getOneBy(LoginCapability.RoleAdmin);
+        login = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin);
         values = new Unique(Addresses.getSilo(getAutomationPropertiesBean().getSilo()));
     }
     

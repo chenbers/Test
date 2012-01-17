@@ -17,12 +17,12 @@ import org.junit.Test;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class DriverStyleBeanTest extends BaseBeanTest

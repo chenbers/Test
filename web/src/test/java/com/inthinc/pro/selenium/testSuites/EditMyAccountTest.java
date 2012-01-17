@@ -6,8 +6,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
@@ -26,7 +28,7 @@ public class EditMyAccountTest extends WebRallyTest {
     public void setupPage() {
         random = new RandomValues();
         myAccountPage = new PageMyAccount();
-        login = users.getOneBy(LoginCapability.IsDriver, LoginCapability.HasVehicle, LoginCapability.RoleAdmin);
+        login = AutomationUsers.getUsers().getOneBy(LoginCapability.IsDriver, LoginCapability.HasVehicle, LoginCapability.RoleAdmin);
     }
 
     @Test

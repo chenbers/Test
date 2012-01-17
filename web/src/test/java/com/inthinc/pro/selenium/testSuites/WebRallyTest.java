@@ -1,8 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.AfterStory;
-import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.BeforeStory;
 import org.junit.After;
 import org.junit.Before;

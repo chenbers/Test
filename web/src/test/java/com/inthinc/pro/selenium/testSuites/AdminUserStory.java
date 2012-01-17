@@ -2,37 +2,22 @@ package com.inthinc.pro.selenium.testSuites;
 
 import static java.util.Arrays.asList;
 import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
-//  import static org.jbehave.core.reporters.Format.CONSOLE;
-//import static org.jbehave.web.selenium.WebDriverHtmlOutput.WEB_DRIVER_HTML;
 
 import java.util.List;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
-//import org.jbehave.core.embedder.StoryControls;
-//import org.jbehave.core.failures.FailingUponPendingStep;
-//import org.jbehave.core.io.LoadFromClasspath;
 import org.jbehave.core.io.LoadFromRelativeFile;
-import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.io.LoadFromRelativeFile.StoryFilePath;
+import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.junit.JUnitStories;
-//import org.jbehave.core.reporters.CrossReference;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.CandidateSteps;
 import org.jbehave.core.steps.InstanceStepsFactory;
-//import org.jbehave.core.steps.PrintStreamStepMonitor;
-//import org.jbehave.web.selenium.ContextView;
-//import org.jbehave.web.selenium.LocalFrameContextView;
-//import org.jbehave.web.selenium.SeleniumConfiguration;
-//import org.jbehave.web.selenium.SeleniumContext;
-//import org.jbehave.web.selenium.SeleniumContextOutput;
-//import org.jbehave.web.selenium.SeleniumStepMonitor;
-//import org.jbehave.core.steps.spring.SpringStepsFactory;
 
-import com.inthinc.pro.selenium.steps.AdminUserSteps;
-import com.inthinc.pro.selenium.steps.LoginSteps;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.inthinc.pro.selenium.steps.AdminUserSteps;
 
 
 public class AdminUserStory extends JUnitStories {

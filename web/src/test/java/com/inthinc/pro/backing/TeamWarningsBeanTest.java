@@ -1,22 +1,16 @@
 package com.inthinc.pro.backing;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.backing.ui.EventDisplay;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.Vehicle;
 
 public class TeamWarningsBeanTest extends BaseBeanTest
 {

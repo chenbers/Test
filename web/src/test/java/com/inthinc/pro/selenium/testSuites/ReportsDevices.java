@@ -7,7 +7,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDevices;
 
@@ -20,7 +22,7 @@ public class ReportsDevices extends WebRallyTest {
     
     @Before
     public void setupUser(){
-        login = users.getOne();
+        login = AutomationUsers.getUsers().getOne();
         device = new PageReportsDevices();
     }
 

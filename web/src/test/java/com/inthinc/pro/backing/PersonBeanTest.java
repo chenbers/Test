@@ -3,7 +3,6 @@ package com.inthinc.pro.backing;
 import java.util.TimeZone;
 
 import com.inthinc.pro.backing.PersonBean.PersonView;
-import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Gender;
 
 public class PersonBeanTest extends BaseAdminBeanTest<PersonBean.PersonView>

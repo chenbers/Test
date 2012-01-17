@@ -6,16 +6,16 @@ import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminAccountDetails;
-import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
-import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlagAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoleAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoles;
 import com.inthinc.pro.selenium.pageObjects.PageAdminDevices;
-import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlagDetails;
+import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
+import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlagAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageAdminReports;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
@@ -26,7 +26,6 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminZones;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
-import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
 public class LoginSteps extends RallySteps { 
 

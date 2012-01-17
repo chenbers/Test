@@ -9,10 +9,10 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.device.emulation.enums.DeviceEnums.ProductType;
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
+import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.Values;
 import com.inthinc.pro.automation.interfaces.ListEnum;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class RandomValues {
 

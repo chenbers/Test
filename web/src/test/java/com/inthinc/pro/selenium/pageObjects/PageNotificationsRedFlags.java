@@ -7,7 +7,6 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
-import com.inthinc.pro.selenium.pageObjects.PopUps.LocationPopUp;
 
 public class PageNotificationsRedFlags extends NotificationsEventsBar {
 

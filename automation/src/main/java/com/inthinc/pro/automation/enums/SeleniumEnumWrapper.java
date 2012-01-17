@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.IndexEnum;
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class SeleniumEnumWrapper implements SeleniumEnums {
 

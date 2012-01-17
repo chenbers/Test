@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.steps;
 import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.When;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoleAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoles;
 

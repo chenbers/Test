@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.interfaces;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
 
 
 public interface SeleniumEnums extends TextEnum {

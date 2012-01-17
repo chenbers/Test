@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.HOSRecordOfDutyStatus;
 import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
@@ -26,8 +27,8 @@ public class HOSReportsTest extends WebRallyTest {
     
     @Before
     public void setupPage() {
-        user = users.getOneBy( LoginCapability.RoleAdmin, LoginCapability.RoleHOS);
-        driver = users.getOneBy(LoginCapability.IsDriver, LoginCapability.HasVehicle, LoginCapability.HasWaySmart, LoginCapability.RoleHOS);
+        user = AutomationUsers.getUsers().getOneBy( LoginCapability.RoleAdmin, LoginCapability.RoleHOS);
+        driver = AutomationUsers.getUsers().getOneBy(LoginCapability.IsDriver, LoginCapability.HasVehicle, LoginCapability.HasWaySmart, LoginCapability.RoleHOS);
         myHOSReports = new PageHOSReports();
     }   
        

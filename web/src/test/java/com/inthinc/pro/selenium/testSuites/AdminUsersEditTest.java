@@ -7,8 +7,10 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.AccountCapability;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
@@ -23,7 +25,7 @@ public class AdminUsersEditTest extends WebRallyTest {
 
     @Before
     public void beforeClass() {
-        login = users.getOneBy(LoginCapability.RoleAdmin, AccountCapability.HOSEnabled, LoginCapability.IsDriver);
+        login = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin, AccountCapability.HOSEnabled, LoginCapability.IsDriver);
         usersPage = new PageAdminUsers();
         edituser = new PageAdminUserAddEdit();
         details = new PageAdminUserDetails();

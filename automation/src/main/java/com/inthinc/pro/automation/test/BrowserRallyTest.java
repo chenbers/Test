@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.test;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.test.RallyTest.RallyTestInterface;
 

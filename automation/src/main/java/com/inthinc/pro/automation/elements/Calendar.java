@@ -1,9 +1,9 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.device.emulation.utils.AutomationCalendar;
-import com.inthinc.device.emulation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.AutomationThread;
 
 public class Calendar {

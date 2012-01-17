@@ -1,26 +1,29 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Level;
 
-import com.inthinc.device.emulation.enums.Addresses;
 import com.inthinc.device.emulation.interfaces.SiloService;
-import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
+import com.inthinc.device.emulation.utils.Unique;
+import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.emulation.hessian.AutomationHessianFactory;
-import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
-import com.inthinc.pro.automation.utils.Unique;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -30,7 +33,6 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.selenium.util.AutomationSiloService;
 
 /**
@@ -120,7 +122,7 @@ public class ReportTest {
 			
 			Device device = new Device();
 			device.setStatus(DeviceStatus.ACTIVE);
-			device.setProductVersion(ProductType.TIWIPRO_R74);
+			device.setProductVersion(com.inthinc.pro.model.configurator.ProductType.TIWIPRO_R74);
 			device.setAccountID(accountID);
 			device.setFirmwareVersion(17120);
 			device.setWitnessVersion(50);
@@ -156,7 +158,7 @@ public class ReportTest {
 	}
 	
 	public void driveTiwis(){
-//		Iterator<Integer> itr = drivers.keySet().iterator();
+		Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
         initialTime.setDate(1319726981);
@@ -164,14 +166,16 @@ public class ReportTest {
 		
         long start = System.currentTimeMillis();
         
-        for (int i  =0;i<2;i++){
-//		while (itr.hasNext()){
-//			Integer next = itr.next();
-			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
-//			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
-//			if (Thread.activeCount() >= 2){
-//			    break;
-//			}
+		while (itr.hasNext()){
+			Integer next = itr.next();
+			DeviceState state = new DeviceState(drivers.get(next).get("device"), ProductType.TIWIPRO_R74);
+//		for (int i=0; i<20; i++){
+//			DeviceState state = new DeviceState("DEVICEDOESNTEXIST", ProductType.TIWIPRO_R74);
+        	TripDriver driver = new TripDriver(state);
+        	driver.run();
+			if (Thread.activeCount() >= 2){
+			    break;
+			}
 			while (Thread.activeCount() > 50){
 			    AutomationThread.pause(500l);
 			    break;
@@ -182,7 +186,7 @@ public class ReportTest {
 		
         while (Thread.activeCount() > 2){
 		    AutomationThread.pause(1);
-//		    MasterTest.print("There are " + Thread.activeCount() + " threads still running");
+		    MasterTest.print("There are " + Thread.activeCount() + " threads still running", Level.DEBUG);
 		}
         try{
             MCMProxyObject.closeService();

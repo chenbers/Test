@@ -16,8 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.inthinc.device.emulation.utils.AutomationCalendar;
-import com.inthinc.device.emulation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;

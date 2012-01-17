@@ -2,7 +2,6 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
-import com.inthinc.pro.selenium.pageObjects.PopUps.LocationPopUp;
 
 public class PageNotificationsSafety extends NotificationsEventsBar {
 

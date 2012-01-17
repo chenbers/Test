@@ -1,8 +1,8 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class ClickableText extends ClickableObject implements
         ClickableTextBased {

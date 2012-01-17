@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.replay;
 
 import java.util.HashMap;
 import java.util.Map;

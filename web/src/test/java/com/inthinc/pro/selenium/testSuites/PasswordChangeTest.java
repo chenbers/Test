@@ -4,8 +4,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
@@ -22,7 +24,7 @@ public class PasswordChangeTest extends WebRallyTest {
     
     @Before
     public void setupPage() {
-        login = users.getOneBy(LoginCapability.RoleAdmin, LoginCapability.HasVehicle);
+        login = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin, LoginCapability.HasVehicle);
         random = new RandomValues();
         myAccountPage = new PageMyAccount();
 

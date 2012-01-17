@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;

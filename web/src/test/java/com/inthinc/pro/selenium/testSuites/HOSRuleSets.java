@@ -1,16 +1,18 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.util.Iterator;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
-import com.inthinc.device.emulation.enums.Addresses;
-import com.inthinc.device.emulation.utils.AutomationCalendar;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
-import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
+import com.inthinc.device.objects.TripTracker;
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 @Ignore
 public class HOSRuleSets extends WebRallyTest {
@@ -34,7 +36,10 @@ public class HOSRuleSets extends WebRallyTest {
         
         waySmart = new WaysmartDevice(satImei, mcmID, server, Direction.wifi);
         waySmart.set_time(initialTime);
-        waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
+
+        TripTracker trip = waySmart.getTripTracker();
+        trip.getTrip("Vancouver Canada", "Abbotsford Canada");
+
         waySmart.setBaseOdometer(5000);
         waySmart.setVehicleID(vehicleID);
         waySmart.setAccountID(accountID);
@@ -44,9 +49,15 @@ public class HOSRuleSets extends WebRallyTest {
         
         waySmart.logInOccupant(occupantID);
         waySmart.turn_key_on(15);
-
-        HanSoloTrip.generateTrip("Vancouver Canada", "Abbotsford Canada", waySmart);
         
+
+        Iterator<GeoPoint> itr = trip.iterator();
+        
+        while (itr.hasNext()){
+        	trip.getNextLocation(65, false);
+        	waySmart.addLocation();
+        }
+
         waySmart.turn_key_off(15);
         waySmart.power_off_device(100);
     }

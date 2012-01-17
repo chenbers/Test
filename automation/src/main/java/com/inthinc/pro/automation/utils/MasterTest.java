@@ -10,48 +10,19 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 
-import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.rally.PrettyJSON;
-import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
-    
-    protected final static AutomationUsers users = AutomationUsers.getUsers();
-    
-
-    public static enum ErrorLevel {
-        FATAL_ERROR(Verdicts.INCONCLUSIVE),
-        FATAL(Verdicts.FAIL),
-        FAIL(Verdicts.FAIL),
-        ERROR(Verdicts.ERROR),
-        INCONCLUSIVE(Verdicts.INCONCLUSIVE),
-        WARN,
-        COMPARE,
-        PASS,
-        ;
-        
-        private Verdicts verdict;
-        
-        private ErrorLevel(){
-            verdict = Verdicts.PASS;
-        }
-        
-        private ErrorLevel(Verdicts verdict){
-            this.verdict = verdict;
-        }
-        
-        public Verdicts getVerdict(){
-            return verdict;
-        }
-    }
     
     protected void enterKey() {
         selenium.enterKey();

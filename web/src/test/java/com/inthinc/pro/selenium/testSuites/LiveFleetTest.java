@@ -4,12 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.device.devices.TiwiProDevice;
-import com.inthinc.device.emulation.enums.Addresses;
-import com.inthinc.device.emulation.utils.AutomationCalendar;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -26,8 +28,8 @@ public class LiveFleetTest extends WebRallyTest {
 
     @Before
     public void before(){
-        user = users.getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin, LoginCapability.RoleAdmin);
-        userTop = users.getOneBy(user.getAccount(), LoginCapability.FleetLevelLogin, LoginCapability.RoleAdmin);
+        user = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive, LoginCapability.TeamLevelLogin, LoginCapability.RoleAdmin);
+        userTop = AutomationUsers.getUsers().getOneBy(user.getAccount(), LoginCapability.FleetLevelLogin, LoginCapability.RoleAdmin);
         pl = new PageLogin();
         pl.loginProcess(user);
         ptds = new PageTeamDashboardStatistics();

@@ -2,18 +2,10 @@ package com.inthinc.pro.backing;
 
 
 import java.io.IOException;
-import java.util.List;
-import java.util.TimeZone;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.reports.ReportCriteria;
 
 public class DriverTripsBeanTest extends BaseBeanTest
 {

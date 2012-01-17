@@ -5,10 +5,10 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
-import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceSpeedEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
+import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
+import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceSpeedEnum;
 
 public class PageVehiclePerformanceSpeed extends NavigationBar {
 	

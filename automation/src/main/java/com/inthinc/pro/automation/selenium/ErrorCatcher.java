@@ -17,8 +17,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.rally.RallyStrings;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 import com.thoughtworks.selenium.SeleniumException;

@@ -2,11 +2,7 @@ package com.inthinc.pro.selenium.steps;
 
 import org.jbehave.core.annotations.When;
 
-import com.inthinc.pro.automation.selenium.Page;
-import com.inthinc.pro.selenium.pageObjects.Masthead;
-import com.inthinc.pro.selenium.pageObjects.NavigationBar;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
-import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
 public class WebSteps extends WebRallyTest {   

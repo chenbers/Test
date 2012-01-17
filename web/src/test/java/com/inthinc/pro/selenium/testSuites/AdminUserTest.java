@@ -6,8 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails.UserDetailsTexts;
@@ -27,7 +29,7 @@ public class AdminUserTest extends WebRallyTest {
     
 	@Before
 	public void setupPage() {
-        login = users.getOneBy(LoginCapability.RoleAdmin);
+        login = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin);
 		my = new PageAdminUsers();
 		myAccount = new PageMyAccount();
 		myAdminUserDetails = new PageAdminUserDetails();

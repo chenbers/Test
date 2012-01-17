@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.utils.MasterTest;

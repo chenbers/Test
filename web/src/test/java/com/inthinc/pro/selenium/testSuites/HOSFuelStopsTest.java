@@ -3,11 +3,12 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.device.emulation.utils.AutomationCalendar;
-import com.inthinc.device.emulation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.enums.AccountCapability;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -31,7 +32,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myAccount = new PageMyAccount();
         myFuelStops = new PageFuelStops();
         myFuelStopsAddEdit = new PageFuelStopsAddEdit();
-        login = users.getOneBy(AccountCapability.HOSEnabled, LoginCapability.IsDriver, LoginCapability.HasWaySmart, LoginCapability.HasVehicle, LoginCapability.RoleHOS);
+        login = AutomationUsers.getUsers().getOneBy(AccountCapability.HOSEnabled, LoginCapability.IsDriver, LoginCapability.HasWaySmart, LoginCapability.HasVehicle, LoginCapability.RoleHOS);
         if (login == null){
             throw new NullPointerException(login.toString());
         }
@@ -309,7 +310,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._textField().vehicle().validate("");
        
         //2. Enter a valid TIWI ID - should not offer suggestions
-        AutomationUser tiwiLogin = users.getOneBy(login.getAccount(), LoginCapability.HasTiwiPro);
+        AutomationUser tiwiLogin = AutomationUsers.getUsers().getOneBy(login.getAccount(), LoginCapability.HasTiwiPro);
         myFuelStops._textField().vehicle().type(tiwiLogin.getUsername());
         myFuelStops._textField().vehicle().getSuggestion(1).validate("No vehicles found");
         

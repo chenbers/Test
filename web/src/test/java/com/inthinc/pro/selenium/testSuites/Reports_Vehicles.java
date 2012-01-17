@@ -11,7 +11,9 @@ import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums;
 import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums.Tabs;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
@@ -46,7 +48,7 @@ public class Reports_Vehicles extends WebRallyTest {
         vehicle_performance = new PageVehiclePerformance();
         admin_users = new PageAdminUsers();
         
-        login = users.getOne();
+        login = AutomationUsers.getUsers().getOne();
     }
 
     @Test
