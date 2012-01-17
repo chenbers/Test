@@ -6,17 +6,17 @@ I need a report that displays by team level
 
 Scenario: TC6014:  Portal Stops Page Display
 Given I am logged into the portal 
-And I have selected an active team from the Home page drop-down
+And I have selected Skip's team from the Home page drop-down
 And I have clicked on the Stops tab
-When I click on a radio button for a driver with a recent trip
+When I click on a radio button for Orson Buggy
 Then the stop page displays appropriate data in each column
 
 
 Scenario: TC6015: Portal Stops Page display report in other formats
 Given I am logged into the portal 
-And I have selected an active team from the Home page drop-down
+And I have selected an Skip's team from the Home page drop-down
 And I have clicked on the Stops tab
-And I click on a radio button for a driver with a recent trip
+And I click on a radio button for Orson Buggy
 Then the stop page displays with data in columns 
 When I click on the icon dropdown <type>
 Then the stop page opens in the chosen format and displays appropriate data in each column
@@ -30,7 +30,7 @@ Scenario: TC6016: Stops Page has clickable Vehicle link
 Given I am logged into the portal 
 And I have selected an active team from the Home page drop-down
 And I have clicked on the Stops tab
-And I click on a radio button for a driver with a recent trip
+And I click on a radio button for Orson Buggy
 And the stop page displays with data in columns 
 When I click on the Vehicle ID link
 Then the Vehicle Performance page opens and displays
@@ -78,13 +78,44 @@ And open my E-mail
 And click on the report link
 Then the stop page displays appropriate data in each column
 
-Scenario: TC6019 Schedule Stops Report Change to InActive
-Given I am logged into the portal 
-And I am on the Administrator page
-And I have clicked on the Reports tab
-And have clicked on the existing Tiwi Stops Report
-When Select "InActive" from Status drop-down
-And I click on Save button
-Then the scheduled report no longer e-mails the Tiwi Stops report
+Scenario: TC6019: Performance Stops Reports
+Given I am logged into the portal as an Admin
+And I am on the Reports tab
+And I have clicked the Performance page
+When I have selected the Driver Stops Report
+And selected the <timeframe> from the dropdown
+And selected Skip's Team from the group dropdown
+And click on an <exporticon>
+Then the report will appear in the selected format
+
+Example:
+|timeframe|exporticon|
+|Today|Excel|
+|Today|PDF|
+|Today|HTML|
+|Yesterday|Excel|
+|Yesterday|PDF|
+|Yesterday|HTML|
+|Past7Days|Excel|
+|Past7Days|PDF|
+|Past7Days|HTML|
+
+Scenario: TC6020: Performance Stops Reports sent EMail
+Given I am logged into the portal as an Administrator
+And I am on the Reports tab
+And I have clicked the Performance page
+When I have selected the Driver Stops Report
+And selected the <timeframe> from the dropdown
+And selected Skip's Team from the group dropdown
+And click on EMail icon
+Then the E-mail pop-up opens
+And I clear any existing E-mails
+And I enter my email address
+And click on the E-mail button
+Then login to my E-mail
+And open my E-mail
+And click on the report link
+Then the stop page displays appropriate data in each column
+
 
 
