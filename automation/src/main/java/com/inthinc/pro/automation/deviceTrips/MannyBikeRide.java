@@ -1,10 +1,10 @@
 package com.inthinc.pro.automation.deviceTrips;
 
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.objects.TiwiProDevice;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.device.objects.AutomationDeviceEvents;
 
 public class MannyBikeRide extends Thread{
     private TiwiProDevice tiwi;

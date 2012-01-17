@@ -3,13 +3,13 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.enums.LoginCapability;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.objects.TiwiProDevice;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;

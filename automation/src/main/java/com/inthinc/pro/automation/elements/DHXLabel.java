@@ -2,7 +2,6 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class DHXLabel extends TextObject {
 

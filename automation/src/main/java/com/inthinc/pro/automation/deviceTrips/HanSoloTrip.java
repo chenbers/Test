@@ -10,16 +10,17 @@ import java.net.URLEncoder;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.objects.TiwiProDevice;
-import com.inthinc.pro.automation.objects.WaysmartDevice;
-import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.HTTPCommands;
-import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.devices.WaysmartDevice;
+import com.inthinc.device.devices.WaysmartDevice.Direction;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.enums.DeviceEnums.ProductType;
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.DeviceState;
+import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.device.emulation.utils.HTTPCommands;
+import com.inthinc.device.objects.AutomationDeviceEvents;
+import com.inthinc.device.objects.TripDriver;
 
 public class HanSoloTrip extends Thread{
     private final static Logger logger = Logger.getLogger(HanSoloTrip.class);

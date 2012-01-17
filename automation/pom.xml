@@ -22,10 +22,6 @@
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.inthinc.pro.dao</groupId>
-			<artifactId>dao</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 		</dependency>
@@ -91,7 +87,12 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.inthinc.device</groupId>
+			<artifactId>emulation</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

@@ -1,12 +1,12 @@
 package com.inthinc.pro.automation;
 
-import com.inthinc.pro.automation.deviceEnums.Heading;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.objects.TiwiProDevice;
+import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.device.emulation.utils.GeoPoint.Heading;
+import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 public class NoteTesterGeneration extends Thread{
     private TiwiProDevice tiwi1;

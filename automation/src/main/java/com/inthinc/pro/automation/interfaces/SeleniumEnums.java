@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.interfaces;
 
+import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
+
 
 public interface SeleniumEnums extends TextEnum {
     //TODO: place Strings that are used repeatedly here, until they can be pulled from .properties (potentially messages.properties)

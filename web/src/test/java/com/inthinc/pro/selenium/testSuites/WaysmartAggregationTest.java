@@ -1,33 +1,36 @@
-package com.inthinc.pro.automation;
+package com.inthinc.pro.selenium.testSuites;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Level;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceNoteTypes;
-import com.inthinc.pro.automation.deviceTrips.TripDriver;
-import com.inthinc.pro.automation.device_emulation.DeviceState;
-import com.inthinc.pro.automation.device_emulation.NoteManager;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents;
-import com.inthinc.pro.automation.models.AutomationDeviceEvents.InstallEvent;
-import com.inthinc.pro.automation.models.DeviceNote;
-import com.inthinc.pro.automation.models.GeoPoint;
-import com.inthinc.pro.automation.objects.MCMProxyObject;
-import com.inthinc.pro.automation.objects.NoteBC;
-import com.inthinc.pro.automation.objects.WaysmartDevice.Direction;
-import com.inthinc.pro.automation.utils.AutomationSiloService;
+import com.inthinc.device.devices.WaysmartDevice;
+import com.inthinc.device.devices.WaysmartDevice.Direction;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.enums.DeviceEnums.ProductType;
+import com.inthinc.device.emulation.notes.DeviceNote;
+import com.inthinc.device.emulation.notes.NoteBC;
+import com.inthinc.device.emulation.utils.DeviceState;
+import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.device.emulation.utils.MCMProxyObject;
+import com.inthinc.device.emulation.utils.NoteManager;
+import com.inthinc.device.objects.AutomationDeviceEvents;
+import com.inthinc.device.objects.AutomationDeviceEvents.InstallEvent;
+import com.inthinc.device.objects.TripDriver;
+import com.inthinc.device.objects.TripTracker;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
-import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.selenium.util.AutomationSiloService;
 
 public class WaysmartAggregationTest {
 //    private static final int acctID = 398;
@@ -54,7 +57,6 @@ public class WaysmartAggregationTest {
     
     private Map<DeviceState, LinkedList<DeviceNote>> tripsMap;
     private Map<DeviceState, Vehicle> vehicleMap;
-    private final static int startingOdometer = 96020;
     private final static int startingTime = 1325644704;
     
     private final static ProductType type = ProductType.WAYSMART;
@@ -71,6 +73,7 @@ public class WaysmartAggregationTest {
 //        sendNotes();
 //        missingNotes();
     }
+    
     
     private void missingNotes(){
     	
@@ -89,7 +92,7 @@ public class WaysmartAggregationTest {
         DeviceState state = driver1.getdeviceState();
         
         state.setDriverID(unknownDriverID);
-        state.setOdometerX100(startingOdometer);
+        state.setOdometerX100(500);
         state.getTime().setDate(startingTime);
         
         driver1.addEvent(25, AutomationDeviceEvents.ignitionOff(state, null));
@@ -122,7 +125,71 @@ public class WaysmartAggregationTest {
     }
     
     
+    private void backwardOdometer(){
+    	// TODO: dtanner
+    	
+    	String start = "4225 W Lake Park Blvd, West Valley City, UT";
+    	String stop = "350 N 700 W, Springville, UT";
+    	List<DeviceNote> list = new ArrayList<DeviceNote>();
+    	DeviceState state = newState(++deviceNumber);
+    	state.setOdometerX100(10000);
+    	TripTracker trips = new TripTracker(state);
+    	TripDriver driver = new TripDriver(trips);
+    	
+    }
     
+    private void reverseOdo(DeviceState state, int lastOdo){
+    	int current = state.getOdometerX100();
+    	int diff = current - lastOdo;
+    	state.setOdometerX100(current - diff);
+    }
+    
+    private void timeGaps(){
+    	// TODO: dtanner
+    	DeviceState state = newState(++deviceNumber);
+    	createVehicle(deviceNumber, portalProxy, state);
+    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
+    	
+    	
+    }
+    
+    
+    private void noIgnitionOn(){
+    	// TODO: dtanner
+    	DeviceState state = newState(++deviceNumber);
+    	createVehicle(deviceNumber, portalProxy, state);
+    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
+    	
+    	
+    }
+    
+    private void lateNotes(){
+    	// TODO: dtanner
+    	DeviceState state = newState(++deviceNumber);
+    	createVehicle(deviceNumber, portalProxy, state);
+    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
+    	
+    	
+    }
+    
+    private void longTrips(){
+    	// TODO: dtanner
+    	DeviceState state = newState(++deviceNumber);
+    	createVehicle(deviceNumber, portalProxy, state);
+    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
+    	
+    	
+    }
+    
+    
+    private void sameTime(){
+    	// TODO: dtanner
+    	DeviceState state = newState(++deviceNumber);
+    	createVehicle(deviceNumber, portalProxy, state);
+    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
+    	
+    	
+    }
     
     private void notesOutOfOrder(){
         
@@ -137,7 +204,7 @@ public class WaysmartAggregationTest {
         DeviceState state = driver.getdeviceState();
         
         state.setDriverID(unknownDriverID);
-        state.setOdometerX100(startingOdometer);
+        state.setOdometerX100(500);
         state.getTime().setDate(startingTime);
         
         state.setTopSpeed(75).setSpeedingDistanceX100(100).setSpeedingSpeedLimit(60).setAvgSpeed(65);
@@ -206,6 +273,7 @@ public class WaysmartAggregationTest {
     private DeviceState newState(int number){
         String last = String.format("%05d", number);
         DeviceState state = new DeviceState("30023FKEWS"+last, type);
+        state.setAccountID(acctID);
         state.setMcmID("FKE" + last);
         state.setWaysDirection(Direction.wifi);
         state.setDriverID(unknownDriverID);

@@ -7,10 +7,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.interfaces.SiloService;
+import com.inthinc.emulation.hessian.AutomationHessianFactory;
 import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.utils.AutomationHessianFactory;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 

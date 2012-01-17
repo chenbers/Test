@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.device.emulation.enums.Addresses;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.models.AutomationUser;

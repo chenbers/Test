@@ -1,29 +1,26 @@
-package com.inthinc.pro.automation;
+package com.inthinc.pro.selenium.testSuites;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Level;
 
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.interfaces.SiloService;
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.MCMProxyObject;
+import com.inthinc.device.resources.DeviceStatistics;
+import com.inthinc.emulation.hessian.AutomationHessianFactory;
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
-import com.inthinc.pro.automation.objects.MCMProxyObject;
-import com.inthinc.pro.automation.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutomationHessianFactory;
-import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
-import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.Unique;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -34,6 +31,7 @@ import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.selenium.util.AutomationSiloService;
 
 /**
  * This test is used to create x number of drivers and all of the support records.<br />
@@ -158,7 +156,7 @@ public class ReportTest {
 	}
 	
 	public void driveTiwis(){
-		Iterator<Integer> itr = drivers.keySet().iterator();
+//		Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
         initialTime.setDate(1319726981);
@@ -166,10 +164,11 @@ public class ReportTest {
 		
         long start = System.currentTimeMillis();
         
-		while (itr.hasNext()){
-			Integer next = itr.next();
-//			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
-			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
+        for (int i  =0;i<2;i++){
+//		while (itr.hasNext()){
+//			Integer next = itr.next();
+			new HanSoloTrip().start("DEVICEDOESNTEXIST", portal, initialTime);
+//			new HanSoloTrip().start(drivers.get(next).get("device"), portal, initialTime);
 //			if (Thread.activeCount() >= 2){
 //			    break;
 //			}
@@ -191,7 +190,7 @@ public class ReportTest {
         }
         MasterTest.print("Starting time is " + DeviceStatistics.getStart());
         MasterTest.print("Ending time is " + DeviceStatistics.getStop());
-		MasterTest.print("We made " + DeviceStatistics.getHessianCalls());
+		MasterTest.print("We made " + DeviceStatistics.getHessianCalls() + " calls");
         MasterTest.print("We took :" + DeviceStatistics.getTimeDelta() + " seconds to run");
         MasterTest.print("This is an average of " + DeviceStatistics.getCallsPerMinute() + " calls per minute");
         
@@ -201,7 +200,7 @@ public class ReportTest {
 		ReportTest test = new ReportTest(Addresses.DEV);
 //		test.create(5000);
 //		MCMProxyObject.regularNote=false;
-		test.readDrivers();
+//		test.readDrivers();
 		test.driveTiwis();
 		
 	}

@@ -3,8 +3,8 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.device.emulation.utils.AutomationCalendar.TimeZones;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.utils.AutomationCalendar.TimeZones;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;

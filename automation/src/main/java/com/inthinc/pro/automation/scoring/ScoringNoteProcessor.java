@@ -7,10 +7,11 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutomationSiloService;
-import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.enums.DeviceEnums.ProductType;
+import com.inthinc.device.emulation.interfaces.SiloService;
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.emulation.hessian.AutomationHessianFactory;
 
 
 public class ScoringNoteProcessor {
@@ -25,7 +26,7 @@ public class ScoringNoteProcessor {
 	private final Double agg_brake = 0.164130;
 	private final Double agg_accel = 0.0593694;
 
-	private AutomationSiloService hessian;
+	private SiloService hessian;
 	private ScoringNoteSorter processor = new ScoringNoteSorter();
 	
 	private Map<String, Double> scores;
@@ -43,7 +44,7 @@ public class ScoringNoteProcessor {
 	
 
 	public ScoringNoteProcessor(Addresses server){
-		hessian = new AutomationSiloService(server);
+		hessian = new AutomationHessianFactory().getPortalProxy(server);
 		scores = new TreeMap<String, Double>();
 	}
 	
@@ -64,16 +65,16 @@ public class ScoringNoteProcessor {
 	}
 	
 	public void changeServers(Addresses server){
-		hessian = new AutomationSiloService(server);
+		hessian = new AutomationHessianFactory().getPortalProxy(server);
 	}
 	
 	private void getVehicleNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
-		processor.preProcessNotes(hessian.getVehicleNote(ID, start.epochSeconds(), stop.epochSeconds()), deviceType);
+		processor.preProcessNotes(hessian.getVehicleNote(ID, start.epochSeconds(), stop.epochSeconds(), 1, new Integer[]{}), deviceType);
 		theResultsAreIn();
 	}
 	
 	private void getDriverNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
-		processor.preProcessNotes(hessian.getDriverNote(ID, start.epochSeconds(), stop.epochSeconds()), deviceType );
+		processor.preProcessNotes(hessian.getDriverNote(ID, start.epochSeconds(), stop.epochSeconds(), 1, new Integer[]{}), deviceType );
 		theResultsAreIn();
 	}
 	

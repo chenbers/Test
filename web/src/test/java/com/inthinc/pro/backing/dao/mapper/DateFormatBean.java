@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.dao;
+package com.inthinc.pro.backing.dao.mapper;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 
 public class DateFormatBean {
+	
 	private String pattern = "MM/dd/yy h:mm a (z)";
 	private static String[] patternStrs = { 
       		"MM/dd/yy h:mm a (z)",

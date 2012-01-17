@@ -10,9 +10,9 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 
+import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;

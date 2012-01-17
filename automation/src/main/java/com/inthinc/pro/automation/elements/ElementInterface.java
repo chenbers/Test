@@ -2,10 +2,9 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
 
-import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.device.emulation.utils.DeviceUtil.IndexEnum;
+import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
-import com.inthinc.pro.model.File;
 
 
 public interface ElementInterface {
@@ -136,7 +135,7 @@ public interface ElementInterface {
     }
 
     public interface URLBased extends ElementInterface {
-        public File getBinaryFile();//? not sure about the best java object to use here
+//        public File getBinaryFile();//? not sure about the best java object to use here
         // what do we want to do with binary files?
         // compare with existing binary files?
         // extract data? for comparison to input values?

@@ -1,18 +1,19 @@
-package com.inthinc.pro.automation.utils;
+package com.inthinc.pro.selenium.util;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.models.DeviceZone;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.interfaces.SiloService;
+import com.inthinc.emulation.hessian.AutomationHessianFactory;
+import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.DeviceMapper;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -24,7 +25,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 
 public class AutomationSiloService {
-
+	
 	private final static Logger logger = Logger
 			.getLogger(AutomationSiloService.class);
 
@@ -289,8 +290,8 @@ public class AutomationSiloService {
         return mapper.convertToModelObject(portalProxy.getZone(zoneID), Zone.class);
     }
     
-    public List<DeviceZone> getZonesByAccountID(Integer acctID){
-        return new ZoneHessianDAO().getMapper().convertToModelObject(portalProxy.getZonesByAcctID(acctID), DeviceZone.class);
+    public List<Zone> getZonesByAccountID(Integer acctID){
+        return new ZoneHessianDAO().getMapper().convertToModelObject(portalProxy.getZonesByAcctID(acctID), Zone.class);
     }
 
 }

@@ -3,7 +3,6 @@ package com.inthinc.pro.automation.elements;
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextScoreTable extends TextTable implements TableBased<TextBased> {
 

@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.ClickableObject;
@@ -16,7 +17,6 @@ import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 

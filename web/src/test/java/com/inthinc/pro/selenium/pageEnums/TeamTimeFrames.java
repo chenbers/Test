@@ -3,8 +3,8 @@ package com.inthinc.pro.selenium.pageEnums;
 
 
 
+import com.inthinc.device.emulation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 public enum TeamTimeFrames implements SeleniumEnums {
     DAYS_AGO_TODAY(AutomationCalendar.getTimeFrameOptions()[0], "timeFrameForm:timeFrameToday"),

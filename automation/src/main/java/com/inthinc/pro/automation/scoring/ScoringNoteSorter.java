@@ -7,17 +7,26 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.model.event.AggressiveDrivingEvent;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.HardVertical820Event;
-import com.inthinc.pro.model.event.IdleEvent;
-import com.inthinc.pro.model.event.SeatBeltEvent;
-import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.device.emulation.enums.DeviceEnums.ProductType;
+import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 
 public class ScoringNoteSorter {
 	
 	private final static Logger logger = Logger.getLogger(ScoringNoteSorter.class);
+
+	private static final String odometer = "odometer";
+	private static final String forgiven = "forgiven";
+	private static final String topSpeed = "topSpeed";
+	private static final String distance = "odometer";
+	private static final String limit = "speedLimit";
+	private static final String noteID = "noteID";
+	private static final String deltaX = "deltaX";
+	private static final String deltaY = "deltaY";
+	private static final String deltaZ = "deltaZ";
+	private static final String speed = "speed";
+	private static final String lowIdle = "lowIdle";
+	private static final String highIdle = "highIdle";
+
 	
 	private HashMap<Long, Map<String, Integer>> aggressive;
 	private HashMap<Long, Map<String, Integer>> idleing;
@@ -28,9 +37,10 @@ public class ScoringNoteSorter {
 
 	private int mileage;
 
-	private Object itHappens;
 
-	public void preProcessNotes(List<Event> lotsANotes, ProductType type){
+	
+
+	public void preProcessNotes(List<Map<String, Object>> lotsANotes, ProductType type){
 
 		logger.info("Number of Notes == "+lotsANotes.size());
 		speedCategories(lotsANotes, type);
@@ -43,56 +53,53 @@ public class ScoringNoteSorter {
 //		mpg.put("mpgOdometer", new ArrayList<Integer>());
 //		mpg.put("mpg", new ArrayList<Integer>());
 		
-		Iterator<Event> itr = lotsANotes.iterator();
+		Iterator<Map<String, Object>> itr = lotsANotes.iterator();
 		mileage = 0;
 		if (type.equals(ProductType.WAYSMART))
-			mileage = lotsANotes.get(0).getOdometer()-lotsANotes.get(lotsANotes.size()-1).getOdometer();
+			mileage = ((Integer)lotsANotes.get(0).get(odometer))-((Integer)lotsANotes.get(lotsANotes.size()-1).get(odometer));
 		
 		while (itr.hasNext()) {
 			
-			itHappens = itr.next();
+			Map<String, Object> next = itr.next();
+			DeviceNoteTypes eventType = DeviceNoteTypes.valueOf((Integer) next.get("type"));
 			
-			if (!type.equals(ProductType.WAYSMART))mileage+=((Event)itHappens).getOdometer();
+			if (!type.equals(ProductType.WAYSMART))mileage+=((Integer)next.get(odometer));
 			
 			Map<String, Integer> map = new HashMap<String, Integer>();
 			
-			if (((Event)itHappens).getForgiven()==1)continue;
+			if (((Integer)next.get(forgiven))==1)continue;
 			
-			if (itHappens instanceof SpeedingEvent) {
-				SpeedingEvent event = (SpeedingEvent) itHappens;
-				map.put("topSpeed", event.getTopSpeed()	);
-				map.put("distance", event.getDistance()	);
-				map.put("limit", event.getSpeedLimit()	);
-				speeding.put(event.getNoteID(), map);
+			if (eventType.equals(DeviceNoteTypes.SPEEDING) || eventType.equals(DeviceNoteTypes.SPEEDING_EX3)) {
+				map.put(topSpeed, (Integer) next.get(topSpeed));
+				map.put(distance, (Integer) next.get(distance)	);
+				map.put(limit, (Integer) next.get(limit));
+				speeding.put((Long) next.get(noteID), map);
 				
-			}else if (itHappens instanceof SeatBeltEvent) {
-				SeatBeltEvent event = (SeatBeltEvent) itHappens;
-				map.put("topSpeed", event.getTopSpeed()	);
-				map.put("distance", event.getDistance()	);
+			}else if (next.equals(DeviceNoteTypes.SEATBELT)) {
+				map.put(topSpeed, (Integer) next.get(topSpeed)	);
+				map.put(odometer, (Integer) next.get(odometer)	);
 				
-				seatbelt.put(event.getNoteID(), map);
+				seatbelt.put((Long) next.get(noteID), map);
 				
-			}else if (itHappens instanceof AggressiveDrivingEvent) {
-				AggressiveDrivingEvent event = (AggressiveDrivingEvent) itHappens;
-				map.put("deltaX", event.getDeltaX());
-				map.put("deltaY", event.getDeltaY());
-				map.put("deltaZ", event.getDeltaZ());
-				map.put("speed", event.getSpeed());
+			}else if (next.equals(DeviceNoteTypes.NOTE_EVENT)) {
+				map.put(deltaX, (Integer) next.get(deltaX));
+				map.put(deltaY, (Integer) next.get(deltaY));
+				map.put(deltaZ, (Integer) next.get(deltaZ));
+				map.put(speed, (Integer) next.get(speed));
 				
-				aggressive.put(event.getNoteID(), map);
+				aggressive.put((Long) next.get(noteID), map);
 				
-			}else if (itHappens instanceof IdleEvent) {
-				IdleEvent event = (IdleEvent) itHappens;
-				map.put("lowIdle", event.getLowIdle());
-				map.put("highIdle", event.getHighIdle());
-				idleing.put(event.getNoteID(), map);
-			}else if (itHappens instanceof HardVertical820Event) {
-				HardVertical820Event event = (HardVertical820Event) itHappens;		
-				map.put("deltaX", 0);
-				map.put("deltaY", 0);
-				map.put("deltaZ", 0);
-				map.put("speed", 0);
-				aggressive.put(event.getNoteID(), map);
+			}else if (next.equals(DeviceNoteTypes.IDLING)) {
+				map.put(lowIdle, (Integer) next.get(lowIdle));
+				map.put(highIdle, (Integer) next.get(highIdle));
+				idleing.put((Long) next.get(noteID), map);
+				
+			}else if (next.equals(DeviceNoteTypes.VERTICALEVENT) || next.equals(DeviceNoteTypes.VERTICALEVENT_SECONDARY)) {
+				map.put(deltaX, 0);
+				map.put(deltaY, 0);
+				map.put(deltaZ, 0);
+				map.put(speed, 0);
+				aggressive.put((Long) next.get(noteID), map);
 			}
 			
 		}
@@ -112,20 +119,20 @@ public class ScoringNoteSorter {
 		
 	}
 
-	private void speedCategories(List<Event> everything, ProductType deviceType) {
+	private void speedCategories(List<Map<String, Object>> everything, ProductType deviceType) {
 		Integer[] miles= {0,0,0,0,0};
 		
-		Iterator<Event> itr = everything.iterator();
+		Iterator<Map<String, Object>> itr = everything.iterator();
 		int m = 0;
 		while (itr.hasNext()) {
-			Event note = itr.next();
-			if (note.getSpeedLimit()==null)note.setSpeedLimit(78);
-			int l = note.getSpeedLimit();
+			Map<String, Object> note = itr.next();
+			if (!note.containsKey(limit))note.put(limit, 78);
+			int l = (Integer) note.get(limit);
 			if (deviceType.equals(ProductType.WAYSMART)) {
 				
 			}
 			else {
-				m = note.getOdometer();
+				m = (Integer) note.get(odometer);
 			}
 			
 			if (l <= 30 ) miles[0]+=m;

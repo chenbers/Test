@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.RallyHTTP.RallyFields;
 

@@ -2,12 +2,12 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.Iterator;
 
+import com.inthinc.device.emulation.utils.DeviceUtil.IndexEnum;
+import com.inthinc.device.emulation.utils.DeviceUtil.TextEnum;
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextTable implements TableBased<TextBased> {
 

@@ -7,15 +7,16 @@ import java.util.Map;
 
 import org.apache.log4j.Level;
 
-import com.inthinc.pro.automation.CassandraPropertiesBean;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.objects.MCMProxyObject;
-import com.inthinc.pro.automation.objects.TiwiProDevice;
-import com.inthinc.pro.automation.resources.DeviceStatistics;
+import com.inthinc.device.CassandraProperties;
+import com.inthinc.device.CassandraPropertiesBean;
+import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.utils.AutomationCalendar;
+import com.inthinc.device.emulation.utils.MCMProxyObject;
+import com.inthinc.device.objects.TripDriver;
+import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
-import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationThread;
-import com.inthinc.pro.automation.utils.CassandraProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class VariableTripCreator {

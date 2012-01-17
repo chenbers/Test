@@ -12,8 +12,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.apache.tools.ant.filters.StringInputStream;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -25,8 +25,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import com.inthinc.device.emulation.enums.Addresses;
 import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.AutomationThread;
@@ -318,7 +318,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         Document doc;
         
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        doc = builder.parse(new StringInputStream(html));
+        doc = builder.parse(IOUtils.toInputStream(html));
         Node child = doc.getFirstChild();
         child = child.getFirstChild();
         while (child != null){

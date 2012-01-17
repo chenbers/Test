@@ -4,10 +4,11 @@ import java.io.StringWriter;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.device.emulation.enums.Addresses;
+import com.inthinc.device.emulation.interfaces.SiloService;
+import com.inthinc.emulation.hessian.AutomationHessianFactory;
+import com.inthinc.emulation.hessian.GenericHessianException;
 import com.inthinc.pro.automation.enums.UniqueValues;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
 public class Unique {
 	private final static Logger logger = Logger.getLogger(Unique.class);
@@ -60,7 +61,7 @@ public class Unique {
 	private Boolean checkUnique(UniqueValues value, String text){
 		try{
 			portalProxy.getID(value.getName(), text);
-		}catch(EmptyResultSetException error){
+		}catch(GenericHessianException error){
 			return true;
 		}
 		return false;
