@@ -117,5 +117,10 @@ And open my E-mail
 And click on the report link
 Then the stop page displays appropriate data in each column
 
+Example:
+|timeframe|
+|Today|
+|Yesterday|
+|Past7Days|
 
 
