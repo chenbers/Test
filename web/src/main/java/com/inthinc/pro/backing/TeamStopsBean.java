@@ -149,7 +149,7 @@ public class TeamStopsBean extends BaseBean {
        
         String selectedDriverName = getSelectedDriverName();
         List<DriverStops> driverStops = driverDAO.getStops(selectedDriverID, selectedDriverName, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
-        driverStopReport = new DriverStopReport(selectedDriverID, selectedDriverName, teamCommonBean.getTimeFrame(), driverStops);
+        driverStopReport = new DriverStopReport(teamCommonBean.getGroup().getName(), selectedDriverID, selectedDriverName, teamCommonBean.getTimeFrame(), driverStops);
     }
     
     private String getSelectedDriverName() {
@@ -187,7 +187,8 @@ public class TeamStopsBean extends BaseBean {
         if (selectedDriverID == null)
             return null;
         
-        ReportCriteria reportCriteria = getReportCriteriaService().getTeamStopsReportCriteria(selectedDriverID, teamCommonBean.getTimeFrame(), 
+        ReportCriteria reportCriteria = getReportCriteriaService().getTeamStopsReportCriteria(
+                getAccountGroupHierarchy(), selectedDriverID, teamCommonBean.getTimeFrame(), 
                 getDateTimeZone(), getLocale(), driverStopReport);
         
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());

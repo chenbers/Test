@@ -1,5 +1,7 @@
 package com.inthinc.pro.reports;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
@@ -47,7 +50,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
        
         reportCriteriaService.setDriverDAO(new MockDriverDAO());
         reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null );
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(getAccountGroupHierarchy(), 1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null );
 
         dump("teamStops1", 0, reportCriteria, FormatType.PDF);
         dump("teamStops1", 0, reportCriteria, FormatType.EXCEL);
@@ -61,7 +64,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
        
         reportCriteriaService.setDriverDAO(new MockDriverDAO());
         reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(11771, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null);
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteria(getAccountGroupHierarchy(), 11771, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH, null);
 
         dump("teamStops2", 0, reportCriteria, FormatType.PDF);
         dump("teamStops2", 0, reportCriteria, FormatType.EXCEL);
@@ -77,12 +80,25 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         reportCriteriaService.setGroupDAO(new MockGroupDAO());
         reportCriteriaService.setReportAddressLookupBean(reportAddressLookup);
         
-//        List<ReportCriteria> reportCriteriaList = reportCriteriaService.getTeamStopsReportCriteria(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
-        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteriaByGroup(1, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(1);
+        
+        GroupHierarchy groupHierarchy = getAccountGroupHierarchy();
+        
+        ReportCriteria reportCriteria = reportCriteriaService.getTeamStopsReportCriteriaByGroup(groupHierarchy, groupIDList, TimeFrame.TODAY,DateTimeZone.getDefault(), Locale.ENGLISH);
 
         dump("teamStopsGroup", 0, reportCriteria, FormatType.PDF);
         dump("teamStopsGroup", 0, reportCriteria, FormatType.EXCEL);
 
+    }
+
+    private GroupHierarchy getAccountGroupHierarchy() {
+        List<Group> hierarchyGroupList = new ArrayList<Group>();
+        hierarchyGroupList.add(new Group(100, 1, "Parent", 0));
+        hierarchyGroupList.add(new Group(1, 1, "Team", 100));
+        
+        GroupHierarchy groupHierarchy = new GroupHierarchy(hierarchyGroupList);
+        return groupHierarchy;
     }
 
     class MockGroupDAO implements GroupDAO {
@@ -179,8 +195,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
 
         @Override
         public List<Driver> getDrivers(Integer groupID) {
-            // TODO Auto-generated method stub
-            return null;
+            return getAllDrivers(groupID);
         }
 
         @Override

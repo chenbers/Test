@@ -36,8 +36,19 @@ public class DateTimeUtilTest {
             }
         }
     }
-    
-    
+    @Test
+    public void dayIntervalListTest(){
+        Interval interval = new Interval(dateFormatter.parseDateTime("02/01/2010"), dateFormatter.parseDateTime("02/05/2010"));
+        Iterator iterator = DateTimeZone.getAvailableIDs().iterator();
+        while (iterator.hasNext()) {
+            DateTimeZone dateTimeZone = DateTimeZone.forID((String )iterator.next());
+            List<Interval> dayIntervalList = DateTimeUtil.getDayIntervalList(interval, dateTimeZone);
+            assertEquals("num days ", 5, dayIntervalList.size());
+            for (int i = 0, dcnt = 1 ; i < dayIntervalList.size(); i++, dcnt++) {
+               assertEquals("start day " + dcnt, "02/0" + dcnt + "/2010", dateFormatter.print(dayIntervalList.get(i).getStart()));
+            }
+        }
+    }
     @Test
     public void startEndIntervalTest()
     {
@@ -61,13 +72,7 @@ public class DateTimeUtilTest {
             assertTrue("start", printFormatter.print(expandedInterval.getStart()).startsWith("01/31/2010 00:00:00"));
             assertTrue("end", printFormatter.print(expandedInterval.getEnd()).startsWith("02/06/2010 23:59:59"));
         }
-        
-  
-    
-    
     }
-    
-    
 
     @Test
     public void daysBackIntervalTest()

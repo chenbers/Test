@@ -115,6 +115,14 @@
                     </ui:include>
                   </li>
                 </h:outputText>
+                <h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT_DAYS'}">
+                    <li class="l">   
+                    <ui:include src="/includes/component/timeFrameAltDays.xhtml" >
+                        <ui:param name="timeFrameSelect" value="#{params.timeFrameSelect}"/> 
+                        <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
+                    </ui:include>
+                  </li>
+                </h:outputText>
                 </ui:repeat>
                 <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
                 <li  class="l select">

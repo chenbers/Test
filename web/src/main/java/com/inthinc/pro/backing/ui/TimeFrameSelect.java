@@ -68,6 +68,7 @@ public class TimeFrameSelect {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         selectItemList.add(new SelectItem(TimeFrame.TODAY, TimeFrameUtil.getTimeFrameStr(TimeFrame.TODAY, getLocale())));
         selectItemList.add(new SelectItem(TimeFrame.ONE_DAY_AGO, TimeFrameUtil.getTimeFrameStr(TimeFrame.ONE_DAY_AGO, getLocale())));
+        selectItemList.add(new SelectItem(TimeFrame.PAST_SEVEN_DAYS, TimeFrameUtil.getTimeFrameStr(TimeFrame.PAST_SEVEN_DAYS, getLocale())));
         return selectItemList;
     }
 }

@@ -139,7 +139,7 @@ public class TeamStopsTest {
         }
         
         
-        DriverStopReport driverStopReport = new DriverStopReport(team.driver.getDriverID(), "", TimeFrame.ONE_DAY_AGO, stopsList);
+        DriverStopReport driverStopReport = new DriverStopReport(team.group.getName(), team.driver.getDriverID(), "", TimeFrame.ONE_DAY_AGO, stopsList);
         
         assertEquals("Total DriveTime", expectedDriveTimeTotal, driverStopReport.getDriveTimeTotal());
         assertEquals("Total IdleHi", expectedIdleHiTotal,driverStopReport.getIdleHiTotal());

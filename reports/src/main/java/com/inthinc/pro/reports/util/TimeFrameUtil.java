@@ -16,7 +16,8 @@ public class TimeFrameUtil {
 		if (timeFrame.equals(TimeFrame.TODAY) ||
 			timeFrame.equals(TimeFrame.ONE_DAY_AGO) || 
 			timeFrame.equals(TimeFrame.WEEK) ||
-			timeFrame.equals(TimeFrame.YEAR))
+			timeFrame.equals(TimeFrame.YEAR) ||
+			timeFrame.equals(TimeFrame.PAST_SEVEN_DAYS))
 			return getTimeFrameItem(timeFrame, locale);
 		
 		if (timeFrame.equals(TimeFrame.MONTH))

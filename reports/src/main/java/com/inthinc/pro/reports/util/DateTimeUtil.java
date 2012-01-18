@@ -26,6 +26,18 @@ public class DateTimeUtil {
         
         return dayList;
     }
+    public static List<Interval> getDayIntervalList(Interval interval, DateTimeZone dateTimeZone)
+    {
+        List<Interval> dayIntervalList = new ArrayList<Interval>();
+        
+        List<DateTime> dayList = getDayList(interval, dateTimeZone);
+        for (DateTime day : dayList) {
+            
+            dayIntervalList.add(new Interval(new DateTime(day, dateTimeZone), new DateTime(day.plusDays(1).minusMillis(1), dateTimeZone)));
+        }
+        
+        return dayIntervalList;
+    }
     
     public static Interval getStartEndInterval(String start, String end, String pattern, DateTimeZone dateTimeZone)
     {

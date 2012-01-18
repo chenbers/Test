@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import org.joda.time.DateTimeZone;
 import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.ui.ReportParams;
@@ -236,7 +237,10 @@ public abstract class ReportsBean extends BaseBean {
                         params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(),  
                         params.getLocale(), getUser().getPerson().getMeasurementType()));
                 break;
-                
+            case TEAM_STOPS_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getTeamStopsReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), 
+                        getDateTimeZone(), getLocale()));
+                break;     
             default:
                 break;
 

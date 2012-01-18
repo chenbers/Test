@@ -14,9 +14,11 @@ public class DriverStopReport {
     private Integer total;
     private Long driveTimeTotal; 
     private TimeFrame timeFrame;
+    private String teamName;
 
-    public DriverStopReport(Integer driverID, String driverName, TimeFrame timeFrame, List<DriverStops> driverStops) {
+    public DriverStopReport(String teamName, Integer driverID, String driverName, TimeFrame timeFrame, List<DriverStops> driverStops) {
         super();
+        this.teamName = teamName;
         this.driverID = driverID;
         this.driverName = driverName;
         this.timeFrame = timeFrame;
@@ -101,4 +103,12 @@ public class DriverStopReport {
         total = idleLoTotal + idleHiTotal + waitTotal;
     }
     
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
 }

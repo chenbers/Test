@@ -5,7 +5,7 @@ public enum ReportCategory {
         IFTA(1, "IFTA", "International Fuel Tax Agreement"),
         Performance(2, "Performance", "Performance, including payroll"),
         Asset(3, "Asset", "Asset"),
-        HOS(4,"HOS", "Hour of services"),
+        HOS(4,"HOS", "Hours of Service"),
         DriverPerformance(5, "Driver Performance", "Driver Performance");
         
         /**
