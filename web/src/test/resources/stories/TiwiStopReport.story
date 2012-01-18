@@ -14,17 +14,17 @@ Then the stop page displays appropriate data in each column
 
 Scenario: TC6015: Portal Stops Page display report in other formats
 Given I am logged into the portal 
-And I have selected an Skip's team from the Home page drop-down
+And I have selected Skip's team from the Home page drop-down
 And I have clicked on the Stops tab
 And I click on a radio button for Orson Buggy
 Then the stop page displays with data in columns 
-When I click on the icon dropdown <type>
+When I click on the <toolicon> dropdown
 Then the stop page opens in the chosen format and displays appropriate data in each column
 
 Examples: 
-|type|
-|Export to PDF|
-|Export to Excel|
+|toolicon|
+|ExporttoPDF|
+|ExporttoExcel|
 
 Scenario: TC6016: Stops Page has clickable Vehicle link
 Given I am logged into the portal 
@@ -63,11 +63,11 @@ Example:
 
 Scenario: TC6018: Portal Stops Page display report in E-Mail
 Given I am logged into the portal 
-And I have selected an active team from the Home page drop-down
+And I have selected Skip's team from the Home page drop-down
 And I have clicked on the Stops tab
-And I click on a radio button for a driver with a recent trip
+And I click on a radio button for Orson Buggy with a recent trip
 Then the stop page displays with data in columns 
-When I click on the icon drop-down 
+When I click on the tool icon drop-down 
 And Select "E-mail This Report"
 Then the E-mail pop-up opens
 And I clear any existing E-mails
@@ -79,7 +79,7 @@ And click on the report link
 Then the stop page displays appropriate data in each column
 
 Scenario: TC6019: Performance Stops Reports
-Given I am logged into the portal as an Admin
+Given I am logged into the portal as an Administrator
 And I am on the Reports tab
 And I have clicked the Performance page
 When I have selected the Driver Stops Report
