@@ -59,6 +59,39 @@ public abstract class TeamBar extends NavigationBar {
         public TextLink timeSelector(TeamTimeFrames timeFrame){
             return new TextLink(timeFrame);
         }
+        
+        public TextLink driverStatsTab() {
+            return new TextLink(TeamBarEnum.DRIVER_STATISTICS);
+        }
+        
+        public TextLink vehicleStatsTab() {
+            return new TextLink(TeamBarEnum.VEHICLE_STATISTICS);
+        }
+        
+        public TextLink tripsTab() {
+            return new TextLink(TeamBarEnum.TRIPS);
+        }
+        
+        public TextLink stopsTab() {
+            return new TextLink(TeamBarEnum.STOPS);
+        }
+        
+        public TextLink liveTeamTab() {
+            return new TextLink(TeamBarEnum.LIVE_TEAM);
+        }
+        
+        public TextLink overallScoreTab() {
+            return new TextLink(TeamBarEnum.OVERALL_SCORE);
+        }
+        
+        public TextLink drivingStyleTab() {
+            return new TextLink(TeamBarEnum.DRIVING_STYLE);
+        }
+        
+        public TextLink speedTab() {
+            return new TextLink(TeamBarEnum.SPEED);
+        }
+        
     }
 
     public TeamBar timeSelectors_validate() {

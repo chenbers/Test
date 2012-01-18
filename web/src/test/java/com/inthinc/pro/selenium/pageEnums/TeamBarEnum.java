@@ -22,6 +22,7 @@ public enum TeamBarEnum implements SeleniumEnums {
     SUB_TITLE("What Happened...", Xpath.start().div(Id.clazz("panel_title")).text("1").toString()),
     
     DRIVER_STATISTICS("Driver Statistics", "teamStatistics_lbl"),
+    VEHICLE_STATISTICS("Vehicle Statistics", "teamVehicleStatistics_lbl"),
     TRIPS("Trips", "teamTrips_lbl"),
     STOPS("Stops", "teamStops_lbl"),
     LIVE_TEAM("Live Team", "teamLive_lbl"),
