@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
@@ -151,8 +152,8 @@ public class PageTeamStops extends TeamBar {
 	public class TeamStopsTextFields extends TeamBarTextFields{}
 	public class TeamStopsButtons extends TeamBarButtons{
 		
-		public Button driverRadio(){
-			return new Button(TeamStopsEnum.DRIVER_RADIO_BUTTON);
+		public ButtonTable driverRadio(){
+			return new ButtonTable(TeamStopsEnum.DRIVER_RADIO_BUTTON);
 		}
 	}
 	public class TeamStopsDropDowns extends TeamBarDropDowns{}
