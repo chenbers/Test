@@ -44,6 +44,9 @@ public enum Addresses implements AddressInterface {
     TEEN_PROD("my.tiwi.com"), 
     
     LDS("lds.inthinc.com"),
+    
+    CONFIGURATOR("dev.tiwipro.com", 8080, "http", "configurator"),
+    LOCALCONFIGURATOR("localhost", 8080, "http", "configurator"),
 
     // PROD_MCM_EC2("my.inthinc.com"),
     // PROD_MCM_PORT_EC2("prodMCMPort"),
@@ -65,6 +68,12 @@ public enum Addresses implements AddressInterface {
                 null);
     }
 
+    private Addresses(String url, Integer webPort, String protocol, String appName) {
+        this.portalUrl = url;
+        this.webPort = webPort;
+        this.protocol = protocol;
+        this.appName = appName;
+    }
     private Addresses(String portalUrl, Integer webPort, Integer portalPort,
             String mcmUrl, Integer mcmPort, Integer waysPort, Integer satPort) {
         this.portalUrl = portalUrl;
