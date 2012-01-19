@@ -27,7 +27,8 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
 			Map<Integer, Object> attrMap = (Map<Integer, Object>) value;
 			Map<String, String> attrValueMap = new HashMap<String, String>();
 			for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet()) {
-				String propertyName = EventAttr.valueOf(attrEntry.getKey()).toString();
+            	EventAttr attrID = EventAttr.valueOf(attrEntry.getKey());
+                String propertyName = attrID == null ? "UNKNOWN(" + attrEntry.getKey() + ")" : attrID.toString();
 				Object propertyData = attrEntry.getValue();
 				if (propertyName == null || propertyData == null)
 					continue;
@@ -45,8 +46,9 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
 	public <E> E convertToModelObject(Map<String, Object> map, Class<E> type) {
 		if (type == Event.class) {
 			Class<?> eventType = getEventType((Integer) map.get("type"));
-			if (eventType != null)
+			if (eventType != null){
 				return type.cast(super.convertToModelObject(map, eventType));
+			}
 			else
 				return super.convertToModelObject(map, type);
 		} else {
