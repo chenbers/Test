@@ -6,6 +6,13 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamStopsEnum implements SeleniumEnums {
 
+    /* Export */
+    EXPORT_TOOLS("", Xpath.start().span(Id.id("stopsReport:teamStops_reportToolImageId")).span("2").toString()),
+    
+    EXPORT_PDF_TOOL(exportPDF, "stopsReport:teamStops-export_menu_item:anchor"),
+    EXPORT_EMAIL_TOOL(emailReport, "stopsReport:teamStops-emailMenuItem:anchor"),
+    EXPORT_EXCEL_TOOL(exportExcel, "stopsReport:teamStops-exportExcelMEnuItem:anchor"),
+    
     /* Driver Selection */
     DRIVER_HEADER("Driver Name", Xpath.start().table(Id.id("stopsTableForm:stopsDrivers:4")).thead().tr().th("2").toString()),
 
@@ -49,7 +56,8 @@ public enum TeamStopsEnum implements SeleniumEnums {
     HIGH_IDLE_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTrips:tb")).tr("###").td("7").toString()),
     WAIT_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTrips:tb")).tr("###").td("8").toString()),
     DURATION_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTrips:tb")).tr("###").td("9").toString()),
-
+    
+    VEHICLE_LINK(null, "stopsTripsTableForm:stopsTrips:###:j_id635")
     ;
     private String text, url;
     private String[] IDs;

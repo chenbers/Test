@@ -19,6 +19,10 @@ public class PageTeamStops extends TeamBar {
 		public TextTableLink driverEntry(){
 			return new TextTableLink(TeamStopsEnum.DRIVER_NAME);
 		}
+		
+		public TextTableLink vehicleLink(){
+		    return new TextTableLink(TeamStopsEnum.VEHICLE_LINK);
+		}
 	}
 	public class TeamStopsTexts extends TeamBarTexts{
 		
@@ -155,8 +159,25 @@ public class PageTeamStops extends TeamBar {
 		public ButtonTable driverRadio(){
 			return new ButtonTable(TeamStopsEnum.DRIVER_RADIO_BUTTON);
 		}
+		
+		public Button tools() {
+	        return new Button(TeamStopsEnum.EXPORT_TOOLS);
+	    }
+
+	    public Button emailReport() {
+	        return new Button(TeamStopsEnum.EXPORT_EMAIL_TOOL);
+	    }
+
+	    public Button exportToPDF() {
+	        return new Button(TeamStopsEnum.EXPORT_PDF_TOOL);
+	    }
+
+	    public Button exportToExcel() {
+	        return new Button(TeamStopsEnum.EXPORT_EXCEL_TOOL);
+	    }
+		
 	}
-	public class TeamStopsDropDowns extends TeamBarDropDowns{}
+		public class TeamStopsDropDowns extends TeamBarDropDowns{}
 	public class TeamStopsPopUps extends MastheadPopUps{}
 	
 	public TeamStopsLinks _link(){
