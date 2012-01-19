@@ -430,7 +430,7 @@ public class AutomationCalendar implements Comparable<Calendar> {
 
     public AutomationCalendar(Calendar date, WebDateFormat format) {
         this(format);
-        this.date = date;
+        this.date.setTimeInMillis(date.getTimeInMillis());
     }
 
     public AutomationCalendar(String dateTime, WebDateFormat format) {
