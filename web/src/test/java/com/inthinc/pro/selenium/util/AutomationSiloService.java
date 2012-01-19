@@ -9,10 +9,10 @@ import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.emulation.hessian.AutomationHessianFactory;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.StackToString;
-import com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.DeviceMapper;
+import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
@@ -31,7 +31,7 @@ public class AutomationSiloService {
 
 	private SiloService portalProxy;
 	private Mapper mapper = new DeviceMapper();
-	private DaoUtilEventMapper noteMapper = new DaoUtilEventMapper();
+	private EventHessianMapper noteMapper = new EventHessianMapper();
 	private AutomationHessianFactory hessian;
 
 	public AutomationSiloService(Addresses silo) {
@@ -218,6 +218,9 @@ public class AutomationSiloService {
 		Integer[] giveMeThemAll = {};
 		List<Map<String, Object>> notes = portalProxy.getVehicleNote(vehicleID,
 				startDate, endDate, 1, giveMeThemAll);
+//		for (Map<String, Object> note : notes){
+//			MasterTest.print(note);
+//		}
 		return noteMapper.convertToModelObject(notes, Event.class);
 	}
 
