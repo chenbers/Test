@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -436,6 +437,7 @@ public class ReportPaginationTest {
 	}
     
     @Test
+    @Ignore //TODO: jwimmer: test ignored until it is clear how to handle the idling time for "unknown Driver" on the reports page.
     public void idling() {
     	ReportHessianDAO reportDAO = new ReportHessianDAO();
     	reportDAO.setSiloService(siloService);
