@@ -201,7 +201,12 @@ public class TestCaseResult extends RallyObject {
     }
 
     public void setNotes(String notes) {
-        this.notes += "; "+notes;
+    	if ((this.notes == null)||(this.notes.isEmpty())){
+    		this.notes=notes;
+    	}
+    	else{
+    		this.notes += "; "+notes;
+    	}
         setField(Fields.NOTES, this.notes);
     }
 
