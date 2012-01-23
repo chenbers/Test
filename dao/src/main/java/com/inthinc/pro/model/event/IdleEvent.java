@@ -3,6 +3,7 @@ package com.inthinc.pro.model.event;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -17,7 +18,9 @@ public class IdleEvent extends Event
      * lowIdle - The duration in seconds the vehicle was idling with RPM < 1000
      * highIdle - The duration in seconds the vehicle was idling with RPM > 1000
      */
+    @EventAttrID(name="LOW_IDLE")
     private Integer lowIdle = 0;
+    @EventAttrID(name="HI_IDLE")
     private Integer highIdle = 0;
 	
 	public IdleEvent()
