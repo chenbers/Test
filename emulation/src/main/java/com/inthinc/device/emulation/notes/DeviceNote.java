@@ -302,27 +302,27 @@ public abstract class DeviceNote {
     	DeviceNote note = null;
         
         if (location == null){
-        	location = new GeoPoint(0.0, 0.0);
+        	location = new GeoPoint();
         }
         
         if (state == null){
         	note = new TiwiNote(type);        	
         } else if (state.getProductVersion().equals(ProductType.WAYSMART)){
-        	if (state.getWaysDirection().equals(Direction.sat)){
+//        	if (state.getWaysDirection().equals(Direction.sat)){
         		note = new SatelliteEvent_t(type, state, location);
-        	}
-        	else if (NoteBC.getTypes().contains(type)){
-                note = new NoteBC(type, state, location);
-            } else {
-                note = new SatelliteEvent(type, state, location);
-            }
+//        	}
+//        	else if (NoteBC.getTypes().contains(type)){
+//                note = new NoteBC(type, state, location);
+//            } else {
+//                note = new SatelliteEvent(type, state, location);
+//            }
         } else {
             note = new TiwiNote(type, state, location);
             note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedLimit());
             state.setOdometerX100(0);
         }
         
-        if (state.getViolationFlags() != 0x00){
+        if (state.getViolationFlags() != 0x00 && note.getClass().equals(TiwiNote.class)){
         	note.addAttr(EventAttr.VIOLATION_FLAGS, state.getViolationFlags());	
         }
         

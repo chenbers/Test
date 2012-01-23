@@ -33,7 +33,6 @@ import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.emulation.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.emulation.hessian.tcp.ProDAOException;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
@@ -399,7 +398,13 @@ public class MCMProxyObject implements MCMService{
                         sendingQueue.get(noteClass), true);
             } else if (sendingQueue.containsKey(SatelliteEvent_t.class)){
             	noteClass = SatelliteEvent_t.class;
-            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+            	if (state.getWaysDirection().equals(Direction.sat)){
+            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+            	} else {
+            		reply = notews(state.getMcmID(),
+                            state.getWaysDirection(),
+                            sendingQueue.get(noteClass), state.getImei()); 
+            	}
             	reply = null;
             } else if (sendingQueue.containsKey(SatelliteStrippedConfigurator.class)){
             	noteClass = SatelliteStrippedConfigurator.class;
@@ -440,18 +445,20 @@ public class MCMProxyObject implements MCMService{
     }
 
 	public Object dumpSet(DeviceState state, Map<Integer, String> settings) {
-		if (state.getProductVersion().equals(ProductType.WAYSMART)){
-			return dumpSet(state.getMcmID(), state.getProductVersion().getIndex(), settings);
-		} else {
-			return dumpSet(state.getImei(), state.getProductVersion().getIndex(), settings);
-		}
+//		if (state.getProductVersion().equals(ProductType.WAYSMART)){
+//			return dumpSet(state.getMcmID(), state.getProductVersion().getIndex(), settings);
+//		} else {
+//			return dumpSet(state.getImei(), state.getProductVersion().getIndex(), settings);
+//		}
+		return null;
 	}
 
 	public Object reqSet(DeviceState state) {
-		if (state.getProductVersion().equals(ProductType.WAYSMART)){
-			return reqSet(state.getMcmID());
-		} else {
-			return reqSet(state.getImei());
-		}
+//		if (state.getProductVersion().equals(ProductType.WAYSMART)){
+//			return reqSet(state.getMcmID());
+//		} else {
+//			return reqSet(state.getImei());
+//		}
+		return null;
 	}
 }

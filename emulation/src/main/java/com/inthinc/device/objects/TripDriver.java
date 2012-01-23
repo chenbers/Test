@@ -90,10 +90,15 @@ public class TripDriver extends Thread {
             	int wouldBePosition = Collections.binarySearch(positions, currentPoint); 
             	if ( wouldBePosition < -1 ){
             		int noteN = positions.get(0);
-            		device.addNote(updateNote(events2[noteN].poll().getNote()));
-            		if (events2[noteN].isEmpty()){
+            		if (events2[noteN] == null || events2[noteN].isEmpty()){
             			positions.remove(0);
             			events2[noteN] = null;
+            		} else {
+	            		device.addNote(updateNote(events2[noteN].poll().getNote()));
+	            		if (events2[noteN].isEmpty()){
+	            			positions.remove(0);
+	            			events2[noteN] = null;
+	            		}
             		}
             	}
             }

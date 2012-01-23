@@ -306,6 +306,7 @@ public abstract class DeviceBase {
         if (state.getPower_state()) {
             increment_time(time_delta);
             set_power();
+            flushNotes();
         } else {
         	MasterTest.print("The device is already off.");
         }
