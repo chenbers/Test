@@ -234,7 +234,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.inthinc.device</groupId>
+			<groupId>com.inthinc.pro.emulation</groupId>
 			<artifactId>emulation</artifactId>
 			<scope>test</scope>
 		</dependency>

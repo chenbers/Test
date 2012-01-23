@@ -294,15 +294,9 @@ WWUUnm]]>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.inthinc.device</groupId>
+				<groupId>com.inthinc.pro.emulation</groupId>
 				<artifactId>emulation</artifactId>
 				<version>${project.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.inthinc.pro.automation</groupId>
-						<artifactId>automation</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>com.inthinc.pro.reports</groupId>
