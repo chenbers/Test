@@ -13,6 +13,14 @@ public enum TeamStopsEnum implements SeleniumEnums {
     EXPORT_EMAIL_TOOL(emailReport, "stopsReport:teamStops-emailMenuItem:anchor"),
     EXPORT_EXCEL_TOOL(exportExcel, "stopsReport:teamStops-exportExcelMEnuItem:anchor"),
     
+    /*EMail PopUp*/
+    EMAIL_POPUP_HEADER("Team Name","teamStops_reportEmailModalHeader"),
+  
+    EMAIL_ADDRESSES("E-Mail_Addresses","stopsReportEmailModal_form:teamStops_reportEmailModal_email","teamStops_reportEmail"),
+    EMAIL_BUTTON("E-Mail","teamStops_reportEmailModal_form:emailReportPopupEmail3"),
+    EMAIL_CANCEL("Cancel","emailReportPopUpSubmit"),
+       
+    
     /* Driver Selection */
     DRIVER_HEADER("Driver Name", Xpath.start().table(Id.id("stopsTableForm:stopsDrivers:4")).thead().tr().th("2").toString()),
 
