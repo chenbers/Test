@@ -223,6 +223,8 @@ System.out.println("account id " + itData.account.getAccountID());
 	        
     	}
     	for (RedFlagAlert redFlagAlert : redFlagAlerts) {
+            if (redFlagAlert.getName().equals("generic"))
+                continue;
     		List<EventType> eventTypes = getEventTypes(redFlagAlert);
 	        String noDriverDeviceIMEI = itData.noDriverDevice.getImei();
 	        
@@ -356,44 +358,43 @@ ALERT_TYPE_IGNITION_ON
     NOTE_TYPE_IGNITION_ON (19)
 */    
     MiscAlertInfo miscAlertInfoList[] = {
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PANIC, new Event[] {
-//                    new Event(0l, 0, NoteType.WAYSMART_PANIC, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PANIC, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_PANIC, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE, new Event[] {
                     new Event(0l, 0, NoteType.WAYSMART_NO_INTERNAL_THUMB_DRIVE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_MAN_DOWN_OK, new Event[] {
-//                    new Event(0l, 0, NoteType.WAYSMART_AUTO_MAN_OK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
-//                    new Event(0l, 0, NoteType.WAYSMART_MAN_OK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
-//                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_OK_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_MAN_DOWN, new Event[] {
-//                    new Event(0l, 0, NoteType.WAYSMART_AUTOMANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
-//                    new Event(0l, 0, NoteType.WAYSMART_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
-//                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_MAN_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
-//                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_AUTO_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),}),
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP, new Event[] {
-//                    new Event(0l, 0, NoteType.WAYSMART_DSS_MICROSLEEP, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT, new Event[] {
-//                    new FirmwareVersionEvent(0l, 0, NoteType.WAYSMART_MCM_APP_FIRMWARE_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_MAN_DOWN_OK, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_AUTO_MAN_OK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+                    new Event(0l, 0, NoteType.WAYSMART_MAN_OK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_OK_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_MAN_DOWN, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_AUTOMANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+                    new Event(0l, 0, NoteType.WAYSMART_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_MAN_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_AUTO_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_DSS_MICROSLEEP, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT, new Event[] {
+                    new FirmwareVersionEvent(0l, 0, NoteType.FIRMWARE_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_HOS_NO_HOURS_REMAINING, new Event[] {
                     new HOSNoHoursEvent(0l, 0, NoteType.WAYSMART_HOS_NO_HOURS, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, HOSNoHoursState.DRIVING)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED, new Event[] {
                     new DOTStoppedEvent(0l, 0, NoteType.WAYSMART_DOT_STOPPED, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, DOTStoppedState.DOT_INSPECTION)}),
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_OFF_HOURS, new Event[] {
-//                    new Event(0l, 0, NoteType.WAYSMART_OFF_HOURS_DRIVING, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_OFF_HOURS, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_OFF_HOURS_DRIVING, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PARKING_BRAKE, new Event[] {
                     new ParkingBrakeEvent(0l, 0, NoteType.WAYSMART_PARKINGBRAKE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, ParkingBrakeState.DRIVING)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_QSI_UPDATED, new Event[] {
                     new QSIVersionEvent(0l, 0, NoteType.WAYSMART_QSI_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WIRELINE_ALARM, new Event[] {
-//                    new Event(0l, 0, NoteType.WAYSMART_WIRELINE_ALARM, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
-//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION, new Event[] {
-//                    new Event(0l, 0, NoteType.WAYSMART_WITNESS_HEARTBEAT_VIOLATION, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WIRELINE_ALARM, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_WIRELINE_ALARM, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_WITNESS_HEARTBEAT_VIOLATION, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WITNESS_UPDATED, new Event[] {
                     new WitnessVersionEvent(0l, 0, NoteType.WITNESS_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_ZONES_CURRENT, new Event[] {
                     new ZonesVersionEvent(0l, 0, NoteType.ZONES_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.SERVER_OLDER)}),
     };
     
-    @Ignore
     @Test 
     public void miscWSAlert() {
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP); 
@@ -416,29 +417,29 @@ ALERT_TYPE_IGNITION_ON
                     }
                     if (!genWSEvent(event.getType(), event, device))
                         fail("Unable to generate event of type " + event.getType());
-                    //break;
-                    AlertMessageBuilder msg = pollForMessagesBuilder("AlertType: " + miscAlertInfo.alertMessageType);
-                    if (msg != null && msg.getAlertMessageType() == miscAlertInfo.alertMessageType) {
-                        
-                        List<String> params = msg.getParamterList();
-                        if (miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_WITNESS_UPDATED ||
-                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT ||
-                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_ZONES_CURRENT ||
-                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_QSI_UPDATED) {
-                            assertEquals("number of params", 5, params.size());
-                            String version = params.get(4);
-                            assertTrue("expected a version param", version.startsWith("VersionState"));
-                        }
-                        else 
-                            assertEquals("number of params", 4, params.size());
-                        assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
-                        assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
-                        String[] latLng = params.get(3).split(",");
-                        assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
-                        assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
-
-                        break;
-                    }
+                    break;
+//                    AlertMessageBuilder msg = pollForMessagesBuilder("AlertType: " + miscAlertInfo.alertMessageType);
+//                    if (msg != null && msg.getAlertMessageType() == miscAlertInfo.alertMessageType) {
+//                        
+//                        List<String> params = msg.getParamterList();
+//                        if (miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_WITNESS_UPDATED ||
+//                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT ||
+//                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_ZONES_CURRENT ||
+//                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_QSI_UPDATED) {
+//                            assertEquals("number of params", 5, params.size());
+//                            String version = params.get(4);
+//                            assertTrue("expected a version param", version.startsWith("VersionState"));
+//                        }
+//                        else 
+//                            assertEquals("number of params", 4, params.size());
+//                        assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
+//                        assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
+//                        String[] latLng = params.get(3).split(",");
+//                        assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
+//                        assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
+//
+//                        break;
+//                    }
                 }
                 
             }
