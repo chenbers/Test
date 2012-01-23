@@ -231,18 +231,12 @@
 		<dependency>
 			<groupId>com.inthinc.pro.automation</groupId>
 			<artifactId>automation</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.device</groupId>
 			<artifactId>emulation</artifactId>
 			<scope>test</scope>
-			<version>0.0.1-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.inthinc.pro.automation</groupId>
-					<artifactId>automation</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.pro.reports</groupId>

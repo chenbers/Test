@@ -12,7 +12,7 @@ import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
-import com.inthinc.emulation.hessian.AutomationHessianFactory;
+import com.inthinc.emulation.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.objects.AutomationCalendar;

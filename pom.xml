@@ -61,7 +61,8 @@
 		<module>hoskiosk</module>
 		<module>i18nutil</module>
 		<module>automation</module>
-		<module>noteparser</module> 
+		<module>noteparser</module>
+		<module>emulation</module>
 	</modules>
 	<properties>
 		<compileSource>1.6</compileSource>
@@ -291,6 +292,17 @@ WWUUnm]]>
 				<groupId>com.inthinc.pro.dao</groupId>
 				<artifactId>dao</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.inthinc.device</groupId>
+				<artifactId>emulation</artifactId>
+				<version>${project.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.inthinc.pro.automation</groupId>
+						<artifactId>automation</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>com.inthinc.pro.reports</groupId>

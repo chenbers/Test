@@ -8,7 +8,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.device.emulation.interfaces.SiloService;
-import com.inthinc.emulation.hessian.AutomationHessianFactory;
+import com.inthinc.emulation.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;

@@ -10,6 +10,8 @@ import org.apache.log4j.Level;
 
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
+import com.inthinc.device.emulation.enums.DeviceNoteTypes;
+import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.notes.NoteBC;
 import com.inthinc.device.emulation.utils.DeviceState;
@@ -20,10 +22,10 @@ import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.objects.TripTracker;
+import com.inthinc.emulation.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
@@ -31,10 +33,10 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.selenium.util.AutomationSiloService;
 
 public class WaysmartAggregationTest {
-//    private static final int acctID = 398;
-//    private static final int groupID = 5260;
-//    private static final int unknownDriverID = 66462;
-//    private static final Addresses server = Addresses.QA;
+    private static final int acctID = 398;
+    private static final int groupID = 5260;
+    private static final int unknownDriverID = 66462;
+    private static final Addresses server = Addresses.QA;
     /* AccountID    =   398
      * Account Name = WSAgg
      * GroupID      =  5259
@@ -45,17 +47,17 @@ public class WaysmartAggregationTest {
      */
     
 
-    private static final int acctID = 1;
-    private static final int groupID = 2;
-    private static final int unknownDriverID = 1;
-    private final static Addresses server = Addresses.DEV;
+//    private static final int acctID = 1;
+//    private static final int groupID = 2;
+//    private static final int unknownDriverID = 1;
+//    private final static Addresses server = Addresses.DEV;
     
     private final static State usState = new State(47, "Utah", "UT");
     private GeoPoint installLocation;
     
     private Map<DeviceState, LinkedList<DeviceNote>> tripsMap;
     private Map<DeviceState, Vehicle> vehicleMap;
-    private final static int startingTime = 1325644704;
+    private final static int startingTime = 1327017279;
     
     private final static ProductType type = ProductType.WAYSMART;
     
@@ -71,16 +73,29 @@ public class WaysmartAggregationTest {
         tripsMap = new HashMap<DeviceState, LinkedList<DeviceNote>>();
         vehicleMap = new HashMap<DeviceState, Vehicle>();
         portalProxy = new AutomationSiloService(server);
-//        notesOutOfOrder();
-//        sendNotes();
-//        missingNotes();
+        notesOutOfOrder();
+        missingNotes();
+        backwardOdometer();
+        noIgnitionOn();
+        longTrips();
+        
+        
+        
+
+        sendNotes();
     }
     
     
     private void missingNotes(){
-    	
-    	TripDriver driver1 = new TripDriver(type);
-    	TripDriver driver2 = new TripDriver(type);
+    	DeviceState state;
+        state = newState(++deviceNumber);
+        createVehicle(deviceNumber, portalProxy, state);
+    	TripDriver driver1 = new TripDriver(state);
+
+
+        state = newState(++deviceNumber);
+        createVehicle(deviceNumber, portalProxy, state);
+    	TripDriver driver2 = new TripDriver(state);
     	
     	String start = "4225 W Lake Blvd, West Valley City, UT 84120";
     	String stop = "5000 W Lake Blvd, West Valley City, UT 84120";
@@ -91,7 +106,7 @@ public class WaysmartAggregationTest {
         driver1.addToTrip(stop, start);
         driver2.addToTrip(stop, start);
         
-        DeviceState state = driver1.getdeviceState();
+        state = driver1.getdeviceState();
         
         state.setDriverID(unknownDriverID);
         state.setOdometerX100(500);
@@ -116,14 +131,9 @@ public class WaysmartAggregationTest {
         	notes2.remove(i);
         }
                 
-        state = newState(++deviceNumber);
-        tripsMap.put(state, notes1);
-        createVehicle(deviceNumber, portalProxy, state);
 
-        state = newState(++deviceNumber);
-        tripsMap.put(state, notes2);
-        createVehicle(deviceNumber, portalProxy, state);
-        
+        tripsMap.put(driver1.getdeviceState(), notes1);
+        tripsMap.put(driver2.getdeviceState(), notes2);
     }
     
     
@@ -133,6 +143,10 @@ public class WaysmartAggregationTest {
     	String stop = "350 N 700 W, Springville, UT";
     	LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
     	DeviceState state = newState(++deviceNumber);
+
+		tripsMap.put(state, list);
+		createVehicle(deviceNumber, portalProxy, state);
+    	
     	state.setOdometerX100(10000);
     	TripTracker trips = new TripTracker(state);
     	trips.getTrip(start, stop);
@@ -148,40 +162,46 @@ public class WaysmartAggregationTest {
     	while (itr.hasNext()){
 	    	lastOdo = state.getOdometerX100();
 	    	trips.getNextLocation(65, false);
-	    	list.add(AutomationDeviceEvents.location(state, trips.currentLocation()).getNote());
-	    	reverseOdo(state, lastOdo);
+	    	DeviceNote note = AutomationDeviceEvents.location(state, trips.currentLocation()).getNote();
+	    	reverseOdo(state, lastOdo, note); 
+	    	list.add(note);
     	}
     	
     	state.incrementTime(60);
     	list.add(AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()).getNote());
     	state.incrementTime(900);
     	list.add(AutomationDeviceEvents.powerOff(state, trips.currentLocation()).getNote());
-    	
-
-        tripsMap.put(state, list);
-        createVehicle(deviceNumber, portalProxy, state);
     }
     
-    private void reverseOdo(DeviceState state, int lastOdo){
+    private void reverseOdo(DeviceState state, int lastOdo, DeviceNote note){
     	int current = state.getOdometerX100();
     	int diff = current - lastOdo;
-    	state.setOdometerX100(current - diff);
+    	state.setOdometerX100(lastOdo - diff);
+    	note.setOdometer(state.getOdometerX100());
     }
     
     private void timeGaps(){
     	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
-    	WaysmartDevice ways = new WaysmartDevice(state, server);
-    	ways.getTripTracker().addLocation(new GeoPoint("4225 W Lake Park Blvd, West Valley City, UT"));
-    	ways.power_on_device();
-    	ways.turn_key_on(60);
     	
+    	TripTracker tracker = new TripTracker(state);
+    	tracker.addLocation(new GeoPoint("4225 W Lake Park Blvd, West Valley City, UT"));
+    	LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
+    	list.add(AutomationDeviceEvents.powerOn(state, tracker.currentLocation()).getNote());
+    	state.incrementTime(100);
+    	list.add(AutomationDeviceEvents.ignitionOn(state, tracker.currentLocation()).getNote());
+    	
+    	state.getTime().addToDay(4);
+    	list.add(AutomationDeviceEvents.ignitionOff(state, tracker.currentLocation()).getNote());
+    	state.incrementTime(900);
+    	list.add(AutomationDeviceEvents.powerOff(state, tracker.currentLocation()).getNote());
+    	
+
     }
     
     
     private void noIgnitionOn(){
-    	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
     	TripTracker trips = new TripTracker(state);
@@ -196,19 +216,26 @@ public class WaysmartAggregationTest {
     	state.setSpeedingDistanceX100(200);
     	state.setSpeedingSpeedLimit(55);
     	
+    	driver.addEvent(10, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	state.setSpeed(88).setSpeedingDistanceX100(500).setSpeedingSpeedLimit(50);
     	driver.addEvent(5, AutomationDeviceEvents.speeding(state, trips.currentLocation()));
     	
     	driver.addEvent(10, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
-    	driver.addEvent(16, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	state.setSeatbeltViolationDistanceX100(500);
+    	driver.addEvent(16, AutomationDeviceEvents.seatbelt(state, trips.currentLocation()));
     	
     	driver.addEvent(20, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
-    	driver.addEvent(28, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	driver.addEvent(28, AutomationDeviceEvents.hardBrake(state, trips.currentLocation(), 150));
     	
     	driver.addEvent(50, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
-    	driver.addEvent(62, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	
+    	driver.addEvent(62, AutomationDeviceEvents.location(state, trips.currentLocation()));
 
-    	driver.addEvent(80, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
-    	driver.addEvent(92, AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()));
+    	driver.addEvent(80, AutomationDeviceEvents.location(state, trips.currentLocation()));
+    	driver.addEvent(92, AutomationDeviceEvents.location(state, trips.currentLocation()));
+    	LinkedList<DeviceNote> list = driver.generateNotes();
+    	
+    	tripsMap.put(state, list);
     	
     }
     
@@ -216,16 +243,27 @@ public class WaysmartAggregationTest {
     	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
-    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
-    	
-    	
     }
     
     private void longTrips(){
     	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
-    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
+    	WaysmartDevice ways = new WaysmartDevice(state, server);
+    	
+    	String start = "4225 W Lake Park Blvd, West Valley City, UT";
+    	String first = "1600 pennsylvania ave, washington dc";
+    	String second = "Disney World, Bay Lake, FL";
+    	String third = "6458 E Golflinks Rd, Tucson, AZ 85730";
+    	String fourth = "5130 Chromite St, El Paso, TX 79932";
+    	TripDriver driver = new TripDriver(ways);
+    	driver.addToTrip(start, first);
+    	driver.addToTrip(first, second);
+    	driver.addToTrip(second, third);
+    	driver.addToTrip(third, fourth);
+    	driver.addToTrip(fourth, start);
+    	AutomationDeviceEvents.install(ways);
+    	driver.run();
     	
     	
     }
@@ -235,7 +273,6 @@ public class WaysmartAggregationTest {
     	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
-    	WaysmartDevice ways = new WaysmartDevice(state.getImei(), state.getMcmID(), server, Direction.wifi);
     	
     	
     }
@@ -268,11 +305,8 @@ public class WaysmartAggregationTest {
         LinkedList<DeviceNote> inOrder = driver.generateNotes();
         
         installLocation = inOrder.get(0).getLocation();
-        if (true){
-        	throw new NullPointerException();
-        }
         
-        MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)inOrder.getLast()).nOdometer);
+        MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)inOrder.getLast()).getOdometer());
         state.getTime().addToMinutes(15);
         MasterTest.print("Final noteTime is: %d", Level.INFO, state.getTime().epochSeconds());
         MasterTest.print("Final noteTime is: %s", Level.INFO, state.getTime());
@@ -296,24 +330,23 @@ public class WaysmartAggregationTest {
         createVehicle(deviceNumber, portalProxy, state);
         
 
-        if (true){
-        	throw new NullPointerException();
-        }
     }
 
 
     private void createVehicle(int i, AutomationSiloService portalProxy,
             DeviceState state) {
         Vehicle vehicle;
-        String vin = String.format("VEHICLEFORW%05d", i);
+        String last = String.format("%05d", i);
+        String vin = "VEHICLEFORW" + last;
         vehicle = new Vehicle(null, groupID, Status.ACTIVE, vin, "Fake",
                 "Model", 2011, "White", VehicleType.HEAVY, vin, 9000, "ll33l", usState);
+        state.setVehicleID(vehicle.getVIN());
         try {
             vehicle = portalProxy.createVehicle(vehicle.getGroupID(), vehicle);
             if (vehicle.getVIN() == null){
             	vehicle = portalProxy.getVehicle(vin);
             }
-        } catch (RemoteServerException e){
+        } catch (HessianException e){
             vehicle = portalProxy.getVehicle(vehicle.getVIN());
         }
         vehicleMap.put(state, vehicle);
@@ -368,7 +401,15 @@ public class WaysmartAggregationTest {
 
 
     public static void main(String[] args){
-        WaysmartAggregationTest test = new WaysmartAggregationTest();
-        MasterTest.print(test);
+//        WaysmartAggregationTest test = new WaysmartAggregationTest();
+//        MasterTest.print(test);
+    	
+    	DeviceState state = new DeviceState("888", ProductType.WAYSMART);
+    	NoteBC note = new NoteBC(DeviceNoteTypes.LOCATION, state, new GeoPoint("4225 W Lake Park Blvd, West Valley City, UT"));
+    	note.addAttr(EventAttr.SPEED_LIMIT, 75);
+    	NoteBC test = note.unPackage(note.Package());
+    	MasterTest.print(note);
+    	MasterTest.print(test);
+    	
     }
 }

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
+import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripTracker;
@@ -45,9 +46,8 @@ public class HOSRuleSets extends WebRallyTest {
         waySmart.setAccountID(accountID);
         AutomationDeviceEvents.install(waySmart);
         waySmart.power_on_device();
-        waySmart.logInDriver(driverID);
-        
-        waySmart.logInOccupant(occupantID);
+        waySmart.changeDriverStatus(driverID, HOSState.ON_DUTY_NOT_DRIVING);
+        waySmart.changeDriverStatus(occupantID, HOSState.OCCUPANT_ON_DUTY);
         waySmart.turn_key_on(15);
         
 

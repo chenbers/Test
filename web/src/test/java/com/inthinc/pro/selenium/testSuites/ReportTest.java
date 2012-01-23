@@ -14,7 +14,7 @@ import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.emulation.utils.Unique;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.resources.DeviceStatistics;
-import com.inthinc.emulation.hessian.AutomationHessianFactory;
+import com.inthinc.emulation.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.UniqueValues;

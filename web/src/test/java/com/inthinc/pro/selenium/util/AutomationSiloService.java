@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.device.emulation.interfaces.SiloService;
-import com.inthinc.emulation.hessian.AutomationHessianFactory;
+import com.inthinc.emulation.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
