@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -22,6 +23,8 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     private Integer deltaX; // deltas store as Integer, divide by 10 for float value
     private Integer deltaY;
     private Integer deltaZ;
+    
+    @EventAttrID(name="SEVERITY")
     private Integer severity; // This number represents the severity of the event 
                         // in the range of 1 to 5, 5 being the most extreme.
                         // This may need to be changed.

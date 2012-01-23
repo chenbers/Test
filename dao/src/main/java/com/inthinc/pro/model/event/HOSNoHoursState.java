@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
 
-public enum HOSNoHoursState  implements BaseEnum {
+public enum HOSNoHoursState  implements BaseEnum, EventAttrEnum {
     NONE(0),
     DRIVING(1),
     ON_DUTY(2),
@@ -47,4 +47,13 @@ public enum HOSNoHoursState  implements BaseEnum {
         return sb.toString();
     }
 
+    @Override
+    public EventAttrEnum mapFromInteger(Integer value) {
+        return valueOf(value);
+    }
+
+    @Override
+    public Integer mapToInteger() {
+        return getCode();
+    }
 }

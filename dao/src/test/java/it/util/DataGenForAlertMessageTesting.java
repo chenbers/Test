@@ -21,7 +21,7 @@ public class DataGenForAlertMessageTesting  extends DataGenForTesting {
     protected void createTestData() {
     	itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 2, ReportTestConst.TIMEZONE_STR));
-        ((ITData)itData).createTestData(siloService, xml, assignmentDate, true, true);
+        ((ITData)itData).createTestData(siloService, xml, assignmentDate, true, true, true);
     }
 
     @Override

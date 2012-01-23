@@ -461,7 +461,7 @@ public abstract class AbstractMapper implements Mapper {
         return false;
     }
 
-    private static List<Field> getAllFields(Class<?> type) {
+    protected static List<Field> getAllFields(Class<?> type) {
         List<Field> fieldList = new ArrayList<Field>();
         Class<?> clazz = type;
         while (clazz != null) {

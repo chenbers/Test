@@ -29,9 +29,16 @@ public class LocalizedMessage
         else 
             message = key;
         
-        if(parameters != null)
-            message = MessageFormat.format(message, parameters);
-
+        if(parameters != null) {
+            String translatedParameters[] = new String[parameters.length];
+            int idx = 0;
+            for (String parameter : parameters) {
+                if (myResources.containsKey(parameter))
+                    parameter = myResources.getString(parameter);
+                translatedParameters[idx++] = parameter;
+            }
+            message = MessageFormat.format(message, translatedParameters);
+        }
             
         return message;
             

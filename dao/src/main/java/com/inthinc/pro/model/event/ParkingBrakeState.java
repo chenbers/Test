@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
 
-public enum ParkingBrakeState  implements BaseEnum {
+public enum ParkingBrakeState  implements BaseEnum, EventAttrEnum {
     PARKED(0),
     DRIVING(1);
     
@@ -43,4 +43,13 @@ public enum ParkingBrakeState  implements BaseEnum {
         return sb.toString();
     }
 
+    @Override
+    public EventAttrEnum mapFromInteger(Integer value) {
+        return valueOf(value);
+    }
+
+    @Override
+    public Integer mapToInteger() {
+        return getCode();
+    }
 }

@@ -1,13 +1,18 @@
 package com.inthinc.pro.dao.hessian.mapper;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
+import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.NoteType;
@@ -26,6 +31,7 @@ public class EventHessianMapper extends AbstractMapper
 
         if (value instanceof Map<?,?>)
         {
+            List<Field> fieldList = getAllFields(event.getClass());
             Map<Integer, Object> attrMap = (Map<Integer, Object>) value;
             Map<String, String> attrValueMap = new HashMap<String, String>();
             for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet())
@@ -38,7 +44,25 @@ public class EventHessianMapper extends AbstractMapper
                 attrValueMap.put(propertyName, propertyData.toString());
                 try
                 {
-                    PropertyUtils.setProperty(event, "attrMap", attrValueMap);
+                    if (attrID != null) {
+                        PropertyUtils.setProperty(event, "attrMap", attrValueMap);
+                        for (Field field : fieldList) {
+                            if (field.isAnnotationPresent(EventAttrID.class)) {
+                                EventAttrID attributeID = field.getAnnotation(EventAttrID.class);
+                                if (attributeID.name().equals(attrID.name())) {
+                                    propertyName = field.getName();
+                                    if (BaseEnum.class.isAssignableFrom(field.getType())) {
+                                        Method valueOf = field.getType().getMethod("valueOf", Integer.class);
+                                        if (valueOf != null)
+                                            propertyData = valueOf.invoke(null, propertyData);
+                                    }
+                                    break;
+                                }
+
+                            }
+                            
+                        }
+                    }
                     PropertyUtils.setProperty(event, propertyName, propertyData);
                 }
                 catch (IllegalAccessException e)

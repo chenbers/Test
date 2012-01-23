@@ -198,8 +198,10 @@ public abstract class BaseITData {
                         genNumericID(group.getGroupID(), 10));
                 device.setActivated(assignmentDate);
                 device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
-                if (group.getName().startsWith("WS")) 
+                if (group.getName().startsWith("WS")) { 
                     device.setProductVersion(ProductType.WAYSMART);
+                    device.setMcmid("MCM"+genNumericID(group.getGroupID(), 10));
+                }
                 else device.setProductVersion(ProductType.TIWIPRO_R74);
                 System.out.println("device imei " + device.getImei() + " activated date: " + assignmentDate);
                 Integer deviceID = deviceDAO.create(account.getAccountID(), device);

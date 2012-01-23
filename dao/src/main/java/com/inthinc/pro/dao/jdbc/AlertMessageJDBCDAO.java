@@ -42,6 +42,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.VersionEvent;
 
 public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessageDAO{
 
@@ -566,6 +567,14 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                     }
                     parameterList.add(String.valueOf(totalIdling/60));
                     parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
+                    break;
+                case ALERT_TYPE_WITNESS_UPDATED:
+                case ALERT_TYPE_FIRMWARE_CURRENT:
+                case ALERT_TYPE_ZONES_CURRENT:
+                case ALERT_TYPE_QSI_UPDATED:
+                    addAddress(event);
+                    if (event instanceof VersionEvent)
+                        parameterList.add(((VersionEvent)event).getStatusMessageKey());
                     break;
                 default:
                     addAddress(event);

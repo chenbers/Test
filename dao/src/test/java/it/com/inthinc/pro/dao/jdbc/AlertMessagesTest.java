@@ -2,7 +2,7 @@ package it.com.inthinc.pro.dao.jdbc;
 
 // The tests in this file  can fail sporadically when the scheduler is running on the same
 // server that is is hitting (usually dev).  If this becomes a problem, we can mark them as Ignore.  
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -44,18 +44,32 @@ import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.DOTStoppedEvent;
+import com.inthinc.pro.model.event.DOTStoppedState;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.FirmwareVersionEvent;
 import com.inthinc.pro.model.event.FullEvent;
+import com.inthinc.pro.model.event.HOSNoHoursEvent;
+import com.inthinc.pro.model.event.HOSNoHoursState;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.event.ParkingBrakeEvent;
+import com.inthinc.pro.model.event.ParkingBrakeState;
+import com.inthinc.pro.model.event.QSIVersionEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.VersionState;
+import com.inthinc.pro.model.event.WitnessVersionEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
+import com.inthinc.pro.model.event.ZonesVersionEvent;
+import com.inthinc.pro.notegen.NoteGenerator;
+import com.inthinc.pro.notegen.WSNoteSender;
 
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
@@ -84,6 +98,8 @@ public class AlertMessagesTest extends BaseJDBCTest{
     private static List<RedFlagAlert> originalAlerts;
     private static ITData itData;
     
+    private static NoteGenerator noteGenerator;
+    
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         IntegrationConfig config = new IntegrationConfig();
@@ -93,14 +109,24 @@ public class AlertMessagesTest extends BaseJDBCTest{
         siloService = new SiloServiceCreator(host, port).getService();
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
+
+        // TODO: CJ add to config properties
+        noteGenerator = new NoteGenerator();
+        WSNoteSender wsNoteSender = new WSNoteSender();
+        wsNoteSender.setUrl("dev.tiwipro.com");
+        wsNoteSender.setPort(8888);
+        noteGenerator.setWsNoteSender(wsNoteSender);
+        
+        
+        
+        
         
         initDAOs();
         initApp();
-        
         itData = new ITData();
 
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
-        if (!itData.parseTestData(stream, siloService, true, true)) {
+        if (!itData.parseTestData(stream, siloService, true, true, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
 System.out.println("account id " + itData.account.getAccountID());        
@@ -315,38 +341,127 @@ System.out.println("account id " + itData.account.getAccountID());
 
       }
   }
+
+    private static Integer DEFAULT_HEADING = 0; //NORTH
+    private static Integer DEFAULT_SATS = 5; 
+    private static Double DEFAULT_LAT = 40.704246d; 
+    private static Double DEFAULT_LNG = -111.948613d; 
+
+/* todo    
+    ALERT_TYPE_INSTALL
+    NOTE_TYPE_INSTALL (35)
+ALERT_TYPE_IGNITION_ON
+    NOTE_TYPE_IGNITION_ON (19)
+*/    
+    MiscAlertInfo miscAlertInfoList[] = {
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PANIC, new Event[] {
+//                    new Event(0l, 0, NoteType.WAYSMART_PANIC, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE, new Event[] {
+                    new Event(0l, 0, NoteType.WAYSMART_NO_INTERNAL_THUMB_DRIVE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_MAN_DOWN_OK, new Event[] {
+//                    new Event(0l, 0, NoteType.WAYSMART_AUTO_MAN_OK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+//                    new Event(0l, 0, NoteType.WAYSMART_MAN_OK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+//                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_OK_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_MAN_DOWN, new Event[] {
+//                    new Event(0l, 0, NoteType.WAYSMART_AUTOMANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+//                    new Event(0l, 0, NoteType.WAYSMART_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+//                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_MAN_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),
+//                    new Event(0l, 0, NoteType.WAYSMART_REMOTE_AUTO_MANDOWN, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG),}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP, new Event[] {
+//                    new Event(0l, 0, NoteType.WAYSMART_DSS_MICROSLEEP, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT, new Event[] {
+//                    new FirmwareVersionEvent(0l, 0, NoteType.WAYSMART_MCM_APP_FIRMWARE_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_HOS_NO_HOURS_REMAINING, new Event[] {
+                    new HOSNoHoursEvent(0l, 0, NoteType.WAYSMART_HOS_NO_HOURS, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, HOSNoHoursState.DRIVING)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED, new Event[] {
+                    new DOTStoppedEvent(0l, 0, NoteType.WAYSMART_DOT_STOPPED, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, DOTStoppedState.DOT_INSPECTION)}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_OFF_HOURS, new Event[] {
+//                    new Event(0l, 0, NoteType.WAYSMART_OFF_HOURS_DRIVING, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PARKING_BRAKE, new Event[] {
+                    new ParkingBrakeEvent(0l, 0, NoteType.WAYSMART_PARKINGBRAKE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, ParkingBrakeState.DRIVING)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_QSI_UPDATED, new Event[] {
+                    new QSIVersionEvent(0l, 0, NoteType.WAYSMART_QSI_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WIRELINE_ALARM, new Event[] {
+//                    new Event(0l, 0, NoteType.WAYSMART_WIRELINE_ALARM, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION, new Event[] {
+//                    new Event(0l, 0, NoteType.WAYSMART_WITNESS_HEARTBEAT_VIOLATION, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_WITNESS_UPDATED, new Event[] {
+                    new WitnessVersionEvent(0l, 0, NoteType.WITNESS_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_ZONES_CURRENT, new Event[] {
+                    new ZonesVersionEvent(0l, 0, NoteType.ZONES_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.SERVER_OLDER)}),
+    };
     
+    @Ignore
     @Test 
-    public void panicAlert() {
-        GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
-        for (RedFlagAlert redFlagAlert : redFlagAlerts) {
-            List<EventType> eventTypes = getEventTypes(redFlagAlert);
-            if (!eventTypes.get(0).equals(EventType.PANIC))
-                continue;
-            boolean anyAlertsFound = false;
-            modRedFlagAlertPref(GROUPS, redFlagAlert);
-            String IMEI = groupData.device.getImei();
-            
-            Event event = new Event(0l, 0, NoteType.WAYSMART_PANIC, new Date(), 100, 1000, 
-                    new Double(40.704246f), new Double(-111.948613f));
+    public void miscWSAlert() {
+        GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP); 
+        String IMEI = groupData.device.getImei();
+        Device device = groupData.device;
         
-            if (!genEvent(event, IMEI))
-                fail("Unable to generate event of type " + eventTypes.get(0));
-            AlertMessageBuilder msg = pollForMessagesBuilder("Red Flag Alert Groups Set");
-            if (msg != null && msg.getAlertMessageType() == AlertMessageType.ALERT_TYPE_PANIC) {
-                anyAlertsFound = true;
+        RedFlagAlert redFlagAlert = redFlagAlerts.get(redFlagAlerts.size()-1);
+        for (MiscAlertInfo miscAlertInfo : miscAlertInfoList) {
+            List<AlertMessageType> typeList = new ArrayList<AlertMessageType>();
+            typeList.add(miscAlertInfo.alertMessageType);
+            redFlagAlert.setTypes(typeList);
+            redFlagAlertHessianDAO.update(redFlagAlert);
+            
+            for (Event event : miscAlertInfo.events) {
+                event.setHeading(DEFAULT_HEADING);
+                event.setSats(DEFAULT_SATS);
+                for (int attempt = 0; attempt < 6; attempt++) {
+                    if (attempt == 5) {
+                        fail("Unable to get alert message after 5 attempts for type: " + miscAlertInfo.alertMessageType);
+                    }
+                    if (!genWSEvent(event.getType(), event, device))
+                        fail("Unable to generate event of type " + event.getType());
+                    //break;
+                    AlertMessageBuilder msg = pollForMessagesBuilder("AlertType: " + miscAlertInfo.alertMessageType);
+                    if (msg != null && msg.getAlertMessageType() == miscAlertInfo.alertMessageType) {
+                        
+                        List<String> params = msg.getParamterList();
+                        if (miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_WITNESS_UPDATED ||
+                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT ||
+                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_ZONES_CURRENT ||
+                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_QSI_UPDATED) {
+                            assertEquals("number of params", 5, params.size());
+                            String version = params.get(4);
+                            assertTrue("expected a version param", version.startsWith("VersionState"));
+                        }
+                        else 
+                            assertEquals("number of params", 4, params.size());
+                        assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
+                        assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
+                        String[] latLng = params.get(3).split(",");
+                        assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
+                        assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
+
+                        break;
+                    }
+                }
                 
-                List<String> params = msg.getParamterList();
-                assertEquals("number of params", 4, params.size());
-                assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
-                assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
-                String[] latLng = params.get(3).split(",");
-                assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
-                assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
             }
-            assertTrue("Expected alert for PANIC ",anyAlertsFound);
+        }
+    }
+    
+    class MiscAlertInfo {
+        AlertMessageType alertMessageType;
+        Event events[];
+        public MiscAlertInfo(AlertMessageType alertMessageType, Event[] events) {
+            super();
+            this.alertMessageType = alertMessageType;
+            this.events = events;
         }
         
+    }
+    
+    
+    @Test 
+    public void alertMessageBuilder() {
+        
+        List<AlertMessageBuilder> list = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL); 
+        
+        System.out.println("list" + list.size());
+
     }
 
     @Test
@@ -626,19 +741,6 @@ System.out.println("account id " + itData.account.getAccountID());
 
     private boolean genEvent(String imei, EventType eventType) {
     	Event event = null;
-    	
-/*
- * def iComputeSeverity(deltax, deltay, deltaz):
-    "Compute the severity from the 3 delta values"
-    delta = max(abs(deltax), abs(deltay), abs(deltaz)) / 10
-    if delta > 20:
-        delta = 20
-    if delta > 7:
-        severity = ((delta-7) / 3) + 1
-    else:
-        severity = 1
-    return severity    	
- */
 System.out.println("genEvent: " + eventType);    	
     	if (eventType.equals(EventType.SEATBELT) )
     			event = new SeatBeltEvent(0l, 0, NoteType.SEATBELT, new Date(), 60, 1000, 
@@ -670,11 +772,14 @@ System.out.println("genEvent: " + eventType);
     	else if (eventType.equals(EventType.SPEEDING) )
 			event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 100, 80, 70, 100, 100);
-        else if (eventType.equals(EventType.PANIC) )
-            event = new Event(0l, 0, NoteType.WAYSMART_PANIC, new Date(), 100, 1000, 
-                    new Double(40.704246f), new Double(-111.948613f));
     	
     	return genEvent(event, imei);
+    }
+
+    private boolean genWSEvent(NoteType noteType, Event event, Device device) {
+        noteGenerator.genEvent(noteType, event, device);
+        return true;
+    
     }
 
     private boolean genEvent(Event event, String imei) {

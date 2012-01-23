@@ -599,7 +599,20 @@ public enum EventAttr {
     public static EventAttr valueOf(Integer code) {
         return lookupByCode.get(code);
     }
-    
+
+    private static HashMap<String, EventAttr> lookupByCodeName = new HashMap<String, EventAttr>();
+
+    static {
+        for (EventAttr p : EnumSet.allOf(EventAttr.class)) {
+            lookupByCodeName.put(p.toString(), p);
+        }
+    }
+
+    public static EventAttr findByNameCode(String nameCode) {
+        return lookupByCodeName.get(nameCode);
+    }
+
+
     @Override
     public String toString(){
         return String.format("%s(%d)", name(), code);

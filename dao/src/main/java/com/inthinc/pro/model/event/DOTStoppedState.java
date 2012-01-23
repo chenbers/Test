@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
 
-public enum DOTStoppedState  implements BaseEnum {
+public enum DOTStoppedState  implements BaseEnum, EventAttrEnum {
     UNKNOWN(0),
     NO_HOURS(1),
     UNSAFE_VEHICLE(2),
@@ -45,6 +45,16 @@ public enum DOTStoppedState  implements BaseEnum {
         sb.append(".");
         sb.append(this.name());
         return sb.toString();
+    }
+
+    @Override
+    public EventAttrEnum mapFromInteger(Integer value) {
+        return valueOf(value);
+    }
+
+    @Override
+    public Integer mapToInteger() {
+        return getCode();
     }
 
 }

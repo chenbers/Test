@@ -3,11 +3,13 @@ package com.inthinc.pro.model.event;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.model.MeasurementType;
 
 public class VersionEvent extends Event implements StatusEvent {
     
     private static final long serialVersionUID = 1L;
+    @EventAttrID(name="UP_TO_DATE_STATUS")
     private VersionState status;
     
     public VersionEvent()
