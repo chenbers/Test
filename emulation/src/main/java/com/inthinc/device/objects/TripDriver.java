@@ -94,11 +94,11 @@ public class TripDriver extends Thread {
             			positions.remove(0);
             			events2[noteN] = null;
             		} else {
-	            		device.addNote(updateNote(events2[noteN].poll().getNote()));
-	            		if (events2[noteN].isEmpty()){
-	            			positions.remove(0);
-	            			events2[noteN] = null;
-	            		}
+            			while(!events2[noteN].isEmpty()){
+            				device.addNote(updateNote(events2[noteN].poll().getNote()));
+            			}
+            			positions.remove(0);
+            			events2[noteN] = null;
             		}
             	}
             }
@@ -132,11 +132,15 @@ public class TripDriver extends Thread {
             	int wouldBePosition = Collections.binarySearch(positions, currentPoint); 
             	if ( wouldBePosition < -1 ){
             		int noteN = positions.get(0);
-
-            		notes.add(updateNote(events2[noteN].poll().getNote()));
-            		if (events2[noteN].isEmpty()){
+            		if (events2[noteN] == null || events2[noteN].isEmpty()){
             			positions.remove(0);
             			events2[noteN] = null;
+            		} else {
+		        		while (!events2[noteN].isEmpty()){
+		        			notes.add(updateNote(events2[noteN].poll().getNote()));
+		        		}
+		    			positions.remove(0);
+		    			events2[noteN] = null;
             		}
             	}
             }
