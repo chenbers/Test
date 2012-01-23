@@ -239,6 +239,8 @@ System.out.println("account id " + itData.account.getAccountID());
     public void redFlagAlerts() {
     	GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
     	for (RedFlagAlert redFlagAlert : redFlagAlerts) {
+    	    if (redFlagAlert.getName().equals("generic"))
+    	        continue;
             boolean anyAlertsFound = false;
 	        modRedFlagAlertPref(GROUPS, redFlagAlert);
 	        List<EventType> eventTypes = getEventTypes(redFlagAlert);

@@ -29,6 +29,7 @@ import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertEscalationItem;
@@ -294,7 +295,7 @@ public abstract class BaseITData {
         return person;
     }
 
-    protected void createAccount()
+    protected void createAccount(boolean includeWSGroup)
     {
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
@@ -303,12 +304,17 @@ public abstract class BaseITData {
         String timeStamp = Calendar.getInstance().getTime().toString();
         account.setAcctName("TEST " + timeStamp.substring(11));
         account.setHos(AccountHOSType.HOS_SUPPORT);
+        account.setProps(new AccountAttributes());
 System.out.println("acct name: " + "TEST " + timeStamp.substring(11));        
+        if (includeWSGroup) {
+                account.getProps().setWaySmart("true");
+        }
 
         // create
         Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
         account.setAccountID(acctID);
+        
     }
     protected void createRedFlagAlerts() {
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
@@ -361,7 +367,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // panic
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_PANIC, "panic");
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_PANIC, "generic");
         redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
     

@@ -47,7 +47,7 @@ public class ITData extends BaseITData{
         init();
 
         // Account
-        createAccount();
+        createAccount(includeWSGroup);
         writeObject(account);
 
         // Address
