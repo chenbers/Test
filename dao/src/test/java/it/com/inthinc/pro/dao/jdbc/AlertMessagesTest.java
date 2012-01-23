@@ -417,29 +417,28 @@ ALERT_TYPE_IGNITION_ON
                     }
                     if (!genWSEvent(event.getType(), event, device))
                         fail("Unable to generate event of type " + event.getType());
-                    break;
-//                    AlertMessageBuilder msg = pollForMessagesBuilder("AlertType: " + miscAlertInfo.alertMessageType);
-//                    if (msg != null && msg.getAlertMessageType() == miscAlertInfo.alertMessageType) {
-//                        
-//                        List<String> params = msg.getParamterList();
-//                        if (miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_WITNESS_UPDATED ||
-//                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT ||
-//                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_ZONES_CURRENT ||
-//                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_QSI_UPDATED) {
-//                            assertEquals("number of params", 5, params.size());
-//                            String version = params.get(4);
-//                            assertTrue("expected a version param", version.startsWith("VersionState"));
-//                        }
-//                        else 
-//                            assertEquals("number of params", 4, params.size());
-//                        assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
-//                        assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
-//                        String[] latLng = params.get(3).split(",");
-//                        assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
-//                        assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
-//
-//                        break;
-//                    }
+                    AlertMessageBuilder msg = pollForMessagesBuilder("AlertType: " + miscAlertInfo.alertMessageType);
+                    if (msg != null && msg.getAlertMessageType() == miscAlertInfo.alertMessageType) {
+                        
+                        List<String> params = msg.getParamterList();
+                        if (miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_WITNESS_UPDATED ||
+                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT ||
+                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_ZONES_CURRENT ||
+                                miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_QSI_UPDATED) {
+                            assertEquals("number of params", 5, params.size());
+                            String version = params.get(4);
+                            assertTrue("expected a version param", version.startsWith("VersionState"));
+                        }
+                        else 
+                            assertEquals("number of params", 4, params.size());
+                        assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
+                        assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
+                        String[] latLng = params.get(3).split(",");
+                        assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
+                        assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
+
+                        break;
+                    }
                 }
                 
             }
