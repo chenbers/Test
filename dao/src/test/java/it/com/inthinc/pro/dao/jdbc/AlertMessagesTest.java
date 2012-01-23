@@ -110,11 +110,10 @@ public class AlertMessagesTest extends BaseJDBCTest{
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
 
-        // TODO: CJ add to config properties
         noteGenerator = new NoteGenerator();
         WSNoteSender wsNoteSender = new WSNoteSender();
-        wsNoteSender.setUrl("dev.tiwipro.com");
-        wsNoteSender.setPort(8888);
+        wsNoteSender.setUrl(config.get(IntegrationConfig.MINA_HOST).toString());
+        wsNoteSender.setPort(Integer.valueOf(config.get(IntegrationConfig.MINA_PORT).toString()));
         noteGenerator.setWsNoteSender(wsNoteSender);
         
         
@@ -129,7 +128,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
         if (!itData.parseTestData(stream, siloService, true, true, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
-System.out.println("account id " + itData.account.getAccountID());        
+     
         List<RedFlagAlert> alerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAccountID());
         originalAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAccountID());
         zoneAlerts = new ArrayList<RedFlagAlert>();

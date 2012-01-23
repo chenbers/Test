@@ -26,6 +26,8 @@ public class IntegrationConfig extends Properties
     public final static String JDBC_MYSQL_PASSWORD = "jdbc.mysql.password";
     public final static String JDBC_MYSQL_CONNECTION_PROPERTIES = "jdbc.mysql.connectionProperties";
 
+    public final static String MINA_HOST = "minaHost";
+    public final static String MINA_PORT = "minaPort";
 
     public IntegrationConfig()
     {
