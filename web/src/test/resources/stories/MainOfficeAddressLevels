@@ -4,9 +4,10 @@ In order for my daily driver logs to reflect the correct home and terminal addre
 As HOS Manager
 I need to be able to set the main office address on more than just two levels of the organization structure
 
-Scenario: TC6022 Set Radio Button for Address
+Scenario: TC6022 Set Level Radio Button for Address
 Given I am logged in as HOS manager 
 And I am on the Organization page
+And I have selected a group on <level>
 And I am Adding an address for my group
 When I select the radio <button>
 And enter the full address
@@ -14,9 +15,19 @@ And click on Save
 Then the address will be saved for my group
 
 Example:
-|main|
-|terminal|
-|neither|
+|level|button|
+|2|main|
+|2||terminal|
+|2|neither|
+|3|main|
+|3|terminal|
+|3|neither|
+|4|main|
+|4|terminal|
+|4|neither|
+|5|main|
+|5|terminal|
+|5|neither|
 
 Scenario: TC6023 Address Required Error Message
 Given I am logged in as HOS manager 
@@ -78,6 +89,13 @@ And I click on Email button
 Then I log into my email address
 And I open the emailed report
 And it displays the daily driver log with the main address and terminal address
+
+Scenario: TC Addresses by level
+Given I am logged in as HOS manager 
+And I am on the Organization page
+And I have selected a group on <level>
+
+
 
 
 
