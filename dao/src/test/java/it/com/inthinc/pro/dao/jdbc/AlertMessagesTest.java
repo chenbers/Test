@@ -277,12 +277,13 @@ public class AlertMessagesTest extends BaseJDBCTest{
     	}
     }
     @Test
+//    @Ignore
 //  de7164
     public void redFlagSpeedAlerts() {
       GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
       for (RedFlagAlert redFlagAlert : redFlagAlerts) {
           List<EventType> eventTypes = getEventTypes(redFlagAlert);
-          if (!eventTypes.get(0).equals(EventType.SPEEDING))
+          if (!redFlagAlert.getName().equals("speeding"))
               continue;
           boolean anyAlertsFound = false;
           modRedFlagAlertPref(GROUPS, redFlagAlert);
@@ -312,8 +313,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
         // max speeding alert is set to 76 mph
       GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
       for (RedFlagAlert redFlagAlert : redFlagAlerts) {
-          List<EventType> eventTypes = getEventTypes(redFlagAlert);
-          if (!eventTypes.get(0).equals(EventType.SPEEDING))
+          if (!redFlagAlert.getName().equals("maxSpeeding"))
               continue;
           boolean anyAlertsFound = false;
           modRedFlagAlertPref(GROUPS, redFlagAlert);
@@ -380,17 +380,26 @@ ALERT_TYPE_IGNITION_ON
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP); 
         Device device = groupData.device;
         
-        RedFlagAlert redFlagAlert = redFlagAlerts.get(redFlagAlerts.size()-1);
+        RedFlagAlert redFlagAlert = null;
+        for (RedFlagAlert rfa : redFlagAlerts) {
+            if (rfa.getName().equals("generic")) {
+                redFlagAlert = rfa;
+                break;
+            }
+        }
+        assertNotNull("unable to find redFlag alert for waysmart testing", redFlagAlert);
+        
         for (MiscAlertInfo miscAlertInfo : miscAlertInfoList) {
             List<AlertMessageType> typeList = new ArrayList<AlertMessageType>();
             typeList.add(miscAlertInfo.alertMessageType);
-logger.info("AlertMessageType: " + miscAlertInfo.alertMessageType);            
+System.out.println("****AlertMessageType: " + miscAlertInfo.alertMessageType);            
             redFlagAlert.setTypes(typeList);
             redFlagAlertHessianDAO.update(redFlagAlert);
             
             for (Event event : miscAlertInfo.events) {
                 event.setHeading(DEFAULT_HEADING);
                 event.setSats(DEFAULT_SATS);
+System.out.println("****NoteType: " + event.getType());            
                 for (int attempt = 0; attempt < 6; attempt++) {
                     if (attempt == 5) {
                         fail("Unable to get alert message after 5 attempts for type: " + miscAlertInfo.alertMessageType);
@@ -441,7 +450,7 @@ logger.info("AlertMessageType: " + miscAlertInfo.alertMessageType);
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void escalationPhoneTest()
     {
         // TODO: this was just fetching one that had been inserted in db, need a better test for this
