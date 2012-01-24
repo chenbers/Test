@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -15,6 +16,7 @@ public abstract class ZoneEvent extends Event {
 	 */
 	private static final long serialVersionUID = -221662750228535423L;
 	
+    @EventAttrID(name="ZONE_ID")
 	protected Integer zoneID;
 	
 	@Column(updateable = false)
@@ -79,5 +81,11 @@ public abstract class ZoneEvent extends Event {
         return sb.toString();
 
 	}
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[1];
+        eventAttrList[0] = EventAttr.ZONE_ID;
+        return eventAttrList;
+    }
 
 }

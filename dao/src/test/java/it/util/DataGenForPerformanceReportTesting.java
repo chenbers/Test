@@ -28,6 +28,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForPerformanceReportTesting extends DataGenForTesting {
 	

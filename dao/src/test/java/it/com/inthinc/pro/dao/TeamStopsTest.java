@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.IntegrationConfig;
-import it.util.MCMSimulator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,6 +44,7 @@ import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.notegen.MCMSimulator;
 
 
 public class TeamStopsTest {

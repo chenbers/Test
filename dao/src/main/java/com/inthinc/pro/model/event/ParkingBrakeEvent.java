@@ -53,5 +53,12 @@ public class ParkingBrakeEvent extends Event implements StatusEvent {
         
     }
 
-    
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[1];
+        eventAttrList[0] = EventAttr.STATE;
+        return eventAttrList;
+    }
+
+
 }

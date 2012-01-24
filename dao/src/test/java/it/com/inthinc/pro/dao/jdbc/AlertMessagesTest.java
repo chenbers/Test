@@ -10,8 +10,6 @@ import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
-import it.util.EventGenerator;
-import it.util.MCMSimulator;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,8 +31,6 @@ import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
-import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -68,13 +64,14 @@ import com.inthinc.pro.model.event.WitnessVersionEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
 import com.inthinc.pro.model.event.ZonesVersionEvent;
+import com.inthinc.pro.notegen.MCMSimulator;
 import com.inthinc.pro.notegen.NoteGenerator;
+import com.inthinc.pro.notegen.TiwiProNoteSender;
 import com.inthinc.pro.notegen.WSNoteSender;
 
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
-    private static MCMSimulator mcmSim;
     private static final String XML_DATA_FILE = "AlertTest.xml";
     private static String mapServerURL;
     private static final int DRIVERS = 1;
@@ -99,6 +96,10 @@ public class AlertMessagesTest extends BaseJDBCTest{
     private static ITData itData;
     
     private static NoteGenerator noteGenerator;
+    private static Integer DEFAULT_HEADING = 0; //NORTH
+    private static Integer DEFAULT_SATS = 5; 
+    private static Double DEFAULT_LAT = 40.704246d; 
+    private static Double DEFAULT_LNG = -111.948613d; 
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -108,7 +109,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
         mapServerURL = config.get(IntegrationConfig.MAP_SERVER_URL).toString();
         siloService = new SiloServiceCreator(host, port).getService();
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-        mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
+        MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
 
         noteGenerator = new NoteGenerator();
         WSNoteSender wsNoteSender = new WSNoteSender();
@@ -116,8 +117,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
         wsNoteSender.setPort(Integer.valueOf(config.get(IntegrationConfig.MINA_PORT).toString()));
         noteGenerator.setWsNoteSender(wsNoteSender);
         
-        
-        
+        TiwiProNoteSender tiwiProNoteSender = new TiwiProNoteSender();
+        tiwiProNoteSender.setMcmSimulator(mcmSim);
+        noteGenerator.setTiwiProNoteSender(tiwiProNoteSender);
         
         
         initDAOs();
@@ -166,38 +168,32 @@ public class AlertMessagesTest extends BaseJDBCTest{
     	for (RedFlagAlert zoneAlert : zoneAlerts) {
     		EventType eventType = getEventTypes(zoneAlert).get(0);
 	    	Integer zoneID = itData.zone.getZoneID();
-	        String IMEI = itData.teamGroupData.get(ITData.GOOD).device.getImei();
+	        Device device = itData.teamGroupData.get(ITData.GOOD).device;
 	
 	        boolean anyAlertsFound = false;
 	        // generate zone arrival/departure event
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
+	        genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Groups Set"))
 	        	anyAlertsFound = true;
 	        
 	        modZoneAlertPref(DRIVERS, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
+            genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Drivers Set"))
 	        	anyAlertsFound = true;
 	        modZoneAlertPref(VEHICLES, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
+            genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Vehicles Set"))
 	        	anyAlertsFound = true;
 	        modZoneAlertPref(VEHICLE_TYPES, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
+            genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Vehicle Types Set"))
 	        	anyAlertsFound = true;
 	        modZoneAlertPref(CONTACT_INFO, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
+            genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Contact Info Set"))
 	        	anyAlertsFound = true;
 	        modZoneAlertPref(ANY_TIME, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
+            genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert ANY TIME (0,0) Set"))
 	        	anyAlertsFound = true;
 	        assertTrue("No Zone Alerts were generated", anyAlertsFound);
@@ -211,11 +207,10 @@ public class AlertMessagesTest extends BaseJDBCTest{
     	for (RedFlagAlert zoneAlert : zoneAlerts) {
     		List<EventType> eventTypes = getZoneEventTypes(zoneAlert);
 	    	Integer zoneID = itData.zone.getZoneID();
-	        String noDriverDeviceIMEI = itData.noDriverDevice.getImei();
+	        Device device = itData.noDriverDevice;
 	        
 	        // generate zone arrival/departure event
-	        if (!genZoneEvent(noDriverDeviceIMEI, zoneID, eventTypes.get(0)))
-	            fail("Unable to generate zone arrival event");
+	        genZoneEvent(device, zoneID, eventTypes.get(0));
 	        if (pollForMessages("Zone Alert Groups Set"))
 	        	anyAlertsFound = true;
 	
@@ -225,10 +220,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
             if (redFlagAlert.getName().equals("generic"))
                 continue;
     		List<EventType> eventTypes = getEventTypes(redFlagAlert);
-	        String noDriverDeviceIMEI = itData.noDriverDevice.getImei();
+	        Device device = itData.noDriverDevice;
 	        
-	        if (!genEvent(noDriverDeviceIMEI, eventTypes.get(0)))
-	            fail("Unable to generate no driver event");
+            genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Groups Set"))
 	        	anyAlertsFound = true;
     	}
@@ -245,42 +239,36 @@ public class AlertMessagesTest extends BaseJDBCTest{
             boolean anyAlertsFound = false;
 	        modRedFlagAlertPref(GROUPS, redFlagAlert);
 	        List<EventType> eventTypes = getEventTypes(redFlagAlert);
-	        String IMEI = groupData.device.getImei();
+	        Device device = groupData.device;
 	        if (eventTypes.get(0).equals(EventType.NO_DRIVER))
-	        	IMEI = itData.noDriverDevice.getImei();
+	        	device= itData.noDriverDevice;
 
 	        
-	        if (!genEvent(IMEI, eventTypes.get(0)))
-	            fail("Unable to generate event of type " + eventTypes.get(0));
+	        genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Groups Set"))
 	        	anyAlertsFound = true;
 	        modRedFlagAlertPref(DRIVERS, redFlagAlert);
-	        if (!genEvent(IMEI, eventTypes.get(0)))
-	            fail("Unable to generate event of type " + eventTypes.get(0));
+            genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Drivers Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(VEHICLES, redFlagAlert);
-	        if (!genEvent(IMEI, eventTypes.get(0)))
-	            fail("Unable to generate event of type " + eventTypes.get(0));
+            genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Vehicles Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(VEHICLE_TYPES, redFlagAlert);
-	        if (!genEvent(IMEI, eventTypes.get(0)))
-	            fail("Unable to generate event of type " + eventTypes.get(0));
+            genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Vehicle Types Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(ANY_TIME, redFlagAlert);
-	        if (!genEvent(IMEI, eventTypes.get(0)))
-	            fail("Unable to generate event of type " + eventTypes.get(0));
+            genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Any Time Info Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(CONTACT_INFO, redFlagAlert);
-	        if (!genEvent(IMEI, eventTypes.get(0)))
-	            fail("Unable to generate event of type " + eventTypes.get(0));
+            genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Contact Info Set"))
 	        	anyAlertsFound = true;
 	        assertTrue("No Red Flag Alerts were generated for eventType " + eventTypes.get(0), anyAlertsFound);
@@ -298,13 +286,12 @@ public class AlertMessagesTest extends BaseJDBCTest{
               continue;
           boolean anyAlertsFound = false;
           modRedFlagAlertPref(GROUPS, redFlagAlert);
-          String IMEI = groupData.device.getImei();
+          Device device = groupData.device;
           
           Event event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
                   new Double(40.704246f), new Double(-111.948613f), 11, 11, 5, 100, 100);
       
-          if (!genEvent(event, IMEI))
-              fail("Unable to generate event of type " + eventTypes.get(0));
+          genEvent(event, device);
           if (pollForMessages("Red Flag Alert Groups Set"))
               anyAlertsFound = true;
           assertTrue("Expect no alerts for speeding 11 mph in a 5 mph zone ",!anyAlertsFound);
@@ -312,8 +299,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
           event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
                   new Double(40.704246f), new Double(-111.948613f), 16, 16, 10, 100, 100);
       
-          if (!genEvent(event, IMEI))
-              fail("Unable to generate event of type " + eventTypes.get(0));
+          genEvent(event, device);
           if (pollForMessages("Red Flag Alert Groups Set"))
               anyAlertsFound = true;
 
@@ -331,13 +317,12 @@ public class AlertMessagesTest extends BaseJDBCTest{
               continue;
           boolean anyAlertsFound = false;
           modRedFlagAlertPref(GROUPS, redFlagAlert);
-          String IMEI = groupData.device.getImei();
+          Device device = groupData.device;
           
           Event event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
                   new Double(40.704246f), new Double(-111.948613f), 77,77, 75, 100, 100);
       
-          if (!genEvent(event, IMEI))
-              fail("Unable to generate event of type " + eventTypes.get(0));
+          genEvent(event, device);
           if (pollForMessages("Red Flag Alert Groups Set"))
               anyAlertsFound = true;
           assertTrue("Expect alert for speeding  mph in any zone ",anyAlertsFound);
@@ -345,10 +330,6 @@ public class AlertMessagesTest extends BaseJDBCTest{
       }
   }
 
-    private static Integer DEFAULT_HEADING = 0; //NORTH
-    private static Integer DEFAULT_SATS = 5; 
-    private static Double DEFAULT_LAT = 40.704246d; 
-    private static Double DEFAULT_LNG = -111.948613d; 
 
 /* todo    
     ALERT_TYPE_INSTALL
@@ -397,13 +378,13 @@ ALERT_TYPE_IGNITION_ON
     @Test 
     public void miscWSAlert() {
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP); 
-        String IMEI = groupData.device.getImei();
         Device device = groupData.device;
         
         RedFlagAlert redFlagAlert = redFlagAlerts.get(redFlagAlerts.size()-1);
         for (MiscAlertInfo miscAlertInfo : miscAlertInfoList) {
             List<AlertMessageType> typeList = new ArrayList<AlertMessageType>();
             typeList.add(miscAlertInfo.alertMessageType);
+logger.info("AlertMessageType: " + miscAlertInfo.alertMessageType);            
             redFlagAlert.setTypes(typeList);
             redFlagAlertHessianDAO.update(redFlagAlert);
             
@@ -414,8 +395,7 @@ ALERT_TYPE_IGNITION_ON
                     if (attempt == 5) {
                         fail("Unable to get alert message after 5 attempts for type: " + miscAlertInfo.alertMessageType);
                     }
-                    if (!genWSEvent(event.getType(), event, device))
-                        fail("Unable to generate event of type " + event.getType());
+                    genEvent(event, device);
                     AlertMessageBuilder msg = pollForMessagesBuilder("AlertType: " + miscAlertInfo.alertMessageType);
                     if (msg != null && msg.getAlertMessageType() == miscAlertInfo.alertMessageType) {
                         
@@ -452,17 +432,6 @@ ALERT_TYPE_IGNITION_ON
             this.alertMessageType = alertMessageType;
             this.events = events;
         }
-        
-    }
-    
-    
-    @Test 
-    public void alertMessageBuilder() {
-        
-        List<AlertMessageBuilder> list = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL); 
-        
-        System.out.println("list" + list.size());
-
     }
 
     @Test
@@ -542,8 +511,6 @@ ALERT_TYPE_IGNITION_ON
         groupIDList.add(groupData.group.getGroupID());
         List<Integer> notifyPersonIDs = new ArrayList<Integer>();
         notifyPersonIDs.add(itData.fleetUser.getPersonID());
-        List<String> emailList = new ArrayList<String>();
-        emailList.add("cjennings@inthinc.com");
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(itData.fleetUser.getPersonID(), 1));
         escalationList.add(new AlertEscalationItem(itData.districtUser.getPersonID(), 0));
@@ -560,7 +527,6 @@ ALERT_TYPE_IGNITION_ON
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                zoneAlert.setEmailTo(emailList);
                 zoneAlert.setEscalationList(escalationList);
                 zoneAlert.setMaxEscalationTries(5);
                 zoneAlert.setMaxEscalationTryTime(null);
@@ -573,7 +539,6 @@ ALERT_TYPE_IGNITION_ON
                 zoneAlert.setVehicleIDs(vehicleIDs);
                 zoneAlert.setVehicleTypes(emptyVTList);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                zoneAlert.setEmailTo(emailList);
                 break;
             case VEHICLE_TYPES:
                 List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
@@ -583,7 +548,6 @@ ALERT_TYPE_IGNITION_ON
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(vehicleTypes);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                zoneAlert.setEmailTo(emailList);
                 zoneAlert.setEscalationList(escalationList);
                 zoneAlert.setMaxEscalationTries(5);
                 zoneAlert.setMaxEscalationTryTime(null);
@@ -594,7 +558,6 @@ ALERT_TYPE_IGNITION_ON
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                zoneAlert.setEmailTo(emailList);
                 zoneAlert.setEscalationList(escalationList);
                 zoneAlert.setMaxEscalationTries(5);
                 zoneAlert.setMaxEscalationTryTime(null);
@@ -605,7 +568,6 @@ ALERT_TYPE_IGNITION_ON
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                zoneAlert.setEmailTo(new ArrayList<String>());
                 zoneAlert.setEscalationList(escalationList);
                 zoneAlert.setMaxEscalationTries(5);
                 zoneAlert.setMaxEscalationTryTime(null);
@@ -618,7 +580,6 @@ ALERT_TYPE_IGNITION_ON
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setStartTOD(0);
                 zoneAlert.setStopTOD(0);
-//                zoneAlert.setEmailTo(emailList);
                 zoneAlert.setEscalationList(escalationList);
                 zoneAlert.setMaxEscalationTries(5);
                 zoneAlert.setMaxEscalationTryTime(null);
@@ -636,8 +597,6 @@ ALERT_TYPE_IGNITION_ON
         groupIDList.add(groupData.group.getGroupID());
         List<Integer> notifyPersonIDs = new ArrayList<Integer>();
         notifyPersonIDs.add(itData.fleetUser.getPersonID());
-        List<String> emailList = new ArrayList<String>();
-        emailList.add("cjennings@inthinc.com");
         List<Integer> emptyList = new ArrayList<Integer>();
         List<VehicleType> emptyVTList = new ArrayList<VehicleType>();
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
@@ -655,7 +614,6 @@ ALERT_TYPE_IGNITION_ON
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setEscalationList(escalationList);
                 redFlagAlert.setMaxEscalationTries(5);
                 redFlagAlert.setMaxEscalationTryTime(null);
@@ -668,7 +626,6 @@ ALERT_TYPE_IGNITION_ON
                 redFlagAlert.setVehicleIDs(vehicleIDs);
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setEscalationList(escalationList);
                 redFlagAlert.setMaxEscalationTries(5);
                 redFlagAlert.setMaxEscalationTryTime(null);
@@ -681,7 +638,6 @@ ALERT_TYPE_IGNITION_ON
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(vehicleTypes);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setEscalationList(escalationList);
                 redFlagAlert.setMaxEscalationTries(5);
                 redFlagAlert.setMaxEscalationTryTime(null);
@@ -692,7 +648,6 @@ ALERT_TYPE_IGNITION_ON
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setEscalationList(escalationList);
                 redFlagAlert.setMaxEscalationTries(5);
                 redFlagAlert.setMaxEscalationTryTime(null);
@@ -703,7 +658,6 @@ ALERT_TYPE_IGNITION_ON
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                redFlagAlert.setEmailTo(new ArrayList<String>());
                 redFlagAlert.setEscalationList(escalationList);
                 redFlagAlert.setMaxEscalationTries(5);
                 redFlagAlert.setMaxEscalationTryTime(null);
@@ -714,7 +668,6 @@ ALERT_TYPE_IGNITION_ON
                 redFlagAlert.setVehicleIDs(emptyList);
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
-//                redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setStartTOD(0);
                 redFlagAlert.setStopTOD(1439);
                 redFlagAlert.setEscalationList(escalationList);
@@ -727,115 +680,64 @@ ALERT_TYPE_IGNITION_ON
         redFlagAlertDAO.update(redFlagAlert);
     }
 
-    private boolean genZoneEvent(String imei, Integer zoneID, EventType eventType) {
-        System.out.println("IMEI: " + imei);
-        System.out.println("ZoneID: " + zoneID);
+    private void genZoneEvent(Device device, Integer zoneID, EventType eventType) {
         Event event = null;
         if (eventType.equals(EventType.ZONES_ARRIVAL))
-        	event = new ZoneArrivalEvent(0l, 0, NoteType.WSZONES_ARRIVAL_EX, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f),
-                zoneID);
+        	event = new ZoneArrivalEvent(0l, 0, NoteType.WSZONES_ARRIVAL_EX, new Date(), 60, 1000, DEFAULT_LAT, DEFAULT_LNG, zoneID);
         else 
-        	event = new ZoneDepartureEvent(0l, 0, NoteType.WSZONES_DEPARTURE_EX, new Date(), 60, 1000, new Double(40.704246f), new Double(-111.948613f),
-                zoneID);
-        return genEvent(event, imei);
+        	event = new ZoneDepartureEvent(0l, 0, NoteType.WSZONES_DEPARTURE_EX, new Date(), 60, 1000, DEFAULT_LAT, DEFAULT_LNG, zoneID);
+        event.setHeading(DEFAULT_HEADING);
+        event.setSats(DEFAULT_SATS);
+        genEvent(event, device);
     }
 
-    private boolean genEvent(String imei, EventType eventType) {
+    private Event createEvent(EventType eventType) {
     	Event event = null;
-System.out.println("genEvent: " + eventType);    	
     	if (eventType.equals(EventType.SEATBELT) )
     			event = new SeatBeltEvent(0l, 0, NoteType.SEATBELT, new Date(), 60, 1000, 
-    					new Double(40.704246f), new Double(-111.948613f), 80, 100, 20);
+    			        DEFAULT_LAT, DEFAULT_LNG, 80, 100, 20);
     	else if (eventType.equals(EventType.HARD_VERT) )
 			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f), 80, 11, -22, -33, 30);
+			        DEFAULT_LAT, DEFAULT_LNG, 80, 11, -22, -33, 30);
     	else if (eventType.equals(EventType.HARD_ACCEL) )
 			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f), 80, 100, -20, 0, 40);
+			        DEFAULT_LAT, DEFAULT_LNG, 80, 100, -20, 0, 40);
     	else if (eventType.equals(EventType.HARD_BRAKE) )
 			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f), 80, -25, 22, -13, 50);
+			        DEFAULT_LAT, DEFAULT_LNG, 80, -25, 22, -13, 50);
     	else if (eventType.equals(EventType.HARD_TURN) )
 			event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTEEVENT, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f), 80, 24, -22, -21, 60);
+			        DEFAULT_LAT, DEFAULT_LNG, 80, 24, -22, -21, 60);
     	else if (eventType.equals(EventType.CRASH) )
 			event = new FullEvent(0l, 0, NoteType.FULLEVENT, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f), 80, 24, -22, -21);
+			        DEFAULT_LAT, DEFAULT_LNG, 80, 24, -22, -21);
     	else if (eventType.equals(EventType.TAMPERING) )
 			event = new Event(0l, 0, NoteType.UNPLUGGED, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f));
+			        DEFAULT_LAT, DEFAULT_LNG);
     	else if (eventType.equals(EventType.LOW_BATTERY) )
 			event = new Event(0l, 0, NoteType.LOW_BATTERY, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f));
+			        DEFAULT_LAT, DEFAULT_LNG);
     	else if (eventType.equals(EventType.NO_DRIVER) )
 			event = new Event(0l, 0, NoteType.NO_DRIVER, new Date(), 60, 1000, 
-					new Double(40.704246f), new Double(-111.948613f));
+			        DEFAULT_LAT, DEFAULT_LNG);
     	else if (eventType.equals(EventType.SPEEDING) )
 			event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
-					new Double(40.704246f), new Double(-111.948613f), 100, 80, 70, 100, 100);
-    	
-    	return genEvent(event, imei);
+			        DEFAULT_LAT, DEFAULT_LNG, 100, 80, 70, 100, 100);
+    	else fail("Code does not support eventType: " + eventType);
+    	event.setHeading(DEFAULT_HEADING);
+    	event.setSats(DEFAULT_SATS);
+    	return event;
     }
 
-    private boolean genWSEvent(NoteType noteType, Event event, Device device) {
-        noteGenerator.genEvent(noteType, event, device);
-        return true;
-    
-    }
-
-    private boolean genEvent(Event event, String imei) {
-        List<byte[]> noteList = new ArrayList<byte[]>();
-
-        byte[] eventBytes = EventGenerator.createDataBytesFromEvent(event);
-        noteList.add(eventBytes);
-        boolean errorFound = false;
-        int retryCnt = 0;
-        while (!errorFound) {
-            try {
-                mcmSim.note(imei, noteList);
-                break;
-            }
-            catch (ProxyException ex) {
-                if (ex.getErrorCode() != 414) {
-                    System.out.print("RETRY EVENT GEN because: " + ex.getErrorCode() + "");
-                    errorFound = true;
-                }
-                else {
-                    if (retryCnt == 300) {
-                        System.out.println("Retries failed after 5 min.");
-                        errorFound = true;
-                    }
-                    else {
-                    	if (retryCnt == 0)
-                    		System.out.println("waiting for IMEI to show up in central server");
-                        try {
-                            Thread.sleep(1000l);
-                            retryCnt++;
-                        }
-                        catch (InterruptedException e) {
-                            errorFound = true;
-                            e.printStackTrace();
-                        }
-                        System.out.print(".");
-                        if (retryCnt % 25 == 0)
-                            System.out.println();
-                    }
-                }
-            }
-            catch (RemoteServerException re) {
-                if (re.getErrorCode() != 302 ) {
-                    errorFound = true;
-                }
-            	
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                errorFound = true;
-            }
+    private void genEvent(Event event, Device device) {
+        try {
+            noteGenerator.genEvent(event, device);
         }
-        return !errorFound;
+        catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Generate Note failed for device: " + device.getImei() + " noteType" + event.getType());
+        }
     }
-
     private static void initDAOs()
     {
         alertMessageDAO = new AlertMessageJDBCDAO();
@@ -902,7 +804,7 @@ System.out.println("genEvent: " + eventType);
                 {
                     alertMessageDAO.acknowledgeMessage(amb.getMessageID());
                 }
-System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
+//System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
                 return msg;
             }
         }

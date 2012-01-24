@@ -1,8 +1,17 @@
 package com.inthinc.pro.notegen;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Map.Entry;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.NoteType;
 
 public class WSNotePackager extends PackageNote{
@@ -15,7 +24,7 @@ public class WSNotePackager extends PackageNote{
         baos.write(0);
         longToByte(baos, noteTypeID, 1);
         longToByte(baos, nVersion, 1);
-        longToByte(baos, event.getTime().getTime()/1000l, 4);
+        longToByte(baos, DateUtil.convertDateToSeconds(event.getTime()), 4);
         longToByte(baos, concatenateTwoInts(event.getHeading(), event.getSats()), 1);
         longToByte(baos, encodeLat(event.getLatitude()), 3);
         longToByte(baos, encodeLng(event.getLongitude()), 3);
@@ -23,7 +32,6 @@ public class WSNotePackager extends PackageNote{
         longToByte(baos, event.getOdometer(), 3);
         longToByte(baos, duration, 2);
         
-        // TODO:
         encodeAttributes(baos, event);
 
         byte[] temp = baos.toByteArray();
@@ -31,4 +39,40 @@ public class WSNotePackager extends PackageNote{
         return temp;
         
     }
+    
+    
+    public void encodeAttributes(ByteArrayOutputStream baos, Event event) {
+        if (event.getEventAttrList() == null)
+            return;
+        List<Field> fieldList = getAllFields(event.getClass());
+        
+        for (EventAttr eventAttr : event.getEventAttrList()) {
+            if (event.getAttrMap() != null &&event.getAttrMap().containsKey(eventAttr)) {
+                    encodeAttribute(baos, eventAttr, event.getAttrMap().get(eventAttr));
+            }
+            else {
+        
+                for (Field field : fieldList) {
+                    if (field.isAnnotationPresent(EventAttrID.class)) {
+                        EventAttrID attributeID = field.getAnnotation(EventAttrID.class);
+                        EventAttr attr = EventAttr.valueOf(attributeID.name());
+                        if (attr == eventAttr) {
+                            try {
+                                encodeAttribute(baos, attr, PropertyUtils.getProperty(event, field.getName()));
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    
+
 }

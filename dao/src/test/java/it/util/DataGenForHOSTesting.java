@@ -29,6 +29,7 @@ import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForHOSTesting extends DataGenForTesting {
     public String xmlPath;

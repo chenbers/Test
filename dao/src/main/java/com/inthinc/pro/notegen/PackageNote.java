@@ -59,7 +59,9 @@ public abstract class PackageNote {
     }
     
 
-    private void encodeAttribute(ByteArrayOutputStream baos, EventAttr key, Object object) {
+    protected void encodeAttribute(ByteArrayOutputStream baos, EventAttr key, Object object) {
+        
+
         try {
             if (object instanceof EventAttrEnum) {
                 longToByte(baos, ((EventAttrEnum)object).mapToInteger(), key.getSize());
@@ -86,37 +88,6 @@ public abstract class PackageNote {
         } catch (NullPointerException e){
             
         }
-    }
-    
-    public void encodeAttributes(ByteArrayOutputStream baos, Event event) {
-        if (event.getAttrMap() != null) 
-            for (Entry<Object, Object> entry : event.getAttrMap().entrySet()) {
-                EventAttr attr = EventAttr.findByNameCode(entry.getKey().toString());
-                encodeAttribute(baos, attr, entry.getValue());
-            }
-    
-        // go through fields of class also
-        List<Field> fieldList = getAllFields(event.getClass());
-        for (Field field : fieldList) {
-            if (field.isAnnotationPresent(EventAttrID.class)) {
-                EventAttrID attributeID = field.getAnnotation(EventAttrID.class);
-                
-                EventAttr attr = EventAttr.valueOf(attributeID.name());
-                try {
-                    encodeAttribute(baos, attr, PropertyUtils.getProperty(event, field.getName()));
-                } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
     
     protected static List<Field> getAllFields(Class<?> type) {

@@ -34,6 +34,7 @@ import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
 import com.inthinc.pro.model.event.ZoneEvent;
 import com.inthinc.pro.model.event.ZonesVersionEvent;
+import com.inthinc.pro.notegen.MCMSimulator;
 
 
 public class EventGenerator

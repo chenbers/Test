@@ -426,4 +426,8 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     {
         this.eventTypeString = eventTypeString;
     }
+    
+    public EventAttr[] getEventAttrList() {
+        return null;
+    }
 }

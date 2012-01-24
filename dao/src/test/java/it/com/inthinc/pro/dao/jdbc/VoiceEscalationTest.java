@@ -10,7 +10,6 @@ import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.util.EventGenerator;
-import it.util.MCMSimulator;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -54,6 +53,7 @@ import com.inthinc.pro.model.event.FullEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.notegen.MCMSimulator;
 @Ignore
 public class VoiceEscalationTest extends BaseJDBCTest{
     

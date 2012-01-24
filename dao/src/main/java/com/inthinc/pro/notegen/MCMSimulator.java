@@ -1,4 +1,4 @@
-package it.util;
+package com.inthinc.pro.notegen;
 
 import java.util.List;
 import java.util.Map;

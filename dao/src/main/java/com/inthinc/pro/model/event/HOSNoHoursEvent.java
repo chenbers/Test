@@ -13,6 +13,7 @@ public class HOSNoHoursEvent extends Event implements StatusEvent {
     @EventAttrID(name="REASON_CODE_HOS")
     private HOSNoHoursState status;
     
+    
     public HOSNoHoursEvent()
     {
         super();
@@ -51,6 +52,13 @@ public class HOSNoHoursEvent extends Event implements StatusEvent {
     {
         return EventType.HOS_NO_HOURS;
         
+    }
+
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[1];
+        eventAttrList[0] = EventAttr.REASON_CODE_HOS;
+        return eventAttrList;
     }
 
     

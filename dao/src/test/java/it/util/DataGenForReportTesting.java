@@ -23,6 +23,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForReportTesting extends DataGenForTesting {
 	public String xmlPath;

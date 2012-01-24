@@ -56,6 +56,7 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.security.Role;
+import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForHelpScreenShots {
     public static SiloService siloService;

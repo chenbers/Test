@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.notegen.MCMSimulator;
 
 public abstract class DataGenForTesting  {
 

@@ -15,17 +15,25 @@ public class NoteGenerator {
     
     private WSNoteSender wsNoteSender;
 
+    private TiwiProNotePackager tiwiProNotePackager = new TiwiProNotePackager();
+    
+    private TiwiProNoteSender tiwiProNoteSender;
+
+
     public NoteGenerator()
     {
     }
     
-    public void genEvent(NoteType noteType, Event event, Device device) {
+    public void genEvent(Event event, Device device) throws Exception {
         
+        NoteType noteType = event.getType();
         if (device.getProductVersion() == ProductType.WAYSMART) {
             byte[] notePackage = wsNotePackager.packageNote(event, noteType.getCode());
             wsNoteSender.sendNote(noteType.getCode(), event.getTime(), notePackage, device);
         }
         else if (device.getProductVersion() == ProductType.TIWIPRO_R74) {
+            byte[] notePackage = tiwiProNotePackager.packageNote(event, noteType.getCode());
+            tiwiProNoteSender.sendNote(noteType.getCode(), event.getTime(), notePackage, device);
             
         }
         else {
@@ -42,4 +50,11 @@ public class NoteGenerator {
         this.wsNoteSender = wsNoteSender;
     }
 
+    public TiwiProNoteSender getTiwiProNoteSender() {
+        return tiwiProNoteSender;
+    }
+
+    public void setTiwiProNoteSender(TiwiProNoteSender tiwiProNoteSender) {
+        this.tiwiProNoteSender = tiwiProNoteSender;
+    }
 }

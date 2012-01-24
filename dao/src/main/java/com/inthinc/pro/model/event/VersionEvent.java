@@ -45,6 +45,12 @@ public class VersionEvent extends Event implements StatusEvent {
         return (status == null) ? VersionState.UNKNOWN.toString() : status.toString();
     }
 
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[1];
+        eventAttrList[0] = EventAttr.UP_TO_DATE_STATUS;
+        return eventAttrList;
+    }
 
     
 }
