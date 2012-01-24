@@ -418,6 +418,12 @@ logger.info("AlertMessageType: " + miscAlertInfo.alertMessageType);
 
                         break;
                     }
+                    try {
+                        Thread.sleep(2000l);
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 
             }
