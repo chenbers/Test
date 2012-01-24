@@ -1,5 +1,6 @@
 package com.inthinc.device.emulation.notes;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,6 +11,7 @@ import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
+import com.inthinc.device.objects.DeviceAttributes;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class TiwiNote extends DeviceNote {
@@ -68,6 +70,33 @@ public class TiwiNote extends DeviceNote {
         return bos.toByteArray();   
     }
     
+
+	@Override
+	public DeviceNote unPackage(byte[] packagedNote) {
+		return unPackageS(packagedNote);
+	}
+	
+	public static TiwiNote unPackageS(byte[] packagedNote){
+		ByteArrayInputStream bais = new ByteArrayInputStream(packagedNote);
+		DeviceNoteTypes type = DeviceNoteTypes.valueOf(byteToInt(bais, 1));
+		AutomationCalendar time = new AutomationCalendar(byteToLong(bais, 4) * 1000);
+		int flags = byteToInt(bais, 1);
+		Heading heading = Heading.valueOf((flags >> 4) & 0x00FF);
+		int sats = flags & 0x00FF;
+		int maprev = byteToInt(bais, 1);
+		GeoPoint location = new GeoPoint(0.0,0.0);
+		location.decodeLat(byteToLong(bais, 3));
+		location.decodeLng(byteToLong(bais, 3));
+		int speed = byteToInt(bais, 1);
+		int odometer = byteToInt(bais, 2);
+		DeviceAttributes attrs = decodeAttributes(bais, 1);
+		TiwiNote note = new TiwiNote(type, time, location, heading, sats, maprev, speed, odometer);
+		note.addAttrs(attrs);
+		return note;
+	}
+    
+    
+    
     public Map<String, String> packageToMap(){
         Map<String, String> map = new HashMap<String, String>();
         map.put("10", type.getIndex() + "");
@@ -119,9 +148,4 @@ public class TiwiNote extends DeviceNote {
 
 
 
-	@Override
-	public DeviceNote unPackage(byte[] packagedNote) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

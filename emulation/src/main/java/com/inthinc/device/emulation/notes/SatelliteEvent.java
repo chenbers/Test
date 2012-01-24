@@ -65,7 +65,10 @@ public class SatelliteEvent extends DeviceNote {
 	public static SatelliteEvent unPackageS(byte[] packagedNote){
 		ByteArrayInputStream bais = new ByteArrayInputStream(packagedNote);
 		DeviceNoteTypes type = DeviceNoteTypes.valueOf(byteToInt(bais, 1));
-		byteToInt(bais, 1); // Note Type Version
+		int version = byteToInt(bais, 1);  		// Note Type Version
+		if ( version != nVersion) { // version == 2
+			throw new IllegalArgumentException("Not a SatelliteEvent: nVersion is " + version);
+		}
 		AutomationCalendar time = new AutomationCalendar(byteToLong(bais, 4) * 1000);
 		int flags = byteToInt(bais, 1);
 		int sats = flags & 0x0F;

@@ -1,5 +1,6 @@
 package com.inthinc.device.emulation.notes;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
@@ -50,41 +51,50 @@ public class SatNote extends DeviceNote {
 		return baos.toByteArray();
 	}
 	
-	// bit definitions for the second byte of m_nFlags
-	/********************************************************************
-	 * 
-	 * first flags byte bit 0 to 7
-	bit 0:  ON/OFF road
-	On road = 0,
-	Off road = 1,
 
-	bit 1: Light/Heavy duty vehicle
-	light duty: 0,
-	heavy duty: 1,
-
-	bit 2 - 4: HOS state
-	value: state
-	0: Off-Duty
-	1: Off-Duty Well Site (otherwise known as waiting)
-	2: Sleeper Berth
-	3: Personal Use
-	4: Driving
-	5: On-Duty Not Driving
-
-
-	bit 5: Speeding violation
-	Currently NOT speeding: 0
-	Currently in Speeding violation: 1
-
-	bit 6: Seatbelt Violation
-	Currently wearing seatbelt: 0
-	Currently in Seatbelt violation: 1
-
-	bit 7: RPM violation
-	Currently NOT exceeding RPM limit: 0
-	Currently exceeding RPM limit: 1
-	*****************************************************************
-	*/
+	@Override
+	public SatNote unPackage(byte[] packagedNote) {
+		return unPackageS(packagedNote);
+	}
+	
+	public static SatNote unPackageS(byte[] packagedNote){
+		ByteArrayInputStream bais = new ByteArrayInputStream(packagedNote);
+		byteToInt(bais, 1);  						// protocol revision number
+		byteToInt(bais, 2); 			 			// Message Length
+		byteToInt(bais, 1);    					 	// IEI
+		byteToInt(bais, 2);							// Header Length
+		byteToInt(bais, 4); 					 	// CDR
+		char[] imeiArray = new char[15];
+		for (int i=0;i<imeiArray.length;i++){
+			imeiArray[i] = (char) bais.read();
+		}
+		String imei = String.copyValueOf(imeiArray);// IMEI goes here 10-24
+		byteToInt(bais, 1); 						// status
+		byteToInt(bais, 2); 						// momsn
+		byteToInt(bais, 2); 						// mtmsn
+		byteToInt(bais, 4);							// session time
+		byteToInt(bais, 1); 						// payload iei
+		int payLoadLength = byteToInt(bais, 2);		// Payload Length
+		if (bais.available() != payLoadLength){
+			throw new IllegalArgumentException("The byte array you provided is inconsistent in size");
+		}
+		byte[] payload = new byte[payLoadLength];
+		for (int i=0; i<payLoadLength;i++){
+			payload[i] = (byte) bais.read();
+		}
+		DeviceNote note = null;
+		try {
+			note = SatelliteEvent_t.unPackageS(payload);
+		} catch (IllegalArgumentException e1){
+			try {
+				note = SatelliteEvent.unPackageS(payload);
+			} catch (IllegalArgumentException e2){
+				note = SatelliteStrippedConfigurator.unPackageS(payload);
+			}
+		}
+		return new SatNote(note, imei);
+	}
+	
 
 	@Override
 	public GeoPoint getLocation() {
@@ -177,10 +187,5 @@ public class SatNote extends DeviceNote {
 		payload.setSats(sats);
 	}
 
-	@Override
-	public DeviceNote unPackage(byte[] packagedNote) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

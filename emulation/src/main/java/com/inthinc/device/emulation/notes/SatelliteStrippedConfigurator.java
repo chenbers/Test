@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -15,13 +16,12 @@ import org.apache.log4j.Level;
 
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
-import com.inthinc.device.emulation.notes.DeviceNote.SatOnly;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
-public class SatelliteStrippedConfigurator extends DeviceNote implements SatOnly {
+public class SatelliteStrippedConfigurator extends DeviceNote {
 	
 
 	private final Map<DeviceProps, String> settings;
@@ -48,17 +48,43 @@ public class SatelliteStrippedConfigurator extends DeviceNote implements SatOnly
 		temp[0] = (byte)(temp.length & 0xFF);
 		return temp;
 	}
+	
+
+	@Override
+	public SatelliteStrippedConfigurator unPackage(byte[] packagedNote) {
+		return unPackageS(packagedNote);
+	}
+	
+	public static SatelliteStrippedConfigurator unPackageS(byte[] packagedNote){
+		ByteArrayInputStream bais = new ByteArrayInputStream(packagedNote);
+		bais.read(); // package size;
+		DeviceNoteTypes type = DeviceNoteTypes.valueOf(byteToInt(bais, 1));
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(bais.available());
+		while (bais.available() > 0){
+			baos.write(bais.read());
+		}
+		Map<DeviceProps, String> settings = null;
+		try {
+			settings = VSettingsUtil.decompressSettings(baos.toByteArray());
+		} catch (DataFormatException e) {
+			e.printStackTrace();
+		}
+		SatelliteStrippedConfigurator note = new SatelliteStrippedConfigurator(type, new GeoPoint(), settings);
+		return note;
+	}
+	
 
 	@Override
 	public DeviceNote copy() {
 		return new SatelliteStrippedConfigurator(type, location, settings) ;
 	}
 	
-	private static class VSettingsUtil {
+	public static class VSettingsUtil {
 
 		public final static double PACKET_SIZE = 270.0;
 
-		public static Map<DeviceProps, String> decompressSettings(byte[] data) throws java.util.zip.DataFormatException
+		public static Map<DeviceProps, String> decompressSettings(byte[] data) throws DataFormatException
 		{
 			Map<DeviceProps, String> settingsMap = new HashMap<DeviceProps, String>();
 			byte[] decompressedData = decompressData(data);
@@ -332,10 +358,5 @@ public class SatelliteStrippedConfigurator extends DeviceNote implements SatOnly
 
 	}
 
-	@Override
-	public DeviceNote unPackage(byte[] packagedNote) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

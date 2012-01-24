@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
@@ -46,9 +45,6 @@ public abstract class DeviceNote {
 		endOfTripNotes.add(DeviceNoteTypes.LOW_POWER_MODE);
 	}
 	
-	public interface SatOnly{
-		
-	}
 	
 	@Override
 	public String toString(){

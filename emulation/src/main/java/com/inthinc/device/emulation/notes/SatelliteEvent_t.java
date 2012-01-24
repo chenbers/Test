@@ -7,14 +7,13 @@ import org.apache.log4j.Level;
 
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
-import com.inthinc.device.emulation.notes.DeviceNote.SatOnly;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 
-public class SatelliteEvent_t extends DeviceNote implements SatOnly {
+public class SatelliteEvent_t extends DeviceNote {
 
 
 	private final static int m_nVersion = 3; // pos 2, set to 3 -- all vars up
@@ -129,9 +128,13 @@ public class SatelliteEvent_t extends DeviceNote implements SatOnly {
 	
 	public static SatelliteEvent_t unPackageS(byte[] packagedNote){
 		ByteArrayInputStream bais = new ByteArrayInputStream(packagedNote);
-		bais.read(); // Size
-		DeviceNoteTypes type = DeviceNoteTypes.valueOf(byteToInt(bais, 1)); 						// pos 0, length of struct including this byte
-		bais.read(); // Version
+		bais.read(); 	// pos 0, length of struct including this byte
+		DeviceNoteTypes type = DeviceNoteTypes.valueOf(byteToInt(bais, 1));  
+		
+		int version = byteToInt(bais, 1);  // Note Type Version
+		if ( version != m_nVersion) { // version == 3
+			throw new IllegalArgumentException("Not a SatelliteEvent: nVersion is " + version); 
+		}
 		AutomationCalendar time = new AutomationCalendar(byteToLong(bais, 4) * 1000);
 		
 		int flags = bais.read(); // trip flags
