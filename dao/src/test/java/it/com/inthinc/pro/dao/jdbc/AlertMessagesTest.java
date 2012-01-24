@@ -376,6 +376,7 @@ ALERT_TYPE_IGNITION_ON
     };
     
     @Test 
+    @Ignore
     public void miscWSAlert() {
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP); 
         Device device = groupData.device;
