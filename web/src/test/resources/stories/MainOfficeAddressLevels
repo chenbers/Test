@@ -7,33 +7,37 @@ I need to be able to set the main office address on more than just two levels of
 Scenario: TC6022 Set Level Radio Button for Address
 Given I am logged in as HOS manager 
 And I am on the Organization page
-And I have selected a group on <level>
-And I am Adding an address for my group
-When I select the radio <button>
+And I have selected a <group> 
+And I am Adding an <address> for my group
+When I select the <dropdown>
 And enter the full address
 And click on Save
 Then the address will be saved for my group
 
 Example:
-|level|button|
-|2|main|
-|2||terminal|
-|2|neither|
-|3|main|
-|3|terminal|
-|3|neither|
-|4|main|
-|4|terminal|
-|4|neither|
-|5|main|
-|5|terminal|
-|5|neither|
+|group|address1|address2|city|state|zipcode|dropdown|
+|SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120|main|
+|SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||terminal|
+|SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||neither|
+|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|main|
+|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|terminal|
+|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|neither|
+|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|main|
+|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|terminal|
+|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|neither|
+|Miswaco|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2|main|
+|Miswaco|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2||terminal|
+|Miswaco|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2||neither|
+|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|main|
+|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|terminal|
+|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|neither|
+
 
 Scenario: TC6023 Address Required Error Message
 Given I am logged in as HOS manager 
 And I am on the Organization page
 And I am adding an address for my group
-When I select the radio <button>
+When I select the <dropdown>
 And leave the address fields blank
 And click on Save
 Then an error displays with "Address is required"
