@@ -3,6 +3,7 @@ package com.inthinc.pro.model.event;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -15,11 +16,30 @@ public class SpeedingEvent extends Event
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
+
+    @EventAttrID(name="TOP_SPEED")
     private Integer topSpeed;
+    @EventAttrID(name="AVG_SPEED")
     private Integer avgSpeed;
+    @EventAttrID(name="SPEED_LIMIT")
     private Integer speedLimit;
+    @EventAttrID(name="DISTANCE")
     private Integer distance;
+    @EventAttrID(name="AVG_RPM")
     private Integer avgRPM;
+    
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[6];
+        eventAttrList[0] = EventAttr.TOP_SPEED;
+        eventAttrList[1] = EventAttr.DISTANCE;
+        eventAttrList[2] = EventAttr.MAX_RPM;
+        eventAttrList[3] = EventAttr.SPEED_LIMIT;
+        eventAttrList[4] = EventAttr.AVG_SPEED;
+        eventAttrList[5] = EventAttr.AVG_RPM;
+        return eventAttrList;
+    }
+
 
     public SpeedingEvent()
     {
