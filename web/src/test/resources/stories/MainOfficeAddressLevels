@@ -10,7 +10,6 @@ And I am on the Organization page
 And I have selected a <group> 
 And I am Adding an <address1> <address2> <city> <state> <zipcode> for my group
 When I select the <dropdown>
-And enter the full address
 And click on Save
 Then the address will be saved for my group
 
