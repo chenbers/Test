@@ -8,7 +8,7 @@ Scenario: TC6022 Set Level Radio Button for Address
 Given I am logged in as HOS manager 
 And I am on the Organization page
 And I have selected a <group> 
-And I am Adding an <address> for my group
+And I am Adding an <address1> <address2> <city> <state> <zipcode> for my group
 When I select the <dropdown>
 And enter the full address
 And click on Save
