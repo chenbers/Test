@@ -4,7 +4,7 @@ In order for my daily driver logs to reflect the correct home and terminal addre
 As HOS Manager
 I need to be able to set the main office address on more than just two levels of the organization structure
 
-Scenario: TC6022 Set Level Radio Button for Address
+Scenario: TC6022 Set Terminal Address
 Given I am logged in as HOS manager 
 And I am on the Organization page
 And I have selected a <group> 
