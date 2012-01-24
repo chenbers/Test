@@ -47,8 +47,38 @@ public class WSNotePackager extends PackageNote{
         List<Field> fieldList = getAllFields(event.getClass());
         
         for (EventAttr eventAttr : event.getEventAttrList()) {
-            if (event.getAttrMap() != null &&event.getAttrMap().containsKey(eventAttr)) {
+            if (event.getAttrMap() != null && event.getAttrMap().containsKey(eventAttr)) {
+
+                if (eventAttr == EventAttr.DELTA_VS) {
+                    Integer deltaX = 0, deltaY = 0, deltaZ = 0;
+                    for (Field field : fieldList) {
+                        if (field.isAnnotationPresent(EventAttrID.class)) {
+                            EventAttrID attributeID = field.getAnnotation(EventAttrID.class);
+                            EventAttr attr = EventAttr.valueOf(attributeID.name());
+                            try {
+                                if (attr == EventAttr.DELTAV_X) 
+                                    deltaX = (Integer) PropertyUtils.getProperty(event, field.getName());
+                                else if (attr == EventAttr.DELTAV_Y)
+                                    deltaY = (Integer) PropertyUtils.getProperty(event, field.getName());
+                                else if (attr == EventAttr.DELTAV_Z)
+                                    deltaZ = (Integer) PropertyUtils.getProperty(event, field.getName());
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    Long packedDeltaV = ((-deltaX) + 600l) * 1464100l + // Turn deltaX negative because the DB expects the opposite from waysmarts
+                                     ((deltaY) + 600l) * 1210l +
+                                     ((deltaZ) + 600l);
+                    encodeAttribute(baos, eventAttr, packedDeltaV);
+                }
+                else {
                     encodeAttribute(baos, eventAttr, event.getAttrMap().get(eventAttr));
+                }
             }
             else {
         

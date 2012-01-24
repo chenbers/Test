@@ -20,8 +20,12 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
      * 
      */
     private static final long serialVersionUID = 1L;
+
+    @EventAttrID(name="DELTAV_X")
     private Integer deltaX; // deltas store as Integer, divide by 10 for float value
+    @EventAttrID(name="DELTAV_Y")
     private Integer deltaY;
+    @EventAttrID(name="DELTAV_Z")
     private Integer deltaZ;
     
     @EventAttrID(name="SEVERITY")
@@ -151,6 +155,12 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     @Override
     public Set<EventType> getEventTypes() {
         return EnumSet.of(EventType.HARD_ACCEL, EventType.HARD_BRAKE, EventType.HARD_TURN, EventType.HARD_VERT);
+    }
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[1];
+        eventAttrList[0] = EventAttr.DELTA_VS;
+        return eventAttrList;
     }
 
 }
