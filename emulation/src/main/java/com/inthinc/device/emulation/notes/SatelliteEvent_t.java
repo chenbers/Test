@@ -37,14 +37,14 @@ public class SatelliteEvent_t extends DeviceNote {
 
 	public SatelliteEvent_t(DeviceNoteTypes type, AutomationCalendar time,
 			GeoPoint location, boolean offRoad, boolean heavyDuty,
-			HOSFlags hosState, boolean speedingViolation,
+			HOSFlags hosFlags, boolean speedingViolation,
 			boolean seatBeltViolation, boolean rpmViolation, Heading heading,
 			int sats, int speed, int speedLimit, int linkID, int odometerX100,
 			int stateID, int dbDriverID) {
 		super(type, time, location);
 		this.offRoad = offRoad;
 		this.heavyDuty = heavyDuty;
-		this.hosState = hosState;
+		this.hosState = hosFlags;
 		this.speedingViolation = speedingViolation;
 		this.seatBeltViolation = seatBeltViolation;
 		this.rpmViolation = rpmViolation;

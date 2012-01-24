@@ -98,7 +98,7 @@ public class MCMProxyObject implements MCMService{
         notes = NoteService.createNode();
     }
     
-    public List<Map<String, Object>> note(String mcmID, List<DeviceNote> noteList, boolean extra){
+    public List<Map<String, Object>> tiwiNote(String mcmID, List<? extends DeviceNote> noteList){
         if (regularNote ){
             List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
             MasterTest.print("\nnote(mcmID=%s, noteList=%s)", Level.DEBUG, mcmID, noteList);
@@ -257,7 +257,7 @@ public class MCMProxyObject implements MCMService{
     }
     
     public List<Map<String, Object>> notebc(String mcmID, Direction comType,
-            List<DeviceNote> noteList, String imei){
+            List<? extends DeviceNote> noteList, String imei){
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
         MasterTest.print("\nnotebc(mcmID=%s, connectType=%s, noteList=%s)", Level.DEBUG, mcmID, comType, noteList);
         
@@ -287,7 +287,7 @@ public class MCMProxyObject implements MCMService{
         return reply;
     }
     
-    private void sendSatNote(String imei, List<DeviceNote> sendingQueue){
+    public void sendSatNote(String imei, List<? extends DeviceNote> sendingQueue){
     	for (DeviceNote note: sendingQueue){
 	    	byte[] packaged = new SatNote(note, imei).Package();
 	    	try {
@@ -313,7 +313,7 @@ public class MCMProxyObject implements MCMService{
     }
     
     public String[] sendHttpNote(String mcmID, Direction comType,
-            List<DeviceNote> sendingQueue, String imei){
+            List<? extends DeviceNote> sendingQueue, String imei){
         
         HTTPCommands http = new HTTPCommands();
         List<String> reply = new ArrayList<String>();
@@ -372,66 +372,102 @@ public class MCMProxyObject implements MCMService{
         notes = service;
         regularNote = false;
     }
-    
-    
-    public Object sendNotes(DeviceState state, Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue){
-        Object reply = null;
-        Class<?> noteClass = DeviceNote.class;
-        try {
-            if (sendingQueue.containsKey(NoteBC.class)) {
-                noteClass = NoteBC.class;
-                reply = notebc(state.getMcmID(),
-                        state.getWaysDirection(),
-                        sendingQueue.get(noteClass), state.getImei());
-            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
-                noteClass = SatelliteEvent.class;
-                reply = sendHttpNote(state.getMcmID(),
-                        state.getWaysDirection(),
-                        sendingQueue.get(noteClass), state.getImei());
-            } else if (sendingQueue.containsKey(TiwiNote.class)) {
-                noteClass = TiwiNote.class;
-                reply = note(state.getImei(),
-                        sendingQueue.get(noteClass), true);
-            } else if (sendingQueue.containsKey(SatelliteEvent_t.class)){
-            	noteClass = SatelliteEvent_t.class;
-            	if (state.getWaysDirection().equals(Direction.sat)){
-            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
-            	} else {
-            		reply = sendHttpNote(state.getMcmID(),
-                            state.getWaysDirection(),
-                            sendingQueue.get(noteClass), state.getImei()); 
-            	}
-            	reply = null;
-            } else if (sendingQueue.containsKey(SatelliteStrippedConfigurator.class)){
-            	noteClass = SatelliteStrippedConfigurator.class;
-            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
-            	reply = null;
-            }
-            sendingQueue.remove(noteClass);
-        } catch (Exception e) {
-        	MasterTest.print(
-                    "Error from Note with IMEI: " + state.getImei() + "  "
-                            + StackToString.toString(e) + "\n"
-                            + sendingQueue + "\nCurrent Note Count is "
-                            + DeviceStatistics.getHessianCalls()
-                            + "\nCurrent time is: "
-                            + System.currentTimeMillis()
-                            + "\nNotes Started at: "
-                            + DeviceStatistics.getStart().epochTime(),
-                    Level.FATAL);
-            throw new NullPointerException();
-        }
-        
-        return reply;
-    }
+
 
     public Object sendNotes(DeviceState state, DeviceNote note) {
-        Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = new HashMap<Class<? extends DeviceNote>, LinkedList<DeviceNote>>();
         LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
         list.add(note);
         MasterTest.print(note);
-        sendingQueue.put(note.getClass(), list);
-        return sendNotes(state, sendingQueue);
+        return sendNotes(state, list);
+    }
+    
+    public Object sendNotes(DeviceState state, List<DeviceNote> notes){
+    	Object reply = null;
+    	Class<? extends DeviceNote> clazz = notes.get(0).getClass();
+    	if (clazz.equals(NoteBC.class)) {
+            reply = notebc(state.getMcmID(),
+                    state.getWaysDirection(), notes, state.getImei());
+            
+        } else if (clazz.equals(SatelliteEvent.class)) {
+        	if (state.getWaysDirection().equals(Direction.sat)){
+        		sendSatNote(state.getImei(), notes);
+        	} else {
+                reply = sendHttpNote(state.getMcmID(),
+                        state.getWaysDirection(),
+                        notes, state.getImei());
+        	}
+        } else if (clazz.equals(TiwiNote.class)) {
+            reply = tiwiNote(state.getImei(),
+            		notes);
+        } else if (clazz.equals(SatelliteEvent_t.class)){
+        	if (state.getWaysDirection().equals(Direction.sat)){
+        		sendSatNote(state.getImei(), notes);
+        	} else {
+        		reply = sendHttpNote(state.getMcmID(),
+                        state.getWaysDirection(),
+                        notes, state.getImei()); 
+        	}
+        } else if (clazz.equals(SatelliteStrippedConfigurator.class)){
+        	sendSatNote(state.getImei(), notes);
+        	reply = null;
+        }
+    	return reply;
+    }
+    
+    
+    public Object[] sendNotes(DeviceState state, Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue){
+        Object[] reply = new Object[sendingQueue.size()];
+        Class<?> noteClass = DeviceNote.class;
+        for (int i=0;i<reply.length;i++){
+	        try {
+	            if (sendingQueue.containsKey(NoteBC.class)) {
+	                noteClass = NoteBC.class;
+	                reply[i] = notebc(state.getMcmID(),
+	                        state.getWaysDirection(),
+	                        sendingQueue.get(noteClass), state.getImei());
+	            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
+	                noteClass = SatelliteEvent.class;
+	            	if (state.getWaysDirection().equals(Direction.sat)){
+	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	} else {
+	            		reply[i] = sendHttpNote(state.getMcmID(),
+		                        state.getWaysDirection(),
+		                        sendingQueue.get(noteClass), state.getImei());
+	            	}
+	            } else if (sendingQueue.containsKey(TiwiNote.class)) {
+	                noteClass = TiwiNote.class;
+	                reply[i] = tiwiNote(state.getImei(),
+	                        sendingQueue.get(noteClass));
+	            } else if (sendingQueue.containsKey(SatelliteEvent_t.class)){
+	            	noteClass = SatelliteEvent_t.class;
+	            	if (state.getWaysDirection().equals(Direction.sat)){
+	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	} else {
+	            		reply[i] = sendHttpNote(state.getMcmID(),
+	                            state.getWaysDirection(),
+	                            sendingQueue.get(noteClass), state.getImei()); 
+	            	}
+	            } else if (sendingQueue.containsKey(SatelliteStrippedConfigurator.class)){
+	            	noteClass = SatelliteStrippedConfigurator.class;
+	            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            }
+	        } catch (Exception e) {
+	        	MasterTest.print(
+	                    "Error from Note with IMEI: " + state.getImei() + "  "
+	                            + StackToString.toString(e) + "\n"
+	                            + sendingQueue + "\nCurrent Note Count is "
+	                            + DeviceStatistics.getHessianCalls()
+	                            + "\nCurrent time is: "
+	                            + System.currentTimeMillis()
+	                            + "\nNotes Started at: "
+	                            + DeviceStatistics.getStart().epochTime(),
+	                    Level.FATAL);
+	        }finally {
+	            sendingQueue.remove(noteClass);
+	        }
+        }
+        
+        return reply;
     }
 
     @Override

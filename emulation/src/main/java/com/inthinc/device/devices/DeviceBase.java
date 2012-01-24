@@ -340,8 +340,8 @@ public abstract class DeviceBase {
         while (notes.hasNext()) {
             Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = notes
                     .getNotes(note_count);
-            while (!sendingQueue.isEmpty()){
-                reply = mcmProxy.sendNotes(state, sendingQueue);
+            Object[] replies = mcmProxy.sendNotes(state, sendingQueue);
+            for (Object reply : replies){
                 if (reply instanceof ArrayList<?>) {
                     ackFwdCmds((List<HashMap<String, Object>>) reply);
                 } else if (reply instanceof String[]) {
