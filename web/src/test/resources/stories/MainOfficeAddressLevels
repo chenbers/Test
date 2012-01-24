@@ -1,0 +1,81 @@
+Narrative:
+
+In order for my daily driver logs to reflect the correct home and terminal addresses 
+As HOS Manager
+I need to be able to set the main office address on more than just two levels of the organization structure
+
+Scenario: TC6022 Set Radio Button for Address
+Given I am logged in as HOS manager 
+And I am on the Organization page
+And I am Editing an address for my group
+When I select the radio <button>
+And enter the full address
+And click on Save
+Then the address will be saved for my group
+
+Example:
+|button|
+|main|
+|terminal|
+|neither|
+
+Scenario: TC6023 Address Required Error Message
+Given I am logged in as HOS manager 
+And I am on the Organization page
+And I am adding an address for my group
+When I select the radio <button>
+And leave the address fields blank
+And click on Save
+Then an error displays with "Address is required"
+
+Example:
+|button|
+|main|
+|terminal|
+
+Scenario: TC6024 Address Displays on Daily Driver Log
+Given I am logged in as HOS Manager
+And I am on the HOS Reports Tab
+And I have selected the "HOS Record of Duty Status Report" 
+And I have selected a timeframe
+And I have selected <ReportOn>
+And I have selected a <name>
+When I click on <displayicon>
+Then the report displays with the correct address 
+
+Example:
+|reporton|name|displayicon|
+|driver|name|HTML|
+|driver|name|PDF|
+
+Scenario: TC6025 Address Displays on Daily Driver Log for Groups
+Given I am logged in as HOS Manager
+And I am on the HOS Reports Tab
+And I have selected the "HOS Record of Duty Status Report" 
+And I have selected a timeframe
+And I have selected <ReportOn>
+And I have checked <Groups>
+When I click on <displayicon>
+Then the report displays with the correct address 
+
+Example:
+|reporton|groups|displayicon|
+|driver|groups|HTML|
+|driver|groups|PDF|
+
+Scenario: TC6026 Email Daily Driver log
+Given I am logged in as HOS Manager
+And I am on the HOS Reports Tab
+And I have selected the "HOS Record of Duty Status Report" 
+And I have selected a timeframe
+And I have selected <ReportOn>
+And I have selected a <name>
+When I click on Email icon
+And the EMail modal popup displays
+And I enter my email address
+And I click on Email button
+Then I log into my email address
+And I open the emailed report
+And it displays the daily driver log with the correct address 
+
+
