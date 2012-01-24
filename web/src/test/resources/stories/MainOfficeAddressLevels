@@ -40,7 +40,7 @@ And I have selected Report On
 And I have selected Driver
 And I have selected a <name>
 When I click on <displayicon>
-Then the report displays with the correct address 
+Then the report displays with the correct main address and terminal address
 
 Example:
 |name|displayicon|
@@ -56,7 +56,7 @@ And I have selected ReportOn
 And I have selected Groups
 And I have checked <groupname>
 When I click on <displayicon>
-Then the report displays with the correct address 
+Then the report displays with the correct main address and terminal address
 
 Example:
 |groupname|displayicon|
@@ -77,7 +77,7 @@ And I enter my email address
 And I click on Email button
 Then I log into my email address
 And I open the emailed report
-And it displays the daily driver log with the correct address 
+And it displays the daily driver log with the main address and terminal address
 
 
 
