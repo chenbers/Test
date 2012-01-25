@@ -11,7 +11,7 @@ And I have selected a <group>
 And I am Adding an <address1> <address2> <city> <state> <zipcode> for my group
 When I select the <dropdown>
 And click on Save
-Then verify the main address and terminal address were saved for the group
+Then verify the <group> <address1> <address2> <city> <state> <zipcode> were saved
 
 Example:
 |group|address1|address2|city|state|zipcode|dropdown|
@@ -53,13 +53,13 @@ And I have selected a timeframe
 And I have selected Report On
 And I have selected Driver
 And I have selected a <name>
-When I click on <displayicon>
-Then the report displays with the correct main address and terminal address
+When I click on HTML
+Then the report displays with the correct main address<maddress1><maddress2><mcity><mstate><mzipcode> and terminal address<taddress1><taddress2><tcity><tstate><tzipcode>
+And compare to the groupname and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
 
 Example:
-|name|displayicon|
-|name|HTML|
-|name|PDF|
+|name|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
+
 
 Scenario: TC6025 Address Displays on Daily Driver Log for Groups
 Given I am logged in as HOS Manager
@@ -69,13 +69,13 @@ And I have selected a timeframe
 And I have selected ReportOn
 And I have selected Groups
 And I have checked <groupname>
-When I click on <displayicon>
-Then the report displays with the correct main address and terminal address
+When I click on HTML
+Then the report displays with the correct main address<maddress1><maddress2><mcity><mstate><mzipcode> and terminal address<taddress1><taddress2><tcity><tstate><tzipcode>
+And compare to the groupname and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
 
 Example:
-|groupname|displayicon|
-|groupname|HTML|
-|groupname|PDF|
+|groupname|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
+
 
 Scenario: TC6026 Email Daily Driver log
 Given I am logged in as HOS Manager
@@ -91,12 +91,9 @@ And I enter my email address
 And I click on Email button
 Then I log into my email address
 And I open the emailed report
-And it displays the daily driver log with the main address and terminal address
+And it displays the daily driver log with the main address<maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
 
-Scenario: TC Addresses by level
-Given I am logged in as HOS manager 
-And I am on the Organization page
-And I have selected a group on <level>
+
 
 
 
