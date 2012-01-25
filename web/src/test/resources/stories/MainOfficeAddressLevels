@@ -11,12 +11,12 @@ And I have selected a <group>
 And I have clicked on Edit button
 And I have cleared the existing <address1> <address2> <city> <state> <zipcode> fields
 And I am Adding an <address1> <address2> <city> <state> <zipcode> for my group
-When I select the <dropdown>
+When I select the <type> of level of address from the dropdown
 And click on Save
 Then verify the <group> <address1> <address2> <city> <state> <zipcode> were saved
 
 Example:
-|group|address1|address2|city|state|zipcode|dropdown|
+|group|address1|address2|city|state|zipcode|type|
 |SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120|main|
 |SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||terminal|
 |SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||neither|
