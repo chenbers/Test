@@ -104,9 +104,9 @@ public class HTTPCommands {
     public String httpRequest(HttpUriRequest method) {
         try {
             HttpResponse response = defaultClient.execute(method);
-            MasterTest.print(response.getStatusLine());
+            MasterTest.print(response.getStatusLine(), Level.DEBUG);
             String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
-            MasterTest.print(returnResponse, Level.INFO);
+            MasterTest.print(returnResponse, Level.DEBUG);
             return returnResponse;
         } catch (ClientProtocolException e) {
         	MasterTest.print(e, Level.FATAL);
