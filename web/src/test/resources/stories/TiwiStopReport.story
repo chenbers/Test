@@ -23,7 +23,6 @@ Then the stop page opens in the chosen format and displays appropriate data in e
 
 Examples: 
 |toolicon|
-|ExporttoPDF|
 |ExporttoExcel|
 
 Scenario: TC6016: Stops Page has clickable Vehicle link
@@ -91,13 +90,10 @@ Then the report will appear in the selected format
 Example:
 |timeframe|exporticon|
 |Today|Excel|
-|Today|PDF|
 |Today|HTML|
 |Yesterday|Excel|
-|Yesterday|PDF|
 |Yesterday|HTML|
 |Past7Days|Excel|
-|Past7Days|PDF|
 |Past7Days|HTML|
 
 Scenario: TC6020: Performance Stops Reports sent EMail
@@ -114,7 +110,7 @@ And I enter my email address
 And click on the E-mail button
 Then login to my E-mail
 And open my E-mail
-And click on the report link
+And click on the View link
 Then the stop page displays appropriate data in each column
 
 Example:
@@ -122,5 +118,6 @@ Example:
 |Today|
 |Yesterday|
 |Past7Days|
+
 
 
