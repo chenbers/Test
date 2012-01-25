@@ -874,7 +874,23 @@ public class SiloServiceImpl implements SiloService {
 			@DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) {
 		return null;
 	}
+	@Override
+    @MethodDescription(description = "Get the count of idling report items for Vehicles in the specified group (deep) and time frame.", crudType=CrudType.READ)
+	public Map<String, Object> getIdlingVehicleReportCount(@DaoParam(name = "groupID", validator=ValidatorType.GROUP) Integer groupID,
+            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+			List<Map<String, Object>> filterList) {
+		return null;
+	}
 
+	@Override
+    @MethodDescription(description = "Get the subset of idling report items for Vehicles in the specified group (deep) and time frame.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.IdlingReportItem.class)
+	public List<Map<String, Object>> getIdlingVehicleReportPage(@DaoParam(name = "groupID", validator=ValidatorType.GROUP) Integer groupID,
+            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
+            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
+			@DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) {
+		return null;
+	}
 	@Override
     @MethodDescription(description = "Get the count of vehicle report items in the specified group (deep).", crudType=CrudType.READ)
 	public Map<String, Object> getVehicleReportCount(@DaoParam(name = "groupID", validator=ValidatorType.GROUP) Integer groupID,

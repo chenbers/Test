@@ -369,6 +369,24 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
         return reportCriteria;
     }
+	@Override
+	public ReportCriteria getIdlingVehicleReportCriteria(Integer groupID, Interval interval, Locale locale, Boolean initDataSet) {
+    	this.locale = locale;
+        Group group = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(MessageUtil.getMessageString("dateFormat", getLocale()));
+        reportCriteria.addParameter("BEGIN_DATE", fmt.print(interval.getStart()));
+        reportCriteria.addParameter("END_DATE", fmt.print(interval.getEnd()));
+
+        if (initDataSet) {
+        	Integer rowCount = reportDAO.getIdlingVehicleReportCount(groupID, interval, null);
+        	PageParams pageParams = new PageParams(0, rowCount, null, null);
+        	reportCriteria.setMainDataset(reportDAO.getIdlingVehicleReportPage(groupID, interval, pageParams));
+        }
+
+
+        return reportCriteria;
+	}
     @Override
     public ReportCriteria getEventsReportCriteria(Integer groupID, Locale locale)
     {
@@ -1397,6 +1415,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
         return reportCriteriaList;
     }
+
+
 
 
 

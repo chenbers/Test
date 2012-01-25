@@ -14,6 +14,7 @@ public class IdlingReportTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("driver_person_fullName");
+        AVAILABLE_COLUMNS.add("vehicle_name");
         AVAILABLE_COLUMNS.add("duration");
         AVAILABLE_COLUMNS.add("hasRPM");
         AVAILABLE_COLUMNS.add("lowHrs");

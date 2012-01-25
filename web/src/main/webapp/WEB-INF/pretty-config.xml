@@ -160,6 +160,16 @@
         <view-id>/secured/pagingreports/idling.faces</view-id>
         <action  onPostback="false">#{pagingIdlingReportBean.searchAction}</action>
     </url-mapping>
+    <url-mapping id="idlingVehicleReport">
+        <pattern>/app/reports/idlingVehicleReport</pattern>
+        <view-id>/secured/pagingreports/idlingVehicle.faces</view-id>
+        <action onPostback="false">#{pagingIdlingVehicleReportBean.searchAction}</action>
+    </url-mapping>
+    <url-mapping id="idlingVehicleReportWithCriteria">
+        <pattern>/app/reports/idlingVehicleReport/</pattern>
+        <view-id>/secured/pagingreports/idlingVehicle.faces</view-id>
+        <action  onPostback="false">#{pagingIdlingVehicleReportBean.searchAction}</action>
+    </url-mapping>
     <url-mapping id="devicesReport">
         <pattern>/app/reports/devicesReport</pattern>
         <view-id>/secured/pagingreports/devices.faces</view-id>

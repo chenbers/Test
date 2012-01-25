@@ -1268,6 +1268,18 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
+    public Map<String, Object> getIdlingVehicleReportCount(Integer groupID, Long startDate, Long endDate, List<Map<String, Object>> filterList) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getIdlingVehicleReportPage(Integer groupID, Long startDate, Long endDate, Map<String, Object> pageParams) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
     public Map<String, Object> getVehicleReportCount(Integer groupID, List<Map<String, Object>> filterList) {
         List<Map<String, Object>> vehicleList = getVehiclesByGroupID(groupID);
         

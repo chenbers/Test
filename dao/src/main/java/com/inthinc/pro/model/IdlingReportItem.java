@@ -18,6 +18,8 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private Number lowIdleTime;
     private Number highIdleTime;
     private Integer hasRPM;
+    private String vehicleName;
+    private Integer vehicleID;
 
 	public Integer getHasRPM() {
 		return hasRPM;
@@ -105,6 +107,18 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     	return 100.0f*((fraction == null) ? 0 : fraction.floatValue())/total.floatValue(); 
     	
     }
+	public String getVehicleName() {
+		return vehicleName;
+	}
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+	public Integer getVehicleID() {
+		return vehicleID;
+	}
+	public void setVehicleID(Integer vehicleID) {
+		this.vehicleID = vehicleID;
+	}
     
 
 }

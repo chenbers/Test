@@ -656,8 +656,12 @@
   <bean id="pagingIdlingReportBean" class="com.inthinc.pro.backing.paging.PagingIdlingReportBean" scope="request" init-method="init" parent="basePagingReportBean">
     <property name="tableDataProvider" ref="idlingReportPaginationTableDataProvider"></property>
   </bean>
-
+  <bean id="pagingIdlingVehicleReportBean" class="com.inthinc.pro.backing.paging.PagingIdlingVehicleReportBean" scope="request" init-method="init" parent="basePagingReportBean">
+    <property name="tableDataProvider" ref="idlingVehicleReportPaginationTableDataProvider"></property>
+  </bean>
+  
   <bean id="idlingReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.IdlingReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider" />
+  <bean id="idlingVehicleReportPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.IdlingVehicleReportPaginationTableDataProvider" scope="request" parent="reportPaginationTableDataProvider" />
 
   <!-- Table column Beans -->
   <bean id="baseTableColumns" class="com.inthinc.pro.table.columns.BaseTableColumns" scope="request" init-method="init" parent="baseBean">
@@ -673,6 +677,7 @@
   <bean id="vehicleReportTableColumns" class="com.inthinc.pro.table.columns.VehicleReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="deviceReportTableColumns" class="com.inthinc.pro.table.columns.DeviceReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="idlingReportTableColumns" class="com.inthinc.pro.table.columns.IdlingReportTableColumns" scope="request" parent="baseTableColumns" />
+  <bean id="idlingVehicleReportTableColumns" class="com.inthinc.pro.table.columns.IdlingVehicleReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="hosTableColumns" class="com.inthinc.pro.table.columns.HosTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="zoneEventsTableColumns" class="com.inthinc.pro.table.columns.ZoneEventsTableColumns" scope="request" parent="eventsTableColumns" />
   <bean id="hosEventsTableColumns" class="com.inthinc.pro.table.columns.HOSEventsTableColumns" scope="request" parent="eventsTableColumns" />

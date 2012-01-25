@@ -442,6 +442,8 @@ public interface SiloService extends HessianService
     Map<String, Object> getIdlingReportCount(Integer groupID, Long startDate, Long endDate, List<Map<String, Object>> filterList);
     List<Map<String, Object>> getIdlingReportPage(Integer groupID, Long startDate, Long endDate, Map<String, Object> pageParams);
 
+    Map<String, Object> getIdlingVehicleReportCount(Integer groupID, Long startDate, Long endDate, List<Map<String, Object>> filterList);
+    List<Map<String, Object>> getIdlingVehicleReportPage(Integer groupID, Long startDate, Long endDate, Map<String, Object> pageParams);
 
     
     // super user methods

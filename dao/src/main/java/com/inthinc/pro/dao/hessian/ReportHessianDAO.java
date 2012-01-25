@@ -175,6 +175,53 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
 		}
 
 	}
+
+	@Override
+	public Integer getIdlingVehicleReportCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
+		List<TableFilterField> reportFilters = removeBlankFilters(filters); 
+
+		try {
+			Map<String, Object> map = getSiloService().getIdlingVehicleReportCount(groupID, DateUtil.convertDateToSeconds(interval.getStart()), DateUtil.convertDateToSeconds(interval.getEnd()), 
+							getMapper().convertList(reportFilters)); 
+			return getCount(map);
+		}
+        catch (EmptyResultSetException e)
+        {
+            return 0;
+        }
+        
+	}
+
+	@Override
+	public List<IdlingReportItem> getIdlingVehicleReportPage(Integer groupID, Interval interval, PageParams pageParams) {
+		pageParams.setFilterList(removeBlankFilters(pageParams.getFilterList()));
+		try {
+			return getMapper().convertToModelObject(getSiloService().getIdlingVehicleReportPage(groupID, DateUtil.convertDateToSeconds(interval.getStart()), DateUtil.convertDateToSeconds(interval.getEnd()), getMapper().convertToMap(pageParams)), IdlingReportItem.class);
+		}
+		catch (EmptyResultSetException e)
+		{
+			return Collections.emptyList();
+		}
+	}
 	
+	@Override
+	public Integer getIdlingVehicleReportSupportsIdleStatsCount(Integer groupID, Interval interval, List<TableFilterField> filters) {
+		if (filters == null)
+           	filters = new ArrayList<TableFilterField>();
+		List<TableFilterField> reportFilters = new ArrayList<TableFilterField>();
+		for (TableFilterField filter : filters) 
+			reportFilters.add(filter);
+		reportFilters.add(new TableFilterField("hasRPM", Integer.valueOf(1)));
+		
+		try {
+			Map<String, Object> map = getSiloService().getIdlingVehicleReportCount(groupID, DateUtil.convertDateToSeconds(interval.getStart()), DateUtil.convertDateToSeconds(interval.getEnd()), getMapper().convertList(reportFilters)); 
+			return getCount(map);
+		}
+        catch (EmptyResultSetException e)
+        {
+            return 0;
+        }
+        
+	}
 
 }
