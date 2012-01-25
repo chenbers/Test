@@ -1,4 +1,4 @@
-package com.inthinc.pro.noteservice;
+package com.inthinc.device.noteservice;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

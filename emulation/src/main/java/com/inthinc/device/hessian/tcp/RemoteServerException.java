@@ -1,4 +1,4 @@
-package com.inthinc.emulation.hessian.tcp;
+package com.inthinc.device.hessian.tcp;
 
 public class RemoteServerException extends HessianException
 {

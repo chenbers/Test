@@ -3,7 +3,7 @@ package com.inthinc.device.emulation.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.emulation.hessian.tcp.ProDAOException;
+import com.inthinc.device.hessian.tcp.ProDAOException;
 
 
 

@@ -28,6 +28,9 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 	
 	public SatelliteStrippedConfigurator(DeviceNoteTypes type, GeoPoint location, Map<DeviceProps, String> settings) {
 		super(type, new AutomationCalendar(), location);
+		if (settings.size() > 20){
+			throw new IllegalArgumentException("The Settings map should be less than 20 in length");
+		}
 		this.settings = new HashMap<DeviceProps, String>();
 		for (DeviceProps prop: settings.keySet()){
 			this.settings.put(prop, settings.get(prop));

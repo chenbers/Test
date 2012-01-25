@@ -1,4 +1,4 @@
-package com.inthinc.emulation.hessian.tcp;
+package com.inthinc.device.hessian.tcp;
 
 import java.lang.reflect.Method;
 

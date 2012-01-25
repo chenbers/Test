@@ -3,8 +3,10 @@ package com.inthinc.device.emulation.enums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import com.inthinc.pro.automation.interfaces.IndexEnum;
 
-public enum EventAttr {
+
+public enum EventAttr implements IndexEnum{
 	
 	// Attribute Id (1-127 have one byte values)
 	TOP_SPEED(1),
@@ -577,6 +579,7 @@ public enum EventAttr {
         string = true;
     }
 
+    @Override
     public Integer getIndex() {
         return code;
     }

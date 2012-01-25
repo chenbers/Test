@@ -5,8 +5,8 @@ import java.io.StringWriter;
 import org.apache.log4j.Logger;
 
 import com.inthinc.device.emulation.interfaces.SiloService;
-import com.inthinc.emulation.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.emulation.hessian.tcp.GenericHessianException;
+import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
+import com.inthinc.device.hessian.tcp.GenericHessianException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.utils.RandomValues;

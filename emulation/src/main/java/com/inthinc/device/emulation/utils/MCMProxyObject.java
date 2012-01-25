@@ -29,15 +29,15 @@ import com.inthinc.device.emulation.notes.SatelliteEvent;
 import com.inthinc.device.emulation.notes.SatelliteEvent_t;
 import com.inthinc.device.emulation.notes.SatelliteStrippedConfigurator;
 import com.inthinc.device.emulation.notes.TiwiNote;
+import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
+import com.inthinc.device.hessian.tcp.ProDAOException;
+import com.inthinc.device.noteservice.NoteService;
 import com.inthinc.device.resources.DeviceStatistics;
-import com.inthinc.emulation.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.emulation.hessian.tcp.ProDAOException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
-import com.inthinc.pro.noteservice.NoteService;
 
 
 public class MCMProxyObject implements MCMService{

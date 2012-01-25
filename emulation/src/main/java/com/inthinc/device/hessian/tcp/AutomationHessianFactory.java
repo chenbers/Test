@@ -1,4 +1,4 @@
-package com.inthinc.emulation.hessian.tcp;
+package com.inthinc.device.hessian.tcp;
 
 import java.net.MalformedURLException;
 
@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.device.emulation.interfaces.MCMService;
 import com.inthinc.device.emulation.interfaces.SiloService;
-import com.inthinc.device.hessian.http.HessianHttpProxyFactory;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
@@ -72,15 +71,6 @@ public class AutomationHessianFactory {
         }
     }
     
-    public void createMcmProxyHttp(){
-    	HessianHttpProxyFactory factory = new HessianHttpProxyFactory();
-    	try {
-			mcmProxy = (MCMService) factory.create(server);
-		} catch (MalformedURLException e) {
-			MasterTest.print(e, Level.FATAL);
-		}
-    }
-
     public MCMService getMcmProxy() {
         if (mcmProxy == null)
             createMcmProxy();

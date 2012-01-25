@@ -18,11 +18,11 @@ import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.emulation.utils.NoteManager;
+import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.objects.TripTracker;
-import com.inthinc.emulation.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.utils.MasterTest;
@@ -78,7 +78,7 @@ public class WaysmartAggregationTest {
         backwardOdometer();
         noIgnitionOn();
         longTrips();
-        
+        timeGaps();
         
         
 
@@ -181,7 +181,6 @@ public class WaysmartAggregationTest {
     }
     
     private void timeGaps(){
-    	// TODO: dtanner
     	DeviceState state = newState(++deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
     	
@@ -246,8 +245,8 @@ public class WaysmartAggregationTest {
     }
     
     private void longTrips(){
-    	// TODO: dtanner
-    	DeviceState state = newState(++deviceNumber);
+    	deviceNumber = 7;
+    	DeviceState state = newState(deviceNumber);
     	createVehicle(deviceNumber, portalProxy, state);
     	WaysmartDevice ways = new WaysmartDevice(state, server);
     	
@@ -306,7 +305,7 @@ public class WaysmartAggregationTest {
         
         installLocation = inOrder.get(0).getLocation();
         
-        MasterTest.print("Final mileage is: %d", Level.INFO, (Object)((NoteBC)inOrder.getLast()).getOdometer());
+        MasterTest.print("Final mileage is: %d", Level.INFO, (Object)inOrder.getLast().getOdometer());
         state.getTime().addToMinutes(15);
         MasterTest.print("Final noteTime is: %d", Level.INFO, state.getTime().epochSeconds());
         MasterTest.print("Final noteTime is: %s", Level.INFO, state.getTime());
@@ -401,15 +400,15 @@ public class WaysmartAggregationTest {
 
 
     public static void main(String[] args){
-//        WaysmartAggregationTest test = new WaysmartAggregationTest();
-//        MasterTest.print(test);
+        WaysmartAggregationTest test = new WaysmartAggregationTest();
+        MasterTest.print(test);
     	
-    	DeviceState state = new DeviceState("888", ProductType.WAYSMART);
-    	NoteBC note = new NoteBC(DeviceNoteTypes.LOCATION, state, new GeoPoint("4225 W Lake Park Blvd, West Valley City, UT"));
-    	note.addAttr(EventAttr.SPEED_LIMIT, 75);
-    	NoteBC test = note.unPackage(note.Package());
-    	MasterTest.print(note);
-    	MasterTest.print(test);
+//    	DeviceState state = new DeviceState("888", ProductType.WAYSMART);
+//    	NoteBC note = new NoteBC(DeviceNoteTypes.LOCATION, state, new GeoPoint("4225 W Lake Park Blvd, West Valley City, UT"));
+//    	note.addAttr(EventAttr.SPEED_LIMIT, 75);
+//    	NoteBC test = note.unPackage(note.Package());
+//    	MasterTest.print(note);
+//    	MasterTest.print(test);
     	
     }
 }
