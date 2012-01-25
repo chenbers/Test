@@ -52,10 +52,10 @@ And I have selected the "HOS Record of Duty Status Report"
 And I have selected a timeframe
 And I have selected Report On
 And I have selected Driver
-And I have selected a <name>
+And I have selected a driver <name>
 When I click on HTML
 Then the report displays with the correct main address<maddress1><maddress2><mcity><mstate><mzipcode> and terminal address<taddress1><taddress2><tcity><tstate><tzipcode>
-And compare to the groupname and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
+And compare to the driver <name> and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
 
 Example:
 |name|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
