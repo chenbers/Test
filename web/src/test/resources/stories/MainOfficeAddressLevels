@@ -9,7 +9,7 @@ Given I am logged in as HOS manager
 And I am on the Organization page
 And I have selected a <group> 
 And I have clicked on Edit button
-And I have cleared the existing <address1> <address2> <city> <state> <zipcode> 
+And I have cleared the existing <address1> <address2> <city> <state> <zipcode> fields
 And I am Adding an <address1> <address2> <city> <state> <zipcode> for my group
 When I select the <dropdown>
 And click on Save
