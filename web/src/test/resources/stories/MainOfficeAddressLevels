@@ -50,15 +50,22 @@ Given I am logged in as HOS Manager
 And I am on the HOS Reports Tab
 And I have selected the "HOS Record of Duty Status Report" 
 And I have selected a timeframe
-And I have selected Report On
-And I have selected Driver
-And I have selected a driver <name>
+And I have selected Report On dropdown 
+And I have selected Driver from the dropdown
+And I have selected a driver <fname><lname> from <groupname>
 When I click on HTML
 Then the report displays with the correct main address<maddress1><maddress2><mcity><mstate><mzipcode> and terminal address<taddress1><taddress2><tcity><tstate><tzipcode>
-And compare to the driver <name> and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
+And compare to the driver <fname> <lname> <groupname><teamname> and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
 
 Example:
-|name|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
+|fname|lname|groupname|teamname|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
+|Jerome|Iginla|Canada1|Inuvik1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|main|100 – 5603 50th Ave|blank|Yellowknife|NT|X1A 1E8|
+|Blair|Jones|Alaska|Kenai|4225 West Lake Park Blvd|blank|West Valley|UT|84120|210 Fidalgo Avenue|blank|Kenai|AK|99611|
+|Lance|Bouma|Canada2|Inuvik2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|102 Borden Drive|blank|Yellowknife|NT|X1A 2N7|
+|Burke|Dales|Alaska2|Kenai2|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2|37915 Loriwood Drive|blank|Kenai|AK|99611|
+|Chris|Butler|Canada3|Inuvik3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|133 MacKenzie Rd|blank|Inuvik|X0E 0T0|
+ 
+
 
 
 Scenario: TC6025 Address Displays on Daily Driver Log for Groups
@@ -66,15 +73,22 @@ Given I am logged in as HOS Manager
 And I am on the HOS Reports Tab
 And I have selected the "HOS Record of Duty Status Report" 
 And I have selected a timeframe
-And I have selected ReportOn
-And I have selected Groups
+And I have selected ReportOn dropdown
+And I have selected Groups from the dropdown
 And I have checked <groupname>
 When I click on HTML
 Then the report displays with the correct main address<maddress1><maddress2><mcity><mstate><mzipcode> and terminal address<taddress1><taddress2><tcity><tstate><tzipcode>
-And compare to the groupname and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
+And compare to the <groupname><teamname> and main address <maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
 
 Example:
-|groupname|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
+|groupname|teamname|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
+|Alaska|Kenai|4225 West Lake Park Blvd|blank|West Valley|UT|84120|210 Fidalgo Avenue|blank|Kenai|AK|99611|
+|Canada1|Inuvik1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|main|100 – 5603 50th Ave|blank|Yellowknife|NT|X1A 1E8|
+|Canada2|Inuvik2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|102 Borden Drive|blank|Yellowknife|NT|X1A 2N7|
+|Alaska2|Kenai2|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2|37915 Loriwood Drive|blank|Kenai|AK|99611|
+|Canada3|Inuvik3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|133 MacKenzie Rd|blank|Inuvik|X0E 0T0|
+
+
 
 
 Scenario: TC6026 Email Daily Driver log
