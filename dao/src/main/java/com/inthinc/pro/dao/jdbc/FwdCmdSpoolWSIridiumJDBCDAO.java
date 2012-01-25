@@ -57,7 +57,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         return id;
     }
 
-    private static final String FETCH_FOR_ID = "select Fwd_WSiridiumID, command, created, modified, status, iridiumStatus FROM Fwd_WSiridium where Fwd_WSiridiumID = ?";
+    private static final String FETCH_FOR_ID = "select Fwd_WSiridiumID, command, data, created, modified, status, iridiumStatus FROM Fwd_WSiridium where Fwd_WSiridiumID = ?";
     public ForwardCommandSpool fetch(long id) {
         Connection conn = null;
         PreparedStatement statement = null;
@@ -84,8 +84,8 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
                 record.setCreated(new DateTime(dateFormatter.parseMillis(createdStr+ "+0000")).toDate());
                 record.setModified(new DateTime(dateFormatter.parseMillis(modStr + "+0000")).toDate());
 
-                record.setStatus(ForwardCommandStatus.valueOf(resultSet.getInt(5)));
-                Integer iridiumStatus = resultSet.getInt(6);
+                record.setStatus(ForwardCommandStatus.valueOf(resultSet.getInt(6)));
+                Integer iridiumStatus = resultSet.getInt(7);
             }
         }   // end try
         catch (SQLException e)
