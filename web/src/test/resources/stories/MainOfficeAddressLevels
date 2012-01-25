@@ -7,7 +7,7 @@ I need to be able to set the main office address on more than just two levels of
 Scenario: TC6022 Set Terminal Address
 Given I am logged in as HOS manager 
 And I am on the Organization page
-And I have selected a <group> 
+And I have selected a <division> 
 And I have clicked on Edit button
 And I have cleared the existing <address1> <address2> <city> <state> <zipcode> fields
 And I am Adding an <address1> <address2> <city> <state> <zipcode> for my group
@@ -16,7 +16,7 @@ And click on Save
 Then verify the <group> <address1> <address2> <city> <state> <zipcode> were saved
 
 Example:
-|group|address1|address2|city|state|zipcode|type|
+|division|address1|address2|city|state|zipcode|type|
 |SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120|main|
 |SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||terminal|
 |SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||neither|
@@ -37,15 +37,18 @@ Example:
 Scenario: TC6023 Address Required Error Message
 Given I am logged in as HOS manager 
 And I am on the Organization page
-And I am adding an address for my group
-When I select the <dropdown>
+And I have selected a group
+And I have clicked on Edit button
+And I have cleared the existing <address1> <address2> <city> <state> <zipcode> fields
 And leave the address fields blank
+When I select the <type> of level of address from the dropdown
 And click on Save
 Then an error displays with "Address is required"
 
 Example:
-|main|
-|terminal|
+|type|address1|address2|city|state|zipcode|
+|main|address1|address2|city|state|zipcode|
+|terminal|address1|address2|city|state|zipcode|
 
 Scenario: TC6024 Address Displays on Daily Driver Log
 Given I am logged in as HOS Manager
@@ -54,19 +57,17 @@ And I have selected the "HOS Record of Duty Status Report"
 And I have selected a timeframe
 And I have selected Report On dropdown 
 And I have selected Driver from the dropdown
-And I have selected a driver <fname><lname> from <groupname>
+And I have selected a driver <fname><lname> from <divisionname> <teamname>
 When I click on HTML
-Then the report displays with the correct main office address<maddress1><maddress2><mcity><mstate><mzipcode> and terminal address<taddress1><taddress2><tcity><tstate><tzipcode>
-And compare to the driver in the organization hierarchy <fname> <lname> <groupname> main office address <maddress1><maddress2><mcity><mstate><mzipcode>and <teamname> terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
-
+Then the report displays with the same main/terminal address as the organization page for driver <fname><lname> from <divisionname> <teamname>
 
 Example:
-|fname|lname|groupname|maddress1|maddress2|mcity|mstate|mzipcode|teamname|taddress1|taddress2|tcity|tstate|tzipcode|
-|Jerome|Iginla|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|Inuvik1|100 – 5603 50th Ave|blank|Yellowknife|NT|X1A 1E8|
-|Blair|Jones|Alaska|4225 West Lake Park Blvd|blank|West Valley|UT|84120|Kenai|210 Fidalgo Avenue|blank|Kenai|AK|99611|
-|Lance|Bouma|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|Inuvik2|102 Borden Drive|blank|Yellowknife|NT|X1A 2N7|
-|Burke|Dales|Alaska2|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2|Kenai2|37915 Loriwood Drive|blank|Kenai|AK|99611|
-|Chris|Butler|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|Inuvik3|133 MacKenzie Rd|blank|Inuvik|X0E 0T0|
+|fname|lname|divisonname|teamname|
+|Jerome|Iginla|Canada1|Inuvik1|
+|Blair|Jones|Alaska|Kenai|
+|Lance|Bouma|Canada2|Inuvik2|
+|Burke|Dales|Alaska2|Calgary||Kenai2|
+|Chris|Butler|Canada3|Inuvik3|
  
  
 Scenario: TC6025 Address Displays on Daily Driver Log for Groups
@@ -76,20 +77,18 @@ And I have selected the "HOS Record of Duty Status Report"
 And I have selected a timeframe
 And I have selected ReportOn dropdown
 And I have selected Groups from the dropdown
-And I have checked <groupname>
+And I have checked a <divisionname>
 When I click on HTML
-Then the report displays with the correct main office address<maddress1><maddress2><mcity><mstate><mzipcode> and terminal address<taddress1><taddress2><tcity><tstate><tzipcode>
-And compare to the organization hierarchy <groupname> main office address <maddress1><maddress2><mcity><mstate><mzipcode>and <teamname> terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
+Then the report displays with the same main/terminal address as the organization page for <divisionname><teamname>
+
 
 Example:
-|groupname|teamname|maddress1|maddress2|mcity|mstate|mzipcode|taddress1|taddress2|tcity|tstate|tzipcode|
-|Alaska|4225 West Lake Park Blvd|blank|West Valley|UT|84120|Kenai|210 Fidalgo Avenue|blank|Kenai|AK|99611|
-|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|Inuvik1|100 – 5603 50th Ave|blank|Yellowknife|NT|X1A 1E8|
-|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|Inuvik2|102 Borden Drive|blank|Yellowknife|NT|X1A 2N7|
-|Alaska2|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2|Kenai2|37915 Loriwood Drive|blank|Kenai|AK|99611|
-|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|Inuvik3|133 MacKenzie Rd|blank|Inuvik|X0E 0T0|
-
-
+|divisionname|teamname|
+|Alaska|Kenai|
+|Canada1|Inuvik1|
+|Canada2|Inuvik2|
+|Alaska2|Kenai2|
+|Canada3|Inuvik3|
 
 
 Scenario: TC6026 Email Daily Driver log
