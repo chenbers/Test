@@ -83,7 +83,6 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
                 String modStr = resultSet.getString(5);
                 record.setCreated(new DateTime(dateFormatter.parseMillis(createdStr+ "+0000")).toDate());
                 record.setModified(new DateTime(dateFormatter.parseMillis(modStr + "+0000")).toDate());
-
                 record.setStatus(ForwardCommandStatus.valueOf(resultSet.getInt(6)));
                 Integer iridiumStatus = resultSet.getInt(7);
             }
