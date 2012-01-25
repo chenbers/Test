@@ -62,9 +62,9 @@ public abstract class DeviceNote {
 	}
 	
     public GeoPoint getLocation(){
-		return location.copy();
+		return location;
 	}
-	
+    
     public int getOdometer() {
 		return odometer;
 	}
