@@ -17,38 +17,37 @@ Then verify the <group> <address1> <address2> <city> <state> <zipcode> were save
 
 Example:
 |division|address1|address2|city|state|zipcode|type|
-|SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120|main|
-|SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||terminal|
-|SLB|4225 West Lake Park Blvd|blank|West Valley|UT|84120||neither|
-|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|main|
-|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|terminal|
-|Canada1|550 Burrard Street|blank|Vancouver|BC|V6C 0B3|neither|
-|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|main|
-|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|terminal|
-|Canada2|525 3rd Avenue SW|blank|Calgary|AB|T2P 0G4|neither|
-|Miswaco|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2|main|
-|Miswaco|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2||terminal|
-|Miswaco|700-2nd Floor Street SW|blank|Calgary|AB|T2P 2W2||neither|
-|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|main|
-|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|terminal|
-|Canada3|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|neither|
+|SLB|4225 West Lake Park Blvd|blank|West Valley|Utah|84120|main|
+|Kenai|210 Fidalgo Avenue Park Blvd|blank|Kenai|Alaska|99611||terminal|
+|PPS|4225 West Lake Park Blvd|blank|West Valley|Utah|84120|neither|
+|Canada1|550 Burrard Street|blank|Vancouver|British Columbia|V6C 0B3|main|
+|Inuvik1|100 – 5603 50th Ave|blank|Yellowknife|Northwest Territories|X1A 1E8|terminal|
+|British Columbia|550 Burrard Street|blank|Vancouver|British Columbia|V6C 0B3|neither|
+|Canada2|525 3rd Avenue SW|blank|Calgary|Alberta|T2P 0G4|main|
+|Inuvik2|102 Borden Drive|blank|Yellowknife|Northwest Territories|T2P 0G4|terminal|
+|NAL|525 3rd Avenue SW|blank|Calgary|Alberta|T2P 0G4|neither|
+|Miswaco|700-2nd Floor Street SW|blank|Calgary|Alberta|T2P 2W2|main|
+|Kenai2|37915 Loriwood Drive|blank|Kenai|Alaska|99611|terminal|
+|Yukon|700-2nd Floor Street SW|blank|Calgary|Alberta|T2P 2W2||neither|
+|Canada3|31 Alder Dr|blank|Inuvik|Northwest Territories|X0E 0T0|main|
+|Inuvik3|133 MacKenzie Rd|blank|Inuvik|Northwest Territories|X0E 0T0|terminal|
+|Alaska2|31 Alder Dr|blank|Inuvik|NT|X0E 0T0|neither|
 
 
 Scenario: TC6023 Address Required Error Message
 Given I am logged in as HOS manager 
 And I am on the Organization page
-And I have selected a group
+And I have selected a <divisionname>
 And I have clicked on Edit button
-And I have cleared the existing <address1> <address2> <city> <state> <zipcode> fields
+And I have cleared the existing address fields
 And leave the address fields blank
 When I select the <type> of level of address from the dropdown
 And click on Save
 Then an error displays with "Address is required"
 
 Example:
-|type|address1|address2|city|state|zipcode|
-|main|address1|address2|city|state|zipcode|
-|terminal|address1|address2|city|state|zipcode|
+|divisionname|type|
+|SLB|main|
 
 Scenario: TC6024 Address Displays on Daily Driver Log
 Given I am logged in as HOS Manager
