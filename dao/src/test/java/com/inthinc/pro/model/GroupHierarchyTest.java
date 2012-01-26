@@ -1,8 +1,9 @@
 package com.inthinc.pro.model;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,22 +12,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.GroupType;
-
 public class GroupHierarchyTest{
 
     private static final Logger logger = Logger.getLogger(GroupHierarchyTest.class);
     private GroupHierarchy groupHierarchy;
     private List<Group> list;
     private int groupID;
+    private static final String addressFormat = "123 {0} Street, {1}, 12345";
     
     public GroupHierarchyTest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+    
     private void addGroups(Group group, int level){
     	
     	if (level < 5 ){
@@ -48,6 +47,7 @@ public class GroupHierarchyTest{
     			}
     			subGroup.setParentID(group.getGroupID());
     			subGroup.setName("Group_"+groupID);
+    			subGroup.setAddress(initAddress(subGroup));
     			
     			list.add(subGroup);
     	    	System.out.println("GroupId is: "+subGroup.getGroupID()+", parentId is: "+subGroup.getParentID()+", level is: "+level
@@ -55,6 +55,19 @@ public class GroupHierarchyTest{
     			addGroups(subGroup, level);
     		}
     	}
+    }
+    
+    
+    private Address initAddress(Group group) {
+        Address address = new Address();
+        address.setAccountID(group.getAccountID());
+        address.setAddr1("123 " +group.getName() + " Street");
+        address.setCity(group.getName());
+//        address.setState(State.valueOf(10));
+        address.setZip("12345");
+        address.setAddrID(group.getGroupID());
+        
+        return address;
     }
 	@Before
     public void setUp() throws Exception
@@ -66,6 +79,7 @@ public class GroupHierarchyTest{
 		topGroup.setGroupID(groupID);
 		topGroup.setType(GroupType.FLEET);
 		topGroup.setName("Group_1");
+		topGroup.setAddress(initAddress(topGroup));
 		list.add(topGroup);
     	System.out.println("GroupId is: "+topGroup.getGroupID()+", parentId is: "+topGroup.getParentID()+", level is: "+0
     	                   +", GroupName is: "+topGroup.getName());
@@ -81,6 +95,73 @@ public class GroupHierarchyTest{
     {
     }
 
+    @Test
+    public void mainAndTerminalAddresses() {
+        
+        Group fleetGroup = groupHierarchy.getTopGroup();
+        fleetGroup.setDotOfficeType(DOTOfficeType.MAIN);
+        System.out.println("Fleet: " + fleetGroup.getName());
+        String expectedMainAddress = MessageFormat.format(addressFormat, new String[] {fleetGroup.getName(), fleetGroup.getName()});
+        for (Group divisionGroup : groupHierarchy.getSubGroupList(fleetGroup.getGroupID())) {
+            if (divisionGroup.getGroupID().equals(fleetGroup.getGroupID()) || divisionGroup.getType() != GroupType.DIVISION)
+                continue;
+            System.out.println("   Division: " + divisionGroup.getName() + " " + divisionGroup.getType());
+            divisionGroup.setDotOfficeType(DOTOfficeType.TERMINAL);
+            String expectedTerminalAddress = MessageFormat.format(addressFormat, new String[] {divisionGroup.getName(), divisionGroup.getName()});
+            for (Group teamGroup : groupHierarchy.getSubGroupList(divisionGroup.getGroupID())) {
+                if (teamGroup.getGroupID().equals(divisionGroup.getGroupID()) || teamGroup.getType() != GroupType.TEAM)
+                    continue;
+                System.out.println("      Team: " + teamGroup.getName());
+                System.out.println("      Main: " + groupHierarchy.getMainAddress(teamGroup.getGroupID()));
+                System.out.println("      Terminal: " + groupHierarchy.getTerminalAddress(teamGroup.getGroupID()));
+                assertEquals("Main Address", expectedMainAddress, groupHierarchy.getMainAddress(teamGroup.getGroupID()));
+                assertEquals("Terminal Address", expectedTerminalAddress, groupHierarchy.getTerminalAddress(teamGroup.getGroupID()));
+            }
+        }
+    }
+    @Test
+    public void mainAndTerminalAddressesNotSet() {
+        
+        Group fleetGroup = groupHierarchy.getTopGroup();
+        System.out.println("Fleet: " + fleetGroup.getName());
+        for (Group divisionGroup : groupHierarchy.getSubGroupList(fleetGroup.getGroupID())) {
+            if (divisionGroup.getGroupID().equals(fleetGroup.getGroupID()) || divisionGroup.getType() != GroupType.DIVISION)
+                continue;
+            System.out.println("   Division: " + divisionGroup.getName() + " " + divisionGroup.getType());
+            for (Group teamGroup : groupHierarchy.getSubGroupList(divisionGroup.getGroupID())) {
+                if (teamGroup.getGroupID().equals(divisionGroup.getGroupID()) || teamGroup.getType() != GroupType.TEAM)
+                    continue;
+                System.out.println("      Team: " + teamGroup.getName());
+                System.out.println("      Main: " + groupHierarchy.getMainAddress(teamGroup.getGroupID()));
+                System.out.println("      Terminal: " + groupHierarchy.getTerminalAddress(teamGroup.getGroupID()));
+                assertEquals("Main Address", "", groupHierarchy.getMainAddress(teamGroup.getGroupID()));
+                assertEquals("Terminal Address", "", groupHierarchy.getTerminalAddress(teamGroup.getGroupID()));
+            }
+        }
+    }
+    @Test
+    public void mainSetAndTerminalAddressesNotSet() {
+        
+        Group fleetGroup = groupHierarchy.getTopGroup();
+        fleetGroup.setDotOfficeType(DOTOfficeType.MAIN);
+        System.out.println("Fleet: " + fleetGroup.getName());
+        String expectedMainAddress = MessageFormat.format(addressFormat, new String[] {fleetGroup.getName(), fleetGroup.getName()});
+        for (Group divisionGroup : groupHierarchy.getSubGroupList(fleetGroup.getGroupID())) {
+            if (divisionGroup.getGroupID().equals(fleetGroup.getGroupID()) || divisionGroup.getType() != GroupType.DIVISION)
+                continue;
+            System.out.println("   Division: " + divisionGroup.getName() + " " + divisionGroup.getType());
+            for (Group teamGroup : groupHierarchy.getSubGroupList(divisionGroup.getGroupID())) {
+                if (teamGroup.getGroupID().equals(divisionGroup.getGroupID()) || teamGroup.getType() != GroupType.TEAM)
+                    continue;
+                System.out.println("      Team: " + teamGroup.getName());
+                System.out.println("      Main: " + groupHierarchy.getMainAddress(teamGroup.getGroupID()));
+                System.out.println("      Terminal: " + groupHierarchy.getTerminalAddress(teamGroup.getGroupID()));
+                assertEquals("Main Address", expectedMainAddress, groupHierarchy.getMainAddress(teamGroup.getGroupID()));
+                assertEquals("Terminal Address", "", groupHierarchy.getTerminalAddress(teamGroup.getGroupID()));
+            }
+        }
+    }
+    
     @Test
     public void testGetTopGroup_topGroupNotLowestID() {
     	Integer groupID = 1;
@@ -156,28 +237,4 @@ public class GroupHierarchyTest{
         shortGroupName =  groupHierarchy.getShortGroupName(0, groupHierarchy.GROUP_SEPERATOR);
         assertTrue(shortGroupName.isEmpty());
     }
-	
-	@Test
-	public void testCompanyGroup(){
-		//the company groups are the 2nd level groups when the account settings have multipleCompanies set to true.
-		Group companyGroup = groupHierarchy.getCompanyGroup(63, null);
-		Integer companyGroupID = companyGroup.getGroupID();
-		assertEquals("companyGroupID should be 33",33,companyGroupID.intValue());
-
-		companyGroup = groupHierarchy.getCompanyGroup(18, null);
-		companyGroupID = companyGroup.getGroupID();
-		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
-
-		companyGroup = groupHierarchy.getCompanyGroup(8, null);
-		companyGroupID = companyGroup.getGroupID();
-		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
-
-		companyGroup = groupHierarchy.getCompanyGroup(2, null);
-		companyGroupID = companyGroup.getGroupID();
-		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
-
-		companyGroup = groupHierarchy.getCompanyGroup(1, null);
-		companyGroupID = companyGroup.getGroupID();
-		assertEquals("companyGroupID should be 1",1,companyGroupID.intValue());
-}
  }

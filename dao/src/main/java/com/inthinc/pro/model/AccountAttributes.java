@@ -36,8 +36,6 @@ public class AccountAttributes extends BaseEntity {
     private String  phoneControlProvider1;
     private String  phoneControlProvider2;
     private String  phoneControlProvider3;
-    private String 	multipleCompanies;
-    private String  fleetGroupID;
     
     @Column(updateable = false)
     private String supportContacts[];
@@ -229,29 +227,4 @@ public class AccountAttributes extends BaseEntity {
         phoneControlProvider2=null;
         phoneControlProvider3=null;
     }
-	public String getMultipleCompanies() {
-		return multipleCompanies == null ? "false" : multipleCompanies;
-	}
-	public void setMultipleCompanies(String multipleCompanies) {
-		this.multipleCompanies = multipleCompanies;
-	}
-	public Boolean isMultipleCompanies() {
-	    return Boolean.valueOf(getMultipleCompanies());
-	}
-	public String getFleetGroupID() {
-		return fleetGroupID;
-	}
-	public void setFleetGroupID(String fleetGroupID) {
-		this.fleetGroupID = fleetGroupID;
-	}
-	public Integer getFleetGroupIDValue(){
-		if (fleetGroupID == null) return null;
-		try{
-			Integer fleetGroupIDValue = Integer.parseInt(fleetGroupID);
-			return fleetGroupIDValue;
-		}
-		catch(NumberFormatException nfe){
-			return null;
-		}
-	}
 }

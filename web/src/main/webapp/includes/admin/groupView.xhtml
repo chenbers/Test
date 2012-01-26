@@ -110,6 +110,17 @@
 							</td>
                           </tr>
             	</table>
+				<security:authorize ifAnyGranted="ROLE_HOSADMIN,ROLE_HOSACCESS">
+					<h:panelGroup rendered="#{organizationBean.accountIsHOS and not empty(groupTreeNode.group.dotOfficeType)}">
+					<table width="500" border="0" cellspacing="2" cellpadding="4" align="left">
+    	               <tr>
+                            <td width="150"><h:outputText value="#{messages.group_address_type}" /></td>
+                            <td><h:outputText id="group-addr-type" value="#{messages[groupTreeNode.group.dotOfficeType]}" />                               
+							</td>
+	                    </tr>
+					</table>
+					</h:panelGroup>  
+				</security:authorize>          	
         	</td>
 		</tr>                    
  		

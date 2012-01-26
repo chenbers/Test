@@ -117,15 +117,21 @@
 		</tr>
         <tr>
 			<td width="100%" valign="top">
-					<div class="add_section_title">
-                		<h:outputText value="#{messages.group_summary_address}" />
-                	</div>
-					<table width="500" border="0" cellspacing="2" cellpadding="4" align="left">
+						<div class="add_section_title">
+                			<h:outputText value="#{messages.group_summary_address}" />
+                		</div>
+                		<a4j:region >
+                		<h:panelGroup id="#{context}-addressGroup">
+						<table width="500" border="0" cellspacing="2" cellpadding="4" align="left">
                           <tr>
-                            <td width="150"><h:outputText value="#{messages.group_address_addr1}" /></td>
-                            <td><h:inputText id="#{context}-addr1" value="#{groupTreeNode.group.address.addr1}" 
+                            <td width="150"><h:outputText value="#{messages.group_address_addr1}" />
+                            	<span class="required">*</span>
+                            </td>
+                            <td>
+								<rich:message for="#{context}-addr1" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            	<h:inputText id="#{context}-addr1" value="#{groupTreeNode.group.address.addr1}" 
                             			styleClass="text" size="40"
-		                              	maxlength="126" />                               
+		                              	maxlength="126"/>                               
 							</td>
                           </tr>
                           <tr>
@@ -136,30 +142,56 @@
 							</td>
                           </tr>
                           <tr>
-                            <td width="150"><h:outputText value="#{messages.group_address_city}" /></td>
-                            <td><h:inputText id="#{context}-city" value="#{groupTreeNode.group.address.city}" 
-                            		styleClass="text" size="40"
-		                              	maxlength="126" />                               
+                            <td width="150"><h:outputText value="#{messages.group_address_city}" />
+                            	<span class="required">*</span>
+                            </td>
+                            <td>
+								<rich:message for="#{context}-city" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            	<h:inputText id="#{context}-city" value="#{groupTreeNode.group.address.city}" 
+                            		styleClass="text" size="40" maxlength="126" />
 							</td>
                           </tr>
                           <tr>
-                            <td width="150"><h:outputText value="#{messages.group_address_state}" /></td>
+                            <td width="150"><h:outputText value="#{messages.group_address_state}" />
+                            	<span class="required">*</span>
+                            </td>
                             <td>
-                            <h:selectOneMenu value="#{groupTreeNode.group.address.state}" id="#{context}-state" >
+							<rich:message for="#{context}-state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu value="#{groupTreeNode.group.address.state}" id="#{context}-state">
                               <f:selectItem itemLabel="" />
                               <f:converter  converterId="StateConverter"/>
                               <f:selectItems value="#{organizationBean.states}" />
                             </h:selectOneMenu>
-                               
 							</td>
                           </tr>
                           <tr>
-                            <td width="150"><h:outputText value="#{messages.group_address_zip}" /></td>
-                            <td><h:inputText id="#{context}-zip" value="#{groupTreeNode.group.address.zip}" 
-                            		styleClass="text" size="40"	maxlength="30" />                               
+                            <td width="150"><h:outputText value="#{messages.group_address_zip}" />
+                            	<span class="required">*</span>
+                            </td>
+                            <td>
+								<rich:message for="#{context}-zip" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            	<h:inputText id="#{context}-zip" value="#{groupTreeNode.group.address.zip}" 
+                            		styleClass="text" size="40"	maxlength="30"/>                               
 							</td>
                           </tr>
                         </table>
+                        </h:panelGroup>
+                        </a4j:region>
+						<security:authorize ifAnyGranted="ROLE_HOSADMIN,ROLE_HOSACCESS">
+							<h:panelGroup rendered="#{organizationBean.accountIsHOS}">
+							<table width="500" border="0" cellspacing="2" cellpadding="4" align="left">
+		    	               <tr>
+		                            <td width="150"><h:outputText value="#{messages.group_address_type}" /></td>
+		                            <td>
+										<h:selectOneMenu id="editgroup-addr-type" value="#{groupTreeNode.group.dotOfficeType}" converter="SimpleBeanConverter" onchange="updateAddressRequired(this)">											
+											<f:selectItems value="#{organizationBean.dotOfficeTypeSelectItems}"/>
+ 										</h:selectOneMenu>
+		                            </td>
+			                    </tr>
+							</table>
+							</h:panelGroup>  
+						</security:authorize>          	
+                        
                       </td>
 		</tr>
 	</table>
@@ -209,7 +241,16 @@
 
 	</h:outputText>
 	<script type="text/javascript">	
-		
+
+		function updateAddressRequired(element) {
+		    if (element.selectedIndex == 0) {
+            	jQuery('#display-form\\:#{context}-addressGroup .required').hide();
+                    	
+		    }
+		    else {
+            	jQuery('#display-form\\:#{context}-addressGroup .required').show();
+		    }
+		}
 		function setFocus(id) {
 		    var element = document.getElementById(id);
 		    if (element) {
@@ -218,6 +259,7 @@
 		}
 
 		setFocus("#{groupTreeNode.group.type eq 'FLEET'? '#{formName}:group_name' : '#{formName}:parent_group'}");
+		updateAddressRequired(document.getElementById("display-form:editgroup-addr-type"));
 									
 	</script> 
 </ui:composition>

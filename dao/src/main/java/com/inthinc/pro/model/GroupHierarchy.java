@@ -242,24 +242,34 @@ public class GroupHierarchy implements Serializable
         return teams;
         
     }
-    public Group getCompanyGroup(Integer groupID, Integer accountTopGroup){
-    	Integer topGroupID = getTopGroup().getGroupID();
-    	if (accountTopGroup != null){
-    		topGroupID = accountTopGroup;
-    	}
-    	Group thisGroup = getGroup(groupID);
-    	if (groupID.equals(topGroupID)){
-    		return getTopGroup();
-    	}
-    	if ((thisGroup.getParentID() == null) || thisGroup.getParentID().equals(topGroupID)){
-    		return thisGroup;
-    	}
-    	Group grandparentGroup = getGroup(getGroup(thisGroup.getParentID()).getParentID());
-    	Group companyGroup = getGroup(thisGroup.getParentID());
-    	while ((grandparentGroup != null) && !grandparentGroup.getGroupID().equals(topGroupID)){
-    		grandparentGroup = getGroup(grandparentGroup.getParentID());
-    		companyGroup = getGroup(companyGroup.getParentID());
-    	}
-    	return companyGroup;
+    public String getMainAddress(Integer groupID) {
+        Group mainOfficeGroup = null;
+        Group terminalGroup = getAddressGroup(DOTOfficeType.TERMINAL, groupID);
+        if (terminalGroup != null) {
+            mainOfficeGroup = getAddressGroup(DOTOfficeType.MAIN, terminalGroup.getGroupID());
+        }
+        else {
+            mainOfficeGroup  = getAddressGroup(DOTOfficeType.MAIN, groupID);
+        }
+        if (mainOfficeGroup != null && mainOfficeGroup.getAddress() != null)
+            return mainOfficeGroup.getAddress().getDisplayString();
+        return "";
+    }
+
+    public String getTerminalAddress(Integer groupID) {
+        Group terminalGroup = getAddressGroup(DOTOfficeType.TERMINAL, groupID);
+        if (terminalGroup != null && terminalGroup.getAddress() != null)
+            return terminalGroup.getAddress().getDisplayString();
+        return "";
+    }
+
+    public Group getAddressGroup(DOTOfficeType dotOfficeType, Integer groupID) {
+        Group group = getGroup(groupID); 
+        if (group.getDotOfficeType() != null && group.getDotOfficeType().equals(dotOfficeType))
+            return group;
+        
+        if (group.getParentID() == null || group.getParentID() == 0)
+            return null;
+        return getAddressGroup(dotOfficeType, group.getParentID());
     }
 }

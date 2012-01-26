@@ -102,8 +102,6 @@ public class AccountOptionsBean extends BaseBean {
             accountDAO.update(account);
             setSaveActionMsg("Success: HOS is " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") +
                                 " , Waysmart is " + (account.hasWaySmartSupport() ? "Enabled" : "Disabled") + 
-                                " , Multiple Companies is " + (account.getProps().isMultipleCompanies() ? "Enabled" : "Disabled") + 
-                                " , Fleet GroupID is " + account.getProps().getFleetGroupID() + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +

@@ -31,6 +31,7 @@ import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
@@ -41,6 +42,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 
 @KeepAlive
 @SuppressWarnings("rawtypes")
@@ -357,7 +359,7 @@ public class OrganizationBean extends BaseBean
                 // treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
             }
             getSelectedGroupNode().setTreeNodeType(null); // Reset the type
-            updateUsersGroupHeirarchy();
+            updateUsersGroupHierarchy();
             this.addInfoMessage(selectedGroupNode.getLabel() + " " + MessageUtil.getMessageString("group_update_confirmation"));
             groupState = State.VIEW;
             cleanFields();
@@ -386,7 +388,7 @@ public class OrganizationBean extends BaseBean
                 setSelectedTreeNode(tempGroupTreeNode);
 
                 // Update The Group Heirarchy Stored in the Session.
-                updateUsersGroupHeirarchy();
+                updateUsersGroupHierarchy();
 
                 // Set the current parent node as expanded and all of its parents up to the root node.
                 setExpandedNode(getRootGroupNode().findTreeNodeByGroupId(selectedParentGroup.getGroupID()));
@@ -427,17 +429,19 @@ public class OrganizationBean extends BaseBean
                 selectedTreeNode = parentNode;
                 // Make sure when the page refreshed that we pull a new list in
                 rootGroupNode = null;
-                updateUsersGroupHeirarchy();
+                updateUsersGroupHierarchy();
             }
         }
 
     }
 
 
-    private void updateUsersGroupHeirarchy()
+    private void updateUsersGroupHierarchy()
     {
-        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID()));
+        List<Group> groupList = groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID());
+        organizationHierarchy = new GroupHierarchy(groupList);
         getProUser().setGroupHierarchy(organizationHierarchy);
+        getProUser().setAccountGroupHierarchy(new GroupHierarchy(groupList));
         treeNavigationBean.refresh();
     }
 
@@ -486,7 +490,21 @@ public class OrganizationBean extends BaseBean
             return false;
         }
 
+        // Rule 5
+        if (groupState == State.EDIT && treeNode.getBaseEntity().getDotOfficeType() != null && 
+                (addressMissingRequiredFields(treeNode.getBaseEntity().getAddress())))
+        {
+            addErrorMessage(MessageUtil.getMessageString("groupEdit_addressRequired"));
+            return false;
+        }
         return true;
+    }
+
+    private boolean addressMissingRequiredFields(Address address) {
+        return address.getAddr1() == null || address.getAddr1().isEmpty() ||
+                address.getState() == null  ||
+                address.getCity() == null || address.getCity().isEmpty() ||
+                address.getZip() == null || address.getZip().isEmpty();
     }
 
     /**
@@ -516,6 +534,7 @@ public class OrganizationBean extends BaseBean
         }
         group.setMapZoom(copyFromGroup.getMapZoom());
         group.setAddressID(copyFromGroup.getAddressID());
+        group.setDotOfficeType(copyFromGroup.getDotOfficeType());
         Address address = new Address();
         if (copyFromGroup.getAddress() != null) {
             Address copyFromAddress = copyFromGroup.getAddress();
@@ -648,7 +667,10 @@ public class OrganizationBean extends BaseBean
     public Map<String, com.inthinc.pro.model.State> getStates() {
         return STATES;
     }
-
+    public List<SelectItem> getDotOfficeTypeSelectItems()
+    {
+        return SelectItemUtil.toList(DOTOfficeType.class, true);
+    }
     public GroupDAO getGroupDAO()
     {
         return groupDAO;

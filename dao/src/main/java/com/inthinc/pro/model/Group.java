@@ -42,6 +42,8 @@ public class Group extends BaseEntity implements HasAccountId
     @Column(updateable=false)
     private Address           address;
 
+    private DOTOfficeType   dotOfficeType;
+
 
     public Group()
     {
@@ -249,6 +251,13 @@ public class Group extends BaseEntity implements HasAccountId
         this.addressID = addressID;
     }
 
+    public DOTOfficeType getDotOfficeType() {
+        return dotOfficeType;
+    }
+
+    public void setDotOfficeType(DOTOfficeType dotOfficeType) {
+        this.dotOfficeType = dotOfficeType;
+    }
 
     @Override
     public String toString() {

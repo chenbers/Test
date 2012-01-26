@@ -25,7 +25,6 @@ import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
@@ -361,7 +360,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             address.setCity("city");
             address.setZip("84120");
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
-                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group, "Company name", address);
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
             // check the data
             List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -637,7 +636,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 
         ddlCriteria.initCriteriaList(interval, hosRecordList, 
                 null, 
-                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group, "", new Address());
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
         
         dump("DDL", 66, ddlCriteria.getCriteriaList(), FormatType.PDF);
         
@@ -670,7 +669,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         
         ddlCriteria.initCriteriaList(interval, hosRecordList, 
                 null, 
-                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group, "", new Address());
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
         
         dump("DDL", 77, ddlCriteria.getCriteriaList(), FormatType.PDF);
         

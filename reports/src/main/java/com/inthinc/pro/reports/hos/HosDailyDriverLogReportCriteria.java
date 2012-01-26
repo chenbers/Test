@@ -48,6 +48,7 @@ import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
@@ -88,8 +89,8 @@ public class HosDailyDriverLogReportCriteria {
     private List<ReportCriteria> criteriaList;
     private Locale locale;
     private Boolean defaultUseMetric;
-    private Address companyAddress;
-    private String companyName;
+    private String mainOfficeDisplayAddress="";
+    private String carrierName="";
     
     private DateTimeFormatter dateTimeFormatter;
     
@@ -130,93 +131,75 @@ public class HosDailyDriverLogReportCriteria {
         
         for (Driver driver : reportDriverList) {
                 if (account == null) {
-                    account = accountDAO.findByID(driver.getPerson().getAcctID());
-                    if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
-                        account.setAddress(addressDAO.findByID(account.getAddressID()));
-                    }
+                    account = fetchAccount(driver.getPerson().getAcctID());
                 }
-                String companyName = getCompanyName(accountGroupHierarchy,account, driver);
-                Address companyAddress = getCompanyAddress(accountGroupHierarchy,account, driver);
+                initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
+                Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
                 Integer driverID = driver.getDriverID();
-                initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, companyName, companyAddress);
+                initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
                 groupCriteriaList.addAll(criteriaList);
         }
         
         criteriaList = groupCriteriaList;
     }
 
+
     public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
     {
         Driver driver = driverDAO.findByID(driverID);
-        Account account = accountDAO.findByID(driver.getPerson().getAcctID());
-        String companyName = getCompanyName(accountGroupHierarchy,account, driver);
-        Address companyAddress = getCompanyAddress(accountGroupHierarchy,account, driver);
+        Account account = fetchAccount(driver.getPerson().getAcctID());
+        initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
+        Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
-        initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, companyName, companyAddress);
+        initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
     }
-    private String getCompanyName(GroupHierarchy accountGroupHierarchy, Account account,Driver driver){
-    	
-        if (account.getProps().isMultipleCompanies()){
-        	Integer accountTopGroupID = account.getProps().getFleetGroupIDValue();
-        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID(), accountTopGroupID);
-        	return companyGroup.getName();
+    
+    private void initMainOfficeInfo(GroupHierarchy accountGroupHierarchy, Account account, Integer groupID) {
+        Address mainOfficeAddress = null;
+        Group mainOfficeGroup = accountGroupHierarchy.getAddressGroup(DOTOfficeType.MAIN, groupID);
+        if (mainOfficeGroup != null) {
+            if (mainOfficeGroup.getAddress() == null && mainOfficeGroup.getAddressID() != null)
+                mainOfficeGroup.setAddress(fetchAddress(mainOfficeGroup.getAddressID()));
+            mainOfficeAddress = mainOfficeGroup.getAddress();
+            carrierName = mainOfficeGroup.getName();
         }
-        else{
-        	return account.getAcctName();
+        if (mainOfficeAddress == null) {
+            mainOfficeAddress = account.getAddress();
+            carrierName = account.getAcctName();
         }
-    	
+        
+        mainOfficeDisplayAddress = (mainOfficeAddress == null) ? "" : mainOfficeAddress.getDisplayString();
     }
-    private Address  getCompanyAddress(GroupHierarchy accountGroupHierarchy, Account account, Driver driver){
-        if (account.getProps().isMultipleCompanies()){
-        	Integer accountTopGroupID = account.getProps().getFleetGroupIDValue();
-        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID(),accountTopGroupID);
-        	return fetchCompanyAddress(companyGroup.getAddressID(), account);
+
+    private Account fetchAccount(Integer accountID) {
+        Account account = accountDAO.findByID(accountID);
+        if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
+            account.setAddress(fetchAddress(account.getAddressID()));
         }
-        else {
-        	if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
-        		account.setAddress(addressDAO.findByID(account.getAddressID()));
-        	}
-        	return account.getAddress();
+        return account;
+        
+    }
+    
+    private Address fetchAddress(Integer addressID) {
+        return addressDAO.findByID(addressID);
+    }
+
+    private Address getTerminalAddress(GroupHierarchy accountGroupHierarchy, Driver driver) {
+        Group terminalOfficeGroup = accountGroupHierarchy.getAddressGroup(DOTOfficeType.TERMINAL, driver.getGroupID());
+        if (terminalOfficeGroup != null) {
+            if (terminalOfficeGroup.getAddress() == null && terminalOfficeGroup.getAddressID() != null)
+                terminalOfficeGroup.setAddress(fetchAddress(terminalOfficeGroup.getAddressID()));
+            return terminalOfficeGroup.getAddress();
         }
-    }
-    private Address fetchCompanyAddress(Integer companyAddressID, Account account){
-		if(companyAddressID == null){
-			return useAccountAddress(account);
-		}
-		else{
-			return addressDAO.findByID(companyAddressID);
-		}
-    }
-    private Address useAccountAddress(Account account){
-    	if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
-    		account.setAddress(addressDAO.findByID(account.getAddressID()));
-    	}
-    	return account.getAddress();
+        return null;
     }
     private void initDriverCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, 
     		Interval interval, Interval expandedInterval, 
     		Driver driver, Account account,
-    		String companyName, Address companyAddress) {
-        Group group = groupDAO.findByID(driver.getGroupID());
-        group.setAddress(getTerminalAddress(group, accountGroupHierarchy)); 
-
+    		Address terminalAddress) {
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
         List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
-        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, group, companyName, companyAddress);
-    }
-    
-
-    
-    private Address getTerminalAddress(Group group, GroupHierarchy groupHierarchy) {
-        if (group.getAddress() == null && group.getAddressID() != null && group.getAddressID().intValue() != 0) {
-            return addressDAO.findByID(group.getAddressID());
-        }
-        Group parentGroup = groupHierarchy.getGroup(group.getParentID());
-        
-        if (parentGroup != null)
-            return getTerminalAddress(parentGroup, groupHierarchy);
-        
-        return null;
+        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
     }
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList) {
@@ -246,9 +229,6 @@ public class HosDailyDriverLogReportCriteria {
         }
     }
 
-
-
-
     public List<ReportCriteria> getCriteriaList()
     {
     
@@ -263,8 +243,8 @@ public class HosDailyDriverLogReportCriteria {
     void initCriteriaList(Interval interval, List<HOSRecord> hosRecordList, 
     		List<HOSVehicleDayData> hosVehicleDayData, 
     		List<HOSOccupantLog> hosOccupantLogList, 
-    		Driver driver, Account account, Group group,
-    		String companyName, Address companyAddress) 
+    		Driver driver, Account account, 
+    		Address terminalAddress) 
     {
         boolean initVehicleDayData = (hosVehicleDayData == null);
         
@@ -302,9 +282,9 @@ public class HosDailyDriverLogReportCriteria {
             dayData.setCorrectedDayTotals(adjustedList.getAdjustedDayTotals(logListForDay));
             dayData.setDay(dateTimeFormatter.print(day));
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList));
-            dayData.setCarrierName(companyName);
-            dayData.setMainAddress(companyAddress == null ? "" : companyAddress.getDisplayString());
-            dayData.setTerminalAddress(group.getAddress() == null ? "" : group.getAddress().getDisplayString());
+            dayData.setCarrierName(carrierName);
+            dayData.setMainAddress(mainOfficeDisplayAddress);
+            dayData.setTerminalAddress(terminalAddress == null ? "" : terminalAddress.getDisplayString());
             dayData.setDriverName(driver.getPerson().getFullName());
             dayData.setEdited(isListEdited(logListForDay));
             dayData.setCodrivers(getCodrivers(logListForDay, occupantLogListForDay));
@@ -931,15 +911,6 @@ public class HosDailyDriverLogReportCriteria {
         this.vehicleDAO = vehicleDAO;
     }
 
-	public Address getCompanyAddress() {
-		return companyAddress;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-    
     public Map<Integer, Vehicle> getVehicleMap() {
         return vehicleMap;
     }
