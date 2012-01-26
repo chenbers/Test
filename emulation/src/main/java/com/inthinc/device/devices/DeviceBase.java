@@ -23,6 +23,7 @@ import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.emulation.utils.NoteManager;
+import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.AutomationDeviceEvents.SpeedingEvent;
 import com.inthinc.device.objects.TripTracker;
@@ -121,7 +122,7 @@ public abstract class DeviceBase {
             return this;
         }
         dump_settings();
-        get_changes();
+        requestSettings();
         return this;
     }
 
@@ -159,23 +160,6 @@ public abstract class DeviceBase {
         while (notes.hasNext()) {
             send_note();
         }
-    }
-
-    public DeviceBase get_changes() {
-		if (portal == Addresses.TEEN_PROD) {
-			return this;
-		}
-		if (state.getWMP() >= 17013) {
-			try {
-				reply = mcmProxy.reqSet(state);
-			} catch (Exception e) {
-				MasterTest.print(e, Level.ERROR);
-			}
-			if (reply instanceof HashMap<?, ?>) {
-				set_settings(theirsToOurs((HashMap<?, ?>) reply));
-			}
-		}
-        return this;
     }
 
     protected abstract Integer get_note_count();
@@ -245,8 +229,6 @@ public abstract class DeviceBase {
 
         return this;
     }
-    
-    
 
     private DeviceBase is_speeding() {
         GeoPoint point = tripTracker.currentLocation();
@@ -280,6 +262,8 @@ public abstract class DeviceBase {
         }
         return this;
     }
+    
+    
 
     public DeviceBase last_location(GeoPoint last, int value) {
         return last_location(last, value, true);
@@ -335,12 +319,31 @@ public abstract class DeviceBase {
 
     protected abstract Integer processCommand(Map<String, Object> reply);
 
+    public DeviceBase requestSettings() {
+		if (portal == Addresses.TEEN_PROD) {
+			return this;
+		}
+		if (state.getWMP() >= 17013) {
+			try {
+				reply = mcmProxy.reqSet(state);
+			} catch (HessianException e){
+				reply = null;
+			} catch (Exception e) {
+				MasterTest.print(e, Level.ERROR);
+			}
+			if (reply instanceof HashMap<?, ?>) {
+				set_settings(theirsToOurs((HashMap<?, ?>) reply));
+			}
+		}
+        return this;
+    }
+
     @SuppressWarnings("unchecked")
     protected DeviceBase send_note() {
         while (notes.hasNext()) {
             Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> sendingQueue = notes
                     .getNotes(note_count);
-            Object[] replies = mcmProxy.sendNotes(state, sendingQueue);
+        	Object[] replies = mcmProxy.sendNotes(state, sendingQueue);
             for (Object reply : replies){
                 if (reply instanceof ArrayList<?>) {
                     ackFwdCmds((List<HashMap<String, Object>>) reply);

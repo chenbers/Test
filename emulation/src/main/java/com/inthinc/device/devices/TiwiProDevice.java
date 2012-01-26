@@ -264,7 +264,7 @@ public class TiwiProDevice extends DeviceBase {
         } else if (fwdCmd == DeviceForwardCommands.DUMP_CONFIGURATION)
             dump_settings();
         else if (fwdCmd == DeviceForwardCommands.CALL_REQ_SET)
-            get_changes();
+            requestSettings();
         else if (fwdCmd == DeviceForwardCommands.DOWNLOAD_NEW_WITNESSII_FIRMWARE)
             set_MSP(reply.get("data"));
         else if (fwdCmd == DeviceForwardCommands.DOWNLOAD_NEW_FIRMWARE)
