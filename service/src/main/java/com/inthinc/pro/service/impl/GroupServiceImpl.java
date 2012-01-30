@@ -19,8 +19,10 @@ import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
+import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.service.GroupService;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
+import com.inthinc.pro.service.exceptionMappers.BaseExceptionMapper;
 import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.DateUtil;
 
@@ -31,7 +33,14 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         List<Group> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Group>>(list) {}).build();
     }
-
+	@Override
+	public Response update(Group object) {
+		Group original = getDao().findByID(object.getGroupID());
+		if(original.getAccountID() != object.getAccountID())
+			return Response.status(Status.FORBIDDEN).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "Changing the accountID on a group is not allowed").build();
+		
+		return super.update(object);
+	}
     @Override
     public Response getGroupDriverNames(Integer groupID) {
         List<DriverName> list = getDao().getGroupDriverNames(groupID);

@@ -1,11 +1,14 @@
 package com.inthinc.pro.service.it;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import javax.validation.constraints.AssertTrue;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -26,14 +29,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
+import com.inthinc.pro.service.exceptionMappers.BaseExceptionMapper;
 
 /**
  * Integration test for Group Service Implementation.
  */
-@Ignore
+//@Ignore
 public class GroupServiceTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(GroupServiceTest.class);
     private static int GROUP_ID = 3;
@@ -48,7 +53,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
         HttpClientParams params = new HttpClientParams();
         params.setAuthenticationPreemptive(true);
         httpClient = new HttpClient(params);
-        Credentials defaultcreds = new UsernamePasswordCredentials(/*TiwiproPrincipal.ADMIN_BACKDOOR_USERNAME*/ "mraby", "password");
+        Credentials defaultcreds = new UsernamePasswordCredentials(/*TiwiproPrincipal.ADMIN_BACKDOOR_USERNAME*/ "cjennings", "password");
         httpClient.getState().setCredentials(new AuthScope(getDomain(), getPort(), AuthScope.ANY_REALM), defaultcreds);
         clientExecutor = new ApacheHttpClientExecutor(httpClient);
 
@@ -281,10 +286,11 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
         .append("</group>");
         
         request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
-
+        //request.se
         String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
         System.out.println(response);
     }
+    
     @Test
     public void getGroupDriverScoresForMonthTest(){
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+"/scores/drivers/month/January");
@@ -352,5 +358,78 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             e.printStackTrace();
         }
     	
+    }
+    
+    /**
+     * DE7336: Web services allows group to be moved from one account to another.
+     * When updating a group via web services, you can move a group from one account to another even though that group 
+     * shouldn't be able to be moved. 
+     * 
+     * @throws Exception
+     */
+    @Test 
+    public void updateGroupTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
+        String expectedErrorMessage = "Changing the accountID on a group is not allowed";
+        Integer accountID = 2; //this is a QA accountID, or a DEV accountID
+        Integer createdGroupID = null;
+        Integer newAccountID = 397;
+        String description = "updateGroupTest description";
+        String name = "updateGroupTest name";
+        String type = "TEAM";
+        //Integer parentID = 4917; //this is a QA parentID
+        Integer parentID = 4; //this is a DEV parentID
+        
+        StringBuilder xmlString = new StringBuilder()
+        .append("<group>")
+        .append("<accountID>"+accountID+"</accountID>")
+        .append("<description>"+description+"</description>")
+        .append("<name>"+name+"</name>")
+        .append("<type>"+type+"</type>")
+        .append("<parentID>"+parentID+"</parentID>") 
+        .append("</group>");
+        
+        try{
+        
+	        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
+	//        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
+	//        assertFalse("response should not include 'Error's", response.contains("Error"));
+	//        assertFalse("response should not include 'Exceptions's", response.contains("Exception"));
+	//        assertTrue("response should be a group",response.contains("<group>"));
+	        
+	        
+	        Group response = request.post(Group.class).getEntity();
+	        System.out.println(response);
+	        assertEquals(accountID, response.getAccountID());
+	        assertEquals(parentID, response.getParentID());
+	        createdGroupID = response.getGroupID();
+	        
+	        xmlString = new StringBuilder()
+	        .append("<group>")
+	        .append("<accountID>"+newAccountID+"</accountID>")
+	        .append("<description>"+description+"</description>")
+			.append("<groupID>"+createdGroupID+"</groupID>")
+			.append("<name>"+name+"</name>")
+			.append("<parentID>"+parentID+"</parentID>")
+			.append("<type>"+type+"</type>")
+			.append("</group>");
+	        
+	        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
+	        //request.accept(MediaType.TEXT_HTML_TYPE).body(MediaType.TEXT_HTML_TYPE, xmlString.toString());
+	        ClientResponse<Group> clientResponse = request.put(Group.class); 
+	        
+	        assertEquals(expectedErrorMessage, clientResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0));
+	        assertEquals(accountID, response.getAccountID());
+	        assertNotSame("AccountID should NOT change",newAccountID, response.getAccountID());
+	
+	        System.out.println(response);
+        } finally {
+	        if(createdGroupID != null){
+	        	request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+createdGroupID);
+		        request.accept("application/xml");
+		        request.delete();
+	        }
+        }
+
     }
 }

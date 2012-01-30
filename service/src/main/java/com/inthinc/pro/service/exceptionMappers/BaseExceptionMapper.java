@@ -37,6 +37,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 public abstract class BaseExceptionMapper<E extends Throwable> implements ExceptionMapper<E> {
 
     private static final String ERROR_WRAPPER = "<exception>{0}</exception>";
+    public static final String HEADER_ERROR_MESSAGE = "ERROR_MESSAGE";
     /**
      * @see javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)
      */
