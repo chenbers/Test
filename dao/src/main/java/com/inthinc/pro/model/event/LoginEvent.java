@@ -11,12 +11,15 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.model.MeasurementType;
 
 public class LoginEvent extends Event implements MultipleEventTypes {
 
     private static final long serialVersionUID = 3218106684884060943L;
 
+    
+    @EventAttrID(name="DRIVER_STR")
     private String empId;
 
     private static final Logger logger = Logger.getLogger(LoginEvent.class);

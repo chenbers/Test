@@ -2,14 +2,21 @@ package com.inthinc.pro.model.event;
 
 import java.util.Date;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
+
 public class IgnitionOffEvent extends Event
 {
     private static final long serialVersionUID = 1L;
+    @EventAttrID(name="MPG")
     private Integer mpg = 0;		// units of 1/100 of a mile per gal
+    @EventAttrID(name="MPG_DISTANCE")
     private Integer mpgDistance;		// units of 1/100 of a mile per gal
+    @EventAttrID(name="TRIP_DURATION")
 	private Integer driveTime;			// units are 1/100 of a mile
+    @EventAttrID(name="PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_")
+    private Integer gpsQuality; 
     
-	public IgnitionOffEvent()
+    public IgnitionOffEvent()
 	{
 		super();
 	}
@@ -41,7 +48,25 @@ public class IgnitionOffEvent extends Event
 	public void setDriveTime(Integer driveTime) {
 		this.driveTime = driveTime;
 	}
-    
+    public Integer getGpsQuality() {
+        return gpsQuality;
+    }
+    public void setGpsQuality(Integer gpsQuality) {
+        this.gpsQuality = gpsQuality;
+    }
+    //   * Attributes [ATTR_MPG], [ATTR_MPG_DISTANCE], [ATTR_TRIP_DURATION], ATTR_PERCENTAGE_GPS_FILTERED, [ATTR_SPEEDING_SQUELCHED], ATTR_CURRENT_IGN, [ATTR_NUM_GPS_REBOOTS], [ATTR_OBD_PCT], [ATTR_GPS_PCT], [ATTR_AGPS_DOWNLOADED], [ATTR_VIOLATION_FLAGS]
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[6];
+        eventAttrList[0] = EventAttr.MPG;
+        eventAttrList[1] = EventAttr.MPG_DISTANCE;
+        eventAttrList[2] = EventAttr.TRIP_DURATION;
+        eventAttrList[3] = EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_;
+        eventAttrList[4] = EventAttr.AVG_RPM; // WRONG
+        eventAttrList[5] = EventAttr.CURRENT_IGN;
+        return eventAttrList;
+    }
+
     
 
 }

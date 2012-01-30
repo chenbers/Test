@@ -13,6 +13,10 @@ public class EventGeneratorData {
 	boolean includeCrash;
 	int mpg;
 	int severity;
+    boolean includeExtra;
+    boolean includeWaysmart;
+    boolean includeCoaching;
+    int zoneID;
 	
 	List<Integer> speedingIndexes;
 	List<Integer> seatbeltIndexes;
@@ -34,7 +38,21 @@ public class EventGeneratorData {
 		this.includeCrash = includeCrash;
 		this.mpg = mpg;
 		this.severity = severity;
+	    this.includeExtra = false;
+	    this.includeWaysmart = false;
+	    this.includeCoaching = false;
+	    this.zoneID = 0;
 	}
+    public EventGeneratorData(  int speedingCnt, int seatbeltCnt, int aggressiveDrivingCnt, int idlingCnt, boolean includeCrash, int mpg, int severity,
+            boolean includeExtra,
+            boolean includeWaysmart,
+            boolean includeCoaching)
+    {
+        this(speedingCnt, seatbeltCnt, aggressiveDrivingCnt, idlingCnt, includeCrash, mpg, severity);
+        this.includeExtra = includeExtra;
+        this.includeWaysmart = includeWaysmart;
+        this.includeCoaching = includeCoaching;
+    }
 	
 	public void initIndexes(int numLocs) {
 		initIndexes(numLocs, false);

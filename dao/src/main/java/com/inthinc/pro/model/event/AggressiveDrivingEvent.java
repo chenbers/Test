@@ -32,7 +32,6 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     private Integer severity; // This number represents the severity of the event 
                         // in the range of 1 to 5, 5 being the most extreme.
                         // This may need to be changed.
-    private Integer speedLimit;
 
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(AggressiveDrivingEvent.class);
@@ -142,15 +141,6 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
         this.deltaZ = deltaZ;
     }
 
-    public Integer getSpeedLimit()
-    {
-        return speedLimit;
-    }
-
-    public void setSpeedLimit(Integer speedLimit)
-    {
-        this.speedLimit = speedLimit;
-    }
 
     @Override
     public Set<EventType> getEventTypes() {

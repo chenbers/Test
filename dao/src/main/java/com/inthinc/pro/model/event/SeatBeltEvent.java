@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -23,11 +24,17 @@ public class SeatBeltEvent extends Event {
 	private static final Integer MIN_DISTANCE = 10;
 	
 	private static final long serialVersionUID = 1L;
-	private Integer avgSpeed;
-	private Integer topSpeed;
-	private Integer distance;
+    @EventAttrID(name="TOP_SPEED")
+    private Integer topSpeed;
+    @EventAttrID(name="AVG_SPEED")
+    private Integer avgSpeed;
+    @EventAttrID(name="DISTANCE")
+    private Integer distance;
+    @EventAttrID(name="MAX_RPM")
+    private Integer maxRPM;
 
-	public SeatBeltEvent() {
+
+    public SeatBeltEvent() {
 		super();
 	}
 
@@ -67,6 +74,14 @@ public class SeatBeltEvent extends Event {
 			this.distance = distance;
 	}
 
+	public Integer getMaxRPM() {
+        return maxRPM;
+    }
+
+    public void setMaxRPM(Integer maxRPM) {
+        this.maxRPM = maxRPM;
+    }
+
 	public Integer getTopSpeed() {
 		return topSpeed;
 	}
@@ -96,5 +111,13 @@ public class SeatBeltEvent extends Event {
 		return MessageFormat.format(formatStr, new Float(tempDistance),
 				mString[1]);
 	}
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[1];
+        eventAttrList[0] = EventAttr.TOP_SPEED;
+        eventAttrList[1] = EventAttr.DISTANCE;
+        eventAttrList[2] = EventAttr.MAX_RPM;
+        return eventAttrList;
+    }
 
 }

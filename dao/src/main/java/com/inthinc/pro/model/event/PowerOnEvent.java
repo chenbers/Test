@@ -2,6 +2,8 @@ package com.inthinc.pro.model.event;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
+
 @XmlRootElement
 public class PowerOnEvent extends Event
 {
@@ -9,8 +11,11 @@ public class PowerOnEvent extends Event
      * 
      */
     private static final long serialVersionUID = 1L;
+    @EventAttrID(name="RESET_REASON")
     private Integer resetReason;
+    @EventAttrID(name="MANUAL_RESET_REASON")
     private Integer manualResetReason;
+    @EventAttrID(name="FIRMWARE_VERSION")
     private Integer firmwareVersion;
     
     

@@ -2,66 +2,95 @@ package it.util;
 
 import it.com.inthinc.pro.dao.model.BaseITData;
 import it.com.inthinc.pro.dao.model.GroupData;
+import it.config.IntegrationConfig;
 
 import java.beans.XMLEncoder;
-import java.util.ArrayList;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
+import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.notegen.MCMSimulator;
+import com.inthinc.pro.notegen.NoteGenerator;
+import com.inthinc.pro.notegen.TiwiProNoteSender;
+import com.inthinc.pro.notegen.WSNoteSender;
 
 public abstract class DataGenForTesting  {
 
 	public static XMLEncoder xml;
     public static SiloService siloService;
+    public static MCMSimulator mcmSim;
+    public static NoteGenerator noteGenerator;
+    EventGenerator eventGenerator = new EventGenerator();
+
     
     public BaseITData itData;
 
     protected abstract boolean parseTestData();
     protected abstract void createTestData();
+    
+    protected static void initServices(String configFile) throws MalformedURLException {
+        IntegrationConfig config = new IntegrationConfig(configFile);
+        initServices(config);
+    }
+    protected static void initServices() throws MalformedURLException {
+        IntegrationConfig config = new IntegrationConfig();
+        initServices(config);
+    }
+    protected static void initServices(IntegrationConfig config) throws MalformedURLException {
+        String host = config.get(IntegrationConfig.SILO_HOST).toString();
+        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
+        siloService = new SiloServiceCreator(host, port).getService();
 
+        HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
+        mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
 
-	protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
+        noteGenerator = new NoteGenerator();
+        WSNoteSender wsNoteSender = new WSNoteSender();
+        wsNoteSender.setUrl(config.get(IntegrationConfig.MINA_HOST).toString());
+        wsNoteSender.setPort(Integer.valueOf(config.get(IntegrationConfig.MINA_PORT).toString()));
+        noteGenerator.setWsNoteSender(wsNoteSender);
+        
+        TiwiProNoteSender tiwiProNoteSender = new TiwiProNoteSender();
+        tiwiProNoteSender.setMcmSimulator(mcmSim);
+        noteGenerator.setTiwiProNoteSender(tiwiProNoteSender);
+
+    }
+
+    EventGeneratorData eventGeneratorDataList[] = {
+            new EventGeneratorData(0,0,0,0,false,30,0, false, false, true),
+            new EventGeneratorData(1,1,1,1,false,25,50, false, false, true),
+            new EventGeneratorData(5,5,5,5,true,20,100, false, false, true)
+    };
+
+	protected void generateDayData(Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
 	{
 		for (GroupData groupData : teamGroupData)
 		{
 			if (groupData.driverType.equals(driverType))
 			{
-				
-				EventGenerator eventGenerator = new EventGenerator();
-				switch (driverType.intValue()) {
-				case 0:			// good
-					eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0));
-					break;
-				case 1:			// intermediate
-					eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50));
-				break;
-				case 2:			// bad
-					eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100));
-				break;
-				
-				}
+                List<Event> eventList = eventGenerator.generateTripEvents(date, eventGeneratorDataList[driverType.intValue()]);
+                noteGenerator.genTrip(eventList, groupData.device);
 			}		
 		}
 			
 		
 	}
 	
-    protected boolean genTestEvent(MCMSimulator mcmSim, Event event, String imei) {
-        List<byte[]> noteList = new ArrayList<byte[]>();
-
-        byte[] eventBytes = EventGenerator.createDataBytesFromEvent(event);
-        noteList.add(eventBytes);
+    protected boolean genTestEvent(Event event, Device device) {
         boolean errorFound = false;
         int retryCnt = 0;
         while (!errorFound) {
             try {
-                mcmSim.note(imei, noteList);
+                noteGenerator.genEvent(event, device);
                 break;
             }
             catch (ProxyException ex) {
@@ -102,14 +131,15 @@ public abstract class DataGenForTesting  {
         return !errorFound;
     }
 
-	protected void waitForIMEIs(MCMSimulator mcmSim, int eventDateSec, List<GroupData> teamGroupData) {
+	protected void waitForIMEIs(int eventDateSec, List<GroupData> teamGroupData) {
 		
 		for (GroupData data : teamGroupData)
 		{
-
+		    if (data.device.getProductVersion() == ProductType.WAYSMART)
+		        continue;
 			Event testEvent = new Event(0l, 0, NoteType.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,
                     new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
-			if (!genTestEvent(mcmSim, testEvent, data.device.getImei()))
+			if (!genTestEvent(testEvent, data.device))
 			{
 				System.out.println("Error: imei has not moved to central server");
 				System.exit(1);

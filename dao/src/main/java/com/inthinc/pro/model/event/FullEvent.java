@@ -4,16 +4,19 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
+
 @XmlRootElement
 public class FullEvent extends Event
 {
     private static final long serialVersionUID = 1L;
     
+    @EventAttrID(name="DELTAV_X")
     private Integer deltaX; // deltas store as Integer, divide by 10 for float value
+    @EventAttrID(name="DELTAV_Y")
     private Integer deltaY;
+    @EventAttrID(name="DELTAV_Z")
     private Integer deltaZ;
-    
-    private Integer speedLimit;
     	
 	public FullEvent()
 	{
@@ -30,7 +33,7 @@ public class FullEvent extends Event
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
 		this.deltaZ = deltaZ;
-		this.speedLimit = speedLimit;
+		setSpeedLimit(speedLimit);
 	}
 	
     public EventType getEventType()
@@ -66,14 +69,11 @@ public class FullEvent extends Event
         this.deltaZ = deltaZ;
     }
     
-    public Integer getSpeedLimit() {
-        return speedLimit;
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[1];
+        eventAttrList[0] = EventAttr.DELTA_VS;
+        return eventAttrList;
     }
-    
-    public void setSpeedLimit(Integer speedLimit) {
-        this.speedLimit = speedLimit;
-    }
-    
-    
 
 }

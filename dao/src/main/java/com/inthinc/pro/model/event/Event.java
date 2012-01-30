@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.model.BaseEntity;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LatLng;
@@ -76,6 +77,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private TimeZone driverTimeZone;
 
     private Integer deviceID;
+    @EventAttrID(name="SPEED_LIMIT")
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
     

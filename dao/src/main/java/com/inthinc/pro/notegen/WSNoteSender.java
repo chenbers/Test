@@ -29,7 +29,7 @@ public class WSNoteSender implements SendNote {
     public void sendNote(Integer noteType, Date noteTime, byte[] notePackage, Device device) throws Exception {
         String uri = 
                         "http://" + url + ":" + port + 
-                        "/gprs_wifi/gprs.do?mcm_id=" + device.getImei() +  // (comType.equals(Direction.sat) ? imei: mcmID )+
+                        "/gprs_wifi/gprs.do?mcm_id=" +// device.getImei() +  // (comType.equals(Direction.sat) ? imei: mcmID )+
                         "&commType="+WIFI_COMM_TYPE+         // hard code to sat
                         "&sat_cmd="+noteType+
                         "&event_time="+(noteTime.getTime()/1000l);
@@ -43,11 +43,13 @@ System.out.println("sendNote: " + uri);
         entity.addPart("event_time", new StringBody("" + noteTime.getTime(), Charset.forName("UTF-8")));
         entity.addPart("sat_cmd", new StringBody("" + noteType, Charset.forName("UTF-8")));
         entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));
+//        entity.addPart("processForwardCommands", new StringBody("false", Charset.forName("UTF-8")));
                 
                 
         entity.addPart("filename", new ByteArrayBody(notePackage, "filename"));
         method.setEntity(entity);
                     
+        
         String response = httpRequest(method);
         
 //        System.out.println("response: " + response);
@@ -55,8 +57,11 @@ System.out.println("sendNote: " + uri);
     
     private String httpRequest(HttpUriRequest method) {
         try {
+            System.out.println("calling execute");
             HttpResponse response = new DefaultHttpClient().execute(method);
+            System.out.println("back - calling execute");
             String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
+            System.out.println("got response");
             return returnResponse;
         } catch (ClientProtocolException e) {
             e.printStackTrace();
@@ -67,6 +72,7 @@ System.out.println("sendNote: " + uri);
     }
     
     private String getResponseBodyFromStream(InputStream is) {
+        System.out.println("parsing response response");
         String str = "";
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

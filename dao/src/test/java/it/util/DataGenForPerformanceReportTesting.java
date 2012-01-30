@@ -3,7 +3,6 @@ package it.util;
 import it.com.inthinc.pro.dao.model.GroupListData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.com.inthinc.pro.dao.model.ITDataExt;
-import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
@@ -12,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,15 +20,12 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForPerformanceReportTesting extends DataGenForTesting {
 	
@@ -140,7 +137,13 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
         
 	}
 
-	protected void generateDayDataExt(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupListData> teamGroupData) throws Exception 
+    EventGeneratorData eventGeneratorDataList[] = {
+            new EventGeneratorData(0,0,0,0,false,30,0, false, false, true),
+            new EventGeneratorData(1,1,1,1,false,25,50, false, false, true),
+            new EventGeneratorData(5,5,5,5,false,20,100, false, false, true)
+    };
+
+	protected void generateDayDataExt(Date date, Integer driverType, List<GroupListData> teamGroupData) throws Exception 
 	{
 	    // only generate for 1st driver in each group, but switch him through the 3 vehicles
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
@@ -152,30 +155,20 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
 		{
 			if (groupData.driverType.equals(driverType))
 			{
-				EventGenerator eventGenerator = new EventGenerator();
                 Driver driver = groupData.driverList.get(0);
-                
-                Vehicle vehicle = groupData.vehicleList.get(0);
-                Device device = groupData.deviceList.get(0);
-                vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driver.getDriverID(), dateTime.toDate());
-                eventGenerator.generateTrip(device.getImei(), mcmSim, dateTime.plusMinutes(1).toDate(), new EventGeneratorData(0,0,0,0,false,30,0));
-
-                vehicle = groupData.vehicleList.get(1);
-                device = groupData.deviceList.get(1);
-                dateTime = dateTime.plusHours(1);
-                vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driver.getDriverID(), dateTime.toDate());
-				eventGenerator.generateTrip(device.getImei(), mcmSim, dateTime.plusMinutes(1).toDate(), new EventGeneratorData(1,1,1,1,false,25,50));
-
-				vehicle = groupData.vehicleList.get(2);
-                device = groupData.deviceList.get(2);
-                dateTime = dateTime.plusHours(1);
-                vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driver.getDriverID(), dateTime.toDate());
-				eventGenerator.generateTrip(device.getImei(), mcmSim, dateTime.plusMinutes(1).toDate(), new EventGeneratorData(5,5,5,5,false,20,100));
+                for (int i = 0; i < 3; i++) {
+                    Vehicle vehicle = groupData.vehicleList.get(i);
+                    Device device = groupData.deviceList.get(i);
+                    vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driver.getDriverID(), dateTime.toDate());
+                    List<Event> eventList = eventGenerator.generateTripEvents(dateTime.plusMinutes(1).toDate(), eventGeneratorDataList[i]);
+                    noteGenerator.genTrip(eventList, device);
+                    dateTime = dateTime.plusHours(1);
+                }
 			}		
 		}
 	}
 	
-	protected void waitForIMEIsExt(MCMSimulator mcmSim, int eventDateSec, List<GroupListData> teamGroupData) {
+	protected void waitForIMEIsExt(int eventDateSec, List<GroupListData> teamGroupData) {
 		
 		for (GroupListData data : teamGroupData)
 		{
@@ -183,13 +176,14 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
 			Event testEvent = new Event(0l, 0, NoteType.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,
                     new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 			for (Device device : data.deviceList) {
-				if (!genTestEvent(mcmSim, testEvent, device.getImei()))
+				if (!genTestEvent(testEvent, device))
 				{
 					System.out.println("Error: imei has not moved to central server");
 					System.exit(1);
 				}
 			}
 		}
+		
 	}
 
     public static void main(String[] args)
@@ -197,11 +191,12 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
         
         DataGenForPerformanceReportTesting  testData = new DataGenForPerformanceReportTesting();
         testData.parseArguments(args);
-
-        IntegrationConfig config = new IntegrationConfig();
-        String host = config.get(IntegrationConfig.SILO_HOST).toString();
-        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
-        siloService = new SiloServiceCreator(host, port).getService();
+        try {
+            initServices();
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            System.exit(1);
+        }
         
         if (testData.isNewDataSet)
         {
@@ -212,10 +207,6 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
 	            System.out.println(" saving output to " + testData.xmlPath);
 	            testData.createTestData();
 	            
-	            // wait for imeis to hit central server
-	            // generate data for today (midnight) and 30 previous days
-	            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-	            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
 
 	            int todayInSec = DateUtil.getTodaysDate();
 	            
@@ -228,7 +219,7 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
 	                xml.close();
 	            }
 	            
-	            testData.waitForIMEIsExt(mcmSim, DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60, ((ITDataExt)testData.itData).teamGroupListData);
+	            testData.waitForIMEIsExt(DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60, ((ITDataExt)testData.itData).teamGroupListData);
 	            for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
 	            {
 	            	for (int day = numDays; day > 0; day--)
@@ -236,7 +227,7 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
 	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 	                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 	                    Date startDate = new Date((long)dateInSec * 1000l);
-	            		testData.generateDayDataExt(mcmSim, startDate, teamType, ((ITDataExt)testData.itData).teamGroupListData);
+	            		testData.generateDayDataExt(startDate, teamType, ((ITDataExt)testData.itData).teamGroupListData);
 	            		
 	            	}
 	            }
@@ -258,15 +249,13 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
                 	System.exit(1);
                 }
 
-                HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-                MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
                 for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
                 {
     	        	for (int day = 0; day < testData.numDays; day++)
     	        	{
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                Date startDate = new Date((long)dateInSec * 1000l);
-    	        		testData.generateDayDataExt(mcmSim, startDate, teamType, ((ITDataExt)testData.itData).teamGroupListData);
+    	        		testData.generateDayDataExt(startDate, teamType, ((ITDataExt)testData.itData).teamGroupListData);
     	        	}
                 }
              

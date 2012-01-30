@@ -3,7 +3,6 @@ package it.util;
 import it.com.inthinc.pro.dao.model.GroupListData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.com.inthinc.pro.dao.model.ITDataExt;
-import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
@@ -12,13 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.event.Event;
@@ -134,6 +132,12 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
         }
         
 	}
+    EventGeneratorData eventGeneratorDataList[] = {
+            new EventGeneratorData(0,0,0,0,false,30,0),
+            new EventGeneratorData(1,1,1,1,false,25,50),
+            new EventGeneratorData(5,5,5,5,true,20,100)
+    };
+
 
 	protected void generateDayDataExt(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupListData> teamGroupData) throws Exception 
 	{
@@ -142,19 +146,11 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
 			if (groupData.driverType.equals(driverType))
 			{
 				
-				EventGenerator eventGenerator = new EventGenerator();
 				for (Device device : groupData.deviceList) {
-					switch (driverType.intValue()) {
-					case 0:			// good
-						eventGenerator.generateTrip(device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0));
-						break;
-					case 1:			// intermediate
-						eventGenerator.generateTrip(device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50));
-					break;
-					case 2:			// bad
-						eventGenerator.generateTrip(device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100));
-					break;
-					}
+				    
+	                EventGeneratorData eventGeneratorData = eventGeneratorDataList[driverType.intValue()];
+	                List<Event> eventList = eventGenerator.generateTripEvents(date, eventGeneratorData);
+	                noteGenerator.genTrip(eventList, device);
 				}
 			}		
 		}
@@ -162,8 +158,8 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
 //	@Override
 	protected void generateUnknownDriverDayData(MCMSimulator mcmSim, Date date) throws Exception 
 	{
-		EventGenerator eventGenerator = new EventGenerator();
-		eventGenerator.generateTrip(itData.noDriverDevice.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50));
+        List<Event> eventList = eventGenerator.generateTripEvents(date, new EventGeneratorData(1,1,1,1,false,25,50));
+        noteGenerator.genTrip(eventList, itData.noDriverDevice);
 	}
 	
 	protected void waitForIMEIsExt(MCMSimulator mcmSim, int eventDateSec, List<GroupListData> teamGroupData) {
@@ -174,7 +170,7 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
 			Event testEvent = new Event(0l, 0, NoteType.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,
                     new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
 			for (Device device : data.deviceList) {
-				if (!genTestEvent(mcmSim, testEvent, device.getImei()))
+				if (!genTestEvent(testEvent, device))
 				{
 					System.out.println("Error: imei has not moved to central server");
 					System.exit(1);
@@ -189,10 +185,12 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
         DataGenForReportPaginationTesting  testData = new DataGenForReportPaginationTesting();
         testData.parseArguments(args);
 
-        IntegrationConfig config = new IntegrationConfig();
-        String host = config.get(IntegrationConfig.SILO_HOST).toString();
-        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
-        siloService = new SiloServiceCreator(host, port).getService();
+        try {
+            initServices();
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            System.exit(1);
+        }
         
         if (testData.isNewDataSet)
         {
@@ -203,11 +201,6 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
 	            System.out.println(" saving output to " + testData.xmlPath);
 	            testData.createTestData();
 	            
-	            // wait for imeis to hit central server
-	            // generate data for today (midnight) and 30 previous days
-	            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-	            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
-
 	            int todayInSec = DateUtil.getTodaysDate();
 	            
 	            int numDays = NUM_EVENT_DAYS;
@@ -252,8 +245,6 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
                 	System.exit(1);
                 }
 
-                HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-                MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
                 for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
                 {
     	        	for (int day = 0; day < testData.numDays; day++)

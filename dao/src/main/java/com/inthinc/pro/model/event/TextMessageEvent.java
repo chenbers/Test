@@ -1,19 +1,18 @@
 package com.inthinc.pro.model.event;
 
-import java.text.MessageFormat;
 import java.util.Date;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.model.MeasurementType;
-import com.mysql.jdbc.Messages;
 
 @XmlRootElement
 public class TextMessageEvent extends Event {
 
         private static final long serialVersionUID = 1L;
         private Integer textId;
+        @EventAttrID(name="TEXT_MESSAGE")
         private String textMsg;
 
         public TextMessageEvent()
@@ -42,7 +41,6 @@ public class TextMessageEvent extends Event {
         
         @Override
         public boolean isValidEvent() {
-            // TODO Auto-generated method stub
             return (textMsg != null);
         }
 

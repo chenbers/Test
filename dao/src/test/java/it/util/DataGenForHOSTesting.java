@@ -3,20 +3,17 @@ package it.util;
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
-import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.net.MalformedURLException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import javax.sql.DataSource;
 
@@ -25,11 +22,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.hos.model.HOSStatus;
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForHOSTesting extends DataGenForTesting {
     public String xmlPath;
@@ -43,9 +37,6 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 2, ReportTestConst.TIMEZONE_STR));
         ((ITData)itData).createTestData(siloService, xml, assignmentDate, false, false);
-        
-        
-
     }
 
     @Override
@@ -231,11 +222,12 @@ System.out.println("testDeviceID = " + testIMEI + " vehicleID = " + testVehicleI
         DataGenForHOSTesting  testData = new DataGenForHOSTesting();
         testData.parseArguments(args);
 
-        IntegrationConfig config = new IntegrationConfig();
-        String host = config.get(IntegrationConfig.SILO_HOST).toString();
-        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
-        siloService = new SiloServiceCreator(host, port).getService();
-
+        try {
+            initServices();
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            System.exit(1);
+        }
         
         try
         {
@@ -255,18 +247,11 @@ System.out.println("testDeviceID = " + testIMEI + " vehicleID = " + testVehicleI
             }
             testData.genHOSTestData(startOfDriverDay);
             
-            // wait for imeis to hit central server
-            // generate data for today (midnight) and 30 previous days
-            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
-            
-            
-
-            testData.waitForIMEIs(mcmSim, startOfDriverDayInSec + 60, ((ITData)testData.itData).teamGroupData);
+            testData.waitForIMEIs(startOfDriverDayInSec + 60, ((ITData)testData.itData).teamGroupData);
             // generate some notes so we get mileage data
             for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
             {
-                testData.generateDayData(mcmSim, startOfDriverDay.toDate(), teamType, ((ITData)testData.itData).teamGroupData);
+                testData.generateDayData(startOfDriverDay.toDate(), teamType, ((ITData)testData.itData).teamGroupData);
             }
          
             System.out.println(" -- test data generation complete -- ");
@@ -284,7 +269,4 @@ System.out.println("testDeviceID = " + testIMEI + " vehicleID = " + testVehicleI
         }
         System.exit(0);
     }
-
-
-
 }

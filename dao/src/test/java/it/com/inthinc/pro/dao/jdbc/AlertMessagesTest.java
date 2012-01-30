@@ -376,7 +376,6 @@ ALERT_TYPE_IGNITION_ON
     };
     
     @Test 
-    @Ignore
     public void miscWSAlert() {
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP); 
         Device device = groupData.device;
@@ -393,14 +392,12 @@ ALERT_TYPE_IGNITION_ON
         for (MiscAlertInfo miscAlertInfo : miscAlertInfoList) {
             List<AlertMessageType> typeList = new ArrayList<AlertMessageType>();
             typeList.add(miscAlertInfo.alertMessageType);
-System.out.println("****AlertMessageType: " + miscAlertInfo.alertMessageType);            
             redFlagAlert.setTypes(typeList);
             redFlagAlertHessianDAO.update(redFlagAlert);
             
             for (Event event : miscAlertInfo.events) {
                 event.setHeading(DEFAULT_HEADING);
                 event.setSats(DEFAULT_SATS);
-System.out.println("****NoteType: " + event.getType());            
                 for (int attempt = 0; attempt < 6; attempt++) {
                     if (attempt == 5) {
                         fail("Unable to get alert message after 5 attempts for type: " + miscAlertInfo.alertMessageType);
@@ -414,17 +411,17 @@ System.out.println("****NoteType: " + event.getType());
                                 miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT ||
                                 miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_ZONES_CURRENT ||
                                 miscAlertInfo.alertMessageType == AlertMessageType.ALERT_TYPE_QSI_UPDATED) {
-                            assertEquals("number of params", 5, params.size());
+                            assertEquals(miscAlertInfo.alertMessageType + " number of params", 5, params.size());
                             String version = params.get(4);
-                            assertTrue("expected a version param", version.startsWith("VersionState"));
+                            assertTrue(miscAlertInfo.alertMessageType + " expected a version param", version.startsWith("VersionState"));
                         }
                         else 
-                            assertEquals("number of params", 4, params.size());
-                        assertEquals("driverName", groupData.driver.getPerson().getFullName(), params.get(1));
-                        assertEquals("vehicleName", groupData.vehicle.getName(), params.get(2));
+                            assertEquals(miscAlertInfo.alertMessageType + " number of params", 4, params.size());
+                        assertEquals(miscAlertInfo.alertMessageType + " driverName", groupData.driver.getPerson().getFullName(), params.get(1));
+                        assertEquals(miscAlertInfo.alertMessageType + " vehicleName", groupData.vehicle.getName(), params.get(2));
                         String[] latLng = params.get(3).split(",");
-                        assertTrue("location - lat", latLng[0].trim().startsWith("40.7"));
-                        assertTrue("location - lng", latLng[1].trim().startsWith("-111.9"));
+                        assertTrue(miscAlertInfo.alertMessageType + " location - lat", latLng[0].trim().startsWith("40.7"));
+                        assertTrue(miscAlertInfo.alertMessageType + " location - lng", latLng[1].trim().startsWith("-111.9"));
 
                         break;
                     }

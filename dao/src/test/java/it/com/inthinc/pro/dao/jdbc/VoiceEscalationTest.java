@@ -42,6 +42,7 @@ import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.VehicleType;
@@ -54,6 +55,9 @@ import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.notegen.MCMSimulator;
+import com.inthinc.pro.notegen.NoteGenerator;
+import com.inthinc.pro.notegen.TiwiProNoteSender;
+import com.inthinc.pro.notegen.WSNoteSender;
 @Ignore
 public class VoiceEscalationTest extends BaseJDBCTest{
     
@@ -85,6 +89,9 @@ public class VoiceEscalationTest extends BaseJDBCTest{
     private static int tryTimeLimit = 0;
     private static int tryLimit = 1;
     
+    private static NoteGenerator noteGenerator;
+
+    
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         IntegrationConfig config = new IntegrationConfig();
@@ -94,6 +101,15 @@ public class VoiceEscalationTest extends BaseJDBCTest{
         siloService = new SiloServiceCreator(host, port).getService();
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
+        noteGenerator = new NoteGenerator();
+        WSNoteSender wsNoteSender = new WSNoteSender();
+        wsNoteSender.setUrl(config.get(IntegrationConfig.MINA_HOST).toString());
+        wsNoteSender.setPort(Integer.valueOf(config.get(IntegrationConfig.MINA_PORT).toString()));
+        noteGenerator.setWsNoteSender(wsNoteSender);
+        
+        TiwiProNoteSender tiwiProNoteSender = new TiwiProNoteSender();
+        tiwiProNoteSender.setMcmSimulator(mcmSim);
+        noteGenerator.setTiwiProNoteSender(tiwiProNoteSender);
         
         initDAOs();
         initApp();
@@ -189,12 +205,11 @@ System.out.println("account id " + itData.account.getAccountID());
             boolean anyAlertsFound = false;
             modRedFlagAlertPref(GROUPS, redFlagAlert);
             List<EventType> eventTypes = getEventTypes(redFlagAlert);
-            String IMEI = groupData.device.getImei();
+            Device device = groupData.device;
             if (eventTypes.get(0).equals(EventType.NO_DRIVER))
-                IMEI = itData.noDriverDevice.getImei();
+                device = itData.noDriverDevice;
             
-            if (!genEvent(IMEI, eventTypes.get(0)))
-                fail("Unable to generate event of type " + eventTypes.get(0));
+            genEvent(device, eventTypes.get(0));
             if (pollForMessages("Voice Escalation Test"))
                 anyAlertsFound = true;
 //            assertTrue("No Red Flag Alerts were generated for eventType " + eventTypes.get(0), anyAlertsFound);
@@ -264,7 +279,7 @@ System.out.println("account id " + itData.account.getAccountID());
         redFlagAlertDAO.update(redFlagAlert);
     }
 
-    private boolean genEvent(String imei, EventType eventType) {
+    private void genEvent(Device device, EventType eventType) {
         Event event = null;
         
         System.out.println("genEvent: " + eventType);       
@@ -299,9 +314,19 @@ System.out.println("account id " + itData.account.getAccountID());
             event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
                     new Double(40.704246f), new Double(-111.948613f), 100, 80, 70, 100, 100);
         
-        return genEvent(event, imei);
+        genEvent(event, device);
+        
     }
-
+    private void genEvent(Event event, Device device) {
+        try {
+            noteGenerator.genEvent(event, device);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Generate Note failed for device: " + device.getImei() + " noteType" + event.getType());
+        }
+    }
+/*
     private boolean genEvent(Event event, String imei) {
         List<byte[]> noteList = new ArrayList<byte[]>();
 
@@ -354,7 +379,7 @@ System.out.println("account id " + itData.account.getAccountID());
         }
         return !errorFound;
     }
-
+*/
     private boolean pollForMessages(String description) {
         //Loop through until nothing comes back then swap to email
         List<String> addresses = new ArrayList<String>();

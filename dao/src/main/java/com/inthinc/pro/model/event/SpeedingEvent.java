@@ -21,8 +21,6 @@ public class SpeedingEvent extends Event
     private Integer topSpeed;
     @EventAttrID(name="AVG_SPEED")
     private Integer avgSpeed;
-    @EventAttrID(name="SPEED_LIMIT")
-    private Integer speedLimit;
     @EventAttrID(name="DISTANCE")
     private Integer distance;
     @EventAttrID(name="AVG_RPM")
@@ -52,7 +50,7 @@ public class SpeedingEvent extends Event
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
         this.topSpeed = topSpeed;
         this.avgSpeed = avgSpeed;
-        this.speedLimit = speedLimit;
+        setSpeedLimit(speedLimit);
         this.distance = distance;
         this.avgRPM = avgRPM;
     }
@@ -77,15 +75,6 @@ public class SpeedingEvent extends Event
         this.distance = distance;
     }
 
-    public Integer getSpeedLimit()
-    {
-        return speedLimit;
-    }
-
-    public void setSpeedLimit(Integer speedLimit)
-    {
-        this.speedLimit = speedLimit;
-    }
 
     public Integer getTopSpeed()
     {
@@ -120,8 +109,8 @@ public class SpeedingEvent extends Event
          topSpeed =  this.topSpeed;
         
         Integer speedLimit = 0;
-        if(this.speedLimit != null)
-            speedLimit = this.speedLimit;
+        if(getSpeedLimit() != null)
+            speedLimit = getSpeedLimit();
         
         // distance is x100
         float distance = 0.0f;
@@ -146,9 +135,7 @@ public class SpeedingEvent extends Event
     }        
     @Override
 	public boolean isValidEvent() {
-		// TODO Auto-generated method stub
-		return (speedLimit != null) && (speedLimit != 0) && (topSpeed != null) && (topSpeed != 0);
+		return (getSpeedLimit() != null) && (getSpeedLimit() != 0) && (topSpeed != null) && (topSpeed != 0);
 	}
-
 
 }

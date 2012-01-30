@@ -3,6 +3,7 @@ package com.inthinc.pro.model.event;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -13,7 +14,7 @@ public class HardVertical820Event extends Event
      */
     private static final long serialVersionUID = 1L;
     
-    // TODO: should backend be setting this?
+    @EventAttrID(name="SEVERITY")
     private Integer severity; 
 
     public HardVertical820Event()

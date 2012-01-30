@@ -1,9 +1,9 @@
 package it.util;
 
 import it.com.inthinc.pro.dao.Util;
-import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,11 +24,7 @@ import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
-import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
@@ -49,16 +45,14 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.security.Role;
-import com.inthinc.pro.notegen.MCMSimulator;
 
-public class DataGenForHelpScreenShots {
+public class DataGenForHelpScreenShots extends DataGenForTesting {
     public static SiloService siloService;
     private static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
@@ -177,9 +171,9 @@ public class DataGenForHelpScreenShots {
     };
     
     String localeStr = "";
-    Locale locale = Locale.getDefault();    
-    private void createTestData()
-    {
+    Locale locale = Locale.getDefault(); 
+    @Override
+    protected void createTestData() {
         init();
 
         // Account
@@ -325,17 +319,8 @@ public class DataGenForHelpScreenShots {
         RoleHessianDAO roleDAO = new RoleHessianDAO();
         roleDAO.setSiloService(siloService);
 
-//        Roles roles = new Roles();
-//        roles.setRoleDAO(roleDAO);
-//        roles.init();
-//        
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
-//        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
-//        mapping.setDeviceDAO(deviceDAO);
-//        mapping.init();
-
-        
     }
     
     private Driver createDriver(Group group)
@@ -407,10 +392,6 @@ public class DataGenForHelpScreenShots {
         Device device = new Device(0, account.getAccountID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
         		genNumericID(uniqueID, 15), genNumericID(uniqueID, 19), genNumericID(uniqueID, 10), 
         		genNumericID(uniqueID, 10));
-//        , 
-//        		"5555559876");
-        
-//        device.setAccel("1100 50 4");
         Integer deviceID = deviceDAO.create(account.getAccountID(), device);
         device.setDeviceID(deviceID);
         
@@ -586,57 +567,7 @@ public class DataGenForHelpScreenShots {
         account.setAccountID(acctID);
         
     }
-	
-    private boolean genTestEvent(MCMSimulator mcmSim, Event event, String imei) {
-        List<byte[]> noteList = new ArrayList<byte[]>();
-System.out.println("Waiting for imei: " + imei);
-        byte[] eventBytes = EventGenerator.createDataBytesFromEvent(event);
-        noteList.add(eventBytes);
-        boolean errorFound = false;
-        int retryCnt = 0;
-        while (!errorFound) {
-            try {
-                mcmSim.note(imei, noteList);
-                break;
-            }
-            catch (ProxyException ex) {
-                if (ex.getErrorCode() != 414) {
-                    errorFound = true;
-                }
-                else {
-                    if (retryCnt == 300) {
-                        System.out.println("Retries failed after 5 min.");
-                        errorFound = true;
-                    }
-                    else {
-                        try {
-                            Thread.sleep(1000l);
-                            retryCnt++;
-                        }
-                        catch (InterruptedException e) {
-                            errorFound = true;
-                            e.printStackTrace();
-                        }
-                        System.out.print(".");
-                        if (retryCnt % 25 == 0)
-                            System.out.println();
-                    }
-                }
-            }
-            catch (RemoteServerException re) {
-                if (re.getErrorCode() != 302 ) {
-                    errorFound = true;
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                errorFound = true;
-            }
-        }
-        return !errorFound;
-    }
-
-	private void waitForIMEIs(MCMSimulator mcmSim, int eventDateSec) {
+	private void waitForIMEIs(int eventDateSec) {
 
 		for (GroupData data : this.teamGroupData)
 		{
@@ -645,7 +576,7 @@ System.out.println("Waiting for imei: " + imei);
 			{
 				Event testEvent = new Event(0l, 0, NoteType.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA,//NoteType.LOCATION,
 	                    new Date(eventDateSec * 1000l), 60, 0,  33.0089, -117.1100);
-				if (!genTestEvent(mcmSim, testEvent, device.getImei()))
+				if (!genTestEvent(testEvent, device))
 				{
 					System.out.println("Error: imei has not moved to central server");
 					System.exit(1);
@@ -653,11 +584,12 @@ System.out.println("Waiting for imei: " + imei);
 			}
 		}
 	}
-	private void generateDayData(MCMSimulator mcmSim, Date date, String imei, Integer driverID) throws Exception 
+	private void generateDayData(Date date, Device device, Integer driverID) throws Exception 
 	{
 		EventGenerator eventGenerator = new EventGenerator();
-		EventGeneratorData data = getEventGeneratorData(driverID);
-		eventGenerator.generateTrip(imei, mcmSim, date, data);
+        List<Event> eventList = eventGenerator.generateTripEvents(date, getEventGeneratorData(driverID));
+        noteGenerator.genTrip(eventList, device);
+
 	}
     private EventGeneratorData getEventGeneratorData(Integer driverID) {
     	EventGeneratorData data = null;
@@ -717,10 +649,14 @@ System.out.println("Waiting for imei: " + imei);
        			break;
        		}
         }
-        IntegrationConfig config = new IntegrationConfig();
-        String host = config.get(IntegrationConfig.SILO_HOST).toString();
-        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
-        siloService = new SiloServiceCreator(host, port).getService();
+        try {
+            initServices();
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            System.exit(1);
+        }
+
+
         
 	        try
 	        {
@@ -729,11 +665,8 @@ System.out.println("Waiting for imei: " + imei);
 	            
 	            // wait for imeis to hit central server
 	            // generate data for today (midnight) and 30 previous days
-	            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-	            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
-
 	            int todayInSec = DateUtil.getTodaysDate();
-	            testData.waitForIMEIs(mcmSim, DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60);
+	            testData.waitForIMEIs(DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60);
 	            
 	            int numDays = NUM_EVENT_DAYS;
 	    		for (GroupData data : testData.teamGroupData)
@@ -747,7 +680,7 @@ System.out.println("Waiting for imei: " + imei);
 		                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 		                    Date startDate = new Date((long)dateInSec * 1000l);
 		                    Integer driverID = testData.assignDriverToVehicle(device, data, startDate);
-		            		testData.generateDayData(mcmSim, startDate, device.getImei(), driverID);
+		            		testData.generateDayData(startDate, device, driverID);
 		            	}
 		            }
 	    		}
@@ -759,6 +692,15 @@ System.out.println("Waiting for imei: " + imei);
 	            System.exit(1);
 	        }
         System.exit(0);
+    }
+
+
+
+
+    @Override
+    protected boolean parseTestData() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 

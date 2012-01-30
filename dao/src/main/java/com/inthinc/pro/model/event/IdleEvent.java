@@ -20,7 +20,7 @@ public class IdleEvent extends Event
      */
     @EventAttrID(name="LOW_IDLE")
     private Integer lowIdle = 0;
-    @EventAttrID(name="HI_IDLE")
+    @EventAttrID(name="HIGH_IDLE")
     private Integer highIdle = 0;
 	
 	public IdleEvent()
@@ -43,7 +43,14 @@ public class IdleEvent extends Event
 	   else
 	       return "";
 	}
-	
+    @Override
+    public EventAttr[] getEventAttrList() {
+        EventAttr[] eventAttrList = new EventAttr[2];
+        eventAttrList[0] = EventAttr.LOW_IDLE;
+        eventAttrList[1] = EventAttr.HIGH_IDLE;
+        return eventAttrList;
+    }
+
    public String getLowIdleDuration()
     {
        if(this.lowIdle != null)

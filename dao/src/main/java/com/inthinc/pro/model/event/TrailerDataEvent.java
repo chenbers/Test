@@ -5,14 +5,18 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
 import com.inthinc.pro.model.MeasurementType;
 
 
 @XmlRootElement
 public class TrailerDataEvent extends Event implements StatusEvent {
     private static final long serialVersionUID = 1L;
+    @EventAttrID(name="HAZMAT_FLAG")
     Boolean hazmatFlag;
+    @EventAttrID(name="SERVICE_ID")
     String serviceId;
+    @EventAttrID(name="TRAILER_ID")
     String trailerId;
     
     public TrailerDataEvent()

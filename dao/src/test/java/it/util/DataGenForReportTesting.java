@@ -2,7 +2,6 @@ package it.util;
 
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
-import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
@@ -11,19 +10,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.notegen.MCMSimulator;
 
 public class DataGenForReportTesting extends DataGenForTesting {
 	public String xmlPath;
@@ -33,9 +30,14 @@ public class DataGenForReportTesting extends DataGenForTesting {
 
     public static Integer NUM_EVENT_DAYS = 31;
     
+    EventGeneratorData eventGeneratorDataList[] = {
+            new EventGeneratorData(1,1,1,0,false,30,0),
+            new EventGeneratorData(1,1,1,1,false,25,50, false, false, true),
+            new EventGeneratorData(5,5,5,5,true,20,100, false, false, true)
+    };
     
     @Override
-    protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
+    protected void generateDayData(Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
     {
         EventHessianDAO eventDAO = new EventHessianDAO();
         eventDAO.setSiloService(siloService);
@@ -44,35 +46,23 @@ public class DataGenForReportTesting extends DataGenForTesting {
         {
             if (groupData.driverType.equals(driverType))
             {
-                
-                EventGenerator eventGenerator = new EventGenerator();
-                switch (driverType.intValue()) {
-                case 0:         // good
-                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,0,false,30,0), false);
+                List<Event> eventList = null;
+                EventGeneratorData eventGeneratorData = eventGeneratorDataList[driverType.intValue()];
+                eventList = eventGenerator.generateTripEvents(date, eventGeneratorData);
+                noteGenerator.genTrip(eventList, groupData.device);
+                if (driverType.intValue() == 0) {
                     // forgive all of the events
                     List<NoteType> noteTypes = EventCategory.VIOLATION.getNoteTypesInCategory();
                     Integer driverID = groupData.driver.getDriverID();
-                    List<Event> eventList = eventDAO.getEventsForDriver(driverID, date, new Date(date.getTime() + DateUtil.MILLISECONDS_IN_DAY-1000l), noteTypes, 0);
-System.out.println("found " + eventList.size() + " events to forgive");                    
+                    eventList = eventDAO.getEventsForDriver(driverID, date, new Date(date.getTime() + DateUtil.MILLISECONDS_IN_DAY-1000l), noteTypes, 0);
+                   
                     for (Event event : eventList) {
                         eventDAO.forgive(driverID, event.getNoteID());
                     }
-                    break;
-                case 1:         // intermediate
-                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50));
-                break;
-                case 2:         // bad
-                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100));
-                break;
-                
                 }
             }       
         }
-            
-        
     }
-
-
     
     @Override
     protected void createTestData() {
@@ -176,12 +166,14 @@ System.out.println("found " + eventList.size() + " events to forgive");
         DataGenForReportTesting  testData = new DataGenForReportTesting();
         testData.parseArguments(args);
     	
+        try {
+            initServices();
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            System.exit(1);
+        }
 
 
-        IntegrationConfig config = new IntegrationConfig();
-        String host = config.get(IntegrationConfig.SILO_HOST).toString();
-        Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
-        siloService = new SiloServiceCreator(host, port).getService();
 
         if (testData.isNewDataSet)
         {
@@ -192,25 +184,18 @@ System.out.println("found " + eventList.size() + " events to forgive");
 	            System.out.println(" saving output to " + testData.xmlPath);
 	            testData.createTestData();
 	            
-	            // wait for imeis to hit central server
-	            // generate data for today (midnight) and 30 previous days
-	            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-	            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
-
 	            int todayInSec = DateUtil.getTodaysDate();
-	            testData.waitForIMEIs(mcmSim, DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60, ((ITData)testData.itData).teamGroupData);
+	            testData.waitForIMEIs(DateUtil.getDaysBackDate(todayInSec, 1, ReportTestConst.TIMEZONE_STR) + 60, ((ITData)testData.itData).teamGroupData);
 	            
 	            int numDays = NUM_EVENT_DAYS;
-//numDays = 5;	            
 	            for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
 	            {
 	            	for (int day = numDays; day > 0; day--)
 	            	{
-//	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 	                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 10800;
 	                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 	                    Date startDate = new Date((long)dateInSec * 1000l);
-	            		testData.generateDayData(mcmSim, startDate, teamType, ((ITData)testData.itData).teamGroupData);
+	            		testData.generateDayData(startDate, teamType, ((ITData)testData.itData).teamGroupData);
 	            	}
 	            }
 	         
@@ -238,16 +223,13 @@ System.out.println("found " + eventList.size() + " events to forgive");
             		System.exit(1);
             	}
     	
-                HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-                MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
                 for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
                 {
     	        	for (int day = 0; day < testData.numDays; day++)
     	        	{
-//    	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 10800;
     	                Date startDate = new Date((long)dateInSec * 1000l);
-    	        		testData.generateDayData(mcmSim, startDate, teamType, ((ITData)testData.itData).teamGroupData);
+    	        		testData.generateDayData(startDate, teamType, ((ITData)testData.itData).teamGroupData);
     	        	}
                 }
              
