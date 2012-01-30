@@ -1,0 +1,241 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+  			xmlns:rich="http://richfaces.org/rich"
+            xmlns:a4j="http://richfaces.org/a4j"
+  			xmlns:f="http://java.sun.com/jsf/core"
+            xmlns:t="http://myfaces.apache.org/tomahawk"
+            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="idlingVehicleSelected" value="current" />
+    <ui:param name="context" value="idlingVehicle" />
+    <ui:param name="bean" value="#{pagingIdlingVehicleReportBean}" />
+
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml">
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</ui:define>
+	
+	<ui:param name="title" value="#{messages.navigation_reports} - #{messages.report_idling}"/>
+	<ui:define name="content">
+			<a4j:keepAlive beanName="idlingReportTableColumns" />
+		 	<ui:param name="tableColumns" value="#{idlingReportTableColumns.tableColumns}" />
+			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+				<tr>
+					<td valign="top">
+							<a4j:form id="#{context}-form">	
+							<div class="">
+								<div class="panel_nw">
+									<div class="panel_title">
+										<span class="driver">#{messages.reports_idlingvehiclereporttitle}</span>
+										<span class="panel_links">
+											    <h:outputFormat id="headerCounts" value="#{messages.idlingVehicleReport_enabled}" >
+	    											<f:param value="#{bean.totalEMUDrivers}" />
+	    											<f:param value="#{bean.totalDrivers}" />
+			    								</h:outputFormat>
+										</span>
+									</div>
+								</div>
+								<div class="panel_w">
+									<div class="panel_content">	
+											<ui:include src="/includes/redFlagsCount.xhtml" >
+												<ui:param name="context" value="idling" />
+											</ui:include>															
+										<ul id="grid_nav" style="margin: 0;">            							
+            								<li class="l">   
+            								    <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+													<tr>
+            								         	<td>								
+            												<h:outputText value="#{messages.idlingReports_dateRange} " />
+            											</td>
+            											<td>            									
+            												<rich:calendar id="startCalendar" inputSize="10" value="#{bean.startDate}" datePattern="#{messages.dateFormat}" timeZone="#{bean.timeZone}"/>
+            											</td>
+            											<td>
+            												<rich:calendar id="endCalendar" inputSize="10" value="#{bean.endDate}" datePattern="#{messages.dateFormat}" timeZone="#{bean.timeZone}"/>
+            											</td>
+            										</tr>
+            									</table>
+            								</li>
+											<li class="l">
+            								</li>
+											<li class="l">
+												<a4j:commandButton id="#{context}_refresh" styleClass="left"
+													reRender="#{context}-form:dateError,#{context}-form:headerCounts,#{context}-form:header,#{context}-form:#{context},#{context}-form:#{context}-bottomScroller,#{context}-form:dateError" 
+													action="#{bean.refreshAction}">
+            										<span class="refresh">
+            											<h:outputText value="#{messages.refresh}" />
+            										</span>
+												</a4j:commandButton>
+			  								</li>  
+            								<li class="l text">
+            									<a4j:commandLink 
+            										id="#{context}SearchEditColumns" 
+            										reRender="editColumnsForm:editColumnGrid"
+            										action="#"
+            									 	styleClass="ls_tab_edit_columns"
+            										onclick="Richfaces.showModalPanel('editColumns');">            									
+            										<h:outputText value="#{messages.button_editColumns}" />
+            									</a4j:commandLink>            									
+            								</li>  
+            								<li class="r grid_icon">
+            									<h:panelGroup id="#{context}_reportToolImageId">
+													<h:graphicImage title="#{messages.contextMenu_tools_menu}" style="cursor: pointer;" value="/images/ico_tools.png"/>
+												</h:panelGroup>
+											</li>
+											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+											</li>      							
+										</ul>
+										<div align="left" style="width: 100%"> 
+											<h:outputText id="dateError"  style="float:left;color:#c44d34" value="#{bean.badDates}"/>
+										</div>
+                                	<ui:include src="/includes/table/statsHeader.xhtml">	
+   										<ui:param name="title" value="#{messages.recordCountHeader}" />
+   										<ui:param name="pageData" value="#{bean.table.pageData}" />
+									</ui:include>
+     
+									<ui:include src="/includes/reportsContextMenu.xhtml">	
+										<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
+										<ui:param  name="reportBean" value="#{bean}"/>
+										<ui:param  name="attachTo" value="#{context}_reportToolImageId"/>
+										<ui:param  name="exportExcel" value="TRUE"/>
+										<ui:param name="context" value="#{context}" />
+									</ui:include>
+	                                <div class="spacer"></div>
+
+                            	 	<div class="datagrid_panel" style="width: 925px;">		   
+                            	 	<t:saveState value="#{bean}"/>
+                                    <rich:dataTable id="#{context}" value="#{bean.table.model}" var="item" 
+                                         styleClass="datagrid filterabledatagrid" 
+							        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller,#{context}-form:headerCounts"
+                                         rowClasses="tableOdd,tableEven" 
+ 										 cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
+										<rich:column id="group" rendered="#{tableColumns['group'].visible}" 
+                            						sortBy="#{item.groupName}" filterBy="#{item.groupName}">
+											<f:facet name="header">
+                            					<h:outputText value="#{messages.reports_group}" />
+                            				</f:facet>
+                                            <pretty:link id="idlingsDashboard" mappingId="dashboard">
+                                              		<h:outputText value="#{item.groupName}"/>
+                                               		<f:param value="#{item.groupID}"/>
+                                            </pretty:link>                                                                                
+										</rich:column>
+                                        <rich:column id="fullName" rendered="#{tableColumns['driver_person_fullName'].visible}"  
+                                        			sortBy="#{item.driverName}" sortOrder="ASCENDING" 
+                                        			filterBy="#{item.driverName}" filterValue="#{bean.searchFor}">
+											<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_driver}" />
+                                  			</f:facet>
+											<pretty:link id="idlingDriverPerformance" mappingId="driverPerformance">
+                                            	<h:outputText value="#{item.driverName}"/>
+                                                <f:param value="#{item.driverID}"/>
+                                            </pretty:link>
+                                		</rich:column>
+                                        <rich:column id="vehicleName" rendered="#{tableColumns['vehicle_name'].visible}"  
+                                        			sortBy="#{item.vehicleName}" sortOrder="ASCENDING" 
+                                        			filterBy="#{item.vehicleName}" filterValue="#{bean.searchFor}">
+											<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_vehicle}" />
+                                  			</f:facet>
+											<pretty:link id="idlingVehiclePerformance" mappingId="vehiclePerformance">
+                                            	<h:outputText value="#{item.vehicleName}"/>
+                                                <f:param value="#{item.vehicleID}"/>
+                                            </pretty:link>
+                                		</rich:column>
+										<rich:column id="idleSupport" rendered="#{tableColumns['hasRPM'].visible}" 
+                                					sortBy="#{item.hasRPM}">    					
+											<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_idle_support}" />
+                                  			</f:facet>
+                                  			<h:outputText value="#{item.hasRPM == 1 ? messages.yes : messages.no}"/>        					
+                                		</rich:column>    				
+										<rich:column id="driveTime" rendered="#{tableColumns['duration'].visible}" 
+                                					sortBy="#{item.driveTime}">    					
+											<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_drivetime}" />
+                                  			</f:facet>
+                                  			<h:outputText value="#{item.driveTime}" converter="TimeToStringConverter"/>        					
+                                		</rich:column>    				
+                                		<rich:column id="lowHours" rendered="#{tableColumns['lowHrs'].visible}" 
+                                					sortBy="#{item.lowIdleTime}">
+                                  			<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_lowidlehrs}" />
+                                  			</f:facet>
+                                  			<h:outputText value="#{item.lowIdleTime}" converter="TimeToStringConverter"/>
+                                		</rich:column>
+                                		<rich:column rendered="#{tableColumns['lowPercent'].visible}">    					
+                                  			<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_percent}" />
+                                  			</f:facet>
+                                  			<h:outputText value="#{item.lowIdlePercent}" converter="FloatConverter"/> 
+                                		</rich:column>
+                                		<rich:column id="highHours" rendered="#{tableColumns['highHrs'].visible}"
+                                					sortBy="#{item.highIdleTime}">
+                                  			<f:facet name="header">
+                                  					<h:outputText value="#{messages.reports_highidlehrs}" />
+                                  			</f:facet>
+                                  			<h:outputText value="#{item.highIdleTime}" converter="TimeToStringConverter"/> 
+                                		</rich:column>
+                                		<rich:column rendered="#{tableColumns['highPercent'].visible}">
+                                  			<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_percent}" />
+                                  			</f:facet>
+                                  			<h:outputText value="#{item.highIdlePercent}" converter="FloatConverter"/> 
+                                		</rich:column>
+                                		<rich:column id="totalHours" rendered="#{tableColumns['totalHrs'].visible}">
+                                  			<f:facet name="header">
+                                  				<h:outputText value="#{messages.reports_totalidlehrs}" />
+                                  			</f:facet>      					
+                                  			<h:outputText value="#{item.totalIdleTime}" converter="TimeToStringConverter"/> 
+                                		</rich:column>
+                          				<rich:column rendered="#{tableColumns['totalPercent'].visible}">    					
+                           					<f:facet name="header">
+                           						<h:outputText value="#{messages.reports_percent}" />
+                           					</f:facet>      					
+                           					<h:outputText value="#{item.totalIdlePercent}" converter="FloatConverter"/> 
+                           				</rich:column>    				
+										<rich:column>
+                                  			<f:facet name="header">
+                                  				<h:outputText value="" />
+                                  			</f:facet>    		
+											<pretty:link id="idlingDriverTrips" mappingId="driverTrips">
+                                            	<h:outputText value="#{messages.reports_trips}"/>
+                                                <f:param value="#{item.driverID}"/>
+											</pretty:link>		      					
+										</rich:column>
+									</rich:dataTable>    	
+                            	</div>	
+                                <div class="spacer"/>
+               	                <rich:datascroller id="#{context}-bottomScroller" 
+                                          for="#{context}" immediate="true" 
+                                          scrollerListener="#{bean.table.scrollerListener}" 
+                                          reRender="#{context},#{context}-form:header"
+                                          requestDelay="200" eventsQueue="pagerQueue" 
+                                          page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
+						</div>
+					</div>
+			    	<div class="panel_sw">
+						<div class="panel_statusbar"></div>
+					</div>
+				</div>
+				</a4j:form>
+				<ui:include src="/includes/columnSelectionPopup.xhtml">
+					<ui:param name="bean" value="#{idlingReportTableColumns}"/>	
+					<ui:param name="reRender" value="#{context}-form:#{context}" />
+					<ui:param name="context" value="#{context}" />
+				</ui:include>
+			</td>
+		</tr>
+	</table>
+	<h:outputText id="idle_email_modalPanel">
+		<ui:include src="/includes/emailReportPopup.xhtml">	
+			<ui:param  name="id" value="#{context}_reportEmailModal" />
+			<ui:param  name="reportBean" value="#{bean}"/>
+			<ui:param name="context" value="#{context}" />
+		</ui:include>
+	</h:outputText>
+	</ui:define>
+</ui:composition>
