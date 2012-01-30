@@ -82,6 +82,7 @@ public class DaoUtilBeanTest {
 			"getDriverReportCount",
 			"getVehicleReportCount",
 			"getIdlingReportCount",
+			"getIdlingVehicleReportCount",
 			"getDriverEventCount",
 			"getRedFlagsCount",
 			"getRfidsForBarcode",
