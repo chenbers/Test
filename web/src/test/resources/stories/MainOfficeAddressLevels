@@ -119,7 +119,7 @@ When click on Save
 Then verify the <name><address1><address2><city><state><zipcode> were saved
 
 Example:
-|groupname|name|address1|address2|city|state|zipcode|
+|group|name|address1|address2|city|state|zipcode|
 |SLB|Schlumberger|4225 West Lake Park Blvd|blank|West Valley|Utah|84120|main|
 
 
