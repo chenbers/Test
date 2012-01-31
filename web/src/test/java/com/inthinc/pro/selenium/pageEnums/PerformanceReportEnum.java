@@ -7,21 +7,19 @@ public enum PerformanceReportEnum implements SeleniumEnums {
     TITLE("Performance Report", "//span[@class='performance']"),
     
     DEFAULT_URL("/app/reports/performanceReport"),
-   
     ERROR_REQUIRED_MESSAGE(null, "peformanceReports_form:paramsError"),
-    
     REPORT_DROP_DOWN(null, "performanceReports_form:performanceReports-report"),
     
-    START_DATE("Date Range:", "//input[contains(@id,'performanceReports_startCalendarInputDate']"),
-    STOP_DATE(null, "//input[contains(@id,'performanceReports_endCalendarInputDate']"),
-    
+    TIME_FRAME_DROP_DOWN(null,"//select(@id,'performanceReports_form:timeframe:0:performanceReports_reportDaysTimeFrame"),
+    TIME_FRAME_LABEL("Group(s)", "//span[@id='performanceReports_form:groupListSelect']/../td[1]"),
+        
     EXCEL("Excel", "performanceReports_form:performanceReports_excelIcon"),
     EMAIL(email, "performanceReports_form:performanceReports_emailIcon"),
     
     GROUP_LABEL("Group(s)", "//span[@id='performanceReports_form:groupListSelect']/../td[1]"),
     GROUP_SELECTOR("Group(s)", "performanceReports_form:performanceReportsgroupListParam"),
-    GROUP_ARROW(null, "//span[@id='waysmartReports_form:groupListSelect']/span[1]/span/div"),
-    
+    GROUP_ARROW(null, "//span[@id='performanceReports_form:groupListSelect']/span[1]/span/div"),
+ 
        
     ;
 
