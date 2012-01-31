@@ -9,11 +9,11 @@ Given I am logged in as HOS manager
 And I am on the Organization page
 And I have selected a <group> 
 And I have clicked on Edit button
-And I have cleared the existing <address1> <address2> <city> <state> <zipcode> fields
-And I am Adding an <address1> <address2> <city> <state> <zipcode> for my group
+And I have cleared the existing <address1><address2><city><state><zipcode> fields
+And I am Adding an <address1><address2><city><state><zipcode> for my group
 When I select the <type> of level of address from the dropdown
 And click on Save
-Then verify the <group> <address1> <address2> <city> <state> <zipcode> were saved
+Then verify the <group><address1><address2><city><state><zipcode> were saved
 
 Example:
 |group|address1|address2|city|state|zipcode|type|
@@ -108,8 +108,19 @@ And I open the emailed report
 And it displays the daily driver log with the main address<maddress1><maddress2><mcity><mstate><mzipcode>and terminal address <taddress1><taddress2><tcity><tstate><tzipcode> in the organization
 
 
+Scenario: TC6027 Edit Group Name
+Given I am logged in as HOS manager 
+And I am on the Organization page
+And I have selected a <group> 
+And I have clicked on Edit button
+And I have cleared the existing <name> fields
+And I edit the <name> for my group
+When click on Save
+Then verify the <name><address1><address2><city><state><zipcode> were saved
 
-
+Example:
+|groupname|name|address1|address2|city|state|zipcode|
+|SLB|Schlumberger|4225 West Lake Park Blvd|blank|West Valley|Utah|84120|main|
 
 
 
