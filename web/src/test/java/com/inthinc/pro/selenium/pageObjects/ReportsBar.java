@@ -43,10 +43,17 @@ public abstract class ReportsBar extends NavigationBar {
 
 		public TextLink devices() {
 			return new TextLink(ReportsBarEnum.DEVICES);
+			
+		}
+		
+		public TextLink performance(){
+		    return new TextLink(ReportsBarEnum.PERFORMANCE);
 		}
 
 		public TextLink waySmart() {
 			return new TextLink(ReportsBarEnum.WAYSMART);
+			
+	
 		}
 	}
 
