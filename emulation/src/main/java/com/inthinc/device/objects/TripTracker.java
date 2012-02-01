@@ -16,7 +16,7 @@ public class TripTracker implements Iterable<GeoPoint> {
     
     private int currentPoint;
     
-    private DeviceState state;
+    private final DeviceState state;
     
     private class TripIterator implements Iterator<GeoPoint>{
 
@@ -60,6 +60,9 @@ public class TripTracker implements Iterable<GeoPoint> {
     }
     
     public GeoPoint currentLocation(){
+    	if (trip.get(currentPoint)==null){
+    		return new GeoPoint();
+    	}
         return trip.get(currentPoint);
     }
     
