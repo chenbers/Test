@@ -57,7 +57,6 @@ public class WaysmartDevice extends DeviceBase {
             Direction comMethod, Map<DeviceProps, String> settings) {
         super(IMEI, server, settings, productVersion);
         state.setMcmID(MCM);
-        portal = server;
         state.setWaysDirection(comMethod);
         setState(147);
     }
@@ -67,9 +66,9 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     public WaysmartDevice(DeviceState state, Addresses server) {
-    	this(state.getImei(), state.getMcmID(), server, state.getWaysDirection());
-    	this.state = state;
+    	super(state, server);
 	}
+
 
 	@Override
     protected void ackFwdCmds(String[] reply) {
@@ -173,8 +172,9 @@ public class WaysmartDevice extends DeviceBase {
 
     }
 
-    public void setAccountID(int accountID) {
+    public WaysmartDevice setAccountID(int accountID) {
         state.setAccountID(accountID);
+        return this;
     }
 
     public WaysmartDevice setBaseOdometer(double odometer) {
@@ -183,16 +183,19 @@ public class WaysmartDevice extends DeviceBase {
     }
 
 
-    public void setEmployeeID(String employeeID) {
+    public WaysmartDevice setEmployeeID(String employeeID) {
         state.setEmployeeID(employeeID);
+        return this;
     }
 
-    public void setState(int state) {
+    public WaysmartDevice setState(int state) {
         this.state.setStateID(state);
+        return this;
     }
 
-    public void setVehicleID(String vehicleID) {
+    public WaysmartDevice setVehicleID(String vehicleID) {
         state.setVehicleID(vehicleID);
+        return this;
     }
 
     protected HashMap<DeviceProps, String> theirsToOurs(HashMap<?, ?> reply) {
@@ -208,6 +211,7 @@ public class WaysmartDevice extends DeviceBase {
 
     @Override
     protected WaysmartDevice was_speeding() {
+    	super.was_speeding();
         return this;
     }
 

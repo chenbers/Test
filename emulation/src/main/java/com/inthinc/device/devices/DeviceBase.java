@@ -48,19 +48,18 @@ public abstract class DeviceBase {
     protected final ArrayList<GeoPoint> speed_loc;
     protected final ArrayList<Integer> speed_points;
 
-    protected DeviceState state;
+    protected final DeviceState state;
     protected final TripTracker tripTracker;
 
     public DeviceBase(String IMEI, Addresses server,
             Map<DeviceProps, String> map, ProductType version) {
-        this(IMEI, version, map);
+        this(IMEI, version, map, server);
         MasterTest.print(server, Level.DEBUG);
-        portal = server;
-        initiate_device();
     }
 
     private DeviceBase(String IMEI, ProductType version,
-            Map<DeviceProps, String> settings) {
+            Map<DeviceProps, String> settings, Addresses server) {
+    	this.portal = server;
         state = new DeviceState(IMEI, version);
         state.setSettings(settings);
         tripTracker = new TripTracker(state);
@@ -69,14 +68,27 @@ public abstract class DeviceBase {
         speed_loc = new ArrayList<GeoPoint>();
         notes = new NoteManager();
         state.setMapRev(0);
+        initiate_device();
     }
 
-    private DeviceBase ackFwdCmds(List<HashMap<String, Object>> reply) {
+    public DeviceBase(DeviceState state, Addresses server) {
+    	this.portal = server;	
+    	this.state = state;
+        tripTracker = new TripTracker(state);
+        sbsModule = new HashMap<Integer, MapSection>();
+        speed_points = new ArrayList<Integer>();
+        speed_loc = new ArrayList<GeoPoint>();
+        notes = new NoteManager();
+        state.setMapRev(0);
+        initiate_device();
+	}
 
-        HashMap<String, Object> fwd = new HashMap<String, Object>();
+	private DeviceBase ackFwdCmds(List<Map<String, Object>> reply) {
+
+    	Map<String, Object> fwd = new HashMap<String, Object>();
 
         if (!reply.isEmpty()) {
-            Iterator<HashMap<String, Object>> itr = reply.iterator();
+            Iterator<Map<String, Object>> itr = reply.iterator();
             while (itr.hasNext()) {
                 fwd = itr.next();
                 // if (fwd.get("fwdID").equals(100)||fwd.get("fwdID").equals(1))
@@ -346,7 +358,7 @@ public abstract class DeviceBase {
         	Object[] replies = mcmProxy.sendNotes(state, sendingQueue);
             for (Object reply : replies){
                 if (reply instanceof ArrayList<?>) {
-                    ackFwdCmds((List<HashMap<String, Object>>) reply);
+                    ackFwdCmds((List<Map<String, Object>>) reply);
                 } else if (reply instanceof String[]) {
                     ackFwdCmds((String[]) reply);
                 } else if (reply != null) {

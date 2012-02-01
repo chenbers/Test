@@ -246,16 +246,11 @@ public class AutomationDeviceEvents {
     	
 		public LogoutEvent (DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.CLEAR_DRIVER, state, location);
-
+			endOfTripAttrs(state, note);
 			if (state.getProductVersion().equals(ProductType.WAYSMART)){
-				
+				note.addAttr(EventAttr.DRIVER_STR, state.getEmployeeID());
 			} else {
 				note.addAttr(EventAttr.LOGOUT_TYPE, LogoutMethod.RFID_LOGOUT.getIndex());
-				note.addAttr(
-		                EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_,
-		                state.getPointsPassedTheFilter());
-				note.addAttr(EventAttr.MPG, state.getMpg());
-				note.addAttr(EventAttr.MPG_DISTANCE, state.getMpgDistanceX100());
 				note.addAttr(EventAttr.RFID0, state.getRfidHigh());
 				note.addAttr(EventAttr.RFID1, state.getRfidLow());
 			}

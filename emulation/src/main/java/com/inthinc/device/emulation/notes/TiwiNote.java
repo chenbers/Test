@@ -2,6 +2,7 @@ package com.inthinc.device.emulation.notes;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,10 +19,10 @@ public class TiwiNote extends DeviceNote {
     
 
     public final Integer maprev;
-    
-    
 
-    public TiwiNote(DeviceNoteTypes type, AutomationCalendar time, GeoPoint location, Heading heading, int sats, int maprev, int speed, int odometerX100){
+    
+    public TiwiNote(DeviceNoteTypes type, AutomationCalendar time, GeoPoint location, 
+    		Heading heading, int sats, int maprev, int speed, int odometerX100){
     	super(type, time, location);
         this.sats = sats;
         this.heading = heading;
@@ -30,21 +31,22 @@ public class TiwiNote extends DeviceNote {
         this.odometer = odometerX100;
     }
     
+    public TiwiNote(DeviceNoteTypes type, Calendar time, GeoPoint location, 
+    		Heading heading, int sats, int maprev, int speed, int odometerX100){
+    	this(type, new AutomationCalendar(time), location, heading, sats,
+    			maprev, speed, odometerX100);
+    }
+    
     
     
     public TiwiNote( DeviceNoteTypes type ){
-    	super(type, new AutomationCalendar(), new GeoPoint(0.0, 0.0));
-        sats = 0;
-        heading = Heading.NORTH;
-        maprev = 0;
-        speed = 0;
-        odometer = 0;
+    	this(type, new AutomationCalendar(), null, Heading.NORTH, 0, 0, 0, 0);
     }
     
     public TiwiNote(DeviceNoteTypes type, DeviceState state, GeoPoint location) {
-		this(type, state.getTime(), location,
-				state.getHeading(), state.getSats(), state.getMapRev(), state
-						.getSpeed(), state.getOdometerX100());
+		this(type, state.getTime(), location, state.getHeading(), 
+				state.getSats(), state.getMapRev(), state.getSpeed(), 
+				state.getOdometerX100());
 	}
     
 

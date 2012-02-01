@@ -2,6 +2,7 @@ package com.inthinc.device.emulation.notes;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
 
 import org.apache.log4j.Level;
 
@@ -56,6 +57,17 @@ public class SatelliteEvent_t extends DeviceNote {
 		this.odometer = odometerX100;
 		m_nBoundaryID = stateID;
 		m_nDriverIdSiloDbVersion = dbDriverID;
+	}
+	
+	public SatelliteEvent_t(DeviceNoteTypes type, Calendar time,
+			GeoPoint location, boolean offRoad, boolean heavyDuty,
+			HOSFlags hosFlags, boolean speedingViolation,
+			boolean seatBeltViolation, boolean rpmViolation, Heading heading,
+			int sats, int speed, int speedLimit, int linkID, int odometerX100,
+			int stateID, int dbDriverID) {
+		this(type, new AutomationCalendar(time), location, offRoad, heavyDuty, hosFlags, speedingViolation,
+				seatBeltViolation, rpmViolation, heading, sats, speed, speedLimit, linkID, odometerX100,
+				stateID, dbDriverID);
 	}
 	
 	public SatelliteEvent_t(DeviceNoteTypes type, DeviceState state,

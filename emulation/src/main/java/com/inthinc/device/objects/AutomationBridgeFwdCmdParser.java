@@ -24,11 +24,12 @@ public class AutomationBridgeFwdCmdParser {
         List<MultiForwardCmd> commands = new ArrayList<MultiForwardCmd>();
         String[] strings = fwdCmds.split("FCMD");
         for (String string: strings){
-            if (string.isEmpty() || string.equals("[OK]")){
+            if (string.isEmpty() || string.startsWith("[OK]")){
                 continue;
             }
-            AutomationByteArrayInputStream bais = new AutomationByteArrayInputStream(("FCMD" + string).getBytes());
-            MultiForwardCmd packetHeader = classes.new MultiForwardCmd(bais);
+            String command = "FCMD" + string;
+            AutomationByteArrayInputStream bais = new AutomationByteArrayInputStream(command.getBytes());
+            MultiForwardCmd packetHeader = classes.new MultiForwardCmd(bais, command);
             commands.add(packetHeader);
             if (packetHeader.m_ID == MULTIPLE_FORWARDS){
                 for (int i=0;i<packetHeader.m_nCount;i++){

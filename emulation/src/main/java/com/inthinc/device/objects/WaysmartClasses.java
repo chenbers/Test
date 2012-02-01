@@ -20,7 +20,7 @@ public final class WaysmartClasses {
         public static final int SIZE = (Integer.SIZE * 2 + Byte.SIZE)
                 / Byte.SIZE;
 
-        public MultiForwardCmd(ByteArrayInputStream bais) {
+        public MultiForwardCmd(ByteArrayInputStream bais, String command) {
             this.m_ID = DeviceNote.byteToInt(bais, 4);
             this.m_version = (byte) bais.read();
             this.m_nCount = DeviceNote.byteToInt(bais, 4);

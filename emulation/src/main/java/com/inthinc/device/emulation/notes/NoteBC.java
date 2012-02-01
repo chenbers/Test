@@ -3,6 +3,7 @@ package com.inthinc.device.emulation.notes;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
@@ -73,12 +74,6 @@ public class NoteBC extends DeviceNote {
     
     static {
         types.add(DeviceNoteTypes.INSTALL);
-        types.add(DeviceNoteTypes.IGNITION_ON);
-        types.add(DeviceNoteTypes.IGNITION_OFF);
-        
-        types.add(DeviceNoteTypes.LOCATION);
-        
-        types.add(DeviceNoteTypes.NEWDRIVER_HOSRULE);
     }
     
     
@@ -169,7 +164,9 @@ public class NoteBC extends DeviceNote {
 	 * 4-driverID <br />
 	 * 
 	 */
-    public NoteBC(DeviceNoteTypes type, AutomationCalendar time, GeoPoint location, Heading heading, int sats, int speed, int speedLimit, int linkID, int odometerX100, int boundaryID, int driverID){
+    public NoteBC(DeviceNoteTypes type, AutomationCalendar time, GeoPoint location, 
+    		Heading heading, int sats, int speed, int speedLimit, int linkID, 
+    		int odometerX100, int boundaryID, int driverID){
     	super(type, time, location);
         this.heading = heading;
         this.sats = sats;
@@ -179,6 +176,28 @@ public class NoteBC extends DeviceNote {
         odometer = odometerX100;
         nBoundaryID = boundaryID;
         nDriverID = driverID;
+    }
+    
+	/**
+	 * 1-type <br />
+	 * 1-version <br />
+	 * 4-time <br />
+	 * 2-flags <br />
+	 * 4-lat <br />
+	 * 4-lng <br />
+	 * 1-speed <br />
+	 * 1-speedLimit <br />
+	 * 4-linkID <br />
+	 * 4-odometer <br />
+	 * 2-boundaryID <br />
+	 * 4-driverID <br />
+	 * 
+	 */
+    public NoteBC(DeviceNoteTypes type, Calendar time, GeoPoint location, 
+    		Heading heading, int sats, int speed, int speedLimit, 
+    		int linkID, int odometerX100, int boundaryID, int driverID){
+    	this(type, new AutomationCalendar(time), location, heading, sats, 
+    			speed, speedLimit, linkID, odometerX100, boundaryID, driverID);
     }
     
     public NoteBC(DeviceNoteTypes type, DeviceState state, GeoPoint location) {
