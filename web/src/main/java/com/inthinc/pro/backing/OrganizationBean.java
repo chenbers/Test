@@ -669,7 +669,7 @@ public class OrganizationBean extends BaseBean
     }
     public List<SelectItem> getDotOfficeTypeSelectItems()
     {
-        return SelectItemUtil.toList(DOTOfficeType.class, true);
+        return SelectItemUtil.toList(DOTOfficeType.class, true, DOTOfficeType.NONE);
     }
     public GroupDAO getGroupDAO()
     {

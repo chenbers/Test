@@ -79,18 +79,27 @@
       										<rich:treeNode id="fleet" type="FLEET" iconLeaf="/images/ico_truck.png"
       											icon="/images/ico_truck.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
-      											<h:outputText value="#{item.label}" />
+      											<ui:param name="labelKey" value="#{item.subType}_marker"/>
+      											<h:outputFormat value="#{messages[labelKey]}">
+      												<f:param value="#{item.label}"/>
+      											</h:outputFormat>
       										</rich:treeNode>
       										<rich:treeNode id="division" type="DIVISION"
       											iconLeaf="/images/ico_trucks.png"
       											icon="/images/ico_trucks.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
-      											<h:outputText value="#{item.label}" />
+      											<ui:param name="labelKey" value="#{item.subType}_marker"/>
+      											<h:outputFormat value="#{messages[labelKey]}">
+      												<f:param value="#{item.label}"/>
+      											</h:outputFormat>
       										</rich:treeNode>
       										<rich:treeNode id="team" type="TEAM" iconLeaf="/images/ico_team.png"
       											icon="/images/ico_team.png">
       											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
-      											<h:outputText value="#{item.label}" />
+      											<ui:param name="labelKey" value="#{item.subType}_marker"/>
+      											<h:outputFormat value="#{messages[labelKey]}">
+      												<f:param value="#{item.label}"/>
+      											</h:outputFormat>
       										</rich:treeNode>
       										<rich:treeNode id="driver" type="DRIVER" iconLeaf="/images/ico_steering_wheel.png"
       											icon="/images/ico_steering_wheel.png">
@@ -131,7 +140,16 @@
 								</script>
 							   <a4j:jsFunction name="refreshTree" reRender="organizationTreePanel,groupPanel" oncomplete="getNavigationTreeData()">
 							   </a4j:jsFunction>
-                               
+								<h:panelGroup rendered="#{organizationBean.accountIsHOS}">
+								<ul style="list-style: none;padding: 0;">
+									<li>
+										<h:outputText value="#{messages.DOTOfficeTypeMAIN_legend}"/>
+									</li>
+									<li>
+										<h:outputText value="#{messages.DOTOfficeTypeTERMINAL_legend}"/>
+									</li>
+								</ul>
+								</h:panelGroup>                               
 							</div>
 							</td>
 							<td valign="top">

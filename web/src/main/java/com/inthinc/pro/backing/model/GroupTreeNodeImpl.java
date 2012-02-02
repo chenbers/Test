@@ -9,6 +9,7 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
@@ -308,4 +309,14 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
     {
         return deviceDAO;
     }
+
+    @Override
+    public DOTOfficeType getSubType() {
+        if (baseEntity != null && baseEntity.getDotOfficeType() != null)
+        {
+            return baseEntity.getDotOfficeType();
+        }
+        return DOTOfficeType.NONE;
+    }
+
 }

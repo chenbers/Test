@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public enum DOTOfficeType implements BaseEnum {
+    NONE(0), 
     MAIN(1), 
     TERMINAL(2); 
 

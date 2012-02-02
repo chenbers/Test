@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.richfaces.model.SwingTreeNodeImpl;
 
 import com.inthinc.pro.model.BaseEntity;
+import com.inthinc.pro.model.DOTOfficeType;
 
 public abstract class BaseTreeNodeImpl<T extends BaseEntity> extends SwingTreeNodeImpl implements Serializable, Comparable<BaseTreeNodeImpl>
 {
@@ -22,6 +23,12 @@ public abstract class BaseTreeNodeImpl<T extends BaseEntity> extends SwingTreeNo
     
     protected String  label;
     protected Integer id;
+
+    
+    public DOTOfficeType getSubType() {
+        return null;
+    }
+
     protected T baseEntity;
     
     protected List<BaseTreeNodeImpl> childNodes;
