@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="Idling Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="654"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="ACCOUNT_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ENTITY_NAME" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RECORD_COUNT" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
+	<parameter name="BEGIN_DATE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="END_DATE" class="java.lang.String" isForPrompting="false"/>
+	<field name="groupName" class="java.lang.String"/>
+	<field name="driverName" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
+	<field name="lowIdlePercent" class="java.lang.Number"/>
+	<field name="highIdlePercent" class="java.lang.Number"/>
+	<field name="totalIdlePercent" class="java.lang.Number"/>
+	<field name="lowIdleTime" class="java.lang.Number"/>
+	<field name="highIdleTime" class="java.lang.Number"/>
+	<field name="totalIdleTime" class="java.lang.Number"/>
+	<field name="driveTime" class="java.lang.Number"/>
+	<field name="hasRPM" class="java.lang.Integer"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="52">
+			<image scaleImage="RetainShape" vAlign="Top">
+				<reportElement key="image-1" x="1" y="2" width="51" height="47"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-16" x="53" y="21" width="115" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-17" x="55" y="5" width="122" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-16" x="628" y="1" width="153" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-17" x="543" y="14" width="238" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.count}+" " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-20" x="417" y="31" width="365" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.days.reported} + " " + $P{BEGIN_DATE} + " - " + $P{END_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35">
+			<rectangle radius="2">
+				<reportElement key="rectangle-3" mode="Opaque" x="0" y="10" width="782" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="3" y="12" width="94" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.group}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="97" y="12" width="136" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.driver.name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="233" y="12" width="137" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.vehicle.name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="500" y="12" width="54" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.low.idle}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-5" x="556" y="12" width="27" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" x="585" y="12" width="61" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.high.idle}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="648" y="12" width="27" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement key="rectangle-2" x="196" y="17" width="0" height="0"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" x="442" y="12" width="56" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.drive.time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" x="677" y="12" width="70" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.total.idle}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-15" x="749" y="12" width="29" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="370" y="12" width="70" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.hasRPM}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="4" y="3" width="93" height="17"/>
+				<textElement rotation="None"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="97" y="3" width="136" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="233" y="3" width="137" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="500" y="3" width="54" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{lowIdleTime})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-5" x="556" y="3" width="27" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{lowIdlePercent}.floatValue())]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-6" x="585" y="3" width="61" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{highIdleTime})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-7" x="648" y="3" width="27" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{highIdlePercent}.floatValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement key="textField-10" x="442" y="3" width="56" height="17"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{driveTime})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-11" x="677" y="3" width="70" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{totalIdleTime})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-12" x="749" y="3" width="29" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{totalIdlePercent}.floatValue())]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="370" y="3" width="70" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{hasRPM}.intValue() == 1) ? $R{yes} : $R{no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26">
+			<line>
+				<reportElement key="line-1" x="0" y="5" width="782" height="1"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" x="638" y="7" width="143" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-18" x="0" y="7" width="198" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="26">
+			<line>
+				<reportElement key="line-2" x="0" y="5" width="782" height="1"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-15" x="638" y="7" width="143" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-19" x="0" y="7" width="198" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="10"/>
+	</summary>
+</jasperReport>
