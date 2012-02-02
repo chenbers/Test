@@ -373,7 +373,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	public ReportCriteria getIdlingVehicleReportCriteria(Integer groupID, Interval interval, Locale locale, Boolean initDataSet) {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName(), locale);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_VEHICLE_REPORT, group.getName(), locale);
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(MessageUtil.getMessageString("dateFormat", getLocale()));
         reportCriteria.addParameter("BEGIN_DATE", fmt.print(interval.getStart()));
         reportCriteria.addParameter("END_DATE", fmt.print(interval.getEnd()));
@@ -1255,6 +1255,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     DateTimeZone dateTimeZone = DateTimeZone.forID(person.getTimeZone().getID());
                     Interval interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
                     reportCriteriaList.add(getIdlingReportCriteria(reportSchedule.getGroupID(), interval, person.getLocale(), true));
+                    break;
+                case IDLING_VEHICLE_REPORT:
+                    DateTimeZone vDateTimeZone = DateTimeZone.forID(person.getTimeZone().getID());
+                    Interval vInterval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), vDateTimeZone), new DateMidnight(new DateTime(), vDateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
+                    reportCriteriaList.add(getIdlingVehicleReportCriteria(reportSchedule.getGroupID(), vInterval, person.getLocale(), true));
                     break;
                 case TEAM_STATISTICS_REPORT:
                     reportCriteriaList.add(getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, 

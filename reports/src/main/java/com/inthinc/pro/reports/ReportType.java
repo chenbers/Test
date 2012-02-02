@@ -13,6 +13,7 @@ public enum ReportType
     DRIVER_REPORT("Driver Report","DriverReport.jrxml","DriverReportRaw.jrxml"),
     VEHICLE_REPORT("Vehicle Report","VehicleReport.jrxml","VehicleReportRaw.jrxml"),
     IDLING_REPORT("Idling Report","IdlingReport.jrxml","IdlingReportRaw.jrxml"),
+    IDLING_VEHICLE_REPORT("Idling Vehicle Report","IdlingVehicleReport.jrxml","IdlingVehicleReportRaw.jrxml"),
     DEVICES_REPORT("Devices Report","DevicesReport.jrxml","DevicesReportRaw.jrxml"),
     OVERALL_SCORE("Overal Score","ScorePieReport.jrxml"),
     TREND("Trend Report","TrendReport.jrxml"),
