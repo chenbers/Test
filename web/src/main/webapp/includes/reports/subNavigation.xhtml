@@ -8,12 +8,12 @@
     xmlns:c="http://java.sun.com/jstl/core"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-    <h:form>
+    <h:form id="subNavForm">
        <div class="sub_nav">
            <div class="sub_nav-bg">
-               <ul>
+               <ul> <li>#{context}</li>
                    <li class="#{driversSelected}">
-                        <pretty:link id="#{context}-driversReport" mappingId="driversReport"><span>#{messages.subNavigation_drivers}</span></pretty:link>
+                        <pretty:link  id="#{context}-driversReport" mappingId="driversReport"><span>#{messages.subNavigation_drivers}</span></pretty:link>
                    </li>
                    <li class="#{vehiclesSelected}">
                          <pretty:link id="#{context}-vehiclesReport" mappingId="vehiclesReport"><span>#{messages.subNavigation_vehicles}</span></pretty:link>
