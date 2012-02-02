@@ -5,9 +5,12 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum ReportsBarEnum implements SeleniumEnums {
     DRIVERS("Drivers", "//div[@class='sub_nav-bg']/ul/li[1]/a"),
     VEHICLES("Vehicles", "//div[@class='sub_nav-bg']/ul/li[2]/a"),
-    IDLING("Idling", "//div[@class='sub_nav-bg']/ul/li[3]/a"),
-    DEVICES("Devices", "//div[@class='sub_nav-bg']/ul/li[4]/a"),
-    WAYSMART("waySmart", "//div[@class='sub_nav-bg']/ul/li[5]/a"),
+    IDLING("Idling Drivers", "//div[@class='sub_nav-bg']/ul/li[3]/a"),
+    IDLING_VEHICLES("Idling Vehicles", "//div[@class='sub_nav-bg']/ul/li[4]/a"),
+    DEVICES("Devices", "//div[@class='sub_nav-bg']/ul/li[5]/a"),
+    PERFORMANCE("Performance", "//div[@class='sub_nav-bg']/ul/li[6]/a"),
+    WAYSMART("waySmart", "//div[@class='sub_nav-bg']/ul/li[7]/a"),
+
     
     OVERALL_SCORE_DHX(null, "//input[@name='***-form:***:overallScoreFilter']"),
     SPEED_SCORE_DHX(null, "//input[@name='***-form:***:speedScoreFilter']"),
@@ -23,7 +26,7 @@ public enum ReportsBarEnum implements SeleniumEnums {
     TOOL_PDF("Export To PDF", "***-form:***-export_menu_item:anchor"),
     TOOL_EXCEL("Export To Excel", "***-form:***-exportExcelMEnuItem:icon"),
     
-    COUNTER("Showing XXX to YYY of ZZZ records", "***-form:header"),
+    COUNTER("Showing XXX to YYY of ZZZ records", "***-form:header"), 
 
     ;
 
