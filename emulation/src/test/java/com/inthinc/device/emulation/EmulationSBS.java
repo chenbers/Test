@@ -1,10 +1,12 @@
-package com.inthinc.sbs;
+package com.inthinc.device.emulation;
 
 import android.util.Log;
 
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.sbs.Sbs;
+import com.inthinc.sbs.SpeedLimit;
 
 public class EmulationSBS {
 	
