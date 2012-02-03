@@ -114,6 +114,7 @@ public class TripDriver extends Thread {
         LinkedList<DeviceNote> notes = new LinkedList<DeviceNote>();
         Iterator<GeoPoint> itr = tripTracker.iterator();
         AutomationCalendar start = tripTracker.getState().getTime();
+        notes.add(AutomationDeviceEvents.powerOn(state, tripTracker.currentLocation()).getNote());
         notes.add(AutomationDeviceEvents.ignitionOn(state, tripTracker.currentLocation()).getNote());
         
         int totalNotes = tripTracker.size()*100;
@@ -155,7 +156,9 @@ public class TripDriver extends Thread {
         AutomationCalendar stop = tripTracker.getState().getTime();
         state.setTripDuration(stop.getDelta(start));
         state.setPointsPassedTheFilter(90);
+        state.setSpeed(0);
         notes.add(AutomationDeviceEvents.ignitionOff(state, tripTracker.currentLocation()).getNote());
+        notes.add(AutomationDeviceEvents.powerOff(state, tripTracker.currentLocation()).getNote());
         
         return notes;
     }
