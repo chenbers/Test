@@ -68,5 +68,5 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
 
     }
     
-    public abstract void dealWithSpecialSettings(VehicleView vehicle, VehicleView batchItem, Map<String, Boolean> updateField);
+    public abstract void dealWithSpecialSettings(VehicleView vehicle, VehicleView batchItem, Map<String, Boolean> updateField, Boolean isBatchEdit);
 }

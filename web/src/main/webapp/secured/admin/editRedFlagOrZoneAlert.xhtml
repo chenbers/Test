@@ -389,15 +389,14 @@
                                 <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
                               </tr>
-                              <c:forEach begin="0" var="index" end="14">
+                              <c:forEach begin="0" var="index" end="14" step="5">
                                 <c:set var="id" value="speed#{index}" />
                                 <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagOrZoneAlertsBean.item.speedSelected[index]}"/>
-                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
-                                    <h:outputText value=" " />
-                                    <h:outputText value="mph" converter="MeasurementTextConverter"/>
+                                  	<ui:param name="msgKey" value="#{redFlagOrZoneAlertsBean.measurementType}_speedSetting#{index}"/>
+	                                <h:outputText value="#{messages[msgKey]}"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
                                     <rich:inputNumberSlider id="#{id}" value="#{redFlagOrZoneAlertsBean.item.speedSettings[index]}" 
@@ -427,7 +426,7 @@
                             <script type="text/javascript">
                               function bumpSpeeds(up)
                               {
-                                for (var i = 0; i &lt; 15; i++) {
+                                for (var i = 0; i &lt; 15; i+=5) {
                                     var check = document.getElementById("edit-form:speed" + i + "Selected");                                                                  
                                     check.checked = true;
                                                                             

@@ -629,9 +629,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     private void dealWithSpecialSettings(VehicleView vehicle){
         
-        if (isBatchEdit()){
-        	vehicle.getEditableVehicleSettings().dealWithSpecialSettings(vehicle, item, getUpdateField());
-        }
+       	vehicle.getEditableVehicleSettings().dealWithSpecialSettings(vehicle, item, getUpdateField(), isBatchEdit());
     }
     private void assignDriver(final VehicleView vehicleView)
     {

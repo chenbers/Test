@@ -16,6 +16,8 @@ import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class TiwiproSettingManager extends VehicleSettingManager{
 
+    private static final double DEFAULT_MAX_SPEED_LIMIT = 78.0;
+
     public TiwiproSettingManager(ConfiguratorDAO configuratorDAO, SensitivitySliders sensitivitySliders,
             ProductType productType, VehicleSetting vehicleSetting) {
         
@@ -43,8 +45,9 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         Integer hardAcceleration =  hardAccelerationSlider.getDefaultValueIndex();
         Integer hardBrake = hardBrakeSlider.getDefaultValueIndex();
         Integer[] speedSettings = convertFromSpeedSettings(TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
+        Double maxSpeed = DEFAULT_MAX_SPEED_LIMIT;
                 
-        return new TiwiproEditableVehicleSettings(vehicleID==null?-1:vehicleID, ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, idlingThresholdSeconds, idleBuzzerDefault);
+        return new TiwiproEditableVehicleSettings(vehicleID==null?-1:vehicleID, ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, idlingThresholdSeconds, idleBuzzerDefault, maxSpeed);
     }
     
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
@@ -57,11 +60,15 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         Integer hardTurn = hardTurnSlider.getSliderValueFromSettings(vs);
         Integer hardAcceleration = hardAccelerationSlider.getSliderValueFromSettings(vs);
         Integer hardBrake = hardBrakeSlider.getSliderValueFromSettings(vs);
-        Integer[] speedSettings = convertFromSpeedSettings(vs.getBestOption(SettingType.SPEED_SETTING.getSettingID()));        
+        Integer[] speedSettings = convertFromSpeedSettings(vs.getBestOption(SettingType.SPEED_SETTING.getSettingID())); 
+        Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.SPEED_LIMIT.getSettingID()));
+        if (maxSpeed < 1.0)
+            maxSpeed = DEFAULT_MAX_SPEED_LIMIT;
 
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
-        return new TiwiproEditableVehicleSettings(vs.getVehicleID(),ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, idlingThresholdSeconds, idleBuzzer);
+        return new TiwiproEditableVehicleSettings(vs.getVehicleID(),ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, idlingThresholdSeconds, idleBuzzer, maxSpeed);
     }
+    
     
     private Integer[] convertFromSpeedSettings(String speedSet){
         
@@ -149,11 +156,14 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 	                                  tiwiproEditableVehicleSettings.getSpeedSettingsString(), 
 	                                  vehicleSetting.getBestOption(SettingType.SPEED_SETTING.getSettingID()), 
 	                                  updateSpeedSettings(updateField));
-	       
 	       newSettings.addSettingIfNeeded(SettingType.IDLING_TIMEOUT, 
                    tiwiproEditableVehicleSettings.getIdlingSeconds().toString(), 
                    vehicleSetting.getBestOption(SettingType.IDLING_TIMEOUT.getSettingID()), 
-                   updateSpeedSettings(updateField));
+                   fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.idlingSeconds"));
+           newSettings.addSettingIfNeeded(SettingType.TIWI_SPEED_LIMIT, 
+                                       tiwiproEditableVehicleSettings.getMaxSpeed().toString(), 
+                                       vehicleSetting.getBestOption(SettingType.TIWI_SPEED_LIMIT.getSettingID()), 
+                                       fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.maxSpeed"));
 
 	       return newSettings.getDesiredSettings();
        }

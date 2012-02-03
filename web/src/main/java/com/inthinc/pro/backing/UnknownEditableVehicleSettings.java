@@ -23,7 +23,7 @@ public class UnknownEditableVehicleSettings extends EditableVehicleSettings {
 
 	@Override
 	public void dealWithSpecialSettings(VehicleView vehicle,
-			VehicleView batchItem, Map<String, Boolean> updateField) {
+			VehicleView batchItem, Map<String, Boolean> updateField, Boolean isBatchEdit) {
 	}
 
 }

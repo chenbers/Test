@@ -175,15 +175,14 @@
                               <th width="100"><h:outputText value="#{messages.editRedFlag_notification}" /></th>
                             </tr>
                             <c:set var="row" value="#{0}" />
-                            <c:forEach begin="0" var="index" end="14">
+                            <c:forEach begin="0" var="index" end="14" step="5">
                               <c:if test="#{redFlagOrZoneAlertsBean.item.speedSelected[index]}">
                                 <c:set var="id" value="speed#{index}" />
                                 <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((row % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
-                                    <h:outputText value=" " />
-                                    <h:outputText value="mph" converter="MeasurementTextConverter" />
+                                  	<ui:param name="msgKey" value="#{redFlagOrZoneAlertsBean.measurementType}_speedSetting#{index}"/>
+	                                  <h:outputText value="#{messages[msgKey]}"/>
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
                                     <rich:inputNumberSlider id="#{id}" disabled="true" 

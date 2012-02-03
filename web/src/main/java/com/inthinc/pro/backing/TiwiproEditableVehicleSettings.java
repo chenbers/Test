@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.AutologoffSetting;
 import com.inthinc.pro.backing.ui.IdlingSetting;
+import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.util.MessageUtil;
@@ -25,6 +26,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 	private Integer hardBrake; //SensitivitySlider value
 	private Integer hardTurn; //SensitivitySlider value
     private Integer hardVertical; //SensitivitySlider value
+    private Double maxSpeed;
      
     public TiwiproEditableVehicleSettings() {
         super();
@@ -32,7 +34,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 
     public TiwiproEditableVehicleSettings(Integer vehicleID, String ephone, Integer autoLogoffSeconds, Integer[] speedSettings,
                                  Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
-                                 Integer hardVertical, Integer idlingThreshold, boolean idleBuzzer) {
+                                 Integer hardVertical, Integer idlingThreshold, boolean idleBuzzer, Double maxSpeed) {
        
         super(vehicleID, ProductType.TIWIPRO_R74, ephone);
 
@@ -44,6 +46,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         setHardBrake(hardBrake);
         setHardTurn(hardTurn);
         setHardVertical(hardVertical);
+        setMaxSpeed(maxSpeed);
     }
     public void setSpeedSettings(Integer[] speedSettings) {
         if (speedSettings == null)
@@ -223,14 +226,31 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
        return true;
     }
     @Override
-    public void dealWithSpecialSettings(VehicleView vehicle, VehicleView batchItem, Map<String, Boolean> updateField){
-        
+    public void dealWithSpecialSettings(VehicleView vehicle, VehicleView batchItem, Map<String, Boolean> updateField, Boolean isBatchEdit){
         String keyBase = "speed";
-        for (int i=0; i< 15;i++){
-            Boolean isSpeedFieldUpdated = updateField.get(keyBase+i);
-            if(isSpeedFieldUpdated != null && isSpeedFieldUpdated){
-                ((TiwiproEditableVehicleSettings)vehicle.getEditableVehicleSettings()).getSpeedSettings()[i] = 
-                    ((TiwiproEditableVehicleSettings)batchItem.getEditableVehicleSettings()).getSpeedSettings()[i];
+        
+        TiwiproEditableVehicleSettings editedSettings = isBatchEdit ? ((TiwiproEditableVehicleSettings)batchItem.getEditableVehicleSettings()) : ((TiwiproEditableVehicleSettings)vehicle.getEditableVehicleSettings()); 
+        for (int i=0; i< 15;i+=5){
+            Boolean isSpeedFieldUpdated = true;
+            if (isBatchEdit)
+                isSpeedFieldUpdated = updateField.get(keyBase+i);
+            if(isSpeedFieldUpdated != null && isSpeedFieldUpdated) {
+                Integer setting = editedSettings.getSpeedSettings()[i];
+                for (int j = i+1; j < i+5; j++) {
+                    editedSettings.getSpeedSettings()[j] = setting;
+                    if (isBatchEdit)
+                        updateField.put(keyBase+j, Boolean.TRUE);
+                }
+            }
+        }
+    
+        if (isBatchEdit) {
+            for (int i=0; i< 15;i++){
+                Boolean isSpeedFieldUpdated = updateField.get(keyBase+i);
+                if(isSpeedFieldUpdated != null && isSpeedFieldUpdated){
+                    ((TiwiproEditableVehicleSettings)vehicle.getEditableVehicleSettings()).getSpeedSettings()[i] = 
+                        ((TiwiproEditableVehicleSettings)batchItem.getEditableVehicleSettings()).getSpeedSettings()[i];
+                }
             }
         }
     }
@@ -240,5 +260,20 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
         context.addMessage(field, message);
 
+    }
+    public Double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(Double maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+    
+    public Integer getMaxSpeedLimitInteger() {
+        return NumberUtil.intValue(getMaxSpeed());
+    }
+
+    public void setMaxSpeedLimitInteger(Integer maxSpeedLimitInteger) {
+        setMaxSpeed((double) maxSpeedLimitInteger);
     }
 }

@@ -73,7 +73,8 @@ public enum SettingType implements BaseEnum
     DOT_VEHICLE_TYPE(45, 1261, 0, 0, "hos_vehicle_type"),
     EVENT_IDLING(46, 105, 2, 1, "idlingEvent"),
     IDLING_TIMEOUT(47,106, 64, 60, "idleThreshold"),
-    BUZZER_IDLE(48, 184, 2, 0, "idleBuzzer");
+    BUZZER_IDLE(48, 184, 2, 0, "idleBuzzer"),
+    TIWI_SPEED_LIMIT(49,14,0,0,"speed_limit");
     
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table

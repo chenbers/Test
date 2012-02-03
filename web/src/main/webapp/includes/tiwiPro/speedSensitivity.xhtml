@@ -54,7 +54,7 @@
   }
   function bumpSpeeds(up,checkboxPrefix,checkboxSet)
   {
-    for (var i = 0; i &lt; 15; i++)
+    for (var i = 0; i &lt; 15; i+=5)
     {
       if ( checkboxSet ) {
       	var check = document.getElementById("#{formName}:" + checkboxPrefix + "speed" + i);                                 
@@ -102,13 +102,14 @@
                                 <th><h:outputText value="#{messages.editDevice_speedHeader}" /></th>
                                 <th colspan="2"><h:outputText value="#{messages.editDevice_speedSettingHeader}" /></th>
                               </tr>
-                              <c:forEach begin="0" var="index" end="14">
+                              <c:forEach begin="0" var="index" end="14" step="5">
                                 <c:set var="id" value="speed#{index}" />
                                 <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{id}" value="#{updateField[id]}" />
-                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphLabelConverter"/>
+                                    <ui:param name="msgKey" value="#{vehiclesBean.measurementType}_speedSettingShort#{index}"/>
+	                                <h:outputText value="#{messages[msgKey]}"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
@@ -132,6 +133,23 @@
                                   </td>
                                 </tr>
                               </ui:fragment>
+                              <tr>
+                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}_maxSpeed" value="#{updateField['editableVehicleSettings.maxSpeed']}" />
+                                	<h:outputText value="#{messages.editDevice_speedMax}"/>
+                                </td>
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
+                                          id="#{context}_maxSpeed" value="#{editableVehicleSettings.maxSpeedLimitInteger}" width="250"
+                                          converter="MphToKphConverter"
+                                          showToolTip="false" showBoundaryValues="false" 
+                                          minValue="${tiwiprofn:convertMphToKph(25)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1" 
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id);"/>
+                                  </td>
+                                <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                                  <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
+                                </td>
+                              </tr>
                             </table>
 
                             <div class="spacer"></div>
@@ -320,7 +338,7 @@
                                  <tr class="tableOdd">
                                  	<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	            	<ui:param name="messageKey" value="editDevice_idling"/>
-                                      	<h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idling" value="#{updateField['editableVehicleSettings.idlingSeconds']}" />
+                                      	<h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idlingThreshold" value="#{updateField['editableVehicleSettings.idlingSeconds']}" />
                                       	<h:outputText value="#{messages[messageKey]}" />
                                    	</td>
                                    	<td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">

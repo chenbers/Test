@@ -401,10 +401,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                         updateField.put("speedSettings", Boolean.TRUE);
                         Boolean selected[]=this.getItem().getSpeedSelected();
                         Integer settings[]=this.getItem().getSpeedSettings();
-                        for (int i=0; i<selected.length; i++)
+                        for (int i=0; i<selected.length; i+=5)
                         {
-                            if (!selected[i])
+                            if (!selected[i]) 
                                 settings[i]=null;
+                            
+                            for (int j = i+1; j < i+5; j++)
+                                settings[j] = settings[i];
                         }
                         getItem().setSpeedSettings(settings);
                     }
