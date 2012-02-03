@@ -38,7 +38,7 @@ import com.inthinc.pro.service.exceptionMappers.BaseExceptionMapper;
 /**
  * Integration test for Group Service Implementation.
  */
-//@Ignore
+@Ignore
 public class GroupServiceTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(GroupServiceTest.class);
     private static int GROUP_ID = 3;
@@ -64,7 +64,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
      * Test if Get DriverLocations service returns the correct content and response.
      */
     @Test
-    @Ignore
+    //@Ignore
     public void testGetGroupDriverLocations() {
         logger.info("Testing Get DriverLocations service... ");
       
