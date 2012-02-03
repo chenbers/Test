@@ -1100,7 +1100,7 @@ public class SiloServiceTest {
         team2Group.setGroupID(groupID);
         // find individual
         // TODO: Should this field be ignored?
-        String ignoreFields[] = { "zoneRev" };
+        String ignoreFields[] = { "zoneRev", "dotOfficeType" };
         Group returnedGroup = groupDAO.findByID(fleetGroup.getGroupID());
         Util.compareObjects(fleetGroup, returnedGroup, ignoreFields);
         returnedGroup = groupDAO.findByID(regionGroup.getGroupID());
