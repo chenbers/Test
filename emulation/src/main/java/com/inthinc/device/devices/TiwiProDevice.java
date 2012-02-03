@@ -8,8 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
+import android.util.Log;
 
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.inthinc.device.emulation.enums.DeviceEnums.FwdCmdStatus;
@@ -28,9 +29,7 @@ import com.inthinc.device.objects.ZoneManager;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
-import com.inthinc.pro.automation.utils.StackToString;
 
 public class TiwiProDevice extends DeviceBase {
 
@@ -52,7 +51,7 @@ public class TiwiProDevice extends DeviceBase {
 
     public TiwiProDevice(String IMEI, Addresses server,
             Map<DeviceProps, String> map) {
-        super(IMEI, server, map, ProductType.TIWIPRO_R74);
+        super(IMEI, ProductType.TIWIPRO_R74, map, server);
     }
 
     @Override
@@ -95,7 +94,7 @@ public class TiwiProDevice extends DeviceBase {
                 }
             }
         } catch (Exception e) {
-            logger.debug(StackToString.toString(e));
+            Log.d(null, e);
             return false;
         }
 
@@ -105,7 +104,7 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     public TiwiProDevice createAckNote(Map<String, Object> reply) {
-    	MasterTest.print("Forward Command from Server: " + reply, Level.INFO);
+    	Log.i("Forward Command from Server: " + reply);
         if (((Integer) reply.get("fwdID")) > 100) {
             TiwiNote ackNote = new TiwiNote(
                     DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
@@ -114,7 +113,7 @@ public class TiwiProDevice extends DeviceBase {
                     FwdCmdStatus.FWDCMD_RECEIVED);
             notes.addNote(ackNote);
             addNote(ackNote);
-            MasterTest.print(ackNote, Level.DEBUG);
+            Log.d(null, ackNote);
         }
         processCommand(reply);
         return this;
@@ -131,8 +130,8 @@ public class TiwiProDevice extends DeviceBase {
         String hessian = SHA1Checksum.getSHA1Checksum(lastDownload);
         getFirmwareFromSVN(versionNumber);
         String svn = SHA1Checksum.getSHA1Checksum(lastDownload);
-        System.out.println(hessian);
-        System.out.println(svn);
+        Log.d(null, hessian);
+        Log.d(null, svn);
         return hessian.equals(svn);
     }
 
@@ -176,7 +175,7 @@ public class TiwiProDevice extends DeviceBase {
             return AutomationFileHandler.downloadSvnDirectory(svnUrl,
                     fileName.replace("-svn", ""), file);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(null, e);
         }
         return false;
     }
@@ -218,7 +217,7 @@ public class TiwiProDevice extends DeviceBase {
                     map);
 //            zones = new ZoneManager((byte[]) reply.get("f"));
         } catch (Exception e) {
-        	MasterTest.print(e);
+        	Log.e(null, e);
             return false;
         }
 
@@ -282,7 +281,7 @@ public class TiwiProDevice extends DeviceBase {
         ackNote.addAttr(EventAttr.FWDCMD_ID, reply.get("fwdID"));
         ackNote.addAttr(EventAttr.FWDCMD_STATUS,
                 FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
-        MasterTest.print(ackNote, Level.DEBUG);
+        Log.d(null, ackNote);
         notes.addNote(ackNote);
         // check_queue();
 

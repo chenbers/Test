@@ -12,12 +12,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.log4j.Level;
+
+import android.util.Log;
 
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
@@ -30,13 +32,13 @@ import com.inthinc.device.emulation.notes.SatelliteEvent_t;
 import com.inthinc.device.emulation.notes.SatelliteStrippedConfigurator;
 import com.inthinc.device.emulation.notes.TiwiNote;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
+import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.hessian.tcp.ProDAOException;
 import com.inthinc.device.noteservice.NoteService;
 import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.utils.HTTPCommands;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
 
@@ -70,21 +72,21 @@ public class MCMProxyObject implements MCMService{
     public MCMProxyObject(Addresses server) {
         this.server = server;
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
-        MasterTest.print("MCM Server is " + server, Level.DEBUG);
+        Log.d("MCM Server is " + server);
         proxy = getHessian.getMcmProxy(server);
     }
     
 
     private void printReply(Object reply){
-    	MasterTest.print(reply, Level.DEBUG, 3);
+    	Log.d("%s", reply);
     }
     
     private void printNote(DeviceNote note){
-    	MasterTest.print(note, Level.DEBUG, 3);
+    	Log.d("%s", note);
     }
     
     private void printOther(Object other){
-    	MasterTest.print(other, Level.DEBUG, 3);
+    	Log.d("%s", other);
     }
     
     public static void processDrivers(Map<Integer, Map<String, String>> driversMap){
@@ -101,7 +103,7 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> tiwiNote(String mcmID, List<? extends DeviceNote> noteList){
         if (regularNote ){
             List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
-            MasterTest.print("\nnote(mcmID=%s, noteList=%s)", Level.DEBUG, mcmID, noteList);
+            Log.d("\nnote(mcmID=%s, noteList=%s)", mcmID, noteList);
             for (DeviceNote note : noteList){
                 byte[] array = note.Package();
                 temp.add(array);
@@ -137,7 +139,7 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> dumpSet(String mcmID, Integer version,
             Map<Integer, String> settings) {
         printOther(settings);
-        MasterTest.print("IMEI:%s, Version:%d", Level.DEBUG, mcmID, version);
+        Log.d("IMEI:%s, Version:%d", mcmID, version);
         List<Map<String, Object>> reply = proxy.dumpSet(mcmID, version, settings);
         printReply(reply);
         return reply;
@@ -259,7 +261,7 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> notebc(String mcmID, Direction comType,
             List<? extends DeviceNote> noteList, String imei){
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
-        MasterTest.print("\nnotebc(mcmID=%s, connectType=%s, noteList=%s)", Level.DEBUG, mcmID, comType, noteList);
+        Log.d("\nnotebc(mcmID=%s, connectType=%s, noteList=%s)", mcmID, comType, noteList);
         
         for (DeviceNote note : noteList){
             if (note.getType() == DeviceNoteTypes.INSTALL || comType.equals(Direction.sat)){
@@ -291,29 +293,30 @@ public class MCMProxyObject implements MCMService{
     	for (DeviceNote note: sendingQueue){
 	    	byte[] packaged = new SatNote(note, imei).Package();
 	    	try {
-	    		MasterTest.print("Sending " + note);
-	    		MasterTest.print("Creating socket");
+	    		Log.i("Sending " + note);
+	    		Log.i("Creating socket");
 	        	Socket socket =  new Socket(server.getMCMUrl(), server.getSatPort());
 	    		ByteArrayOutputStream out =  new ByteArrayOutputStream(); 
 	    		out.write(packaged, 0, packaged.length);
-	    		MasterTest.print("Writing to socket");
+	    		Log.i("Writing to socket");
 	    		out.writeTo(socket.getOutputStream());
 	    		out.flush();
 	    		out.close();
 	    		
 	    		socket.getOutputStream().flush();
 	    		socket.close();
+	            DeviceStatistics.addCall();
 	    		
 			} catch (UnknownHostException e) {
-				MasterTest.print(e, Level.FATAL);
+				Log.wtf("%s", e);
 			} catch (IOException e) {
-				MasterTest.print(e, Level.FATAL);
+				Log.wtf("%s", e);
 			}
     	}
     }
     
     public String[] sendHttpNote(String mcmID, Direction comType,
-            List<? extends DeviceNote> sendingQueue, String imei){
+            List<? extends DeviceNote> sendingQueue, String imei) throws ClientProtocolException, IOException{
         
         HTTPCommands http = new HTTPCommands();
         List<String> reply = new ArrayList<String>();
@@ -349,7 +352,7 @@ public class MCMProxyObject implements MCMService{
             method.setEntity(entity);
                 
         	reply.add(http.httpRequest(method));
-            
+            DeviceStatistics.addCall();
             printNote(note);
         }
         return reply.toArray(new String[]{});
@@ -377,11 +380,18 @@ public class MCMProxyObject implements MCMService{
     public Object sendNotes(DeviceState state, DeviceNote note) {
         LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
         list.add(note);
-        MasterTest.print(note);
-        return sendNotes(state, list);
+        Log.d("%s", note);
+        try {
+			return sendNotes(state, list);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return null;
     }
     
-    public Object sendNotes(DeviceState state, List<DeviceNote> notes){
+    public Object sendNotes(DeviceState state, List<DeviceNote> notes) throws ClientProtocolException, IOException{
     	Object reply = null;
     	Class<? extends DeviceNote> clazz = notes.get(0).getClass();
     	if (clazz.equals(NoteBC.class)) {
@@ -451,19 +461,17 @@ public class MCMProxyObject implements MCMService{
 	            	noteClass = SatelliteStrippedConfigurator.class;
 	            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
 	            }
+	            sendingQueue.remove(noteClass);
 	        } catch (Exception e) {
-	        	MasterTest.print(
-	                    "Error from Note with IMEI: " + state.getImei() + "  "
+	        	Log.wtf("Error from Note with IMEI: " + state.getImei() + "  "
 	                            + StackToString.toString(e) + "\n"
 	                            + sendingQueue + "\nCurrent Note Count is "
 	                            + DeviceStatistics.getHessianCalls()
 	                            + "\nCurrent time is: "
 	                            + System.currentTimeMillis()
 	                            + "\nNotes Started at: "
-	                            + DeviceStatistics.getStart().epochTime(),
-	                    Level.FATAL);
-	        }finally {
-	            sendingQueue.remove(noteClass);
+	                            + DeviceStatistics.getStart().epochTime()
+	                   );
 	        }
         }
         
@@ -477,18 +485,36 @@ public class MCMProxyObject implements MCMService{
     }
 
 	public Object dumpSet(DeviceState state, Map<Integer, String> settings) {
-		if (state.getProductVersion().equals(ProductType.WAYSMART)){
-			return dumpSet(state.getMcmID(), state.getProductVersion().getIndex(), settings);
-		} else {
-			return dumpSet(state.getImei(), state.getProductVersion().getIndex(), settings);
+		try {
+				if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				return dumpSet(state.getMcmID(), state.getProductVersion().getIndex(), settings);
+			} else {
+				return dumpSet(state.getImei(), state.getProductVersion().getIndex(), settings);
+			}
+		} catch (HessianException e){
+			if (e.getErrorCode()==304){
+				Log.i("Device probably not assigned to a vehicle, got 304");
+			} else {
+				throw e;
+			}
 		}
+		return null;
 	}
 
 	public Object reqSet(DeviceState state) {
-		if (state.getProductVersion().equals(ProductType.WAYSMART)){
-			return reqSet(state.getMcmID());
-		} else {
-			return reqSet(state.getImei());
+		try {
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				return reqSet(state.getMcmID());
+			} else {
+				return reqSet(state.getImei());
+			}
+		} catch (HessianException e){
+			if (e.getErrorCode()==304){
+				Log.i("Device probably not assigned to a vehicle, got 304");
+			} else {
+				throw e;
+			}
 		}
+	return null;
 	}
 }

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.device.CassandraProperties;
 import com.inthinc.device.CassandraPropertiesBean;
@@ -17,7 +17,6 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationThread;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class VariableTripCreator {
 
@@ -48,7 +47,7 @@ public class VariableTripCreator {
         AutomationCalendar secondTrip = new AutomationCalendar();
         secondTrip.addToDay(1);
         
-        MasterTest.print(portal);
+        Log.d("%s", portal);
         int threads = Thread.activeCount();
 
         long start = System.currentTimeMillis();
@@ -84,7 +83,7 @@ public class VariableTripCreator {
         }
         int count = Thread.activeCount();
         while (count > threads ){
-            MasterTest.print("Still running " + (count - threads) + " active threads", Level.INFO);
+            Log.i("Still running " + (count - threads) + " active threads");
             count = Thread.activeCount();
             AutomationThread.pause(1);
         }
@@ -93,18 +92,18 @@ public class VariableTripCreator {
             MCMProxyObject.closeService();
         } catch (Exception e) {}
         
-        MasterTest.print("Starting time is " + DeviceStatistics.getStart().epochTime());
-        MasterTest.print("Ending time is " + DeviceStatistics.getStop().epochTime());
-        MasterTest.print("We made " + DeviceStatistics.getHessianCalls());
-        MasterTest.print("We took :" + DeviceStatistics.getTimeDeltaL() + " milliSeconds to run");
-        MasterTest.print("This is an average of " + DeviceStatistics.getCallsPerMinute() + " calls per minute");
+        Log.i("Starting time is " + DeviceStatistics.getStart().epochTime());
+        Log.i("Ending time is " + DeviceStatistics.getStop().epochTime());
+        Log.i("We made " + DeviceStatistics.getHessianCalls());
+        Log.i("We took :" + DeviceStatistics.getTimeDeltaL() + " milliSeconds to run");
+        Log.i("This is an average of " + DeviceStatistics.getCallsPerMinute() + " calls per minute");
     }
         
     public static void main(String[] args){
         CassandraPropertiesBean cpb = CassandraProperties.getPropertyBean();
         
         Integer totalTime = cpb.getMinutes() * 60 + cpb.getSeconds();
-        VariableTripCreator test = new VariableTripCreator(Addresses.DEV);
+        VariableTripCreator test = new VariableTripCreator(Addresses.QA);
         if (totalTime == 0){
             test.once  = true;
         }

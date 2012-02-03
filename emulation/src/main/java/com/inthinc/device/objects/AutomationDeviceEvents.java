@@ -1,6 +1,6 @@
 package com.inthinc.device.objects;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.device.devices.DeviceBase;
 import com.inthinc.device.emulation.enums.DeviceEnums.LogoutMethod;
@@ -11,7 +11,6 @@ import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.pro.automation.enums.ProductType;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutomationDeviceEvents {
 	
@@ -313,7 +312,7 @@ public class AutomationDeviceEvents {
                              ((deltaY) + 600l) * 1210l +
                              ((deltaZ) + 600l);
             
-            MasterTest.print(packedDeltaV, Level.DEBUG);
+            Log.d(packedDeltaV + "");
             return packedDeltaV;
         }
         

@@ -3,10 +3,8 @@ package com.inthinc.device.emulation.enums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.interfaces.IndexEnum;
 
-
-public enum DeviceNoteTypes implements IndexEnum {
+public enum DeviceNoteTypes  {
     
 	/**
 	 * Generated when a "crash" is detected <br/>
@@ -480,6 +478,10 @@ public enum DeviceNoteTypes implements IndexEnum {
 //    @Override
     public Integer getIndex() {
         return code;
+    }
+    
+    public Integer getCode() {
+    	return code;
     }
     
     public EventAttr[] getAttributes(){

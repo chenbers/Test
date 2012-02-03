@@ -5,14 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import android.util.Log;
 
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.pro.automation.enums.ProductType;
 
 public class ScoringNoteSorter {
 	
-	private final static Logger logger = Logger.getLogger(ScoringNoteSorter.class);
 
 	private static final String odometer = "odometer";
 	private static final String forgiven = "forgiven";
@@ -42,7 +41,7 @@ public class ScoringNoteSorter {
 
 	public void preProcessNotes(List<Map<String, Object>> lotsANotes, ProductType type){
 
-		logger.info("Number of Notes == "+lotsANotes.size());
+		Log.i("Number of Notes == "+lotsANotes.size());
 		speedCategories(lotsANotes, type);
 		
 		aggressive = new HashMap<Long, Map<String, Integer>>();
@@ -103,19 +102,19 @@ public class ScoringNoteSorter {
 			}
 			
 		}
-		logger.info("Total Mileage == " + mileage);
+		Log.i("Total Mileage == " + mileage);
 		
-		logger.debug("Idle Map  == " +idleing);
-		logger.info("Idle       NumNotes == " +idleing.size());
+		Log.d("Idle Map  == " +idleing);
+		Log.i("Idle       NumNotes == " +idleing.size());
 		
-		logger.debug("Aggressive Map  == " +aggressive);
-		logger.info("Aggressive NumNotes == " +aggressive.size());
+		Log.d("Aggressive Map  == " +aggressive);
+		Log.i("Aggressive NumNotes == " +aggressive.size());
 		
-		logger.debug("Speeding Map  == " +speeding);
-		logger.info("Speeding   NumNotes == " +speeding.size());
+		Log.d("Speeding Map  == " +speeding);
+		Log.i("Speeding   NumNotes == " +speeding.size());
 		
-		logger.debug("Seatbelt Map  == " +seatbelt);
-		logger.info("Seatbelt   NumNotes == " +seatbelt.size());
+		Log.d("Seatbelt Map  == " +seatbelt);
+		Log.i("Seatbelt   NumNotes == " +seatbelt.size());
 		
 	}
 
@@ -141,7 +140,7 @@ public class ScoringNoteSorter {
 			else if (l <= 64 ) miles[3]+=m;
 			else miles[4]+=m;
 		}
-		logger.info( "Mile Categories  ==  " +miles[0]+", "+miles[1]+", "+miles[2]+", "+miles[3]+", "+miles[4]);
+		Log.i( "Mile Categories  ==  " +miles[0]+", "+miles[1]+", "+miles[2]+", "+miles[3]+", "+miles[4]);
 		categories = miles;
 	}
 	

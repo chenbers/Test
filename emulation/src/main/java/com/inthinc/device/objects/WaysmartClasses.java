@@ -4,10 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.device.emulation.notes.DeviceNote;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public final class WaysmartClasses {
 
@@ -24,9 +23,7 @@ public final class WaysmartClasses {
             this.m_ID = DeviceNote.byteToInt(bais, 4);
             this.m_version = (byte) bais.read();
             this.m_nCount = DeviceNote.byteToInt(bais, 4);
-            MasterTest.print(
-                    String.format("Got %d forward commands", m_nCount),
-                    Level.INFO);
+            Log.i("Got %d forward commands", m_nCount);
             events = new ArrayList<ForwardCommandEventInterface>();
         }
 
@@ -55,7 +52,7 @@ public final class WaysmartClasses {
                 nLength = DeviceNote.byteToInt(bais, 4);
             }
 
-            MasterTest.print(toString(), Level.INFO);
+            Log.i(toString());
         }
 
         @Override
@@ -100,7 +97,6 @@ public final class WaysmartClasses {
             for (;length>0;length--){
                 m_data.add((byte)bais.read());
             }
-            MasterTest.print(m_data.get(m_data.size()-1));
         }
         
         @Override

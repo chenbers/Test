@@ -8,14 +8,13 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.HessianProtocolException;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class HessianTCPProxy implements InvocationHandler {
 
@@ -143,13 +142,6 @@ public class HessianTCPProxy implements InvocationHandler {
 
 			if (method.getReturnType().isInstance(value)) {
 				in.completeReply();
-
-				// if (profileLog.isInfoEnabled())
-				// {
-				// profileLog.info(method.getName() + " " + (new
-				// Date().getTime() - traceStartTime.getTime()) + " ms");
-				// }
-
 				return value;
 
 			}
@@ -163,21 +155,21 @@ public class HessianTCPProxy implements InvocationHandler {
 			return null;
 
 		} catch (HessianProtocolException e) {
-			MasterTest.print(e, Level.ERROR);
+			Log.e(null, e);
 			throw new HessianRuntimeException(e);
 		} finally {
 			try {
 				if (is != null)
 					is.close();
 			} catch (Throwable e) {
-				MasterTest.print(e, Level.ERROR);
+				Log.e(null, e);
 			}
 
 			try {
 				if (socket != null)
 					socket.close();
 			} catch (Throwable e) {
-				MasterTest.print(e, Level.ERROR);
+				Log.e(null, e);
 			}
 		}
 	}

@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
@@ -12,7 +12,6 @@ import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class SatelliteEvent_t extends DeviceNote {
 
@@ -126,8 +125,7 @@ public class SatelliteEvent_t extends DeviceNote {
 		temp[0] = (byte) (temp.length & 0xFF);
 
 		for (int i = 0; i < temp.length; i++) {
-			MasterTest.print("Byte %d = %02X", Level.DEBUG, i,
-					(temp[i] & 0xFF));
+			Log.d("Byte %d = %02X", i, (temp[i] & 0xFF));
 		}
 
 		return temp;

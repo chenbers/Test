@@ -6,12 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
-import com.inthinc.device.emulation.enums.DeviceNoteTypes;
-import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
 import com.inthinc.device.emulation.enums.DeviceEnums.TripFlags;
+import com.inthinc.device.emulation.enums.DeviceNoteTypes;
+import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
@@ -23,7 +23,7 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.sbs.Sbs;
 
 public class WaysmartDevice extends DeviceBase {
 	
@@ -55,10 +55,11 @@ public class WaysmartDevice extends DeviceBase {
 
     public WaysmartDevice(String IMEI, String MCM, Addresses server,
             Direction comMethod, Map<DeviceProps, String> settings) {
-        super(IMEI, server, settings, productVersion);
+        super(IMEI, productVersion, settings, server);
         state.setMcmID(MCM);
         state.setWaysDirection(comMethod);
         setState(147);
+        sbs = new Sbs(MCM, state.getSbsBaseRevision(), server);
     }
 
     public WaysmartDevice(String IMEI, String MCM, Direction comMethod) {
@@ -67,6 +68,7 @@ public class WaysmartDevice extends DeviceBase {
 
     public WaysmartDevice(DeviceState state, Addresses server) {
     	super(state, server);
+        sbs = new Sbs(state.getMcmID(), state.getSbsBaseRevision(), server);
 	}
 
 
@@ -132,8 +134,7 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     protected WaysmartDevice set_IMEI(HashMap<DeviceProps, String> settings) {
-    	MasterTest.print("IMEI: " + state.getImei() + ", Server: " + portal,
-                Level.DEBUG);
+    	Log.d(null, "IMEI: " + state.getImei() + ", Server: " + portal);
         state.setSetting(DeviceProps.MCM_ID, state.getMcmID());
         state.setSetting(DeviceProps.WITNESS_ID, state.getImei());
         return this;

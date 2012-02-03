@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.device.devices.WaysmartDevice.Direction;
-import com.inthinc.device.emulation.enums.DeviceEnums.TripFlags;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
 import com.inthinc.device.emulation.enums.DeviceEnums.HosRuleSet;
+import com.inthinc.device.emulation.enums.DeviceEnums.TripFlags;
 import com.inthinc.device.emulation.enums.DeviceEnums.ViolationFlags;
 import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.enums.MapSection;
@@ -22,7 +22,6 @@ import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class DeviceState {
 
@@ -33,20 +32,18 @@ public class DeviceState {
     private int avgSpeed = 50;
     private int boundaryID = 1;
 
-    private int tripFlags = 0;
-
     private Integer course = 100;
+
     private int driverID = 1;
     private String employeeID = "";
     private boolean exceedingRPMLimit = false;
     private final AutomationCalendar gpsLockTime;
     private Integer GPSPercent = 95;
     private int gracePeriod = 5;
-
     private Heading heading = Heading.NORTH;
+
     private int headlightOffDistanceX100 = 0;
     private boolean headlightsOff = false;
-
     private boolean heavyDuty = false;
 
     private int highIdle = 0;
@@ -54,40 +51,40 @@ public class DeviceState {
     private HOSFlags hosFlags = HOSFlags.OFF_DUTY;
 
     private HosRuleSet hosRuleSet = HosRuleSet.US_7DAY;
-    
+
     private HOSState hosState = HOSState.OFF_DUTY;
-
+    
     private Boolean ignition_state = false;
-    private final String imei;
 
+    private final String imei;
     private String lastDownload;
 
     private int linkID = 0;
+
     private int lowIdle = 0;
     private Integer lowPowerTimeout = 900;
-
     private Integer mapRev = 0;
 
     private int maxRpm = 500;
 
     private int maxSpeedLimit = 75;
+
     private String mcmID;
     private int mpg = 99;
-    
     private int mpgDistanceX100 = 0;
+    
     private boolean noDriver = true;
     private int noDriverDistanceX100 = 0;
-    
     private boolean noTrailer = true;
+    
     private int noTrailerDistanceX100 = 0;
-	private int nSpeedLimit1to30MilesX100 = 0;
+    private int nSpeedLimit1to30MilesX100 = 0;
 	private int nSpeedLimit31to40MilesX100 = 0;
 	private int nSpeedLimit41to54MilesX100 = 0;
-	
 	private int nSpeedLimit55to64MilesX100 = 0;
 	
 	private int nSpeedLimit65to80MilesX100 = 0;
-
+	
 	private Integer OBDPercent = 5;
 
 	private String occupantID = "";
@@ -109,11 +106,13 @@ public class DeviceState {
 	private int rfidHigh = 0;
 
 	private int rfidLow = 0;
-	
+
 	private boolean rfOff = false;
 	
 	private int RFOffDistanceX100 = 0;
+	
 	private int sats = 15;
+	private int sbsBaseRevision = 7;
 
 	private int sbsLinkID = 0;
 	
@@ -169,12 +168,14 @@ public class DeviceState {
 
 	private int tripDuration = 0;
 
+	private int tripFlags = 0;
+
 	private String vehicleID;
 
 	private int violationFlags = 0x0;
-
-	private Direction waysDirection = Direction.wifi;
 	
+	private Direction waysDirection = Direction.wifi;
+
 	private int weatherSpeedLimitPercent = 50;
 
 	private int WMP = 17013, MSP = 50;
@@ -201,7 +202,7 @@ public class DeviceState {
 	public String get_setting(DeviceProps propertyID) {
         return settings.get(propertyID);
     }
-	
+
 	public Integer getAccountID() {
         return accountID;
     }
@@ -218,14 +219,10 @@ public class DeviceState {
         return boundaryID;
     }
 	
-	public Integer getTripFlags() {
-		return tripFlags & 0xF0;
-	}
-
 	public Integer getCourse() {
 		return course;
 	}
-
+	
 	public Integer getDriverID() {
         return driverID;
     }
@@ -309,7 +306,6 @@ public class DeviceState {
 	public String getMcmID() {
         return mcmID;
     }
-	
 
 	public Integer getMpg() {
 		return mpg;
@@ -318,6 +314,7 @@ public class DeviceState {
 	public Integer getMpgDistanceX100() {
 		return mpgDistanceX100;
 	}
+	
 
 	public Integer getMSP() {
         return MSP;
@@ -386,18 +383,22 @@ public class DeviceState {
 	public int getRfidHigh() {
 		return rfidHigh;
 	}
-	
+
 	public int getRfidLow() {
 		return rfidLow;
 	}
 
-    public Integer getRFOffDistanceX100() {
+	public Integer getRFOffDistanceX100() {
 		return RFOffDistanceX100;
 	}
-
-    public Integer getSats() {
+	
+	public Integer getSats() {
         return sats;
     }
+
+    public int getSbsBaseRevision() {
+		return sbsBaseRevision;
+	}
 
     public Integer getSbsLinkID() {
 		return sbsLinkID;
@@ -415,10 +416,10 @@ public class DeviceState {
 		return seatbeltDistanceX100;
 	}
 
-
     public Integer getSeatbeltTopSpeed() {
 		return seatBeltTopSpeed;
 	}
+
 
     public Integer getSeatBeltTopSpeed() {
 		return seatBeltTopSpeed;
@@ -502,6 +503,10 @@ public class DeviceState {
 
     public int getTripDuration() {
 		return tripDuration;
+	}
+
+    public Integer getTripFlags() {
+		return tripFlags & 0xF0;
 	}
 
     public String getVehicleID() {
@@ -698,17 +703,6 @@ public class DeviceState {
 		return this;
 	}
 
-    public DeviceState setTripFlags(TripFlags... tripFlags) {
-    	if (tripFlags.length == 0){
-    		this.tripFlags = 0x00;
-    	} else {
-			for (TripFlags flag : tripFlags){
-				this.tripFlags = (flag.getIndex() | this.tripFlags);
-			}
-    	}
-		return this;
-	}
-
     public DeviceState setHosFlags(HOSFlags hosFlags) {
 		this.hosFlags = hosFlags;
 		return this;
@@ -718,23 +712,23 @@ public class DeviceState {
 		this.hosRuleSet = hosRuleSet;
 		return this;
 	}
-    
+
     public DeviceState setHosState(HOSState hosState) {
 		this.hosState = hosState;
 		return this;
 	}
-
+    
     public DeviceState setIgnition_state(Boolean ignition_state) {
         this.ignition_state = ignition_state;
 		return this;
     }
-    
+
     public DeviceState setLastDownload(String lastDownload) {
         this.lastDownload = lastDownload;
 		return this;
     }
-
-	public DeviceState setLinkID(int linkID) {
+    
+    public DeviceState setLinkID(int linkID) {
         this.linkID = linkID;
 		return this;
     }
@@ -822,11 +816,11 @@ public class DeviceState {
 		return this;
 	}
 
-
 	public DeviceState setnSpeedLimit55to64MilesX100(int nSpeedLimit55to64MilesX100) {
 		this.nSpeedLimit55to64MilesX100 = nSpeedLimit55to64MilesX100;
 		return this;
 	}
+
 
 	public DeviceState setnSpeedLimit65to80MilesX100(int nSpeedLimit65to80MilesX100) {
 		this.nSpeedLimit65to80MilesX100 = nSpeedLimit65to80MilesX100;
@@ -890,7 +884,7 @@ public class DeviceState {
             dos.writeInt(low);
             dos.flush();
         } catch (IOException e) {
-        	MasterTest.print(e, Level.FATAL);
+        	Log.wtf("%s", e);
         }
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bos.toByteArray());
@@ -899,7 +893,7 @@ public class DeviceState {
 		try {
 			rfid = dis.readLong();
 		} catch (IOException e) {
-			MasterTest.print(e, Level.FATAL);
+			Log.wtf("%s", e);
 		}
 		return this;
 	}
@@ -931,11 +925,18 @@ public class DeviceState {
 		RFOffDistanceX100 = rFOffDistance;
 		return this;
 	}
-	
+
 	public DeviceState setSats(int sats) {
         this.sats = sats;
 		return this;
     }
+	
+	public void setSbsBaseRevision(int sbsBaseRevision) {
+		if (sbsBaseRevision < 7){
+			throw new IllegalArgumentException("The Basemap Revision number HAS to be higher than 6");
+		}
+		this.sbsBaseRevision = sbsBaseRevision;
+	}
 
 	public DeviceState setSbsLinkID(int sbsLinkID) {
 		this.sbsLinkID = sbsLinkID;
@@ -1073,6 +1074,17 @@ public class DeviceState {
 		setTripDuration(delta.intValue());		
 		return this;
 	}
+	public DeviceState setTripFlags(TripFlags... tripFlags) {
+    	if (tripFlags.length == 0){
+    		this.tripFlags = 0x00;
+    	} else {
+			for (TripFlags flag : tripFlags){
+				this.tripFlags = (flag.getIndex() | this.tripFlags);
+			}
+    	}
+		return this;
+	}
+
 	public DeviceState setVehicleID(String vehicleID) {
         this.vehicleID = vehicleID;
 		return this;

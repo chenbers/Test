@@ -17,7 +17,6 @@ import com.inthinc.device.emulation.enums.DeviceForwardCommands;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.enums.Locales;
-import com.inthinc.device.emulation.enums.MapSection;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
@@ -32,7 +31,7 @@ import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.sbs.Sbs;
 
 public abstract class DeviceBase {
 
@@ -42,8 +41,8 @@ public abstract class DeviceBase {
     protected final NoteManager notes;
     protected Addresses portal;
     protected Object reply;
+    protected Sbs sbs;
     
-    protected Map<Integer, MapSection> sbsModule;
 
     protected final ArrayList<GeoPoint> speed_loc;
     protected final ArrayList<Integer> speed_points;
@@ -51,19 +50,13 @@ public abstract class DeviceBase {
     protected final DeviceState state;
     protected final TripTracker tripTracker;
 
-    public DeviceBase(String IMEI, Addresses server,
-            Map<DeviceProps, String> map, ProductType version) {
-        this(IMEI, version, map, server);
-        MasterTest.print(server, Level.DEBUG);
-    }
-
-    private DeviceBase(String IMEI, ProductType version,
+    public DeviceBase(String IMEI, ProductType version,
             Map<DeviceProps, String> settings, Addresses server) {
     	this.portal = server;
         state = new DeviceState(IMEI, version);
         state.setSettings(settings);
-        tripTracker = new TripTracker(state);
-        sbsModule = new HashMap<Integer, MapSection>();
+        sbs = new Sbs(IMEI, state.getSbsBaseRevision(), server);
+        tripTracker = new TripTracker(state, sbs);
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<GeoPoint>();
         notes = new NoteManager();
@@ -72,10 +65,10 @@ public abstract class DeviceBase {
     }
 
     public DeviceBase(DeviceState state, Addresses server) {
+        sbs = new Sbs(state.getImei(), state.getSbsBaseRevision(), server);
     	this.portal = server;	
     	this.state = state;
         tripTracker = new TripTracker(state);
-        sbsModule = new HashMap<Integer, MapSection>();
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<GeoPoint>();
         notes = new NoteManager();
@@ -156,9 +149,7 @@ public abstract class DeviceBase {
 				reply = mcmProxy.dumpSet(state,	oursToThiers());
 				MasterTest.print(reply, Level.DEBUG);
 			} catch (Exception e) {
-				MasterTest.print(
-						"Error from DumpSet: " + StackToString.toString(e),
-						Level.ERROR);
+				MasterTest.print("Error from DumpSet: %s", Level.ERROR,e);
 			}
 		}
         return this;
@@ -234,8 +225,6 @@ public abstract class DeviceBase {
         state.setSpeeding(false);
         state.setExceedingRPMLimit(false);
         state.setSeatbeltEngaged(false);
-
-        // clear_internal_settings();
 
         set_server(portal);
 

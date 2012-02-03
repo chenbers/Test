@@ -1,8 +1,11 @@
 package com.inthinc.device.hessian.tcp;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
-import com.inthinc.pro.automation.utils.MasterTest;
+import android.util.Log;
+
+import com.inthinc.device.emulation.notes.DeviceNote;
 
 public class UserLogUtil {
 
@@ -16,7 +19,7 @@ public class UserLogUtil {
     public static void logBeforeMethodWithUser(Method method, Object[] args, Object target) {
         String message = method.getName()+"("+argsToString(args)+");";
         
-        MasterTest.print(message);// specific to user.log
+        Log.i(null, message);// specific to user.log
     }
 
 
@@ -26,11 +29,25 @@ public class UserLogUtil {
      * @param args
      * @return human readable version of the args Object[]
      */
-    private static String argsToString(Object[] args) {
+    @SuppressWarnings("unchecked")
+	private static String argsToString(Object[] args) {
         StringBuffer params = new StringBuffer("");
         if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {
-                params.append(", " + args[i]);
+            	if (args[i] instanceof List<?>){
+            		try {
+            			params.append(", ");
+	            		for (byte[] bits: (List<byte[]>)args[i]){
+	            			params.append(DeviceNote.unPackageS((byte[]) bits));
+	            			params.append(", ");
+	            		}
+	            		params.append(") ");
+            		} catch (Exception e){
+                		params.append(args[i]);
+            		}
+            	} else {
+            		params.append(", " + args[i]);
+            	}
             }
             if (params.charAt(0) == ',') {
                 params.delete(0, 1);
@@ -38,4 +55,6 @@ public class UserLogUtil {
         }
         return params.toString();
     }
+    
+    
 }

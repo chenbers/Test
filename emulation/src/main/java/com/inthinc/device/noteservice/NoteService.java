@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import com.inthinc.device.CassandraProperties;
 import com.inthinc.device.CassandraPropertiesBean;
 import com.inthinc.device.resources.DeviceStatistics;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class NoteService {
     private static Logger logger = LoggerFactory.getLogger(NoteLoader.class);
@@ -60,7 +59,6 @@ public class NoteService {
     
     public static NoteService createNode() {
         CassandraPropertiesBean cpb = CassandraProperties.getPropertyBean();
-        MasterTest.print(cpb);
         return new NoteService(cpb.getClusterName(), "note", 
                 cpb.getAddress(), cpb.getPoolSize(), cpb.isAutoDiscovery());
     }

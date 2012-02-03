@@ -1,7 +1,8 @@
 package com.inthinc.device.resources;
 
+import android.util.Log;
+
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class DeviceStatistics {
@@ -43,7 +44,7 @@ public class DeviceStatistics {
     public static boolean updateStop(){
         stop.setDate(System.currentTimeMillis());
         if (stop.getDelta(last) > 15000){
-        	MasterTest.print("Sent: %d, Time: %d, NotesPerMinute: %d",
+        	Log.d("Sent: %d, Time: %d, NotesPerMinute: %d",
                     hessianCalls, getTimeDelta(), getCallsPerMinute());
             last.setDate(stop);
         }

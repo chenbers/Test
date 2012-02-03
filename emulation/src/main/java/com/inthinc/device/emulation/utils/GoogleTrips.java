@@ -7,13 +7,13 @@ import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.log4j.Level;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.inthinc.pro.automation.utils.HTTPCommands;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class GoogleTrips {
     
@@ -33,23 +33,23 @@ public class GoogleTrips {
         try {
             return processReply(sendRequest(getRequest));
         } catch (JSONException e) {
-            MasterTest.print(e, Level.INFO);
+        	Log.wtf("%s", e);
         }
         return null;
     }
     
     private JSONObject sendRequest(GetMethod getMethod){
     	try {
-    		MasterTest.print(getMethod.getURI().toString());
+    		Log.d(getMethod.getURI().toString());
             String response = http.httpRequest(getMethod);
             return new JSONObject(response);
             
         } catch (HttpException e) {
-        	MasterTest.print(e, Level.DEBUG);
+        	Log.wtf("%s", e);
         } catch (IOException e) {
-        	MasterTest.print(e, Level.DEBUG);
+        	Log.wtf("%s", e);
         } catch (JSONException e) {
-        	MasterTest.print(e, Level.INFO);
+        	Log.wtf("%s", e);
         }
     	return null;
     }
@@ -62,7 +62,7 @@ public class GoogleTrips {
 			JSONObject latLng = response.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
 			return new GeoPoint(latLng.getDouble("lat"), latLng.getDouble("lng"));
 		} catch (JSONException e) {
-			MasterTest.print(e, Level.ERROR);
+        	Log.wtf("%s", e);
 		}
     	return new GeoPoint(-1.0, -1.0);
     }

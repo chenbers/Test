@@ -3,10 +3,9 @@ package com.inthinc.device.emulation.utils;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.pro.automation.interfaces.IndexEnum;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class GeoPoint {
 	
@@ -22,7 +21,7 @@ public class GeoPoint {
 	    
 	    public static Double change_in_latitude( Double miles ){
 	        double delta_lat = ( miles / earth_radius ) * rad2deg;
-	        MasterTest.print("Change in Lat: "+delta_lat, Level.DEBUG);
+	        Log.d("Change in Lat: "+delta_lat);
 	        return delta_lat;
 	    }
 	    
@@ -30,7 +29,7 @@ public class GeoPoint {
 	        
 	        double r = earth_radius * Math.cos(latitude * deg2rad );
 	        double delta_lng = ( miles / r ) * rad2deg;
-	        MasterTest.print("Change in Lng: "+delta_lng, Level.DEBUG);
+	        Log.d("Change in Lng: "+delta_lng);
 	        return delta_lng;
 	    }
 	    
@@ -40,13 +39,13 @@ public class GeoPoint {
 	        double distance = Math.sqrt( Math.pow(y, 2 ) + Math.pow(x, 2)  );
 	        double nautToFeet = ( distance * 6076 );
 	        double deltaX = nautToFeet / 5280;
-	        MasterTest.print("Change in Miles: " + deltaX, Level.DEBUG);
+	        Log.d("Change in Miles: " + deltaX);
 	        return deltaX;
 	    }
 	    
 	    public static Integer get_heading( GeoPoint start, GeoPoint stop  ){
-	        MasterTest.print(start, Level.DEBUG);
-	        MasterTest.print(stop, Level.DEBUG);
+	    	Log.d("%s", start);
+	        Log.d("%s", stop);
 
 	        double lat1 = start.getLat() * deg2rad;
 	        double lat2 = stop.getLat() * deg2rad;
@@ -56,13 +55,13 @@ public class GeoPoint {
 	        
 	        double tc2 = Math.atan2(Math.sin(lng2-lng1)*Math.cos(lat2),
 	                Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lng2-lng1)) % 2 * Math.PI;
-	        MasterTest.print("Direction of travel in radians: " + tc2, Level.DEBUG);
+	        Log.d("Direction of travel in radians: " + tc2);
 	        
 	        Integer tc1 = Math.abs(((Double)(tc2 * rad2deg)).intValue());
 	        while (tc1 > 360 ){
 	            tc1 -= 360;
 	        }
-	        MasterTest.print("Direction of travel: " + tc1, Level.DEBUG);
+	        Log.d("Direction of travel: " + tc1);
 
 	        return tc1;
 	    }
@@ -230,12 +229,19 @@ public class GeoPoint {
 	
 	    public static Heading getHeading(GeoPoint start, GeoPoint stop){
 	        Integer direction = Distance_Calc.get_heading(start, stop);
-	        for (Heading heading : EnumSet.allOf(Heading.class)){
+	        return getHeading(direction);
+	    }
+	    
+	    public static Heading getHeading(Integer direction){
+	    	while (direction > 360){
+	    		direction = direction / 10;
+	    	}
+	    	for (Heading heading : EnumSet.allOf(Heading.class)){
 	            if (direction >= heading.min && direction < heading.max){
 	                return heading;
 	            }
 	        }
-	        return Heading.NORTH;
+	    	return Heading.NORTH;
 	    }
 	    
 	    @Override
@@ -246,6 +252,10 @@ public class GeoPoint {
 	    @Override
 	    public Integer getIndex(){
 	    	return heading;
+	    }
+	    
+	    public Integer getDegree(){
+	    	return heading * 45;
 	    }
 	    
 		private static HashMap<Integer, Heading> lookupByCode = new HashMap<Integer, Heading>();

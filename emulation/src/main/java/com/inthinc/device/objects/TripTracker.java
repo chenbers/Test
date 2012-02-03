@@ -5,10 +5,13 @@ import java.util.LinkedList;
 
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.device.emulation.utils.GeoPoint.Distance_Calc;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.GoogleTrips;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.sbs.Sbs;
+import com.inthinc.sbs.SpeedLimit;
 
 public class TripTracker implements Iterable<GeoPoint> {
 
@@ -17,6 +20,8 @@ public class TripTracker implements Iterable<GeoPoint> {
     private int currentPoint;
     
     private final DeviceState state;
+
+	private Sbs sbs = null;
     
     private class TripIterator implements Iterator<GeoPoint>{
 
@@ -40,6 +45,11 @@ public class TripTracker implements Iterable<GeoPoint> {
     public TripTracker(String startPoint, String endPoint, DeviceState state){
         this(state);
         getTrip(startPoint, endPoint);
+    }
+    
+    public TripTracker(DeviceState state, Sbs sbs){
+    	this(state);
+    	this.sbs  = sbs;
     }
     
     public TripTracker(DeviceState state){
@@ -76,7 +86,7 @@ public class TripTracker implements Iterable<GeoPoint> {
     public GeoPoint getNextLocation(int value, boolean time){
         GeoPoint next = trip.get(++currentPoint);
         GeoPoint last = lastLocation();
-        while (next.equals(last)){
+        while (next.equals(last) && currentPoint < trip.size()-1){
         	next = trip.get(++currentPoint);
         }
         if (last == null){
@@ -88,7 +98,12 @@ public class TripTracker implements Iterable<GeoPoint> {
             return next;
         }
         
-        state.setHeading(Heading.getHeading(next, last));
+        Integer heading = Distance_Calc.get_heading(next, last);
+        if (sbs != null){
+        	SpeedLimit limit = sbs.getSpeedLimit(next, heading*10);
+        	state.setSpeedLimit(limit.speedLimit/100);
+        }
+        state.setHeading(Heading.getHeading(heading));
         
         int distTraveled = ((Double)(last.deltaX(next) * 100)).intValue();
         

@@ -12,14 +12,12 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.automation.utils.StackToString;
 
 public class SatelliteStrippedConfigurator extends DeviceNote {
 	
@@ -71,7 +69,7 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 		try {
 			settings = VSettingsUtil.decompressSettings(baos.toByteArray());
 		} catch (DataFormatException e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException();
 		}
 		SatelliteStrippedConfigurator note = new SatelliteStrippedConfigurator(type, new GeoPoint(), settings);
 		return note;
@@ -98,12 +96,12 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 				{
 					DeviceProps key = DeviceProps.valueOf(((Long)(decodeUnsignedInteger(settingsStream) + 1000)).intValue());
 					String value = getString(settingsStream);
-					MasterTest.print("Setting # %d, %s = %s", ++num, key, value);
+					Log.d("Setting # %d, %s = %s", ++num, key, value);
 					settingsMap.put(key, value);
 				}
 			} catch (IOException exception)
 			{
-				MasterTest.print("IOException reading compressed settings: %s", StackToString.toString(exception));
+				Log.e("IOException reading compressed settings: %s", exception);
 			}
 			return settingsMap;
 		}
@@ -129,8 +127,8 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 					}
 				}
 
-				MasterTest.print("packetList.size(): " + packetList.size(), Level.DEBUG);
-				MasterTest.print("increasePacketSize: " + increasePacketSize, Level.DEBUG);
+				Log.d("packetList.size(): " + packetList.size());
+				Log.d("increasePacketSize: " + increasePacketSize);
 				
 				if (increasePacketSize)
 					packets = packetList.size() + 1;
@@ -151,15 +149,15 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 				if (packets == 0)
 					packets = (int)Math.ceil(compressedData.length/PACKET_SIZE); 
 
-				MasterTest.print("Compressed data length: " + compressedData.length, Level.DEBUG);
-				MasterTest.print("Packets: " + packets, Level.DEBUG);
+				Log.d("Compressed data length: " + compressedData.length);
+				Log.d("Packets: " + packets);
 				
 				if (packets == 1)
 					packetList.add(compressedData);
 				else
 				{
 					int settingsPerPacket = (int) Math.ceil((double)(map.size()/packets));
-					MasterTest.print("settingsPerPacket: " + settingsPerPacket, Level.DEBUG);
+					Log.d("settingsPerPacket: " + settingsPerPacket);
 					Map<DeviceProps, String> partialMap = new HashMap<DeviceProps, String>();
 					int totalCounter = 0;
 					int packetCounter = 0;
@@ -176,13 +174,13 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 							packetCounter = 0;
 						}
 							
-						MasterTest.print(setting.getKey() + " = " + setting.getValue(), Level.DEBUG);
+						Log.d(setting.getKey() + " = " + setting.getValue());
 					}
 					
 				}
 			} catch (IOException e)
 			{
-				MasterTest.print("compressSettings IO error: " + StackToString.toString(e));
+				Log.e("compressSettings IO error: ", e);
 			}
 			return packetList;
 		}
@@ -225,15 +223,15 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 			 }
 			 catch(IOException ioe)
 			 {
-				 MasterTest.print("Error while closing the stream : " + StackToString.toString(ioe));
+				 Log.e("Error while closing the stream : %s", ioe);
 			 }
 			  
 			 //get the compressed byte array from output stream
 			 byte[] compressedArray = bos.toByteArray();
 			  
-			 MasterTest.print("Byte array has been compressed!", Level.DEBUG);
-			 MasterTest.print("Size of original array is:" + bytes.length, Level.DEBUG);
-			 MasterTest.print("Size of compressed array is:" + compressedArray.length, Level.DEBUG);
+			 Log.d("Byte array has been compressed!");
+			 Log.d("Size of original array is:" + bytes.length);
+			 Log.d("Size of compressed array is:" + compressedArray.length);
 			  
 			return compressedArray;
 		}

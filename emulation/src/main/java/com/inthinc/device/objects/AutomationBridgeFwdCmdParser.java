@@ -3,6 +3,8 @@ package com.inthinc.device.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.inthinc.device.emulation.enums.DeviceForwardCommands;
 import com.inthinc.device.emulation.utils.AutomationByteArrayInputStream;
 import com.inthinc.device.objects.WaysmartClasses.EventHeader;
@@ -10,7 +12,6 @@ import com.inthinc.device.objects.WaysmartClasses.ForwardCommandEvent;
 import com.inthinc.device.objects.WaysmartClasses.ForwardCommandEventEx;
 import com.inthinc.device.objects.WaysmartClasses.HttpHeader;
 import com.inthinc.device.objects.WaysmartClasses.MultiForwardCmd;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutomationBridgeFwdCmdParser {
     
@@ -88,7 +89,7 @@ public class AutomationBridgeFwdCmdParser {
     }
     
     private static ForwardCommandEvent updateDriverChangeHistoryHttp(AutomationByteArrayInputStream bais, HttpHeader forwardHeader){
-    	MasterTest.print("UPDATE_DRIVER_CHANGE_HISTORY_HTTP");
+    	Log.i("UPDATE_DRIVER_CHANGE_HISTORY_HTTP");
         int bytesRead = 0;
         ForwardCommandEvent Event = classes.new ForwardCommandEvent(forwardHeader.nForwardCommand);
         int length = 0;
@@ -102,7 +103,7 @@ public class AutomationBridgeFwdCmdParser {
         Event.m_header.m_nEventType = EVENT_FORWARD_COMMAND;
         Event.m_header.m_nLength = ForwardCommandEvent.SIZE - EventHeader.SIZE;
         Event.addData(forwardHeader.m_data);
-        MasterTest.print(Event.toString());
+        Log.i(Event.toString());
         return Event;
     }
 }

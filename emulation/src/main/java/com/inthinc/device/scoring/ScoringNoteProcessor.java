@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
+import android.util.Log;
 
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
@@ -15,7 +15,6 @@ import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 
 public class ScoringNoteProcessor {
-	private final static Logger logger = Logger.getLogger(ScoringNoteProcessor.class);
 	
 	public static enum UnitType {DRIVER, VEHICLE}; 
 
@@ -93,7 +92,7 @@ public class ScoringNoteProcessor {
 		
 		while (itr.hasNext()) {
 			Long noteID = itr.next();
-			logger.debug("Processing Aggressive note == " +noteID);
+			Log.d("Processing Aggressive note == " +noteID);
 			Map<String, Integer> dumbDriver = aggressive.get(noteID);
 			Double deltaX = dumbDriver.get("deltaX").doubleValue();
 			Double deltaY = dumbDriver.get("deltaY").doubleValue();
@@ -127,7 +126,7 @@ public class ScoringNoteProcessor {
 		Iterator<Long> itr = seatbelt.keySet().iterator();
 		while (itr.hasNext()) {
 			Long noteID = itr.next();
-			logger.debug("Processing Seatbelt note == " +noteID);
+			Log.d("Processing Seatbelt note == " +noteID);
 			Map<String, Integer> badDriver = seatbelt.get(noteID);
 			Double topSpeed = badDriver.get("topSpeed").doubleValue();
 			Double distance = badDriver.get("distance").doubleValue();
@@ -153,7 +152,7 @@ public class ScoringNoteProcessor {
 		while (itr.hasNext()) {
 			Long noteID = itr.next();
 			Map<String, Integer> speedDemon = speeding.get(noteID);
-			logger.debug("Processing Speeding note == " +noteID);
+			Log.d("Processing Speeding note == " +noteID);
 			Double top = speedDemon.get("topSpeed").doubleValue();
 			Double limit = speedDemon.get("limit").doubleValue();
 			Double distance = speedDemon.get("distance").doubleValue();

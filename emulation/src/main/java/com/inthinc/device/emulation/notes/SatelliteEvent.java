@@ -4,14 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
-import org.apache.log4j.Level;
+import android.util.Log;
 
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class SatelliteEvent extends DeviceNote {
 
@@ -61,7 +60,7 @@ public class SatelliteEvent extends DeviceNote {
 		byte[] temp = baos.toByteArray();
 		temp[0] = (byte) (temp.length & 0xFF);
 		for (int i = 0; i < temp.length; i++) {
-			MasterTest.print("Byte " + i + " = " + temp[i], Level.DEBUG);
+			Log.d("Byte " + i + " = " + temp[i]);
 		}
 		return temp;
 	}

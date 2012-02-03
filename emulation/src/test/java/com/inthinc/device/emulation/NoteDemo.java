@@ -1,7 +1,10 @@
 package com.inthinc.device.emulation;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.client.ClientProtocolException;
 
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
@@ -68,7 +71,15 @@ public class NoteDemo {
 
 		List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
 		notes.add(note);
-		proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+		try {
+			proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	
@@ -82,7 +93,15 @@ public class NoteDemo {
 
 		List<SatelliteEvent> notes = new ArrayList<SatelliteEvent>();
 		notes.add(note);
-		proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+		try {
+			proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	

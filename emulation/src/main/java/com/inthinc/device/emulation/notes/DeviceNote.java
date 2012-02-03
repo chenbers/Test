@@ -57,7 +57,7 @@ public abstract class DeviceNote {
 		this.type = type;
 		this.time = time.copy();
 		this.time.setFormat(WebDateFormat.NOTE_PRECISE_TIME);
-		this.location = location.copy();
+		this.location = location == null ? null : location.copy();
 		attrs = new DeviceAttributes();
 	}
 	
@@ -327,4 +327,24 @@ public abstract class DeviceNote {
     public abstract DeviceNote copy();
 
 	public abstract DeviceNote unPackage(byte[] packagedNote);
+	
+	
+	public static DeviceNote unPackageS(byte[] packagedNote){
+		DeviceNote note = null;
+		try {
+			note = SatelliteEvent_t.unPackageS(packagedNote);
+		} catch (IllegalArgumentException e1){
+			try {
+				note = SatelliteEvent.unPackageS(packagedNote);
+			} catch (IllegalArgumentException e2){
+				try {
+					note = TiwiNote.unPackageS(packagedNote);	
+				} catch (IllegalArgumentException e3){
+					note = SatelliteStrippedConfigurator.unPackageS(packagedNote);
+				}
+				
+			}
+		}
+		return note;
+	}
 }

@@ -101,19 +101,13 @@ public class HTTPCommands {
         return str;
     }
 
-    public String httpRequest(HttpUriRequest method) {
-        try {
-            HttpResponse response = defaultClient.execute(method);
-            MasterTest.print(response.getStatusLine(), Level.DEBUG);
-            String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
-            MasterTest.print(returnResponse, Level.DEBUG);
-            return returnResponse;
-        } catch (ClientProtocolException e) {
-        	MasterTest.print(e, Level.FATAL);
-        } catch (IOException e) {
-        	MasterTest.print(e, Level.FATAL);
-        }
-        return "";
+    public String httpRequest(HttpUriRequest method) throws ClientProtocolException, IOException {
+        HttpResponse response;
+        response = defaultClient.execute(method);
+        MasterTest.print(response.getStatusLine(), Level.DEBUG);
+        String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
+        MasterTest.print(returnResponse, Level.DEBUG);
+        return returnResponse;
     }
 
 }

@@ -3,13 +3,13 @@ package com.inthinc.device.emulation.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.device.hessian.tcp.ProDAOException;
+import com.inthinc.device.hessian.tcp.HessianException;
 
 
 
 public interface MCMService extends HessianService
 {
-	Integer crash(String mcmID, List<byte[]> crashDataList) throws ProDAOException;
+	Integer crash(String mcmID, List<byte[]> crashDataList) throws HessianException;
 
 	/**
      *  This method is only called by the device.
@@ -23,15 +23,15 @@ public interface MCMService extends HessianService
      * @param noteList - list of byte arrays - each contains one event 
      * @return Returns a List of Forward commands, an integer error, or a list of new settings 
      */
-    List<Map<String, Object>> note(String mcmID, List<byte[]> noteList);
+    List<Map<String, Object>> note(String mcmID, List<byte[]> noteList) throws HessianException;
     
-    List<Map<String, Object>> notebc(String mcmID, int connectType, List<byte[]> noteList);
+    List<Map<String, Object>> notebc(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
     
-    List<Map<String, Object>> notews(String mcmID, int connectType, List<byte[]> noteList);
+    List<Map<String, Object>> notews(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
     
-    List<Map<String, Object>> dumpSet(String mcmID, Integer version, Map<Integer, String> settings);
+    List<Map<String, Object>> dumpSet(String mcmID, Integer version, Map<Integer, String> settings) throws HessianException;
     
-    List<Map<Integer, String>> reqSet(String imei);
+    List<Map<Integer, String>> reqSet(String imei) throws HessianException;
     
     
     /**
@@ -56,7 +56,7 @@ public interface MCMService extends HessianService
      * @param map
      * @return
      */
-    Map<String, Object> audioUpdate(String mcmID, Map<String, Object> map);
+    Map<String, Object> audioUpdate(String mcmID, Map<String, Object> map) throws HessianException;
     
     
     /**
@@ -76,7 +76,7 @@ public interface MCMService extends HessianService
      * @param map
      * @return
      */
-    Map<String, Object> tiwiproUpdate(String mcmID, Map<String, Object> map);
+    Map<String, Object> tiwiproUpdate(String mcmID, Map<String, Object> map) throws HessianException;
     
     
     /**
@@ -95,7 +95,7 @@ public interface MCMService extends HessianService
      * @param map
      * @return
      */
-    Map<String, Object> witnessUpdate(String mcmID, Map<String, Object> map);
+    Map<String, Object> witnessUpdate(String mcmID, Map<String, Object> map) throws HessianException;
     
     
     /**
@@ -121,7 +121,7 @@ public interface MCMService extends HessianService
      * @param map
      * @return
      */
-    Map<String, Object> emuUpdate(String mcmID, Map<String, Object> map);
+    Map<String, Object> emuUpdate(String mcmID, Map<String, Object> map) throws HessianException;
     
     
     /**
@@ -139,7 +139,7 @@ public interface MCMService extends HessianService
      * @param map
      * @return
      */
-    Map<String, Object> zoneUpdate(String mcmID, Map<String, Object> map);
+    Map<String, Object> zoneUpdate(String mcmID, Map<String, Object> map) throws HessianException;
     
     
     /**
@@ -174,7 +174,7 @@ public interface MCMService extends HessianService
      * @param map
      * @return
      */
-    Map<String, Object> sbsUpdate(String mcmID, Map<String, Object> map);
+    Map<String, Object> sbsUpdate(String mcmID, Map<String, Object> map) throws HessianException;
     
     
     /**
@@ -188,13 +188,13 @@ public interface MCMService extends HessianService
      * @param mapList
      * @return
      */
-    List<Map<String, Object>> sbsCheck(String mcmID, int baselineID, List<Map<String, Object>> mapList);
+    List<Map<String, Object>> sbsCheck(String mcmID, int baselineID, List<Map<String, Object>> mapList) throws HessianException;
     
-    List<Map<String, Object>> checkSbsSubscribed(String mcmID, Map<String, Object> map);
+    List<Map<String, Object>> checkSbsSubscribed(String mcmID, Map<String, Object> map) throws HessianException;
     
-    Map<String, Object> getSbsBase(String mcmID, Map<String, Object> map);
+    Map<String, Object> getSbsBase(String mcmID, Map<String, Object> map) throws HessianException;
     
-    Map<String, Object> getSbsEdit(String mcmID, Map<String, Object> map);
+    Map<String, Object> getSbsEdit(String mcmID, Map<String, Object> map) throws HessianException;
     
-    List<Map<String, Object>> checkSbsEdit(String mcmID, List<Map<String, Object>> map);
+    List<Map<String, Object>> checkSbsEdit(String mcmID, List<Map<String, Object>> map) throws HessianException;
 }
