@@ -64,7 +64,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
      * Test if Get DriverLocations service returns the correct content and response.
      */
     @Test
-//    @Ignore
+    @Ignore
     public void testGetGroupDriverLocations() {
         logger.info("Testing Get DriverLocations service... ");
       
@@ -272,11 +272,11 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
         StringBuilder xmlString = new StringBuilder()
         .append("<group>")
         .append("<accountID>2</accountID>")
-        .append("<name>service created 3</name>")
-        .append("<parentID>4917</parentID>")
+        .append("<name>service created 6 Jason Wimmer test</name>")
+        .append("<parentID>5058</parentID>")
         .append("<status>GROUP_ACTIVE</status>")
         .append("<type>DIVISION</type>")
-        .append("<managerID>3</managerID>")
+        //.append("<managerID>3</managerID>")
 //        .append("<mapZoom>12</mapZoom>")
 //        .append("<mapLat>40.711</mapLat>")
 //        .append("<mapLng>-111.992</mapLng>")
