@@ -94,7 +94,7 @@ public class TiwiProDevice extends DeviceBase {
                 }
             }
         } catch (Exception e) {
-            Log.d(null, e);
+            Log.d("%s", e);
             return false;
         }
 
@@ -113,7 +113,7 @@ public class TiwiProDevice extends DeviceBase {
                     FwdCmdStatus.FWDCMD_RECEIVED);
             notes.addNote(ackNote);
             addNote(ackNote);
-            Log.d(null, ackNote);
+            Log.d("%s", ackNote);
         }
         processCommand(reply);
         return this;
@@ -130,8 +130,8 @@ public class TiwiProDevice extends DeviceBase {
         String hessian = SHA1Checksum.getSHA1Checksum(lastDownload);
         getFirmwareFromSVN(versionNumber);
         String svn = SHA1Checksum.getSHA1Checksum(lastDownload);
-        Log.d(null, hessian);
-        Log.d(null, svn);
+        Log.d("%s", hessian);
+        Log.d("%s", svn);
         return hessian.equals(svn);
     }
 
@@ -175,7 +175,7 @@ public class TiwiProDevice extends DeviceBase {
             return AutomationFileHandler.downloadSvnDirectory(svnUrl,
                     fileName.replace("-svn", ""), file);
         } catch (IOException e) {
-            Log.e(null, e);
+            Log.e("%s", e);
         }
         return false;
     }
@@ -217,7 +217,7 @@ public class TiwiProDevice extends DeviceBase {
                     map);
 //            zones = new ZoneManager((byte[]) reply.get("f"));
         } catch (Exception e) {
-        	Log.e(null, e);
+        	Log.e("%s", e);
             return false;
         }
 
@@ -281,7 +281,7 @@ public class TiwiProDevice extends DeviceBase {
         ackNote.addAttr(EventAttr.FWDCMD_ID, reply.get("fwdID"));
         ackNote.addAttr(EventAttr.FWDCMD_STATUS,
                 FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
-        Log.d(null, ackNote);
+        Log.d("%s", ackNote);
         notes.addNote(ackNote);
         // check_queue();
 

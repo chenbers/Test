@@ -37,7 +37,7 @@ import com.inthinc.sbs.regions.SbsMap;
  *
  */
 public abstract class AbstractSbsMapLoader implements Callable<List<SbsMap>>{
-	public static final String TAG = "SbsService";
+	public static final String TAG = "%s";
 	public static final String SBSV2 = "/sbsV2";
 	public static final String EXMAPV2 = "/exmapV2";
 	public static final String EXMAPOLD = "/ex_maps";

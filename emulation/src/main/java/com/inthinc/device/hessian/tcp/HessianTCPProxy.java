@@ -155,21 +155,21 @@ public class HessianTCPProxy implements InvocationHandler {
 			return null;
 
 		} catch (HessianProtocolException e) {
-			Log.e(null, e);
+			Log.e("%s", e);
 			throw new HessianRuntimeException(e);
 		} finally {
 			try {
 				if (is != null)
 					is.close();
 			} catch (Throwable e) {
-				Log.e(null, e);
+				Log.e("%s", e);
 			}
 
 			try {
 				if (socket != null)
 					socket.close();
 			} catch (Throwable e) {
-				Log.e(null, e);
+				Log.e("%s", e);
 			}
 		}
 	}

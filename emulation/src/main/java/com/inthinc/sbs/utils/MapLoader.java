@@ -24,7 +24,7 @@ import com.inthinc.sbs.regions.SpeedBaseMap;
  * Copyright 2003-2012 Inthinc Technology Solutions, Inc.  All rights reserved worldwide.
  */
 public final class MapLoader extends AbstractSbsMapLoader {
-	public static final String TAG = "SbsService";
+	public static final String TAG = "%s";
 	public final String prefix;
 	private final int fileAsInt;
 	private final ConcreteDownloadManager manager;

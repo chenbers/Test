@@ -21,7 +21,7 @@ import com.inthinc.sbs.utils.SbsUtils;
  * Copyright 2003-2011 Inthinc Technology Solutions, Inc.  All rights reserved worldwide.
  */
 public abstract class SpeedMap extends SbsMap {
-	public static final String TAG = "SbsService";
+	public static final String TAG = "%s";
 	
 
 	@Override

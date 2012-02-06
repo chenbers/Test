@@ -24,7 +24,7 @@ import com.inthinc.sbs.simpledatatypes.SbsPoint;
  *
  */
 public final class ProximityAndHeadingStrategy implements SpeedlimitStrategy {
-	public static final String TAG = "SbsLib";
+	public static final String TAG = "%s";
 	
 	public static final int MAX_DISTANCE =  0;
 	public static final int MAX_ANGLE = 1;

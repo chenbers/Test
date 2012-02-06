@@ -27,7 +27,7 @@ import com.inthinc.sbs.simpledatatypes.LatLong;
  * Copyright 2003-2011 Inthinc Technology Solutions, Inc.  All rights reserved worldwide.
  */
 public class SpeedBaseMap extends SpeedMap {
-	public static final String TAG = "SbsService";
+	public static final String TAG = "%s";
 	
 	/**
 	 * Constructor to create an empty map.

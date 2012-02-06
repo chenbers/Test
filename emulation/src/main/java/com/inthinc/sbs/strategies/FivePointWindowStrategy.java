@@ -47,7 +47,7 @@ public class FivePointWindowStrategy implements CoverageStrategy {
 			if(!p.isCovered()){
 				SbsMap map = loadedMaps.get(Integer.valueOf(p.fileAsInt));
 				if(map == null){
-					Log.d("SbsService","attempt to cover " + p.fileAsInt);
+					Log.d("attempt to cover " + p.fileAsInt);
 					p.setCovered(false);
 					mapToLoad = p.fileAsInt;
 					return false;

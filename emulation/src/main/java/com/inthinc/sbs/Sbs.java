@@ -1,5 +1,6 @@
 package com.inthinc.sbs;
 
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ import com.inthinc.sbs.utils.AbstractSbsMapLoader;
  * Copyright 2003-2012 Inthinc Technology Solutions, Inc.  All rights reserved worldwide.
  **/
 public class Sbs implements SpeedLimitProvider{
-	public static final String TAG = "SbsService";
+	public static final String TAG = "%s";
 	
 	private CoverageStrategy coverageStrategy;
 	private final ConcreteDownloadManager downloadManager;
@@ -276,6 +277,28 @@ public class Sbs implements SpeedLimitProvider{
 	
 	public void setRequiredBaselineVersion(int requiredBaselineVersion) {
 		this.requiredBaselineVersion = requiredBaselineVersion;
+	}
+	
+	
+	public static void main(String[] args){
+		GeoPoint location;
+		if (args[0].equals("latlng")){
+			location = new GeoPoint(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
+		} else {
+			StringWriter writer = new StringWriter();
+			for (String arg: args){
+				System.out.println(arg);
+				if (arg.equals(args[0])){
+					continue;
+				}
+				writer.write(arg);
+			}
+			location = new GeoPoint(writer.toString());
+		}
+		Sbs sbs = new Sbs("DEVICEDOESNTEXIST", 7, Addresses.QA);
+		for (Heading heading: Heading.values()){
+			System.out.printf("Heading: %s, Limit: %d", heading, sbs.getSpeedLimit(location, heading).speedLimit);
+		}
 	}
 	
 }

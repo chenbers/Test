@@ -134,7 +134,7 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     protected WaysmartDevice set_IMEI(HashMap<DeviceProps, String> settings) {
-    	Log.d(null, "IMEI: " + state.getImei() + ", Server: " + portal);
+    	Log.d("%s", "IMEI: " + state.getImei() + ", Server: " + portal);
         state.setSetting(DeviceProps.MCM_ID, state.getMcmID());
         state.setSetting(DeviceProps.WITNESS_ID, state.getImei());
         return this;

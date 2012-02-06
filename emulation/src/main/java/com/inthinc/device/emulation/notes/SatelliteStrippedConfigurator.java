@@ -180,7 +180,7 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 				}
 			} catch (IOException e)
 			{
-				Log.e("compressSettings IO error: ", e);
+				Log.e("compressSettings IO error: %s", e);
 			}
 			return packetList;
 		}

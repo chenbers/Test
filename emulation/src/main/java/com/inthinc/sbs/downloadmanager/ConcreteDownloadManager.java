@@ -47,7 +47,7 @@ import com.inthinc.sbs.utils.SbsUtils;
  * All rights reserved worldwide.
  */
 public final class ConcreteDownloadManager implements SbsDownloadManager {
-	public static final String TAG = "SbsService";
+	public static final String TAG = "%s";
 	
 	/**
 	 * Protected based on a google recommend when sharing variables to private
