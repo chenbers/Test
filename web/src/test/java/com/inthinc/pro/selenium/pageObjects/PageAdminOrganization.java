@@ -530,6 +530,10 @@ public class PageAdminOrganization extends AdminBar{
         public DropDown state(){
             return new DropDown(AdminOrganizationEnum.EDIT_STATE);
         }
+        
+        public DropDown DOT(){
+            return new DropDown(AdminOrganizationEnum.EDIT_DOT_ADDRESS_TYPE);
+        }
     }
 
     public class PageAdminOrganizationPopUps extends MastheadPopUps {}

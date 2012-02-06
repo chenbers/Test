@@ -32,7 +32,7 @@ public enum AdminOrganizationEnum implements SeleniumEnums {
     EDIT_ZIP_CODE("Zip Code:","display-form:organization-zip"),
     EDIT_FIND_ADDRESS("Find Address:","organization-groupEdit-addressTextBox"),
     EDIT_LOCATE("Locate","display-form:organization-groupEdit-groupMapViewSearch"),
-    
+    EDIT_DOT_ADDRESS_TYPE("DOT:","display-form:editgroup-addr-type"),
     
     HEADER_SUMMARY(null, "//tr[1]/td/div[@class='add_section_title']"),
     HEADER_ADDRESS("Address", "//tr[2]/td/div[@class='add_section_title']"),
