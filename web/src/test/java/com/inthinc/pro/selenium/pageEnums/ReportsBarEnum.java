@@ -3,15 +3,15 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum ReportsBarEnum implements SeleniumEnums {
-    DRIVERS("Drivers", "//div[@class='sub_nav-bg']/ul/li[1]/a"),
-    VEHICLES("Vehicles", "//div[@class='sub_nav-bg']/ul/li[2]/a"),
-    IDLING("Idling Drivers", "//div[@class='sub_nav-bg']/ul/li[3]/a"),
-    IDLING_VEHICLES("Idling Vehicles", "//div[@class='sub_nav-bg']/ul/li[4]/a"),
-    DEVICES("Devices", "//div[@class='sub_nav-bg']/ul/li[5]/a"),
-    PERFORMANCE("Performance", "//div[@class='sub_nav-bg']/ul/li[6]/a"),
-    WAYSMART("waySmart", "//div[@class='sub_nav-bg']/ul/li[7]/a"),
 
-    
+    DRIVERS("Drivers", "subNavForm:drivers-driversReport"),
+    VEHICLES("Vehicles", "subNavForm:drivers-vehiclesReport"),
+    IDLING_DRIVERS("Idling Drivers", "subNavForm:drivers-idlingReport"),
+    IDLING_VEHICLES("Idling Vehicles","subNavForm:drivers-idlingVehicleReport"),
+    DEVICES("Devices", "subNavForm:drivers-devicesReport"),
+    PERFORMANCE("Performance","subNavForm:drivers-performanceReport"),
+    WAYSMART("waySmart", "subNavForm:drivers-waysmartReport"),
+
     OVERALL_SCORE_DHX(null, "//input[@name='***-form:***:overallScoreFilter']"),
     SPEED_SCORE_DHX(null, "//input[@name='***-form:***:speedScoreFilter']"),
     STYLE_SCORE_DHX(null, "//input[@name='***-form:***:styleScoreFilter']"),
