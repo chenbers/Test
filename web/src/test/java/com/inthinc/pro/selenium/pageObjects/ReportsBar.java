@@ -37,13 +37,16 @@ public abstract class ReportsBar extends NavigationBar {
 			return new TextLink(ReportsBarEnum.VEHICLES);
 		}
 
-		public TextLink idling() {
-			return new TextLink(ReportsBarEnum.IDLING);
+		public TextLink idlingDrivers() {
+			return new TextLink(ReportsBarEnum.IDLING_DRIVERS);
 		}
+		
+		public TextLink idlingVehicles() {
+            return new TextLink(ReportsBarEnum.IDLING_VEHICLES);
+        }
 
 		public TextLink devices() {
 			return new TextLink(ReportsBarEnum.DEVICES);
-			
 		}
 		
 		public TextLink performance(){
