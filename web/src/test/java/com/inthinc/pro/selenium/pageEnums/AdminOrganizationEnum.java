@@ -34,6 +34,8 @@ public enum AdminOrganizationEnum implements SeleniumEnums {
     EDIT_LOCATE("Locate","display-form:organization-groupEdit-groupMapViewSearch"),
     EDIT_DOT_ADDRESS_TYPE("DOT:","display-form:editgroup-addr-type"),
     
+    TEXT_ERROR("ERROR - The address is required when the DOT Address Type is set","display-form:message"),
+    
     HEADER_SUMMARY(null, "//tr[1]/td/div[@class='add_section_title']"),
     HEADER_ADDRESS("Address", "//tr[2]/td/div[@class='add_section_title']"),
     HEADER_DEFAULT_MAP_VIEW("Default Map View", "//span/div[@class='add_section_title']"),
