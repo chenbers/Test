@@ -22,6 +22,8 @@ public class TripTracker implements Iterable<GeoPoint> {
     private final DeviceState state;
 
 	private Sbs sbs = null;
+
+	private boolean useSbs = true;
     
     private class TripIterator implements Iterator<GeoPoint>{
 
@@ -83,6 +85,10 @@ public class TripTracker implements Iterable<GeoPoint> {
         return trip.get(currentPoint-1);
     }
     
+    public void useSbs(boolean useSbs){
+    	this.useSbs  = useSbs;
+    }
+    
     public GeoPoint getNextLocation(int value, boolean time){
         GeoPoint next = trip.get(++currentPoint);
         GeoPoint last = lastLocation();
@@ -99,7 +105,7 @@ public class TripTracker implements Iterable<GeoPoint> {
         }
         
         Integer heading = Distance_Calc.get_heading(next, last);
-        if (sbs != null){
+        if (sbs != null && useSbs){
         	SpeedLimit limit = sbs.getSpeedLimit(next, heading*10);
         	state.setSpeedLimit(limit.speedLimit/100);
         }
