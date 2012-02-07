@@ -80,7 +80,11 @@ public class PageAdminOrganization extends AdminBar{
         public Text title(){
             return new Text(AdminOrganizationEnum.TITLE);
         }
-
+        
+        public Text error(){
+            return new Text(AdminOrganizationEnum.TEXT_ERROR);
+        }
+        
         public Text headerTopGroup(){
             return new Text(AdminOrganizationEnum.HEADER_TOP_GROUP);
         }
