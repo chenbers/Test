@@ -36,7 +36,7 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
 	@Override
 	public Response update(Group object) {
 		Group original = getDao().findByID(object.getGroupID());
-		if(original.getAccountID() != object.getAccountID())
+		if(!original.getAccountID().equals(object.getAccountID()))
 			return Response.status(Status.FORBIDDEN).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "Changing the accountID on a group is not allowed").build();
 		
 		return super.update(object);
