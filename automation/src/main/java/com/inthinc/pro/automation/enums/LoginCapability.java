@@ -11,6 +11,7 @@ public enum LoginCapability implements AutoCapability  {
     HasVehicle,
     HasWaySmart,
     HasTiwiPro,
+    HasUniqueMainTermAddrs,
     NoteTesterData,
     StatusInactive(false),
     StatusActive(true),
@@ -45,7 +46,8 @@ public enum LoginCapability implements AutoCapability  {
     NoAccessPointEmployeeInfo,
     NoAccessPointLoginInfo,
     NoAccessPointNotificationsInfo,
-    NoAccessPointVehicleInfo,
+    NoAccessPointVehicleInfo, 
+    
     ;
     private Integer intValue;
     private boolean boolValue;
