@@ -1,17 +1,17 @@
 package com.inthinc.pro.service.it;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import javax.validation.constraints.AssertTrue;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
@@ -359,7 +359,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
         }
     	
     }
-    
+
     /**
      * DE7336: Web services allows group to be moved from one account to another.
      * When updating a group via web services, you can move a group from one account to another even though that group 
@@ -368,7 +368,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
      * @throws Exception
      */
     @Test 
-    public void updateGroupTest() throws Exception{
+    public void updateGroupTest_changeAccount() throws Exception{
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
         String expectedErrorMessage = "Changing the accountID on a group is not allowed";
         Integer accountID = 2; //this is a QA accountID, or a DEV accountID
@@ -431,5 +431,156 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
 	        }
         }
 
+    }
+    /**
+     * DE7336: Web services allows group to be moved from one account to another.
+     * When updating a group via web services, you can move a group from one account to another even though that group 
+     * shouldn't be able to be moved. 
+     * 
+     * @throws Exception
+     */
+    @Test 
+    public void updateGroupTest_harmlessChange() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
+        Integer accountID = 2; //this is a QA accountID, or a DEV accountID
+        Integer createdGroupID = null;
+        Integer newAccountID = 397;
+        String description = "updateGroupTest description";
+        String name = "updateGroupTest name";
+        String type = "TEAM";
+        //Integer parentID = 4917; //this is a QA parentID
+        Integer parentID = 4; //this is a DEV parentID
+        
+        StringBuilder xmlString = new StringBuilder()
+        .append("<group>")
+        .append("<accountID>"+accountID+"</accountID>")
+        .append("<description>"+description+"</description>")
+        .append("<name>"+name+"</name>")
+        .append("<type>"+type+"</type>")
+        .append("<parentID>"+parentID+"</parentID>") 
+        .append("</group>");
+        
+        try{
+        
+	        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
+	//        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
+	//        assertFalse("response should not include 'Error's", response.contains("Error"));
+	//        assertFalse("response should not include 'Exceptions's", response.contains("Exception"));
+	//        assertTrue("response should be a group",response.contains("<group>"));
+	        
+	        
+	        Group response = request.post(Group.class).getEntity();
+	        System.out.println(response);
+	        assertEquals(accountID, response.getAccountID());
+	        assertEquals(parentID, response.getParentID());
+	        createdGroupID = response.getGroupID();
+	        
+	        xmlString = new StringBuilder()
+	        .append("<group>")
+	        .append("<accountID>"+accountID+"</accountID>")
+	        .append("<description>"+description+"</description>")
+			.append("<groupID>"+createdGroupID+"</groupID>")
+			.append("<name>"+name+"</name>")
+			.append("<parentID>"+parentID+"</parentID>")
+			.append("<type>"+type+"</type>")
+			.append("</group>");
+	        
+	        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
+	        //request.accept(MediaType.TEXT_HTML_TYPE).body(MediaType.TEXT_HTML_TYPE, xmlString.toString());
+	        ClientResponse<Group> clientResponse = request.put(Group.class); 
+	        
+	        assertEquals(accountID, clientResponse.getEntity().getAccountID());
+	        assertNotSame("AccountID should NOT change",newAccountID, response.getAccountID());
+	
+	        System.out.println(response);
+        } finally {
+	        if(createdGroupID != null){
+	        	request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+createdGroupID);
+		        request.accept("application/xml");
+		        request.delete();
+	        }
+        }
+    }
+    
+    /**
+     * DE7277: Web service createGroup error 307 A Database execute call failed [dev: jWimmer] [test: ?]
+     * 
+     * web service deletions was leaving orphaned groups (with status = 0))
+     * this test attempts to delete a group that has at least one group under it
+     * if things are working now, the delete should NOT occur, there should be no orphans, and an appropriate error message should get sent back
+     * 
+     * @throws Exception
+     */
+    @Test 
+    public void deleteGroupTest_tryToCreateOrphanGroup() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
+        Integer accountID = 1; //this is a DEV accountID
+        Integer parentGroupID = null;
+        Integer childGroupID = null;
+        String description = "de7277 parent group ";
+        String name = "DE7277 parent group";
+        String type = "DIVISION";
+        //Integer parentID = 4917; //this is a QA parentID
+        Integer parentID = 1; //this is a DEV parentID
+        
+        StringBuilder xmlString = new StringBuilder()
+        .append("<group>")
+        .append("<accountID>"+accountID+"</accountID>")
+        .append("<description>"+description+"</description>")
+        .append("<name>"+name+"</name>")
+        .append("<type>"+type+"</type>")
+        .append("<parentID>"+parentID+"</parentID>") 
+        .append("</group>");
+        
+        try{
+        
+	        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
+	//        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
+	//        assertFalse("response should not include 'Error's", response.contains("Error"));
+	//        assertFalse("response should not include 'Exceptions's", response.contains("Exception"));
+	//        assertTrue("response should be a group",response.contains("<group>"));
+	        
+	        
+	        Group response = request.post(Group.class).getEntity();
+	        System.out.println(response);
+	        assertEquals(accountID, response.getAccountID());
+	        assertEquals(parentID, response.getParentID());
+	        parentGroupID = response.getGroupID();
+	        
+	        xmlString = new StringBuilder()
+	        .append("<group>")
+	        .append("<accountID>"+accountID+"</accountID>")
+	        .append("<description>de7277 child group</description>")
+			.append("<name>de7277 child group</name>")
+			.append("<parentID>"+parentGroupID+"</parentID>")
+			.append("<type>"+type+"</type>")
+			.append("</group>");
+	        
+	        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
+	        //request.accept(MediaType.TEXT_HTML_TYPE).body(MediaType.TEXT_HTML_TYPE, xmlString.toString());
+	        response = request.post(Group.class).getEntity(); 
+	        childGroupID = response.getGroupID();
+	        
+	        request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+parentGroupID);
+	        request.accept("application/xml");
+	        ClientResponse deleteParentResponse = request.delete();
+	        assertTrue("deleting parent should fail and return status=400 (Bad Request)", Status.BAD_REQUEST.getStatusCode() == deleteParentResponse.getStatus());
+	
+	        System.out.println(deleteParentResponse);
+        } finally {
+	        if(childGroupID != null){
+	        	request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+childGroupID);
+		        request.accept("application/xml");
+		        ClientResponse deleteChildResponse = request.delete();
+		        assertTrue("warning test cleanup failed?", (Status.OK.getStatusCode() == deleteChildResponse.getStatus()) );
+	        }
+	        if(parentGroupID != null){
+	        	request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+parentGroupID);
+		        request.accept("application/xml");		        
+		        ClientResponse deleteParentResponse = request.delete();
+		        assertTrue("warning test cleanup failed?", (Status.OK.getStatusCode() == deleteParentResponse.getStatus()) );
+
+	        }
+        }
     }
 }

@@ -6,20 +6,21 @@ import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
+import org.jboss.resteasy.spi.BadRequestException;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupStatus;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
-import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.service.GroupService;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.exceptionMappers.BaseExceptionMapper;
@@ -40,6 +41,35 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
 			return Response.status(Status.FORBIDDEN).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "Changing the accountID on a group is not allowed").build();
 		
 		return super.update(object);
+	}
+	@Override
+	public Response delete(Integer id){
+		if(groupHasActiveAssets(id))
+			throw new BadRequestException("Cannot delete a group that contains a subordinate group, driver, or vehicle.");
+		
+		return super.delete(id);
+	}
+	
+	public boolean groupHasActiveAssets(Integer groupID){
+		boolean groupHasActiveChildren = false;
+		boolean groupHasActiveDrivers = false;
+		boolean groupHasActiveVehicles = false;
+		Group original = getDao().findByID(groupID);
+		groupHasActiveDrivers = !getDao().getGroupDriverNames(groupID).isEmpty();
+		groupHasActiveVehicles = !getDao().getGroupVehicleNames(groupID).isEmpty();
+		
+		List<Group> subGroups = getDao().getSubGroups(original.getGroupID());
+		if(!subGroups.isEmpty()){
+			for(Group group: subGroups){
+				if(group.getStatus() != GroupStatus.GROUP_DELETED){
+					groupHasActiveChildren = true;//can stop as soon as true
+					break;
+				}
+				else
+					groupHasActiveChildren |= groupHasActiveAssets(group.getGroupID());//don't return false until all have been checked
+			}
+		}
+		return groupHasActiveChildren || groupHasActiveDrivers || groupHasActiveVehicles;
 	}
     @Override
     public Response getGroupDriverNames(Integer groupID) {
