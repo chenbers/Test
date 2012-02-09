@@ -297,8 +297,9 @@ public class Sbs implements SpeedLimitProvider{
 		}
 		Sbs sbs = new Sbs("DEVICEDOESNTEXIST", 7, Addresses.QA);
 		for (Heading heading: Heading.values()){
-			System.out.printf("Heading: %s, Limit: %d", heading, sbs.getSpeedLimit(location, heading).speedLimit);
+			System.out.printf("\nHeading: %s, Limit: %d\n", heading, sbs.getSpeedLimit(location, heading).speedLimit/100);
 		}
+		sbs.getThreadManager().shutdown();
 	}
 	
 }

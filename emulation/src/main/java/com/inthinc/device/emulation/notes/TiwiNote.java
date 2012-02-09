@@ -39,8 +39,8 @@ public class TiwiNote extends DeviceNote {
     
     
     
-    public TiwiNote( DeviceNoteTypes type ){
-    	this(type, new AutomationCalendar(), null, Heading.NORTH, 0, 0, 0, 0);
+    public TiwiNote( DeviceNoteTypes type, GeoPoint location){
+    	this(type, new AutomationCalendar(), location, Heading.NORTH, 0, 0, 0, 0);
     }
     
     public TiwiNote(DeviceNoteTypes type, DeviceState state, GeoPoint location) {

@@ -107,7 +107,7 @@ public class TiwiProDevice extends DeviceBase {
     	Log.i("Forward Command from Server: " + reply);
         if (((Integer) reply.get("fwdID")) > 100) {
             TiwiNote ackNote = new TiwiNote(
-                    DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
+                    DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA, tripTracker.currentLocation());
             ackNote.addAttr(EventAttr.FWDCMD_ID, (Integer) reply.get("fwdID"));
             ackNote.addAttr(EventAttr.FWDCMD_STATUS,
                     FwdCmdStatus.FWDCMD_RECEIVED);
@@ -255,7 +255,7 @@ public class TiwiProDevice extends DeviceBase {
         }
         HashMap<DeviceProps, String> changes = new HashMap<DeviceProps, String>();
         TiwiNote ackNote = new TiwiNote(
-                DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
+                DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA, tripTracker.currentLocation());
 
         if (fwdCmd == DeviceForwardCommands.ASSIGN_DRIVER) {
             String[] values = reply.get("data").toString().split(" ");

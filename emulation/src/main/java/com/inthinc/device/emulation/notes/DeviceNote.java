@@ -302,7 +302,7 @@ public abstract class DeviceNote {
         }
         
         if (state == null){
-        	note = new TiwiNote(type);        	
+        	note = new TiwiNote(type, location);        	
         } else if (state.getProductVersion().equals(ProductType.WAYSMART)){
         	if (NoteBC.getTypes().contains(type)){
                 note = new NoteBC(type, state, location);
