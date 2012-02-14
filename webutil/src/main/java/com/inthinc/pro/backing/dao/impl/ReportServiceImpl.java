@@ -132,6 +132,15 @@ public class ReportServiceImpl implements ReportService
         return null;
     }
 
+    @Override
+    @MethodDescription(description="Returns a list where each record contains a driver, an optional vehicle and scores.  The vehicle will be included if the driver is mapped to a vehicle.", crudType=CrudType.READ, 
+    					modelClass=com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper.class)  
+    public List<Map<String, Object>> getVDScoresByGSE(@DaoParam(name="groupID", validator=ValidatorType.GROUP)Integer groupID,             
+            @DaoParam(name="startDate", type=java.util.Date.class,  inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm")Long endDate)
+    {
+        return null;
+    }
 
     @Override
     @MethodDescription(description="Returns the vehicle's scores for the specified duration.", crudType=CrudType.READ,

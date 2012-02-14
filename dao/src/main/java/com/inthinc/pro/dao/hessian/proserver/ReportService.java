@@ -220,6 +220,8 @@ public interface ReportService extends HessianService
     
     List<Map<String, Object>> getDVScoresByGSE(Integer groupID, Long start, Long end);
     
+    List<Map<String, Object>> getVDScoresByGSE(Integer groupID, Long start, Long end);
+    
 //  GQMap 
     List<Map<String, Object>> getSDScoresByGT(Integer groupID, Integer duration);    
     

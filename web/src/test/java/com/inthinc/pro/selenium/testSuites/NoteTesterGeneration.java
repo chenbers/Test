@@ -1,10 +1,15 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.junit.Test;
+
 import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.objects.AutomationDeviceEvents;
+import com.inthinc.device.objects.TripDriver;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 
@@ -136,6 +141,70 @@ public class NoteTesterGeneration extends Thread{
         
         trip.noteTesterFirstGeneration( imei1, imei2, imei3, imei4, address, initialTime);
     }
+    
 
+    @Test
+    public void idlingTestTrip() {
+    	TiwiProDevice tiwi;
+    	//String imei = "FAKEIMEIDEVICE2";
+    	String imei = "FAKEIMEIDEVICE";
+        Addresses address=Addresses.mraby; 
+        tiwi = new TiwiProDevice(imei, address);
+        tiwi.set_time(new AutomationCalendar());
+        
+        String start = "980 N 1050 E, Pleasant Grove, UT 84062";
+        //String start = "950 Laird Ave, Salt Lake City, UT 84105";
+        String mid = "815 N 1020 E, Pleasant Grove, UT 84062";
+        String mid2 = "1003 E 1000 N, Pleasant Grove, UT 84062";
+        String stop = "1175 North 730 East, Pleasant Grove, UT 84062";
+       
+        TripDriver driver = new TripDriver(tiwi);
+        
+        driver.addToTrip(start, mid);
+        driver.addToTrip(mid, mid2);
+        driver.addToTrip(mid2, stop);
+
+        DeviceState state = new DeviceState(null, ProductType.TIWIPRO_R74);
+
+//        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
+//        driver.addEvent(29, AutomationDeviceEvents.speeding(state, null));
+        
+        tiwi.getState().setLowIdle(100).setHighIdle(200);
+        AutomationDeviceEvents.idling(tiwi);
+        driver.addEvent(1, AutomationDeviceEvents.idling(state, null));
+        
+        tiwi.getState().setLowIdle(330).setHighIdle(130);
+        driver.addEvent(10, AutomationDeviceEvents.idling(state, new GeoPoint()));
+        
+        tiwi.getState().setLowIdle(44).setHighIdle(14);
+        driver.addEvent(20, AutomationDeviceEvents.idling(state, null));
+        
+        tiwi.getState().setLowIdle(55).setHighIdle(15);
+        driver.addEvent(33, AutomationDeviceEvents.idling(state, null));
+        
+        tiwi.getState().setLowIdle(100).setHighIdle(200);
+        AutomationDeviceEvents.idling(tiwi);
+        driver.addEvent(44, AutomationDeviceEvents.idling(state, null));
+        
+        tiwi.getState().setLowIdle(330).setHighIdle(130);
+        driver.addEvent(55, AutomationDeviceEvents.idling(state, new GeoPoint()));
+        
+        tiwi.getState().setLowIdle(44).setHighIdle(14);
+        driver.addEvent(66, AutomationDeviceEvents.idling(state, null));
+        
+        tiwi.getState().setLowIdle(55).setHighIdle(15);
+        driver.addEvent(77, AutomationDeviceEvents.idling(state, null));
+        
+        tiwi.getState().setLowIdle(100).setHighIdle(200);
+        AutomationDeviceEvents.idling(tiwi);
+        driver.addEvent(88, AutomationDeviceEvents.idling(state, null));
+        
+        tiwi.getState().setLowIdle(330).setHighIdle(130);
+        driver.addEvent(99, AutomationDeviceEvents.idling(state, new GeoPoint()));
+
+        driver.run();
+        
+
+    }
 
 }

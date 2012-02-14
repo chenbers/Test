@@ -169,6 +169,15 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
 
     /**
      * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.GroupReportDAO#getVehicleScores(java.lang.Integer, org.joda.time.DateTime, org.joda.time.DateTime)
+     */
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, DateTime startTime, DateTime endTime) {
+        return Collections.emptyList();
+    }
+    
+    /**
+     * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.GroupReportDAO#getDriverScores(java.lang.Integer, org.joda.time.Interval)
      */
     @Override
@@ -178,6 +187,15 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
 
     /**
      * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.GroupReportDAO#getVehicleScores(java.lang.Integer, org.joda.time.Interval)
+     */
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Interval interval) {
+        return Collections.emptyList();
+    }
+    
+    /**
+     * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.GroupReportDAO#getDriverScores(java.lang.Integer, org.joda.time.DateTime)
      */
     @Override
@@ -185,6 +203,15 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
         return Collections.emptyList();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.dao.report.GroupReportDAO#getVehicleScores(java.lang.Integer, org.joda.time.DateTime)
+     */
+    @Override
+    public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, DateTime day) {
+        return Collections.emptyList();
+    }
+    
     /**
      * {@inheritDoc}
      * @see com.inthinc.pro.dao.report.GroupReportDAO#getSubGroupsAggregateDriverScores(java.lang.Integer, com.inthinc.pro.model.Duration)

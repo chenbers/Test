@@ -25,6 +25,8 @@ public enum Addresses implements AddressInterface {
 
     STAGE("stage.inthinc.com"),
     
+    mraby("mraby-node0.tiwipro.com"),
+    
     STAGE_DIRECT("ec2-50-18-81-171.us-west-1.compute.amazonaws.com"),
 
     DEV("dev.tiwipro.com", 8081, null, null, 8090, 8888, 7780),
