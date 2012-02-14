@@ -19,6 +19,19 @@ public class TrailerDataEvent extends Event implements StatusEvent {
     @EventAttrID(name="TRAILER_ID")
     String trailerId;
     
+    private static EventAttr[] eventAttrList = {
+        EventAttr.DATA_LENGTH,
+        EventAttr.SERVICE_ID,
+        EventAttr.TRAILER_ID,
+        EventAttr.HAZMAT_FLAG,
+    };
+    
+    @Override
+    public EventAttr[] getEventAttrList() {
+        return eventAttrList;
+    }
+
+    
     public TrailerDataEvent()
     {
         super();

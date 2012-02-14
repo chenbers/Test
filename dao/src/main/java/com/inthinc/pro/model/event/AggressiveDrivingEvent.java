@@ -35,6 +35,10 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
 
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(AggressiveDrivingEvent.class);
+    
+    private static EventAttr[] eventAttrList = {
+        EventAttr.DELTA_VS
+    };
 
     public AggressiveDrivingEvent()
     {
@@ -148,8 +152,6 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     }
     @Override
     public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[1];
-        eventAttrList[0] = EventAttr.DELTA_VS;
         return eventAttrList;
     }
 

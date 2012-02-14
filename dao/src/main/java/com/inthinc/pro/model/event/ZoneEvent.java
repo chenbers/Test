@@ -24,6 +24,16 @@ public abstract class ZoneEvent extends Event {
 	
 	private List<LatLng> zonePoints;
 	
+    private static EventAttr[] eventAttrList = {
+        EventAttr.ZONE_ID
+    };
+    
+    @Override
+    public EventAttr[] getEventAttrList() {
+        return eventAttrList;
+    }
+
+	
 
 	public ZoneEvent() {
 		super();
@@ -81,11 +91,5 @@ public abstract class ZoneEvent extends Event {
         return sb.toString();
 
 	}
-    @Override
-    public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[1];
-        eventAttrList[0] = EventAttr.ZONE_ID;
-        return eventAttrList;
-    }
 
 }

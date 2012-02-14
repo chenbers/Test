@@ -34,6 +34,12 @@ public class SeatBeltEvent extends Event {
     private Integer maxRPM;
 
 
+    private static EventAttr[] eventAttrList = {
+        EventAttr.TOP_SPEED,
+        EventAttr.DISTANCE,
+        EventAttr.MAX_RPM
+    };
+
     public SeatBeltEvent() {
 		super();
 	}
@@ -113,10 +119,6 @@ public class SeatBeltEvent extends Event {
 	}
     @Override
     public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[3];
-        eventAttrList[0] = EventAttr.TOP_SPEED;
-        eventAttrList[1] = EventAttr.DISTANCE;
-        eventAttrList[2] = EventAttr.MAX_RPM;
         return eventAttrList;
     }
 

@@ -14,6 +14,16 @@ public class TextMessageEvent extends Event {
         private Integer textId;
         @EventAttrID(name="TEXT_MESSAGE")
         private String textMsg;
+        
+        private static EventAttr[] eventAttrList = {
+            EventAttr.TEXT_MESSAGE,
+        };
+        
+        @Override
+        public EventAttr[] getEventAttrList() {
+            return eventAttrList;
+        }
+
 
         public TextMessageEvent()
         {

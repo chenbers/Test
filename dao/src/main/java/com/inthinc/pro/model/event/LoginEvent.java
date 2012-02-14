@@ -21,6 +21,11 @@ public class LoginEvent extends Event implements MultipleEventTypes {
     
     @EventAttrID(name="DRIVER_STR")
     private String empId;
+    
+    private static EventAttr[] eventAttrList = {
+        EventAttr.DRIVER_STR,
+    };
+
 
     private static final Logger logger = Logger.getLogger(LoginEvent.class);
 
@@ -102,5 +107,9 @@ public class LoginEvent extends Event implements MultipleEventTypes {
 
     public void setEmpId(String empId) {
         this.empId = empId;
+    }
+    @Override
+    public EventAttr[] getEventAttrList() {
+        return eventAttrList;
     }
 }

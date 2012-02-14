@@ -18,6 +18,10 @@ public class FullEvent extends Event
     @EventAttrID(name="DELTAV_Z")
     private Integer deltaZ;
     	
+    private static EventAttr[] eventAttrList = {
+        EventAttr.DELTA_VS
+    };
+    
 	public FullEvent()
 	{
 		super();
@@ -71,8 +75,6 @@ public class FullEvent extends Event
     
     @Override
     public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[1];
-        eventAttrList[0] = EventAttr.DELTA_VS;
         return eventAttrList;
     }
 

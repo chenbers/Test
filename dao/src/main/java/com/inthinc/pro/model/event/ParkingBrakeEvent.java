@@ -13,6 +13,10 @@ public class ParkingBrakeEvent extends Event implements StatusEvent {
     @EventAttrID(name="STATE")
     private ParkingBrakeState status;
     
+    private static EventAttr[] eventAttrList = {
+        EventAttr.STATE
+    };
+    
     public ParkingBrakeEvent()
     {
         super();
@@ -55,8 +59,6 @@ public class ParkingBrakeEvent extends Event implements StatusEvent {
 
     @Override
     public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[1];
-        eventAttrList[0] = EventAttr.STATE;
         return eventAttrList;
     }
 

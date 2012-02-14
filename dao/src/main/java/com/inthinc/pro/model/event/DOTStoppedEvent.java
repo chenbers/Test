@@ -12,6 +12,10 @@ public class DOTStoppedEvent extends Event implements StatusEvent {
     @EventAttrID(name="REASON_CODE_DOT")
     private DOTStoppedState status;
     
+    private static EventAttr[] eventAttrList = {
+        EventAttr.REASON_CODE_DOT,
+    };
+    
     public DOTStoppedEvent()
     {
         super();
@@ -54,8 +58,6 @@ public class DOTStoppedEvent extends Event implements StatusEvent {
 
     @Override
     public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[1];
-        eventAttrList[0] = EventAttr.REASON_CODE_DOT;
         return eventAttrList;
     }
 

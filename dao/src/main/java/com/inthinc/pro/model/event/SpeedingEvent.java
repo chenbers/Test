@@ -25,16 +25,18 @@ public class SpeedingEvent extends Event
     private Integer distance;
     @EventAttrID(name="AVG_RPM")
     private Integer avgRPM;
+   
+    private static EventAttr[] eventAttrList = {
+        EventAttr.TOP_SPEED,
+        EventAttr.DISTANCE,
+        EventAttr.MAX_RPM,
+        EventAttr.SPEED_LIMIT,
+        EventAttr.AVG_SPEED,
+        EventAttr.AVG_RPM
+    };
     
     @Override
     public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[6];
-        eventAttrList[0] = EventAttr.TOP_SPEED;
-        eventAttrList[1] = EventAttr.DISTANCE;
-        eventAttrList[2] = EventAttr.MAX_RPM;
-        eventAttrList[3] = EventAttr.SPEED_LIMIT;
-        eventAttrList[4] = EventAttr.AVG_SPEED;
-        eventAttrList[5] = EventAttr.AVG_RPM;
         return eventAttrList;
     }
 

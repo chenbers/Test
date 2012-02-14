@@ -17,7 +17,14 @@ public class PowerOnEvent extends Event
     private Integer manualResetReason;
     @EventAttrID(name="FIRMWARE_VERSION")
     private Integer firmwareVersion;
-    
+
+    // Attributes ATTR_RESET_REASON, ATTR_MANUAL_RESET_REASON, ATTR_FIRMWARE_VERSION, ATTR_GPS_LOCK_TIME, [ATTR_DMM_VERSION], [ATTR_DMM_ORIENTATION], [ATTR_DMM_CAL_STATUS], ATTR_PRODUCT_VERSION, [ATTR_VIOLATION_FLAGS]
+    private static EventAttr[] eventAttrList = {
+        EventAttr.RESET_REASON,
+        EventAttr.MANUAL_RESET_REASON,
+        EventAttr.FIRMWARE_VERSION,
+        EventAttr.GPS_LOCK_TIME
+    };
     
     public PowerOnEvent()
     {
@@ -58,5 +65,10 @@ public class PowerOnEvent extends Event
     public void setFirmwareVersion(Integer firmwareVersion)
     {
         this.firmwareVersion = firmwareVersion;
+    }
+
+    @Override
+    public EventAttr[] getEventAttrList() {
+        return eventAttrList;
     }
 }

@@ -23,6 +23,11 @@ public class IdleEvent extends Event
     @EventAttrID(name="HIGH_IDLE")
     private Integer highIdle = 0;
 	
+    private static EventAttr[] eventAttrList = {
+        EventAttr.LOW_IDLE,
+        EventAttr.HIGH_IDLE
+    };
+
 	public IdleEvent()
 	{
 		super();
@@ -45,9 +50,6 @@ public class IdleEvent extends Event
 	}
     @Override
     public EventAttr[] getEventAttrList() {
-        EventAttr[] eventAttrList = new EventAttr[2];
-        eventAttrList[0] = EventAttr.LOW_IDLE;
-        eventAttrList[1] = EventAttr.HIGH_IDLE;
         return eventAttrList;
     }
 

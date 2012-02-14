@@ -142,7 +142,7 @@ public abstract class AbstractMapper implements Mapper {
         return returnList;
     }
 
-    private <E> List<E> convertSimpleListToModelObject(List<Object> list, Class<E> type, List<Field> fieldType) {
+    protected <E> List<E> convertSimpleListToModelObject(List<Object> list, Class<E> type, List<Field> fieldType) {
         List<E> returnList = new ArrayList<E>();
         if (list != null) {
             for (Object o : list) {
@@ -189,7 +189,7 @@ public abstract class AbstractMapper implements Mapper {
         }
     }
 
-    private Object convertProperty(Class<?> propertyType, String key, Object value, List<Field> fieldList) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+    protected Object convertProperty(Class<?> propertyType, String key, Object value, List<Field> fieldList) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
             NoSuchFieldException, InstantiationException {
         if (propertyType != null) {
             if (propertyType.equals(Date.class) && value instanceof Number) {
@@ -471,11 +471,11 @@ public abstract class AbstractMapper implements Mapper {
         return fieldList;
     }
 
-    private static Field getField(String fieldName, Class<?> type) throws NoSuchFieldException {
+    protected static Field getField(String fieldName, Class<?> type) throws NoSuchFieldException {
         return getField(fieldName, getAllFields(type));
     }
 
-    private static Field getField(String fieldName, List<Field> fieldList) throws NoSuchFieldException {
+    protected static Field getField(String fieldName, List<Field> fieldList) throws NoSuchFieldException {
         for (Field field : fieldList) {
             if (field.getName().equals(fieldName))
                 return field;
