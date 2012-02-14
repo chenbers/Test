@@ -8,13 +8,12 @@ import com.inthinc.pro.model.TableType;
 public class IdlingReportTableColumns extends BaseTableColumns {
 	private static final long serialVersionUID = 8753087702011476835L;
 	private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
-    private static final List<String> AVAILABLE_COLUMNS;
+    protected static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("driver_person_fullName");
-        AVAILABLE_COLUMNS.add("vehicle_name");
         AVAILABLE_COLUMNS.add("duration");
         AVAILABLE_COLUMNS.add("hasRPM");
         AVAILABLE_COLUMNS.add("lowHrs");
