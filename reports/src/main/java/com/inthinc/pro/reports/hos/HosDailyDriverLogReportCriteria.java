@@ -150,7 +150,7 @@ public class HosDailyDriverLogReportCriteria {
         Account account = fetchAccount(driver.getPerson().getAcctID());
         initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
         Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
-        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1);
         initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
     }
     
@@ -714,8 +714,16 @@ public class HosDailyDriverLogReportCriteria {
         return dayOccupantLogList;
     }
     private boolean timesOverlap(HOSRecAdjusted hosRecord, HOSOccupantLog hosOccupantLog) {
+        // added this to prevent crashes with bad intervals from the database (end before start) 
+        if (hosOccupantLog.getEndTime() == null || hosOccupantLog.getLogTime() == null ||
+                hosRecord.getTotalRealMinutes() < 0 ||
+                hosOccupantLog.getEndTime().before(hosOccupantLog.getLogTime())) {
+            logger.error("Error in interval end time before start " + hosOccupantLog.getLogTime() + " " + hosOccupantLog.getEndTime() + " " + hosOccupantLog.getVehicleID());
+            return false;
+        }
         Interval driverInterval = new Interval(new DateTime(hosRecord.getLogTimeDate()), 
                                                 new DateTime(hosRecord.getLogTimeDate()).plusMinutes((int)hosRecord.getTotalRealMinutes()));
+        
         Interval occupantInterval = new Interval(new DateTime(hosOccupantLog.getLogTime()), new DateTime(hosOccupantLog.getEndTime()));
         return driverInterval.overlaps(occupantInterval);
     }
