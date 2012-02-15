@@ -8,7 +8,7 @@ import com.inthinc.pro.model.TableType;
 public class IdlingReportTableColumns extends BaseTableColumns {
 	private static final long serialVersionUID = 8753087702011476835L;
 	private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
-    protected static final List<String> AVAILABLE_COLUMNS;
+    static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
