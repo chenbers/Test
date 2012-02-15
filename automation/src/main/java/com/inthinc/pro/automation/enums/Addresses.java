@@ -47,7 +47,8 @@ public enum Addresses implements AddressInterface {
     
     LDS("lds.inthinc.com"),
     
-    CONFIGURATOR("dev.tiwipro.com", 8080, "http", "configurator"),
+    CONFIGURATOR("tiwipro0.tiwipro.com", 8080, "http", "configurator"),
+    CONFIGURATOROUTSIDE("dev.tiwipro.com", 8080, "http", "configurator"),
     LOCALCONFIGURATOR("localhost", 8080, "http", "configurator"),
 
     // PROD_MCM_EC2("my.inthinc.com"),
