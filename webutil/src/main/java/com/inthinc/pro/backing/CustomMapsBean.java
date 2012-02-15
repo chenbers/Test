@@ -90,7 +90,12 @@ public class CustomMapsBean extends BaseBean {
       setEditing(true);
     }
     public void deleteAction() {
-        // TODO:
+        if (getSelectedCustomMapID() == null || getSelectedCustomMapID().equals(NEW_MAP_ID)) {
+            initCustomMaps();
+            return;
+        }
+        customMapDAO.deleteByID(getSelectedCustomMapID());
+        initCustomMaps();
     }
     public void refreshAction() {
     }

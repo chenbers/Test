@@ -102,12 +102,15 @@
 			<table>
             <tr>
 				<td>
-					<a4j:commandButton action="#{customMapsBean.newAction}" value="Add"  rendered="#{!customMapsBean.editing}" 
+					<a4j:commandButton action="#{customMapsBean.newAction}" value="Add"  
+						rendered="#{!customMapsBean.editing}" 
 						reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
 					<a4j:commandButton action="#{customMapsBean.editAction}" value="Edit" 
 						rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"
 						reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
-					<h:commandButton action="#{customMapsBean.deleteAction}" value="Remove"  rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"/>
+					<a4j:commandButton value="Remove"  
+							rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"
+							oncomplete="Richfaces.showModalPanel('confirmDelete'); return false;"/>
 				</td>
 			</tr>
 			</table>
@@ -235,5 +238,30 @@
  			</a4j:outputPanel>			
 		</div>
 		</div>
+		
+    	<rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" 
+    				width="200" height="100" autosized="true" resizeable="false" zindex="2001" >
+			<f:facet name="header">
+        		<h:outputText value="Confirm Delete" />
+      		</f:facet>
+<!--       		
+      		<f:facet name="controls">
+        		<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('confirmDelete')" />
+      		</f:facet>
+ -->
+      		<div class="popupsubtitle"><h:outputText value="Are you sure you want to delete this custom map?" /></div>
+
+			<a4j:form id="confirmDeleteForm">
+
+	        <div class="popupactions">
+          		<a4j:commandButton id="cancelDelete" onclick="Richfaces.hideModalPanel('confirmDelete');" immediate="true" value="No"/>
+          		<a4j:commandButton id="doDelete" action="#{customMapsBean.deleteAction}" onclick="Richfaces.hideModalPanel('confirmDelete')" value="Yes"
+          			reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup" oncomplete="initMap();"/>
+          	</div>
+
+      		</a4j:form>
+
+    	</rich:modalPanel>
+		
     </ui:define>
 </ui:composition>

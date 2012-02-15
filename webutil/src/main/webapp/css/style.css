@@ -139,4 +139,16 @@ span.required {
 	background: url(../images/icon_msg_err_small.png) top left no-repeat;
 	color: #c44d34;
 }
+
+.popupsubtitle {
+	padding: 5px;
+	margin: 5px;
+	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+}
+.popupactions {
+	border-top: 1px solid black;
+	padding: 5px;
+	margin: 5px;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+}
 	
