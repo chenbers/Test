@@ -34,6 +34,7 @@
 	<bean id="bulkImportBean" class="com.inthinc.pro.backing.importer.BulkImportBean" scope="session"/>
 	<bean id="progressBarBean" class="com.inthinc.pro.backing.importer.ProgressBarBean" scope="session"/>
 	<bean id="hosBean" class="com.inthinc.pro.backing.hos.HOSBean" scope="session"/>
+	<bean id="customMapsBean" class="com.inthinc.pro.backing.CustomMapsBean" init-method="init" parent="baseBean" scope="session"/>
 	
 	<!--  UI beans -->
 	<bean id="productSelectItems" class="com.inthinc.pro.configurator.ui.ProductSelectItems"/>

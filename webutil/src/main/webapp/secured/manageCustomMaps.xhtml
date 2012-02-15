@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/template/template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+
+   	<ui:define name="scripts">
+	<script src="https://maps-api-ssl.google.com/maps?file=api&amp;v=2&amp;client=gme-inthinc&amp;sensor=false&amp;ahl=en" type="text/javascript"></script>
+	<script type="text/javascript">
+	//<![CDATA[
+		var map;
+		var saveLatLng;
+		var saveZoom;
+
+		saveLatLng = new GLatLng(38.5482, -95.8008);
+		saveZoom = 10;
+
+		function initMap()
+		{
+   			if (GBrowserIsCompatible()) 
+			{
+		 	  	map = new GMap2(document.getElementById("map-canvas"),{mapTypes:[]});
+	        	geocoder = new GClientGeocoder();
+		 	  	addLayer();
+		        map.addControl(new GLargeMapControl());
+		        map.addControl(new GScaleControl());
+		        map.addControl(new GMenuMapTypeControl(true));
+				map.setCenter(saveLatLng, saveZoom);
+		        map.enableScrollWheelZoom();
+		        GEvent.addListener(map, "dragend", function() {
+              		saveLatLng = map.getCenter();
+				});
+		        GEvent.addListener(map, "zoomend", function(oldlevel, newlevel) {
+              		saveZoom = newlevel;
+				});
+			}
+		}	
+		function processAddressLookup(addressId)
+   		{
+   			var address = document.getElementById(addressId).value;
+	   		if(address.length == 0)  
+   			{
+   				return;
+   	   		}
+
+	   	    if (geocoder) {
+	   	        geocoder.getLatLng(
+	   	          address,
+	   	          function(point) {
+	   	        	  if (!point) {
+	   	        		  alert(address + ' not found');
+	   	        	  } else {
+						 saveLatLng = point;
+  						 map.setCenter(saveLatLng, saveZoom);
+	    	         }
+	   	          }
+	   	        );
+   		    }
+   		}
+		//]]>
+	</script>
+	</ui:define>
+    <ui:param name="panelTitle" value="Manage Custom Maps" />
+    <ui:param name="groupSelected" value="MAIN" />
+    <ui:define name="util_content">
+    <div style="margin: 10px auto 20px auto;background: #fff;">
+    <div style="width:500px">
+		<a4j:form id="account-select-form" rendered="#{customMapsBean.isSuperuser}">
+			<table>
+			<tr><td>
+			<h:panelGrid columns="2" cellspacing="0" columnClasses="labelColMiddle,valueCol">
+				<h:outputText value="Account:" style="font-size:12px;font-weight:bold;padding:10px;"/>
+				<h:selectOneMenu id="account-select-menu" value="#{customMapsBean.selectedAccountID}">
+						<f:selectItems value="#{customMapsBean.accountSelectList}" />
+                        <a4j:support event="onchange" reRender="mapSelectForm, mapActionForm, mapOptionsForm, mapPreview, addressLookup"/>
+				</h:selectOneMenu>
+			</h:panelGrid>
+			</td>
+			<td>
+			</td>
+			</tr>
+			</table>	
+			<rich:separator height="3"/>
+		</a4j:form>
+		
+		<a4j:form id="mapSelectForm">
+			<h:panelGroup  rendered="#{customMapsBean.selectedAccount != null and !customMapsBean.editing}">
+			<table>
+			<tr><td>
+            <h:panelGrid columns="2" cellspacing="0" columnClasses="labelColMiddle,valueCol">
+				<h:outputText value="Maps:"  style="font-size:12px;padding:10px;"/>
+				<h:selectOneMenu id="layers" value="#{customMapsBean.selectedCustomMapID}">
+					<f:selectItems value="#{customMapsBean.customMapSelectList}"/>
+		            <a4j:support event="onchange" reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup" oncomplete="initMap();"/>
+				</h:selectOneMenu>
+            </h:panelGrid>
+            </td></tr>
+			</table>
+			</h:panelGroup>
+		</a4j:form>
+		<a4j:form id="mapActionForm">
+			<h:panelGroup  rendered="#{customMapsBean.selectedAccount != null}">
+			<table>
+            <tr>
+				<td>
+					<a4j:commandButton action="#{customMapsBean.newAction}" value="Add"  rendered="#{!customMapsBean.editing}" 
+						reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+					<a4j:commandButton action="#{customMapsBean.editAction}" value="Edit" 
+						rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"
+						reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+					<h:commandButton action="#{customMapsBean.deleteAction}" value="Remove"  rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"/>
+				</td>
+			</tr>
+			</table>
+			</h:panelGroup>
+		</a4j:form>
+         <a4j:form id="mapOptionsForm">
+            <rich:panel rendered="#{customMapsBean.selectedCustomMap != null}">
+	            <f:facet name="header">
+					<h:outputText value="Map Definition - #{customMapsBean.selectedCustomMap.name}" />
+        	    </f:facet>
+                <table>
+					<tr>
+                   		<td class="labelColMiddle">
+                   			<h:outputText value="Display Name:" style="font-weight:bold;"/>
+                   			<span class="required">*</span>
+                   		</td>
+                   		<td>
+                            <rich:message for="displayName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                       		<h:inputText id="displayName" value="#{customMapsBean.selectedCustomMap.name}" size="55" rendered="#{customMapsBean.editing}"
+                       				required="true" requiredMessage="Required"/>
+                       		<h:outputText value="#{customMapsBean.selectedCustomMap.name}" rendered="#{!customMapsBean.editing}"/>
+                   		</td>
+					</tr>
+					<tr>
+                    	<td class="labelColMiddle">
+                    		<h:outputText value="URL:" style="font-weight:bold;" />
+                   			<span class="required">*</span>
+                    	</td>
+                        <td>
+                            <rich:message for="url" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        	<h:inputText id="url" value="#{customMapsBean.selectedCustomMap.url}"  size="55" rendered="#{customMapsBean.editing}" 
+                       				required="true" requiredMessage="Required"/>
+                        	<h:outputText value="#{customMapsBean.selectedCustomMap.url}"  rendered="#{!customMapsBean.editing}"/>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td class="labelColMiddle"><h:outputText value="Png Format Tiles:" style="font-weight:bold;" /></td>
+                        <td>
+                        	<h:selectBooleanCheckbox value="#{customMapsBean.selectedCustomMap.pngFormat}" rendered="#{customMapsBean.editing}"/>
+                        	<h:outputText value="#{customMapsBean.selectedCustomMap.pngFormat}" rendered="#{!customMapsBean.editing}"/>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+	                   	<td class="labelColMiddle"><h:outputText value="Zoom Min:" style="font-weight:bold;" /></td>
+	                    <td>
+							<rich:inputNumberSlider id="minRes" value="#{customMapsBean.selectedCustomMap.minZoom}" 
+	                       	width="300" onfocus="this.select();" showToolTip="true" 
+	                        showBoundaryValues="true" minValue="0" maxValue="30" step="1" rendered="#{customMapsBean.editing}"/>
+							<h:outputText value="#{customMapsBean.selectedCustomMap.minZoom}" rendered="#{!customMapsBean.editing}"/>
+	                   </td>                              	                           	
+					</tr>
+	                <tr>    
+	                   	<td class="labelColMiddle"><h:outputText value="Zoom Max:" style="font-weight:bold;" /></td>
+	                    <td>
+							<rich:inputNumberSlider id="maxRes" value="#{customMapsBean.selectedCustomMap.maxZoom}" 
+	                       	width="300" onfocus="this.select();" showToolTip="true" 
+	                        showBoundaryValues="true" minValue="0" maxValue="30" step="1" rendered="#{customMapsBean.editing}"/>
+							<h:outputText value="#{customMapsBean.selectedCustomMap.maxZoom}" rendered="#{!customMapsBean.editing}"/>
+	                    </td>                              	                           	
+					</tr>
+					<tr>    
+		            	<td class="labelColMiddle"><h:outputText value="Opacity:" style="font-weight:bold;" /></td>
+		                <td>
+							<rich:inputNumberSlider id="opacity" value="#{customMapsBean.selectedCustomMap.opacity}" 
+		                     width="300" onfocus="this.select();" showToolTip="true" 
+		                     showBoundaryValues="true" minValue="0.0" maxValue="1.0" step=".01" rendered="#{customMapsBean.editing}"/>
+							<h:outputText value="#{customMapsBean.selectedCustomMap.opacity}" rendered="#{!customMapsBean.editing}"/>
+						</td>                              	                           	
+					</tr>
+					<tr>
+                    	<td class="labelColMiddle"><h:outputText value="Layer Over:"  style="font-weight:bold;"/></td>
+                        <td>
+							<h:selectOneMenu id="bottomLayer" value="#{customMapsBean.selectedCustomMap.bottomLayer}"  converter="SimpleBeanConverter" rendered="#{customMapsBean.editing}">
+								<f:selectItems value="#{customMapsBean.googleMapTypes}"/>
+							</h:selectOneMenu>
+							<h:outputText value="#{customMapsBean.selectedCustomMap.bottomLayer}" rendered="#{!customMapsBean.editing}"/>
+                        </td>                              	                           	
+					</tr>
+                </table>
+                <table>
+					<tr>
+						<td width="50%">
+						 	<h:panelGroup rendered="#{customMapsBean.editing}">
+								<a4j:commandButton id="cancel" action="#{customMapsBean.cancelAction}" value="Cancel" immediate="true" 
+										reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+								<a4j:commandButton id="save"  action="#{customMapsBean.saveAction}" value="Save" 
+										reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+							</h:panelGroup>
+						</td>
+						<td>
+							<a4j:commandButton id="refresh" value="Refresh Preview" style="float:right;"
+		            				action="#{customMapsBean.refreshAction}" reRender="mapPreview" oncomplete="initMap();"/>
+						</td>
+                    </tr>
+                </table>
+			</rich:panel>
+            </a4j:form>
+            
+            <a4j:form id="mapPreview">
+            <rich:panel rendered="#{customMapsBean.selectedCustomMap != null}">
+	            <f:facet name="header">
+					<h:outputText value="Map Preview" />
+        	    </f:facet>
+				<div id="map-canvas" style="width: 475px; height: 400px; border: 0"></div>
+        	    <ui:include src="/includes/customMap.xhtml" >
+      				<ui:param name="customMap" value="#{customMapsBean.selectedCustomMap}"/> 
+  				</ui:include>
+			</rich:panel>
+			</a4j:form>
+			<a4j:outputPanel  id="addressLookup">
+				<h:panelGroup rendered="#{customMapsBean.selectedCustomMap != null}">
+                <table>
+					<tr>
+						<td>
+							<h:inputText id="addressText" size="50" value=""/>
+						</td>
+						<td width="165" rowspan="2">
+							<button id="addressSearch" name="locationButton" value="" class="left" onclick="processAddressLookup('addressText');">
+								Lookup Address
+							</button>
+						</td>
+					</tr>
+				</table>        
+				</h:panelGroup>	    
+ 			</a4j:outputPanel>			
+		</div>
+		</div>
+    </ui:define>
+</ui:composition>

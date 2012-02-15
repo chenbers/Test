@@ -86,6 +86,12 @@
    <to-view-id>/secured/hos.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_customMaps</from-outcome>
+   <to-view-id>/secured/manageCustomMaps.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  <converter>
   <converter-id>ConfiguratorDoubleConverter</converter-id>
   <converter-class>com.inthinc.pro.configurator.ui.ConfiguratorDoubleConverter</converter-class>
@@ -93,6 +99,10 @@
  <converter>
   <converter-id>ConfiguratorIntegerConverter</converter-id>
   <converter-class>com.inthinc.pro.configurator.ui.ConfiguratorIntegerConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-id>SimpleBeanConverter</converter-id>
+  <converter-class>com.inthinc.pro.convert.SimpleBeanConverter</converter-class>
  </converter>
  
   <!-- =========== FULL CONFIGURATION FILE ================================== -->

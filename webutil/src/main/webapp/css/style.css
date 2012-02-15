@@ -114,3 +114,29 @@ th.rich-table-subheadercell {
 	overflow:auto; 
 }
 	
+span.required {
+	color: #990000;
+}
+
+.field-msg {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px 0px 1px 16px;
+	display: block;
+}
+
+.field-warning {
+	background: url(../images/icon_msg_warn_small.png) top left no-repeat;
+	color: #c26b06;
+}
+
+.field-info {
+	background: url(../images/icon_msg_info_small.png) top left no-repeat;
+	color: #395898;
+}
+
+.field-error {
+	background: url(../images/icon_msg_err_small.png) top left no-repeat;
+	color: #c44d34;
+}
+	

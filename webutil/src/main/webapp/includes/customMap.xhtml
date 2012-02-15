@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+         wmsDef: Instance of the com.inthinc.pro.dao.model.CustomMap class.
+
+    To use:
+  ==============
+  <ui:include src="/includes/customMap.xhtml" >
+      <ui:param name="customMap" value="#{backingBean.customMap}"/> 
+  </ui:include>
+  
+-->
+
+<ui:composition>
+
+	<script type="text/javascript">
+
+	//<![CDATA[
+	
+	function getMapType(bottomLayer) {
+		if (bottomLayer == 'G_NORMAL_MAP')
+			return G_NORMAL_MAP;	      	
+		
+		if (bottomLayer == 'G_SATELLITE_MAP')	      	
+			return G_SATELLITE_MAP;
+				      	
+		if (bottomLayer == 'G_HYBRID_MAP')	      	
+			return G_HYBRID_MAP;
+				      	
+		if (bottomLayer == 'G_PHYSICAL_MAP')	      	
+			return G_PHYSICAL_MAP;	      	
+		
+		if (bottomLayer == 'G_AERIAL_MAP')	      	
+			return G_AERIAL_MAP;	
+			      	
+		if (bottomLayer == 'G_AERIAL_HYBRID_MAP')	      	
+			return G_AERIAL_HYBRID_MAP;
+			
+		return null;	      	
+	}
+	function addWMSMap(url, displayName, minZoom, maxZoom, opacityVal, usePng, bottomLayer) {
+		var wmsMap = new GTileLayer(null, minZoom, maxZoom, {
+			tileUrlTemplate:url,
+	      	isPng:usePng,
+	      	opacity:opacityVal });
+
+		var layers = new Array();
+		var bottomMapType = getMapType(bottomLayer); 
+
+		if (bottomMapType != null) {
+			for (var i = 0; i < bottomMapType.getTileLayers().length; i++) {
+				layers.push(bottomMapType.getTileLayers()[i]);
+			} 
+		}
+		else {
+			bottomMapType = G_NORMAL_MAP; 
+		}
+		
+		layers.push(wmsMap);
+					 
+		var custommap = new GMapType(layers, bottomMapType.getProjection(), displayName);
+		map.addMapType(custommap);
+		
+	}
+
+	 
+	function addLayer() {
+		addWMSMap("#{customMap.url}", "#{customMap.name}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}", "#{customMap.bottomLayer}");
+	}		
+	//]]>
+	</script>
+</ui:composition>
+
+</html>
