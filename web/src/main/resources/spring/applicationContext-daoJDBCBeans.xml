@@ -28,4 +28,6 @@ default-autowire="byName">
 
   <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO"/>
 	
+    <bean id="customMapDAO" class="com.inthinc.pro.dao.jdbc.CustomMapJDBCDAO" parent="genericJDBCDAO"></bean>
+	
 </beans>

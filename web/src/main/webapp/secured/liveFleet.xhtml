@@ -56,7 +56,7 @@
 				map.addOverlay(marker);
 				bounds.extend(marker.getPoint());
 
-				initWMSLayers();
+				initCustomMaps(map);
 			
 				var node = document.getElementById("defaultMessage").cloneNode(true);
 				node.style.display = 'block';
@@ -183,7 +183,7 @@
 	</ui:define>
 	<ui:define name="content">
 	
-	<ui:include src="../includes/WMSMapLayers.xhtml"/>
+	<ui:include src="../includes/customMaps.xhtml"/>
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form id="liveFleetVehicleBubbles">
 			<rich:panel id="mapMarkers">

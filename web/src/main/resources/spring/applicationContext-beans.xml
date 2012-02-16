@@ -320,7 +320,6 @@
   
   <bean id="accountBean" class="com.inthinc.pro.backing.AccountBean" scope="session" init-method="initBean">
     <property name="personDAO" ref="personDAO"></property>  
-    <property name="wmsConfigurationBean" ref="wmsConfigurationBean"></property>
 <!--  <property name="externalConfigBean" ref="externalConfigBean"></property>    
     <property name="accountOptionsBean" ref="accountOptionsBean"></property>
      --> 
@@ -550,14 +549,7 @@
   </bean>
 -->
 
-  <bean id="wmsConfigurationBean" class="com.inthinc.pro.backing.WMSConfigurationBean" scope="session" parent="baseBean" init-method="init">
-  <!-- 
-    <property name="url" value="${wms.url}" />
-    <property name="query" value="${wms.query}" />
-    <property name="layers" value="${wms.layers}" />
-    <property name="layerQueryParam" value="${wms.layer.queryparam}" />
-    -->
-  </bean>
+  <bean id="customMapsBean" class="com.inthinc.pro.backing.CustomMapsBean" scope="session" parent="baseBean" init-method="init"/>
 <!--   
   <bean id="externalConfigBean" class="com.inthinc.pro.backing.ExternalConfigBean" scope="session" parent="baseBean" init-method="init">
   </bean>

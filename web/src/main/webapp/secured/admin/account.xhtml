@@ -79,59 +79,6 @@
                         </table>
                           
                       </td>
-					
-                      <td width="10" valign="top">
-                    	  <h:graphicImage value="/images/x.gif" width="10" />
-                      </td>
-                    
-                      <td width="390" valign="top">
-                        <div class="add_section_title">
-                      	  <h:outputText value="#{messages.editAccount_web_map_service}" />                      	
-                        </div>					     
-					  
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_url}" /></td>
-                            <td><h:outputText value="#{accountBean.item.props.wmsURL}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_query}" /></td>
-                            <td><h:outputText value="#{accountBean.item.props.wmsQuery}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_layers}" /></td>
-                            <td><h:outputText value="#{accountBean.item.props.wmsLayers}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_query_parameters}" /></td>
-                            <td><h:outputText value="#{accountBean.item.props.wmsLayerQueryParam}" /></td>
-                          </tr>                          
-                        </table>
-                      </td>					                                              
-                    </tr>
-                    
-                    <tr>
-                      <td width="390" valign="top">
-                
-                        <div class="add_section_title">
-                        	<h:outputText value="#{messages.editAccount_miscellaneous}" />
-                        </div>
-                  
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_phone_alerts_active}" /></td>
-                            <td><h:outputText id="editAccount-phoneAlerts" disabled="true"
-                            	value="#{accountBean.item.props.phoneAlertsActive == '1' ?  messages.editAccount_yes : messages.editAccount_no}" />                               
-							</td>
-                          </tr>
-                          <tr>
-                            <td width="150"><h:outputText value="#{messages.editAccount_no_reply_email}" /></td>
-                            <td><h:outputText value="#{accountBean.item.props.noReplyEmail}" /></td>
-                          </tr>
-                        </table>
-                          
-                      </td>
-					
                       <td width="10" valign="top">
                     	  <h:graphicImage value="/images/x.gif" width="10" />
                       </td>
@@ -156,8 +103,31 @@
                       </td>					                                              
                     </tr>
                     
-                    
                     <tr>
+                      <td width="390" valign="top">
+                
+                        <div class="add_section_title">
+                        	<h:outputText value="#{messages.editAccount_miscellaneous}" />
+                        </div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_phone_alerts_active}" /></td>
+                            <td><h:outputText id="editAccount-phoneAlerts" disabled="true"
+                            	value="#{accountBean.item.props.phoneAlertsActive == '1' ?  messages.editAccount_yes : messages.editAccount_no}" />                               
+							</td>
+                          </tr>
+                          <tr>
+                            <td width="150"><h:outputText value="#{messages.editAccount_no_reply_email}" /></td>
+                            <td><h:outputText value="#{accountBean.item.props.noReplyEmail}" /></td>
+                          </tr>
+                        </table>
+                      </td>
+                      
+                      <td width="10" valign="top">
+                    	  <h:graphicImage value="/images/x.gif" width="10" />
+                      </td>
+					
                       <td width="390" valign="top">
                 
                         <div class="add_section_title">
@@ -191,27 +161,30 @@
                           </tr>
                         </table>
                       </td>
+                    </tr>
+<!--                     
+                    
+                    <tr>
                       <td width="10" valign="top">
                     	  <h:graphicImage value="/images/x.gif" width="10" />
                       </td>
-<!--                      <td width="390" valign="top"></td>-->
+                      <td width="390" valign="top"></td>
                       <td width="390" valign="top">
-<!--                        <div class="add_section_title">-->
-<!--                        	<h:outputText value="#{messages.editAccount_phoneControl}" />-->
-<!--                        </div>-->
-<!--					  -->
-<!--                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">-->
-<!--                          <a4j:repeat rowKeyVar="row" value="#{accountBean.item.props.phoneControlProviders}" var="provider">-->
-<!--                          	 <h:panelGroup rendered="#{not empty provider}">-->
-<!-- 	                          <tr>-->
-<!--        	                    <td><h:outputText escape="false" value="#{provider.name}" /></td>-->
-<!--            	              </tr>-->
-<!--            	              </h:panelGroup>-->
-<!--                          </a4j:repeat>-->
-<!--                          -->
-<!--                        </table>-->
+                        <div class="add_section_title">
+                        	<h:outputText value="#{messages.editAccount_phoneControl}" />
+                        </div>
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="left">
+                          <a4j:repeat rowKeyVar="row" value="#{accountBean.item.props.phoneControlProviders}" var="provider">
+                          	 <h:panelGroup rendered="#{not empty provider}">
+ 	                          <tr>
+        	                    <td><h:outputText escape="false" value="#{provider.name}" /></td>
+            	              </tr>
+            	              </h:panelGroup>
+                          </a4j:repeat>
+                        </table>
                       </td>					                                              
                     </tr>
+ -->                    
                   </table>
 
                 </div>

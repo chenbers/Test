@@ -8,7 +8,7 @@
 		<a4j:loadScript id="markclust" src="/js/markerclusterer_packed.js" />
 		<a4j:loadScript id="progbar" src="/js/progressbarcontrol_packed.js" />
 
-		<ui:include src="/includes/WMSMapLayers.xhtml" />
+		<ui:include src="/includes/customMaps.xhtml" />
 
 		<script type="text/javascript">
 
@@ -57,7 +57,7 @@
 				    map.enableScrollWheelZoom();
 					map.setZoom(zoom);
 					
-					initWMSLayers();
+					initCustomMaps(map);
 					
 			 		overviewMapControl = new GOverviewMapControl();
 			 		map.addControl(overviewMapControl); 

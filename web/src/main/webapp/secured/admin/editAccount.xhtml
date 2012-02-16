@@ -149,119 +149,7 @@
                           </td>
                         </tr>                        
                      </table>
-
-                     
 					</td>
-					
-                    <td width="10" valign="top">
-                    	<h:graphicImage value="/images/x.gif" width="10" />
-                    </td>
-                    
-                    <td width="390" valign="top">
-                      <div class="add_section_title">
-                      	<h:outputText value="#{messages.editAccount_web_map_service}" />                      	
-                      </div> 
-                      
-                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_url}" />
-                            
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-url" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{accountBean.item.props.wmsURL}" id="editAccount-url" 
-                            	onchange="checkMultiple(this)" styleClass="text" size="30"
-                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                            
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_query}" />
-                            
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-query" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{accountBean.item.props.wmsQuery}" id="editAccount-query" 
-                            	onchange="checkMultiple(this)" styleClass="text" size="30"
-                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                               
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_layers}" />
-                                                  	
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-layers" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{accountBean.item.props.wmsLayers}" id="editAccount-layers" 
-                            	onchange="checkMultiple(this)" styleClass="text" size="30"
-                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                               
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_query_parameters}" />
-                                                  	
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-queryParameters" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{accountBean.item.props.wmsLayerQueryParam}" id="editAccount-queryParameters" 
-                            	onchange="checkMultiple(this)" styleClass="text" size="30"
-                              	maxlength="50" required="false" requiredMessage="#{messages.required}" />                               
-                          </td>
-                        </tr>                        
-                      </table>
-             
-                    </td>
-                    					
-                   </tr>
-                  <tr>
-                    <td width="390" valign="top">
-
-                      <div class="add_section_title">
-                      	<h:outputText value="#{messages.editAccount_miscellaneous}" />
-                      </div>
-
-                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_phone_alerts_active}" />
-                            <span class="required">*</span>
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-phoneAlerts" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu id="editAccount-phoneAlerts" value="#{accountBean.item.props.phoneAlertsActive}" 
-                            	required="false" requiredMessage="#{messages.required}" >
-                            	<f:selectItem itemLabel=""                            itemValue=""/>
-                            	<f:selectItem itemLabel="#{messages.editAccount_yes}" itemValue="1"/>
-                            	<f:selectItem itemLabel="#{messages.editAccount_no}"  itemValue="0"/>
-                            </h:selectOneMenu>                              	                           	
-                              	                              
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="150" valign="top">
-                            <h:outputText value="#{messages.editAccount_no_reply_email}" />
-                          </td>
-                          <td>
-                            <rich:message for="editAccount-noReplyEmail" errorClass="field-error" fatalClass="field-error" 
-                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-noReplyEmail" value="#{accountBean.item.props.noReplyEmail}"
-                            	styleClass="text" size="30" validator="#{accountBean.validateEmail}"
-                              	maxlength="50" />                               
-                          </td>
-                        </tr>
-                      </table>
-
-                     
-					</td>
-					
                     <td width="10" valign="top">
                     	<h:graphicImage value="/images/x.gif" width="10" />
                     </td>
@@ -302,8 +190,49 @@
                       	
                     </td>
                     					
-                   </tr>    
-                    <tr>
+                    </tr>
+                  <tr>
+                    <td width="390" valign="top">
+
+                      <div class="add_section_title">
+                      	<h:outputText value="#{messages.editAccount_miscellaneous}" />
+                      </div>
+
+                      <table width="380" border="0" cellspacing="2" cellpadding="4" align="left">
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_phone_alerts_active}" />
+                            <span class="required">*</span>
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-phoneAlerts" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu id="editAccount-phoneAlerts" value="#{accountBean.item.props.phoneAlertsActive}" 
+                            	required="false" requiredMessage="#{messages.required}" >
+                            	<f:selectItem itemLabel=""                            itemValue=""/>
+                            	<f:selectItem itemLabel="#{messages.editAccount_yes}" itemValue="1"/>
+                            	<f:selectItem itemLabel="#{messages.editAccount_no}"  itemValue="0"/>
+                            </h:selectOneMenu>                              	                           	
+                              	                              
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150" valign="top">
+                            <h:outputText value="#{messages.editAccount_no_reply_email}" />
+                          </td>
+                          <td>
+                            <rich:message for="editAccount-noReplyEmail" errorClass="field-error" fatalClass="field-error" 
+                            	warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="editAccount-noReplyEmail" value="#{accountBean.item.props.noReplyEmail}"
+                            	styleClass="text" size="30" validator="#{accountBean.validateEmail}"
+                              	maxlength="50" />                               
+                          </td>
+                        </tr>
+                      </table>
+					</td>
+                    <td width="10" valign="top">
+                    	<h:graphicImage value="/images/x.gif" width="10" />
+                    </td>
                       <td width="390" valign="top">
                 
                         <div class="add_section_title">
@@ -352,11 +281,10 @@
                           </tr>
                         </table>
                       </td>
-                      <td width="10" valign="top">
-                    	  <h:graphicImage value="/images/x.gif" width="10" />
-                      </td>
+                  </tr>    
+<!--                    <tr>
                       <td width="390" valign="top">
-<!--                        <div class="add_section_title">-->
+                        <div class="add_section_title">-->
 <!--                        	<h:outputText value="#{messages.editAccount_phoneControl}" />-->
 <!--                        </div>-->
 <!--					  -->
@@ -368,9 +296,10 @@
 <!--    	                        </h:selectManyCheckbox>-->
 <!--								</td>-->
 <!--            	              </tr>                          -->
-<!--                        </table>-->
+<!--                        </table>
                       </td>					                                              
-                    </tr>                    
+                    </tr>           
+-->
 				</table>
 
                 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>

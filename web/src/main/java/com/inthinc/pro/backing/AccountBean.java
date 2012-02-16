@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -79,20 +78,10 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
           
     private PersonDAO personDAO;
-    private WMSConfigurationBean wmsConfigurationBean;
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
-
-    public WMSConfigurationBean getWmsConfigurationBean() {
-        return wmsConfigurationBean;
-    }
-
-    public void setWmsConfigurationBean(WMSConfigurationBean wmsConfigurationBean) {
-        this.wmsConfigurationBean = wmsConfigurationBean;
-    }
-
     @Override
     protected Boolean authorizeAccess(AccountView item) {
         return null;
@@ -125,13 +114,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             
             // Communicate to other aspects of the system
             getUnknownDriver().setPerson(a.getPerson()); 
-            
-            // Map server
-            wmsConfigurationBean.setLayerQueryParam(a.getProps().getWmsLayerQueryParam());
-            wmsConfigurationBean.setLayers(a.getProps().getWmsLayers());
-            wmsConfigurationBean.setQuery(a.getProps().getWmsQuery());
-            wmsConfigurationBean.setUrl(a.getProps().getWmsURL());  
-            
+
             getProUser().setAccountAttributes(a.getProps());
             getProUser().setAccountHOSType(a.getHos());
         }  
@@ -233,20 +216,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
                     MessageUtil.getMessageString(REQUIRED_KEY), null);
             context.addMessage("edit-form:editAccount-timeZone", message);
         }
-        
-        // look for http:// or https:// in the url, should it be provided
-        if ( saveItem.getProps().getWmsURL().trim().length() != 0 ) {
-            
-            if ( (saveItem.getProps().getWmsURL().indexOf("https://") == -1) &&
-                 (saveItem.getProps().getWmsURL().indexOf("http://") == -1) ) {
-                valid = false;
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                    MessageUtil.getMessageString("editAccount_bad_url"), null);
-                context.addMessage("edit-form:editAccount-url", message);
-            }
-            
-        }
-        
         // check that phone alerts are on/off
         if ( saveItem.getProps().getPhoneAlertsActive() == null ) {            
             valid = false;
@@ -254,26 +223,9 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
                 MessageUtil.getMessageString("editAccount_bad_phone_alerts"), null);
             context.addMessage("edit-form:editAccount-phoneAlerts", message);            
         }
-        // even number of layers?
-        if ( !parseLayers(saveItem.getProps().getWmsLayers()) ) {
-            valid = false;
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                MessageUtil.getMessageString("editAccount_bad_number_of_layers"), null);
-            context.addMessage("edit-form:editAccount-layers", message);                  
-        }
-        
         return valid;
     }
-    private boolean parseLayers(String layers) {
-        StringTokenizer st = new StringTokenizer(layers," ");
-        
-        if ( (st.countTokens() % 2) == 0 ) {
-            return true;
-        }
-        
-        return false;
-    }
-    
+
     public void validateEmail(FacesContext context, UIComponent component, Object value)
     {
         String valueStr = (String) value;
@@ -339,7 +291,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
         @Override
         public String getName() {
-            // TODO Auto-generated method stub
             return null;
         }
 
@@ -350,7 +301,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
         @Override
         public void setSelected(boolean selected) {
-            // TODO Auto-generated method stub
             this.selected = selected;
         }
 

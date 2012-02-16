@@ -55,7 +55,7 @@
 	<a4j:loadScript src="/js/labeledMarker.js"/>
 	<a4j:loadScript src="/js/markerClustererWithMergedMarkerSets.js"/>
 	<a4j:loadScript src="/js/teamTrips.js"/>
-	
+	<ui:include src="/includes/customMaps.xhtml"/>
 	
 	<script type="text/javascript">
 	
@@ -79,7 +79,10 @@
 			GUnload();
 			TeamTrips.map = new GMap2(document.getElementById("teamTrip-map-canvas"));						
 			TeamTrips.map.addControl(new GLargeMapControl());
-			TeamTrips.map.addControl(new GMapTypeControl());
+			TeamTrips.map.addControl(new GMenuMapTypeControl(true));
+
+	 	  	initCustomMaps(TeamTrips.map);
+
 //			TeamTrips.map.addControl(new GOverviewMapControl()); 
 			TeamTrips.map.setMapType(G_NORMAL_MAP);
 			

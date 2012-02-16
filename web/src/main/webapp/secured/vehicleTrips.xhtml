@@ -8,7 +8,7 @@
 				<a4j:loadScript src="/js/FusionCharts.js" />
 				<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 
-				<ui:include src="/includes/WMSMapLayers.xhtml" />
+				<ui:include src="/includes/customMaps.xhtml" />
  		<rich:panel id="mapScript">	
 				<script type="text/javascript">
 		var map;
@@ -30,7 +30,7 @@
 			{
 		 	  	map = new GMap2(document.getElementById("map-canvas"));
 
-		 	  	addLayers();
+		 	  	initCustomMaps(map);
 
 		        map.addControl(new GLargeMapControl());
 		        map.addControl(new GScaleControl());
@@ -39,7 +39,7 @@
 				map.setCenter(new GLatLng(lat, lng), zoom);
 		        map.enableScrollWheelZoom();
 	
-				addListeners();
+//				addListeners();
 						 	  	
 				map.addControl(new GOverviewMapControl()); 
 				map.setMapType(G_NORMAL_MAP);

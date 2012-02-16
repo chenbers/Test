@@ -53,7 +53,7 @@
     <a4j:loadScript src="/js/mapGeocode.js" />
     <a4j:loadScript src="/js/drawZone.js" />
     
-	<ui:include src="/includes/WMSMapLayers.xhtml"/>	
+	<ui:include src="/includes/customMaps.xhtml"/>	
     <script type="text/javascript">    
        var map;
     </script>
@@ -244,7 +244,7 @@
                     if (GBrowserIsCompatible())
                     {
                       	map = new GMap2(document.getElementById("map-canvas"));
-	          	        addLayers();
+	          	        initCustomMaps(map);
 	
 	        	        map.addControl(new GLargeMapControl());
 	        	        map.addControl(new GScaleControl());
@@ -252,7 +252,7 @@
 	
 	        	        map.enableScrollWheelZoom();
 	
-						addListeners();
+//						addListeners();
 
                       if (!showZone(false)) 
                   		map.setCenter(new GLatLng(39.0, -104.0), 4);

@@ -13,6 +13,7 @@
 	<ui:define name="scripts">
         <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
         <a4j:loadScript src="/js/FusionCharts.js" />
+ 		<ui:include src="/includes/customMaps.xhtml"/>
 	  	<script	 type="text/javascript">
 	  		var baseIcon = new GIcon();
 				baseIcon.iconSize = new GSize(21, 20);
@@ -25,10 +26,13 @@
  					if (GBrowserIsCompatible())
  	  				{
       					map = new GMap2(document.getElementById("map-canvas"));
-      					map.addControl(new GLargeMapControl());
-      					map.addControl(new GMapTypeControl());
+      			 	  	initCustomMaps(map);
+      			 	  	
+      			        map.addControl(new GLargeMapControl());
       					map.addControl(new GOverviewMapControl()); 
-						map.setCenter(new GLatLng(lat, lng), zoom);
+      			        map.addControl(new GMenuMapTypeControl(true));
+      					map.setCenter(new GLatLng(lat, lng), zoom);
+      			        map.enableScrollWheelZoom();
 						map.setMapType(G_NORMAL_MAP);
 			    		geocoder = new GClientGeocoder();
 						errorMessage = "#{messages.sbs_badLatLng}"
