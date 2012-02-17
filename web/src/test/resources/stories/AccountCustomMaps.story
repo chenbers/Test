@@ -17,9 +17,8 @@ And no dropdown displays for other accounts
 
 Scenario TC6043 Add and Save Map
 Given I am logged in as SuperUser
-And I am on the Account page
+And I am on the Manage Custom Maps page
 And I have selected an Account name from the dropdown
-And I have selected a <maps> from the dropdown
 When I click on Add button
 Then I enter <display name>
 And I enter the <URL>
@@ -30,8 +29,9 @@ And I select the <opacity> slider
 And I select the <layer> Over from the dropdown
 And I click on Save button
 
+
 Examples:
-|maps|display_name|URL|min|max|opacity|layer|
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
 |map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
 |sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
 |hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
@@ -43,7 +43,7 @@ Examples:
 
 Scenario TC6044 Edit and Save Map
 Given I am logged in as SuperUser
-And I am on the Account page
+And I am on the Manage Custom Maps page 
 And I have selected an Account name from the dropdown
 And I have selected a <maps> from the dropdown
 When I click on Edit button
@@ -70,16 +70,18 @@ Examples:
 
 Scenario TC6045 Remove Map
 Given I am logged in as a SuperUser
-And I am on the Account page
+And I am on the Manage Custom Maps page
 And I select an Account from the dropdown
+And I select a map from the dropdown
 When I click on Remove
-Then something happens
+Then a popup to confirm deletion displays
+And I click on the Yes button
+And the map is deleted
 
 Scenario TC6046 Cancel Add
 Given I am logged in as SuperUser
 And I am on the Account page
 And I have selected an Account name from the dropdown
-And I have selected a <maps> from the dropdown
 When I click on Add button
 Then I enter <display name>
 And I enter the <URL>
@@ -100,6 +102,42 @@ Given I am logged in as a SuperUser
 And I am on the Account page
 And I select an Account from the dropdown
 When I click on Remove
-Then something happens
-When I click on Cancel
+Then a popup to confirm deletion displays
+And I click on the NO button
 Then the Remove is canceled
+
+Scenario: TC Verify Maps Saved in Portal
+Given a mapName has been saved
+And I am logged into the portal
+When I click to view the maps on <pageName>
+Then the maps dropdown displays mapName
+
+Examples:
+|pageName|
+|live_fleet_map|
+|main_live_fleet|
+|driver_trip|
+|vehicle_trip|
+|last_trip|
+|team_trip|
+|zone_map|
+
+Scenario: TC Verify Deleted Maps are Removed from Portal
+Given a mapName has been deleted
+And I am logged into the portal
+When I click to view the maps on <pageName>
+Then the mapName is removed from the maps dropdown display
+
+Examples:
+|pageName|
+|live_fleet_map|
+|main_live_fleet|
+|driver_trip|
+|vehicle_trip|
+|last_trip|
+|team_trip|
+|zone_map|
+
+Scenario: TC 
+
+
