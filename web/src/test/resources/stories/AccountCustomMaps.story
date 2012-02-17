@@ -80,7 +80,7 @@ And the map is deleted
 
 Scenario TC6046 Cancel Add
 Given I am logged in as SuperUser
-And I am on the Account page
+And I am on the Manage Custom Maps page
 And I have selected an Account name from the dropdown
 When I click on Add button
 Then I enter <display name>
@@ -99,7 +99,7 @@ Examples:
 
 Scenario TC6045 Cancel Remove
 Given I am logged in as a SuperUser
-And I am on the Account page
+And I am on the Manage Custom Maps page
 And I select an Account from the dropdown
 When I click on Remove
 Then a popup to confirm deletion displays
