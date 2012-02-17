@@ -106,7 +106,7 @@ Then a popup to confirm deletion displays
 And I click on the NO button
 Then the Remove is canceled
 
-Scenario: TC Verify Maps Saved in Portal
+Scenario: TC6049  Verify Maps Saved in Portal
 Given a mapName has been saved
 And I am logged into the portal
 When I click to view the maps on <pageName>
@@ -122,7 +122,7 @@ Examples:
 |team_trip|
 |zone_map|
 
-Scenario: TC Verify Deleted Maps are Removed from Portal
+Scenario: TC6050  Verify Deleted Maps are Removed from Portal
 Given a mapName has been deleted
 And I am logged into the portal
 When I click to view the maps on <pageName>
@@ -138,6 +138,5 @@ Examples:
 |team_trip|
 |zone_map|
 
-Scenario: TC 
 
 
