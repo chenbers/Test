@@ -86,6 +86,10 @@
 			<h:panelGroup  rendered="#{customMapsBean.selectedAccount != null and !customMapsBean.editing}">
 			<table>
 			<tr><td>
+				Click <b>Add</b> to add a new map or select any existing map from the list <b>View</b>, <b>Edit</b>, or <b>Delete</b> it.
+				<br/> 
+			</td></tr>
+			<tr><td>
             <h:panelGrid columns="2" cellspacing="0" columnClasses="labelColMiddle,valueCol">
 				<h:outputText value="Maps:"  style="font-size:12px;padding:10px;"/>
 				<h:selectOneMenu id="layers" value="#{customMapsBean.selectedCustomMapID}">
@@ -104,10 +108,10 @@
 				<td>
 					<a4j:commandButton action="#{customMapsBean.newAction}" value="Add"  
 						rendered="#{!customMapsBean.editing}" 
-						reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+						reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
 					<a4j:commandButton action="#{customMapsBean.editAction}" value="Edit" 
 						rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"
-						reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+						reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
 					<a4j:commandButton value="Remove"  
 							rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"
 							oncomplete="Richfaces.showModalPanel('confirmDelete'); return false;"/>
