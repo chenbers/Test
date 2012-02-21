@@ -162,6 +162,7 @@
 				<ref bean="phoneMessageCronTrigger" />
 				<ref bean="emailReportCronTrigger" />
 				<ref bean="zonePublishCronTrigger" />
+				<ref bean="aggregationCronTrigger" />
 			</list>
 		</property>
 	</bean>
