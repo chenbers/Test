@@ -8,6 +8,10 @@ default-autowire="byName">
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
+	
+	<bean id="DBUtil" class="com.inthinc.pro.aggregation.db.DBUtil">
+		<property name="dataSource" ref="tiwiJDBCDataSource"/>
+	</bean>
 
   <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
   <bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
