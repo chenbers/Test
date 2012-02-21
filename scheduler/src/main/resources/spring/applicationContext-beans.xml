@@ -113,6 +113,12 @@
 		</property>
 	</bean>
 
+	<bean name="aggregationJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+		parent="baseAlertJob">
+		<property name="jobClass"
+			value="com.inthinc.pro.scheduler.quartz.AggregationJob" />
+	</bean>
+
 
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="emailReportJob" />
@@ -140,6 +146,11 @@
 	<bean id="zonePublishCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="zonePublishJob" />
 		<property name="cronExpression" value="${cron.zonePublish}" />
+	</bean>
+
+	<bean id="aggregationCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="aggregationJob" />
+		<property name="cronExpression" value="${cron.aggregation}" />
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
