@@ -166,6 +166,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.inthinc.pro.aggregation</groupId>
+            <artifactId>aggregation</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
             <version>1.0.1B</version>
