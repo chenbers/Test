@@ -10,7 +10,7 @@ public class TableIterator<T> implements Iterator<T> {
 
     public TableIterator(TableBased<T> table) {
         this.table = table;
-        rowNumber = 1;
+        rowNumber = 0;
     }
 
     private int rowNumber;
@@ -30,4 +30,9 @@ public class TableIterator<T> implements Iterator<T> {
     public void remove() {
         throw new UnsupportedOperationException("There is nothing to remove");
     }
+    
+    public int getRowNumber(){
+    	return rowNumber;
+    }
+
 }

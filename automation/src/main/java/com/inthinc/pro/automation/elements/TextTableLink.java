@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.elements;
 
-import java.util.Iterator;
-
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -26,7 +24,7 @@ public class TextTableLink implements TableBased<ClickableTextBased> {
     }
 
     @Override
-    public Iterator<ClickableTextBased> iterator() {
+    public TableIterator<ClickableTextBased> iterator() {
         return new TableIterator<ClickableTextBased>(this);
     }
 
@@ -42,7 +40,7 @@ public class TextTableLink implements TableBased<ClickableTextBased> {
     
     public ClickableText getFirstClickableLink(){
         ClickableText link = null;
-        Iterator<ClickableTextBased> iterator = this.iterator();
+        TableIterator<ClickableTextBased> iterator = this.iterator();
         while(iterator.hasNext() && (link == null || !link.isClickable())){ 
             link = (ClickableText) iterator.next();
         }
@@ -57,7 +55,7 @@ public class TextTableLink implements TableBased<ClickableTextBased> {
     
     public ClickableText getLinkMatching(String matchText) {
         ClickableText link = null;
-        Iterator<ClickableTextBased> iterator = this.iterator();
+        TableIterator<ClickableTextBased> iterator = this.iterator();
         boolean matches = false;
         while(iterator.hasNext() && (!matches)){ 
             link = (ClickableText) iterator.next();

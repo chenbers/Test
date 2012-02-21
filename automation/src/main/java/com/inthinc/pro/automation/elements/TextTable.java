@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.elements;
 
-import java.util.Iterator;
-
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -27,7 +25,7 @@ public class TextTable implements TableBased<TextBased> {
 
 
     @Override
-    public Iterator<TextBased> iterator() {
+    public TableIterator<TextBased> iterator() {
         return new TableIterator<TextBased>(this);
     }
 

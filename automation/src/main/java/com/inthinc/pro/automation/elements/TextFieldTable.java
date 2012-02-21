@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.elements;
 
-import java.util.Iterator;
-
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
@@ -24,7 +22,7 @@ public class TextFieldTable implements TableBased<TextField>{
     }
     
     @Override
-    public Iterator<TextField> iterator() {
+    public TableIterator<TextField> iterator() {
         return new TableIterator<TextField>(this);
     }
 

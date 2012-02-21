@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.elements;
 
-import java.util.Iterator;
-
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -18,7 +16,7 @@ public class CheckBoxTable implements TableBased<Checkable> {
     }
 
     @Override
-    public Iterator<Checkable> iterator() {
+    public TableIterator<Checkable> iterator() {
         return new TableIterator<Checkable>(new CheckBoxTable(myEnum));
     }
 

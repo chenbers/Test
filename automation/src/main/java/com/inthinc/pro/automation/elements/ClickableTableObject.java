@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.elements;
 
-import java.util.Iterator;
-
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -17,7 +15,7 @@ public class ClickableTableObject implements TableBased<Clickable> {
     }
 
     @Override
-    public Iterator<Clickable> iterator() {
+    public TableIterator<Clickable> iterator() {
         return new TableIterator<Clickable>(this);
     }
 
