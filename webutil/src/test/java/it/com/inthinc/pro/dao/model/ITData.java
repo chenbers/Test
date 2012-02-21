@@ -147,7 +147,7 @@ public class ITData extends BaseITData{
             fleetGroup = getNext(xmlDecoder, Group.class);
             districtGroup = getNext(xmlDecoder, Group.class);
             teamGroupData = new ArrayList<GroupData>();
-            for (int i = GOOD; i <= BAD; i++) {
+            for (int i = GOOD; i <= WS; i++) {
                 Group group = getNext(xmlDecoder, Group.class);
                 GroupData groupData = new GroupData();
                 groupData.group = group;
@@ -156,7 +156,7 @@ public class ITData extends BaseITData{
             }
             fleetUser = getNext(xmlDecoder, User.class);
             districtUser = getNext(xmlDecoder, User.class);
-            for (int i = GOOD; i <= BAD; i++) {
+            for (int i = GOOD; i <= WS; i++) {
                 GroupData groupData = teamGroupData.get(i);
                 groupData.user = getNext(xmlDecoder, User.class);
                 groupData.device = getNext(xmlDecoder, Device.class);
@@ -172,7 +172,7 @@ public class ITData extends BaseITData{
                 zone = getNext(xmlDecoder, Zone.class);
                 zoneAlert = getNext(xmlDecoder, RedFlagAlert.class);
                 redFlagAlertList = new ArrayList<RedFlagAlert>();
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < 9; i++) {
                     redFlagAlertList.add(getNext(xmlDecoder, RedFlagAlert.class));
                 }
             }

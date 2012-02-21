@@ -69,11 +69,13 @@ public abstract class BaseITData {
     public static int GOOD = 0;
     public static int INTERMEDIATE = 1;
     public static int BAD = 2;
+    public static int WS = 3;
     protected static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     public static String TEAM_GROUP_NAME[] = {
     	"GOOD",
     	"INTERMEDIATE",
     	"BAD",
+    	"WS",
     };
     public static Integer TESTING_SILO = 0;    
 
