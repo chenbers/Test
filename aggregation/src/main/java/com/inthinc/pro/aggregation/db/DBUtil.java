@@ -123,6 +123,7 @@ public class DBUtil {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         
+		logger.info("deleteDeviceDay2Agg called deviceID: " + deviceId + " day: " + day);
         try
         {
             conn =  tiwiproDS.getConnection();
