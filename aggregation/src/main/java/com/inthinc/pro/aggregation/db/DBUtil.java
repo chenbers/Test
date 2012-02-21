@@ -123,14 +123,14 @@ public class DBUtil {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         
-		logger.info("deleteDeviceDay2Agg called deviceID: " + deviceId + " day: " + day);
+		logger.info("deleteDeviceDay2Agg called deviceID: " + deviceId + " day: " + DateUtil.getDateFormat(TimeZone.getTimeZone("UTC")).format(day));
         try
         {
             conn =  tiwiproDS.getConnection();
             statement = conn.prepareStatement(DELETE_DEVICEDAYS2AGG);
 
             statement.setLong(1, deviceId);
-            statement.setDate(2, new java.sql.Date(day.getTime()));
+            statement.setString(2, DateUtil.getDateFormat(TimeZone.getTimeZone("UTC")).format(day));
             
             statement.executeUpdate();
 
