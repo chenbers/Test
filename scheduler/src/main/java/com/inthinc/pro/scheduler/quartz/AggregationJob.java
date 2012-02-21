@@ -17,9 +17,9 @@ public class AggregationJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 //        logger.setLevel(Level.DEBUG);
-        logger.debug("START PROCESSING WAYSMART TRIP AGGREGATION");
+        logger.info("START PROCESSING WAYSMART TRIP AGGREGATION");
         processWSTripAggegation();
-        logger.debug("END PROCESSING WAYSMART TRIP AGGREGATION");
+        logger.info("END PROCESSING WAYSMART TRIP AGGREGATION");
 
     }
     
