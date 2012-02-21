@@ -20,6 +20,7 @@ public enum Addresses implements AddressInterface {
     CINTAS("cintas.inthinc.com"),
 
     BARRICK("barrick.inthinc.com"),
+    BARRICK_WEB_10("barrick-web10.tiwipro.com"),
 
     TECK("teck.inthinc.com"),
 
