@@ -119,7 +119,7 @@ public class TestCaseResult extends RallyObject {
         try {
             return testCaseResults.get(field.toString());
         } catch (JSONException e) {
-            logger.info(StackToString.toString(e));
+            logger.debug(StackToString.toString(e));
         }
         return null;
     }
@@ -250,4 +250,15 @@ public class TestCaseResult extends RallyObject {
             send_test_case_results();
         }
     }
+
+	public boolean hasVitalFields() {
+		for (Fields field : Fields.values()){
+			if (field.required){
+				if (getField(field)==null){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

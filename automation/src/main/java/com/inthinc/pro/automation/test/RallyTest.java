@@ -55,22 +55,26 @@ public class RallyTest {
 
     public void after() {
         if (!superTest.getSkip()) {
-            try {
-                if (deletelastResults != null){
-                    tcr.deleteTestCaseResult(deletelastResults);
-                }
-                if(apb.getAddTestSet()){
-                    setTestSet(getTestSet());
-                }
-                tcr.setBuildNumber(superTest.getBuildNumber());
-                tcr.setVerdict(superTest.getTestVerdict());
-                tcr.setNotes(getTestSet(), superTest.getErrorCatcher());
-                tcr.setDuration(superTest.getStopTime() - superTest.getStartTime());
-                tcr.send_test_case_results();
-                tcr = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        	if (tcr.hasVitalFields()){
+	            try {
+	                if (deletelastResults != null){
+	                    tcr.deleteTestCaseResult(deletelastResults);
+	                }
+	                if(apb.getAddTestSet()){
+	                    setTestSet(getTestSet());
+	                }
+	                tcr.setBuildNumber(superTest.getBuildNumber());
+	                tcr.setVerdict(superTest.getTestVerdict());
+	                tcr.setNotes(getTestSet(), superTest.getErrorCatcher());
+	                tcr.setDuration(superTest.getStopTime() - superTest.getStartTime());
+	                tcr.send_test_case_results();
+	                tcr = null;
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+        	} else {
+        		logger.fatal("Test case is missing fields necessary to update Rally");
+        	}
         }
     }
     
