@@ -131,8 +131,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         reportGroups.add(new SelectItemGroup("", "", false, getItemsByCategory(null)));
         for (ReportCategory cat : ReportCategory.values()) {
             SelectItem[] items = getItemsByCategory(cat);
-            if (items != null && items.length > 0)
-                reportGroups.add(new SelectItemGroup(cat.getLabel(), cat.getLabel(), false, items));
+            if (items != null && items.length > 0) {
+                String catLabel = MessageUtil.getMessageString(cat.toString());
+                reportGroups.add(new SelectItemGroup(catLabel, catLabel, false, items));
+            }
         }
         
         return reportGroups;

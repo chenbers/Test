@@ -62,6 +62,7 @@ public class NonTranslated {
         nonTranslatedList.add("report.teamstats.idle_percentage");
         nonTranslatedList.add("report.vehicle.odometer");
         nonTranslatedList.add("timeFormat");
+        nonTranslatedList.add("report.teamstops.total");
         nonTranslated_ro.put("/reports/src/main/resources/com/inthinc/pro/ReportMessages", nonTranslatedList);
         
         nonTranslatedList = new ArrayList<String>();
@@ -574,7 +575,19 @@ public class NonTranslated {
         nonTranslatedList.add("fuelStop_service");
         nonTranslatedList.add("fuelStops_service");
         nonTranslatedList.add("txtMsg_inbox");
+        nonTranslatedList.add("DOTOfficeType.NONE");
+        nonTranslatedList.add("DOTOfficeType.TERMINAL_marker");
+        nonTranslatedList.add("DOTOfficeType.NONE_marker");
+        nonTranslatedList.add("DOTOfficeType.MAIN_marker");
+        nonTranslatedList.add("ReportCategory.HOS");
+        nonTranslatedList.add("ReportCategory.IFTA");
+
         nonTranslated_ro.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("title");
+        nonTranslated_ro.put("/webutil/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
+
     }    
 
     static Map<String, List<String>> nonTranslated_es = new HashMap<String, List<String>>();
@@ -627,6 +640,7 @@ public class NonTranslated {
         nonTranslatedList.add("dateTimeFormat");
         nonTranslatedList.add("report.hos.dateTimeFormat");
         nonTranslatedList.add("simpleDateFormat");
+        nonTranslatedList.add("report.teamstops.total");
         nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/ReportMessages", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
@@ -841,6 +855,13 @@ public class NonTranslated {
         nonTranslatedList.add("alertTypeHighIdleLimit");
         nonTranslatedList.add("alertTypeLowIdleLimit");
         nonTranslatedList.add("fuelStop_dot");
+        nonTranslatedList.add("DOTOfficeType.NONE");
+        nonTranslatedList.add("DOTOfficeType.TERMINAL_marker");
+        nonTranslatedList.add("DOTOfficeType.NONE_marker");
+        nonTranslatedList.add("DOTOfficeType.MAIN_marker");
+        nonTranslatedList.add("ReportCategory.HOS");
+        nonTranslatedList.add("ReportCategory.IFTA");
+
         nonTranslated_es.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
         
     }    
@@ -879,6 +900,9 @@ public class NonTranslated {
         nonTranslatedList.add("report.trend.score");
         nonTranslatedList.add("report.vehicle.style");
         nonTranslatedList.add("timeFormat");
+        nonTranslatedList.add("report.teamstops.total");
+        nonTranslatedList.add("report.teamstops.zone");
+
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/ReportMessages", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
@@ -1230,7 +1254,13 @@ public class NonTranslated {
         nonTranslatedList.add("fuelStops_service");
         nonTranslatedList.add("subNavigation_performance");
         nonTranslatedList.add("report_performance");
-      
+        nonTranslatedList.add("DOTOfficeType.NONE");
+        nonTranslatedList.add("DOTOfficeType.TERMINAL_marker");
+        nonTranslatedList.add("DOTOfficeType.NONE_marker");
+        nonTranslatedList.add("ReportCategory.HOS");
+        nonTranslatedList.add("ReportCategory.IFTA");
+        nonTranslatedList.add("ReportCategory.Performance");
+        
         
         nonTranslated_fr.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
 

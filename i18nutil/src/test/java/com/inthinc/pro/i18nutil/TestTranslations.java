@@ -13,7 +13,7 @@ import java.util.Properties;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+//@Ignore
 public class TestTranslations {
     
     @Test

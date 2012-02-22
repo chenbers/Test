@@ -52,11 +52,14 @@ public class WaysmartReportsBean extends ReportsBean {
 
         itemGroups.add(getBlankGroup());
         
-        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
+        String catLabel = MessageUtil.getMessageString(ReportCategory.Performance.toString());
+
+        itemGroups.add(new SelectItemGroup(catLabel,catLabel, 
+        		false, getItemsByCategory(ReportCategory.Performance)));
         
-        itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
-        		ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
+        catLabel = MessageUtil.getMessageString(ReportCategory.IFTA.toString());
+        itemGroups.add(new SelectItemGroup(catLabel,catLabel, 
+        		false, getItemsByCategory(ReportCategory.IFTA)));
         
         return itemGroups;
     }

@@ -41,7 +41,6 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
             statement.setFloat(6, customMap.getOpacity().floatValue());
             statement.setInt(7, customMap.getPngFormat() == null || !customMap.getPngFormat() ? 0 : 1);
             statement.setInt(8, customMap.getBottomLayer().getCode());
-System.out.println(statement.toString());
             statement.executeUpdate();
             
             resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
@@ -71,7 +70,6 @@ System.out.println(statement.toString());
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(DELETE_CUSTOM_MAP);
             statement.setInt(1, customMapID);
-System.out.println(statement.toString());            
             return statement.executeUpdate();
         } 
         catch (SQLException e)
@@ -94,7 +92,6 @@ System.out.println(statement.toString());
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(FIND_CUSTOM_MAP);
             statement.setInt(1, customMapID);
-System.out.println(statement.toString());
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -132,7 +129,6 @@ System.out.println(statement.toString());
             statement.setInt(7, customMap.getBottomLayer().getCode());
             statement.setInt(8, customMap.getAcctID());
             statement.setInt(9, customMap.getCustomMapID());
-System.out.println(statement.toString());
             return statement.executeUpdate();
         }
         catch (SQLException e) { 
@@ -157,7 +153,6 @@ System.out.println(statement.toString());
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement(FETCH_CUSTOM_MAPS_FOR_ACCOUNT);
             statement.setInt(1, acctID);
-System.out.println(statement.toString());
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {

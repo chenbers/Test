@@ -15,10 +15,10 @@ public class AccountAttributes extends BaseEntity {
         
     private static final long serialVersionUID = 1L;
     
-    private String  wmsURL;
-    private String  wmsQuery;
-    private String  wmsLayers;
-    private String  wmsLayerQueryParam;
+//    private String  wmsURL;
+//    private String  wmsQuery;
+//    private String  wmsLayers;
+//    private String  wmsLayerQueryParam;
     private String  phoneAlertsActive;    
     private String  noReplyEmail;
     @Column(name = "supportPhone1")
@@ -43,30 +43,30 @@ public class AccountAttributes extends BaseEntity {
     @Column(updateable = false)
     private List<CellProviderType> phoneControlProviders;
 
-    public String getWmsURL() {
-        return wmsURL;
-    }
-    public void setWmsURL(String wmsURL) {
-        this.wmsURL = wmsURL;
-    }
-    public String getWmsQuery() {
-        return wmsQuery;
-    }
-    public void setWmsQuery(String wmsQuery) {
-        this.wmsQuery = wmsQuery;
-    }
-    public String getWmsLayers() {
-        return wmsLayers;
-    }
-    public void setWmsLayers(String wmsLayers) {
-        this.wmsLayers = wmsLayers;
-    }
-    public String getWmsLayerQueryParam() {
-        return wmsLayerQueryParam;
-    }
-    public void setWmsLayerQueryParam(String wmsLayerQueryParam) {
-        this.wmsLayerQueryParam = wmsLayerQueryParam;
-    }
+//    public String getWmsURL() {
+//        return wmsURL;
+//    }
+//    public void setWmsURL(String wmsURL) {
+//        this.wmsURL = wmsURL;
+//    }
+//    public String getWmsQuery() {
+//        return wmsQuery;
+//    }
+//    public void setWmsQuery(String wmsQuery) {
+//        this.wmsQuery = wmsQuery;
+//    }
+//    public String getWmsLayers() {
+//        return wmsLayers;
+//    }
+//    public void setWmsLayers(String wmsLayers) {
+//        this.wmsLayers = wmsLayers;
+//    }
+//    public String getWmsLayerQueryParam() {
+//        return wmsLayerQueryParam;
+//    }
+//    public void setWmsLayerQueryParam(String wmsLayerQueryParam) {
+//        this.wmsLayerQueryParam = wmsLayerQueryParam;
+//    }
     public String getPhoneAlertsActive() {
         return phoneAlertsActive;
     }

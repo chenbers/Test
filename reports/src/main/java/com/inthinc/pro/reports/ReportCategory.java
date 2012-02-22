@@ -38,6 +38,6 @@ public enum ReportCategory {
         
         @Override
         public String toString(){
-        	return getLabel();
+        	return this.getClass().getSimpleName()+"."+this.name();
         }
 }

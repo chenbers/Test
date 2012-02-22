@@ -52,8 +52,9 @@ public class PerformanceReportsBean extends ReportsBean {
 
         itemGroups.add(getBlankGroup());
         
-        itemGroups.add(new SelectItemGroup(ReportCategory.DriverPerformance.getLabel(), 
-        		ReportCategory.DriverPerformance.getLabel(), false, getItemsByCategory(ReportCategory.DriverPerformance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL, ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL)));
+        String catLabel = MessageUtil.getMessageString(ReportCategory.DriverPerformance.toString());
+        itemGroups.add(new SelectItemGroup(catLabel, 
+        		catLabel, false, getItemsByCategory(ReportCategory.DriverPerformance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL, ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL)));
         
         return itemGroups;
     }

@@ -30,15 +30,10 @@ public class HosReportsBean extends ReportsBean {
 
         itemGroups.add(getBlankGroup());
         
-//        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-//                ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance, true)));
-        // Just HOS for HOS
-        itemGroups.add(new SelectItemGroup(ReportCategory.HOS.getLabel(), 
-                ReportCategory.HOS.getDescription(), false, getItemsByCategory(ReportCategory.HOS, true)));
+        String catLabel = MessageUtil.getMessageString(ReportCategory.HOS.toString());
 
-//        itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
-//                ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA, false)));
-        
+        itemGroups.add(new SelectItemGroup(catLabel,catLabel, false, getItemsByCategory(ReportCategory.HOS, true)));
+
         return itemGroups;
     }
     

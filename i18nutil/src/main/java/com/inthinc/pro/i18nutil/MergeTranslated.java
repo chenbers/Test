@@ -85,7 +85,6 @@ public class MergeTranslated extends BaseTranslationUtil {
     private Map<String, Properties> initTranslations(String translationsFile, File baseDir, String lang) throws IOException {
         
         Map<String, Properties> translationMap = new HashMap<String, Properties>();
-        
         BufferedReader reader = new BufferedReader(new FileReader(new File(translationsFile)));
         String line = null;
         String propPath = null; 
@@ -147,7 +146,10 @@ System.out.println("propPath: " + propPath);
         
         for (Object key : fromProp.keySet()) {
             Object value = fromProp.get(key);
-            toProp.put(key, value);
+            System.out.println(key + "=" + new String(value.toString().getBytes()));
+            toProp.put(key, new String(value.toString().getBytes()));
+//            System.out.println(key + "=" + value.toString());
+//            toProp.put(key, value.toString());
         }
         
         

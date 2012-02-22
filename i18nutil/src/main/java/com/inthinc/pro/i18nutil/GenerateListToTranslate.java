@@ -88,6 +88,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
                 name.contains("helpconfig") ||
                 name.contains("integrationtest") ||
                 name.contains("cassandra") ||
+                name.contains("metadata") ||
                 name.contains("dbutil.properties"))
             return toTranslate;
         
