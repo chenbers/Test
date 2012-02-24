@@ -24,7 +24,7 @@ public class PageHOSDriverLogs extends HOSBar {
         checkMe.add(HOSDriverLogsEnum.BATCH_EDIT);
     }
     
-    public class PageHOSDriverLogsLinks extends HOSBarLinks {
+    public class HOSDriverLogsLinks extends HOSBarLinks {
         
         public TextLinkTableHeader entryDateTime() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_DATE_TIME);
@@ -55,7 +55,7 @@ public class PageHOSDriverLogs extends HOSBar {
         }
     }
 
-    public class PageHOSDriverLogsTexts extends HOSBarTexts {
+    public class HOSDriverLogsTexts extends HOSBarTexts {
         
         public TextTable entryDateTime() {
             return new TextTable(HOSDriverLogsEnum.ENTRY_DATE_TIME);
@@ -74,7 +74,7 @@ public class PageHOSDriverLogs extends HOSBar {
         }
         
         public TextTable entryTrailer() {
-            return new TextTable(HOSDriverLogsEnum.ENTRY_LOCATION);
+            return new TextTable(HOSDriverLogsEnum.ENTRY_TRAILER);
         }
         
         public TextTable entryStatus() {
@@ -104,9 +104,13 @@ public class PageHOSDriverLogs extends HOSBar {
         public Text title() {
             return new Text(HOSDriverLogsEnum.TITLE);
         }
+
+		public TextTable entryLocation() {
+			return new TextTable(HOSDriverLogsEnum.ENTRY_LOCATION);
+		}
     }
 
-    public class PageHOSDriverLogsTextFields extends HOSBarTextFields {
+    public class HOSDriverLogsTextFields extends HOSBarTextFields {
         
         public TextFieldSuggestions driver() {
             return new TextFieldSuggestions(HOSDriverLogsEnum.DRIVER_FIELD, HOSDriverLogsEnum.DRIVER_SUGGESTION);
@@ -129,7 +133,7 @@ public class PageHOSDriverLogs extends HOSBar {
 
     }
 
-    public class PageHOSDriverLogsButtons extends HOSBarButtons {
+    public class HOSDriverLogsButtons extends HOSBarButtons {
         
         public TextButton refresh() {
             return new TextButton(HOSDriverLogsEnum.REFRESH);
@@ -152,11 +156,11 @@ public class PageHOSDriverLogs extends HOSBar {
         }
     }
 
-    public class PageHOSDriverLogsDropDowns extends HOSBarDropDowns {}
+    public class HOSDriverLogsDropDowns extends HOSBarDropDowns {}
 
-    public class PageHOSDriverLogsPopUps extends MastheadPopUps {
+    public class HOSDriverLogsPopUps extends MastheadPopUps {
         
-        public PageHOSDriverLogsPopUps(){
+        public HOSDriverLogsPopUps(){
             super(page);
         }
         
@@ -165,38 +169,38 @@ public class PageHOSDriverLogs extends HOSBar {
         }
     }
 
-    public class PageHOSDriverLogsPager {
+    public class HOSDriverLogsPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageHOSDriverLogsPager _page() {
-        return new PageHOSDriverLogsPager();
+    public HOSDriverLogsPager _page() {
+        return new HOSDriverLogsPager();
     }
 
-    public PageHOSDriverLogsLinks _link() {
-        return new PageHOSDriverLogsLinks();
+    public HOSDriverLogsLinks _link() {
+        return new HOSDriverLogsLinks();
     }
 
-    public PageHOSDriverLogsTexts _text() {
-        return new PageHOSDriverLogsTexts();
+    public HOSDriverLogsTexts _text() {
+        return new HOSDriverLogsTexts();
     }
 
-    public PageHOSDriverLogsButtons _button() {
-        return new PageHOSDriverLogsButtons();
+    public HOSDriverLogsButtons _button() {
+        return new HOSDriverLogsButtons();
     }
 
-    public PageHOSDriverLogsTextFields _textField() {
-        return new PageHOSDriverLogsTextFields();
+    public HOSDriverLogsTextFields _textField() {
+        return new HOSDriverLogsTextFields();
     }
 
-    public PageHOSDriverLogsDropDowns _dropDown() {
-        return new PageHOSDriverLogsDropDowns();
+    public HOSDriverLogsDropDowns _dropDown() {
+        return new HOSDriverLogsDropDowns();
     }
 
-    public PageHOSDriverLogsPopUps _popUp() {
-        return new PageHOSDriverLogsPopUps();
+    public HOSDriverLogsPopUps _popUp() {
+        return new HOSDriverLogsPopUps();
     }
 
 }
