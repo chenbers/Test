@@ -532,6 +532,9 @@ public class DBUtil {
 		
 		int milesDrivenForDay = (int) (trip.getMileage()+trip.getMileageOffset());
 
+		if (milesDrivenForDay < 0)
+			milesDrivenForDay = 0;
+
 		//Prorate mileage if trip crosses a day 
 		logger.debug("tripID: " + trip.getTripID());
 		logger.debug("day: " + day);
