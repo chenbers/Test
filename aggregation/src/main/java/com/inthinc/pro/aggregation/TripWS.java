@@ -281,8 +281,21 @@ public class TripWS {
 		
 		logger.debug("note.getOdometer(): " + note.getOdometer() + " trip.getStartOdometer(): " + trip.getStartOdometer() + " trip.getMileageOffset(): " + trip.getMileageOffset() + " totalMiles: " + totalMiles + " totalHrs: " + totalHrs + " (totalMiles/100)/totalHrs: " + (totalMiles/100)/totalHrs);		
 		
+		if (totalMiles == 0 && note.getOdometer() == trip.getEndOdometer())
+		{
+			trip.setEndOdometer(note.getOdometer());
+			trip.setMileage(totalMiles);
+		}
+		
 		//Check that Odometer isn't going backwards and mileage is reasonable (mph < 100)
 		if (totalMiles > 0 && note.getOdometer() > trip.getEndOdometer() && (totalHrs > 0 && (totalMiles/100)/totalHrs < 100))
+		{
+			trip.setEndOdometer(note.getOdometer());
+			trip.setMileage(totalMiles);
+		}
+
+		//Catch instance where empty trip
+		if (totalMiles == 0 && note.getOdometer() == trip.getEndOdometer())
 		{
 			trip.setEndOdometer(note.getOdometer());
 			trip.setMileage(totalMiles);
