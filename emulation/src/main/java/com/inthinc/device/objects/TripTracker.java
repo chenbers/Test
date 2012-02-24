@@ -104,9 +104,12 @@ public class TripTracker implements Iterable<GeoPoint> {
             return next;
         }
         
-        Integer heading = Distance_Calc.get_heading(next, last);
+        Integer heading = Distance_Calc.get_heading(last, next);
         if (sbs != null && useSbs){
         	SpeedLimit limit = sbs.getSpeedLimit(next, heading*10);
+        	if (limit.closestGID == 0){
+        		state.getCourse();
+        	}
         	state.setSpeedLimit(limit.speedLimit/100);
         }
         state.setHeading(Heading.getHeading(heading));

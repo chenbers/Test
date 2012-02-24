@@ -30,17 +30,17 @@ public final class Street extends SbsStreet {
 		this.fileAsInt = fileAsInt;
 	}
 
-//	@Override
-//	public String toString() {
-//		StringBuilder streetheader = new StringBuilder();
-//		streetheader.append("Street: ");
-//		streetheader.append(gid);
-//		streetheader.append(",");
-//		streetheader.append(category);
-//		streetheader.append(",");
-//		streetheader.append(nVerticies);
-//		return streetheader.toString();
-//	}
+	@Override
+	public String toString() {
+		StringBuilder streetheader = new StringBuilder();
+		streetheader.append("Street: ");
+		streetheader.append(gid);
+		streetheader.append(",");
+		streetheader.append(category);
+		streetheader.append(",");
+		streetheader.append(nVerticies);
+		return streetheader.toString();
+	}
 	
 
 	@Override

@@ -54,7 +54,7 @@ public class GeoPoint {
 	        
 	        
 	        double tc2 = Math.atan2(Math.sin(lng2-lng1)*Math.cos(lat2),
-	                Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lng2-lng1)) % 2 * Math.PI;
+	                Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lng2-lng1)) % (2 * Math.PI);
 	        Log.d("Direction of travel in radians: " + tc2);
 	        
 	        Integer tc1 = Math.abs(((Double)(tc2 * rad2deg)).intValue());
@@ -65,6 +65,7 @@ public class GeoPoint {
 
 	        return tc1;
 	    }
+	    
 	}
 
     private double lat;
@@ -107,6 +108,9 @@ public class GeoPoint {
     }
     
     public int deltaT(Integer speedInMPH, GeoPoint nextLocation){
+    	if (speedInMPH==0){
+    		return 0;
+    	}
         Double delX = deltaX(nextLocation);
         Double v = speedInMPH.doubleValue() / 3600.0 ; //Miles/Seconds
         Double delT = (delX / v);

@@ -23,6 +23,7 @@ import android.util.Log;
 import com.inthinc.device.emulation.interfaces.MCMService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.device.hessian.tcp.HessianException;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.sbs.regions.SbsMap;
 import com.inthinc.sbs.simpledatatypes.DownloadedFile;
 import com.inthinc.sbs.simpledatatypes.SubscriptionListElement;
@@ -66,6 +67,9 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 	private AtomicBoolean downloadsEnabled = new AtomicBoolean(false);
 	private final String mcmid;
 	
+
+	private final Map<Integer,AutomationCalendar> mapcheck;
+	
 	/**
 	 * Create a download manager with a single thread in the pool.  
 	 * 
@@ -85,6 +89,7 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 		downloadsEnabled.set(true);
 		this.mcmid = mcmid;
 		this.prefix = prefix;
+		mapcheck = new HashMap<Integer,AutomationCalendar>();
 		
 		/**
 		 * Warning:  If the client doesn't properly clear the list after fetching
@@ -102,7 +107,12 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 
 	@Override
 	public void checkSbsEdit(int fileAsInt, int b, int cv) {
-		actions.add(new SbsDownloadAction(CHECKSBSEDIT,fileAsInt,b,cv,-1));
+		AutomationCalendar now = new AutomationCalendar();
+		if (!mapcheck.containsKey(fileAsInt)){
+			mapcheck.put(fileAsInt, now);
+		}else if (!mapcheck.get(fileAsInt).compareDays(new AutomationCalendar())){
+			actions.add(new SbsDownloadAction(CHECKSBSEDIT,fileAsInt,b,cv,-1));
+		}
 
 	}
 
@@ -306,6 +316,7 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 
 		try {
 			result = serverCall.checkSbsEdit(mcmid, maps);
+			Log.i(TAG, result);
 		} catch (HessianException e){
 			Integer response = e.getErrorCode();
 			Log.d(TAG,String.format("actionGetSbsEdit:  Integer Error returned: %d",response.intValue()));
@@ -333,10 +344,10 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 				Log.d(TAG,String.format("f=%d,b=%d,v=%d\n",fileAsInteger,baselineVersion,version));
 				getSbsEdit(fileAsInteger, baselineVersion, cv, version);
 			}
-			run();
+//			run();
 		}
 		
-		return numMapsToUpdate;
+		return 0;
 	}
 
 	@SuppressWarnings("unchecked")

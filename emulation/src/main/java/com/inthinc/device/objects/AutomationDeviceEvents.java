@@ -1,5 +1,7 @@
 package com.inthinc.device.objects;
 
+import java.util.HashSet;
+
 import android.util.Log;
 
 import com.inthinc.device.devices.DeviceBase;
@@ -683,6 +685,18 @@ public class AutomationDeviceEvents {
 	private AutomationDeviceEvents(DeviceNoteTypes type, DeviceState state, GeoPoint location){
 		this.type = type;
 		note = DeviceNote.constructNote(type, location, state);
+	}
+	
+	public static final HashSet<DeviceNoteTypes> endOfTripNotes = new HashSet<DeviceNoteTypes>();
+	
+	static {
+		endOfTripNotes.add(DeviceNoteTypes.IGNITION_OFF);
+		endOfTripNotes.add(DeviceNoteTypes.CLEAR_DRIVER);
+		endOfTripNotes.add(DeviceNoteTypes.FULLEVENT);
+		endOfTripNotes.add(DeviceNoteTypes.ROLLOVER);
+		endOfTripNotes.add(DeviceNoteTypes.UNPLUGGED);
+		endOfTripNotes.add(DeviceNoteTypes.UNPLUGGED_WHILE_ASLEEP);
+		endOfTripNotes.add(DeviceNoteTypes.INSTALL);
 	}
 	
 	/***

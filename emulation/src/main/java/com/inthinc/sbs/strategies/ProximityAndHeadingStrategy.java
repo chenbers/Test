@@ -99,8 +99,19 @@ public final class ProximityAndHeadingStrategy implements SpeedlimitStrategy {
 		lastStreet = null;
 		
 		if(selected != null){
-			sl = new SpeedLimit(maxLimit,closestGID, 
-					selected.getGID(),selected.getFileAsInt(),selected.isKph());
+			SbsMap selectedMap = maps.get(selected.getFileAsInt());
+			if(selectedMap == null){
+				Log.wtf(TAG, "Null map when trying to find the selected map, this should NEVER happen.");
+				sl = new SpeedLimit(maxLimit,closestGID, 
+						selected.getGID(),selected.getFileAsInt(),
+						selected.isKph(),0,0);
+			}else{
+				sl = new SpeedLimit(maxLimit,closestGID, 
+					selected.getGID(),selected.getFileAsInt(),
+					selected.isKph(),selectedMap.getBaselineVersion(),
+					selectedMap.getExceptionVersion());
+			}
+			
 			lastStreet = selected;
 		}else{
 			sl = new SpeedLimit();

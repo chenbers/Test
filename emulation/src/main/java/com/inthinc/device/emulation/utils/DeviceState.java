@@ -170,7 +170,7 @@ public class DeviceState {
 
 	private int tripFlags = 0;
 
-	private String vehicleID;
+	private String vehicleID = "0";
 
 	private int violationFlags = 0x0;
 	
@@ -1031,6 +1031,9 @@ public class DeviceState {
 	}
 
 	public DeviceState setSpeedLimit(int speedLimit) {
+		if (speedLimit == 0){
+			speedLimit = 70;
+		}
 		this.speedLimit = speedLimit;
 		return this;
 	}

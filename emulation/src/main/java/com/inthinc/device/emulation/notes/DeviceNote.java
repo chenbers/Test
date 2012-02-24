@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
@@ -304,11 +305,13 @@ public abstract class DeviceNote {
         if (state == null){
         	note = new TiwiNote(type, location);        	
         } else if (state.getProductVersion().equals(ProductType.WAYSMART)){
-        	if (NoteBC.getTypes().contains(type)){
-                note = new NoteBC(type, state, location);
-            } else {
-            	note = new SatelliteEvent_t(type, state, location);
-            }
+//        	if (state.getWaysDirection().equals(Direction.sat)){
+        		note = new SatelliteEvent_t(type, state, location);
+//        	} else if (NoteBC.getTypes().contains(type)){
+//                note = new NoteBC(type, state, location);
+//            } else {
+//            	note = new SatelliteEvent_t(type, state, location);
+//            }
         } else {
             note = new TiwiNote(type, state, location);
             note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedLimit());

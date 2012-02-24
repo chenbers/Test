@@ -14,6 +14,8 @@ public class SpeedLimit {
 	public final long sourceGID;
 	public final int fileAsInt;
 	public final boolean isKph;
+	public final int baseline;
+	public final int exRev;
 	
 	
 	public SpeedLimit(){
@@ -22,15 +24,26 @@ public class SpeedLimit {
 		this.sourceGID = 0;
 		this .fileAsInt = 0;
 		this.isKph = false;
+		this.baseline = 0;
+		this.exRev = 0;
 	}
 	
-	public SpeedLimit(int speedLimit,long closestGID, long sourceGID,int fileAsInt,boolean isKph){
+	public SpeedLimit(int speedLimit,long closestGID, long sourceGID,
+			int fileAsInt,boolean isKph,int base,int ex){
 		
 		this.speedLimit = speedLimit;
 		this.closestGID = closestGID;
 		this.sourceGID = sourceGID;
 		this .fileAsInt = fileAsInt;
 		this.isKph = isKph;
+		this.baseline = base;
+		this.exRev = ex;
+		
+	}
+	
+	@Override
+	public String toString(){
+		return String.format("Limit: %d, fileAsInt: %d", speedLimit, fileAsInt);
 	}
 	
 	

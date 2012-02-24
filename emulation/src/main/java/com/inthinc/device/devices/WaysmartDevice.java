@@ -135,8 +135,8 @@ public class WaysmartDevice extends DeviceBase {
 
     protected WaysmartDevice set_IMEI(HashMap<DeviceProps, String> settings) {
     	Log.d("%s", "IMEI: " + state.getImei() + ", Server: " + portal);
-        state.setSetting(DeviceProps.MCM_ID, state.getMcmID());
-        state.setSetting(DeviceProps.WITNESS_ID, state.getImei());
+        state.setSetting(DeviceProps.MCM_ID_W, state.getMcmID());
+        state.setSetting(DeviceProps.WITNESS_ID_W, state.getImei());
         return this;
     }
 
@@ -159,16 +159,16 @@ public class WaysmartDevice extends DeviceBase {
         String url, port;
         url = server.getMCMUrl();
         port = server.getWaysPort().toString();
-        state.setSetting(DeviceProps.SERVER_IP, url + ":" + port);
-        state.setSetting(DeviceProps.MAP_SERVER_URL, url);
-        state.setSetting(DeviceProps.MAP_SERVER_PORT, server.getMCMPort()
+        state.setSetting(DeviceProps.SERVER_IP_W, url + ":" + port);
+        state.setSetting(DeviceProps.MAP_SERVER_URL_W, url);
+        state.setSetting(DeviceProps.MAP_SERVER_PORT_W, server.getMCMPort()
                 .toString());
         return this;
     }
 
     @Override
     public WaysmartDevice set_speed_limit(Integer limit) {
-        set_settings(DeviceProps.SPEED_LIMIT, limit);
+        set_settings(DeviceProps.SPEED_LIMIT_W, limit);
         return this;
 
     }

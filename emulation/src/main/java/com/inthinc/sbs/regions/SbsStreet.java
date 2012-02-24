@@ -20,6 +20,7 @@ public abstract class SbsStreet implements SbsRegion{
 	protected LatLong [] points = null;
 	protected long streethashcode = 0;
 	protected int fileAsInt = 0;
+	protected boolean isRamp = false;
 	
 	@Override
 	public String toString(){
@@ -125,8 +126,8 @@ public abstract class SbsStreet implements SbsRegion{
 		return lim;
 	}
 	
-	public static boolean isRamp(int speed){
-		return ((speed & 0x80) == 0x80);
+	public boolean isRamp(){
+		return isRamp;
 	}
 	
 	public static final double KPH_TO_MPH=0.621371192;
@@ -136,7 +137,7 @@ public abstract class SbsStreet implements SbsRegion{
 	 */
 	public int getSpeedLimit(){
 		int limit = speedlimit;
-		if(isRamp(speedlimit)){
+		if(isRamp){
 			limit = (speedlimit & (byte) 0x7F);
 		}
 		

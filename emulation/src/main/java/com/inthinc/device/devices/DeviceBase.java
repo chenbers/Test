@@ -296,7 +296,7 @@ public abstract class DeviceBase {
         	MasterTest.print("The device is already off.");
         }
         MasterTest.print("Power Off note created at: "
-                + state.getTime().epochSecondsInt(), Level.INFO);
+                + state.getTime().toInt() + " " + state.getTime(), Level.INFO);
         return this;
     }
 
@@ -387,7 +387,7 @@ public abstract class DeviceBase {
         Map<DeviceProps, String> change = new HashMap<DeviceProps, String>();
         change.put(key, value);
         set_settings(change);
-        if (key.equals(DeviceProps.SPEED_LIMIT) || key.equals(DeviceProps.TIWI_SPEED_LIMIT)){
+        if (key.equals(DeviceProps.SPEED_LIMIT_W) || key.equals(DeviceProps.SPEED_LIMIT_T)){
         	state.setSpeedLimit(((Double)Double.parseDouble(value)).intValue());
         }
         return this;

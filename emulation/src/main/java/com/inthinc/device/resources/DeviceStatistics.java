@@ -3,36 +3,13 @@ package com.inthinc.device.resources;
 import android.util.Log;
 
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.StackToString;
 
 public class DeviceStatistics {
     
     private static int hessianCalls = 0;
-    private static int connectionTimeouts = 0;
-    private static int connectionResets = 0;
     private static AutomationCalendar start = new AutomationCalendar();
     private static AutomationCalendar stop = new AutomationCalendar();
     private static AutomationCalendar last = new AutomationCalendar();
-    
-    public static boolean addTimeout(){
-        connectionTimeouts++;
-        return true;
-    }
-    
-    public static boolean addReset(){
-        connectionResets++;
-        return true;
-    }
-    
-    public static boolean addConnectionError(Throwable e){
-        String message = StackToString.toString(e);
-        if (message.contains("Connection timed out")){
-            addTimeout();
-        } else if (message.contains("reset")){
-            addReset();
-        }
-        return true;
-    }
     
     
     public static boolean addCall(){
@@ -44,7 +21,7 @@ public class DeviceStatistics {
     public static boolean updateStop(){
         stop.setDate(System.currentTimeMillis());
         if (stop.getDelta(last) > 15000){
-        	Log.d("Sent: %d, Time: %d, NotesPerMinute: %d",
+        	Log.i("Sent: %d, Time: %d, NotesPerMinute: %d",
                     hessianCalls, getTimeDelta(), getCallsPerMinute());
             last.setDate(stop);
         }

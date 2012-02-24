@@ -138,7 +138,7 @@ public class TiwiProDevice extends DeviceBase {
     @Override
     protected Integer get_note_count() {
         return Integer.parseInt(state
-                .get_setting(DeviceProps.TIWI_SET_MSGS_PER_NOTIFICATION));
+                .get_setting(DeviceProps.SET_MSGS_PER_NOTIFICATION_T));
     }
 
     public String get_setting(DeviceProps settingID) {
@@ -269,7 +269,7 @@ public class TiwiProDevice extends DeviceBase {
         else if (fwdCmd == DeviceForwardCommands.DOWNLOAD_NEW_FIRMWARE)
             state.setWMP((Integer) reply.get("data"));
         else if (fwdCmd == DeviceForwardCommands.SET_SPEED_BUFFER_VALUES) {
-            changes.put(DeviceProps.TIWI_VARIABLE_SPEED_LIMITS,
+            changes.put(DeviceProps.VARIABLE_SPEED_LIMITS_T,
                     reply.get("fwdData").toString());
         } else if (fwdCmd == DeviceForwardCommands.DOWNLOAD_NEW_MAPS) {
             // checkSbsSubscribed();
@@ -313,7 +313,7 @@ public class TiwiProDevice extends DeviceBase {
         if (state.getPower_state()) {
         	AutomationDeviceEvents.powerOn(this);
         } else if (!state.getPower_state()) {
-        	state.setLowPowerTimeout(get_setting_int(DeviceProps.TIWI_LOW_POWER_MODE_SECONDS));
+        	state.setLowPowerTimeout(get_setting_int(DeviceProps.LOW_POWER_MODE_SECONDS_T));
         	AutomationDeviceEvents.powerOff(this);
             flushNotes();
         }
@@ -323,9 +323,9 @@ public class TiwiProDevice extends DeviceBase {
     @Override
     protected TiwiProDevice set_server(Addresses server) {
         mcmProxy = new MCMProxyObject(server);
-        state.setSetting(DeviceProps.TIWI_SERVER_PORT, server.getMCMPort()
+        state.setSetting(DeviceProps.SERVER_PORT_T, server.getMCMPort()
                 .toString());
-        state.setSetting(DeviceProps.TIWI_SERVER_URL, server.getMCMUrl());
+        state.setSetting(DeviceProps.SERVER_URL_T, server.getMCMUrl());
         return this;
     }
 
@@ -336,7 +336,7 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     public TiwiProDevice set_speed_limit(Integer limit) {
-        state.setSetting(DeviceProps.TIWI_SPEED_LIMIT, limit.toString());
+        state.setSetting(DeviceProps.SPEED_LIMIT_T, limit.toString());
         return this;
     }
 

@@ -1,6 +1,5 @@
 package com.inthinc.sbs;
 
-import java.io.StringWriter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +56,10 @@ public class Sbs implements SpeedLimitProvider{
 
 
 	private final ExecutorService threadManager;
-
+	
+	
+	private String prefix;
+	private int entryCountThreshold;
 
 
 	/**
@@ -92,126 +94,39 @@ public class Sbs implements SpeedLimitProvider{
 		speedlimitStrat = new ProximityAndHeadingStrategy(12000, 45);
 		
 		threadManager = Executors.newCachedThreadPool();
+		prefix = "target/";
+		entryCountThreshold = 100;
 	}
-
-
-	@Override
-	public void dumpAllMaps() {
-		loadedMaps.clear();
-	}
-
-
-	public CoverageStrategy getCoverageStrategy() {
-		return coverageStrategy;
-	}
-
-
-	public ConcreteDownloadManager getDownloadManager() {
-		return downloadManager;
-	}
-
-
 
 	/**
-	 * Methods intended for test access only.
+	 * Post process a loaded map to queue any necessary updates.
+	 * @param m - map loaded, must not be null
 	 */
-	public Map<Integer,SbsMap> getLoadedMaps(){
-		Map<Integer,SbsMap> maps = new HashMap<Integer, SbsMap>(loadedMaps);
-		return Collections.unmodifiableMap(maps);
-	}
-
-
-	public Future<List<SbsMap>> getLoader() {
-		return loader;
-	}
-
-
-	public Map<Integer, VisitedMap> getMapsVisited() {
-		return mapsVisited;
-	}
-
-
-	public int getRequiredBaselineVersion() {
-		return requiredBaselineVersion;
-	}
-	
-	public SpeedLimit getSpeedLimit(GeoPoint location, Heading heading) {
-		SbsPoint point = new SbsPoint(location.getLat(), location.getLng());
-		return getSpeedLimit(point.lat, point.lng, heading.getDegree()*10);
-	}
-	
-	public SpeedLimit getSpeedLimit(GeoPoint location, int headingX10) {
-		SbsPoint point = new SbsPoint(location.getLat(), location.getLng());
-		return getSpeedLimit(point.lat, point.lng, headingX10);
-	}
-
-	@Override
-	public synchronized SpeedLimit getSpeedLimit(int lat, int lng, int heading) {
+	void postProcessLoad(SbsMap m){
 		
-		SbsPoint currentPoint = new SbsPoint(lat,lng);
-    	mergeDownloadedMaps(downloadManager.getDownloadedMaps(),loadedMaps);
+		if(m.isEmpty()){
+			return;
+		}
 		
-    	Log.d(TAG,String.format("Get limit for %d,%d,%d",lat,lng,heading));
-    	if(!coverageStrategy.isCovered(lat, lng, loadedMaps)){
-    		if(loader == null){
-    			launchLoader(coverageStrategy.getMapToLoad());
-    		}
-    	}
-		Log.d(TAG,"Loader is complete, process");
-		List<SbsMap> maps = null;
-		try {
-			maps = loader.get();
-			if(maps != null){
-				for(SbsMap map : maps){
-					loadedMaps.put(Integer.valueOf(map.getFileAsInt()), map);
-					postProcessLoad(map);
+		if(m.getBaselineVersion() < requiredBaselineVersion){
+			downloadManager.getSbsBase(m.getFileAsInt(), requiredBaselineVersion);
+		}else{
+			VisitedMap vmap = mapsVisited.get(m.getFileAsInt());
+			if(vmap != null){
+				vmap.entryCount++;
+				if(vmap.entryCount > entryCountThreshold){
+					downloadManager.checkSbsEdit(m.getFileAsInt(),
+							m.getBaselineVersion(), m.getExceptionVersion());
 				}
+			}else{
+				vmap = new VisitedMap(m.getFileAsInt(), m.getExceptionVersion(), 1);
+				mapsVisited.put(Integer.valueOf(m.getFileAsInt()), vmap);
+				
+				downloadManager.checkSbsEdit( m.getFileAsInt(), 
+						m.getBaselineVersion(), m.getExceptionVersion());
 			}
-		} catch (InterruptedException e) {
-			Log.e(TAG, e);
-		} catch (ExecutionException e) {
-			Log.e(TAG, e);
-		} 
-    	
-    	if(!coverageStrategy.isCovered(lat, lng, loadedMaps)){
-    		if(loader == null){
-    			launchLoader(coverageStrategy.getMapToLoad());
-    		}
-    	}
-    	
-    	
-    	Log.d(TAG,"Coverage acheived, look for a limit");
-    	return speedlimitStrat.getSpeedlimit(currentPoint,heading,loadedMaps,coverageStrategy.getWindow());
-    	
-	}
-	public SpeedlimitStrategy getSpeedlimitStrat() {
-		return speedlimitStrat;
-	}
-	
-	public ExecutorService getThreadManager() {
-		return threadManager;
-	}
-	public boolean isLoaderComplete(){
-		if(loader != null){
-			return loader.isDone();
 		}
-		return false;
-	}
-	
-	private void launchLoader(int fileAsInt){
-		Log.d(TAG,"Loader submitted for processing");
-		loader = threadManager.submit(AbstractSbsMapLoader.newMapLoader("target", fileAsInt, downloadManager));
-		while (!loader.isDone()){
-			Thread.yield();
-		}
-	}
-	
-	
-	public boolean loaderExists(){
-		if(loader == null){
-			return false;
-		}
-		return true;
+		
 	}
 	
 	/**
@@ -231,75 +146,98 @@ public class Sbs implements SpeedLimitProvider{
 		
 	}
 	
-	/**
-	 * Post process a loaded map to queue any necessary updates.
-	 * @param m - map loaded, must not be null
-	 */
-	public void postProcessLoad(SbsMap m){
-		
-		if(m.isEmpty()){
-			return;
-		}
-		
-		if(m.getBaselineVersion() < requiredBaselineVersion){
-			downloadManager.getSbsBase(m.getFileAsInt(), requiredBaselineVersion);
-		}else{
-			VisitedMap vmap = mapsVisited.get(m.getFileAsInt());
-			if(vmap != null){
-				vmap.entryCount++;
-				if(vmap.entryCount > 15){
-					downloadManager.checkSbsEdit(m.getFileAsInt(),
-							m.getBaselineVersion(), m.getExceptionVersion());
-				}
-			}else{
-				vmap = new VisitedMap(m.getFileAsInt(), m.getExceptionVersion(), 1);
-				mapsVisited.put(Integer.valueOf(m.getFileAsInt()), vmap);
-				
-				downloadManager.checkSbsEdit( m.getFileAsInt(), 
-						m.getBaselineVersion(), m.getExceptionVersion());
-			}
-		}
-		downloadManager.run();
-		
+	private void launchLoader(int fileAsInt){
+		Log.d(TAG,"Loader submitted for processing");
+		loader = threadManager.submit(AbstractSbsMapLoader.newMapLoader(prefix, fileAsInt, downloadManager));
+		while (!loader.isDone()){
+			Thread.yield();
+		}	
 	}
 	
-	public void setCoverageStrategy(CoverageStrategy coverageStrategy) {
-		this.coverageStrategy = coverageStrategy;
+	public SpeedLimit getSpeedLimit(GeoPoint location, Heading heading) {
+		SbsPoint point = new SbsPoint(location.getLat(), location.getLng());
+		return getSpeedLimit(point.lat, point.lng, heading.getDegree()*10);
+	}
+	
+	public SpeedLimit getSpeedLimit(GeoPoint location, int headingX10) {
+		SbsPoint point = new SbsPoint(location.getLat(), location.getLng());
+		return getSpeedLimit(point.lat, point.lng, headingX10);
+	}
+	
+	@Override
+	public synchronized SpeedLimit getSpeedLimit(int lat, int lng, int heading) {
+		
+		SbsPoint currentPoint = new SbsPoint(lat,lng);
+    	mergeDownloadedMaps(downloadManager.getDownloadedMaps(),loadedMaps);
+		
+    	Log.d(TAG,String.format("Get limit for %d,%d,%d",lat,lng,heading));
+    	if(!coverageStrategy.isCovered(lat, lng, loadedMaps)){
+    		if(!loaderExists()){
+    			launchLoader(coverageStrategy.getMapToLoad());
+    		}
+    	}
+    	if(!loaderExists()){
+			launchLoader(coverageStrategy.getMapToLoad());
+		}
+		Log.d(TAG,"Loader is complete, process");
+		List<SbsMap> maps = null;
+		try {
+			maps = loader.get();
+			if(maps != null){
+				for(SbsMap map : maps){
+					loadedMaps.put(Integer.valueOf(map.getFileAsInt()), map);
+					postProcessLoad(map);
+				}
+			}
+		} catch (InterruptedException e) {
+			Log.e(TAG, "LoadError, Interrupted Exception " + e.getLocalizedMessage());
+		} catch (ExecutionException e) {
+			Log.e(TAG, "Execution Exception, " + e.getLocalizedMessage());
+		} finally{
+			loader = null;
+		}
+    	
+    	if(!coverageStrategy.isCovered(lat, lng, loadedMaps)){
+    		if(loader == null){
+    			launchLoader(coverageStrategy.getMapToLoad());
+    		}
+    	}
+    		
+    	Log.d(TAG,"Coverage acheived, look for a limit");
+    	return speedlimitStrat.getSpeedlimit(currentPoint,heading,loadedMaps,coverageStrategy.getWindow());
+    	
 	}
 
-	public void setLoader(Future<List<SbsMap>> loader) {
-		this.loader = loader;
+	@Override
+	public void dumpAllMaps() {
+		loadedMaps.clear();
 	}
 	
-	public void setMapsVisited(Map<Integer, VisitedMap> mapsVisited) {
-		this.mapsVisited.putAll(mapsVisited);
+	/**
+	 * Methods intended for test access only.
+	 */
+	public Map<Integer,SbsMap> getLoadedMaps(){
+		Map<Integer,SbsMap> maps = new HashMap<Integer, SbsMap>(loadedMaps);
+		return Collections.unmodifiableMap(maps);
 	}
 	
-	public void setRequiredBaselineVersion(int requiredBaselineVersion) {
-		this.requiredBaselineVersion = requiredBaselineVersion;
-	}
-	
-	
-	public static void main(String[] args){
-		GeoPoint location;
-		if (args[0].equals("latlng")){
-			location = new GeoPoint(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
-		} else {
-			StringWriter writer = new StringWriter();
-			for (String arg: args){
-				System.out.println(arg);
-				if (arg.equals(args[0])){
-					continue;
-				}
-				writer.write(arg);
-			}
-			location = new GeoPoint(writer.toString());
+	public boolean loaderExists(){
+		if(loader == null){
+			return false;
 		}
-		Sbs sbs = new Sbs("DEVICEDOESNTEXIST", 7, Addresses.QA);
-		for (Heading heading: Heading.values()){
-			System.out.printf("\nHeading: %s, Limit: %d\n", heading, sbs.getSpeedLimit(location, heading).speedLimit/100);
+		return true;
+	}
+	
+	public boolean isLoaderComplete(){
+		if(loader != null){
+			return loader.isDone();
 		}
-		sbs.getThreadManager().shutdown();
+		return false;
+	}
+	
+
+	public ExecutorService getThreadManager() {
+		return threadManager;
 	}
 	
 }

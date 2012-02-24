@@ -7,15 +7,15 @@
 
 	<name>emulation</name>
 	<url>http://maven.apache.org</url>
-    <ciManagement>
-        <system>hudson</system>
-        <url>https://devserv.tiwipro.com:8585/hudson/</url>
-    </ciManagement>
-    <scm>
-        <connection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</connection>
-        <developerConnection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</developerConnection>
-        <url>http://svn.iwiglobal.com/pro</url>
-    </scm>
+	<ciManagement>
+		<system>hudson</system>
+		<url>https://devserv.tiwipro.com:8585/hudson/</url>
+	</ciManagement>
+	<scm>
+		<connection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</connection>
+		<developerConnection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</developerConnection>
+		<url>http://svn.iwiglobal.com/pro</url>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,11 +52,15 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
+			<!-- <plugin> <groupId>org.dstovall</groupId> <artifactId>onejar-maven-plugin</artifactId> 
+				<version>1.4.4</version> <executions> <execution> <configuration> <mainClass>com.inthinc.device.sbs.Sbs</mainClass> 
+				</configuration> <goals> <goal>one-jar</goal> </goals> </execution> </executions> 
+				</plugin> -->
 		</plugins>
 	</build>
-    <!--                          -->
-    <!-- Distritubtion Management -->
-    <!--                          -->
+	<!-- -->
+	<!-- Distritubtion Management -->
+	<!-- -->
 	<distributionManagement>
 		<repository>
 			<id>devserv.tiwipro.com</id>
@@ -102,7 +106,10 @@
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
-
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.tmatesoft.svnkit</groupId>
 			<artifactId>svnkit</artifactId>

@@ -3,6 +3,7 @@ package com.inthinc.device.emulation.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class MCMProxyObject implements MCMService{
     public MCMProxyObject(Addresses server) {
         this.server = server;
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
-        Log.d("MCM Server is " + server);
+        Log.i("MCM Server is " + server);
         proxy = getHessian.getMcmProxy(server);
     }
     
@@ -321,6 +322,11 @@ public class MCMProxyObject implements MCMService{
         HTTPCommands http = new HTTPCommands();
         List<String> reply = new ArrayList<String>();
         for (DeviceNote note : sendingQueue){
+        	if (note.getType().equals(DeviceNoteTypes.INSTALL)){
+        		List<DeviceNote> list = new ArrayList<DeviceNote>();
+        		list.add(note);
+        		sendSatNote(imei, list);
+        	}
         	byte[] packaged = note.Package();
         	String uri = 
                     "http://" + server.getPortalUrl() + 
@@ -334,15 +340,18 @@ public class MCMProxyObject implements MCMService{
             MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
             
             try {
+            	// Essential
                 entity.addPart("mcm_id", new StringBody(mcmID, Charset.forName("UTF-8")));
-                entity.addPart("imei", new StringBody(imei, Charset.forName("UTF-8")));
                 entity.addPart("commType", new StringBody("" + comType.getIndex(), Charset.forName("UTF-8")));
-                entity.addPart("event_time", new StringBody("" + note.getTime(), Charset.forName("UTF-8")));
-                entity.addPart("sat_cmd", new StringBody("" + note.getType(), Charset.forName("UTF-8")));
-                entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));
-                entity.addPart("note", new StringBody(note.toString(), Charset.forName("UTF-8")));
-                entity.addPart("vehicle_id_str", new StringBody("654", Charset.forName("UTF-8")));
-                entity.addPart("company_id", new StringBody("3", Charset.forName("UTF-8")));
+                
+                // For debugging purposes.
+//                entity.addPart("imei", new StringBody(imei, Charset.forName("UTF-8")));
+//                entity.addPart("event_time", new StringBody("" + note.getTime(), Charset.forName("UTF-8")));
+//                entity.addPart("sat_cmd", new StringBody("" + note.getType(), Charset.forName("UTF-8")));
+//                entity.addPart("url", new StringBody(uri, Charset.forName("UTF-8")));
+//                entity.addPart("note", new StringBody(note.toString(), Charset.forName("UTF-8")));
+//                entity.addPart("vehicle_id_str", new StringBody("654", Charset.forName("UTF-8")));
+//                entity.addPart("company_id", new StringBody("3", Charset.forName("UTF-8")));
             } catch (Exception e) {
                 
             }
@@ -462,6 +471,13 @@ public class MCMProxyObject implements MCMService{
 	            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
 	            }
 	            sendingQueue.remove(noteClass);
+	        } catch (SocketException e){
+	        	i--;
+	        	Log.wtf("IMEI: %s\n%s: %s\nCalls made: %s, Calls per Minute: %d",
+	        			state.getImei(),
+	        			e.getClass().getSimpleName(), e.getMessage(), 
+	        			DeviceStatistics.getHessianCalls(), DeviceStatistics.getCallsPerMinute());
+	        	continue;
 	        } catch (Exception e) {
 	        	Log.wtf("Error from Note with IMEI: " + state.getImei() + "  "
 	                            + StackToString.toString(e) + "\n"
@@ -510,7 +526,7 @@ public class MCMProxyObject implements MCMService{
 			}
 		} catch (HessianException e){
 			if (e.getErrorCode()==304){
-				Log.i("Device probably not assigned to a vehicle, got 304");
+				Log.i("Vehicle doesn't have any actuals yet, got 304");
 			} else {
 				throw e;
 			}
