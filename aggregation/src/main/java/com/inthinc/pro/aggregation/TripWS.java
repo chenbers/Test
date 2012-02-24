@@ -114,26 +114,18 @@ public class TripWS {
 				case Note.TYPE_NEWDRIVER:
 				case Note.TYPE_NEWDRIVER_HOSRULE:
 				case Note.TYPE_IGNITION_ON:
-					if (tripEnded)
+					if (tripStarted || tripEnded)
 					{
-						//We had an end before a start
-						tripEnded = false;
+						//We had an start/end before a start
 						tripStarted = false;
+						tripEnded = false;
 						trip.setStatus(TripStatus.TRIP_COMPLETED);
-						insertTrip(trip, day);
+
+						if (isRealTrip(trip))
+							insertTrip(trip, day);
 					}
 					
-					if (tripStarted)
-					{
-						setTripEndFields(trip, note);
-						if (isRealTrip(trip))
-						{
-							//SAVE Trip to DB
-							trip = new Trip();
-						}
-					}	
-					else
-						trip = new Trip();
+					trip = new Trip();
 
 					setTripStartFields(trip, note);
 					tripStarted = true;
@@ -191,17 +183,25 @@ public class TripWS {
 			}
 		
 		}
-		if (tripStarted && trip != null)
+		
+		if (trip != null)
 		{
-			trip.setStatus(TripStatus.TRIP_ACTIVE);
-			
-			if (trip.getEndTime() == null)
+			if (tripEnded)
 			{
-				
-				Date currentTime = new Date();
-				trip.setEndTime(currentTime.before(trip.getStartTime()) ? trip.getStartTime() : currentTime);
+				if (isRealTrip(trip))
+					insertTrip(trip, day);
 			}
-			insertTrip(trip, day);
+			else
+			{
+				trip.setStatus(TripStatus.TRIP_ACTIVE);
+				if (trip.getEndTime() == null)
+				{
+					
+					Date currentTime = new Date();
+					trip.setEndTime(currentTime.before(trip.getStartTime()) ? trip.getStartTime() : currentTime);
+				}
+				insertTrip(trip, day);
+			}
 		}
 		}
 		catch (Throwable e)
@@ -268,7 +268,7 @@ public class TripWS {
 	
 	private boolean isRealTrip(Trip trip)
 	{
-		return (trip.getMileage() > 9 || trip.getIdleTime() > 0);
+		return (trip.getMileage() > 0 || trip.getIdleTime() > 0);
 	}
 
 	
