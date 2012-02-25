@@ -19,8 +19,8 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
 
     @Override
     public TextFieldSuggestions type(Object toType) {
-        selenium.type(myEnum, "");
-        selenium.typeKeys(myEnum, toType.toString());
+        getSelenium().type(myEnum, "");
+        getSelenium().typeKeys(myEnum, toType.toString());
         return this;
     }
 

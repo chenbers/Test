@@ -107,9 +107,9 @@ public class DHXDropDown extends DropDown implements Selectable {
             page = "";
         }
         for (SeleniumEnums enume : enums) {
-            if (selenium.isElementPresent(new SeleniumEnumWrapper(enume).replaceWord(page)) && enume != null) {
+            if (getSelenium().isElementPresent(new SeleniumEnumWrapper(enume).replaceWord(page)) && enume != null) {
                 logger.debug("//body/div[" + div + "]"+", "+enume.toString());
-                selenium.assignId("//body/div[" + div + "]", enume.toString());
+                getSelenium().assignId("//body/div[" + div + "]", enume.toString());
                 div++;
             }
         }
@@ -129,8 +129,8 @@ public class DHXDropDown extends DropDown implements Selectable {
     @Override
     public DHXDropDown select(Integer optionNumber) {
         assignIDs();
-        selenium.click(makeDropDown);
-        selenium.selectDhx(myEnum, optionNumber.toString());
+        getSelenium().click(makeDropDown);
+        getSelenium().selectDhx(myEnum, optionNumber.toString());
         return this;
     }
 
@@ -150,8 +150,8 @@ public class DHXDropDown extends DropDown implements Selectable {
         assignIDs();
         matchNumber--;
         String xpath = makeXpath(Id.text(fullMatch));
-        selenium.click(makeDropDown);
-        selenium.click(xpath, matchNumber);
+        getSelenium().click(makeDropDown);
+        getSelenium().click(xpath, matchNumber);
         return this;
     }
 
@@ -165,15 +165,15 @@ public class DHXDropDown extends DropDown implements Selectable {
         assignIDs();
         matchNumber--;
         String xpath = makeXpath(Id.contains(Id.text(), partialMatch));
-        selenium.click(makeDropDown);
-        selenium.click(xpath, matchNumber);
+        getSelenium().click(makeDropDown);
+        getSelenium().click(xpath, matchNumber);
         return this;
     }
     
     @Override
     public String getText(Integer optionNumber){
         assignIDs();
-        return selenium.getDHXText(myEnum, optionNumber.toString());
+        return getSelenium().getDHXText(myEnum, optionNumber.toString());
     }
 
     private String makeXpath(String secondDiv) {

@@ -31,8 +31,8 @@ public class TextFieldWithSpinner extends TextField {
         return new Button(setIds(1)) {
             @Override
             public Button click() {
-                selenium.mouseDown(myEnum);
-                selenium.mouseUp(myEnum);
+                getSelenium().mouseDown(myEnum);
+                getSelenium().mouseUp(myEnum);
                 return this;
             }
         };
@@ -42,8 +42,8 @@ public class TextFieldWithSpinner extends TextField {
         return new Button(setIds(2)) {
             @Override
             public Button click() {
-                selenium.mouseDown(myEnum);
-                selenium.mouseUp(myEnum);
+                getSelenium().mouseDown(myEnum);
+                getSelenium().mouseUp(myEnum);
                 return this;
             }
         };

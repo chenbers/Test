@@ -48,7 +48,7 @@ public class TDSelector extends SelectableObject implements Selectable {
     
     @Override
     public String getText(Integer optionNumber){
-        return selenium.getText(addQualifier(optionNumber.toString()));
+        return getSelenium().getText(addQualifier(optionNumber.toString()));
     }
     
     private SeleniumEnumWrapper addQualifier(String tr, String td){

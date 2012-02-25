@@ -2,8 +2,6 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.ArrayList;
 
-import org.openqa.selenium.WebDriver;
-
 import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
@@ -15,8 +13,6 @@ public abstract class AbstractPage extends MasterTest implements Page {
 
     protected SeleniumEnums url;
     protected ArrayList<SeleniumEnums> checkMe;
-    private CoreMethodInterface selenium;
-    protected WebDriver webDriver;
     protected String currentPage;
     public static ArrayList<Class<? extends AbstractPage>> instantiatedPages = new ArrayList<Class<? extends AbstractPage>>();
 
@@ -26,8 +22,6 @@ public abstract class AbstractPage extends MasterTest implements Page {
     }
 
     public AbstractPage() {
-        selenium = super.getSelenium();
-        webDriver = selenium.getWrappedDriver();
         checkMe = new ArrayList<SeleniumEnums>();
 
         Class<? extends AbstractPage> derivedClass = this.getClass();

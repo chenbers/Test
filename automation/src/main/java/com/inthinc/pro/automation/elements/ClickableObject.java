@@ -11,14 +11,14 @@ public class ClickableObject extends ElementBase implements Clickable {
 
 
     public ClickableObject click() {
-        selenium.click(myEnum);
-        selenium.waitForPageToLoad();
+        getSelenium().click(myEnum);
+        getSelenium().waitForPageToLoad();
         return this;
     }
 
     @Override
     public Boolean isClickable() {
-        return selenium.isClickable(myEnum);
+        return getSelenium().isClickable(myEnum);
     }
 
     @Override

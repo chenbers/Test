@@ -46,9 +46,9 @@ public class NavTree extends TextLink implements Clickable, TextBased {
     public NavTree click(String groupNameToMatch, Integer matchNumber){
         matchNumber--;
         String xpath = "//a[text()='" + groupNameToMatch + "']";
-        List<WebElement> elements = selenium.getWrappedDriver().findElements(By.xpath(xpath));
+        List<WebElement> elements = getSelenium().getWrappedDriver().findElements(By.xpath(xpath));
         String href = elements.get(matchNumber).getAttribute("href");//.replace("/tiwipro", "");//TODO: jwimmer: provide method to save the String higher up
-        selenium.open(href);
+        getSelenium().open(href);
         return this;
     }
 }

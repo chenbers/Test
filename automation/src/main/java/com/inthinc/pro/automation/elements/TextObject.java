@@ -37,7 +37,7 @@ public class TextObject extends ElementBase implements TextBased {
 
     @Override
     public String getText() {
-        return selenium.getText(myEnum);
+        return getSelenium().getText(myEnum);
     }
 
     @Override

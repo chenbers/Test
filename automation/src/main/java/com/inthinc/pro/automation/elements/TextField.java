@@ -22,13 +22,13 @@ public class TextField extends TextObject implements Typeable {
 
     @Override
     public TextField type(Object inputText) {
-        selenium.type(myEnum, inputText.toString());
+        getSelenium().type(myEnum, inputText.toString());
         return this;
     }
 
     @Override
     public String getText(){
-        return selenium.getValue(myEnum);
+        return getSelenium().getValue(myEnum);
     }
     @Override
     public Boolean assertEquals() {

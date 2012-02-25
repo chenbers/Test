@@ -23,11 +23,11 @@ import com.inthinc.pro.rally.PrettyJSON;
 public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
     
-    protected void enterKey() {
-        selenium.enterKey();
+    public void enterKey() {
+        getSelenium().enterKey();
     }
 
-    protected static String escapeHtml(String original) {
+    public static String escapeHtml(String original) {
         return StringEscapeUtils.escapeHtml(original);
     }
 
@@ -77,18 +77,18 @@ public class MasterTest {
         print(String.format(printToScreen, objects), Level.INFO, 3);
     }
 
-    protected void tabKey() {
-        selenium.tabKey();
+    public void tabKey() {
+        getSelenium().tabKey();
     }
 
-    protected static void spaceBar() {
+    public static void spaceBar() {
         KeyCommands.typeKey(KeyEvent.VK_SPACE);
     }
-    protected static void keyPeriod() {
+    public static void keyPeriod() {
         KeyCommands.typeKey(KeyEvent.VK_PERIOD);
     }
 
-    protected static String unescapeHtml(String original) {
+    public static String unescapeHtml(String original) {
         return StringEscapeUtils.unescapeHtml(original);
     }
 
@@ -104,15 +104,15 @@ public class MasterTest {
         addError(errorName, ErrorLevel.FAIL);
     }
     protected void addError(String errorName, ErrorLevel level) {
-        selenium.getErrorCatcher().addError(errorName, Thread.currentThread().getStackTrace(), level);
+        getSelenium().getErrorCatcher().addError(errorName, Thread.currentThread().getStackTrace(), level);
     }
 
     protected void addError(String errorName, String error, ErrorLevel level) {
-        selenium.getErrorCatcher().addError(errorName, error, level);
+        getSelenium().getErrorCatcher().addError(errorName, error, level);
     }
 
     protected void addError(String errorName, Throwable stackTrace, ErrorLevel level) {
-        selenium.getErrorCatcher().addError(errorName, stackTrace, level);
+        getSelenium().getErrorCatcher().addError(errorName, stackTrace, level);
     }
 
     protected Boolean assertEquals(Object expected, Object actual) {
@@ -137,11 +137,11 @@ public class MasterTest {
     }
 
     protected Boolean assertEquals(Object expected, SeleniumEnumWrapper actual) {
-        return assertEquals(expected, selenium.getText(actual));
+        return assertEquals(expected, getSelenium().getText(actual));
     }
 
     protected Boolean assertEquals(SeleniumEnumWrapper anEnum) {
-        return assertEquals(anEnum.getText(), selenium.getText(anEnum), anEnum);
+        return assertEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
     }
 
     protected Boolean assertFalse(Boolean test, String error) {
@@ -165,7 +165,7 @@ public class MasterTest {
     }
 
     protected Boolean assertNotEquals(Object expected, SeleniumEnumWrapper anEnum) {
-        return assertNotEquals(anEnum.getText(), selenium.getText(anEnum), anEnum);
+        return assertNotEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
     }
 
     protected Boolean assertStringContains(String partialString, String fullString) {
@@ -191,7 +191,7 @@ public class MasterTest {
     protected Boolean compare(Object expected, Object actual) {
         Boolean results = false;
         if (actual instanceof SeleniumEnumWrapper) {
-            results = compare(expected, selenium.getText((SeleniumEnumWrapper) actual));
+            results = compare(expected, getSelenium().getText((SeleniumEnumWrapper) actual));
         } else if (expected instanceof TextEnum) {
             results = compare(((TextEnum) expected).getText(), actual);
         } else {
@@ -206,36 +206,33 @@ public class MasterTest {
     }
 
     protected ErrorCatcher getErrors() {
-        return selenium.getErrorCatcher();
+        return getSelenium().getErrorCatcher();
     }
 
-    protected CoreMethodInterface getSelenium() {
-        if (selenium == null) {
-            selenium = CoreMethodLib.getSeleniumThread();
-        }
-        return selenium;
+    public CoreMethodInterface getSelenium() {
+        return CoreMethodLib.getSeleniumThread();
     }
 
     protected String getTextFromElementWithFocus() {// TODO: jwimmer please check this again against new code.
-        return selenium.getTextFromElementWithFocus();
+        return getSelenium().getTextFromElementWithFocus();
     }
 
     protected void open(SeleniumEnums pageToOpen) {
-        selenium.open(new SeleniumEnumWrapper(pageToOpen));
+        getSelenium().open(new SeleniumEnumWrapper(pageToOpen));
     }
     
     protected void open(Page page){
-        selenium.open(page.getExpectedPath());
+        getSelenium().open(page.getExpectedPath());
     }
 
     protected void open(SeleniumEnums pageToOpen, Integer replaceNumber) {
         SeleniumEnumWrapper urlWithNumber = new SeleniumEnumWrapper(pageToOpen);
         urlWithNumber.updateURL(replaceNumber);
-        selenium.open(urlWithNumber);
+        getSelenium().open(urlWithNumber);
     }
 
     protected void open(String url) {
-        selenium.open(url);
+        getSelenium().open(url);
     }
 
     protected void openSavedPage() {
@@ -253,15 +250,13 @@ public class MasterTest {
         savedPage = getCurrentLocation();
     }
 
-    protected void setSelenium() {
-        this.selenium = CoreMethodLib.getSeleniumThread();
-    }
     protected void killSelenium() {
+    	CoreMethodLib.closeSeleniumThread();
         this.selenium = null;
     }
 
     protected void typeToElementWithFocus(String type) {
-        WebDriver web = selenium.getWrappedDriver();
+        WebDriver web = getSelenium().getWrappedDriver();
         web.switchTo().activeElement().sendKeys(type);
     }
 

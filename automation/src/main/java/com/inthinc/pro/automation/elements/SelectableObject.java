@@ -19,7 +19,7 @@ public class SelectableObject extends Text implements Selectable {
     public SelectableObject select(String desiredOption) {
 
         select(desiredOption, 1);
-        String selected = selenium.getSelectedLabel(myEnum);
+        String selected = getSelenium().getSelectedLabel(myEnum);
         assertEquals(desiredOption, selected);
         return this;
     }
@@ -33,16 +33,16 @@ public class SelectableObject extends Text implements Selectable {
     
     @Override
     public String getText() {
-        return selenium.getSelectedLabel(myEnum);
+        return getSelenium().getSelectedLabel(myEnum);
     }
 
     @Override
     public String getText(Integer optionNumber) {
-        return selenium.getSelectOptions(myEnum)[--optionNumber];
+        return getSelenium().getSelectOptions(myEnum)[--optionNumber];
     }
 
     public SelectableObject selectRandom() {
-        String[] allOptions = selenium.getSelectOptions(myEnum);
+        String[] allOptions = getSelenium().getSelectOptions(myEnum);
         int randomIndex = RandomValues.newOne().getInt(allOptions.length);
         return select(randomIndex);
     }
@@ -50,9 +50,9 @@ public class SelectableObject extends Text implements Selectable {
     @Override
     public SelectableObject select(Integer optionNumber) {
         optionNumber--;
-        selenium.select(myEnum, "index=" + optionNumber);
+        getSelenium().select(myEnum, "index=" + optionNumber);
         pause(2, "Wait for propogation");
-        String selected = selenium.getSelectedIndex(myEnum);
+        String selected = getSelenium().getSelectedIndex(myEnum);
         assertEquals(optionNumber.toString(), selected);
         return this;
     }
@@ -64,7 +64,7 @@ public class SelectableObject extends Text implements Selectable {
         if (xpath == null) {
             xpath = getSelectXpath();
         }
-        selenium.click(xpath, Id.text(desiredOption), matchNumber);
+        getSelenium().click(xpath, Id.text(desiredOption), matchNumber);
         return this;
     }
 
@@ -75,7 +75,7 @@ public class SelectableObject extends Text implements Selectable {
         if (xpath == null) {
             xpath = getSelectXpath();
         }
-        selenium.click(xpath, Id.contains(Id.text(), partialMatch), matchNumber);
+        getSelenium().click(xpath, Id.contains(Id.text(), partialMatch), matchNumber);
         return this;
     }
 

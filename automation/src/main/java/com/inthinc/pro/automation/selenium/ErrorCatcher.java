@@ -99,8 +99,8 @@ public class ErrorCatcher implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result = null;
         try {
-            if(startTime+DEFAULT_TEST_TIMEOUT  < currentTime() )
-                addError("Test timed out", "Test timed out after (("+currentTime()+"-"+startTime+"))"+(currentTime()-startTime)+" seconds", ErrorLevel.FATAL);
+//            if(startTime+DEFAULT_TEST_TIMEOUT  < currentTime() )
+//                addError("Test timed out", "Test timed out after (("+currentTime()+"-"+startTime+"))"+(currentTime()-startTime)+" seconds", ErrorLevel.FATAL);
             logger.debug("before method " + method.getName());
             result = method.invoke(delegate, args);
         } catch (InvocationTargetException e) {

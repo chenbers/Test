@@ -29,7 +29,7 @@ public class CheckBox extends ClickableObject implements Checkable, Clickable {
 
     @Override
     public Boolean isChecked() {
-        return selenium.isChecked(myEnum);
+        return getSelenium().isChecked(myEnum);
     }
 
     @Override

@@ -27,7 +27,6 @@ public class BrowserTest extends Test{
             } catch (Exception e) {
                 logger.fatal(StackToString.toString(e));
             }finally{
-                    CoreMethodLib.closeSeleniumThread();
                     killSelenium();
             }
         } else {
@@ -42,7 +41,7 @@ public class BrowserTest extends Test{
             super.getSelenium();
             setErrorCatcher(getSelenium().getErrorCatcher());
         } catch (Exception e) {
-            logger.fatal(StackToString.toString(e));
+            print(e);
             skip = true;
             throw new NullPointerException();
         }

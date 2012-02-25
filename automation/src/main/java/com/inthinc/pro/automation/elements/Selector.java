@@ -14,17 +14,17 @@ public class Selector extends SelectableObject implements Selectable {
     }
     
     public Selector addSelection(String item){
-    	selenium.addSelection(myEnum, item);
+    	getSelenium().addSelection(myEnum, item);
     	return this;
     }
     
     public Selector removeSelection(String item){
-    	selenium.removeSelection(myEnum, item);
+    	getSelenium().removeSelection(myEnum, item);
     	return this;
     }
     
     public Selector removeAllSelections(){
-    	selenium.removeAllSelections(myEnum);
+    	getSelenium().removeAllSelections(myEnum);
     	return this;
     }
     
