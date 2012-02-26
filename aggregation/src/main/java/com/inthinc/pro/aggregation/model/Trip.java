@@ -179,7 +179,7 @@ public class Trip {
 		this.startOdometer = startOdometer;
 	}
 
-	public Long getEndOdometer() {
+	public long getEndOdometer() {
 		return endOdometer;
 	}
 

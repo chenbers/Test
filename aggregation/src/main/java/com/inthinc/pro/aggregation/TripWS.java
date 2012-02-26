@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -114,21 +115,24 @@ public class TripWS {
 				case Note.TYPE_NEWDRIVER:
 				case Note.TYPE_NEWDRIVER_HOSRULE:
 				case Note.TYPE_IGNITION_ON:
-					if (tripStarted || tripEnded)
+					if (tripEnded)
 					{
 						//We had an start/end before a start
 						tripStarted = false;
 						tripEnded = false;
 						trip.setStatus(TripStatus.TRIP_COMPLETED);
-
 						if (isRealTrip(trip))
 							insertTrip(trip, day);
 					}
-					
-					trip = new Trip();
 
-					setTripStartFields(trip, note);
-					tripStarted = true;
+					if (!tripStarted)
+					{
+						trip = new Trip();
+						tripStarted = true;
+						setTripStartFields(trip, note);
+					}
+					
+					setTripEndFields(trip, note);
 					break;
 					
 				case Note.TYPE_CLEAR_DRIVER:
@@ -137,8 +141,13 @@ public class TripWS {
 				case Note.TYPE_HOS_CHANGE_STATE_EX:
 				case Note.TYPE_HOS_CHANGE_STATE_NO_GPS_LOCK:
 				case Note.TYPE_RFKILL:
+					//We don't write out trip here because there are frequently two end trip notes
+					//in a row.  For example CLEAR_DRIVER followed by IGNITION_OFF.
 					if (tripStarted)
+					{
+						trip.setStatus(TripStatus.TRIP_COMPLETED);
 						setTripEndFields(trip, note);
+					}
 
 					tripEnded = true;
 					break;
@@ -164,6 +173,7 @@ public class TripWS {
 
 					break;
 				case Note.TYPE_IDLING:
+				case Note.TYPE_IDLING2:
 					if (!tripStarted)
 					{
 							trip = new Trip();
@@ -188,6 +198,7 @@ public class TripWS {
 		{
 			if (tripEnded)
 			{
+				trip.setStatus(TripStatus.TRIP_COMPLETED);
 				if (isRealTrip(trip))
 					insertTrip(trip, day);
 			}
@@ -213,7 +224,13 @@ public class TripWS {
 	private void updateAggs(Date tripDay, Long deviceId, String tzName) throws SQLException
 	{
 		logger.debug("updateAggs tripDay: " + tripDay);
-		String strDay = DateUtil.getDisplayDate(tripDay).substring(0, 10);
+
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		String strDay = dateFormat.format(tripDay);
+		logger.debug("strDay: " + strDay);
+
 	    TimeZone driverTZ = TimeZone.getTimeZone(tzName);
 	    
 	    GregorianCalendar tripDayEndCal = new GregorianCalendar();
@@ -228,8 +245,9 @@ public class TripWS {
 	    int day = Integer.parseInt(strDay.substring(8,10));
 	    driverDayCal.set(year, month-1, day, 0, 0, 0);
 
-	    if (tripDay.before(driverDayCal.getTime()))
-	    	driverDayCal.add(Calendar.DATE, -1);
+		logger.debug("updateAggs driverDayCal: " + driverDayCal);
+//	    if (tripDay.before(driverDayCal.getTime()))
+//	    	driverDayCal.add(Calendar.DATE, -1);
 	    
 		//We update the aggs that the newly aggregated trips may have effected.
 	    while (driverDayCal.getTime().before(tripDayEndCal.getTime()))
@@ -281,11 +299,6 @@ public class TripWS {
 		
 		logger.debug("note.getOdometer(): " + note.getOdometer() + " trip.getStartOdometer(): " + trip.getStartOdometer() + " trip.getMileageOffset(): " + trip.getMileageOffset() + " totalMiles: " + totalMiles + " totalHrs: " + totalHrs + " (totalMiles/100)/totalHrs: " + (totalMiles/100)/totalHrs);		
 		
-		if (totalMiles == 0 && note.getOdometer() == trip.getEndOdometer())
-		{
-			trip.setEndOdometer(note.getOdometer());
-			trip.setMileage(totalMiles);
-		}
 		
 		//Check that Odometer isn't going backwards and mileage is reasonable (mph < 100)
 		if (totalMiles > 0 && note.getOdometer() > trip.getEndOdometer() && (totalHrs > 0 && (totalMiles/100)/totalHrs < 100))

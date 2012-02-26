@@ -23,6 +23,7 @@ public class Note
 	public final static int TYPE_FUEL_STOP = 73; 
 	public final static int TYPE_FUEL_STOP_EX = 166;
 	public final static int TYPE_IDLING = 140;
+	public final static int TYPE_IDLING2 = 208;
 	public final static int TYPE_RFKILL = 219;
 	
     private Long noteID;

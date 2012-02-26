@@ -215,7 +215,7 @@ public class DBUtil {
         return deviceList;
     }
 	
-	private static final String FETCH_WS_TRIPNOTES_BETWEEN = "SELECT noteID,vehicleID,driverID,groupID,type,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s'),speed,odometer,state,flags,maprev,latitude,longitude,topSpeed,avgSpeed,speedLimit,distance,deltaX,deltaY,deltaZ,attrs FROM __NOTETABLE__ WHERE deviceID=? AND `type` IN (7,19,20,22,66,73,96,113,116,166,208,219) AND time BETWEEN  ? AND ? ORDER BY time";
+	private static final String FETCH_WS_TRIPNOTES_BETWEEN = "SELECT noteID,vehicleID,driverID,groupID,type,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s'),speed,odometer,state,flags,maprev,latitude,longitude,topSpeed,avgSpeed,speedLimit,distance,deltaX,deltaY,deltaZ,attrs FROM __NOTETABLE__ WHERE deviceID=? AND `type` IN (7,19,20,22,66,73,96,113,116,140,166,208,219) AND time BETWEEN  ? AND ? ORDER BY time";
     public static List<Note> getWSTripNotesForDevice(Long deviceID, Date startTimeStamp, Date endTimeStamp)  throws SQLException
     {
     	final String ATTR_driverFlag	= "8201";
@@ -532,8 +532,6 @@ public class DBUtil {
 		
 		int milesDrivenForDay = (int) (trip.getMileage()+trip.getMileageOffset());
 
-		if (milesDrivenForDay < 0)
-			milesDrivenForDay = 0;
 
 		//Prorate mileage if trip crosses a day 
 		logger.debug("tripID: " + trip.getTripID());
@@ -548,7 +546,10 @@ public class DBUtil {
 		logger.debug("trip.getStartTimeTS(): " + trip.getStartTime().getTime());
 		logger.debug("trip.getEndTimeTS(): " + trip.getEndTime().getTime());
 		logger.debug("milesDrivenForDay: " + milesDrivenForDay);
-		
+
+		if (milesDrivenForDay < 0)
+			milesDrivenForDay = 0;
+
 		if (startTS > (trip.getStartTime().getTime()/1000) || endTS < (trip.getEndTime().getTime()/1000))
 		{
 			float percent = ((float)(endTS-startTS))/((trip.getEndTime().getTime()/1000F)-(trip.getStartTime().getTime()/1000F));
@@ -567,7 +568,8 @@ public class DBUtil {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dateFormat.setTimeZone(driverTZ);
 
-            statement.setDate(1, new java.sql.Date(day.getTime()));
+            statement.setString(1, dateFormat.format(day));
+//            statement.setDate(1, new java.sql.Date(day.getTime()));
             statement.setLong(2, trip.getDriverID());
             statement.setLong(3, trip.getVehicleID());
             statement.setLong(4, trip.getDeviceID());
@@ -593,7 +595,7 @@ public class DBUtil {
 
 	
 	private static final String SELECT_TRIPS_FOR_AGG = "SELECT tripID,driverID,vehicleID,coalesce(idleTime,0),coalesce(mileage,0),coalesce(mileageOffset,0),DATE_FORMAT(CONVERT_TZ(startTime, 'GMT', ?), '%Y-%m-%d %H:%i:%s'), DATE_FORMAT(CONVERT_TZ(COALESCE(endTime,UTC_TIMESTAMP()), 'GMT', ?), '%Y-%m-%d %H:%i:%s'), startOdometer, endOdometer FROM trip WHERE deviceID = ? " +
-			"AND (CONVERT_TZ(startTime, 'GMT', ?) BETWEEN ? AND ? OR CONVERT_TZ(endTime, 'GMT', ?) BETWEEN ? AND ?)";
+			"AND (CONVERT_TZ(startTime, 'GMT', ?) BETWEEN ? AND ? OR CONVERT_TZ(endTime, 'GMT', ?) BETWEEN ? AND ?) AND (coalesce(mileage,0) > 0 OR coalesce(mileageOffset,0) > 0)";
 	public static List<Trip> fetchTripsForAggDay(Date startDayTimeDriverTZ, Date endDayTimeDriverTZ, Long deviceId, TimeZone driverTZ) throws SQLException
 	{
         Connection conn = null;
