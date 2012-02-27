@@ -26,7 +26,6 @@ And I check the Png Format tiles box
 And I select the Zoom <min> slider
 And I select the Zoom <max> slider
 And I select the <opacity> slider
-And I select the <layer> Over from the dropdown
 And I click on Save button
 
 
@@ -54,7 +53,6 @@ And I check the Png Format tiles box
 And I select the Zoom <min> slider
 And I select the Zoom <max> slider
 And I select the <opacity> slider
-And I select the <layer> Over from the dropdown
 And I click on Save button
 
 Examples:
@@ -89,7 +87,6 @@ And I check the Png Format tiles box
 And I select the Zoom <min> slider
 And I select the Zoom <max> slider
 And I select the <opacity> slider
-And I select the <layer> Over from the dropdown
 When I click on Cancel button
 Then the Add is canceled
 
@@ -111,6 +108,8 @@ Given a mapName has been saved
 And I am logged into the portal
 When I click to view the maps on <pageName>
 Then the maps dropdown displays mapName
+And maps display with checkbox
+
 
 Examples:
 |pageName|
@@ -138,5 +137,23 @@ Examples:
 |team_trip|
 |zone_map|
 
+Scenario: TC Verify Maps can be selected from dropdown in Portal
+Given a mapName has been saved
+And I am logged into the portal
+When I click to view the maps on <pageName>
+And the maps dropdown displays mapName
+And maps display with checkbox
+And I check a map checkbox
+Then the map overlay displays
 
+
+Examples:
+|pageName|
+|live_fleet_map|
+|main_live_fleet|
+|driver_trip|
+|vehicle_trip|
+|last_trip|
+|team_trip|
+|zone_map|
 
