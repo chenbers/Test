@@ -137,7 +137,7 @@ Examples:
 |team_trip|
 |zone_map|
 
-Scenario: TC Verify Maps can be selected from dropdown in Portal
+Scenario: TC6052 Verify Maps can be selected from dropdown in Portal
 Given a mapName has been saved
 And I am logged into the portal
 When I click to view the maps on <pageName>
