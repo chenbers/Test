@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 
 
@@ -512,14 +513,15 @@ public enum DeviceProps implements IndexEnum {
         for (DeviceProps p : EnumSet.allOf(DeviceProps.class)) {
             lookupByCode.put(p.getIndex(), p);
             String name = p.name();
+            String fixedName = MasterTest.capitalizeString(name.substring(0,name.length()-2), "_").replace("_", " ");
             
-            if (p.name().endsWith("_T")){
-            	tiwiByName.put(name.substring(0,name.length()-2), p);
+            if (name.endsWith("_T")){
+            	tiwiByName.put(fixedName, p);
             	if (p.getDefaultSetting() != null){
             		tiwiPro.put(p, p.getDefaultSetting());
             	}
             } else {
-            	waysByName.put(name.substring(0,name.length()-2), p);
+            	waysByName.put(fixedName, p);
             	if (p.getDefaultSetting() != null){
             		waysmart.put(p, p.getDefaultSetting());
             	}
@@ -539,19 +541,11 @@ public enum DeviceProps implements IndexEnum {
     }
 
     public static Map<DeviceProps, String> getTiwiDefaults() {
-    	Map<DeviceProps, String> temp = new HashMap<DeviceProps, String>();
-    	for (DeviceProps prop: tiwiPro.keySet()){
-    		temp.put(prop, tiwiPro.get(prop) + "");
-    	}
-        return temp;
+        return tiwiPro;
     }
     
     public static Map<DeviceProps, String> getWaysmartDefaults(){
-    	Map<DeviceProps, String> temp = new HashMap<DeviceProps, String>();
-    	for (DeviceProps prop: waysmart.keySet()){
-    		temp.put(prop, waysmart.get(prop) + "");
-    	}
-        return temp;
+        return waysmart;
     }
 
     public String getDefaultSetting() {

@@ -310,7 +310,7 @@ public class MasterTest {
         return capitalizeString(s, " ");
     }
     
-    private static String capitalizeString(final String s, final String split){
+    public static String capitalizeString(final String s, final String split){
         final StringTokenizer st = new StringTokenizer( s, split, true );
         final StringBuilder sb = new StringBuilder();
          
