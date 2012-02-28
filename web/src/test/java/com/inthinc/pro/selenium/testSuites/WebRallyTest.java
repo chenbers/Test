@@ -13,7 +13,7 @@ import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
  * automated browser tests will extend this class, which provides before and after methods that setup and tear down: the browser, related selenium and Rally resources
  * 
  */
-public abstract class WebRallyTest extends BrowserRallyTest {
+public class WebRallyTest extends BrowserRallyTest {
 
     public WebRallyTest() {
         super(MastheadEnum.VERSION);
