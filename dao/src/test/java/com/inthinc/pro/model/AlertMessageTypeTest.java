@@ -62,23 +62,23 @@ public class AlertMessageTypeTest {
     public void testAlertMessageTypeMapping2() {
         Long mask = 0l;
         mask |= AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask();
-        System.out.println(AlertMessageType.ALERT_TYPE_ENTER_ZONE + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask()));
+//        System.out.println(AlertMessageType.ALERT_TYPE_ENTER_ZONE + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask()));
         mask |= AlertMessageType.ALERT_TYPE_EXIT_ZONE.getBitMask();
-        System.out.println(AlertMessageType.ALERT_TYPE_EXIT_ZONE + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(AlertMessageType.ALERT_TYPE_EXIT_ZONE.getBitMask()));
+//        System.out.println(AlertMessageType.ALERT_TYPE_EXIT_ZONE + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(AlertMessageType.ALERT_TYPE_EXIT_ZONE.getBitMask()));
         
         
         mask = 0l;
         for (AlertMessageType type : AlertMessageType.values()) {
             mask |= type.getBitMask();
-            System.out.println(type + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(type.getBitMask()));
+//            System.out.println(type + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(type.getBitMask()));
         }
         
         String tmp = Long.toHexString(mask);
         assertEquals("fffdfffff", Long.toHexString(mask));
         
         List<AlertMessageType> allTypes = AlertMessageType.getAlertMessageTypes(mask);
-        for (AlertMessageType type : allTypes)
-            System.out.println(type.toString());
+//        for (AlertMessageType type : allTypes)
+//            System.out.println(type.toString());
 
         assertEquals(allTypes.size(), AlertMessageType.values().length);
         
