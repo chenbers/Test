@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class BrowserTest extends Test{

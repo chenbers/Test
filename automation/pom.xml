@@ -10,6 +10,10 @@
 	<artifactId>automation</artifactId>
 	<version>2.0.11-SNAPSHOT</version>
 	<packaging>jar</packaging>
+	<properties>	
+		<jbehave.core.version>3.5</jbehave.core.version>
+		<jbehave.web.version>3.4</jbehave.web.version>
+	</properties>
 
 	<name>Pro Portal - Automation Utils</name>
 	<dependencies>
@@ -77,7 +81,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.9</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -87,7 +90,28 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-
+		<dependency>
+	      <groupId>org.jbehave</groupId>
+	      <artifactId>jbehave-core</artifactId>
+	      <version>${jbehave.core.version}</version>
+	      <classifier>resources</classifier>
+	      <type>zip</type>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.jbehave.web</groupId>
+	      <artifactId>jbehave-web-selenium</artifactId>
+	      <version>${jbehave.web.version}</version>
+	      <exclusions>
+	        <exclusion>
+	          <groupId>org.seleniumhq.selenium</groupId>
+	          <artifactId>selenium-remote-control</artifactId>
+	        </exclusion>
+	        <exclusion>
+	          <groupId>org.seleniumhq.selenium</groupId>
+	          <artifactId>selenium-support</artifactId>
+	        </exclusion>
+	      </exclusions>
+	    </dependency> 
 	</dependencies>
 	<build>
 		<plugins>

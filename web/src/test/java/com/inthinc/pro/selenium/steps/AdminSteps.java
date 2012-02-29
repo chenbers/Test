@@ -16,19 +16,19 @@ public class AdminSteps extends LoginSteps {
  
     
     //ROLES section (custom roles apply to most if not all admin sections)
-    private PageAdminCustomRoles roles = new PageAdminCustomRoles();
-    private PageAdminCustomRoles roleDetails = new PageAdminCustomRoles();
-    private PageAdminCustomRoleAddEdit roleAddEdit = new PageAdminCustomRoleAddEdit();
-    
-    @When("I input the role name as $roleName")
-    @Pending
-    public void whenIInputTheRoleNameAs(String roleName){
-        if(roleAddEdit.isOnPage()){
-            roleAddEdit._textField().name().type(roleName);
-        } else {
-            addError("not on the correct page to call whenIInputTheRoleNameAs("+roleName+")", ErrorLevel.ERROR);
-        }
-    }
+//    private PageAdminCustomRoles roles = new PageAdminCustomRoles();
+//    private PageAdminCustomRoles roleDetails = new PageAdminCustomRoles();
+//    private PageAdminCustomRoleAddEdit roleAddEdit = new PageAdminCustomRoleAddEdit();
+//    
+//    @When("I input the role name as $roleName")
+//    @Pending
+//    public void whenIInputTheRoleNameAs(String roleName){
+//        if(roleAddEdit.isOnPage()){
+//            roleAddEdit._textField().name().type(roleName);
+//        } else {
+//            addError("not on the correct page to call whenIInputTheRoleNameAs("+roleName+")", ErrorLevel.ERROR);
+//        }
+//    }
     
     
     

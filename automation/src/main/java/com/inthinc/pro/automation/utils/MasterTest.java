@@ -7,6 +7,8 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.jbehave.core.annotations.Aliases;
+import org.jbehave.core.annotations.When;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 
@@ -23,6 +25,7 @@ import com.inthinc.pro.rally.PrettyJSON;
 public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
     
+    @When("I press the enter key on my keyboard")
     public void enterKey() {
         getSelenium().enterKey();
     }
@@ -77,13 +80,17 @@ public class MasterTest {
         print(String.format(printToScreen, objects), Level.INFO, 3);
     }
 
+    @When("I hit the Tab Key")
     public void tabKey() {
         getSelenium().tabKey();
     }
 
+    @When("I hit the Spacebar")
     public static void spaceBar() {
         KeyCommands.typeKey(KeyEvent.VK_SPACE);
     }
+    
+    @When("I hit the Period key")
     public static void keyPeriod() {
         KeyCommands.typeKey(KeyEvent.VK_PERIOD);
     }
@@ -252,6 +259,8 @@ public class MasterTest {
     	CoreMethodLib.closeSeleniumThread();
     }
 
+    @When("I type to the active field")
+    @Aliases(values={"I type to the element with focus"})
     protected void typeToElementWithFocus(String type) {
         WebDriver web = getSelenium().getWrappedDriver();
         web.switchTo().activeElement().sendKeys(type);

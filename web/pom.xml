@@ -170,28 +170,6 @@
 		</profile>
 	</profiles>
 	<dependencies>
-	    <dependency>
-	      <groupId>org.jbehave</groupId>
-	      <artifactId>jbehave-core</artifactId>
-	      <version>${jbehave.core.version}</version>
-	      <classifier>resources</classifier>
-	      <type>zip</type>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.jbehave.web</groupId>
-	      <artifactId>jbehave-web-selenium</artifactId>
-	      <version>${jbehave.web.version}</version>
-	      <exclusions>
-	        <exclusion>
-	          <groupId>org.seleniumhq.selenium</groupId>
-	          <artifactId>selenium-remote-control</artifactId>
-	        </exclusion>
-	        <exclusion>
-	          <groupId>org.seleniumhq.selenium</groupId>
-	          <artifactId>selenium-support</artifactId>
-	        </exclusion>
-	      </exclusions>
-	    </dependency>
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-api</artifactId>

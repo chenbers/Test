@@ -128,8 +128,8 @@ public class ElementBase extends MasterTest implements ElementInterface {
         for (Object enumerated : enums) {
             setMyEnum((SeleniumEnums) enumerated);
             result &= isPresent();
-            if (errorLevel != null)
-                assertTrue(isPresent(), myEnum.toString(), errorLevel);
+//            if (errorLevel != null)
+//                assertTrue(isPresent(), myEnum.toString(), errorLevel);
         }
         myEnum = temp;
         return result;

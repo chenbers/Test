@@ -1,7 +1,8 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import org.jbehave.core.annotations.AfterStory;
-import org.jbehave.core.annotations.BeforeStory;
+import org.apache.log4j.Level;
+import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.BeforeScenario;
 import org.junit.After;
 import org.junit.Before;
 
@@ -20,22 +21,20 @@ public class WebRallyTest extends BrowserRallyTest {
     }
 
     @Before
-    @BeforeStory
-    //@BeforeScenario//TODO: jwimmer: there is some issue where we are loosing seleniums ability to control the browser on all but the FIRST test scenario.  BUT the scenarios are not necessarily written to shut themselves down?  eventually I need to work out the "Timer has already been stopped" error and fix this.
+    @BeforeScenario
     public void a_before() {
         super.before();
     }
 
     
     @After
-    @AfterStory
-    //@AfterScenario
+    @AfterScenario
     @Override
     public void after() {
-        System.out.println("get_test_case(): '" + get_test_case() + "'");
+        print("get_test_case(): '" + get_test_case() + "'");
         super.after();
         if (get_test_case() == null || get_test_case().equals(""))
-            logger.warn("This test did NOT have a testcase?!");
+            print("This test did NOT have a testcase?!", Level.WARN);
         didTestFail();
     }
 
