@@ -1,104 +1,22 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import static java.util.Arrays.asList;
-import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
-
 import java.util.List;
 
-import org.jbehave.core.configuration.Configuration;
-import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.jbehave.core.io.LoadFromRelativeFile;
-import org.jbehave.core.io.LoadFromRelativeFile.StoryFilePath;
-import org.jbehave.core.io.StoryFinder;
-import org.jbehave.core.junit.JUnitStories;
-import org.jbehave.core.reporters.Format;
-import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.CandidateSteps;
-import org.jbehave.core.steps.InstanceStepsFactory;
 
-import com.google.common.util.concurrent.MoreExecutors;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 
-public class LoginStory extends JUnitStories {
+public class LoginStory extends WebStories {
 
-    public LoginStory(){
-        configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
-    }
 
-	// // Here we specify the configuration, starting from default
-	 //MostUsefulConfiguration, and changing only what is needed
-	@Override
-	public Configuration configuration() {
-		return new MostUsefulConfiguration()
-			// where to find the stories
-			.useStoryLoader(new LoadFromRelativeFile(codeLocationFromClass(this.getClass()), new StoryFilePath("/target/test-classes","/src/test/resources/stories")))
-			// CONSOLE and TXT reporting
-			.useStoryReporterBuilder(
-					new StoryReporterBuilder()
-							.withDefaultFormats()
-							.withFormats(Format.CONSOLE, Format.TXT, Format.XML, Format.HTML_TEMPLATE, Format.HTML))
-			//.useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
-			//.doDryRun(true)//helpful when generating new steps' methods
-			;
-	}
-
-	// Here we specify the steps classes
 	@Override
 	public List<CandidateSteps> candidateSteps() {
-		// varargs, can have more that one steps classes
-		return new InstanceStepsFactory(configuration(), new LoginSteps())
-				.createCandidateSteps();
+		return candidateSteps(new LoginSteps());
 	}
 
 	@Override
 	protected List<String> storyPaths() {
-		System.out.println("storyFilter: "+System.getProperty("storyFilter", "*") );
-		System.out.println("codeLocationFromClass: "+codeLocationFromClass(this.getClass()).getFile());
-		List<String> storyPaths = new StoryFinder().findPaths(codeLocationFromClass(this.getClass()).getFile()+"../../src/test/resources/stories/", asList("**/"+ System.getProperty("storyFilter", "*") + "login.story"), null);
-		for(String path: storyPaths)
-		    System.out.println("path: "+path);
-		return storyPaths;
+		return storyPaths("login.story");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// public LoginStory() {
-//  CrossReference crossReference = new CrossReference().withJsonOnly()
-//          .withOutputAfterEachStory(true)
-//          .excludingStoriesWithNoExecutedScenarios(true);
-//  ContextView contextView = new LocalFrameContextView().sized(640, 120);
-//  SeleniumContext seleniumContext = new SeleniumContext();
-//  SeleniumStepMonitor stepMonitor = new SeleniumStepMonitor(contextView,
-//          seleniumContext, crossReference.getStepMonitor());
-//  Format[] formats = new Format[] { new SeleniumContextOutput(seleniumContext), CONSOLE, WEB_DRIVER_HTML };
-//  StoryReporterBuilder reporterBuilder = new StoryReporterBuilder()
-//          .withCodeLocation(codeLocationFromClass(LoginStory.class))
-//          .withFailureTrace(true).withFailureTraceCompression(true)
-//          .withDefaultFormats().withFormats(formats)
-//          .withCrossReference(crossReference);
-//
-//  Configuration configuration = new SeleniumConfiguration()
-//          .useSeleniumContext(seleniumContext).useFailureStrategy(
-//                  new FailingUponPendingStep()).useStoryControls(
-//                  new StoryControls().doResetStateBeforeScenario(false))
-//          .useStepMonitor(stepMonitor).useStoryLoader(
-//                  new LoadFromClasspath(LoginStory.class))
-//          .useStoryReporterBuilder(reporterBuilder);
-//  useConfiguration(configuration);
-//
-//  // ApplicationContext context = new SpringApplicationContextFactory("etsy-steps.xml").createApplicationContext();
-//  // useStepsFactory(new SpringStepsFactory(configuration, context));
-//}
 }
