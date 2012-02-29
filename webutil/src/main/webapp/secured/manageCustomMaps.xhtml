@@ -4,57 +4,24 @@
     xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 
    	<ui:define name="scripts">
-	<script src="https://maps-api-ssl.google.com/maps?file=api&amp;v=2&amp;client=gme-inthinc&amp;sensor=false&amp;ahl=en" type="text/javascript"></script>
+	<a4j:loadScript src="/js/jquery-1.4.2.min.js"/>
+	<script type="text/javascript"> jQuery.noConflict(); </script>
+    <a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
+    
+	<a4j:loadScript src="https://maps-api-ssl.google.com/maps?file=api&amp;v=2&amp;client=gme-inthinc&amp;sensor=false&amp;ahl=en" type="text/javascript"/>
+    <a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
+    <a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.3-min.js"/>
+	<a4j:loadScript src="/js/maps.js"/>
+	
+	
 	<script type="text/javascript">
 	//<![CDATA[
-		var map;
-		var saveLatLng;
-		var saveZoom;
-
-		saveLatLng = new GLatLng(38.5482, -95.8008);
-		saveZoom = 10;
-
-		function initMap()
-		{
-   			if (GBrowserIsCompatible()) 
-			{
-		 	  	map = new GMap2(document.getElementById("map-canvas"),{mapTypes:[]});
-	        	geocoder = new GClientGeocoder();
-		 	  	addLayer();
-		        map.addControl(new GLargeMapControl());
-		        map.addControl(new GScaleControl());
-		        map.addControl(new GMenuMapTypeControl(true));
-				map.setCenter(saveLatLng, saveZoom);
-		        map.enableScrollWheelZoom();
-		        GEvent.addListener(map, "dragend", function() {
-              		saveLatLng = map.getCenter();
-				});
-		        GEvent.addListener(map, "zoomend", function(oldlevel, newlevel) {
-              		saveZoom = newlevel;
-				});
-			}
-		}	
 		function processAddressLookup(addressId)
    		{
    			var address = document.getElementById(addressId).value;
 	   		if(address.length == 0)  
-   			{
    				return;
-   	   		}
-
-	   	    if (geocoder) {
-	   	        geocoder.getLatLng(
-	   	          address,
-	   	          function(point) {
-	   	        	  if (!point) {
-	   	        		  alert(address + ' not found');
-	   	        	  } else {
-						 saveLatLng = point;
-  						 map.setCenter(saveLatLng, saveZoom);
-	    	         }
-	   	          }
-	   	        );
-   		    }
+	   		portalmap.lookupAddress(address);
    		}
 		//]]>
 	</script>
@@ -71,7 +38,8 @@
 				<h:outputText value="Account:" style="font-size:12px;font-weight:bold;padding:10px;"/>
 				<h:selectOneMenu id="account-select-menu" value="#{customMapsBean.selectedAccountID}">
 						<f:selectItems value="#{customMapsBean.accountSelectList}" />
-                        <a4j:support event="onchange" reRender="mapSelectForm, mapActionForm, mapOptionsForm, mapPreview, addressLookup"/>
+                        <a4j:support event="onchange" reRender="mapSelectForm, mapActionForm, mapOptionsForm, mapLayers"
+                        	oncomplete="initLayers();"/>
 				</h:selectOneMenu>
 			</h:panelGrid>
 			</td>
@@ -94,7 +62,7 @@
 				<h:outputText value="Maps:"  style="font-size:12px;padding:10px;"/>
 				<h:selectOneMenu id="layers" value="#{customMapsBean.selectedCustomMapID}">
 					<f:selectItems value="#{customMapsBean.customMapSelectList}"/>
-		            <a4j:support event="onchange" reRender="mapOptionsForm, mapActionForm, mapPreview, addressLookup" oncomplete="initMap();"/>
+		            <a4j:support event="onchange" reRender="mapOptionsForm, mapActionForm"/>
 				</h:selectOneMenu>
             </h:panelGrid>
             </td></tr>
@@ -108,10 +76,10 @@
 				<td>
 					<a4j:commandButton action="#{customMapsBean.newAction}" value="Add"  
 						rendered="#{!customMapsBean.editing}" 
-						reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+						reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapLayers"/>
 					<a4j:commandButton action="#{customMapsBean.editAction}" value="Edit" 
 						rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"
-						reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+						reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapLayers"/>
 					<a4j:commandButton value="Remove"  
 							rendered="#{!customMapsBean.editing and not empty customMapsBean.selectedCustomMapID}"
 							oncomplete="Richfaces.showModalPanel('confirmDelete'); return false;"/>
@@ -184,29 +152,16 @@
 							<h:outputText value="#{customMapsBean.selectedCustomMap.opacity}" rendered="#{!customMapsBean.editing}"/>
 						</td>                              	                           	
 					</tr>
-					<tr>
-                    	<td class="labelColMiddle"><h:outputText value="Layer Over:"  style="font-weight:bold;"/></td>
-                        <td>
-							<h:selectOneMenu id="bottomLayer" value="#{customMapsBean.selectedCustomMap.bottomLayer}"  converter="SimpleBeanConverter" rendered="#{customMapsBean.editing}">
-								<f:selectItems value="#{customMapsBean.googleMapTypes}"/>
-							</h:selectOneMenu>
-							<h:outputText value="#{customMapsBean.selectedCustomMap.bottomLayer}" rendered="#{!customMapsBean.editing}"/>
-                        </td>                              	                           	
-					</tr>
                 </table>
                 <table>
 					<tr>
 						<td width="50%">
 						 	<h:panelGroup rendered="#{customMapsBean.editing}">
 								<a4j:commandButton id="cancel" action="#{customMapsBean.cancelAction}" value="Cancel" immediate="true" 
-										reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+										reRender="mapSelectForm, mapOptionsForm, mapActionForm"/>
 								<a4j:commandButton id="save"  action="#{customMapsBean.saveAction}" value="Save" 
-										reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup"  oncomplete="initMap();"/>
+										reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapLayers"  oncomplete="initLayers();"/>
 							</h:panelGroup>
-						</td>
-						<td>
-							<a4j:commandButton id="refresh" value="Refresh Preview" style="float:right;"
-		            				action="#{customMapsBean.refreshAction}" reRender="mapPreview" oncomplete="initMap();"/>
 						</td>
                     </tr>
                 </table>
@@ -214,18 +169,15 @@
             </a4j:form>
             
             <a4j:form id="mapPreview">
-            <rich:panel rendered="#{customMapsBean.selectedCustomMap != null}">
-	            <f:facet name="header">
+            <rich:panel>
+ 	            <f:facet name="header">
 					<h:outputText value="Map Preview" />
         	    </f:facet>
-				<div id="map-canvas" style="width: 475px; height: 400px; border: 0"></div>
-        	    <ui:include src="/includes/customMap.xhtml" >
-      				<ui:param name="customMap" value="#{customMapsBean.selectedCustomMap}"/> 
-  				</ui:include>
+				<div id="map_canvas" style="width: 475px; height: 400px; border: 0"></div>
 			</rich:panel>
 			</a4j:form>
 			<a4j:outputPanel  id="addressLookup">
-				<h:panelGroup rendered="#{customMapsBean.selectedCustomMap != null}">
+				<h:panelGroup>
                 <table>
 					<tr>
 						<td>
@@ -240,6 +192,11 @@
 				</table>        
 				</h:panelGroup>	    
  			</a4j:outputPanel>			
+            <a4j:form id="mapLayers">
+				<ui:include src="/includes/customLayers.xhtml" >  
+      				<ui:param name="customMapList" value="#{customMapsBean.customMapList}"/> 
+  				</ui:include>
+			</a4j:form>
 		</div>
 		</div>
 		
@@ -248,11 +205,6 @@
 			<f:facet name="header">
         		<h:outputText value="Confirm Delete" />
       		</f:facet>
-<!--       		
-      		<f:facet name="controls">
-        		<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('confirmDelete')" />
-      		</f:facet>
- -->
       		<div class="popupsubtitle"><h:outputText value="Are you sure you want to delete this custom map?" /></div>
 
 			<a4j:form id="confirmDeleteForm">
@@ -260,7 +212,7 @@
 	        <div class="popupactions">
           		<a4j:commandButton id="cancelDelete" onclick="Richfaces.hideModalPanel('confirmDelete');" immediate="true" value="No"/>
           		<a4j:commandButton id="doDelete" action="#{customMapsBean.deleteAction}" onclick="Richfaces.hideModalPanel('confirmDelete')" value="Yes"
-          			reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapPreview, addressLookup" oncomplete="initMap();"/>
+          			reRender="mapSelectForm, mapOptionsForm, mapActionForm, mapLayers" oncomplete="initLayers();"/>
           	</div>
 
       		</a4j:form>

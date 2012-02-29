@@ -80,9 +80,9 @@ public class CustomMapsBean extends BaseBean {
       customMap.setCustomMapID(NEW_MAP_ID);
       customMap.setUrl("");
       customMap.setName("");
-      customMap.setMinZoom(0);
-      customMap.setMaxZoom(0);
-      customMap.setOpacity(1.0);
+      customMap.setMinZoom(5);
+      customMap.setMaxZoom(16);
+      customMap.setOpacity(0.5);
       customMap.setPngFormat(Boolean.TRUE);
       customMap.setBottomLayer(GoogleMapType.NONE);
       customMaps.put(customMap.getCustomMapID(), customMap);
@@ -98,6 +98,9 @@ public class CustomMapsBean extends BaseBean {
         initCustomMaps();
     }
     public void refreshAction() {
+    }
+    public void switchAccountAction() {
+        System.out.println("switchAccountAction() selected = " + this.getSelectedAccountID());
     }
     public void editAction() {
         setEditing(true);
@@ -177,6 +180,15 @@ public class CustomMapsBean extends BaseBean {
 
     public void setCustomMapSelectList(List<SelectItem> customMapSelectList) {
         this.customMapSelectList = customMapSelectList;
+    }
+    
+    public List<CustomMap> getCustomMapList() {
+        List<CustomMap> customMapList = new ArrayList<CustomMap>();
+        if (customMaps != null) {
+            for (CustomMap customMap : customMaps.values())
+                customMapList.add(customMap);
+        }
+        return customMapList;
     }
 
     public AccountDAO getAccountDAO() {

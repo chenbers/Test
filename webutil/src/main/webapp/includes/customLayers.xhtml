@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+         customMapList: Instance of a List of com.inthinc.pro.dao.model.CustomMap class.
+
+    To use:
+  ==============
+  <ui:include src="/includes/customLayers.xhtml" >
+      <ui:param name="customMapList" value="#{backingBean.customMapList}"/> 
+  </ui:include>
+  
+-->
+
+<ui:composition>
+
+	<script type="text/javascript">
+
+		function initLayers() {
+//			alert ('in init layers');
+			portalmap.reinit();	
+			var addControl = false;
+//			alert ('in init map - completed');
+			<ui:repeat value="#{customMapList}" var="customMap">
+//			alert ('add layer');
+				addControl = true;
+				portalmap.addWMSLayer("#{customMap.url}", "#{customMap.name}", "#{customMap.name}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}");
+			</ui:repeat>
+			if (addControl)
+				portalmap.addOverlaysControl();
+		}
+	
+	
+	</script>
+	
+</ui:composition>
+
+</html>

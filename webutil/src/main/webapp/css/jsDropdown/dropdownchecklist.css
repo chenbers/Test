@@ -1,0 +1,55 @@
+.ui-dropdownchecklist {
+	font-size: 10px;
+	color: black;
+	z-index: 999;
+}
+.ui-dropdownchecklist-selector {
+	height: 18px;
+	border: 1px solid #ddd;
+	background: #fff;
+}
+.ui-state-hover, .ui-state-active {
+	border-color: #5794bf;
+}
+.ui-dropdownchecklist-text {
+	line-height: 20px;
+}
+.ui-dropdownchecklist-dropcontainer {
+	background-color: #fff;
+	border: 1px solid #999;
+}
+.ui-dropdownchecklist-item {
+}
+
+.ui-state-hover {
+	background-color: #39f;
+	margin:0;
+}
+
+.ui-state-disabled label {
+	color: #ccc;
+}
+.ui-dropdownchecklist-group {
+	font-weight: bold;
+	font-style: italic;
+}
+.ui-dropdownchecklist-indent {
+	padding-left: 10px;
+}
+.ui-dropdownchecklist-selector-wrapper {
+	vertical-align: middle;
+}
+.ui-dropdownchecklist-selector {
+	padding: 1px 1px 1px 3px;
+}
+.ui-dropdownchecklist-group {
+	padding: 1px 1px 1px 3px;
+}
+
+
+/* states and images */
+.ui-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
+.ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_222222_256x240.png); }
+
+.ui-icon-triangle-1-n { background-position: 0 -16px; }
+.ui-icon-triangle-1-s { background-position: -64px -16px; }
