@@ -26,3 +26,12 @@ When I enter a valid username password combination
 And I click log in
 Then I should end up on the Overview page
 
+Scenario: User name incorrect case error
+Given i am on the login page
+And I should record these test results in Rally for TC1251
+When i type an user name in the wrong case
+And i type a valid password
+And i click log in
+Then i get an alert 'Incorrect user name or password. Please try again.'
+And i close the alert and i am still on the login page 
+And the name and password fields are blank

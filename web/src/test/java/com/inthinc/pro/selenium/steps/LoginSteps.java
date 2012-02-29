@@ -35,6 +35,62 @@ public class LoginSteps extends WebSteps {
     AutomationUser login;
     
 
+    private static final PageLogin page = new PageLogin();
+    private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
+
+    @Given("i am on the login page")
+    public void givenIAmOnTheLoginPage() {
+        if (!page.verifyOnPage()) {
+            page.load();
+        }
+    }
+
+    @When("i type an user name in the wrong case")
+    public void whenITypeAnUserNameInTheWrongCase(){
+        page._textField().userName().type(MasterTest.switchCase(autouser.getUsername()));
+        
+    }
+
+    @When("i type a valid password")
+    public void whenITypeAValidPassword() {
+        page._textField().password().type(autouser.getPassword());
+    }
+
+    @When("i click log in")
+    public void whenIClickLogIn() {
+        page._button().logIn().click();
+    }
+
+    @Then("i get an alert 'Incorrect user name or password. Please try again.'")
+    public void thenIGetAnAlertIncorrectUserNameOrPasswordPleaseTryAgain() {
+        page._popUp().loginError()._text().message().validate();
+    }
+
+    @Then("i close the alert and i am still on the login page")
+    public void thenICloseTheAlertAndIAmStillOnTheLoginPage() {
+        page._popUp().loginError()._button().ok().click();
+    }
+
+    @Then("the name and password fields are blank")
+    public void thenTheNameAndPasswordFieldsAreBlank() {
+
+        validateUserNameField("");
+        validateUserPasswordField("");
+        
+    }
+    
+    @Then("the name field is")
+    public void validateUserNameField(String text) {
+    //    if (text.equals(" ")){
+    //        text = "";
+    //    }
+        page._textField().userName().validate(text);
+    }
+    
+    @Then("the password field is $password")
+    public void validateUserPasswordField(String password) {
+        page._textField().password().validate(password);
+    }
 
     
 //    
