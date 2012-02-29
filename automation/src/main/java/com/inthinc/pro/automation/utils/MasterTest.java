@@ -94,8 +94,6 @@ public class MasterTest {
 
     private String savedPage;
 
-    private CoreMethodInterface selenium;
-
     /**
      * Adds an error for this test, WARNING: default ErrorLevel is set to FAIL.
      * @param errorName
@@ -252,7 +250,6 @@ public class MasterTest {
 
     protected void killSelenium() {
     	CoreMethodLib.closeSeleniumThread();
-        this.selenium = null;
     }
 
     protected void typeToElementWithFocus(String type) {
