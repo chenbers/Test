@@ -23,16 +23,16 @@ public class SatelliteEvent_t extends DeviceNote {
 
 	// pos 7, second flag: num of sats in lower nibble if gps locked, course in
 	// the upper nibble
-	private final boolean offRoad; // bit 0: ON/OFF road
-	private final boolean heavyDuty; // bit 1: Light/Heavy duty vehicle
-	private final HOSFlags hosState; // bit 2 - 4: HOS state
-	private final boolean speedingViolation; // bit 5: Speeding violation
-	private final boolean seatBeltViolation; // bit 6: Seatbelt Violation
-	private final boolean rpmViolation; // bit 7: RPM violation
+	public final boolean offRoad; // bit 0: ON/OFF road
+	public final boolean heavyDuty; // bit 1: Light/Heavy duty vehicle
+	public final HOSFlags hosState; // bit 2 - 4: HOS state
+	public final boolean speedingViolation; // bit 5: Speeding violation
+	public final boolean seatBeltViolation; // bit 6: Seatbelt Violation
+	public final boolean rpmViolation; // bit 7: RPM violation
 
-	private final int m_nLinkID; // pos 19, link ID
-	private final int m_nBoundaryID; // pos 27, current boundary
-	private final int m_nDriverIdSiloDbVersion; // pos 29, driverId
+	public final int m_nLinkID; // pos 19, link ID
+	public final int m_nBoundaryID; // pos 27, current boundary
+	public final int m_nDriverIdSiloDbVersion; // pos 29, driverId
 	
 
 	public SatelliteEvent_t(DeviceNoteTypes type, AutomationCalendar time,
@@ -190,5 +190,18 @@ public class SatelliteEvent_t extends DeviceNote {
 		temp.addAttrs(attrs);
 		return temp;
 	}
+	
+	public SatelliteEvent_t copy(DeviceNoteTypes type, boolean copyAttr) {
 
+		SatelliteEvent_t temp = new SatelliteEvent_t(type, time, location, offRoad,
+				heavyDuty, hosState, speedingViolation, seatBeltViolation,
+				rpmViolation, heading, sats, speed, speedLimit,
+				m_nLinkID, odometer, m_nBoundaryID,
+				m_nDriverIdSiloDbVersion);
+		if(copyAttr)
+			temp.addAttrs(attrs);
+		
+		return temp;
+	}
+	
 }
