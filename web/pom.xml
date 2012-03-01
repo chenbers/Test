@@ -171,6 +171,15 @@
 	</profiles>
 	<dependencies>
 		<dependency>
+			<groupId>com.inthinc.pro.emulation</groupId>
+			<artifactId>emulation</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.inthinc.pro.dao</groupId>
+			<artifactId>dao</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-api</artifactId>
 		</dependency>
@@ -201,20 +210,6 @@
 		<dependency>
 			<groupId>org.jasypt</groupId>
 			<artifactId>jasypt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.inthinc.pro.dao</groupId>
-			<artifactId>dao</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.inthinc.pro.automation</groupId>
-			<artifactId>automation</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.inthinc.pro.emulation</groupId>
-			<artifactId>emulation</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.pro.reports</groupId>
