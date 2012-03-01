@@ -105,22 +105,22 @@ public class MasterTest {
      * Adds an error for this test, WARNING: default ErrorLevel is set to FAIL.
      * @param errorName
      */
-    protected void addError(String errorName){
+    public void addError(String errorName){
         addError(errorName, ErrorLevel.FAIL);
     }
-    protected void addError(String errorName, ErrorLevel level) {
+    public void addError(String errorName, ErrorLevel level) {
         getSelenium().getErrorCatcher().addError(errorName, Thread.currentThread().getStackTrace(), level);
     }
 
-    protected void addError(String errorName, String error, ErrorLevel level) {
+    public void addError(String errorName, String error, ErrorLevel level) {
         getSelenium().getErrorCatcher().addError(errorName, error, level);
     }
 
-    protected void addError(String errorName, Throwable stackTrace, ErrorLevel level) {
+    public void addError(String errorName, Throwable stackTrace, ErrorLevel level) {
         getSelenium().getErrorCatcher().addError(errorName, stackTrace, level);
     }
 
-    protected Boolean assertEquals(Object expected, Object actual) {
+    public Boolean assertEquals(Object expected, Object actual) {
         return assertEquals(expected, actual, true);
     }
 
@@ -133,7 +133,7 @@ public class MasterTest {
         return true;
     }
 
-    protected Boolean assertEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
+    public Boolean assertEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
         if (!compare(expected, actual)) {
             addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
             return false;
@@ -141,15 +141,15 @@ public class MasterTest {
         return true;
     }
 
-    protected Boolean assertEquals(Object expected, SeleniumEnumWrapper actual) {
+    public Boolean assertEquals(Object expected, SeleniumEnumWrapper actual) {
         return assertEquals(expected, getSelenium().getText(actual));
     }
 
-    protected Boolean assertEquals(SeleniumEnumWrapper anEnum) {
+    public Boolean assertEquals(SeleniumEnumWrapper anEnum) {
         return assertEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
     }
 
-    protected Boolean assertFalse(Boolean test, String error) {
+    public Boolean assertFalse(Boolean test, String error) {
         if (test) {
             addError(error, ErrorLevel.FATAL);
             return false;
@@ -157,11 +157,11 @@ public class MasterTest {
         return true;
     }
 
-    protected Boolean assertNotEquals(Object expected, Object actual) {
+    public Boolean assertNotEquals(Object expected, Object actual) {
         return assertEquals(expected, actual, false);
     }
 
-    protected Boolean assertNotEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
+    public Boolean assertNotEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
         if (compare(expected, actual)) {
             addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
             return false;
@@ -169,11 +169,11 @@ public class MasterTest {
         return true;
     }
 
-    protected Boolean assertNotEquals(Object expected, SeleniumEnumWrapper anEnum) {
+    public Boolean assertNotEquals(Object expected, SeleniumEnumWrapper anEnum) {
         return assertNotEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
     }
 
-    protected Boolean assertStringContains(String partialString, String fullString) {
+    public Boolean assertStringContains(String partialString, String fullString) {
         if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString, ErrorLevel.FATAL);
             return false;
@@ -181,7 +181,7 @@ public class MasterTest {
         return true;
     }
     
-    protected Boolean assertTrue(Boolean test, String error, ErrorLevel level) {
+    public Boolean assertTrue(Boolean test, String error, ErrorLevel level) {
         if (!test) {
             addError(error, level);
             return false;
@@ -189,11 +189,11 @@ public class MasterTest {
         return true;   
     }
 
-    protected Boolean assertTrue(Boolean test, String error) {
+    public Boolean assertTrue(Boolean test, String error) {
         return assertTrue(test, error, ErrorLevel.FATAL);
     }
 
-    protected Boolean compare(Object expected, Object actual) {
+    public Boolean compare(Object expected, Object actual) {
         Boolean results = false;
         if (actual instanceof SeleniumEnumWrapper) {
             results = compare(expected, getSelenium().getText((SeleniumEnumWrapper) actual));
@@ -210,7 +210,7 @@ public class MasterTest {
         return getSelenium().getLocation();
     }
 
-    protected ErrorCatcher getErrors() {
+    public ErrorCatcher getErrors() {
         return getSelenium().getErrorCatcher();
     }
 
@@ -218,29 +218,29 @@ public class MasterTest {
         return CoreMethodLib.getSeleniumThread();
     }
 
-    protected String getTextFromElementWithFocus() {// TODO: jwimmer please check this again against new code.
+    public String getTextFromElementWithFocus() {// TODO: jwimmer please check this again against new code.
         return getSelenium().getTextFromElementWithFocus();
     }
 
-    protected void open(SeleniumEnums pageToOpen) {
+    public void open(SeleniumEnums pageToOpen) {
         getSelenium().open(new SeleniumEnumWrapper(pageToOpen));
     }
     
-    protected void open(Page page){
+    public void open(Page page){
         getSelenium().open(page.getExpectedPath());
     }
 
-    protected void open(SeleniumEnums pageToOpen, Integer replaceNumber) {
+    public void open(SeleniumEnums pageToOpen, Integer replaceNumber) {
         SeleniumEnumWrapper urlWithNumber = new SeleniumEnumWrapper(pageToOpen);
         urlWithNumber.updateURL(replaceNumber);
         getSelenium().open(urlWithNumber);
     }
 
-    protected void open(String url) {
+    public void open(String url) {
         getSelenium().open(url);
     }
 
-    protected void openSavedPage() {
+    public void openSavedPage() {
         open(savedPage);
     }
     
@@ -251,22 +251,22 @@ public class MasterTest {
         return this;
     }
 
-    protected void savePageLink() {
+    public void savePageLink() {
         savedPage = getCurrentLocation();
     }
 
-    protected void killSelenium() {
+    public void killSelenium() {
     	CoreMethodLib.closeSeleniumThread();
     }
 
     @When("I type to the active field")
     @Aliases(values={"I type to the element with focus"})
-    protected void typeToElementWithFocus(String type) {
+    public void typeToElementWithFocus(String type) {
         WebDriver web = getSelenium().getWrappedDriver();
         web.switchTo().activeElement().sendKeys(type);
     }
 
-    protected Boolean validateEquals(Object expected, Object actual) {
+    public Boolean validateEquals(Object expected, Object actual) {
         return validateEquals(expected, actual, true);
     }
 
@@ -284,11 +284,11 @@ public class MasterTest {
     
     
 
-    protected Boolean validateNotEquals(Object expected, Object actual) {
+    public Boolean validateNotEquals(Object expected, Object actual) {
         return validateEquals(expected, actual, false);
     }
 
-    protected Boolean validateStringContains(String partialString, String fullString) {
+    public Boolean validateStringContains(String partialString, String fullString) {
         if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
             return false;
@@ -296,7 +296,7 @@ public class MasterTest {
         return true;
     }
     
-    protected Boolean validateTrue(Boolean test, String error) {
+    public Boolean validateTrue(Boolean test, String error) {
         if (!test) {
             addError(error, ErrorLevel.FAIL);
             return false;
@@ -304,7 +304,7 @@ public class MasterTest {
         return true;
     }
     
-    protected Boolean validateFalse(Boolean test, String error) {
+    public Boolean validateFalse(Boolean test, String error) {
         if (test) {
             addError(error, ErrorLevel.FAIL);
             return false;
