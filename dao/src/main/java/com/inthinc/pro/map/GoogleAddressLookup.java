@@ -66,11 +66,12 @@ public class GoogleAddressLookup extends AddressLookup {
 			throws NoAddressFoundException {
 		
 		this.latLng = latLng;
-		
+		String lat = String.format("%f", latLng.getLat());
+		String lng = String.format("%f", latLng.getLng());
 		StringBuilder request = new StringBuilder(googleMapGeoUrl)
-		    .append(latLng.getLat())
+		    .append(lat)
 		    .append(",")
-		    .append(latLng.getLng())
+		    .append(lng)
 		    .append("&output=xml");
 		if (getLocale() != null && getLocale().getLanguage() != null)
 		    request.append("&hl=" + getLocale().getLanguage());
