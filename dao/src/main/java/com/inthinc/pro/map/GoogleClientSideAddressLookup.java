@@ -3,6 +3,7 @@ package com.inthinc.pro.map;
 import java.util.List;
 
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Zone;
 
 public class GoogleClientSideAddressLookup extends AddressLookup {
@@ -14,12 +15,16 @@ public class GoogleClientSideAddressLookup extends AddressLookup {
 	}
 	
   @Override
-  public String getAddress(LatLng latLng){
-      
+  public String getAddress(LatLng latLng) throws NoAddressFoundException{
+ 
+  	if (!isValidLatLngRange(latLng)){
+    	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.INVALID_LATLNG);
+	}
+
             StringBuilder request = new StringBuilder(googleMapGeoUrl)
-              .append(latLng.getLat())
+              .append(String.format("%f", latLng.getLat()))
               .append(",")
-              .append(latLng.getLng())
+              .append(String.format("%f", latLng.getLng()))
               .append("&output=csv");
           
           return request.toString();
@@ -27,12 +32,23 @@ public class GoogleClientSideAddressLookup extends AddressLookup {
 
     @Override
     public String getAddressOrLatLng(LatLng latLng){
-        return getAddress(latLng);
+        try {
+			return getAddress(latLng);
+		} catch (NoAddressFoundException e) {
+			// TODO Auto-generated catch block
+		}
+        return null;
     }
 
     @Override
     public String getAddressOrZoneOrLatLng(LatLng latLng, List<Zone> zones){
-        return getAddress(latLng);
+        try {
+			return getAddress(latLng);
+		} catch (NoAddressFoundException e) {
+			// TODO Auto-generated catch block
+			
+		}
+        return null;
     }
 
     public String getGoogleMapGeoUrl() {

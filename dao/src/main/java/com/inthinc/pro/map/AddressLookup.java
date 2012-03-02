@@ -66,9 +66,11 @@ public abstract class  AddressLookup {
             return getLatLngString(latLng);
         }
     }
-	
+    protected boolean isValidLatLngRange(LatLng latLng){
+        return (Math.abs(latLng.getLat()) > 0.0001) || (Math.abs(latLng.getLng()) > 0.0001);
+    }
     private String getLatLngString(LatLng latLng){
-        return latLng.getLat() + ", " + latLng.getLng();
+        return String.format("%f", latLng.getLat()) + ", " + String.format("%f", latLng.getLng());
     }
     
     private String findZoneName(List<Zone> zoneList,LatLng latLng) {

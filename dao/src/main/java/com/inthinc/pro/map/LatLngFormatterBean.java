@@ -28,6 +28,6 @@ public class LatLngFormatterBean extends AddressLookup {
         return getFormattedLatLng(latLng);
     }
     private String getFormattedLatLng(LatLng latLng){
-        return "Lat: " + latLng.getLat() + " Lng: " + latLng.getLng();
+        return "Lat: " + String.format("%f", latLng.getLat()) + " Lng: " + String.format("%f", latLng.getLng());
     }
 }

@@ -44,7 +44,7 @@ public class GoogleAddressLookup extends AddressLookup {
             setMeasurementType(measurementType);
             this.latLng = latLng;
     
-            StringBuilder request = new StringBuilder(googleMapGeoUrl).append(latLng.getLat()).append(",").append(latLng.getLng()).append("&output=xml");
+            StringBuilder request = new StringBuilder(googleMapGeoUrl).append(String.format("%f", latLng.getLat())).append(",").append(String.format("%f", latLng.getLng())).append("&output=xml");
             if(this.debugMode)
                 System.out.println("request: "+request);
             String address = null;
@@ -64,14 +64,15 @@ public class GoogleAddressLookup extends AddressLookup {
 	@Override
 	public String getAddress(LatLng latLng)
 			throws NoAddressFoundException {
+    	if (!isValidLatLngRange(latLng)){
+        	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.INVALID_LATLNG);
+    	}
 		
 		this.latLng = latLng;
-		String lat = String.format("%f", latLng.getLat());
-		String lng = String.format("%f", latLng.getLng());
 		StringBuilder request = new StringBuilder(googleMapGeoUrl)
-		    .append(lat)
+		    .append(String.format("%f", latLng.getLat()))
 		    .append(",")
-		    .append(lng)
+		    .append(String.format("%f", latLng.getLng()))
 		    .append("&output=xml");
 		if (getLocale() != null && getLocale().getLanguage() != null)
 		    request.append("&hl=" + getLocale().getLanguage());

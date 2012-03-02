@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
+import com.inthinc.pro.model.NoAddressFoundException.reasons;
 
 public class TestGoogleAddressLookupTest {
     
@@ -115,17 +116,24 @@ public class TestGoogleAddressLookupTest {
     
     @Test
     public final void getAddressLatLngBoolean_validLatLngReturnAddress_returnValidAddress() {
-//        LatLng latLng = new LatLng(32.0429, -102.085);
-        LatLng latLng = new LatLng(0.000005,0.000000);
-		String lat = String.format("%f", latLng.getLat());
-		String lng = String.format("%f", latLng.getLng());
-//        LatLng latLng = new LatLng(40.6861, -112.0051);
+        LatLng latLng = new LatLng(32.0429, -102.085);
         String address = null;
         try {
             address = gal.getAddress(latLng);
         } catch (NoAddressFoundException e) {
             fail();
         }
-//        assertTrue("The given LatLng should reside in the 79705 zip code", address.contains("79705"));
+        assertTrue("The given LatLng should reside in the 79705 zip code", address.contains("79705"));
+    }
+    @Test
+    public final void getAddressLatLngBoolean_invalidLatLng() {
+        LatLng latLng = new LatLng(0.000005,0.000000);
+        String address = null;
+        try {
+            address = gal.getAddress(latLng);
+            fail();
+        } catch (NoAddressFoundException e) {
+            assertTrue(reasons.INVALID_LATLNG.equals(e.getReason()));
+        }
     }
 }

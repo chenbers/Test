@@ -82,6 +82,16 @@ public class AddressLookupTest extends BaseBeanTest{
 				
 				Assert.assertNull(noAddressLatLng);
 			}
+			try{
+				
+				noAddressLatLng = googleAddressLookup.getAddress(new LatLng(0.000005,0.00000));
+				Assert.assertNotNull("Address was null", noAddressLatLng);
+				
+			}
+			catch(NoAddressFoundException nafe){
+				
+				Assert.assertNull(noAddressLatLng);
+			}
 		
 	}
 }

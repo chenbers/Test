@@ -49,6 +49,9 @@ public class GeonamesAddressLookup extends AddressLookup
     @Override
     public String getAddress(LatLng latLng) throws NoAddressFoundException
     {
+    	if (!isValidLatLngRange(latLng)){
+        	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.INVALID_LATLNG);
+    	}
         //The caching is broken until David Story or Dave Harry update their hessian library to handle many references to one object. After this is done, the equals() an hashcode() methods in the LatLng class need to be uncommented.
         if (addressMap.containsKey(latLng))
             return addressMap.get(latLng);
@@ -59,13 +62,13 @@ public class GeonamesAddressLookup extends AddressLookup
         }
         try
         {
-            String address = sendRequest(new URL(getMapServerURLString() + "&lat=" + latLng.getLat() + "&lng=" + latLng.getLng()));
+            String address = sendRequest(new URL(getMapServerURLString() + "&lat=" + String.format("%f", latLng.getLat()) + "&lng=" + String.format("%f", latLng.getLng())));
             if (address != null && !address.isEmpty())
             {
                 checkMapSize();
                 addressMap.put(latLng, address);
                 if(logger.isDebugEnabled())
-                    logger.debug("Address lookup for Latitude: " + latLng.getLat() + " Longitude: " + latLng.getLng() + " returned Address: " + address );
+                    logger.debug("Address lookup for Latitude: " + String.format("%f", latLng.getLat()) + " Longitude: " + String.format("%f", latLng.getLng()) + " returned Address: " + address );
             }
             else
             {

@@ -2,7 +2,7 @@ package com.inthinc.pro.model;
 
 public class NoAddressFoundException extends Exception {
 
-	public enum reasons {NO_ADDRESS_FOUND, NO_MAP_KEY, COULD_NOT_REACH_SERVICE, CLIENTSIDE, CLIENTSIDE_UNRECOGNISED_RESULTTYPE}
+	public enum reasons {NO_ADDRESS_FOUND, NO_MAP_KEY, COULD_NOT_REACH_SERVICE, CLIENTSIDE, CLIENTSIDE_UNRECOGNISED_RESULTTYPE, INVALID_LATLNG}
 	/**
 	 * 
 	 */
