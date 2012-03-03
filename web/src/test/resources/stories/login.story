@@ -13,7 +13,7 @@ As varying types of users
 I want to see valid and invalid logins
 
 Scenario: TC1240: Log in - Access Blocked Error
-Given I am on the Login Page one
+Given I am on the Login page
 And I should record these test results in Rally for TC1240
 And I should associate these test results with DE6705 in Rally
 When I attempt to login with a blocked username password combination
@@ -27,11 +27,11 @@ And I click log in
 Then I should end up on the Overview page
 
 Scenario: User name incorrect case error
-Given i am on the login page
+Given I am on the login page
 And I should record these test results in Rally for TC1251
-When i type an user name in the wrong case
-And i type a valid password
-And i click log in
-Then i get an alert 'Incorrect user name or password. Please try again.'
-And i close the alert and i am still on the login page 
+When I type an user name in the wrong case
+And I type a valid password
+And I click log in
+Then I get an alert 'Incorrect user name or password. Please try again.'
+And I close the alert and I am still on the login page 
 And the name and password fields are blank

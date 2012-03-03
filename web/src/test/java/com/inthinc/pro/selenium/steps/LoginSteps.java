@@ -12,19 +12,6 @@ import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.selenium.pageObjects.PageAdminAccountDetails;
-import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoleAddEdit;
-import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoles;
-import com.inthinc.pro.selenium.pageObjects.PageAdminDevices;
-import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
-import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlagAddEdit;
-import com.inthinc.pro.selenium.pageObjects.PageAdminRedFlags;
-import com.inthinc.pro.selenium.pageObjects.PageAdminReports;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
-import com.inthinc.pro.selenium.pageObjects.PageAdminZones;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
@@ -38,35 +25,36 @@ public class LoginSteps extends WebSteps {
     private static final PageLogin page = new PageLogin();
     private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
 
-    @Given("i am on the login page")
+    @Given("I am on the login page")
+    @Aliases(values={"I am on the Login page"})
     public void givenIAmOnTheLoginPage() {
         if (!page.verifyOnPage()) {
             page.load();
         }
     }
 
-    @When("i type an user name in the wrong case")
+    @When("I type an user name in the wrong case")
     public void whenITypeAnUserNameInTheWrongCase(){
         page._textField().userName().type(MasterTest.switchCase(autouser.getUsername()));
         
     }
 
-    @When("i type a valid password")
+    @When("I type a valid password")
     public void whenITypeAValidPassword() {
         page._textField().password().type(autouser.getPassword());
     }
 
-    @When("i click log in")
-    public void whenIClickLogIn() {
-        page._button().logIn().click();
-    }
+//    @When("I click log in")
+//    public void whenIClickLogIn() {
+//        page._button().logIn().click();
+//    }
 
-    @Then("i get an alert 'Incorrect user name or password. Please try again.'")
+    @Then("I get an alert 'Incorrect user name or password. Please try again.'")
     public void thenIGetAnAlertIncorrectUserNameOrPasswordPleaseTryAgain() {
         page._popUp().loginError()._text().message().validate();
     }
 
-    @Then("i close the alert and i am still on the login page")
+    @Then("I close the alert and i am still on the login page")
     public void thenICloseTheAlertAndIAmStillOnTheLoginPage() {
         page._popUp().loginError()._button().ok().click();
     }
@@ -139,75 +127,76 @@ public class LoginSteps extends WebSteps {
     }
     
     //admin users
-    @Given("I am on the \"$pageDescription\" page")
-    public void givenIAmOnThePage(String pageDescription){
-        MasterTest.print("public void givenIAmOnThePage(String "+pageDescription+")", Level.DEBUG);
-        boolean matched = false;
-        PageTeamDashboardStatistics dummyPage  = new PageTeamDashboardStatistics();
-        if(pageDescription.equalsIgnoreCase("admin users")) {
-            matched = true;
-            PageAdminUsers adminUsersPage = new PageAdminUsers();
-            adminUsersPage.load();
-        }
-        if(pageDescription.startsWith("Admin -")){
-            matched = true;
-            if(pageDescription.endsWith("- Users"))
-                new PageAdminCustomRoleAddEdit().load();
-            else if(pageDescription.endsWith("- Add User"))
-                new PageAdminUserAddEdit();
-            else if(pageDescription.endsWith("- Vehicles"))
-                new PageAdminVehicles();
-            else if(pageDescription.endsWith("- Add Vehicle"))
-                new PageAdminVehicleEdit().load();
-            else if(pageDescription.endsWith("- Devices"))
-                new PageAdminDevices().load();
-            else if(pageDescription.endsWith("- Zones"))
-                new PageAdminZones().load();
-            else if(pageDescription.endsWith("- Red Flags"))
-                new PageAdminRedFlags().load();
-            else if(pageDescription.endsWith("- Add Red Flag"))
-                new PageAdminRedFlagAddEdit().load();
-            else if(pageDescription.endsWith("- Reports"))
-                new PageAdminReports().load();
-            else if(pageDescription.endsWith("- Add Report")){
-                matched = false;
-                test.addError("Admin - Add Report does not have a PageObject ???");
-            }
-            else if(pageDescription.endsWith("- Organization"))
-                new PageAdminOrganization().load();
-            else if(pageDescription.endsWith("- Custom Roles"))
-                 new PageAdminCustomRoles().load();
-            else if(pageDescription.endsWith("- Add Custom Role"))
-                new PageAdminCustomRoleAddEdit().load();            
-            else if(pageDescription.endsWith("- Speed By Street")){
-                matched = false;
-                test.addError("Admin - Speed by Street does not have a PageObject ???");
-            }
-            else if(pageDescription.endsWith("- Account Details"))
-                new PageAdminAccountDetails().load();
-            else
-                matched = false;
-        }
-            
-        if(!matched)
-            test.addError("Automation Framework does not know about the '"+pageDescription+"' page");
-        
-        PageAdminUsers adminUsers = new PageAdminUsers();
-        adminUsers.load();
-    }
-    @Given("I am on the $firstWord $secondWord $thirdWord page")
-    public void givenIAmOnThePage(String firstWord, String secondWord, String thirdWord){
-        MasterTest.print("public void givenIAmOnThePage(String "+firstWord+", String "+secondWord+", String "+thirdWord+")", Level.DEBUG);
-        PageTeamDashboardStatistics dummyPage  = new PageTeamDashboardStatistics();
-        
-        if(firstWord.equalsIgnoreCase("live") && secondWord.equalsIgnoreCase("fleet"))
-            dummyPage._link().liveFleet().click();
-        else
-            test.addError("Automation Framework does not know about the '"+firstWord+" "+secondWord+" "+thirdWord+"' page");
-        
-        PageAdminUsers adminUsers = new PageAdminUsers();
-        adminUsers.load();
-    }
+//    @Given("I am on the \"$pageDescription\" page")
+//    public void givenIAmOnThePage(String pageDescription){
+//        MasterTest.print("public void givenIAmOnThePage(String "+pageDescription+")", Level.DEBUG);
+//        boolean matched = false;
+//        PageTeamDashboardStatistics dummyPage  = new PageTeamDashboardStatistics();
+//        if(pageDescription.equalsIgnoreCase("admin users")) {
+//            matched = true;
+//            PageAdminUsers adminUsersPage = new PageAdminUsers();
+//            adminUsersPage.load();
+//        }
+//        if(pageDescription.startsWith("Admin -")){
+//            matched = true;
+//            if(pageDescription.endsWith("- Users"))
+//                new PageAdminCustomRoleAddEdit().load();
+//            else if(pageDescription.endsWith("- Add User"))
+//                new PageAdminUserAddEdit();
+//            else if(pageDescription.endsWith("- Vehicles"))
+//                new PageAdminVehicles();
+//            else if(pageDescription.endsWith("- Add Vehicle"))
+//                new PageAdminVehicleEdit().load();
+//            else if(pageDescription.endsWith("- Devices"))
+//                new PageAdminDevices().load();
+//            else if(pageDescription.endsWith("- Zones"))
+//                new PageAdminZones().load();
+//            else if(pageDescription.endsWith("- Red Flags"))
+//                new PageAdminRedFlags().load();
+//            else if(pageDescription.endsWith("- Add Red Flag"))
+//                new PageAdminRedFlagAddEdit().load();
+//            else if(pageDescription.endsWith("- Reports"))
+//                new PageAdminReports().load();
+//            else if(pageDescription.endsWith("- Add Report")){
+//                matched = false;
+//                test.addError("Admin - Add Report does not have a PageObject ???");
+//            }
+//            else if(pageDescription.endsWith("- Organization"))
+//                new PageAdminOrganization().load();
+//            else if(pageDescription.endsWith("- Custom Roles"))
+//                 new PageAdminCustomRoles().load();
+//            else if(pageDescription.endsWith("- Add Custom Role"))
+//                new PageAdminCustomRoleAddEdit().load();            
+//            else if(pageDescription.endsWith("- Speed By Street")){
+//                matched = false;
+//                test.addError("Admin - Speed by Street does not have a PageObject ???");
+//            }
+//            else if(pageDescription.endsWith("- Account Details"))
+//                new PageAdminAccountDetails().load();
+//            else
+//                matched = false;
+//        }
+//            
+//        if(!matched)
+//            test.addError("Automation Framework does not know about the '"+pageDescription+"' page");
+//        
+//        PageAdminUsers adminUsers = new PageAdminUsers();
+//        adminUsers.load();
+//    }
+    
+//    @Given("I am on the $firstWord $secondWord $thirdWord page")
+//    public void givenIAmOnThePage(String firstWord, String secondWord, String thirdWord){
+//        MasterTest.print("public void givenIAmOnThePage(String "+firstWord+", String "+secondWord+", String "+thirdWord+")", Level.DEBUG);
+//        PageTeamDashboardStatistics dummyPage  = new PageTeamDashboardStatistics();
+//        
+//        if(firstWord.equalsIgnoreCase("live") && secondWord.equalsIgnoreCase("fleet"))
+//            dummyPage._link().liveFleet().click();
+//        else
+//            test.addError("Automation Framework does not know about the '"+firstWord+" "+secondWord+" "+thirdWord+"' page");
+//        
+//        PageAdminUsers adminUsers = new PageAdminUsers();
+//        adminUsers.load();
+//    }
     
     @When("I open the Login Page")
     @Pending

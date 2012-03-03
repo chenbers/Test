@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.test;
 
-import org.jbehave.core.annotations.Given;
-
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.test.RallyTest.RallyTestInterface;
@@ -42,20 +40,17 @@ public class BrowserRallyTest extends BrowserTest implements RallyTestInterface 
     }
 
     @Override
-    @Given("my test is in test set $name")
     public void setTestSet(String name) {
         rallyTest.setTestSet(name);
     }
 
     @Override
-    @Given("I should record these test results in Rally for $testCaseFormattedID")
     public void set_test_case(String testCaseFormattedID) {
-        rallyTest.set_test_case(testCaseFormattedID);
+        RallyTest.set_test_case(testCaseFormattedID, Thread.currentThread().getId());
     }
     
-    @Given("I should associate these test results with $defectFormattedID in Rally")
     public void set_defect(String defectFormattedID) {
-        rallyTest.set_defect(defectFormattedID);
+        RallyTest.set_defect(defectFormattedID, Thread.currentThread().getId());
         addError("This TestCase is linked to Defect: "+defectFormattedID, ErrorLevel.WARN);
     }
 

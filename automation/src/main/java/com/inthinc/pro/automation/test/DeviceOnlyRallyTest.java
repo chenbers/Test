@@ -34,7 +34,7 @@ public class DeviceOnlyRallyTest extends DeviceOnlyTest implements RallyTestInte
 
     @Override
     public void set_test_case(String formattedID) {
-        rallyTest.set_test_case(formattedID);
+        RallyTest.set_test_case(formattedID, Thread.currentThread().getId());
     }
 
     @Override

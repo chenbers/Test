@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.RallyHTTP.RallyFields;
 
@@ -255,6 +256,7 @@ public class TestCaseResult extends RallyObject {
 		for (Fields field : Fields.values()){
 			if (field.required){
 				if (getField(field)==null){
+				    MasterTest.print("This Test Case Result is missing: " + field);
 					return false;
 				}
 			}
