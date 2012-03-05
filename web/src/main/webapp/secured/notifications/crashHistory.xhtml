@@ -16,36 +16,44 @@
     <ui:param name="context" value="crashHistory"/>
     <ui:param name="title" value="#{messages.navigation_notifications} - #{messages.notes_tab_crashhistory}"/>
     <ui:define name="scripts">
-		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+   		<ui:include src="/includes/map/portalMap.xhtml"/>
     
         <script type="text/javascript">  
-        var map;
+        var map = null;
         var geocoder = null;
         var errorMessage = null;
           	
         function initializeCrashMap(lat, lng) 
         {            
           if (GBrowserIsCompatible()) {
-            map = new GMap2(document.getElementById("address-canvas"));
+//            map = new GMap2(document.getElementById("address-canvas"));
+//            map.addControl(new GLargeMapControl());
+			if (map == null) {
+		  		portalmap.init(false, "address-canvas");
+		  		initLayers();
+		  		map = portalmap.getMap();
+			}
+			else {
+				map.clearOverlays();
+				portalmap.restoreLayersState();
+			}
+
             var location = new GLatLng(lat, lng)
-            map.addControl(new GLargeMapControl());
             map.setCenter(location, 15);
             map.addOverlay(new GMarker(location)); 
           }
         }
         
         function initializeCrashTable()
-        {            
+        {
             jQuery(".clickable-map-icon").click(function(){
-                var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
+                var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='ddress']").text();
                 jQuery('#mapModalHeader').text("#{messages.driver_event_location} " + address);
               });
             jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
             jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
             
- //           getAddresses();
-            
-          }
+        }
 
 		/* CreateMarker(GLatLng, divID, GIcon or null)
 		 *	
@@ -206,7 +214,7 @@
 						</table>
 					  </li>
 					  <li class="l">
-						<a4j:commandButton id="crashHistoryRefresh" styleClass="left"
+						<a4j:commandButton id="crashHistoryRefresh" styleClass="left" oncomplete="initializeCrashTable()"
 									reRender="header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
 	           				<span class="refresh">

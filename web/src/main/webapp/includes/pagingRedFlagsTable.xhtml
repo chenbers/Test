@@ -35,7 +35,7 @@
                         <f:param name="lat" value="#{redFlag.event.latitude}" />
                         <f:param name="lng" value="#{redFlag.event.longitude}" />
                   		<f:param name="zonePoints" value="#{redFlag.event.zonePointsStr}" />
-                  		<f:param name="noteID" value="#{redFlag.event.noteID}" />
+                  		<f:param name="noteID" value="noteID#{redFlag.event.noteID}" />
                     </rich:componentControl>
                 </h:graphicImage>
 				<rich:toolTip id="addressToolTip" mode="client" rendered="#{redFlag.event.zoneName ne null}">
@@ -56,7 +56,7 @@
 					<h:inputHidden id="eventLng" value="#{redFlag.event.longitude}"/>
  					<h:outputText id="eventAddress" />
                 </rich:toolTip>
-				<div id="#{redFlag.event.noteID}" style="display: none;">
+				<div id="noteID#{redFlag.event.noteID}" style="display: none;">
                 	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 						<f:facet name="header">
 							<h:outputText  value="#{redFlag.event.driverName}" />
@@ -241,7 +241,7 @@
 	
 
     <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng, event.parameters.zonePoints, event.parameters.noteID);" onhide="GUnload()">
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng, event.parameters.zonePoints, event.parameters.noteID);">
         <f:facet name="header">
             <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
         </f:facet>

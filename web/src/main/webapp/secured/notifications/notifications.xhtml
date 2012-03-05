@@ -11,52 +11,61 @@
     <ui:param name="notificationsSelected" value="current" />
 	
     <ui:define name="scripts">
-		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+		<ui:include src="/includes/map/portalMap.xhtml"/>
 		<a4j:loadScript src="/js/drawZone.js" />
 		<a4j:loadScript src="/js/mapGeocode.js" />
         <script type="text/javascript">
-          var map;
+          var map = null;
           var geocoder = null;
           var errorMessage = null;
           
           function initializeMap(lat, lng, zonePoints, noteID) 
           {
             if (GBrowserIsCompatible()) {
-              map = new GMap2(document.getElementById("address-canvas"));
-              var location = new GLatLng(lat, lng)
-              map.addControl(new GLargeMapControl());
-              map.setCenter(location, 15);
-              map.addOverlay(new GMarker(location)); 
-  				errorMessage = "#{messages.sbs_badLatLng}"
+//              map = new GMap2(document.getElementById("address-canvas"));
+//              map.addControl(new GLargeMapControl());
+				if (map == null) {
+  			  		portalmap.init(false, "address-canvas");
+			  		initLayers();
+			  		map = portalmap.getMap();
+				}
+				else {
+					map.clearOverlays();
+					portalmap.restoreLayersState();
+				}
+              
+	          	var location = new GLatLng(lat, lng)
+              	map.setCenter(location, 15);
+              	map.addOverlay(new GMarker(location));
+               
+  			  	errorMessage = "#{messages.sbs_badLatLng}"
 
               
-		      var outline = fromOutlineString(zonePoints);
-              if (outline)
-              {
+		      	var outline = fromOutlineString(zonePoints);
+              	if (outline) {
             	// Draw Zone and set center
-                centerMapAtZone(getLatLngBounds(outline));
-                loadZone(outline, false);
-                map.addOverlay(new GMarker(getLatLngBounds(outline).getCenter()));
-                showInfoBubble(noteID, getLatLngBounds(outline).getCenter());
-              }
-              else
-              {
-            	showInfoBubble(noteID, location);
-              }
+                	centerMapAtZone(getLatLngBounds(outline));
+                	loadZone(outline, false);
+                	map.addOverlay(new GMarker(getLatLngBounds(outline).getCenter()));
+                	showInfoBubble(noteID, getLatLngBounds(outline).getCenter());
+              	}
+              	else{
+            	  	showInfoBubble(noteID, location);
+              	}
             }
           }
 
 	      function showInfoBubble(divID, latLng)
 	      {
 	    	  var node = document.getElementById(divID).cloneNode(true);
-    		  node.style.display = 'block';
+	    	  node.style.display = 'block';
        		  map.openInfoWindow(latLng, node);
 		  }
           
           function initializeTable()
           {
               jQuery(".clickable-map-icon").click(function(){
-                  var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
+                  var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='ddress']").text();
                   jQuery('#mapModalHeader').text("#{messages.driver_event_location}: " + address);
                 });
               jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");

@@ -35,6 +35,9 @@
                     <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
                         <f:param name="lat" value="#{event.latitude}" />
                         <f:param name="lng" value="#{event.longitude}" />
+                  		<f:param name="zonePoints" value="#{event.zonePointsStr}" />
+                  		<f:param name="noteID" value="noteID#{event.noteID}" />
+                        
                     </rich:componentControl>
                 </h:graphicImage>
                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1}">
@@ -50,6 +53,27 @@
 				<h:inputHidden id="eventLng" value="#{event.longitude}"/>
  				<h:outputText id="eventAddress" />
                 </rich:toolTip>
+				<div id="noteID#{event.noteID}" style="display: none;">
+                	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
+						<f:facet name="header">
+							<h:outputText  value="#{event.driverName}" />
+						</f:facet>
+						<h:outputText rendered="#{event.zoneName ne null}" value="#{messages.zones_zone}"/>
+						<h:outputText rendered="#{event.zoneName ne null}" value="#{event.zoneName}" />
+						
+						<h:outputText value="#{messages.notes_redflags_date}"/>
+						<h:outputText value="#{event.time}">
+		                	<f:converter converterId="DateTimeTZConverter"/>
+							<f:attribute name="timeZone" value="#{event.driverTimeZone}"/>
+                			<f:attribute name="pattern" value="#{messages.dateTimeFormat}"/>
+                		</h:outputText>
+                		
+                		<h:outputText value="#{messages.notes_redflags_detail}"/>
+						<ui:include src="/includes/eventDetails.xhtml">
+	            			<ui:param name="event" value="#{event}" />
+						</ui:include>
+                	</h:panelGrid>
+				</div>
             </rich:column>
              
             <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{event.time}"  sortOrder="DESCENDING">
@@ -181,7 +205,7 @@
     
 
     <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng, event.parameters.zonePoints, event.parameters.noteID);">
         <f:facet name="header">
             <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
         </f:facet>

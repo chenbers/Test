@@ -13,7 +13,7 @@
                 xmlns:security="http://pro.tiwi.com/jsf/security">
                 
     <ui:define name="scripts">
-        <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+   		<ui:include src="/includes/map/portalMap.xhtml"/>
 		
 		<tiwi:conditionalCSS browserVersion="IE"><script language="javascript" type="text/javascript" src="#{request.contextPath}/js/crshdetl.excanvas.min.js"></script></tiwi:conditionalCSS>
 	    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/crshdetl.jquery.flot.js"></script>
@@ -83,11 +83,15 @@
 				if (GBrowserIsCompatible()) {					
 					//GUnload();//causing problems with java applet in page
 					//var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
-					map = new GMap2(document.getElementById("map-canvas"));						
-					map.addControl(new GLargeMapControl());
-					map.addControl(new GMapTypeControl());
-					map.addControl(new GOverviewMapControl()); 
-					map.setMapType(G_NORMAL_MAP);
+					portalmap.init(true, "map-canvas");
+					initLayers();
+					map = portalmap.getMap();
+					
+//					map = new GMap2(document.getElementById("map-canvas"));						
+//					map.addControl(new GLargeMapControl());
+//					map.addControl(new GMapTypeControl());
+//					map.addControl(new GOverviewMapControl()); 
+//					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(crashPoint.latlng, 14);
 					
 					var vehicleIcon = new GIcon(baseIcon);

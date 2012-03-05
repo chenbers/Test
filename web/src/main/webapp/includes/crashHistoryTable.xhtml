@@ -191,7 +191,7 @@
 
     <!-- START LOCATION MODAL -->
     <rich:modalPanel id="crashLocationModal" width="540" height="450" headerClass="popupHeader" 
-    	onshow="initializeCrashMap(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+    	onshow="initializeCrashMap(event.parameters.lat, event.parameters.lng);">
         <f:facet name="header">
             <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
         </f:facet>

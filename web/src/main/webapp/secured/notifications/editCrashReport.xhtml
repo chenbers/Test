@@ -15,7 +15,7 @@
 	
    
     <ui:define name="scripts">
-		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+   		<ui:include src="/includes/map/portalMap.xhtml"/>
          <script src="#{facesContext.externalContext.request.contextPath}/js/mapGeocode.js" type="text/javascript"></script>
          <script type="text/javascript">
          	function setLatLng(address) {
@@ -157,10 +157,14 @@
 	            {		          
 					if (GBrowserIsCompatible()) {
 						 GUnload();
-						 map = new GMap2(document.getElementById("map-canvas"));
+						portalmap.init(false, "map-canvas");
+						initLayers();
+					  	map = portalmap.getMap();
+									 
+//						 map = new GMap2(document.getElementById("map-canvas"));
 			
-		                 map.addControl(new GMapTypeControl());
-						 map.setMapType(G_NORMAL_MAP);
+//		                 map.addControl(new GMapTypeControl());
+//						 map.setMapType(G_NORMAL_MAP);
 
 						 <ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
 						 	 map.setCenter(new GLatLng('#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}'),12);
