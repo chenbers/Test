@@ -541,8 +541,6 @@ public class DBUtil {
 		logger.debug("(endDayCalendar.getTime().getTime()/1000): " + (endDayCalendar.getTime().getTime()/1000));
 		logger.debug("startTS: " + startTS);
 		logger.debug("endTS: " + endTS);
-		logger.debug("trip.getStartTime(): " + trip.getStartTime());
-		logger.debug("trip.getEndTime(): " + trip.getEndTime());
 		logger.debug("trip.getStartTimeTS(): " + trip.getStartTime().getTime());
 		logger.debug("trip.getEndTimeTS(): " + trip.getEndTime().getTime());
 		logger.debug("milesDrivenForDay: " + milesDrivenForDay);
@@ -552,7 +550,11 @@ public class DBUtil {
 
 		if (startTS > (trip.getStartTime().getTime()/1000) || endTS < (trip.getEndTime().getTime()/1000))
 		{
-			float percent = ((float)(endTS-startTS))/((trip.getEndTime().getTime()/1000F)-(trip.getStartTime().getTime()/1000F));
+			long tripStartTS = trip.getStartTime().getTime()/1000;
+			long tripEndTS = trip.getEndTime().getTime()/1000;
+			logger.debug("tripStartTS: " + tripStartTS);
+			logger.debug("tripEndTS: " + tripEndTS);
+			float percent = (endTS-startTS)/(tripEndTS-(tripStartTS*1F));
 			logger.debug("percent: " + percent);
 			logger.debug("milesDrivenForDay before: " + milesDrivenForDay);
 			milesDrivenForDay = (int) (milesDrivenForDay * percent);
@@ -585,7 +587,13 @@ public class DBUtil {
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
         	
+			logger.error("SQLException: " + e);
             throw e;
+        }   // end catch
+        catch (Throwable e)
+        { // handle database hosLogs in the usual manner
+        	
+			logger.error("Exception: " + e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -593,9 +601,9 @@ public class DBUtil {
         } // end finally   
     }
 
-	
 	private static final String SELECT_TRIPS_FOR_AGG = "SELECT tripID,driverID,vehicleID,coalesce(idleTime,0),coalesce(mileage,0),coalesce(mileageOffset,0),DATE_FORMAT(CONVERT_TZ(startTime, 'GMT', ?), '%Y-%m-%d %H:%i:%s'), DATE_FORMAT(CONVERT_TZ(COALESCE(endTime,UTC_TIMESTAMP()), 'GMT', ?), '%Y-%m-%d %H:%i:%s'), startOdometer, endOdometer FROM trip WHERE deviceID = ? " +
-			"AND (CONVERT_TZ(startTime, 'GMT', ?) BETWEEN ? AND ? OR CONVERT_TZ(endTime, 'GMT', ?) BETWEEN ? AND ?) AND (coalesce(mileage,0) > 0 OR coalesce(mileageOffset,0) > 0)";
+			"AND (CONVERT_TZ(startTime, 'GMT', ?) BETWEEN ? AND ? OR CONVERT_TZ(endTime, 'GMT', ?) BETWEEN ? AND ? " +
+			"OR (CONVERT_TZ(startTime, 'GMT', ?) < ? AND CONVERT_TZ(endTime, 'GMT', ?) > ?)) AND (coalesce(mileage,0) > 0 OR coalesce(mileageOffset,0) > 0)";
 	public static List<Trip> fetchTripsForAggDay(Date startDayTimeDriverTZ, Date endDayTimeDriverTZ, Long deviceId, TimeZone driverTZ) throws SQLException
 	{
         Connection conn = null;
@@ -621,7 +629,11 @@ public class DBUtil {
             statement.setString(7, driverTZ.getID());
             statement.setString(8, dateFormat.format(startDayTimeDriverTZ));
             statement.setString(9, dateFormat.format(endDayTimeDriverTZ));
-
+            statement.setString(10, driverTZ.getID());
+            statement.setString(11, dateFormat.format(startDayTimeDriverTZ));
+            statement.setString(12, driverTZ.getID());
+            statement.setString(13, dateFormat.format(endDayTimeDriverTZ));
+			
             logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();

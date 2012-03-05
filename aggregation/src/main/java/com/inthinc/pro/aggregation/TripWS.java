@@ -115,7 +115,7 @@ public class TripWS {
 				case Note.TYPE_NEWDRIVER:
 				case Note.TYPE_NEWDRIVER_HOSRULE:
 				case Note.TYPE_IGNITION_ON:
-					if (tripEnded)
+					if (tripEnded && trip != null)
 					{
 						//We had an start/end before a start
 						tripStarted = false;
@@ -147,9 +147,8 @@ public class TripWS {
 					{
 						trip.setStatus(TripStatus.TRIP_COMPLETED);
 						setTripEndFields(trip, note);
+						tripEnded = true;
 					}
-
-					tripEnded = true;
 					break;
 	
 				case Note.TYPE_FUEL_STOP:
@@ -286,12 +285,24 @@ public class TripWS {
 	
 	private boolean isRealTrip(Trip trip)
 	{
+		if (trip == null)
+		{
+			logger.error("Called isRealTrip for trip that is null");		
+			return false;
+		}
+
 		return (trip.getMileage() > 0 || trip.getIdleTime() > 0);
 	}
 
 	
 	private void setTripEndFields(Trip trip, Note note)
 	{
+		if (trip == null)
+		{
+			logger.error("Trying to set tripEndFields of trip that is null");		
+			return;
+		}
+	
 		int startTS = (int)(trip.getStartTime().getTime()/1000);
 		int endTS = (int)(note.getTime().getTime()/1000);
 		float totalHrs = (endTS-startTS)/3600F;
