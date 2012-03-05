@@ -23,6 +23,10 @@
 .ui-dropdownchecklist-item {
 }
 
+.ui-dropdownchecklist-close {
+	text-align: center;
+}
+
 .ui-state-hover {
 	background-color: #39f;
 	margin:0;

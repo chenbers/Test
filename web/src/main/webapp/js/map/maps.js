@@ -111,7 +111,7 @@
       					map.addControl(overlayControl);
       					jQuery("#overlay-select").dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
       							width: 100, maxDropHeight: 150, 
-      							//explicitClose: ' --- Close ---&nbsp;&nbsp;&nbsp;',
+      							explicitClose: 'Close',
       							onItemClick: function(item) {
       								i = item.attr("index");
       								checked = item.attr("checked");
