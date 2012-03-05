@@ -3,6 +3,9 @@ package com.inthinc.device.emulation.enums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
+import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 
 
@@ -605,9 +608,14 @@ public enum EventAttr implements IndexEnum{
     }
 
     public static EventAttr valueOf(Integer code) {
-        return lookupByCode.get(code);
+        EventAttr result = lookupByCode.get(code);
+        if(result == null)
+        	logger.warn("Unknown EventAttr.code: "+code);
+        
+        return result;
     }
-    
+    private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
+
     @Override
     public String toString(){
         return String.format("%s(%d)", name(), code);

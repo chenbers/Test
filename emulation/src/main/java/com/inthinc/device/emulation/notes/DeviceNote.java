@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.inthinc.device.devices.WaysmartDevice.Direction;
+import org.apache.log4j.Logger;
+
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
@@ -22,7 +23,8 @@ import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 
 public abstract class DeviceNote {
 	
-	
+    private final static Logger logger = Logger.getLogger(DeviceNote.class);
+
 	
 	protected final AutomationCalendar time;
 	protected final DeviceNoteTypes type;
@@ -258,6 +260,9 @@ public abstract class DeviceNote {
 	}
 	
 	public static void decodeAttribute(ByteArrayInputStream bais, EventAttr key, DeviceAttributes attrs){
+		if(key == null){
+			return;
+		}
 		if (key.isString()){
 			StringWriter writer = new StringWriter();
 			if (key.isZeroTerminated()){
@@ -275,7 +280,6 @@ public abstract class DeviceNote {
 		} else {
 			attrs.addAttribute(key, byteToLong(bais, key.getSize()));
 		}
-		
 	}
     
     public static void encodeAttributes(ByteArrayOutputStream baos, DeviceAttributes attrs, EventAttr[] attrList) {
