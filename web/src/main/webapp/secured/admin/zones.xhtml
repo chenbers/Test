@@ -49,11 +49,9 @@
 		
   		
   	</style>
-    <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+  	<ui:include src="/includes/map/portalMap.xhtml"/>
     <a4j:loadScript src="/js/mapGeocode.js" />
     <a4j:loadScript src="/js/drawZone.js" />
-    
-	<ui:include src="/includes/customMaps.xhtml"/>	
     <script type="text/javascript">    
        var map;
     </script>
@@ -241,6 +239,7 @@
 
                   function bodyLoad()
                   {
+/*                      
                     if (GBrowserIsCompatible())
                     {
                       	map = new GMap2(document.getElementById("map-canvas"));
@@ -257,12 +256,20 @@
                       if (!showZone(false)) 
                   		map.setCenter(new GLatLng(39.0, -104.0), 4);
                     }
+*/
+ 					portalmap.init();
+ 					initLayers();
+ 					map = portalmap.getMap();
+ 				    if (!showZone(false)) 
+ 	                	map.setCenter(new GLatLng(39.0, -104.0), 4);
+ 	                
                   }
-
+/*
                   function bodyUnload()
                   {
                     GUnload();
                   }
+*/                  
                 </script>
 
               </div>

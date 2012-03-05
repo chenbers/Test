@@ -7,29 +7,28 @@
     xmlns:rich="http://richfaces.org/rich">
 
 <!--
-  Parameters:
-  ==============
-         customMapList: Instance of a List of com.inthinc.pro.dao.model.CustomMap class.
-
     To use:
   ==============
-  <ui:include src="/includes/customLayers.xhtml" >
-      <ui:param name="customMapList" value="#{backingBean.customMapList}"/> 
+  include a <div> on the page with the id='map_canvas' where the map should be placed
+  <ui:include src="/includes/map/portalMap.xhtml" >
   </ui:include>
   
 -->
 
 <ui:composition>
+	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+    <a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
+    <a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
+    <a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.3-min.js"/>
+	<a4j:loadScript src="/js/map/maps.js" />
+
 
 	<script type="text/javascript">
 
 		function initLayers() {
-//			alert ('in init layers');
 			portalmap.reinit();	
-			var addControl = false;
-//			alert ('in init map - completed');
-			<ui:repeat value="#{customMapList}" var="customMap">
-//			alert ('add layer');
+			addControl = false;
+			<ui:repeat value="#{customMapsBean.customMaps}" var="customMap">
 				addControl = true;
 				portalmap.addWMSLayer("#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}");
 			</ui:repeat>

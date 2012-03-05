@@ -15,7 +15,8 @@
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="ajaxPanels" value="inputFormPanel"/>
 	<ui:define name="scripts">
-		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+ 		<ui:include src="/includes/map/portalMap.xhtml"/>
+		
 		<a4j:loadScript src="/js/markerclusterer_packed.js"/>
 		<a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
 		
@@ -41,7 +42,8 @@
 	      if (GBrowserIsCompatible()) {
 	    	  
 	    	  if (mapNeedsInit) {
-	    	  
+
+/*		    	  
 		       	map = new GMap2(document.getElementById("map-canvas"));
 	        	geocoder = new GClientGeocoder();
 		
@@ -61,6 +63,21 @@
 				var node = document.getElementById("defaultMessage").cloneNode(true);
 				node.style.display = 'block';
 			    marker.openInfoWindow(node);
+*/
+
+				portalmap.init();
+				initLayers();
+				map = portalmap.getMap();
+	        	geocoder = new GClientGeocoder();
+				map.setCenter(mapDefaultLoc);
+				bounds = new GLatLngBounds();
+			    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
+				var node = document.getElementById("defaultMessage").cloneNode(true);
+				node.style.display = 'block';
+			    marker.openInfoWindow(node);
+
 			
 			    mapNeedsInit = false;
 
@@ -81,6 +98,8 @@
 
    			// Clear all existing markers and zoom boundary.
 			map.clearOverlays();
+			portalmap.restoreLayersState();
+			
 			bounds = new GLatLngBounds();
    			
 			//Text field is blank, process form for only number of vehicles dropdown.
@@ -183,7 +202,6 @@
 	</ui:define>
 	<ui:define name="content">
 	
-	<ui:include src="../includes/customMaps.xhtml"/>
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form id="liveFleetVehicleBubbles">
 			<rich:panel id="mapMarkers">

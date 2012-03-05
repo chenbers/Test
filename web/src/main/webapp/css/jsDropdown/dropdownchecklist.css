@@ -2,10 +2,11 @@
 	font-size: 10px;
 	color: black;
 	z-index: 999;
+	text-align: left;
 }
 .ui-dropdownchecklist-selector {
 	height: 18px;
-	border: 1px solid #ddd;
+	border: 1px solid black;
 	background: #fff;
 }
 .ui-state-hover, .ui-state-active {
@@ -13,6 +14,7 @@
 }
 .ui-dropdownchecklist-text {
 	line-height: 20px;
+	float: none;
 }
 .ui-dropdownchecklist-dropcontainer {
 	background-color: #fff;

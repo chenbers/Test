@@ -23,6 +23,16 @@
    				return;
 	   		portalmap.lookupAddress(address);
    		}
+   		function checkEnterAddressLookup(e, addressId)
+   		{ 
+   			characterCode = (e.which) ? e.which : event.keyCode; 
+   			if(characterCode == 13) {    				
+   				processAddressLookup(addressId);
+				return false; 
+			}
+			return true;  
+   		}
+
 		//]]>
 	</script>
 	</ui:define>
@@ -54,12 +64,12 @@
 			<h:panelGroup  rendered="#{customMapsBean.selectedAccount != null and !customMapsBean.editing}">
 			<table>
 			<tr><td>
-				Click <b>Add</b> to add a new map or select any existing map from the list <b>View</b>, <b>Edit</b>, or <b>Delete</b> it.
+				Click <b>Add</b> to add a new map layer or select any existing map layer from the list <b>View</b>, <b>Edit</b>, or <b>Delete</b> it.
 				<br/> 
 			</td></tr>
 			<tr><td>
             <h:panelGrid columns="2" cellspacing="0" columnClasses="labelColMiddle,valueCol">
-				<h:outputText value="Maps:"  style="font-size:12px;padding:10px;"/>
+				<h:outputText value="Map Layers:"  style="font-size:12px;padding:10px;"/>
 				<h:selectOneMenu id="layers" value="#{customMapsBean.selectedCustomMapID}">
 					<f:selectItems value="#{customMapsBean.customMapSelectList}"/>
 		            <a4j:support event="onchange" reRender="mapOptionsForm, mapActionForm"/>
@@ -103,6 +113,10 @@
                             <rich:message for="displayName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                        		<h:inputText id="displayName" value="#{customMapsBean.selectedCustomMap.name}" size="55" rendered="#{customMapsBean.editing}"
                        				required="true" requiredMessage="Required"/>
+							<rich:toolTip for="mapOptionsForm:displayName">
+								<b>Display Name:</b><br/>
+								Check box option title to display in map Layers drop down list.
+							</rich:toolTip>
                        		<h:outputText value="#{customMapsBean.selectedCustomMap.name}" rendered="#{!customMapsBean.editing}"/>
                    		</td>
 					</tr>
@@ -115,23 +129,59 @@
                             <rich:message for="url" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                         	<h:inputText id="url" value="#{customMapsBean.selectedCustomMap.url}"  size="55" rendered="#{customMapsBean.editing}" 
                        				required="true" requiredMessage="Required"/>
+							<rich:toolTip for="mapOptionsForm:url">
+								<b>URL:</b><br/>
+								Map server URL or template URL.  A template URL has X,Y,Z parameters. 
+								Examples from public sites:
+								<ul>
+								<li><b>URL:</b> http://IGSKMNCNGS509.cr.usgs.gov:80/wmsconnector/com.esri.wms.Esrimap/USGS_EDC_LandCover_NLCD2001?</li>
+								<li><b>Template URL:</b> http://tile.openstreetmap.org/{Z}/{X}/{Y}.png</li></ul>
+							</rich:toolTip>
                         	<h:outputText value="#{customMapsBean.selectedCustomMap.url}"  rendered="#{!customMapsBean.editing}"/>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td class="labelColMiddle">
+                    		<h:outputText value="Layer:" style="font-weight:bold;" />
+                    	</td>
+                        <td>
+                        	<h:inputText id="layer" value="#{customMapsBean.selectedCustomMap.layer}"  size="55" rendered="#{customMapsBean.editing}"/> 
+							<rich:toolTip for="mapOptionsForm:layer">
+								<b>Layer:</b><br/>
+								If the URL is not a template type URL, a layer name is required. 
+								Examples layers for this URL:<br/> http://IGSKMNCNGS509.cr.usgs.gov:80/wmsconnector/com.esri.wms.Esrimap/USGS_EDC_LandCover_NLCD2001?
+								<ul>
+								<li>NLCD_2001_Impervious_Surface</li>
+								<li>NLCD_2001_Canopy</li>
+								</ul>
+							</rich:toolTip>
+                    		<h:outputText value="Layer is required if URL is not a X,Y,Z template." style="color: gray;font-style:italics;" rendered="#{customMapsBean.editing}"/>
+                        	<h:outputText value="#{customMapsBean.selectedCustomMap.layer}"  rendered="#{!customMapsBean.editing}"/>
                         </td>                              	                           	
 					</tr>
 					<tr>
                     	<td class="labelColMiddle"><h:outputText value="Png Format Tiles:" style="font-weight:bold;" /></td>
                         <td>
-                        	<h:selectBooleanCheckbox value="#{customMapsBean.selectedCustomMap.pngFormat}" rendered="#{customMapsBean.editing}"/>
+                        	<h:selectBooleanCheckbox id="pngFormat" value="#{customMapsBean.selectedCustomMap.pngFormat}" rendered="#{customMapsBean.editing}"/>
                         	<h:outputText value="#{customMapsBean.selectedCustomMap.pngFormat}" rendered="#{!customMapsBean.editing}"/>
+							<rich:toolTip for="mapOptionsForm:pngFormat">
+								<b>Png Format Tiles:</b><br/>
+								Select check box if the map server tiles are in the png format (support transparency).
+							</rich:toolTip>
                         </td>                              	                           	
 					</tr>
 					<tr>
 	                   	<td class="labelColMiddle"><h:outputText value="Zoom Min:" style="font-weight:bold;" /></td>
 	                    <td>
 							<rich:inputNumberSlider id="minRes" value="#{customMapsBean.selectedCustomMap.minZoom}" 
-	                       	width="300" onfocus="this.select();" showToolTip="true" 
-	                        showBoundaryValues="true" minValue="0" maxValue="30" step="1" rendered="#{customMapsBean.editing}"/>
+	                       		width="300" onfocus="this.select();" showToolTip="true" 
+	                        	showBoundaryValues="true" minValue="0" maxValue="30" step="1" 
+	                        	rendered="#{customMapsBean.editing}"/>
 							<h:outputText value="#{customMapsBean.selectedCustomMap.minZoom}" rendered="#{!customMapsBean.editing}"/>
+							<rich:toolTip for="mapOptionsForm:minRes">
+								<b>Zoom Min:</b><br/>
+								Minimum Zoom level tiles are available for.
+							</rich:toolTip>
 	                   </td>                              	                           	
 					</tr>
 	                <tr>    
@@ -141,6 +191,10 @@
 	                       	width="300" onfocus="this.select();" showToolTip="true" 
 	                        showBoundaryValues="true" minValue="0" maxValue="30" step="1" rendered="#{customMapsBean.editing}"/>
 							<h:outputText value="#{customMapsBean.selectedCustomMap.maxZoom}" rendered="#{!customMapsBean.editing}"/>
+							<rich:toolTip for="mapOptionsForm:maxRes">
+								<b>Zoom Max:</b><br/>
+								Maximum Zoom level tiles are available for.
+							</rich:toolTip>
 	                    </td>                              	                           	
 					</tr>
 					<tr>    
@@ -150,6 +204,10 @@
 		                     width="300" onfocus="this.select();" showToolTip="true" 
 		                     showBoundaryValues="true" minValue="0.0" maxValue="1.0" step=".01" rendered="#{customMapsBean.editing}"/>
 							<h:outputText value="#{customMapsBean.selectedCustomMap.opacity}" rendered="#{!customMapsBean.editing}"/>
+							<rich:toolTip for="mapOptionsForm:opacity">
+								<b>Opacity:</b><br/>
+								Opacity level where 0 is totally transparent to 1 which is totally opaque. 
+							</rich:toolTip>
 						</td>                              	                           	
 					</tr>
                 </table>
@@ -181,7 +239,7 @@
                 <table>
 					<tr>
 						<td>
-							<h:inputText id="addressText" size="50" value=""/>
+							<h:inputText id="addressText" size="50" value="" onkeypress="checkEnterAddressLookup(event, 'addressText')" />
 						</td>
 						<td width="165" rowspan="2">
 							<button id="addressSearch" name="locationButton" value="" class="left" onclick="processAddressLookup('addressText');">

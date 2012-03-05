@@ -8,14 +8,14 @@
 		<a4j:loadScript id="markclust" src="/js/markerclusterer_packed.js" />
 		<a4j:loadScript id="progbar" src="/js/progressbarcontrol_packed.js" />
 
-		<ui:include src="/includes/customMaps.xhtml" />
+		<ui:include src="/includes/map/portalMap.xhtml" />
 
 		<script type="text/javascript">
 
 	  	var map;
 	  	var markerClusterer;
 		var markers = [];
-	  	var mapNeedsInit = true;
+//	  	var mapNeedsInit = true;
 	  	var overviewMapControl;
 	    
 	    var baseIcon = new GIcon();
@@ -41,6 +41,7 @@
 
 	  	function initMap(lat,lng,zoom)
 	  	{
+/*		  	
 			if (GBrowserIsCompatible()) {
 				GUnload();
 				
@@ -66,9 +67,17 @@
 			 		mapNeedsInit = false;
 				}
 			}
+*/
+			portalmap.init(true);
+			portalmap.zoom(zoom);
+			portalmap.center(new GLatLng(lat, lng));
+			initLayers();
+			bounds = new GLatLngBounds();
+			map = portalmap.getMap();
 		}
 	  	function centerMap() 
 	  	{
+//		  	portalmap.centerInBounds();
 	  		map.setZoom(map.getBoundsZoomLevel(bounds)-1);
 		    map.setCenter(bounds.getCenter());
 		}
@@ -82,15 +91,6 @@
 			map.panTo(new GLatLng(lat, lng));
 		}
 		
-//		function bodyUnload()
-//		{
-//			GUnload();
-//		}
-		
-//		function bodyLoad()
-//		{    	
-//			initLiveFleetMap();
-//		}
 
 		function initLiveFleetMap(){
 			initMap(#{mapxcenter},#{mapycenter},#{mapzoom});
@@ -118,10 +118,6 @@
 			}		
 			#{oncomplete};
 		}  	
-//		jQuery(function(){
-//			bodyLoad();
-//		});
-
 	</script>
 
 		<a4j:region id="main">

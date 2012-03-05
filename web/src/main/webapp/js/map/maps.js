@@ -1,8 +1,17 @@
+/*
+ 	Usage:
+ 		include in your xhtml page within the <ui:define name="scripts"> section
+		<a4j:loadScript src="/js/map/maps.js"/>  
+ 	Dependency:
+		include google maps prior
+		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 
+	Notes:
+		The DIV for the map has to have the ID map_canvas.
+
+ */
 	//<![CDATA[
 
-//    var inthincCopyright = new GCopyrightCollection("© ");
-//    inthincCopyright.addCopyright(new GCopyright('Demo', new GLatLngBounds(new GLatLng(-90,-180), new GLatLng(90,180)),0,'©2011 inthinc'));
     function WMSTileLayer(wmsURL, wmsLayer, map, minZoom, maxZoom, opacity, usePng) {
     	if (!(this instanceof arguments.callee)) {
     	    return new arguments.callee(wmsURL, wmsLayer, map, minZoom, maxZoom, opacity, usePng);
@@ -36,6 +45,7 @@
 	var portalmap = (function() {
     		var map;
     		var overlays = new Array();
+    		var overlaysState = new Array();
     		var saveLatLng;
     		var saveZoom;
     		var overlayControl;
@@ -93,20 +103,24 @@
       					overlaySelect.appendChild(overlaySelectOption);
       					if(!hidden) map.addOverlay(overlay);
       					overlays.push(overlay);
+      					overlaysState.push(hidden);
    					
       				},
       				addControlToMap: function() {
       					overlayControl = new OverlayControl();
       					map.addControl(overlayControl);
       					jQuery("#overlay-select").dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-      							width: 80, maxDropHeight: 150, explicitClose: ' --- Close ---&nbsp;&nbsp;&nbsp;',
+      							width: 100, maxDropHeight: 150, 
+      							//explicitClose: ' --- Close ---&nbsp;&nbsp;&nbsp;',
       							onItemClick: function(item) {
       								i = item.attr("index");
       								checked = item.attr("checked");
       								if (checked) {
       									map.addOverlay(overlays[i]);
+      									overlaysState[i] = false;
       								} else {
       									map.removeOverlay(overlays[i]);
+      									overlaysState[i] = true;
       								};
       							},
       		      				textFormatFunction: function(options) {
@@ -120,16 +134,28 @@
       					jQuery("#overlay-select").dropdownchecklist("destroy");
       					map.removeControl(overlayControl);
       					overlays = new Array();
+      				},
+      				restoreOverlayState: function() {
+      					for (i = 0; i < overlaysState.length; i++)
+      						if (!overlaysState[i])
+									map.addOverlay(overlays[i]);
+      							
       				}
+
       			};
       			
       		})();
 
       		return {
-      			init: function() {
-      	    		map = new GMap2(document.getElementById("map_canvas"));
+      			init: function(showOverviewControl, canvas) {
+					var overviewControl = showOverviewControl ? showOverviewControl : false;
+					var canvasID = canvas ? canvas : "map-canvas";
+      	    		map = new GMap2(document.getElementById(canvasID));
       	            map.addControl(new GLargeMapControl());  	            
     		        map.addControl(new GMapTypeControl(true));
+    		        if (overviewControl)
+    		        	map.addControl(new GOverviewMapControl()); 
+
       	    		map.setCenter(saveLatLng, saveZoom);		
     		        map.enableScrollWheelZoom();
     		        GEvent.addListener(map, "dragend", function() {
@@ -139,12 +165,29 @@
                   		saveZoom = newlevel;
     				});
       			},
+      			getMap: function() {
+      				return map;
+      			},
+      			zoom: function(zoomTo) {
+      				map.setZoom(zoomTo);
+      			}, 
+      			center: function(latLng) {
+      				map.setCenter(latLng);
+      			}, 
+      			centerInBounds: function() { 
+      				bounds = new GLatLngBounds();
+      		  		map.setZoom(map.getBoundsZoomLevel(bounds)-1);
+      			    map.setCenter(bounds.getCenter());
+      			},
       			resize: function() {
       				map.checkResize();
       			}, 
       			reinit: function() {
       				map.clearOverlays();
 		        	wmsOverlays.clearOverlayData();
+      			},
+      			restoreLayersState: function() {
+		        	wmsOverlays.restoreOverlayState();
       			},
       			addWMSLayer: function(url, displayName, layerName, minZoom, maxZoom, opacityVal, usePng) {
       				wmsOverlays.addOverlay(url, displayName, layerName, true, minZoom, maxZoom, opacityVal, usePng);
@@ -171,6 +214,6 @@
   				}
       		};    	
       	})();
-  	    GEvent.addDomListener(window, 'load', portalmap.init);
+//  	    GEvent.addDomListener(window, 'load', portalmap.init);
   	    GEvent.addDomListener(window, 'unload', GUnload);
 		//]]>

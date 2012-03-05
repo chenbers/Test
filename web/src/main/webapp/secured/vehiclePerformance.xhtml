@@ -11,9 +11,8 @@
 
 	<ui:param name="title" value="#{messages.vehiclePerformanceTab} - #{vehiclePerformanceBean.vehicle.name}"/>
 	<ui:define name="scripts">
-        <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
         <a4j:loadScript src="/js/FusionCharts.js" />
- 		<ui:include src="/includes/customMaps.xhtml"/>
+ 		<ui:include src="/includes/portalMap.xhtml"/>
 	  	<script	 type="text/javascript">
 	  		var baseIcon = new GIcon();
 				baseIcon.iconSize = new GSize(21, 20);
@@ -22,7 +21,7 @@
 	
 	  		var map;
 	  		function initMap(lat,lng,zoom){
-	  		
+	  		/*
  					if (GBrowserIsCompatible())
  	  				{
       					map = new GMap2(document.getElementById("map-canvas"));
@@ -39,6 +38,15 @@
 						addressLookupAddressFormat = #{vehiclePerformanceBean.addressFormat};
 						bounds = new GLatLngBounds();
 					}
+			*/	
+ 					portalmap.init();
+ 					portalmap.zoom(zoom);
+ 					portalmap.center(new GLatLng(lat, lng));
+ 					initLayers();
+					addressLookupAddressFormat = #{vehiclePerformanceBean.addressFormat};
+ 					bounds = new GLatLngBounds();
+ 					map = portalmap.getMap();
+					
 			}
 			function drawTrip()
 			{

@@ -14,10 +14,8 @@
     <ui:define name="scripts">
         
 		<a4j:loadScript src="/js/FusionCharts.js"/>
-        <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
         
- 		<ui:include src="/includes/customMaps.xhtml"/>
- 		<rich:panel id="mapScript">	
+ 		<ui:include src="/includes/map/portalMap.xhtml"/>
         <script type="text/javascript">
 		var map;
 		var showWarnings = true;
@@ -32,6 +30,7 @@
 		
 		function initMap(lat,lng,zoom)
 		{
+/*			
    			if (GBrowserIsCompatible()) 
 			{
 		 	  	map = new GMap2(document.getElementById("map-canvas"));
@@ -55,9 +54,20 @@
 				defaultAddressElement = "tripsMapForm:bubbleAddress";
 			
 			}
-		}	
+*/
+			portalmap.init();
+			initLayers();
+			map = portalmap.getMap();
+			errorMessage = "#{messages.sbs_badLatLng}"
+			bounds = new GLatLngBounds();
+			addressLookupAddressFormat = #{driverTripsBean.addressFormat};
+			defaultAddressElement = "tripsMapForm:bubbleAddress";
+			map.setCenter(new GLatLng(lat, lng), zoom);
 
 		
+		}	
+
+
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
 	    function showWarningsChanged()
 	    {
@@ -146,105 +156,17 @@
 
         <script type="text/javascript">
 		
-	    // Unload Google Map objects
-		function bodyUnload()
-		{
-			GUnload();
-		}	
-
 	    // This is called on pageLoad 
 		function bodyLoad()
 		{
+			GUnload();
+			map=null;
 			initMap(#{driverTripsBean.anchorLat}, #{driverTripsBean.anchorLng}, 14);
 			if ( #{driverTripsBean.selectedTrips[0] ne null} ) {
 		   		showTrips();
 			}
 		}
 
-   		function drawSelectedTrips()
-   		{
-				var polyline;
-				var marker;
-				var startlatlng;
-				var endlatlng;
-				var color;
-
-				if ( map == null ) {
-					return;
-				}
-				
-				map.clearOverlays();
-				
-   				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
-				<ui:fragment rendered="#{trip.goodRoute}">
-   			   		if ("#{trip.trip.quality}" == "BAD")
-						color = "#ee0000";
-   					else if ("#{trip.trip.quality}" == "GOOD")
-						color = "#006600";
-   					else if ("#{trip.trip.quality}" == "WAYSMART")
-						color = "#0000ee";
-   					else color = "#0000ee";
-   					
-					polyline = new GPolyline([
-							<ui:repeat value="#{trip.route}" var="rt">
-									new GLatLng(#{rt.lat}, #{rt.lng}),
-							</ui:repeat>
-			  						new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
-											], color, 6);
-					map.addOverlay(polyline);
-
-					<ui:repeat value="#{trip.route}" var="rt2">
-						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
-					</ui:repeat>
-					
-					//Start of trip marker
-					startlatlng = new GLatLng(#{trip.beginningPoint.lat}, #{trip.beginningPoint.lng});
-					marker = createMarker(startlatlng, #{trip.trip.tripID}, 0,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,1);
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-					//End of trip marker
-					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-					if ("#{trip.inProgress}" == "true")
-					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,1);
-					}
-					else
-					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,1);
-					}
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-					</ui:fragment>
-  				</ui:repeat>
-
-  				if(showWarnings == true)
-				{
-	  				var violation;
-					<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
-						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						map.addOverlay(createMarker(violation, "#{violation.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png",fillEventBubble,2));
-					</ui:repeat>
-				}
-
-				var idleMarker;
-				if(showIdleMarkers == true)
-				{
-					var idle;
-					<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
-						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
-						map.addOverlay(createMarker(idle, "#{idle.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",fillEventBubble,2));
-					</ui:repeat>
-				}	
-
-				if(showTamperMarkers == true)
-				{
-					var tamper;
-					<ui:repeat value="#{driverTripsBean.tamperEvents}" var="tamperEvent">
-						tamper = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
-						map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",fillEventBubble,2));
-					</ui:repeat>
-				}	
-			}
         function getAddresses()
         {
             if (#{driverTripsBean.addressFormat == 3}){
@@ -257,7 +179,6 @@
 	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');
 	
 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-//					pauseBetweenCalls(250);
 	    		});	
 	    		jQuery('td[id$="address_column"]').each(function(n){
 
@@ -267,7 +188,6 @@
 	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        		
 				
 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-//	              	pauseBetweenCalls(250);	
 	    		});
             } else {
                 ajaxCount++;
@@ -288,7 +208,6 @@
 	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        			        		
 	
 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);					
-//	              	pauseBetweenCalls(250);	
 	    		});
             }
             
@@ -312,6 +231,97 @@
 	        }
 	
 		</script>
+ 		<rich:panel id="mapScript">
+ 		
+        <script type="text/javascript">
+	   		function drawSelectedTrips()
+	   		{
+		   		alert('drawSelectedTrips()');
+					var polyline;
+					var marker;
+					var startlatlng;
+					var endlatlng;
+					var color;
+
+					if ( map == null ) {
+						return;
+					}
+
+					map.clearOverlays();
+					portalmap.restoreLayersState();
+					
+	   				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
+					<ui:fragment rendered="#{trip.goodRoute}">
+	   			   		if ("#{trip.trip.quality}" == "BAD")
+							color = "#ee0000";
+	   					else if ("#{trip.trip.quality}" == "GOOD")
+							color = "#006600";
+	   					else if ("#{trip.trip.quality}" == "WAYSMART")
+							color = "#0000ee";
+	   					else color = "#0000ee";
+	   					
+						polyline = new GPolyline([
+								<ui:repeat value="#{trip.route}" var="rt">
+										new GLatLng(#{rt.lat}, #{rt.lng}),
+								</ui:repeat>
+				  						new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
+												], color, 6);
+						map.addOverlay(polyline);
+
+						<ui:repeat value="#{trip.route}" var="rt2">
+							bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+						</ui:repeat>
+						
+						//Start of trip marker
+						startlatlng = new GLatLng(#{trip.beginningPoint.lat}, #{trip.beginningPoint.lng});
+						marker = createMarker(startlatlng, #{trip.trip.tripID}, 0,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,1);
+						map.addOverlay(marker);
+						bounds.extend(marker.getPoint());
+						//End of trip marker
+						endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
+						if ("#{trip.inProgress}" == "true")
+						{
+							marker = createMarker(endlatlng, #{trip.trip.tripID},1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,1);
+						}
+						else
+						{
+							marker = createMarker(endlatlng, #{trip.trip.tripID},2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,1);
+						}
+						map.addOverlay(marker);
+						bounds.extend(marker.getPoint());
+						</ui:fragment>
+	  				</ui:repeat>
+
+	  				if(showWarnings == true)
+					{
+		  				var violation;
+						<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
+							violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+							map.addOverlay(createMarker(violation, "#{violation.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png",fillEventBubble,2));
+						</ui:repeat>
+					}
+
+					var idleMarker;
+					if(showIdleMarkers == true)
+					{
+						var idle;
+						<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
+							idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
+							map.addOverlay(createMarker(idle, "#{idle.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",fillEventBubble,2));
+						</ui:repeat>
+					}	
+
+					if(showTamperMarkers == true)
+					{
+						var tamper;
+						<ui:repeat value="#{driverTripsBean.tamperEvents}" var="tamperEvent">
+							tamper = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
+							map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",fillEventBubble,2));
+						</ui:repeat>
+					}	
+				}
+		</script>
+ 			
         </rich:panel>
 
     </ui:define>
@@ -320,8 +330,6 @@
     <ui:define name="content">
         
       	<h:form id="tripsMapForm">
-<!--    	<rich:jQuery selector="document" query="ready(function(){getAddresses()})" />-->
-
 			<rich:panel id="tripBubbles">
 			<rich:panel id="tripBubblesInner"  rendered="#{driverTripsBean.selectedTripID != null}">
             <!-- BEGIN GOOGLE BUBBLES -->
@@ -456,9 +464,11 @@
                                         </a4j:outputPanel></td>                                        
                                     </tr>
                                     <tr>
-                                        <td colspan="2" align="center"><a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
-                                            reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedTrip,selectedTripMap,selectedTripTable,calendarStart,calendarEnd" immediate="false" styleClass="left"
-                                            oncomplete="bodyLoad();getAddresses()">
+                                        <td colspan="2" align="center">
+                                        <a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
+                                            reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedTrip,selectedEvents,noTripsMessage,calendarStart,calendarEnd" 
+                                            immediate="false" styleClass="left"
+                                            oncomplete="showTrips();getAddresses()">   
                                             <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
                                         </a4j:commandButton></td>                                      
                                     </tr>                                    
@@ -628,21 +638,6 @@
                 <div class="" id=""><a4j:region id="optionsRegion">
                     <table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
                         <tbody>
-                            <!--<tr>
-                                <td width="290">#{messages.drivertrip_last_ten_trips}</td>
-                                <td width="25"><a4j:status id="showLastTenStatus" for="optionsRegion">
-                                    <f:facet name="start">
-                                        <h:outputText>
-                                            <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-                                    </f:facet>
-                                </a4j:status></td>
-                                <td width="20"><a4j:form id="showLastTenForm">
-                                    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showLastTenTrips}">
-                                        <a4j:support event="onclick" reRender="script,tripBubbles,selectedEvents" 
-                                        oncomplete="bodyLoad();getAddresses();" />
-                                    </h:selectBooleanCheckbox>
-                                </a4j:form></td>
-                            </tr>-->
                             <tr>
                                 <td>#{messages.drivertrip_show_idle_marker}</td>
                                 <td></td>
@@ -736,8 +731,8 @@
                             	styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
                                 
     
-                                <a4j:support event="onRowClick" reRender="mapScript,tripBubbles,selectedEvents,showLastTenForm,selectVehicleForm" 
-                                	oncomplete="bodyLoad();getAddresses();">
+                                <a4j:support event="onRowClick" reRender="tripBubbles,mapScript,selectedEvents,showLastTenForm,selectVehicleForm" 
+                                	oncomplete="showTrips();getAddresses();">
                                     <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
                                 </a4j:support>
     
@@ -836,19 +831,20 @@
 	                </h:form>
                 </div>
                 </div>
-                <div class="panel_w"><a4j:form id="selectedTripMap">
+                <div class="panel_w">
+                <a4j:form id="selectedTripMap">
                     <rich:panel bodyClass="panel_content">
-<!--                        <h:outputText rendered="#{driverTripsBean.numTrips gt 0}">-->
                             <h:panelGroup styleClass="map-border" layout="block">
                                 <div id="map-canvas" style="width: 588px; height: 400px; border: 0"></div>
                             </h:panelGroup>
-<!--                        </h:outputText>-->
-
-                        <h:outputText rendered="#{driverTripsBean.numTrips lt 1}">
-                            <h2>#{messages.no_trips_found}</h2>
-                        </h:outputText>
                     </rich:panel>
-                </a4j:form></div>
+                </a4j:form>
+                </div>
+                    <rich:panel bodyClass="panel_content"  id="noTripsMessage">
+                        	<h:outputText rendered="#{driverTripsBean.numTrips lt 1}">
+                            	<h2>#{messages.no_trips_found}</h2>
+                        	</h:outputText>
+                    </rich:panel>
                 <div class="panel_sw">
                 <div class="panel_statusbar"></div>
                 </div>
@@ -867,12 +863,9 @@
 		<a4j:jsFunction name="fillBubbleMarker" reRender="eventBubbles" oncomplete="getAddressForCurrentMarker()">
 			<a4j:actionparam name="eventId" assignTo="#{driverTripsBean.selectedViolationID}"/>
 		</a4j:jsFunction>
-<!--		<ui:fragment rendered="#{driverTripsBean.selectedViolationID ne null}">-->
 		<a4j:jsFunction name="fillBubbleMap" reRender="eventBubbles" oncomplete="getAddressForEvent()">
 			<a4j:actionparam name="eventId" assignTo="#{driverTripsBean.selectedViolationID}"/>
 		</a4j:jsFunction>
-<!--		</ui:fragment>		-->	 
-
 		<a4j:jsFunction name="lkFrZnEvtTbl" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="setZoneNameSync(data);">
 			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
 			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>

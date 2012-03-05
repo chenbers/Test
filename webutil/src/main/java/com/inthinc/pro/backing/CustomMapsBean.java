@@ -84,7 +84,7 @@ public class CustomMapsBean extends BaseBean {
       customMap.setMaxZoom(16);
       customMap.setOpacity(0.5);
       customMap.setPngFormat(Boolean.TRUE);
-      customMap.setBottomLayer(GoogleMapType.NONE);
+      customMap.setLayer("");
       customMaps.put(customMap.getCustomMapID(), customMap);
       setSelectedCustomMapID(NEW_MAP_ID);
       setEditing(true);

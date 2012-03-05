@@ -4,19 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import it.com.inthinc.pro.dao.Util;
 import it.config.ITDataSource;
-import it.config.IntegrationConfig;
 
 import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.CustomMapJDBCDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.CustomMap;
-import com.inthinc.pro.model.GoogleMapType;
 
 
 public class CustomMapJDBCDAOTest extends BaseJDBCTest {
@@ -66,7 +62,7 @@ System.out.println("acct id " + testAccount.getAccountID());
         customMap.setMaxZoom(20);
         customMap.setOpacity(1.0);
         customMap.setPngFormat(Boolean.TRUE);
-        customMap.setBottomLayer(GoogleMapType.G_SATELLITE_MAP);
+        customMap.setLayer("barSat");
         customMap.setAcctID(testAccount.getAccountID());
         
         // create
@@ -86,7 +82,7 @@ System.out.println("acct id " + testAccount.getAccountID());
         updateCustomMap.setMaxZoom(customMap.getMaxZoom() + 1);
         updateCustomMap.setOpacity(0.5);
         updateCustomMap.setPngFormat(Boolean.FALSE);
-        updateCustomMap.setBottomLayer(GoogleMapType.NONE);
+        customMap.setLayer("");
         updateCustomMap.setAcctID(customMap.getAcctID());
         updateCustomMap.setCustomMapID(customMap.getCustomMapID());
         customMapDAO.update(updateCustomMap);

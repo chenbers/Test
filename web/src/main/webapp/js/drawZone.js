@@ -32,6 +32,7 @@ var CIRCLE_VERTICES = 16;   // the number of vertices in a circle
 var MAX_VERTICES = 255;     // the most vertices allowed in a free-edit polygon
 var drawZone = {};          // for adding event listeners to
 var polygon;                // after drawing or calling loadZone, this is set to an instance of GPolygon
+var zoneOverlay;
 
 /**
  * Stops any zone drawing currently in progress and initializes for drawing a rectangle zone.
@@ -318,6 +319,7 @@ function endShape_(e, getMapPoints)
 function createGPolygon_(points, editable)
 {
   var poly = new GPolygon(points, ZONE_COLOR, 2, 0.7, ZONE_COLOR, 0.2);
+  zoneOverlay = poly;
   map.addOverlay(poly);
   if (editable)
     poly.enableEditing({onEvent: "mouseover", maxVertices: MAX_VERTICES});
@@ -440,6 +442,7 @@ function calcCirclePoints_(numPoints)
 function initPoly_(poly)
 {
   shape_ = {type:"polygon"};
+  zoneOverlay = poly;
   map.addOverlay(poly);
   poly.enableDrawing({maxVertices: MAX_VERTICES});
   poly.enableEditing({onEvent: "mouseover", maxVertices: MAX_VERTICES});
@@ -519,4 +522,11 @@ function getMousePosition_(e)
     posy = e.clientY + (document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop);
   }
   return {x:posx, y:posy};
+}
+
+function removeZoneOverlay() {
+	if (zoneOverlay != null) {
+		map.removeOverlay(zoneOverlay);
+		zoneOverlay = null;
+	}
 }

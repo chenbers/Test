@@ -30,11 +30,10 @@
 			border-style:none;	
 		}
   	</style>
-    <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+  	
+  	<ui:include src="/includes/map/portalMap.xhtml"/>
     <a4j:loadScript src="/js/mapGeocode.js" />
     <a4j:loadScript src="/js/drawZone.js" />
-    
-	<ui:include src="/includes/customMaps.xhtml"/>	
     <script type="text/javascript">    
        var map;
     </script>
@@ -210,12 +209,15 @@
                   function clearOutline()
                   {
                     document.getElementById("zones-form:points").value = "";
-                    map.clearOverlays();
-                  }
+                    removeZoneOverlay();
+//                    map.clearOverlays();
+				 }
 
                   function showZone(editable)
                   {
-                    map.clearOverlays();
+                    // map.clearOverlays();
+                    removeZoneOverlay();
+                    
                     var outline = fromOutlineString(document.getElementById("zones-form:points").value);
                     if (outline)
                     {
@@ -234,7 +236,9 @@
                   function cancelEdit()
                   {
                     stopDrawing();
-                    map.clearOverlays();
+                    // map.clearOverlays();
+                    removeZoneOverlay();
+                    
                     var outline = document.getElementById("backupPoints").value;
                     if (outline == "")
                       outline = document.getElementById("firstPoints").value;
@@ -248,8 +252,12 @@
                     applyImage("circle", type);
                     applyImage("polygon", type);
 
-                    if (type != "hand")
-                      map.clearOverlays();
+                    if (type != "hand") {
+                        removeZoneOverlay();
+                        
+    	                //  map.clearOverlays();
+	  					// portalmap.restoreLayersState();
+                    }
                   }
 
                   function applyImage(type, selectedType)
@@ -271,14 +279,19 @@
                   {
                     if (GBrowserIsCompatible())
                     {
+/*                        
                       	map = new GMap2(document.getElementById("map-canvas"));
 	          	        initCustomMaps(map);
 	
 	        	        map.addControl(new GLargeMapControl());
 	        	        map.addControl(new GScaleControl());
 	        	        map.addControl(new GMenuMapTypeControl(true));
-	
 	        	        map.enableScrollWheelZoom();
+	*/
+	 					portalmap.init();
+	 					initLayers();
+	 					map = portalmap.getMap();
+		        	        
 	
 //						addListeners();
                       GEvent.addListener(drawZone, "startZone", function(type)
@@ -305,14 +318,14 @@
 
                       if (!showZone(false))
                     	map.setCenter(new GLatLng(39.0, -104.0), 4);
-                      //  showAddress("4225 West Lake Park Blvd. Suite 100 West Valley City UT 84120");
                     }
                   }
-
+/*
                   function bodyUnload()
                   {
                     GUnload();
                   }
+*/                  
                 </script>
 
               </div>

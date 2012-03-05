@@ -9,11 +9,11 @@ public class CustomMap {
     private Integer acctID;
     private String url;
     private String name;
+    private String layer;
     private Integer minZoom;
     private Integer maxZoom;
     private Double opacity;
     private Boolean pngFormat;
-    private GoogleMapType bottomLayer;
     
     public Integer getCustomMapID() {
         return customMapID;
@@ -57,32 +57,30 @@ public class CustomMap {
     public void setPngFormat(Boolean pngFormat) {
         this.pngFormat = pngFormat;
     }
-    public GoogleMapType getBottomLayer() {
-        return bottomLayer;
-    }
-    public void setBottomLayer(GoogleMapType bottomLayer) {
-        this.bottomLayer = bottomLayer;
-    }
-
     public Integer getAcctID() {
         return acctID;
     }
     public void setAcctID(Integer acctID) {
         this.acctID = acctID;
     }
-
+    public String getLayer() {
+        return layer;
+    }
+    public void setLayer(String layer) {
+        this.layer = layer;
+    }
 
     @Override
     public String toString() {
         
     return "acctID: " + acctID +
-            "customMapID: " + customMapID +
+            " customMapID: " + customMapID +
             " url: " +  url +
+            " layer: " +  layer +
             " name: " +  name +
             " minResolution: " +  minZoom +
             " maxResolution: " + maxZoom +
             " opacity: " +  opacity +
-            " pngFormat: " +  pngFormat +
-            " bottomLayer: " +  bottomLayer;
+            " pngFormat: " +  pngFormat;
     }
 }

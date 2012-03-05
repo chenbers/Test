@@ -10,16 +10,17 @@ import java.util.List;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.CustomMapDAO;
 import com.inthinc.pro.model.CustomMap;
-import com.inthinc.pro.model.GoogleMapType;
 
 public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
     
     private static final long serialVersionUID = 1L;
     
-    private static final String CUSTOM_MAP_FIELDS = "customMapID, acctID, name, url, minZoom, maxZoom, opacity, pngFormat, bottomLayer";
+    //alter table customMap ADD COLUMN layer VARCHAR(30) AFTER pngFormat;
     
-    private static final String INSERT_CUSTOM_MAP = "INSERT INTO customMap(acctID, name, url, minZoom, maxZoom, opacity, pngFormat, bottomLayer) values (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_CUSTOM_MAP = "UPDATE customMap set name = ?, url = ?, minZoom = ?, maxZoom = ?, opacity = ?, pngFormat = ?, bottomLayer = ? where acctID = ? and customMapID = ?";
+    private static final String CUSTOM_MAP_FIELDS = "customMapID, acctID, name, url, minZoom, maxZoom, opacity, pngFormat, layer";
+    
+    private static final String INSERT_CUSTOM_MAP = "INSERT INTO customMap(acctID, name, url, minZoom, maxZoom, opacity, pngFormat, layer) values (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_CUSTOM_MAP = "UPDATE customMap set name = ?, url = ?, minZoom = ?, maxZoom = ?, opacity = ?, pngFormat = ?, layer = ? where acctID = ? and customMapID = ?";
     private static final String FIND_CUSTOM_MAP = "SELECT " + CUSTOM_MAP_FIELDS + " FROM customMap where customMapID = ?";
     private static final String DELETE_CUSTOM_MAP = "DELETE FROM customMap where customMapID = ?";
     private static final String FETCH_CUSTOM_MAPS_FOR_ACCOUNT = "SELECT " + CUSTOM_MAP_FIELDS + " FROM customMap where acctID = ?";
@@ -40,7 +41,7 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
             statement.setInt(5, customMap.getMaxZoom());
             statement.setFloat(6, customMap.getOpacity().floatValue());
             statement.setInt(7, customMap.getPngFormat() == null || !customMap.getPngFormat() ? 0 : 1);
-            statement.setInt(8, customMap.getBottomLayer().getCode());
+            statement.setString(8, customMap.getLayer());
             statement.executeUpdate();
             
             resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
@@ -126,7 +127,7 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
             statement.setInt(4, customMap.getMaxZoom());
             statement.setFloat(5, customMap.getOpacity().floatValue());
             statement.setInt(6, customMap.getPngFormat() == null || !customMap.getPngFormat() ? 0 : 1);
-            statement.setInt(7, customMap.getBottomLayer().getCode());
+            statement.setString(7, customMap.getLayer());
             statement.setInt(8, customMap.getAcctID());
             statement.setInt(9, customMap.getCustomMapID());
             return statement.executeUpdate();
@@ -183,7 +184,7 @@ public class CustomMapJDBCDAO extends GenericJDBCDAO implements CustomMapDAO {
         customMap.setMaxZoom(resultSet.getInt(6));
         customMap.setOpacity(new Double(resultSet.getFloat(7)));
         customMap.setPngFormat(resultSet.getInt(8) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        customMap.setBottomLayer(GoogleMapType.valueOf(resultSet.getInt(9)));
+        customMap.setLayer(resultSet.getString(9));
         return customMap;
     }
 }

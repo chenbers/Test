@@ -5,12 +5,10 @@
 		<ui:param name="title" value="#{messages.vehiclePerformanceTab} - #{vehiclePerformanceBean.vehicle.name} - #{messages.vehicle_trips}"/>
 		<ui:define name="scripts">
 
-				<a4j:loadScript src="/js/FusionCharts.js" />
-				<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-
-				<ui:include src="/includes/customMaps.xhtml" />
- 		<rich:panel id="mapScript">	
-				<script type="text/javascript">
+		<a4j:loadScript src="/js/FusionCharts.js" />
+		<ui:include src="/includes/map/portalMap.xhtml"/>
+				
+		<script type="text/javascript">
 		var map;
 		var showWarnings = new Boolean(true);
 		var showIdleMarkers = new Boolean(true);
@@ -26,6 +24,7 @@
 		
 		function initMap(lat,lng,zoom)
 		{
+/*			
    			if (GBrowserIsCompatible()) 
 			{
 		 	  	map = new GMap2(document.getElementById("map-canvas"));
@@ -50,6 +49,18 @@
 				defaultAddressElement = "tripsMapForm:bubbleAddress";
 				
 			}
+*/
+
+			portalmap.init();
+			initLayers();
+			map = portalmap.getMap();
+			map.setCenter(new GLatLng(lat, lng), zoom);
+
+			errorMessage = "#{messages.sbs_badLatLng}"
+			bounds = new GLatLngBounds();
+			addressLookupAddressFormat = #{vehicleTripsBean.addressFormat};
+			defaultAddressElement = "tripsMapForm:bubbleAddress";
+			
 		}
 			
 
@@ -139,23 +150,90 @@
 		} 		 		
 		</script>
 
-						<script type="text/javascript">
+		<script type="text/javascript">
 		
-	    //Unload Google Map objects
-		function bodyUnload()
-		{
-			GUnload();
-		}	
-
 		// This is called on pageLoad and A4J re-renders
 		function bodyLoad()
 		{
+			GUnload();
+			map=null;
 			initMap(#{vehicleTripsBean.anchorLat}, #{vehicleTripsBean.anchorLng}, 14);
 			if ( #{vehicleTripsBean.selectedTrips[0] ne null} ) {				
 		   		showTrips();
 			}
 		}
 		
+        function getAddresses()
+        {
+            if (#{vehicleTripsBean.addressFormat == 3}){
+  	    		geocoder = new GClientGeocoder();
+  	    		jQuery('td[id$="end_column"]').each(function(n){
+  	
+  	         		var lat = jQuery(this).find('*[id$="lat"]');
+  	        		var lng = jQuery(this).find('*[id$="lng"]');
+  	        		var address = jQuery(this).find('*[id$="address"]');
+	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');
+  						
+  					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
+  	
+  	    		});	
+  	    		jQuery('td[id$="address_column"]').each(function(n){
+  	
+  	        		var lat = jQuery(this).find('*[id$="eventLat"]');
+  	        		var lng = jQuery(this).find('*[id$="eventLng"]');
+  	        		var address = jQuery(this).find('*[id$="eventAddress"]');
+	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        		
+  						
+  					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
+  	              		
+  	    		});
+            } else {
+                ajaxCount++;
+            }
+            
+        }
+
+        function getEventAddresses()
+        {
+            if (#{vehicleTripsBean.addressFormat == 3}){
+	    		geocoder = new GClientGeocoder();
+
+	    		jQuery('td[id$="address_column"]').each(function(n){
+
+	        		var lat = jQuery(this).find('*[id$="eventLat"]');
+	        		var lng = jQuery(this).find('*[id$="eventLng"]');
+	        		var address = jQuery(this).find('*[id$="eventAddress"]');
+	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        			        		
+						
+					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
+	    		});
+            }
+            
+        }        
+        
+
+        function reverseGeocodeTripAddress(latlng, addressElement, zoneAddress){
+            ajaxCount++;
+         	geocoder.getLocations(latlng, 
+        			function(response){
+    			        if (!response || response.Status.code != 200) {
+	        				 
+							// Couldn't find one, use the one we calculated on the server
+  			         	  	addressElement.innerHTML = zoneAddress;
+
+    			        } 
+    			        else {
+  			             	addressElement.innerHTML = response.Placemark[0].address;
+    			        }
+    			        ajaxCount--;
+    		    	});
+        }
+  			    
+		
+   		
+		</script>
+ 		<rich:panel id="mapScript">	
+		<script type="text/javascript">
    		function drawSelectedTrips()
    		{
 				var polyline;
@@ -169,6 +247,8 @@
 				}
 
 				map.clearOverlays();
+				portalmap.restoreLayersState();
+				
 				
    				<ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
    				//alert('drawing selected trip #{trip.trip.startTime}');
@@ -242,78 +322,8 @@
 					</ui:repeat>
 				}	
 			}
-        function getAddresses()
-        {
-            if (#{vehicleTripsBean.addressFormat == 3}){
-  	    		geocoder = new GClientGeocoder();
-  	    		jQuery('td[id$="end_column"]').each(function(n){
-  	
-  	         		var lat = jQuery(this).find('*[id$="lat"]');
-  	        		var lng = jQuery(this).find('*[id$="lng"]');
-  	        		var address = jQuery(this).find('*[id$="address"]');
-	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');
-  						
-  					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-  	
-  	    		});	
-  	    		jQuery('td[id$="address_column"]').each(function(n){
-  	
-  	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-  	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-  	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        		
-  						
-  					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-  	              		
-  	    		});
-            } else {
-                ajaxCount++;
-            }
-            
-        }
-
-        function getEventAddresses()
-        {
-            if (#{vehicleTripsBean.addressFormat == 3}){
-	    		geocoder = new GClientGeocoder();
-
-	    		jQuery('td[id$="address_column"]').each(function(n){
-
-	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        			        		
-						
-					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-//	              	pauseBetweenCalls(250);	
-	    		});
-            }
-            
-        }        
-        
-
-        function reverseGeocodeTripAddress(latlng, addressElement, zoneAddress){
-            ajaxCount++;
-         	geocoder.getLocations(latlng, 
-        			function(response){
-    			        if (!response || response.Status.code != 200) {
-	        				 
-							// Couldn't find one, use the one we calculated on the server
-  			         	  	addressElement.innerHTML = zoneAddress;
-
-    			        } 
-    			        else {
-//  			             document.getElementById(addressElement).innerHTML = response.Placemark[0].address;
-  			             	addressElement.innerHTML = response.Placemark[0].address;
-    			        }
-    			        ajaxCount--;
-    		    	});
-        }
-  			    
-		
-   		
 		</script>
-				</rich:panel>
+		</rich:panel>
 
 		</ui:define>
 		<ui:param name="homeSelected" value="current" />
@@ -441,7 +451,7 @@
 																		</tr>
 																		<tr>
 																				<td colspan="2" align="center"><a4j:commandButton id="vehicleTripsDate" action="#{vehicleTripsBean.DateChangedAction}"
-																						reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedEvents,selectedTripMap,calendarStart,calendarEnd" immediate="false" styleClass="left" oncomplete="bodyLoad();">
+																						reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedEvents,noTripsMessage,calendarStart,calendarEnd" immediate="false" styleClass="left" oncomplete="showTrips();">
 																						<span class="edit"> <h:outputText value="#{messages.vehciletrip_updateDateRange}" /> </span>
 																				</a4j:commandButton></td>
 																		</tr>
@@ -700,7 +710,7 @@
 														<!-- Start Trip table -->
 														<rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
 
-																<a4j:support event="onRowClick" reRender="mapScript,tripBubbles,selectedEvents,showLastTenForm,selectDriverForm" oncomplete="bodyLoad();getAddresses();">
+																<a4j:support event="onRowClick" reRender="mapScript,tripBubbles,selectedEvents,showLastTenForm,selectDriverForm" oncomplete="showTrips();getAddresses();">
 																		<f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
 																</a4j:support>
 
@@ -794,17 +804,19 @@
 										<span class="panel_links"></span>
 								</h:form></div>
 								</div>
-								<div class="panel_w"><rich:panel bodyClass="panel_content" id="selectedTripMap">
-<!--										<h:outputText rendered="#{vehicleTripsBean.numTrips gt 0}">-->
-												<h:panelGroup styleClass="map-border" layout="block">
-														<div id="map-canvas" style="width: 588px; height: 400px; border: 0"></div>
-												</h:panelGroup>
-<!--										</h:outputText>-->
-
-										<h:outputText rendered="#{vehicleTripsBean.numTrips lt 1}">
-												<h2>#{messages.no_trips_found}</h2>
-										</h:outputText>
-								</rich:panel></div>
+								<div class="panel_w">
+								<rich:panel bodyClass="panel_content" id="selectedTripMap">
+									<h:panelGroup styleClass="map-border" layout="block">
+											<div id="map-canvas" style="width: 588px; height: 400px; border: 0"></div>
+									</h:panelGroup>
+								</rich:panel>
+								</div>
+								<rich:panel bodyClass="panel_content"  id="noTripsMessage">
+                        			<h:outputText rendered="#{vehicleTripsBean.numTrips lt 1}">
+                            		<h2>#{messages.no_trips_found}</h2>
+                        			</h:outputText>
+                    			</rich:panel>
+								
 								<div class="panel_sw">
 								<div class="panel_statusbar"></div>
 								</div>
