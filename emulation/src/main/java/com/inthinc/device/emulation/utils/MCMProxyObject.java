@@ -337,24 +337,20 @@ public class MCMProxyObject implements MCMService{
         Properties props = new Properties();
         props.put("mail.smtp.host", server.getPortalUrl());
         Session session = Session.getDefaultInstance(props, null);
-        InternetAddress from=null, to1=null, to2=null, to3=null;
+        InternetAddress from=null, to1=null;
         try {
             from = new InternetAddress("sbdservice@sbd.iridium.com", "Emulation Project");
             to1 = new InternetAddress("iridium@" + server.getPortalUrl(), "Bridge");
-            to2 = new InternetAddress("dtanner@inthinc.com", "David Tanner");
-//            to3 = new InternetAddress("bmiller@inthinc.com", "Bill Miller");
         } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Couldn't encode the Email addresses");
         }
         
-        for (DeviceNote payload: sendingQueue){
+        for (DeviceNote note: sendingQueue){
             try {
-                SatNote note = new SatNote(payload, imei);
+//                SatNote note = new SatNote(payload, imei);
                 Message msg = new MimeMessage(session);
                 msg.setFrom(from);
                 msg.addRecipient(Message.RecipientType.TO, to1);
-                msg.addRecipient(Message.RecipientType.TO, to2);
-//                msg.addRecipient(Message.RecipientType.TO, to3);
                 
                 msg.setSubject("SBD Msg From Unit: " + imei);
     
@@ -373,7 +369,7 @@ public class MCMProxyObject implements MCMService{
     
                 // create the Multipart and add its parts to it
                 Multipart mp = new MimeMultipart();
-                mp.addBodyPart(mbp1);
+//                mp.addBodyPart(mbp1);
                 mp.addBodyPart(mbp2);
     
                 // add the Multipart to the message
