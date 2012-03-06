@@ -13,7 +13,6 @@ import android.util.Log;
 
 import com.inthinc.device.emulation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 
 public enum EventAttr implements IndexEnum{
@@ -566,10 +565,14 @@ public enum EventAttr implements IndexEnum{
 
     private int code;
     private int size;
-    private boolean zeroTerminated;
-    private boolean string;
+    private boolean zeroTerminated; // If the string is variable sized then it is ended with \0
+    private boolean string; // Is the attribute a string.
 
-
+    /**
+     * For generic attributes that just have a key and value.<br />
+     * The size is determined by the key value.
+     * @param code
+     */
     private EventAttr(int code) {
         this.code = code;
         size = getAttrSize(code);
@@ -596,11 +599,23 @@ public enum EventAttr implements IndexEnum{
         return size;
     }
 
+    /**
+     * For when the Size doesn't match the common sizes.
+     * @param code
+     * @param size
+     */
     private EventAttr(int code, int size) {
         this(code);
         this.size = size;
     }
 
+    /** 
+     * For String values, max size is determined and <br />
+     * we specify if we have a variable length string.
+     * @param code
+     * @param size
+     * @param zeroTerminated
+     */
     private EventAttr(int code, int size, boolean zeroTerminated) {
         this(code, size);
         this.zeroTerminated = zeroTerminated;
@@ -612,14 +627,26 @@ public enum EventAttr implements IndexEnum{
         return code;
     }
 
+    /**
+     * Return the (max)size of the Attribute.
+     * @return
+     */
     public Integer getSize() {
         return size;
     }
     
+    /**
+     * Is this value a string?
+     * @return
+     */
     public boolean isString(){
     	return string;
     }
 
+    /** 
+     * Is this string variable length?
+     * @return
+     */
     public boolean isZeroTerminated() {
         return zeroTerminated;
     }
@@ -632,6 +659,12 @@ public enum EventAttr implements IndexEnum{
         }
     }
 
+    /**
+     * Only the key value is passed around, so with this method<br />
+     * we can quickly get the right EventAttr and use it as a key
+     * @param code
+     * @return
+     */
     public static EventAttr valueOf(Integer code) {
         EventAttr result = lookupByCode.get(code);
         if(result == null){
@@ -641,77 +674,94 @@ public enum EventAttr implements IndexEnum{
         return result;
     }
     
-    private static void updateAttr(Integer code){
+    
+    /**
+     * If we are missing a key then download the current<br />
+     * firmware source code and find out what we should have.<br />
+     * This also prints out a recommended addition in this enums<br />
+     * current format, which is with the ATTR_ removed.
+     * @param code
+     */
+    private static void updateAttr(int code){
+        for (File file : downloadNotifications()){
+            searchForKey(file, code);
+            printUnknownAttrs();    
+        }
+        
+    }
+    
+    /**
+     * Loop through a file to see if we can find a matching Attr key
+     * @param file
+     * @param code
+     */
+    private static void searchForKey(File file, int code){
+        String line;
         try {
-            String base = "notifications";
-            String waysFile = base + "-ways.h";
-            String tiwiFile = base + "-tiwi.h";
-            String ways = "https://svn.iwiglobal.com/iwi/uClinux/trunk/user/iwi/src/controller";
-            String tiwi = "https://svn.iwiglobal.com/iwi/snitch/Firmware/trunk/inc/";
-            
-            String directory = "target/test/resources/downloads/";
-            File file = new File(directory);
-            file.mkdirs();
-            file = new File(directory + waysFile);
-            file.createNewFile();
-            AutomationFileHandler.downloadSvnDirectory(ways,
-                    base+".h", file);
-            
             BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
             while ((line = br.readLine()) != null){
-                if (line.contains(code.toString()) && line.contains("ATTR_")){
+                if (line.contains(code + "") && line.contains("ATTR_")){
                     Log.i(formatAttr(line));
                 }
             }
-            
-            file = new File(directory + tiwiFile);
-            file.createNewFile();
-            AutomationFileHandler.downloadSvnDirectory(tiwi,
-                    base+".h", file);
-
-            br = new BufferedReader(new FileReader(file));
-            while ((line = br.readLine()) != null){
-                if (line.contains(code.toString()) && line.contains("ATTR_")){
-                    Log.i(formatAttr(line));
-                }
-            }
-            printUnknownAttrs();
         } catch (IOException e) {
-            Log.e("%s", e);
+            Log.wtf("%s", e);
         }
     }
     
+    /**
+     * Download the Firmware source code from SVN for both<br />
+     * Waysmarts and TiwiPros.
+     * @return
+     */
+    public static File[] downloadNotifications(){
+       
+        String base = "notifications";
+        String waysFile = base + "-ways.h";
+        String tiwiFile = base + "-tiwi.h";
+        String ways = "https://svn.iwiglobal.com/iwi/uClinux/trunk/user/iwi/src/controller";
+        String tiwi = "https://svn.iwiglobal.com/iwi/snitch/Firmware/trunk/inc/";
+        
+        String directory = "target/test/resources/downloads/";
+
+        File file = new File(directory);
+        file.mkdirs();
+        
+        File[] files = {new File(directory + waysFile), new File(directory + tiwiFile)};
+        
+        AutomationFileHandler.downloadSvnDirectory(ways, base+".h", files[0]);
+
+        AutomationFileHandler.downloadSvnDirectory(tiwi, base+".h", files[1]);
+        
+        return files;
+    }
+    
+    /**
+     * Format the Attr to match this enum.
+     * @param line
+     * @return
+     */
     private static String formatAttr(String line){
         return line.replace("ATTR_", "").replace(" = ", "(").replace(",", "),");
     }
     
-    public static void printUnknownAttrs(){
+    /** 
+     * Find ALL of the keys in source code and print them out<br />
+     * so we can add them to the enum.
+     * @param file
+     */
+    public static void searchForUnknowns(File file){
+        String regex = "ATTR_[A-Z_]*.*[=].*[0-9]*,";
+        Pattern pat = Pattern.compile(regex);
+        Pattern code = Pattern.compile("= [0-9]+");
+        Pattern name = Pattern.compile("ATTR_[A-Z_0-9]*");
+        Matcher match;
+        
+        String line;
         try {
-            String base = "notifications";
-            String waysFile = base + "-ways.h";
-            String tiwiFile = base + "-tiwi.h";
-            String ways = "https://svn.iwiglobal.com/iwi/uClinux/trunk/user/iwi/src/controller";
-            String tiwi = "https://svn.iwiglobal.com/iwi/snitch/Firmware/trunk/inc/";
-            
-            String directory = "target/test/resources/downloads/";
-            File file = new File(directory);
-            file.mkdirs();
-            file = new File(directory + waysFile);
-            file.createNewFile();
-            AutomationFileHandler.downloadSvnDirectory(ways,
-                    base+".h", file);
-            
             BufferedReader br = new BufferedReader(new FileReader(file));
-            String regex = "ATTR_[A-Z_]*.*[=].*[0-9]*,";
-            Pattern pat = Pattern.compile(regex);
-            Pattern code = Pattern.compile("= [0-9]+");
-            Pattern name = Pattern.compile("ATTR_[A-Z_0-9]*");
-            Matcher match;
-            
-            String line;
             while ((line = br.readLine()) != null){
-                if (line.contains("} NotificationType;")){
+                if (line.contains("} NotificationType;") || line.contains("} NotificationAttributes;")){
                     break;
                 }
                 if (line.contains("ATTR_")){
@@ -741,63 +791,26 @@ public enum EventAttr implements IndexEnum{
                             }
                             Double attrCode = Double.parseDouble(attrValue);
                             if (!lookupByCode.containsKey(attrCode.intValue())){
-                                Log.i("Missing Waysmart code");
-                                MasterTest.print(formatAttr(line));
-                            }
-                            break;
-                        }
-                        
-                    }
-                }
-            }
-            
-            file = new File(directory + tiwiFile);
-            file.createNewFile();
-            AutomationFileHandler.downloadSvnDirectory(tiwi,
-                    base+".h", file);
-
-            br = new BufferedReader(new FileReader(file));
-            while ((line = br.readLine()) != null){
-                if (line.contains("} NotificationAttributes;")){
-                    break;
-                }
-                if (line.contains("ATTR_")){
-                    match = pat.matcher(line);
-                    if (match.find()) {
-                        int start = match.start();
-                        int end = match.end();
-                        String attr = line.substring(start, end);
-                        
-                        match = name.matcher(attr);
-                        match.find();
-                        String attrName = attr.substring(match.start(), match.end()).replace("ATTR_", "");
-                        
-                        try {
-                            valueOf(attrName);
-                        } catch (IllegalArgumentException e){
-                            Log.i("Attr with name " + attrName + " is missing, or wrong");
-                            Log.i(formatAttr(line));
-                        }
-                        
-                        
-                        match = code.matcher(attr);
-                        while (match.find()){
-                            String attrValue = attr.substring(match.start()+2, match.end());
-                            if (attrValue.isEmpty()){
-                                continue;
-                            }
-                            Double attrCode = Double.parseDouble(attrValue);
-                            if (!lookupByCode.containsKey(attrCode.intValue())){
-                                Log.i("Missing Tiwi code");
+                                Log.i("Missing code " + attrCode.intValue());
                                 Log.i(formatAttr(line));
-                            }    
+                            }
                             break;
                         }
                     }
                 }
             }
-        } catch (IOException e) {
+        }catch (IOException e) {
             Log.i("%s", e);
+        }
+    }
+    
+    /**
+     * Loop through all of the source code files to find<br />
+     * missing key values.
+     */
+    public static void printUnknownAttrs(){
+        for (File file: downloadNotifications()){
+            searchForUnknowns(file);
         }
     }
     
