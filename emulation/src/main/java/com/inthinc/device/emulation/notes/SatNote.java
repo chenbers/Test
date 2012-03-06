@@ -186,6 +186,5 @@ public class SatNote extends DeviceNote {
 	public void setSats(int sats) {
 		payload.setSats(sats);
 	}
-
-
+	
 }

@@ -67,7 +67,7 @@ public class NoteDemo {
 				HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
 				65, 0, 0, 47, 0);
 
-		note.addAttr(EventAttr.LOCATION, "West Valley, UT");
+		note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, "West Valley, UT");
 
 		List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
 		notes.add(note);
@@ -111,7 +111,7 @@ public class NoteDemo {
 				HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
 				65, 0, 0, 47, 0);
 
-		note.addAttr(EventAttr.LOCATION, "West Valley, UT");
+		note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, "West Valley, UT");
 
 		List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
 		notes.add(note);

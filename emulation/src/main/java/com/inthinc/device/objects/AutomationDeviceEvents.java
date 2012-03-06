@@ -37,7 +37,7 @@ public class AutomationDeviceEvents {
 				note.addAttr(EventAttr.VEHICLE_GALLONS, vehicleGallons);
 				note.addAttr(EventAttr.ODOMETER, odometerX100);
 				note.addAttr(EventAttr.TRAILER_GALLONS, trailerGallons);
-				note.addAttr(EventAttr.LOCATION, locationS);
+				note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, locationS);
 			}
 		}
 	}
@@ -154,12 +154,12 @@ public class AutomationDeviceEvents {
 		
 		private HOSChangeNoGPSEvent(DeviceState state, GeoPoint location, String locationStr){
 			super(DeviceNoteTypes.A_AND_D_SPACE___HOS_CHANGE_STATE_NO_GPS_LOCK, state, location);
-			if (locationStr.length() > EventAttr.LOCATION.getSize()){
-				throw new IllegalArgumentException("Cannot have a location string longer than " + EventAttr.LOCATION.getSize());
+			if (locationStr.length() > EventAttr.NO_GPS_LOCK_LOCATION.getSize()){
+				throw new IllegalArgumentException("Cannot have a location string longer than " + EventAttr.NO_GPS_LOCK_LOCATION.getSize());
 			}
-			note.addAttr(EventAttr.DRIVER_STR, state.getEmployeeID());
+			note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
 			note.addAttr(EventAttr.DRIVER_HOS_STATE, state.getHosState());
-			note.addAttr(EventAttr.LOCATION, locationStr);
+			note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, locationStr);
 
 			hosChangeState(state, note);
 			
@@ -187,8 +187,8 @@ public class AutomationDeviceEvents {
 		
 		private NewDriverHOSRuleEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.NEWDRIVER_HOSRULE, state, location);
-			note.addAttr(EventAttr.DRIVER_STR, state.getEmployeeID());
-			note.addAttr(EventAttr.MCM_RULESET, state.getHosRuleSet());
+			note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
+			note.addAttr(EventAttr.CURRENT_HOS_RULESET, state.getHosRuleSet());
 			
 		}
 	}
@@ -212,8 +212,8 @@ public class AutomationDeviceEvents {
 		private DriverStateChangeEvent(DeviceState state, GeoPoint location, String locationStr){
 			super(DeviceNoteTypes.DRIVERSTATE_CHANGE, state, location);
 			
-			note.addAttr(EventAttr.DRIVER_STR, state.getEmployeeID());
-			note.addAttr(EventAttr.LOCATION, locationStr);
+			note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
+			note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, locationStr);
 			note.addAttr(EventAttr.DRIVER_HOS_STATE, state.getHosState());
 			
 			if ((state.getTripFlags() & TripFlags.CLEAR_DRIVER.getIndex()) == TripFlags.CLEAR_DRIVER.getIndex()){
@@ -249,7 +249,7 @@ public class AutomationDeviceEvents {
 			super(DeviceNoteTypes.CLEAR_DRIVER, state, location);
 			endOfTripAttrs(state, note);
 			if (state.getProductVersion().equals(ProductType.WAYSMART)){
-				note.addAttr(EventAttr.DRIVER_STR, state.getEmployeeID());
+				note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
 			} else {
 				note.addAttr(EventAttr.LOGOUT_TYPE, LogoutMethod.RFID_LOGOUT.getIndex());
 				note.addAttr(EventAttr.RFID0, state.getRfidHigh());
@@ -300,12 +300,12 @@ public class AutomationDeviceEvents {
             this.eventType = eventType;
             
             if (state.getProductVersion().equals(ProductType.WAYSMART)) {
-                note.addAttr(EventAttr.DELTA_VS, packDeltaVS());
+                note.addAttr(EventAttr.PACKED_DELTAV, packDeltaVS());
 
             } else {
-                note.addAttr(EventAttr.DELTAV_X, deltaX);
-                note.addAttr(EventAttr.DELTAV_Y, deltaY);
-                note.addAttr(EventAttr.DELTAV_Z, deltaZ);
+                note.addAttr(EventAttr.DELTA_VX, deltaX);
+                note.addAttr(EventAttr.DELTA_VY, deltaY);
+                note.addAttr(EventAttr.DELTA_VZ, deltaZ);
             }
         }
         
@@ -386,7 +386,7 @@ public class AutomationDeviceEvents {
             } else {
                 note.addAttr(EventAttr.AVG_RPM, state.getAvgRpm());
                 
-                note.addAttr(EventAttr.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED,
+                note.addAttr(EventAttr.GPS_PCT,
                         state.getGPSPercent());
                 
                 note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
@@ -712,9 +712,9 @@ public class AutomationDeviceEvents {
     	note.addAttr(EventAttr.MPG, state.getMpg());
     	note.addAttr(EventAttr.MPG_DISTANCE, state.getMpgDistanceX100());
     	
-    	note.addAttr(EventAttr.PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, state.getPointsPassedTheFilter() * 10);
-    	note.addAttr(EventAttr.PERCENTAGE_OF_TIME_SPEED_FROM_OBD_USED, state.getOBDPercent() * 10);
-    	note.addAttr(EventAttr.PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED, state.getGPSPercent() * 10);
+    	note.addAttr(EventAttr.PERCENTAGE_GPS_FILTERED, state.getPointsPassedTheFilter() * 10);
+    	note.addAttr(EventAttr.OBD_PCT, state.getOBDPercent() * 10);
+    	note.addAttr(EventAttr.GPS_PCT, state.getGPSPercent() * 10);
     	
     	note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
     	note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());

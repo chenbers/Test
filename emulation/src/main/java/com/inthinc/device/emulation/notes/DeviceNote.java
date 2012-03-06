@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
@@ -23,8 +21,7 @@ import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 
 public abstract class DeviceNote {
 	
-    private final static Logger logger = Logger.getLogger(DeviceNote.class);
-
+	
 	
 	protected final AutomationCalendar time;
 	protected final DeviceNoteTypes type;
@@ -204,9 +201,7 @@ public abstract class DeviceNote {
         Iterator<EventAttr> keys = attrs.iterator();
         
         while( keys.hasNext()){
-            EventAttr key=null;
-
-            key = keys.next();
+            EventAttr key = keys.next();
             int keyCode = key.getIndex();
             longToByte(baos, keyCode, keySize);    
             encodeAttribute(baos, key, attrs.getValue(key));
@@ -261,7 +256,7 @@ public abstract class DeviceNote {
 	
 	public static void decodeAttribute(ByteArrayInputStream bais, EventAttr key, DeviceAttributes attrs){
 		if(key == null){
-			return;
+			throw new IllegalArgumentException("Key cannot be null");
 		}
 		if (key.isString()){
 			StringWriter writer = new StringWriter();
@@ -280,6 +275,7 @@ public abstract class DeviceNote {
 		} else {
 			attrs.addAttribute(key, byteToLong(bais, key.getSize()));
 		}
+		
 	}
     
     public static void encodeAttributes(ByteArrayOutputStream baos, DeviceAttributes attrs, EventAttr[] attrList) {

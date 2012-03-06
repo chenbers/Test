@@ -2,6 +2,7 @@ package com.inthinc.device.emulation.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -12,6 +13,21 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -291,6 +307,7 @@ public class MCMProxyObject implements MCMService{
     }
     
     public void sendSatNote(String imei, List<? extends DeviceNote> sendingQueue){
+
     	for (DeviceNote note: sendingQueue){
 	    	byte[] packaged = new SatNote(note, imei).Package();
 	    	try {
@@ -316,6 +333,65 @@ public class MCMProxyObject implements MCMService{
     	}
     }
     
+    public void sendSatSMTP(String imei, List<? extends DeviceNote> sendingQueue){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "192.168.1.226");
+        Session session = Session.getDefaultInstance(props, null);
+        InternetAddress from=null, to1=null, to2=null, to3=null;
+        try {
+            from = new InternetAddress("sbdservice@sbd.iridium.com", "Emulation Project");
+            to1 = new InternetAddress("iridium@" + server.getPortalUrl(), "Bridge");
+            to2 = new InternetAddress("dtanner@inthinc.com", "David Tanner");
+            to3 = new InternetAddress("bmiller@inthinc.com", "Bill Miller");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Couldn't encode the Email addresses");
+        }
+        
+        for (DeviceNote payload: sendingQueue){
+            try {
+                SatNote note = new SatNote(payload, imei);
+                Message msg = new MimeMessage(session);
+                msg.setFrom(from);
+                msg.addRecipient(Message.RecipientType.TO, to1);
+                msg.addRecipient(Message.RecipientType.TO, to2);
+                msg.addRecipient(Message.RecipientType.TO, to3);
+                
+                msg.setSubject("SBD Msg From Unit: " + imei);
+    
+                // create and fill the first message part
+                MimeBodyPart mbp1 = new MimeBodyPart();
+                mbp1.setText(note.toString());
+                printNote(note);
+    
+                // create the second message part
+                MimeBodyPart mbp2 = new MimeBodyPart();
+                
+                // attach the file to the message
+                DataSource ds = new ByteArrayDataSource(note.Package(), "application/x-any");
+                mbp2.setDataHandler(new DataHandler(ds));
+                mbp2.setFileName("note");
+    
+                // create the Multipart and add its parts to it
+                Multipart mp = new MimeMultipart();
+                mp.addBodyPart(mbp1);
+                mp.addBodyPart(mbp2);
+    
+                // add the Multipart to the message
+                msg.setContent(mp);
+    
+                // set the Date: header
+                msg.setSentDate(note.getTime().getDate());
+                
+                // send the message
+                Transport.send(msg);
+            } catch (AddressException e) {
+                Log.wtf("%s", e);
+            } catch (MessagingException e) {
+                Log.wtf("%s", e);
+            } 
+        }
+    }
+    
     public String[] sendHttpNote(String mcmID, Direction comType,
             List<? extends DeviceNote> sendingQueue, String imei) throws ClientProtocolException, IOException{
         
@@ -325,7 +401,7 @@ public class MCMProxyObject implements MCMService{
         	if (note.getType().equals(DeviceNoteTypes.INSTALL)){
         		List<DeviceNote> list = new ArrayList<DeviceNote>();
         		list.add(note);
-        		sendSatNote(imei, list);
+        		sendSatSMTP(imei, list);
         	}
         	byte[] packaged = note.Package();
         	String uri = 
@@ -409,7 +485,7 @@ public class MCMProxyObject implements MCMService{
             
         } else if (clazz.equals(SatelliteEvent.class)) {
         	if (state.getWaysDirection().equals(Direction.sat)){
-        		sendSatNote(state.getImei(), notes);
+        	    sendSatSMTP(state.getImei(), notes);
         	} else {
                 reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
@@ -420,14 +496,14 @@ public class MCMProxyObject implements MCMService{
             		notes);
         } else if (clazz.equals(SatelliteEvent_t.class)){
         	if (state.getWaysDirection().equals(Direction.sat)){
-        		sendSatNote(state.getImei(), notes);
+        	    sendSatSMTP(state.getImei(), notes);
         	} else {
         		reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
                         notes, state.getImei()); 
         	}
         } else if (clazz.equals(SatelliteStrippedConfigurator.class)){
-        	sendSatNote(state.getImei(), notes);
+            sendSatSMTP(state.getImei(), notes);
         	reply = null;
         }
     	return reply;
@@ -447,7 +523,7 @@ public class MCMProxyObject implements MCMService{
 	            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
 	                noteClass = SatelliteEvent.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
-	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	    sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 		                        state.getWaysDirection(),
@@ -460,7 +536,7 @@ public class MCMProxyObject implements MCMService{
 	            } else if (sendingQueue.containsKey(SatelliteEvent_t.class)){
 	            	noteClass = SatelliteEvent_t.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
-	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	    sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 	                            state.getWaysDirection(),
@@ -468,7 +544,7 @@ public class MCMProxyObject implements MCMService{
 	            	}
 	            } else if (sendingQueue.containsKey(SatelliteStrippedConfigurator.class)){
 	            	noteClass = SatelliteStrippedConfigurator.class;
-	            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            }
 	            sendingQueue.remove(noteClass);
 	        } catch (SocketException e){

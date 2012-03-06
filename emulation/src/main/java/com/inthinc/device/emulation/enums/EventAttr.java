@@ -6,11 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.util.Log;
 
 import com.inthinc.device.emulation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 
 public enum EventAttr implements IndexEnum{
@@ -68,13 +71,13 @@ public enum EventAttr implements IndexEnum{
     OBD_VIN_DIGIT_1(45),
     DMM_CAL_STATUS(46),
     CURRENT_IGN(47),
-    NUMBER_OF_GPS_REBOOTS(48),
-    PERCENTAGE_OF_TIME_SPEED_FROM_OBD_USED(49),
+    NUM_GPS_REBOOTS(48),
+    OBD_PCT(49),
     
-    PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED(50),
-    STATS(51),
-    AGPS_ERROR_CODE(52),
-    UNPLUGGED_WHILE_ASLEEP(53),
+    GPS_PCT(50),
+    PRODUCT_VERSION(51),
+    AGPS_DOWNLOADED(52),
+    TAMPERING_TYPE(53),
     LOGOUT_TYPE(54),
     SAT_EPH_CNT(55),
     WITNESS_EVENT_TYPE(56),
@@ -95,14 +98,15 @@ public enum EventAttr implements IndexEnum{
 
 	LOW_LOAD_PCT(70),
 	SOURCE(71),
+	SBS_DLD_ERR(72),
 
 	// Attribute Id (128->191 have two byte values)
     DISTANCE(129),
     
     MAX_RPM(130), // true rpm
-    DELTAV_X(131),
-    DELTAV_Y(132),
-    DELTAV_Z(133),
+    DELTA_VX(131),
+    DELTA_VY(132),
+    DELTA_VZ(133),
     VEHICLE_BATTERY(134),
     BACKUP_BATTERY(135),
     GPS_SATS_SNR_MEAN_100X(136),
@@ -133,12 +137,12 @@ public enum EventAttr implements IndexEnum{
     MSP_HARD_TURN_DV(159),
 
     MSP_HARD_BUMP_RMSLEV(160),
-    HARD_VERT_DMM_PEAK_TO_PEAK_LEVEL(161),
+    MSP_HARD_BUMP_PK2PKLEV(161),
     MSP_TEMPSLOPE_U(162),
     MSP_TEMPSLOPE_V(163),
     MSP_TEMPSLOPE_W(164),
-    NUMBER_OF_TIMES_A_SPEEDING_VIOLATION_WAS_EITHER_PREVENTED_OR_SQUELCHED_(165),
-    PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_(166),
+    SPEEDING_SQUELCHED(165),
+    PERCENTAGE_GPS_FILTERED(166),
     GPS_WEEK(167),
     LOOPCOUNT_DEFERRED_LOGIN(168),
     NUM_REBOOTS(169),
@@ -186,7 +190,9 @@ public enum EventAttr implements IndexEnum{
     
     TOTAL_BYTES_DUMPSET(230),
     SBS_LINK_ID(231),
+    SBS_SOURCE_GID(231),
     CLOSEST_SBS_LINK_ID(232),
+    CLOSEST_SBS_GID(232),
     VEH_ODO(233),
     SBS_WARNING_GID(234),
     MPG_DISTANCE_FILTERED(235),
@@ -200,11 +206,12 @@ public enum EventAttr implements IndexEnum{
     // Attribute Id (255) has a stringId byte,
  	// followed by a null terminate string.
     STRING_TIWIPRO(255),
+    STRING(255),
 
     // one byte value attributes 8192 [0x2000] to 16383 [0x3FFF]
     
     BASELINE_VERSION(8192),
-    BOOTLOADER_REV(8193),
+    BOOT_LOADER_REV(8193),
     BRAKE_COLLECTED(8194),
     CAL_VERSION(8195),
     CALIBRATION_STATUS(8196),
@@ -223,27 +230,27 @@ public enum EventAttr implements IndexEnum{
     FILTERED_SPEED(8208),
     FIRMWARE_REV_PREVIOUS(8209),
     
-    FIRMWARE_VERSION_WAYS(8210),
+    FIRMWARE_VERSION_KERNEL(8210),
     FLAG(8211),
     IGNITION_OFF_FULL_EVENTS_ENABLED(8212),
     GPS_CONFIDENCE_PERCENT(8213),
     GPS_STATE(8214),
     HARD_ACCEL_AVERAGE_CHANGE(8215),
-    HARD_ACCEL_DELTA_V(8216),
+    HARD_ACCEL_DELTAV(8216),
     HARD_ACCEL_LEVEL(8217),
     HARD_VERT_DMM_TO_CRASH_RATIO_THRES(8218),
-    IGNITIONON_PERCENTAGE(8219),
+    IGNITION_ON_PERCENTAGE(8219),
     
     LOCK_PERCENTAGE(8220),
     MAGICA(8221),
     MAPS_MOUNTED_PERCENTAGE(8222),
     MAPS_UNMOUNTED_COUNT(8223),
     MAX_SPEED_LIMIT(8224),
-    MCM_RULESET(8225),
+    CURRENT_HOS_RULESET(8225),
     NO_STRING_PERCENTAGE(8226),
     OBD_CONFIDENCE_PERCENT(8227),
     OBD_SPEED_WAYS(8228),
-    ODOMETER_COLLECTED(8229),
+    ODOMETER_COLLEDCTED(8229),
     
     ORIENTATION_TRIAX(8230),
     PERCENT_MEMORY_AVAILABLE(8231),
@@ -252,11 +259,11 @@ public enum EventAttr implements IndexEnum{
     REASON_CODE_HOS(8234),
     REBOOTS(8235),
     RMS_LEVEL(8236),
-    RMS_WINDOW(8237),
+    RMS_WINDWO(8237),
     RPM_COLLECTED(8238),
     SBS_DB_UPDATE_RESULT(8239),
     
-    SBS_EX_MAP_UPDATE_RESULT(8240),
+    SBS_EXMAP_UPDATE_RESULT(8240),
     SBS_SPEED_LIMIT(8241),
     SEATBELT_ENGAGED(8242),
     SEATBELT_COLLECTED(8243),
@@ -269,7 +276,7 @@ public enum EventAttr implements IndexEnum{
     SPEED_SOURCE(8250),
     SPEEDING_BUFFER(8251),
     ATTR_SPEEDING_TYPE(8253), // removing here since defined at 65 for vehicle bus uptime
-    STATE(8254),
+    HOS_STATE(8254),
     STATUS(8255),
     TEMP_COMP_ENABLED(8256),
     TEMP_COMP_SLOPES_IN_BUFFER(8257),
@@ -287,14 +294,14 @@ public enum EventAttr implements IndexEnum{
     VERSION_EXCEPTION_4(8268),
     WEATHER_SPEED_LIMIT_PERCENT(8269),
     
-    X_ACCEL(8270),
-    X_WINDOW(8271),
-    X_CAT_DATA(8272),
-    X_CAT_EVENT(8273),
-    Y_SLOPE(8274),
-    Y_WINDOW(8275),
-    Z_SLOPE(8276),
-    Z_WINDOW(8277),
+    XACCEL(8270),
+    XWINDOW(8271),
+    XCAT_DATA(8272),
+    XCAT_EVENT(8273),
+    YSLOPE(8274),
+    YWINDOW(8275),
+    ZSLOPE(8276),
+    ZWINDOW(8277),
     ZONE_SPEED_LIMIT(8278),
     HAZMAT_FLAG(8279),
     
@@ -305,6 +312,7 @@ public enum EventAttr implements IndexEnum{
 	TRIP_KIOSK_MODE(8284),
 	SEATBELT_TOP_SPEED(8285),
 	DRIVER_HISTOGRAM_STATS_VERSION(8286),
+	NUM_TIME_CHANGES(8287),
     
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
@@ -320,7 +328,7 @@ public enum EventAttr implements IndexEnum{
     DIGITAL_OUTPUT_STATUS(16391),
     DURATION(16392),
     ERROR_CODE(16393),
-    //ERROR_DETAILS(16394),
+    ERROR_DETAILS_(16394),
     FILTERED_NOTE_EVENT_COUNT(16395),
     FORWARD_COMMAND_ID(16396),
     G_TRIGGER_LEVEL(16397),
@@ -331,7 +339,7 @@ public enum EventAttr implements IndexEnum{
     MAX_TIME(16400),
     MESSAGES_LATENT(16401),
     MODE_OF_OPERATIONS(16402),
-    MSP_430_REBOOTS(16403),
+    MSP430_REBOOTS(16403),
     OBD_DISTANCE(16404),
     POWER_RECYCLE_ATTEMPTS(16405),
     POWER_UP_COUNT(16406),
@@ -344,7 +352,7 @@ public enum EventAttr implements IndexEnum{
     STOP_TIME(16412),
     TEMP_AT_CALIBRATION(16413),
     TEMP_COMP_SLOPES_MEASURED(16414),
-    TEMP_SENSE_ADC_ATCAL(16415),
+    TEMP_SENSE_ADC_AT_CAL(16415),
     TEXT_LENGTH(16416),
     TOTAL_TEMP_COMP_SLOPE_ESTIMATES(16417),
     TOTAL_TEMP_COMP_SLOPE_UPDATES(16418),
@@ -393,11 +401,11 @@ public enum EventAttr implements IndexEnum{
 	
     DATA(24576),                            // string length comes from ATTR_DATA_LENGTH
     TEXT_MESSAGE(24577),                    // string length comes from ATTR_TEXT_LENGTH
-    DRIVER_STR(24578, 10, false),           // string 10         fixed length,              \0 filled
+    DRIVER_ID_STR(24578, 10, false),        // string 10         fixed length,              \0 filled
     EMU_NAME_DEVICE(24579, 29, false),      // string 29         fixed length,              \0 filled
     EMU_NAME_TRANSFORM(24580, 29, false),   // string 29         fixed length,              \0 filled
     FILE_NAME(24581, 32, true),             // string 32 max, variable length,              \0 terminated
-    LOCATION(24582, 32, true),              // string 32 max, variable length,              \0 terminated
+    NO_GPS_LOCK_LOCATION(24582, 32, true),  // string 32 max, variable length,              \0 terminated
     REPORT_ID(24583, 4, true),              // string  4 max, variable length,              \0 terminated
     SERVICE_ID(24584, 20, true),            // string 20 max, variable length,              \0 terminated
     SILICON_ID(24585, 17, false),           // string 17         fixed length,              \0 filled
@@ -405,8 +413,8 @@ public enum EventAttr implements IndexEnum{
     TRAILER_ID(24587, 20, true),            // string 20 max, variable length,              \0 terminated
     VIN(24588, 18, false),                  // string 18         fixed length,              \0 filled
     WITNESS_ID(24589, 9, true),             // string  9 max, variable length,              \0 terminated
-    OCCUPANT_STR(24590, 10, false),         // string 10         fixed length,              \0 filled
-    EMP_ID(24591, 11, true),                // string 11 max, variable length,              \0 terminated
+    OCCUPANT_ID_STR(24590, 10, false),      // string 10         fixed length,              \0 filled
+    EMPLOYEE_ID_STR(24591, 11, true),       // string 11 max, variable length,              \0 terminated
     VEHICLE_ID_STR(24592, 20, true),        // string 20 max, variable length,              \0 terminated
     IMEI(24593, 15, true),                  // string 15 max, variable length,              \0 terminated
     MCM_ID_STR(24594, 9, true),             // string  9 max, variable length,              \0 terminated
@@ -425,20 +433,20 @@ public enum EventAttr implements IndexEnum{
     BRAKE_REQUESTS(32771),
     DATA_CURRENT(32772),
     DATA_EXPECTED(32773),
-    DOWNLOAD_WEEKLY_TOTAL_BOOTLOADER(32774),
+    DOWNLOAD_WEEKLY_TOTAL_BOOT_LOADER(32774),
     DOWNLOAD_WEEKLY_TOTAL_BOUNDARY_DAT(32775),
     DOWNLOAD_WEEKLY_TOTAL_FIRMWARE(32776),
     DOWNLOAD_WEEKLY_TOTAL_MAPS(32777),
-    DOWNLOAD_WEEKLY_TOTAL_PLACES_2_DAT(32778),
+    DOWNLOAD_WEEKLY_TOTAL_PLACES2_DAT(32778),
     DOWNLOAD_WEEKLY_TOTAL_QSI_FIRMWARE(32779),
     
-    DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_CHECK_BYTES(32780),
-    DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_DOWNLOAD_BYTES(32781),
-    DOWNLOAD_WEEKLY_TOTAL_SBS_EX_MAPS_DOWNLOAD_COUNT(32782),
+    DOWNLOAD_WEEKLY_TOTAL_SBS_EXMAPS_CHECK_BYTES(32780),
+    DOWNLOAD_WEEKLY_TOTAL_SBS_EXMAPS_DOWNLOAD_BYTES(32781),
+    DOWNLOAD_WEEKLY_TOTAL_SBS_EXMAPS_DOWNLOAD_COUNT(32782),
     DOWNLOAD_WEEKLY_TOTAL_SMTOOLS_EMULATION(32783),
     DOWNLOAD_WEEKLY_TOTAL_SMTOOLS_FIRMWARE(32784),
-    DOWNLOAD_WEEKLY_TOTAL_TRIAX_II_FIRMWARE(32785),
-    DOWNLOAD_WEEKLY_TOTAL_WITNESS_II_FIRMWARE(32786),
+    DOWNLOAD_WEEKLY_TOTAL_TRIAXII_FIRMWARE(32785),
+    DOWNLOAD_WEEKLY_TOTAL_WITNESSII_FIRMWARE(32786),
     DOWNLOAD_WEEKLY_TOTAL_ZONES(32787),
     EMU_NAME_VERIFIED(32789),
     
@@ -449,24 +457,24 @@ public enum EventAttr implements IndexEnum{
     LOOPS(32794),
     MAP_FILE_SIZE(32795),
     MAP_ID(32796),
-    MAX_POSGS(32797),
-    MAX_NEGGS(32798),
+    MAX_POS_GS(32797),
+    MAX_NEG_GS(32798),
     MESSAGES_SIZE(32799),
     
-    NOPT_WEEKLY_WRITE_COUNT(32800),
+    OPT_WEEKLY_WRITE_COUNT(32800),
     ODOMETER(32801),
     ODOMETER_GPS_COUNT(32802),
-    ODOMETER_ODB_COUNT(32803),
+    ODOMETER_OBD_COUNT(32803),
     ODOMETER_RECEIVES(32804),
     ODOMETER_REQUESTS(32805),
-    RECEIVED_MESSAGE_COUNT(32806),
+    RECEIVED_MESSAGES_COUNT(32806),
     RPM_RECEIVES(32807),
     RPM_REQUESTS(32808),
     SEATBELT_RECEIVES(32809),
     
     SEATBELT_REQUESTS(32810),
     SMTOOLS_RESET_STATUS(32812),
-    SMTOOLSTIMERRUNNING(32813),
+    SMTOOLS_TIMER_RUNNING(32813),
     SPEED_RECEIVES(32814),
     SPEED_REQUESTS(32815),
     START_TIME(32816),
@@ -475,17 +483,17 @@ public enum EventAttr implements IndexEnum{
     TIME_CALIBRATED(32819),
     
     TIME_LAST_CHECKED(32821),
-    TIME_LAST_VISTED(32822),
+    TIME_LAST_VISITED(32822),
     TIME_RTC(32823),
     UPLOAD_WEEK_TOTAL_NOTIFICATION_BYTES(32824),
-    UPLOAD_WEEK_TOTAL_NOTIFICATION_COUNT(32825),
-    UPLOAD_WEEK_TOTAL_WITTNESS_II_TRACE(32826),
+    UPLOAD_WEEKLY_TOTAL_NOTIFICATION_COUNT(32825),
+    UPLOAD_WEEKLY_TOTAL_WITNESSII_TRACE(32826),
     WIRELINE_FLAGS(32827),
     SEVERE_SPEED_SECONDS(32828),
     SPEEDING_GRACE_PERIOD(32829),
     
     COMPANY_ID(32830),
-    EVENT_CODE_INT(32831),
+    SPEED_LAT_START(32831),
     SPEED_LONG_START(32832),
     SPEED_LAT_STOP(32833),
     SPEED_LONG_STOP(32834),
@@ -530,22 +538,22 @@ public enum EventAttr implements IndexEnum{
 //	these attributes are binary data values 0xC000 [49152] to 0XDFFF	[57343] (specially parsed data from old style notifications)
 ////////////////////////////////////////////////////////////////////////////////////
     
-    DELTA_VS(49152, 4),                             //binary   4 bytes
+    PACKED_DELTAV(49152, 4),                        //binary   4 bytes
     DENOMINATOR(49153, 6),                          //binary   6 bytes
     IDLE_TIMES(49154, 4),                           //binary   4 bytes
     INTERCEPTS(49155, 6),                           //binary   6 bytes
-    LAT_LNG_3(49156, 6),                            //binary   6 bytes
-    LAT_LNG_4(49157, 8),                            //binary   8 bytes
+    LAT_LONG_3_BYTE(49156, 6),                      //binary   6 bytes
+    LAT_LONG_4_BYTE(49157, 8),                      //binary   8 bytes
     NUMERATOR(49158, 6),                            //binary   6 bytes
     ORIENTATION_ROLL_PITCH_YAW(49159, 6),           //binary   6 bytes roll, pitch, yaw
     SENSOR_AGREEMENT(49160, 4),                     //binary   4 bytes
-    SPEED_DATA_HIRES(49161, 100),                   //binary 100 bytes
+    CRASH_DATA_HI_RES(49161, 100),                  //binary 100 bytes
     TEMP_COMP_DATA(49162, 54),                      //binary  54 bytes
     TEMP_COMP_SAMPLE_MAX(49163, 8),                 //binary   8 bytes
     // TEMP_COMP_SAMPLE_MIN(49163, 8),              //binary   8 bytes
     TEMP_COMP_SLOPE(49164, 6),                      //binary   6 bytes
-    WITNESS_II_ARCHIVE(49165, 124),                 //binary 124 bytes
-    WITNESS_II_ARCHIVE_HEADER(49166, 17),           //binary  17 bytes
+    WITNESSII_ARCHIVE(49165, 124),                  //binary 124 bytes
+    WITNESSII_ARCHIVE_HEADER(49166, 17),            //binary  17 bytes
     ACK_DATA(49167, 1024),                          //binary max 1024 bytes, variable length 
     CRASH_TRACE(49168, 16384),                      //binary approximately 16K bytes (not in DB attr) 16384
     WKLY_DRIVER_HISTOGRAM_STATS(49169, 1024),  		//binary approximately 1k bytes (not in db attr)
@@ -640,34 +648,150 @@ public enum EventAttr implements IndexEnum{
             file.mkdirs();
             file = new File(directory + waysFile);
             file.createNewFile();
-            Log.i("Downloading: " + waysFile);
             AutomationFileHandler.downloadSvnDirectory(ways,
                     base+".h", file);
             
             BufferedReader br = new BufferedReader(new FileReader(file));
-            
-            while (br.ready()){
-                String line = br.readLine();
+            String line;
+            while ((line = br.readLine()) != null){
                 if (line.contains(code.toString()) && line.contains("ATTR_")){
-                    Log.i(line.replace("ATTR_", "").replace(" = ", "(").replace(code+",", code+"),"));
+                    Log.i(formatAttr(line));
                 }
             }
             
             file = new File(directory + tiwiFile);
             file.createNewFile();
-            Log.i("Downloading: " + tiwiFile);
             AutomationFileHandler.downloadSvnDirectory(tiwi,
                     base+".h", file);
 
             br = new BufferedReader(new FileReader(file));
-            while (br.ready()){
-                String line = br.readLine();
+            while ((line = br.readLine()) != null){
                 if (line.contains(code.toString()) && line.contains("ATTR_")){
-                    Log.i(line.replace("ATTR_", "").replace(" = ", "(").replace(",", "),"));
+                    Log.i(formatAttr(line));
+                }
+            }
+            printUnknownAttrs();
+        } catch (IOException e) {
+            Log.e("%s", e);
+        }
+    }
+    
+    private static String formatAttr(String line){
+        return line.replace("ATTR_", "").replace(" = ", "(").replace(",", "),");
+    }
+    
+    public static void printUnknownAttrs(){
+        try {
+            String base = "notifications";
+            String waysFile = base + "-ways.h";
+            String tiwiFile = base + "-tiwi.h";
+            String ways = "https://svn.iwiglobal.com/iwi/uClinux/trunk/user/iwi/src/controller";
+            String tiwi = "https://svn.iwiglobal.com/iwi/snitch/Firmware/trunk/inc/";
+            
+            String directory = "target/test/resources/downloads/";
+            File file = new File(directory);
+            file.mkdirs();
+            file = new File(directory + waysFile);
+            file.createNewFile();
+            AutomationFileHandler.downloadSvnDirectory(ways,
+                    base+".h", file);
+            
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String regex = "ATTR_[A-Z_]*.*[=].*[0-9]*,";
+            Pattern pat = Pattern.compile(regex);
+            Pattern code = Pattern.compile("= [0-9]+");
+            Pattern name = Pattern.compile("ATTR_[A-Z_0-9]*");
+            Matcher match;
+            
+            String line;
+            while ((line = br.readLine()) != null){
+                if (line.contains("} NotificationType;")){
+                    break;
+                }
+                if (line.contains("ATTR_")){
+                    match = pat.matcher(line);
+                    if (match.find()) {
+                        int start = match.start();
+                        int end = match.end();
+                        String attr = line.substring(start, end);
+                        
+                        match = name.matcher(attr);
+                        match.find();
+                        String attrName = attr.substring(match.start(), match.end()).replace("ATTR_", "");
+                        
+                        try {
+                            valueOf(attrName);
+                        } catch (IllegalArgumentException e){
+                            Log.i("Attr with name " + attrName + " is missing, or wrong");
+                            Log.i(formatAttr(line));
+                        }
+                        
+                        
+                        match = code.matcher(attr);
+                        while (match.find()){
+                            String attrValue = attr.substring(match.start()+2, match.end());
+                            if (attrValue.isEmpty()){
+                                continue;
+                            }
+                            Double attrCode = Double.parseDouble(attrValue);
+                            if (!lookupByCode.containsKey(attrCode.intValue())){
+                                Log.i("Missing Waysmart code");
+                                MasterTest.print(formatAttr(line));
+                            }
+                            break;
+                        }
+                        
+                    }
+                }
+            }
+            
+            file = new File(directory + tiwiFile);
+            file.createNewFile();
+            AutomationFileHandler.downloadSvnDirectory(tiwi,
+                    base+".h", file);
+
+            br = new BufferedReader(new FileReader(file));
+            while ((line = br.readLine()) != null){
+                if (line.contains("} NotificationAttributes;")){
+                    break;
+                }
+                if (line.contains("ATTR_")){
+                    match = pat.matcher(line);
+                    if (match.find()) {
+                        int start = match.start();
+                        int end = match.end();
+                        String attr = line.substring(start, end);
+                        
+                        match = name.matcher(attr);
+                        match.find();
+                        String attrName = attr.substring(match.start(), match.end()).replace("ATTR_", "");
+                        
+                        try {
+                            valueOf(attrName);
+                        } catch (IllegalArgumentException e){
+                            Log.i("Attr with name " + attrName + " is missing, or wrong");
+                            Log.i(formatAttr(line));
+                        }
+                        
+                        
+                        match = code.matcher(attr);
+                        while (match.find()){
+                            String attrValue = attr.substring(match.start()+2, match.end());
+                            if (attrValue.isEmpty()){
+                                continue;
+                            }
+                            Double attrCode = Double.parseDouble(attrValue);
+                            if (!lookupByCode.containsKey(attrCode.intValue())){
+                                Log.i("Missing Tiwi code");
+                                Log.i(formatAttr(line));
+                            }    
+                            break;
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
-            Log.e("%s", e);
+            Log.i("%s", e);
         }
     }
     

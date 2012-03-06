@@ -21,6 +21,8 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 
 public class AutomationFileHandler {
@@ -65,6 +67,10 @@ public class AutomationFileHandler {
     }
     
     public static boolean downloadSvnDirectory(String source, String fileDir, File destination){
+        if (new AutomationCalendar().compareDays(new AutomationCalendar(destination.lastModified()))){
+            return true;
+        }
+        MasterTest.print("Downloading file: " + source + "/" + fileDir);
         DAVRepositoryFactory.setup( );
         SVNURL temp;
         try {
