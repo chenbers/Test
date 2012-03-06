@@ -43,27 +43,6 @@
 	    	  
 	    	  if (mapNeedsInit) {
 
-/*		    	  
-		       	map = new GMap2(document.getElementById("map-canvas"));
-	        	geocoder = new GClientGeocoder();
-		
-		        map.addControl(new GLargeMapControl());
-		        map.addControl(new GScaleControl());
-		        map.addControl(new GMenuMapTypeControl(true));
-				map.setCenter(mapDefaultLoc);
-		        map.enableScrollWheelZoom();
-					
-				bounds = new GLatLngBounds();
-			    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-
-				initCustomMaps(map);
-			
-				var node = document.getElementById("defaultMessage").cloneNode(true);
-				node.style.display = 'block';
-			    marker.openInfoWindow(node);
-*/
 
 				portalmap.init();
 				initLayers();

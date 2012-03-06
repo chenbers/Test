@@ -24,33 +24,6 @@
 		
 		function initMap(lat,lng,zoom)
 		{
-/*			
-   			if (GBrowserIsCompatible()) 
-			{
-		 	  	map = new GMap2(document.getElementById("map-canvas"));
-
-		 	  	initCustomMaps(map);
-
-		        map.addControl(new GLargeMapControl());
-		        map.addControl(new GScaleControl());
-		        map.addControl(new GMenuMapTypeControl(true));
-	
-				map.setCenter(new GLatLng(lat, lng), zoom);
-		        map.enableScrollWheelZoom();
-	
-//				addListeners();
-						 	  	
-				map.addControl(new GOverviewMapControl()); 
-				map.setMapType(G_NORMAL_MAP);
-				bounds = new GLatLngBounds();
-	    		geocoder = new GClientGeocoder();
-				errorMessage = "#{messages.sbs_badLatLng}"
-				addressLookupAddressFormat = #{vehicleTripsBean.addressFormat};
-				defaultAddressElement = "tripsMapForm:bubbleAddress";
-				
-			}
-*/
-
 			portalmap.init();
 			initLayers();
 			map = portalmap.getMap();

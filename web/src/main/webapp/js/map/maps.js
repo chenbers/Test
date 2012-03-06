@@ -77,8 +77,8 @@
       			};
       			
       			return {
-      				addOverlay: function(wmsURL, displayName, wmsLayer, isHiddenDefault, minZ, maxZ, opacity, isUsePng) {
-      					var hidden = isHiddenDefault ? isHiddenDefault : false;
+      				addOverlay: function(wmsURL, displayName, wmsLayer, isSelectedDefault, minZ, maxZ, opacity, isUsePng) {
+      					var selected = isSelectedDefault ? isSelectedDefault : false;
       					var minZoom = minZ ? minZ : 1;
       					var maxZoom = maxZ ? maxZ : 30;
       					var opacityVal = opacity ? opacity : 1.0;
@@ -97,13 +97,13 @@
       					
       					var overlaySelectOption = document.createElement('OPTION');
       					overlaySelectOption.setAttribute('id', wmsLayer + "-option");
-      					if (!hidden)
+      					if (selected)
       						overlaySelectOption.setAttribute('selected', 'selected');
       					overlaySelectOption.innerHTML = displayName;
       					overlaySelect.appendChild(overlaySelectOption);
-      					if(!hidden) map.addOverlay(overlay);
+      					if(selected) map.addOverlay(overlay);
       					overlays.push(overlay);
-      					overlaysState.push(hidden);
+      					overlaysState.push(selected);
    					
       				},
       				addControlToMap: function() {
@@ -117,10 +117,10 @@
       								checked = item.attr("checked");
       								if (checked) {
       									map.addOverlay(overlays[i]);
-      									overlaysState[i] = false;
+      									overlaysState[i] = true;
       								} else {
       									map.removeOverlay(overlays[i]);
-      									overlaysState[i] = true;
+      									overlaysState[i] = false;
       								};
       							},
       		      				textFormatFunction: function(options) {
@@ -138,9 +138,12 @@
       				},
       				restoreOverlayState: function() {
       					for (i = 0; i < overlaysState.length; i++)
-      						if (!overlaysState[i])
+      						if (overlaysState[i])
 									map.addOverlay(overlays[i]);
       							
+      				},
+      				getOverlayState : function() {
+      					return overlaysState;
       				}
 
       			};
@@ -194,8 +197,12 @@
       			restoreLayersState: function() {
 		        	wmsOverlays.restoreOverlayState();
       			},
-      			addWMSLayer: function(url, displayName, layerName, minZoom, maxZoom, opacityVal, usePng) {
-      				wmsOverlays.addOverlay(url, displayName, layerName, true, minZoom, maxZoom, opacityVal, usePng);
+      			getLayersState: function() {
+		        	return wmsOverlays.getOverlayState();
+      			},
+      			addWMSLayer: function(url, displayName, layerName, minZoom, maxZoom, opacityVal, usePng, selected) {
+					var isSelected = selected ? selected : false;
+      				wmsOverlays.addOverlay(url, displayName, layerName, selected, minZoom, maxZoom, opacityVal, usePng);
 
       			},
       			addOverlaysControl: function() {

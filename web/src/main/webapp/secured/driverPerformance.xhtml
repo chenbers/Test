@@ -21,27 +21,6 @@
 	
 	  		var map;
 	  		function initMap(lat,lng,zoom){
-/*	  		
- 					if (GBrowserIsCompatible())
- 	  				{
-      					map = new GMap2(document.getElementById("map-canvas"));
-
-      			 	  	initCustomMaps(map);
-      			 	  	
-      			        map.addControl(new GLargeMapControl());
-      					map.addControl(new GOverviewMapControl()); 
-      			        map.addControl(new GMenuMapTypeControl(true));
-      					map.setCenter(new GLatLng(lat, lng), zoom);
-      			        map.enableScrollWheelZoom();
-
-						map.setMapType(G_NORMAL_MAP);
-			    		geocoder = new GClientGeocoder();
-						errorMessage = "#{messages.sbs_badLatLng}"
-							addressLookupAddressFormat = #{driverPerformanceBean.addressFormat};
-						bounds = new GLatLngBounds();
-									
-					}
-*/
  					portalmap.init();
  					portalmap.zoom(zoom);
  					portalmap.center(new GLatLng(lat, lng));

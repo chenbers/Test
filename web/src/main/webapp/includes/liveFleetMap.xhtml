@@ -41,33 +41,6 @@
 
 	  	function initMap(lat,lng,zoom)
 	  	{
-/*		  	
-			if (GBrowserIsCompatible()) {
-				GUnload();
-				
-				if(mapNeedsInit == true)
-				{
-			 		map = new GMap2(document.getElementById("map-canvas"));
-		    		geocoder =new GClientGeocoder();
-	
-				    map.addControl(new GLargeMapControl());
-				    map.addControl(new GScaleControl());
-				    map.addControl(new GMenuMapTypeControl(true));
-	
-					map.setCenter(new GLatLng(lat, lng));
-				    map.enableScrollWheelZoom();
-					map.setZoom(zoom);
-					
-					initCustomMaps(map);
-					
-			 		overviewMapControl = new GOverviewMapControl();
-			 		map.addControl(overviewMapControl); 
-					bounds = new GLatLngBounds();
-		    		
-			 		mapNeedsInit = false;
-				}
-			}
-*/
 			portalmap.init(true);
 			portalmap.zoom(zoom);
 			portalmap.center(new GLatLng(lat, lng));
@@ -77,7 +50,6 @@
 		}
 	  	function centerMap() 
 	  	{
-//		  	portalmap.centerInBounds();
 	  		map.setZoom(map.getBoundsZoomLevel(bounds)-1);
 		    map.setCenter(bounds.getCenter());
 		}

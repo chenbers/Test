@@ -24,19 +24,19 @@
 
 
 	<script type="text/javascript">
-
 		function initLayers() {
+			overlaysState = portalmap.getLayersState();
 			portalmap.reinit();	
-			addControl = false;
+			i = 0;
 			<ui:repeat value="#{customMapsBean.customMaps}" var="customMap">
-				addControl = true;
-				portalmap.addWMSLayer("#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}");
+				selected = overlaysState ? (overlaysState[i] ? overlaysState[i] : false) : false;
+				portalmap.addWMSLayer("#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}", selected);
+				i = i + 1;
 			</ui:repeat>
-			if (addControl)
+			if (i > 0) {
 				portalmap.addOverlaysControl();
+			}
 		}
-	
-	
 	</script>
 	
 </ui:composition>

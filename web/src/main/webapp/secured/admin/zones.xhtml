@@ -239,24 +239,6 @@
 
                   function bodyLoad()
                   {
-/*                      
-                    if (GBrowserIsCompatible())
-                    {
-                      	map = new GMap2(document.getElementById("map-canvas"));
-	          	        initCustomMaps(map);
-	
-	        	        map.addControl(new GLargeMapControl());
-	        	        map.addControl(new GScaleControl());
-	        	        map.addControl(new GMenuMapTypeControl(true));
-	
-	        	        map.enableScrollWheelZoom();
-	
-//						addListeners();
-
-                      if (!showZone(false)) 
-                  		map.setCenter(new GLatLng(39.0, -104.0), 4);
-                    }
-*/
  					portalmap.init();
  					initLayers();
  					map = portalmap.getMap();
@@ -264,12 +246,6 @@
  	                	map.setCenter(new GLatLng(39.0, -104.0), 4);
  	                
                   }
-/*
-                  function bodyUnload()
-                  {
-                    GUnload();
-                  }
-*/                  
                 </script>
 
               </div>

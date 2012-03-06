@@ -75,40 +75,16 @@
 	var labels = [#{messages.teamLabels}];
 	
 	function initTeamTripsMap() {
-/*		
-		if (GBrowserIsCompatible()) {
-								
-			GUnload();
-			TeamTrips.map = new GMap2(document.getElementById("teamTrip-map-canvas"));						
-			TeamTrips.map.addControl(new GLargeMapControl());
-			TeamTrips.map.addControl(new GMenuMapTypeControl(true));
-
-	 	  	initCustomMaps(TeamTrips.map);
-
-			TeamTrips.map.setMapType(G_NORMAL_MAP);
-			
-			// Check if the zoom level is too large and set it so the page doesn't hang
-			var zoom = #{teamCommonBean.group.mapZoom};			
-			if ( zoom > 15 ) {
-				zoom = 15;
-			}
-				
-			TeamTrips.map.setCenter(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}), zoom);
-			initTeamTripsClusters(TeamTrips.map,icons);
+		var zoom = #{teamCommonBean.group.mapZoom};			
+		if ( zoom > 15 ) {
+			zoom = 15;
 		}
-*/
-			var zoom = #{teamCommonBean.group.mapZoom};			
-			if ( zoom > 15 ) {
-				zoom = 15;
-			}
-			portalmap.init(true, "teamTrip-map-canvas");
-			portalmap.zoom(zoom);
-			portalmap.center(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}));
-			initLayers();
-			TeamTrips.map = portalmap.getMap();
-			initTeamTripsClusters(TeamTrips.map,icons);
-
-				
+		portalmap.init(true, "teamTrip-map-canvas");
+		portalmap.zoom(zoom);
+		portalmap.center(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}));
+		initLayers();
+		TeamTrips.map = portalmap.getMap();
+		initTeamTripsClusters(TeamTrips.map,icons);
 	}
 	var dayClickFunction = function(event){
 	   	resetTripsForSelectedDrivers(TeamTrips.map);
