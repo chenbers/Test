@@ -573,6 +573,11 @@ public class AutomationCalendar implements Comparable<Calendar> {
         return this;
     }
 
+    /**
+     * Compares the two objects to see if they are on the same day.
+     * @param compareAgainst
+     * @return
+     */
     public boolean compareDays(AutomationCalendar compareAgainst) {
         compareAgainst.zeroTimeOfDay();
         AutomationCalendar original = new AutomationCalendar(date, format);
@@ -580,11 +585,21 @@ public class AutomationCalendar implements Comparable<Calendar> {
         return compareAgainst.equals(original);
     }
 
+    /**
+     * Compares the two objects to see if they are on the same day.
+     * @param compareAgainst
+     * @return
+     */
     public boolean compareDays(Calendar compareAgainst) {
         AutomationCalendar provided = new AutomationCalendar(compareAgainst, format);
         return compareDays(provided);
     }
 
+    /**
+     * Compares the two objects to see if they are on the same day.
+     * @param compareAgainst
+     * @return
+     */
     public boolean compareDays(String compareAgainst) {
         AutomationCalendar provided = new AutomationCalendar(compareAgainst, format);
         return compareDays(provided);
