@@ -7,19 +7,6 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security">
 
-	<!-- 
-		This is a google map control which will allow for searching, locating, and defining a center long/lat value and zoom level
-		The zoom level can be sent back to the server with the next form submision
-		
-		Paramters: 
-		latValue(Required): This is initialLatValue and also the property that the lat value is bound to when the form is submitted
-		longValue(Required)
-		zoomLevel(Required)
-		readOnly(required)
-		formName(required)
-		context(required) I had to add this because I was using the map in different includes.
-        mapId(optional) This indicates which map api will be used. ('google','microsoft') Default is 'google'
-	 -->
 	<h:panelGroup id="#{context}-mapPanel">
 		
 			<div class="add_section_title">#{messages.group_default_view}</div>
@@ -28,12 +15,13 @@
 				<table width="100%" border="0" cellpadding="4" cellspacing="0">
 					<tr>
 						<td width="100">#{messages.group_find_address}</td>
-						<td width="200"><input type="text" size="42"
-							id="#{context}-addressTextBox"
-							value="" tabindex="6"/></td>
+						<td width="200">
+							<input type="text" size="42" id="#{context}-addressTextBox" value="" tabindex="6"/>
+						</td>
 						<td width="50" align="left">
-							<a4j:commandButton  id="#{context}-groupMapViewSearch" immediate="true" tabindex="7" onclick="showAddress(document.getElementById('#{context}-addressTextBox').value);" styleClass="left">
-                     
+							<a4j:commandButton  id="#{context}-groupMapViewSearch" immediate="true" tabindex="7" 
+								onclick="showAddress(document.getElementById('#{context}-addressTextBox').value);" 
+								styleClass="left">
 								<span class="search">
 									#{messages.group_locate}
 								</span>
@@ -49,12 +37,11 @@
 					</tr>
 					<tr>
 						<td><h:panelGroup styleClass="map-border" layout="block">
-							<div id="map-canvas"
+							<div id="#{context}map-canvas"
 								style="width: 500px; height: 500px; border: 0"></div>
 							</h:panelGroup> 
 							<script type="text/javascript">
-							var mapstraction = null;	
-							/*function showAddress(address) {
+							function showAddress(address) {
 								  
 								  var geocoder = new GClientGeocoder();
 								  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
@@ -67,51 +54,28 @@
 									        var accuracy = place.AddressDetails.Accuracy;
 									        var point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
 									        map.setCenter(point, zoomLookup[accuracy]);
-											
-									        var marker = new GMarker(point);
-									        map.addOverlay(marker);
-									        marker.openInfoWindowHtml(address);
-									      }
-									    }
-								    );
-																		  
-							}*/
-
-							function showAddress(address) {
-								  
-								  var geocoder = new GClientGeocoder();
-								  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
-								  geocoder.getLocations(address,
-									    function(response) {
-									      if(response.Status.code!=200){
-									        alert('"' + address + '" not found');
-									      } else {
-									        var place = response.Placemark[0];
-									        var accuracy = place.AddressDetails.Accuracy;
-									        var point = new LatLonPoint(place.Point.coordinates[1],place.Point.coordinates[0]);
-									        mapstraction.setCenterAndZoom(point, zoomLookup[accuracy]);
-									        updateMapValues(point.lat,point.lon,zoomLookup[accuracy]);
-									        var marker = new Marker(point);
-									        mapstraction.addMarker(marker);
-                                            marker.setInfoBubble(address);
-									        marker.openBubble();
+											var marker = new GMarker(point);
+											map.addOverlay(marker);
+											marker.openInfoWindowHtml(address);
 									      }
 									    }
 								    );
 																		  
 							}
 							
-							/*
+							function clearMap(){
+								portalmap.reinit();
+								GUnload();
+								map = null;
+							}			    
+							
 							function initMap(){			    
 								if (GBrowserIsCompatible()) {
-									
-									GUnload();
-										
-							  					
-									map = new GMap2(document.getElementById("map-canvas"));
-											
-									map.addControl(new GMapTypeControl());
-									map.setMapType(G_NORMAL_MAP);
+									if (map == null) {
+		 								portalmap.init(false, '#{context}map-canvas');
+			 							map = portalmap.getMap();
+			 							initLayers();
+									}
 									map.setCenter(new GLatLng(#{latValue},#{longValue}),#{zoomLevel});
 						
 									GEvent.addListener(map, "moveend", function() {
@@ -119,18 +83,6 @@
 										  var zoom = map.getZoom();
 										  updateMapValues(center.lat(),center.lng(),zoom);
 									});
-						
-									function updateMapValues(lat,lng,zoom){
-						
-										var latField = document.getElementById('#{formName}:#{uniqueID}-latvalue');
-										var longField = document.getElementById('#{formName}:#{uniqueID}-longvalue');
-										var zoomField = document.getElementById('#{formName}:#{uniqueID}-zoomlevel');
-						
-										latField.value = lat;
-										longField.value = lng;
-										zoomField.value = zoom;
-									};
-													
 									<h:outputText rendered="#{readOnly}">
 										map.disableDragging();
 										map.disableScrollWheelZoom();
@@ -139,40 +91,8 @@
 									<h:outputText rendered="#{not readOnly}">
 										map.addControl(new GLargeMapControl());
 									</h:outputText>
-						
 								}
-					
-								
 							}
-                            */
-                            function initMap()
-                            {
-                                mapstraction = new Mapstraction('map-canvas',"#{mapId ne null ? mapId : 'google'}");
-                                // create a lat/lon object
-                                var myPoint = new LatLonPoint(#{latValue},#{longValue});
-
-                                // display the map centered on a latitude and longitude (Google zoom levels)
-                                mapstraction.setCenterAndZoom(myPoint, #{zoomLevel});
-
-                                mapstraction.addEventListener('moveend',function() {
-                                   var center = mapstraction.getCenter();
-                                   var zoom = mapstraction.getZoom();
-                                   updateMapValues(center.lat,center.lon,zoom);
-                                });
-					
-								
-                                                                
-                                <h:outputText rendered="#{readOnly}">
-                                   mapstraction.dragging(false);
-      							</h:outputText>
-      							<h:outputText rendered="#{not readOnly}">
-      							    mapstraction.addControls({
-                                        pan: true, 
-                                        zoom: 'large',
-                                        map_type: true});
-      							</h:outputText>                                
-                            }
-
                             function updateMapValues(lat,lng,zoom){
             					
 								var latField = document.getElementById('#{formName}:#{context}-latvalue');
@@ -184,7 +104,6 @@
 								zoomField.value = zoom;
                                 
 							};
-							initMap();
 						</script> 
 						<h:inputHidden id="#{context}-latvalue" value="#{latValue}" />
 						<h:inputHidden id="#{context}-longvalue" value="#{longValue}" />

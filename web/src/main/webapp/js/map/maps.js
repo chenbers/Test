@@ -133,6 +133,7 @@
       					jQuery("#overlay-select").empty();
       					jQuery("#overlay-select").dropdownchecklist("destroy");
       					map.removeControl(overlayControl);
+      					overlayControl = null;
       					overlays = new Array();
       				},
       				restoreOverlayState: function() {
@@ -147,10 +148,14 @@
       		})();
 
       		return {
-      			init: function(showOverviewControl, canvas) {
+      			init: function(showOverviewControl, canvas, opts) {
 					var overviewControl = showOverviewControl ? showOverviewControl : false;
 					var canvasID = canvas ? canvas : "map-canvas";
-      	    		map = new GMap2(document.getElementById(canvasID));
+					
+					
+					if (opts)
+						map = new GMap2(document.getElementById(canvasID), {googleBarOptions: opts});
+					else map = new GMap2(document.getElementById(canvasID));
       	            map.addControl(new GLargeMapControl());  	            
     		        map.addControl(new GMapTypeControl(true));
     		        if (overviewControl)

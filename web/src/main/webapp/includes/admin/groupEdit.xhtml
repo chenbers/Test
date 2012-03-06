@@ -13,14 +13,14 @@
 		<ul id="grid_nav_dark">
 			<li class="r">
 				<h:commandButton id="groupEditPanelView" rendered="#{organizationBean.groupState ne 'VIEW'}" tabindex="11"
-					action="#{organizationBean.view}" oncomplete="refreshNavigationTree()"
+					action="#{organizationBean.view}" oncomplete="refreshNavigationTree();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" immediate="true" styleClass="left">
 					<span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="10"
-					action="#{organizationBean.update}" oncomplete="refreshNavigationTree()"
+					action="#{organizationBean.update}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -28,7 +28,7 @@
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="10"
-					action="#{organizationBean.save}" oncomplete="refreshNavigationTree()"
+					action="#{organizationBean.save}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -207,21 +207,21 @@
 		<ui:param name="formName" value="display-form" />
         <ui:param name="mapId" value="#{organizationBean.mapType.mapId}"/>
 		<ui:param name="context" value="#{context}-groupEdit"/>
-	</ui:include></div>
-
+	</ui:include>
+	</div>
+	
 	<h:outputText rendered="#{organizationBean.groupState eq 'EDIT'}">
-
 		<ul id="grid_nav_dark">
 			<li class="r">
 				<h:commandButton id="#{context}-groupEditEditView" rendered="#{organizationBean.groupState ne 'VIEW'}"
-					action="#{organizationBean.view}" oncomplete="refreshNavigationTree()"
+					action="#{organizationBean.view}" oncomplete="refreshNavigationTree();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" immediate="true" styleClass="left" tabindex="9">
 					<span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton id="#{context}-groupEditEditEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="8"
-					action="#{organizationBean.update}" oncomplete="refreshNavigationTree()"
+					action="#{organizationBean.update}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -229,23 +229,18 @@
 			</li>
 			<li class="r">
 				<a4j:commandButton id="#{context}-groupEditEditAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="8"
-					action="#{organizationBean.save}" oncomplete="refreshNavigationTree()"
+					action="#{organizationBean.save}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="add"><h:outputText
 						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
 			</li>
-			
-			
 		</ul>
-
 	</h:outputText>
-	<script type="text/javascript">	
-
+	<script type="text/javascript">
 		function updateAddressRequired(element) {
 		    if (element.selectedIndex == 0) {
             	jQuery('#display-form\\:#{context}-addressGroup .required').hide();
-                    	
 		    }
 		    else {
             	jQuery('#display-form\\:#{context}-addressGroup .required').show();

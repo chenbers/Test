@@ -12,15 +12,15 @@
 	
 		<li class="r">
 			<a4j:commandButton id="#{context}-groupViewAdd"
-				action="#{organizationBean.add}"
-				reRender="contentPanel" styleClass="left">
+				action="#{organizationBean.add}"  onclick="clearMap();"
+				reRender="contentPanel" styleClass="left" oncomplete="initMap();">
 				<span class="add"><h:outputText
 					value="#{messages.button_add}" /></span></a4j:commandButton>
 		</li>
 		<li class="r">
 			<a4j:commandButton id="#{context}-groupViewEdit"
-				action="#{organizationBean.edit}"
-				reRender="contentPanel" styleClass="left">
+				action="#{organizationBean.edit}" onclick="clearMap();"
+				reRender="contentPanel" styleClass="left" oncomplete="initMap();">
 				<span class="edit"><h:outputText
 					value="#{messages.button_edit}" /></span></a4j:commandButton>
 		</li>
@@ -138,8 +138,6 @@
 		<ui:param name="formName" value="display-form" />
 		<ui:param name="context" value="#{context}-groupView"/>
         <ui:param name="mapId" value="#{organizationBean.mapType.mapId}"/>
-	</ui:include></div>
-
-	
-
+	</ui:include>
+	</div>
 </ui:composition>

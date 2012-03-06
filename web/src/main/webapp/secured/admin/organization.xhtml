@@ -11,14 +11,14 @@
     <ui:param name="title" value="#{messages.adminHeader_organization}"/>
 	<ui:param name="adminSelected" value="current" />
 	<ui:define name="scripts">
-		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-        <script src="#{facesContext.externalContext.request.contextPath}/js/mapstraction/mapstraction.js" type="text/javascript"></script>
+	  	<ui:include src="/includes/map/portalMap.xhtml"/>
+	  	<script type="text/javascript">
+			var map = null;
+		</script>
         <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6"></script>
 	</ui:define>
 
 	<ui:define name="content">
-<!--		<t:saveState value="#{organizationBean}"/>-->
-		
 		<table width="920" border="0" cellspacing="0" cellpadding="0"
 			align="center" style="margin: 0 auto 0 auto;">
 			<tr>
@@ -48,6 +48,7 @@
 									value="/images/ico_building.png" /></li>
 								<li class="l grid_title" style="width: 160px">#{organizationBean.accountName}</li>
 								<li class="r grid_icon">
+								
 									<a4j:status	id="overview_ajax_status" for="treeViewRegion">
 										<f:facet name="start">
 											<h:outputText>
@@ -72,6 +73,8 @@
       										nodeFace="#{item.data.treeNodeType}"
       										nodeSelectListener="#{organizationBean.selectNode}"
       										reRender="contentPanel"
+      										onclick="clearMap();"
+          									oncomplete="initMap();"
       										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
       										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
       										changeExpandListener="#{organizationBean.changeExpandListener}"
@@ -260,11 +263,11 @@
 	      <ui:param name="deleteBean" value="#{organizationBean}" />
 	      <ui:param name="explanation" value="#{messages.group_delete_confirmation}" />
 	      <ui:param name="reRender" value="contentPanel,organizationTreePanel,navigation:recents" />
-      		<ui:param name="context" value="organization" />
-      		<ui:param name="ondelete" value="refreshNavigationTree()" />
+      	  <ui:param name="context" value="organization" />
+      	  <ui:param name="supportRedirect" value="true" />
 	    </ui:include>
     
-	    <script type="text/javascript">	
+	    <script type="text/javascript">
 	    	function bodyLoad()
 	    	{
 	        	initMap();
