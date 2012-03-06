@@ -3,9 +3,8 @@ package com.inthinc.device.emulation.enums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
+import android.util.Log;
 
-import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 
 
@@ -316,7 +315,7 @@ public enum EventAttr implements IndexEnum{
     DIGITAL_OUTPUT_STATUS(16391),
     DURATION(16392),
     ERROR_CODE(16393),
-    ERROR_DETAILS(16394),
+    //ERROR_DETAILS(16394),
     FILTERED_NOTE_EVENT_COUNT(16395),
     FORWARD_COMMAND_ID(16396),
     G_TRIGGER_LEVEL(16397),
@@ -376,6 +375,10 @@ public enum EventAttr implements IndexEnum{
 	SPEED_LIMIT_41_TO_54_DISTANCE(16444),
 	SPEED_LIMIT_55_TO_64_DISTANCE(16445),
 	SPEED_LIMIT_65_TO_80_DISTANCE(16446),
+    OBD_ABS_ODO_DIST(16447),
+    OBD_SPD_DIST(16448),
+    GPS_SPD_DIST(16449),
+    GPS_GAP_DIST(16450),
     
 
 	
@@ -503,6 +506,9 @@ public enum EventAttr implements IndexEnum{
 	SPEED_STOP_TIME_OS(32852),
 	SPEED_MAX_TIME_OS(32853),
 	LINK_ID(32854),
+    TIME_DIFF(32855),
+    ERROR_DETAILS(32856),
+    NOTIFICATION_ENUM(32857),
 
 		    
 ////////////////////////////////////////////////////////////////////////////////////
@@ -609,13 +615,12 @@ public enum EventAttr implements IndexEnum{
 
     public static EventAttr valueOf(Integer code) {
         EventAttr result = lookupByCode.get(code);
-        if(result == null)
-        	logger.warn("Unknown EventAttr.code: "+code);
-        
+        if(result == null){
+        	Log.i("Unknown EventAttr.code: " + code);
+        }
         return result;
     }
-    private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
-
+    
     @Override
     public String toString(){
         return String.format("%s(%d)", name(), code);
