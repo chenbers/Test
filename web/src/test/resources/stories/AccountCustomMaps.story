@@ -390,3 +390,187 @@ Example
 |hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
 |map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
 |sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6072 Test custom layers display correctly in Portal - Notifications Tab - Red Flags Tab
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the red flags tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6073 Test custom layers display correctly in Portal - Notifications Tab - Safety Tab
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the safety tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6074 Test custom layers display correctly in Portal - Notifications Tab - Diagnostics Tab
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the diagnostics tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6075 Test custom layers display correctly in Portal - Notifications Tab - Zones Tab
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the zones tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6076 Test custom layers display correctly in Portal - Notifications Tab - HOS Exceptions Tab
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the hos exceptions tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6077 Test custom layers display correctly in Portal - Notifications Tab - Emergency Tab
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the emergency tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6078 Test custom layers display correctly in Portal - Notifications Tab - Crash History
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the crash history tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6079 Test custom layers display correctly in Portal - Notifications Tab - Driver Logins
+Given I log in to the home page
+And I click on the notifications tab
+And I click on the driver logins tab
+And I select a team
+And I select a time frame
+And I click refresh
+And I click the map icon
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
