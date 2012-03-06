@@ -264,8 +264,14 @@ public abstract class DeviceNote {
 	public static DeviceAttributes decodeAttributes(ByteArrayInputStream bais, Integer keySize) {
 		DeviceAttributes attrs = new DeviceAttributes();
 		for (int i = bais.available(); i>0; i = bais.available()){
-			EventAttr key = EventAttr.valueOf(byteToInt(bais, keySize));
-			decodeAttribute(bais, key, attrs);
+		    int attrKey = byteToInt(bais, keySize);
+			EventAttr key = EventAttr.valueOf(attrKey);
+			if (key==null){
+			    readAttribute(bais, attrKey); // Since we can't add the key, just read in the 
+			                                // array, but we can't use it.
+			} else {
+			    decodeAttribute(bais, key, attrs);
+			}
 		}
 		return attrs;
 	}
@@ -277,6 +283,14 @@ public abstract class DeviceNote {
 			decodeAttribute(bais, key, attrs);
 		}
 		return attrs;
+	}
+	
+	public static void readAttribute(ByteArrayInputStream bais, int key){
+	    if (EventAttr.getAttrSize(key) <= Integer.SIZE/Byte.SIZE){
+            byteToInt(bais, EventAttr.getAttrSize(key));
+        } else {
+            byteToDouble(bais);
+        }
 	}
 	
 	public static void decodeAttribute(ByteArrayInputStream bais, EventAttr key, DeviceAttributes attrs){

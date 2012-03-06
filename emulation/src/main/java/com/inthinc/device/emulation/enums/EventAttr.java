@@ -572,22 +572,28 @@ public enum EventAttr implements IndexEnum{
 
     private EventAttr(int code) {
         this.code = code;
-        if (code <= 127) {                          // Attribute Id (1-127 have one byte values)
+        size = getAttrSize(code);
+        string = false;
+    }
+    
+    public static final int getAttrSize(int attrKey){
+        int size = 0;
+        if (attrKey <= 127) {                          // Attribute Id (1-127 have one byte values)
             size = Byte.SIZE / Byte.SIZE;
-        } else if (code >= 128 && 191 >= code) {    // Attribute Id (128->191 have two byte values)
+        } else if (attrKey >= 128 && 191 >= attrKey) {    // Attribute Id (128->191 have two byte values)
             size = Short.SIZE / Byte.SIZE;
-        } else if (code >= 192 && 254 >= code) {    // Attribute id (192->254) have four byte values)
+        } else if (attrKey >= 192 && 254 >= attrKey) {    // Attribute id (192->254) have four byte values)
             size = Integer.SIZE / Byte.SIZE;
-        } else if (code >= 8192 && 16383 >= code) { // one byte value attributes 8192 [0x2000] to 16383 [0x3FFF]
+        } else if (attrKey >= 8192 && 16383 >= attrKey) { // one byte value attributes 8192 [0x2000] to 16383 [0x3FFF]
             size = Byte.SIZE / Byte.SIZE;
-        } else if (code >= 16384 && 24575 >= code) {// two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]    
+        } else if (attrKey >= 16384 && 24575 >= attrKey) {// two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]    
             size = Short.SIZE / Byte.SIZE;
-        } else if (code >= 32768 && 40959 >= code) {// Attribute ids 32768  [0x8000] to  40959 [0x9FFF] have four byte values,
+        } else if (attrKey >= 32768 && 40959 >= attrKey) {// Attribute ids 32768  [0x8000] to  40959 [0x9FFF] have four byte values,
             size = Integer.SIZE / Byte.SIZE;
-        } else if (code >= 40960 && 49151 >= code) {// double value Attributes 40960 [0xA000] to 49151 [0xBFFF]
+        } else if (attrKey >= 40960 && 49151 >= attrKey) {// double value Attributes 40960 [0xA000] to 49151 [0xBFFF]
             size = Double.SIZE / Byte.SIZE;
         }
-        string = false;
+        return size;
     }
 
     private EventAttr(int code, int size) {
