@@ -334,7 +334,48 @@ Given I log in to the home page
 And I click on the reports tab
 And I click on the drivers tab
 And I select a driver with a last trip
-ANd I click on view all trips link
+And I click on view all trips link
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6070 Test custom layers display correctly in Portal - Reports Tab - Vehicles Tab - Pick a vehicle with a list trip
+Given I log in to the home page
+And I click on the reports tab
+And I click on the vehicles tab
+And I select a vehicle with a last trip
+When map is selected by default
+And I have selected a <maptype> from the dropdown
+Then map is updated correctly
+
+Example
+|maps|display_name|URL|min|max|opacity|layer|map_pages|
+|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
+|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
+|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
+|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
+|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
+|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
+|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
+|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
+
+Scenario: TC6071 Test custom layers display correctly in Portal - Reports Tab - Vehicles Tab - Pick a vehicle with a list trip - View all trips
+Given I log in to the home page
+And I click on the reports tab
+And I click on the vehicles tab
+And I select a vehicle with a last trip
+And I click on view all trips link
 When map is selected by default
 And I have selected a <maptype> from the dropdown
 Then map is updated correctly
