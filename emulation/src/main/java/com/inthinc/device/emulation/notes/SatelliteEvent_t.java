@@ -176,7 +176,7 @@ public class SatelliteEvent_t extends DeviceNote {
 				seatBeltViolation, rpmViolation, heading, sats, 
 				speed, speedLimit, linkID, odometer, boundaryID, driverID);
 		note.addAttrs(decodeAttributes(bais, 2));
-		return null;
+		return note;
 	}
 
 	@Override
