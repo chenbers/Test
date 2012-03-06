@@ -335,14 +335,14 @@ public class MCMProxyObject implements MCMService{
     
     public void sendSatSMTP(String imei, List<? extends DeviceNote> sendingQueue){
         Properties props = new Properties();
-        props.put("mail.smtp.host", "192.168.1.226");
+        props.put("mail.smtp.host", server.getPortalUrl());
         Session session = Session.getDefaultInstance(props, null);
         InternetAddress from=null, to1=null, to2=null, to3=null;
         try {
             from = new InternetAddress("sbdservice@sbd.iridium.com", "Emulation Project");
             to1 = new InternetAddress("iridium@" + server.getPortalUrl(), "Bridge");
             to2 = new InternetAddress("dtanner@inthinc.com", "David Tanner");
-            to3 = new InternetAddress("bmiller@inthinc.com", "Bill Miller");
+//            to3 = new InternetAddress("bmiller@inthinc.com", "Bill Miller");
         } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Couldn't encode the Email addresses");
         }
@@ -354,7 +354,7 @@ public class MCMProxyObject implements MCMService{
                 msg.setFrom(from);
                 msg.addRecipient(Message.RecipientType.TO, to1);
                 msg.addRecipient(Message.RecipientType.TO, to2);
-                msg.addRecipient(Message.RecipientType.TO, to3);
+//                msg.addRecipient(Message.RecipientType.TO, to3);
                 
                 msg.setSubject("SBD Msg From Unit: " + imei);
     

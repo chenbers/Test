@@ -2,12 +2,15 @@ package com.inthinc.device.emulation.notes;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import android.util.Log;
 
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
@@ -173,11 +176,33 @@ public abstract class DeviceNote {
             dos.flush();
             array = bos.toByteArray();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.wtf("%s", e);
         }
         for (int i=array.length-numOfBytes; i<array.length;i++){
             baos.write(array[i]);
         }
+    }
+    
+    public static void doubleToByte(ByteArrayOutputStream baos, Double toAdd){
+        DataOutputStream dos = new DataOutputStream(baos);
+        
+        try {
+            dos.writeDouble(toAdd);
+            dos.flush();
+        } catch (IOException e) {
+            Log.wtf("%s", e);
+        }
+    }
+    
+    
+    public static double byteToDouble(ByteArrayInputStream bais){
+        DataInputStream dis = new DataInputStream(bais);
+        try {
+            return dis.readDouble();
+        } catch (IOException e) {
+            Log.wtf("%s", e);
+        }
+        return 0.0;
     }
     
     public static void longToByte(ByteArrayOutputStream baos, Integer toAdd, int numOfBytes){
@@ -273,7 +298,11 @@ public abstract class DeviceNote {
 			}
 			attrs.addAttribute(key, writer.toString());
 		} else {
-			attrs.addAttribute(key, byteToLong(bais, key.getSize()));
+		    if (key.getSize() <= Integer.SIZE/Byte.SIZE){
+		        attrs.addAttribute(key, byteToInt(bais, key.getSize()));
+		    } else {
+		        attrs.addAttribute(key, byteToDouble(bais));
+		    }
 		}
 		
 	}

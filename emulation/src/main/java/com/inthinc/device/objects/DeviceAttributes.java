@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import android.util.Log;
+
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
@@ -45,6 +47,36 @@ public class DeviceAttributes implements Iterable<EventAttr>{
     
     public Object getValue(EventAttr key){
         return attrs.get(key);
+    }
+    
+    public int getInt(EventAttr key){
+        Object value = attrs.get(key);
+        try {
+            return (Integer) value;
+        } catch (ClassCastException e){
+            Log.e("Cannot cast " + key + " to an Integer, Actual class is : " + attrs.get(key).getClass().getSimpleName());
+        }
+        return 0;
+    }
+    
+    public String getString(EventAttr key){
+        Object value = attrs.get(key);
+        try {
+            return (String) value;
+        } catch (ClassCastException e){
+            Log.e("Cannot cast " + key + " to a String, Actual class is : " + attrs.get(key).getClass().getSimpleName());
+        }
+        return "";
+    }
+    
+    public double getDouble(EventAttr key){
+        Object value = attrs.get(key);
+        try {
+            return (Double) value;
+        } catch (ClassCastException e){
+            Log.e("Cannot cast " + key + " to a Double, Actual class is : " + attrs.get(key).getClass().getSimpleName());
+        }
+        return 0.0;
     }
 
     @Override
