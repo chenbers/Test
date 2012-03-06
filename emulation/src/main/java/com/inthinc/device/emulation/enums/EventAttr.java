@@ -1,10 +1,15 @@
 package com.inthinc.device.emulation.enums;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 
 import android.util.Log;
 
+import com.inthinc.device.emulation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 
 
@@ -616,9 +621,54 @@ public enum EventAttr implements IndexEnum{
     public static EventAttr valueOf(Integer code) {
         EventAttr result = lookupByCode.get(code);
         if(result == null){
-        	Log.i("Unknown EventAttr.code: " + code);
+            Log.i("Unknown EventAttr.code: " + code);
+            updateAttr(code);
         }
         return result;
+    }
+    
+    private static void updateAttr(Integer code){
+        try {
+            String base = "notifications";
+            String waysFile = base + "-ways.h";
+            String tiwiFile = base + "-tiwi.h";
+            String ways = "https://svn.iwiglobal.com/iwi/uClinux/trunk/user/iwi/src/controller";
+            String tiwi = "https://svn.iwiglobal.com/iwi/snitch/Firmware/trunk/inc/";
+            
+            String directory = "target/test/resources/downloads/";
+            File file = new File(directory);
+            file.mkdirs();
+            file = new File(directory + waysFile);
+            file.createNewFile();
+            Log.i("Downloading: " + waysFile);
+            AutomationFileHandler.downloadSvnDirectory(ways,
+                    base+".h", file);
+            
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            
+            while (br.ready()){
+                String line = br.readLine();
+                if (line.contains(code.toString()) && line.contains("ATTR_")){
+                    Log.i(line.replace("ATTR_", "").replace(" = ", "(").replace(code+",", code+"),"));
+                }
+            }
+            
+            file = new File(directory + tiwiFile);
+            file.createNewFile();
+            Log.i("Downloading: " + tiwiFile);
+            AutomationFileHandler.downloadSvnDirectory(tiwi,
+                    base+".h", file);
+
+            br = new BufferedReader(new FileReader(file));
+            while (br.ready()){
+                String line = br.readLine();
+                if (line.contains(code.toString()) && line.contains("ATTR_")){
+                    Log.i(line.replace("ATTR_", "").replace(" = ", "(").replace(",", "),"));
+                }
+            }
+        } catch (IOException e) {
+            Log.e("%s", e);
+        }
     }
     
     @Override
