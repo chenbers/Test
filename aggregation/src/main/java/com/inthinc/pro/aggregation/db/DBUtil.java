@@ -530,7 +530,8 @@ public class DBUtil {
 			endTS = (int) (endDayCalendar.getTime().getTime()/1000);
 		}
 		
-		int milesDrivenForDay = (int) (trip.getMileage()+trip.getMileageOffset());
+//		int milesDrivenForDay = (int) (trip.getMileage()+trip.getMileageOffset());
+		int milesDrivenForDay = (int) trip.getMileage();
 
 
 		//Prorate mileage if trip crosses a day 
