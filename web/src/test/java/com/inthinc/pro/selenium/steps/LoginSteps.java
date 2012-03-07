@@ -1,5 +1,7 @@
 package com.inthinc.pro.selenium.steps;
 
+import java.awt.event.FocusAdapter;
+
 import org.apache.log4j.Level;
 import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.Given;
@@ -21,12 +23,70 @@ public class LoginSteps extends WebSteps {
     PageLogin loginPage = new PageLogin();
     AutomationUser login;
     
+    //Need to add code that will update Rally as that is currently failing
 
     private static final PageLogin page = new PageLogin();
     private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
 
+
+    @Given("I log in to the login page")
+    public void givenIAmLoggedInToTheLoginPage() {
+        if (!page.verifyOnPage()) {
+            page.load();
+            page._textField().userName().type(autouser.getUsername());
+            page._textField().password().type(autouser.getPassword());
+            whenIClickSignIn();
+        }
+    }
+    
+    @Given("I log in to the login page as an admin")
+    public void givenIAmLoggedInToTheLoginPageAsAnAdmin() {
+        if (!page.verifyOnPage()) {
+            page.load();
+            page._textField().userName().type("mweiss");
+            page._textField().password().type("password");
+            whenIClickSignIn();
+        }
+    }
+    
+    @When("I log in to the login page as a locked out user")
+    public void givenIAmLoggedInToTheLoginPageAsALockedOutUser() {
+        {
+            page._textField().userName().type("002113");
+            page._textField().password().type("password");
+            whenIClickSignIn();
+        }
+    }
+    
+    @When("I bookmark the page")
+    public void whenIBookmarkThePage() {
+        page.savePageLink();
+    }
+    
+    @When("I click log out")
+    public void whenIClickLogOut() {
+        page._link().logout().click();
+    }    
+    
+    @When("I click the bookmark I just added")
+    public void whenIClickTheBookmarkIJustAdded() {
+        page.openSavedPage();
+    }    
+    
+    @When("I type a valid user name")
+    public void whenITypeAValidUserName() {
+        page._textField().userName().type(autouser.getUsername());
+    }
+    
+    
+    @When("I am on the log in page")
+    public void givenIAmOnTheLogInPage() {
+        if (!page.verifyOnPage()) {
+            page.load();
+        }
+    }
+    
     @Given("I am on the login page")
-    @Aliases(values={"I am on the Login page"})
     public void givenIAmOnTheLoginPage() {
         if (!page.verifyOnPage()) {
             page.load();
@@ -34,14 +94,29 @@ public class LoginSteps extends WebSteps {
     }
 
     @When("I type an user name in the wrong case")
-    public void whenITypeAnUserNameInTheWrongCase(){
+    public void whenITypeAnUserNameInTheWrongCase() {
         page._textField().userName().type(MasterTest.switchCase(autouser.getUsername()));
         
+    }
+    
+    @When("I type an invalid user name")
+    public void whenITypeAnInvalidUserName() {
+        page._textField().userName().type("thiswillneverbeavalidusername");
     }
 
     @When("I type a valid password")
     public void whenITypeAValidPassword() {
         page._textField().password().type(autouser.getPassword());
+    }
+    
+    @When("I type an invalid password")
+    public void whenITypeAnInvalidPassword() {
+        page._textField().password().type("invalidpasswordentered");
+    }
+    
+    @When("I type a password in the wrong case")
+    public void whenITypeAPasswordInTheWrongCase() {
+        page._textField().password().type(MasterTest.switchCase(autouser.getPassword()));
     }
 
 //    @When("I click log in")
@@ -53,8 +128,13 @@ public class LoginSteps extends WebSteps {
     public void thenIGetAnAlertIncorrectUserNameOrPasswordPleaseTryAgain() {
         page._popUp().loginError()._text().message().validate();
     }
+    
+    @Then("I get an alert 'Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.'")
+    public void thenIGetANAlertYourAccessHasBeenBlocked() {
+        page._popUp().loginError()._text().message().validate();
+    }
 
-    @Then("I close the alert and i am still on the login page")
+    @Then("I close the alert and I am still on the login page")
     public void thenICloseTheAlertAndIAmStillOnTheLoginPage() {
         page._popUp().loginError()._button().ok().click();
     }
@@ -67,19 +147,87 @@ public class LoginSteps extends WebSteps {
         
     }
     
-    @Then("the name field is")
+    @Then("the name field is $text")
     public void validateUserNameField(String text) {
-    //    if (text.equals(" ")){
-    //        text = "";
-    //    }
+
         page._textField().userName().validate(text);
+        page._textField().userName().focus();
+        
     }
     
     @Then("the password field is $password")
     public void validateUserPasswordField(String password) {
         page._textField().password().validate(password);
     }
+    
+    @Then("I select home")
+    public void thenISelectHome()
+    {
+        
+    }
+    
+    @Then("the overview page is displayed")
+    public void thenTheOverviewPageIsDisplayed()
+    {
+        PageTeamDashboardStatistics teamDashboardPage = new PageTeamDashboardStatistics();
+        teamDashboardPage.verifyOnPage();
+        String team = teamDashboardPage._text().teamName().getText();
+        test.assertEquals(login.getTeamName(), team);
+    }
+    
+    @When("I press the enter key")
+    public void whenIPressTheEnterKey(){
+        page._button().logIn().enterKey();
+    }
+    
+    @When("the focus is on the name field")
+    public void whenTheFocusIsOnTheNameField(){
+        page._textField().userName().focus();//ADD THE FUNCTIONALITY FOR VERFIYING THE FOCUS IS IN THE RIGHT PLACE
+    }
 
+    @Then("the focus moves to the password field")
+    public void thenTheFocusMovesToThePasswordField(){
+      // PENDING
+    }
+    
+    @Then("the focus moves to the log in button")
+    public void thenTheFocusMovesToTheLogInButton(){
+      // PENDING
+    }
+
+    @Then("the focus moves to the forgot user name or password link")
+    public void thenTheFocusMovesToTheForgotUserNameOrPasswordLink(){
+      // PENDING
+    }
+
+    @Then("the focus moves to the privacy policy link")
+    public void thenTheFocusMovesToThePrivacyPolicyLink(){
+      // PENDING
+    }
+
+    @Then("the focus moves to the legal notice link")
+    public void thenTheFocusMovesToTheLegalNoticeLink(){
+      // PENDING
+    }
+
+    @Then("the focus moves to the support link")
+    public void thenTheFocusMovesToTheSupportLink(){
+      // PENDING
+    }
+    
+    @Then("I confirm the page contains all necessary elements")
+    public void thenIConfirmThePageContainsAllNecessaryElements(){
+        Boolean validate = page._textField().userName().isPresent() & 
+                page._textField().userName().focus().isPresent() &
+                page._textField().password().isPresent() &
+                page._button().logIn().isPresent() &
+                page._link().forgotUsernamePassword().isPresent() &
+                page._text().version().isPresent();
+
+        
+        page.validateTrue(validate, "All elements exist on this page");
+    }
+     
     
 //    
     @Given("I am logged in as a user in a role that does have the $accessPointName accesspoint")
@@ -199,16 +347,15 @@ public class LoginSteps extends WebSteps {
 //    }
     
     @When("I open the Login Page")
-    @Pending
     public void whenIOpenTheLoginPage() {
         //TODO: jwimmer: figure out if we REALLY need separate givens and whens?  (these 2 methods DO the same thing)
         loginPage.load();
     }
-    @Given("I am on the Login Page $dummyText")
+/*    @Given("I am on the Login Page $dummyText")
     public void givenIAmOnTheLoginPage(String dummyText) {
         MasterTest.print("Given I am on the Login Page "+dummyText, Level.ERROR);
         loginPage.load();
-    }
+    } */
 
     @When("I enter a valid username password combination")
     public void whenIEnterAValidUsernamePasswordCombination() {
@@ -296,7 +443,6 @@ public class LoginSteps extends WebSteps {
     }
 
     @When("I attempt to login with an invalid username valid password combination")
-    @Pending
     public void whenIAttemptToLoginWithAnInvalidUsernameValidPasswordCombination() {
         String invalidUsername = AutomationUsers.getUsers().getOneBy(LoginCapability.PasswordInvalid).getUsername();
         String validPassword = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive).getPassword();
