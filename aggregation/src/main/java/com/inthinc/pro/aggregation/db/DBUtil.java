@@ -554,7 +554,12 @@ public class DBUtil {
 			long tripEndTS = trip.getEndTime().getTime()/1000;
 			logger.debug("tripStartTS: " + tripStartTS);
 			logger.debug("tripEndTS: " + tripEndTS);
-			float percent = (endTS-startTS)/(tripEndTS-(tripStartTS*1F));
+			float tripInDaySeconds = (endTS-startTS) * 1F;
+			float tripSeconds = (tripEndTS-tripStartTS) * 1F;
+			logger.debug("tripInDaySeconds: " + tripInDaySeconds);
+			logger.debug("tripSeconds: " + tripSeconds);
+			
+			float percent = tripInDaySeconds/tripSeconds;
 			logger.debug("percent: " + percent);
 			logger.debug("milesDrivenForDay before: " + milesDrivenForDay);
 			milesDrivenForDay = (int) (milesDrivenForDay * percent);
