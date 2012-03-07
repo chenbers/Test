@@ -11,151 +11,21 @@
 
 	<ui:param name="title" value="#{messages.vehiclePerformanceTab} - #{vehiclePerformanceBean.vehicle.name} - #{messages.vehicle_speed}"/>
 	<ui:define name="scripts">
-        <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
         <a4j:loadScript src="/js/FusionCharts.js" />
+   		<ui:include src="/secured/reports/driverVehicleCommon.xhtml">
+			<ui:param name="formName" value="notificationsTableForm" />
+			<ui:param name="mapDiv" value="address-canvas" />
+		</ui:include>
         <a4j:loadScript src="/js/speedByStreet.js" />	
-	    <script type="text/javascript">
-	    var geocoder;
-
-	    (function($){ 
-
-	    	$.fn.refreshTable = function(index){
-		    	
-	              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
-	              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-					setAddress(index);
-	  				setAverageSpeedDifference(index);
-	  				setTopSpeedDifference(index);
-	    	};
-	    	
-	    })(jQuery);
-	    
-	      function initialize(lat, lng) 
-	      {
-	        if (GBrowserIsCompatible()) {
-	          var map = new GMap2(document.getElementById("address-canvas"));
-	          var location = new GLatLng(lat, lng)
-              map.addControl(new GLargeMapControl());
-	          map.setCenter(location, 15);
-	          map.addOverlay(new GMarker(location)); 
-	    	  geocoder = new GClientGeocoder();
-	        }
-	      }
-/*          function initializeTable()
-          {
-              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
-              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-    		  getAddresses();
-			  setSpeedDifferences();
-	            
-          }*/
-    	  function setAverageSpeedDifference(index){
-  		
-    		document.getElementById("notificationsTableForm:notificationsTable:"+index+":averageSpeedDifference").innerHTML = 	
-    	      	parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":averageSpeedValue").innerHTML)-
-  		  		parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":speedLimitValue").innerHTML);
-  		
-  		  }
-
-    	  function setTopSpeedDifference(index){
-  		
-    		document.getElementById("notificationsTableForm:notificationsTable:"+index+":topSpeedDifference").innerHTML = 	
-				parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":topSpeedValue").innerHTML)-
-  				parseInt(document.getElementById("notificationsTableForm:notificationsTable:"+index+":speedLimitValue").innerHTML);
-  		
-  	 	  }
-    	function setAddress(index){
-        	
-	  		var address = document.getElementById("notificationsTableForm:notificationsTable:"+index+":eventAddress");
-	  		
-	  		if (address.innerHTML.length==0){
-
-	      		var lat = document.getElementById("notificationsTableForm:notificationsTable:"+index+":eventLat");
-	      		var lng = document.getElementById("notificationsTableForm:notificationsTable:"+index+":eventLng");
-	
-	    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-						
-	    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
-				}
-				else {
-					
-					address.innerHTML ="#{messages.sbs_badLatLng}";
-				}
-	  		}
-    	}
-    	
-/*          function getAddresses()
-          {
-              if (#{vehicleSpeedBean.addressFormat == 3}){
-
-              	jQuery('td[id$="address_column"]').each(function(n){
-
-      	      		var address = jQuery(this).find('*[id$="eventAddress"]');
-      	      		
-      	      		if (address[0].innerHTML.length==0){
-      		      		
-      	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-      	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-      	
-      	        		if( lat[0].value &gt;= -90 &amp;&amp; lat[0].value &lt;= 90 &amp;&amp;  lng[0].value &gt;= -180 &amp;&amp;  lng[0].value &lt;= 180){
-      							
-      	        			reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0], null);
-      					}
-      					else {
-      						
-      						address[0].innerHTML ="#{messages.sbs_badLatLng}";
-      					}
-      	      		}
-                    		
-          		});
-              }
-              
-          }*/
-          function setSpeedDifferences(){
-              
-             	jQuery('td[id$="averageSpeed"]').each(function(n){
-
-             		var tokens = this.id.split(':');
-            		setAverageSpeedDifference(tokens[2]);
-            		setTopSpeedDifference(tokens[2]);
-            		
-             	});
-          }
-          function reverseGeocodeTripAddress(latlng, addressElement){
-              
-              if (geocoder == null) geocoder = new GClientGeocoder();
-                
-           	geocoder.getLocations(latlng, 
-          			function(response){
-      			        if (!response || response.Status.code != 200) {
-          			        
-      			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
-
-      			        } 
-      			        else {
-
-      		             	addressElement.innerHTML = response.Placemark[0].address;
-      			        }
-      		    	});
-          }
-    	</script>
-
+        
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
 	
 	
 	<ui:define name="content">
-<!--	<t:saveState value="#{vehicleSpeedBean.events}"/>-->
-<!--	<t:saveState value="#{vehicleSpeedBean.filteredEvents}"/>-->
-<!--	<t:saveState value="#{vehicleSpeedBean.eventsListsMap}"/>-->
-<!--	<t:saveState value="#{vehicleSpeedBean.tableStatsBean}"/>-->
-<!--	<t:saveState value="#{vehicleSpeedBean.selectedBreakdown}"/>-->
-<!--	<t:saveState value="#{vehicleSpeedBean.vehicle}"/>-->
-<!--    <t:saveState value="#{vehicleSpeedBean.groupTreeNodeImpl}"/>-->
 <div id="wrapper">
 <h:form>
-    <!--<rich:jQuery selector="document" query="ready(function(){initializeTable()})" />-->
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
@@ -660,7 +530,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
- 	 								<rich:jQuery selector="id$=notificationsTable" timing="onload" query="refreshTable(#{index})" />
+ 	 								<rich:jQuery selector="id$=notificationsTable" timing="onload" query="refreshTable(#{index}, true)" />
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleSpeedBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
 									</h:outputText>
@@ -809,7 +679,7 @@ var firstLoad = new Boolean(true);
 <!-- END SBS MODAL -->
 
 <!-- START LOCATION MODAL -->
-	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);">
 		<f:facet name="header">
 	    	<h:outputText value="#{messages.vehicle_event_location}" />
 	    </f:facet>
@@ -821,6 +691,7 @@ var firstLoad = new Boolean(true);
 	    	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
 	    </div>
 	
+		<h:form>
 	    <div class="popupactions">
 	    	<a4j:commandButton id="vehicleSpeedClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
 	   			<span class="edit">
@@ -828,6 +699,7 @@ var firstLoad = new Boolean(true);
 	   			</span>
 		 	</a4j:commandButton>
 	    </div>
+		</h:form>
 	</rich:modalPanel>
 <!-- END LOCATION MODAL -->
 

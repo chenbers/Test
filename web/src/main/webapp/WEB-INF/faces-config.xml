@@ -245,76 +245,6 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
- <!--<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_reports</from-outcome>
-   <to-view-id>/secured/reports/drivers.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>-->
- <!--<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_drivers</from-outcome>
-   <to-view-id>/secured/reports/drivers.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_vehicles</from-outcome>
-   <to-view-id>/secured/reports/vehicles.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_devices</from-outcome>
-   <to-view-id>/secured/reports/devices.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_idling</from-outcome>
-   <to-view-id>/secured/reports/idling.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_emailReports</from-outcome>
-   <to-view-id>/secured/reports/emailReport.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_redFlags</from-outcome>
-   <to-view-id>/secured/notifications/redflags.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_safety</from-outcome>
-   <to-view-id>/secured/notifications/safety.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_diagnostics</from-outcome>
-   <to-view-id>/secured/notifications/diagnostics.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_emergency</from-outcome>
-   <to-view-id>/secured/notifications/emergency.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>-->
  <navigation-rule>
   <navigation-case>
    <from-outcome>go_crashHistory</from-outcome>
@@ -520,12 +450,6 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
- <!--<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_adminEditGroup</from-outcome>
-   <to-view-id>/secured/admin/editGroup.xhtml</to-view-id>
-  </navigation-case>
- </navigation-rule>-->
  <navigation-rule>
   <navigation-case>
    <from-outcome>go_adminRedFlags</from-outcome>
@@ -562,30 +486,12 @@
    <to-view-id>/secured/groupOverview.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
- <!--<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_fleetDetail</from-outcome>
-   <to-view-id>/secured/fleetDetail.xhtml</to-view-id>
-  </navigation-case>
- </navigation-rule>
-<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_divisionDetail</from-outcome>
-   <to-view-id>/secured/divisionDetail.xhtml</to-view-id>
-  </navigation-case>
- </navigation-rule>-->
  <navigation-rule>
   <navigation-case>
    <from-outcome>go_team</from-outcome>
    <to-view-id>/secured/groupOverview.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
- <!--<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_vehicle</from-outcome>
-   <to-view-id>/secured/vehicle.xhtml</to-view-id>
-  </navigation-case>
- </navigation-rule>-->
  <navigation-rule>
   <navigation-case>
    <from-outcome>go_reportVehicleSpeed</from-outcome>
@@ -610,13 +516,6 @@
    <to-view-id>/secured/vehicleTrips.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
- <!--<navigation-rule>
-  <navigation-case>
-   <from-outcome>go_driver</from-outcome>
-   <to-view-id>/secured/driver.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>-->
  <navigation-rule>
   <navigation-case>
    <from-outcome>go_reportDriverSpeed</from-outcome>

@@ -33,6 +33,10 @@ public class User extends BaseEntity {
     private Integer groupID;
     private Date lastLogin;
     private Date passwordDT;
+    
+    private GoogleMapType mapType;
+    private List<Integer> selectedMapLayerIDs;
+    
 
     public User(Integer userID, Integer personID, List<Integer> roles, Status status, String username, String password, Integer groupID) {
         super();
@@ -155,4 +159,22 @@ public class User extends BaseEntity {
     public boolean hasRoles(){
     	return roles != null;
     }
+
+    public GoogleMapType getMapType() {
+            return mapType;
+    }
+
+    public void setMapType(GoogleMapType mapType) {
+        this.mapType = mapType;
+    }
+
+    public List<Integer> getSelectedMapLayerIDs() {
+        return selectedMapLayerIDs;
+    }
+
+    public void setSelectedMapLayerIDs(List<Integer> selectedMapLayerIDs) {
+        this.selectedMapLayerIDs = selectedMapLayerIDs;
+    }
+
+
 }

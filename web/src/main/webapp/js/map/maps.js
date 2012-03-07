@@ -46,6 +46,7 @@
     		var map;
     		var overlays = new Array();
     		var overlaysState = new Array();
+    		var overlayID = new Array();
     		var saveLatLng;
     		var saveZoom;
     		var overlayControl;
@@ -77,7 +78,7 @@
       			};
       			
       			return {
-      				addOverlay: function(wmsURL, displayName, wmsLayer, isSelectedDefault, minZ, maxZ, opacity, isUsePng) {
+      				addOverlay: function(wmsURL, displayName, wmsLayer, isSelectedDefault, minZ, maxZ, opacity, isUsePng, id) {
       					var selected = isSelectedDefault ? isSelectedDefault : false;
       					var minZoom = minZ ? minZ : 1;
       					var maxZoom = maxZ ? maxZ : 30;
@@ -104,6 +105,7 @@
       					if(selected) map.addOverlay(overlay);
       					overlays.push(overlay);
       					overlaysState.push(selected);
+      					overlayID.push(id);
    					
       				},
       				addControlToMap: function() {
@@ -122,6 +124,9 @@
       									map.removeOverlay(overlays[i]);
       									overlaysState[i] = false;
       								};
+      								
+      								GEvent.trigger(map, "layerselect", overlayID[i], checked);
+
       							},
       		      				textFormatFunction: function(options) {
     								return "<b>Layers</b>";
@@ -200,9 +205,9 @@
       			getLayersState: function() {
 		        	return wmsOverlays.getOverlayState();
       			},
-      			addWMSLayer: function(url, displayName, layerName, minZoom, maxZoom, opacityVal, usePng, selected) {
+      			addWMSLayer: function(id, url, displayName, layerName, minZoom, maxZoom, opacityVal, usePng, selected) {
 					var isSelected = selected ? selected : false;
-      				wmsOverlays.addOverlay(url, displayName, layerName, selected, minZoom, maxZoom, opacityVal, usePng);
+      				wmsOverlays.addOverlay(url, displayName, layerName, selected, minZoom, maxZoom, opacityVal, usePng, id);
 
       			},
       			addOverlaysControl: function() {

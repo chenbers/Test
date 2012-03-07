@@ -25,19 +25,46 @@
 
 	<script type="text/javascript">
 		function initLayers() {
-			overlaysState = portalmap.getLayersState();
-			portalmap.reinit();	
+			portalmap.reinit();
+			portalmap.getMap().setMapType(#{customMapsBean.googleMapType});
 			i = 0;
 			<ui:repeat value="#{customMapsBean.customMaps}" var="customMap">
-				selected = overlaysState ? (overlaysState[i] ? overlaysState[i] : false) : false;
-				portalmap.addWMSLayer("#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}", selected);
+				portalmap.addWMSLayer("#{customMap.customMapID}", "#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}", "#{customMap.selected}");
 				i = i + 1;
 			</ui:repeat>
 			if (i > 0) {
 				portalmap.addOverlaysControl();
 			}
+			
+			
+			GEvent.addListener(portalmap.getMap(), "maptypechanged", function() {
+				name = portalmap.getMap().getCurrentMapType().getName();
+				if (name == G_NORMAL_MAP.getName())
+					setGoogleMapType('G_NORMAL_MAP'); 				
+				else if (name == G_SATELLITE_MAP.getName())
+					setGoogleMapType('G_SATELLITE_MAP'); 				
+				if (name == G_HYBRID_MAP.getName())
+					setGoogleMapType('G_HYBRID_MAP'); 				
+    		});
+    		
+    		
+			GEvent.addListener(portalmap.getMap(), "layerselect", function(layerID, checked) {
+				setGoogleMapLayerState(layerID, checked);
+			});  		
+			
+			
 		}
 	</script>
+	<a4j:form>
+	<a4j:jsFunction name="setGoogleMapType" ajaxSingle="true" > 
+     	<a4j:actionparam name="param1" assignTo="#{customMapsBean.googleMapTypeStr}"/> 
+   	</a4j:jsFunction> 
+	<a4j:jsFunction name="setGoogleMapLayerState" action="#{customMapsBean.saveLayerState}"> 
+     	<a4j:actionparam name="param1" assignTo="#{customMapsBean.googleMapLayerID}"/> 
+     	<a4j:actionparam name="param2" assignTo="#{customMapsBean.googleMapLayerSelected}"/> 
+   	</a4j:jsFunction> 
+	</a4j:form>
+	
 	
 </ui:composition>
 

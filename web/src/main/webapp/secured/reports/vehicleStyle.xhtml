@@ -11,118 +11,16 @@
 
 	<ui:param name="title" value="#{messages.vehiclePerformanceTab} - #{vehiclePerformanceBean.vehicle.name} - #{messages.vehicle_driving_style}"/>
 	<ui:define name="scripts">
-        <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
         <a4j:loadScript src="/js/FusionCharts.js" />
-	    <script type="text/javascript">
-	    var geocoder;
-	    (function($){ 
-
-	    	$.fn.refreshTable = function(index){
-		    	
-	              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
-	              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-					setAddress(index);
-	    	};
-	    	
-	    })(jQuery);
-
-	    function initialize(lat, lng) 
-	      {
-	        if (GBrowserIsCompatible())
-		        {
-					var map = new GMap2(document.getElementById("location-canvas"));
-					var location = new GLatLng(lat, lng)
-	                map.addControl(new GLargeMapControl());
-					map.setCenter(location, 15);
-					map.addOverlay(new GMarker(location)); 
-		    		geocoder = new GClientGeocoder();
-	        	}
-	      }
-	    /*         function initializeTable()
-          {
-              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
-              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-    		  getAddresses();
-           }
-          function getAddresses()
-          {
-              if (#{vehicleStyleBean.addressFormat == 3}){
-
-              	jQuery('td[id$="address_column"]').each(function(n){
-
-      	      		var address = jQuery(this).find('*[id$="eventAddress"]');
-      	      		
-      	      		if (address[0].innerHTML.length==0){
-      		      		
-      	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-      	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-      	
-      	        		if( lat[0].value &gt;= -90 &amp;&amp; lat[0].value &lt;= 90 &amp;&amp;  lng[0].value &gt;= -180 &amp;&amp;  lng[0].value &lt;= 180){
-      							
-      	        			reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0], null);
-      					}
-      					else {
-      						
-      						address[0].innerHTML ="#{messages.sbs_badLatLng}";
-      					}
-      	      		}
-                    		
-          		});
-              }
-              
-          }*/
-          
-          function reverseGeocodeTripAddress(latlng, addressElement){
-              
-            if (geocoder == null) geocoder = new GClientGeocoder();
-              
-           	geocoder.getLocations(latlng, 
-          			function(response){
-      			        if (!response || response.Status.code != 200) {
-          			        
-      			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
-
-      			        } 
-      			        else {
-
-      		             	addressElement.innerHTML = response.Placemark[0].address;
-      			        }
-      		    	});
-          }
-	      function setAddress(index){
-	        	
-		  		var address = document.getElementById("eventTable:notificationsTable:"+index+":eventAddress");
-		  		
-		  		if (address.innerHTML.length==0){
-
-		      		var lat = document.getElementById("eventTable:notificationsTable:"+index+":eventLat");
-		      		var lng = document.getElementById("eventTable:notificationsTable:"+index+":eventLng");
-//		    		var lat = jQuery(this).find('*[id$="eventLat"]');
-//		    		var lng = jQuery(this).find('*[id$="eventLng"]');
-		
-		    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-							
-		    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
-					}
-					else {
-						
-						address.innerHTML ="#{messages.sbs_badLatLng}";
-					}
-		  		}
-	    	}
-        
-    	</script>
+   		<ui:include src="/secured/reports/driverVehicleCommon.xhtml">
+			<ui:param name="formName" value="eventTable" />
+			<ui:param name="mapDiv" value="location-canvas" />
+		</ui:include>
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
 
 	<ui:define name="content">
-<!--	<t:saveState value="#{vehicleStyleBean.events}"/>-->
-<!--	<t:saveState value="#{vehicleStyleBean.filteredEvents}"/>-->
-<!--	<t:saveState value="#{vehicleStyleBean.tableStatsBean}"/>-->
-<!--	<t:saveState value="#{vehicleStyleBean.selectedBreakdown}"/>-->
-<!--	<t:saveState value="#{vehicleStyleBean.vehicle}"/>-->
-<!--    <t:saveState value="#{vehicleStyleBean.groupTreeNodeImpl}"/>-->
 <div id="wrapper">
 
 <h:form>
@@ -589,7 +487,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
- 	 								<rich:jQuery selector="id$=notificationsTable" timing="onload" query="refreshTable(#{index})" />
+ 	 								<rich:jQuery selector="id$=notificationsTable" timing="onload" query="refreshTable(#{index}, false)" />
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleStyleBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
 									</h:outputText>
@@ -702,7 +600,7 @@ var firstLoad = new Boolean(true);
 <!-- END FORGIVE MODAL -->
 
 <!-- START LOCATION MODAL -->
-<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);">
 	<f:facet name="header">
     	<h:outputText value="#{messages.vehicle_event_location}" />
     </f:facet>
@@ -714,6 +612,7 @@ var firstLoad = new Boolean(true);
     	<div id="location-canvas" style="width: 522px; height: 355px; border: 0"></div>
     </div>
 
+	<h:form>
     <div class="popupactions">
     	<a4j:commandButton id="vehicleStyleClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
    			<span class="edit">
@@ -721,6 +620,7 @@ var firstLoad = new Boolean(true);
    			</span>
 	 	</a4j:commandButton>
     </div>
+	</h:form>
 </rich:modalPanel>
 <!-- END LOCATION MODAL -->
 

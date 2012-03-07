@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+	Common code for driver/vehicle performance details pages.
+	
+-->
+<ui:composition>
+	
+		<ui:include src="/includes/map/portalMap.xhtml"/>
+
+	    <script type="text/javascript">
+	    
+	    (function($){ 
+
+	    	$.fn.refreshTable = function(index, refreshSpeed){
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
+	              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
+				  setAddress(index);
+				  if (refreshSpeed) {
+		  			  setAverageSpeedDifference(index);
+		  			  setTopSpeedDifference(index);
+				  }
+	    	};
+	    })(jQuery);
+
+
+	    var map = null;
+	    var geocoder;
+	    
+		function initialize(lat, lng) 
+	      {
+	        if (map == null) {
+				portalmap.init(false, "#{mapDiv}");
+				initLayers();
+				map = portalmap.getMap();
+	        }
+	        else {
+				map.clearOverlays();
+				portalmap.restoreLayersState();
+	        }
+			var location = new GLatLng(lat, lng)
+			map.setCenter(location, 14);
+			map.addOverlay(new GMarker(location)); 
+	      }
+
+		function setAverageSpeedDifference(index){
+    		
+      		document.getElementById("#{formName}:notificationsTable:"+index+":averageSpeedDifference").innerHTML = 	
+      	      parseInt(document.getElementById("#{formName}:notificationsTable:"+index+":averageSpeedValue").innerHTML)-
+    		  parseInt(document.getElementById("#{formName}:notificationsTable:"+index+":speedLimitValue").innerHTML);
+    		
+    	}
+
+      	function setTopSpeedDifference(index){
+    		
+      		document.getElementById("#{formName}:notificationsTable:"+index+":topSpeedDifference").innerHTML = 	
+					parseInt(document.getElementById("#{formName}:notificationsTable:"+index+":topSpeedValue").innerHTML)-
+    				parseInt(document.getElementById("#{formName}:notificationsTable:"+index+":speedLimitValue").innerHTML);
+    		
+    	}
+    	function setAddress(index){
+        	
+	  		var address = document.getElementById("#{formName}:notificationsTable:"+index+":eventAddress");
+	  		
+	  		if (address.innerHTML.length==0){
+
+	      		var lat = document.getElementById("#{formName}:notificationsTable:"+index+":eventLat");
+	      		var lng = document.getElementById("#{formName}:notificationsTable:"+index+":eventLng");
+	    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
+						
+	    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
+				}
+				else {
+					
+					address.innerHTML ="#{messages.sbs_badLatLng}";
+				}
+	  		}
+    	}
+        function reverseGeocodeTripAddress(latlng, addressElement){
+
+            if (!geocoder) geocoder = new GClientGeocoder();
+                
+         	geocoder.getLocations(latlng, 
+        			function(response){
+    			        if (!response || response.Status.code != 200) {
+        			        
+    			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
+
+    			        } 
+    			        else {
+
+    		             	addressElement.innerHTML = response.Placemark[0].address;
+    			        }
+    		    	});
+        }
+         	
+    	</script>
+
+</ui:composition>
+</html>

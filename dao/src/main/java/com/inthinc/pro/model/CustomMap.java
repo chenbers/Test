@@ -2,6 +2,8 @@ package com.inthinc.pro.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 @XmlRootElement
 public class CustomMap {
     
@@ -15,6 +17,15 @@ public class CustomMap {
     private Double opacity;
     private Boolean pngFormat;
     
+    @Column(updateable = false)
+    private Boolean selected;
+    
+    public Boolean getSelected() {
+        return selected;
+    }
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
+    }
     public Integer getCustomMapID() {
         return customMapID;
     }
