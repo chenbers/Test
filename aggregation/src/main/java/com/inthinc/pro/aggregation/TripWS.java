@@ -131,8 +131,24 @@ public class TripWS {
 						tripStarted = true;
 						setTripStartFields(trip, note);
 					}
+					else
+					{
+						//Check for NEW_DRIVER AFTER IGNITION_ON without CLEAR_DRIVER in between
+						if (trip.getDriverID() != note.getDriverID())
+						{
+							setTripEndFields(trip, note);
+							if (isRealTrip(trip))
+								insertTrip(trip, day);
+						
+							trip = new Trip();
+							tripStarted = true;
+							setTripStartFields(trip, note);
+						}
+					
+					}
 					
 					setTripEndFields(trip, note);
+					
 					break;
 					
 				case Note.TYPE_CLEAR_DRIVER:
@@ -291,7 +307,7 @@ public class TripWS {
 			return false;
 		}
 
-		return (trip.getMileage() > 0 || trip.getIdleTime() > 0);
+		return (trip.getMileage() > 9 || trip.getIdleTime() > 0);
 	}
 
 	
