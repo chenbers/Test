@@ -111,7 +111,9 @@
       </tr>
       <tr>
         <td valign="top" width="465">
-        
+	    <table width="100%">
+    	<tr>
+    	<td>
           <!-- START PANEL -->
           <div class="">
             <div class="panel_nw">
@@ -151,6 +153,45 @@
             </div>
           </div>
           <!-- END PANEL -->
+    	</td>
+    	</tr>
+	    <tr>
+        	<td style="height:10px"> </td>
+    	</tr>
+    	<tr>
+    	<td>
+          <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="map"><h:outputText value="#{messages.myAccount_mapPref}" /></span>
+              </div>
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td width="120"><h:outputText value="#{messages.myAccount_mapPrefType}" /></td>
+                      <td id="myAccountMapType"><h:outputText value="#{myAccountBean.user.mapType == null ? '' : messages[myAccountBean.user.mapType]}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="120"><h:outputText value="#{messages.myAccount_mapPrefLayers}" /></td>
+                      <td id="myAccountMayLayers"><h:outputText value="#{myAccountBean.layersDisplay}" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+      
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+          </div>
+          <!-- END PANEL -->
+    	</td>
+    	</tr>
+    	</table>    
         </td>
       
         <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>

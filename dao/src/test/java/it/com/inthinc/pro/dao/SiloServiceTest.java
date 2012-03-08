@@ -71,6 +71,7 @@ import com.inthinc.pro.model.ForwardCommandParamType;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
+import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LastLocation;
@@ -1379,7 +1380,7 @@ public class SiloServiceTest {
             assertNotNull(personID);
             
             Person createdPerson = personDAO.findByID(personID);
-            String ignoreFields[] = { "personID","modified"};
+            String ignoreFields[] = { "personID","modified", "mapType"};
             Util.compareObjects(person, createdPerson, ignoreFields);
             
             User user = person.getUser();
@@ -1393,6 +1394,11 @@ public class SiloServiceTest {
 //            newRoles.add(roleList.get(1).getRoleID());
             
             user.setRoles(randomRole(acctID));
+            user.setMapType(GoogleMapType.G_SATELLITE_MAP);
+            List<Integer> selectedMapLayerIDs = new ArrayList<Integer>();
+            selectedMapLayerIDs.add(1);
+            selectedMapLayerIDs.add(2);
+            user.setSelectedMapLayerIDs(selectedMapLayerIDs);
             Integer changedCount = userDAO.update(user);
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
             // find user by ID - ignoring roles until update fixed
@@ -1898,7 +1904,7 @@ public class SiloServiceTest {
         assertNotNull("personID in user not set", person.getUser().getPersonID());
         assertNotNull("personID in driver not set", person.getDriver().getPersonID());
         Person returnPerson = personDAO.findByID(personID);
-        String[] ignoreFields = { "modified", "measurementType", "address" };
+        String[] ignoreFields = { "modified", "measurementType", "address", "mapType" };
         Util.compareObjects(person, returnPerson, ignoreFields);
         // TODO: This did not work
         // personDAO.deleteByID(personID);

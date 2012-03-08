@@ -35,6 +35,8 @@ public class User extends BaseEntity {
     private Date passwordDT;
     
     private GoogleMapType mapType;
+    
+    @Column(name="maplayers")
     private List<Integer> selectedMapLayerIDs;
     
 

@@ -6,8 +6,6 @@
 		include google maps prior
 		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 
-	Notes:
-		The DIV for the map has to have the ID map_canvas.
 
  */
 	//<![CDATA[
@@ -160,7 +158,6 @@
 					var overviewControl = showOverviewControl ? showOverviewControl : false;
 					var canvasID = canvas ? canvas : "map-canvas";
 					
-					
 					if (opts)
 						map = new GMap2(document.getElementById(canvasID), {googleBarOptions: opts});
 					else map = new GMap2(document.getElementById(canvasID));
@@ -231,6 +228,5 @@
   				}
       		};    	
       	})();
-//  	    GEvent.addDomListener(window, 'load', portalmap.init);
   	    GEvent.addDomListener(window, 'unload', GUnload);
 		//]]>

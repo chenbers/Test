@@ -92,6 +92,7 @@ public class CustomMap {
             " minResolution: " +  minZoom +
             " maxResolution: " + maxZoom +
             " opacity: " +  opacity +
-            " pngFormat: " +  pngFormat;
+            " pngFormat: " +  pngFormat +
+            " selected: " +  selected;
     }
 }

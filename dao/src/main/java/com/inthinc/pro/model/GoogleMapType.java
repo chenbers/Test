@@ -8,9 +8,9 @@ public enum GoogleMapType implements BaseEnum {
     NONE(0, false), 
     G_NORMAL_MAP(1, true),
     G_SATELLITE_MAP(2, true),       // This map type displays satellite images.
-    G_AERIAL_MAP(3, false),         // This map type displays aerial imagery.
+//    G_AERIAL_MAP(3, false),         // This map type displays aerial imagery.
     G_HYBRID_MAP(4, true),          // This map type displays a transparent layer of major streets on satellite images.
-    G_AERIAL_HYBRID_MAP(5, false),  // This map type displays a transparent layer of major streets on top of aerial imagery.
+//    G_AERIAL_HYBRID_MAP(5, false),  // This map type displays a transparent layer of major streets on top of aerial imagery.
     G_PHYSICAL_MAP(6, false); 
 
     private int code;

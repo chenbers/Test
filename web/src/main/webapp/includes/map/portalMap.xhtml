@@ -29,7 +29,7 @@
 			portalmap.getMap().setMapType(#{customMapsBean.googleMapType});
 			i = 0;
 			<ui:repeat value="#{customMapsBean.customMaps}" var="customMap">
-				portalmap.addWMSLayer("#{customMap.customMapID}", "#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}", "#{customMap.selected}");
+				portalmap.addWMSLayer("#{customMap.customMapID}", "#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}", "#{customMap.selected ? true : null}");
 				i = i + 1;
 			</ui:repeat>
 			if (i > 0) {

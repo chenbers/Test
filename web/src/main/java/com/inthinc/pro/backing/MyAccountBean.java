@@ -1,11 +1,17 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
@@ -13,28 +19,23 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
+import com.inthinc.pro.model.CustomMap;
+import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 import com.inthinc.pro.validators.EmailValidator;
 public class MyAccountBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(MyAccountBean.class);
-/*    
-    private static final Map<String, Integer> ALERT_OPTIONS;
-    static
-    {
-        // alert options
-        ALERT_OPTIONS = new LinkedHashMap<String, Integer>();
-        for (int i = 0; i < 8; i++)
-            if (i != 5) // skip cell phone
-                ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
-    }
-*/    
     private PersonDAO personDAO;
     private UserDAO userDAO;
     private DriverDAO driverDAO;
     private HelpBean helpBean;
-//    private AccountOptionsBean accountOptionsBean;
+    
+
+    private CustomMapsBean customMapsBean;
 
     public MyAccountBean()
     {
@@ -71,7 +72,9 @@ public class MyAccountBean extends BaseBean
         
         if(valid) {
             userDAO.update(getUser());
+            customMapsBean.initUserPreferences(getUser());
             result = "pretty:myAccount";
+            
         }
         return result;
     }
@@ -115,6 +118,36 @@ public class MyAccountBean extends BaseBean
         return alertOptions;
     }
 
+    public List<SelectItem> getMapTypeOptions() {
+        
+        return SelectItemUtil.toList(GoogleMapType.class, true, GoogleMapType.NONE, GoogleMapType.G_PHYSICAL_MAP);
+    }
+    public List<SelectItem> getMapLayers() {
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        for (CustomMap customMap : customMapsBean.getCustomMaps())
+        {
+                selectItemList.add(new SelectItem(customMap.getCustomMapID(),customMap.getName()));
+        }
+        return selectItemList;
+    }
+    
+    public String getLayersDisplay() {
+        StringBuffer buffer = new StringBuffer();
+        List<Integer> selectedMapLayerIDs = getUser().getSelectedMapLayerIDs();
+        if (selectedMapLayerIDs != null)
+            for (Integer id : selectedMapLayerIDs) {
+                for (CustomMap customMap : customMapsBean.getCustomMaps())
+                    if (customMap.getCustomMapID().equals(id)) {
+                        if (buffer.length() > 0)
+                            buffer.append(", ");
+                        buffer.append(customMap.getName());
+                        break;
+                    }
+            }
+        return buffer.toString();
+        
+    }
+    
     public void setPersonDAO(PersonDAO personDAO)
     {
         this.personDAO = personDAO;
@@ -137,15 +170,6 @@ public class MyAccountBean extends BaseBean
 		this.helpBean = helpBean;
 	}
 
-/*    
-    public AccountOptionsBean getAccountOptionsBean() {
-		return accountOptionsBean;
-	}
-
-	public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
-		this.accountOptionsBean = accountOptionsBean;
-	}
-*/
 	public Integer getInfo()
 	{
 		return validAccountAlertValue(getUser().getPerson().getInfo());
@@ -169,5 +193,16 @@ public class MyAccountBean extends BaseBean
 		return value;
 	}
 	
+    
+    public CustomMapsBean getCustomMapsBean() {
+        return customMapsBean;
+    }
+
+
+    public void setCustomMapsBean(CustomMapsBean customMapsBean) {
+        this.customMapsBean = customMapsBean;
+    }
+
+
 	
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.inthinc.pro.dao.CustomMapDAO;
 import com.inthinc.pro.model.CustomMap;
 import com.inthinc.pro.model.GoogleMapType;
+import com.inthinc.pro.model.User;
 
 
 public class CustomMapsBean extends BaseBean {
@@ -34,22 +35,27 @@ public class CustomMapsBean extends BaseBean {
     public void init() {
         if (customMaps == null) {
             customMaps = customMapDAO.getCustomMapsByAcctID(getAccountID());
+            for (CustomMap customMap : customMaps)
+                    customMap.setSelected(false);
             
-            googleMapType = getUser().getMapType();
-            if (googleMapType == null)
-                googleMapType = GoogleMapType.G_NORMAL_MAP;
-            
-            List<Integer> selectedMapLayerIDs = getUser().getSelectedMapLayerIDs();
-            if (selectedMapLayerIDs != null)
-                for (Integer id : selectedMapLayerIDs) {
-                    for (CustomMap customMap : customMaps)
-                        if (customMap.getCustomMapID().equals(id)) {
-                            customMap.setSelected(true);
-                            break;
-                        }
-                            
-                }
+            initUserPreferences(getUser());
         }
+    }
+    
+    public void initUserPreferences(User user) {
+        googleMapType = user.getMapType();
+        if (googleMapType == null || googleMapType == GoogleMapType.NONE)
+            googleMapType = GoogleMapType.G_NORMAL_MAP;
+        
+        List<Integer> selectedMapLayerIDs = user.getSelectedMapLayerIDs();
+        if (selectedMapLayerIDs != null)
+            for (Integer id : selectedMapLayerIDs) {
+                for (CustomMap customMap : customMaps)
+                    if (customMap.getCustomMapID().equals(id)) {
+                        customMap.setSelected(true);
+                        break;
+                    }
+            }
     }
     
     public CustomMapDAO getCustomMapDAO() {
@@ -110,5 +116,6 @@ public class CustomMapsBean extends BaseBean {
                 break;
             }
     }
+    
 
 }

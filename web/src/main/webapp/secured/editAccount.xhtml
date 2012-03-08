@@ -9,8 +9,15 @@
                 xmlns:pretty="http://ocpsoft.com/prettyfaces">
   				
   
-  <ui:define name="content">
+	<ui:define name="scripts">
+
+  <a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
+  <a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.3-min.js"/>
+  <a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
   
+	</ui:define>  
+  
+  <ui:define name="content">
   <style>
     .rich-message {margin:5px;display:block;}
   </style>
@@ -122,6 +129,9 @@
         </tr>
         <tr>
           <td valign="top" width="465">
+          	<table width="100%">
+    		<tr>
+    		<td>
           
             <!-- START PANEL -->
             <div class="">
@@ -174,9 +184,68 @@
               </div>
             </div>
             <!-- END PANEL -->
-          </td>
-        
-          <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>
+            
+            
+           	</td>
+    	</tr>
+	    <tr>
+        	<td style="height:10px"> </td>
+    	</tr>
+    	<tr>
+    	<td>
+          <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="map"><h:outputText value="#{messages.myAccount_mapPref}" /></span>
+              </div>
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td width="120"><h:outputText value="#{messages.myAccount_mapPrefType}" /></td>
+                      <td id="myAccountMapType">
+                       <h:selectOneMenu value="#{myAccountBean.user.mapType}" id="editAccount-mapType" style="width:250px" converter="SimpleBeanConverter">
+                           <f:selectItems value="#{myAccountBean.mapTypeOptions}" />
+                       </h:selectOneMenu>
+                       </td>
+                    </tr>
+                    <tr>
+                      <td width="120"><h:outputText value="#{messages.myAccount_mapPrefLayers}" /></td>
+                      <td id="myAccountMapLayers">
+                      <a4j:outputPanel>
+						<h:selectManyMenu id="myAccountMapLayersSelect" value="#{myAccountBean.user.selectedMapLayerIDs}"  converter="SimpleBeanConverter"
+					  					style="width:200px;size:auto">
+							<f:selectItems value="#{myAccountBean.mapLayers}"/>
+					  	</h:selectManyMenu>
+						<rich:jQuery selector="#myAccountMapLayersSelect" timing="onload"  
+                            query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+                                                        textFormatFunction: function(options) {
+																return '#{messages.mapLayers}';
+      		      										},
+                                                        width: 200,maxDropHeight: 150,
+      		      									}
+							)"/>
+						</a4j:outputPanel>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+      
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+          </div>
+          <!-- END PANEL -->
+    	</td>
+    	</tr>
+    	</table>    
+        </td>
+        <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>
         
           <td valign="top" width="465">
           
