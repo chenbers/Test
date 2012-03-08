@@ -88,6 +88,7 @@ public enum EventAttr {
 
 	LOW_LOAD_PCT(70),
 	SOURCE(71),
+    SBS_DLD_ERR(72),
 
 	// Attribute Id (128->191 have two byte values)
     DISTANCE(129),
@@ -172,7 +173,7 @@ public enum EventAttr {
     RFID1(223), // low
     MPG_DISTANCE(224),
     TRIP_DURATION(225), // trip time in seconds
-    BAD_ERROR(226), // Errors that we want the portal to track
+    DIAGNOSTICS(226), // Errors that we want the portal to track
     DRIVER_ID(227),
     TOTAL_AGPS_BYTES(228),
     MAP_HASH(229),
@@ -313,7 +314,7 @@ public enum EventAttr {
     DIGITAL_OUTPUT_STATUS(16391),
     DURATION(16392),
     ERROR_CODE(16393),
-    ERROR_DETAILS(16394),
+    ERROR_DETAILS_(16394),
     FILTERED_NOTE_EVENT_COUNT(16395),
     FORWARD_COMMAND_ID(16396),
     G_TRIGGER_LEVEL(16397),
@@ -373,8 +374,12 @@ public enum EventAttr {
 	SPEED_LIMIT_41_TO_54_DISTANCE(16444),
 	SPEED_LIMIT_55_TO_64_DISTANCE(16445),
 	SPEED_LIMIT_65_TO_80_DISTANCE(16446),
-    
+    OBD_ABS_ODO_DIST(16447),
+    OBD_SPD_DIST(16448),
+    GPS_SPD_DIST(16449),
+    GPS_GAP_DIST(16450),
 
+    
 	
 ////////////////////////////////////////////////////////////////////////////////////
 //	string Attributes 24576 [0x6000] to 32767 [0x7FFF],
@@ -500,6 +505,9 @@ public enum EventAttr {
 	SPEED_STOP_TIME_OS(32852),
 	SPEED_MAX_TIME_OS(32853),
 	LINK_ID(32854),
+    TIME_DIFF(32855),
+    ERROR_DETAILS(32856),
+    NOTIFICATION_ENUM(32857),
 
 		    
 ////////////////////////////////////////////////////////////////////////////////////
