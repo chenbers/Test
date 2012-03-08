@@ -215,7 +215,7 @@ public class DBUtil {
         return deviceList;
     }
 	
-	private static final String FETCH_WS_TRIPNOTES_BETWEEN = "SELECT noteID,vehicleID,driverID,groupID,type,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s'),speed,odometer,state,flags,maprev,latitude,longitude,topSpeed,avgSpeed,speedLimit,distance,deltaX,deltaY,deltaZ,attrs FROM __NOTETABLE__ WHERE deviceID=? AND `type` IN (7,19,20,22,66,73,96,113,116,140,166,208,219) AND time BETWEEN  ? AND ? ORDER BY time";
+	private static final String FETCH_WS_TRIPNOTES_BETWEEN = "SELECT noteID,vehicleID,driverID,groupID,type,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s'),speed,odometer,state,flags,maprev,latitude,longitude,topSpeed,avgSpeed,speedLimit,distance,deltaX,deltaY,deltaZ,attrs FROM __NOTETABLE__ WHERE deviceID=? AND `type` IN (7,19,20,22,66,73,96,113,116,140,166,208,219) AND time BETWEEN  ? AND ? ORDER BY time, created";
     public static List<Note> getWSTripNotesForDevice(Long deviceID, Date startTimeStamp, Date endTimeStamp)  throws SQLException
     {
     	final String ATTR_driverFlag	= "8201";
