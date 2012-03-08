@@ -1,10 +1,12 @@
-package com.inthinc.pro.automation.test;
+package com.inthinc.pro.automation.jbehave;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jbehave.core.reporters.ConcurrentStoryReporter;
 import org.jbehave.core.reporters.StoryReporter;
+
+import com.inthinc.pro.automation.test.RallyTest;
 
 public class AutoStoryReporter extends ConcurrentStoryReporter {
     

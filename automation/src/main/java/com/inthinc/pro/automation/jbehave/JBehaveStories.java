@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.test;
+package com.inthinc.pro.automation.jbehave;
 
 import static java.util.Arrays.asList;
 
@@ -16,6 +16,7 @@ import org.jbehave.core.reporters.Format;
 import org.jbehave.core.steps.CandidateSteps;
 
 import com.google.common.util.concurrent.MoreExecutors;
+import com.inthinc.pro.automation.test.Test;
 
 public abstract class JBehaveStories extends JUnitStories {
     
@@ -44,7 +45,7 @@ public abstract class JBehaveStories extends JUnitStories {
                                 .withFormats(Format.CONSOLE, Format.TXT, Format.XML, Format.HTML_TEMPLATE, Format.HTML))
                 //.useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
                 //.doDryRun(true)//helpful when generating new steps' methods
-                
+//                .useStepPatternParser(stepPatternParser)
                 ;
         } catch (MalformedURLException e) {
             e.printStackTrace();

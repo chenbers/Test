@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.test;
+package com.inthinc.pro.automation.jbehave;
 
 import java.util.HashMap;
 import java.util.Map;

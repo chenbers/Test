@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.test;
+package com.inthinc.pro.automation.jbehave;
 
 import static java.util.Arrays.asList;
 

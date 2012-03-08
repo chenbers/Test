@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.jbehave.core.steps.CandidateSteps;
 
-import com.inthinc.pro.automation.test.JBehaveStories;
+import com.inthinc.pro.automation.jbehave.JBehaveStories;
 
 public abstract class WebStories extends JBehaveStories{
     
