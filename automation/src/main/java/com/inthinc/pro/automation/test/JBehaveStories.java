@@ -14,10 +14,8 @@ import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.steps.CandidateSteps;
-import org.jbehave.core.steps.InstanceStepsFactory;
 
 import com.google.common.util.concurrent.MoreExecutors;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public abstract class JBehaveStories extends JUnitStories {
     
@@ -46,6 +44,7 @@ public abstract class JBehaveStories extends JUnitStories {
                                 .withFormats(Format.CONSOLE, Format.TXT, Format.XML, Format.HTML_TEMPLATE, Format.HTML))
                 //.useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
                 //.doDryRun(true)//helpful when generating new steps' methods
+                
                 ;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -90,12 +89,7 @@ public abstract class JBehaveStories extends JUnitStories {
         List<Object> total = new ArrayList<Object>();
         total.addAll(asList(steps));
         total.add(first);
-//        MasterTest.print(total);
-//        if (true){
-//            throw new NullPointerException();
-//        }
-
-        return new InstanceStepsFactory(configuration(), total).createCandidateSteps();
+        return new AutoStepsFactory(configuration(), total).createCandidateSteps();
     }
 
 }
