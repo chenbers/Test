@@ -190,18 +190,19 @@ public class SatelliteEvent_t extends DeviceNote {
 		temp.addAttrs(attrs);
 		return temp;
 	}
-	
-	public SatelliteEvent_t copy(DeviceNoteTypes type, boolean copyAttr) {
-
-		SatelliteEvent_t temp = new SatelliteEvent_t(type, time, location, offRoad,
+	public SatelliteEvent_t copy(DeviceNoteTypes type, AutomationCalendar time, boolean copyAttr){
+		SatelliteEvent_t result = new SatelliteEvent_t(type, time, location, offRoad,
 				heavyDuty, hosState, speedingViolation, seatBeltViolation,
 				rpmViolation, heading, sats, speed, speedLimit,
 				m_nLinkID, odometer, m_nBoundaryID,
 				m_nDriverIdSiloDbVersion);
 		if(copyAttr)
-			temp.addAttrs(attrs);
+			result.addAttrs(attrs);
 		
-		return temp;
+		return result;
+	}
+	public SatelliteEvent_t copy(DeviceNoteTypes type, boolean copyAttr) {
+		return copy(type, time, copyAttr);
 	}
 	
 }
