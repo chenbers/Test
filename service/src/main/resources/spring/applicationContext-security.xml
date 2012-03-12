@@ -19,6 +19,8 @@
   <aop:aspectj-autoproxy/>
 
   <http auto-config="true" create-session="never" session-fixation-protection="newSession">
+  	<intercept-url pattern="/api/vxml" filters="none"></intercept-url>
+  	<intercept-url pattern="/api/voiceack/**" filters="none"></intercept-url>
     <intercept-url pattern="/api/**" access="ROLE_ADMIN" />
     <http-basic />
   </http>

@@ -30,10 +30,12 @@ public class VoiceServiceImpl implements VoiceService {
 // All messages need to be acknowledged just in different ways which are handled by the jdbc code
 //        if (ack!=null && ack.intValue()!=0)
 //        {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        //removing authenitcation
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             StringBuffer sb = context.getRequestURL();
             sb.setLength(sb.length()-context.getPathInfo().length());
-            sb.insert(sb.indexOf("://")+3, authentication.getName() + ":" + authentication.getCredentials() + "@");
+//            sb.insert(sb.indexOf("://")+3, authentication.getName() + ":" + authentication.getCredentials() + "@");
             sb.append("/voiceack/");
             sb.append(msgID);
 
