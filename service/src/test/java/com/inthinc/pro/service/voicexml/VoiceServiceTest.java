@@ -101,7 +101,7 @@ public class VoiceServiceTest {
                nodeMap.put(name, expr);
            }
            assertTrue(nodeMap.get("voxeoAudio").equals("'http://webhosting.voxeo.net/57256/www/audio/'"));
-           assertTrue(nodeMap.get("ackQuery").equals("'http://test:testpassword@localhost:8080/voiceack/1'"));
+           assertTrue(nodeMap.get("ackQuery").equals("'http://localhost:8080/voiceack/1'"));
            assertTrue(nodeMap.get("messageText").equals("'hello'"));
            assertTrue(nodeMap.get("welcomeAudio").equals("voxeoAudio + 'iwi-welcome-new.wav'"));
            assertTrue(nodeMap.get("pressOneAudio").equals("voxeoAudio + 'iwi-acknowledge.wav'"));
