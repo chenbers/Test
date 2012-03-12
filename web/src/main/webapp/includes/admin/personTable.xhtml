@@ -47,11 +47,11 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_secPhone}" /></f:facet>
       <h:outputText value="#{item.secPhone}" />
     </rich:column>
-    <rich:column id="priMail" rendered="#{personBean.tableColumns['priEmail'].visible}" sortBy="#{item.priEmail}">
+    <rich:column id="priEmail" rendered="#{personBean.tableColumns['priEmail'].visible}" sortBy="#{item.priEmail}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_priEmail}" /></f:facet>
       <a href="mailto:#{item.priEmail}"><h:outputText value="#{item.priEmail}" /></a>
     </rich:column>
-    <rich:column id="secMail" rendered="#{personBean.tableColumns['secEmail'].visible}" sortBy="#{item.secEmail}">
+    <rich:column id="secEmail" rendered="#{personBean.tableColumns['secEmail'].visible}" sortBy="#{item.secEmail}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_secEmail}" /></f:facet>
       <a href="mailto:#{item.secEmail}"><h:outputText value="#{item.secEmail}" /></a>
     </rich:column>
