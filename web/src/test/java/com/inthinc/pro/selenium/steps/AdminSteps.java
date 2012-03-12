@@ -1,60 +1,85 @@
 package com.inthinc.pro.selenium.steps;
 
-import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.Alias;
+import org.jbehave.core.annotations.Composite;
+import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
+import com.inthinc.pro.automation.enums.LoginCapability;
+import com.inthinc.pro.automation.objects.AutomationUsers;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 
 public class AdminSteps extends LoginSteps { 
     
+    private PageAdminUsers users = new PageAdminUsers();
     private static final PageAdminUsers adminUsers = new PageAdminUsers();
     private static final PageAdminUserDetails adminDetails = new PageAdminUserDetails();
-    
-    @When("i select admin")
-    public void whenISelectAdmin() {
-        adminUsers._link().admin().click();
+
+    @When("I click any user link")
+    public void whenIClickAnyUserLink(){
+        users._link().tableEntryUserFullName().row(1).click();
+    }
+
+    //TODO: Todd: this is an example of something that seems like a good step when written in English, but is very hard (if not impossible) to implement i.e. what ARE the "other" accessPoints?
+    @Then("I cannot edit any other access points")
+    @Pending
+    public void thenICannotEditAnyOtherAccessPoints(){
+      // PENDING
     }
     
-    @When("i select users")
-    public void whenISelectUsers() {
-        adminUsers._link().adminUsers().click();
+    @When("I am on the Admin page")
+    @Alias("I select admin")
+    public void whenIAmOnTheAdminPage(){
+        if (!adminUsers.verifyOnPage()) {
+            adminUsers._link().admin().click();
+        }
+        // adminUsers.assertTrue(adminUsers.verifyOnPage(), "I am on the admin page");   
     }
     
-    @When("i select a valid user")
-    public void whenISelectAValidUser() {
-        adminUsers._link().tableEntryUserFullName().row(1).click();
+    @When("I log into a different admin account")
+    @Composite(steps = {"When I log out", 
+                            "When I type another admin username and password",
+                            "When I click log in"})    
+    public void whenILogIntoADifferentAdminAccount(){
+
     }
     
-    @When("i click the edit link")
-    public void whenIClickTheEditLink() {
-        adminDetails._button().edit().click();
+    @When("I log into a different nonadmin account")
+    @Composite(steps = {"When I log out", 
+            "When I type another nonadmin username and password",
+            "When I click log in"})    
+    public void whenILogIntoADifferentNonadminAccount(){
+ 
+    }    
+    
+    @When("I attempt to login with the same username password combination")
+    public void whenIAttemptToLoginWithTheSameUsernamePasswordCombination() {
+        login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusInactive);
+        loginPage.loginProcess(login.getUsername(), login.getPassword());
     }
     
-  
+    @When("I am on the Live Fleet page")
+    public void whenIAmOnTheLiveFleetPage(){
+        if (!adminDetails.verifyOnPage()){
+            adminDetails._link().liveFleet().click();
+        }
+    }
     
-    //TODO: steps that apply to any ADMIN tab tests ???
+    @Then("the admin page is displayed")
+    @Alias("I confirm the Admin page contains all necessary elements")
+    public void thenTheAdminPageIsDisplayed(){
+        adminUsers.verifyOnPage();
+    }
+    
+    @Then("I get an alert 'Access Denied'")
+    public void thenIGetAnAlertAccessDenied() {
+        //page..validate();  WHere is this page alert 'access denied'?
+    }
     
     
  
-    
-    //ROLES section (custom roles apply to most if not all admin sections)
-//    private PageAdminCustomRoles roles = new PageAdminCustomRoles();
-//    private PageAdminCustomRoles roleDetails = new PageAdminCustomRoles();
-//    private PageAdminCustomRoleAddEdit roleAddEdit = new PageAdminCustomRoleAddEdit();
-//    
-//    @When("I input the role name as $roleName")
-//    @Pending
-//    public void whenIInputTheRoleNameAs(String roleName){
-//        if(roleAddEdit.isOnPage()){
-//            roleAddEdit._textField().name().type(roleName);
-//        } else {
-//            addError("not on the correct page to call whenIInputTheRoleNameAs("+roleName+")", ErrorLevel.ERROR);
-//        }
-//    }
-    
-    
-    
     
 }
