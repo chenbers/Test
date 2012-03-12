@@ -1,8 +1,6 @@
 package com.inthinc.pro.selenium.steps;
 
 import org.jbehave.core.annotations.Alias;
-import org.jbehave.core.annotations.Composite;
-import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
@@ -484,7 +482,7 @@ public class AdminUserSteps extends AdminSteps {
 
     @Then("the DOT column is in the table")
     public void thenTheDOTColumnIsInTheTable(){
-        adminUsers._link().sortByDOT().validatePresence(true);
+        adminUsers._link().sortByDOB().validatePresence(true);
     }
     
     @Then("the box becomes unchecked")
