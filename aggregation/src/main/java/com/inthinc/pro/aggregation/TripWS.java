@@ -75,15 +75,18 @@ public class TripWS {
 			DBUtil.deleteTrips(dd.getDeviceID(), startTS, endTS);
 			updateTripsWSForDeviceDay(noteList, dd.getDay());
 			
-			String driverTZName = getTriverTZNameFromNotes(noteList);
-			updateAggs(dd.getDay(), dd.getDeviceID(), driverTZName);
+			if (noteList.size() > 0)
+			{
+				String driverTZName = getDriverTZNameFromNotes(noteList);
+				updateAggs(dd.getDay(), dd.getDeviceID(), driverTZName);
+			}
 			
 			DBUtil.deleteDeviceDay2Agg(dd.getDeviceID(), dd.getDay());
 		}
 	}
 	
 	
-	private String getTriverTZNameFromNotes(List<Note> noteList)
+	private String getDriverTZNameFromNotes(List<Note> noteList)
 	{
 		String driverTZ = "UTC";
 		for (Note note : noteList)
@@ -137,6 +140,7 @@ public class TripWS {
 						if (trip.getDriverID() != note.getDriverID())
 						{
 							setTripEndFields(trip, note);
+							trip.setStatus(TripStatus.TRIP_COMPLETED);
 							if (isRealTrip(trip))
 								insertTrip(trip, day);
 						
@@ -260,13 +264,12 @@ public class TripWS {
 	    int day = Integer.parseInt(strDay.substring(8,10));
 	    driverDayCal.set(year, month-1, day, 0, 0, 0);
 
-		logger.debug("updateAggs driverDayCal: " + driverDayCal);
-//	    if (tripDay.before(driverDayCal.getTime()))
-//	    	driverDayCal.add(Calendar.DATE, -1);
+    	driverDayCal.add(Calendar.DATE, -1);
 	    
 		//We update the aggs that the newly aggregated trips may have effected.
 	    while (driverDayCal.getTime().before(tripDayEndCal.getTime()))
 	    {
+			logger.debug("updateAggs driverDayCal: " + driverDayCal);
 			updateAgg(deviceId, driverDayCal.getTime(), driverTZ);
 	    	driverDayCal.add(Calendar.DATE, 1);
 	    }
