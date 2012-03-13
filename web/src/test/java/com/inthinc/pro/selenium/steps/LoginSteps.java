@@ -4,6 +4,7 @@ import org.apache.log4j.Level;
 import org.jbehave.core.annotations.Alias;
 import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
@@ -15,23 +16,17 @@ import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PopUps;
 
 public class LoginSteps extends WebSteps { 
 
     PageLogin loginPage = new PageLogin();
     AutomationUser login;
-    
-    /*  Need to add a method that will update Rally
-    @Given("I should record these test results in Rally for \"$TCname\"")
-    @Pending
-    public void givenIShouldRecordTheseTestResultsInRallyForTC147(){
-      // PENDING
-    }
-    */
+
     private static final PageLogin page = new PageLogin();
+    private static final PopUps popup = new PopUps();
     private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
     private static final MasterTest mastertest = new MasterTest();
-
 
     @Given("I log in to the login page")
     public void givenIAmLoggedInToTheLoginPage() {
@@ -174,7 +169,87 @@ public class LoginSteps extends WebSteps {
     {
         //NEEDS TO BE IMPLEMENTED
     }
-     
+    
+    @Then("I click the 'Forgot your user name or password?' link")
+    @When("I click the 'Forgot your user name or password?' link")
+    public void whenIClickTheForgotYourUserNameOrPasswordLink(){
+        page._link().forgotUsernamePassword().click();
+    }
+
+    @When("I enter a email address not in the database into the email address field")
+    public void whenIEnterTextIntoTheEmailAddressField(){
+        page._popUp().forgotPassword()._textField().email().type("test@test.com");
+    }
+
+    @When("I click cancel")
+    public void whenIClickCancel(){
+        page._popUp().forgotPassword()._button().cancel().click();
+    }
+
+    @Then("the 'Forgot you user name or password?' window is closed")
+    public void thenTheForgotYouUserNameOrPasswordWindowIsClosed(){
+        page._popUp().forgotPassword()._text().header().validateVisibility(false);
+    }
+
+    @Then("I am on the login page")
+    @Aliases(values = {"I open the Login Page"})    
+    public void thenIAmOnTheLogInPage() {
+        if (!page.verifyOnPage()) {
+            page.load();
+        }
+    }  
+
+    @Then("the email address text field is blank")
+    public void thenTheEmailAddressTextFieldIsBlank(){
+        page._popUp().forgotPassword()._textField().email().validate("");
+    }
+    
+    @When("I enter non valid email text into the email address field")
+    public void whenIEnterNonValidEmailTextIntoTheEmailAddressField(){
+        page._popUp().forgotPassword()._textField().email().type("z");                       // doesn't conform to rule * x to y characters ??
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("test@@test.com");         /* doesn't conform to rule * Only one commercial at (@) is 
+                                                                                               allowed to separate the user name from the domain name User Name */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("test@test@test.com");     /* doesn't conform to rule * Only one commercial at (@) is allowed to 
+                                                                                               separate the user name from the domain name User Name */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("!@#...com");              /* doesn't conform to rule * A - Z, a - z, 0 - 9, underscore (_), hyphen 
+                                                                                               (-), and period (.) characters are allowed (Note: A period at the 
+                                                                                               beginning, a period at the end, and 2 consecutive periods are allowed.) */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("test test@email.com");    /* doesn't conform to rule * All other characters, inclusive of a blank space 
+                                                                                               and a quoted string (i.e. between double quotes), are NOT allowed Domain Name */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("\"test\"@email.com");     /* doesn't conform to rule * All other characters, inclusive of a blank space 
+                                                                                               and a quoted string (i.e. between double quotes), are NOT allowed Domain Name */
+    }
+
+    @When("I click send")
+    public void whenIClickSend(){
+        page._popUp().forgotPassword()._button().send().click();
+    }
+
+    @Then("the alert 'Incorrect format' appears above the email address field")
+    public void thenTheAlertIncorrectFormatAppearsAboveTheEmailAddressField(){
+        page._popUp().forgotPassword()._text().error().validate("Incorrect format (jdoe@tiwipro.com)");
+    }
+    
+    @Then("the alert 'Required' appears above the email address field")
+    public void thenTheAlertRequiredAppearsAboveTheEmailAddressField(){
+        page._popUp().forgotPassword()._text().error().validate("Required");
+    }
+    
+    @Then("the alert 'Incorrect e-mail address' appears above the email address field")
+    public void thenTheAlertIncorrectEmailAddressAppearsAboveTheEmailAddressField(){
+        page._popUp().forgotPassword()._text().error().validate("Incorrect e-mail address");        
+    }
+
+    @Then("the 'Forgot user name or password' pop up displays correctly with all elements")
+    public void thenTheForgotUserNameOrPasswordPopUpDisplaysCorrectlyWithAllElements(){
+        page._popUp().forgotPassword().equals(popup);
+
+    }
     
 //    
     @Given("I am logged in as a user in a role that does have the $accessPointName accesspoint")
