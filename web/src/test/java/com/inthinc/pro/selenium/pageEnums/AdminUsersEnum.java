@@ -52,6 +52,7 @@ public enum AdminUsersEnum implements SeleniumEnums {
     LICENSE_STATE(null, "admin-table-form:personTable:stateheader"),
     LICENSE_EXPIRATION(null, "admin-table-form:personTable:expirationheader"),
     CERTIFICATIONS(null, "admin-table-form:personTable:certificationheader"),
+    DOT(null, "admin-table-form:personTable:dotheader"),
     DRIVER_TEAM(null, "admin-table-form:personTable:teamNameheader"),
     
     SELECT_ROW(null, "admin-table-form:personTable:###:select"),

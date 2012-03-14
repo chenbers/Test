@@ -44,6 +44,10 @@ public abstract class AdminBar extends NavigationBar {
 		public TextLinkContextSense adminDevices() {
 			return new TextLinkContextSense(AdminBarEnum.DEVICES);
 		}
+		
+	    public TextLinkContextSense adminBackToUsers() {
+	        return new TextLinkContextSense(AdminBarEnum.GO_BACK);
+	    }
 
 		public TextLinkContextSense adminOrganization() {
 			return new TextLinkContextSense(AdminBarEnum.ORGANIZATION);

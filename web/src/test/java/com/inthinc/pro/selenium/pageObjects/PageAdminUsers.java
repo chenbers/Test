@@ -59,6 +59,7 @@ public class PageAdminUsers extends AdminTables {
         checkMe.add(AdminUsersEnum.LICENSE_STATE);
         checkMe.add(AdminUsersEnum.LICENSE_EXPIRATION);
         checkMe.add(AdminUsersEnum.CERTIFICATIONS);
+        checkMe.add(AdminUsersEnum.DOT);        
         checkMe.add(AdminUsersEnum.DRIVER_TEAM);
         
     }
@@ -77,6 +78,9 @@ public class PageAdminUsers extends AdminTables {
 
         public TextTableLink tableEntryUserFullName() {
             return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.FULL_NAME);
+        }
+        public TextTableLink tableEntryUserEmail1() {
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.EMAIL_1);
         }
         public TextLink sortByColumn(UserColumns column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
@@ -211,6 +215,10 @@ public class PageAdminUsers extends AdminTables {
         
         public TextLink sortByCertifications(){
             return new TextLink(AdminUsersEnum.CERTIFICATIONS);
+        }
+        
+        public TextLink sortByDOT(){
+            return new TextLink(AdminUsersEnum.DOT);
         }
         
         public TextLink sortByDriverTeam(){
