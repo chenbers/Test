@@ -45,7 +45,7 @@
 	<field name="correctedGraphList" class="java.util.List"/>
 	<field name="remarksList" class="java.util.List"/>
 	<field name="recap" class="java.util.List"/>
-	<field name="recapType" class="com.inthinc.pro.reports.hos.model.RecapType"/>
+	<field name="recapType" class="com.inthinc.hos.ddl.RecapType"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -169,7 +169,7 @@
 			</textField>
 			<subreport>
 				<reportElement mode="Transparent" x="500" y="46" width="55" height="223" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[Boolean.valueOf($F{recapType} != com.inthinc.pro.reports.hos.model.RecapType.NONE)]]></printWhenExpression>
+					<printWhenExpression><![CDATA[Boolean.valueOf($F{recapType} != com.inthinc.hos.ddl.RecapType.NONE)]]></printWhenExpression>
 				</reportElement>
 				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 				<dataSourceExpression><![CDATA[new  net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{recap})]]></dataSourceExpression>

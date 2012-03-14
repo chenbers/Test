@@ -3,6 +3,8 @@ package com.inthinc.pro.reports.hos.model;
 import java.awt.Image;
 import java.util.List;
 
+import com.inthinc.hos.ddl.Recap;
+import com.inthinc.hos.ddl.RecapType;
 import com.inthinc.hos.model.DayTotals;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.RuleSetType;
