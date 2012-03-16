@@ -158,11 +158,11 @@
                                         <f:facet name="header">
                                             <rich:columnGroup>
                                                 <rich:column rowspan="2">#{""}</rich:column>
-                                                <rich:column rowspan="2">#{messages.sbs_address}</rich:column>
-                                                <rich:column colspan="2">#{messages.sbs_speed_limit}</rich:column>
-                                                <rich:column rowspan="2">#{messages.sbs_comment}</rich:column>
-                                                <rich:column breakBefore="true">#{messages.sbs_current}</rich:column>
-                                                <rich:column>#{messages.sbs_new}</rich:column>
+                                                <rich:column id="headingAddress" rowspan="2">#{messages.sbs_address}</rich:column>
+                                                <rich:column id="headingSpeedLimit" colspan="2">#{messages.sbs_speed_limit}</rich:column>
+                                                <rich:column id="headingComment" rowspan="2">#{messages.sbs_comment}</rich:column>
+                                                <rich:column id="headingCurrent" breakBefore="true">#{messages.sbs_current}</rich:column>
+                                                <rich:column id="headingNew">#{messages.sbs_new}</rich:column>
                                             </rich:columnGroup>
                                         </f:facet>
 
@@ -171,10 +171,10 @@
                                             <h:selectBooleanCheckbox value="#{item.selected}" id="c" onclick="check = true" />
                                         </rich:column>
                                         <rich:column>
-                                            <h:outputText value="#{item.address}" />
+                                            <h:outputText id="valueAddress" value="#{item.address}" />
                                         </rich:column>
                                         <rich:column>
-                                            <h:outputText value="#{item.speedLimit} #{item.kilometersPerHour ? messages.sbs_kph : messages.sbs_mph}" />
+                                            <h:outputText value="#{item.speedLimit} #{item.kilometersPerHour ? messages.sbs_kph : messages.sbs_mph}" id="valueSpeedLimit" />
                                             <!--<h:outputText value="#{item.speedLimit}" converter="MphToKphConverter"/>-->
                                         </rich:column>
                                         <rich:column>
