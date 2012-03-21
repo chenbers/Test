@@ -463,13 +463,14 @@ public abstract class DeviceBase {
             speeding_distance += Math.abs(GeoPoint.Distance_Calc
                     .calc_distance(last, loc));
         }
-        
+        speed_loc.clear();
+        speed_points.clear();
         
         state.setSpeedingDistanceX100((int) (speeding_distance * 100));
+        
         state.setAvgSpeed(avgSpeed);
         
         SpeedingEvent event = AutomationDeviceEvents.speeding(state, tripTracker.currentLocation());
-        
         addEvent(event);
         return this;
     }

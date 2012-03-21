@@ -411,29 +411,30 @@ public class AutomationDeviceEvents {
             	
             	
             	note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
-            	note.addAttr(EventAttr.DISTANCE, state.getSpeedingDistanceX100() / 10);
+            	note.addAttr(EventAttr.DISTANCE, state.getSpeedingDistanceX100() / 10); // WORD m_nDistance_10x;
+            	
             	note.addAttr(EventAttr.MAX_RPM, state.getMaxRpm());
             	note.addAttr(EventAttr.SPEED_LIMIT, state.getSpeedingSpeedLimit());
             	note.addAttr(EventAttr.AVG_SPEED, state.getAvgSpeed());
             	note.addAttr(EventAttr.AVG_RPM, state.getAvgRpm());
             	
-            	note.addAttr(EventAttr.SBS_LINK_ID, state.getSbsLinkID());
-            	note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
+            	note.addAttr(EventAttr.SBS_LINK_ID, state.getSbsLinkID());// don't send if revision < 5
+            	note.addAttr(EventAttr.ZONE_ID, state.getZoneID());// WSZonesAttrs iwi.h -  atoi(controller_state.last_wszone.zone.m_nZoneId)
             	note.addAttr(EventAttr.SPEEDING_TYPE, 3);
             	note.addAttr(EventAttr.SEATBELT_ENGAGED, state.isSeatbeltEngaged());
             	note.addAttr(EventAttr.START_TIME, state.getSpeedingStartTime());
-            	note.addAttr(EventAttr.STOP_TIME, state.getSpeedingStopTime());
-            	note.addAttr(EventAttr.MAX_TIME, state.getSpeedingStopTime().getDelta(state.getSpeedingStartTime()));
-            	note.addAttr(EventAttr.COURSE, state.getCourse());
-            	note.addAttr(EventAttr.MAX_SPEED_LIMIT, state.getMaxSpeedLimit());
+            	note.addAttr(EventAttr.STOP_TIME, state.getSpeedingStopTime()); // offset from start
+            	note.addAttr(EventAttr.MAX_TIME, state.getSpeedingStopTime().getDelta(state.getSpeedingStartTime()));// offset from start
+            	note.addAttr(EventAttr.COURSE, state.getCourse());// GpsData iwi.h
+            	note.addAttr(EventAttr.MAX_SPEED_LIMIT, state.getMaxSpeedLimit());// regular speeding seconds
             	note.addAttr(EventAttr.SBS_SPEED_LIMIT, state.getSbsSpeedLimit());
-            	note.addAttr(EventAttr.ZONE_SPEED_LIMIT, state.getZoneSpeedLimit());
-            	note.addAttr(EventAttr.WEATHER_SPEED_LIMIT_PERCENT, state.getWeatherSpeedLimitPercent());
-            	note.addAttr(EventAttr.SEVERE_SPEED_THRESHOLD, state.getSevereSpeedThreshold());
-            	note.addAttr(EventAttr.SPEEDING_BUFFER, state.getSpeedingBuffer());
+            	note.addAttr(EventAttr.ZONE_SPEED_LIMIT, state.getZoneSpeedLimit());// zone speed limit
+            	note.addAttr(EventAttr.WEATHER_SPEED_LIMIT_PERCENT, state.getWeatherSpeedLimitPercent());// weather percentage
+            	note.addAttr(EventAttr.SEVERE_SPEED_THRESHOLD, state.getSevereSpeedThreshold());// severe buffer size
+            	note.addAttr(EventAttr.SPEEDING_BUFFER, state.getSpeedingBuffer());// regular speeding buffer size
             	note.addAttr(EventAttr.SPEEDING_GRACE_PERIOD, state.getGracePeriod());
-            	note.addAttr(EventAttr.SEVERE_SPEED_SECONDS, state.getSeverSpeedSeconds());
-            	note.addAttr(EventAttr.SPEED_MODULE_ENABLED, state.isSpeedModuleEnabled());
+            	note.addAttr(EventAttr.SEVERE_SPEED_SECONDS, state.getSeverSpeedSeconds());// severe seconds
+            	note.addAttr(EventAttr.SPEED_MODULE_ENABLED, state.isSpeedModuleEnabled()); // sbs enabled
             	note.addAttr(EventAttr.SPEED_SOURCE, 1);
 
             } else {
@@ -443,6 +444,7 @@ public class AutomationDeviceEvents {
                 note.addAttr(EventAttr.SPEED_ID, 9999);
                 note.addAttr(EventAttr.VIOLATION_FLAGS, SpeedingEvent.FLAG);
             }
+        	state.setSpeedingDistanceX100(0);
         }
     }
 	public class StatisticsEvent extends AutomationDeviceEvents {
