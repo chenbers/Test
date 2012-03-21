@@ -16,11 +16,14 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import com.inthinc.hos.ddl.HosDailyDriverLog;
 import com.inthinc.hos.ddl.Recap;
 import com.inthinc.hos.ddl.RecapCanada;
 import com.inthinc.hos.ddl.RecapCanada2007;
 import com.inthinc.hos.ddl.RecapType;
 import com.inthinc.hos.ddl.RecapUS;
+import com.inthinc.hos.ddl.RemarkLog;
+import com.inthinc.hos.ddl.VehicleInfo;
 import com.inthinc.hos.model.DayTotals;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRecAdjusted;
@@ -35,9 +38,6 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.hos.model.HosDailyDriverLog;
-import com.inthinc.pro.reports.hos.model.RemarkLog;
-import com.inthinc.pro.reports.hos.model.VehicleInfo;
 import com.inthinc.pro.reports.hos.testData.DDLDataSet;
 
 public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{

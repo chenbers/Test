@@ -19,6 +19,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.inthinc.hos.ddl.HosDailyDriverLog;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.DriverStopReport;
@@ -32,7 +33,6 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
 import com.inthinc.pro.reports.hos.model.DriverDOTLog;
 import com.inthinc.pro.reports.hos.model.DrivingTimeViolationsSummary;
-import com.inthinc.pro.reports.hos.model.HosDailyDriverLog;
 import com.inthinc.pro.reports.hos.model.HosEdit;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;

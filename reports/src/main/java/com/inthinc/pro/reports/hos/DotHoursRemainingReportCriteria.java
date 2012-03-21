@@ -125,7 +125,7 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
        
        for (DateTime day : dayList)
        {
-           List<HOSRecAdjusted> dayLogList = hosAdjustedList.getAdjustedListForDay(day.toDate(), currentDate.toDate(), true);
+           List<HOSRecAdjusted> dayLogList = hosAdjustedList.getAdjustedListForDay(day.toDate(), currentDate.toDate(), true, driver.getPerson().getTimeZone());
            int drivingIncrements = 0;
            int onDutyIncrements = 0;
            for (HOSRecAdjusted log : dayLogList)

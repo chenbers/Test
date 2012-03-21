@@ -27,11 +27,15 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.adjusted.HOSAdjustedList;
+import com.inthinc.hos.ddl.HosDailyDriverLog;
+import com.inthinc.hos.ddl.HosDriverDailyLogGraph;
 import com.inthinc.hos.ddl.Recap;
 import com.inthinc.hos.ddl.RecapCanada;
 import com.inthinc.hos.ddl.RecapCanada2007;
 import com.inthinc.hos.ddl.RecapType;
 import com.inthinc.hos.ddl.RecapUS;
+import com.inthinc.hos.ddl.RemarkLog;
+import com.inthinc.hos.ddl.VehicleInfo;
 import com.inthinc.hos.model.DayTotals;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRec;
@@ -64,9 +68,6 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.model.HosDailyDriverLog;
-import com.inthinc.pro.reports.hos.model.RemarkLog;
-import com.inthinc.pro.reports.hos.model.VehicleInfo;
 import com.inthinc.pro.reports.jasper.ReportUtils;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
@@ -273,7 +274,7 @@ public class HosDailyDriverLogReportCriteria {
             if (day.toDate().after(currentTime)) 
                 break;
 
-            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true); 
+            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone()); 
             List<HOSOccupantLog> occupantLogListForDay = getOccupantLogsForDay(logListForDay, hosOccupantLogList);
             HOSRec firstHosRecForDay = getFirstRecordForDay(day.toDate(), hosRecapList, dateTimeZone);
             RuleSetType ruleSetType = getRuleSetTypeForDay(day, driver, firstHosRecForDay);
@@ -298,7 +299,7 @@ public class HosDailyDriverLogReportCriteria {
             dayData.setCorrectedGraphList(logListForDay);
             dayData.setCorrectedGraph(createGraph(logListForDay, dayData.getCorrectedDayTotals()));
             if (dayData.getEdited()) {
-                List<HOSRecAdjusted> originalLogListForDay = originalAdjustedList.getAdjustedListForDay(day.toDate(), currentTime, true);
+                List<HOSRecAdjusted> originalLogListForDay = originalAdjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone());
                 dayData.setOriginalGraphList(originalLogListForDay);
                 dayData.setOriginalDayTotals(originalAdjustedList.getAdjustedDayTotals(originalLogListForDay));
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals()));
