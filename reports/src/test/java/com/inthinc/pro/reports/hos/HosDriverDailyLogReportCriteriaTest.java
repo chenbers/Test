@@ -551,9 +551,10 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         // matching hosRecords
         List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
         for (HOSRecAdjusted rec : logListForDay) {
-            long vehicleOdometer = rec.getVehicleID() * 100l;
+            Integer vehicleID = (Integer)(rec.getVehicleID());
+            long vehicleOdometer = vehicleID * 100l;
             hosRecordList.add(new HOSRecord(Integer.valueOf(rec.getId()), MockHOSDAO.MOCK_DRIVER_ID1, 
-                    rec.getRuleType(), rec.getVehicleID(), rec.getVehicleID()+"", true, 
+                    rec.getRuleType(), vehicleID, vehicleID+"", true, 
                     vehicleOdometer, rec.getLogTimeDate(), rec.getLogTimeDate(), rec.getLogTimeZone(), rec.getStatus(), HOSOrigin.DEVICE, "test location", 0f, 0f, 1000l,
                     "", "", true, false, "", false, 0f, 0f));
         }
@@ -623,9 +624,11 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         // matching hosRecords
         List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
         for (HOSRecAdjusted rec : logListForDay) {
-            long vehicleOdometer = rec.getVehicleID() * 100l;
+            Integer vehicleID = (Integer)(rec.getVehicleID());
+
+            long vehicleOdometer = vehicleID * 100l;
             HOSRecord hosRecord = new HOSRecord(Integer.valueOf(rec.getId()), ddlTestData.driver.getDriverID(), 
-                    rec.getRuleType(), rec.getVehicleID(), rec.getVehicleID()+"", true, 
+                    rec.getRuleType(), vehicleID, vehicleID+"", true, 
                     vehicleOdometer, rec.getLogTimeDate(), rec.getLogTimeDate(), rec.getLogTimeZone(), rec.getStatus(), HOSOrigin.DEVICE, "test location", 0f, 0f, 1000l,
                     "", "", true, true, "EDITOR", false, 0f, 0f);
             hosRecord.setOriginalLogTime(new Date(hosRecord.getLogTime().getTime() - ONE_HOUR));

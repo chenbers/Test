@@ -322,7 +322,7 @@ public class HosDailyDriverLogReportCriteria {
     List<VehicleInfo> initVehicleInfoForDay(DateTime day, Integer driverID, List<HOSRecAdjusted> logListForDay, List<HOSRecord> hosRecordList) {
         List<VehicleInfo> vehicleInfoList = new ArrayList<VehicleInfo>();
         for (HOSRecAdjusted rec  : logListForDay) {
-            if (rec.getVehicleID() != null && rec.getVehicleID().intValue() != 0) {
+            if (isIDSet(rec.getVehicleID())) {
                 boolean alreadyAdded = false;
                 for (VehicleInfo vehicleInfo : vehicleInfoList) {
                     if (rec.getVehicleID().equals(vehicleInfo.getVehicleID())) {
@@ -332,10 +332,11 @@ public class HosDailyDriverLogReportCriteria {
                 }
                 if (!alreadyAdded) {
                     VehicleInfo vehicleInfo = new VehicleInfo();
+                    Integer vehicleID = (Integer)(rec.getVehicleID());
                     vehicleInfo.setStartOdometer(getVehicleStartOdometer(day, rec, hosRecordList));
-                    vehicleInfo.setName(getVehicleNameStr(rec.getVehicleID()));
+                    vehicleInfo.setName(getVehicleNameStr(vehicleID));
                     vehicleInfo.setVehicleID(rec.getVehicleID());
-                    Map<Integer, Long> mileageMap = hosDAO.fetchMileageForDayVehicle(day, rec.getVehicleID());
+                    Map<Integer, Long> mileageMap = hosDAO.fetchMileageForDayVehicle(day, vehicleID);
                     vehicleInfo.setDriverMiles(getDriverMiles(mileageMap, logListForDay, driverID));
                     vehicleInfo.setVehicleMiles(getVehicleMiles(mileageMap));
                     vehicleInfoList.add(vehicleInfo);
@@ -343,6 +344,17 @@ public class HosDailyDriverLogReportCriteria {
             }
         }
         return vehicleInfoList;
+    }
+    private Boolean isIDSet(Object id) {
+        if (id == null)
+            return false;
+        
+        String idString = id.toString().trim();
+        if (idString.isEmpty() || idString.equals("0"))
+            return false;
+        
+        
+        return true;
     }
 
     private Number getDriverMiles(Map<Integer, Long> mileageMap, List<HOSRecAdjusted> logListForDay, Integer driverID) {
