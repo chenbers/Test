@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.TeamOverallEnum;
 
 public class PageTeamOverallScore extends TeamBar {
@@ -82,5 +83,10 @@ public class PageTeamOverallScore extends TeamBar {
 	public TeamOverallScorePopUps _popUp() {
 		return new TeamOverallScorePopUps();
 	}
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return TeamOverallEnum.DEFAULT_URL;
+    }
 
 }

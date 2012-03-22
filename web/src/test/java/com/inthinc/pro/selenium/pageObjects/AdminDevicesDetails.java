@@ -4,15 +4,22 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminDevicesDetailsEnum;
 
-public class PageAdminDevicesDetails extends AdminBar {
+public class AdminDevicesDetails extends AdminBar {
 
     public class AdminDeviceDetailsButtons extends AdminBarButtons {
 
         public TextButton edit() {
             return new TextButton(AdminDevicesDetailsEnum.EDIT_BUTTON);
         }
+    }
+    
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminDevicesDetailsEnum.URL;
     }
 
     public class AdminDeviceDetailsDropDowns extends AdminBarDropDowns {}
@@ -156,7 +163,7 @@ public class PageAdminDevicesDetails extends AdminBar {
 
     }
 
-    public PageAdminDevicesDetails() {
+    public AdminDevicesDetails() {
         checkMe.add(AdminDevicesDetailsEnum.BACK_TO_DEVICES);
         checkMe.add(AdminDevicesDetailsEnum.TITLE);
         checkMe.add(AdminDevicesDetailsEnum.EDIT_BUTTON);

@@ -11,8 +11,6 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 public class PageNotificationsRedFlags extends NotificationsEventsBar {
 
     public PageNotificationsRedFlags() {
-        url = NotificationsRedFlagsEnum.DEFAULT_URL;
-        
         enums = new SeleniumEnums[] { NotificationsBarEnum.LEVEL_FILTER_DHX, NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
     }
 
@@ -122,5 +120,10 @@ public class PageNotificationsRedFlags extends NotificationsEventsBar {
 
     public RedFlagsPager _page(){
         return new RedFlagsPager();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsRedFlagsEnum.DEFAULT_URL;
     }
 }

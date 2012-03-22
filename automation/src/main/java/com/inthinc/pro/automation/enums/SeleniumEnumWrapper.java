@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.enums;
 
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,6 +12,7 @@ import org.openqa.selenium.By;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 public class SeleniumEnumWrapper implements SeleniumEnums {
 
@@ -47,6 +49,18 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
     			replaceNumber(((IndexEnum)object).getIndex());
     		} else if (object instanceof Integer){
     			replaceNumber((Integer)object);
+    		} else if (object instanceof Enum){
+    			try {
+					Method getText = object.getClass().getMethod("getText");
+					replaceWord((String) getText.invoke(object));
+				} catch (Exception e1) {
+					try {
+						Method getCode = object.getClass().getMethod("getCode");
+						replaceNumber((Integer) getCode.invoke(object));
+					} catch (Exception e2) {
+						
+					}
+				}
     		}
     	}
     }
@@ -137,7 +151,7 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
                         IDs[i] = before + middle + after;
                     }
                 } else {
-                    use = Integer.parseInt(neww) - 1 + "";
+                    use = Integer.parseInt(neww) + "";
                 }
 
             }

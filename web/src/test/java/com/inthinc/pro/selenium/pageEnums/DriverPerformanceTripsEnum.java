@@ -57,6 +57,7 @@ public enum DriverPerformanceTripsEnum implements SeleniumEnums {
 	BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:driverTrips-dashboard')]"),
 	DRIVER_NAME(null, "//a[contains(@id,'driverTripsDriverPerformance1')]"),
 	TRIPS_BY(null, "//span[@class='vehicle']"),
+	DEFAULT_URL("app/driver/trips"),
 	
 	;
 

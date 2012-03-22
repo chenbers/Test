@@ -4,14 +4,10 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.ExecutiveExpansionBarEnum;
 
-public class ExecutiveExpansionBar extends NavigationBar {
+public abstract class ExecutiveExpansionBar extends NavigationBar {
     
     protected String page = "details";
 
-    public ExecutiveExpansionBar() {
-        // TODO Auto-generated constructor stub
-    }
-    
     
     public class ExpansionBarLinks extends NavigationBarLinks{
         

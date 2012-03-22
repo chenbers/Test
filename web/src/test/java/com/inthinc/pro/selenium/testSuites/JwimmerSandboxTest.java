@@ -11,11 +11,11 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleView;
+import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageChangePassword;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -35,7 +35,6 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamLiveTeam;
 import com.inthinc.pro.selenium.pageObjects.PageTeamOverallScore;
 import com.inthinc.pro.selenium.pageObjects.PageTeamStops;
 import com.inthinc.pro.selenium.pageObjects.PageTeamTrips;
-import com.inthinc.pro.selenium.pageObjects.PageUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
@@ -75,7 +74,7 @@ public void sometest() {
     public void adminVehicle_smokeTest() {
         l.loginProcess(username, password);
         PageAdminVehicles list = new PageAdminVehicles();
-        PageAdminVehicleView view = new PageAdminVehicleView(); 
+        PageAdminVehicleDetails view = new PageAdminVehicleDetails(); 
         list._link().admin().click();
         list._link().adminVehicles().click();
         list._textField().search().type("jwimmer");
@@ -137,7 +136,7 @@ public void sometest() {
         view._popUp().delete()._button().cancel().click();//DONE: fixed: popup needed page var
 
         view._button().edit().click();//DONE: added isVisible check to locator failover
-        PageAdminVehicleEdit edit = new PageAdminVehicleEdit();
+        PageAdminAddEditVehicle edit = new PageAdminAddEditVehicle();
         // edit._textField().VIN().type("here");
         // edit._textField().make().type("here");
         // edit._textField().model().type("here");
@@ -475,7 +474,7 @@ public void sometest() {
     @Ignore
     public void adminVehicleView_sanityCheck_shouldPass() {
 
-        PageAdminVehicleView page = new PageAdminVehicleView();
+        PageAdminVehicleDetails page = new PageAdminVehicleDetails();
         page.loginProcess("jwimmer", "password");
         page.load(37689);
 
@@ -507,7 +506,7 @@ public void sometest() {
     @Ignore
     @Test
     public void pageAdminVehicleView_smokeTest_informPercentageExercised() {
-        PageAdminVehicleView page = new PageAdminVehicleView();
+        PageAdminVehicleDetails page = new PageAdminVehicleDetails();
         List<String> potentialActions = getPotentialActionsByReflex(page);
 
         new PageLogin().loginProcess("jwimmer", "password");
@@ -591,7 +590,7 @@ public void sometest() {
     public void page_testScenario_expectedResult() throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException {
         PageLogin login = new PageLogin();
         login.loginProcess(username, password);
-        AbstractPage instPage = new PageAdminVehicleView();
+        AbstractPage instPage = new PageAdminVehicleDetails();
         instPage = new PageDriverPerformanceStyle();
         instPage = new PageDriverPerformance();
         instPage = new PageChangePassword();
@@ -600,7 +599,7 @@ public void sometest() {
         // ((PageAdminUsers)instPage)._link().tableEntry(AdminUsersEntries.FULL_NAME).getText(1);
         // PageAdminUsers page = new PageAdminUsers();
         instPage = new PageAdminUserDetails();
-        instPage = new PageAdminUserAddEdit();
+        instPage = new PageAdminAddEditUser();
        // instPage = new PageDriverReport();
         instPage = new PageVehiclePerformanceStyle();
         instPage = new PageVehiclePerformanceTrips();
@@ -614,7 +613,7 @@ public void sometest() {
         instPage = new PageMyAccount();
         instPage = new PageNotificationsRedFlags();
         instPage = new PageVehiclePerformance();
-        instPage = new PageUserDetails();
+        instPage = new PageAdminUserDetails();
         instPage = new PageLogin();
         //instPage = new PageVehicleReport();
         instPage = new PageLiveFleet();
@@ -624,7 +623,7 @@ public void sometest() {
         instPage = new PageTeamLiveTeam();
         instPage = new PageTeamDashboardStatistics();
         instPage = new PageReportsDevices();
-        instPage = new PageAdminVehicleView();
+        instPage = new PageAdminVehicleDetails();
 
         System.out.println("page_testScenario_expectedResult()");
         int pages = 0;

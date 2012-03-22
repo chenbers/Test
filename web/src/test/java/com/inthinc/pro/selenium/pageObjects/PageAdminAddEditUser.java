@@ -15,14 +15,20 @@ import com.inthinc.pro.selenium.pageEnums.AdminAddEditUserEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 
-public class PageAdminUserAddEdit extends AdminBar {
+public class PageAdminAddEditUser extends AdminBar {
 
     private static String page = "Person";
 
-    public PageAdminUserAddEdit() {
-        url = AdminAddEditUserEnum.DEFAULT_URL;
+    public PageAdminAddEditUser() {
         checkMe.add(AdminAddEditUserEnum.DRIVER_TEAM_DHX);
     }
+    
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminAddEditUserEnum.DEFAULT_URL;
+    }
+    
 
     public AddEditUserPopUps _popUp() {
         return new AddEditUserPopUps();

@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceTripsEnum;
 
 public class PageVehiclePerformanceTrips extends NavigationBar {
@@ -187,6 +188,10 @@ public class PageVehiclePerformanceTrips extends NavigationBar {
     
     public VehicleTripsPager _page(){
         return new VehicleTripsPager();
+    }
+    @Override
+    public SeleniumEnums setUrl() {
+        return VehiclePerformanceTripsEnum.DEFAULT_URL;
     }
     
 }

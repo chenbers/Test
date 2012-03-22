@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
@@ -248,6 +249,12 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
     
     public VehicleSpeedPager _page(){
         return new VehicleSpeedPager();
+    }
+
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return VehiclePerformanceSpeedEnum.DEFAULT_URL;
     }
     
 

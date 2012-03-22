@@ -78,6 +78,8 @@ public enum TeamDriverStatsEnum implements SeleniumEnums {
     DRIVER_FUEL_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-mpg"),
     DRIVER_CRASHES_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-crashes"),
     DRIVER_SAFETY_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-safety"),
+    
+    DEFAULT_URL("app/dashboard/tab/teamStatistics"),
 
     
     ;

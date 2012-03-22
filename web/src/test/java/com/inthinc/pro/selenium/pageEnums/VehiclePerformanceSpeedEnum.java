@@ -64,6 +64,8 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
     TOP_ENTRY_DIFF(null, "notificationsTableForm:notificationsTable:###:topSpeedDifference"),
 
     DISTANCE_ENTRY(null, "notificationsTableForm:notificationsTable:###:distance"),
+    
+    DEFAULT_URL("app/vehicle/seatBelt"),
 
     ;
 

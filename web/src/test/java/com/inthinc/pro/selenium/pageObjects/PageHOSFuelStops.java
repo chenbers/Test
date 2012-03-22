@@ -11,36 +11,37 @@ import com.inthinc.pro.automation.elements.TextFieldSuggestions;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.selenium.pageEnums.FuelStopsEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.HOSFuelStopsEnum;
 
-public class PageFuelStops extends HOSBar {
+public class PageHOSFuelStops extends HOSBar {
 
     public class FuelStopsButtons extends HOSBarButtons {
 
         public TextButton add() {
-            return new TextButton(FuelStopsEnum.ADD);
+            return new TextButton(HOSFuelStopsEnum.ADD);
         }
 
         public TextButton delete() {
-            return new TextButton(FuelStopsEnum.DELETE_BUTTON);
+            return new TextButton(HOSFuelStopsEnum.DELETE_BUTTON);
         }
 
         public Button editColumns() {
-            return new Button(FuelStopsEnum.EDIT_COLUMNS);
+            return new Button(HOSFuelStopsEnum.EDIT_COLUMNS);
         }
 
         public TextButton refresh() {
-            return new TextButton(FuelStopsEnum.REFRESH);
+            return new TextButton(HOSFuelStopsEnum.REFRESH);
         }
     }
 
     public class FuelStopsCheckBoxs {
         public CheckBox checkAll() {
-            return new CheckBox(FuelStopsEnum.CHECK_ALL);
+            return new CheckBox(HOSFuelStopsEnum.CHECK_ALL);
         }
 
         public CheckBoxTable entryCheckBox() {
-            return new CheckBoxTable(FuelStopsEnum.VALUE_CHECK);
+            return new CheckBoxTable(HOSFuelStopsEnum.VALUE_CHECK);
         }
     }
 
@@ -49,43 +50,43 @@ public class PageFuelStops extends HOSBar {
     public class FuelStopsLinks extends HOSBarLinks {
 
         public TextLink sortDateTime() {
-            return new TextLink(FuelStopsEnum.SORT_DATE_TIME);
+            return new TextLink(HOSFuelStopsEnum.SORT_DATE_TIME);
         }
 
         public TextLink sortEdited() {
-            return new TextLink(FuelStopsEnum.SORT_EDITED);
+            return new TextLink(HOSFuelStopsEnum.SORT_EDITED);
         }
 
         public TextLink sortLocation() {
-            return new TextLink(FuelStopsEnum.SORT_LOCATION);
+            return new TextLink(HOSFuelStopsEnum.SORT_LOCATION);
         }
 
         public TextLink sortOdometerAfter() {
-            return new TextLink(FuelStopsEnum.SORT_AFTER);
+            return new TextLink(HOSFuelStopsEnum.SORT_AFTER);
         }
 
         public TextLink sortOdometerBefore() {
-            return new TextLink(FuelStopsEnum.SORT_BEFORE);
+            return new TextLink(HOSFuelStopsEnum.SORT_BEFORE);
         }
 
         public TextLink sortTrailer() {
-            return new TextLink(FuelStopsEnum.SORT_TRAILER);
+            return new TextLink(HOSFuelStopsEnum.SORT_TRAILER);
         }
 
         public TextLink sortTrailerFuel() {
-            return new TextLink(FuelStopsEnum.SORT_TRAILER_FUEL);
+            return new TextLink(HOSFuelStopsEnum.SORT_TRAILER_FUEL);
         }
 
         public TextLink sortVehicle() {
-            return new TextLink(FuelStopsEnum.SORT_VEHICLE);
+            return new TextLink(HOSFuelStopsEnum.SORT_VEHICLE);
         }
 
         public TextLink sortVehicleFuel() {
-            return new TextLink(FuelStopsEnum.SORT_VEHICLE_FUEL);
+            return new TextLink(HOSFuelStopsEnum.SORT_VEHICLE_FUEL);
         }
 
         public TextTableLink valueEdit() {
-            return new TextTableLink(FuelStopsEnum.VALUE_EDIT);
+            return new TextTableLink(HOSFuelStopsEnum.VALUE_EDIT);
         }
 
     }
@@ -114,62 +115,62 @@ public class PageFuelStops extends HOSBar {
     public class FuelStopsTextFields extends HOSBarTextFields {
 
         public TextFieldSuggestions vehicle() {
-            return new TextFieldSuggestions(FuelStopsEnum.VEHICLE_TEXT_FIELD, FuelStopsEnum.VEHICLE_SUGGESTION_BOX);
+            return new TextFieldSuggestions(HOSFuelStopsEnum.VEHICLE_TEXT_FIELD, HOSFuelStopsEnum.VEHICLE_SUGGESTION_BOX);
         }
     }
 
     public class FuelStopsTexts extends HOSBarTexts {
 
         public Text counter() {
-            return new Text(FuelStopsEnum.COUNTER);
+            return new Text(HOSFuelStopsEnum.COUNTER);
         }
 
         public Text labelDateRange() {
-            return new Text(FuelStopsEnum.DATE_RANGE_LABEL);
+            return new Text(HOSFuelStopsEnum.DATE_RANGE_LABEL);
         }
 
         public TextFieldLabel labelVehicleField() {
-            return new TextFieldLabel(FuelStopsEnum.VEHICLE_TEXT_FIELD);
+            return new TextFieldLabel(HOSFuelStopsEnum.VEHICLE_TEXT_FIELD);
         }
 
         public TextTable sortDateTime() {
-            return new TextTable(FuelStopsEnum.VALUE_DATE_TIME);
+            return new TextTable(HOSFuelStopsEnum.VALUE_DATE_TIME);
         }
 
         public Text title() {
-            return new Text(FuelStopsEnum.TITLE);
+            return new Text(HOSFuelStopsEnum.TITLE);
         }
 
         public TextTable valueEdited() {
-            return new TextTable(FuelStopsEnum.VALUE_EDITED);
+            return new TextTable(HOSFuelStopsEnum.VALUE_EDITED);
         }
 
         public TextTable valueLocation() {
-            return new TextTable(FuelStopsEnum.VALUE_LOCATION);
+            return new TextTable(HOSFuelStopsEnum.VALUE_LOCATION);
         }
 
         public TextTable valueOdometerAfter() {
-            return new TextTable(FuelStopsEnum.VALUE_AFTER);
+            return new TextTable(HOSFuelStopsEnum.VALUE_AFTER);
         }
 
         public TextTable valueOdometerBefore() {
-            return new TextTable(FuelStopsEnum.VALUE_BEFORE);
+            return new TextTable(HOSFuelStopsEnum.VALUE_BEFORE);
         }
 
         public TextTable valueTrailer() {
-            return new TextTable(FuelStopsEnum.VALUE_TRAILER);
+            return new TextTable(HOSFuelStopsEnum.VALUE_TRAILER);
         }
 
         public TextTable valueTrailerFuel() {
-            return new TextTable(FuelStopsEnum.VALUE_TRAILER_FUEL);
+            return new TextTable(HOSFuelStopsEnum.VALUE_TRAILER_FUEL);
         }
 
         public TextTable valueVehicle() {
-            return new TextTable(FuelStopsEnum.VALUE_VEHICLE);
+            return new TextTable(HOSFuelStopsEnum.VALUE_VEHICLE);
         }
 
         public TextTable valueVehicleFuel() {
-            return new TextTable(FuelStopsEnum.VALUE_VEHICLE_FUEL);
+            return new TextTable(HOSFuelStopsEnum.VALUE_VEHICLE_FUEL);
         }
     }
 
@@ -214,12 +215,17 @@ public class PageFuelStops extends HOSBar {
     public class FuelStopsDateSelectors{
 
         public Calendar dateStart() {
-            return new Calendar(FuelStopsEnum.DATE_START_BOX);
+            return new Calendar(HOSFuelStopsEnum.DATE_START_BOX);
         }
 
         public Calendar dateStop() {
-            return new Calendar(FuelStopsEnum.DATE_STOP_BOX);
+            return new Calendar(HOSFuelStopsEnum.DATE_STOP_BOX);
         }
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return HOSFuelStopsEnum.DEFAULT_URL;
     }
 
 }

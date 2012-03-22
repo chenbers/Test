@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetExpansionEnum;
 
 public class PageExecutiveLiveFleetExpansion extends ExecutiveExpansionBar {
@@ -64,6 +65,11 @@ public class PageExecutiveLiveFleetExpansion extends ExecutiveExpansionBar {
     
     public LiveFleetExpansionPopUps _popUp(){
         return new LiveFleetExpansionPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return LiveFleetExpansionEnum.DEFAULT_URL;
     }
     
     

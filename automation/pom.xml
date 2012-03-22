@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
@@ -68,7 +69,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>com.eaio.uuid</groupId>
 			<artifactId>uuid</artifactId>
@@ -87,27 +88,26 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-	      <groupId>org.jbehave</groupId>
-	      <artifactId>jbehave-core</artifactId>
-	      <version>${jbehave.core.version}</version>
-	      <classifier>resources</classifier>
-	      <type>zip</type>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.jbehave.web</groupId>
-	      <artifactId>jbehave-web-selenium</artifactId>
-	      <version>${jbehave.web.version}</version>
-	      <exclusions>
-	        <exclusion>
-	          <groupId>org.seleniumhq.selenium</groupId>
-	          <artifactId>selenium-remote-control</artifactId>
-	        </exclusion>
-	        <exclusion>
-	          <groupId>org.seleniumhq.selenium</groupId>
-	          <artifactId>selenium-support</artifactId>
-	        </exclusion>
-	      </exclusions>
-	    </dependency> 
+			<groupId>org.jbehave</groupId>
+			<artifactId>jbehave-core</artifactId>
+			<version>${jbehave.core.version}</version>
+		</dependency>
+		<!-- Jackson -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-lgpl</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>1.9.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

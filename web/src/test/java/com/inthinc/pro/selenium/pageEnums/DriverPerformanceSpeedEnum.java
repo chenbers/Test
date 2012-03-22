@@ -65,7 +65,8 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     DISTANCE_ENTRY(null, "driverSpeedForm:notificationsTable:##:distance"),
 
     EXCLUDE("exclude", "driverSpeedForm:notificationsTable:###:driverSpeedInclude"),
-    INCLUDE("include", "driverSpeedForm:notificationsTable:###:driverSpeed_excluded");
+    INCLUDE("include", "driverSpeedForm:notificationsTable:###:driverSpeed_excluded"), 
+    DEFAULT_URL("app/driver/speed");
 
     ;
 

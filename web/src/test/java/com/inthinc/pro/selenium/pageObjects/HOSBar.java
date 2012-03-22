@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.HosBarEnum;
 
-public class HOSBar extends NavigationBar {
+public abstract class HOSBar extends NavigationBar {
     
 
     protected static final String page = "hosReports";

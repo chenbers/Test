@@ -51,7 +51,8 @@ public enum AdminUserDetailsEnum implements SeleniumEnums {
 	PHONE_2(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[6]/td[2]"),
 	INFORMATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[7]/td[2]"),
 	WARNING(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[8]/td[2]"),
-	CRITICAL(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[9]/td[2]"),
+	CRITICAL(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[9]/td[2]"), 
+	DEFAULT_URL("app/admin/person"),
 	
 	
 	;

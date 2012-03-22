@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.TeamLiveEnum;
 
 public class PageTeamLiveTeam extends TeamBar {
@@ -40,6 +41,11 @@ public class PageTeamLiveTeam extends TeamBar {
     
     public TeamLiveTeamPopUps _popUp(){
         return new TeamLiveTeamPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return TeamLiveEnum.DEFAULT_URL;
     }
     
 

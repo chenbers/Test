@@ -26,7 +26,6 @@ public class LoginSteps extends WebSteps {
     private static final PageLogin page = new PageLogin();
     private static final PopUps popup = new PopUps();
     private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
-    private static final MasterTest mastertest = new MasterTest();
 
     @Given("I log in to the login page")
     public void givenIAmLoggedInToTheLoginPage() {
@@ -148,7 +147,7 @@ public class LoginSteps extends WebSteps {
     //Tab key is not working yet
     @When("I press the tab key")
     public void whenIPressTheTabKey(){
-        mastertest.tabKey();
+        test.tabKey();
     }
     
     @Then("I confirm the page contains all necessary elements")

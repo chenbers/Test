@@ -4,14 +4,20 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminSpeedByStreetEnum;
 
-public class AdminSpeedByStreet extends AdminBar {
+public class PageAdminSpeedByStreet extends AdminBar {
 
-    public AdminSpeedByStreet() {
-        url = AdminSpeedByStreetEnum.DEFAULT_URL;
+    public PageAdminSpeedByStreet() {
         checkMe.add(AdminSpeedByStreetEnum.DELETE);
         checkMe.add(AdminSpeedByStreetEnum.TITLE);
+    }
+    
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminSpeedByStreetEnum.DEFAULT_URL;
     }
 
     
@@ -91,4 +97,5 @@ public class AdminSpeedByStreet extends AdminBar {
     public AdminSpeedByStreetPopUps _popUp() {
         return new AdminSpeedByStreetPopUps();
     }
+
 }

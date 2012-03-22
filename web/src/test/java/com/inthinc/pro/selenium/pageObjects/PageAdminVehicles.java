@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.VehicleColumns;
 import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
@@ -17,8 +18,13 @@ public class PageAdminVehicles extends AdminTables {
 
     public PageAdminVehicles() {
         page = "vehicles";
-        url = AdminVehiclesEnum.DEFAULT_URL;
         checkMe.add(AdminVehiclesEnum.TITLE);
+    }
+    
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminVehiclesEnum.DEFAULT_URL;
     }
 
     public AdminVehiclesPopUps _popUp() {
@@ -108,5 +114,6 @@ public class PageAdminVehicles extends AdminTables {
     public AdminVehiclesPager _page() {
         return new AdminVehiclesPager();
     }
+
 
 }

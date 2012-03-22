@@ -10,6 +10,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminReportsEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.ReportsColumns;
@@ -18,12 +19,17 @@ public class PageAdminReports extends AdminTables {
 
     public PageAdminReports() {
         page = "person";
-        url = AdminReportsEnum.DEFAULT_URL;
         checkMe.add(AdminReportsEnum.BATCH_EDIT);
         checkMe.add(AdminReportsEnum.EDIT_COLUMNS_LINK);
         checkMe.add(AdminReportsEnum.SEARCH_BUTTON);
     }
 
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminReportsEnum.DEFAULT_URL;
+    }
+    
     public class AdminReportsButtons extends AdminTablesButtons {
 
         public TextButton delete() {
@@ -123,5 +129,5 @@ public class PageAdminReports extends AdminTables {
         addError("clickNameMatching("+column+", "+value+")", ErrorLevel.FATAL);
         return this;
     }
-    
+
 }

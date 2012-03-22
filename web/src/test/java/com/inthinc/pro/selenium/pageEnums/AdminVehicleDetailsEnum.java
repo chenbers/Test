@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
-public enum AdminVehicleViewEnum implements SeleniumEnums {
+public enum AdminVehicleDetailsEnum implements SeleniumEnums {
     DEFAULT_URL("/app/admin/vehicle/### "),
     TITLE("Admin - *** Details", Xpath.start().span(Id.clazz("admin")).toString()),
     
@@ -94,10 +94,10 @@ public enum AdminVehicleViewEnum implements SeleniumEnums {
     private String text, url;
     private String[] IDs;
     
-    private AdminVehicleViewEnum(String url){
+    private AdminVehicleDetailsEnum(String url){
     	this.url = url;
     }
-    private AdminVehicleViewEnum(String text, String ...IDs){
+    private AdminVehicleDetailsEnum(String text, String ...IDs){
         this.text=text;
     	this.IDs = IDs;
     }

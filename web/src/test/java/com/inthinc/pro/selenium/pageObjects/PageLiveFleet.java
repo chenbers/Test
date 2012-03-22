@@ -10,11 +10,11 @@ import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
 public class PageLiveFleet extends NavigationBar {
     public PageLiveFleet() {
-        url = LiveFleetEnum.DEFAULT_URL;
         checkMe.add(LiveFleetEnum.HEADER_BOX_DISPATCH);
         checkMe.add(LiveFleetEnum.HEADER_BOX_FLEET_LEGEND);
         checkMe.add(LiveFleetEnum.HEADER_BOX_LIVE_FLEET);
@@ -194,6 +194,11 @@ public class PageLiveFleet extends NavigationBar {
         public Paging pageIndex(){
             return new Paging(LiveFleetEnum.PAGER);
         }
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return LiveFleetEnum.DEFAULT_URL;
     }
 
 }

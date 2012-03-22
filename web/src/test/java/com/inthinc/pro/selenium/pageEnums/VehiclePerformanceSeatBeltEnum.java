@@ -31,8 +31,10 @@ public enum VehiclePerformanceSeatBeltEnum implements SeleniumEnums {
     DATE_TIME_ENTRY(null, "eventTableForm:notificationsTable:###:time"),
     AVERAGE_SPEED_ENTRY(null, "eventTableForm:notificationsTable:###:averageSpeed"),
     TOP_SPEED_ENTRY(null, "eventTableForm:notificationsTable:###:topSpeed"),
-    DISTANCE_ENTRY(null, "eventTableForm:notificationsTable:###:distance"),
-
+    DISTANCE_ENTRY(null, "eventTableForm:notificationsTable:###:distance"), 
+    
+    DEFAULT_URL("app/vehicle/seatBelt"),
+    
     ;
 
     private String text, url;

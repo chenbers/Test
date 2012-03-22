@@ -5,7 +5,7 @@ import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
-import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoleAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditCustomRole;
 import com.inthinc.pro.selenium.pageObjects.PageAdminCustomRoles;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -47,7 +47,7 @@ public class StepsAdmin extends LoginSteps {
     //ROLES section (custom roles apply to most if not all admin sections)
     private PageAdminCustomRoles roles = new PageAdminCustomRoles();
     private PageAdminCustomRoles roleDetails = new PageAdminCustomRoles();
-    private PageAdminCustomRoleAddEdit roleAddEdit = new PageAdminCustomRoleAddEdit();
+    private PageAdminAddEditCustomRole roleAddEdit = new PageAdminAddEditCustomRole();
     
     @When("I input the role name as $roleName")
     @Pending

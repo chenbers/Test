@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
 
 public class PageNotificationsSafety extends NotificationsEventsBar {
@@ -97,6 +98,11 @@ public class PageNotificationsSafety extends NotificationsEventsBar {
         public Paging pageIndex() {
             return new Paging();
         }
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsSafetyEnum.DEFAULT_URL;
     }
 
 }

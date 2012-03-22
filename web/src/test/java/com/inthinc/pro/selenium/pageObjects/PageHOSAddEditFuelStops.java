@@ -12,12 +12,13 @@ import com.inthinc.pro.automation.elements.TextFieldValue;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TimeOfDay;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.FuelStopsEditEnum;
 
-public class PageFuelStopsAddEdit extends HOSBar {
+public class PageHOSAddEditFuelStops extends HOSBar {
     
-    public class FuelStopsAddEditLinks extends HOSBarLinks{}
-    public class FuelStopsAddEditTexts extends HOSBarTexts{
+    public class AddEditFuelStopsLinks extends HOSBarLinks{}
+    public class AddEditFuelStopsTexts extends HOSBarTexts{
         
         public Text errorMaster(){
             return new Text(FuelStopsEditEnum.MASTER_ERROR);
@@ -102,7 +103,7 @@ public class PageFuelStopsAddEdit extends HOSBar {
         
         
     }
-    public class FuelStopsAddEditTextFields extends HOSBarTextFields{
+    public class AddEditFuelStopsTextFields extends HOSBarTextFields{
         
         
         public TextField trailer(){
@@ -128,7 +129,7 @@ public class PageFuelStopsAddEdit extends HOSBar {
             return new Calendar(FuelStopsEditEnum.DATE_BOX);
         }
     }
-    public class FuelStopsAddEditButtons extends HOSBarButtons{
+    public class AddEditFuelStopsButtons extends HOSBarButtons{
         
         public TextButton topSave(){
             return new TextButton(FuelStopsEditEnum.SAVE_TOP);
@@ -146,42 +147,47 @@ public class PageFuelStopsAddEdit extends HOSBar {
             return new TextButton(FuelStopsEditEnum.CANCEL_BOTTOM);
         }
     }
-    public class FuelStopsAddEditDropDowns extends HOSBarDropDowns{
+    public class AddEditFuelStopsDropDowns extends HOSBarDropDowns{
         
         public DropDown driver(){
             return new DropDown(FuelStopsEditEnum.DRIVER_DROP_DOWN);
         }
         
     }
-    public class FuelStopsAddEditPopUps extends MastheadPopUps{}
+    public class AddEditFuelStopsPopUps extends MastheadPopUps{}
     
 
-    public FuelStopsAddEditLinks _link(){
-        return new FuelStopsAddEditLinks();
+    public AddEditFuelStopsLinks _link(){
+        return new AddEditFuelStopsLinks();
     }
     
-    public FuelStopsAddEditTexts _text(){
-        return new FuelStopsAddEditTexts();
+    public AddEditFuelStopsTexts _text(){
+        return new AddEditFuelStopsTexts();
     }
         
-    public FuelStopsAddEditButtons _button(){
-        return new FuelStopsAddEditButtons();
+    public AddEditFuelStopsButtons _button(){
+        return new AddEditFuelStopsButtons();
     }
     
-    public FuelStopsAddEditTextFields _textField(){
-        return new FuelStopsAddEditTextFields();
+    public AddEditFuelStopsTextFields _textField(){
+        return new AddEditFuelStopsTextFields();
     }
     
-    public FuelStopsAddEditDropDowns _dropDown(){
-        return new FuelStopsAddEditDropDowns();
+    public AddEditFuelStopsDropDowns _dropDown(){
+        return new AddEditFuelStopsDropDowns();
     }
     
-    public FuelStopsAddEditPopUps _popUp(){
-        return new FuelStopsAddEditPopUps();
+    public AddEditFuelStopsPopUps _popUp(){
+        return new AddEditFuelStopsPopUps();
     }
     
     public TimeOfDay _timeSelector(){
         return new TimeOfDay(FuelStopsEditEnum.TIME_CHANGER);
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return FuelStopsEditEnum.DEFAULT_URL;
     }
     
 

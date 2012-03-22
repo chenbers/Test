@@ -42,6 +42,8 @@ public class PrettyJSON {
             aStringAString.write(StringUtils.repeat("\t", depth));
             if (item.get(next) instanceof String || item.get(next) == null) {
                 printPair(aStringAString, next, item.getString(next));
+            } else if (item.get(next) instanceof Integer){ 
+                printPair(aStringAString, next, item.getInt(next));
             } else if (item.get(next) instanceof JSONObject) {
                 aStringAString.write("{ \"" + next + "\":\n");
                 depth += 1;
@@ -65,8 +67,16 @@ public class PrettyJSON {
         }
         stringer.write("\"" + key + "\":" + "\"" + value + "\",\n");
     }
+    
+    private static void printPair(StringWriter stringer, String key, int value){
+        stringer.write("\"" + key + "\":" + value + ",\n");
+    }
 
     private static void printLine(StringWriter stringer, String line) {
+        stringer.write("\"" + line + "\"\n");
+    }
+    
+    private static void printLine(StringWriter stringer, Integer line) {
         stringer.write("\"" + line + "\"\n");
     }
 
@@ -74,13 +84,15 @@ public class PrettyJSON {
         depth += 1;
         for (int i = 0; i < array.length(); i++) {
 
-            if (array.get(i) instanceof String)
+            if (array.get(i) instanceof String){
                 printLine(stringMeUp, array.getString(i));
-            else if (array.get(i) instanceof JSONObject) {
+            } else if (array.get(i) instanceof Integer) {
+                printLine(stringMeUp, array.getInt(i));
+            } else if (array.get(i) instanceof JSONObject) {
                 printJSONObject(stringMeUp, array.getJSONObject(i));
             } else if (array.get(i) instanceof JSONArray) {
                 printJSONArray(stringMeUp, array.getJSONArray(i));
-            }
+            } 
             if (i < array.length() - 1) {
                 stringMeUp.write(StringUtils.repeat("\t", depth));
             }

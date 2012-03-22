@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSpeedEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
@@ -15,7 +16,6 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 	private String page = "speedForm";
 	
 	public PageDriverPerformanceSpeed(){
-		url = null;
 		checkMe.add(DriverPerformanceSpeedEnum.DETAILS_TITLE);
 		checkMe.add(DriverPerformanceSpeedEnum.OVERALL_TITLE);
 		checkMe.add(DriverPerformanceSpeedEnum.RETURN);
@@ -254,6 +254,11 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
     
     public DriverSpeedPager _page(){
         return new DriverSpeedPager();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return DriverPerformanceSpeedEnum.DEFAULT_URL;
     }
     
 }

@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextScoreTable;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.ExecutiveDashBoardEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
@@ -289,5 +290,10 @@ public class PageExecutiveDashboard extends NavigationBar {
     public DashboardTextField _textField(){
 		return new DashboardTextField();
 	}
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return ExecutiveDashBoardEnum.HOME_PAGE;
+    }
 
 }

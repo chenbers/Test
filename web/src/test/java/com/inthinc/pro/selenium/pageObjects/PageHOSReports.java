@@ -8,13 +8,13 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.HosReportsEnum;
 
 public class PageHOSReports extends HOSBar {
     
 
     public PageHOSReports() {
-        url = HosReportsEnum.DEFAULT_URL;
         checkMe.add(HosReportsEnum.REPORT_DROP_DOWN);
         checkMe.add(HosReportsEnum.TITLE);
     }
@@ -208,5 +208,10 @@ public class PageHOSReports extends HOSBar {
         public HOSReportsNonDOTViolationsDetail _nonDOTViolationsDetailReportHTML(){
             return new HOSReportsNonDOTViolationsDetail();
         }
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return HosReportsEnum.DEFAULT_URL;
     }
 }

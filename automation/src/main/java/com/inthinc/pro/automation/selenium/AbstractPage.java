@@ -15,6 +15,12 @@ public abstract class AbstractPage extends MasterTest implements Page {
     protected ArrayList<SeleniumEnums> checkMe;
     protected String currentPage;
     public static ArrayList<Class<? extends AbstractPage>> instantiatedPages = new ArrayList<Class<? extends AbstractPage>>();
+    
+    public String getUrl(){
+        return url.getURL();
+    }
+    
+    public abstract SeleniumEnums setUrl();
 
     public TextLink getLinkByText(String text) {
         return new TextLink(new SeleniumEnumWrapper("GET_LINK_BY_TEXT", "link="
@@ -23,6 +29,7 @@ public abstract class AbstractPage extends MasterTest implements Page {
 
     public AbstractPage() {
         checkMe = new ArrayList<SeleniumEnums>();
+        url = setUrl();
 
         Class<? extends AbstractPage> derivedClass = this.getClass();
         if (!instantiatedPages.contains(derivedClass)) {
@@ -33,6 +40,10 @@ public abstract class AbstractPage extends MasterTest implements Page {
     public Boolean verifyOnPage() {
         ElementBase test = new ElementBase() {};
         return test.validateElementsPresent(checkMe);
+    }
+    
+    public Boolean assertOnPage(){
+        return assertTrue(isOnPage(), "Could not assert on " + this.getClass().getSimpleName());
     }
     
     

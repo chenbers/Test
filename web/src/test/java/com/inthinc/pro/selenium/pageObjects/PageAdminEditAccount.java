@@ -3,13 +3,14 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLabel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminAccountDetailsEnum;
 
 public class PageAdminEditAccount extends AdminBar {
 
-    public class PageAdminEditAccountLinks extends AdminBarLinks {}
+    public class AdminEditAccountLinks extends AdminBarLinks {}
 
-    public class PageAdminEditAccountTexts extends AdminBarTexts {
+    public class AdminEditAccountTexts extends AdminBarTexts {
 
         public Text title() {
             return new Text(AdminAccountDetailsEnum.TITLE);
@@ -190,41 +191,46 @@ public class PageAdminEditAccount extends AdminBar {
         }
     }
 
-    public class PageAdminEditAccountTextFields extends AdminBarTextFields {}
+    public class AdminEditAccountTextFields extends AdminBarTextFields {}
 
-    public class PageAdminEditAccountButtons extends AdminBarButtons {
+    public class AdminEditAccountButtons extends AdminBarButtons {
 
         public TextButton valueEditButton() {
             return new TextButton(AdminAccountDetailsEnum.EDIT_BUTTON);
         }
     }
 
-    public class PageAdminEditAccountDropDowns extends AdminBarDropDowns {}
+    public class AdminEditAccountDropDowns extends AdminBarDropDowns {}
 
-    public class PageAdminEditAccountPopUps extends MastheadPopUps {}
+    public class AdminEditAccountPopUps extends MastheadPopUps {}
 
-    public PageAdminEditAccountLinks _link() {
-        return new PageAdminEditAccountLinks();
+    public AdminEditAccountLinks _link() {
+        return new AdminEditAccountLinks();
     }
 
-    public PageAdminEditAccountTexts _text() {
-        return new PageAdminEditAccountTexts();
+    public AdminEditAccountTexts _text() {
+        return new AdminEditAccountTexts();
     }
 
-    public PageAdminEditAccountButtons _button() {
-        return new PageAdminEditAccountButtons();
+    public AdminEditAccountButtons _button() {
+        return new AdminEditAccountButtons();
     }
 
-    public PageAdminEditAccountTextFields _textField() {
-        return new PageAdminEditAccountTextFields();
+    public AdminEditAccountTextFields _textField() {
+        return new AdminEditAccountTextFields();
     }
 
-    public PageAdminEditAccountDropDowns _dropDown() {
-        return new PageAdminEditAccountDropDowns();
+    public AdminEditAccountDropDowns _dropDown() {
+        return new AdminEditAccountDropDowns();
     }
 
-    public PageAdminEditAccountPopUps _popUp() {
-        return new PageAdminEditAccountPopUps();
+    public AdminEditAccountPopUps _popUp() {
+        return new AdminEditAccountPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminAccountDetailsEnum.URL;
     }
 
 }

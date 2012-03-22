@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextDropDownLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TimeOfDay;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.HOSDriverLogsEditEnum;
 
 public class PageHOSEditDriverLogs extends HOSBar {
@@ -161,6 +162,11 @@ public class PageHOSEditDriverLogs extends HOSBar {
     
     public TimeOfDay _timeSelector(){
         return new TimeOfDay(HOSDriverLogsEditEnum.TIME_CHANGER);
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return HOSDriverLogsEditEnum.DEFAULT_URL;
     }
 
 }

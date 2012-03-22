@@ -3,12 +3,12 @@ package com.inthinc.pro.selenium.steps;
 import org.jbehave.core.annotations.Then;
 
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 
 public class StepsAdminAddEditUser extends WebSteps {
     
 
-    private PageAdminUserAddEdit editUser = new PageAdminUserAddEdit();
+    private PageAdminAddEditUser editUser = new PageAdminAddEditUser();
 
     @Then("I should not be able to edit $user information")
     public void thenIShouldNotBeAbleToEditUserInformation(String user){

@@ -1,13 +1,13 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsHOSExceptionsEnum;
 
 public class PageNotificationsHOSExceptions extends NotificationsEventsBar {
 
     public PageNotificationsHOSExceptions() {
         page = "hosEvents";
-        url = NotificationsHOSExceptionsEnum.DEFAULT_URL;
         checkMe.add(NotificationsHOSExceptionsEnum.TITLE);
         checkMe.add(NotificationsHOSExceptionsEnum.MESSAGE);
     }
@@ -78,6 +78,11 @@ public class PageNotificationsHOSExceptions extends NotificationsEventsBar {
 
     public PageNotificationsHOSExceptionsPopUps _popUp() {
         return new PageNotificationsHOSExceptionsPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsHOSExceptionsEnum.DEFAULT_URL;
     }
 
 }

@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AccessDenied403Enum;
 
 public class Page403ErrorAccessDenied extends Masthead {
@@ -41,6 +42,11 @@ public class Page403ErrorAccessDenied extends Masthead {
     
     public Error403Texts _text(){
         return new Error403Texts();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return null;
     }
         
 }

@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsEmergencyEnum;
 
@@ -9,7 +10,6 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
 
     public PageNotificationsEmergency() {
         page = "safety";
-        url = NotificationsEmergencyEnum.DEFAULT_URL;
         checkMe.add(NotificationsEmergencyEnum.MAIN_TITLE);
     }
 
@@ -100,6 +100,11 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
         public Paging pageIndex() {
             return new Paging();
         }
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsEmergencyEnum.DEFAULT_URL;
     }
 
 

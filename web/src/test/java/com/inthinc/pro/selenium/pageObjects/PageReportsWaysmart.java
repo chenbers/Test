@@ -7,12 +7,12 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextDateFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.WaysmartReportEnum;
 
 public class PageReportsWaysmart extends ReportsBar {
     
     public PageReportsWaysmart() {
-        url = WaysmartReportEnum.DEFAULT_URL;
         checkMe.add(WaysmartReportEnum.REPORT_DROP_DOWN);
         checkMe.add(WaysmartReportEnum.TITLE);
     }
@@ -107,5 +107,10 @@ public class PageReportsWaysmart extends ReportsBar {
     
     public WaysmartReportDropDowns _dropDown() {
         return new WaysmartReportDropDowns();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return WaysmartReportEnum.DEFAULT_URL;
     }
 }

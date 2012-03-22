@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
@@ -12,7 +13,6 @@ import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 public class PageAdminUserDetails extends AdminBar {
 
     public PageAdminUserDetails() {
-        url = null;
         checkMe.add(AdminUserDetailsEnum.FIRST_NAME);
         checkMe.add(AdminUserDetailsEnum.EMPLOYEE_INFORMATION);
         checkMe.add(AdminUserDetailsEnum.NOTIFICATIONS);
@@ -21,6 +21,12 @@ public class PageAdminUserDetails extends AdminBar {
 
     public UserDetailsPopUps _popUp() {
         return new UserDetailsPopUps();
+    }
+    
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminUserDetailsEnum.DEFAULT_URL;
     }
 
     public class UserDetailsPopUps extends AdminBarPopUps {

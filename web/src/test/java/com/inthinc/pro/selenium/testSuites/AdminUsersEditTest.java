@@ -12,14 +12,14 @@ import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 
 public class AdminUsersEditTest extends WebRallyTest {
 
     private PageAdminUsers usersPage = new PageAdminUsers();
-    private PageAdminUserAddEdit edituser = new PageAdminUserAddEdit();
+    private PageAdminAddEditUser edituser = new PageAdminAddEditUser();
     private PageAdminUserDetails details = new PageAdminUserDetails();
     private AutomationUser login;
 
@@ -27,7 +27,7 @@ public class AdminUsersEditTest extends WebRallyTest {
     public void beforeClass() {
         login = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin, AccountCapability.HOSEnabled, LoginCapability.IsDriver);
         usersPage = new PageAdminUsers();
-        edituser = new PageAdminUserAddEdit();
+        edituser = new PageAdminAddEditUser();
         details = new PageAdminUserDetails();
     }
 

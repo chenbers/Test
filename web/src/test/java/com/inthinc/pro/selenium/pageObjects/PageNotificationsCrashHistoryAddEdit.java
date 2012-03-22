@@ -13,6 +13,7 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextRadioButtonLabel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryAddEditEnum;
 
 public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
@@ -21,9 +22,9 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         // TODO Auto-generated constructor stub
     }
 
-    public class PageNotificationsCrashHistoryAddEditLinks extends NotificationsBarLinks {}
+    public class NotificationsCrashHistoryAddEditLinks extends NotificationsBarLinks {}
 
-    public class PageNotificationsCrashHistoryAddEditTexts extends NotificationsBarTexts {
+    public class NotificationsCrashHistoryAddEditTexts extends NotificationsBarTexts {
         public Text title() {
             return new Text(NotificationsCrashHistoryAddEditEnum.TITLE);
         }
@@ -108,7 +109,7 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         }
     }
 
-    public class PageNotificationsCrashHistoryAddEditTextFields extends NotificationsBarTextFields {
+    public class NotificationsCrashHistoryAddEditTextFields extends NotificationsBarTextFields {
 
         public TextFieldWithSpinner occupantCount() {
             return new TextFieldWithSpinner(
@@ -131,7 +132,7 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
 
     }
 
-    public class PageNotificationsCrashHistoryAddEditButtons extends NotificationsBarButtons {
+    public class NotificationsCrashHistoryAddEditButtons extends NotificationsBarButtons {
 
         public TextButton topSave() {
             return new TextButton(NotificationsCrashHistoryAddEditEnum.TOP_SAVE);
@@ -189,7 +190,7 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
 
     }
 
-    public class PageNotificationsCrashHistoryAddEditDropDowns extends NotificationsBarDropDowns {
+    public class NotificationsCrashHistoryAddEditDropDowns extends NotificationsBarDropDowns {
 
         public DropDown crashReportStatus() {
             return new DropDown(
@@ -205,40 +206,45 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         }
     }
 
-    public class PageNotificationsCrashHistoryAddEditPopUps extends MastheadPopUps {}
+    public class NotificationsCrashHistoryAddEditPopUps extends MastheadPopUps {}
 
-    public class PageNotificationsCrashHistoryAddEditPager {
+    public class NotificationsCrashHistoryAddEditPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageNotificationsCrashHistoryAddEditPager _page() {
-        return new PageNotificationsCrashHistoryAddEditPager();
+    public NotificationsCrashHistoryAddEditPager _page() {
+        return new NotificationsCrashHistoryAddEditPager();
     }
 
-    public PageNotificationsCrashHistoryAddEditLinks _link() {
-        return new PageNotificationsCrashHistoryAddEditLinks();
+    public NotificationsCrashHistoryAddEditLinks _link() {
+        return new NotificationsCrashHistoryAddEditLinks();
     }
 
-    public PageNotificationsCrashHistoryAddEditTexts _text() {
-        return new PageNotificationsCrashHistoryAddEditTexts();
+    public NotificationsCrashHistoryAddEditTexts _text() {
+        return new NotificationsCrashHistoryAddEditTexts();
     }
 
-    public PageNotificationsCrashHistoryAddEditButtons _button() {
-        return new PageNotificationsCrashHistoryAddEditButtons();
+    public NotificationsCrashHistoryAddEditButtons _button() {
+        return new NotificationsCrashHistoryAddEditButtons();
     }
 
-    public PageNotificationsCrashHistoryAddEditTextFields _textField() {
-        return new PageNotificationsCrashHistoryAddEditTextFields();
+    public NotificationsCrashHistoryAddEditTextFields _textField() {
+        return new NotificationsCrashHistoryAddEditTextFields();
     }
 
-    public PageNotificationsCrashHistoryAddEditDropDowns _dropDown() {
-        return new PageNotificationsCrashHistoryAddEditDropDowns();
+    public NotificationsCrashHistoryAddEditDropDowns _dropDown() {
+        return new NotificationsCrashHistoryAddEditDropDowns();
     }
 
-    public PageNotificationsCrashHistoryAddEditPopUps _popUp() {
-        return new PageNotificationsCrashHistoryAddEditPopUps();
+    public NotificationsCrashHistoryAddEditPopUps _popUp() {
+        return new NotificationsCrashHistoryAddEditPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsCrashHistoryAddEditEnum.DEFAULT_URL;
     }
 
 }

@@ -11,6 +11,7 @@ public enum DriverPerformanceEnum implements SeleniumEnums {
     
     EXPANDED_DRIVER_NAME_LINK(null, "driver***ChartForm:driver***DriverPerformance"),
     EXPANDED_BREADCRUMB(null, "driver***ChartForm:breadcrumbitem:###:driver***-dashboard"),
+    DEFAULT_URL("app/driver"),
     
     ;
 

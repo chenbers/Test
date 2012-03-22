@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.FuelEfficiencyExpansionEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
 
@@ -123,6 +124,11 @@ public class PageExecutiveFuelEfficiencyExpansion extends ExecutiveExpansionBar 
     
     public FuelEfficiencyExpansionPopUps _popUp(){
         return new FuelEfficiencyExpansionPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return FuelEfficiencyExpansionEnum.DEFAULT_URL;
     }
     
     

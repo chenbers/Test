@@ -17,6 +17,7 @@ public enum OverallExpansionEnum implements SeleniumEnums {
     LABEL_STYLE("Driving Style", "//td[1]/div[@class='piegrid_label']"),
     LABEL_SEATBELT("Seatbelt","//td[1]/div[@class='piegrid_label']"),
     LABEL_SPEEDING("Speeding","//td[1]/div[@class='piegrid_label']"),
+    DEFAULT_URL("app/dashboard/detail/OVERALL"),
     
     
     ;

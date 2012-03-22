@@ -16,6 +16,7 @@ import org.jbehave.core.reporters.Format;
 import org.jbehave.core.steps.CandidateSteps;
 
 import com.google.common.util.concurrent.MoreExecutors;
+import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.test.Test;
 
 public abstract class JBehaveStories extends JUnitStories {
@@ -24,7 +25,18 @@ public abstract class JBehaveStories extends JUnitStories {
     public JBehaveStories(String uri){
         this.uri = uri;
         configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
+        super.useEmbedder(new AutoEmbedder(setPageObjects()));
     }
+    
+    public abstract List<AbstractPage> setPageObjects();
+    
+    protected List<AbstractPage> pageList(AbstractPage ...pages){
+        List<AbstractPage> list = new ArrayList<AbstractPage>();
+        list.addAll(asList(pages));
+        return list;
+    }
+    
+    
 
 
     // The uri string provides the location to start looking for stories from.
@@ -43,9 +55,9 @@ public abstract class JBehaveStories extends JUnitStories {
                         new AutoStoryReporterBuilder()
                                 .withDefaultFormats()
                                 .withFormats(Format.CONSOLE, Format.TXT, Format.XML, Format.HTML_TEMPLATE, Format.HTML))
-                //.useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
+                .useViewGenerator(new AutoViewGenerator())
+//                .useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
                 //.doDryRun(true)//helpful when generating new steps' methods
-//                .useStepPatternParser(stepPatternParser)
                 ;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -88,7 +100,9 @@ public abstract class JBehaveStories extends JUnitStories {
      */
     public List<CandidateSteps> candidateSteps(Test first, Object ...steps){
         List<Object> total = new ArrayList<Object>();
-        total.addAll(asList(steps));
+        if (steps[0] != null ){
+            total.addAll(asList(steps));
+        }
         total.add(first);
         return new AutoStepsFactory(configuration(), total).createCandidateSteps();
     }

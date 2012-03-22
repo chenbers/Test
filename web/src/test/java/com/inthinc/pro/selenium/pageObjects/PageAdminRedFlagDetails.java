@@ -5,13 +5,16 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminRedFlagsDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.RedFlagGenericDetails;
 
 public class PageAdminRedFlagDetails extends AdminBar {
 
     public PageAdminRedFlagDetails() {
-        // TODO Auto-generated constructor stub
+        checkMe.add(AdminRedFlagsDetailsEnum.DELETE);
+        checkMe.add(AdminRedFlagsDetailsEnum.EDIT);
+        checkMe.add(AdminRedFlagsDetailsEnum.BACK_TO_RED_FLAGS);
     }
 
     public class AdminRedFlagDetailsLinks extends AdminBarLinks {
@@ -319,5 +322,10 @@ public class PageAdminRedFlagDetails extends AdminBar {
 
     public AdminRedFlagDetailsPopUps _popUp() {
         return new AdminRedFlagDetailsPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminRedFlagsDetailsEnum.URL;
     }
 }

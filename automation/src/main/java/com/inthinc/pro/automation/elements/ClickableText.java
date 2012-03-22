@@ -1,5 +1,9 @@
 package com.inthinc.pro.automation.elements;
 
+import java.lang.reflect.Method;
+
+import org.jbehave.core.steps.StepCreator.PendingStep;
+
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
@@ -68,5 +72,12 @@ public class ClickableText extends ClickableObject implements
     public Boolean validate() {
         return textStuff.validate();
     }
-
+    
+    public static Object[] getParametersS(PendingStep step, Method method) {
+        if (method.getDeclaringClass().isAssignableFrom(TextBased.class)){
+            return TextObject.getParametersS(step, method);    
+        }
+        return ClickableObject.getParametersS(step, method);
+    }
+    
 }

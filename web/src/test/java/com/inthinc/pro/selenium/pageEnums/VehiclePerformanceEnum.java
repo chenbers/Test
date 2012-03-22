@@ -13,7 +13,8 @@ public enum VehiclePerformanceEnum implements SeleniumEnums {
     
 
     EXCLUDE("exclude", "eventTableForm:notificationsTable:###:vehicle***Included"),
-    INCLUDE("include", "eventTableForm:notificationsTable:###:vehicle***_excluded"), 
+    INCLUDE("include", "eventTableForm:notificationsTable:###:vehicle***_excluded"),
+    DEFAULT_URL("app/vehicle"), 
 
     
     ;

@@ -2,13 +2,17 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
 
+import com.inthinc.pro.automation.interfaces.AutoElementTags.Assert;
+import com.inthinc.pro.automation.interfaces.AutoElementTags.Validate;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
 
 public interface ElementInterface {
+    @Assert(englishName="present")
     public Boolean assertPresence(Boolean present);
+    @Assert(englishName="visible")
     public Boolean assertVisibility(Boolean visibile);
     public ElementInterface focus();
     public SeleniumEnums getMyEnum();
@@ -19,31 +23,36 @@ public interface ElementInterface {
     public void setMyEnum(SeleniumEnums anEnum);
     public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums);
     public Boolean validateElementsPresent(Object ...enums);
+    @Validate(englishName="present")
     public Boolean validatePresence(Boolean present);
+    @Validate(englishName="visible")
     public Boolean validateVisibility(Boolean visible);
     public void waitForElement();
     public void waitForElement(int i);
     public String getAttribute(String attributeToGet);
 
-    public interface Checkable extends Editable,Clickable {
+    public interface Checkable extends Clickable {
+        @Assert(englishName="checked")
         public Boolean assertChecked(Boolean checked);
     	public Checkable check();
     	public Boolean isChecked();
     	public ElementInterface uncheck();
+        @Validate(englishName="checked")
     	public Boolean validateChecked(Boolean checked);
     }
     
-    public interface Editable{}
-    public interface ClickableTextBased extends Editable, Clickable, TextBased {}
+    public interface ClickableTextBased extends Clickable, TextBased {}
     
     public interface Clickable extends ElementInterface {
         public Clickable click();
         public Boolean isClickable();
+        @Validate(englishName="clickable")
         public Boolean validateClickable(Boolean clickable);
+        @Assert(englishName="clickable")
         public Boolean assertClickable(Boolean clickable);
     }
     
-    public interface Selectable extends ElementInterface, Editable {
+    public interface Selectable extends ElementInterface{
         
 	/**
          * Selects the optionNumber'th option in this Element's choices
@@ -96,8 +105,11 @@ public interface ElementInterface {
     }
     
     public interface TextBased extends ElementInterface {
+        @Assert(englishName="equals the default")
         public Boolean assertEquals();
+        @Assert(englishName="equal to")
         public Boolean assertEquals(String compareAgainst);
+        @Assert(englishName="not equal to")
         public Boolean assertNotEquals(String compareAgainst);
         
         /**
@@ -117,21 +129,24 @@ public interface ElementInterface {
          * @return the actual (in browser at test runtime) value of this Element.
          */
         public String getText();
+        @Validate(englishName="the default value")
         public Boolean validate();
+        @Validate(englishName="")
         public Boolean validate(String expected);
         public Boolean validate(TextEnum expected);
         public Boolean validate(TextEnum expected, String replaceOld, String withNew);
+        @Validate(englishName="contains")
         public Boolean validateContains(String expectedPart);
     }
     
-    public interface TextFieldWithSuggestions extends Editable,TextBased {
-        public TextLink getSuggestion(Integer row);
-        public TextLink getSuggestion(String fullName);
+    public interface TextFieldWithSuggestions extends Typeable {
+        public ClickableTextBased getSuggestion(Integer row);
+        public ClickableTextBased getSuggestion(String fullName);
     }
     
-    public interface Typeable extends Editable,TextBased {
+    public interface Typeable extends TextBased {
         public Typeable type(Object inputText);
-        public TextField clear();
+        public Typeable clear();
     }
 
     public interface URLBased extends ElementInterface {

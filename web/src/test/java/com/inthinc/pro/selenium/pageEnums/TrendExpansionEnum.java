@@ -28,6 +28,7 @@ public enum TrendExpansionEnum implements SeleniumEnums {
 	ENTRY_GROUP_NAME(null, "trendTable:details:###:details-trendGroup"),
 	ENTRY_SCORE_BOX(null, "//table[@id='trendTable:details:tb']/tr[###]/td[4]"),
 	ENTRY_CRASH_COUNT(null, "trendTable:details:###:crashes"),
+	DEFAULT_URL("app/dashboard/detail/TREND"),
 	
 	
 	

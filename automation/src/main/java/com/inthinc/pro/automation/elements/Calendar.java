@@ -1,6 +1,11 @@
 package com.inthinc.pro.automation.elements;
 
+import java.lang.reflect.Method;
+
+import org.jbehave.core.steps.StepCreator.PendingStep;
+
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
@@ -42,7 +47,7 @@ public class Calendar {
         return true;
     }
     
-    private boolean changeMonths(int desiredMonth){
+    private boolean changeMonths(Integer desiredMonth){
         int currentMonth = today.getMonth();
         int changeBy = currentMonth - desiredMonth;
         int button;
@@ -66,5 +71,33 @@ public class Calendar {
             AutomationThread.pause(250l);
         }
         return true;
+    }
+    
+    public static Object[] getParametersS(PendingStep step, Method method) {
+        String stepAsString = step.stepAsString();
+        
+        // TODO: dtanner: need a way to handle overloaded methods.
+        
+        Class<?>[] parameters = method.getParameterTypes();
+        Object[] passParameters = new Object[parameters.length];
+        
+        
+        for (int i=0;i<parameters.length;i++){
+            Class<?> next = parameters[i];
+            if (next.isAssignableFrom(AutomationCalendar.class)){
+                String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
+                String time = lastOfStep.substring(0, lastOfStep.indexOf("\""));
+                passParameters[i] = new AutomationCalendar(time, WebDateFormat.DATE_RANGE_FIELDS);
+            } else if (next.isAssignableFrom(Integer.class)) {
+                passParameters[i] = WordConverterEnum.getNumber(stepAsString);
+            }
+            
+            
+            if (passParameters[i] == null){
+                throw new NoSuchMethodError("We are missing parameters for " 
+                            + method.getName() + ", working on step " + step.stepAsString());
+            }
+        }
+        return passParameters;
     }
 }

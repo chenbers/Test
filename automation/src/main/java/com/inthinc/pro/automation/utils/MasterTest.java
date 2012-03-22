@@ -1,29 +1,282 @@
 package com.inthinc.pro.automation.utils;
 
+import static java.util.Arrays.asList;
+
 import java.awt.event.KeyEvent;
 import java.io.StringWriter;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.When;
+import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
+import org.springframework.util.ClassUtils;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.interfaces.AutoElementTags.Assert;
+import com.inthinc.pro.automation.interfaces.AutoElementTags.Validate;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.rally.PrettyJSON;
 
-public class MasterTest {
+public abstract class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
+    
+    private final Long threadID = Thread.currentThread().getId();
+
+    
+    public static final Map<Long, Map<String, String>> variables = new HashMap<Long, Map<String, String>>();
+    protected Map<String, String> localVariables;
+    
+    public MasterTest(){
+        if (variables.containsKey(threadID)) {
+            localVariables = variables.get(threadID);
+        } else {
+            localVariables = new HashMap<String, String>();
+            variables.put(threadID, localVariables);
+        }
+    }
+    
+    public static String getComparator(String stepAsString){
+        String variable = getLastTerms(stepAsString);
+        if (variable == null){
+            return null;
+        }
+        if (variable.contains("\"")){
+            return variable.replace("\"", "");
+        } else {
+            return variables.get(Thread.currentThread().getId()).get(variable);
+        }
+    }
+    
+    public static String getLastTerms(String stepAsString){
+        Pattern pat = Pattern.compile(RegexTerms.getVariable);
+        Matcher mat = pat.matcher(stepAsString);
+        if (mat.find()){
+            return stepAsString.substring(mat.start(), mat.end());
+        }
+        return null;
+    }
+    
+    public static void setComparator(String stepAsString, Object value){
+        Pattern pat = Pattern.compile(RegexTerms.setVariable);
+        Matcher mat = pat.matcher(stepAsString);
+        if (mat.find()){
+            String key = stepAsString.substring(mat.start(), mat.end());
+            variables.get(Thread.currentThread().getId()).put(key, value.toString());
+        }
+    }
+    
+    public Map<Method, Object[]> parseValidationStep(PendingStep step, String elementType) throws NoSuchMethodException {
+        String stepAsString = step.stepAsString();
+        Map<String, List<Method>> methods = null;
+        Map<Method, Object[]> validateMethod = new HashMap<Method, Object[]>(2);
+        String validationType = "validate";
+        if (stepAsString.contains("validate")){
+            methods = getMethods(this.getClass(), Validate.class);
+        } else if (stepAsString.contains("assert")) {
+            methods = getMethods(this.getClass(), Assert.class);
+            validationType = "assert";
+        }
+        if (methods == null){
+            throw new NoSuchMethodException("Could not find a validation method for: " + stepAsString);
+        }
+        boolean trueFalse = checkBoolean(stepAsString);
+        Set<String> names = methods.keySet();
+        String variable = getComparator(stepAsString);
+        
+        if (names.contains(validationType)){
+            List<Method> matches = methods.get(validationType);
+            for (Method match : matches){
+                Class<?>[] params = match.getParameterTypes();
+                if (params.length > 0){
+                    if (params[0].equals(variable.getClass())){
+                        validateMethod.put(match, new Object[]{variable});
+                    } else if (params[0].equals(boolean.class)){
+                        validateMethod.put(match, new Object[]{trueFalse});
+                    }
+                    return validateMethod;
+                }
+            }
+        }
+        
+        String additional = validationType + getLastTerms(stepAsString).toLowerCase().replace(" ", "");// TODO;
+        if (names.contains(additional)){
+            List<Method> matches = methods.get(validationType);
+            for (Method match : matches){
+                Class<?>[] params = match.getParameterTypes();
+                if (params.length > 0){
+                    if (params[0].equals(variable.getClass())){
+                        validateMethod.put(match, new Object[]{variable});
+                    } else if (params[0].equals(boolean.class)){
+                        validateMethod.put(match, new Object[]{trueFalse});
+                    }
+                    return validateMethod;
+                }
+            }
+        }
+        
+        
+        
+        return null;
+    }
+    
+    
+    public Method parseStep(String stepAsString, String elementType) throws NoSuchMethodException{        
+        Map<String, List<Method>> methods = getMethods(this.getClass(), null);
+        String regex = RegexTerms.getMethod;
+        Pattern pat = Pattern.compile(regex);
+        Matcher mat = pat.matcher(stepAsString);
+        String potentialMethod;
+        List<Method> matchingMethods = null;
+        while (mat.find()){
+            potentialMethod = stepAsString.substring(mat.start(), mat.end()).replace(" ", "");
+            if (methods.containsKey(potentialMethod)){ 
+                matchingMethods = methods.get(potentialMethod);
+                
+            } else {
+                regex += RegexTerms.addLowercaseWord;
+                pat = Pattern.compile(regex);
+                mat = pat.matcher(stepAsString);
+            }
+        }
+        
+        if (matchingMethods == null ){
+            throw new NoSuchMethodException("Could not find a method for : " + stepAsString);
+        }
+        
+        if (matchingMethods.size() == 1){
+            return matchingMethods.get(0);
+        } else {
+            String name = getComparator(stepAsString);
+            if (name == null){
+                
+            } else {
+                for (Method method : matchingMethods){
+                    List<Class<?>> classes = asList(method.getParameterTypes());
+                    if (classes.contains(String.class) || classes.contains(Object.class)){
+                        return method;
+                    }
+                }
+            }
+            return matchingMethods.get(0);
+        }
+    }
+    
+    public static Map<String, List<Method>> getMethods(Class<?> clazz, Class<? extends Annotation> filter) throws SecurityException, NoSuchMethodException{
+        Map<String, List<Method>> methods = new HashMap<String, List<Method>>();
+        for (Method method : clazz.getMethods()){ 
+            
+            
+            String methodName = method.getName().toLowerCase();
+            
+            if (filter != null){
+                Annotation ann = (Annotation) method.getAnnotation(filter);
+                if (ann == null){
+                    Class<?>[] interfaces = ClassUtils.getAllInterfacesForClass(clazz);
+                    for (Class<?> implementation : interfaces){
+                        try {
+                            Method superMethod = implementation.getMethod(methodName, method.getParameterTypes());
+                            ann = superMethod.getAnnotation(filter);
+                            if (ann != null){
+                                String englishName = "";
+                                if (ann instanceof Validate){
+                                    englishName = ((Validate)ann).englishName();
+                                } else if (ann instanceof Assert){
+                                    englishName = ((Assert)ann).englishName();
+                                }
+                                if (englishName.isEmpty()){
+                                    break;
+                                }
+                                englishName = methodName + englishName.replace(" ", "").toLowerCase();
+                                if (!methods.containsKey(englishName)){
+                                    methods.put(englishName, new ArrayList<Method>());
+                                }  
+                                methods.get(englishName).add(method);
+                                break;
+                            }
+                        } catch (NoSuchMethodException e){
+                            continue;
+                        }
+                    }
+                    if (ann == null){
+                        continue;
+                    }
+                } 
+
+                if (!methods.containsKey(methodName)){
+                    methods.put(methodName, new ArrayList<Method>());
+                }   
+                
+                methods.get(methodName).add(method);
+                continue;
+                
+            }
+            
+            if (!methods.containsKey(methodName)){
+                methods.put(methodName, new ArrayList<Method>());
+            }
+            
+            if (!method.getReturnType().isInterface()) {
+                methods.get(methodName).add(method);
+            }
+        }
+        return methods;
+    }
+
+    public static boolean checkBoolean(String stepAsString){
+        if (stepAsString.contains("not")){
+            return false;
+        }
+        return true;
+    }
+    
+    public Object[] getParameters(PendingStep step, Method method) throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+        try {
+            return (Object[]) method.getDeclaringClass()
+                    .getMethod("getParametersS", step.getClass(), method.getClass())
+                    .invoke(null, step, method);
+        } catch (NullPointerException e){
+            throw new NoSuchMethodException("Could not find a method for step: " + step.stepAsString());
+        }
+    }
+
+    public static Object[] getParametersS(PendingStep step, Method method) {
+        Class<?>[] parameters = method.getParameterTypes();
+        Object[] passParameters = new Object[parameters.length];
+        
+        for (int i=0;i<parameters.length;i++){
+            Class<?> next = parameters[i];
+            if (next.isAssignableFrom(Boolean.class)){
+                passParameters[i] = checkBoolean(step.stepAsString());
+            }
+            if (passParameters[i] == null){
+                throw new NoSuchMethodError("We are missing parameters for " 
+                            + method.getName() + ", working on step " + step.stepAsString());
+            }
+        }
+        return passParameters;
+    }
     
     @When("I press the enter key on my keyboard")
     public void enterKey() {

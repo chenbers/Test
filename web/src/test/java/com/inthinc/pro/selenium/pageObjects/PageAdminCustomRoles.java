@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkTableHeader;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminCustomRolesEnum;
 
@@ -12,9 +13,12 @@ public class PageAdminCustomRoles extends AdminTables {
     
     public PageAdminCustomRoles(){
         page = "customRoles";
-        url = AdminCustomRolesEnum.DEFAULT_URL;
-        
         checkMe.add(AdminCustomRolesEnum.TITLE);
+    }
+    
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminCustomRolesEnum.URL;
     }
     
     public class CustomRolesLinks extends AdminTablesLinks {

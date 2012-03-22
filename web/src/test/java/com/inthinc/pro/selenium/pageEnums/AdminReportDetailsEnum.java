@@ -28,6 +28,7 @@ public enum AdminReportDetailsEnum implements SeleniumEnums {
 	   
 	EMAIL_SECTION(null, "id('reportScheduleForm')/x:div/x:div[2]/x:div/x:table/x:tbody/x:tr/x:td[3]/x:div[4]"),
 	EMAIL(null, "id('reportScheduleForm')/x:div/x:div[2]/x:div/x:table/x:tbody/x:tr/x:td[3]/x:table/x:tbody/x:tr/x:td"),
+	URL("app/admin/report"),
 	;
 
     private String text, url;

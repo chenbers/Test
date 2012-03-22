@@ -10,19 +10,19 @@ import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
 
 //@Ignore
 public class AdminAddVehicleTest extends WebRallyTest {
 
     private AutomationUser login;
     
-    private PageAdminVehicleEdit editVehicle;
+    private PageAdminAddEditVehicle editVehicle;
     private Unique values;
     
     @Before
     public void before(){
-        editVehicle = new PageAdminVehicleEdit();
+        editVehicle = new PageAdminAddEditVehicle();
         login = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin);
         values = new Unique(Addresses.getSilo(getAutomationPropertiesBean().getSilo()));
     }

@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.elements.TextDateFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldSuggestions;
 import com.inthinc.pro.automation.elements.TextLinkTableHeader;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.HOSDriverLogsEnum;
 
 public class PageHOSDriverLogs extends HOSBar {
@@ -201,6 +202,11 @@ public class PageHOSDriverLogs extends HOSBar {
 
     public HOSDriverLogsPopUps _popUp() {
         return new HOSDriverLogsPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return HOSDriverLogsEnum.DEFAULT_URL;
     }
 
 }

@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSeatBeltEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
@@ -13,7 +14,6 @@ import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 public class PageDriverPerformanceSeatBelt extends NavigationBar {
 	
 	public PageDriverPerformanceSeatBelt(){
-		url=null;
 		checkMe.add(DriverPerformanceSeatBeltEnum.DETAILS_TITLE);
 		checkMe.add(DriverPerformanceSeatBeltEnum.DRIVER_NAME_LINK);
 	}
@@ -157,6 +157,10 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
     
     public DriverSeatBeltPager _page(){
         return new DriverSeatBeltPager();
+    }
+    @Override
+    public SeleniumEnums setUrl() {
+        return DriverPerformanceSeatBeltEnum.DEFAULT_URL;
     }
     
 }

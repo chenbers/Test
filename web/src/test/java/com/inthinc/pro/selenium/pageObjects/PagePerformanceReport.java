@@ -5,13 +5,13 @@ import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PerformanceReportEnum;
 
 
 public class PagePerformanceReport extends ReportsBar {
     
     public PagePerformanceReport() {
-        url = PerformanceReportEnum.DEFAULT_URL;
         checkMe.add(PerformanceReportEnum.REPORT_DROP_DOWN);
         checkMe.add(PerformanceReportEnum.TITLE);
     }
@@ -67,5 +67,10 @@ public class PagePerformanceReport extends ReportsBar {
      
     public PerformanceReportDropDowns _dropDown() {
         return new PerformanceReportDropDowns();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return PerformanceReportEnum.DEFAULT_URL;
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jbehave.core.steps.CandidateSteps;
 
+import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.steps.ForgotUserNameOrPasswordSteps;
 
 public class LogInForgotPasswordTest extends WebStories {
@@ -18,5 +19,10 @@ public class LogInForgotPasswordTest extends WebStories {
     public List<CandidateSteps> candidateSteps() {
 
         return candidateSteps(new ForgotUserNameOrPasswordSteps());
+    }
+    
+    @Override
+    public List<AbstractPage> setPageObjects() {
+        return null;
     }
 }

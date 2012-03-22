@@ -1,7 +1,12 @@
 package com.inthinc.pro.automation.elements;
 
+import java.lang.reflect.Method;
+
+import org.jbehave.core.steps.StepCreator.PendingStep;
+
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
@@ -179,6 +184,35 @@ public class DHXDropDown extends DropDown implements Selectable {
     private String makeXpath(String secondDiv) {
         String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[0])).div(secondDiv).toString();
         return xpath;
+    }
+    
+    
+    public static Object[] getParametersS(PendingStep step, Method method) {
+        String stepAsString = step.stepAsString();
+        
+        // TODO: dtanner: need a way to handle overloaded methods.
+        
+        Class<?>[] parameters = method.getParameterTypes();
+        Object[] passParameters = new Object[parameters.length];
+        
+        
+        for (int i=0;i<parameters.length;i++){
+            Class<?> next = parameters[i];
+            if (next.isAssignableFrom(String.class)){
+                String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
+                String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
+                passParameters[i] = toType;    
+            } else if (next.isAssignableFrom(Integer.class)) {
+                passParameters[i] = WordConverterEnum.getNumber(stepAsString);
+            }
+            
+            
+            if (passParameters[i] == null){
+                throw new NoSuchMethodError("We are missing parameters for " 
+                            + method.getName() + ", working on step " + step.stepAsString());
+            }
+        }
+        return passParameters;
     }
 
 }

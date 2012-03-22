@@ -5,7 +5,7 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 
@@ -13,7 +13,7 @@ public class AdminUserSteps extends AdminSteps {
     
     private static final PageAdminUsers adminUsers = new PageAdminUsers();
     private static final PageAdminUserDetails adminDetails = new PageAdminUserDetails();
-    private static final PageAdminUserAddEdit adminEditAccount = new PageAdminUserAddEdit();
+    private static final PageAdminAddEditUser adminEditAccount = new PageAdminAddEditUser();
     public String fullname, firstName, middleName, lastName;
     
     @When("I select users")

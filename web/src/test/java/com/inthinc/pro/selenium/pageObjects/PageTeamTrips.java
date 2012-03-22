@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.TeamTripsEnum;
 
 public class PageTeamTrips extends TeamBar {
@@ -55,6 +56,11 @@ public class PageTeamTrips extends TeamBar {
     
     public TeamTripsPopUps _popUp(){
         return new TeamTripsPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return TeamTripsEnum.DEFAULT_URL;
     }
     
 }

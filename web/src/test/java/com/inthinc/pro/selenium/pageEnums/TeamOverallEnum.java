@@ -18,6 +18,8 @@ public enum TeamOverallEnum implements SeleniumEnums {
     SCORE_3_4(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("5").toString()),
     SCORE_4_5(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("6").toString()),
     SCORE_TOTAL(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("7").toString()),
+    
+    DEFAULT_URL("app/dashboard/tab/teamLive"),
 
     ;
 

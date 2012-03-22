@@ -8,7 +8,7 @@ import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
@@ -158,7 +158,7 @@ public class VerifyPageObjectsTest extends WebRallyTest {
         
 //		Click Add User.
         adminUsers._link().adminAddUser().click();
-        PageAdminUserAddEdit addUser = new PageAdminUserAddEdit();
+        PageAdminAddEditUser addUser = new PageAdminAddEditUser();
         addUser.validate();
         
 //		Click Vehicles.

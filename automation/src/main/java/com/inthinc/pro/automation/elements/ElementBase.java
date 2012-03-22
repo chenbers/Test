@@ -1,24 +1,27 @@
 package com.inthinc.pro.automation.elements;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.utils.MasterTest;
 
-public class ElementBase extends MasterTest implements ElementInterface {
-
-    protected final static String parentXpath = "/..";
+public abstract class ElementBase extends MasterTest implements ElementInterface {
+    
 
     protected final static Logger logger = Logger.getLogger(ElementBase.class);
 
-    protected SeleniumEnumWrapper myEnum;
+    protected final static String parentXpath = "/..";
 
     protected HashMap<String, String> current;
+
+    protected SeleniumEnumWrapper myEnum;
 
     public ElementBase() {
     }
@@ -29,88 +32,15 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
     
     @Override
-    public Boolean isPresent() {
-        return getSelenium().isElementPresent(myEnum);
+    public Boolean assertPresence(Boolean present) {
+        return assertEquals(present, isPresent());
     }
 
-    @Override
-    public Boolean isVisible() {
-        return getSelenium().isVisible(myEnum);
-    }
-
-    @Override
-    public Boolean isEditable() {
-        return getSelenium().isEditable(myEnum);
-    }
-    
     @Override
     public Boolean assertVisibility(Boolean visible) {
         return assertTrue(visible == getSelenium().isVisible(myEnum), myEnum.toString());
     }
 
-    @Override
-    public ElementBase focus() {
-        getSelenium().focus(myEnum);
-        return this;
-    }
-    
-    @Override
-    public String getAttribute(String attributeToGet) {
-        return getSelenium().getAttribute(myEnum, attributeToGet);
-    }
-
-    @Override
-    public Boolean hasFocus() {
-        return getSelenium().hasFocus(myEnum);
-    }
-
-    @Override
-    public SeleniumEnums getMyEnum() {
-        return myEnum;
-    }
-
-    @Override
-    public void setMyEnum(SeleniumEnums anEnum) {
-        this.myEnum = new SeleniumEnumWrapper(anEnum);
-    }
-
-    protected void setCurrentLocation() {
-        String uri = getCurrentLocation();
-        logger.debug(uri);
-        String[] address = uri.split("/");
-        current = new HashMap<String, String>();
-        current.put("protocol", address[0]);
-        String[] url = address[2].split(":");
-        current.put("url", url[0]);
-        if(url.length>1)
-            current.put("port", url[1]);
-        current.put("appPath", address[3]);
-        current.put("page", address[address.length - 1]);
-
-        if (address.length == 7) {
-            current.put("label", address[4]);
-            current.put("section", address[5]);
-        }
-    }
-
-    @Override
-    public String getCurrentLocation() {
-        return getSelenium().getLocation();
-    }
-
-    @Override
-    public Boolean validateElementsPresent(Object... enums) {
-        return checkElementsPresent(ErrorLevel.FATAL, enums);
-    }
-
-    @Override
-    public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums) {
-        return validateElementsPresent(enums.toArray());
-    }
-    
-    public Boolean isElementsPresent(ArrayList<SeleniumEnums> enums){
-        return checkElementsPresent(ErrorLevel.COMPARE, enums.toArray());
-    }
     
     /**
      * checkElementsPresent is a helper method to encapsulate checking to see if an element is present. This presents options to check for an element without requiring an error
@@ -135,13 +65,71 @@ public class ElementBase extends MasterTest implements ElementInterface {
         return result;
     }
 
-    protected ElementBase replaceNumber(Integer number) {
-        myEnum.replaceNumber(number);
+    @Override
+    public ElementBase focus() {
+        getSelenium().focus(myEnum);
         return this;
     }
+    
+    @Override
+    public String getAttribute(String attributeToGet) {
+        return getSelenium().getAttribute(myEnum, attributeToGet);
+    }
 
-    protected ElementBase replaceWord(String word) {
-        myEnum.replaceWord(word);
+    @Override
+    public String getCurrentLocation() {
+        return getSelenium().getLocation();
+    }
+
+    @Override
+    public SeleniumEnums getMyEnum() {
+        return myEnum;
+    }
+    
+    public static Object[] getParametersS(PendingStep step, Method method) {
+        Class<?>[] parameters = method.getParameterTypes();
+        Object[] passParameters = new Object[parameters.length];
+        
+        for (int i=0;i<parameters.length;i++){
+            Class<?> next = parameters[i];
+            if (next.isAssignableFrom(Boolean.class)){
+                passParameters[i] = checkBoolean(step.stepAsString());
+            }
+            if (passParameters[i] == null){
+                throw new NoSuchMethodError("We are missing parameters for " 
+                            + method.getName() + ", working on step " + step.stepAsString());
+            }
+        }
+        return passParameters;
+    }
+
+    @Override
+    public Boolean hasFocus() {
+        return getSelenium().hasFocus(myEnum);
+    }
+
+    @Override
+    public Boolean isEditable() {
+        return getSelenium().isEditable(myEnum);
+    }
+
+    public Boolean isElementsPresent(ArrayList<SeleniumEnums> enums){
+        return checkElementsPresent(ErrorLevel.COMPARE, enums.toArray());
+    }
+
+    @Override
+    public Boolean isPresent() {
+        return getSelenium().isElementPresent(myEnum);
+    }
+    
+    @Override
+    public Boolean isVisible() {
+        return getSelenium().isVisible(myEnum);
+    }
+    
+
+    protected ElementBase replaceNumber(Integer number) {
+        myEnum.replaceNumber(number);
         return this;
     }
 
@@ -159,6 +147,50 @@ public class ElementBase extends MasterTest implements ElementInterface {
         return this;
     }
 
+    protected ElementBase replaceWord(String word) {
+        myEnum.replaceWord(word);
+        return this;
+    }
+
+    protected void setCurrentLocation() {
+        String uri = getCurrentLocation();
+        logger.debug(uri);
+        String[] address = uri.split("/");
+        current = new HashMap<String, String>();
+        current.put("protocol", address[0]);
+        String[] url = address[2].split(":");
+        current.put("url", url[0]);
+        if(url.length>1)
+            current.put("port", url[1]);
+        current.put("appPath", address[3]);
+        current.put("page", address[address.length - 1]);
+
+        if (address.length == 7) {
+            current.put("label", address[4]);
+            current.put("section", address[5]);
+        }
+    }
+    
+    @Override
+    public void setMyEnum(SeleniumEnums anEnum) {
+        this.myEnum = new SeleniumEnumWrapper(anEnum);
+    }
+    
+    @Override
+    public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums) {
+        return validateElementsPresent(enums.toArray());
+    }
+
+    @Override
+    public Boolean validateElementsPresent(Object... enums) {
+        return checkElementsPresent(ErrorLevel.FATAL, enums);
+    }
+
+    @Override
+    public Boolean validatePresence(Boolean present) {
+        return validateEquals(present, isPresent());
+    }
+    
     @Override
     public Boolean validateVisibility(Boolean visible) {
         return validateEquals(visible, isVisible());
@@ -169,18 +201,11 @@ public class ElementBase extends MasterTest implements ElementInterface {
         waitForElement(60);
     }
     
+
+    
     @Override
     public void waitForElement(int i){
         getSelenium().waitForElementPresent(myEnum, i);
     }
 
-    @Override
-    public Boolean validatePresence(Boolean present) {
-        return validateEquals(present, isPresent());
-    }
-
-    @Override
-    public Boolean assertPresence(Boolean present) {
-        return assertEquals(present, isPresent());
-    }
 }

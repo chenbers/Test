@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.IdlingReportEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
@@ -14,7 +15,6 @@ public class PageReportsIdling extends ReportsBar {
 	private String page = "idling";
 	
 	public PageReportsIdling(){
-		url = IdlingReportEnum.DEFAULT_URL;
 		checkMe.add(IdlingReportEnum.IDLING_COUNTER);
 		checkMe.add(IdlingReportEnum.START_DATE);
 		checkMe.add(IdlingReportEnum.END_DATE);
@@ -131,4 +131,8 @@ public class PageReportsIdling extends ReportsBar {
 	public IdlingReportLinks _link() {
 	    return new IdlingReportLinks();
 	}
+    @Override
+    public SeleniumEnums setUrl() {
+        return IdlingReportEnum.DEFAULT_URL;
+    }
 }

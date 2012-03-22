@@ -4,6 +4,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminCustomRoleDetailsEnum implements SeleniumEnums {
     
+    URL("app/admin/customRole"),
+    
     TITLE("Admin - NAME_OF_ROLE Details", "//span[@class='admin']"),
     
     BACK_TO_TABLE("Back to Custom Roles", "roleForm:roleCancel1"),

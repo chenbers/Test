@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.ChangePasswordEnum;
 
 public class PageChangePassword extends Masthead {
@@ -122,4 +123,9 @@ public class PageChangePassword extends Masthead {
 	public class ChangeDropDowns extends MastheadDropDowns{
 		
 	}
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return null;
+    }
 }

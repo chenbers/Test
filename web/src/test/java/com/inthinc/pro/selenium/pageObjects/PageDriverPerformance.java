@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
@@ -178,5 +179,10 @@ public class PageDriverPerformance extends NavigationBar {
 	public DriverPerformancePopUps _popUp() {
 		return new DriverPerformancePopUps();
 	}
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return DriverPerformanceEnum.DEFAULT_URL;
+    }
 	
 }

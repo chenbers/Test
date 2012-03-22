@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminReportDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.ReportsColumns;
@@ -12,7 +13,6 @@ import com.inthinc.pro.selenium.pageEnums.AdminTables.ReportsColumns;
 public class PageAdminReportDetails extends AdminBar {
 
     public PageAdminReportDetails() {
-        url = null;
         checkMe.add(AdminReportDetailsEnum.NAME_STATUS_TIME);
         checkMe.add(AdminReportDetailsEnum.REPORT_OCCURANCE);
         checkMe.add(AdminReportDetailsEnum.REPORT_SETTINGS);
@@ -92,5 +92,10 @@ public class PageAdminReportDetails extends AdminBar {
 
     public ReportDetailsTextFields _textField() {
         return new ReportDetailsTextFields();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminReportDetailsEnum.URL;
     }
 }

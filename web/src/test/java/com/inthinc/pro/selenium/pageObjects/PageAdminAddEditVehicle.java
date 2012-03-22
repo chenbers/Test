@@ -12,14 +12,15 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminVehicleEdit;
 
 
-public class PageAdminVehicleEdit extends AdminBar {
+public class PageAdminAddEditVehicle extends AdminBar {
     String currentPage = "vehicle";
     String view = "edit";
     
-	public PageAdminVehicleEdit(){
+	public PageAdminAddEditVehicle(){
 	    
 	}
 	
@@ -169,8 +170,9 @@ public class PageAdminVehicleEdit extends AdminBar {
 	public AdminVehicleCheckBoxes _checkBox() {
 	    return new AdminVehicleCheckBoxes();
 	}
+
     @Override
-    public String getExpectedPath() {
-        return AdminVehicleEdit.DEFAULT_URL.getURL();
+    public SeleniumEnums setUrl() {
+        return AdminVehicleEdit.DEFAULT_URL;
     }
 }

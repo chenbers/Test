@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 
-public enum FuelStopsEnum implements SeleniumEnums {
+public enum HOSFuelStopsEnum implements SeleniumEnums {
     /* Buttons */
     REFRESH("Refresh", "fuelStops-table-form:fuelStopsTable_refresh"),
     ADD("Add", "fuelStops-table-form:fuelStopsTable-fuelStopsTableAdd"),
@@ -49,15 +49,16 @@ public enum FuelStopsEnum implements SeleniumEnums {
     /* CheckBoxes */
     CHECK_ALL(null, "fuelStops-table-form:fuelStopsTable:selectAll"),
     VALUE_CHECK(null, "fuelStops-table-form:fuelStopsTable:###:selectItem"),
+    DEFAULT_URL("app/fuelStops"),
     
     ;
     private String text, url;
     private String[] IDs;
     
-    private FuelStopsEnum(String url){
+    private HOSFuelStopsEnum(String url){
     	this.url = url;
     }
-    private FuelStopsEnum(String text, String ...IDs){
+    private HOSFuelStopsEnum(String text, String ...IDs){
         this.text=text;
     	this.IDs = IDs;
     }

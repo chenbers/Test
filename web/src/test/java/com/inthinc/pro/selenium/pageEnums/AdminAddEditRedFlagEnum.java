@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public enum AdminRedFlagAddEditEnum implements SeleniumEnums {
+public enum AdminAddEditRedFlagEnum implements SeleniumEnums {
     
     TITLE("Red Flag Type", "//span[@class='admin']"),
     SAVE_TOP(save, "edit-form:editRedFlagSave1"),
@@ -166,17 +166,18 @@ public enum AdminRedFlagAddEditEnum implements SeleniumEnums {
     
     ZONES_DEPARTURE(null, "edit-form:editZoneAlert-departure"),
     ZONES_DEPARTURE_LABEL("Report on Departure", "//input[@id='edit-form:editZoneAlert-departure']/.."),
+    URL("app/admin/editRedFlagOrZoneAlert"),
     
     
     ;
     private String text, url;
     private String[] IDs;
 
-    private AdminRedFlagAddEditEnum(String url) {
+    private AdminAddEditRedFlagEnum(String url) {
         this.url = url;
     }
 
-    private AdminRedFlagAddEditEnum(String text, String... IDs) {
+    private AdminAddEditRedFlagEnum(String text, String... IDs) {
         this.text = text;
         this.IDs = IDs;
     }

@@ -8,13 +8,13 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceTripsEnum;
 
 
 public class PageDriverPerformanceTrips extends NavigationBar {
 	
 	public PageDriverPerformanceTrips(){
-		url = null;
 		checkMe.add(DriverPerformanceTripsEnum.DATE_ENTRY);
 		checkMe.add(DriverPerformanceTripsEnum.DRIVER_NAME);
 		checkMe.add(DriverPerformanceTripsEnum.SHOW_TAMPERING);
@@ -195,6 +195,11 @@ public class PageDriverPerformanceTrips extends NavigationBar {
     
     public DriverTripsPager _page(){
         return new DriverTripsPager();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return DriverPerformanceTripsEnum.DEFAULT_URL;
     }
     
 

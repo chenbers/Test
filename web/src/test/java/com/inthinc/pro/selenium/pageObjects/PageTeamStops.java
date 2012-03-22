@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.TeamStopsEnum;
 
 public class PageTeamStops extends TeamBar {
@@ -216,6 +217,11 @@ public class PageTeamStops extends TeamBar {
     	public Paging stopsTable(){
     		return new Paging(stopsScroller);
     	}
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return TeamStopsEnum.DEFAULT_URL;
     }
 
 }

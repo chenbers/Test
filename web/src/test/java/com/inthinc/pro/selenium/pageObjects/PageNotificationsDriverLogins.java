@@ -1,13 +1,13 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsDriverLoginsEnum;
 
 public class PageNotificationsDriverLogins extends NotificationsEventsBar {
 
     public PageNotificationsDriverLogins() {
         page = "driverLogins";
-        url = NotificationsDriverLoginsEnum.DEFAULT_URL;
         checkMe.add(NotificationsDriverLoginsEnum.TITLE);
         checkMe.add(NotificationsDriverLoginsEnum.MESSAGE);
     }
@@ -78,5 +78,10 @@ public class PageNotificationsDriverLogins extends NotificationsEventsBar {
     
     public DriverLoginsPopUps _popUp(){
         return new DriverLoginsPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsDriverLoginsEnum.DEFAULT_URL;
     }
 }

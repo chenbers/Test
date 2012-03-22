@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkScoreTable;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
@@ -16,7 +17,6 @@ import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 public class PageReportsVehicles extends ReportsBar {
 	
 	public PageReportsVehicles(){
-		url = VehicleReportEnum.DEFAULT_URL;
 		checkMe.add(VehicleReportEnum.TITLE);
 	}
 	
@@ -219,5 +219,10 @@ public class PageReportsVehicles extends ReportsBar {
         public Paging pageIndex() {
             return new Paging();
         }
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return VehicleReportEnum.DEFAULT_URL;
     }
 }

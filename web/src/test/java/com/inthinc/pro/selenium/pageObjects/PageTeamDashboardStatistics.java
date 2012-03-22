@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkScoreTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.TeamDriverStatsEnum;
 
 public class PageTeamDashboardStatistics extends TeamBar {
@@ -306,6 +307,11 @@ public class PageTeamDashboardStatistics extends TeamBar {
 
     public Paging _page() {
 	return new Paging(pageScroller);
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return TeamDriverStatsEnum.DEFAULT_URL;
     }
 
 }

@@ -9,12 +9,12 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.MyMessagesEnum;
 
 public class PageMyMessages extends NavigationBar {
     
     public PageMyMessages() {
-        url = MyMessagesEnum.DEFAULT_URL;
         checkMe.add(MyMessagesEnum.TEAM_DROP_DOWN);
         checkMe.add(MyMessagesEnum.TITLE);
     }
@@ -238,5 +238,10 @@ public class PageMyMessages extends NavigationBar {
 
     public MyMessagesSelectors _selector() {
         return new MyMessagesSelectors();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return MyMessagesEnum.DEFAULT_URL;
     }
 }

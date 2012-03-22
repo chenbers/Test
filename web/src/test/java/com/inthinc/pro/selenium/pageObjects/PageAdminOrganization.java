@@ -15,12 +15,12 @@ import com.inthinc.pro.automation.elements.organization.OrganizationLevels.Divis
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.FleetLevel;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.GroupLevels;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.TeamLevel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminOrganizationEnum;
 
 public class PageAdminOrganization extends AdminBar{
 
     public PageAdminOrganization() {
-        url = AdminOrganizationEnum.DEFAULT_URL;
         checkMe.add(AdminOrganizationEnum.TITLE);
     }
     
@@ -614,5 +614,10 @@ public class PageAdminOrganization extends AdminBar{
     
     public GroupLevels clickToGroup(String groups){
         return new OrganizationBase(OrganizationType.FLEET).goToGroup(groups);
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminOrganizationEnum.DEFAULT_URL;
     }
 }

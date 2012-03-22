@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
@@ -11,7 +12,7 @@ public class PageVehiclePerformance extends NavigationBar {
 private String page = "vehicle";
 	
 	
-	public class DriverPerformanceButtons extends NavigationBarButtons {
+	public class VehiclePerformanceButtons extends NavigationBarButtons {
 		public Button tools(){
 			return new Button(PerformanceEnum.OVERALL_TOOLS);
 		}
@@ -43,10 +44,10 @@ private String page = "vehicle";
 		}
 	}
 
-	public class DriverPerformanceDropDowns extends NavigationBarDropDowns {
+	public class VehiclePerformanceDropDowns extends NavigationBarDropDowns {
 	}
 
-	public class DriverPerformanceLinks extends NavigationBarLinks {
+	public class VehiclePerformanceLinks extends NavigationBarLinks {
 		public TextLink breadCrumb(Integer position){
 			return new TextLink(VehiclePerformanceEnum.BREADCRUMB_ITEM, position);
 		}
@@ -94,10 +95,10 @@ private String page = "vehicle";
 		
 	}
 
-	public class DriverPerformanceTextFields extends NavigationBarTextFields {
+	public class VehiclePerformanceTextFields extends NavigationBarTextFields {
 	}
 
-	public class DriverPerformanceTexts extends NavigationBarTexts {
+	public class VehiclePerformanceTexts extends NavigationBarTexts {
 		public Text crashesPerMillionMilesTitle(){
 			return new Text(PerformanceEnum.CRASHES_PER_TEXT);
 		}
@@ -139,28 +140,28 @@ private String page = "vehicle";
 		}
 	}
 
-	public DriverPerformanceButtons _button() {
-		return new DriverPerformanceButtons();
+	public VehiclePerformanceButtons _button() {
+		return new VehiclePerformanceButtons();
 	}
 
-	public DriverPerformanceDropDowns _dropDown() {
-		return new DriverPerformanceDropDowns();
+	public VehiclePerformanceDropDowns _dropDown() {
+		return new VehiclePerformanceDropDowns();
 	}
 
-	public DriverPerformanceLinks _link() {
-		return new DriverPerformanceLinks();
+	public VehiclePerformanceLinks _link() {
+		return new VehiclePerformanceLinks();
 	}
 
-	public DriverPerformanceTexts _text() {
-		return new DriverPerformanceTexts();
+	public VehiclePerformanceTexts _text() {
+		return new VehiclePerformanceTexts();
 	}
 
-	public DriverPerformanceTextFields _textField() {
-		return new DriverPerformanceTextFields();
+	public VehiclePerformanceTextFields _textField() {
+		return new VehiclePerformanceTextFields();
 	}
 	
-	public class DriverPerformancePopUps extends MastheadPopUps{
-    	public DriverPerformancePopUps(){
+	public class VehiclePerformancePopUps extends MastheadPopUps{
+    	public VehiclePerformancePopUps(){
     		super(page, Types.PERFORMANCE, 3);
     	}
     	
@@ -170,8 +171,8 @@ private String page = "vehicle";
     	
     }
 
-	public DriverPerformancePopUps _popUp() {
-		return new DriverPerformancePopUps();
+	public VehiclePerformancePopUps _popUp() {
+		return new VehiclePerformancePopUps();
 	}
     @Override
     public PageVehiclePerformance validate() {
@@ -179,5 +180,10 @@ private String page = "vehicle";
         //TODO: it would be nice if every page had some level of "am I even on the right page" validation
         _text().overallTitle().validate();
         return this;
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return VehiclePerformanceEnum.DEFAULT_URL;
     }
 }

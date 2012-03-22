@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jbehave.core.steps.CandidateSteps;
 
+import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.steps.AdminUserSteps;
 
 
@@ -18,4 +19,9 @@ public class AdminUserStory extends WebStories {
 	protected List<String> storyPaths() {
 		return storyPaths("AdminUser.story");
 	}
+	
+	@Override
+    public List<AbstractPage> setPageObjects() {
+        return null;
+    }
 }

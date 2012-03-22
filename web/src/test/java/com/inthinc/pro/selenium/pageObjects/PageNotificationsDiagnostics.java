@@ -93,5 +93,10 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
     public DiagnosticsPager _page(){
         return new DiagnosticsPager();
     }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsDiagnosticsEnum.URL;
+    }
     
 }

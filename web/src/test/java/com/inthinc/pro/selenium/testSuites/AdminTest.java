@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jbehave.core.steps.CandidateSteps;
 
+import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.steps.AdminSteps;
 
 public class AdminTest extends WebStories {
@@ -19,4 +20,13 @@ public class AdminTest extends WebStories {
 
         return candidateSteps(new AdminSteps());
     }
+
+    @Override
+    public List<AbstractPage> setPageObjects() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    
+    
 }

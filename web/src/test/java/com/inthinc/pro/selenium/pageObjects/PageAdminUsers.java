@@ -4,25 +4,21 @@ import java.util.Iterator;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.LoginEnum;
-import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
-import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadLinks;
 
 public class PageAdminUsers extends AdminTables {
 
     public PageAdminUsers() {
         page = "person";
-        url = AdminUsersEnum.DEFAULT_URL;
         checkMe.add(AdminUsersEnum.BATCH_EDIT);
         checkMe.add(AdminUsersEnum.EDIT_COLUMNS_LINK);
         checkMe.add(AdminUsersEnum.SEARCH_BUTTON);
@@ -313,6 +309,11 @@ public class PageAdminUsers extends AdminTables {
         }
         addError("clickFullNameMatching("+column+", "+value+")", ErrorLevel.FATAL);
         return this;
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminUsersEnum.DEFAULT_URL;
     }
     
 }

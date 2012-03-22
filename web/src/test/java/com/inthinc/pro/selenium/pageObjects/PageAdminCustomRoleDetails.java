@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminCustomRoleDetailsEnum;
 
 public class PageAdminCustomRoleDetails extends AdminBar {
@@ -13,6 +14,11 @@ public class PageAdminCustomRoleDetails extends AdminBar {
         checkMe.add(AdminCustomRoleDetailsEnum.TITLE);
     }
 
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminCustomRoleDetailsEnum.URL;
+    }
+    
     public class CustomRoleDetailsLinks extends AdminBarLinks {
         
         public TextLink backToCustomRoles() {

@@ -41,6 +41,8 @@ public enum NotificationsCrashHistoryAddEditEnum implements SeleniumEnums {
     
     TITLE("ADD/EDIT Crash Report", "//span[@class='email']"),
     
+    DEFAULT_URL("app/notifications/addCrashReport"),
+    
 
     ;
     private String text, url;

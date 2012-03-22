@@ -30,4 +30,5 @@ public class ClickableObject extends ElementBase implements Clickable {
     public Boolean assertClickable(Boolean clickable) {
         return assertEquals(clickable, isClickable());
     }
+    
 }

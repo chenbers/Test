@@ -6,14 +6,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
+import com.inthinc.pro.automation.utils.MasterTest;
 
-public class FusionChartUtilities extends AbstractPage {
+public class FusionChartUtilities {
 	private CoreMethodInterface selenium;
     
     public FusionChartUtilities() {
-    	selenium = super.getSelenium();
+    	selenium = new MasterTest(){}.getSelenium();
     }
 
     public OverallScoreSummary findOverallScoreData(String chart) {

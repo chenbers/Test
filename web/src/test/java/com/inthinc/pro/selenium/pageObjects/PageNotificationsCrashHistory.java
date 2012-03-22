@@ -9,12 +9,12 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryEnum;
 
 public class PageNotificationsCrashHistory extends NotificationsBar {
     
     public PageNotificationsCrashHistory() {
-        url = NotificationsCrashHistoryEnum.DEFAULT_URL;
         checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
         checkMe.add(NotificationsCrashHistoryEnum.TITLE);
         page = "crashHistory";
@@ -165,5 +165,10 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     
     public NotificationsCrashHistoryTexts _text() {
         return new NotificationsCrashHistoryTexts();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsCrashHistoryEnum.DEFAULT_URL;
     }
 }

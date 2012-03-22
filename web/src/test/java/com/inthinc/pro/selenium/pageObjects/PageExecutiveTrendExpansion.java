@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextScoreTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
 import com.inthinc.pro.selenium.pageEnums.TrendExpansionEnum;
 
@@ -143,6 +144,11 @@ public class PageExecutiveTrendExpansion extends ExecutiveExpansionBar {
     
     public TrendExpansionCheckBoxs _checkBox(){
         return new TrendExpansionCheckBoxs();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return TrendExpansionEnum.DEFAULT_URL;
     }
 
 }

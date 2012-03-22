@@ -7,6 +7,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 /****************************************************************************************
@@ -17,7 +18,6 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 public class PageLogin extends Masthead {
 	public PageLogin(){
-		url = LoginEnum.LOGIN_URL;	
 		checkMe.add(LoginEnum.LOGIN_BUTTON);
 		checkMe.add(LoginEnum.LOGIN_HEADER);
 	}
@@ -111,5 +111,10 @@ public class PageLogin extends Masthead {
     
     public class LoginDropDowns extends MastheadDropDowns{
     	
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return LoginEnum.LOGIN_URL;
     }
 }

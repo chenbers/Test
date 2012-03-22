@@ -6,8 +6,9 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.selenium.pageEnums.AdminVehicleViewEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminVehicleDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceStyleEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
@@ -18,7 +19,6 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 
 	
 	public PageDriverPerformanceStyle(){
-		url = null;
 		checkMe.add(DriverPerformanceStyleEnum.BREAKDOWN_HARD_ACCEL_LINK);
 		checkMe.add(DriverPerformanceStyleEnum.BREAKDOWN_HARD_ACCEL_SCORE);
 		checkMe.add(DriverPerformanceStyleEnum.BREAKDOWN_HARD_BRAKE_LINK);
@@ -227,7 +227,7 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 		return null;
     }
     public PageDriverPerformanceStyle load(Integer vehicleID) {
-    	open(AdminVehicleViewEnum.DEFAULT_URL, vehicleID);
+    	open(AdminVehicleDetailsEnum.DEFAULT_URL, vehicleID);
     	return this;
     }
     
@@ -240,6 +240,11 @@ public class PageDriverPerformanceStyle extends NavigationBar {
     
     public DriverStylePager _page(){
         return new DriverStylePager();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return DriverPerformanceStyleEnum.DEFAULT_URL;
     }
     
 }

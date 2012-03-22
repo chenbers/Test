@@ -12,6 +12,8 @@ public enum TeamLiveEnum implements SeleniumEnums {
     LEGEND_ENTRY(null,Xpath.start().td(Id.id("icos1:###")).div().span().toString()), 
     REFRESH(null, "refresh:team-liveFleetMapRefresh"),
     
+    DEFAULT_URL("app/dashboard/tab/teamLive"),
+    
     ;
     private String text, url;
     private String[] IDs;

@@ -7,17 +7,27 @@ import com.inthinc.pro.automation.elements.TextDropDownLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.AdminAccountDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminEditAccountEnum;
 
 public class PageAdminAccountDetails extends AdminBar {
-    public class PageAdminAccountDetailsLinks extends AdminBarLinks {
+    
+    
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminAccountDetailsEnum.URL;
+    }
+    
+    public class AdminAccountDetailsLinks extends AdminBarLinks {
         
         public TextLink example() {
             return new TextLink(AdminEditAccountEnum.EXAMPLE);
         }
     }
 
-    public class PageAdminAccountDetailsTexts extends AdminBarTexts {
+    public class AdminAccountDetailsTexts extends AdminBarTexts {
         
 
         public Text labelFirst(){
@@ -119,7 +129,7 @@ public class PageAdminAccountDetails extends AdminBar {
     }
     
 
-    public class PageAdminAccountDetailsTextFields extends AdminBarTextFields {
+    public class AdminAccountDetailsTextFields extends AdminBarTextFields {
         
         public TextField first(){
             return new TextField(AdminEditAccountEnum.FIRST);
@@ -182,7 +192,7 @@ public class PageAdminAccountDetails extends AdminBar {
         }
     }
 
-    public class PageAdminAccountDetailsButtons extends AdminBarButtons {
+    public class AdminAccountDetailsButtons extends AdminBarButtons {
         
         public TextButton saveTop() {
             return new TextButton(AdminEditAccountEnum.SAVE_TOP);
@@ -201,7 +211,7 @@ public class PageAdminAccountDetails extends AdminBar {
         }
     }
 
-    public class PageAdminAccountDetailsDropDowns extends AdminBarDropDowns {
+    public class AdminAccountDetailsDropDowns extends AdminBarDropDowns {
         
         public DropDown timeZone() {
             return new DropDown(AdminEditAccountEnum.TIME_ZONE);
@@ -217,39 +227,40 @@ public class PageAdminAccountDetails extends AdminBar {
         
     }
 
-    public class PageAdminAccountDetailsPopUps extends MastheadPopUps {}
+    public class AdminAccountDetailsPopUps extends MastheadPopUps {}
 
-    public class PageAdminAccountDetailsPager {
+    public class AdminAccountDetailsPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageAdminAccountDetailsPager _page() {
-        return new PageAdminAccountDetailsPager();
+    public AdminAccountDetailsPager _page() {
+        return new AdminAccountDetailsPager();
     }
 
-    public PageAdminAccountDetailsLinks _link() {
-        return new PageAdminAccountDetailsLinks();
+    public AdminAccountDetailsLinks _link() {
+        return new AdminAccountDetailsLinks();
     }
 
-    public PageAdminAccountDetailsTexts _text() {
-        return new PageAdminAccountDetailsTexts();
+    public AdminAccountDetailsTexts _text() {
+        return new AdminAccountDetailsTexts();
     }
 
-    public PageAdminAccountDetailsButtons _button() {
-        return new PageAdminAccountDetailsButtons();
+    public AdminAccountDetailsButtons _button() {
+        return new AdminAccountDetailsButtons();
     }
 
-    public PageAdminAccountDetailsTextFields _textField() {
-        return new PageAdminAccountDetailsTextFields();
+    public AdminAccountDetailsTextFields _textField() {
+        return new AdminAccountDetailsTextFields();
     }
 
-    public PageAdminAccountDetailsDropDowns _dropDown() {
-        return new PageAdminAccountDetailsDropDowns();
+    public AdminAccountDetailsDropDowns _dropDown() {
+        return new AdminAccountDetailsDropDowns();
     }
 
-    public PageAdminAccountDetailsPopUps _popUp() {
-        return new PageAdminAccountDetailsPopUps();
+    public AdminAccountDetailsPopUps _popUp() {
+        return new AdminAccountDetailsPopUps();
     }
+
 }

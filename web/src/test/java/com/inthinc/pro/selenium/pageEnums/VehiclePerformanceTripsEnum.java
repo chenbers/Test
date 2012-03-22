@@ -60,6 +60,8 @@ public enum VehiclePerformanceTripsEnum implements SeleniumEnums {
 	DRIVER_NAME(null, "selectDriverForm:vehicleTrips-driverPerformance"),
 	TRIPS_BY(null, "//span[@class='vehicle']"),
 	
+	DEFAULT_URL("app/vehicle/trips"),
+	
 	;
 
     private String text, url;

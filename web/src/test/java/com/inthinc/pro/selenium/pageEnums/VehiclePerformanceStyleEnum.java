@@ -47,6 +47,8 @@ public enum VehiclePerformanceStyleEnum implements SeleniumEnums {
     SPEED_ENTRY(null, "eventTable:notificationsTable:###:speed"),
 
     SEVERITY_ENTRY_SEVERITY(null, Xpath.start().td(Id.id("eventTable:notificationsTable:###:severity")).tbody().tr("1").toString()),
+    
+    DEFAULT_URL("app/vehicle/seatBelt"),
 
     ;
 

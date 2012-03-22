@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextScoreTable;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.OverallExpansionEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
 
@@ -112,5 +113,10 @@ public class PageExecutiveOverallExpansion extends ExecutiveExpansionBar {
     
     public OverallExpansionTextFields _textField(){
         return new OverallExpansionTextFields();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return OverallExpansionEnum.DEFAULT_URL;
     }
 }

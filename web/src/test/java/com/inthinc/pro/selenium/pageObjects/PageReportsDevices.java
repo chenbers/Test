@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.DeviceReportEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
@@ -16,7 +17,6 @@ import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
 public class PageReportsDevices extends ReportsBar {
 	private String page = "devices";
 	public PageReportsDevices() {
-		url = DeviceReportEnum.DEFAULT_URL;
 //		checkMe.add(e) //TODO: add verifyOnPage elements.
 	}
 
@@ -166,5 +166,10 @@ public class PageReportsDevices extends ReportsBar {
     
     public DeviceReportsPager _page(){
         return new DeviceReportsPager();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return DeviceReportEnum.DEFAULT_URL;
     }
 }

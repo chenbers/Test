@@ -9,23 +9,30 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminDevicesEditEnum;
 
-public class PageAdminDeviceEdit extends AdminBar {
+public class PageAdminEditDevice extends AdminBar {
 
-    public PageAdminDeviceEdit() {
-        url = null;
+    public PageAdminEditDevice() {
+        checkMe.add(AdminDevicesEditEnum.TOP_SAVE);
+        checkMe.add(AdminDevicesEditEnum.TOP_CANCEL);
+    }
+    
 
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminDevicesEditEnum.URL;
     }
 
-    public class PageAdminDeviceEditLinks extends AdminBarLinks {
+    public class AdminEditDeviceLinks extends AdminBarLinks {
 
         public TextLink showHideVehiclesForAssignment() {
             return new TextLink(AdminDevicesEditEnum.SHOW_HIDE_VEHICLES_LINK);
         }
     }
 
-    public class PageAdminDeviceEditTexts extends AdminBarTexts {
+    public class AdminEditDeviceTexts extends AdminBarTexts {
 
         public Text valueProduct() {
             return new Text(AdminDevicesEditEnum.PRODUCT);
@@ -196,9 +203,9 @@ public class PageAdminDeviceEdit extends AdminBar {
         }
     }
 
-    public class PageAdminDeviceEditTextFields extends AdminBarTextFields {}
+    public class AdminEditDeviceTextFields extends AdminBarTextFields {}
 
-    public class PageAdminDeviceEditButtons extends AdminBarButtons {
+    public class AdminEditDeviceButtons extends AdminBarButtons {
 
         public Button vehicleTableEntrySelector() {
             return new Button(AdminDevicesEditEnum.VEHICLE_TABLE_SELECT);
@@ -250,7 +257,7 @@ public class PageAdminDeviceEdit extends AdminBar {
 
     }
 
-    public class PageAdminDeviceEditDropDowns extends AdminBarDropDowns {
+    public class AdminEditDeviceDropDowns extends AdminBarDropDowns {
         private final AdminDevicesEditEnum[] enumerated = {
                 AdminDevicesEditEnum.VEHICLE_TABLE_PRODUCT_FILTER,
                 AdminDevicesEditEnum.VEHICLE_TABLE_STATUS_FILTER };
@@ -268,39 +275,39 @@ public class PageAdminDeviceEdit extends AdminBar {
         }
     }
 
-    public class PageAdminDeviceEditPopUps extends MastheadPopUps {}
+    public class AdminEditDevicePopUps extends MastheadPopUps {}
 
-    public class PageAdminDeviceEditPager {
+    public class AdminEditDevicePager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageAdminDeviceEditPager _page() {
-        return new PageAdminDeviceEditPager();
+    public AdminEditDevicePager _page() {
+        return new AdminEditDevicePager();
     }
 
-    public PageAdminDeviceEditLinks _link() {
-        return new PageAdminDeviceEditLinks();
+    public AdminEditDeviceLinks _link() {
+        return new AdminEditDeviceLinks();
     }
 
-    public PageAdminDeviceEditTexts _text() {
-        return new PageAdminDeviceEditTexts();
+    public AdminEditDeviceTexts _text() {
+        return new AdminEditDeviceTexts();
     }
 
-    public PageAdminDeviceEditButtons _button() {
-        return new PageAdminDeviceEditButtons();
+    public AdminEditDeviceButtons _button() {
+        return new AdminEditDeviceButtons();
     }
 
-    public PageAdminDeviceEditTextFields _textField() {
-        return new PageAdminDeviceEditTextFields();
+    public AdminEditDeviceTextFields _textField() {
+        return new AdminEditDeviceTextFields();
     }
 
-    public PageAdminDeviceEditDropDowns _dropDown() {
-        return new PageAdminDeviceEditDropDowns();
+    public AdminEditDeviceDropDowns _dropDown() {
+        return new AdminEditDeviceDropDowns();
     }
 
-    public PageAdminDeviceEditPopUps _popUp() {
-        return new PageAdminDeviceEditPopUps();
+    public AdminEditDevicePopUps _popUp() {
+        return new AdminEditDevicePopUps();
     }
 }

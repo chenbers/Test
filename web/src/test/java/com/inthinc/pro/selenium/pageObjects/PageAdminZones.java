@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminZonesEnum;
 
 public class PageAdminZones extends AdminBar {
@@ -19,14 +20,14 @@ public class PageAdminZones extends AdminBar {
     }
 
     
-    public class PageAdminZonesLinks extends AdminBarLinks {
+    public class AdminZonesLinks extends AdminBarLinks {
         
         public TextLink download(){
             return new TextLink(AdminZonesEnum.DOWNLOAD_LINK);
         }
     }
 
-    public class PageAdminZonesTexts extends AdminBarTexts {
+    public class AdminZonesTexts extends AdminBarTexts {
         
         public Text title(){
             return new Text(AdminZonesEnum.TITLE);
@@ -109,7 +110,7 @@ public class PageAdminZones extends AdminBar {
         }
     }
 
-    public class PageAdminZonesTextFields extends AdminBarTextFields {
+    public class AdminZonesTextFields extends AdminBarTextFields {
         
 
         public TextFieldWithSpinner editLabelSpeedLimit(){
@@ -126,7 +127,7 @@ public class PageAdminZones extends AdminBar {
         
     }
 
-    public class PageAdminZonesButtons extends AdminBarButtons {
+    public class AdminZonesButtons extends AdminBarButtons {
         
         public TextButton edit(){
             return new TextButton(AdminZonesEnum.EDIT);
@@ -162,7 +163,7 @@ public class PageAdminZones extends AdminBar {
         
     }
 
-    public class PageAdminZonesDropDowns extends AdminBarDropDowns {
+    public class AdminZonesDropDowns extends AdminBarDropDowns {
         
         public DropDown zoneName(){
             return new DropDown(AdminZonesEnum.ZONE_NAME);
@@ -213,39 +214,44 @@ public class PageAdminZones extends AdminBar {
         }
     }
 
-    public class PageAdminZonesPopUps extends MastheadPopUps {}
+    public class AdminZonesPopUps extends MastheadPopUps {}
 
-    public class PageAdminZonesPager {
+    public class AdminZonesPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageAdminZonesPager _page() {
-        return new PageAdminZonesPager();
+    public AdminZonesPager _page() {
+        return new AdminZonesPager();
     }
 
-    public PageAdminZonesLinks _link() {
-        return new PageAdminZonesLinks();
+    public AdminZonesLinks _link() {
+        return new AdminZonesLinks();
     }
 
-    public PageAdminZonesTexts _text() {
-        return new PageAdminZonesTexts();
+    public AdminZonesTexts _text() {
+        return new AdminZonesTexts();
     }
 
-    public PageAdminZonesButtons _button() {
-        return new PageAdminZonesButtons();
+    public AdminZonesButtons _button() {
+        return new AdminZonesButtons();
     }
 
-    public PageAdminZonesTextFields _textField() {
-        return new PageAdminZonesTextFields();
+    public AdminZonesTextFields _textField() {
+        return new AdminZonesTextFields();
     }
 
-    public PageAdminZonesDropDowns _dropDown() {
-        return new PageAdminZonesDropDowns();
+    public AdminZonesDropDowns _dropDown() {
+        return new AdminZonesDropDowns();
     }
 
-    public PageAdminZonesPopUps _popUp() {
-        return new PageAdminZonesPopUps();
+    public AdminZonesPopUps _popUp() {
+        return new AdminZonesPopUps();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminZonesEnum.DEFAULT_URL;
     }
 }

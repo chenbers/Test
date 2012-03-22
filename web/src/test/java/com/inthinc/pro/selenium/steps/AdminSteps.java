@@ -8,7 +8,7 @@ import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 

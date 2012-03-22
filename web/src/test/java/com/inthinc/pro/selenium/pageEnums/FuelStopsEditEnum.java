@@ -36,7 +36,8 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
     DELETE_TOP(delete, "edit-form:editfuelStopDelete1"),
     DELETE_BOTTOM(delete, "edit-form:editfuelStopDelete2"),
     
-    TIME_CHANGER(null, "edit-form:fuelStopEdit_***")
+    TIME_CHANGER(null, "edit-form:fuelStopEdit_***"),
+    DEFAULT_URL("app/fuelStopEdit"),
     ;
     private String text, url;
     private String[] IDs;

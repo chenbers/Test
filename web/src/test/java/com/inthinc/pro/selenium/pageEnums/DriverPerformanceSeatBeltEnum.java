@@ -39,6 +39,7 @@ public enum DriverPerformanceSeatBeltEnum implements SeleniumEnums {
     
     DRIVER_NAME_LINK(null, "//a[contains(@id,'driverSeatBeltDriverPerformance')]"),
     BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:driversSeatBelt-dashboard')]"),
+    DEFAULT_URL("app/driver/seatbelt"),
 
     ;
 

@@ -7,11 +7,13 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class PageMyAccount extends NavigationBar {
 	public PageMyAccount() {
-		url = MyAccountEnum.MY_ACCOUNT_URL;
+	    //TODO: addd elements to test for onPage
 	}
 	public class MyAccountPopUps extends MastheadPopUps{
 		public MyAccountChangePassword changeMyPassword(){
@@ -389,5 +391,10 @@ public class PageMyAccount extends NavigationBar {
 	public String getExpectedPath() {
 		return MyAccountEnum.MY_ACCOUNT_URL.getURL();
 	}
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return LoginEnum.LOGIN_URL; 
+    }
 
 }

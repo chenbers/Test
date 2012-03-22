@@ -14,12 +14,11 @@ import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminReportAddEditEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.ReportsColumns;
 
-public class PageAdminReportAddEdit extends AdminBar {
+public class PageAdminAddEditReport extends AdminBar {
 
     private static String page = "Report";
 
-    public PageAdminReportAddEdit() {
-        url = AdminReportAddEditEnum.DEFAULT_URL;
+    public PageAdminAddEditReport() {
         checkMe.add(AdminReportAddEditEnum.NAME);
         checkMe.add(AdminReportAddEditEnum.STATUS);
         checkMe.add(AdminReportAddEditEnum.TIME_OF_DAY);
@@ -174,7 +173,7 @@ public class PageAdminReportAddEdit extends AdminBar {
     }
 
     @Override
-    public String getExpectedPath() {
-        return AdminReportAddEditEnum.DEFAULT_URL.getURL();
+    public SeleniumEnums setUrl() {
+        return AdminReportAddEditEnum.DEFAULT_URL;
     }
 }

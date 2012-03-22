@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminDevicesEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.DeviceColumns;
@@ -16,9 +17,13 @@ public class PageAdminDevices extends AdminTables {
     
     public PageAdminDevices() {
         page = "devices";
-        url = AdminDevicesEnum.DEFAULT_URL;
         checkMe.add(AdminDevicesEnum.TITLE);
-        
+    }
+    
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminDevicesEnum.DEFAULT_URL;
     }
 
     
@@ -79,8 +84,8 @@ public class PageAdminDevices extends AdminTables {
     }
     
     
-    public AdminDevicesPager _page(){
-        return new AdminDevicesPager();
+    public Paging _page(){
+        return new Paging(AdminDevicesEnum.PAGE_SCROLLER);
     }
     
     public AdminDevicesLinks _link(){

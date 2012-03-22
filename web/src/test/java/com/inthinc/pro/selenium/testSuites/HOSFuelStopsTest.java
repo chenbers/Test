@@ -12,8 +12,8 @@ import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
-import com.inthinc.pro.selenium.pageObjects.PageFuelStops;
-import com.inthinc.pro.selenium.pageObjects.PageFuelStopsAddEdit;
+import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
+import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
 public class HOSFuelStopsTest extends WebRallyTest {
@@ -22,16 +22,16 @@ public class HOSFuelStopsTest extends WebRallyTest {
     private PageAdminUsers usersPage;
     private PageAdminUserDetails userDetails;
     
-    private PageFuelStops myFuelStops; 
-    private PageFuelStopsAddEdit myFuelStopsAddEdit;
+    private PageHOSFuelStops myFuelStops; 
+    private PageHOSAddEditFuelStops myFuelStopsAddEdit;
     private AutomationUser login;
     
     
     @Before
     public void setupPage() {
         myAccount = new PageMyAccount();
-        myFuelStops = new PageFuelStops();
-        myFuelStopsAddEdit = new PageFuelStopsAddEdit();
+        myFuelStops = new PageHOSFuelStops();
+        myFuelStopsAddEdit = new PageHOSAddEditFuelStops();
         login = AutomationUsers.getUsers().getOneBy(AccountCapability.HOSEnabled, LoginCapability.IsDriver, LoginCapability.HasWaySmart, LoginCapability.HasVehicle, LoginCapability.RoleHOS);
         if (login == null){
             throw new NullPointerException(login.toString());

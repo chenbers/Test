@@ -22,6 +22,7 @@ public enum FuelEfficiencyExpansionEnum implements SeleniumEnums {
     ENTRY_LIGHT(null, "mpgTableForm:details:###:light"),
     ENTRY_MEDIUM(null, "mpgTableForm:details:###:medium"),
     ENTRY_HEAVY(null, "mpgTableForm:details:###:heavy"),
+    DEFAULT_URL("app/dashboard/detail/MPG"),
     
     ;
 

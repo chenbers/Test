@@ -65,7 +65,8 @@ public enum TeamStopsEnum implements SeleniumEnums {
     WAIT_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTrips:tb")).tr("###").td("8").toString()),
     DURATION_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTrips:tb")).tr("###").td("9").toString()),
     
-    VEHICLE_LINK(null, "stopsTripsTableForm:stopsTrips:###:j_id635")
+    VEHICLE_LINK(null, "stopsTripsTableForm:stopsTrips:###:j_id635"),
+    DEFAULT_URL("app/dashboard/tab/teamStops"),
     ;
     private String text, url;
     private String[] IDs;

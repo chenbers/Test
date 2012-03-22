@@ -67,6 +67,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         errors = new ErrorCatcher(this);
         this.browser = browser;
         this.silo = silo;
+        this.setTimeout("999999999");
     }
     
     @Override
@@ -296,7 +297,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
                 logger.info(StackToString.toString(e));
             }
         }
-        return getText(element);
+        String text = getText(element);
+        logger.debug("gotText = " + text);
+        return text;
     }
     
 
@@ -555,7 +558,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodLib open(SeleniumEnumWrapper myEnum) {
         String element = myEnum.getURL();
-        System.out.println(seleniumByThread.get(getThreadID()));
         open(element);
         return this;
     }

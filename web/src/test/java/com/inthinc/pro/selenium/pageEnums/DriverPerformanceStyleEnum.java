@@ -48,7 +48,8 @@ public enum DriverPerformanceStyleEnum implements SeleniumEnums {
     SEVERITY_ENTRY_SEVERITY(null, Xpath.start().td(Id.id("driverStyleEventTable:notificationsTable:###:severity")).tbody().tr("1").toString()),
 
     EXCLUDE("exclude", "driverStyleEventTable:notificationsTable:###:driverStyleInclude"),
-    INCLUDE("include", "driverStyleEventTable:notificationsTable:###:driverStyle_excluded"),
+    INCLUDE("include", "driverStyleEventTable:notificationsTable:###:driverStyle_excluded"), 
+    DEFAULT_URL("app/driver/style"),
 
     ;
 

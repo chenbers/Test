@@ -2,7 +2,9 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public enum AdminCustomRoleAddEditEnum implements SeleniumEnums {
+public enum AdminAddEditCustomRoleEnum implements SeleniumEnums {
+    
+    URL("app/admin/editCustomRole"),
     
     TITLE("Admin - Add/Edit Custom Role", "//span[@class='admin']"),
     
@@ -25,10 +27,10 @@ public enum AdminCustomRoleAddEditEnum implements SeleniumEnums {
     private String text, url;
     private String[] IDs;
     
-    private AdminCustomRoleAddEditEnum(String url){
+    private AdminAddEditCustomRoleEnum(String url){
         this.url = url;
     }
-    private AdminCustomRoleAddEditEnum(String text, String ...IDs){
+    private AdminAddEditCustomRoleEnum(String text, String ...IDs){
         this.text=text;
         this.IDs = IDs;
     }

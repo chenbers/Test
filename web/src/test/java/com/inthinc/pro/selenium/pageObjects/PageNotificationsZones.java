@@ -1,13 +1,13 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsZonesEnum;
 
 public class PageNotificationsZones extends NotificationsEventsBar {
 
     public PageNotificationsZones() {
         page = "zone";
-        super.url = NotificationsZonesEnum.URL;
         super.checkMe.add(NotificationsZonesEnum.TITLE);
         super.checkMe.add(NotificationsZonesEnum.NOTE);
     }
@@ -95,6 +95,11 @@ public class PageNotificationsZones extends NotificationsEventsBar {
     
     public ZonesPager _page(){
         return new ZonesPager();
+    }
+
+    @Override
+    public SeleniumEnums setUrl() {
+        return NotificationsZonesEnum.URL;
     }
 
 }
