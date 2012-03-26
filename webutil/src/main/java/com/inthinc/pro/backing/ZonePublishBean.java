@@ -79,18 +79,11 @@ public class ZonePublishBean extends BaseBean {
     private Account initAccount(Integer accountID) {
         Account accnt = accountDAO.findByID(accountID);
         zoneList = zoneDAO.getZones(accnt.getAccountID());
-        zonesNeedPublish = initZonesNeedPublish(accnt, zoneList);
+        zonesNeedPublish = initZonesNeedPublish(accnt);
         return accnt;
     }
-    private Boolean initZonesNeedPublish(Account account, List<Zone> zoneList) {
-        Date lastPublishDate = (account.getZonePublishDate() == null) ? new Date(0) : account.getZonePublishDate();
-
-        for (Zone zone : zoneList) {
-            if ((zone.getCreated() != null && zone.getCreated().after(lastPublishDate)) || 
-                (zone.getModified() != null && zone.getModified().after(lastPublishDate)))
-                return true;
-        }
-        return false;
+    private Boolean initZonesNeedPublish(Account account) {
+		return zonePublishDAO.zonesNeedPublish(account.getAccountID());
     }
 
     private void publishZones(Account account, List<Zone> zoneList) {
