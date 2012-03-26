@@ -48,7 +48,7 @@ public class ZonePublishJob extends QuartzJobBean {
             if (a != null && a.getStatus() != null && !a.getStatus().equals(Status.DELETED)) {
                 logger.debug("Account: " + a.getAcctName());
                 List<Zone> zoneList = zoneDAO.getZones(account.getAccountID());
-                if (zonesNeedPublish(a, zoneList)) {
+                if (zonesNeedPublish(a)) {
                     logger.debug("Publishing zones -- numZones: " + zoneList.size());
                     publishZones(a, zoneList);
                 }
@@ -59,16 +59,9 @@ public class ZonePublishJob extends QuartzJobBean {
         }
     }
     
-    private boolean zonesNeedPublish(Account account, List<Zone> zoneList) {
-        Date lastPublishDate = (account.getZonePublishDate() == null) ? new Date(0) : account.getZonePublishDate();
-
-        for (Zone zone : zoneList) {
-            if ((zone.getCreated() != null && zone.getCreated().after(lastPublishDate)) || 
-                (zone.getModified() != null && zone.getModified().after(lastPublishDate)))
-                return true;
-        }
-        return false;
-    }
+    private boolean zonesNeedPublish(Account account) {
+		return zonePublishDAO.zonesNeedPublish(account.getAccountID());
+	}
 
     private void publishZones(Account account, List<Zone> zoneList) {
         ZonePublisher zonePublisher = new ZonePublisher();
