@@ -9,4 +9,6 @@ public interface ZonePublishDAO extends GenericDAO<ZonePublish, Integer> {
     
     ZonePublish getPublishedZone(Integer acctID, ZoneVehicleType zoneVehicleType);
     ZonePublish getPublishedZone(String mcmID);
+    boolean zonesNeedPublish(Integer acctID);
+	
 }

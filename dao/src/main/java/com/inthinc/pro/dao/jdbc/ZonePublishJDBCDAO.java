@@ -23,6 +23,7 @@ public class ZonePublishJDBCDAO extends GenericJDBCDAO implements ZonePublishDAO
     private static final String UPDATE_ZONE_PUBLISH = "UPDATE zonePublish set zoneData = ? where  acctID = ? and zoneType = ?";
     private static final String FETCH_ZONE_PUBLISH = "SELECT zoneData FROM zonePublish WHERE acctID = ? and zoneType = ?";
     private static final String FETCH_ZONE_PUBLISH_BY_ID = "SELECT zonePublishID, acctID, zoneType, zoneData FROM zonePublish WHERE zonePublishID = ?";
+    private static final String FETCH_PUBLISH_ZONES = "SELECT zoneID FROM zone z, account a WHERE a.acctID = ? AND z.acctID = a.acctID AND z.modified > a.zonePublishDate LIMIT 1";
     
     @Override
     public void publishZone(ZonePublish zonePublish) {
@@ -103,6 +104,39 @@ public class ZonePublishJDBCDAO extends GenericJDBCDAO implements ZonePublishDAO
         
         return null;
     }
+	
+    @Override
+	public boolean zonesNeedPublish(Integer acctID)
+	{
+		boolean publish = false;
+		Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(FETCH_PUBLISH_ZONES);
+            statement.setInt(1, acctID);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next())
+                publish = true;
+                
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally   
+        return publish;
+	}
+
 
     @Override
     public Integer create(Integer id, ZonePublish zonePublish) {
