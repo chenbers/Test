@@ -125,7 +125,7 @@ public class SatelliteEvent_t extends DeviceNote {
 		temp[0] = (byte) (temp.length & 0xFF);
 
 		for (int i = 0; i < temp.length; i++) {
-			Log.d("Byte %d = %02X", i, (temp[i] & 0xFF));
+			Log.t("Byte %d = %02X", i, (temp[i] & 0xFF));
 		}
 
 		return temp;
