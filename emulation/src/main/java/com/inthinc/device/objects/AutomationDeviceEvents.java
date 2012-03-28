@@ -314,7 +314,7 @@ public class AutomationDeviceEvents {
                              ((deltaY) + 600l) * 1210l +
                              ((deltaZ) + 600l);
             
-            Log.d(packedDeltaV + "");
+            Log.d("packedDeltaV: "+packedDeltaV);
             return packedDeltaV;
         }
         
