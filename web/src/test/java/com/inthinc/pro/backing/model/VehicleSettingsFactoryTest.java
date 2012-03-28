@@ -36,7 +36,7 @@ public class VehicleSettingsFactoryTest {
         sfcm.setDefaultValueIndex(4);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         
         //Hard Brake
@@ -49,7 +49,7 @@ public class VehicleSettingsFactoryTest {
         sfcm.setDefaultValueIndex(4);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         //HARD_TURN
         sfcm = new SensitivitySliderValues();
@@ -61,7 +61,7 @@ public class VehicleSettingsFactoryTest {
         sfcm.setDefaultValueIndex(4);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         
         //HARD_BUMP
@@ -75,7 +75,7 @@ public class VehicleSettingsFactoryTest {
         sfcm.setDefaultValueIndex(9);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         //Hard brake
         //DVX
@@ -208,7 +208,7 @@ public class VehicleSettingsFactoryTest {
         vehicleSettingsFactory.setConfiguratorDAO(new ConfiguratorHessianDAO());
         vehicleSettingsFactory.setSensitivitySliders(sensitivitySliders);
         
-        VehicleSettingManager vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForBatchEditing(ProductType.TIWIPRO_R74);
+        VehicleSettingManager vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForBatchEditing(ProductType.TIWIPRO);
         assertTrue(vehicleSettingManager instanceof TiwiproSettingManager);
         
         vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForBatchEditing(ProductType.WAYSMART);
@@ -217,7 +217,7 @@ public class VehicleSettingsFactoryTest {
         vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForBatchEditing(ProductType.UNKNOWN);
         assertTrue(vehicleSettingManager instanceof UnknownSettingManager);
 
-        vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForNewSettingWithKnownDevice(ProductType.TIWIPRO_R74, 1,1);
+        vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForNewSettingWithKnownDevice(ProductType.TIWIPRO, 1,1);
         assertTrue(vehicleSettingManager instanceof TiwiproSettingManager);
         
         vehicleSettingManager = vehicleSettingsFactory.getSettingManagerForNewSettingWithKnownDevice(ProductType.WAYSMART, 1,1);

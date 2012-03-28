@@ -333,7 +333,7 @@
   </void> 
   <void property="productVersion"> 
    <object id="ProductType0" class="com.inthinc.pro.model.configurator.ProductType" method="valueOf"> 
-    <string>TIWIPRO_R74</string> 
+    <string>TIWIPRO</string> 
    </object> 
   </void> 
   <void property="serialNum"> 

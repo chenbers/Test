@@ -49,8 +49,7 @@ public class VehicleSettingsFactory {
             switch (productType){
             case WAYSMART:
         		vehicleSettingManagers.put(vehicle.getVehicleID(),new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,vehicle.getVehicleID(),device.getDeviceID()));
-            case TIWIPRO_R71:
-            case TIWIPRO_R74:
+            case TIWIPRO:
         		vehicleSettingManagers.put(vehicle.getVehicleID(),new TiwiproSettingManager(configuratorDAO, sensitivitySliders,productType,vehicle.getVehicleID(),device.getDeviceID()));
             default:
         		vehicleSettingManagers.put(vehicle.getVehicleID(),new UnknownSettingManager());
@@ -81,8 +80,7 @@ public class VehicleSettingsFactory {
         switch (productType){
             case WAYSMART:
                return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,vehicleSetting);
-            case TIWIPRO_R71:
-            case TIWIPRO_R74:
+            case TIWIPRO:
                 return new TiwiproSettingManager(configuratorDAO, sensitivitySliders,productType,vehicleSetting);
             default:
                 return new UnknownSettingManager();
@@ -99,8 +97,7 @@ public class VehicleSettingsFactory {
         switch (productType){
             case WAYSMART:
                return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,null,null);
-            case TIWIPRO_R71:
-            case TIWIPRO_R74:
+            case TIWIPRO:
                 return new TiwiproSettingManager(configuratorDAO,sensitivitySliders, productType,null,null);
             default:
                 return new UnknownSettingManager();
@@ -113,8 +110,7 @@ public class VehicleSettingsFactory {
         switch (productType){
             case WAYSMART:
                return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,vehicleID,deviceID);
-            case TIWIPRO_R71:
-            case TIWIPRO_R74:
+            case TIWIPRO:
                 return new TiwiproSettingManager(configuratorDAO, sensitivitySliders,productType,vehicleID,deviceID);
             default:
                 return new UnknownSettingManager();

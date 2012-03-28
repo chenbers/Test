@@ -2,8 +2,8 @@ package com.inthinc.pro.model.configurator;
 
 public enum ProductName {
     
-    UNKNOWN("UNKNOWN","Unknown"),TEEN("Teen"),WAYSMART("waySmart"),TIWIPRO("tiwiPro");
-    
+//    UNKNOWN("UNKNOWN","Unknown"),TEEN("Teen"),WAYSMART("waySmart"),TIWIPRO("tiwiPro");
+    ;
     private String messageKey;
     private String productName;
 

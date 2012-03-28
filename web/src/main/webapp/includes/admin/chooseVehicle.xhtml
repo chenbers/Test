@@ -94,10 +94,10 @@
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
             <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
           </rich:column>
-<!--          <rich:column id="productVersion" sortBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" >-->
+<!--          <rich:column id="productVersion" sortBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description}" >-->
 <!--                      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_productType}" /></f:facet>-->
-          <rich:column id="productVersion" custFilterBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" 
-          				sortBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" filterValue="#{editorBean.chooseVehicleFiltering['productVersion']}">
+          <rich:column id="productVersion" custFilterBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description}" 
+          				sortBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description}" filterValue="#{editorBean.chooseVehicleFiltering['productVersion']}">
       	<f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.vehiclesHeader_productType}" />
@@ -115,7 +115,7 @@
 			</h:panelGroup>
         </h:panelGroup>
       </f:facet>
-      <h:outputText value="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" />
+      <h:outputText value="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description}" />
     </rich:column>
 
     <rich:column id="device" sortBy="#{editorBean.deviceMap[item.deviceID].name}">

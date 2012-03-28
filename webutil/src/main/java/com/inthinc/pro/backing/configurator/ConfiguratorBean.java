@@ -337,10 +337,10 @@ public class ConfiguratorBean extends UsesBaseBean implements Serializable{
 //    }
 //  public void createConfigurationsFromVehicleSettings(){
 //	
-//    displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74);
+//    displaySettingsDefinitions = deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO);
 //
 //    ConfigurationExtractor.getConfigurations(configurationSelectionBean.getVehicleSettings().getVehicleSettings(),
-//    		 deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO_R74));
+//    		 deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO));
 //}
 //  private void buildConfigurations(){
 //	

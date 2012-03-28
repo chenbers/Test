@@ -21,7 +21,7 @@ public class VehicleSensitivitySliderTest {
     public void createVehicleSensitivitySlider(){
         VehicleSensitivitySlider vehicleSensitivitySlider = new VehicleSensitivitySlider(sensitivitySlidersMockDataCreator.getSensitivitySliders(), 
                 SliderType.HARD_ACCEL_SLIDER,
-                ProductType.TIWIPRO_R74, 
+                ProductType.TIWIPRO, 
                 0,1000000) ;
         assertEquals(new Integer(4),(Integer)vehicleSensitivitySlider.getDefaultValueIndex());
         assertTrue(vehicleSensitivitySlider.getSettingIDsForThisSlider().size()==1);

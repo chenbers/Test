@@ -33,7 +33,7 @@ public class NoteGenerator {
             byte[] notePackage = wsNotePackager.packageNote(event, noteType.getCode());
             wsNoteSender.sendNote(noteType.getCode(), event.getTime(), notePackage, device);
         }
-        else if (device.getProductVersion() == ProductType.TIWIPRO_R74) {
+        else if (device.getProductVersion().equals(ProductType.TIWIPRO)) {
             byte[] notePackage = tiwiProNotePackager.packageNote(event, noteType.getCode());
             tiwiProNoteSender.sendNote(noteType.getCode(), event.getTime(), notePackage, device);
             
@@ -51,7 +51,7 @@ public class NoteGenerator {
             notePackager = wsNotePackager;
             noteSender = wsNoteSender;
         }
-        else if (device.getProductVersion() == ProductType.TIWIPRO_R74) {
+        else if (device.getProductVersion().equals(ProductType.TIWIPRO)) {
             notePackager = tiwiProNotePackager;
             noteSender = tiwiProNoteSender;
         }

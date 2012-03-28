@@ -161,7 +161,7 @@ public class FileImporterTest extends BaseSpringTest {
                 accountName.substring(2), accountName+"XX", accountName.substring(7), 
                 accountName.substring(7));
         device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
-        device.setProductVersion(ProductType.TIWIPRO_R74);
+        device.setProductVersion(ProductType.TIWIPRO);
         Integer deviceID = deviceDAO.create(acctID, device);
         device.setDeviceID(deviceID);
 

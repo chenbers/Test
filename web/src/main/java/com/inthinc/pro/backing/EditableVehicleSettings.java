@@ -61,10 +61,10 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
     	return true;
     }
     public String getProductDisplayName(){
-        if(getProductType().getDescription().getMessageKey() != null){
-        	return MessageUtil.getMessageString(getProductType().getDescription().getMessageKey());
+        if(getProductType().equals(ProductType.UNKNOWN)){
+        	return MessageUtil.getMessageString(getProductType().name());
         }
-        return getProductType().getDescription().getProductName();
+        return getProductType().getDescription();
 
     }
     

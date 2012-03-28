@@ -80,7 +80,7 @@
                                   <h:outputText value="#{messages.editDevice_productVer}" />
                                 </td>
                                 <td width="100" valign="top">
-                                  <h:outputText value="#{devicesBean.item.productVersion.description.productName}" />
+                                  <h:outputText value="#{devicesBean.item.productVersion.description}" />
                                 </td>
                               </tr>
                               <tr>
@@ -98,7 +98,7 @@
                                 </td>
                                 <td><h:outputText value="#{devicesBean.item.serialNum}" /></td>
                               </tr>
-                              <ui:fragment rendered="#{devicesBean.item.productVersion eq 'TIWIPRO_R74' or devicesBean.item.productVersion eq 'TIWIPRO_R71'}">
+                              <ui:fragment rendered="#{devicesBean.item.productVersion eq 'TIWIPRO'}">
                               <tr>
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-imei" value="#{devicesBean.updateField['imei']}" />

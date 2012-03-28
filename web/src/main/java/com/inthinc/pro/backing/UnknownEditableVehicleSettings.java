@@ -15,7 +15,7 @@ public class UnknownEditableVehicleSettings extends EditableVehicleSettings {
 
 	@Override
 	public String getProductDisplayName() {
-    	return MessageUtil.getMessageString(ProductType.UNKNOWN.getDescription().getMessageKey());
+    	return MessageUtil.getMessageString(ProductType.UNKNOWN.name());
 	}
 
 	public UnknownEditableVehicleSettings() {

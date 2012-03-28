@@ -32,7 +32,7 @@ public class ConfiguratorHessianDAOTest {
         List<SensitivitySliderValues> sensitivitySliderValues = configuratorHessianDAO.getSensitivitySliderValues();
         for (SensitivitySliderValues ssv :sensitivitySliderValues){
             
-            if(ssv.getProductType().equals(ProductType.TIWIPRO_R74) && ssv.getSettingID() != 1225){
+            if(ssv.getProductType().equals(ProductType.TIWIPRO) && ssv.getSettingID() != 1225){
                 for (String sliderValue : ssv.getValues()){
                     
                     String[] tokens = sliderValue.split(" ");

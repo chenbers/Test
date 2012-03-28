@@ -189,7 +189,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
        VehicleSetting vehicleSetting = new VehicleSetting();
        vehicleSetting.setVehicleID(vehicleID);
        vehicleSetting.setDesired(new HashMap<Integer, String>());
-       vehicleSetting.setProductType(ProductType.TIWIPRO_R74);
+       vehicleSetting.setProductType(ProductType.TIWIPRO);
 
        return vehicleSetting;
    }

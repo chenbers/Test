@@ -40,7 +40,7 @@ public interface MCMService extends HessianService
      * "fileVersion"   integer File number (1-8) from forward command<br />
      * "formatVersion" integer unused<br />
      * "moreInformation"   unused<br />
-     * "productVersion" int unused but 1=Tiwi, 2=WaySmart, 3=TiwiPro R71, 4=unused, 5=TiwiPro R74<br />
+     * "productVersion" int unused but 1=Tiwi, 2=WaySmart, 3=TiwiPro R71, 4=unused, 5=TiwiPro R74, 7=TiwiPro R7.47<br />
      * "locale" string  (e.g. en_US, en_CA, ro_RO)<br />
      * "startByte" integer starting byte for incremental download 0=first byte.<br />
      * "endByte" integer ending byte for incremental downloads (eg. 4095 if the file is 4096 bytes).<br />

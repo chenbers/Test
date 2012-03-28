@@ -266,7 +266,7 @@ public class SiloServiceTest {
         SensitivitySliders sensitivitySliders = new SensitivitySliders();
         sensitivitySliders.setConfiguratorDAO(configuratorDAO);
         sensitivitySliders.init();
-        SensitivitySlider slider = sensitivitySliders.getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.TIWIPRO_R74,0,1000000));
+        SensitivitySlider slider = sensitivitySliders.getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.TIWIPRO,0,1000000));
         
         assertEquals(4,slider.getDefaultValueIndex());
         Set<Integer> idsForThisSlider = slider.getSettingIDsForThisSlider();
@@ -338,7 +338,7 @@ public class SiloServiceTest {
         ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
         configuratorDAO.setSiloService(siloService);
         VehicleSetting vs = configuratorDAO.getVehicleSettings(TESTING_VEHICLE_ID);
-        assertEquals(ProductType.TIWIPRO_R74,vs.getProductType());
+        assertEquals(ProductType.TIWIPRO,vs.getProductType());
         assertEquals(TESTING_VEHICLE_ID,vs.getVehicleID());
         assertTrue(vs.getActual()!= null);
         assertTrue(vs.getDesired()!=null);
@@ -1174,7 +1174,7 @@ public class SiloServiceTest {
 //                    "555555987" + i); // ephone
             if (i == DEVICE_COUNT-1)
                 device.setProductVersion(ProductType.WAYSMART);
-            else device.setProductVersion(ProductType.TIWIPRO_R74);
+            else device.setProductVersion(ProductType.TIWIPRO);
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);
@@ -1229,7 +1229,7 @@ public class SiloServiceTest {
                 "5555551239");
 //        , // phone
 //                "5555559879"); // ephone
-        device.setProductVersion(ProductType.TIWIPRO_R74);
+        device.setProductVersion(ProductType.TIWIPRO);
         Integer deviceID = deviceDAO.create(acctID, device);
         assertNotNull(deviceID);
         device.setDeviceID(deviceID);

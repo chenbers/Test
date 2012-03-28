@@ -26,7 +26,7 @@ public class SensitivitySlidersMockDataCreator {
         sfcm.setDefaultValueIndex(4);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         
         //Hard Brake
@@ -39,7 +39,7 @@ public class SensitivitySlidersMockDataCreator {
         sfcm.setDefaultValueIndex(4);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         //HARD_TURN
         sfcm = new SensitivitySliderValues();
@@ -51,7 +51,7 @@ public class SensitivitySlidersMockDataCreator {
         sfcm.setDefaultValueIndex(4);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         
         //HARD_BUMP
@@ -65,7 +65,7 @@ public class SensitivitySlidersMockDataCreator {
         sfcm.setDefaultValueIndex(9);
         sfcm.setMaxFirmwareVersion(1000000);
         sfcm.setMinFirmwareVersion(0);
-        sfcm.setProductType(ProductType.TIWIPRO_R74);
+        sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         //Hard brake
         //DVX

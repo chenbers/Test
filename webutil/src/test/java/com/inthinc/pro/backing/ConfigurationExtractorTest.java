@@ -50,7 +50,7 @@ public class ConfigurationExtractorTest {
         deviceSettingDefinitionsByProductType.init();
 
         vehicleSettings = new VehicleSettings();
-        vehicleSettings.filterSettings(configuratorHessianDAO.getVehicleSettingsByGroupIDDeep(1), ProductType.TIWIPRO_R74);
+        vehicleSettings.filterSettings(configuratorHessianDAO.getVehicleSettingsByGroupIDDeep(1), ProductType.TIWIPRO);
 
     }
     private void makeupSettingsRandom( List<DeviceSettingDefinitionBean> list, List<VehicleSetting> vehicleSettings){
@@ -162,9 +162,9 @@ public class ConfigurationExtractorTest {
 //    @Ignore
 //    @Test
 //    public void configuratorExtractConfigurationsFromVehicleSettingsNotSameTest(){
-//        makeupSettingsRandom(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettings.getVehicleSettings());
+//        makeupSettingsRandom(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO),vehicleSettings.getVehicleSettings());
 //        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettings.getVehicleSettings(),
-//        		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO_R74));
+//        		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO));
 //        
 //        assertEquals("3 vehicle settings should have returned 3 configurations",3,configurationSet.getConfigurations().size());
 //        assertFalse("should be some settings that aren't the same",configurationSet.getSettingIDsWithMoreThanOneValue().isEmpty());
@@ -172,9 +172,9 @@ public class ConfigurationExtractorTest {
 //    @Ignore
 //    @Test
 //    public void configuratorExtractConfigurationsFromVehicleSettingsSameTest(){
-//        makeupSettingsSame(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO_R74),vehicleSettings.getVehicleSettings());
+//        makeupSettingsSame(deviceSettingDefinitionsByProductType.getDeviceSettings(ProductType.TIWIPRO),vehicleSettings.getVehicleSettings());
 //        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettings.getVehicleSettings(),
-//        		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO_R74));
+//        		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO));
 //        assertEquals("3 vehicle settings should have returned 1 configuration",1,configurationSet.getConfigurations().size());
 //        assertEquals("3 vehicles should be in list",3,configurationSet.getConfigurations().get(0).getVehicleIDs().size());
 //        assertTrue("should not be some settings that aren't the same",configurationSet.getSettingIDsWithMoreThanOneValue().isEmpty());
@@ -183,7 +183,7 @@ public class ConfigurationExtractorTest {
 //    @Test
 //    public void configuratorExtractConfigurationsFromVehicleSettingsRealTest(){
 //        ConfigurationSet configurationSet = ConfigurationExtractor.getConfigurations(vehicleSettings.getVehicleSettings(),
-//        		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO_R74));
+//        		deviceSettingDefinitionsByProductType.getKeys(ProductType.TIWIPRO));
 //        assertEquals("3 out of 3 vehicle settings should have returned 3 configuration",3,configurationSet.getConfigurations().size());
 //        assertEquals("1 vehicles should be in list",1,configurationSet.getConfigurations().get(0).getVehicleIDs().size());
 //        assertFalse("should be some settings that aren't the same",configurationSet.getSettingIDsWithMoreThanOneValue().isEmpty());

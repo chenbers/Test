@@ -24,7 +24,7 @@ public class SensitivitySlidersTest {
     public void testSliderValues(){
         SensitivitySlider slider =  sensitivitySlidersMockDataCreator.
                                     getSensitivitySliders().
-                                    getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.TIWIPRO_R74,0,1000000));
+                                    getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.TIWIPRO,0,1000000));
         
         assertEquals(4,slider.getDefaultValueIndex());
         Set<Integer> idsForThisSlider = slider.getSettingIDsForThisSlider();

@@ -32,7 +32,7 @@ public class DevicesBeanTest extends BaseAdminBeanTest<DevicesBean.DeviceView>
         editItem.setImei("123456");
         editItem.setSim("123456789");
         editItem.setPhone("123-456-7890");
-        editItem.setProductVersion(ProductType.TIWIPRO_R74);
+        editItem.setProductVersion(ProductType.TIWIPRO);
         editItem.setActivated(new Date());
     }
 

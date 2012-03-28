@@ -45,7 +45,7 @@ public class SensitivitySliders {
     }
     private boolean ignoreThisSetting(SensitivitySliderValues sensitivitySliderValues){
         //Ignore setting 1225 which is already included in the hard bump multi part settings for tiwipro and shouldn't be in there anyway
-        return EnumSet.of(ProductType.TIWIPRO_R71,ProductType.TIWIPRO_R74).contains(sensitivitySliderValues.getProductType()) && 
+        return ProductType.TIWIPRO.equals(sensitivitySliderValues.getProductType()) && 
                         sensitivitySliderValues.getSettingID()==1225;
     }
     private void addSettingToSlider(SensitivitySliderValues sensitivitySliderValues){

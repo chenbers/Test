@@ -604,12 +604,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
         public String getProductDisplayName(){
             if(getProductVersion() == null) {
-            	return MessageUtil.getMessageString(ProductType.UNKNOWN.getDescription().getMessageKey());
+            	return MessageUtil.getMessageString(ProductType.UNKNOWN.name());
             }
-            if(getProductVersion().getDescription().getMessageKey() != null){
-            	return MessageUtil.getMessageString(getProductVersion().getDescription().getMessageKey());
+            if(getProductVersion().equals(ProductType.UNKNOWN)){
+            	return MessageUtil.getMessageString(getProductVersion().name());
             }
-            return getProductVersion().getDescription().getProductName();
+            return getProductVersion().getDescription();
 
         }
         public String getStatusName(){

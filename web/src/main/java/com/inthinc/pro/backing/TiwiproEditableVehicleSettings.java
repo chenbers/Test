@@ -36,7 +36,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
                                  Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                  Integer hardVertical, Integer idlingThreshold, boolean idleBuzzer, Double maxSpeed) {
        
-        super(vehicleID, ProductType.TIWIPRO_R74, ephone);
+        super(vehicleID, ProductType.TIWIPRO, ephone);
 
         this.autologoffSeconds = autoLogoffSeconds;
         this.idlingSeconds = idlingThreshold;
