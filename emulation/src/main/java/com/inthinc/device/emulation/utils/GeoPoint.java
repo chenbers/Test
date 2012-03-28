@@ -44,8 +44,8 @@ public class GeoPoint {
 	    }
 	    
 	    public static Integer get_heading( GeoPoint start, GeoPoint stop  ){
-	    	Log.d("%s", start);
-	        Log.d("%s", stop);
+	    	Log.d("get_heading start: %s", start);
+	        Log.d("stop: %s", stop);
 
 	        double lat1 = start.getLat() * deg2rad;
 	        double lat2 = stop.getLat() * deg2rad;

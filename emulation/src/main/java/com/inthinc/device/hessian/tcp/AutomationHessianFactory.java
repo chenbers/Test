@@ -60,7 +60,7 @@ public class AutomationHessianFactory {
     }
 
     private void createPortalProxy() {
-    	Log.d("%s", server);
+    	Log.d("createPortalProxy %s", server);
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
             portalProxy = (SiloService) factory.create(SiloService.class, server.portalUrl, server.portalPort);
@@ -72,7 +72,7 @@ public class AutomationHessianFactory {
     }
 
     private void createMcmProxy() {
-    	Log.d("%s", server);
+    	Log.d("createMcmProxy %s", server);
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
             mcmProxy = (MCMService) factory.create(MCMService.class, server.mcmUrl, server.mcmPort);

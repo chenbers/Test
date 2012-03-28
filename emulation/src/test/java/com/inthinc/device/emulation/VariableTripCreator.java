@@ -47,7 +47,7 @@ public class VariableTripCreator {
         AutomationCalendar secondTrip = new AutomationCalendar();
         secondTrip.addToDay(1);
         
-        Log.d("%s", portal);
+        Log.d("portal %s", portal);
         int threads = Thread.activeCount();
 
         long start = System.currentTimeMillis();

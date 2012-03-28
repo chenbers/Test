@@ -95,15 +95,15 @@ public class MCMProxyObject implements MCMService{
     
 
     private void printReply(Object reply){
-    	Log.d("%s", reply);
+    	Log.d("printReply %s", reply);
     }
     
     private void printNote(DeviceNote note){
-    	Log.d("%s", note);
+    	Log.d("printNote %s", note);
     }
     
     private void printOther(Object other){
-    	Log.d("%s", other);
+    	Log.d("printOther %s", other);
     }
     
     public static void processDrivers(Map<Integer, Map<String, String>> driversMap){
@@ -461,7 +461,7 @@ public class MCMProxyObject implements MCMService{
     public Object sendNotes(DeviceState state, DeviceNote note) {
         LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
         list.add(note);
-        Log.d("%s", note);
+        Log.d("sentNotes %s", note);
         try {
 			return sendNotes(state, list);
 		} catch (ClientProtocolException e) {

@@ -173,8 +173,8 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 							partialMap.clear();
 							packetCounter = 0;
 						}
-							
-						Log.d(setting.getKey() + " = " + setting.getValue());
+
+						Log.d("key=value: "+setting.getKey() + " = " + setting.getValue());
 					}
 					
 				}
