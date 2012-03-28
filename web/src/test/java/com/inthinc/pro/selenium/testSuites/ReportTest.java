@@ -122,7 +122,7 @@ public class ReportTest {
 			
 			Device device = new Device();
 			device.setStatus(DeviceStatus.ACTIVE);
-			device.setProductVersion(com.inthinc.pro.model.configurator.ProductType.TIWIPRO_R74);
+			device.setProductVersion(com.inthinc.pro.model.configurator.ProductType.TIWIPRO);
 			device.setAccountID(accountID);
 			device.setFirmwareVersion(17120);
 			device.setWitnessVersion(50);
