@@ -10,6 +10,7 @@ import java.util.TimeZone;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
+import com.inthinc.hos.ddl.HOSOccupantLog;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
@@ -19,7 +20,6 @@ import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
 import com.inthinc.pro.model.hos.HOSOccupantInfo;
-import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 
@@ -234,13 +234,11 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
 
     @Override
     public List<HOSGroupMileage> getHOSMileage(Integer groupID, Interval interval, Boolean noDriver) {
-        // TODO Auto-generated method stub
         return new ArrayList<HOSGroupMileage>();
     }
 
     @Override
     public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
-        // TODO Auto-generated method stub
         return new ArrayList<HOSOccupantLog>();
     }
 

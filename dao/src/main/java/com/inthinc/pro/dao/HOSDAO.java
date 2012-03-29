@@ -6,11 +6,11 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
+import com.inthinc.hos.ddl.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
 import com.inthinc.pro.model.hos.HOSOccupantInfo;
-import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 

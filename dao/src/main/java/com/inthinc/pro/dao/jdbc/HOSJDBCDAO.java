@@ -21,6 +21,7 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.hos.ddl.HOSOccupantLog;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
@@ -32,9 +33,7 @@ import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
 import com.inthinc.pro.model.hos.HOSOccupantInfo;
-import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 
 
@@ -199,10 +198,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                     || (endLogTimeCalendar.after(startDayCalendar) && endLogTimeCalendar.before(endDayCalendar))
                     || (startLogTimeCalendar.before(startDayCalendar) && endLogTimeCalendar.after(endDayCalendar)))
                 {
-                    if (occupantDuplicateCheckList.indexOf(occupantLog.getDriverID()) == -1)
+                    Integer driverID = (Integer)(occupantLog.getDriverID());
+                    if (occupantDuplicateCheckList.indexOf(driverID) == -1)
                     {
-                        occupantDuplicateCheckList.add(occupantLog.getDriverID());
-                        occupantHistoryList.add(new HOSOccupantHistory((i * -1)+1, occupantLog.getDriverID(), startDayOfYear));
+                        occupantDuplicateCheckList.add(driverID);
+                        occupantHistoryList.add(new HOSOccupantHistory((i * -1)+1, driverID, startDayOfYear));
                     }
                 }
             }
@@ -219,7 +219,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     @Override
     public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
         Date currentTime = new Date();
-System.out.println("getHOSOccupantLogs: " + interval);            
+//System.out.println("getHOSOccupantLogs: " + interval);            
         
         Connection conn = null;
         CallableStatement statement = null;
@@ -235,8 +235,6 @@ System.out.println("getHOSOccupantLogs: " + interval);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
 
-System.out.println(statement.toString());            
-			
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
             
@@ -255,7 +253,8 @@ System.out.println(statement.toString());
                 occupantLog.setEndTime((ms == null || ms == 0) ? currentTime : new Date(ms));
                 occupantLog.setServiceID(resultSet.getString(6));
                 occupantLog.setTrailerID(resultSet.getString(7));
-System.out.println("adding OccupantLog: driverID" + occupantLog.getDriverID() + " vehicleID: " + occupantLog.getVehicleID() + " time: " + occupantLog.getLogTime() + " to " + occupantLog.getEndTime());                
+                if(logger.isDebugEnabled())
+                    logger.debug("adding OccupantLog: driverID" + occupantLog.getDriverID() + " vehicleID: " + occupantLog.getVehicleID() + " time: " + occupantLog.getLogTime() + " to " + occupantLog.getEndTime());                
                 
                 recordList.add(occupantLog);
             }

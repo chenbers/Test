@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
@@ -27,25 +26,18 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.adjusted.HOSAdjustedList;
+import com.inthinc.hos.ddl.DDLUtil;
+import com.inthinc.hos.ddl.HOSOccupantLog;
 import com.inthinc.hos.ddl.HosDailyDriverLog;
 import com.inthinc.hos.ddl.HosDriverDailyLogGraph;
-import com.inthinc.hos.ddl.Recap;
-import com.inthinc.hos.ddl.RecapCanada;
-import com.inthinc.hos.ddl.RecapCanada2007;
-import com.inthinc.hos.ddl.RecapType;
-import com.inthinc.hos.ddl.RecapUS;
 import com.inthinc.hos.ddl.RemarkLog;
 import com.inthinc.hos.ddl.VehicleInfo;
 import com.inthinc.hos.model.DayTotals;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
-import com.inthinc.hos.model.HOSRecBase;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.hos.rules.HOSRules;
-import com.inthinc.hos.rules.RuleSetFactory;
-import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -63,7 +55,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -247,6 +238,9 @@ public class HosDailyDriverLogReportCriteria {
     		Driver driver, Account account, 
     		Address terminalAddress) 
     {
+
+        DDLUtil ddlUtil = new DDLUtil(); 
+        
         boolean initVehicleDayData = (hosVehicleDayData == null);
         
         Collections.sort(hosRecordList);
@@ -254,13 +248,23 @@ public class HosDailyDriverLogReportCriteria {
         Date endDate = interval.getEnd().toDate();
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
         HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList);
-        adjustForOccupantTravelTime(hosRecordList, adjustedList, endDate);
-        adjustForOccupantTravelTime(hosRecordList, originalAdjustedList, endDate);
-        List<HOSRec> hosRecapList = getRecapList(adjustedList, endDate);
+        RuleSetType occupantTravelTimeRuleType = null;
+        for (HOSRecord logRec : hosRecordList) {
+            if (logRec.getStatus() != null && logRec.getStatus().equals(HOSStatus.TRAVELTIME_OCCUPANT))
+                occupantTravelTimeRuleType = logRec.getDriverDotType();
+        }
+        
+        if (occupantTravelTimeRuleType != null) {
+            ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, adjustedList, endDate);
+            ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, originalAdjustedList, endDate);
+        }
+        List<HOSRec> hosRecapList = ddlUtil.getRecapList(adjustedList, endDate);
         Collections.reverse(hosRecordList);
 
         Date currentTime = new Date();
         
+        RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
+
         criteriaList = new ArrayList<ReportCriteria>();
 
         for (DateTime intervalDay = interval.getStart(); intervalDay.isBefore(interval.getEnd()); intervalDay = intervalDay.plusDays(1)) 
@@ -268,16 +272,17 @@ public class HosDailyDriverLogReportCriteria {
             
             LocalDate localDate = new LocalDate(intervalDay);
             DateTime driverDay = localDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
-            DateTimeZone dateTimeZone = getBestTimeZone(driverDay.toDate(), hosRecordList, driver.getPerson().getTimeZone());
+            DateTimeZone dateTimeZone = ddlUtil.getBestTimeZone(driverDay.toDate(), adjustedList.getHosList(), driver.getPerson().getTimeZone());
 
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
             if (day.toDate().after(currentTime)) 
                 break;
 
             List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone()); 
-            List<HOSOccupantLog> occupantLogListForDay = getOccupantLogsForDay(logListForDay, hosOccupantLogList);
-            HOSRec firstHosRecForDay = getFirstRecordForDay(day.toDate(), hosRecapList, dateTimeZone);
-            RuleSetType ruleSetType = getRuleSetTypeForDay(day, driver, firstHosRecForDay);
+            List<HOSOccupantLog> occupantLogListForDay = ddlUtil.getOccupantLogsForDay(logListForDay, hosOccupantLogList);
+            HOSRec firstHosRecForDay = ddlUtil.getFirstRecordForDay(day.toDate(), hosRecapList, dateTimeZone);
+            
+            RuleSetType ruleSetType = ddlUtil.getRuleSetTypeForDay(day, driverRuleSetType, firstHosRecForDay);
             
             HosDailyDriverLog dayData= new HosDailyDriverLog();
             dayData.setCorrectedDayTotals(adjustedList.getAdjustedDayTotals(logListForDay));
@@ -287,10 +292,10 @@ public class HosDailyDriverLogReportCriteria {
             dayData.setMainAddress(mainOfficeDisplayAddress);
             dayData.setTerminalAddress(terminalAddress == null ? "" : terminalAddress.getDisplayString());
             dayData.setDriverName(driver.getPerson().getFullName());
-            dayData.setEdited(isListEdited(logListForDay));
-            dayData.setCodrivers(getCodrivers(logListForDay, occupantLogListForDay));
-            dayData.setShipping(getShippingInfoForDay(logListForDay, occupantLogListForDay));
-            dayData.setTrailers(getTrailerInfoForDay(logListForDay, occupantLogListForDay));
+            dayData.setEdited(ddlUtil.isListEdited(logListForDay));
+            dayData.setCodrivers(ddlUtil.getCodrivers(logListForDay, occupantLogListForDay));
+            dayData.setShipping(ddlUtil.getShippingInfoForDay(logListForDay, occupantLogListForDay));
+            dayData.setTrailers(ddlUtil.getTrailerInfoForDay(logListForDay, occupantLogListForDay));
             dayData.setRuleSetType(ruleSetType);
             if (initVehicleDayData)
                 dayData.setVehicles(initVehicleInfoForDay(day, driver.getDriverID(), logListForDay, hosRecordList));
@@ -305,8 +310,8 @@ public class HosDailyDriverLogReportCriteria {
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals()));
  
             }
-            dayData.setRecap(initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone));
-            dayData.setRecapType(getRecapType(dayData.getRecap()));
+            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone));
+            dayData.setRecapType(ddlUtil.getRecapType(dayData.getRecap()));
 
             List<HosDailyDriverLog> dataList = new ArrayList<HosDailyDriverLog>();
             dataList.add(dayData);
@@ -429,115 +434,6 @@ public class HosDailyDriverLogReportCriteria {
         return returnStr;
     }
 
-    private void adjustForOccupantTravelTime(List<HOSRecord> hosRecordList, HOSAdjustedList adjustedList, Date endDate) {
-        
-        RuleSetType occupantTravelTimeRuleType = null;
-        for (HOSRecord logRec : hosRecordList) {
-            if (logRec.getStatus() != null && logRec.getStatus().equals(HOSStatus.TRAVELTIME_OCCUPANT))
-                occupantTravelTimeRuleType = logRec.getDriverDotType();
-        }
-        
-        if (occupantTravelTimeRuleType != null) {
-            
-            List<HOSRec> ruleList = new ArrayList<HOSRec>();
-            adjustedList.initAdjustedTimeAndMinutes(true, endDate);
-            for (HOSRecAdjusted rec : adjustedList.getHosList()) {
-                ruleList.add(0, new HOSRec(rec.getId(), rec.getStatus(), rec.getTotalRealMinutes(), rec.getLogTimeDate()));
-            }
-
-            HOSRules rule = RuleSetFactory.getRulesForRuleSetType(occupantTravelTimeRuleType);
-            rule.convertOccupantTravelTime(ruleList);
-            
-            //We need to copy new status back to resultList record
-//            for (HOSRecAdjusted adjustedRec : adjustedList.getHosList()) {
-             for (int i = 0; i < adjustedList.getHosList().size(); i++) {
-                HOSRecAdjusted adjustedRec = adjustedList.getHosList().get(i);
-                if (adjustedRec.getStatus().equals(HOSStatus.TRAVELTIME_OCCUPANT) && !adjustedRec.getId().equalsIgnoreCase("generated"))
-                {
-                    for (HOSRec rec : ruleList)
-                    {
-                        if (rec.getId().equals(adjustedRec.getId()))
-                        {
-                            adjustedRec.setGraphStatus(rec.getStatus());
-                            
-                            // adjacent records
-                            for (int j = i-1; j >= 0; j--) 
-                                if (adjustedList.getHosList().get(j).getStatus() == HOSStatus.TRAVELTIME_OCCUPANT)
-                                    adjustedList.getHosList().get(j).setGraphStatus(rec.getStatus());
-                                else break;
-                            
-                            for (int j = i+1; j < adjustedList.getHosList().size(); j++) 
-                                if (adjustedList.getHosList().get(j).getStatus() == HOSStatus.TRAVELTIME_OCCUPANT)
-                                    adjustedList.getHosList().get(j).setGraphStatus(rec.getStatus());
-                                else break;
-                            
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    private DateTimeZone getBestTimeZone(Date date, List<HOSRecord> hosRecordList, TimeZone driverTimeZone) {
-        
-        HOSRecord priorRec = null; 
-        for (HOSRecord logRec : hosRecordList)
-        {
-            if (logRec.getDeleted())
-                continue;
-            if (logRec.getLogTime().after(date))
-            {
-                break;
-            }
-            priorRec = logRec;
-        }
-        if (priorRec == null)
-            return DateTimeZone.forTimeZone(driverTimeZone);
-        
-        return DateTimeZone.forTimeZone(priorRec.getTimeZone());
-        
-        
-    }
-    private List<Recap> initRecap(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, DayTotals dayTotals, DateTimeZone dateTimeZone) {
-        
-        List<Recap> recapList = new ArrayList<Recap>();
-        if (ruleSetType == null ||
-                ruleSetType == RuleSetType.NON_DOT ||
-                ruleSetType == RuleSetType.CANADA_2007_60_DEGREES_OIL ||
-                ruleSetType == RuleSetType.CANADA_2007_OIL ||
-                ruleSetType == RuleSetType.CANADA_ALBERTA)
-                return null;
-            
-        Recap recap = null;
-        if (ruleSetType == RuleSetType.CANADA ||
-                ruleSetType == RuleSetType.CANADA_60_DEGREES ||
-                ruleSetType == RuleSetType.CANADA_HOME_OFFICE) {
-            recap = new RecapCanada(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15, dateTimeZone);
-        }
-        else if (ruleSetType == RuleSetType.CANADA_2007_CYCLE_1 ||
-                    ruleSetType == RuleSetType.CANADA_2007_CYCLE_2 ||
-                    ruleSetType == RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1 ||
-                    ruleSetType == RuleSetType.CANADA_2007_60_DEGREES_CYCLE_2) {
-            recap = new RecapCanada2007(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15, dateTimeZone);
-        }
-        else {
-            if (ruleSetType == RuleSetType.TEXAS)
-                recap = new RecapUS(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()+dayTotals.getSleeperBerth()) * 15, dateTimeZone);
-            else recap = new RecapUS(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15, dateTimeZone);
-        }
-    
-        recapList.add(recap);
-        return recapList;
-    }
-    
-    private RecapType getRecapType(List<Recap> recapList) {
-        if (recapList == null || recapList.size() == 0)
-            return RecapType.NONE;
-        
-        return recapList.get(0).getRecapType();
-    }
-    
 
     private List<RemarkLog> getRemarksListForDay(DateTime day, List<HOSRecord> hosRecordList) {
         List<RemarkLog> remarkLogList = new ArrayList<RemarkLog>();
@@ -708,85 +604,6 @@ public class HosDailyDriverLogReportCriteria {
         return  (hosRecord.getTripReportFlag() != null && hosRecord.getTripReportFlag().booleanValue());
     }
 
-    private List<HOSOccupantLog> getOccupantLogsForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> hosOccupantLogList) {
-        
-        List<HOSOccupantLog> dayOccupantLogList = new ArrayList<HOSOccupantLog>();
-        if (hosOccupantLogList != null &&  hosOccupantLogList.size() > 0) {
-            for (HOSRecAdjusted hosRecord: logListForDay) {
-                if (hosRecord.getStatus().equals(HOSStatus.DRIVING) ||
-                        hosRecord.getStatus().equals(HOSStatus.ON_DUTY) ||
-                        hosRecord.getStatus().equals(HOSStatus.ON_DUTY_OCCUPANT) ||
-                        hosRecord.getStatus().equals(HOSStatus.SLEEPER)) {
-                    for (HOSOccupantLog hosOccupantLog :  hosOccupantLogList) {
-                        if (hosOccupantLog.getVehicleID().equals(hosRecord.getVehicleID()) && timesOverlap(hosRecord, hosOccupantLog)) 
-                            dayOccupantLogList.add(hosOccupantLog);                
-                    }
-                }
-            }
-        }
-        return dayOccupantLogList;
-    }
-    private boolean timesOverlap(HOSRecAdjusted hosRecord, HOSOccupantLog hosOccupantLog) {
-        // added this to prevent crashes with bad intervals from the database (end before start) 
-        if (hosOccupantLog.getEndTime() == null || hosOccupantLog.getLogTime() == null ||
-                hosRecord.getTotalRealMinutes() < 0 ||
-                hosOccupantLog.getEndTime().before(hosOccupantLog.getLogTime())) {
-            logger.error("Error in interval end time before start " + hosOccupantLog.getLogTime() + " " + hosOccupantLog.getEndTime() + " " + hosOccupantLog.getVehicleID());
-            return false;
-        }
-        Interval driverInterval = new Interval(new DateTime(hosRecord.getLogTimeDate()), 
-                                                new DateTime(hosRecord.getLogTimeDate()).plusMinutes((int)hosRecord.getTotalRealMinutes()));
-        
-        Interval occupantInterval = new Interval(new DateTime(hosOccupantLog.getLogTime()), new DateTime(hosOccupantLog.getEndTime()));
-        return driverInterval.overlaps(occupantInterval);
-    }
-
-    private String getCodrivers(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> occupantLogListForDay) {
-        StringBuffer codrivers = new StringBuffer();
-        for (HOSOccupantLog hosOccupantLog :  occupantLogListForDay) {
-            if (!codrivers.toString().contains(hosOccupantLog.getDriverName())) {
-                codrivers.append(codrivers.length() > 0 ? ", " : "");
-                codrivers.append(hosOccupantLog.getDriverName());
-            }
-         }
-        return codrivers.toString();
-    }
-    private String getTrailerInfoForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> occupantLogListForDay) {
-        StringBuffer trailerInfo = new StringBuffer();
-        for (HOSRecAdjusted hosRecord: logListForDay) {
-            if (hosRecord.getTrailerID() != null && !trailerInfo.toString().contains(hosRecord.getTrailerID())) {
-                trailerInfo.append(trailerInfo.length() > 0 ? ", " : "");
-                trailerInfo.append(hosRecord.getTrailerID());
-            }
-        }
-        for (HOSOccupantLog hosOccupantLog :  occupantLogListForDay) {
-            if (hosOccupantLog.getTrailerID() == null)
-                continue;
-            if (!trailerInfo.toString().contains(hosOccupantLog.getTrailerID())) {
-                trailerInfo.append(trailerInfo.length() > 0 ? ", " : "");
-                trailerInfo.append(hosOccupantLog.getTrailerID());
-            }
-         }
-        return trailerInfo.toString();
-    }
-    private String getShippingInfoForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> occupantLogListForDay) {
-        StringBuffer shippingInfo = new StringBuffer();
-        for (HOSRecAdjusted hosRecord: logListForDay) {
-            if (hosRecord.getServiceID() != null && !shippingInfo.toString().contains(hosRecord.getServiceID())) {
-                shippingInfo.append(shippingInfo.length() > 0 ? ", " : "");
-                shippingInfo.append(hosRecord.getServiceID());
-            }
-        }
-        for (HOSOccupantLog hosOccupantLog :  occupantLogListForDay) {
-            if (hosOccupantLog.getServiceID() == null)
-                continue;
-            if (!shippingInfo.toString().contains(hosOccupantLog.getServiceID())) {
-                shippingInfo.append(shippingInfo.length() > 0 ? ", " : "");
-                shippingInfo.append(hosOccupantLog.getServiceID());
-            }
-         }
-        return shippingInfo.toString();
-    }
 
     private Number getMilesDrivenOnDay(List<VehicleInfo> vehicles) {
         long total = 0l;
@@ -811,37 +628,6 @@ public class HosDailyDriverLogReportCriteria {
         }
         return vehicleInfoList;
     }
-    private boolean isListEdited(List<HOSRecAdjusted> correctedListForDay) {
-        for (HOSRecAdjusted rec : correctedListForDay)
-            if (rec.isEdited())
-                return true;
-        return false;
-    }
-    private RuleSetType getRuleSetTypeForDay(DateTime day, Driver driver, HOSRecBase hosRec)
-    {
-        RuleSetType ruleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
-        if (hosRec != null) {
-            ruleSetType =  hosRec.getRuleType();
-        }
-        return ruleSetType;
-    }
-    
-    private HOSRec getFirstRecordForDay(Date day, List<HOSRec> hosList, DateTimeZone timeZone)
-    {
-        Date dayStart = DateUtil.getStartOfDay(day, timeZone.toTimeZone());
-        Date dayEnd =  DateUtil.getEndOfDay(day, timeZone.toTimeZone());
-        
-        for (HOSRec logRec : hosList)
-        {
-            if (logRec.getEndTimeDate().compareTo(dayStart) >= 0 && 
-                logRec.getLogTimeDate().compareTo(dayEnd) < 0)
-            {
-                return logRec;
-            }
-        }
-        return null;
-    }
-
     public Image createGraph(List<HOSRecAdjusted> graphList, DayTotals dayTotals) 
     {
         
@@ -865,24 +651,6 @@ public class HosDailyDriverLogReportCriteria {
         return hosDriverDailyLogGraph.drawHosLogGraph(img, graphList, dayTotals);
     }
     
-    
-
-    private List<HOSRec> getRecapList(HOSAdjustedList adjustedList, Date endDate) {
-        List<HOSRec> hosRecapList = new ArrayList<HOSRec>();
-        Date currentDate = new Date();
-        adjustedList.initAdjustedTimeAndMinutes(true, endDate.after(currentDate) ? currentDate : endDate);
-
-        List<HOSRecAdjusted> adjustedRecapList = new ArrayList<HOSRecAdjusted>(adjustedList.getHosList());
-        Collections.reverse(adjustedRecapList);
-        
-        for (HOSRecAdjusted rec : adjustedRecapList) {
-            hosRecapList.add(new HOSRec(rec.getId(), rec.getStatus(), rec.getTotalAdjustedMinutes(), rec.getAdjustedTime(), rec.getLogTimeZone(), rec.getRuleType(), null, true, false));
-        }
-
-
-        return hosRecapList;
-    }
-
     public AccountDAO getAccountDAO() {
         return accountDAO;
     }

@@ -226,7 +226,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.carrier}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" x="357" y="138" width="140" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
@@ -407,15 +407,15 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="22">
+		<band height="23">
 			<componentElement>
-				<reportElement positionType="Float" x="0" y="0" width="555" height="22" isRemoveLineWhenBlank="true"/>
+				<reportElement positionType="Float" x="0" y="0" width="555" height="23" isRemoveLineWhenBlank="true"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Horizontal">
 					<datasetRun subDataset="remarksDataset">
 						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{remarksList})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="22" width="555">
+					<jr:listContents height="23" width="555">
 						<textField isStretchWithOverflow="true">
 							<reportElement x="0" y="0" width="95" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
@@ -431,7 +431,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" x="95" y="12" width="95" height="10" isRemoveLineWhenBlank="true">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" x="95" y="12" width="95" height="11" isRemoveLineWhenBlank="true">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
@@ -454,7 +454,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="false">
-							<reportElement positionType="Float" x="515" y="12" width="40" height="10" isRemoveLineWhenBlank="true">
+							<reportElement positionType="Float" x="515" y="12" width="40" height="11" isRemoveLineWhenBlank="true">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue() && $F{deleted}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
@@ -477,7 +477,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="95" y="12" width="95" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="95" y="12" width="95" height="11" isRemoveLineWhenBlank="true" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
@@ -500,7 +500,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement positionType="Float" mode="Opaque" x="515" y="12" width="40" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
+							<reportElement positionType="Float" mode="Opaque" x="515" y="12" width="40" height="11" isRemoveLineWhenBlank="true" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue() && $F{deleted}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>

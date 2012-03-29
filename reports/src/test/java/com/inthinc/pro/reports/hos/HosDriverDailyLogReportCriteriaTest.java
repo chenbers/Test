@@ -440,7 +440,50 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
                 if (hosDailyDriverLog.getOriginalDayTotals() != null)
                     checkDayTotals(testCaseName[testCaseCnt], hosDailyDriverLog.getOriginalDayTotals());
             }
+            
 
+        }
+    }
+    @Test
+    public void USRecap() {
+        int testCaseCnt = 14;
+        int dayIdx = 3;
+        DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
+        HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+        Address address = new Address();
+        address.setAddr1("address 1");
+        address.setCity("city");
+        address.setZip("84120");
+        hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
+            
+        // check the data
+        List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
+        HosDailyDriverLog hosDailyDriverLog = (HosDailyDriverLog)criteriaList.get(dayIdx).getMainDataset().get(0);
+        ExpectedRecap expectedRecapList [] = {
+                 new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,3,
+                "24.00","24.00","60.00","-","00.00","","",0),
+                new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,3,
+                        "24.00","24.00","60.00","-","00.00","","",0),
+        };
+
+        List<Recap> recapList = hosDailyDriverLog.getRecap();
+        Recap baseRecap = recapList.get(0);
+        for (ExpectedRecap expectedRecap : expectedRecapList) {
+        
+        assertEquals("expected recap type for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.recapType, baseRecap.getRecapType());
+        assertEquals("expected ruleset recap type for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.ruleSetType, baseRecap.getRuleSetType());
+        if (baseRecap.getRecapType() == RecapType.US) {
+            RecapUS recap = (RecapUS)baseRecap;
+            assertEquals("expected recap day for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.day, recap.getDay());
+            assertEquals("expected recap hours worked for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.hoursWorkedToday, recap.getHoursWorkedToday());
+            assertEquals("expected recap hours avail for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.hoursAvailToday, recap.getHoursAvailToday());
+            assertEquals("expected recap hours worked 7 days for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.hoursWorked7Days, recap.getHoursWorked7Days());
+            assertEquals("expected recap hours worked 8 days for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.hoursWorked8Days, recap.getHoursWorked8Days());
+            assertEquals("expected recap hours avail tomorrow for " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedRecap.hoursAvailTomorrow, recap.getHoursAvailTomorrow());
+        }
+        
+        dayIdx++;
         }
     }
     
