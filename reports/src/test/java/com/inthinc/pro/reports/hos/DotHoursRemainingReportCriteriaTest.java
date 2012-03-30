@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.hos;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
@@ -258,6 +260,7 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
 //                data.dump();
 //            }
 //            System.out.println("},");
+            System.out.println("dataList size " + dataList.size());
             
             int ecnt = 0;
             for (DotHoursRemaining data : dataList) {
@@ -280,4 +283,49 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
         }
     }
 
+    @Test
+    public void gainDuplicateDrivers() {
+        // for defect DE7656
+      for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
+            HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
+            String first = null;
+            String last = null;
+            for (Driver driver : testData.driverHOSRecordMap.keySet()) {
+                if (first == null && last == null) {
+                    first = driver.getPerson().getFirst();
+                    last = driver.getPerson().getLast();
+                }
+                else {
+                    driver.getPerson().setFirst(first);
+                    driver.getPerson().setLast(last);
+                    break;
+                }
+            }
+
+            
+            DotHoursRemainingReportCriteria dotHoursRemainingReportCriteria = new DotHoursRemainingReportCriteria(Locale.US);
+            dotHoursRemainingReportCriteria.initDataSet(testData.getGroupHierarchy(), testData.driverHOSRecordMap, new DateTime(testCaseCurrentDate[testCaseCnt].getTime()));
+            
+            List<DotHoursRemaining> dataList= dotHoursRemainingReportCriteria.getMainDataset();
+            dump("dotHoursRemainingDupTest", testCaseCnt, dotHoursRemainingReportCriteria, FormatType.PDF);
+            dump("dotHoursRemainingDupTest", testCaseCnt, dotHoursRemainingReportCriteria, FormatType.EXCEL);
+            System.out.println("dataList size " + dataList.size());
+
+
+            String lastId = null;
+            String id = null;
+            int ecnt = 0;
+            for (DotHoursRemaining data : dataList) {
+                DotHoursRemaining expectedData = dotHoursRemainingExpectedData[testCaseCnt][ecnt];
+                id = data.getDriverName() +""+data.getDriverId();
+                if (lastId != null) {
+                    assertTrue("Sort order is not correct " + lastId + " should be before " + id, lastId.compareTo(id) <= 0);
+                    
+                }
+                lastId = id;
+                ecnt++;
+            }
+
+        }
+    }
 }

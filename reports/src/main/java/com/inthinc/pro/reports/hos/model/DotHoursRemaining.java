@@ -120,7 +120,9 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
         // first by group name, then driver name and next by day and then by status
         int cmp = groupName.compareTo(o.getGroupName());
         if (cmp == 0) {
-            cmp = driverName.compareTo(o.getDriverName());
+            String id = driverName+driverId;
+            String oId = o.getDriverName()+ o.getDriverId();
+            cmp = id.compareTo(oId);
             if (cmp == 0) {
                 cmp = dayDate.compareTo(o.getDayDate()) * -1;
                 if (cmp == 0) 
