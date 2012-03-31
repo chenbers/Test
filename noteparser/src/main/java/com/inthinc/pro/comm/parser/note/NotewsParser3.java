@@ -58,7 +58,7 @@ public class NotewsParser3 implements NoteParser{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
 //			attribParser.parseAttrib(data, 2, Attrib.NOTETYPE, attribMap);
 			
-			attribMap.put(Attrib.NOTETYPE.getCode(), noteType.getCode());
+			attribMap.put(String.valueOf(Attrib.NOTETYPE.getCode()), String.valueOf(noteType.getCode()));
 			
 			if (!noteType.isStrippedNote())
 			{
@@ -84,7 +84,7 @@ public class NotewsParser3 implements NoteParser{
 
 				//Odometer size/value different between version 2 and 3 notes, so just read it raw
 				int odometer = ReadUtil.read(data, 23, 4);
-				attribMap.put(Attrib.NOTEODOMETER.getCode(), new Long(odometer));
+				attribMap.put(String.valueOf(Attrib.NOTEODOMETER.getCode()), String.valueOf(odometer));
 
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.BOUNDARYID.getAttribParserType()); 
 				attribParser.parseAttrib(data, 27, Attrib.BOUNDARYID, attribMap);

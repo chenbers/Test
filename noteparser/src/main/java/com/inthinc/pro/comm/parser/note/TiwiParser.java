@@ -55,16 +55,16 @@ public class TiwiParser implements NoteParser{
 	{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
 //			attribParser.parseAttrib(data, 2, Attrib.NOTETYPE, attribMap);
-		attribMap.put(Attrib.NOTETYPE.getCode(), ReadUtil.unsign(data[0]));
+		attribMap.put(String.valueOf(Attrib.NOTETYPE.getCode()), String.valueOf(ReadUtil.unsign(data[0])));
 
 //        	logger.info("Note Type: " + ReadUtil.unsign(data[0]));
 		
 		AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
 		attribParser.parseAttrib(data, 1, Attrib.NOTETIME, attribMap);
 		
-		attribMap.put(Attrib.NOTEFLAGS.getCode(), ReadUtil.unsign(data[5]));
+		attribMap.put(String.valueOf(Attrib.NOTEFLAGS.getCode()), String.valueOf(ReadUtil.unsign(data[5])));
 
-		attribMap.put(Attrib.NOTEMAPREV.getCode(), ReadUtil.unsign(data[6]));
+		attribMap.put(String.valueOf(Attrib.NOTEMAPREV.getCode()), String.valueOf(ReadUtil.unsign(data[6])));
 		
 		//TO DO: KLUDGE here deciding between version 2 & 3 lat/lng.  Need to fix
 		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
@@ -75,7 +75,7 @@ public class TiwiParser implements NoteParser{
 
 		//Odometer size/value different between version 2 and 3 notes, so just read it raw
 		short odometer = (short) ReadUtil.read(data, 14, 2);
-		attribMap.put(Attrib.NOTEODOMETER.getCode(), new Short(odometer));
+		attribMap.put(String.valueOf(Attrib.NOTEODOMETER.getCode()), String.valueOf(odometer));
 		return attribMap;
 	}
 }

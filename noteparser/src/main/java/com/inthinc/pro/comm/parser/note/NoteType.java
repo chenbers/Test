@@ -183,7 +183,7 @@ public enum NoteType {
 //	SPEEDING_LOG4(192, new Attrib[]{}),
 
 //	SNITCH_DIAGNOSTICS(200, new Attrib[]{}),
-//	IDLING(208, new Attrib[]{}),
+	IDLING(208, new Attrib[]{}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),
@@ -226,5 +226,10 @@ public enum NoteType {
 	public boolean isStrippedNote()
 	{
 		return (code.intValue() > 245 && code.intValue() < 255);
+	}
+
+	public static boolean isStrippedNote(int code)
+	{
+		return (code > 245 && code < 255);
 	}
 }

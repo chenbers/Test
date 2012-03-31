@@ -253,6 +253,13 @@ public enum Attrib {
 	VEHICLEID(32901, AttribParserType.INTEGER),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
 	
+	SEATBELTTOPSPEED(8285, AttribParserType.INTEGER),
+	SEATBELTOUTDISTANCE(16437, AttribParserType.INTEGER), //(distance miles x 100)
+	HEADLIGHTOFFDISTANCE(16438, AttribParserType.INTEGER), // (distance miles x 100)
+	NODRIVERDISTANCE(16439, AttribParserType.INTEGER), // (distance miles x 100)
+	NOTRAILERDISTANCE(16440, AttribParserType.INTEGER), // (distance miles x 100)
+	RFOFFDISTANCE(16441, AttribParserType.INTEGER), // (distance miles x 100)
+	
 	// DOUBLE 
 	MAXLATITUDE(40960, AttribParserType.DOUBLE),
 	MAXLONGITUDE(40961, AttribParserType.DOUBLE),

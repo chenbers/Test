@@ -78,7 +78,7 @@ public class NotebcParser implements NoteParser{
 
 			//Odometer size/value different between version 2 and 3 notes, so just read it raw
 			int odometer = ReadUtil.read(data, 22, 4);
-			attribMap.put(Attrib.NOTEODOMETER.getCode(), new Long(odometer));
+			attribMap.put(String.valueOf(Attrib.NOTEODOMETER.getCode()), String.valueOf(odometer));
 
 			attribParser = AttribParserFactory.getParserForParserType(Attrib.BOUNDARYID.getAttribParserType()); 
 			attribParser.parseAttrib(data, 26, Attrib.BOUNDARYID, attribMap);

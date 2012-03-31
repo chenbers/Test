@@ -26,13 +26,16 @@ public class NotewsParser2 implements NoteParser{
 			
 			Attrib[] attribs = noteType.getAttribs();
 	
-			for(int i = 0; i < attribs.length; i++)
+			if (attribs != null) 
 			{
-				AttribParser parser = AttribParserFactory.getParserForParserType(attribs[i].getAttribParserType());
-				offset = parser.parseAttrib(data, offset, attribs[i], attribMap);
+				for(int i = 0; i < attribs.length; i++)
+				{
+					AttribParser parser = AttribParserFactory.getParserForParserType(attribs[i].getAttribParserType());
+					offset = parser.parseAttrib(data, offset, attribs[i], attribMap);
+				}
+				
+				parseExtraData(data, offset, noteType, attribMap);
 			}
-			
-			parseExtraData(data, offset, noteType, attribMap);
 		}
 		else
 			logger.info("Note parser for type " + noteTypeCode + " is not defined.");
@@ -46,7 +49,7 @@ public class NotewsParser2 implements NoteParser{
 		{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
 //			attribParser.parseAttrib(data, 1, Attrib.NOTETYPE, attribMap);
-			attribMap.put(Attrib.NOTETYPE.getCode(), noteType.getCode());
+			attribMap.put(String.valueOf(Attrib.NOTETYPE.getCode()), String.valueOf(noteType.getCode()));
 		
 			if (!noteType.isStrippedNote())
 			{
@@ -65,7 +68,6 @@ public class NotewsParser2 implements NoteParser{
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTEDURATION.getAttribParserType()); 
 				attribParser.parseAttrib(data, 18, Attrib.NOTEDURATION, attribMap);
-				
 			}
 
 		}
@@ -80,39 +82,45 @@ public class NotewsParser2 implements NoteParser{
 		final int EXTRA_DATA_DRIVERID = 0x04;
 
 		byte extraData;
-		if (offset < data.length && !noteType.isStrippedNote()) {
-			extraData = data[offset];
-
-			offset++;
-
-			if ((extraData & EXTRA_DATA_IDLETIME) == EXTRA_DATA_IDLETIME) {
-
-				AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.LOWIDLE2.getAttribParserType()); 
-				attribParser.parseAttrib(data, offset, Attrib.LOWIDLE2, attribMap);
-				offset += 2;
-				logger.info("EXTRADATA_LOWIDLE: " + attribMap.get(Attrib.LOWIDLE2.getCode()).toString());
-				
-				
-				attribParser = AttribParserFactory.getParserForParserType(Attrib.HIGHIDLE2.getAttribParserType()); 
-				attribParser.parseAttrib(data, offset, Attrib.HIGHIDLE2, attribMap);
-				offset += 2;
-				logger.info("EXTRADATA_HIGHIDLE: " + attribMap.get(Attrib.HIGHIDLE2.getCode()).toString());
+		
+		try {
+			if (offset < data.length && !noteType.isStrippedNote()) {
+				extraData = data[offset];
+	
+				offset++;
+	
+				if ((extraData & EXTRA_DATA_IDLETIME) == EXTRA_DATA_IDLETIME) {
+	
+					AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.LOWIDLE2.getAttribParserType()); 
+					attribParser.parseAttrib(data, offset, Attrib.LOWIDLE2, attribMap);
+					offset += 2;
+					logger.info("EXTRADATA_LOWIDLE: " + attribMap.get(Attrib.LOWIDLE2.getCodeString()));
+					
+					
+					attribParser = AttribParserFactory.getParserForParserType(Attrib.HIGHIDLE2.getAttribParserType()); 
+					attribParser.parseAttrib(data, offset, Attrib.HIGHIDLE2, attribMap);
+					offset += 2;
+					logger.info("EXTRADATA_HIGHIDLE: " + attribMap.get(Attrib.HIGHIDLE2.getCodeString()));
+				}
+	
+				if ((extraData & EXTRA_DATA_TEMPERATURE) == EXTRA_DATA_TEMPERATURE)
+				{
+					//Temperature shouldn't be getting set on devices any longer
+					offset += 2;
+				}
+	
+				if ((extraData & EXTRA_DATA_DRIVERID) == EXTRA_DATA_DRIVERID)
+				{
+					AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.DRIVERSTR.getAttribParserType()); 
+					attribParser.parseAttrib(data, offset, Attrib.DRIVERSTR, attribMap);
+					logger.info("EXTRADATA_DRIVERID: " + attribMap.get(Attrib.DRIVERSTR.getCodeString()));
+				}
 			}
-
-			if ((extraData & EXTRA_DATA_TEMPERATURE) == EXTRA_DATA_TEMPERATURE)
-			{
-				//Temperature shouldn't be getting set on devices any longer
-				offset += 2;
-			}
-
-			if ((extraData & EXTRA_DATA_DRIVERID) == EXTRA_DATA_DRIVERID)
-			{
-				AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.DRIVERSTR.getAttribParserType()); 
-				attribParser.parseAttrib(data, offset, Attrib.DRIVERSTR, attribMap);
-				logger.info("EXTRADATA_DRIVEROD: " + attribMap.get(Attrib.DRIVERSTR.getCode()).toString());
-			}
+		} catch(Throwable e)
+		{
+			logger.error("Error parsing extra data: " + e);
+			e.printStackTrace();
 		}
-
 		
 		return attribMap;
 	}
