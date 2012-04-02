@@ -75,7 +75,7 @@ public class GeoPoint {
     private final static Integer note = 0x00FFFFFF;
     
     public GeoPoint(){
-    	this("4225 W Lake Park Blvd, West Valley City, UT");
+    	this(40.71015,-111.993438);// 4225 W Lake Park Blvd, West Valley City, UT
     }
     
     public GeoPoint(final double lat, final double lng) {
@@ -276,4 +276,7 @@ public class GeoPoint {
 	}
 
 
+	public static void main(String[] args){
+	    new GeoPoint();
+	}
 }
