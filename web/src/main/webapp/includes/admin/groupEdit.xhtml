@@ -239,7 +239,7 @@
 	</h:outputText>
 	<script type="text/javascript">
 		function updateAddressRequired(element) {
-		    if (element.selectedIndex == 0) {
+		    if (element == null || element.selectedIndex == 0) {
             	jQuery('#display-form\\:#{context}-addressGroup .required').hide();
 		    }
 		    else {

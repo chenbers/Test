@@ -491,7 +491,9 @@ public class OrganizationBean extends BaseBean
         }
 
         // Rule 5
-        if (groupState == State.EDIT && treeNode.getBaseEntity().getDotOfficeType() != null && 
+        if (groupState == State.EDIT && 
+                (treeNode.getBaseEntity().getDotOfficeType() != null && 
+                treeNode.getBaseEntity().getDotOfficeType() != DOTOfficeType.NONE) &&
                 (addressMissingRequiredFields(treeNode.getBaseEntity().getAddress())))
         {
             addErrorMessage(MessageUtil.getMessageString("groupEdit_addressRequired"));
