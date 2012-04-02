@@ -16,6 +16,7 @@ public enum ProductType implements BaseEnum {
     private int code;
     private int version;
     private String description;
+    private String messageKey;
 
     private static final Map<Integer, ProductType> lookupByCode = new HashMap<Integer, ProductType>();
     private static final Map<Integer, ProductType> lookupByVersion = new HashMap<Integer, ProductType>();
@@ -43,6 +44,9 @@ public enum ProductType implements BaseEnum {
     }
 
     ProductType(int code, int version, String description) {
+        if (code==0){
+            this.messageKey = name();
+        }
         this.code = code;
         this.version = version;
         this.description = description;
@@ -62,5 +66,9 @@ public enum ProductType implements BaseEnum {
 
     public boolean isForProduct(Integer mask) {
         return (mask & code) == code;
+    }
+
+    public String getMessageKey() {
+        return messageKey;
     }
 }

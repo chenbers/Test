@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.model.configurator.ProductName;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class ProductTypeSelectItems {
@@ -22,9 +22,9 @@ public class ProductTypeSelectItems {
         blankItem.setEscape(false);
         productTypesSelectItems.add(blankItem);
 
-        for (ProductName e : EnumSet.allOf(ProductName.class))
+        for (ProductType e : EnumSet.allOf(ProductType.class))
         {
-        	String displayName = e.getMessageKey()!=null?MessageUtil.getMessageString(e.getMessageKey()):e.getProductName();
+        	String displayName = e.getMessageKey()!=null?MessageUtil.getMessageString(e.getMessageKey()):e.getDescription();
             productTypesSelectItems.add(new SelectItem(e,displayName));
         }
         return productTypesSelectItems;
