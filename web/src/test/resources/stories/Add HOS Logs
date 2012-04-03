@@ -1,0 +1,129 @@
+Narrative:
+
+In order to update daily driver logs  
+As HOS Manager
+I need to be able to manually add, edit, and delete logs from the HOS logs for HOS specific drivers
+
+Scenario: Add logName
+Given I am on the HOS Driver Logs page
+When I enter a logged in valid driver name
+And I select the closet match to my driver name
+And I select a valid date range
+And I click on the "Refresh" button
+And I click on the "Add" button
+When the Add HOS Log page opens
+And I select a date with no logs
+And I enter a time frame
+And I select a "<logName>" from the dropdown
+And I enter an eight character "trailerId"
+And I enter an eight character "serviceNumber"
+And I select my current driverName from the dropdown
+And I select a "vehicleID" from the dropdown
+And I enter a "cityName" and "stateName" in the location field
+And I select a "DOTStatus" from the dropdown
+And I click on "Save" button
+When I am back on the Driver Logs page for my chosen driver
+And I click on the "Send HOS Logs to Device" envelope button
+And a "message" displays 
+Then I verify that the details of the HOS Logs have been received by the waysmart
+
+Examples:
+|logName|
+|Off Duty|
+|Sleeper Berth|
+|Driving|
+|On Duty Not Driving|
+|Off-Duty At Well|
+|Fuel Stop|
+|DOT Stopped|
+|On Duty, Not Driving Occupant|
+|Off Duty Occupant|
+|BOUNDARY_CHANGE|
+|TIMESTAMP|
+|NEWDRIVER|
+|Safety Check|
+|Secure Load|
+|Secure Load Check|
+|Pre Trip Inspection|
+|Pre Trip Inspection Not Needed|
+|Post Trip Inspection|
+|Post Trip Inspection Not Needed|
+|Adverse Driving Conditions|
+|Nearest Place of Rest|
+|Emergency|
+|Deferral|
+|Driving Non-DOT|
+|Stop Driving Non_DOT|
+|RULESET|
+|Mid Trip Inspection|
+|Occupant Travel Time|
+|Personal Time|
+
+Scenario: Edit log
+Given I am on the HOS Driver Logs page
+When I enter a logged in valid driver name
+And I select the closet match to my driver name
+And I select a valid date range
+And I click on the "Refresh" button
+And I click on the "Edit" link 
+When the Add HOS Log page opens
+And I select a new date 
+And I enter a new time frame
+And I select a new "<logName>" from the dropdown
+And I enter an new eight character "trailerId"
+And I enter an  new eight character "serviceNumber"
+And I select my current driverName from the dropdown
+And I select a new "vehicleID" from the dropdown
+And I enter a new "cityName" and new "stateName" in the location field
+And I select a new "DOTStatus" from the dropdown
+And I click on "Save" button
+When I am back on the Driver Logs page for my chosen driver
+And I click on the "Send HOS Logs to Device" envelope button
+And a "message" displays 
+Then I verify that the details of the HOS Logs have been received by the waysmart
+
+Examples:
+|logName|
+|Off Duty|
+|Sleeper Berth|
+|Driving|
+|On Duty Not Driving|
+|Off-Duty At Well|
+|Fuel Stop|
+|DOT Stopped|
+|On Duty, Not Driving Occupant|
+|Off Duty Occupant|
+|BOUNDARY_CHANGE|
+|TIMESTAMP|
+|NEWDRIVER|
+|Safety Check|
+|Secure Load|
+|Secure Load Check|
+|Pre Trip Inspection|
+|Pre Trip Inspection Not Needed|
+|Post Trip Inspection|
+|Post Trip Inspection Not Needed|
+|Adverse Driving Conditions|
+|Nearest Place of Rest|
+|Emergency|
+|Deferral|
+|Driving Non-DOT|
+|Stop Driving Non_DOT|
+|RULESET|
+|Mid Trip Inspection|
+|Occupant Travel Time|
+|Personal Time|
+
+Scenario: Delete log
+
+Given I am on the HOS Driver Logs page
+When I enter a logged in valid driver name
+And I select the closet match to my driver name
+And I select a valid date range
+And I click on the "Refresh" button
+And I click on the "Edit" link 
+When the Add HOS Log page opens
+And I click on "Delete" Button
+And a "message" displays 
+Then I verify that the HOS Log has been deleted by the waysmart
+
