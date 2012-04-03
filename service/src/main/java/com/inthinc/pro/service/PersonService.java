@@ -2,7 +2,6 @@ package com.inthinc.pro.service;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,7 +17,6 @@ import com.inthinc.pro.model.Person;
 
 @Path("/")
 @Produces({"application/xml","application/json", "application/fastinfoset"})
-@Consumes("application/xml")
 public interface PersonService extends GenericService<Person> {
 
     @GET
