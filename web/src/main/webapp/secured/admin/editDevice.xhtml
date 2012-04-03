@@ -297,8 +297,8 @@
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
             <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
           </rich:column>
-          <rich:column id="productVersion" custFilterBy="#{devicesBean.deviceMap[item.deviceID].productVersion.description.productName}" 
-          				sortBy="#{devicesBean.deviceMap[item.deviceID].productVersion.description.productName}" filterValue="#{devicesBean.chooseVehicleFiltering['productVersion']}">
+          <rich:column id="productVersion" custFilterBy="#{devicesBean.deviceMap[item.deviceID].productVersion.description}" 
+          				sortBy="#{devicesBean.deviceMap[item.deviceID].productVersion.description}" filterValue="#{devicesBean.chooseVehicleFiltering['productVersion']}">
       	<f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.vehiclesHeader_productType}" />
@@ -316,7 +316,7 @@
 			</h:panelGroup>
         </h:panelGroup>
       </f:facet>
-      <h:outputText value="#{devicesBean.deviceMap[item.deviceID].productVersion.description.productName}" />
+      <h:outputText value="#{devicesBean.deviceMap[item.deviceID].productVersion.description}" />
     </rich:column>
 
     <rich:column id="device" sortBy="#{devicesBean.deviceMap[item.deviceID].name}">
