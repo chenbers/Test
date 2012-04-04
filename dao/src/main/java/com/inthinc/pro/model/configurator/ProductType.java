@@ -9,14 +9,15 @@ import com.inthinc.pro.model.BaseEnum;
 public enum ProductType implements BaseEnum {
     UNKNOWN(0, 0, "Unknown"),
 //    TEEN(1, 1, "Teen"),
-    WAYSMART(2, 2, "waySmart"), //xx10
+    WAYSMART(2, 2, "waySmart", 2), //xx10
 //    TIWIPRO_R71(4, 3, ProductName.TIWIPRO),
-    TIWIPRO(16, 1, "tiwiPro"); //xxx1
+    TIWIPRO(16, 1, "tiwiPro", 3, 5, 7); //xxx1
 
     private int code;
     private int version;
     private String description;
     private String messageKey;
+    private Integer[] versions;
 
     private static final Map<Integer, ProductType> lookupByCode = new HashMap<Integer, ProductType>();
     private static final Map<Integer, ProductType> lookupByVersion = new HashMap<Integer, ProductType>();
@@ -43,13 +44,14 @@ public enum ProductType implements BaseEnum {
         return EnumSet.allOf(ProductType.class);
     }
 
-    ProductType(int code, int version, String description) {
+    ProductType(int code, int version, String description, Integer ...versions) {
         if (code==0){
             this.messageKey = name();
         }
         this.code = code;
         this.version = version;
         this.description = description;
+        this.versions = versions;
     }
 
     public Integer getCode() {
@@ -70,5 +72,9 @@ public enum ProductType implements BaseEnum {
 
     public String getMessageKey() {
         return messageKey;
+    }
+    
+    public Integer[] getVersions(){
+        return versions;
     }
 }

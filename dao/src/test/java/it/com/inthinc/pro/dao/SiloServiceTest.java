@@ -23,7 +23,6 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.model.RuleSetType;
@@ -1172,9 +1171,14 @@ public class SiloServiceTest {
                     "555555123" + i);
 //            , // phone
 //                    "555555987" + i); // ephone
-            if (i == DEVICE_COUNT-1)
+            if (i == DEVICE_COUNT-1){
                 device.setProductVersion(ProductType.WAYSMART);
-            else device.setProductVersion(ProductType.TIWIPRO);
+                device.setProductVer(ProductType.WAYSMART.getVersions()[0]);
+            }
+            else {
+                device.setProductVersion(ProductType.TIWIPRO);
+                device.setProductVer(ProductType.TIWIPRO.getVersions()[1]);
+            }
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);
@@ -1230,6 +1234,7 @@ public class SiloServiceTest {
 //        , // phone
 //                "5555559879"); // ephone
         device.setProductVersion(ProductType.TIWIPRO);
+        device.setProductVer(ProductType.TIWIPRO.getVersions()[1]);
         Integer deviceID = deviceDAO.create(acctID, device);
         assertNotNull(deviceID);
         device.setDeviceID(deviceID);

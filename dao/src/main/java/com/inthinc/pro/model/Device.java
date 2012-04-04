@@ -28,13 +28,14 @@ public class Device extends BaseEntity implements HasAccountId
     private String            phone;
     private Date              activated;
     private Integer           baseID;
+    private Integer           productVer;
     
     @Column(name="firmVer", updateable = false)
     private Integer	firmwareVersion;
     @Column(name="witnessVer", updateable = false)
     private Integer	witnessVersion;
     private String emuMd5;
-    @Column(name="productVer", updateable = false)
+    @Column(name="productVer")
     private ProductType productVersion;
     private String mcmid;   //Waysmart mcmid
     @Column(name = "altImei")
@@ -246,5 +247,11 @@ public class Device extends BaseEntity implements HasAccountId
     }
     public boolean isGPRSOnly() {
         return getImei() != null && getMcmid() != null && getImei().equalsIgnoreCase(getMcmid());
+    }
+    public Integer getProductVer() {
+        return productVer;
+    }
+    public void setProductVer(Integer productVer) {
+        this.productVer = productVer;
     }
 }
