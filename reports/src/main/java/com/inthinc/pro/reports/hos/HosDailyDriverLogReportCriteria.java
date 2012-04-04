@@ -76,6 +76,8 @@ public class HosDailyDriverLogReportCriteria {
     private VehicleDAO vehicleDAO;
     
     private static final String BASE_LOG_GRAPH_IMAGE_PATH = "hos/hosLog";
+    private static final String DST_START_IMAGE= "_dst_start";
+    private static final String DST_END_IMAGE= "_dst_end";
     
     // each item in list is data for one day
     private List<ReportCriteria> criteriaList;
@@ -278,7 +280,9 @@ public class HosDailyDriverLogReportCriteria {
             if (day.toDate().after(currentTime)) 
                 break;
 
-            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone()); 
+            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone());
+            boolean isDSTStart = adjustedList.isDayDSTStart(day.toDate(), dateTimeZone.toTimeZone());
+            boolean isDSTEnd = adjustedList.isDayDSTEnd(day.toDate(), dateTimeZone.toTimeZone());
             List<HOSOccupantLog> occupantLogListForDay = ddlUtil.getOccupantLogsForDay(logListForDay, hosOccupantLogList);
             HOSRec firstHosRecForDay = ddlUtil.getFirstRecordForDay(day.toDate(), hosRecapList, dateTimeZone);
             
@@ -302,12 +306,12 @@ public class HosDailyDriverLogReportCriteria {
             else dayData.setVehicles(getVehicleInfoForDay(day, hosVehicleDayData));
             dayData.setMilesDriven(getMilesDrivenOnDay(dayData.getVehicles()));
             dayData.setCorrectedGraphList(logListForDay);
-            dayData.setCorrectedGraph(createGraph(logListForDay, dayData.getCorrectedDayTotals()));
+            dayData.setCorrectedGraph(createGraph(logListForDay, dayData.getCorrectedDayTotals(), isDSTStart, isDSTEnd));
             if (dayData.getEdited()) {
                 List<HOSRecAdjusted> originalLogListForDay = originalAdjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone());
                 dayData.setOriginalGraphList(originalLogListForDay);
                 dayData.setOriginalDayTotals(originalAdjustedList.getAdjustedDayTotals(originalLogListForDay));
-                dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals()));
+                dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals(), isDSTStart, isDSTEnd));
  
             }
             dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone));
@@ -628,12 +632,17 @@ public class HosDailyDriverLogReportCriteria {
         }
         return vehicleInfoList;
     }
-    public Image createGraph(List<HOSRecAdjusted> graphList, DayTotals dayTotals) 
+    public Image createGraph(List<HOSRecAdjusted> graphList, DayTotals dayTotals, boolean isDSTStart, boolean isDSTEnd) 
     {
         
         BufferedImage img = null;
         try {
-            String imageFile = BASE_LOG_GRAPH_IMAGE_PATH + (!locale.getLanguage().equals("en") ? ("_" + locale.getLanguage() + ".jpg") : ".jpg");
+            String imageFile = BASE_LOG_GRAPH_IMAGE_PATH;
+            if (isDSTStart)
+                imageFile = imageFile + DST_START_IMAGE;
+            if (isDSTEnd)
+                imageFile = imageFile + DST_END_IMAGE;
+            imageFile = imageFile + (!locale.getLanguage().equals("en") ? ("_" + locale.getLanguage() + ".jpg") : ".jpg");
             img = ImageIO.read(ReportUtils.loadFile(imageFile));
         } catch (IOException e) {
             logger.error(e);
@@ -648,7 +657,7 @@ public class HosDailyDriverLogReportCriteria {
         
         HosDriverDailyLogGraph hosDriverDailyLogGraph = new HosDriverDailyLogGraph();
         
-        return hosDriverDailyLogGraph.drawHosLogGraph(img, graphList, dayTotals);
+        return hosDriverDailyLogGraph.drawHosLogGraph(img, graphList, dayTotals, isDSTEnd);
     }
     
     public AccountDAO getAccountDAO() {
