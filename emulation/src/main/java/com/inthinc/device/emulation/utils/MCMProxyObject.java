@@ -335,14 +335,13 @@ public class MCMProxyObject implements MCMService{
     
     public void sendSatSMTP(String imei, List<? extends DeviceNote> sendingQueue){
         Properties props = new Properties();
-//        props.put("mail.smtp.host", server.getPortalUrl());
         props.put("mail.smtp.host", "qa.tiwipro.com");
         Session session = Session.getDefaultInstance(props, null);
         InternetAddress from, to1;
         try {
             from = new InternetAddress("sbdservice@sbd.iridium.com", "Emulation Project");
-//            to1 = new InternetAddress("iridium@" + server.getPortalUrl(), "Bridge");
-            to1 = new InternetAddress("email@my.tiwipro.com", "Bridge");
+            to1 = new InternetAddress("iridium@" + server.getPortalUrl().replace("inthinc", "tiwipro"), "Bridge");
+//            to1 = new InternetAddress("email@my.tiwipro.com", "Bridge");
         } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Couldn't encode the Email addresses");
         }
@@ -496,8 +495,8 @@ public class MCMProxyObject implements MCMService{
             		notes);
         } else if (clazz.equals(SatelliteEvent_t.class)){
         	if (state.getWaysDirection().equals(Direction.sat)){
-        		sendSatNote(state.getImei(), notes);
-        		//sendSatSMTP(state.getImei(), notes);
+//        		sendSatNote(state.getImei(), notes);
+        		sendSatSMTP(state.getImei(), notes);
         	} else {
         		reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
@@ -525,8 +524,8 @@ public class MCMProxyObject implements MCMService{
 	            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
 	                noteClass = SatelliteEvent.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
-	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
-	            		//sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
+//	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            		sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 		                        state.getWaysDirection(),
@@ -539,8 +538,8 @@ public class MCMProxyObject implements MCMService{
 	            } else if (sendingQueue.containsKey(SatelliteEvent_t.class)){
 	            	noteClass = SatelliteEvent_t.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
-	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
-	            	    //sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
+//	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	    sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 	                            state.getWaysDirection(),
@@ -548,8 +547,8 @@ public class MCMProxyObject implements MCMService{
 	            	}
 	            } else if (sendingQueue.containsKey(SatelliteStrippedConfigurator.class)){
 	            	noteClass = SatelliteStrippedConfigurator.class;
-	            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
-	            	//sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
+//	            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            }
 	            sendingQueue.remove(noteClass);
 	        } catch (SocketException e){
