@@ -42,7 +42,7 @@ public enum Addresses implements AddressInterface {
 
     // QA2("qa2.tiwipro.com", 8299, "qa2.tiwipro.com", 8290, 8988, 7980),
 
-    TEEN_QA("192.168.1.215"),
+    TEEN_QA("qaserv.iwiglobal.com", 8099, 9085, null, 9090, null, null ),
 
     TEEN_PROD("my.tiwi.com"), 
     
@@ -78,6 +78,7 @@ public enum Addresses implements AddressInterface {
         this.protocol = protocol;
         this.appName = appName;
     }
+    
     private Addresses(String portalUrl, Integer webPort, Integer portalPort,
             String mcmUrl, Integer mcmPort, Integer waysPort, Integer satPort) {
         this.portalUrl = portalUrl;
