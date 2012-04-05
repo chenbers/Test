@@ -292,32 +292,36 @@ public abstract class MasterTest {
     }
     
     public static void print(Object printToScreen, Level level, int stepsBack){
-        String printStringToScreen = "";
-        stepsBack ++;
-        if (printToScreen == null){
-            printToScreen = "error";
-        } else if (printToScreen instanceof Throwable){
-            printStringToScreen = StackToString.toString((Throwable) printToScreen);
-        } else if (printToScreen instanceof JSONObject){
-            printStringToScreen = PrettyJSON.toString(printToScreen);
-        } else if (printToScreen instanceof StackTraceElement[]){
-        	printStringToScreen = StackToString.toString((StackTraceElement[]) printToScreen);
-        } else {
-            printStringToScreen = printToScreen.toString();
-        }
-        StackTraceElement element = Thread.currentThread().getStackTrace()[3];
-        String print = String.format("line:%3d - %s\n", element.getLineNumber(), printStringToScreen);
+
+        StackTraceElement element = Thread.currentThread().getStackTrace()[stepsBack];
         Logger temp = Logger.getLogger(element.getClassName());
-        if (level.equals(Level.INFO)){
-            temp.info(print);
-        } else if (level.equals(Level.DEBUG)){
-            temp.debug(print);
-        } else if (level.equals(Level.ERROR)){
-            temp.error(print);
-        } else if (level.equals(Level.FATAL)){
-            temp.fatal(print);
-        } else {
-            temp.trace(print);
+        
+        if (level.isGreaterOrEqual(temp.getParent().getLevel())){
+            String printStringToScreen = "";
+            stepsBack ++;
+            if (printToScreen == null){
+                printToScreen = "error";
+            } else if (printToScreen instanceof Throwable){
+                printStringToScreen = StackToString.toString((Throwable) printToScreen);
+            } else if (printToScreen instanceof JSONObject){
+                printStringToScreen = PrettyJSON.toString(printToScreen);
+            } else if (printToScreen instanceof StackTraceElement[]){
+            	printStringToScreen = StackToString.toString((StackTraceElement[]) printToScreen);
+            } else {
+                printStringToScreen = printToScreen.toString();
+            }
+            String print = String.format("line:%3d - %s\n", element.getLineNumber(), printStringToScreen);
+            if (level.equals(Level.INFO)){
+                temp.info(print);
+            } else if (level.equals(Level.DEBUG)){
+                temp.debug(print);
+            } else if (level.equals(Level.ERROR)){
+                temp.error(print);
+            } else if (level.equals(Level.FATAL)){
+                temp.fatal(print);
+            } else {
+                temp.trace(print);
+            }
         }
     }
     

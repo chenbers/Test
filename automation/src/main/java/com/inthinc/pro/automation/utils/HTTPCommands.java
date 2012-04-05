@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -32,6 +36,14 @@ public class HTTPCommands {
     public HTTPCommands(){
         httpClient = new HttpClient();
         defaultClient = new DefaultHttpClient();
+    }
+
+    public HTTPCommands(String userID, String password) {
+        HttpClientParams params = new HttpClientParams();
+        params.setAuthenticationPreemptive(true);
+        HttpClient httpClient = new HttpClient(params);
+        Credentials defaultcreds = new UsernamePasswordCredentials(userID, password);
+        httpClient.getState().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM), defaultcreds);
     }
 
     /**
