@@ -772,7 +772,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         public String getProductTypeName() {
-            if(editableVehicleSettings == null) return ProductType.UNKNOWN.name();
+            if(editableVehicleSettings == null) return ProductType.UNKNOWN.getDescription();
 //            return editableVehicleSettings.getProductType().getDescription().getProductName();
             return editableVehicleSettings.getProductDisplayName();
         }
