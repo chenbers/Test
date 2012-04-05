@@ -44,14 +44,27 @@ public class TiwiProDevice extends DeviceBase {
     public TiwiProDevice(String IMEI) {
         this(IMEI, Addresses.QA);
     }
+    
+    public TiwiProDevice(String IMEI, ProductType type){
+        this(IMEI, type, Addresses.QA);
+    }
 
     public TiwiProDevice(String IMEI, Addresses server) {
         this(IMEI, server, DeviceProps.getTiwiDefaults());
+    }
+    
+    public TiwiProDevice(String IMEI, ProductType type, Addresses server){
+        this(IMEI, type, server, DeviceProps.getTiwiDefaults());
     }
 
     public TiwiProDevice(String IMEI, Addresses server,
             Map<DeviceProps, String> map) {
         super(IMEI, ProductType.TIWIPRO_R74, map, server);
+    }
+    
+    public TiwiProDevice(String IMEI, ProductType type, Addresses server,
+            Map<DeviceProps, String> map) {
+        super(IMEI, type, map, server);
     }
 
     @Override
@@ -104,7 +117,7 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     public TiwiProDevice createAckNote(Map<String, Object> reply) {
-    	Log.i("Forward Command from Server: " + reply);
+    	Log.d("Forward Command from Server: " + reply);
         if (((Integer) reply.get("fwdID")) > 100) {
             TiwiNote ackNote = new TiwiNote(
                     DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA, tripTracker.currentLocation());
@@ -131,7 +144,7 @@ public class TiwiProDevice extends DeviceBase {
         getFirmwareFromSVN(versionNumber);
         String svn = SHA1Checksum.getSHA1Checksum(lastDownload);
         Log.d("hessian %s", hessian);
-        Log.d("svn %s", svn);
+        Log.d("svn     %s", svn);
         return hessian.equals(svn);
     }
 
@@ -158,11 +171,8 @@ public class TiwiProDevice extends DeviceBase {
     public boolean getFirmwareFromSVN(int versionNumber) {
         try {
             String svnUrl = "https://svn.iwiglobal.com/iwi/release/tiwi/pro/wmp";
-            if (state.getProductVersion().equals(ProductType.TIWIPRO_R74)) {
-                svnUrl += "R74/";
-            } else {
-                svnUrl += "/";
-            }
+            svnUrl += state.getProductVersion().getTiwiVersion() + "/";
+            
             String directory = "target/test/resources/" + state.getImei()
                     + "/downloads/";
             String fileName = state.getProductVersion().name().toLowerCase()
@@ -373,6 +383,7 @@ public class TiwiProDevice extends DeviceBase {
         updateMap.put("productVersion", state.getProductVersion().getIndex());
         Map<String, Object> reply = mcmProxy.tiwiproUpdate(state.getImei(),
                 updateMap);
+        
         String fileName = state.getProductVersion().name().toLowerCase()
                 .replace("_", ".")
                 + "." + versionNumber + "-hessian.dwl";

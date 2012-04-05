@@ -123,7 +123,7 @@ public class HanSoloTrip extends Thread{
         tiwi.update_location(new GeoPoint(33.0104, -117.111), 15);
         tiwi.update_location(new GeoPoint(33.0104, -117.113), 15);
         
-        state.setSeatbeltViolationDistanceX100(500);
+        state.setSeatbeltViolationDistanceX100(500).setTopSpeed(tiwi.getState().getSpeed());
         AutomationDeviceEvents.seatbelt(tiwi);
         AutomationDeviceEvents.hardLeft(tiwi, 105);
 
@@ -308,26 +308,26 @@ public class HanSoloTrip extends Thread{
         imei = "DEVICEDOESNTEXIST";
 //        imei = "500000000007272"; address=Addresses.DEV;// initialTime.setDate(time)
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
-//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1324155471);  // vehicleID=37706       deviceID=34506
-        address=Addresses.QA;           initialTime.setDate(1323834000);  // vehicleID=7293        deviceID=3753
-//          address=Addresses.DEV;		initialTime.setDate(1323817719);
-//        address=Addresses.STAGE;        initialTime.setDate(1323817719);  // vehicleID=117441441   deviceID=117441936 
-//        address=Addresses.PROD;         initialTime.setDate(1323819788);  // vehicleID=1           deviceID=1
+//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1333300955);  // vehicleID=37706       deviceID=34506
+//        address=Addresses.QA;           initialTime.setDate(1333652037);  // vehicleID=7293        deviceID=3753
+//          address=Addresses.DEV;		initialTime.setDate(1333652037);
+//        address=Addresses.STAGE;        initialTime.setDate(1333652037);  // vehicleID=117441441   deviceID=117441936 
+//        address=Addresses.PROD;         initialTime.setDate(1333300955);  // vehicleID=1           deviceID=1
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CHEVRON;      initialTime.setDate(1323823926);  // vehicleID=117441441   deviceID=117441936
+//        address=Addresses.CHEVRON;      initialTime.setDate(1333652037);  // vehicleID=117441441   deviceID=117441936
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.SCHLUMBERGER; initialTime.setDate(1323821857);  // vehicleID=150994955   deviceID=150994955
+//        address=Addresses.SCHLUMBERGER; initialTime.setDate(1333652037);  // vehicleID=150994955   deviceID=150994955
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.WEATHERFORD;  initialTime.setDate(1323817719);  // vehicleID=184549575   deviceID=184549735
+//        address=Addresses.WEATHERFORD;  initialTime.setDate(1333652037);  // vehicleID=184549575   deviceID=184549735
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.TECK;         initialTime.setDate(1323817719);  // vehicleID=251658249   deviceID=251658248
+//        address=Addresses.TECK;         initialTime.setDate(1333652037);  // vehicleID=251658249   deviceID=251658248
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.BARRICK;      initialTime.setDate(1323817719);  // vehicleID=83886085    deviceID=83886086
+//        address=Addresses.BARRICK;      initialTime.setDate(1333652037);  // vehicleID=83886085    deviceID=83886086
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CINTAS;       initialTime.setDate(1323821857);  // vehicleID=234881465   deviceID=234881624
+//        address=Addresses.CINTAS;       initialTime.setDate(1333652037);  // vehicleID=234881465   deviceID=234881624
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.LDS;       initialTime.setDate(1323817719);  // vehicleID=100663298   deviceID=100663298
-        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.LDS;       initialTime.setDate(1333652037);  // vehicleID=100663298   deviceID=100663298
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
         
         
         

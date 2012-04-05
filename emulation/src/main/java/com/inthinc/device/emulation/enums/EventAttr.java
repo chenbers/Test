@@ -666,6 +666,10 @@ public enum EventAttr implements IndexEnum{
      * @return
      */
     public static EventAttr valueOf(Integer code) {
+        if (!(code>0)){
+            return null;
+//            throw new IllegalArgumentException("Code cannot be 0");
+        }
         EventAttr result = lookupByCode.get(code);
         if(result == null){
             Log.i("Unknown EventAttr.code: " + code);
@@ -701,7 +705,7 @@ public enum EventAttr implements IndexEnum{
             BufferedReader br = new BufferedReader(new FileReader(file));
             while ((line = br.readLine()) != null){
                 if (line.contains(code + "") && line.contains("ATTR_")){
-                    Log.i(formatAttr(line));
+                    Log.d(formatAttr(line));
                 }
             }
         } catch (IOException e) {
@@ -763,6 +767,9 @@ public enum EventAttr implements IndexEnum{
             while ((line = br.readLine()) != null){
                 if (line.contains("} NotificationType;") || line.contains("} NotificationAttributes;")){
                     break;
+                }
+                if(Pattern.compile("^(?>\\s*)//").matcher(line).find()){ // Ignore the line if it is all commented.
+                    continue;
                 }
                 if (line.contains("ATTR_")){
                     match = pat.matcher(line);

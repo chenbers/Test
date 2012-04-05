@@ -67,7 +67,7 @@ public class AutomationFileHandler {
     }
     
     public static boolean downloadSvnDirectory(String source, String fileDir, File destination){
-        if (new AutomationCalendar().compareDays(new AutomationCalendar(destination.lastModified()))){
+        if (new AutomationCalendar().compareDays(new AutomationCalendar(destination.lastModified())) && destination.length()!=0){
             return true;
         }
         MasterTest.print("Downloading file: " + source + "/" + fileDir);

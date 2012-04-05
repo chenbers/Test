@@ -718,12 +718,12 @@ public class AutomationDeviceEvents {
     	note.addAttr(EventAttr.OBD_PCT, state.getOBDPercent() * 10);
     	note.addAttr(EventAttr.GPS_PCT, state.getGPSPercent() * 10);
     	
-    	note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
-    	note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
     	
-		note.addAttr(EventAttr.NO_DRIVER_DISTANCE, state.getNoDriverDistanceX100());
     	
     	if (state.getProductVersion().equals(ProductType.WAYSMART)){
+            note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
+            note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
+            note.addAttr(EventAttr.NO_DRIVER_DISTANCE, state.getNoDriverDistanceX100());
     		note.addAttr(EventAttr.HEADLIGHT_OFF_DISTANCE, state.getHeadlightOffDistanceX100());
     		note.addAttr(EventAttr.NO_TRAILER_DISTANCE, state.getNoTrailerDistanceX100());
     		note.addAttr(EventAttr.RF_OFF_DISTANCE, state.getRFOffDistanceX100());

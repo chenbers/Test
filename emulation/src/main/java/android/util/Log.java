@@ -1,28 +1,16 @@
 package android.util;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class Log {
-    private static final Logger log4j = Logger.getLogger(Log.class);
     
     private static void log(Level level, String toPrint, Object ...string ){
-        if (log4j.getLevel() == null){
-            if (log4j.getParent().getLevel()==null){
-                log4j.setLevel(log4j.getParent().getParent().getLevel());
-            } else {
-                log4j.setLevel(log4j.getParent().getLevel());
-            }
-                
+        if (string!=null){
+            toPrint = String.format(toPrint, string);
         }
-        if (level.isGreaterOrEqual(log4j.getLevel())){
-            if (string!=null){
-                toPrint = String.format(toPrint, string);
-            }
-            MasterTest.print(toPrint, level, 4);    
-        }
+        MasterTest.print(toPrint, level, 4);    
         
     }
 	
