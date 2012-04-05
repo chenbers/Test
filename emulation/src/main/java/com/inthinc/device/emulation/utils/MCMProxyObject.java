@@ -399,7 +399,8 @@ public class MCMProxyObject implements MCMService{
         	if (note.getType().equals(DeviceNoteTypes.INSTALL)){
         		List<DeviceNote> list = new ArrayList<DeviceNote>();
         		list.add(note);
-        		sendSatSMTP(imei, list);
+        		//sendSatSMTP(imei, list);
+        		sendSatNote(imei, list);
         	}
         	byte[] packaged = note.Package();
         	String uri = 
@@ -483,7 +484,8 @@ public class MCMProxyObject implements MCMService{
             
         } else if (clazz.equals(SatelliteEvent.class)) {
         	if (state.getWaysDirection().equals(Direction.sat)){
-        	    sendSatSMTP(state.getImei(), notes);
+        		sendSatNote(state.getImei(), notes);
+        		//sendSatSMTP(state.getImei(), notes);
         	} else {
                 reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
@@ -494,14 +496,16 @@ public class MCMProxyObject implements MCMService{
             		notes);
         } else if (clazz.equals(SatelliteEvent_t.class)){
         	if (state.getWaysDirection().equals(Direction.sat)){
-        	    sendSatSMTP(state.getImei(), notes);
+        		sendSatNote(state.getImei(), notes);
+        		//sendSatSMTP(state.getImei(), notes);
         	} else {
         		reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
                         notes, state.getImei()); 
         	}
         } else if (clazz.equals(SatelliteStrippedConfigurator.class)){
-            sendSatSMTP(state.getImei(), notes);
+        	sendSatNote(state.getImei(), notes);
+        	//sendSatSMTP(state.getImei(), notes);
         	reply = null;
         }
     	return reply;
@@ -521,7 +525,8 @@ public class MCMProxyObject implements MCMService{
 	            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
 	                noteClass = SatelliteEvent.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
-	            	    sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
+	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            		//sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 		                        state.getWaysDirection(),
@@ -534,7 +539,8 @@ public class MCMProxyObject implements MCMService{
 	            } else if (sendingQueue.containsKey(SatelliteEvent_t.class)){
 	            	noteClass = SatelliteEvent_t.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
-	            	    sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
+	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	    //sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 	                            state.getWaysDirection(),
@@ -542,7 +548,8 @@ public class MCMProxyObject implements MCMService{
 	            	}
 	            } else if (sendingQueue.containsKey(SatelliteStrippedConfigurator.class)){
 	            	noteClass = SatelliteStrippedConfigurator.class;
-	            	sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
+	            	sendSatNote(state.getImei(), sendingQueue.get(noteClass));
+	            	//sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
 	            }
 	            sendingQueue.remove(noteClass);
 	        } catch (SocketException e){
