@@ -104,7 +104,8 @@ public class TeamStatisticsBean extends BaseBean {
                     break;
                 case 3:
                 	driverStatistics = groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), 
-                			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart());
+                			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
+                			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd());
             }
 
             cleanData(driverStatistics);
