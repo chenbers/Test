@@ -625,6 +625,48 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         assertEquals("Vehicle 2 odometer", MockHOSDAO.MOCK_VEHICLE_ID2*100l, vehicle2Info.getStartOdometer());
     }
 
+    @Test
+    public void vehicleInfoNoVehicleStatus() {
+        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+        
+        ddlCriteria.setHosDAO(new MockHOSDAO());
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
+        
+        LocalDate localDate = new LocalDate(new DateTime());
+        DateTime day = localDate.toDateTimeAtStartOfDay();
+        System.out.println("day: " + day);
+        
+        List<HOSRecAdjusted> logListForDay = new ArrayList<HOSRecAdjusted>();
+        // on duty 2 hours in vehicle 1
+        logListForDay.add(new HOSRecAdjusted("1",HOSStatus.ON_DUTY, day.toDate(), TimeZone.getTimeZone("US/Mountain"), day.toDate(),60l,0,8,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        // driving 1 hour in vehicle 1
+        logListForDay.add(new HOSRecAdjusted("2",HOSStatus.OFF_DUTY_AT_WELL, day.plusHours(2).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(2).toDate(),60l,8,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        // off duty 1 hour
+        logListForDay.add(new HOSRecAdjusted("3",HOSStatus.OFF_DUTY, day.plusHours(3).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(3).toDate(),60l,12,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        // occupant 1 hour in vehicle 2
+        logListForDay.add(new HOSRecAdjusted("4",HOSStatus.ON_DUTY, day.plusHours(4).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(4).toDate(),60l,16,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        // off duty 1 hour from portal
+        logListForDay.add(new HOSRecAdjusted("5",HOSStatus.OFF_DUTY, day.plusHours(5).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(5).toDate(),60l,20,4,false,"","",60l,RuleSetType.US_OIL, 0));
+        // off duty rest of day
+        logListForDay.add(new HOSRecAdjusted("6",HOSStatus.OFF_DUTY, day.plusHours(6).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(6).toDate(),1080l,24,72,false,"","",1080l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        
+        // matching hosRecords
+        List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
+        for (HOSRecAdjusted rec : logListForDay) {
+            Integer vehicleID = (Integer)(rec.getVehicleID());
+            long vehicleOdometer = vehicleID * 100l;
+            hosRecordList.add(new HOSRecord(Integer.valueOf(rec.getId()), MockHOSDAO.MOCK_DRIVER_ID1, 
+                    rec.getRuleType(), vehicleID, vehicleID+"", true, 
+                    vehicleOdometer, rec.getLogTimeDate(), rec.getLogTimeDate(), rec.getLogTimeZone(), rec.getStatus(), HOSOrigin.DEVICE, "test location", 0f, 0f, 1000l,
+                    "", "", true, false, "", false, 0f, 0f));
+        }
+        List<VehicleInfo> vehicleInfoList =  ddlCriteria.initVehicleInfoForDay(day, MockHOSDAO.MOCK_DRIVER_ID1, logListForDay, hosRecordList);
+        
+        assertEquals("Number of vehicles for driver for day", 0, vehicleInfoList.size());
+    }
+
+
     private static final long ONE_HOUR = 3600000L;
     @Test
     public void originalTimeChange() {
@@ -740,6 +782,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         }
         
     }
+
+    
     
     class ExpectedRecap {
         

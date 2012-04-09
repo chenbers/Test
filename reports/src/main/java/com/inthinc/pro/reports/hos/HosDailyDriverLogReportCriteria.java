@@ -93,13 +93,15 @@ public class HosDailyDriverLogReportCriteria {
     private Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
 
     private ResourceBundle resourceBundle;
-
+    private DDLUtil ddlUtil;
+    
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
     {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         setResourceBundle(ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale));
+        ddlUtil = new DDLUtil(); 
     }
 
     public ResourceBundle getResourceBundle() {
@@ -241,7 +243,6 @@ public class HosDailyDriverLogReportCriteria {
     		Address terminalAddress) 
     {
 
-        DDLUtil ddlUtil = new DDLUtil(); 
         
         boolean initVehicleDayData = (hosVehicleDayData == null);
         
@@ -331,6 +332,8 @@ public class HosDailyDriverLogReportCriteria {
     List<VehicleInfo> initVehicleInfoForDay(DateTime day, Integer driverID, List<HOSRecAdjusted> logListForDay, List<HOSRecord> hosRecordList) {
         List<VehicleInfo> vehicleInfoList = new ArrayList<VehicleInfo>();
         for (HOSRecAdjusted rec  : logListForDay) {
+            if (ddlUtil.isNoVehicleStatus(rec.getStatus())) 
+                continue;
             if (isIDSet(rec.getVehicleID())) {
                 boolean alreadyAdded = false;
                 for (VehicleInfo vehicleInfo : vehicleInfoList) {
