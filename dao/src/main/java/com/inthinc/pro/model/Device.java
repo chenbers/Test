@@ -35,7 +35,7 @@ public class Device extends BaseEntity implements HasAccountId
     @Column(name="witnessVer", updateable = false)
     private Integer	witnessVersion;
     private String emuMd5;
-    @Column(name="productVer")
+//    @Column(name="productVer")
     private ProductType productVersion;
     private String mcmid;   //Waysmart mcmid
     @Column(name = "altImei")
