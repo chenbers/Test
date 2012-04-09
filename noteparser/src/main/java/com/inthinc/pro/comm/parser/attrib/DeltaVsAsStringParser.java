@@ -28,6 +28,10 @@ public class DeltaVsAsStringParser implements AttribParser {
 		String value = "DeltaVX: " + deltaVx + " DeltaVY: " + deltaVy + " DeltaVZ: " + deltaVz;
 			
 		attribMap.put(String.valueOf(attrib.getCode()), value);
+		
+		attribMap.put(String.valueOf(Attrib.DELTAVX.getCode()), deltaVx);
+		attribMap.put(String.valueOf(Attrib.DELTAVY.getCode()), deltaVy);
+		attribMap.put(String.valueOf(Attrib.DELTAVZ.getCode()), deltaVz);
 
 		return offset+4;
 	}

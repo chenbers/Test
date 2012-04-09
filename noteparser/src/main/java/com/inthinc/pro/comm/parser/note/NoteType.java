@@ -184,6 +184,9 @@ public enum NoteType {
 
 //	SNITCH_DIAGNOSTICS(200, new Attrib[]{}),
 	IDLING(208, new Attrib[]{}),
+	CRASH(209, new Attrib[]{}),
+	SPEED_COACHING(210, new Attrib[]{}),
+	RF_KILL(218, new Attrib[]{}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),
@@ -232,4 +235,41 @@ public enum NoteType {
 	{
 		return (code > 245 && code < 255);
 	}
+	
+	public boolean isTripStartNoteType()
+	{
+		return  isTripStartNoteType(getCode());
+	}
+
+	public static boolean  isTripStartNoteType(int code)
+	{
+		return (get(code) == NEWDRIVER || get(code) == NEWDRIVER_HOSRULE || get(code) == IGNITION_ON);
+	}
+
+	public boolean isTripEndNoteType()
+	{
+		return isTripEndNoteType(getCode());
+	}
+
+	public static boolean isTripEndNoteType(int code)
+	{
+		return (get(code) == CLEAR_DRIVER 
+				|| get(code) == LOW_BATTERY 
+				|| get(code) == IGNITION_OFF 
+				|| get(code) == RF_KILL 
+				|| get(code) == HOS_CHANGE_STATE_EX 
+				|| get(code) == HOS_CHANGE_STATE_NO_GPS_LOCK);
+	}
+
+	public boolean isIdleNoteType()
+	{
+		return isIdleNoteType(getCode());
+	}
+
+	public static boolean isIdleNoteType(int code)
+	{
+		return (get(code) == IDLE_STATS || get(code) == IDLING);
+	}
+
+	
 }

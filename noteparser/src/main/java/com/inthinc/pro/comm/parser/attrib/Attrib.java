@@ -177,6 +177,14 @@ public enum Attrib {
 	ANALOGSENSOR(16424, AttribParserType.SHORT),
 	LOWIDLE2(16425, AttribParserType.SHORT),
 	HIGHIDLE2(16426, AttribParserType.SHORT),
+
+	
+	MILESUNDER30(16442, AttribParserType.SHORT),
+	MILES31TO40(16443, AttribParserType.SHORT),
+	MILES41TO54(16444, AttribParserType.SHORT),
+	MILES55TO64(16445, AttribParserType.SHORT),
+	MILESOVER64(16446, AttribParserType.SHORT),
+	
 	
 	// INT 
 	SKIPINT(32000, AttribParserType.INTEGER_SKIP),
