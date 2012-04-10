@@ -474,6 +474,16 @@ public class AdminUserSteps extends AdminSteps {
             adminUsers._popUp().editColumns()._checkBox().row(30).check();
         }
     }
+    
+    @When("I click the Back To Users link")
+    public void whenIClickTheBackToUsersLink(){
+        adminUsers._link().adminBackToUsers().click();
+    }
+
+    @Then("I am on the Admin Users page")
+    public void thenIAmOnTheAdminUsersPage(){
+        adminUsers.verifyOnPage();
+    }
 
     @Then("the name column is no longer in the table")
     public void thenTheNameColumnIsNoLongerInTheTable(){
