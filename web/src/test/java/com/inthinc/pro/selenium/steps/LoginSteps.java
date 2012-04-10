@@ -43,6 +43,7 @@ public class LoginSteps extends WebSteps {
     }
     
     @When("I click log out")
+    @Alias("I click logout")
     public void whenIClickLogOut() {
         page._link().logout().click();
     }    
