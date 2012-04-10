@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 import android.util.Log;
 
+import com.inthinc.device.emulation.interfaces.HessianService;
 import com.inthinc.device.emulation.interfaces.MCMService;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.pro.automation.enums.Addresses;
@@ -58,29 +59,26 @@ public class AutomationHessianFactory {
             createMcmProxy();
         }
     }
-
-    private void createPortalProxy() {
-    	Log.d("createPortalProxy %s", server);
+    
+    public HessianService createProxy(Class<?> proxy, String url, int port){
+        Log.d("createProxy for %s, %s", proxy.getClass().getSimpleName(), server);
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
-            portalProxy = (SiloService) factory.create(SiloService.class, server.portalUrl, server.portalPort);
+            return (HessianService) factory.create(proxy, url, port);
         } catch (NumberFormatException e) {
             Log.wtf("%s", e);
         } catch (MalformedURLException e) {
-        	Log.wtf("%s", e);
+            Log.wtf("%s", e);
         }
+        return null;
+    }
+
+    private void createPortalProxy() {
+        portalProxy = (SiloService) createProxy(SiloService.class, server.portalUrl, server.portalPort);
     }
 
     private void createMcmProxy() {
-    	Log.d("createMcmProxy %s", server);
-        HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-        try {
-            mcmProxy = (MCMService) factory.create(MCMService.class, server.mcmUrl, server.mcmPort);
-        } catch (NumberFormatException e) {
-            Log.wtf("%s", e);
-        } catch (MalformedURLException e) {
-            Log.wtf("%s", e);
-        }
+        mcmProxy = (MCMService) createProxy(MCMService.class, server.mcmUrl, server.mcmPort);
     }
     
     public MCMService getMcmProxy() {

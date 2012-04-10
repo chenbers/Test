@@ -1,9 +1,12 @@
 package com.inthinc.device.emulation;
 
-import java.io.File;
-import java.util.EnumSet;
+import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.spi.ErrorCode;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -14,78 +17,85 @@ import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
-import com.inthinc.pro.automation.utils.AutomationFileHandler;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class DownloadTesting {
     
+    private final static Set<ProductType> tiwiSet = EnumSet.of(ProductType.TIWIPRO_R71, ProductType.TIWIPRO_R74, ProductType.TIWIPRO_R747);
+    private final static Set<ProductType> tiwiProSet = EnumSet.of(ProductType.TIWIPRO_R74, ProductType.TIWIPRO_R747);
+    private final static Set<Addresses> serverSet = EnumSet.of(Addresses.TEEN_QA, Addresses.QA, Addresses.DEV);
+    private final static String tiwiImei = "500000000000000";
+    
+    private final static int[] fw = {17210, 17302, 17303, 
+                                     17304, 17305, 17401, 
+                                     17404, 17603, 17604};
+    
+    
+    private final static int uploadFW = 17604;
+    
     @Test
-    @Ignore
     public void audioFilesFromHessianMatchSVN() {
-        StringBuilder destPath = new StringBuilder(
-                "target/test/resources/audioFiles/");
-        String svnPath = destPath.append("svnVersion/").toString();
-        String hessianPath = destPath.append("hessianVersion/").toString();
-        String fileName="", svnFile="", hessianFile="";
 
         TiwiProDevice tiwi;
         Addresses silo = Addresses.QA;
-        for (ProductType type : EnumSet.of(ProductType.TIWIPRO_R71, ProductType.TIWIPRO_R74, ProductType.TIWIPRO_R747)){
-            try{
-                tiwi = new TiwiProDevice("FAKEIMEIDEVICE", type, silo);
-                tiwi.getState().setWMP(17207);
-                for (int i = 1; i <= 33; i++) {
-    
-                    fileName = String.format("%02d.pcm", i);
-                    svnFile = svnPath + "/" + fileName;
-                    hessianFile = hessianPath + "/" + fileName;
-                    MasterTest.print(fileName);
-    
-                    for (Locales locale : EnumSet.allOf(Locales.class)) {
-                        try {
-                            MasterTest.print(locale);
-                            String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"
-                                    + locale.getFolder();
-                            File dest = new File(svnFile);
-        
-                            if (!AutomationFileHandler.downloadSvnDirectory(url, fileName, dest)) {
-                                MasterTest.print("SVN File not found");
-                            }
-                            tiwi.getAudioFile(hessianFile, i, locale);
-                            MasterTest.print(AutomationFileHandler.filesEqual(svnFile, hessianFile));
-                        } catch (HessianException e){
-                            MasterTest.print("Failed for " + fileName + "." + locale);
-                            continue;
-                        }
-                                    
+        List<String> errors = new ArrayList<String>();
+
+        boolean result = true;
+        for (ProductType type : tiwiSet){
+            tiwi = new TiwiProDevice(tiwiImei, type, silo);
+            tiwi.getState().setWMP(17207);
+            for (int i = 1; i <= 33; i++) {
+                for (Locales locale : EnumSet.allOf(Locales.class)) {
+                    boolean thisOne = tiwi.compareAudio(i, locale); 
+                    result &= thisOne;
+                    if (!thisOne){
+                        errors.add(String.format("Compare failed for %02d.pcm, locale: %s, ProductType: %s", i, locale, type));
                     }
                 }
-            } catch(Exception e){
-                MasterTest.print(e);
             }
         }
+        assertTrue("Unable to verify all audio versions: " + errors, result);
     }
     
     @Test
-    @Ignore
     public void firmwareDownloadTest(){
-        boolean results = false;
-        for (ProductType type : EnumSet.of(ProductType.TIWIPRO_R71, ProductType.TIWIPRO_R74, ProductType.TIWIPRO_R747)){
-            TiwiProDevice tiwi = new TiwiProDevice("500000000000000", type, Addresses.QA);
-            
-                for (Integer version : new int[]{17210,17302,17303,17304,17305,17401,17404}){
-                    try {
-                        results &= tiwi.firmwareCompare(version);
-                    } catch (HessianException e){
-                        if (e.getErrorCode() == 304){
-                            
-                        }
-                        Log.i("%s", e);
-                        continue;
+        boolean results = true;
+        List<String> errors = new ArrayList<String>();
+        for (ProductType type : tiwiSet){
+            TiwiProDevice tiwi = new TiwiProDevice(tiwiImei, type, Addresses.QA);
+            for (Integer version : fw){
+                try {
+                    boolean thisOne = tiwi.firmwareCompare(version); 
+                    results &= thisOne;
+                    if (!thisOne){
+                        errors.add(String.format("Version compare failed for: %d, productType = %s", version, type));
                     }
-                    assert(results);
+                } catch (HessianException e){
+                    if (e.getErrorCode() == 304){
+                        Log.i("Version: %d, for product: %s cannot be retrieved via Hessian", version, type);
+                    } else {
+                        results = false;
+                        errors.add(String.format("Got error for version: %d, productType = %s\n%s", version, type, e));
+                    }
+                    continue;
                 }
-            
+            }
+        }
+        assertTrue("Firmware versions didn't all match: " + errors, results);
+    }
+    
+    
+    @Test
+    @Ignore
+    public void uploadFirmware(){
+        for (ProductType type : tiwiProSet){
+            for (Addresses server : serverSet){
+                try {
+                    TiwiProDevice tiwi = new TiwiProDevice(type, server);
+                    tiwi.uploadFirmware(uploadFW);
+                } catch (HessianException e ){
+                    Log.wtf("%s", e);
+                }
+            }
         }
     }
 

@@ -73,6 +73,7 @@ public enum Addresses implements AddressInterface {
     }
 
     private Addresses(String url, Integer webPort, String protocol, String appName) {
+        this(url, null, webPort, null, null, null, null);
         this.portalUrl = url;
         this.webPort = webPort;
         this.protocol = protocol;

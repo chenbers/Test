@@ -21,7 +21,6 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 
@@ -67,9 +66,6 @@ public class AutomationFileHandler {
     }
     
     public static boolean downloadSvnDirectory(String source, String fileDir, File destination){
-        if (new AutomationCalendar().compareDays(new AutomationCalendar(destination.lastModified())) && destination.length()!=0){
-            return true;
-        }
         MasterTest.print("Downloading file: " + source + "/" + fileDir);
         DAVRepositoryFactory.setup( );
         SVNURL temp;
@@ -167,38 +163,6 @@ public class AutomationFileHandler {
         return bytes;
     }
     
-//    public static void main(String[] args){
-//        int numTested = 0;
-//        int numFailed = 0;
-//        String destPath = new String("target/test/resources/audioFiles/");
-//        TiwiProDevice tiwi = new TiwiProDevice("javadeviceindavidsaccount", Addresses.QA);
-//        tiwi.set_WMP(17207);
-//        
-//        for (Locales locale: EnumSet.allOf(Locales.class)){
-//            String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
-//            for (int i=1;i<=33;i++){
-//                int fileNumber = i;
-//                String fileName = String.format("%02d.pcm", fileNumber);
-//                String svnFileName = destPath+"svnVersion/"+locale+fileName;
-//                String hessianFileName = destPath+"hessianVersion/"+locale+fileName;
-//                File svnFile = new File(svnFileName);
-//                
-//                DownloadFile.downloadSvnDirectory(url, fileName, svnFile);
-//                
-//                tiwi.getAudioFile(hessianFileName, fileNumber, locale);
-//        
-//                String svn = MD5Checksum.getMD5Checksum(svnFileName);
-//                String hessian = MD5Checksum.getMD5Checksum(hessianFileName);
-//                if(!hessian.equals(svn)){
-//                    numFailed++;
-//                    System.out.println("FAIL:"+"svn: " + svn + "  hessian: " + hessian);
-//                } 
-//                numTested++;
-//            }
-//        }
-//        if(numFailed > 0)
-//            System.out.println(numFailed+"/"+numTested+" files FAILED MD5Checksum comparison.");
-//        else
-//            System.out.println(numTested+"/"+numTested+" files PASSED MD5Checksum comparison.");
-//    }
+    
+    
 }

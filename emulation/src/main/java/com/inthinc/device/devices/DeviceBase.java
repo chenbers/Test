@@ -13,6 +13,8 @@ import java.util.Map;
 
 import org.apache.log4j.Level;
 
+import android.util.Log;
+
 import com.inthinc.device.emulation.enums.DeviceForwardCommands;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
@@ -36,6 +38,7 @@ import com.inthinc.sbs.Sbs;
 public abstract class DeviceBase {
 
     protected String lastDownload;
+
     protected MCMProxyObject mcmProxy;
     protected int note_count = 4;
     protected final NoteManager notes;
@@ -184,6 +187,10 @@ public abstract class DeviceBase {
     public GeoPoint getCurrentLocation() {
 		return tripTracker.currentLocation();
 	}
+
+    public String getLastDownload() {
+        return lastDownload;
+    }
 
     public NoteManager getNotes() {
         return notes;
@@ -476,7 +483,7 @@ public abstract class DeviceBase {
     }
 
 	protected boolean writeTiwiFile(String fileName, Map<String, Object> reply) {
-		MasterTest.print(reply, Level.DEBUG);
+		Log.d("%s", reply);
         if (!fileName.startsWith("target")) {
             String resourceFile = "target/test/resources/" + state.getImei()
                     + "/" + "downloads/";
@@ -492,17 +499,16 @@ public abstract class DeviceBase {
             FileOutputStream fw = new FileOutputStream(destination);
             fw.write((byte[]) reply.get("f"));
             fw.close();
-            MasterTest.print(
+            Log.d(
                     "SHA1 Hash is: "
-                            + SHA1Checksum.getSHA1Checksum(lastDownload),
-                    Level.DEBUG);
+                            + SHA1Checksum.getSHA1Checksum(lastDownload));
             return true;
         } catch (FileNotFoundException e) {
-        	MasterTest.print(e, Level.ERROR);
+        	Log.e("%s", e);
         } catch (IOException e) {
-        	MasterTest.print(e, Level.ERROR);
+            Log.e("%s", e);
         } catch (Exception e) {
-        	MasterTest.print(e, Level.ERROR);
+            Log.e("%s", e);
         }
         return false;
     }

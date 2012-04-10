@@ -1,6 +1,7 @@
 package com.inthinc.device.devices;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,27 +9,37 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import android.util.Log;
 
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.inthinc.device.emulation.enums.DeviceEnums.FwdCmdStatus;
+import com.inthinc.device.emulation.enums.ConstDDB;
 import com.inthinc.device.emulation.enums.DeviceForwardCommands;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.enums.EventAttr;
+import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.emulation.enums.MapSection;
+import com.inthinc.device.emulation.interfaces.DownloadService;
 import com.inthinc.device.emulation.notes.TiwiNote;
 import com.inthinc.device.emulation.utils.AutomationFileHandler;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
+import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
+import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.ZoneManager;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.DownloadServers;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 
 public class TiwiProDevice extends DeviceBase {
@@ -40,17 +51,36 @@ public class TiwiProDevice extends DeviceBase {
     private ZoneManager zones;
 
     private int baseVer = 6;
+    
+    private static final String defaultIMEI = "500000000000000";
+    
+
+    public TiwiProDevice() {
+        this(defaultIMEI);
+    }
 
     public TiwiProDevice(String IMEI) {
         this(IMEI, Addresses.QA);
     }
     
+    public TiwiProDevice(ProductType type){
+        this(defaultIMEI, type, Addresses.QA);
+    }
+    
     public TiwiProDevice(String IMEI, ProductType type){
         this(IMEI, type, Addresses.QA);
+    }
+    
+    public TiwiProDevice(Addresses server){
+        this(defaultIMEI, server);
     }
 
     public TiwiProDevice(String IMEI, Addresses server) {
         this(IMEI, server, DeviceProps.getTiwiDefaults());
+    }
+    
+    public TiwiProDevice(ProductType type, Addresses server){
+        this(defaultIMEI, type, server);
     }
     
     public TiwiProDevice(String IMEI, ProductType type, Addresses server){
@@ -66,6 +96,7 @@ public class TiwiProDevice extends DeviceBase {
             Map<DeviceProps, String> map) {
         super(IMEI, type, map, server);
     }
+
 
     @Override
     protected void ackFwdCmds(String[] reply) {
@@ -113,6 +144,41 @@ public class TiwiProDevice extends DeviceBase {
 
         return true;
     }
+    
+
+
+    public boolean compareAudio(int fileNumber, Locales locale) {
+        String destPath = "target/test/resources/audioFiles/";
+        String svnPath = destPath + "svnVersion/";
+        String hessianPath = destPath + "hessianVersion/";
+        String fileName = String.format("%02d.pcm", fileNumber); 
+        Log.d(fileName);
+        
+        String svnFile = svnPath + "/" + fileName; 
+        String hessianFile = hessianPath + "/" + fileName;
+        
+        try {
+            getAudioFile(hessianFile, fileNumber, locale);
+            
+            String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"
+                    + locale.getFolder(); 
+            File dest = new File(svnFile);
+
+            if (!AutomationFileHandler.downloadSvnDirectory(url, fileName, dest)) {
+                Log.i("SVN File not found");
+                return false;
+            }
+            boolean result = AutomationFileHandler.filesEqual(svnFile, hessianFile);
+            if (!result){
+                saveBadAudio(destPath, locale, fileNumber, svnFile, hessianFile);
+            }
+            return result;
+        } catch (HessianException e){
+            Log.wtf("%s", e);
+            return false;
+        }
+    }
+    
 
 
     @Override
@@ -299,6 +365,20 @@ public class TiwiProDevice extends DeviceBase {
             set_settings(changes);
         return 1;
     }
+    
+
+    private void saveBadAudio(String base, Locales locale, int fileNumber, String svnFile, String hessianFile) {
+        File temp = new File(base + "/badAudio"); 
+        temp.mkdir();
+        AutomationCalendar now = new AutomationCalendar(WebDateFormat.FILE_NAME);
+        String suffix = String.format("_%s_%s_%02d.pcm", locale, now, fileNumber);
+        try {
+            FileUtils.copyFile(new File(svnFile), new File(temp, "svn" + suffix));
+            FileUtils.copyFile(new File(hessianFile), new File(temp, "hessian" + suffix));
+        } catch (IOException e) {
+            Log.wtf("%s", e);
+        }
+    }
 
     protected TiwiProDevice set_ignition(Integer time_delta) {
         state.setIgnition_state(!state.getIgnition_state());
@@ -389,4 +469,37 @@ public class TiwiProDevice extends DeviceBase {
                 + "." + versionNumber + "-hessian.dwl";
         return writeTiwiFile(fileName, reply);
     }
+    
+    public int uploadFirmware(int version){
+        try {
+            getFirmwareFromSVN(version);
+            
+            DownloadServers server = DownloadServers.valueOf(state.getProductVersion().name());
+            DownloadService upload = (DownloadService) new AutomationHessianFactory().createProxy(DownloadService.class, server.getAddress(), server.getPort());
+            File svnFile = new File(getLastDownload());
+            FileInputStream fis = new FileInputStream(svnFile);
+            byte[] file = IOUtils.toByteArray(fis);
+            
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("dlTypeID", ConstDDB.DDB_DLTYPE_TIWIPRO_FIRMWARE.getIndex());
+            map.put("filename", svnFile.getName().replace("-svn", ""));
+            map.put("version", version);
+            map.put("min_hw_version", 0);
+            map.put("max_hw_version", 2147483647);
+            map.put("productMask", 1<<(state.getProductVersion().getIndex()-1));
+            map.put("status", 1);
+            map.put("file", file);
+            
+            Map<String, Object> result = upload.createDownload(map);
+            int dlID = (Integer) result.get("dlID");
+            AutomationThread.pause(10);
+            Log.i("%s", firmwareCompare(version));
+            return dlID;
+        } catch (IOException e){
+            Log.wtf("%s", e);
+        }
+        return 0;
+    }
+
+    
 }

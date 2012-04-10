@@ -364,6 +364,8 @@ public class AutomationCalendar implements Comparable<Calendar> {
         
         TIME("HH:mm a (z)"),
         
+        FILE_NAME("yyyy-MM-dd"),
+        
         ;
 
         private String format;
