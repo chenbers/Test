@@ -474,7 +474,7 @@ public class TiwiProDevice extends DeviceBase {
         try {
             getFirmwareFromSVN(version);
             
-            DownloadServers server = DownloadServers.valueOf(state.getProductVersion().name());
+            DownloadServers server = DownloadServers.valueOf(portal.name());
             DownloadService upload = (DownloadService) new AutomationHessianFactory().createProxy(DownloadService.class, server.getAddress(), server.getPort());
             File svnFile = new File(getLastDownload());
             FileInputStream fis = new FileInputStream(svnFile);
