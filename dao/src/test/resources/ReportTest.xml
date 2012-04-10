@@ -2,10 +2,10 @@
 <java version="1.6.0_26" class="java.beans.XMLDecoder"> 
  <object class="com.inthinc.pro.model.Account"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="acctName"> 
-   <string>TEST 11:06:53 MST 2012</string> 
+   <string>TEST 15:51:02 MDT 2012</string> 
   </void> 
   <void property="hos"> 
    <object class="com.inthinc.pro.model.AccountHOSType" method="valueOf"> 
@@ -26,16 +26,16 @@
  </object> 
  <object class="com.inthinc.pro.model.Address"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="addr1"> 
-   <string>803 Street</string> 
+   <string>401 Street</string> 
   </void> 
   <void property="addrID"> 
-   <int>6427</int> 
+   <int>6793</int> 
   </void> 
   <void property="city"> 
-   <string>City 25</string> 
+   <string>City 20</string> 
   </void> 
   <void property="state"> 
    <object id="State0" class="com.inthinc.pro.model.State"> 
@@ -56,13 +56,13 @@
  </object> 
  <object class="com.inthinc.pro.model.Group"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="description"> 
    <string>Fleet Group</string> 
   </void> 
   <void property="groupID"> 
-   <int>8996</int> 
+   <int>9540</int> 
   </void> 
   <void id="LatLng0" property="mapCenter"> 
    <void property="lat"> 
@@ -97,13 +97,13 @@
  </object> 
  <object class="com.inthinc.pro.model.Group"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="description"> 
    <string>Division Group</string> 
   </void> 
   <void property="groupID"> 
-   <int>8997</int> 
+   <int>9541</int> 
   </void> 
   <void id="LatLng1" property="mapCenter"> 
    <void property="lat"> 
@@ -123,7 +123,7 @@
    <string>Division</string> 
   </void> 
   <void property="parentID"> 
-   <int>8996</int> 
+   <int>9540</int> 
   </void> 
   <void property="status"> 
    <object idref="GroupStatus0"/> 
@@ -136,13 +136,13 @@
  </object> 
  <object class="com.inthinc.pro.model.Group"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="description"> 
    <string>GOOD</string> 
   </void> 
   <void property="groupID"> 
-   <int>8998</int> 
+   <int>9542</int> 
   </void> 
   <void id="LatLng2" property="mapCenter"> 
    <void property="lat"> 
@@ -162,7 +162,7 @@
    <string>GOOD</string> 
   </void> 
   <void property="parentID"> 
-   <int>8997</int> 
+   <int>9541</int> 
   </void> 
   <void property="status"> 
    <object idref="GroupStatus0"/> 
@@ -175,13 +175,13 @@
  </object> 
  <object class="com.inthinc.pro.model.Group"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="description"> 
    <string>INTERMEDIATE</string> 
   </void> 
   <void property="groupID"> 
-   <int>8999</int> 
+   <int>9543</int> 
   </void> 
   <void id="LatLng3" property="mapCenter"> 
    <void property="lat"> 
@@ -201,7 +201,7 @@
    <string>INTERMEDIATE</string> 
   </void> 
   <void property="parentID"> 
-   <int>8997</int> 
+   <int>9541</int> 
   </void> 
   <void property="status"> 
    <object idref="GroupStatus0"/> 
@@ -212,13 +212,13 @@
  </object> 
  <object class="com.inthinc.pro.model.Group"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="description"> 
    <string>BAD</string> 
   </void> 
   <void property="groupID"> 
-   <int>9000</int> 
+   <int>9544</int> 
   </void> 
   <void id="LatLng4" property="mapCenter"> 
    <void property="lat"> 
@@ -238,7 +238,7 @@
    <string>BAD</string> 
   </void> 
   <void property="parentID"> 
-   <int>8997</int> 
+   <int>9541</int> 
   </void> 
   <void property="status"> 
    <object idref="GroupStatus0"/> 
@@ -249,21 +249,21 @@
  </object> 
  <object class="com.inthinc.pro.model.User"> 
   <void property="groupID"> 
-   <int>8996</int> 
+   <int>9540</int> 
   </void> 
   <void property="password"> 
    <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
   </void> 
   <void property="personID"> 
-   <int>33023</int> 
+   <int>34508</int> 
   </void> 
   <void property="roles"> 
    <object class="java.util.ArrayList"> 
     <void method="add"> 
-     <int>13515</int> 
+     <int>14307</int> 
     </void> 
     <void method="add"> 
-     <int>13516</int> 
+     <int>14308</int> 
     </void> 
    </object> 
   </void> 
@@ -271,29 +271,29 @@
    <object idref="Status0"/> 
   </void> 
   <void property="userID"> 
-   <int>16171</int> 
+   <int>17078</int> 
   </void> 
   <void property="username"> 
-   <string>TEST_33023</string> 
+   <string>TEST_34508</string> 
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.User"> 
   <void property="groupID"> 
-   <int>8997</int> 
+   <int>9541</int> 
   </void> 
   <void property="password"> 
    <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
   </void> 
   <void property="personID"> 
-   <int>33024</int> 
+   <int>34509</int> 
   </void> 
   <void property="roles"> 
    <object class="java.util.ArrayList"> 
     <void method="add"> 
-     <int>13515</int> 
+     <int>14307</int> 
     </void> 
     <void method="add"> 
-     <int>13516</int> 
+     <int>14308</int> 
     </void> 
    </object> 
   </void> 
@@ -301,29 +301,29 @@
    <object idref="Status0"/> 
   </void> 
   <void property="userID"> 
-   <int>16172</int> 
+   <int>17079</int> 
   </void> 
   <void property="username"> 
-   <string>TEST_33024</string> 
+   <string>TEST_34509</string> 
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.User"> 
   <void property="groupID"> 
-   <int>8998</int> 
+   <int>9542</int> 
   </void> 
   <void property="password"> 
    <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
   </void> 
   <void property="personID"> 
-   <int>33025</int> 
+   <int>34510</int> 
   </void> 
   <void property="roles"> 
    <object class="java.util.ArrayList"> 
     <void method="add"> 
-     <int>13515</int> 
+     <int>14307</int> 
     </void> 
     <void method="add"> 
-     <int>13516</int> 
+     <int>14308</int> 
     </void> 
    </object> 
   </void> 
@@ -331,35 +331,38 @@
    <object idref="Status0"/> 
   </void> 
   <void property="userID"> 
-   <int>16173</int> 
+   <int>17080</int> 
   </void> 
   <void property="username"> 
-   <string>TEST_33025</string> 
+   <string>TEST_34510</string> 
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.Device"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="activated"> 
    <object id="Date0" class="java.util.Date"> 
-    <long>1328166000000</long> 
+    <long>1331272800000</long> 
    </object> 
   </void> 
   <void property="deviceID"> 
-   <int>21240</int> 
+   <int>22157</int> 
   </void> 
   <void property="emuMd5"> 
    <string>696d6acbc199d607a5704642c67f4d86</string> 
   </void> 
   <void property="imei"> 
-   <string>989980724912057</string> 
+   <string>995423689580812</string> 
   </void> 
   <void property="name"> 
    <string>GOODDevice</string> 
   </void> 
   <void property="phone"> 
-   <string>9899810975</string> 
+   <string>9954211920</string> 
+  </void> 
+  <void property="productVer"> 
+   <int>3</int> 
   </void> 
   <void property="productVersion"> 
    <object id="ProductType0" class="com.inthinc.pro.model.configurator.ProductType" method="valueOf"> 
@@ -367,10 +370,10 @@
    </object> 
   </void> 
   <void property="serialNum"> 
-   <string>9899880468</string> 
+   <string>9954213352</string> 
   </void> 
   <void property="sim"> 
-   <string>9899803653011529563</string> 
+   <string>9954203254849018348</string> 
   </void> 
   <void property="status"> 
    <object id="DeviceStatus0" class="com.inthinc.pro.model.DeviceStatus" method="valueOf"> 
@@ -385,7 +388,7 @@
    </object> 
   </void> 
   <void property="driverID"> 
-   <int>23500</int> 
+   <int>24495</int> 
   </void> 
   <void property="expiration"> 
    <object class="java.util.Date"> 
@@ -393,10 +396,10 @@
    </object> 
   </void> 
   <void property="groupID"> 
-   <int>8998</int> 
+   <int>9542</int> 
   </void> 
   <void property="license"> 
-   <string>l33026</string> 
+   <string>l34511</string> 
   </void> 
   <void property="licenseClass"> 
    <string>ABCD</string> 
@@ -404,10 +407,10 @@
   <void property="person"> 
    <object id="Person0" class="com.inthinc.pro.model.Person"> 
     <void property="acctID"> 
-     <int>5858</int> 
+     <int>6198</int> 
     </void> 
     <void property="addressID"> 
-     <int>6427</int> 
+     <int>6793</int> 
     </void> 
     <void property="crit"> 
      <int>1</int> 
@@ -417,11 +420,11 @@
     </void> 
     <void property="dob"> 
      <object class="java.util.Date"> 
-      <long>1330970814120</long> 
+      <long>1334094664506</long> 
      </object> 
     </void> 
     <void property="empid"> 
-     <string>emp_8998_5858_71061</string> 
+     <string>emp_9542_6198_47825</string> 
     </void> 
     <void property="first"> 
      <string>DriverGOOD</string> 
@@ -443,7 +446,7 @@
      <int>1</int> 
     </void> 
     <void property="last"> 
-     <string>Last8998</string> 
+     <string>Last9542</string> 
     </void> 
     <void property="measurementType"> 
      <object id="MeasurementType0" class="com.inthinc.pro.model.MeasurementType" method="valueOf"> 
@@ -454,10 +457,10 @@
      <string>m</string> 
     </void> 
     <void property="personID"> 
-     <int>33026</int> 
+     <int>34511</int> 
     </void> 
     <void property="priEmail"> 
-     <string>DriverGOODemail899875480@email.com</string> 
+     <string>DriverGOODemail954213579@email.com</string> 
     </void> 
     <void property="priPhone"> 
      <string>5555555555</string> 
@@ -502,7 +505,7 @@
  <object idref="Person0"/> 
  <object class="com.inthinc.pro.model.Vehicle"> 
   <void property="VIN"> 
-   <string>VIN_21240</string> 
+   <string>VIN_22157</string> 
   </void> 
   <void property="color"> 
    <string>Red</string> 
@@ -511,10 +514,10 @@
    <string>2000 Make Model</string> 
   </void> 
   <void property="groupID"> 
-   <int>8998</int> 
+   <int>9542</int> 
   </void> 
   <void property="license"> 
-   <string>UT 8998</string> 
+   <string>UT 9542</string> 
   </void> 
   <void property="make"> 
    <string>Make</string> 
@@ -532,7 +535,7 @@
    <object idref="Status0"/> 
   </void> 
   <void property="vehicleID"> 
-   <int>26049</int> 
+   <int>27270</int> 
   </void> 
   <void property="vtype"> 
    <object id="VehicleType0" class="com.inthinc.pro.model.VehicleType" method="valueOf"> 
@@ -548,21 +551,21 @@
  </object> 
  <object class="com.inthinc.pro.model.User"> 
   <void property="groupID"> 
-   <int>8999</int> 
+   <int>9543</int> 
   </void> 
   <void property="password"> 
    <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
   </void> 
   <void property="personID"> 
-   <int>33027</int> 
+   <int>34512</int> 
   </void> 
   <void property="roles"> 
    <object class="java.util.ArrayList"> 
     <void method="add"> 
-     <int>13515</int> 
+     <int>14307</int> 
     </void> 
     <void method="add"> 
-     <int>13516</int> 
+     <int>14308</int> 
     </void> 
    </object> 
   </void> 
@@ -570,42 +573,45 @@
    <object idref="Status0"/> 
   </void> 
   <void property="userID"> 
-   <int>16174</int> 
+   <int>17081</int> 
   </void> 
   <void property="username"> 
-   <string>TEST_33027</string> 
+   <string>TEST_34512</string> 
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.Device"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="activated"> 
    <object idref="Date0"/> 
   </void> 
   <void property="deviceID"> 
-   <int>21241</int> 
+   <int>22158</int> 
   </void> 
   <void property="emuMd5"> 
    <string>696d6acbc199d607a5704642c67f4d86</string> 
   </void> 
   <void property="imei"> 
-   <string>989998240936152</string> 
+   <string>995439046719389</string> 
   </void> 
   <void property="name"> 
    <string>INTERMEDIATEDevice</string> 
   </void> 
   <void property="phone"> 
-   <string>9899965935</string> 
+   <string>9954325958</string> 
+  </void> 
+  <void property="productVer"> 
+   <int>3</int> 
   </void> 
   <void property="productVersion"> 
    <object idref="ProductType0"/> 
   </void> 
   <void property="serialNum"> 
-   <string>9899984771</string> 
+   <string>9954349700</string> 
   </void> 
   <void property="sim"> 
-   <string>9899958722513180926</string> 
+   <string>9954319386952746846</string> 
   </void> 
   <void property="status"> 
    <object idref="DeviceStatus0"/> 
@@ -616,7 +622,7 @@
    <object idref="RuleSetType0"/> 
   </void> 
   <void property="driverID"> 
-   <int>23501</int> 
+   <int>24496</int> 
   </void> 
   <void property="expiration"> 
    <object class="java.util.Date"> 
@@ -624,10 +630,10 @@
    </object> 
   </void> 
   <void property="groupID"> 
-   <int>8999</int> 
+   <int>9543</int> 
   </void> 
   <void property="license"> 
-   <string>l33028</string> 
+   <string>l34513</string> 
   </void> 
   <void property="licenseClass"> 
    <string>ABCD</string> 
@@ -635,10 +641,10 @@
   <void property="person"> 
    <object id="Person1" class="com.inthinc.pro.model.Person"> 
     <void property="acctID"> 
-     <int>5858</int> 
+     <int>6198</int> 
     </void> 
     <void property="addressID"> 
-     <int>6427</int> 
+     <int>6793</int> 
     </void> 
     <void property="crit"> 
      <int>1</int> 
@@ -648,11 +654,11 @@
     </void> 
     <void property="dob"> 
      <object class="java.util.Date"> 
-      <long>1330970814600</long> 
+      <long>1334094664902</long> 
      </object> 
     </void> 
     <void property="empid"> 
-     <string>emp_8999_5858_14826</string> 
+     <string>emp_9543_6198_6927</string> 
     </void> 
     <void property="first"> 
      <string>DriverINTERMEDIATE</string> 
@@ -670,7 +676,7 @@
      <int>1</int> 
     </void> 
     <void property="last"> 
-     <string>Last8999</string> 
+     <string>Last9543</string> 
     </void> 
     <void property="measurementType"> 
      <object idref="MeasurementType0"/> 
@@ -679,10 +685,10 @@
      <string>m</string> 
     </void> 
     <void property="personID"> 
-     <int>33028</int> 
+     <int>34513</int> 
     </void> 
     <void property="priEmail"> 
-     <string>DriverINTERMEDIATEemail899922202@email.com</string> 
+     <string>DriverINTERMEDIATEemail954331215@email.com</string> 
     </void> 
     <void property="priPhone"> 
      <string>5555555555</string> 
@@ -720,7 +726,7 @@
  <object idref="Person1"/> 
  <object class="com.inthinc.pro.model.Vehicle"> 
   <void property="VIN"> 
-   <string>VIN_21241</string> 
+   <string>VIN_22158</string> 
   </void> 
   <void property="color"> 
    <string>Red</string> 
@@ -729,10 +735,10 @@
    <string>2000 Make Model</string> 
   </void> 
   <void property="groupID"> 
-   <int>8999</int> 
+   <int>9543</int> 
   </void> 
   <void property="license"> 
-   <string>UT 8999</string> 
+   <string>UT 9543</string> 
   </void> 
   <void property="make"> 
    <string>Make</string> 
@@ -750,7 +756,7 @@
    <object idref="Status0"/> 
   </void> 
   <void property="vehicleID"> 
-   <int>26050</int> 
+   <int>27271</int> 
   </void> 
   <void property="vtype"> 
    <object idref="VehicleType0"/> 
@@ -764,21 +770,21 @@
  </object> 
  <object class="com.inthinc.pro.model.User"> 
   <void property="groupID"> 
-   <int>9000</int> 
+   <int>9544</int> 
   </void> 
   <void property="password"> 
    <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
   </void> 
   <void property="personID"> 
-   <int>33029</int> 
+   <int>34514</int> 
   </void> 
   <void property="roles"> 
    <object class="java.util.ArrayList"> 
     <void method="add"> 
-     <int>13515</int> 
+     <int>14307</int> 
     </void> 
     <void method="add"> 
-     <int>13516</int> 
+     <int>14308</int> 
     </void> 
    </object> 
   </void> 
@@ -786,42 +792,45 @@
    <object idref="Status0"/> 
   </void> 
   <void property="userID"> 
-   <int>16175</int> 
+   <int>17082</int> 
   </void> 
   <void property="username"> 
-   <string>TEST_33029</string> 
+   <string>TEST_34514</string> 
   </void> 
  </object> 
  <object class="com.inthinc.pro.model.Device"> 
   <void property="accountID"> 
-   <int>5858</int> 
+   <int>6198</int> 
   </void> 
   <void property="activated"> 
    <object idref="Date0"/> 
   </void> 
   <void property="deviceID"> 
-   <int>21242</int> 
+   <int>22159</int> 
   </void> 
   <void property="emuMd5"> 
    <string>696d6acbc199d607a5704642c67f4d86</string> 
   </void> 
   <void property="imei"> 
-   <string>990004736639654</string> 
+   <string>995440868180800</string> 
   </void> 
   <void property="name"> 
    <string>BADDevice</string> 
   </void> 
   <void property="phone"> 
-   <string>9900038472</string> 
+   <string>9954489504</string> 
+  </void> 
+  <void property="productVer"> 
+   <int>3</int> 
   </void> 
   <void property="productVersion"> 
    <object idref="ProductType0"/> 
   </void> 
   <void property="serialNum"> 
-   <string>9900096064</string> 
+   <string>9954451347</string> 
   </void> 
   <void property="sim"> 
-   <string>9900021765308184780</string> 
+   <string>9954453430886696393</string> 
   </void> 
   <void property="status"> 
    <object idref="DeviceStatus0"/> 
@@ -832,7 +841,7 @@
    <object idref="RuleSetType0"/> 
   </void> 
   <void property="driverID"> 
-   <int>23502</int> 
+   <int>24497</int> 
   </void> 
   <void property="expiration"> 
    <object class="java.util.Date"> 
@@ -840,10 +849,10 @@
    </object> 
   </void> 
   <void property="groupID"> 
-   <int>9000</int> 
+   <int>9544</int> 
   </void> 
   <void property="license"> 
-   <string>l33030</string> 
+   <string>l34515</string> 
   </void> 
   <void property="licenseClass"> 
    <string>ABCD</string> 
@@ -851,10 +860,10 @@
   <void property="person"> 
    <object id="Person2" class="com.inthinc.pro.model.Person"> 
     <void property="acctID"> 
-     <int>5858</int> 
+     <int>6198</int> 
     </void> 
     <void property="addressID"> 
-     <int>6427</int> 
+     <int>6793</int> 
     </void> 
     <void property="crit"> 
      <int>1</int> 
@@ -864,11 +873,11 @@
     </void> 
     <void property="dob"> 
      <object class="java.util.Date"> 
-      <long>1330970814970</long> 
+      <long>1334094665269</long> 
      </object> 
     </void> 
     <void property="empid"> 
-     <string>emp_9000_5858_80237</string> 
+     <string>emp_9544_6198_66603</string> 
     </void> 
     <void property="first"> 
      <string>DriverBAD</string> 
@@ -886,7 +895,7 @@
      <int>1</int> 
     </void> 
     <void property="last"> 
-     <string>Last9000</string> 
+     <string>Last9544</string> 
     </void> 
     <void property="measurementType"> 
      <object idref="MeasurementType0"/> 
@@ -895,10 +904,10 @@
      <string>m</string> 
     </void> 
     <void property="personID"> 
-     <int>33030</int> 
+     <int>34515</int> 
     </void> 
     <void property="priEmail"> 
-     <string>DriverBADemail900090520@email.com</string> 
+     <string>DriverBADemail954448090@email.com</string> 
     </void> 
     <void property="priPhone"> 
      <string>5555555555</string> 
@@ -936,7 +945,7 @@
  <object idref="Person2"/> 
  <object class="com.inthinc.pro.model.Vehicle"> 
   <void property="VIN"> 
-   <string>VIN_21242</string> 
+   <string>VIN_22159</string> 
   </void> 
   <void property="color"> 
    <string>Red</string> 
@@ -945,10 +954,10 @@
    <string>2000 Make Model</string> 
   </void> 
   <void property="groupID"> 
-   <int>9000</int> 
+   <int>9544</int> 
   </void> 
   <void property="license"> 
-   <string>UT 9000</string> 
+   <string>UT 9544</string> 
   </void> 
   <void property="make"> 
    <string>Make</string> 
@@ -966,7 +975,7 @@
    <object idref="Status0"/> 
   </void> 
   <void property="vehicleID"> 
-   <int>26051</int> 
+   <int>27272</int> 
   </void> 
   <void property="vtype"> 
    <object idref="VehicleType0"/> 
@@ -978,5 +987,5 @@
    <int>2000</int> 
   </void> 
  </object> 
- <int>1328338800</int> 
+ <int>1331445600</int> 
 </java> 
