@@ -26,6 +26,7 @@ import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
+import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmpIDException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Account;
@@ -294,6 +295,9 @@ public abstract class BaseITData {
                 retryCount = 0;
             }
             catch (DuplicateEmailException ex) {
+                retryCount--;
+            }
+            catch (DuplicateEmpIDException ex) {
                 retryCount--;
             }
 
