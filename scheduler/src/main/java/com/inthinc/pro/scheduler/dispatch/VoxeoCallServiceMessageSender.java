@@ -32,7 +32,7 @@ public class VoxeoCallServiceMessageSender implements CallServiceMessageSender {
         params[1] = new NameValuePair("callerid", getCallerID());
         params[2] = new NameValuePair("numbertodial", phoneNumber);
         params[3] = new NameValuePair("msgID", msgID.toString());
-        params[4] = new NameValuePair("msg", messageText);
+        params[4] = new NameValuePair("msg", cleanMessage(messageText));
         params[5] = new NameValuePair("ack", acknowledge ? "1" : "0");
         params[6] = new NameValuePair("calltimeout", "35"); // in seconds, time waits for answer (and blocks!!)
 
@@ -54,7 +54,11 @@ public class VoxeoCallServiceMessageSender implements CallServiceMessageSender {
             logger.error("PhoneMessageJob Error " + e);
         }
     }
-
+    
+    private String cleanMessage(String messageText){
+    	//Voxeo can't deal with quotes and apostrophes in a message
+    	return messageText.replaceAll("[\"']","");
+    }
     public String getCallerID() {
         return callerID;
     }
