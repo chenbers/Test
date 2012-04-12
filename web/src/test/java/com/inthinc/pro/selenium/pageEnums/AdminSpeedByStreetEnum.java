@@ -13,6 +13,17 @@ public enum AdminSpeedByStreetEnum implements SeleniumEnums {
     SUBMIT_REQUEST("Submit Request", "speedLimitChangeRequestTable:sbscrSubmit1"),
     TITLE("Admin - Speed By Street", "//span[@class='admin']"),
     MESSAGE("Type an address, or click on the map to identify street segments to update.", "speedLimitChangeRequestTable:items:caption"),
+    HEADING_ADDRESS("Address", "speedLimitChangeRequestTable:items:headingAddress"),
+    HEADING_SPEED_LIMIT("Speed Limit", "speedLimitChangeRequestTable:items:headingSpeedLimit"),
+    HEADING_CURRENT("Current", "speedLimitChangeRequestTable:items:headingCurrent"),
+    HEADING_NEW("New", "speedLimitChangeRequestTable:items:headingNew"), 
+    HEADING_COMMENT("Comment", "speedLimitChangeRequestTable:items:headingComment"),
+    CHECKBOX(null, "speedLimitChangeRequestTable:items:###:c"),
+    ADDRESS(null, "speedLimitChangeRequestTable:items:###:valueAddress"),
+    SPEED_LIMIT_CURRENT(null, "speedLimitChangeRequestTable:items:###:valueSpeedLimit"),
+    SPEED_LIMIT_NEW("0", "speedLimitChangeRequestTable:items:###:s"),
+    COMMENT("", "speedLimitChangeRequestTable:items:###:t"),
+    MAP(null, "speedLimitChangeRequestTable:map"),
     
     ;
     private String text, url;

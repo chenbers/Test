@@ -268,8 +268,9 @@ public class PageAdminUsers extends AdminTables {
     public CheckBoxTable _checkBox() {
         return new CheckBoxTable(PopUpEnum.SELECT_ALL_CHECKBOX, page);
     }
-    
+       
     */
+
 
     public class AdminUsersPopUps extends AdminTablesPopUps {
         public AdminDelete delete(){

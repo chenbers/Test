@@ -231,26 +231,6 @@ Example
 |map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
 |sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
 
-Scenario: TC6064 Test custom layers display correctly in Portal - Admin - Zones - Add Alert
-Given I log in to the home page
-And I click on the admin tab
-And I click on the zones tab
-And I click on the add alert button
-When map is selected by default
-And I have selected a <maptype> from the dropdown
-Then map is updated correctly
-
-Example
-|maps|display_name|URL|min|max|opacity|layer|map_pages|
-|map|barrick1|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|0|
-|sat|barrick2|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|1|
-|hyb|barrick3|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|2|
-|map|barrick4|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|3|
-|sat|barrick5|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|4|
-|hyb|barrick6|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|5|
-|map|barrick7|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|6|
-|sat|barrick8|http://tile.openstreetmap.org/{Z}/{X}/{Y}.png|1|20|.5|7|
-
 Scenario: TC6065 Test custom layers display correctly in Portal - Admin - Organization
 Given I log in to the home page
 And I click on the admin tab
@@ -293,8 +273,8 @@ Scenario: TC6080 Test custom layers display correctly in Portal- Home Tab - Pick
 Given I log in to the home page
 And I hover over the home tab
 And I click on a team
-When map is selected by default
 And I click on trips tab
+When map is selected by default
 And I have selected a <maptype> from the dropdown
 Then map is updated correctly
 
@@ -313,8 +293,8 @@ Scenario: TC6067 Test custom layers display correctly in Portal- Home Tab - Pick
 Given I log in to the home page
 And I hover over the home tab
 And I click on a team
+And I click on live team tab
 When map is selected by default
-And I click on Live Team tab
 And I have selected a <maptype> from the dropdown
 Then map is updated correctly
 
