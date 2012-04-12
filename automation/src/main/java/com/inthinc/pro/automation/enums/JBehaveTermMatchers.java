@@ -15,7 +15,7 @@ public class JBehaveTermMatchers {
     public enum ElementTypes {
         _button("button"), 
         _textField("field", "textfield"),
-        _link("link", "textlink"),
+        _link("link", "textlink", "tab"),
         _dropDown("dropdown", "select"),
         _text("text", "error", "label"),
         _pager("pager", "paging", "index", "indexer"),
