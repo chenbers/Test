@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.LinkedList;
 
+import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.BasicAuthenticationManager;
@@ -20,6 +22,8 @@ import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
+
+import android.util.Log;
 
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
@@ -161,6 +165,33 @@ public class AutomationFileHandler {
         
         fis.close();
         return bytes;
+    }
+
+    public String getLatestFileFromSVN(String url) {
+        try {
+            ISVNAuthenticationManager authManager = new BasicAuthenticationManager("dtanner", "aOURh7PL5v");
+            DAVRepositoryFactory.setup( );
+            SVNURL temp = SVNURL.parseURIDecoded(url);
+            DefaultSVNOptions options = SVNWCUtil.createDefaultOptions(true);
+            SVNClientManager clientManager = SVNClientManager.newInstance(options, authManager);
+            SVNRepository repo = clientManager.createRepository(temp, false);
+            LinkedList<SVNDirEntry> entries = new LinkedList<SVNDirEntry>();
+            repo.getDir("", -1, false, entries);
+            SVNDirEntry lastEntry = null;
+            for (SVNDirEntry entry : entries){
+                if (entry.getName().endsWith(".dwl")){
+                    if (lastEntry == null){
+                        lastEntry = entry;
+                    } else if (lastEntry.getDate().getTime() < entry.getDate().getTime()){
+                        lastEntry = entry;
+                    }
+                }
+            }
+            return lastEntry.getName();
+        } catch (SVNException e) {
+            Log.e("%s", e);
+            return null;
+        }
     }
     
     

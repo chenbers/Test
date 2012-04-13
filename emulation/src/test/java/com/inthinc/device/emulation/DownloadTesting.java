@@ -7,7 +7,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import android.util.Log;
@@ -21,16 +20,14 @@ import com.inthinc.pro.automation.enums.ProductType;
 public class DownloadTesting {
     
     private final static Set<ProductType> tiwiSet = EnumSet.of(ProductType.TIWIPRO_R71, ProductType.TIWIPRO_R74, ProductType.TIWIPRO_R747);
-    private final static Set<ProductType> tiwiProSet = EnumSet.of(ProductType.TIWIPRO_R74, ProductType.TIWIPRO_R747);
-    private final static Set<Addresses> serverSet = EnumSet.of(Addresses.TEEN_QA, Addresses.QA, Addresses.DEV);
+
     private final static String tiwiImei = "500000000000000";
     
     private final static int[] fw = {17210, 17302, 17303, 
                                      17304, 17305, 17401, 
-                                     17404, 17603, 17604};
+                                     17404, 17603, 17604,
+                                     17605};
     
-    
-    private final static int uploadFW = 17605;
     
     @Test
     public void audioFilesFromHessianMatchSVN() {
@@ -82,21 +79,4 @@ public class DownloadTesting {
         }
         assertTrue("Firmware versions didn't all match: " + errors, results);
     }
-    
-    
-    @Test
-    @Ignore
-    public void uploadFirmware(){
-        for (ProductType type : tiwiProSet){
-            for (Addresses server : serverSet){
-                try {
-                    TiwiProDevice tiwi = new TiwiProDevice(type, server);
-                    tiwi.uploadFirmware(uploadFW);
-                } catch (HessianException e ){
-                    Log.wtf("%s", e);
-                }
-            }
-        }
-    }
-
 }
