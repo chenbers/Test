@@ -16,10 +16,13 @@ public class NotewsParser3 implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(NotewsParser3.class);
 
-	public Map parseNote(byte[] data, int noteTypeCode)
+	public Map parseNote(byte[] data)
 	{
 		HashMap attribMap = new HashMap();
+
+		int noteTypeCode = ReadUtil.read(data, 0, 1);
 		NoteType noteType = NoteType.get(noteTypeCode);
+		
 
 		if (noteType != null)
 		{
@@ -30,6 +33,8 @@ public class NotewsParser3 implements NoteParser{
 			{
 				int attribCode = ReadUtil.read(data, offset, 2);
 				offset += 2;
+
+				logger.info("attribCode: " + attribCode);
 				
 				Attrib attrib = Attrib.get(attribCode);
 				

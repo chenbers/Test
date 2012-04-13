@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.comm.parser.attrib.AttribParser;
 import com.inthinc.pro.comm.parser.attrib.AttribParserFactory;
+import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,11 @@ public class NotewsParser2 implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(NotewsParser2.class);
 
-	public Map parseNote(byte[] data, int noteTypeCode)
+	public Map parseNote(byte[] data)
 	{
 		HashMap attribMap = new HashMap();
+		
+		int noteTypeCode = ReadUtil.read(data, 1, 1);
 		NoteType noteType = NoteType.get(noteTypeCode);
 
 		if (noteType != null)

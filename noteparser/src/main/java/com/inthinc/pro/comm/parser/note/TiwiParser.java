@@ -16,7 +16,7 @@ public class TiwiParser implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(TiwiParser.class);
 
-	public Map parseNote(byte[] data, int noteTypeCode)
+	public Map parseNote(byte[] data)
 	{
 		HashMap attribMap = new HashMap();
 

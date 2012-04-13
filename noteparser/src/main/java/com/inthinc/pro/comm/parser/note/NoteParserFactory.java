@@ -36,4 +36,22 @@ public class NoteParserFactory {
         return null;
     }
 
+    public static NoteParser getParserForMethod(String method)
+    {
+    	
+    	NoteParser parser = null;
+		if (method.equalsIgnoreCase("notebc")) 
+			parser =  NOTEBC_PARSER;
+		if (method.equalsIgnoreCase("notews")) 
+			parser = NOTEWS2_PARSER;
+		if (method.equalsIgnoreCase("note")) 
+			parser = TIWIPRO_PARSER;
+		
+		if (parser == null)
+			logger.error("No parser for method: " + method);
+
+		return parser;
+    }
+
+
 }

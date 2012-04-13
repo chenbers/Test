@@ -16,7 +16,7 @@ public class NotebcParser implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(NotebcParser.class);
 
-	public Map parseNote(byte[] data, int noteTypeCode)
+	public Map parseNote(byte[] data)
 	{
 		logger.debug("NotebcParser.parseNote called:");
 		
@@ -31,6 +31,8 @@ public class NotebcParser implements NoteParser{
 			offset += 2;
 			
 			Attrib attrib = Attrib.get(attribCode);
+
+			logger.info("attribCode: " + attribCode);
 			
 			if (attrib != null)
 			{

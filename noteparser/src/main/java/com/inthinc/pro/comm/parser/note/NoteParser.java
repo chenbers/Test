@@ -4,5 +4,5 @@ import java.util.Map;
 
 
 public interface NoteParser {
-	public Map parseNote(byte[] data, int noteTypeCode);
+	public Map parseNote(byte[] data);
 }
