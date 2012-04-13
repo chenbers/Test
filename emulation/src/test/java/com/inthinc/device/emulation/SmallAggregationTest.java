@@ -2,6 +2,7 @@ package com.inthinc.device.emulation;
 
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.device.devices.DeviceBase;
@@ -42,6 +43,7 @@ public class SmallAggregationTest {
     
     
     @Test
+    @Ignore
     public void testTiwi(){
         TiwiProDevice tiwi = new TiwiProDevice(tiwiImei);
         tiwi.getState().getTime().setDate(tiwiStart);
@@ -49,6 +51,7 @@ public class SmallAggregationTest {
     }
     
     @Test
+    @Ignore
     public void testWaysmart(){
         WaysmartDevice ways = new WaysmartDevice(waysImei, waysMcmid, waysDirection);
         ways.getState().getTime().setDate(waysStart);
