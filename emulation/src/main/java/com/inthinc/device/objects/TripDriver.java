@@ -74,17 +74,14 @@ public class TripDriver extends Thread {
             device.power_on_device();
             device.turn_key_on(60);
         }
-        int totalNotes = tripTracker.size()*100;
-        Double currentPercent;
         while (itr.hasNext() && !interrupt){
-            currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
-            int currentPoint = currentPercent.intValue();
+            int currentPoint = tripTracker.percentOfTrip().intValue();
             int speedLimit = device.getState().getSpeedLimit().intValue();
             if (events2[currentPoint] != null){
             	while (!events2[currentPoint].isEmpty()){
                     device.addNote(updateNote(events2[currentPoint].poll().getNote()));
             	}
-        		positions.remove(currentPercent);
+        		positions.remove(currentPoint);
         		events2[currentPoint] = null;
             } else {
             	int wouldBePosition = Collections.binarySearch(positions, currentPoint); 
@@ -117,17 +114,14 @@ public class TripDriver extends Thread {
         notes.add(AutomationDeviceEvents.powerOn(state, tripTracker.currentLocation()).getNote());
         notes.add(AutomationDeviceEvents.ignitionOn(state, tripTracker.currentLocation()).getNote());
         
-        int totalNotes = tripTracker.size()*100;
-        Double currentPercent;
         int speed = 60;
         while (itr.hasNext()){
-            currentPercent = ((tripTracker.currentCount() * 100.0) / totalNotes) * 100;
-            int currentPoint = currentPercent.intValue();
+            int currentPoint = tripTracker.percentOfTrip().intValue();
             if (events2[currentPoint] != null){
             	while (!events2[currentPoint].isEmpty()){
             		notes.add(updateNote(events2[currentPoint].poll().getNote()));
             	}
-        		positions.remove((Object)currentPoint);
+        		positions.remove(currentPoint);
         		events2[currentPoint] = null;
             } else {
             	int wouldBePosition = Collections.binarySearch(positions, currentPoint); 

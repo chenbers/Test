@@ -58,12 +58,14 @@ public class AutomationDeviceEvents {
 	public class IdlingEvent extends AutomationDeviceEvents {
 		private IdlingEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.IDLING, state, location);
-
+			
+            note.addAttr(EventAttr.LOW_IDLE, state.getLowIdle());
+            note.addAttr(EventAttr.HIGH_IDLE, state.getHighIdle());
+            
 			if (state.getProductVersion().equals(ProductType.WAYSMART)){
-				
+			    
 			} else {
-				note.addAttr(EventAttr.LOW_IDLE, state.getLowIdle());
-				note.addAttr(EventAttr.HIGH_IDLE, state.getHighIdle());
+			    
 			}
 			state.setLowIdle(0).setHighIdle(0);
 		}

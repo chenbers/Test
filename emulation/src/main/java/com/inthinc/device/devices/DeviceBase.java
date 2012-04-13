@@ -214,6 +214,12 @@ public abstract class DeviceBase {
         is_speeding();
         return this;
     }
+    
+    public void idle(int lowIdle, int highIdle) {
+        state.setHighIdle(highIdle).setLowIdle(lowIdle);
+        increment_time(lowIdle + highIdle);
+        AutomationDeviceEvents.idling(this);
+    }
 
     public DeviceBase increment_time(Integer increment) {
         state.incrementTime(increment);
@@ -512,6 +518,17 @@ public abstract class DeviceBase {
         }
         return false;
     }
+
+    public DeviceBase unBuckleSeatbelt() {
+        state.setSeatbeltEngaged(false);
+        return this;
+    }
+    
+    public DeviceBase buckleSeatbelt(){
+        state.setSeatbeltEngaged(true);
+        return this;
+    }
+
 
 
 }

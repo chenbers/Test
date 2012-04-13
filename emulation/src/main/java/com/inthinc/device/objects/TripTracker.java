@@ -24,6 +24,8 @@ public class TripTracker implements Iterable<GeoPoint> {
 	private Sbs sbs = null;
 
 	private boolean useSbs = true;
+
+    private int lastSpeedLimit = 70;
     
     private class TripIterator implements Iterator<GeoPoint>{
 
@@ -110,7 +112,8 @@ public class TripTracker implements Iterable<GeoPoint> {
         	if (limit.closestGID == 0){
         		state.getCourse();
         	}
-        	state.setSpeedLimit(limit.speedLimit/100);
+        	lastSpeedLimit = limit.speedLimit/100;
+        	state.setSpeedLimit(lastSpeedLimit);
         }
         state.setHeading(Heading.getHeading(heading));
         
@@ -166,5 +169,17 @@ public class TripTracker implements Iterable<GeoPoint> {
 
     public DeviceState getState() {
         return state;
+    }
+    
+    public Double percentOfTrip(){
+        return (currentCount() / size() * 100.0);
+    }
+    
+    public Sbs getSbs(){
+        return sbs;
+    }
+
+    public int getLastSpeedLimit() {
+        return lastSpeedLimit ;
     }
 }

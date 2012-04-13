@@ -40,7 +40,7 @@ public class GoogleTrips {
     
     private JSONObject sendRequest(GetMethod getMethod){
     	try {
-    		Log.d("sendRequest... "+getMethod.getURI().toString());
+    		Log.d("sendRequest... %s", getMethod.getURI().toString());
             String response = http.httpRequest(getMethod);
             return new JSONObject(response);
             
