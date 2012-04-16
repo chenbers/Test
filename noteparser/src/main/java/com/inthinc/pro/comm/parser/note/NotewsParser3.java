@@ -41,7 +41,7 @@ public class NotewsParser3 implements NoteParser{
 				if (attrib != null)
 				{
 					AttribParser parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
-					offset = parser.parseAttrib(data, offset, attrib, attribMap);
+					offset = parser.parseAttrib(data, offset, attrib.getCode(), attribMap);
 				}
 				else
 				{
@@ -68,34 +68,34 @@ public class NotewsParser3 implements NoteParser{
 			if (!noteType.isStrippedNote())
 			{
 				AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
-				attribParser.parseAttrib(data, 3, Attrib.NOTETIME, attribMap);
+				attribParser.parseAttrib(data, 3, Attrib.NOTETIME.getCode(), attribMap);
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTEFLAGS.getAttribParserType()); 
-				attribParser.parseAttrib(data, 7, Attrib.NOTEFLAGS, attribMap);
+				attribParser.parseAttrib(data, 7, Attrib.NOTEFLAGS.getCode(), attribMap);
 
 				//TO DO: KLUDGE here deciding between version 2 & 3 lat/lng.  Need to fix
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
-				((LatLongParser)attribParser).parseAttrib(data, 9, Attrib.NOTELATLONG, attribMap, 4);
+				((LatLongParser)attribParser).parseAttrib(data, 9, Attrib.NOTELATLONG.getCode(), attribMap, 4);
 		
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEED.getAttribParserType()); 
-				attribParser.parseAttrib(data, 17, Attrib.NOTESPEED, attribMap);
+				attribParser.parseAttrib(data, 17, Attrib.NOTESPEED.getCode(), attribMap);
 
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEEDLIMIT.getAttribParserType()); 
-				attribParser.parseAttrib(data, 18, Attrib.NOTESPEEDLIMIT, attribMap);
+				attribParser.parseAttrib(data, 18, Attrib.NOTESPEEDLIMIT.getCode(), attribMap);
 
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.LINKID.getAttribParserType()); 
-				attribParser.parseAttrib(data, 19, Attrib.LINKID, attribMap);
+				attribParser.parseAttrib(data, 19, Attrib.LINKID.getCode(), attribMap);
 
 				//Odometer size/value different between version 2 and 3 notes, so just read it raw
 				int odometer = ReadUtil.read(data, 23, 4);
 				attribMap.put(String.valueOf(Attrib.NOTEODOMETER.getCode()), String.valueOf(odometer));
 
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.BOUNDARYID.getAttribParserType()); 
-				attribParser.parseAttrib(data, 27, Attrib.BOUNDARYID, attribMap);
+				attribParser.parseAttrib(data, 27, Attrib.BOUNDARYID.getCode(), attribMap);
 
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.DRIVERID.getAttribParserType()); 
-				attribParser.parseAttrib(data, 29, Attrib.DRIVERID, attribMap);
+				attribParser.parseAttrib(data, 29, Attrib.DRIVERID.getCode(), attribMap);
 			}
 		}
 		return attribMap;

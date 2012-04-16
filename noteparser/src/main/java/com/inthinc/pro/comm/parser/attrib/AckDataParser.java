@@ -7,7 +7,7 @@ import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class AckDataParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, Attrib attrib, Map attribMap) {
+	public int parseAttrib(byte[] data, int offset, int attribCode, Map attribMap) {
 		final int FORWARD_COMMAND_ID_LEN = 8;
 		
 		//Subtract FORWARD_COMMAND_ID_LEN from data.length and then subtract the ofset to get length of
@@ -25,7 +25,7 @@ public class AckDataParser implements AttribParser {
 				AttribParserType parserType = forwardCommand.getParserType();   
 				AttribParser parser = AttribParserFactory.getParserForParserType(parserType);
 
-				offset = parser.parseAttrib(data, offset, attrib, attribMap);
+				offset = parser.parseAttrib(data, offset, code, attribMap);
 			}
 			else
 			{
@@ -60,7 +60,7 @@ public class AckDataParser implements AttribParser {
 				}
 				
 				if (value != null)
-					attribMap.put(String.valueOf(attrib.getCode()), String.valueOf(value));
+					attribMap.put(String.valueOf(attribCode), String.valueOf(value));
 			}
 		}
 		

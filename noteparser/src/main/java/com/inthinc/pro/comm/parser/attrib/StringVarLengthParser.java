@@ -4,10 +4,10 @@ import java.util.Map;
 
 public class StringVarLengthParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, Attrib attrib, Map attribMap) {
+	public int parseAttrib(byte[] data, int offset, int code, Map attribMap) {
 
 		int maxLength = 500;
-		AttribParserType parserType = attrib.getAttribParserType();
+		AttribParserType parserType = Attrib.get(code).getAttribParserType();
 			
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH4))
         	maxLength = 4;
@@ -27,7 +27,7 @@ public class StringVarLengthParser implements AttribParser {
 		
 		assert(data.length > offset + length);
 		
-		attribMap.put(String.valueOf(attrib.getCode()), new String(data, offset, length));
+		attribMap.put(String.valueOf(code), new String(data, offset, length));
 
 		return offset+(length+1);
 	}
