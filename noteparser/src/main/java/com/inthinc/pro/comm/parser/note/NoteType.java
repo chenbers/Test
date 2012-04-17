@@ -1,9 +1,14 @@
 package com.inthinc.pro.comm.parser.note;
 
+import com.inthinc.noteservice.aggregation.DailyAggUtil;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public enum NoteType {
 	FULLEVENT(1, new Attrib[]{Attrib.DELTAVS}),
@@ -202,6 +207,7 @@ public enum NoteType {
 	private Attrib[] attribs;
 	private Integer code;
 	private static final Map<Integer,NoteType> lookup = new HashMap<Integer,NoteType>();
+    private static Logger logger = LoggerFactory.getLogger(NoteType.class);
 	
     private NoteType(Integer code, Attrib[] attribs)
     {
