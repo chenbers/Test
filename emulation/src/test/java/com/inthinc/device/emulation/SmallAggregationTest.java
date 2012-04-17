@@ -81,6 +81,7 @@ public class SmallAggregationTest {
         device.unBuckleSeatbelt();
         int i = 0;
         boolean accel = true, turn = true, bump = true;
+        boolean[] speedCats = {true, true, true, true, true};
         while (itr.hasNext()){
             i = trip.percentOfTrip().intValue();
             int speed = trip.getLastSpeedLimit();
@@ -106,7 +107,27 @@ public class SmallAggregationTest {
             
             if(i>speeding[0] && i<speeding[1]){
             	speed += speeding[2];
-            }
+            } else if ((i>10 || speed < 30) && speedCats[0]) {
+            	speedCats[0] = false;
+            	state.setTopSpeed(29).setSpeedingDistanceX100(50).setAvgSpeed(27).setSpeedingSpeedLimit(25).setSpeed(25);
+            	AutomationDeviceEvents.speeding(device);
+            } else if ((i>20 || speed > 30 && speed < 41) && speedCats[1]) {
+            	speedCats[1] = false;
+            	state.setTopSpeed(40).setSpeedingDistanceX100(50).setAvgSpeed(37).setSpeedingSpeedLimit(35).setSpeed(35);
+            	AutomationDeviceEvents.speeding(device);
+            } else if ((i>30 || speed > 40 && speed < 55) && speedCats[2]) {
+            	speedCats[2] = false;
+            	state.setTopSpeed(53).setSpeedingDistanceX100(50).setAvgSpeed(47).setSpeedingSpeedLimit(45).setSpeed(45);
+            	AutomationDeviceEvents.speeding(device);
+            } else if ((i>40 || speed > 54 && speed < 65) && speedCats[3]) {
+            	speedCats[3] = false;
+            	state.setTopSpeed(64).setSpeedingDistanceX100(50).setAvgSpeed(57).setSpeedingSpeedLimit(55).setSpeed(55);
+            	AutomationDeviceEvents.speeding(device);
+            } else if ((i>50 || speed > 64) && speedCats[4]) {
+            	speedCats[4] = false;
+            	state.setTopSpeed(70).setSpeedingDistanceX100(50).setAvgSpeed(68).setSpeedingSpeedLimit(65).setSpeed(65);
+            	AutomationDeviceEvents.speeding(device);
+            } 
             
             device.goToNextLocation(speed, false);
         }
