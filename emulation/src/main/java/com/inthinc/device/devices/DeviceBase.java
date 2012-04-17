@@ -482,9 +482,8 @@ public abstract class DeviceBase {
         state.setSpeedingDistanceX100((int) (speeding_distance * 100));
         
         state.setAvgSpeed(avgSpeed);
-        
-        SpeedingEvent event = AutomationDeviceEvents.speeding(state, tripTracker.currentLocation());
-        addEvent(event);
+
+        AutomationDeviceEvents.speeding(this);
         return this;
     }
 
@@ -526,6 +525,10 @@ public abstract class DeviceBase {
     
     public DeviceBase buckleSeatbelt(){
         state.setSeatbeltEngaged(true);
+        if (state.getSeatbeltDistanceX100()!=0) {
+        	AutomationDeviceEvents.seatbelt(this);
+        	state.setSeatbeltDistanceX100(0);
+        }
         return this;
     }
 

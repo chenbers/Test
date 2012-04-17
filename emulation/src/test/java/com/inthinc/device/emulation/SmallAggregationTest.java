@@ -25,7 +25,7 @@ public class SmallAggregationTest {
     private static final int waysStart = 1334078618; // Needs to be updated after running
                                                      // so trips don't stomp on themselves.
     
-    private static final String tiwiImei = "FAKEIMEIDEVICE";
+    private static final String tiwiImei = "DEVICEDOESNTEXIST";
     private static final int tiwiStart = 1334078618; // Needs to be updated after running
                                                      // so trips don't stomp on themselves.
     
@@ -40,10 +40,12 @@ public class SmallAggregationTest {
     private static final int bumpSeverity = 100;
     private static final int accelSeverity = 70;
     
+    private static final int[] speeding = {20,25,10};
+    
     
     
     @Test
-    @Ignore
+//    @Ignore
     public void testTiwi(){
         TiwiProDevice tiwi = new TiwiProDevice(tiwiImei);
         tiwi.getState().getTime().setDate(tiwiStart);
@@ -81,6 +83,7 @@ public class SmallAggregationTest {
         boolean accel = true, turn = true, bump = true;
         while (itr.hasNext()){
             i = trip.percentOfTrip().intValue();
+            int speed = trip.getLastSpeedLimit();
             if (i==unbuckledTime && !state.isSeatbeltEngaged()){
                 device.buckleSeatbelt();
                 device.increment_time(30);
@@ -101,7 +104,11 @@ public class SmallAggregationTest {
                 device.increment_time(30);
             }
             
-            device.goToNextLocation(trip.getLastSpeedLimit(), false);
+            if(i>speeding[0] && i<speeding[1]){
+            	speed += speeding[2];
+            }
+            
+            device.goToNextLocation(speed, false);
         }
         
         device.idle(idleTime/4, idleTime/4);
@@ -110,3 +117,4 @@ public class SmallAggregationTest {
     }
 
 }
+

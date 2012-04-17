@@ -548,7 +548,7 @@ public class DeviceState {
 		
 		odometerX100 += delta;
 		
-		seatbeltDistanceX100     = seatbeltEngaged ? seatbeltDistanceX100     + delta : seatbeltDistanceX100;
+		seatbeltDistanceX100     = seatbeltEngaged ? seatbeltDistanceX100             : seatbeltDistanceX100  + delta;
 		noDriverDistanceX100     = noDriver        ? noDriverDistanceX100     + delta : noDriverDistanceX100; 
 		noTrailerDistanceX100    = noTrailer       ? noTrailerDistanceX100    + delta : noTrailerDistanceX100;
 		headlightOffDistanceX100 = headlightsOff   ? headlightOffDistanceX100 + delta : headlightOffDistanceX100;

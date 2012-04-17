@@ -172,7 +172,9 @@ public class TripTracker implements Iterable<GeoPoint> {
     }
     
     public Double percentOfTrip(){
-        return (currentCount() / size() * 100.0);
+        Double size = size() * 1.0;
+    	Double valueToReturn = ((currentPoint*1.0) / size * 100.0);
+    	return valueToReturn;
     }
     
     public Sbs getSbs(){
