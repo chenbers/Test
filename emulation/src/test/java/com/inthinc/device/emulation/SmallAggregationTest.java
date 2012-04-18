@@ -45,7 +45,7 @@ public class SmallAggregationTest {
     
     
     @Test
-//    @Ignore
+    @Ignore
     public void testTiwi(){
         TiwiProDevice tiwi = new TiwiProDevice(tiwiImei);
         tiwi.getState().getTime().setDate(tiwiStart);
