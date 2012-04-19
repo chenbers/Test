@@ -72,7 +72,7 @@ public class AutoPageRunner {
         location = location.replace(server.getWebAddress(), "");
 
         if (location.contains(";")){
-            location = location.substring(0, location.indexOf(";")-1);
+            location = location.substring(0, location.indexOf(";"));
         }
         
         Matcher mat = Pattern.compile("[0-9]").matcher(location); 
@@ -197,7 +197,7 @@ public class AutoPageRunner {
     
     private Step given(PendingStep step){
         try {
-            if (pageSpecificStep(workingOnStep)){
+            if (pageSpecificStep(workingOnStep)) {
                 return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("load"));
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
@@ -215,7 +215,7 @@ public class AutoPageRunner {
     }
     
     private ElementBase getElement() throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
-        elementType = ElementTypes.getAlias(workingOnStep);
+        elementType = ElementTypes.getAlias(workingOnStep); 
         Object elementCategory = currentPageClass.getMethod(ElementTypes.getTypeFromString(workingOnStep)).invoke(currentPage);
         return (ElementBase) getElement(elementCategory);
         
