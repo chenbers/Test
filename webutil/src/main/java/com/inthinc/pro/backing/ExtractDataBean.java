@@ -22,7 +22,6 @@ import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.scoring.Calculator;
 import com.inthinc.pro.scoring.ScoringNoteProcessor;
 import com.inthinc.pro.scoring.ScoringNoteSorter;
 
