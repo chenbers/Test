@@ -134,7 +134,7 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     protected WaysmartDevice set_IMEI(HashMap<DeviceProps, String> settings) {
-    	Log.d("set_IMEI %s", "IMEI: " + state.getImei() + ", Server: " + portal);
+    	Log.d("set_IMEI %s", "IMEI: " + state.getImei() + ", Server: " + server);
         state.setSetting(DeviceProps.MCM_ID_W, state.getMcmID());
         state.setSetting(DeviceProps.WITNESS_ID_W, state.getImei());
         return this;
@@ -153,9 +153,9 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     @Override
-    protected WaysmartDevice set_server(Addresses server) {
+    public WaysmartDevice set_server(Addresses server) {
         mcmProxy = new MCMProxyObject(server);
-        portal = server;
+        this.server = server;
         String url, port;
         url = server.getMCMUrl();
         port = server.getWaysPort().toString();

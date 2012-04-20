@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
+import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.sbs.downloadmanager.ConcreteDownloadManager;
 import com.inthinc.sbs.regions.SbsMap;
@@ -189,6 +190,8 @@ public class Sbs implements SpeedLimitProvider{
 					postProcessLoad(map);
 				}
 			}
+		} catch (HessianException e){
+		    Log.d(TAG, e.getLocalizedMessage());
 		} catch (InterruptedException e) {
 			Log.e(TAG, "LoadError, Interrupted Exception " + e.getLocalizedMessage());
 		} catch (ExecutionException e) {

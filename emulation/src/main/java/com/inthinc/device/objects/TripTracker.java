@@ -2,6 +2,7 @@ package com.inthinc.device.objects;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
@@ -69,7 +70,12 @@ public class TripTracker implements Iterable<GeoPoint> {
     
     public TripTracker getTrip(String startPoint, String endPoint){
         GoogleTrips trips = new GoogleTrips();
-        trip.addAll(trips.getTrip(startPoint, endPoint));
+        setPoints(trips.getTrip(startPoint, endPoint));
+        return this;
+    }
+    
+    public TripTracker setPoints(List<GeoPoint> points){
+        trip.addAll(points);
         return this;
     }
     

@@ -411,7 +411,7 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     @Override
-    protected TiwiProDevice set_server(Addresses server) {
+    public TiwiProDevice set_server(Addresses server) {
         mcmProxy = new MCMProxyObject(server);
         state.setSetting(DeviceProps.SERVER_PORT_T, server.getMCMPort()
                 .toString());
@@ -474,7 +474,7 @@ public class TiwiProDevice extends DeviceBase {
         try {
             getFirmwareFromSVN(version);
             
-            DownloadServers server = DownloadServers.valueOf(portal.name());
+            DownloadServers server = DownloadServers.valueOf(this.server.name());
             DownloadService upload = (DownloadService) new AutomationHessianFactory().createProxy(DownloadService.class, server.getAddress(), server.getPort());
             File svnFile = new File(getLastDownload());
             FileInputStream fis = new FileInputStream(svnFile);

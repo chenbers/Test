@@ -42,7 +42,7 @@ public abstract class DeviceBase {
     protected MCMProxyObject mcmProxy;
     protected int note_count = 4;
     protected final NoteManager notes;
-    protected Addresses portal;
+    protected Addresses server;
     protected Object reply;
     protected Sbs sbs;
     
@@ -55,7 +55,7 @@ public abstract class DeviceBase {
 
     public DeviceBase(String IMEI, ProductType version,
             Map<DeviceProps, String> settings, Addresses server) {
-    	this.portal = server;
+    	this.server = server;
         state = new DeviceState(IMEI, version);
         state.setSettings(settings);
         sbs = new Sbs(IMEI, state.getSbsBaseRevision(), server);
@@ -69,7 +69,7 @@ public abstract class DeviceBase {
 
     public DeviceBase(DeviceState state, Addresses server) {
         sbs = new Sbs(state.getImei(), state.getSbsBaseRevision(), server);
-    	this.portal = server;	
+    	this.server = server;	
     	this.state = state;
         tripTracker = new TripTracker(state);
         speed_points = new ArrayList<Integer>();
@@ -126,7 +126,7 @@ public abstract class DeviceBase {
 
 
     private DeviceBase configurate_device() {
-        if (portal == Addresses.TEEN_PROD) {
+        if (server == Addresses.TEEN_PROD) {
             return this;
         }
         dump_settings();
@@ -141,7 +141,7 @@ public abstract class DeviceBase {
     protected abstract DeviceBase createAckNote(Map<String, Object> reply);
 
     public DeviceBase dump_settings() {
-		if (portal == Addresses.TEEN_PROD) {
+		if (server == Addresses.TEEN_PROD) {
 			return this;
 		}
 
@@ -239,7 +239,7 @@ public abstract class DeviceBase {
         state.setExceedingRPMLimit(false);
         state.setSeatbeltEngaged(false);
 
-        set_server(portal);
+        set_server(server);
 
         return this;
     }
@@ -334,7 +334,7 @@ public abstract class DeviceBase {
     protected abstract Integer processCommand(Map<String, Object> reply);
 
     public DeviceBase requestSettings() {
-		if (portal == Addresses.TEEN_PROD) {
+		if (server == Addresses.TEEN_PROD) {
 			return this;
 		}
 		if (state.getWMP() >= 17013) {
@@ -390,7 +390,7 @@ public abstract class DeviceBase {
         return this;
     }
 
-    protected abstract DeviceBase set_server(Addresses server);
+    public abstract DeviceBase set_server(Addresses server);
 
     public DeviceBase set_settings(DeviceProps key, Integer value) {
         return set_settings(key, value.toString());

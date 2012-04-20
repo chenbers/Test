@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -66,6 +68,8 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 	private List<SbsMap> downloadedMaps;
 	private AtomicBoolean downloadsEnabled = new AtomicBoolean(false);
 	private final String mcmid;
+	
+	private static final Set<Integer> ignoreThisMap = new HashSet<Integer>();
 	
 
 	private final Map<Integer,AutomationCalendar> mapcheck;
@@ -255,6 +259,9 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 	}
 
 	DownloadedFile actionGetSbsEdit(int fileAsInt, int b, int cv, int nv) {
+	    if (ignoreThisMap.contains(fileAsInt)){
+	        return new DownloadedFile();
+	    }
 		Map<String,Object> m = new HashMap<String, Object>();
 		m.put("b",b);
 		m.put("f",fileAsInt);
@@ -266,6 +273,9 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 		try {
 			 result = serverCall.getSbsEdit(this.mcmid, m);
 		} catch (HessianException e){
+		    if (e.getErrorCode() == 304){
+                ignoreThisMap.add(fileAsInt);
+            }
 			Integer response = e.getErrorCode();
 			Log.e(TAG,String.format("actionGetSbsEdit:  Integer Error returned: %d",response.intValue()));
 			df = new DownloadedFile(response);
@@ -302,7 +312,9 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 	 * @return number of maps needing an update, -1 if attempt failed
 	 */
 	int actionCheckSbsEdit(int fileAsInt, int b, int cv) {
-		
+		if (ignoreThisMap.contains(fileAsInt)){
+		    return 0;
+		}
 		int numMapsToUpdate = 0;
 		
 		Map<String,Object> m = new HashMap<String, Object>();
@@ -318,6 +330,9 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 			result = serverCall.checkSbsEdit(mcmid, maps);
 			Log.i(TAG, result);
 		} catch (HessianException e){
+		    if (e.getErrorCode() == 304){
+                ignoreThisMap.add(fileAsInt);
+            }
 			Integer response = e.getErrorCode();
 			Log.d(TAG,String.format("actionGetSbsEdit:  Integer Error returned: %d",response.intValue()));
 			numMapsToUpdate = -1;
@@ -352,18 +367,27 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 
 	@SuppressWarnings("unchecked")
 	DownloadedFile actionGetSbsBase(int fileAsInt, int b) {
-		
+		if (ignoreThisMap.contains(fileAsInt)){
+		    return new DownloadedFile();
+		}
 		Map<String,Object> m = new HashMap<String, Object>();
 		m.put("b",Integer.valueOf(b));
 		m.put("f",Integer.valueOf(fileAsInt));
 		
 		Log.d(TAG,String.format("actionGetSbsBase: %d,%d",fileAsInt,b));
 		DownloadedFile df = null;
-		Object result = serverCall.getSbsBase(mcmid, m);
-		if(result == null){
-			Log.e(TAG,"actionGetSbsBase:  Null result returned");
-			df = new DownloadedFile();
-		}else if(result instanceof Integer){
+		Object result = null;
+		try {
+		    result = serverCall.getSbsBase(mcmid, m);
+		} catch (HessianException e){
+		    if (e.getErrorCode() == 304){
+		        ignoreThisMap.add(fileAsInt);
+		    }
+            Log.d(TAG,"actionGetSbsBase:  Null result returned");
+            return new DownloadedFile();
+		}
+		
+		if(result instanceof Integer){
 			Integer response = (Integer) result;
 			Log.e(TAG,String.format("actionGetSbsBase:  Integer Error returned: %d",response.intValue()));
 			df = new DownloadedFile(((Integer) result).intValue());
@@ -518,11 +542,15 @@ public final class ConcreteDownloadManager implements SbsDownloadManager {
 		Log.d(TAG,String.format("checkSbsSubscribed: %d,%d",fileAsInt,base));
 		args.add(mcmid);
 		args.add(m);
-
-		Object result = serverCall.checkSbsSubscribed(mcmid, m);
-		if(result == null){
-			Log.e(TAG,"checkSbsSubscribed:  Null result returned");
-		}else if(result instanceof Integer){
+		Object result = null;
+		try {
+		    result = serverCall.checkSbsSubscribed(mcmid, m);
+		} catch (HessianException e){
+		    Log.e(TAG,"checkSbsSubscribed:  Null result returned");
+		    return subsResult;
+		}
+		
+		if(result instanceof Integer){
 			Integer response = (Integer) result;
 			Log.e(TAG,String.format("checkSbsSubscribed:  Integer Error returned: %d",response.intValue()));
 			subsResult = new SubscriptionResult(response);
