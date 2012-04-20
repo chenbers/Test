@@ -48,13 +48,14 @@ public abstract class AbstractPage extends MasterTest implements Page {
     
     
     /**
-     * Same as {@link #verifyOnPage()}, only does not add errors if NOT on page.
+     * Page method to see what page the portal is currently on.
      * @return true if on page
      */
     public Boolean isOnPage() {
-        ElementBase test = new ElementBase() {};
-        return test.isElementsPresent(checkMe);
+        return checkIsOnPage(); 
     }
+    
+    protected abstract boolean checkIsOnPage();
 
     @Override
     public String getExpectedPath() {
