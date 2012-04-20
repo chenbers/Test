@@ -201,4 +201,10 @@ public class PageLiveFleet extends NavigationBar {
         return LiveFleetEnum.DEFAULT_URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

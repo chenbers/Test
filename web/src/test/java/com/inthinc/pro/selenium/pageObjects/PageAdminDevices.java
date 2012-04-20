@@ -111,6 +111,13 @@ public class PageAdminDevices extends AdminTables {
     public AdminDevicesPopUps _popUp(){
         return new AdminDevicesPopUps();
     }
+
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
     
 }

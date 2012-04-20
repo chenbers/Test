@@ -310,4 +310,11 @@ public class PageAdminEditDevice extends AdminBar {
     public AdminEditDevicePopUps _popUp() {
         return new AdminEditDevicePopUps();
     }
+
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

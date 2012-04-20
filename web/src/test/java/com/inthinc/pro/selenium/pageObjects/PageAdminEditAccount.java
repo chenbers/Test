@@ -233,4 +233,10 @@ public class PageAdminEditAccount extends AdminBar {
         return AdminAccountDetailsEnum.URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

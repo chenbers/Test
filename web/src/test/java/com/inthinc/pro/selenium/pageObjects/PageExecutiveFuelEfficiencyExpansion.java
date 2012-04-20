@@ -130,6 +130,12 @@ public class PageExecutiveFuelEfficiencyExpansion extends ExecutiveExpansionBar 
     public SeleniumEnums setUrl() {
         return FuelEfficiencyExpansionEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
     
 

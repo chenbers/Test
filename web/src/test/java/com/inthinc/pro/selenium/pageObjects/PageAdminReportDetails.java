@@ -98,4 +98,10 @@ public class PageAdminReportDetails extends AdminBar {
     public SeleniumEnums setUrl() {
         return AdminReportDetailsEnum.URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

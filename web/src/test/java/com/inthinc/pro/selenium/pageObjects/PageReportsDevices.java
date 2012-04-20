@@ -172,4 +172,10 @@ public class PageReportsDevices extends ReportsBar {
     public SeleniumEnums setUrl() {
         return DeviceReportEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

@@ -620,4 +620,10 @@ public class PageAdminOrganization extends AdminBar{
     public SeleniumEnums setUrl() {
         return AdminOrganizationEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

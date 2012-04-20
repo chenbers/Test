@@ -117,4 +117,11 @@ public class PageLogin extends Masthead {
     public SeleniumEnums setUrl() {
         return LoginEnum.LOGIN_URL;
     }
+
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

@@ -328,4 +328,10 @@ public class PageAdminRedFlagDetails extends AdminBar {
     public SeleniumEnums setUrl() {
         return AdminRedFlagsDetailsEnum.URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

@@ -89,4 +89,10 @@ public class PageTeamOverallScore extends TeamBar {
         return TeamOverallEnum.DEFAULT_URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

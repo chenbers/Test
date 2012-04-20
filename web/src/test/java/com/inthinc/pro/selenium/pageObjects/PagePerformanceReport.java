@@ -73,4 +73,10 @@ public class PagePerformanceReport extends ReportsBar {
     public SeleniumEnums setUrl() {
         return PerformanceReportEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

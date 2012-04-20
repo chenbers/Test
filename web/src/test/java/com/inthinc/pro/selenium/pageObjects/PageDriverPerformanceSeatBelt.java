@@ -162,5 +162,10 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
     public SeleniumEnums setUrl() {
         return DriverPerformanceSeatBeltEnum.DEFAULT_URL;
     }
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

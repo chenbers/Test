@@ -62,5 +62,11 @@ public class PageTeamTrips extends TeamBar {
     public SeleniumEnums setUrl() {
         return TeamTripsEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

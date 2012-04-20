@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.jbehave;
 
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -73,18 +72,30 @@ public class AutoPageRunner {
 
         if (location.contains(";")){
             location = location.substring(0, location.indexOf(";"));
-        }
+        } 
         
         Matcher mat = Pattern.compile("[0-9]").matcher(location); 
-        if (mat.find()){
-            location.substring(0, mat.end()-1);
+        while (mat.find()){
+            String start = location.substring(0, mat.end()-2);
+            String end;
+            if (mat.end() != location.length()){
+                end = location.substring(mat.end()+1);
+            } else {
+                end = "";
+            }
+            location = start + end;
         }
         
-        currentPage = pageMap.get(location);
-        if (currentPage!=null){
+        if (pageMap.containsKey(location)){
+            currentPage = pageMap.get(location);    
             currentPageClass = currentPage.getClass();
+        } else {
+            for (AbstractPage page : pageMap.values()){
+                if (page.isOnPage()){
+                    currentPage = page;
+                }
+            }
         }
-        
     }
     
     private void setClassMethods(Class<?> clazz){
@@ -112,7 +123,7 @@ public class AutoPageRunner {
         
         if (stepType == StepType.GIVEN){
             returnStep = given(step);
-        } else if (stepType == StepType.WHEN){
+        } else if (stepType == StepType.WHEN) { 
             returnStep = when(step);
         } else {
             returnStep = then(step);

@@ -109,4 +109,10 @@ public class PageAdminUserDetails extends AdminBar {
         return (firstname + " " + middlename + " " + lastname + " " + suffix).replace("  ", " ").trim();
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

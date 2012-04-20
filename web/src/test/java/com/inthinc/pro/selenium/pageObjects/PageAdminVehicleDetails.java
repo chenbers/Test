@@ -138,4 +138,10 @@ public class PageAdminVehicleDetails extends AdminBar {
     public SeleniumEnums setUrl() {
         return AdminVehicleDetailsEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

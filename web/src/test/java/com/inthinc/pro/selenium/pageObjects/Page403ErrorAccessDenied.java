@@ -48,5 +48,11 @@ public class Page403ErrorAccessDenied extends Masthead {
     public SeleniumEnums setUrl() {
         return null;
     }
-        
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

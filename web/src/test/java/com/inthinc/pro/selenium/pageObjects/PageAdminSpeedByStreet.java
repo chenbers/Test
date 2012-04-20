@@ -179,4 +179,10 @@ public class PageAdminSpeedByStreet extends AdminBar {
         return new AdminSpeedByStreetPopUps();
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

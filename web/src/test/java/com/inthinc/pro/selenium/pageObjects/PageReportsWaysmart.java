@@ -113,4 +113,10 @@ public class PageReportsWaysmart extends ReportsBar {
     public SeleniumEnums setUrl() {
         return WaysmartReportEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

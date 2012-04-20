@@ -84,4 +84,10 @@ public class PageNotificationsDriverLogins extends NotificationsEventsBar {
     public SeleniumEnums setUrl() {
         return NotificationsDriverLoginsEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

@@ -254,4 +254,10 @@ public class PageAdminZones extends AdminBar {
     public SeleniumEnums setUrl() {
         return AdminZonesEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

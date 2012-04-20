@@ -102,4 +102,10 @@ public class PageNotificationsZones extends NotificationsEventsBar {
         return NotificationsZonesEnum.URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

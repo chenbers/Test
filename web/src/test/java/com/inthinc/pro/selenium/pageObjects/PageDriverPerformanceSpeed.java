@@ -260,5 +260,11 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
     public SeleniumEnums setUrl() {
         return DriverPerformanceSpeedEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

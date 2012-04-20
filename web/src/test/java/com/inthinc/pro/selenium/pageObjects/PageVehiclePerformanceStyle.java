@@ -221,5 +221,11 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
     public SeleniumEnums setUrl() {
         return VehiclePerformanceStyleEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

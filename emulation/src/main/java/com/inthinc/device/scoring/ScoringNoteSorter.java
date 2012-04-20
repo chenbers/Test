@@ -32,17 +32,17 @@ public class ScoringNoteSorter {
 	private HashMap<Long, Map<String, Integer>> speeding;
 	private HashMap<Long, Map<String, Integer>> seatbelt;
 
-	private Integer[] categories;
+	private Integer[] categoryMileage;
 
 	private int mileage;
 
 
 	
 
-	public void preProcessNotes(List<Map<String, Object>> lotsANotes, ProductType type){
+	public void preProcessNotes(List<Map<String, Object>> notes, ProductType type){
 
-		Log.i("Number of Notes == "+lotsANotes.size());
-		speedCategories(lotsANotes, type);
+		Log.i("Number of Notes == "+notes.size());
+		speedCategories(notes, type);
 		
 		aggressive = new HashMap<Long, Map<String, Integer>>();
 		idleing = new HashMap<Long, Map<String, Integer>>();
@@ -52,10 +52,10 @@ public class ScoringNoteSorter {
 //		mpg.put("mpgOdometer", new ArrayList<Integer>());
 //		mpg.put("mpg", new ArrayList<Integer>());
 		
-		Iterator<Map<String, Object>> itr = lotsANotes.iterator();
+		Iterator<Map<String, Object>> itr = notes.iterator();
 		mileage = 0;
 		if (type.equals(ProductType.WAYSMART))
-			mileage = ((Integer)lotsANotes.get(0).get(odometer))-((Integer)lotsANotes.get(lotsANotes.size()-1).get(odometer));
+			mileage = ((Integer)notes.get(0).get(odometer))-((Integer)notes.get(notes.size()-1).get(odometer));
 		
 		while (itr.hasNext()) {
 			
@@ -141,7 +141,7 @@ public class ScoringNoteSorter {
 			else miles[4]+=m;
 		}
 		Log.i( "Mile Categories  ==  " +miles[0]+", "+miles[1]+", "+miles[2]+", "+miles[3]+", "+miles[4]);
-		categories = miles;
+		categoryMileage = miles;
 	}
 	
 	public HashMap<Long, Map<String, Integer>> getAggressive() {
@@ -161,7 +161,7 @@ public class ScoringNoteSorter {
 		return mileage;
 	}
 	
-	public Integer[] getCategorical() {
-		return categories;
+	public Integer[] getMileageBuckets() {
+		return categoryMileage;
 	}
 }

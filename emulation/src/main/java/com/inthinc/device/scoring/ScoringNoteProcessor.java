@@ -1,7 +1,6 @@
 package com.inthinc.device.scoring;
 
 import java.io.StringWriter;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -18,20 +17,20 @@ public class ScoringNoteProcessor {
 	
 	public static enum UnitType {DRIVER, VEHICLE}; 
 
-	private final Double a = -10.4888220818923;
-	private final Double b = 1.16563268601352;
-	private final Double agg_bump = 0.36351;
-	private final Double agg_turn = 0.412991;
-	private final Double agg_brake = 0.164130;
-	private final Double agg_accel = 0.0593694;
+	private final Double a = -10.4888220818923; // Offset for scores in log scale.
+	private final Double b = 1.16563268601352;  // Scale factor for scores in log scale.
+	private final Double agg_bump = 0.270663;   // Percent of scores for bump  (scale factor used to compute bump-only scores)
+	private final Double agg_turn = 0.321069;   // Percent of scores for turn  (scale factor used to compute turn-only scores)
+	private final Double agg_brake = 0.382325;  // Percent of scores for brake (scale factor used to compute brake-only scores)
+	private final Double agg_accel = 0.0259425; // Percent of scores for accel (scale factor used to compute accel-only scores)
 
 	private SiloService hessian;
-	private ScoringNoteSorter processor = new ScoringNoteSorter();
+	private ScoringNoteSorter sorter = new ScoringNoteSorter();
 	
 	private Map<String, Double> scores;
 	
 	
-	private Map<Long, Map<String, Integer>> speeding, aggressive, seatbelt;
+//	private Map<Long, Map<String, Integer>> speeding, aggressive, seatbelt;
 	private Integer[] categories;
 	private double accel;
 	private double brake;
@@ -63,41 +62,38 @@ public class ScoringNoteProcessor {
 		return scores;
 	}
 	
-	public void changeServers(Addresses server){
+	public void setServer(Addresses server){
 		hessian = new AutomationHessianFactory().getPortalProxy(server);
 	}
 	
 	private void getVehicleNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
-		processor.preProcessNotes(hessian.getVehicleNote(ID, start.epochSeconds(), stop.epochSeconds(), 1, new Integer[]{}), deviceType);
-		theResultsAreIn();
+		sorter.preProcessNotes(hessian.getVehicleNote(ID, start.epochSeconds(), stop.epochSeconds(), 1, new Integer[]{}), deviceType);
+		calculateScores();
 	}
 	
 	private void getDriverNotes(Integer ID, AutomationCalendar start, AutomationCalendar stop){
-		processor.preProcessNotes(hessian.getDriverNote(ID, start.epochSeconds(), stop.epochSeconds(), 1, new Integer[]{}), deviceType );
-		theResultsAreIn();
+		sorter.preProcessNotes(hessian.getDriverNote(ID, start.epochSeconds(), stop.epochSeconds(), 1, new Integer[]{}), deviceType );
+		calculateScores();
 	}
 	
-	private void theResultsAreIn() {
-		aggressive = processor.getAggressive();
-		speeding = processor.getSpeeding();
-		seatbelt = processor.getSeatBelt();
-		mileage = processor.getMileage();
-		categories = processor.getCategorical();
+	private void calculateScores() {
+//		aggressive = processor.getAggressive();
+//		speeding = processor.getSpeeding();
+//		seatbelt = processor.getSeatBelt();
+		mileage = sorter.getMileage();
+		categories = sorter.getMileageBuckets();
 	}
 	
 	
 	private Double drivingStyleScore() {
-		Iterator<Long> itr = aggressive.keySet().iterator();
 		accel=0.0; brake=0.0; turn=0.0; bump=0.0;
 		
-		while (itr.hasNext()) {
-			Long noteID = itr.next();
-			Log.d("Processing Aggressive note == " +noteID);
-			Map<String, Integer> dumbDriver = aggressive.get(noteID);
-			Double deltaX = dumbDriver.get("deltaX").doubleValue();
-			Double deltaY = dumbDriver.get("deltaY").doubleValue();
-			Double deltaZ = dumbDriver.get("deltaZ").doubleValue();
-			Double speed = dumbDriver.get("speed").doubleValue();
+		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getAggressive().entrySet()){
+			Log.d("Processing Aggressive note == " +note.getKey());
+			Double deltaX = note.getValue().get("deltaX").doubleValue();
+			Double deltaY = note.getValue().get("deltaY").doubleValue();
+			Double deltaZ = note.getValue().get("deltaZ").doubleValue();
+			Double speed  = note.getValue().get("speed" ).doubleValue();
 			
 			if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > Math.abs(deltaZ)) {
 				if (deltaX>0) accel += ScoringFormulas.xSeverity(deltaX, speed);
@@ -123,13 +119,10 @@ public class ScoringNoteProcessor {
 	private Double seatBeltScore() {
 		seatbeltscore=0.0;
 		
-		Iterator<Long> itr = seatbelt.keySet().iterator();
-		while (itr.hasNext()) {
-			Long noteID = itr.next();
-			Log.d("Processing Seatbelt note == " +noteID);
-			Map<String, Integer> badDriver = seatbelt.get(noteID);
-			Double topSpeed = badDriver.get("topSpeed").doubleValue();
-			Double distance = badDriver.get("distance").doubleValue();
+		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSeatBelt().entrySet()) {
+			Log.d("Processing Seatbelt note == " +note.getKey());
+			Double topSpeed = note.getValue().get("topSpeed").doubleValue();
+			Double distance = note.getValue().get("distance").doubleValue();
 			
 			seatbeltscore += Math.pow(topSpeed, 2.0) * distance;
 		}
@@ -141,49 +134,44 @@ public class ScoringNoteProcessor {
 	public void testSeatBelt(Double topSpeed, Double distance, Double mileage) {
 		Double penalty = (Math.pow(topSpeed, 2.0)*distance);
 		Double score = ScoringFormulas.p2s(.3, .2, penalty, mileage);
-		System.out.println(score);
+		Log.i("%2.2f", score);
 	}
 	
 	private Double speedingScore() {
-		Iterator<Long> itr = speeding.keySet().iterator();
-		Double[] cats = {0.0,0.0,0.0,0.0,0.0};
-		Integer[] numbers = {0,0,0,0,0};
+		Double[] penalties = {0.0,0.0,0.0,0.0,0.0};
+		Integer[] categoryCount = {0,0,0,0,0};
 		
-		while (itr.hasNext()) {
-			Long noteID = itr.next();
-			Map<String, Integer> speedDemon = speeding.get(noteID);
-			Log.d("Processing Speeding note == " +noteID);
-			Double top = speedDemon.get("topSpeed").doubleValue();
-			Double limit = speedDemon.get("limit").doubleValue();
-			Double distance = speedDemon.get("distance").doubleValue();
-			Integer meow = 0;
-			if (limit<=30) meow = 0;
-			else if (limit<=40) meow = 1;
-			else if (limit<=54) meow = 2;
-			else if (limit<=64) meow = 3;
-			else meow=4;
+		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSpeeding().entrySet()){
+			Log.d("Processing Speeding note == " +note.getKey());
+			Double top       = note.getValue().get("topSpeed").doubleValue();
+			Double limit     = note.getValue().get("limit"   ).doubleValue();
+			Double distance  = note.getValue().get("distance").doubleValue();
+			Integer category = 0;
+			if (limit<=30) category = 0;
+			else if (limit<=40) category = 1;
+			else if (limit<=54) category = 2;
+			else if (limit<=64) category = 3;
+			else category=4;
 			
-			cats[meow] += ScoringFormulas.speedingPenalty(top, limit, distance);
-			numbers[meow] ++;
+			penalties[category] += ScoringFormulas.speedingPenalty(top, limit, distance);
+			categoryCount[category] ++;
 		}
 
-		scores.put(" 1-30",    ScoringFormulas.p2s(1.0,0.2,cats[0],categories[0].doubleValue()));
-		scores.put("31-40",    ScoringFormulas.p2s(1.0,0.2,cats[1],categories[1].doubleValue()));
-		scores.put("41-54",    ScoringFormulas.p2s(1.0,0.2,cats[2],categories[2].doubleValue()));
-		scores.put("55-64",    ScoringFormulas.p2s(1.0,0.2,cats[3],categories[3].doubleValue()));
-		scores.put("65-80",    ScoringFormulas.p2s(1.0,0.2,cats[4],categories[4].doubleValue()));
-		scores.put("Speeding", ScoringFormulas.p2s(1.0,0.2,ScoringFormulas.speedingPenalty(speeding),mileage));
+		scores.put(" 1-30",    ScoringFormulas.p2s(1.0,0.2,penalties[0],categories[0].doubleValue()));
+		scores.put("31-40",    ScoringFormulas.p2s(1.0,0.2,penalties[1],categories[1].doubleValue()));
+		scores.put("41-54",    ScoringFormulas.p2s(1.0,0.2,penalties[2],categories[2].doubleValue()));
+		scores.put("55-64",    ScoringFormulas.p2s(1.0,0.2,penalties[3],categories[3].doubleValue()));
+		scores.put("65-80",    ScoringFormulas.p2s(1.0,0.2,penalties[4],categories[4].doubleValue()));
+		scores.put("Speeding", ScoringFormulas.p2s(1.0,0.2,ScoringFormulas.speedingPenalty(sorter.getSpeeding()),mileage));
 		return scores.get("Speeding");
 	}
 	
 	@Override
 	public String toString(){
 	    StringWriter writer = new StringWriter();
-	    Iterator<String> itr = scores.keySet().iterator();
-	    while (itr.hasNext()){
-	        String key = itr.next();
-	        double value = scores.get(key);
-	        writer.write(key + " = " + value + "\n");
+	    for (Map.Entry<String, Double> entry : scores.entrySet()){
+	        double value = entry.getValue();
+	        writer.write(entry.getKey() + " = " + value + "\n");
 	    }
 	    return writer.toString();
 	}

@@ -86,4 +86,10 @@ public class PageAdminCustomRoles extends AdminTables {
         return new CustomRolesPopUps();
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

@@ -214,4 +214,10 @@ public class PageHOSReports extends HOSBar {
     public SeleniumEnums setUrl() {
         return HosReportsEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

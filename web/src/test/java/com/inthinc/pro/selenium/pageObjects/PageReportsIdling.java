@@ -135,4 +135,9 @@ public class PageReportsIdling extends ReportsBar {
     public SeleniumEnums setUrl() {
         return IdlingReportEnum.DEFAULT_URL;
     }
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

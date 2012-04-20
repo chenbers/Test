@@ -316,5 +316,11 @@ public class PageAdminUsers extends AdminTables {
     public SeleniumEnums setUrl() {
         return AdminUsersEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

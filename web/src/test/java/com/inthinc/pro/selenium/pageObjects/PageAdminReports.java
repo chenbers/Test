@@ -130,4 +130,11 @@ public class PageAdminReports extends AdminTables {
         return this;
     }
 
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

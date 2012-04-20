@@ -116,4 +116,11 @@ public class PageAdminVehicles extends AdminTables {
     }
 
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+
 }

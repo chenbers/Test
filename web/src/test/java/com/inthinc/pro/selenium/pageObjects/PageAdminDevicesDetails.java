@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminDevicesDetailsEnum;
 
-public class AdminDevicesDetails extends AdminBar {
+public class PageAdminDevicesDetails extends AdminBar {
 
     public class AdminDeviceDetailsButtons extends AdminBarButtons {
 
@@ -163,7 +163,7 @@ public class AdminDevicesDetails extends AdminBar {
 
     }
 
-    public AdminDevicesDetails() {
+    public PageAdminDevicesDetails() {
         checkMe.add(AdminDevicesDetailsEnum.BACK_TO_DEVICES);
         checkMe.add(AdminDevicesDetailsEnum.TITLE);
         checkMe.add(AdminDevicesDetailsEnum.EDIT_BUTTON);
@@ -195,6 +195,12 @@ public class AdminDevicesDetails extends AdminBar {
 
     public AdminDeviceDetailsTextFields _textField() {
         return new AdminDeviceDetailsTextFields();
+    }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

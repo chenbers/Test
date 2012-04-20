@@ -107,5 +107,11 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
         return NotificationsEmergencyEnum.DEFAULT_URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 
 }

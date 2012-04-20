@@ -225,4 +225,10 @@ public class PageReportsVehicles extends ReportsBar {
     public SeleniumEnums setUrl() {
         return VehicleReportEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

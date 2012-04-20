@@ -85,4 +85,10 @@ public class PageNotificationsHOSExceptions extends NotificationsEventsBar {
         return NotificationsHOSExceptionsEnum.DEFAULT_URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

@@ -564,4 +564,10 @@ public class PageAdminAddEditRedFlag extends AdminBar {
     public SeleniumEnums setUrl() {
         return AdminAddEditRedFlagEnum.URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

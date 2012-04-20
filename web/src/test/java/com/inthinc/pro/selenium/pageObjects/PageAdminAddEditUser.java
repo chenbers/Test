@@ -234,4 +234,11 @@ public class PageAdminAddEditUser extends AdminBar {
     public String getExpectedPath() {
         return AdminAddEditUserEnum.DEFAULT_URL.getURL();
     }
+
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

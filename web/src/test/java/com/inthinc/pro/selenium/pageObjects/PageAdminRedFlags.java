@@ -92,4 +92,10 @@ public class PageAdminRedFlags extends AdminTables {
     public SeleniumEnums setUrl() {
         return AdminRedFlags.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

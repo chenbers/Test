@@ -244,4 +244,10 @@ public class PageMyMessages extends NavigationBar {
     public SeleniumEnums setUrl() {
         return MyMessagesEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

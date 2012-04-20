@@ -119,4 +119,10 @@ public class PageExecutiveOverallExpansion extends ExecutiveExpansionBar {
     public SeleniumEnums setUrl() {
         return OverallExpansionEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

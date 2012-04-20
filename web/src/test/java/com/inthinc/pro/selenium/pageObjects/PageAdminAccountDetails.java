@@ -263,4 +263,10 @@ public class PageAdminAccountDetails extends AdminBar {
         return new AdminAccountDetailsPopUps();
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

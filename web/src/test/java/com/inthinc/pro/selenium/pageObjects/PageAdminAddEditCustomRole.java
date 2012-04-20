@@ -137,4 +137,10 @@ public class PageAdminAddEditCustomRole extends AdminBar {
         }
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

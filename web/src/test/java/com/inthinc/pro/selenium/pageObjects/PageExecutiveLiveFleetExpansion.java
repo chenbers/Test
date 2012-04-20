@@ -71,6 +71,12 @@ public class PageExecutiveLiveFleetExpansion extends ExecutiveExpansionBar {
     public SeleniumEnums setUrl() {
         return LiveFleetExpansionEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
     
 

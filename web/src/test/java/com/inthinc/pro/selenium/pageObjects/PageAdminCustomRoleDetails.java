@@ -101,4 +101,10 @@ public class PageAdminCustomRoleDetails extends AdminBar {
         return new CustomRoleDetailsPopUps();
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

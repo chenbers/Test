@@ -193,5 +193,10 @@ public class PageVehiclePerformanceTrips extends NavigationBar {
     public SeleniumEnums setUrl() {
         return VehiclePerformanceTripsEnum.DEFAULT_URL;
     }
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

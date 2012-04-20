@@ -223,4 +223,10 @@ public class PageReportsDrivers extends ReportsBar {
         return ReportsDriversEnum.DEFAULT_URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

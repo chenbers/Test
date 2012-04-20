@@ -128,4 +128,11 @@ public class PageChangePassword extends Masthead {
     public SeleniumEnums setUrl() {
         return null;
     }
+
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

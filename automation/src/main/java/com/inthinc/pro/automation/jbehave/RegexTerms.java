@@ -36,5 +36,9 @@ public class RegexTerms {
     
     
 
+    public final static String testCase = "[Tt][Cc][0123456789]*";
+    public final static String defect = "[Dd][Ee][0123456789]*";
+    
+
     
 }

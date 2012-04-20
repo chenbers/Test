@@ -176,4 +176,10 @@ public class PageAdminAddEditReport extends AdminBar {
     public SeleniumEnums setUrl() {
         return AdminReportAddEditEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

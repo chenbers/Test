@@ -224,4 +224,10 @@ public class PageTeamStops extends TeamBar {
         return TeamStopsEnum.DEFAULT_URL;
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

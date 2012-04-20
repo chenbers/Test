@@ -397,4 +397,10 @@ public class PageMyAccount extends NavigationBar {
         return LoginEnum.LOGIN_URL; 
     }
 
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

@@ -98,5 +98,11 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
     public SeleniumEnums setUrl() {
         return NotificationsDiagnosticsEnum.URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
 }

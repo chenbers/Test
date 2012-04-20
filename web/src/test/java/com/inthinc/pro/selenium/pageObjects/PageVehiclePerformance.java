@@ -186,4 +186,10 @@ private String page = "vehicle";
     public SeleniumEnums setUrl() {
         return VehiclePerformanceEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

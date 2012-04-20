@@ -171,4 +171,10 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     public SeleniumEnums setUrl() {
         return NotificationsCrashHistoryEnum.DEFAULT_URL;
     }
+
+    @Override
+    protected boolean checkIsOnPage() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
