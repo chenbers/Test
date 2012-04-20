@@ -61,7 +61,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         Integer hardAcceleration = hardAccelerationSlider.getSliderValueFromSettings(vs);
         Integer hardBrake = hardBrakeSlider.getSliderValueFromSettings(vs);
         Integer[] speedSettings = convertFromSpeedSettings(vs.getBestOption(SettingType.SPEED_SETTING.getSettingID())); 
-        Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.SPEED_LIMIT.getSettingID()));
+        Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.TIWI_SPEED_LIMIT.getSettingID()));
         if (maxSpeed < 1.0)
             maxSpeed = DEFAULT_MAX_SPEED_LIMIT;
 
