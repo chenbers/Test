@@ -1,6 +1,12 @@
 package com.inthinc.pro.scoring;
 
 // ported from driveq.c in c code
+/**
+ * @see {@link com.inthinc.pro.scoring.ScoringFormulas}
+ *
+ */
+@Deprecated 
+
 public class ScoreCalculator {
     
     public static double agg_a = -10.4888220818923;

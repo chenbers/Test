@@ -37,6 +37,11 @@
 			<f:validateLongRange minimum="1" maximum="30"/>
 		</h:inputText>
         <rich:message for="days"/>
+        
+        <h:outputText value="Product:" styleClass="label"></h:outputText>
+		<h:selectOneMenu id="productCode" value="#{extractDataBean.productTypeCode}">
+			<f:selectItems value="#{productSelectItems.selectItems}"/>
+		</h:selectOneMenu>
 		
 	</h:panelGrid>        
 	<h:commandButton value="Extract Data" action="#{extractDataBean.extractAction}"/>
@@ -58,11 +63,11 @@
 			</h:form>
 		</rich:modalPanel>    
 	
-		<rich:modalPanel id="successPanel" styleClass="successPopup" showWhenRendered="#{not empty extractDataBean.successMsg}" width="300" height="200" zindex="2000">
+		<rich:modalPanel id="successPanel" styleClass="successPopup" showWhenRendered="#{not empty extractDataBean.successMsg}" width="300" height="300" zindex="2000">
 		    <f:facet name="header">
 		      <h:outputText value="Extract Data Success" />
 		    </f:facet>
-		    <p>
+		    <p align="right">
 		      <h:outputText value="#{extractDataBean.successMsg}" escape="false"/>
 		    </p>
 		    <h:form>

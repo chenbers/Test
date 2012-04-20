@@ -1,20 +1,22 @@
-package com.inthinc.device.scoring;
+package com.inthinc.pro.scoring;
 
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
-import android.util.Log;
+import org.apache.log4j.Logger;
 
 
 public class ScoringNoteProcessor {
+    
+    private final static Logger logger = Logger.getLogger(ScoringNoteProcessor.class);
 	
 	public static enum UnitType {DRIVER, VEHICLE}; 
 
 	private final Double a = -10.4888220818923; // Offset for scores in log scale.
 	private final Double b = 1.16563268601352;  // Scale factor for scores in log scale.
-	private final Double agg_bump = 0.270663;   // Percent of scores for bump  (scale factor used to compute bump-only scores)
-	private final Double agg_turn = 0.321069;   // Percent of scores for turn  (scale factor used to compute turn-only scores)
+	private final Double agg_bump  = 0.270663;  // Percent of scores for bump  (scale factor used to compute bump-only scores)
+	private final Double agg_turn  = 0.321069;  // Percent of scores for turn  (scale factor used to compute turn-only scores)
 	private final Double agg_brake = 0.382325;  // Percent of scores for brake (scale factor used to compute brake-only scores)
 	private final Double agg_accel = 0.0259425; // Percent of scores for accel (scale factor used to compute accel-only scores)
 
@@ -58,7 +60,7 @@ public class ScoringNoteProcessor {
 		accel=0.0; brake=0.0; turn=0.0; bump=0.0;
 		
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getAggressive().entrySet()){
-			Log.d("Processing Aggressive note == " +note.getKey());
+			logger.debug("Processing Aggressive note == " +note.getKey());
 			Double deltaX = note.getValue().get("deltaX").doubleValue();
 			Double deltaY = note.getValue().get("deltaY").doubleValue();
 			Double deltaZ = note.getValue().get("deltaZ").doubleValue();
@@ -89,7 +91,7 @@ public class ScoringNoteProcessor {
 		seatbeltscore=0.0;
 		
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSeatBelt().entrySet()) {
-			Log.d("Processing Seatbelt note == " +note.getKey());
+			logger.debug("Processing Seatbelt note == " +note.getKey());
 			Double topSpeed = note.getValue().get("topSpeed").doubleValue();
 			Double distance = note.getValue().get("distance").doubleValue();
 			
@@ -103,7 +105,7 @@ public class ScoringNoteProcessor {
 	public void testSeatBelt(Double topSpeed, Double distance, Double mileage) {
 		Double penalty = (Math.pow(topSpeed, 2.0)*distance);
 		Double score = ScoringFormulas.p2s(.3, .2, penalty, mileage);
-		Log.i("%2.2f", score);
+		logger.info(String.format("%2.2f", score));
 	}
 	
 	public Double speedingScore() {
@@ -111,7 +113,7 @@ public class ScoringNoteProcessor {
 		Integer[] categoryCount = {0,0,0,0,0};
 		
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSpeeding().entrySet()){
-			Log.d("Processing Speeding note == " +note.getKey());
+			logger.debug("Processing Speeding note == " +note.getKey());
 			Double top       = note.getValue().get("topSpeed").doubleValue();
 			Double limit     = note.getValue().get("limit"   ).doubleValue();
 			Double distance  = note.getValue().get("distance").doubleValue();

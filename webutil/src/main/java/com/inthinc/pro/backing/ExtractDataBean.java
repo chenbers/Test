@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
@@ -15,12 +16,15 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.scoring.Calculator;
+import com.inthinc.pro.scoring.ScoringNoteProcessor;
+import com.inthinc.pro.scoring.ScoringNoteSorter;
 
 public class ExtractDataBean {
 	
@@ -33,6 +37,10 @@ public class ExtractDataBean {
     private String fileName = "extract.txt";
 	private String errorMsg;
     private String successMsg;
+    private ProductType productType;
+    
+    @SuppressWarnings("unused")
+    private Integer productTypeCode;
 
     private Date startDate;
     private Date endDate;
@@ -40,6 +48,11 @@ public class ExtractDataBean {
     private EventDAO eventDAO;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm z");
+
+
+    public void setProductTypeCode(Integer productTypeCode) {
+       productType = ProductType.valueOfByCode(productTypeCode);
+    }
 
     public EventDAO getEventDAO() {
 		return eventDAO;
@@ -55,9 +68,23 @@ public class ExtractDataBean {
     public void extractAction() {
 
     	setErrorMsg(null);
-    	
+    	int daysBack = 0;
+        try {
+            daysBack = new Integer(days).intValue();
+        }
+        catch (NumberFormatException ex) {
+            setErrorMsg("Days Back must be an integer between 1 and 30.");
+        }
 
-    	List<Event> eventList = fetchEventList();
+        int idNum = 0;
+        try {
+            idNum = new Integer(id).intValue();
+        }
+        catch (NumberFormatException ex) {
+            setErrorMsg("ID is not valid.");
+        }
+
+    	List<Event> eventList = fetchEventList(daysBack, idNum);
     	
     	
     	if (export(FacesContext.getCurrentInstance(), eventList))
@@ -127,51 +154,37 @@ public class ExtractDataBean {
 
     	setErrorMsg(null);
     	
+    	int daysBack = 0;
+        try {
+            daysBack = new Integer(days).intValue();
+        }
+        catch (NumberFormatException ex) {
+            setErrorMsg("Days Back must be an integer between 1 and 30.");
+        }
 
-    	List<Event> eventList = fetchEventList();
+        int idNum = 0;
+        try {
+            idNum = new Integer(id).intValue();
+        }
+        catch (NumberFormatException ex) {
+            setErrorMsg("ID is not valid.");
+        }
+
+    	List<Event> eventList = fetchEventList(daysBack, idNum);
+    	ScoringNoteSorter sorter = new ScoringNoteSorter();
+    	ScoringNoteProcessor processor = new ScoringNoteProcessor(sorter);
+    	sorter.preProcessNotes(eventList, productType);
+    	processor.calculateScores();
 	
 		
-//    	if (export(FacesContext.getCurrentInstance(), eventList))
-		{
-        
-			StringBuilder scoreData = new StringBuilder();
-			
-			Calculator calculator = new Calculator();
-	
-			double mileage = calculator.getDistance(eventList);
-			double overall = calculator.getOverallScore(eventList, mileage);
-			double speedScore = calculator.getSpeedingScore(eventList, mileage);
-			double seatbeltScore = calculator.getSeatbeltScore(eventList, mileage);
-			double drivingStyleScore = calculator.getDrivingStyleScore(eventList, mileage);
-			
-			scoreData.append("Date Range  From: " + dateFormat.format(startDate) + "<br/>To: " + dateFormat.format(endDate) + "<br/> File: " + fileName + "<br/>");
-	
-			scoreData.append("mileage: " + mileage + "<br/>");
-			scoreData.append("overall: " + overall + "<br/>");
-			scoreData.append("speedScore: " + speedScore + "<br/>");
-			scoreData.append("seatbeltScore: " + seatbeltScore + "<br/>");
-			scoreData.append("drivingStyleScore: " + drivingStyleScore + "<br/>");
-			
-			setSuccessMsg(scoreData.toString());
+		StringBuilder scoreData = new StringBuilder();
+		for (Map.Entry<String, Double> entry : processor.getOverall().entrySet()){
+		    scoreData.append(String.format("%s = %1.1f<br />", entry.getKey(), entry.getValue()));
 		}
+		setSuccessMsg(scoreData.toString());
     }
 
-	private List<Event> fetchEventList() {
-		int daysBack = 0;
-    	try {
-    		daysBack = new Integer(days).intValue();
-    	}
-    	catch (NumberFormatException ex) {
-    		setErrorMsg("Days Back must be an integer between 1 and 30.");
-    	}
-
-    	int idNum = 0;
-    	try {
-    		idNum = new Integer(id).intValue();
-    	}
-    	catch (NumberFormatException ex) {
-    		setErrorMsg("ID is not valid.");
-    	}
+	private List<Event> fetchEventList(int daysBack, int idNum) {
 
     	endDate = new Date();
     	startDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.convertDateToSeconds(endDate), daysBack, "US/Mountain"));
@@ -285,5 +298,18 @@ public class ExtractDataBean {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	
+	public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
+    public Integer getProductTypeCode() {
+        return productType!=null?productType.getCode():ProductType.TIWIPRO.getVersions()[1];
+    }
+
 
 }
