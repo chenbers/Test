@@ -84,7 +84,7 @@ public class Log {
         if (!print) return;
             
         
-        Object[] converted = new String[items.length+2];
+        Object[] converted = new Object[items.length+2];
         converted[0] = element.getFileName().replace(".java", "").replace(".class", "");
         converted[1] = new Integer(element.getLineNumber()).toString();
         for (int i=0+2;i<converted.length;i++){
@@ -97,6 +97,8 @@ public class Log {
                 converted[i] = PrettyJSON.toString(item);
             } else if (item instanceof StackTraceElement[]){
                 converted[i] = StackToString.toString((StackTraceElement[]) item);
+            } else if (item instanceof Number){
+                converted[i] = item;
             } else {
                 converted[i] = item.toString();
             }
