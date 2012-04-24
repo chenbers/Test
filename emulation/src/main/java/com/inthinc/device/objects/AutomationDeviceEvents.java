@@ -316,7 +316,7 @@ public class AutomationDeviceEvents {
                              ((deltaY) + 600l) * 1210l +
                              ((deltaZ) + 600l);
             
-            Log.d("packedDeltaV: "+packedDeltaV);
+            Log.debug("packedDeltaV: "+packedDeltaV);
             return packedDeltaV;
         }
         
@@ -713,8 +713,10 @@ public class AutomationDeviceEvents {
     **/
     public static void endOfTripAttrs(DeviceState state, DeviceNote note){
     	
-    	note.addAttr(EventAttr.MPG, state.getMpg());
-    	note.addAttr(EventAttr.MPG_DISTANCE, state.getMpgDistanceX100());
+        if (state.getMpgDistanceX100()!=0){
+        	note.addAttr(EventAttr.MPG, state.getMpg());
+        	note.addAttr(EventAttr.MPG_DISTANCE, state.getMpgDistanceX100());
+        }
     	
     	note.addAttr(EventAttr.PERCENTAGE_GPS_FILTERED, state.getPointsPassedTheFilter() * 10);
     	note.addAttr(EventAttr.OBD_PCT, state.getOBDPercent() * 10);
@@ -723,12 +725,25 @@ public class AutomationDeviceEvents {
     	
     	
     	if (state.getProductVersion().equals(ProductType.WAYSMART)){
-            note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
-            note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
-            note.addAttr(EventAttr.NO_DRIVER_DISTANCE, state.getNoDriverDistanceX100());
-    		note.addAttr(EventAttr.HEADLIGHT_OFF_DISTANCE, state.getHeadlightOffDistanceX100());
-    		note.addAttr(EventAttr.NO_TRAILER_DISTANCE, state.getNoTrailerDistanceX100());
-    		note.addAttr(EventAttr.RF_OFF_DISTANCE, state.getRFOffDistanceX100());
+    	    if (state.getSeatbeltDistanceX100()!=0){
+    	        note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
+                note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());    
+    	    }
+            if (state.getNoDriverDistanceX100()!=0){
+                note.addAttr(EventAttr.NO_DRIVER_DISTANCE, state.getNoDriverDistanceX100());    
+            }
+            if (state.getNoTrailerDistanceX100()!=0){
+                note.addAttr(EventAttr.NO_TRAILER_DISTANCE, state.getNoTrailerDistanceX100());    
+            }
+            
+            if (state.getHeadlightOffDistanceX100()!=0){
+                note.addAttr(EventAttr.HEADLIGHT_OFF_DISTANCE, state.getHeadlightOffDistanceX100());
+            }
+            
+            if (state.getRFOffDistanceX100()!=0){
+                note.addAttr(EventAttr.RF_OFF_DISTANCE, state.getRFOffDistanceX100());    
+            }
+    		
     		
     		note.addAttr(EventAttr.SPEED_LIMIT_1_TO_30_DISTANCE,  state.getnSpeedLimit1to30MilesX100());
     		note.addAttr(EventAttr.SPEED_LIMIT_31_TO_40_DISTANCE, state.getnSpeedLimit31to40MilesX100());

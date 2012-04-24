@@ -222,4 +222,8 @@ public class TripDriver extends Thread {
 	public void isLocationOn(boolean locationOn) {
 		this.locationOn  = locationOn;
 	}
+
+    public TripTracker getTripTracker() {
+        return tripTracker;
+    }
 }

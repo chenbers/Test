@@ -15,7 +15,7 @@ public class EmulationSBS {
 		GeoPoint point = new GeoPoint(44.228503,-106.671517);
 		SpeedLimit limit = sbs.getSpeedLimit(point, Heading.WEST);
 		sbs.getThreadManager().shutdown();
-		Log.i(limit.speedLimit + "");
+		Log.info(limit.speedLimit + "");
 	}
 
 }

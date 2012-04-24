@@ -17,12 +17,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.steps.StepCreator.PendingStep;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.springframework.util.ClassUtils;
 
@@ -33,14 +30,13 @@ import com.inthinc.pro.automation.interfaces.AutoElementTags.Validate;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.jbehave.RegexTerms;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.Page;
-import com.inthinc.pro.rally.PrettyJSON;
 
 public abstract class MasterTest {
-    private final static Logger logger = Logger.getLogger(MasterTest.class);
     
     private final Long threadID = Thread.currentThread().getId();
 
@@ -287,56 +283,6 @@ public abstract class MasterTest {
         return StringEscapeUtils.escapeHtml(original);
     }
 
-    public static void print(Object printToScreen) {
-        print(printToScreen, Level.INFO, 2);
-    }
-    
-    public static void print(Object printToScreen, Level level, int stepsBack){
-
-        StackTraceElement element = Thread.currentThread().getStackTrace()[stepsBack];
-        Logger temp = Logger.getLogger(element.getClassName());
-        
-        if (level.isGreaterOrEqual(temp.getParent().getLevel())){
-            String printStringToScreen = "";
-            stepsBack ++;
-            if (printToScreen == null){
-                printToScreen = "error";
-            } else if (printToScreen instanceof Throwable){
-                printStringToScreen = StackToString.toString((Throwable) printToScreen);
-            } else if (printToScreen instanceof JSONObject){
-                printStringToScreen = PrettyJSON.toString(printToScreen);
-            } else if (printToScreen instanceof StackTraceElement[]){
-            	printStringToScreen = StackToString.toString((StackTraceElement[]) printToScreen);
-            } else {
-                printStringToScreen = printToScreen.toString();
-            }
-            String print = String.format("line:%3d - %s\n", element.getLineNumber(), printStringToScreen);
-            if (level.equals(Level.INFO)){
-                temp.info(print);
-            } else if (level.equals(Level.DEBUG)){
-                temp.debug(print);
-            } else if (level.equals(Level.ERROR)){
-                temp.error(print);
-            } else if (level.equals(Level.FATAL)){
-                temp.fatal(print);
-            } else {
-                temp.trace(print);
-            }
-        }
-    }
-    
-    public static void print(Object printToScreen, Level level){
-        print(printToScreen, level, 3);
-    }
-    
-    public static void print(String printToScreen, Level level, Object ...objects){
-        print(String.format(printToScreen, objects), level, 3);
-    }
-    
-    public static void print(String printToScreen, Object ...objects){
-        print(String.format(printToScreen, objects), Level.INFO, 3);
-    }
-
     @When("I hit the Tab Key")
     public void tabKey() {
         getSelenium().tabKey();
@@ -383,7 +329,7 @@ public abstract class MasterTest {
 
     private Boolean assertEquals(Object expected, Object actual, Boolean areObjectsEqual) {
         if (compare(expected, actual) != areObjectsEqual) {
-            logger.debug("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
+            Log.debug("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
             addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FATAL);
             return false;
         }
@@ -459,7 +405,7 @@ public abstract class MasterTest {
         } else {
             results = actual.equals(expected);
         }
-        logger.debug("Expected: " + expected + " == Actual: " + actual + " is " + results);
+        Log.debug("Expected: " + expected + " == Actual: " + actual + " is " + results);
         return results;
     }
 

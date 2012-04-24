@@ -41,7 +41,7 @@ public class ScoringNoteSorter {
 
 	public void preProcessNotes(List<Map<String, Object>> notes, ProductType type){
 
-		Log.i("Number of Notes == "+notes.size());
+		Log.info("Number of Notes == "+notes.size());
 		speedCategories(notes, type);
 		
 		aggressive = new HashMap<Long, Map<String, Integer>>();
@@ -102,19 +102,19 @@ public class ScoringNoteSorter {
 			}
 			
 		}
-		Log.i("Total Mileage == " + mileage);
+		Log.info("Total Mileage == " + mileage);
 		
-		Log.d("Idle Map  == " +idleing);
-		Log.i("Idle       NumNotes == " +idleing.size());
+		Log.debug("Idle Map  == " +idleing);
+		Log.info("Idle       NumNotes == " +idleing.size());
 		
-		Log.d("Aggressive Map  == " +aggressive);
-		Log.i("Aggressive NumNotes == " +aggressive.size());
+		Log.debug("Aggressive Map  == " +aggressive);
+		Log.info("Aggressive NumNotes == " +aggressive.size());
 		
-		Log.d("Speeding Map  == " +speeding);
-		Log.i("Speeding   NumNotes == " +speeding.size());
+		Log.debug("Speeding Map  == " +speeding);
+		Log.info("Speeding   NumNotes == " +speeding.size());
 		
-		Log.d("Seatbelt Map  == " +seatbelt);
-		Log.i("Seatbelt   NumNotes == " +seatbelt.size());
+		Log.debug("Seatbelt Map  == " +seatbelt);
+		Log.info("Seatbelt   NumNotes == " +seatbelt.size());
 		
 	}
 
@@ -140,7 +140,7 @@ public class ScoringNoteSorter {
 			else if (l <= 64 ) miles[3]+=m;
 			else miles[4]+=m;
 		}
-		Log.i( "Mile Categories  ==  " +miles[0]+", "+miles[1]+", "+miles[2]+", "+miles[3]+", "+miles[4]);
+		Log.info( "Mile Categories  ==  " +miles[0]+", "+miles[1]+", "+miles[2]+", "+miles[3]+", "+miles[4]);
 		categoryMileage = miles;
 	}
 	

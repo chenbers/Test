@@ -7,7 +7,7 @@ import org.jbehave.core.steps.StepCreator.PendingStep;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
-import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.logging.Log;
 
 public class TextObject extends ElementBase implements TextBased {
 
@@ -50,7 +50,7 @@ public class TextObject extends ElementBase implements TextBased {
                     toReturn = "";
                 }
             } catch (Exception e ){
-                MasterTest.print(e);
+                Log.info(e);
             }
         }
         return toReturn;

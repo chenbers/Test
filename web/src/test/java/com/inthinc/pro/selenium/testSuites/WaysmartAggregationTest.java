@@ -6,14 +6,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-
-import android.util.Log;
-
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
-import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
+import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
@@ -26,7 +22,7 @@ import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.objects.TripTracker;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
-import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
@@ -149,8 +145,8 @@ public class WaysmartAggregationTest {
         	notes2.remove(i);
         }
         
-        Log.i("Last note for Missing notes is: %s  :: %d", notes1.getLast().getTime(), notes1.getLast().getTime().toInt());
-        Log.i("Odo for Missing notes is: %d", notes1.getLast().getOdometer());
+        Log.info("Last note for Missing notes is: %s  :: %d", notes1.getLast().getTime(), notes1.getLast().getTime().toInt());
+        Log.info("Odo for Missing notes is: %d", notes1.getLast().getOdometer());
 
         tripsMap.put(driver1.getdeviceState(), notes1);
         tripsMap.put(driver2.getdeviceState(), notes2);
@@ -174,7 +170,7 @@ public class WaysmartAggregationTest {
 //		int odo = 37504 + 9168;
 //    	state.getTime().setDate(startTime);
     	state.setOdometerX100(odo);
-    	Log.i("Highest Mileage for the backwards odometer is : " + state.getOdometerX100());
+    	Log.info("Highest Mileage for the backwards odometer is : " + state.getOdometerX100());
     	
     	TripTracker trips = new TripTracker(state);
     	trips.getTrip(start, stop);
@@ -198,7 +194,7 @@ public class WaysmartAggregationTest {
     	state.incrementTime(60);
     	list.add(AutomationDeviceEvents.ignitionOff(state, trips.currentLocation()).getNote());
     	state.incrementTime(900);
-    	Log.i("Backward Odometer last note time is " + state.getTime().toInt());
+    	Log.info("Backward Odometer last note time is " + state.getTime().toInt());
     	list.add(AutomationDeviceEvents.powerOff(state, trips.currentLocation()).getNote());
     }
     
@@ -358,10 +354,10 @@ public class WaysmartAggregationTest {
         
         installLocation = inOrder.get(0).getLocation();
         
-        MasterTest.print("Final mileage is: %d", Level.INFO, (Object)inOrder.getLast().getOdometer());
+        Log.info("Final mileage is: %d", inOrder.getLast().getOdometer());
         state.getTime().addToMinutes(15);
-        MasterTest.print("Final noteTime is: %d", Level.INFO, state.getTime().epochSeconds());
-        MasterTest.print("Final noteTime is: %s", Level.INFO, state.getTime());
+        Log.info("Final noteTime is: %d", state.getTime().epochSeconds());
+        Log.info("Final noteTime is: %s", state.getTime());
         
 
         LinkedList<DeviceNote> randomized = new LinkedList<DeviceNote>();
@@ -424,7 +420,7 @@ public class WaysmartAggregationTest {
         state.setDriverID(unknownDriverID);
         state.setEmployeeID(last);
         state.setHosState(HOSState.ON_DUTY_NOT_DRIVING);
-        MasterTest.print("Imei:%s, MCMID:%s, DriverID:%d", state.getImei(), state.getMcmID(), state.getDriverID());
+        Log.info("Imei:%s, MCMID:%s, DriverID:%d", state.getImei(), state.getMcmID(), state.getDriverID());
         return state;
     }
     
@@ -439,7 +435,7 @@ public class WaysmartAggregationTest {
             int noteSize = 4;
             LinkedList<DeviceNote> temp = tripsMap.get(next);
             manager.addNote(AutomationDeviceEvents.changeDriverState(next, temp.peek().getLocation(), "WVC,UT").getNote());
-            MasterTest.print(manager.getNotes());
+            Log.info(manager.getNotes());
             while (!temp.isEmpty()){
             	DeviceNote note = temp.poll();
                 manager.addNote(note);
@@ -449,7 +445,7 @@ public class WaysmartAggregationTest {
             	Map<Class<? extends DeviceNote>, LinkedList<DeviceNote>> list = manager.getNotes(noteSize);
             	while (!list.isEmpty()){
             		proxy.sendNotes(next, list);
-//            		MasterTest.print("Notes left to send: " + manager.size());
+//            		Log.i("Notes left to send: " + manager.size());
             	}
         	}
         }
@@ -459,26 +455,26 @@ public class WaysmartAggregationTest {
     private void installEvent(DeviceState state, MCMProxyObject proxy) {
         Vehicle vehicle = vehicleMap.get(state);
         if (onQA && vehicle.getDeviceID() != null){
-            MasterTest.print("Vehicle: %d, Device: %d", vehicle.getVehicleID(), vehicle.getDeviceID());
+            Log.info("Vehicle: %d, Device: %d", vehicle.getVehicleID(), vehicle.getDeviceID());
             return;
         }
-        MasterTest.print(vehicle, Level.DEBUG);
+        Log.debug(vehicle);
         state.getTime().addToDay(-1);
         InstallEvent event = AutomationDeviceEvents.install(state, installLocation);
-        MasterTest.print(proxy.sendNotes(state, event.getNote()));
+        Log.info(proxy.sendNotes(state, event.getNote()));
     }
 
 
     public static void main(String[] args){
         WaysmartAggregationTest test = new WaysmartAggregationTest();
-        MasterTest.print(test);
+        Log.info(test);
     	
 //    	DeviceState state = new DeviceState("888", ProductType.WAYSMART);
 //    	NoteBC note = new NoteBC(DeviceNoteTypes.LOCATION, state, new GeoPoint("4225 W Lake Park Blvd, West Valley City, UT"));
 //    	note.addAttr(EventAttr.SPEED_LIMIT, 75);
 //    	NoteBC test = note.unPackage(note.Package());
-//    	MasterTest.print(note);
-//    	MasterTest.print(test);
+//    	Log.i(note);
+//    	Log.i(test);
     	
     }
 }

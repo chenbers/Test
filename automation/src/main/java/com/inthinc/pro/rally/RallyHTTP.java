@@ -13,20 +13,17 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.HTTPCommands;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class RallyHTTP extends HTTPCommands {
     
 
-    private final static Logger logger = Logger.getLogger(HTTPCommands.class);
     
     private JSONObject queryResults, workspace;
     private String query;
@@ -70,14 +67,14 @@ public class RallyHTTP extends HTTPCommands {
                 "start", startPosition.toString(), 
                 "pageSize", pageSize.toString(),
                 "fetch", fetch.toString());
-        MasterTest.print(query, Level.DEBUG);
+        Log.debug(query);
     }
 
     public String constructFilter(String filterString) throws URIException {
         if (filterString == null || filterString.equals(""))
             return "";
         String filter = encodeURLQuery(filterString);
-        MasterTest.print(filter, Level.INFO);
+        Log.info(filter);
         return filter;
     }
 
@@ -102,7 +99,7 @@ public class RallyHTTP extends HTTPCommands {
             throws URIException {
         String formatted = "( " + pair.getName() + " = \"" + pair.getValue()
                 + "\" )";
-        MasterTest.print(formatted, Level.DEBUG);
+        Log.debug(formatted);
         if (encode)
             return encodeURLQuery(formatted);
         else
@@ -117,11 +114,11 @@ public class RallyHTTP extends HTTPCommands {
             results = new JSONObject(response);
             setQueryResult(results.getJSONObject("QueryResult"));
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         } catch (UnsupportedEncodingException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         } catch (IOException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
         response = null;
     }
@@ -142,7 +139,7 @@ public class RallyHTTP extends HTTPCommands {
             JSONObject postJSON = new JSONObject();
             postJSON.put(request.getName(), item);
             String content = postJSON.toString();
-            logger.debug(PrettyJSON.toString(postJSON));
+            Log.debug(PrettyJSON.toString(postJSON));
 
             PostMethod postRequest = new PostMethod(url);
             RequestEntity requestEntity = new StringRequestEntity(content,
@@ -152,7 +149,7 @@ public class RallyHTTP extends HTTPCommands {
             httpRequest(postRequest);
 
             JSONObject reply = new JSONObject(response);
-            logger.debug(PrettyJSON.toString(reply));
+            Log.debug(PrettyJSON.toString(reply));
             try {
                 setOperationResult(reply.getJSONObject("QueryResult"));
             } catch (JSONException e) {
@@ -163,13 +160,13 @@ public class RallyHTTP extends HTTPCommands {
                 }
             }
         } catch (JSONException e) {
-            logger.fatal(url);
-            logger.fatal(response);
-            logger.fatal(StackToString.toString(e));
+            Log.error(url);
+            Log.error(response);
+            Log.error(e);
         } catch (UnsupportedEncodingException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         } catch (IOException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
         response = null;
     }
@@ -187,7 +184,7 @@ public class RallyHTTP extends HTTPCommands {
             url = item.getString("_ref");
             deleteObject(url);
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
         response = null;
     }
@@ -199,13 +196,13 @@ public class RallyHTTP extends HTTPCommands {
             JSONObject workspace = new JSONObject(response);
             setQueryResult(workspace.getJSONObject("OperationResult"));
         } catch (JSONException e) {
-            logger.fatal(url);
-            logger.fatal(response);
-            logger.fatal(StackToString.toString(e));
+            Log.error(url);
+            Log.error(response);
+            Log.error(e);
         } catch (HttpException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         } catch (IOException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
     }
 
@@ -214,7 +211,7 @@ public class RallyHTTP extends HTTPCommands {
     }
 
     private void setOperationResult(JSONObject queryResult) {
-        logger.info(PrettyJSON.toString(queryResult));
+        Log.info(PrettyJSON.toString(queryResult));
         this.queryResults = queryResult;
     }
 
@@ -236,11 +233,11 @@ public class RallyHTTP extends HTTPCommands {
             getObjects(RallyWebServices.WORKSPACE);
             workspace = getResults().getJSONObject(0);
         } catch (HttpException e1) {
-            logger.fatal(StackToString.toString(e1));
+            Log.error(StackToString.toString(e1));
         } catch (JSONException e1) {
-            logger.fatal(StackToString.toString(e1));
+            Log.error(StackToString.toString(e1));
         }
-        logger.debug(workspace);
+        Log.debug(workspace);
     }
 
     /**

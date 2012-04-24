@@ -1,16 +1,13 @@
 package com.inthinc.pro.rally;
 
 import org.apache.commons.httpclient.URIException;
-import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.logging.Log;
 
 public class TypeDefinition extends RallyObject {
 	
-	private final static Logger logger = Logger.getLogger(TypeDefinition.class);
-
 		
 		public TypeDefinition(String username, String password){
 			http=new RallyHTTP(username, password);
@@ -28,9 +25,9 @@ public class TypeDefinition extends RallyObject {
 				http.getObjects(RallyWebServices.TYPE_DEFINITION);
 				return http.getResults().getJSONObject(0);
 			} catch (JSONException e) {
-				logger.debug(StackToString.toString(e));
+				Log.debug(e);
 			} catch (URIException e) {
-				logger.debug(StackToString.toString(e));
+				Log.debug(e);
 			}
 			return null;
 		}

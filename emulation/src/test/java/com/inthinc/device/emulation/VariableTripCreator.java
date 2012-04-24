@@ -83,7 +83,7 @@ public class VariableTripCreator {
         }
         int count = Thread.activeCount();
         while (count > threads ){
-            Log.i("Still running " + (count - threads) + " active threads");
+            Log.info("Still running " + (count - threads) + " active threads");
             count = Thread.activeCount();
             AutomationThread.pause(1);
         }
@@ -92,11 +92,11 @@ public class VariableTripCreator {
             MCMProxyObject.closeService();
         } catch (Exception e) {}
         
-        Log.i("Starting time is " + DeviceStatistics.getStart().epochTime());
-        Log.i("Ending time is " + DeviceStatistics.getStop().epochTime());
-        Log.i("We made " + DeviceStatistics.getHessianCalls());
-        Log.i("We took :" + DeviceStatistics.getTimeDeltaL() + " milliSeconds to run");
-        Log.i("This is an average of " + DeviceStatistics.getCallsPerMinute() + " calls per minute");
+        Log.info("Starting time is " + DeviceStatistics.getStart().epochTime());
+        Log.info("Ending time is " + DeviceStatistics.getStop().epochTime());
+        Log.info("We made " + DeviceStatistics.getHessianCalls());
+        Log.info("We took :" + DeviceStatistics.getTimeDeltaL() + " milliSeconds to run");
+        Log.info("This is an average of " + DeviceStatistics.getCallsPerMinute() + " calls per minute");
     }
         
     public static void main(String[] args){

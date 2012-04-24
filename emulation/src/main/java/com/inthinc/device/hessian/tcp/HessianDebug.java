@@ -9,10 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractHessianOutput;
+import com.inthinc.pro.automation.logging.Log;
 
 public class HessianDebug
 {
@@ -22,14 +21,12 @@ public class HessianDebug
     public static String debugInFileNamePrefix = "c:/debugHessianReq" ; 
     public static String debugOutFileNamePrefix = "c:/debugHessianOut" ; 
     
-    private static final Logger logger = Logger.getLogger(HessianDebug.class);
-
 
 
     public static void debugInput(String methodName, Object[] args, HessianProxyFactory factory) throws IOException
     {
         
-        logger.debug("methodName: " + methodName);
+        Log.debug("methodName: " + methodName);
 
         FileOutputStream fos = null;
         try
@@ -95,7 +92,7 @@ public class HessianDebug
     public static void debugRequest(String methodName, Object[] args)
     {
         
-        logger.debug("methodName: " + methodName);
+        Log.debug("methodName: " + methodName);
         if (args != null)
         {
             for (int i = 0; i < args.length; i++)
@@ -106,7 +103,7 @@ public class HessianDebug
                 }
                 else if (args[i] != null)
                 {
-                    logger.debug("arg[" + i + "] " + args[i].toString());
+                    Log.debug("arg[" + i + "] " + args[i].toString());
                 }
             }
         }
@@ -116,7 +113,7 @@ public class HessianDebug
         for (String param : params.keySet())
         {
             Object value = params.get(param);
-            logger.debug(param + " = " + ((value == null) ? "<null>" : value.toString()));
+            Log.debug(param + " = " + ((value == null) ? "<null>" : value.toString()));
         }
     }
 

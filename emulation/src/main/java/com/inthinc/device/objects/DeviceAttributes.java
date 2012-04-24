@@ -54,7 +54,7 @@ public class DeviceAttributes implements Iterable<EventAttr>{
         try {
             return (Integer) value;
         } catch (ClassCastException e){
-            Log.e("Cannot cast " + key + " to an Integer, Actual class is : " + attrs.get(key).getClass().getSimpleName());
+            Log.error("Cannot cast " + key + " to an Integer, Actual class is : " + attrs.get(key).getClass().getSimpleName());
         }
         return 0;
     }
@@ -64,7 +64,7 @@ public class DeviceAttributes implements Iterable<EventAttr>{
         try {
             return (String) value;
         } catch (ClassCastException e){
-            Log.e("Cannot cast " + key + " to a String, Actual class is : " + attrs.get(key).getClass().getSimpleName());
+            Log.error("Cannot cast " + key + " to a String, Actual class is : " + attrs.get(key).getClass().getSimpleName());
         }
         return "";
     }
@@ -74,7 +74,7 @@ public class DeviceAttributes implements Iterable<EventAttr>{
         try {
             return (Double) value;
         } catch (ClassCastException e){
-            Log.e("Cannot cast " + key + " to a Double, Actual class is : " + attrs.get(key).getClass().getSimpleName());
+            Log.error("Cannot cast " + key + " to a Double, Actual class is : " + attrs.get(key).getClass().getSimpleName());
         }
         return 0.0;
     }

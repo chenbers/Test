@@ -23,6 +23,7 @@ import org.jbehave.core.steps.StepMonitor;
 import org.jbehave.core.steps.StepResult;
 import org.jbehave.core.steps.StepType;
 
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.thoughtworks.paranamer.NullParanamer;
@@ -129,7 +130,7 @@ public class AutoStepCreator extends StepCreator {
                 stepMonitor.performing(stepAsString, dryRun);
                 if (!dryRun) {
                     Object result = method.invoke(instance, parameters);
-                    MasterTest.print("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
+                    Log.info("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                 }
                 return successful(stepAsString).withParameterValues(parametrisedStep);
             } catch (ParameterNotFound e) {
@@ -195,7 +196,7 @@ public class AutoStepCreator extends StepCreator {
                 if (!dryRun) {
                     Object result = method.invoke(instance, parameters);
                     MasterTest.setComparator(stepAsString, result);
-                    MasterTest.print("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
+                    Log.info("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                 }
                 return successful(stepAsString).withParameterValues(parametrisedStep);
             } catch (ParameterNotFound e) {
@@ -260,14 +261,14 @@ public class AutoStepCreator extends StepCreator {
                         result = method.invoke(instance, parameters);
                     } catch (AssertionError e ){
                         result = false;
-                        MasterTest.print(e);
+                        Log.info(e);
                     }
                     if (result.equals(false)){
                         String failure = String.format("Executing method %s%s returned %s, for step %s", 
                                 method.getName(), asList(parameters), result, stepAsString);
                         return failed(stepAsString, new UUIDExceptionWrapper(failure)).withParameterValues(parametrisedStep);
                     }
-                    MasterTest.print("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
+                    Log.info("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                 }
                 return successful(stepAsString).withParameterValues(parametrisedStep);
             } catch (ParameterNotFound e) {

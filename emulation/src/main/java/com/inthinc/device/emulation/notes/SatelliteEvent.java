@@ -60,7 +60,7 @@ public class SatelliteEvent extends DeviceNote {
 		byte[] temp = baos.toByteArray();
 		temp[0] = (byte) (temp.length & 0xFF);
 		for (int i = 0; i < temp.length; i++) {
-			Log.d("Byte " + i + " = " + temp[i]);
+			Log.debug("Byte " + i + " = " + temp[i]);
 		}
 		return temp;
 	}

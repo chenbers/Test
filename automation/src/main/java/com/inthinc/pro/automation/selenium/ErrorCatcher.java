@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.rally.RallyStrings;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 import com.thoughtworks.selenium.SeleniumException;
@@ -34,7 +34,6 @@ import com.thoughtworks.selenium.SeleniumException;
  */
 public class ErrorCatcher implements InvocationHandler {
 
-    private final static Logger logger = Logger.getLogger(ErrorCatcher.class);
     private Map<ErrorLevel, Map<String, Map<String, String>>> severity;
     private Map<String, Map<String, String>> errors;
     private Map<String, String> errorList;
@@ -101,14 +100,14 @@ public class ErrorCatcher implements InvocationHandler {
         try {
 //            if(startTime+DEFAULT_TEST_TIMEOUT  < currentTime() )
 //                addError("Test timed out", "Test timed out after (("+currentTime()+"-"+startTime+"))"+(currentTime()-startTime)+" seconds", ErrorLevel.FATAL);
-            logger.debug("before method " + method.getName());
+            Log.debug("before method " + method.getName());
             result = method.invoke(delegate, args);
         } catch (InvocationTargetException e) {
             sortErrors(e.getCause(), method, args);
         } catch (Exception e) {
             sortErrors(e, method, args);
         } finally {
-            logger.debug("after method " + method.getName());
+            Log.debug("after method " + method.getName());
         }
         return result;
     }
@@ -209,7 +208,7 @@ public class ErrorCatcher implements InvocationHandler {
      *            text
      */
     private void addError(String name, String type, String error, ErrorLevel level) {
-        logger.info("\n" + level + ": " +name + "\n\t" + type + " :\n" + error + "\n");
+        Log.info("\n" + level + ": " +name + "\n\t" + type + " :\n" + error + "\n");
         ErrorLevel temp = level;
         if (level.equals(ErrorLevel.FATAL)){
             level = ErrorLevel.FAIL;
@@ -280,7 +279,7 @@ public class ErrorCatcher implements InvocationHandler {
         while (itrs.hasNext()){
             ErrorLevel level = itrs.next();
             Iterator<String> itr = severity.get(level).keySet().iterator();
-            logger.debug(severity.get(level));
+            Log.debug(severity.get(level));
             errors = severity.get(level);
             if (severity.get(level).isEmpty()){
                 continue;

@@ -21,7 +21,7 @@ public class GeoPoint {
 	    
 	    public static Double change_in_latitude( Double miles ){
 	        double delta_lat = ( miles / earth_radius ) * rad2deg;
-	        Log.d("Change in Lat: "+delta_lat);
+	        Log.debug("Change in Lat: "+delta_lat);
 	        return delta_lat;
 	    }
 	    
@@ -29,7 +29,7 @@ public class GeoPoint {
 	        
 	        double r = earth_radius * Math.cos(latitude * deg2rad );
 	        double delta_lng = ( miles / r ) * rad2deg;
-	        Log.d("Change in Lng: "+delta_lng);
+	        Log.debug("Change in Lng: "+delta_lng);
 	        return delta_lng;
 	    }
 	    
@@ -39,7 +39,7 @@ public class GeoPoint {
 	        double distance = Math.sqrt( Math.pow(y, 2 ) + Math.pow(x, 2)  );
 	        double nautToFeet = ( distance * 6076 );
 	        double deltaX = nautToFeet / 5280;
-	        Log.d("Change in Miles: " + deltaX);
+	        Log.debug("Change in Miles: " + deltaX);
 	        return deltaX;
 	    }
 	    
@@ -55,13 +55,13 @@ public class GeoPoint {
 	        
 	        double tc2 = Math.atan2(Math.sin(lng2-lng1)*Math.cos(lat2),
 	                Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lng2-lng1)) % (2 * Math.PI);
-	        Log.d("Direction of travel in radians: " + tc2);
+	        Log.debug("Direction of travel in radians: " + tc2);
 	        
 	        Integer tc1 = Math.abs(((Double)(tc2 * rad2deg)).intValue());
 	        while (tc1 > 360 ){
 	            tc1 -= 360;
 	        }
-	        Log.d("Direction of travel: " + tc1);
+	        Log.debug("Direction of travel: " + tc1);
 
 	        return tc1;
 	    }

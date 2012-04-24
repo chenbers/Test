@@ -35,9 +35,8 @@ import org.jbehave.core.steps.StepCollector.Stage;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepResult;
 
-import com.inthinc.pro.automation.jbehave.AutoStepCreator.AutoPageStep;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutoStoryRunner extends StoryRunner {
     
@@ -290,7 +289,7 @@ public class AutoStoryRunner extends StoryRunner {
                 handleStoryFailureByStrategy();
             }
         } catch (Exception e){ 
-            MasterTest.print(e);
+            Log.error(e);
         } finally {
             if (!context.givenStory() && reporter.get() instanceof ConcurrentStoryReporter) {
                 ((ConcurrentStoryReporter) reporter.get()).invokeDelayed();

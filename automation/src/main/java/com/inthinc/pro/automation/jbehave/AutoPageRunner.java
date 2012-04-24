@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Level;
 import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.steps.Step;
@@ -19,11 +18,11 @@ import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.JBehaveTermMatchers.ElementTypes;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutoPageRunner {
     
@@ -55,7 +54,7 @@ public class AutoPageRunner {
             pageMap.put(page.getUrl(), page);
             pageMap.put(className, page);
         }
-        MasterTest.print(pageMap);
+        Log.info(pageMap);
     }
     
     public void setEmbedder(Embedder embedder){
@@ -158,15 +157,15 @@ public class AutoPageRunner {
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
         } catch (NoSuchMethodException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (IllegalArgumentException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (SecurityException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (IllegalAccessException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (InvocationTargetException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } 
         
         return step;
@@ -192,15 +191,15 @@ public class AutoPageRunner {
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
         } catch (NoSuchMethodException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (IllegalArgumentException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (SecurityException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (IllegalAccessException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (InvocationTargetException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } 
         
         return step;
@@ -213,13 +212,13 @@ public class AutoPageRunner {
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
         } catch (NoSuchMethodException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (IllegalArgumentException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (IllegalAccessException e) {
-            MasterTest.print(e);
+            Log.info(e);
         } catch (InvocationTargetException e) {
-            MasterTest.print(e);
+            Log.info(e);
         }
         
         return step;
@@ -263,14 +262,14 @@ public class AutoPageRunner {
                 try {
                     passParameters[i] = Enum.valueOf((Class<Enum>)next, columnName);
                 } catch (IllegalArgumentException e){
-                    MasterTest.print("Column: %s enum does not contain %", Level.WARN, next.getSimpleName(), columnName);
+                    Log.warning("Column: %s enum does not contain %",next.getSimpleName(), columnName);
                 }
             }
             if (rowName != null && next.isAssignableFrom(Enum.class)){
                 try {
                     passParameters[i] = Enum.valueOf((Class<Enum>)next, columnName);
                 } catch (IllegalArgumentException e2){
-                    MasterTest.print("Row: %s enum does not contain %", Level.WARN, next.getSimpleName(), rowName);
+                    Log.warning("Row: %s enum does not contain %",next.getSimpleName(), rowName);
                 }                
             }
             if (passParameters[i] == null){

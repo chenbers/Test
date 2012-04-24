@@ -169,77 +169,6 @@ public class HanSoloTrip extends Thread{
         tiwi.power_off_device(900);
     }
     
-//    public static void generateTrip(String origin, String destination, DeviceBase device) {
-//        String sendRequestResults = "";
-//        try {
-//            String mode = "json"; // json or xml
-//            String googleMapsApi = "http://maps.googleapis.com/maps/api/directions/" + mode;// +"?"sensor=false&origin="+origin+"&destination="+destination+"";
-//            String query = "sensor=false&origin=" + URLEncoder.encode(origin, "UTF-8") + "&destination=" + URLEncoder.encode(destination, "UTF-8") + "";
-//            URL request = new URL(googleMapsApi + "?" + query);
-//            sendRequestResults = sendRequest(request);
-//            logger.info("sendRequest(" + request + ") returns " + sendRequestResults);
-////            logger.info(PrettyJSON.toString(sendRequestResults));
-////            JSONObject workspace = new JSONObject();
-////            JSONArray routes = workspace.getJSONArray("routes");
-////            JSONArray legs = routes.getJSONObject(0).getJSONArray("legs");
-////            JSONArray steps = legs.getJSONObject(0).getJSONArray("steps");
-////            for (int i = 0; i < steps.length(); i++) {
-////                double lat = steps.getJSONObject(i).getJSONObject("end_location").getDouble("lat");
-////                double lng = steps.getJSONObject(i).getJSONObject("end_location").getDouble("lng");
-////                int time_delta = steps.getJSONObject(i).getJSONObject("duration").getInt("value");
-////                if (device instanceof WaysmartDevice)
-////                    ((WaysmartDevice) device).update_location(new GeoPoint(lat, lng, time_delta);
-////                else if (device instanceof TiwiProDevice)
-////                    ((TiwiProDevice) device).update_location(new GeoPoint(lat, lng, time_delta);
-////                else
-////                    throw new IllegalArgumentException("generateTrip requires device to be either a WaysmartDevice or a TiwiProDevice");
-////            }
-//
-//        } catch (UnsupportedEncodingException uee) {
-//            logger.error("generateTrips couldn't encode either origin: " + origin + "; or destination: " + destination + ";");
-//        } catch (MalformedURLException murle) {
-//            logger.error("MalformedURLExcpetion: " + murle);
-//            murle.printStackTrace();
-////        } catch (JSONException jsone) {
-////            logger.debug(sendRequestResults);
-////            jsone.printStackTrace();
-//        }
-//    }
-//    private static String sendRequest(URL request) {
-//        logger.info("private String sendRequest(URL "+request+")");
-//        URLConnection conn;
-//        HttpURLConnection httpConn = null;
-//        try
-//        {
-//            conn = request.openConnection();
-//            if (conn instanceof HttpURLConnection)
-//            {
-//                httpConn = (HttpURLConnection) conn;
-//                String status = httpConn.getResponseMessage();
-//                if (status.equals("OK"))
-//                {
-//                    return HTTPCommands.getResponseBodyFromStream(httpConn.getInputStream());
-//                }
-//                else { 
-//                    logger.warn("status: "+status);
-//                    return null;
-//                }
-//            }
-//        }
-//        catch (IOException e)
-//        {
-//           e.printStackTrace();      
-//        }
-//        finally
-//        {
-//            if (httpConn != null)
-//            {
-//                httpConn.disconnect();
-//                httpConn = null;
-//            }
-//        }
-//        return null;
-//    }
     
     public void de6587_canadaWaysmartTrip() {
         String satImei = "virt_ws_de6587";
@@ -305,10 +234,10 @@ public class HanSoloTrip extends Thread{
         AutomationCalendar initialTime = new AutomationCalendar();
         Addresses address;
         String imei = "FAKEIMEIDEVICE"; address=Addresses.DEV;
-        imei = "DEVICEDOESNTEXIST";
+//        imei = "DEVICEDOESNTEXIST";
 //        imei = "500000000007272"; address=Addresses.DEV;// initialTime.setDate(time)
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
-//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1333300955);  // vehicleID=37706       deviceID=34506
+        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1333668196);  // vehicleID=37706       deviceID=34506
 //        address=Addresses.QA;           initialTime.setDate(1333652037);  // vehicleID=7293        deviceID=3753
 //          address=Addresses.DEV;		initialTime.setDate(1333652037);
 //        address=Addresses.STAGE;        initialTime.setDate(1333652037);  // vehicleID=117441441   deviceID=117441936 
@@ -327,7 +256,7 @@ public class HanSoloTrip extends Thread{
 //        address=Addresses.CINTAS;       initialTime.setDate(1333652037);  // vehicleID=234881465   deviceID=234881624
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.LDS;       initialTime.setDate(1333652037);  // vehicleID=100663298   deviceID=100663298
-//        trip.hanSolosFirstTrip( imei, address, initialTime);
+        trip.hanSolosFirstTrip( imei, address, initialTime);
         
         
         

@@ -89,7 +89,7 @@ public class AutomationBridgeFwdCmdParser {
     }
     
     private static ForwardCommandEvent updateDriverChangeHistoryHttp(AutomationByteArrayInputStream bais, HttpHeader forwardHeader){
-    	Log.i("UPDATE_DRIVER_CHANGE_HISTORY_HTTP");
+    	Log.info("UPDATE_DRIVER_CHANGE_HISTORY_HTTP");
         int bytesRead = 0;
         ForwardCommandEvent Event = classes.new ForwardCommandEvent(forwardHeader.nForwardCommand);
         int length = 0;
@@ -103,7 +103,7 @@ public class AutomationBridgeFwdCmdParser {
         Event.m_header.m_nEventType = EVENT_FORWARD_COMMAND;
         Event.m_header.m_nLength = ForwardCommandEvent.SIZE - EventHeader.SIZE;
         Event.addData(forwardHeader.m_data);
-        Log.i(Event.toString());
+        Log.info(Event.toString());
         return Event;
     }
 }

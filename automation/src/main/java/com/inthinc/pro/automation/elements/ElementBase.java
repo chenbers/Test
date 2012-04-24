@@ -4,18 +4,17 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public abstract class ElementBase extends MasterTest implements ElementInterface {
     
 
-    protected final static Logger logger = Logger.getLogger(ElementBase.class);
 
     protected final static String parentXpath = "/..";
 
@@ -154,7 +153,7 @@ public abstract class ElementBase extends MasterTest implements ElementInterface
 
     protected void setCurrentLocation() {
         String uri = getCurrentLocation();
-        logger.debug(uri);
+        Log.debug(uri);
         String[] address = uri.split("/");
         current = new HashMap<String, String>();
         current.put("protocol", address[0]);

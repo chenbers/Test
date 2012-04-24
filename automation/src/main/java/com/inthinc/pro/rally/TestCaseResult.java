@@ -4,14 +4,13 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.RallyHTTP.RallyFields;
 
@@ -103,7 +102,6 @@ public class TestCaseResult extends RallyObject {
         }
     }
 
-    private final static Logger logger = Logger.getLogger(TestCaseResult.class);
 
     private JSONObject testCaseResults;
     private String notes;
@@ -120,7 +118,7 @@ public class TestCaseResult extends RallyObject {
         try {
             return testCaseResults.get(field.toString());
         } catch (JSONException e) {
-            logger.debug(StackToString.toString(e));
+            Log.error(e);
         }
         return null;
     }
@@ -147,13 +145,13 @@ public class TestCaseResult extends RallyObject {
             http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);
             return http.getResults().getJSONObject(0);
         } catch (JSONException e) {
-            logger.info("JSONException: "+e);
-            logger.info("The " + fieldFailed
+            Log.info("JSONException: "+e);
+            Log.info("The " + fieldFailed
                     + " is missing from the test case results.");
-            logger.info(PrettyJSON.toString(testCaseResults));
-            logger.info(StackToString.toString(e));
+            Log.info(PrettyJSON.toString(testCaseResults));
+            Log.info(StackToString.toString(e));
         } catch(Exception e){
-            logger.info("something bad happened with send_test_case_results() "+e);
+            Log.info("something bad happened with send_test_case_results() "+e);
         }
         return testCaseResults;
     }
@@ -171,7 +169,7 @@ public class TestCaseResult extends RallyObject {
         try {
             testCaseResults.put(field.toString(), value);
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
     }
 
@@ -245,8 +243,8 @@ public class TestCaseResult extends RallyObject {
         Verdicts lastVerdict = tc.getLastVerdict();
 
         if (!tc.wasRunToday() || lastVerdict != Verdicts.PASS) {
-            logger.info("Last Test Case result: " + tc.getLastRun());
-            logger.info("Today is: " + today);
+            Log.info("Last Test Case result: " + tc.getLastRun());
+            Log.info("Today is: " + today);
             setTestCase(new NameValuePair(byID, testCase));
             send_test_case_results();
         }
@@ -256,7 +254,7 @@ public class TestCaseResult extends RallyObject {
 		for (Fields field : Fields.values()){
 			if (field.required){
 				if (getField(field)==null){
-				    MasterTest.print("This Test Case Result is missing: " + field);
+				    Log.info("This Test Case Result is missing: " + field);
 					return false;
 				}
 			}

@@ -8,6 +8,7 @@ import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.elements.ElementBase;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutoActionFinder {
@@ -50,7 +51,7 @@ public class AutoActionFinder {
                 return stepCreator.createPageStep(step, elementClass, method, parameters);
             }
         } catch (Exception e){
-            MasterTest.print(e);
+            Log.info(e);
         }
         
         

@@ -253,5 +253,6 @@ public class Device extends BaseEntity implements HasAccountId
     }
     public void setProductVer(Integer productVer) {
         this.productVer = productVer;
+        setProductVersion(ProductType.getProductTypeFromVersion(productVer));
     }
 }

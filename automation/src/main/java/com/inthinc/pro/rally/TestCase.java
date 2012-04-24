@@ -10,16 +10,13 @@ import java.util.Map;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
-import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class TestCase extends RallyObject {
@@ -91,8 +88,6 @@ public class TestCase extends RallyObject {
 
     private AutomationCalendar lastRun;
     private Verdicts lastVerdict;
-
-    private final static Logger logger = Logger.getLogger(TestCase.class);
 
     private Map<String, Boolean> customFields = new HashMap<String, Boolean>();
 
@@ -191,9 +186,9 @@ public class TestCase extends RallyObject {
                         field.getBoolean("Custom"));
             }
         } catch (URIException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
     }
 
@@ -212,17 +207,17 @@ public class TestCase extends RallyObject {
     public JSONObject getTestCase(NameValuePair searchParams, Boolean fetch) {
         try {
             String filter = http.constructFilter(searchParams, false);
-            MasterTest.print(filter, Level.DEBUG);
+            Log.debug(filter);
             http.constructQuery(filter, 1, 200, fetch);
 
             http.getObjects(RallyWebServices.TEST_CASE);
             return http.getResults().getJSONObject(0);
         } catch (HttpException e) {
-            MasterTest.print(e, Level.FATAL);
+            Log.warning(e);
         } catch (JSONException e) {
-            MasterTest.print(http.getQuery(), Level.FATAL);
-            MasterTest.print(http.getFullResults(), Level.FATAL);
-            MasterTest.print(e, Level.FATAL);
+            Log.error(http.getQuery());
+            Log.error(http.getFullResults());
+            Log.error(e);
         }
         return null;
     }
@@ -276,9 +271,9 @@ public class TestCase extends RallyObject {
             } while (more);
 
         } catch (HttpException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
         return getAll;
     }
@@ -337,7 +332,7 @@ public class TestCase extends RallyObject {
                     }
                 }
             } catch (JSONException e) {
-                logger.fatal(StackToString.toString(e));
+                Log.error(e);
             }
         }
         return testCase;
@@ -357,7 +352,7 @@ public class TestCase extends RallyObject {
             sendme[0] = http.getErrors();
             sendme[0] = http.getWarnings();
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+            Log.error(e);
         }
         return sendme;
     }

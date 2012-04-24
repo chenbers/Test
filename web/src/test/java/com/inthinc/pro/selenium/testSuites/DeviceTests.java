@@ -10,8 +10,8 @@ import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class DeviceTests {
     
@@ -70,29 +70,29 @@ public class DeviceTests {
                         fileName = String.format("%02d.pcm", i);
                         svnFile = svnPath + "/" + fileName;
                         hessianFile = hessianPath + "/" + fileName;
-                        MasterTest.print(fileName);
+                        Log.info(fileName);
         
                         for (Locales locale : EnumSet.allOf(Locales.class)) {
                             try {
-                                MasterTest.print(locale);
+                                Log.info(locale);
                                 String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"
                                         + locale.getFolder();
                                 File dest = new File(svnFile);
             
                                 if (!AutomationFileHandler.downloadSvnDirectory(url, fileName, dest)) {
-                                    MasterTest.print("SVN File not found");
+                                    Log.info("SVN File not found");
                                 }
                                 tiwi.getAudioFile(hessianFile, i, locale);
-                                MasterTest.print(AutomationFileHandler.filesEqual(svnFile, hessianFile));
+                                Log.info(AutomationFileHandler.filesEqual(svnFile, hessianFile));
                             } catch (HessianException e){
-                                MasterTest.print("Failed for " + fileName + "." + locale);
+                                Log.info("Failed for " + fileName + "." + locale);
                                 continue;
                             }
                                         
                         }
                     }
                 } catch(Exception e){
-                    MasterTest.print(e);
+                    Log.info(e);
                     
 //                    continue;
                 }

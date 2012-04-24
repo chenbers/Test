@@ -2,17 +2,14 @@ package com.inthinc.device.emulation.utils;
 
 import java.io.StringWriter;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.device.hessian.tcp.GenericHessianException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.RandomValues;
 
 public class Unique {
-	private final static Logger logger = Logger.getLogger(Unique.class);
 	
 	private SiloService portalProxy;
 	private RandomValues random = new RandomValues();
@@ -49,7 +46,7 @@ public class Unique {
 		}
 		start = false; 
 		startString = "";
-		logger.debug("Random " + type.toString()+": "+aStringAString.toString());
+		Log.debug("Random " + type.toString()+": "+aStringAString.toString());
 		return aStringAString.toString();
 	}
 	
@@ -62,7 +59,7 @@ public class Unique {
 	private Boolean checkUnique(UniqueValues value, String text){
 		try{
 			portalProxy.getID(value.getName(), text);
-		}catch(GenericHessianException error){
+		}catch(Exception error){
 			return true;
 		}
 		return false;

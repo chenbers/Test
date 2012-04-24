@@ -10,6 +10,7 @@ import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -113,7 +114,7 @@ public class DHXDropDown extends DropDown implements Selectable {
         }
         for (SeleniumEnums enume : enums) {
             if (getSelenium().isElementPresent(new SeleniumEnumWrapper(enume).replaceWord(page)) && enume != null) {
-                logger.debug("//body/div[" + div + "]"+", "+enume.toString());
+                Log.debug("//body/div[" + div + "]"+", "+enume.toString());
                 getSelenium().assignId("//body/div[" + div + "]", enume.toString());
                 div++;
             }

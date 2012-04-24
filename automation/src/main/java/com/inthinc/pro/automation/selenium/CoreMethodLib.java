@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -30,6 +29,7 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.KeyCommands;
@@ -54,7 +54,6 @@ import com.thoughtworks.selenium.SeleniumException;
 public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethodInterface {
 
     public static Integer PAGE_TIMEOUT = 30000;
-    private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
     private final Browsers browser;
@@ -284,7 +283,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public String getText(SeleniumEnumWrapper myEnum) {
-        logger.debug(" getText(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
+        Log.debug(" getText(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
         String element = getLocator(myEnum);
         
         WebElement parent = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
@@ -294,11 +293,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             try{
                 return replaceSpacers(innerHtml);
             } catch (Exception e){
-                logger.info(StackToString.toString(e));
+                Log.info(StackToString.toString(e));
             }
         }
         String text = getText(element);
-        logger.debug("gotText = " + text);
+        Log.debug("gotText = " + text);
         return text;
     }
     
@@ -360,7 +359,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public String getValue(SeleniumEnumWrapper myEnum) {
-        logger.debug(" getValue(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
+        Log.debug(" getValue(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
         return super.getValue(getLocator(myEnum));
     }
 
@@ -798,7 +797,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 //            selenium.open("http://www.google.com");
             
         } catch (BeansException e) {
-            logger.error(StackToString.toString(e));
+            Log.error(StackToString.toString(e));
             selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);
         } 
         seleniumByThread.put(currentThread, selenium.getErrorCatcher().newInstanceOfSelenium());
@@ -811,10 +810,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             seleniumByThread.get(currentThread).close();
             seleniumByThread.get(currentThread).stop();
         }catch(NullPointerException e){
-            logger.debug("Selenium already closed.");
+            Log.debug("Selenium already closed.");
         }catch(Exception e){
             if(!e.getMessage().contains("session") && !e.getMessage().contains("does not exist"))
-                logger.debug(StackToString.toString(e));
+                Log.debug(StackToString.toString(e));
         }
         seleniumByThread.remove(currentThread);
     }

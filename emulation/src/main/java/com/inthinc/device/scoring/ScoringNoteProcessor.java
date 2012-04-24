@@ -58,7 +58,7 @@ public class ScoringNoteProcessor {
 		accel=0.0; brake=0.0; turn=0.0; bump=0.0;
 		
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getAggressive().entrySet()){
-			Log.d("Processing Aggressive note == " +note.getKey());
+			Log.debug("Processing Aggressive note == " +note.getKey());
 			Double deltaX = note.getValue().get("deltaX").doubleValue();
 			Double deltaY = note.getValue().get("deltaY").doubleValue();
 			Double deltaZ = note.getValue().get("deltaZ").doubleValue();
@@ -89,7 +89,7 @@ public class ScoringNoteProcessor {
 		seatbeltscore=0.0;
 		
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSeatBelt().entrySet()) {
-			Log.d("Processing Seatbelt note == " +note.getKey());
+			Log.debug("Processing Seatbelt note == " +note.getKey());
 			Double topSpeed = note.getValue().get("topSpeed").doubleValue();
 			Double distance = note.getValue().get("distance").doubleValue();
 			
@@ -111,7 +111,7 @@ public class ScoringNoteProcessor {
 		Integer[] categoryCount = {0,0,0,0,0};
 		
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSpeeding().entrySet()){
-			Log.d("Processing Speeding note == " +note.getKey());
+			Log.debug("Processing Speeding note == " +note.getKey());
 			Double top       = note.getValue().get("topSpeed").doubleValue();
 			Double limit     = note.getValue().get("limit"   ).doubleValue();
 			Double distance  = note.getValue().get("distance").doubleValue();

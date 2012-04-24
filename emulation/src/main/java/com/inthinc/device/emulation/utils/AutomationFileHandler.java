@@ -70,7 +70,7 @@ public class AutomationFileHandler {
     }
     
     public static boolean downloadSvnDirectory(String source, String fileDir, File destination){
-        MasterTest.print("Downloading file: " + source + "/" + fileDir);
+        Log.info("Downloading file: " + source + "/" + fileDir);
         DAVRepositoryFactory.setup( );
         SVNURL temp;
         try {

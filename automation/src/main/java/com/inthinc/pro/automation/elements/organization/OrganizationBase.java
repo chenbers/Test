@@ -14,6 +14,7 @@ import com.inthinc.pro.automation.elements.organization.OrganizationLevels.Fleet
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.GroupLevels;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.TeamLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class OrganizationBase extends MasterTest{
@@ -160,7 +161,7 @@ public class OrganizationBase extends MasterTest{
     private OrganizationType getTopGroupType() {
         WebElement element = getSelenium().getWrappedDriver().findElement(By.xpath("//td[contains(@id,'display-form:tree:0::')][contains(@id,':text')]"));
         String id = element.getAttribute("id");
-        print(id);
+        Log.info(id);
         String[] split = id.split(":");
         String type = split[split.length-2];
         if (type.equals("fleet")){

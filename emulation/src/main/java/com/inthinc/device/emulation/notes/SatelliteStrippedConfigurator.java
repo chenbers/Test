@@ -127,8 +127,8 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 					}
 				}
 
-				Log.d("packetList.size(): " + packetList.size());
-				Log.d("increasePacketSize: " + increasePacketSize);
+				Log.debug("packetList.size(): " + packetList.size());
+				Log.debug("increasePacketSize: " + increasePacketSize);
 				
 				if (increasePacketSize)
 					packets = packetList.size() + 1;
@@ -149,15 +149,15 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 				if (packets == 0)
 					packets = (int)Math.ceil(compressedData.length/PACKET_SIZE); 
 
-				Log.d("Compressed data length: " + compressedData.length);
-				Log.d("Packets: " + packets);
+				Log.debug("Compressed data length: " + compressedData.length);
+				Log.debug("Packets: " + packets);
 				
 				if (packets == 1)
 					packetList.add(compressedData);
 				else
 				{
 					int settingsPerPacket = (int) Math.ceil((double)(map.size()/packets));
-					Log.d("settingsPerPacket: " + settingsPerPacket);
+					Log.debug("settingsPerPacket: " + settingsPerPacket);
 					Map<DeviceProps, String> partialMap = new HashMap<DeviceProps, String>();
 					int totalCounter = 0;
 					int packetCounter = 0;
@@ -174,7 +174,7 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 							packetCounter = 0;
 						}
 
-						Log.d("key=value: "+setting.getKey() + " = " + setting.getValue());
+						Log.debug("key=value: "+setting.getKey() + " = " + setting.getValue());
 					}
 					
 				}
@@ -229,9 +229,9 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 			 //get the compressed byte array from output stream
 			 byte[] compressedArray = bos.toByteArray();
 			  
-			 Log.d("Byte array has been compressed!");
-			 Log.d("Size of original array is:" + bytes.length);
-			 Log.d("Size of compressed array is:" + compressedArray.length);
+			 Log.debug("Byte array has been compressed!");
+			 Log.debug("Size of original array is:" + bytes.length);
+			 Log.debug("Size of compressed array is:" + compressedArray.length);
 			  
 			return compressedArray;
 		}

@@ -11,13 +11,10 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-
-import android.util.Log;
 
 import com.caucho.hessian.client.HessianRuntimeException;
-import com.inthinc.device.emulation.enums.DeviceEnums.FwdCmdStatus;
 import com.inthinc.device.emulation.enums.ConstDDB;
+import com.inthinc.device.emulation.enums.DeviceEnums.FwdCmdStatus;
 import com.inthinc.device.emulation.enums.DeviceForwardCommands;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
@@ -37,14 +34,13 @@ import com.inthinc.device.objects.ZoneManager;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DownloadServers;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 
 public class TiwiProDevice extends DeviceBase {
-
-    private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
 
     private AutomationCalendar trip_start, trip_stop;
 
@@ -113,7 +109,7 @@ public class TiwiProDevice extends DeviceBase {
         list.add(map);
         List<Map<String, Object>> reply = mcmProxy.checkSbsEdit(
                 state.getImei(), list);
-        logger.debug(reply);
+        Log.debug(reply);
 
         return false;
     }
@@ -138,7 +134,7 @@ public class TiwiProDevice extends DeviceBase {
                 }
             }
         } catch (Exception e) {
-            Log.d("Exception %s", e);
+            Log.debug("Exception %s", e);
             return false;
         }
 
@@ -152,7 +148,7 @@ public class TiwiProDevice extends DeviceBase {
         String svnPath = destPath + "svnVersion/";
         String hessianPath = destPath + "hessianVersion/";
         String fileName = String.format("%02d.pcm", fileNumber); 
-        Log.d(fileName);
+        Log.debug(fileName);
         
         String svnFile = svnPath + "/" + fileName; 
         String hessianFile = hessianPath + "/" + fileName;
@@ -165,7 +161,7 @@ public class TiwiProDevice extends DeviceBase {
             File dest = new File(svnFile);
 
             if (!AutomationFileHandler.downloadSvnDirectory(url, fileName, dest)) {
-                Log.i("SVN File not found");
+                Log.info("SVN File not found");
                 return false;
             }
             boolean result = AutomationFileHandler.filesEqual(svnFile, hessianFile);
@@ -174,7 +170,7 @@ public class TiwiProDevice extends DeviceBase {
             }
             return result;
         } catch (HessianException e){
-            Log.wtf("%s", e);
+            Log.error(e);
             return false;
         }
     }
@@ -183,7 +179,7 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     public TiwiProDevice createAckNote(Map<String, Object> reply) {
-    	Log.d("Forward Command from Server: " + reply);
+    	Log.debug("Forward Command from Server: " + reply);
         if (((Integer) reply.get("fwdID")) > 100) {
             TiwiNote ackNote = new TiwiNote(
                     DeviceNoteTypes.STRIPPED_ACKNOWLEDGE_ID_WITH_DATA, tripTracker.currentLocation());
@@ -192,7 +188,7 @@ public class TiwiProDevice extends DeviceBase {
                     FwdCmdStatus.FWDCMD_RECEIVED);
             notes.addNote(ackNote);
             addNote(ackNote);
-            Log.d("ackNote %s", ackNote);
+            Log.debug("ackNote %s", ackNote);
         }
         processCommand(reply);
         return this;
@@ -209,8 +205,8 @@ public class TiwiProDevice extends DeviceBase {
         String hessian = SHA1Checksum.getSHA1Checksum(lastDownload);
         getFirmwareFromSVN(versionNumber);
         String svn = SHA1Checksum.getSHA1Checksum(lastDownload);
-        Log.d("hessian %s", hessian);
-        Log.d("svn     %s", svn);
+        Log.debug("hessian %s", hessian);
+        Log.debug("svn     %s", svn);
         return hessian.equals(svn);
     }
 
@@ -251,7 +247,7 @@ public class TiwiProDevice extends DeviceBase {
             return AutomationFileHandler.downloadSvnDirectory(svnUrl,
                     fileName.replace("-svn", ""), file);
         } catch (IOException e) {
-            Log.e("%s", e);
+            Log.error(e);
         }
         return false;
     }
@@ -293,7 +289,7 @@ public class TiwiProDevice extends DeviceBase {
                     map);
 //            zones = new ZoneManager((byte[]) reply.get("f"));
         } catch (Exception e) {
-        	Log.e("%s", e);
+        	Log.error(e);
             return false;
         }
 
@@ -322,7 +318,7 @@ public class TiwiProDevice extends DeviceBase {
 
     @Override
     protected Integer processCommand(Map<String, Object> reply) {
-        logger.debug(reply);
+        Log.debug(reply);
         if (reply.get("cmd") == null)
             return 1;
         DeviceForwardCommands fwdCmd = (DeviceForwardCommands) reply.get("cmd");
@@ -357,7 +353,7 @@ public class TiwiProDevice extends DeviceBase {
         ackNote.addAttr(EventAttr.FWDCMD_ID, reply.get("fwdID"));
         ackNote.addAttr(EventAttr.FWDCMD_STATUS,
                 FwdCmdStatus.FWDCMD_FLASH_SUCCESS);
-        Log.d("ackNote %s", ackNote);
+        Log.debug("ackNote %s", ackNote);
         notes.addNote(ackNote);
         // check_queue();
 
@@ -376,7 +372,7 @@ public class TiwiProDevice extends DeviceBase {
             FileUtils.copyFile(new File(svnFile), new File(temp, "svn" + suffix));
             FileUtils.copyFile(new File(hessianFile), new File(temp, "hessian" + suffix));
         } catch (IOException e) {
-            Log.wtf("%s", e);
+            Log.error(e);
         }
     }
 
@@ -493,10 +489,10 @@ public class TiwiProDevice extends DeviceBase {
             Map<String, Object> result = upload.createDownload(map);
             int dlID = (Integer) result.get("dlID");
             AutomationThread.pause(10);
-            Log.i("%s", firmwareCompare(version));
+            Log.info(firmwareCompare(version));
             return dlID;
         } catch (IOException e){
-            Log.wtf("%s", e);
+            Log.trace(e);
         }
         return 0;
     }

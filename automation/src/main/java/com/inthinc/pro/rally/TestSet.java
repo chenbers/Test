@@ -7,17 +7,13 @@ import java.util.List;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.logging.Log;
 
 public class TestSet extends RallyObject {
-
-	private final static Logger logger = Logger
-			.getLogger(TestSet.class);
 
 
 	public TestSet(String username, String password, RallyWebServices space) {
@@ -87,9 +83,9 @@ public class TestSet extends RallyObject {
 			http.getObjects(RallyWebServices.TEST_SET);
 			return http.getResults().getJSONObject(0);
 		} catch (HttpException e) {
-			logger.fatal(StackToString.toString(e));
+			Log.error(e);
 		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
+			Log.error(e);
 		}
 		return null;
 	}
@@ -134,9 +130,9 @@ public class TestSet extends RallyObject {
 			} while (more);
 
 		} catch (HttpException e) {
-			logger.fatal(StackToString.toString(e));
+			Log.error(e);
 		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
+			Log.error(e);
 		}
 		return getAll;
 	}

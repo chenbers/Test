@@ -19,7 +19,7 @@ public class UserLogUtil {
     public static void logBeforeMethodWithUser(Method method, Object[] args, Object target) {
         String message = method.getName()+"("+argsToString(args)+");";
         
-        Log.d(message);// specific to user.log
+        Log.debug(message);// specific to user.log
     }
 
 

@@ -1,31 +1,44 @@
 package com.inthinc.pro.automation.jbehave;
 
 import static java.util.Arrays.asList;
+import static org.jbehave.core.annotations.AfterScenario.Outcome.ANY;
+import static org.jbehave.core.annotations.AfterScenario.Outcome.FAILURE;
+import static org.jbehave.core.annotations.AfterScenario.Outcome.SUCCESS;
 import static org.jbehave.core.steps.StepType.GIVEN;
 import static org.jbehave.core.steps.StepType.THEN;
 import static org.jbehave.core.steps.StepType.WHEN;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.AfterScenario.Outcome;
 import org.jbehave.core.annotations.Alias;
 import org.jbehave.core.annotations.Aliases;
+import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Composite;
 import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.ScenarioType;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.configuration.Configuration;
+import org.jbehave.core.steps.BeforeOrAfterStep;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.StepCandidate;
+import org.jbehave.core.steps.StepCollector.Stage;
+import org.jbehave.core.steps.StepCreator;
 import org.jbehave.core.steps.StepType;
 import org.jbehave.core.steps.Steps;
 
-import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.test.BrowserRallyTest;
 
 public class AutoSteps extends Steps {
 
     private Class<?> type;
+    private Object instance;
     private InjectableStepsFactory stepsFactory;
     private final Configuration configuration;
     
@@ -40,6 +53,7 @@ public class AutoSteps extends Steps {
     public AutoSteps(Configuration configuration, Object instance) {
         super(configuration, instance);
         this.type = instance.getClass();
+        this.instance = instance;
         this.stepsFactory = new AutoStepsFactory(configuration, this);
         this.configuration = configuration;
     }
@@ -51,14 +65,6 @@ public class AutoSteps extends Steps {
         this.configuration = configuration;
     }
     
-//    public List<StepCandidate> listCandidates() {
-//        try {
-//            return super.listCandidates();
-//        } catch (DuplicateCandidateFound e){
-//            MasterTest.print(e);
-//            throw e;
-//        }
-//    }
     
     public List<StepCandidate> listCandidates() {
         List<StepCandidate> candidates = new ArrayList<StepCandidate>();
@@ -88,7 +94,7 @@ public class AutoSteps extends Steps {
             }
             return candidates;
         } catch (DuplicateCandidateFound e){
-            MasterTest.print(e);
+            Log.info(e);
             throw e;
         }
     }
@@ -137,6 +143,79 @@ public class AutoSteps extends Steps {
 
     private List<Method> allMethods() {
         return asList(type.getMethods());
+    }
+    
+    
+    public List<BeforeOrAfterStep> listBeforeOrAfterScenario(ScenarioType type) {
+        List<BeforeOrAfterStep> steps = new ArrayList<BeforeOrAfterStep>();
+        steps.addAll(scenarioStepsHaving(type, Stage.BEFORE, BeforeScenario.class));
+        steps.addAll(scenarioStepsHaving(type, Stage.AFTER, AfterScenario.class, ANY, SUCCESS, FAILURE));
+        return steps;
+    }
+
+
+
+    private List<BeforeOrAfterStep> scenarioStepsHaving(ScenarioType type, Stage stage,
+            Class<? extends Annotation> annotationClass, Outcome... outcomes) {
+        List<BeforeOrAfterStep> steps = new ArrayList<BeforeOrAfterStep>();
+        for (Method method : methodsAnnotatedWith(annotationClass)) {
+            ScenarioType scenarioType = scenarioType(method, annotationClass);
+            if (type == scenarioType) {
+                if (stage == Stage.BEFORE) {
+                    steps.add(createBeforeOrAfterStep(stage, method));
+                }
+                if (stage == Stage.AFTER) {
+                    Outcome scenarioOutcome = scenarioOutcome(method, annotationClass);
+                    for (Outcome outcome : outcomes) {
+                        if (outcome.equals(scenarioOutcome)) {
+                            steps.add(createBeforeOrAfterStep(stage, method, outcome));
+                        }
+                    }
+                }
+            }
+        }
+        return steps;
+    }
+
+    private ScenarioType scenarioType(Method method, Class<? extends Annotation> annotationClass) {
+        if (annotationClass.isAssignableFrom(BeforeScenario.class)) {
+            return ((BeforeScenario) method.getAnnotation(annotationClass)).uponType();
+        }
+        if (annotationClass.isAssignableFrom(AfterScenario.class)) {
+            return ((AfterScenario) method.getAnnotation(annotationClass)).uponType();
+        }
+        return ScenarioType.NORMAL;
+    }
+
+    private Outcome scenarioOutcome(Method method, Class<? extends Annotation> annotationClass) {
+        if (annotationClass.isAssignableFrom(AfterScenario.class)) {
+            return ((AfterScenario) method.getAnnotation(annotationClass)).uponOutcome();
+        }
+        return Outcome.ANY;
+    }
+
+    private BeforeOrAfterStep createBeforeOrAfterStep(Stage stage, Method method) {
+        return createBeforeOrAfterStep(stage, method, Outcome.ANY);
+    }
+
+    private BeforeOrAfterStep createBeforeOrAfterStep(Stage stage, Method method, Outcome outcome) {
+        if (stage.equals(Stage.BEFORE) && instance instanceof BrowserRallyTest){
+            return new BeforeRallyStep(stage, method, outcome, new StepCreator(type, stepsFactory,
+                    configuration.parameterConverters(), null, configuration.stepMonitor()), instance);
+                
+        } else 
+        return new BeforeOrAfterStep(stage, method, outcome, new StepCreator(type, stepsFactory,
+                configuration.parameterConverters(), null, configuration.stepMonitor()));
+    }
+
+    private List<Method> methodsAnnotatedWith(Class<? extends Annotation> annotationClass) {
+        List<Method> annotated = new ArrayList<Method>();
+        for (Method method : allMethods()) {
+            if (method.isAnnotationPresent(annotationClass)) {
+                annotated.add(method);
+            }
+        }
+        return annotated;
     }
 
 }

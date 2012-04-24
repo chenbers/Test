@@ -14,6 +14,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
@@ -202,8 +203,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(itr.hasNext()){
             AutomationCalendar newDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
             if(currentDate.compareTo(newDate) < 0){
-                    print(currentDate.toString());
-                    print(newDate.toString());
+                    Log.info(currentDate.toString());
+                    Log.info(newDate.toString());
                     addError("Dates out of order", ErrorLevel.FAIL);
             }
             currentDate = newDate;
@@ -219,8 +220,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(itr.hasNext()){
             AutomationCalendar newDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
             if(currentDate.compareTo(newDate) > 0){
-                    print(currentDate.toString());
-                    print(newDate.toString());
+                    Log.info(currentDate.toString());
+                    Log.info(newDate.toString());
                     addError("Dates out of order", ErrorLevel.FAIL);
             }
             currentDate = newDate;
@@ -236,8 +237,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(citr.hasNext()){
             String newText = citr.next().getText();
             if(currentText.compareToIgnoreCase(newText) > 0){
-                    print(currentText);
-                    print(newText);
+                    Log.info(currentText);
+                    Log.info(newText);
                     addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
@@ -253,8 +254,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(citr.hasNext()){
             String newText = citr.next().getText();
             if(currentText.compareToIgnoreCase(newText) < 0){
-                    print(currentText);
-                    print(newText);
+                    Log.info(currentText);
+                    Log.info(newText);
                     addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
@@ -270,8 +271,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(citr.hasNext()){
             String newText = citr.next().getText();
             if(currentText.compareToIgnoreCase(newText) > 0){
-                    print(currentText);
-                    print(newText);
+                    Log.info(currentText);
+                    Log.info(newText);
                     addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
@@ -287,8 +288,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(citr.hasNext()){
             String newText = citr.next().getText();
             if(currentText.compareToIgnoreCase(newText) < 0){
-                    print(currentText);
-                    print(newText);
+                    Log.info(currentText);
+                    Log.info(newText);
                     addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
@@ -305,8 +306,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(citr.hasNext()){
             String newText = citr.next().getText();
             if(currentText.compareToIgnoreCase(newText) > 0){
-                    print(currentText);
-                    print(newText);
+                    Log.info(currentText);
+                    Log.info(newText);
                     addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
@@ -322,8 +323,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         while(citr.hasNext()){
             String newText = citr.next().getText();
             if(currentText.compareToIgnoreCase(newText) < 0){
-                    print(currentText);
-                    print(newText);
+                    Log.info(currentText);
+                    Log.info(newText);
                     addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;

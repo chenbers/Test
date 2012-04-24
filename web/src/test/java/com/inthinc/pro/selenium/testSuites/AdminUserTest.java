@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
@@ -90,7 +91,7 @@ public class AdminUserTest extends WebRallyTest {
 		/*Driver Info*/
 		
         String team =_text.values(UserColumns.TEAM).getText();
-        print(team);
+        Log.info(team);
         
         /*Employee Info*/
       

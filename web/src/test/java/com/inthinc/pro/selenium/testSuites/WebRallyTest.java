@@ -6,6 +6,7 @@ import org.jbehave.core.annotations.BeforeScenario;
 import org.junit.After;
 import org.junit.Before;
 
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.test.BrowserRallyTest;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
@@ -31,10 +32,10 @@ public class WebRallyTest extends BrowserRallyTest {
     @AfterScenario
     @Override
     public void after() {
-        print("get_test_case(): '" + get_test_case() + "'");
+        Log.info("get_test_case(): '" + get_test_case() + "'");
         super.after();
         if (get_test_case() == null || get_test_case().equals(""))
-            print("This test did NOT have a testcase?!", Level.WARN);
+            Log.info("This test did NOT have a testcase?!", Level.WARN);
         didTestFail();
     }
 

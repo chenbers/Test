@@ -2,15 +2,13 @@ package com.inthinc.device.emulation;
 
 import org.junit.Test;
 
+import android.util.Log;
+
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.utils.GeoPoint;
-import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class DE7570 {
     
@@ -34,7 +32,7 @@ public class DE7570 {
 //            .setDate(new AutomationCalendar(1331704800, WebDateFormat.NOTE_PRECISE_TIME))
 //            .addToDay(addToDays); // Time is for 3/14/2012 midnight MDT
         createTrip(waysmart, start, stop);
-        MasterTest.print(waysmart.getOdometer() + " Trip for number 1");
+        Log.info(waysmart.getOdometer() + " Trip for number 1");
         
         
 //        waysmart = new WaysmartDevice("30023FKE2DE7570", "F2DE7570", Addresses.QA, Direction.sat);

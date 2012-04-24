@@ -11,15 +11,14 @@ import com.inthinc.pro.automation.test.RallyTest.RallyTestInterface;
  * @author dtanner
  */
 public class BrowserRallyTest extends BrowserTest implements RallyTestInterface {
-    
+
+
     private RallyTest rallyTest;
-    
 
     public BrowserRallyTest(SeleniumEnums version) {
         super(version);
         rallyTest = new RallyTest(this);
     }
-
 
     @Override
     public void before() {
@@ -31,7 +30,7 @@ public class BrowserRallyTest extends BrowserTest implements RallyTestInterface 
     public void after() {
         super.after();
         rallyTest.after();
-        
+
     }
 
     @Override
@@ -46,12 +45,16 @@ public class BrowserRallyTest extends BrowserTest implements RallyTestInterface 
 
     @Override
     public void set_test_case(String testCaseFormattedID) {
-        RallyTest.set_test_case(testCaseFormattedID, Thread.currentThread().getId());
+        rallyTest.set_test_case(testCaseFormattedID);
     }
-    
+
+    public void parseJBehaveStep(String stepAsString) {
+        rallyTest.parseJBehaveStep(stepAsString);
+    }
+
     public void set_defect(String defectFormattedID) {
-        RallyTest.set_defect(defectFormattedID, Thread.currentThread().getId());
-        addError("This TestCase is linked to Defect: "+defectFormattedID, ErrorLevel.WARN);
+        rallyTest.set_defect(defectFormattedID);
+        addError("This TestCase is linked to Defect: " + defectFormattedID, ErrorLevel.WARN);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums;
@@ -131,7 +132,7 @@ public class Reports_Vehicles extends WebRallyTest {
 
         for ( row=1;row<=20;row++){
             pause(10,"");
-            print(row);
+            Log.info(row);
             String driverID;
             if (reports_vehicles._link().driverValue().row(row).isClickable()){
                 driverID = reports_vehicles._link().driverValue().row(row).getText();
@@ -170,7 +171,7 @@ public class Reports_Vehicles extends WebRallyTest {
 //                break;
 //            }else{
 //                addError("No Drivers assigned to any vehicles within search criteria", ErrorLevel.ERROR );
-//                print("No Drivers assigned to any vehicles within search criteria");
+//                Log.i("No Drivers assigned to any vehicles within search criteria");
 //                break;
 //            }
         }
@@ -193,7 +194,7 @@ public class Reports_Vehicles extends WebRallyTest {
         int row;
         for ( row=1;row<=20;row++){
             pause(10,"");
-            print(row);
+            Log.info(row);
             if (reports_vehicles._link().styleValue().row(row).isPresent()){
                 style_value =reports_vehicles._link().styleValue().row(row).getText();
                 reports_vehicles._link().styleValue().row(row).click();
@@ -272,16 +273,16 @@ public class Reports_Vehicles extends WebRallyTest {
         String groupname;
         String tema;
         for ( row=1;row<=20;row++){
-            print(row);
+            Log.info(row);
             if (reports_vehicles._link().groupValue().row(row).isPresent()){
                 groupname = reports_vehicles._link().groupValue().row(row).getText();
                 reports_vehicles._link().groupValue().row(row).click();
                 pause(10,"");
                 team_dashboard.verifyOnPage();
                 tema = team_dashboard._text().teamName().getText();                
-                print(tema);
+                Log.info(tema);
                 team_dashboard._text().teamName().assertEquals(groupname);
-                print(groupname);
+                Log.info(groupname);
             }else if(!reports_vehicles._link().groupValue().row(row).isPresent()){
                 break;
             }
@@ -317,7 +318,7 @@ public class Reports_Vehicles extends WebRallyTest {
         int row;
         String overall;
         for ( row=1;row<=20;row++){
-            print(row);
+            Log.info(row);
             if (reports_vehicles._link().overallValue().row(row).isPresent()){
                 //Compare score from vehicle reports page to score on vehicle performance page.
                 overall = reports_vehicles._link().overallValue().row(row).getText();
@@ -459,7 +460,7 @@ public class Reports_Vehicles extends WebRallyTest {
         for ( row=1;row<=20;row++){
             if (reports_vehicles._link().speedValue().row(row).isPresent()){
                 speed_value = reports_vehicles._link().speedValue().row(row).getText();   
-                print(speed_value);
+                Log.info(speed_value);
                 reports_vehicles._link().speedValue().row(row).click();
                 pause(10,"");
                 
@@ -623,9 +624,9 @@ public class Reports_Vehicles extends WebRallyTest {
                 vehicle = reports_vehicles._link().vehicleValue().row(row).getText();
                 reports_vehicles._link().vehicleValue().row(row).click();
                 vehicle_performance.verifyOnPage();
-                print(vehicle);
+                Log.info(vehicle);
                 actual = vehicle_performance._link().vehicleName().getText();
-                print(actual);
+                Log.info(actual);
                 vehicle_performance._link().vehicleName().assertEquals(vehicle);
                 vehicle_performance._link().reports().click();
                 reports_vehicles._link().vehicles().click();

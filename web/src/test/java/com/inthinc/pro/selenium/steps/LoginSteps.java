@@ -1,15 +1,14 @@
 package com.inthinc.pro.selenium.steps;
 
-import org.apache.log4j.Level;
 import org.jbehave.core.annotations.Alias;
 import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.Given;
-import org.jbehave.core.annotations.Pending;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.utils.MasterTest;
@@ -286,7 +285,7 @@ public class LoginSteps extends WebSteps {
     }
     @Given("I am logged in as a user in a role that does not have the $accesspointName accesspoint")
     public void loginAsUserWithoutAccesspoint(String accesspointName){
-        MasterTest.print("I am logged in as a user in a role that does not have "+ accesspointName+" accesspoint", Level.ERROR);
+        Log.error("I am logged in as a user in a role that does not have "+ accesspointName+" accesspoint");
         LoginCapability hasThisCapability = null;
         if(accesspointName.equals("UserInfo"))
             hasThisCapability = LoginCapability.NoAccessPointUserInfo;//TODO: jwimmer: I do not like this manual mapping???
@@ -479,10 +478,10 @@ public class LoginSteps extends WebSteps {
     @When("I change the password to an incorrect case")
     public void whenIChangeThePasswordToAnIncorrectCase() {
         String originalPassword = loginPage._textField().password().getText();
-        MasterTest.print("originalPassword: "+originalPassword, Level.DEBUG);
+        Log.debug("originalPassword: "+originalPassword);
 
         String incorrectCasePassword = flipCase(originalPassword);
-        MasterTest.print("incorrectCasePassword: "+incorrectCasePassword, Level.DEBUG);
+        Log.debug("incorrectCasePassword: "+incorrectCasePassword);
         //TODO: jwimmer: watch the loggers and see if this works... I wouldn't be surprised if we do NOT get the original password correctly???
         loginPage._textField().password().type(incorrectCasePassword);
     }
@@ -550,10 +549,10 @@ public class LoginSteps extends WebSteps {
     @When("I change the username to an incorrect case")
     public void whenIChangeTheUsernameToAnIncorrectCase() {
         String originalUserName = loginPage._textField().userName().getText();
-        MasterTest.print("originalUserName: "+originalUserName, Level.DEBUG);
+        Log.debug("originalUserName: "+originalUserName);
 
         String incorrectCaseUserName = flipCase(originalUserName);
-        MasterTest.print("incorrectCasePassword: "+incorrectCaseUserName, Level.DEBUG);
+        Log.debug("incorrectCasePassword: "+incorrectCaseUserName);
         //TODO: jwimmer: watch the loggers and see if this works... I wouldn't be surprised if we do NOT get the original password correctly???
         loginPage._textField().password().type(incorrectCaseUserName);
     }

@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.test;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
@@ -14,7 +12,6 @@ public class Test extends MasterTest {
 
     private AutomationPropertiesBean automationPropertiesBean;
 
-    protected final Logger logger = Logger.getLogger(Test.class);
     private ErrorCatcher errors;
 
     protected Boolean skip = false;

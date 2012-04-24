@@ -1,14 +1,12 @@
 package com.inthinc.pro.automation.test;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class BrowserTest extends Test{
 
-    protected final Logger logger = Logger.getLogger(BrowserTest.class);
     
     private SeleniumEnumWrapper webVersionID;
 
@@ -24,12 +22,12 @@ public class BrowserTest extends Test{
             try {
                 setBuildNumber(getSelenium().getText(webVersionID));
             } catch (Exception e) {
-                logger.fatal(StackToString.toString(e));
+                Log.error(StackToString.toString(e));
             }finally{
                     killSelenium();
             }
         } else {
-            logger.info(" skip ");
+            Log.info(" skip ");
         }
     }
 
@@ -40,7 +38,7 @@ public class BrowserTest extends Test{
             super.getSelenium();
             setErrorCatcher(getSelenium().getErrorCatcher());
         } catch (Exception e) {
-            print(e);
+            Log.error(e);
             skip = true;
             throw new NullPointerException();
         }

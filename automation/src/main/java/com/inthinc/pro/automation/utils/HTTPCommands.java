@@ -19,7 +19,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Level;
+
+import com.inthinc.pro.automation.logging.Log;
 
 
 
@@ -63,17 +64,17 @@ public class HTTPCommands {
         try {
             int statusCode = httpClient.executeMethod(method);
             if (statusCode != HttpStatus.SC_OK) {
-                MasterTest.print(method.getName() + " method failed: " + method.getStatusLine(), Level.DEBUG);
+                Log.debug(method.getName() + " method failed: " + method.getStatusLine());
                 response = getResponseBodyFromStream(method
                         .getResponseBodyAsStream());
             } else {
-            	MasterTest.print(method.getName() + " method succeeded: " + method.getStatusLine(), Level.DEBUG);
+            	Log.debug(method.getName() + " method succeeded: " + method.getStatusLine());
                 response = getResponseBodyFromStream(method
                         .getResponseBodyAsStream());
             }
             method.releaseConnection();
         } catch (URIException e) {
-        	MasterTest.print(method.getQueryString());
+            Log.error(method.getQueryString());
             throw new URIException("Failed");
         }
         return response;
@@ -94,7 +95,7 @@ public class HTTPCommands {
         try {
             return URIUtil.encodeQuery(string);
         } catch (URIException e) {
-        	MasterTest.print(e, Level.DEBUG);
+            Log.debug("%s", e);
         }
         return "";
     }
@@ -116,9 +117,9 @@ public class HTTPCommands {
     public String httpRequest(HttpUriRequest method) throws ClientProtocolException, IOException {
         HttpResponse response;
         response = defaultClient.execute(method);
-        MasterTest.print(response.getStatusLine(), Level.DEBUG);
+        Log.debug("%s", response.getStatusLine());
         String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
-        MasterTest.print(returnResponse, Level.DEBUG);
+        Log.debug(returnResponse);
         return returnResponse;
     }
 

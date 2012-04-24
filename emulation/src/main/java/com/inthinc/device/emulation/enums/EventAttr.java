@@ -672,7 +672,7 @@ public enum EventAttr implements IndexEnum{
         }
         EventAttr result = lookupByCode.get(code);
         if(result == null){
-            Log.i("Unknown EventAttr.code: " + code);
+            Log.info("Unknown EventAttr.code: " + code);
             updateAttr(code);
         }
         return result;
@@ -705,7 +705,7 @@ public enum EventAttr implements IndexEnum{
             BufferedReader br = new BufferedReader(new FileReader(file));
             while ((line = br.readLine()) != null){
                 if (line.contains(code + "") && line.contains("ATTR_")){
-                    Log.d(formatAttr(line));
+                    Log.debug(formatAttr(line));
                 }
             }
         } catch (IOException e) {
@@ -785,8 +785,8 @@ public enum EventAttr implements IndexEnum{
                         try {
                             valueOf(attrName);
                         } catch (IllegalArgumentException e){
-                            Log.i("Attr with name " + attrName + " is missing, or wrong");
-                            Log.i(formatAttr(line));
+                            Log.info("Attr with name " + attrName + " is missing, or wrong");
+                            Log.info(formatAttr(line));
                         }
                         
                         
@@ -798,8 +798,8 @@ public enum EventAttr implements IndexEnum{
                             }
                             Double attrCode = Double.parseDouble(attrValue);
                             if (!lookupByCode.containsKey(attrCode.intValue())){
-                                Log.i("Missing code " + attrCode.intValue());
-                                Log.i(formatAttr(line));
+                                Log.info("Missing code " + attrCode.intValue());
+                                Log.info(formatAttr(line));
                             }
                             break;
                         }

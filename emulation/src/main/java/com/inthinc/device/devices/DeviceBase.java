@@ -11,10 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-
-import android.util.Log;
-
 import com.inthinc.device.emulation.enums.DeviceForwardCommands;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
@@ -26,12 +22,11 @@ import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.emulation.utils.NoteManager;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
-import com.inthinc.device.objects.AutomationDeviceEvents.SpeedingEvent;
 import com.inthinc.device.objects.TripTracker;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.sbs.Sbs;
 
@@ -148,11 +143,11 @@ public abstract class DeviceBase {
 		if (state.getWMP() >= 17013) {
 			reply = null;
 			try {
-				MasterTest.print("dumping settings", Level.DEBUG);
+				Log.debug("dumping settings");
 				reply = mcmProxy.dumpSet(state,	oursToThiers());
-				MasterTest.print(reply, Level.DEBUG);
+				Log.debug(reply);
 			} catch (Exception e) {
-				MasterTest.print("Error from DumpSet: %s", Level.ERROR,e);
+				Log.error("Error from DumpSet: %s", e);
 			}
 		}
         return this;
@@ -253,7 +248,7 @@ public abstract class DeviceBase {
             state.setTopSpeed(state.getSpeed());
             state.getSpeedingStartTime().setDate(state.getTime());
             state.setSpeedingSpeedLimit(state.getSpeedLimit().intValue());
-            MasterTest.print("Started Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
+            Log.debug("Started Speeding at: " + tripTracker.currentLocation());
             
         } else if (state.getSpeed() > state.getSpeedLimit()
                 && state.isSpeeding()) {
@@ -262,7 +257,7 @@ public abstract class DeviceBase {
             if (state.getSpeed() > state.getTopSpeed()){
             	state.setTopSpeed(state.getSpeed());
             }
-            MasterTest.print("Still Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
+            Log.debug("Still Speeding at: " + tripTracker.currentLocation());
             
         } else if (state.getSpeed() < state.getSpeedLimit()
                 && state.isSpeeding()) {
@@ -270,7 +265,7 @@ public abstract class DeviceBase {
             state.setSpeeding(false);
             speed_loc.add(point);
             speed_points.add(state.getSpeed());
-            MasterTest.print("Stopped Speeding at: " + tripTracker.currentLocation(), Level.DEBUG);
+            Log.debug("Stopped Speeding at: " + tripTracker.currentLocation());
             
             was_speeding();
         }
@@ -306,10 +301,10 @@ public abstract class DeviceBase {
             set_power();
             flushNotes();
         } else {
-        	MasterTest.print("The device is already off.");
+        	Log.info("The device is already off.");
         }
-        MasterTest.print("Power Off note created at: "
-                + state.getTime().toInt() + " " + state.getTime(), Level.INFO);
+        Log.info("Power Off note created at: "
+                + state.getTime().toInt() + " " + state.getTime());
         return this;
     }
 
@@ -326,7 +321,7 @@ public abstract class DeviceBase {
             time_now.addToSeconds(30);
             set_time(time_now);
         } else {
-        	MasterTest.print("The device is already on.");
+        	Log.info("The device is already on.");
         }
         return this;
     }
@@ -343,7 +338,7 @@ public abstract class DeviceBase {
 			} catch (HessianException e){
 				reply = null;
 			} catch (Exception e) {
-				MasterTest.print(e, Level.ERROR);
+				Log.error(e);
 			}
 			if (reply instanceof HashMap<?, ?>) {
 				set_settings(theirsToOurs((HashMap<?, ?>) reply));
@@ -364,7 +359,7 @@ public abstract class DeviceBase {
                 } else if (reply instanceof String[]) {
                     ackFwdCmds((String[]) reply);
                 } else if (reply != null) {
-                	MasterTest.print("Reply from Server: " + reply, Level.DEBUG);
+                	Log.debug("Reply from Server: " + reply);
                 }
             }
         }
@@ -422,7 +417,7 @@ public abstract class DeviceBase {
     public DeviceBase set_time(AutomationCalendar time_now) {
         state.getTime_last().setDate(state.getTime());
         state.getTime().setDate(time_now);
-        MasterTest.print("Time = " + time_now, Level.DEBUG);
+        Log.debug("Time = " + time_now);
         return this;
     }
 
@@ -434,7 +429,7 @@ public abstract class DeviceBase {
         if (state.getIgnition_state()) {
             set_ignition(time_delta);
         } else {
-        	MasterTest.print("Vehicle was already turned off");
+        	Log.info("Vehicle was already turned off");
         }
         return this;
     }
@@ -443,7 +438,7 @@ public abstract class DeviceBase {
         if (!state.getIgnition_state()) {
             set_ignition(time_delta);
         } else {
-        	MasterTest.print("Vehicle was already turned on");
+        	Log.info("Vehicle was already turned on");
         }
         return this;
     }
@@ -488,7 +483,7 @@ public abstract class DeviceBase {
     }
 
 	protected boolean writeTiwiFile(String fileName, Map<String, Object> reply) {
-		Log.d("%s", reply);
+		Log.debug(reply);
         if (!fileName.startsWith("target")) {
             String resourceFile = "target/test/resources/" + state.getImei()
                     + "/" + "downloads/";
@@ -504,16 +499,16 @@ public abstract class DeviceBase {
             FileOutputStream fw = new FileOutputStream(destination);
             fw.write((byte[]) reply.get("f"));
             fw.close();
-            Log.d(
+            Log.debug(
                     "SHA1 Hash is: "
                             + SHA1Checksum.getSHA1Checksum(lastDownload));
             return true;
         } catch (FileNotFoundException e) {
-        	Log.e("%s", e);
+        	Log.error(e);
         } catch (IOException e) {
-            Log.e("%s", e);
+            Log.error(e);
         } catch (Exception e) {
-            Log.e("%s", e);
+            Log.error(e);
         }
         return false;
     }

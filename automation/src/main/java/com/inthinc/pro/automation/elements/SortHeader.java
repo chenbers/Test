@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.logging.Log;
 
 public class SortHeader extends TextButton {
     
@@ -36,7 +37,7 @@ public class SortHeader extends TextButton {
             }else if( !id.contains("=")){
                 newID = processID(id);
             }
-            print(newID);
+            Log.info(newID);
             newIds[i]=newID;
         }
         myEnum.setID(newIds);

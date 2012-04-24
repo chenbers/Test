@@ -13,6 +13,7 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripTracker;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 @Ignore
@@ -24,7 +25,7 @@ public class HOSRuleSets extends WebRallyTest {
 
     @Test
     public void de6587_canadaWaysmartTrip() {
-        logger.info("generating canadaWaysmartTrip");
+        Log.info("generating canadaWaysmartTrip");
         WaysmartDevice waySmart;
         String satImei = "virt_ws_de6587";
         String mcmID = "virt_MCM39731";

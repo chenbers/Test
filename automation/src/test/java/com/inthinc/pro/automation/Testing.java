@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -190,8 +189,6 @@ public class Testing {
 			String firstProject="Portal Merge", secondProject="waySmart Firmware";
 			RallyWebServices space = RallyWebServices.INTHINC;
 			
-			final Logger logger = Logger.getLogger(RallyWebServices.class);
-//			logger.setLevel(Level.DEBUG);
 //			Project other = new Project(username, password);
 //			JSONObject otherProject = other.getProject(secondProject, space);
 			TestFolder folderCommand = new TestFolder(username, password, space);

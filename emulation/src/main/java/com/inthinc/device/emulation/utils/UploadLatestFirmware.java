@@ -30,7 +30,7 @@ public class UploadLatestFirmware {
                     tiwi.uploadFirmware(uploadFW);
                 } catch (HessianException e ){
                     if (e.getErrorCode()==322){
-                        Log.i("Already uploaded " + fileName);
+                        Log.info("Already uploaded " + fileName);
                         continue;
                     }
                     Log.wtf("%s", e);

@@ -80,7 +80,6 @@ public class AutomationSiloService {
 		Map<String, Object> map = mapper.convertToMap(device);
 		map.put("firmVer", device.getFirmwareVersion());
 		map.put("witnessVer", device.getWitnessVersion());
-		map.put("productVer", device.getProductVersion().getVersion());
 		return map;
 	}
 

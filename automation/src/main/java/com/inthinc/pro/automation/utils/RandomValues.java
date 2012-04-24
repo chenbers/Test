@@ -7,17 +7,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.Values;
 import com.inthinc.pro.automation.interfaces.ListEnum;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.logging.Log;
 
 public class RandomValues {
-
-	private final static Logger logger = Logger
-			.getLogger(RandomValues.class);
 
 	
 	private static HashMap<String, HashMap<String, String>> rfid = new HashMap<String, HashMap<String, String>>();
@@ -273,7 +269,7 @@ public class RandomValues {
 
 	public String getEmail(Integer length, String domain) {
 		String address = getCharString(length) + "@" + domain;
-		logger.debug(address);
+		Log.debug(address);
 		return address;
 	}
 

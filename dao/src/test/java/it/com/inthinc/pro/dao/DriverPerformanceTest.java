@@ -105,6 +105,16 @@ public class DriverPerformanceTest {
         Group group = groupListData.group;
         List<DriverPerformance> driverPerformanceList = driverPerformanceReportHessianDAO.getDriverPerformanceListForGroup(group.getGroupID(), group.getName(), interval);
         boolean first = true;
+        
+        for (int j=0; j<5;j++){
+            int i = 0;
+            for (DriverPerformance dp : driverPerformanceList){
+                System.out.println(dp.getScore() +  " " + i);
+            }
+            i++;
+            driverPerformanceList = driverPerformanceReportHessianDAO.getDriverPerformanceListForGroup(group.getGroupID(), group.getName(), interval);
+        }
+        
         for (DriverPerformance dp : driverPerformanceList) {
             if (first) {
                 assertEquals("1st Driver Score", 27, dp.getScore().intValue());

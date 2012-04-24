@@ -1,9 +1,9 @@
 package com.inthinc.pro.automation.utils;
 
-import org.apache.log4j.Logger;
+import com.inthinc.pro.automation.logging.Log;
+
 
 public class AutomationNumberManager {
-	private final static Logger logger = Logger.getLogger(AutomationNumberManager.class);
 	
 	public static Integer extract(String stringWithIntegers) {
 		
@@ -23,7 +23,7 @@ public class AutomationNumberManager {
 	        }
 	    }
 	    Integer justTheNumbers = Integer.parseInt(strBuff.toString());
-	    logger.debug("String: " + stringWithIntegers + " to Integer: " + justTheNumbers);
+	    Log.debug("String: " + stringWithIntegers + " to Integer: " + justTheNumbers);
 	    return justTheNumbers;
 	}
 	

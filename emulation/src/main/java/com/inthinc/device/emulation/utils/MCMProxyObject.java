@@ -89,7 +89,7 @@ public class MCMProxyObject implements MCMService{
     public MCMProxyObject(Addresses server) {
         this.server = server;
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
-        Log.i("MCM Server is " + server);
+        Log.info("MCM Server is " + server);
         proxy = getHessian.getMcmProxy(server);
     }
     
@@ -311,12 +311,12 @@ public class MCMProxyObject implements MCMService{
     	for (DeviceNote note: sendingQueue){
 	    	byte[] packaged = new SatNote(note, imei).Package();
 	    	try {
-	    		Log.i("Sending " + note);
-	    		Log.i("Creating socket");
+	    		Log.info("Sending " + note);
+	    		Log.info("Creating socket");
 	        	Socket socket =  new Socket(server.getMCMUrl(), server.getSatPort());
 	    		ByteArrayOutputStream out =  new ByteArrayOutputStream(); 
 	    		out.write(packaged, 0, packaged.length);
-	    		Log.i("Writing to socket");
+	    		Log.info("Writing to socket");
 	    		out.writeTo(socket.getOutputStream());
 	    		out.flush();
 	    		out.close();
@@ -335,7 +335,9 @@ public class MCMProxyObject implements MCMService{
     
     public void sendSatSMTP(String imei, List<? extends DeviceNote> sendingQueue){
         Properties props = new Properties();
-        props.put("mail.smtp.host", "qa.tiwipro.com");
+//        props.put("mail.smtp.host", "qa.tiwipro.com");
+        props.put("mail.smtp.host", "192.168.11.110");
+        props.put("mail.smtp.port", 2526);
         Session session = Session.getDefaultInstance(props, null);
         InternetAddress from, to1;
         try {
@@ -381,6 +383,7 @@ public class MCMProxyObject implements MCMService{
                 
                 // send the message
                 Transport.send(msg);
+                DeviceStatistics.addCall();
             } catch (AddressException e) {
                 Log.wtf("%s", e);
             } catch (MessagingException e) {
@@ -483,8 +486,8 @@ public class MCMProxyObject implements MCMService{
             
         } else if (clazz.equals(SatelliteEvent.class)) {
         	if (state.getWaysDirection().equals(Direction.sat)){
-        		sendSatNote(state.getImei(), notes);
-        		//sendSatSMTP(state.getImei(), notes);
+//        		sendSatNote(state.getImei(), notes);
+        		sendSatSMTP(state.getImei(), notes);
         	} else {
                 reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
@@ -503,8 +506,8 @@ public class MCMProxyObject implements MCMService{
                         notes, state.getImei()); 
         	}
         } else if (clazz.equals(SatelliteStrippedConfigurator.class)){
-        	sendSatNote(state.getImei(), notes);
-        	//sendSatSMTP(state.getImei(), notes);
+//        	sendSatNote(state.getImei(), notes);
+        	sendSatSMTP(state.getImei(), notes);
         	reply = null;
         }
     	return reply;
@@ -589,7 +592,7 @@ public class MCMProxyObject implements MCMService{
 			}
 		} catch (HessianException e){
 			if (e.getErrorCode()==304){
-				Log.i("Device probably not assigned to a vehicle, got 304");
+				Log.info("Device probably not assigned to a vehicle, got 304");
 			} else {
 				throw e;
 			}
@@ -606,7 +609,7 @@ public class MCMProxyObject implements MCMService{
 			}
 		} catch (HessianException e){
 			if (e.getErrorCode()==304){
-				Log.i("Vehicle doesn't have any actuals yet, got 304");
+				Log.info("Vehicle doesn't have any actuals yet, got 304");
 			} else {
 				throw e;
 			}

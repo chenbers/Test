@@ -1,16 +1,14 @@
 package com.inthinc.pro.rally;
 
 import org.apache.commons.httpclient.URIException;
-import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.logging.Log;
 
 
 public class Project extends RallyObject{
 	
-private final static Logger logger = Logger.getLogger(Project.class);
 
 	
 	public Project(String username, String password){
@@ -28,9 +26,9 @@ private final static Logger logger = Logger.getLogger(Project.class);
 			http.getObjects(RallyWebServices.PROJECT);
 			return http.getResults().getJSONObject(0);
 		} catch (JSONException e) {
-			logger.debug(StackToString.toString(e));
+			Log.error(e);
 		} catch (URIException e) {
-			logger.debug(StackToString.toString(e));
+			Log.error(e);
 		}
 		return null;
 	}

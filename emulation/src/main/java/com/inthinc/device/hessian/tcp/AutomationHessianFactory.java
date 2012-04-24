@@ -64,7 +64,7 @@ public class AutomationHessianFactory {
         Log.d("createProxy for %s, %s", proxy.getClass().getSimpleName(), server);
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
-            return (HessianService) factory.create(proxy, url, port);
+            return (HessianService) factory.create(proxy, url, port); 
         } catch (NumberFormatException e) {
             Log.wtf("%s", e);
         } catch (MalformedURLException e) {

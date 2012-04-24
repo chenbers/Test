@@ -11,9 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.log4j.Level;
-
-import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.logging.Log;
 
 //TODO: Document
 /**
@@ -35,9 +33,9 @@ public class ObjectReadWrite {
             outputStream.writeObject(item);
             
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            Log.error(ex);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Log.error(ex);
         } finally {
             //Close the ObjectOutputStream
             try {
@@ -46,7 +44,7 @@ public class ObjectReadWrite {
                     outputStream.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Log.error(ex);
             }
         }
     }
@@ -68,9 +66,9 @@ public class ObjectReadWrite {
 	            objects.add(obj);
 	        }
 	    } catch (EOFException ex) { //This exception will be caught when EOF is reached
-	        MasterTest.print("End of file reached.", Level.DEBUG);
+	        Log.debug("End of file reached.");
 	    } catch (ClassNotFoundException ex) {
-	        ex.printStackTrace();
+	        Log.error(ex);
 	    } catch (FileNotFoundException ex) {
 	        try {
                 inputStream = new ObjectInputStream(this.getClass().getResource(filename).openStream());
@@ -79,13 +77,13 @@ public class ObjectReadWrite {
                     objects.add(obj);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.error(e);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                Log.error(e);
             }
-	        ex.printStackTrace();
+	        Log.error(ex);
 	    } catch (IOException ex) {
-	        ex.printStackTrace();
+	        Log.error(ex);
 	    } finally {
 	        //Close the ObjectInputStream
 	        try {
@@ -93,7 +91,7 @@ public class ObjectReadWrite {
 	                inputStream.close();
 	            }
 	        } catch (IOException ex) {
-	            ex.printStackTrace();
+	            Log.error(ex);
 	        }
 	    }
         return objects;
@@ -110,7 +108,7 @@ public class ObjectReadWrite {
         new ObjectReadWrite().writeObject(writeMe, "myFile.txt");
         ArrayList<Object> stuff = new ObjectReadWrite().readObject("myFile.txt");
         if (stuff.get(0) instanceof HashMap<?, ?>) {
-        	System.out.println(stuff.get(0));
+        	Log.info(stuff.get(0));
         }
     }
 }

@@ -52,7 +52,7 @@ public final class WaysmartClasses {
                 nLength = DeviceNote.byteToInt(bais, 4);
             }
 
-            Log.i(toString());
+            Log.info(toString());
         }
 
         @Override

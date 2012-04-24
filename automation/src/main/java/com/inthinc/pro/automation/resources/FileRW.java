@@ -12,20 +12,18 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
-
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class FileRW {
 	
-	private final static Logger logger = Logger.getLogger(FileRW.class);
 	private static BufferedImage image;
 	private String fileName;
 	private BufferedReader in;
 //	private InputStream stream;
 
 	public FileRW(String fileName){
-		logger.debug(fileName);
+		Log.debug(fileName);
 		this.fileName = fileName;
 	}
 	public FileRW(){
@@ -47,7 +45,7 @@ public class FileRW {
 		try {
             in = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
-            logger.info(StackToString.toString(e));
+            Log.info(StackToString.toString(e));
             throw new NullPointerException(fileName + " was not found");
         }
 	}
@@ -78,7 +76,7 @@ public class FileRW {
 				results.add(in.readLine());
 			}
 		} catch (IOException e) {
-			logger.debug(StackToString.toString(e));
+			Log.debug(StackToString.toString(e));
 		}
 		close();
 		return results;
@@ -92,7 +90,7 @@ public class FileRW {
 //			stream.close();
 			in.close();
 		} catch (IOException e) {
-			logger.debug(StackToString.toString(e));
+			Log.debug(StackToString.toString(e));
 		}
 	}
 	
@@ -107,13 +105,13 @@ public class FileRW {
             // Create file on disk (if it doesn't exist)
             success = file.createNewFile();
         } catch (IOException e) {
-            logger.debug(StackToString.toString(e));
+            Log.debug(StackToString.toString(e));
         }
 
         if (success) {
-        	logger.info("File did not exist and was created.\n");
+        	Log.info("File did not exist and was created.\n");
         } else {
-        	logger.info("File already exists.\n");
+        	Log.info("File already exists.\n");
         }
 	}
 	
@@ -122,7 +120,7 @@ public class FileRW {
 			image = ImageIO.read(new File(fileName));
 			return image;
 		} catch (IOException e) {
-			logger.debug(StackToString.toString(e));
+			Log.debug(StackToString.toString(e));
 		}
 		return null;
 	}
@@ -132,7 +130,7 @@ public class FileRW {
 		if (imgURL != null) {
 			return new ImageIcon(imgURL, description);
 		}else {
-			logger.fatal("Couldn't find file: " + fileName);
+			Log.error("Couldn't find file: " + fileName);
 			return null;
 		}
 	}
