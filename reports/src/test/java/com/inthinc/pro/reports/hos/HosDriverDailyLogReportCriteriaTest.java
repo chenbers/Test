@@ -619,7 +619,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         assertEquals("Vehicle 2 Miles", MockHOSDAO.VEHICLE2_MILEAGE, vehicle2Info.getVehicleMiles());
 
         assertEquals("Vehicle 1 Driver Miles", MockHOSDAO.VEHICLE1_MILEAGE, vehicle1Info.getDriverMiles());
-        assertEquals("Vehicle 2 Driver Miles", 0L, vehicle2Info.getDriverMiles());
+        assertEquals("Vehicle 2 Driver Miles", MockHOSDAO.VEHICLE2_MILEAGE, vehicle2Info.getDriverMiles());
 
         assertEquals("Vehicle 1 Odometer", MockHOSDAO.MOCK_VEHICLE_ID1*100l, vehicle1Info.getStartOdometer());
         assertEquals("Vehicle 2 odometer", MockHOSDAO.MOCK_VEHICLE_ID2*100l, vehicle2Info.getStartOdometer());
@@ -664,6 +664,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         List<VehicleInfo> vehicleInfoList =  ddlCriteria.initVehicleInfoForDay(day, MockHOSDAO.MOCK_DRIVER_ID1, logListForDay, hosRecordList);
         
         assertEquals("Number of vehicles for driver for day", 0, vehicleInfoList.size());
+        
     }
 
 
