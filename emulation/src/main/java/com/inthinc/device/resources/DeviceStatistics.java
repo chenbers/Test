@@ -22,7 +22,7 @@ public class DeviceStatistics {
         stop.setDate(System.currentTimeMillis());
         if (stop.getDelta(last) > 15000){
         	Log.i("Sent: %d, Time: %d, NotesPerMinute: %d",
-                    hessianCalls, getTimeDelta(), getCallsPerMinute());
+                    hessianCalls, getTimeDelta().intValue(), getCallsPerMinute());
             last.setDate(stop);
         }
         return true;

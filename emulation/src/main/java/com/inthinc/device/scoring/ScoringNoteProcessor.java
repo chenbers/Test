@@ -113,8 +113,8 @@ public class ScoringNoteProcessor {
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSpeeding().entrySet()){
 			Log.debug("Processing Speeding note == " +note.getKey());
 			Double top       = note.getValue().get("topSpeed").doubleValue();
-			Double limit     = note.getValue().get("limit"   ).doubleValue();
-			Double distance  = note.getValue().get("distance").doubleValue();
+			Double limit     = note.getValue().get("speedLimit"   ).doubleValue();
+			Double distance  = note.getValue().get("odometer").doubleValue();
 			Integer category = 0;
 			if (limit<=30) category = 0;
 			else if (limit<=40) category = 1;

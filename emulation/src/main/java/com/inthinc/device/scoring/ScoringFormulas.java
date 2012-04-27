@@ -140,7 +140,7 @@ public class ScoringFormulas {
 		while (itr.hasNext()) {
 			Map<String, Integer> map = speeding.get(itr.next());
 			penalty += speedingPenalty(map.get("topSpeed").doubleValue(),
-					map.get("limit").doubleValue(),map.get("distance").doubleValue());
+					map.get("speedLimit").doubleValue(),map.get("odometer").doubleValue());
 		}
 		Log.debug("Speeding Penalty en mass: "+penalty);
 		return penalty;
