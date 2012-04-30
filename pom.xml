@@ -49,6 +49,12 @@
 			<email>jhoward@inthinc.com</email>
 			<url>pro.tiwi.com</url>
 		</developer>
+		<developer>
+			<id>jwimmer</id>
+			<name>Jason Wimmer</name>
+			<email>jwimmer@inthinc.com</email>
+			<url>pro.tiwi.com</url>
+		</developer>	
 	</developers>
 	<modules>
 		<module>dao</module>
@@ -85,7 +91,7 @@
 		<log4j.version>1.2.12</log4j.version>
 		<jmockit.version>0.999.4</jmockit.version>
 		<hos.version>0.0.15</hos.version>
-		<selenium.version>2.19.0</selenium.version>
+		<selenium.version>2.21.0</selenium.version>
 		<jbehave.core.version>3.5.4</jbehave.core.version>
 		<jbehave.web.version>3.4.3</jbehave.web.version>
 	</properties>
