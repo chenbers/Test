@@ -39,11 +39,14 @@ public class RallyTest {
     private String testCase;
     private JSONObject deletelastResults;
     private Test superTest;
+    private String stepAsString;
     
     
     
     public RallyTest(Test superTest){
         this.superTest = superTest;
+        Long id = Thread.currentThread().getId();
+        Log.info(id);
     }
     
     public void before() {
@@ -51,7 +54,7 @@ public class RallyTest {
             getTcr().newResults();
             if (testCase != null){
                 set_test_case(testCase);
-            }
+            } 
         } catch (Exception e) {
             Log.error(e);
             superTest.setSkip(true);
@@ -68,6 +71,9 @@ public class RallyTest {
                 if(apb.getAddTestSet()){
                     setTestSet(getTestSet());
                 }
+                if (testCase == null && stepAsString != null){
+                    parseJBehaveStep(stepAsString);
+                }
                 tcr.setBuildNumber(superTest.getBuildNumber());
                 tcr.setVerdict(superTest.getTestVerdict());
                 tcr.setNotes(getTestSet(), superTest.getErrorCatcher());
@@ -76,7 +82,7 @@ public class RallyTest {
                 if (tcr.hasVitalFields()){
 	                tcr.send_test_case_results();
                 } else {
-                    Log.error("Test case is missing: ", tcr.missingFields());
+                    Log.error("Test case is missing:  ", tcr.missingFields());
                 }
             } catch (Exception e) {
                 Log.error(e);
@@ -104,6 +110,7 @@ public class RallyTest {
     }
     
     public void parseJBehaveStep(String stepAsString){
+        this.stepAsString = stepAsString;
         Pattern tc = Pattern.compile(RegexTerms.testCase);
         Matcher matchTC = tc.matcher(stepAsString);
 

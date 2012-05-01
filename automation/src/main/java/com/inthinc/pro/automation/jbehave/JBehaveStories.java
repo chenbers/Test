@@ -13,17 +13,17 @@ import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.io.LoadFromRelativeFile;
 import org.jbehave.core.io.StoryFinder;
-import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.steps.CandidateSteps;
 
-import com.google.common.util.concurrent.MoreExecutors;
 import com.inthinc.pro.automation.selenium.AbstractPage;
+import com.inthinc.pro.automation.test.JBehaveTest;
 import com.inthinc.pro.automation.test.Test;
 
-public abstract class JBehaveStories extends JUnitStories {
+public abstract class JBehaveStories extends JBehaveTest {
     
     private Test test;
+    private Configuration config;
     
     public JBehaveStories(String uri){
         try {
@@ -32,16 +32,7 @@ public abstract class JBehaveStories extends JUnitStories {
         } catch (DecoderException e) {
             throw new NullPointerException("Unable to parse uri: " + uri);
         }
-        configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
-        super.useEmbedder(new AutoEmbedder(requiredPageObjectsList()));
     }
-    
-    /**
-     * This method MUST return page objects to be used by the automation<br />
-     * so that we can interact with the pages.<br />
-     * <br />
-     */
-    public abstract List<AbstractPage> requiredPageObjectsList();
     
     /**
      * Helper method to convert an array of page objects into a list<br />
@@ -54,9 +45,6 @@ public abstract class JBehaveStories extends JUnitStories {
         return list;
     }
     
-    
-
-
     // The uri string provides the location to start looking for stories from.
     private final String uri;
     
@@ -64,8 +52,11 @@ public abstract class JBehaveStories extends JUnitStories {
 //  MostUsefulConfiguration, and changing only what is needed
     @Override
     public Configuration configuration() {
+        if (test == null){
+            test = getTest();
+        }
         try {
-            return new MostUsefulConfiguration()
+            config = new MostUsefulConfiguration()
                 // where to find the stories
                 .useStoryLoader(new LoadFromRelativeFile(new File(uri).toURI().toURL()))
                 // CONSOLE and TXT reporting
@@ -76,17 +67,14 @@ public abstract class JBehaveStories extends JUnitStories {
 //                .useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
                 //.doDryRun(true)//helpful when generating new steps' methods
                 ;
+            return config;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    /**
-     * Provides a list of stories to be run.
-     */
-    @Override
-    protected abstract List<String> storyPaths() ;
+    protected abstract Test getTest();
     
     /**
      * This method supplies the names of the stories<br />
@@ -103,13 +91,6 @@ public abstract class JBehaveStories extends JUnitStories {
     }
     
     
-    /**
-     * Provides a list of step objects that are more complicated<br />
-     * than we can automate by parsing the step.
-     */
-    @Override
-    public abstract List<CandidateSteps> candidateSteps();
-        
         
     /**
      * This method provides the different steps objects<br />
@@ -121,14 +102,13 @@ public abstract class JBehaveStories extends JUnitStories {
      * @param steps
      * @return
      */
-    public List<CandidateSteps> candidateSteps(Test first, Object ...steps){
-        this.test = first;
+    public List<CandidateSteps> candidateSteps(Object ...steps){
         List<Object> total = new ArrayList<Object>();
         if (steps[0] != null ){
             total.addAll(asList(steps));
         }
-        total.add(first);
-        return new AutoStepsFactory(configuration(), total).createCandidateSteps();
+        total.add(test);
+        return new AutoStepsFactory(config, total).createCandidateSteps();
     }
 
 }

@@ -253,7 +253,7 @@ public class TestCaseResult extends RallyObject {
     }
 
 	public boolean hasVitalFields() {
-		return !missingRequiredFields().isEmpty();
+		return missingRequiredFields().isEmpty();
 	}
 	
 	private List<Fields> missingRequiredFields(){
