@@ -151,7 +151,7 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
                         IDs[i] = before + middle + after;
                     }
                 } else {
-                    use = Integer.parseInt(neww) + "";
+                    use = Integer.parseInt(neww) -1 + "";
                 }
 
             }
