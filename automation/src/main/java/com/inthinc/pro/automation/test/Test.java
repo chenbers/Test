@@ -17,7 +17,7 @@ public class Test extends MasterTest {
     protected Boolean skip = false;
     private Verdicts testVerdict;
     
-    private String buildNumber;
+    private String buildNumber = "NO_BUILD_FOUND";
     protected Long stopTime;
     
     public void before(){
@@ -57,7 +57,7 @@ public class Test extends MasterTest {
     }
 
     public void setBuildNumber(String buildNumber) {
-        this.buildNumber = buildNumber;
+        this.buildNumber = buildNumber == null ? this.buildNumber : buildNumber;
     }
 
     public void setTestVerdict() {

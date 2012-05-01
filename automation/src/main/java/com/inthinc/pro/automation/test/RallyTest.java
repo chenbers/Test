@@ -4,8 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.jbehave.core.annotations.AfterScenario;
-import org.jbehave.core.annotations.BeforeScenario;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
@@ -51,6 +49,9 @@ public class RallyTest {
     public void before() {
         try {
             getTcr().newResults();
+            if (testCase != null){
+                set_test_case(testCase);
+            }
         } catch (Exception e) {
             Log.error(e);
             superTest.setSkip(true);
@@ -60,27 +61,29 @@ public class RallyTest {
 
     public void after() {
         if (!superTest.getSkip()) {
-        	if (tcr.hasVitalFields()){
-	            try {
-	                if (deletelastResults != null){
-	                    tcr.deleteTestCaseResult(deletelastResults);
-	                }
-	                if(apb.getAddTestSet()){
-	                    setTestSet(getTestSet());
-	                }
-	                tcr.setBuildNumber(superTest.getBuildNumber());
-	                tcr.setVerdict(superTest.getTestVerdict());
-	                tcr.setNotes(getTestSet(), superTest.getErrorCatcher());
-	                tcr.setDuration(superTest.getStopTime() - superTest.getStartTime());
+            try {
+                if (deletelastResults != null){
+                    tcr.deleteTestCaseResult(deletelastResults);
+                }
+                if(apb.getAddTestSet()){
+                    setTestSet(getTestSet());
+                }
+                tcr.setBuildNumber(superTest.getBuildNumber());
+                tcr.setVerdict(superTest.getTestVerdict());
+                tcr.setNotes(getTestSet(), superTest.getErrorCatcher());
+                tcr.setDuration(superTest.getStopTime() - superTest.getStartTime());
+
+                if (tcr.hasVitalFields()){
 	                tcr.send_test_case_results();
-	                tcr = null;
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
-        	} else {
-        		Log.error("Test case is missing fields necessary to update Rally");
-        	}
+                } else {
+                    Log.error("Test case is missing: ", tcr.missingFields());
+                }
+            } catch (Exception e) {
+                Log.error(e);
+            }
         }
+        tcr = null;
+        testCase = null;
     }
     
     public boolean runToday(){
@@ -108,7 +111,7 @@ public class RallyTest {
 
             String tcID = stepAsString.substring(matchTC.start(), matchTC.end());
             set_test_case(tcID);
-
+            testCase = tcID;
             Pattern de = Pattern.compile(RegexTerms.defect);
             Matcher matchDE = de.matcher(stepAsString);
             if (matchDE.find()) {
@@ -119,7 +122,8 @@ public class RallyTest {
     }
     
     private void resetTCR(){
-        tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);   
+        tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);  
+        tcr.setBuildNumber("NO_BUILD_FOUND");
     }
     
     private TestCaseResult getTcr(){

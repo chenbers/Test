@@ -58,8 +58,7 @@ public class AutoPageRunner {
     }
     
     public void setEmbedder(Embedder embedder){
-        Map.Entry<String, AbstractPage> entry = pageMap.entrySet().iterator().next();
-        stepCreator = new AutoStepCreator(embedder, entry.getValue(), entry.getValue().getClass());
+        stepCreator = new AutoStepCreator(embedder);
         methodFinder.setStepCreator(stepCreator);
     }
     
@@ -157,6 +156,8 @@ public class AutoPageRunner {
                 }
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
+        } catch (NullPointerException e){
+            Log.debug(e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } catch (IllegalArgumentException e) {
@@ -191,6 +192,8 @@ public class AutoPageRunner {
                 }
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
+        } catch (NullPointerException e){
+            Log.debug(e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } catch (IllegalArgumentException e) {
@@ -212,6 +215,8 @@ public class AutoPageRunner {
                 return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("load"));
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
+        } catch (NullPointerException e){
+            Log.debug(e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } catch (IllegalArgumentException e) {

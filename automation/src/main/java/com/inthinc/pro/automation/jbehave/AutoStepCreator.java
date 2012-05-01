@@ -50,6 +50,11 @@ public class AutoStepCreator extends StepCreator {
         this(currentPage, embedder.stepsFactory(), embedder.configuration().parameterConverters(), new FauxMatcher(), new SilentStepMonitor());
     }
     
+    public AutoStepCreator(Embedder embedder) {
+        this("", embedder.stepsFactory(), embedder.configuration().parameterConverters(), 
+                new FauxMatcher(), new SilentStepMonitor());
+    }
+
     public static class FauxMatcher implements StepMatcher {
 
         @Override

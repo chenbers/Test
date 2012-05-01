@@ -1,7 +1,9 @@
 package com.inthinc.pro.rally;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.json.JSONException;
@@ -118,7 +120,7 @@ public class TestCaseResult extends RallyObject {
         try {
             return testCaseResults.get(field.toString());
         } catch (JSONException e) {
-            Log.error(e);
+            Log.debug(e);
         }
         return null;
     }
@@ -251,14 +253,22 @@ public class TestCaseResult extends RallyObject {
     }
 
 	public boolean hasVitalFields() {
-		for (Fields field : Fields.values()){
-			if (field.required){
-				if (getField(field)==null){
-				    Log.info("This Test Case Result is missing: " + field);
-					return false;
-				}
-			}
-		}
-		return true;
+		return !missingRequiredFields().isEmpty();
 	}
+	
+	private List<Fields> missingRequiredFields(){
+	    List<Fields> missing = new ArrayList<Fields>();
+	    for (Fields field : Fields.values()){
+            if (field.required){
+                if (getField(field)==null){
+                    missing.add(field);
+                }
+            }
+        }
+	    return missing;
+	}
+
+    public String missingFields() {
+        return missingRequiredFields().toString();
+    }
 }
