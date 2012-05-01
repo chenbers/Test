@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.net.URLCodec;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.io.LoadFromRelativeFile;
@@ -21,15 +23,31 @@ import com.inthinc.pro.automation.test.Test;
 
 public abstract class JBehaveStories extends JUnitStories {
     
+    private Test test;
     
     public JBehaveStories(String uri){
-        this.uri = uri;
+        try {
+            URLCodec urlc = new URLCodec();
+            this.uri = urlc.decode(urlc.decode(uri));
+        } catch (DecoderException e) {
+            throw new NullPointerException("Unable to parse uri: " + uri);
+        }
         configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
-        super.useEmbedder(new AutoEmbedder(setPageObjects()));
+        super.useEmbedder(new AutoEmbedder(requiredPageObjectsList()));
     }
     
-    public abstract List<AbstractPage> setPageObjects();
+    /**
+     * This method MUST return page objects to be used by the automation<br />
+     * so that we can interact with the pages.<br />
+     * <br />
+     */
+    public abstract List<AbstractPage> requiredPageObjectsList();
     
+    /**
+     * Helper method to convert an array of page objects into a list<br />
+     * to be used by requiredPageObjectsList.<br />
+     * Should never be a null list.
+     */
     protected List<AbstractPage> pageList(AbstractPage ...pages){
         List<AbstractPage> list = new ArrayList<AbstractPage>();
         list.addAll(asList(pages));
@@ -52,10 +70,9 @@ public abstract class JBehaveStories extends JUnitStories {
                 .useStoryLoader(new LoadFromRelativeFile(new File(uri).toURI().toURL()))
                 // CONSOLE and TXT reporting
                 .useStoryReporterBuilder(
-                        new AutoStoryReporterBuilder()
+                        new AutoStoryReporterBuilder(test)
                                 .withDefaultFormats()
                                 .withFormats(Format.CONSOLE, Format.TXT, Format.XML, Format.HTML_TEMPLATE, Format.HTML))
-                .useViewGenerator(new AutoViewGenerator())
 //                .useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
                 //.doDryRun(true)//helpful when generating new steps' methods
                 ;
@@ -65,6 +82,9 @@ public abstract class JBehaveStories extends JUnitStories {
         return null;
     }
 
+    /**
+     * Provides a list of stories to be run.
+     */
     @Override
     protected abstract List<String> storyPaths() ;
     
@@ -83,7 +103,10 @@ public abstract class JBehaveStories extends JUnitStories {
     }
     
     
-//  Here we specify the steps classes
+    /**
+     * Provides a list of step objects that are more complicated<br />
+     * than we can automate by parsing the step.
+     */
     @Override
     public abstract List<CandidateSteps> candidateSteps();
         
@@ -91,7 +114,7 @@ public abstract class JBehaveStories extends JUnitStories {
     /**
      * This method provides the different steps objects<br />
      * for the story to run.  By default it will always<br />
-     * include the ConfiguratorRallyTest so that things<br />
+     * include the RallyTest so that things<br />
      * can be recorded in Rally, and it provides the <br />
      * Test before and after methods.
      * 
@@ -99,6 +122,7 @@ public abstract class JBehaveStories extends JUnitStories {
      * @return
      */
     public List<CandidateSteps> candidateSteps(Test first, Object ...steps){
+        this.test = first;
         List<Object> total = new ArrayList<Object>();
         if (steps[0] != null ){
             total.addAll(asList(steps));

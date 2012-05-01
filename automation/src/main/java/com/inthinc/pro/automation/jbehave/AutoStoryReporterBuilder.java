@@ -8,7 +8,16 @@ import org.jbehave.core.reporters.NullStoryReporter;
 import org.jbehave.core.reporters.StoryReporter;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 
+import com.inthinc.pro.automation.test.Test;
+
 public class AutoStoryReporterBuilder extends StoryReporterBuilder {
+    
+    private Test test;
+    
+    public AutoStoryReporterBuilder(Test test){
+        this.test = test;
+    }
+    
     
     @Override
     public StoryReporter build(String storyPath) {
@@ -20,7 +29,7 @@ public class AutoStoryReporterBuilder extends StoryReporterBuilder {
         DelegatingStoryReporter delegate = new DelegatingStoryReporter(delegates.values());
         StoryReporter crossReferencing = (this.crossReference() == null ? new NullStoryReporter() : reporterFor(storyPath,
                 this.crossReference()));
-        return new AutoStoryReporter(crossReferencing, delegate, this.multiThreading());
+        return new AutoStoryReporter(crossReferencing, delegate, this.multiThreading(), test);
     }
     
     

@@ -58,7 +58,8 @@ public class AutoPageRunner {
     }
     
     public void setEmbedder(Embedder embedder){
-        stepCreator = new AutoStepCreator(embedder, currentPage, currentPageClass);
+        Map.Entry<String, AbstractPage> entry = pageMap.entrySet().iterator().next();
+        stepCreator = new AutoStepCreator(embedder, entry.getValue(), entry.getValue().getClass());
         methodFinder.setStepCreator(stepCreator);
     }
     

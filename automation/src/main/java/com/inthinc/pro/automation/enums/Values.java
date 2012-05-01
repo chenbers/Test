@@ -6,14 +6,14 @@ import com.inthinc.pro.automation.interfaces.ListEnum;
 import com.inthinc.pro.automation.resources.FileRW;
 
 public enum Values implements ListEnum{
-	COLOR("src/main/resources/values/colors.dat"), 
+	COLOR("colors.dat"), 
 	YEAR(""), 
-	MAKE("src/main/resources/values/make.dat"), 
-	MODEL("src/main/resources/values/model.dat"), 
-	STATES("src/main/resources/values/states.dat"), 
-	RFID("src/main/resources/values/rfid.dat"), 
-	TEXT_MESSAGE("src/main/resources/values/textMessages.dat"), 
-	EMAIL_DOMAINS("src/main/resources/values/emailDomains.dat"),
+	MAKE("make.dat"), 
+	MODEL("model.dat"), 
+	STATES("states.dat"), 
+	RFID("rfid.dat"), 
+	TEXT_MESSAGE("textMessages.dat"), 
+	EMAIL_DOMAINS("emailDomains.dat"),
 
 	;
 
@@ -25,7 +25,6 @@ public enum Values implements ListEnum{
 
 	private Values(String fileName) {
 		this.fileName = fileName;
-
 	}
 
 	public ArrayList<String> getList() {

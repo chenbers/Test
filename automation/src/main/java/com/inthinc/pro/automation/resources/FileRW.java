@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.net.URLCodec;
+
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.StackToString;
 
@@ -41,11 +44,16 @@ public class FileRW {
 //	}
 	
 	private void openReader(){
-	    File file = new File(fileName);
 		try {
+	        String location = this.getClass().getResource(fileName).getFile();
+	        location = new URLCodec().decode(location);
+	        File file = new File(location);
             in = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
-            Log.info(StackToString.toString(e));
+            Log.info(e);
+            throw new NullPointerException(fileName + " was not found");
+        } catch (DecoderException e) {
+            Log.info(e);
             throw new NullPointerException(fileName + " was not found");
         }
 	}

@@ -16,6 +16,7 @@ import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.jbehave.core.model.StepPattern;
 import org.jbehave.core.parsers.StepMatcher;
 import org.jbehave.core.steps.InjectableStepsFactory;
+import org.jbehave.core.steps.ParameterControls;
 import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.SilentStepMonitor;
 import org.jbehave.core.steps.StepCreator;
@@ -26,28 +27,27 @@ import org.jbehave.core.steps.StepType;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.utils.MasterTest;
-import com.thoughtworks.paranamer.NullParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 
 public class AutoStepCreator extends StepCreator {
     
-    private Class<?> stepsType;
-    private final InjectableStepsFactory stepsFactory;
-    private final ParameterConverters parameterConverters;
     private StepMonitor stepMonitor;
-    private Paranamer paranamer = new NullParanamer();
     private boolean dryRun = false;
+    private Object instance;
 
-    public AutoStepCreator(Class<?> stepsType, InjectableStepsFactory stepsFactory, ParameterConverters parameterConverters, StepMatcher stepMatcher, StepMonitor stepMonitor) {
-        super(stepsType, stepsFactory, parameterConverters, stepMatcher, stepMonitor);
+    public AutoStepCreator(Object stepsType, InjectableStepsFactory stepsFactory, ParameterConverters parameterConverters, StepMatcher stepMatcher, StepMonitor stepMonitor) {
+        super((Class<?>) ((stepsType instanceof Class<?>) ? stepsType : stepsType.getClass())
+        , stepsFactory, parameterConverters, new ParameterControls(), stepMatcher, stepMonitor);
         this.stepMonitor = stepMonitor;
-        this.parameterConverters = parameterConverters;
-        this.stepsType = stepsType;
-        this.stepsFactory = stepsFactory;
+        this.instance = stepsType;
+    }
+    
+    @Override
+    public Object stepsInstance() {
+        return instance;
     }
 
     public AutoStepCreator(Embedder embedder, AbstractPage currentPage, Class<? extends AbstractPage> currentPageClass) {
-        this(currentPageClass, embedder.stepsFactory(), embedder.configuration().parameterConverters(), new FauxMatcher(), new SilentStepMonitor());
+        this(currentPage, embedder.stepsFactory(), embedder.configuration().parameterConverters(), new FauxMatcher(), new SilentStepMonitor());
     }
     
     public static class FauxMatcher implements StepMatcher {
@@ -94,18 +94,16 @@ public class AutoStepCreator extends StepCreator {
     
 
     
-    public class AutoPageStep extends ParameterizedStep {
+    public class AutoPageStep extends ParameterisedStep {
         
         private String parametrisedStep;
         private final String stepAsString;
         private final Method method;
         private Object[] parameters;
         private Object instance;
-        private boolean expectedResult;
 
         public AutoPageStep(Object instance, String stepAsString, Method method, String stepWithoutStartingWord, Map<String, String> namedParameters) {
             super(stepAsString, method, stepWithoutStartingWord, namedParameters);
-            stepsType = instance.getClass();
             this.instance = instance; 
             this.stepAsString = stepAsString;
             this.method = method;
@@ -121,7 +119,6 @@ public class AutoStepCreator extends StepCreator {
         
         public AutoPageStep(Object instance, String stepAsString, Method method, String stepWithoutStartingWord, boolean expectedResult, Object[] parameters) {
             this(instance, stepAsString, method, stepWithoutStartingWord, parameters);
-            this.expectedResult = expectedResult;
         }
         
         
@@ -162,24 +159,19 @@ public class AutoStepCreator extends StepCreator {
         return new SaveVariableStep(instance, step.stepAsString(), method, step.stepAsString().substring(step.stepAsString().indexOf(" ")), parameters);
     }
     
-    public class SaveVariableStep extends ParameterizedStep {
+    public class SaveVariableStep extends ParameterisedStep {
         
-        private Object[] convertedParameters;
         private String parametrisedStep;
         private final String stepAsString;
         private final Method method;
-        private final String stepWithoutStartingWord;
         private Object[] parameters;
         private Object instance;
-        private boolean expectedResult;
 
         public SaveVariableStep(Object instance, String stepAsString, Method method, String stepWithoutStartingWord, Map<String, String> namedParameters) {
             super(stepAsString, method, stepWithoutStartingWord, namedParameters);
-            stepsType = instance.getClass();
             this.instance = instance; 
             this.stepAsString = stepAsString;
             this.method = method;
-            this.stepWithoutStartingWord = stepWithoutStartingWord;
             this.parameters = new Object[]{};
             
         }
@@ -224,24 +216,19 @@ public class AutoStepCreator extends StepCreator {
         return new ValidationStep(elementClass, step.stepAsString(), method, step.stepAsString().substring(step.stepAsString().indexOf(" ")), parameters);
     }
     
-    public class ValidationStep extends ParameterizedStep {
+    public class ValidationStep extends ParameterisedStep {
         
-        private Object[] convertedParameters;
         private String parametrisedStep;
         private final String stepAsString;
         private final Method method;
-        private final String stepWithoutStartingWord;
         private Object[] parameters;
         private Object instance;
-        private boolean expectedResult;
 
         public ValidationStep(Object instance, String stepAsString, Method method, String stepWithoutStartingWord, Map<String, String> namedParameters) {
             super(stepAsString, method, stepWithoutStartingWord, namedParameters);
-            stepsType = instance.getClass();
             this.instance = instance; 
             this.stepAsString = stepAsString;
             this.method = method;
-            this.stepWithoutStartingWord = stepWithoutStartingWord;
             this.parameters = new Object[]{};
             
         }

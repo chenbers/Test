@@ -9,6 +9,7 @@ import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.parsers.StepMatcher;
 import org.jbehave.core.parsers.StepPatternParser;
 import org.jbehave.core.steps.InjectableStepsFactory;
+import org.jbehave.core.steps.ParameterControls;
 import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.SilentStepMonitor;
 import org.jbehave.core.steps.Step;
@@ -22,21 +23,21 @@ public class AutoStepCandidate extends StepCandidate {
 
     private final Method method;
     private final StepMatcher stepMatcher;
-    private final StepCreator stepCreator;
+    private final AutoStepCreator stepCreator;
     private String[] composedSteps;
     private StepMonitor stepMonitor = new SilentStepMonitor();
     private final Keywords keywords;
     private final StepType stepType;
     
     
-    public AutoStepCandidate(String patternAsString, int priority, StepType stepType, Method method, Class<?> stepsType, InjectableStepsFactory stepsFactory, Keywords keywords,
-            StepPatternParser stepPatternParser, ParameterConverters parameterConverters) {
-        super(patternAsString, priority, stepType, method, stepsType, stepsFactory, keywords, stepPatternParser, parameterConverters);
+    public AutoStepCandidate(String patternAsString, int priority, StepType stepType, Method method, Object stepsType, InjectableStepsFactory stepsFactory, Keywords keywords,
+            StepPatternParser stepPatternParser, ParameterConverters parameterConverters) { 
+        super(patternAsString, priority, stepType, method, (Class<?>) ((stepsType instanceof Class<?>) ? stepsType : stepsType.getClass()), stepsFactory, keywords, stepPatternParser, parameterConverters, new ParameterControls());
         this.stepType = stepType;
         this.method = method;
         this.keywords = keywords;
         this.stepMatcher = stepPatternParser.parseStep(stepType, patternAsString);
-        this.stepCreator = new StepCreator(stepsType, stepsFactory, parameterConverters, stepMatcher, stepMonitor);
+        this.stepCreator = new AutoStepCreator(stepsType, stepsFactory, parameterConverters, stepMatcher, stepMonitor);
     }
     
    

@@ -4,6 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.httpclient.NameValuePair;
+import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.BeforeScenario;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
@@ -48,10 +50,9 @@ public class RallyTest {
     
     public void before() {
         try {
-            tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
-            tcr.newResults();
+            getTcr().newResults();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.error(e);
             superTest.setSkip(true);
             throw new NullPointerException();
         }
@@ -83,20 +84,20 @@ public class RallyTest {
     }
     
     public boolean runToday(){
-        TestCase tc = new TestCase(tcr);
+        TestCase tc = new TestCase(getTcr());
         tc.setTestCase(testCase);
         superTest.setSkip(tc.wasRunToday());
         if (!superTest.getSkip()){
-            tcr.setBuildNumber("N/A");
-            tcr.setVerdict(Verdicts.PASS);
-            deletelastResults = tcr.send_test_case_results();
+            getTcr().setBuildNumber("N/A");
+            getTcr().setVerdict(Verdicts.PASS);
+            deletelastResults = getTcr().send_test_case_results();
         }
         return !superTest.getSkip();
     }
     
     public void setTestSet(String name){
         Log.info("setTestSet("+name+")");
-        tcr.setTestSet(new NameValuePair("Name", name));
+        getTcr().setTestSet(new NameValuePair("Name", name));
     }
     
     public void parseJBehaveStep(String stepAsString){
@@ -116,14 +117,25 @@ public class RallyTest {
             }
         }
     }
+    
+    private void resetTCR(){
+        tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);   
+    }
+    
+    private TestCaseResult getTcr(){
+        if (tcr == null){
+            resetTCR();
+        }
+        return tcr;
+    }
 
     public void set_test_case(String formattedID) {
         Log.info("set_test_case("+formattedID+")");
         testCase = formattedID;
-        tcr.setTestCase(new NameValuePair(TestCase.Fields.FORMATTED_ID.toString(), formattedID));
+        getTcr().setTestCase(new NameValuePair(TestCase.Fields.FORMATTED_ID.toString(), formattedID));
     }
     public void set_defect(String formattedID){
-        tcr.setNotes("  DefectID: "+formattedID);
+        getTcr().setNotes("  DefectID: "+formattedID);
     }
     public String get_test_case(){
         return testCase;

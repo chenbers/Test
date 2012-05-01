@@ -28,43 +28,28 @@ import org.jbehave.core.steps.BeforeOrAfterStep;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.StepCandidate;
 import org.jbehave.core.steps.StepCollector.Stage;
-import org.jbehave.core.steps.StepCreator;
 import org.jbehave.core.steps.StepType;
 import org.jbehave.core.steps.Steps;
 
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.test.BrowserRallyTest;
 
 public class AutoSteps extends Steps {
 
-    private Class<?> type;
-    private Object instance;
+    private final Object instance;
     private InjectableStepsFactory stepsFactory;
     private final Configuration configuration;
     
 
-    public AutoSteps(Configuration configuration) {
-        super(configuration);
-        this.type = this.getClass();
-        this.stepsFactory = new AutoStepsFactory(configuration, this);
-        this.configuration = configuration;
-    }
-
     public AutoSteps(Configuration configuration, Object instance) {
         super(configuration, instance);
-        this.type = instance.getClass();
         this.instance = instance;
         this.stepsFactory = new AutoStepsFactory(configuration, this);
         this.configuration = configuration;
     }
 
-    public AutoSteps(Configuration configuration, Class<?> type, InjectableStepsFactory stepsFactory) {
-        super(configuration, type, stepsFactory);
-        this.type = type;
-        this.stepsFactory = stepsFactory;
-        this.configuration = configuration;
+    public Object getInstance(){
+        return instance;
     }
-    
     
     public List<StepCandidate> listCandidates() {
         List<StepCandidate> candidates = new ArrayList<StepCandidate>();
@@ -101,7 +86,7 @@ public class AutoSteps extends Steps {
     
     private StepCandidate createCandidate(Method method, StepType stepType, String stepPatternAsString, int priority,
             Configuration configuration) {
-        return new AutoStepCandidate(stepPatternAsString, priority, stepType, method, type, stepsFactory,
+        return new AutoStepCandidate(stepPatternAsString, priority, stepType, method, instance, stepsFactory,
                 configuration.keywords(), configuration.stepPatternParser(), configuration.parameterConverters());
     }
     
@@ -142,7 +127,10 @@ public class AutoSteps extends Steps {
     
 
     private List<Method> allMethods() {
-        return asList(type.getMethods());
+        if (instance instanceof Class<?>){
+            return asList(((Class<?>) instance).getMethods());
+        }
+        return asList(instance.getClass().getMethods());
     }
     
     
@@ -158,6 +146,7 @@ public class AutoSteps extends Steps {
     private List<BeforeOrAfterStep> scenarioStepsHaving(ScenarioType type, Stage stage,
             Class<? extends Annotation> annotationClass, Outcome... outcomes) {
         List<BeforeOrAfterStep> steps = new ArrayList<BeforeOrAfterStep>();
+        
         for (Method method : methodsAnnotatedWith(annotationClass)) {
             ScenarioType scenarioType = scenarioType(method, annotationClass);
             if (type == scenarioType) {
@@ -199,13 +188,8 @@ public class AutoSteps extends Steps {
     }
 
     private BeforeOrAfterStep createBeforeOrAfterStep(Stage stage, Method method, Outcome outcome) {
-        if (stage.equals(Stage.BEFORE) && instance instanceof BrowserRallyTest){
-            return new BeforeRallyStep(stage, method, outcome, new StepCreator(type, stepsFactory,
-                    configuration.parameterConverters(), null, configuration.stepMonitor()), instance);
-                
-        } else 
-        return new BeforeOrAfterStep(stage, method, outcome, new StepCreator(type, stepsFactory,
-                configuration.parameterConverters(), null, configuration.stepMonitor()));
+        return new BeforeOrAfterStep(stage, method, outcome, new AutoStepCreator(instance, stepsFactory,
+                configuration.parameterConverters(), null, null));
     }
 
     private List<Method> methodsAnnotatedWith(Class<? extends Annotation> annotationClass) {
@@ -217,5 +201,7 @@ public class AutoSteps extends Steps {
         }
         return annotated;
     }
+    
+    
 
 }

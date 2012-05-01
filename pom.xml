@@ -92,8 +92,7 @@
 		<jmockit.version>0.999.4</jmockit.version>
 		<hos.version>0.0.15</hos.version>
 		<selenium.version>2.21.0</selenium.version>
-		<jbehave.core.version>3.5.4</jbehave.core.version>
-		<jbehave.web.version>3.4.3</jbehave.web.version>
+		<jbehave.core.version>3.6.4</jbehave.core.version>
 	</properties>
 	<build>
 		<finalName>pro</finalName>

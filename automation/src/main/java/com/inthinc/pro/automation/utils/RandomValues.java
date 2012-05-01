@@ -227,7 +227,7 @@ public class RandomValues {
 		if (states.isEmpty()) {
 			getStates();
 		}
-		String[] list = (String[]) states.keySet().toArray();
+		String[] list = states.keySet().toArray(new String[]{});
 		state = list[random.nextInt(list.length)];
 		return state;
 	}

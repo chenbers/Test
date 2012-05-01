@@ -22,7 +22,7 @@ public class LoginStory extends WebStories {
 	}
 
     @Override
-    public List<AbstractPage> setPageObjects() {
+    public List<AbstractPage> requiredPageObjectsList() {
         return pageList();
     }
 }

@@ -22,7 +22,7 @@ public class SearchCrashesStory extends WebStories {
 	}
 	
 	@Override
-    public List<AbstractPage> setPageObjects() {
+    public List<AbstractPage> requiredPageObjectsList() {
         return null;
     }
 }

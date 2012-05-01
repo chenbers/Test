@@ -16,6 +16,7 @@ import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
 public class AutoStepsFactory extends InstanceStepsFactory {
     
     private final Configuration configuration;
+    private final List<Object> instances;
 
     public AutoStepsFactory(Configuration configuration, Object... stepsInstances) {
         this(configuration, asList(stepsInstances));
@@ -24,19 +25,20 @@ public class AutoStepsFactory extends InstanceStepsFactory {
     public AutoStepsFactory(Configuration configuration, List<Object> stepsInstances) {
         super(configuration, stepsInstances);
         this.configuration = configuration;
+        instances = stepsInstances;
     }
     
     @Override
     public List<CandidateSteps> createCandidateSteps() {
-        List<Class<?>> types = stepsTypes();
         List<CandidateSteps> steps = new ArrayList<CandidateSteps>();
-        for (Class<?> type : types) {
+        for (Object type : instances) {
             configuration.parameterConverters().addConverters(
-                    methodReturningConverters(type));
-            steps.add(new AutoSteps(configuration, type, this));
+                    methodReturningConverters(type.getClass()));
+            steps.add(new AutoSteps(configuration, type));
         }
         return steps;
     }
+    
     
     /**
      * Create parameter converters from methods annotated with @AsParameterConverter
@@ -53,4 +55,18 @@ public class AutoStepsFactory extends InstanceStepsFactory {
         return converters;
     }
 
+    public Object createInstanceOfType(Class<?> type) {
+        
+        for (Object instance : instances){
+            if (instance.getClass().equals(type)){
+                return instance;
+            } else if (instance instanceof AutoSteps){
+                Object internal = ((AutoSteps)instance).getInstance();
+                if (internal.getClass().equals(type)){
+                    return internal;
+                }
+            }
+        }
+        throw new StepsInstanceNotFound(type, this);
+    }
 }
