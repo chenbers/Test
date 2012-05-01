@@ -581,7 +581,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, hosRecord.getDeviceID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setLong(3, 0); //Note ID
@@ -599,6 +599,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setFloat(15, (hosRecord.getTrailerGallons() == null) ? 0f : hosRecord.getTrailerGallons());
             statement.setString(16, hosRecord.getEmployeeID());
             statement.setInt(17, hosRecord.getStateID());
+            statement.setBoolean(18, hosRecord.getTripInspectionFlag());
+            statement.setBoolean(19, hosRecord.getTripReportFlag());
             
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
