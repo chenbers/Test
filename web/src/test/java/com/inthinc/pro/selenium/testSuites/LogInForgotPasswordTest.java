@@ -23,6 +23,6 @@ public class LogInForgotPasswordTest extends WebStories {
     
     @Override
     public List<AbstractPage> setPageObjects() {
-        return null;
+        return pageList();
     }
 }

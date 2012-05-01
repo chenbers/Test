@@ -22,6 +22,6 @@ public class AdminUserStory extends WebStories {
 	
 	@Override
     public List<AbstractPage> setPageObjects() {
-        return null;
+        return pageList();
     }
 }

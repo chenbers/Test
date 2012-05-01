@@ -61,7 +61,7 @@ public enum AdminBarEnum implements SeleniumEnums {
     TITLE(null, Xpath.start().span(Id.clazz("admin")).toString()),
 
     
-    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:***Table-adminTableEditColumns"),
+    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),
 
     TABLE_HEADERS(null, "admin-table-form:***Table:*column*header:sortDiv"),
     TABLE_ENTRIES(null, "admin-table-form:***Table:###:*column*"),

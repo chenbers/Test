@@ -23,7 +23,7 @@ public class AdminUsersTest  extends WebStories {
 
     @Override
     public List<AbstractPage> setPageObjects() {
-        // TODO Auto-generated method stub
-        return null;
+
+        return pageList();
     }
 }
