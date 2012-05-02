@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum NotificationsDiagnosticsEnum implements SeleniumEnums {
-    URL("/app/notifications/diagnostics"),
+    URL(appUrl + "/notifications/diagnostics"),
     TITLE("Diagnostics", "//span[@id='diagnostics_searchRegion:status']/../span[@class='diagnostics_title']"),
     MESSAGE("                       All diagnostic related notifications from device including idling, low battery, tampering, etc.             ", "//span[@id='diagnostics_searchRegion:status']/../span[@class='panel_links']"),
     

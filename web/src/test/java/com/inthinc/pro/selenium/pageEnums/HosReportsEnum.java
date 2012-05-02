@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum HosReportsEnum implements SeleniumEnums {
     
-    DEFAULT_URL("hosReports"),
+    DEFAULT_URL(appUrl + "/hosReports"),
 
     TITLE("HOS Reports", "//span[@class='hos']"),
     ERROR_REQUIRED_MESSAGE(null, "hosReports_form:paramsError"),

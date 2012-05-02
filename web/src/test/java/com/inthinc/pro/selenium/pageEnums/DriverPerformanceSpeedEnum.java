@@ -5,6 +5,9 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
+    
+    DEFAULT_URL(appUrl + "/driver/speed/"),
+    
     /* Overall Score */
     TIME_FRAME_SELECTOR(null, "speedForm:driverSpeed-dateLinksToolsDetail***"),
     OVERALL_TITLE("Speed: Overall", "titleSpan"),
@@ -65,8 +68,7 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     DISTANCE_ENTRY(null, "driverSpeedForm:notificationsTable:##:distance"),
 
     EXCLUDE("exclude", "driverSpeedForm:notificationsTable:###:driverSpeedInclude"),
-    INCLUDE("include", "driverSpeedForm:notificationsTable:###:driverSpeed_excluded"), 
-    DEFAULT_URL("app/driver/speed");
+    INCLUDE("include", "driverSpeedForm:notificationsTable:###:driverSpeed_excluded"),
 
     ;
 

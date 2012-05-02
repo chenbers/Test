@@ -5,7 +5,8 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum VehiclePerformanceStyleEnum implements SeleniumEnums {
-	
+
+    DEFAULT_URL(appUrl + "/vehicle/style/"),
 
     /* Overall */
     OVERALL_TIME_FRAME_SELECTOR(null, "styleForm:vehicleStyle-dateLinksToolsDetail***"),
@@ -48,7 +49,6 @@ public enum VehiclePerformanceStyleEnum implements SeleniumEnums {
 
     SEVERITY_ENTRY_SEVERITY(null, Xpath.start().td(Id.id("eventTable:notificationsTable:###:severity")).tbody().tr("1").toString()),
     
-    DEFAULT_URL("app/vehicle/seatBelt"),
 
     ;
 

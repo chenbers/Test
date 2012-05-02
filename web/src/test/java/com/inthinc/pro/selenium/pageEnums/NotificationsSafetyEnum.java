@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum NotificationsSafetyEnum implements SeleniumEnums {
     MAIN_TITLE("Safety", "//span[@id='safety_searchRegion:status']/../span[@class='event']"), 
     MAIN_TITLE_COMMENT("              			All safety notifications from device including speeding, driving style, seat belt, etc.     		", "//span[@id='safety_searchRegion:status']/../span[@class='panel_links']"), 
-    DEFAULT_URL("/app/notifications/safety"),
+    DEFAULT_URL(appUrl + "/notifications/safety"),
     
     ;
 

@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum DeviceReportEnum implements SeleniumEnums {
-	DEFAULT_URL("/app/reports/devicesReport"),
+	DEFAULT_URL(appUrl + "/reports/devicesReport"),
     
 	DEVICE_ID_SORT("Device ID", "devices-form:devices:deviceNameheader:sortDiv"),
 	VEHICLE_SORT("Assigned Vehicle", "devices-form:devices:vehicleNameheader:sortDiv"),

@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminSpeedByStreetEnum implements SeleniumEnums {
     
-    DEFAULT_URL("/app/admin/sbs"),
+    DEFAULT_URL(appUrl + "/admin/sbs"),
     
     DELETE(delete, "speedLimitChangeRequestTable:sbscrDelete"),
     CLEAR_ALL("Clear All", "speedLimitChangeRequestTable:sbscrDeleteAll"),

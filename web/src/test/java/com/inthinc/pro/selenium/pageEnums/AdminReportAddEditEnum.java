@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminReportAddEditEnum implements SeleniumEnums {
-    DEFAULT_URL("/app/admin/editReport"),
+    DEFAULT_URL(appUrl + "/admin/editReport"),
 
     DROP_DOWNS(null, "edit-form:editReportSchedule-***"),
 

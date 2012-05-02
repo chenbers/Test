@@ -1,208 +1,206 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TextLabel;
+import com.inthinc.pro.automation.elements.TextDropDownLabel;
+import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.AdminAccountDetailsEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminEditAccountEnum;
 
 public class PageAdminEditAccount extends AdminBar {
+    
+    
 
-    public class AdminEditAccountLinks extends AdminBarLinks {}
+    @Override
+    public SeleniumEnums setUrl() {
+        return AdminEditAccountEnum.DEFAULT_URL;
+    }
+    
+    public class AdminEditAccountLinks extends AdminBarLinks {
+        
+        public TextLink example() {
+            return new TextLink(AdminEditAccountEnum.EXAMPLE);
+        }
+    }
 
     public class AdminEditAccountTexts extends AdminBarTexts {
+        
 
-        public Text title() {
-            return new Text(AdminAccountDetailsEnum.TITLE);
+        public Text labelFirst(){
+            return new TextFieldLabel(AdminEditAccountEnum.FIRST);
         }
-
-        public Text unknownDriverHeader() {
-            return new Text(AdminAccountDetailsEnum.UNKNOWN_DRIVER_HEADER);
-        }
-
-        public Text valueFirst() {
-            return new Text(AdminAccountDetailsEnum.FIRST);
-        }
-
-        public Text valueLast() {
-            return new Text(AdminAccountDetailsEnum.LAST);
-        }
-
-        public Text valueTimeZone() {
-            return new Text(AdminAccountDetailsEnum.TIME_ZONE);
-        }
-
-        public Text miscellaneousHeader() {
-            return new Text(AdminAccountDetailsEnum.MISCELLANEOUS_HEADER);
-        }
-
-        public Text valuePhoneAlertsActive() {
-            return new Text(AdminAccountDetailsEnum.PHONE_ALERTS_ACTIVE);
-        }
-
-        public Text valueNoReplyEmail() {
-            return new Text(AdminAccountDetailsEnum.NO_REPLY_EMAIL);
-        }
-
-        public Text addressHeader() {
-            return new Text(AdminAccountDetailsEnum.ADDRESS_HEADER);
-        }
-
-        public Text valueAddress1() {
-            return new Text(AdminAccountDetailsEnum.ADDRESS_1);
-        }
-
-        public Text valueAddress2() {
-            return new Text(AdminAccountDetailsEnum.ADDRESS_2);
-        }
-
-        public Text valueCity() {
-            return new Text(AdminAccountDetailsEnum.CITY);
-        }
-
-        public Text valueState() {
-            return new Text(AdminAccountDetailsEnum.STATE);
-        }
-
-        public Text valueZipCode() {
-            return new Text(AdminAccountDetailsEnum.ZIP_CODE);
-        }
-
-        public Text webMapServiceHeader() {
-            return new Text(AdminAccountDetailsEnum.WEB_MAP_SERVICE_HEADER);
-        }
-
-        public Text valueURL() {
-            return new Text(AdminAccountDetailsEnum.URL);
-        }
-
-        public Text valueQuery() {
-            return new Text(AdminAccountDetailsEnum.QUERY);
-        }
-
-        public Text valueLayers() {
-            return new Text(AdminAccountDetailsEnum.LAYERS);
-        }
-
-        public Text valueQueryParameters() {
-            return new Text(AdminAccountDetailsEnum.QUERY_PARAMETERS);
-        }
-
-        public Text supportContactInformationHeader() {
-            return new Text(
-                    AdminAccountDetailsEnum.SUPPORT_CONTACT_INFORMATION_HEADER);
-        }
-
-        public Text valueContact1() {
-            return new Text(AdminAccountDetailsEnum.CONTACT_1);
-        }
-
-        public Text valueContact2() {
-            return new Text(AdminAccountDetailsEnum.CONTACT_2);
-        }
-
-        public Text valueContact3() {
-            return new Text(AdminAccountDetailsEnum.CONTACT_3);
-        }
-
-        public Text valueContact4() {
-            return new Text(AdminAccountDetailsEnum.CONTACT_4);
-        }
-
-        public Text valueContact5() {
-            return new Text(AdminAccountDetailsEnum.CONTACT_5);
-        }
-
-        public Text labelFirst() {
-            return new TextLabel(AdminAccountDetailsEnum.FIRST);
-        }
-
+        
         public Text labelLast() {
-            return new TextLabel(AdminAccountDetailsEnum.LAST);
+            return new TextFieldLabel(AdminEditAccountEnum.LAST);
         }
-
-        public Text labelTimeZone() {
-            return new TextLabel(AdminAccountDetailsEnum.TIME_ZONE);
-        }
-
-        public Text labelPhoneAlertsActive() {
-            return new TextLabel(AdminAccountDetailsEnum.PHONE_ALERTS_ACTIVE);
-        }
-
+        
         public Text labelNoReplyEmail() {
-            return new TextLabel(AdminAccountDetailsEnum.NO_REPLY_EMAIL);
+            return new TextFieldLabel(AdminEditAccountEnum.NO_REPLY_EMAIL);
         }
-
-
+        
         public Text labelAddress1() {
-            return new TextLabel(AdminAccountDetailsEnum.ADDRESS_1);
+            return new TextFieldLabel(AdminEditAccountEnum.ADDRESS_1);
         }
-
-        public Text labelAddress2() {
-            return new TextLabel(AdminAccountDetailsEnum.ADDRESS_2);
-        }
-
-        public Text labelCity() {
-            return new TextLabel(AdminAccountDetailsEnum.CITY);
-        }
-
-        public Text labelState() {
-            return new TextLabel(AdminAccountDetailsEnum.STATE);
-        }
-
+        
         public Text labelZipCode() {
-            return new TextLabel(AdminAccountDetailsEnum.ZIP_CODE);
+            return new TextFieldLabel(AdminEditAccountEnum.ZIP_CODE);
         }
-
-        public Text labelURL() {
-            return new TextLabel(AdminAccountDetailsEnum.URL);
+        
+        public Text labelAddress2() {
+            return new TextFieldLabel(AdminEditAccountEnum.ADDRESS_2);
         }
-
-        public Text labelQuery() {
-            return new TextLabel(AdminAccountDetailsEnum.QUERY);
-        }
-
-        public Text labelLayers() {
-            return new TextLabel(AdminAccountDetailsEnum.LAYERS);
-        }
-
-        public Text labelQueryParameters() {
-            return new TextLabel(AdminAccountDetailsEnum.QUERY_PARAMETERS);
-        }
-
+        
         public Text labelContact1() {
-            return new TextLabel(AdminAccountDetailsEnum.CONTACT_1);
+            return new TextFieldLabel(AdminEditAccountEnum.CONTACT_1);
         }
-
+        
         public Text labelContact2() {
-            return new TextLabel(AdminAccountDetailsEnum.CONTACT_2);
+            return new TextFieldLabel(AdminEditAccountEnum.CONTACT_2);
         }
-
+        
         public Text labelContact3() {
-            return new TextLabel(AdminAccountDetailsEnum.CONTACT_3);
+            return new TextFieldLabel(AdminEditAccountEnum.CONTACT_3);
         }
-
+        
         public Text labelContact4() {
-            return new TextLabel(AdminAccountDetailsEnum.CONTACT_4);
+            return new TextFieldLabel(AdminEditAccountEnum.CONTACT_4);
         }
-
+        
         public Text labelContact5() {
-            return new TextLabel(AdminAccountDetailsEnum.CONTACT_5);
+            return new TextFieldLabel(AdminEditAccountEnum.CONTACT_5);
+        }
+        
+        public Text labelTimeZone() {
+            return new TextDropDownLabel(AdminEditAccountEnum.TIME_ZONE);
+        }
+        
+        public Text labelPhoneAlertsActive() {
+            return new TextDropDownLabel(AdminEditAccountEnum.PHONE_ALERTS_ACTIVE);
+        }
+        
+        public Text labelState() {
+            return new TextDropDownLabel(AdminEditAccountEnum.STATE);
+        }
+        
+        public Text headerUnknownDriver() {
+            return new Text(AdminEditAccountEnum.UNKNOWN_DRIVER_HEADER);
+        }
+        
+        public Text headerMiscellaneous() {
+            return new Text(AdminEditAccountEnum.MISCELLANEOUS_HEADER);
+        }
+        
+        public Text headerAddress() {
+            return new Text(AdminEditAccountEnum.ADDRESS_HEADER);
+        }
+        
+        public Text headerSupportContactInformation() {
+            return new Text(AdminEditAccountEnum.SUPPORT_CONTACT_INFORMATION_HEADER);
+        }
+        
+        public Text title(){
+            return new Text(AdminEditAccountEnum.TITLE);
+        }
+        
+    }
+    
+
+    public class AdminEditAccountTextFields extends AdminBarTextFields {
+        
+        public TextField first(){
+            return new TextField(AdminEditAccountEnum.FIRST);
+        }
+        
+        public TextField last() {
+            return new TextField(AdminEditAccountEnum.LAST);
+        }
+        
+        public TextField noReplyEmail() {
+            return new TextField(AdminEditAccountEnum.NO_REPLY_EMAIL);
+        }
+        
+        public TextField address1() {
+            return new TextField(AdminEditAccountEnum.ADDRESS_1);
+        }
+        
+        public TextField zipCode() {
+            return new TextField(AdminEditAccountEnum.ZIP_CODE);
+        }
+        
+        public TextField address2() {
+            return new TextField(AdminEditAccountEnum.ADDRESS_2);
+        }
+        
+        public TextField contact1() {
+            return new TextField(AdminEditAccountEnum.CONTACT_1);
+        }
+        
+        public TextField contact2() {
+            return new TextField(AdminEditAccountEnum.CONTACT_2);
+        }
+        
+        public TextField contact3() {
+            return new TextField(AdminEditAccountEnum.CONTACT_3);
+        }
+        
+        public TextField contact4() {
+            return new TextField(AdminEditAccountEnum.CONTACT_4);
+        }
+        
+        public TextField contact5() {
+            return new TextField(AdminEditAccountEnum.CONTACT_5);
         }
     }
-
-    public class AdminEditAccountTextFields extends AdminBarTextFields {}
 
     public class AdminEditAccountButtons extends AdminBarButtons {
-
-        public TextButton valueEditButton() {
-            return new TextButton(AdminAccountDetailsEnum.EDIT_BUTTON);
+        
+        public TextButton saveTop() {
+            return new TextButton(AdminEditAccountEnum.SAVE_TOP);
+        }
+        
+        public TextButton saveBottom() {
+            return new TextButton(AdminEditAccountEnum.SAVE_BOTTOM);
+        }
+        
+        public TextButton cancelTop() {
+            return new TextButton(AdminEditAccountEnum.CANCEL_TOP);
+        }
+        
+        public TextButton cancelBottom() {
+            return new TextButton(AdminEditAccountEnum.CANCEL_BOTTOM);
         }
     }
 
-    public class AdminEditAccountDropDowns extends AdminBarDropDowns {}
+    public class AdminEditAccountDropDowns extends AdminBarDropDowns {
+        
+        public DropDown timeZone() {
+            return new DropDown(AdminEditAccountEnum.TIME_ZONE);
+        }
+        
+        public DropDown phoneAlertsActive() {
+            return new DropDown(AdminEditAccountEnum.PHONE_ALERTS_ACTIVE);
+        }
+        
+        public DropDown state() {
+            return new DropDown(AdminEditAccountEnum.STATE);
+        }
+        
+    }
 
     public class AdminEditAccountPopUps extends MastheadPopUps {}
+
+    public class AdminEditAccountPager {
+        public Paging pageIndex() {
+            return new Paging();
+        }
+    }
+
+    public AdminEditAccountPager _page() {
+        return new AdminEditAccountPager();
+    }
 
     public AdminEditAccountLinks _link() {
         return new AdminEditAccountLinks();
@@ -226,11 +224,6 @@ public class PageAdminEditAccount extends AdminBar {
 
     public AdminEditAccountPopUps _popUp() {
         return new AdminEditAccountPopUps();
-    }
-
-    @Override
-    public SeleniumEnums setUrl() {
-        return AdminAccountDetailsEnum.URL;
     }
 
     @Override

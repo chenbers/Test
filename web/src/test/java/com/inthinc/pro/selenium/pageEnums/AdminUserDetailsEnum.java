@@ -3,6 +3,10 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminUserDetailsEnum implements SeleniumEnums {
+    
+
+    DEFAULT_URL(appUrl + "/admin/person"),
+    
 	
 	USER_INFORMATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/div[1]"),
 	FIRST_NAME(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/table[1]/tbody/tr[1]/td[2]"),
@@ -52,8 +56,6 @@ public enum AdminUserDetailsEnum implements SeleniumEnums {
 	INFORMATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[7]/td[2]"),
 	WARNING(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[8]/td[2]"),
 	CRITICAL(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[3]/table[3]/tbody/tr[9]/td[2]"), 
-	DEFAULT_URL("app/admin/person"),
-	
 	
 	;
 

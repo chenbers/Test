@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminDevicesEnum implements SeleniumEnums {
     
-    DEFAULT_URL("app/admin/devices"),
+    DEFAULT_URL(appUrl + "/admin/devices"),
     
     PAGE_SCROLLER(null, "admin-table-form:devicesTable-dataTableScroller_table"),
     

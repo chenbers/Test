@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum LiveFleetEnum implements SeleniumEnums {
 
-    DEFAULT_URL("app/liveFleet"),
+    DEFAULT_URL(appUrl + "/liveFleet"),
 
     /* Main LiveFleet Page Elements */
     HEADER_BOX_DISPATCH("Dispatch", "//div[@id='wrapper']/table/tbody/tr/td[1]/div/div[1]/div/span[1]"),

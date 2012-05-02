@@ -5,6 +5,9 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum DriverPerformanceSeatBeltEnum implements SeleniumEnums {
+    
+
+    DEFAULT_URL(appUrl + "/driver/seatbelt/"),
 
     /* Overall */
     OVERALL_TIME_FRAME_SELECTOR(null, "seatBeltForm:driversSeatBelt-dateLinksToolsDetail***"),
@@ -39,7 +42,6 @@ public enum DriverPerformanceSeatBeltEnum implements SeleniumEnums {
     
     DRIVER_NAME_LINK(null, "//a[contains(@id,'driverSeatBeltDriverPerformance')]"),
     BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:driversSeatBelt-dashboard')]"),
-    DEFAULT_URL("app/driver/seatbelt"),
 
     ;
 

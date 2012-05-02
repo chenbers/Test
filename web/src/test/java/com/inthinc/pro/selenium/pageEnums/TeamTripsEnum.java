@@ -8,13 +8,15 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamTripsEnum implements SeleniumEnums {
     
+
+    DEFAULT_URL(appUrl + "/dashboard//tab/teamTrips"),
+    
+    
     DRIVER_HEADER("Driver Name", Xpath.start().table(Id.id("tripsTableForm:driversTrips")).thead().tr().th("2").toString()),
     
     CHECK_BOX_ENTRY(null, "tripsTableForm:driversTrips:###:checkDriver"),
     DRIVER_NAME(null, "tripsTableForm:driversTrips:###:teamTrips-driverPerformance"),
     DRIVER_LETTER(null, Xpath.start().tr("###").td("3").div().div(Id.clazz("trips_label")).toString()),
-    DEFAULT_URL("app/dashboard/tab/teamTrips"),
-    
     ;
     
 

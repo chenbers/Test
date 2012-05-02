@@ -4,7 +4,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum TrendExpansionEnum implements SeleniumEnums {
 
-	
+
+    DEFAULT_URL(appUrl + "/dashboard/detail//TREND"),
 
 	TIME_SELECTOR(null, "details-trend_form:details-trend-***"),
 	RETURN(null, "details-trend_details"),
@@ -28,7 +29,6 @@ public enum TrendExpansionEnum implements SeleniumEnums {
 	ENTRY_GROUP_NAME(null, "trendTable:details:###:details-trendGroup"),
 	ENTRY_SCORE_BOX(null, "//table[@id='trendTable:details:tb']/tr[###]/td[4]"),
 	ENTRY_CRASH_COUNT(null, "trendTable:details:###:crashes"),
-	DEFAULT_URL("app/dashboard/detail/TREND"),
 	
 	
 	

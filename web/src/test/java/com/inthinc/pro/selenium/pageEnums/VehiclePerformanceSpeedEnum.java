@@ -5,6 +5,8 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
+    
+    DEFAULT_URL(appUrl + "/vehicle/seatBelt/"),
 
 	 /* Overall Score */
     TIME_FRAME_SELECTOR(null, "speedForm:notificationsTable-dateLinksToolsDetail***"),
@@ -65,7 +67,6 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
 
     DISTANCE_ENTRY(null, "notificationsTableForm:notificationsTable:###:distance"),
     
-    DEFAULT_URL("app/vehicle/seatBelt"),
 
     ;
 

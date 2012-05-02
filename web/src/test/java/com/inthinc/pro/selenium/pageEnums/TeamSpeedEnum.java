@@ -8,6 +8,8 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamSpeedEnum implements SeleniumEnums {
     
+    URL(appUrl + "dashboard//tab/teamSpeeding"),
+    
     SPEED_SCORE(null,null,Xpath.start().div(Id.clazz("middle")).table().tbody().tr().toString()),
     SPEED_SCORE_LABEL(null,null,Xpath.start().div(Id.clazz("middle")).text().toString()),
     

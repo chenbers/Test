@@ -4,6 +4,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum OverallExpansionEnum implements SeleniumEnums {
     
+    DEFAULT_URL(appUrl + "/dashboard/detail//OVERALL"),
+    
     TITLE("Overall Score", "//span[@class='overall']"),
     DURATION(null, "details_form:details-***"),
     TOOLS(null, "details_toolImage"),
@@ -17,7 +19,6 @@ public enum OverallExpansionEnum implements SeleniumEnums {
     LABEL_STYLE("Driving Style", "//td[1]/div[@class='piegrid_label']"),
     LABEL_SEATBELT("Seatbelt","//td[1]/div[@class='piegrid_label']"),
     LABEL_SPEEDING("Speeding","//td[1]/div[@class='piegrid_label']"),
-    DEFAULT_URL("app/dashboard/detail/OVERALL"),
     
     
     ;

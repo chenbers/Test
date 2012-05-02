@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum MyAccountEnum implements SeleniumEnums {
 
-    MY_ACCOUNT_URL("account"),
+    MY_ACCOUNT_URL(appUrl + "/account"),
 
     /* Buttons and Title */
     CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", "//ul[@id='grid_nav']/li/button[1]"),

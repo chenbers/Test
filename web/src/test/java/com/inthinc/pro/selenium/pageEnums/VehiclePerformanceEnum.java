@@ -3,6 +3,9 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum VehiclePerformanceEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/vehicle/"), 
+
     VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips"), 
     BREADCRUMB_ITEM(null, "vehiclePerformanceBreadCrumb:breadcrumbitem:###:vehiclePerformance-dashboard"), 
     VEHICLE_NAME_LINK(null, "vehiclePerformanceBreadCrumb:vehiclePerformance"),
@@ -14,8 +17,6 @@ public enum VehiclePerformanceEnum implements SeleniumEnums {
 
     EXCLUDE("exclude", "eventTableForm:notificationsTable:###:vehicle***Included"),
     INCLUDE("include", "eventTableForm:notificationsTable:###:vehicle***_excluded"),
-    DEFAULT_URL("app/vehicle"), 
-
     
     ;
 

@@ -33,7 +33,7 @@ public enum AdminDevicesDetailsEnum implements SeleniumEnums {
     DEVICE_ASSIGNMENT("Device Assignment", "//td[3]/div[@class='add_section_title'][2]"),
     
     DETAILS_TAB("Details", "deviceForm:details_lbl"), 
-    URL("app/admin/device"),
+    URL(appUrl + "/admin/device"),
     ;
 
     private String text, url;

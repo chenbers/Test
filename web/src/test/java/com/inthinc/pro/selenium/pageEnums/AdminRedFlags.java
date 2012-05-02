@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminRedFlags implements SeleniumEnums {
     
-    DEFAULT_URL("/app/admin/redFlags"),
+    DEFAULT_URL(appUrl + "/admin/redFlags"),
     TITLE("Admin - Red Flags", "//span[@class='admin']"),
     
     

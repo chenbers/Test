@@ -3,9 +3,10 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum NotificationsCrashHistoryEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/notifications/crashHistory"),
     
     TITLE("Crash History", "//span[@class='crash']"),
-    DEFAULT_URL("app/notifications/crashHistory"),
     
 
     COUNTER("SHowing XXX to YYY of ZZZ records","crashHistorySearch:header"),

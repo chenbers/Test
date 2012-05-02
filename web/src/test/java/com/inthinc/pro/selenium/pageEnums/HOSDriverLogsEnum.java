@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum HOSDriverLogsEnum implements SeleniumEnums {
     
-    DEFAULT_URL("/hos"),
+    DEFAULT_URL(appUrl + "/hos"),
     
     TITLE("HOS Driver Logs", "//span[@class='hos']"),
     

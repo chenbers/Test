@@ -6,7 +6,7 @@ public enum NotificationsZonesEnum implements SeleniumEnums {
 
     TITLE("Zones", "//span[@id='zone_searchRegion:status']/../span[@class='event']"),
     NOTE("                          All zone enter and departure notifications from devices.            ", "//span[@id='zone_searchRegion:status']/../span[@class='panel_links']"),
-    URL("/app/notifications/zoneEvents"),
+    URL(appUrl + "/notifications/zoneEvents"),
     
     ;
 

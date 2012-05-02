@@ -4,6 +4,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FuelStopsEditEnum implements SeleniumEnums {
 
+    DEFAULT_URL(appUrl + "/fuelStopEdit"),
+    
     SAVE_TOP(save, "edit-form:editfuelStopSave1"),
     SAVE_BOTTOM(save, "edit-form:editfuelStopSave2"),
     CANCEL_TOP(cancel, "edit-form:editfuelStopCancel1"),
@@ -37,7 +39,6 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
     DELETE_BOTTOM(delete, "edit-form:editfuelStopDelete2"),
     
     TIME_CHANGER(null, "edit-form:fuelStopEdit_***"),
-    DEFAULT_URL("app/fuelStopEdit"),
     ;
     private String text, url;
     private String[] IDs;

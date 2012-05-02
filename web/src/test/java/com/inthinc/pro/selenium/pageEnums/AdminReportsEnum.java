@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum AdminReportsEnum implements SeleniumEnums {
-    DEFAULT_URL("/app/admin/reports"),
+    DEFAULT_URL(appUrl + "/admin/reports"),
     TITLE("Admin - Reports", Xpath.start().span(Id.clazz("admin")).toString()),
 
     DELETE(delete, "admin-table-form:reportScheduleTable-adminTableDelete"),

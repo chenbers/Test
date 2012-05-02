@@ -3,6 +3,8 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminAccountDetailsEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/admin/account"),
     
     TITLE("Admin - Account Details", "//span[@class='admin']"),
     
@@ -21,12 +23,6 @@ public enum AdminAccountDetailsEnum implements SeleniumEnums {
     CITY("City:","display-form:editAccount-city"),
     STATE("State:","display-form:editAccount-state"),
     ZIP_CODE("Zip Code:","display-form:editAccount-zip"),
-    
-    WEB_MAP_SERVICE_HEADER("Web Map Service", "//tr[1]/td[3]/div[@class='add_section_title']"),
-    URL("URL:","//tr[1]/td[3]/div[@class='add_section_title']/../table/tbody/tr[1]/td[2]"),
-    QUERY("Query:","//tr[1]/td[3]/div[@class='add_section_title']/../table/tbody/tr[2]/td[2]"),
-    LAYERS("Layers:","//tr[1]/td[3]/div[@class='add_section_title']/../table/tbody/tr[3]/td[2]"),
-    QUERY_PARAMETERS("Query Parameters:","//tr[1]/td[3]/div[@class='add_section_title']/../table/tbody/tr[4]/td[2]"),
     
     SUPPORT_CONTACT_INFORMATION_HEADER("Support Contact Information", "//tr[2]/td[3]/div[@class='add_section_title']"),
     CONTACT_1("Contact 1:", "//tr[2]/td[3]/div[@class='add_section_title']/../table/tbody/tr[1]/td[2]"),

@@ -4,6 +4,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum HOSDriverLogsEditEnum implements SeleniumEnums {
     
+    DEFAULT_URL(appUrl + "/hosEdit/"),
+    
     TITLE(null, "//span[@class='admin'"),
     HEADER("HOS Log Information", "//div[@class='add_section_title']"),
     
@@ -23,7 +25,6 @@ public enum HOSDriverLogsEditEnum implements SeleniumEnums {
     LOCATION("Location:", "edit-form:editHosLog_location"),
     CITY_STATE("City, State/Province", "//div[@class='add_section_title']/../table/tbody/tr[9]/td[2]/span"),
     DOT("DOT:", "edit-form:editHosLog_dot"),
-    DEFAULT_URL(""),
     
     
     ;

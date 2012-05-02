@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum NotificationsEmergencyEnum implements SeleniumEnums {
-    DEFAULT_URL("app/notifications/emergency"), 
+    DEFAULT_URL(appUrl + "/notifications/emergency"), 
     MAIN_TITLE("Emergency", "//span[@id='emergency_searchRegion:status']/../span[@class='emergency_title']"), 
     
     ;

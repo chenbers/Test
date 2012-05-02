@@ -3,6 +3,9 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum DriverPerformanceTripsEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/driver/trips/"),
+    
 	DATE_ENTRY(null, "tripsTableForm:tripsTable:###:date_column"),
 	TIME_ENTRY(null, "tripsTableForm:tripsTable:###:time_column"),
 	DISTANCE_ENTRY(null, "tripsTableForm:tripsTable:###:distance_column"),
@@ -57,7 +60,6 @@ public enum DriverPerformanceTripsEnum implements SeleniumEnums {
 	BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:driverTrips-dashboard')]"),
 	DRIVER_NAME(null, "//a[contains(@id,'driverTripsDriverPerformance1')]"),
 	TRIPS_BY(null, "//span[@class='vehicle']"),
-	DEFAULT_URL("app/driver/trips"),
 	
 	;
 

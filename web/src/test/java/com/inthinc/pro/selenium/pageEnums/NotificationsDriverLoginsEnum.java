@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum NotificationsDriverLoginsEnum implements SeleniumEnums {
 
-    DEFAULT_URL("app/notifications/driverLogins"),
+    DEFAULT_URL(appUrl + "/notifications/driverLogins"),
     
     TITLE("Driver Logins", "//span[@class='event']"),
     MESSAGE("                       All driver login notifications.             ", "//span[@class='panel_links']"),

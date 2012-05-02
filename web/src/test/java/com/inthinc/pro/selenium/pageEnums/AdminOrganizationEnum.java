@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum AdminOrganizationEnum implements SeleniumEnums {
     
     TITLE("Admin - Organization", "//span[@class='admin']"),
-    DEFAULT_URL("/app/admin/organization"),
+    DEFAULT_URL(appUrl + "/admin/organization"),
     
     HEADER_TOP_GROUP(null, "//ul[@id='grid_nav']/li[2]"),
     

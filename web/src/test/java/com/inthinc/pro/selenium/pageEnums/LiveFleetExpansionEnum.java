@@ -3,6 +3,8 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum LiveFleetExpansionEnum implements SeleniumEnums {
+    
+    DEFAULT_URL(appUrl + "/dashboard/detail//MAP"),
 
     TITLE("Live Fleet", "//form[@id='refresh']/../../span[@class='map']"),
     REFRESH(null, "refresh:details-liveFleetMapRefresh"),
@@ -10,7 +12,6 @@ public enum LiveFleetExpansionEnum implements SeleniumEnums {
     
     LEGEND_TITLE("Fleet Legend", "//form[@id='bubbleForm']/../div/div/div/span[@class='legend']"),
     LEGEND_ENTRY(null, "icos2:###"), 
-    DEFAULT_URL("app/dashboard/detail/MAP"),
     
     ;
 

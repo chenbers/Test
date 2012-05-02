@@ -3,10 +3,11 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum WaysmartReportEnum implements SeleniumEnums{
+
+    DEFAULT_URL(appUrl + "/reports/waysmartReport"),
     
     TITLE("waySmart Reports", "//span[@class='hos']"),
     
-    DEFAULT_URL("/app/reports/waysmartReport"),
     ERROR_REQUIRED_MESSAGE(null, "waysmartReports_form:paramsError"),
     
     REPORT_DROP_DOWN(null, "waysmartReports_form:hosReports-report"),

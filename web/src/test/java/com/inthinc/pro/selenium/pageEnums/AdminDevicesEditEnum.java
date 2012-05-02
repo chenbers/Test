@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminDevicesEditEnum implements SeleniumEnums {
     
-    URL("app/admin/editDevice"),
+    URL(appUrl + "/admin/editDevice"),
     
     TITLE("Admin - Edit Device", "//span[@class='admin']"),
     DETAILS_TAB("Details", "edit-form:details_lbl"),

@@ -3,9 +3,10 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum MyMessagesEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/messages"),
     
     TITLE(null, "//span[@class='textmsg']"),
-    DEFAULT_URL("/app/messages"),
     
     TEAM_DROP_DOWN("Team:", "//div[@class='dhx_combo_input']"),
     

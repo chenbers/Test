@@ -3,6 +3,8 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum NotificationsCrashHistoryAddEditEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/notifications/addCrashReport"),
     
     CRASH_SUMMARY_HEADER("Crash Summary", "//td[1]/div[@class='section_title']"),
     DESCRIPTION_HEADER("Description", "//td[2]/div[@class='section_title']"),
@@ -41,7 +43,6 @@ public enum NotificationsCrashHistoryAddEditEnum implements SeleniumEnums {
     
     TITLE("ADD/EDIT Crash Report", "//span[@class='email']"),
     
-    DEFAULT_URL("app/notifications/addCrashReport"),
     
 
     ;

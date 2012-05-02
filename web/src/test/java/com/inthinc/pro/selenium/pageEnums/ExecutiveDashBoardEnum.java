@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum ExecutiveDashBoardEnum implements SeleniumEnums {
-    HOME_PAGE(appUrl + "/dashboard"),
+    HOME_PAGE(appUrl + "/dashboard/"),
 
     TOOL_BUTTON(null, "***_toolImage"),
 

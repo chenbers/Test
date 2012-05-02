@@ -4,6 +4,9 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 
 public enum HOSFuelStopsEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/fuelStops"),
+    
     /* Buttons */
     REFRESH("Refresh", "fuelStops-table-form:fuelStopsTable_refresh"),
     ADD("Add", "fuelStops-table-form:fuelStopsTable-fuelStopsTableAdd"),
@@ -49,7 +52,6 @@ public enum HOSFuelStopsEnum implements SeleniumEnums {
     /* CheckBoxes */
     CHECK_ALL(null, "fuelStops-table-form:fuelStopsTable:selectAll"),
     VALUE_CHECK(null, "fuelStops-table-form:fuelStopsTable:###:selectItem"),
-    DEFAULT_URL("app/fuelStops"),
     
     ;
     private String text, url;

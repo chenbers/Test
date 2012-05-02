@@ -5,6 +5,9 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum VehiclePerformanceSeatBeltEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "app/vehicle/seatBelt/"),
+    
 	/* Overall */
     OVERALL_TIME_FRAME_SELECTOR(null, "seatBeltForm:vehicleSeatBelt-dateLinksToolsDetail***"),
     OVERALL_TITLE("Seat Belt: Overall", "titleSpan"),
@@ -33,7 +36,6 @@ public enum VehiclePerformanceSeatBeltEnum implements SeleniumEnums {
     TOP_SPEED_ENTRY(null, "eventTableForm:notificationsTable:###:topSpeed"),
     DISTANCE_ENTRY(null, "eventTableForm:notificationsTable:###:distance"), 
     
-    DEFAULT_URL("app/vehicle/seatBelt"),
     
     ;
 

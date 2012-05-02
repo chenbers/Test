@@ -4,6 +4,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminEditAccountEnum implements SeleniumEnums {
     
+    DEFAULT_URL(appUrl + "/admin/account"),
+    
     TITLE("Admin - Edit Account", "//span[@class='admin']"),
     
     UNKNOWN_DRIVER_HEADER("Unknown Driver", "//tr[1]/td[1]/div[@class='add_section_title']"),
@@ -21,12 +23,6 @@ public enum AdminEditAccountEnum implements SeleniumEnums {
     CITY("City:","edit-form:editAccount-city"),
     STATE("State:","edit-form:editAccount-state"),
     ZIP_CODE("Zip Code:","edit-form:editAccount-zip"),
-    
-    WEB_MAP_SERVICE_HEADER("Web Map Service", "//tr[1]/td[3]/div[@class='add_section_title']"),
-    URL("URL:","edit-form:editAccount-url"),
-    QUERY("Query:","edit-form:editAccount-query"),
-    LAYERS("Layers:","edit-form:editAccount-layers"),
-    QUERY_PARAMETERS("Query Parameters:","edit-form:editAccount-queryParameters"),
     
     SUPPORT_CONTACT_INFORMATION_HEADER("Support Contact Information", "//tr[2]/td[3]/div[@class='add_section_title']"),
     CONTACT_1("Contact 1:", "edit-form:editAccount-supportContact0"),

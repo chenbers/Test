@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum AdminVehiclesEnum implements SeleniumEnums {
-    DEFAULT_URL("/app/admin/vehicles"),
+    DEFAULT_URL(appUrl + "/admin/vehicles"),
     
     TITLE("Admin - Vehicles", Xpath.start().span(Id.clazz("admin")).toString()),
     

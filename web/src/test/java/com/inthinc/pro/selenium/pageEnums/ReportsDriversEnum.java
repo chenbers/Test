@@ -3,12 +3,14 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum ReportsDriversEnum implements SeleniumEnums {
+
+    DEFAULT_URL(appUrl + "/reports/driversReport"),
+    
     /* Permanent Items */
     TITLE("Driver Report", "//span[@class='driver']"),
     EDIT_COLUMNS("Edit Columns", "drivers-form:driversEditColumns"),
     TOOLS(null, "drivers-form:drivers_reportToolImageId"),
 
-    DEFAULT_URL("/app/reports/driversReport"),
     GROUP_SEARCH(null, "drivers-form:drivers:groupfsp"),
     DRIVER_SEARCH(null, "drivers-form:drivers:fullNamefsp"),
     VEHICLE_SEARCH(null, "drivers-form:drivers:vehiclenamefsp"),

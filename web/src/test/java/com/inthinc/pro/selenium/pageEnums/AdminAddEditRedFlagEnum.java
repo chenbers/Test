@@ -166,7 +166,8 @@ public enum AdminAddEditRedFlagEnum implements SeleniumEnums {
     
     ZONES_DEPARTURE(null, "edit-form:editZoneAlert-departure"),
     ZONES_DEPARTURE_LABEL("Report on Departure", "//input[@id='edit-form:editZoneAlert-departure']/.."),
-    URL("app/admin/editRedFlagOrZoneAlert"),
+    
+    URL(appUrl + "/admin/editRedFlagOrZoneAlert"),
     
     
     ;

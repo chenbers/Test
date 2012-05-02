@@ -6,6 +6,8 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamStopsEnum implements SeleniumEnums {
 
+    DEFAULT_URL(appUrl + "/dashboard//tab/teamStops"),
+    
     /* Export */
     EXPORT_TOOLS("", Xpath.start().span(Id.id("stopsReport:teamStops_reportToolImageId")).span("2").toString()),
     
@@ -66,7 +68,6 @@ public enum TeamStopsEnum implements SeleniumEnums {
     DURATION_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTrips:tb")).tr("###").td("9").toString()),
     
     VEHICLE_LINK(null, "stopsTripsTableForm:stopsTrips:###:j_id635"),
-    DEFAULT_URL("app/dashboard/tab/teamStops"),
     ;
     private String text, url;
     private String[] IDs;

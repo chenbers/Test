@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminZonesEnum implements SeleniumEnums {
     
-    DEFAULT_URL("/app/admin/zones"),
+    DEFAULT_URL(appUrl + "/admin/zones"),
     
     ZONE_NAME("Zone:", "zones-form:zone"),
     EDIT("Edit", "zones-form:zonesEdit"),

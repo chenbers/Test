@@ -6,7 +6,8 @@ public enum PerformanceReportEnum implements SeleniumEnums {
     /* Permanent Items */
     TITLE("Performance Report", "//span[@class='performance']"),
     
-    DEFAULT_URL("/app/reports/performanceReport"),
+    DEFAULT_URL(appUrl + "/reports/performanceReport"),
+    
     ERROR_REQUIRED_MESSAGE(null, "peformanceReports_form:paramsError"),
     REPORT_DROP_DOWN(null, "performanceReports_form:performanceReports-report"),
     

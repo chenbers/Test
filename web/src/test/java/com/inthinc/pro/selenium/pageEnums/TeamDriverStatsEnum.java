@@ -8,6 +8,9 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamDriverStatsEnum implements SeleniumEnums {
 
+    DEFAULT_URL(appUrl + "/dashboard//tab/teamStatistics"),
+
+    
     /* Edit Columns */
     EDIT_COLUMNS_BUTTON(null, "teamStatisticsForm:teamStatisticsEditColumns"),
 
@@ -79,8 +82,6 @@ public enum TeamDriverStatsEnum implements SeleniumEnums {
     DRIVER_CRASHES_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-crashes"),
     DRIVER_SAFETY_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-safety"),
     
-    DEFAULT_URL("app/dashboard/tab/teamStatistics"),
-
     
     ;
     

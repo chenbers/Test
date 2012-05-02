@@ -6,6 +6,8 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum DriverPerformanceStyleEnum implements SeleniumEnums {
 
+    DEFAULT_URL(appUrl + "/driver/style/"),
+
     /* Overall */
     OVERALL_TIME_FRAME_SELECTOR(null, "styleForm:driverStyle-dateLinksToolsDetail***"),
     OVERALL_TITLE("Driving Style: Overall", "titleSpan"),
@@ -49,7 +51,6 @@ public enum DriverPerformanceStyleEnum implements SeleniumEnums {
 
     EXCLUDE("exclude", "driverStyleEventTable:notificationsTable:###:driverStyleInclude"),
     INCLUDE("include", "driverStyleEventTable:notificationsTable:###:driverStyle_excluded"), 
-    DEFAULT_URL("app/driver/style"),
 
     ;
 

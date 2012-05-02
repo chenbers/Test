@@ -5,6 +5,8 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamStyleEnum implements SeleniumEnums {
+    
+    DEFAULT_URL(appUrl + "/dashboard//tab/teamStyle"),
 
     STYLE_SCORE(null, Xpath.start().div(Id.clazz("middle")).table().tbody().tr().toString()),
     STYLE_SCORE_LABEL(null, Xpath.start().div(Id.clazz("middle")).text().toString())

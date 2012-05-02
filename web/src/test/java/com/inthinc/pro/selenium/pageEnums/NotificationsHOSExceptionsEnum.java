@@ -7,7 +7,7 @@ public enum NotificationsHOSExceptionsEnum implements SeleniumEnums {
     MESSAGE("Hours of Service notifications from HOS enabled devices.", "//span[@class='panel_links']"),
     
     
-    DEFAULT_URL("/app/notifications/hosEvents"),
+    DEFAULT_URL(appUrl + "/notifications/hosEvents"),
     
     
     ;

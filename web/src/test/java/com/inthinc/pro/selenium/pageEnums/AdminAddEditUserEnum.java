@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminAddEditUserEnum implements SeleniumEnums {
-    DEFAULT_URL("/app/admin/editPerson"),
+    DEFAULT_URL(appUrl + "/admin/editPerson"),
 
     /* Drop downs and such */
     DROP_DOWNS(null, "edit-form:editPerson-***"),

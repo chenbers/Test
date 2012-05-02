@@ -3,6 +3,9 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FuelEfficiencyExpansionEnum implements SeleniumEnums {
+    
+
+    DEFAULT_URL(appUrl + "/dashboard/detail//MPG"),
 
     DURATION(null, "details-mpgChart_form:details-mpgChart-***"),
     TOOLS(null, "details-mpgChart_toolImage"),
@@ -22,7 +25,6 @@ public enum FuelEfficiencyExpansionEnum implements SeleniumEnums {
     ENTRY_LIGHT(null, "mpgTableForm:details:###:light"),
     ENTRY_MEDIUM(null, "mpgTableForm:details:###:medium"),
     ENTRY_HEAVY(null, "mpgTableForm:details:###:heavy"),
-    DEFAULT_URL("app/dashboard/detail/MPG"),
     
     ;
 

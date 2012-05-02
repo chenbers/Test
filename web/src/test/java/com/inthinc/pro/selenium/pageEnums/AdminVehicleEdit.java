@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminVehicleEdit implements SeleniumEnums {
-    DEFAULT_URL("/app/admin/editVehicle"),
+    DEFAULT_URL(appUrl + "/admin/editVehicle"),
 
     TITLE("Admin - *** Details", "//span[@class='admin']"),
     

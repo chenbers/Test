@@ -8,11 +8,13 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamLiveEnum implements SeleniumEnums {
     
+
+    DEFAULT_URL(appUrl + "/dashboard//tab/teamLive"),
+    
     LEGEND_TITLE("Team Legend",null, Xpath.start().span(Id.clazz("legend")).toString()),
     LEGEND_ENTRY(null,Xpath.start().td(Id.id("icos1:###")).div().span().toString()), 
     REFRESH(null, "refresh:team-liveFleetMapRefresh"),
     
-    DEFAULT_URL("app/dashboard/tab/teamLive"),
     
     ;
     private String text, url;
