@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkContextSense;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 
@@ -41,6 +42,10 @@ public abstract class NotificationsBar extends NavigationBar {
     
         public TextLinkContextSense crashHistory() {
             return new TextLinkContextSense(NotificationsBarEnum.SAFETY);
+        }
+        
+        public TextLink editColumns(){
+            return new TextLink(NotificationsBarEnum.EDIT_COLUMNS, page);
         }
     }
 }

@@ -122,7 +122,6 @@ public class PageExecutiveOverallExpansion extends ExecutiveExpansionBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link().duration(DurationEnumeration.DAYS_30).isPresent();
     }
 }

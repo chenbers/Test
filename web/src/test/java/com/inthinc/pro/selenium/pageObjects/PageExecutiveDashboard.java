@@ -298,8 +298,7 @@ public class PageExecutiveDashboard extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _text().labelCrashesPerMil().isPresent() && _link().fuelEfficiencyDuration(TimeDuration.DAYS_30).isPresent();
     }
 
 }

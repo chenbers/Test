@@ -171,8 +171,7 @@ public class PageHOSEditDriverLogs extends HOSBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().topCancel().isPresent() && _text().labelDate().isPresent();
     }
 
 }

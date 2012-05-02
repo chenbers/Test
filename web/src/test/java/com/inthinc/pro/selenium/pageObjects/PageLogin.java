@@ -121,7 +121,6 @@ public class PageLogin extends Masthead {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().logIn().isPresent() && _textField().userName().isPresent() && _textField().password().isPresent();
     }
 }

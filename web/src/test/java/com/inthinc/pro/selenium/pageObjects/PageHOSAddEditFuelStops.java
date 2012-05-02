@@ -192,8 +192,7 @@ public class PageHOSAddEditFuelStops extends HOSBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().bottomCancel().isPresent() && _textField().trailer().isPresent();
     }
     
 

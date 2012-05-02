@@ -22,7 +22,8 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     
     public class NotificationsCrashHistoryLinks extends NotificationsBarLinks {
         
-        public TextLink EditColumns() {
+        @Override
+        public TextLink editColumns() {
             return new TextLink(NotificationsCrashHistoryEnum.EDIT_COLUMNS_LINK);    
         }
         

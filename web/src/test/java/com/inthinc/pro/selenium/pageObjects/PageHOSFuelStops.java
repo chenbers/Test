@@ -230,8 +230,7 @@ public class PageHOSFuelStops extends HOSBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().refresh().isPresent() && _textField().vehicle().isPresent();
     }
 
 }

@@ -263,8 +263,7 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link()._1_30().isPresent() && _link().dateTimeSort().isPresent();
     }
     
 }

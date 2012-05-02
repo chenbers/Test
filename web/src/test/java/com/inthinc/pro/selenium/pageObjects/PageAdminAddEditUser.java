@@ -238,7 +238,6 @@ public class PageAdminAddEditUser extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().cancelBottom().isPresent() && _text().personLabel(UserColumns.FIRST_NAME).isPresent();
     }
 }

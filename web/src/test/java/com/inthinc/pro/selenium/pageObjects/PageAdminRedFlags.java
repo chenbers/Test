@@ -95,7 +95,6 @@ public class PageAdminRedFlags extends AdminTables {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().batchEdit().isPresent() && _text().title().isPresent();
     }
 }

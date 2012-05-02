@@ -101,7 +101,6 @@ public class PageAdminReportDetails extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().edit().isPresent() && _link().backToReports().isPresent();
     }
 }

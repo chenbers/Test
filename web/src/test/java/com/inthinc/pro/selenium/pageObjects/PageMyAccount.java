@@ -78,7 +78,7 @@ public class PageMyAccount extends NavigationBar {
 
 	public class MyAccountButtons extends NavigationBarButtons {
 
-		public TextButton change() {
+		public TextButton changePassword() {
 			return new TextButton(MyAccountEnum.CHANGE_PASSWORD_BUTTON);
 		}
 
@@ -399,8 +399,8 @@ public class PageMyAccount extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return (_button().edit().isPresent() && _button().changePassword().isPresent()) || 
+               (_button().save().isPresent() && _button().cancel().isPresent());
     }
 
 }

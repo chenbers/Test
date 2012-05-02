@@ -203,8 +203,7 @@ public class PageLiveFleet extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().refresh().isPresent();
     }
 
 }

@@ -179,7 +179,6 @@ public class PageAdminAddEditReport extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _textField().personFields(ReportsColumns.NAME).isPresent() && _button().cancelTop().isPresent();
     }
 }

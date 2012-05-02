@@ -88,8 +88,7 @@ public class PageAdminCustomRoles extends AdminTables {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().delete().isPresent();
     }
 
 }

@@ -164,8 +164,7 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
     }
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link().dateTimeSort().isPresent() && _link().duration(TimeDuration.DAYS_30).isPresent();
     }
     
 }

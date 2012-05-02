@@ -160,7 +160,7 @@ public class PageAdminAccountDetails extends AdminBar {
 
     public class AdminAccountDetailsButtons extends AdminBarButtons {
 
-        public TextButton valueEditButton() {
+        public TextButton edit() {
             return new TextButton(AdminAccountDetailsEnum.EDIT_BUTTON);
         }
     }
@@ -200,8 +200,7 @@ public class PageAdminAccountDetails extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().edit().isPresent() && _text().title().isPresent();
     }
 
 }

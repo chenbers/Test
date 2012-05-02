@@ -623,7 +623,6 @@ public class PageAdminOrganization extends AdminBar{
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _text().title().isPresent();
     }
 }

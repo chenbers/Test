@@ -199,8 +199,7 @@ public class PageAdminDevicesDetails extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link().backToDevices().isPresent() && _text().valueProductType().isPresent();
     }
 
 }

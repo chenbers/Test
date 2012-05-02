@@ -111,8 +111,7 @@ public class PageAdminUserDetails extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link().backToUsers().isPresent() && _text().labels(UserColumns.FIRST_NAME).isPresent();
     }
 
 }

@@ -139,8 +139,7 @@ public class PageAdminAddEditCustomRole extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().topSave().isPresent() && _button().bottomCancel().isPresent();
     }
 
 }

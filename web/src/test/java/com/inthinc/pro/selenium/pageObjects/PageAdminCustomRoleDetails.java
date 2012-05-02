@@ -103,8 +103,7 @@ public class PageAdminCustomRoleDetails extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link().backToCustomRoles().isPresent();
     }
 
 }

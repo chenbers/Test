@@ -13,11 +13,11 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
         checkMe.add(NotificationsEmergencyEnum.MAIN_TITLE);
     }
 
-    public class NotificationsEmergencyLinks extends NotificationsBarLinks {
+    public class NotificationsEmergencyLinks extends EventsBarLinks {
 
     }
 
-    public class NotificationsEmergencyTexts extends NotificationsBarTexts {
+    public class NotificationsEmergencyTexts extends EventsBarTexts {
 
 
 
@@ -31,16 +31,16 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
 
     }
 
-    public class NotificationsEmergencyTextFields extends NotificationsBarTextFields {
+    public class NotificationsEmergencyTextFields extends EventsBarTextFields {
 
     }
 
-    public class NotificationsEmergencyButtons extends NotificationsBarButtons {
+    public class NotificationsEmergencyButtons extends EventsBarButtons {
 
 
     }
 
-    public class NotificationsEmergencyDropDowns extends NotificationsBarDropDowns {
+    public class NotificationsEmergencyDropDowns extends EventsBarDropDowns {
 
 
     }

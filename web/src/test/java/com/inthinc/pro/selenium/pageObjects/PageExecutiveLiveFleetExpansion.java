@@ -74,8 +74,7 @@ public class PageExecutiveLiveFleetExpansion extends ExecutiveExpansionBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().refresh().isPresent();
     }
     
     

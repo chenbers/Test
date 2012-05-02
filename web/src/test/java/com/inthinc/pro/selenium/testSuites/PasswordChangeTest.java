@@ -40,7 +40,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Change existing password and click on Cancel button.
         String password = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password);
@@ -61,7 +61,7 @@ public class PasswordChangeTest extends WebRallyTest {
 
         // 1. Open the Change Password popup and close by clicking on Cancel.
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._button().cancel().click();
 
         // 2. Verify no changes were made to password by logging in with
@@ -81,7 +81,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // Lower case results in error.
         String password = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password.toUpperCase());
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password.toLowerCase());
@@ -104,7 +104,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Successfully change the password.
         String randomPassword = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
@@ -116,7 +116,7 @@ public class PasswordChangeTest extends WebRallyTest {
 
         // 3. Reset password to original
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(login.getPassword());
@@ -136,7 +136,7 @@ public class PasswordChangeTest extends WebRallyTest {
 
         // 1. Enter non matching new passwords to generate and validate error.
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(random.getMixedString(12));
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(random.getMixedString(12));
@@ -160,7 +160,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Change password only in the Confirm field leaving New Password
         // field empty.
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(random.getMixedString(12));
         myAccountPage._popUp().changeMyPassword()._button().change().click();
@@ -183,7 +183,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Change existing password to less than 6 characters and validate
         // error message.
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(random.getMixedString(12));
         myAccountPage._popUp().changeMyPassword()._button().change().click();
@@ -206,7 +206,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1.Generate a password error by entering incorrect current password.
         String password = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(password);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(login.getPassword());
@@ -231,7 +231,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Validate error displays when submitting password change with empty
         // fields.
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._button().change().click();
         myAccountPage._popUp().changeMyPassword()._text().currentPasswordError().validate("Required");
         myAccountPage._popUp().changeMyPassword()._text().newPasswordError().validate("Required");
@@ -256,7 +256,7 @@ public class PasswordChangeTest extends WebRallyTest {
         //and ensure it only allows 12. 
         String randomPassword = random.getMixedString(13);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
@@ -290,7 +290,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // error message.
         String password = random.getMixedString(4);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password);
@@ -316,7 +316,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Validate fields, buttons display in pop up and cursor focus is in
         // current password field.
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().focus();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().assertVisibility(true);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().assertVisibility(true);
@@ -341,7 +341,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Successfully change the password.
         String randomPassword = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
@@ -353,7 +353,7 @@ public class PasswordChangeTest extends WebRallyTest {
 
         // 3. Reset password to original
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(login.getPassword());
@@ -374,7 +374,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // 1. Successfully change the password using special characters.
         String randomPassword = random.getSpecialString(10);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
@@ -386,7 +386,7 @@ public class PasswordChangeTest extends WebRallyTest {
 
         // 3. Reset password to original
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(login.getPassword());
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(login.getPassword());
@@ -408,7 +408,7 @@ public class PasswordChangeTest extends WebRallyTest {
         // by clicking on the X window control.
         String randomPassword = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
-        myAccountPage._button().change().click();
+        myAccountPage._button().changePassword().click();
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._button().close();

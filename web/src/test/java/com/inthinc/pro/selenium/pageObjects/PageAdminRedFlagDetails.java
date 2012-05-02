@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -273,7 +274,16 @@ public class PageAdminRedFlagDetails extends AdminBar {
 
     public class AdminRedFlagDetailsTextFields extends AdminBarTextFields {}
 
-    public class AdminRedFlagDetailsButtons extends AdminBarButtons {}
+    public class AdminRedFlagDetailsButtons extends AdminBarButtons {
+        
+        public TextButton edit(){
+            return new TextButton(AdminRedFlagsDetailsEnum.EDIT);
+        }
+        
+        public TextButton delete(){
+            return new TextButton(AdminRedFlagsDetailsEnum.DELETE);
+        }
+    }
 
     public class AdminRedFlagDetailsDropDowns extends AdminBarDropDowns {}
 
@@ -331,7 +341,6 @@ public class PageAdminRedFlagDetails extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().edit().isPresent() && _text().labelName().isPresent();
     }
 }

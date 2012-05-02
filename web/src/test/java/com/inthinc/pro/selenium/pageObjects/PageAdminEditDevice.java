@@ -206,6 +206,22 @@ public class PageAdminEditDevice extends AdminBar {
     public class AdminEditDeviceTextFields extends AdminBarTextFields {}
 
     public class AdminEditDeviceButtons extends AdminBarButtons {
+        
+        public TextButton topSave(){
+            return new TextButton(AdminDevicesEditEnum.TOP_SAVE);
+        }
+        
+        public TextButton bottomSave(){
+            return new TextButton(AdminDevicesEditEnum.BOTTOM_SAVE);
+        }
+        
+        public TextButton topCancel(){
+            return new TextButton(AdminDevicesEditEnum.TOP_CANCEL);
+        }
+        
+        public TextButton bottomCancel(){
+            return new TextButton(AdminDevicesEditEnum.BOTTOM_CANCEL);
+        }
 
         public Button vehicleTableEntrySelector() {
             return new Button(AdminDevicesEditEnum.VEHICLE_TABLE_SELECT);
@@ -314,7 +330,6 @@ public class PageAdminEditDevice extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link().showHideVehiclesForAssignment().isPresent() && _button().bottomCancel().isPresent();
     }
 }

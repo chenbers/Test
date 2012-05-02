@@ -1,20 +1,12 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import org.ajax4jsf.org.w3c.tidy.AttrCheckImpl.CheckAlign;
-
-import com.inthinc.pro.automation.elements.CheckBox;
-import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
-import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminSpeedByStreetEnum;
-import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 
 public class PageAdminSpeedByStreet extends AdminBar {
 
@@ -181,8 +173,7 @@ public class PageAdminSpeedByStreet extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().clearAll().isPresent() && _textField().search().isPresent();
     }
 
 }
