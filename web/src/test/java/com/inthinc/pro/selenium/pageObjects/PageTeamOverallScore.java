@@ -91,8 +91,8 @@ public class PageTeamOverallScore extends TeamBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _text().total_ScoreCount().isPresent() &&
+               _text().overallScoreLabel().isPresent();
     }
 
 }

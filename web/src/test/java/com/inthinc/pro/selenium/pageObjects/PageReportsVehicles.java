@@ -228,7 +228,6 @@ public class PageReportsVehicles extends ReportsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().editColumns().isPresent();
     }
 }

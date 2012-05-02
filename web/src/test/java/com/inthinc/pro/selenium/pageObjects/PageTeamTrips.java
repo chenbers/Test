@@ -65,8 +65,7 @@ public class PageTeamTrips extends TeamBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _text().tableHeader().isPresent();
     }
     
 }

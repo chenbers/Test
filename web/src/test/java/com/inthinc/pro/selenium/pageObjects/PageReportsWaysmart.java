@@ -116,7 +116,6 @@ public class PageReportsWaysmart extends ReportsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _dropDown().report().isPresent();
     }
 }

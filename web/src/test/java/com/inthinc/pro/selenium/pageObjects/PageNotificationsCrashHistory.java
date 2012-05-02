@@ -175,7 +175,7 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _link().editColumns().isPresent() &&
+               _link().AddCrashReport().isPresent();
     }
 }

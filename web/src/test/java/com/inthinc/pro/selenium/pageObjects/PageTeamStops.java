@@ -226,8 +226,8 @@ public class PageTeamStops extends TeamBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _text().zoneHeader().isPresent() &&
+               _text().waitHeader().isPresent();
     }
 
 }

@@ -224,8 +224,8 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().emailReport().isPresent() &&
+               _link().eventSort().isPresent();
     }
     
 }

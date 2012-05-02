@@ -195,8 +195,8 @@ public class PageVehiclePerformanceTrips extends NavigationBar {
     }
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().updateDateRange().isPresent() &&
+               _textField().startDate().isPresent();
     }
     
 }

@@ -249,8 +249,8 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _dropDown().crashReportStatus().isPresent() &&
+               _dropDown().driver().isPresent();
     }
 
 }

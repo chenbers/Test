@@ -175,7 +175,6 @@ public class PageReportsDevices extends ReportsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().editColumns().isPresent();
     }
 }

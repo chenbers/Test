@@ -11,6 +11,8 @@ import com.inthinc.pro.selenium.pageEnums.IdlingReportEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
+// TODO: Page needs to be split into two, there is now a Idling Drivers and Idling Vehicles page
+
 public class PageReportsIdling extends ReportsBar {
 	private String page = "idling";
 	
@@ -137,7 +139,6 @@ public class PageReportsIdling extends ReportsBar {
     }
     @Override
     protected boolean checkIsOnPage() {
-        // TODO Auto-generated method stub
-        return false;
+        return _button().editColumns().isPresent();
     }
 }
