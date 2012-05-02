@@ -130,9 +130,16 @@ public class PageReportsIdling extends ReportsBar {
 	public IdlingReportPopUps _popUp() {
 		return new IdlingReportPopUps();
 	}
+	
 	public IdlingReportLinks _link() {
 	    return new IdlingReportLinks();
 	}
+	
+	public IdlingReportButtons _button(){
+	    return new IdlingReportButtons();
+	}
+	
+	
     @Override
     public SeleniumEnums setUrl() {
         return IdlingReportEnum.DEFAULT_URL;
