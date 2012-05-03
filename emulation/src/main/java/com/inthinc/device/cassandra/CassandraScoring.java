@@ -143,6 +143,7 @@ public class CassandraScoring
 		scoreMap = cs.getVehicleScoresForMonths(52721, "2012-04", "2012-04");    	
 		scoreMap = cs.getVehicleGroupScoresForDays(5260, "2012-04-10", "2012-04-10");
 		scoreMap = cs.getVehicleGroupScoresForMonths(5260, "2012-04", "2012-04");
+		cassandraDB.shutdown();
     }
 	
 
