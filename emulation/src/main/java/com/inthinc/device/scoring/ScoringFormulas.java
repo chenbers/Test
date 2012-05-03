@@ -15,6 +15,11 @@ import android.util.Log;
  */
 public class ScoringFormulas {
 	
+    public final static double agg_a = -10.4888220818923;
+    public final static double agg_b = 1.16563268601352;
+    public final static double MAX_SCORE = 5.0;
+    public final static double MIN_SCORE = 0.0;
+
     /**
      * Typical Aggressive events have deltaX/Y/Z values between 70 and 200. <br />
      * 220 = 1G.
@@ -28,7 +33,8 @@ public class ScoringFormulas {
 		Log.info("speed = " + speed);
 		if (deltaX>0) {
 			Log.debug("Accell Severity: "+severity);
-		}else Log.debug("Brake Severity: "+severity);
+		}else 
+			Log.debug("Brake Severity: "+severity);
 		return severity;
 	}
 	
@@ -157,7 +163,26 @@ public class ScoringFormulas {
 		return penalty;
 	}
 	
-	/**
+	
+	
+    public static double getSpeedingScore(double totalMiles, double speedPenalty) {
+        return p2s(1.0, 0.2, speedPenalty, totalMiles);
+    }
+    public static double getStyleScore(double totalMiles, double stylePenalty) {
+        return ap2s(agg_a, agg_b, stylePenalty, totalMiles, 1.0);
+    }
+    public static double getSeatBeltScore(double totalMiles, double seatbeltPenalty) {
+        return p2s(0.3d ,0.2d, seatbeltPenalty, totalMiles);
+    }
+
+    public static double getOverallFromPenalty(double totalMiles, double seatbeltPenalty, double stylePenalty, double speedingPenalty) {
+        double seatbelt = getSeatBeltScore(totalMiles, seatbeltPenalty);
+        double style = getStyleScore(totalMiles, stylePenalty);
+        double speeding = getSpeedingScore(totalMiles, speedingPenalty);
+        return overallScore(speeding, style, seatbelt);
+    }
+    
+    /**
 	 * This is now a weighted RMS of the other scores.
 	 * @param speed
 	 * @param style
@@ -165,12 +190,12 @@ public class ScoringFormulas {
 	 * @return
 	 */
 	public final static Double overallScore(Double speed, Double style, Double seatBelt) {
-		Double overall = Math.floor((5-Math.sqrt( 
-				0.4 * Math.pow(5-speed, 2) + 
-				0.4 * Math.pow(5-style, 2) + 
-				0.2 * Math.pow(5-seatBelt,2)))*10)/10;
+		Double overall = Math.ceil((MAX_SCORE-Math.sqrt( 
+				0.4 * Math.pow(MAX_SCORE-speed, 2) + 
+				0.4 * Math.pow(MAX_SCORE-style, 2) + 
+				0.2 * Math.pow(MAX_SCORE-seatBelt,2)))*10.0)/10.0;
 		Log.debug("Overall Score: "+overall);
 		return overall;
 	}
-	
+
 }
