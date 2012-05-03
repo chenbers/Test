@@ -16,6 +16,7 @@ import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
@@ -41,6 +42,36 @@ public class PopUps extends MasterTest {
         public String getText() {
             return type;
         }
+    }
+    
+    public class CloseTextButton extends TextButton {
+
+        public CloseTextButton(SeleniumEnums anEnum, Object ...objects) {
+            super(anEnum, objects);
+        }
+        
+        @Override
+        public ClickableObject click() {
+            super.click();
+            assertVisibility(false);
+            return this;
+        }
+        
+    }
+    
+    public class CloseButton extends Button {
+
+        public CloseButton(SeleniumEnums anEnum, Object ...objects) {
+            super(anEnum, objects);
+        }
+        
+        @Override
+        public ClickableObject click() {
+            super.click();
+            assertVisibility(false);
+            return this;
+        }
+        
     }
 
     public PopUps(String page, Types type, Integer number) {
@@ -87,27 +118,11 @@ public class PopUps extends MasterTest {
             }
 
             public TextButton cancel() {
-                return new TextButton(PopUpEnum.EDIT_CANCEL, page) {
-
-                    @Override
-                    public ClickableObject click() {
-                        super.click();
-                        assertVisibility(false);
-                        return this;
-                    }
-                };
+                return new CloseTextButton(PopUpEnum.EDIT_CANCEL, page) ;
             }
 
             public TextButton close() {
-                return new TextButton(PopUpEnum.X) {
-
-                    @Override
-                    public ClickableObject click() {
-                        super.click();
-                        assertVisibility(false);
-                        return this;
-                    }
-                };
+                return new CloseTextButton(PopUpEnum.X) ;
             }
         }
 
@@ -150,27 +165,11 @@ public class PopUps extends MasterTest {
             }
 
             public TextButton cancel() {
-                return new TextButton(PopUpEnum.EMAIL_CANCEL) {
-
-                    @Override
-                    public ClickableObject click() {
-                        super.click();
-                        assertVisibility(false);
-                        return this;
-                    }
-                };
+                return new CloseTextButton(PopUpEnum.EMAIL_CANCEL);
             }
 
             public Button close() {
-                return new Button(PopUpEnum.X, page + type) {
-
-                    @Override
-                    public ClickableObject click() {
-                        super.click();
-                        assertVisibility(false);
-                        return this;
-                    }
-                };
+                return new CloseButton(PopUpEnum.X, page + type) ;
             }
         }
 
@@ -261,7 +260,7 @@ public class PopUps extends MasterTest {
             }
             
             public TextButton close(){
-                return new TextButton(enums.get(close), page);
+                return new CloseTextButton(enums.get(close), page);
             }
             
         }
@@ -381,27 +380,11 @@ public class PopUps extends MasterTest {
             }
 
             public TextButton cancel() {
-                return new TextButton(PopUpEnum.FORGOT_CANCEL_BUTTON) {
-
-                    @Override
-                    public ClickableObject click() {
-                        super.click();
-                        assertVisibility(false);
-                        return this;
-                    }
-                };
+                return new CloseTextButton(PopUpEnum.FORGOT_CANCEL_BUTTON);
             }
 
             public Button close() {
-                return new Button(PopUpEnum.FORGOT_CLOSE) {
-
-                    @Override
-                    public ClickableObject click() {
-                        super.click();
-                        assertVisibility(false);
-                        return this;
-                    }
-                };
+                return new CloseButton(PopUpEnum.FORGOT_CLOSE);
             }
         }
     }
@@ -442,15 +425,7 @@ public class PopUps extends MasterTest {
 
         public class DriverToVehicleButtons {
             public TextButton x() {
-                return new TextButton(PopUpEnum.X, "chooseDriver"){
-
-                    @Override
-                    public ClickableObject click() {
-                        super.click();
-                        assertVisibility(false);
-                        return this;
-                    }
-                };
+                return new CloseTextButton(PopUpEnum.X, "chooseDriver");
             }
         }
 
@@ -647,11 +622,11 @@ public class PopUps extends MasterTest {
             }
 
             public TextButton cancel() {
-                return new TextButton(cancel, page);
+                return new CloseTextButton(cancel, page);
             }
 
             public Button close() {
-                return new Button(PopUpEnum.DELETE_CLOSE);
+                return new CloseButton(PopUpEnum.DELETE_CLOSE);
             }
         }
 
@@ -760,7 +735,7 @@ public class PopUps extends MasterTest {
         public class UpdateButtons {
 
             public Button close() {
-                return new Button(PopUpEnum.UPDATE_PASSWORD_CLOSE);
+                return new CloseButton(PopUpEnum.UPDATE_PASSWORD_CLOSE);
             }
         }
 
@@ -855,11 +830,11 @@ public class PopUps extends MasterTest {
             }
 
             public TextButton cancel() {
-                return new TextButton(PopUpEnum.MY_CHANGE_CANCEL);
+                return new CloseTextButton(PopUpEnum.MY_CHANGE_CANCEL);
             }
 
             public Button close() {
-                return new Button(PopUpEnum.CHANGE_PASSWORD_FORM_CHANGE_X);
+                return new CloseButton(PopUpEnum.CHANGE_PASSWORD_FORM_CHANGE_X);
             }
         }
     }
@@ -902,11 +877,11 @@ public class PopUps extends MasterTest {
             }
             
             public TextButton closeLocationPopUp(){
-                return new TextButton(PopUpEnum.LOCATION_CLOSE_BUTTON, page);
+                return new CloseTextButton(PopUpEnum.LOCATION_CLOSE_BUTTON, page);
             }
             
             public Button closeLocationBubble(){
-                return new Button(PopUpEnum.LOCATION_BUBBLE_CLOSE);
+                return new CloseButton(PopUpEnum.LOCATION_BUBBLE_CLOSE);
             }
         }
         
