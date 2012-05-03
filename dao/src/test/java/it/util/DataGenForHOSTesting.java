@@ -104,7 +104,7 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         try
         {
             conn = dataSource.getConnection();
-            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)}");
+            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?)}");
             statement.setInt(1, hosRecord.getDeviceID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setLong(3, 0l);
@@ -122,6 +122,8 @@ public class DataGenForHOSTesting extends DataGenForTesting {
             statement.setFloat(15, hosRecord.getTrailerGallons());
             statement.setString(16, hosRecord.getEmployeeID());
             statement.setInt(17, hosRecord.getStateID());
+            statement.setInt(18, 0);
+            statement.setInt(19, 0);
 System.out.println(statement.toString());
             resultSet = statement.executeQuery();
         }   // end try
