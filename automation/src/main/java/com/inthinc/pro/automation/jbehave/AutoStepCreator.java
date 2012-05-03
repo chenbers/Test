@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.jbehave;
 
 import static java.util.Arrays.asList;
 import static org.jbehave.core.steps.AbstractStepResult.failed;
+import static org.jbehave.core.steps.AbstractStepResult.notPerformed;
 import static org.jbehave.core.steps.AbstractStepResult.pending;
 import static org.jbehave.core.steps.AbstractStepResult.successful;
 
@@ -83,6 +84,29 @@ public class AutoStepCreator extends StepCreator {
         }
         
     }
+    
+    public PopupStep createPopupStep(String stepAsString){
+        return new PopupStep(stepAsString);
+    }
+    
+    public class PopupStep extends AbstractStep {
+        private final String stepAsString;
+        
+        public PopupStep(String stepAsString){
+            this.stepAsString = stepAsString;
+        }
+
+        @Override
+        public StepResult perform(UUIDExceptionWrapper storyFailureIfItHappened) {
+            return successful(stepAsString);
+        }
+
+        @Override
+        public StepResult doNotPerform(UUIDExceptionWrapper storyFailureIfItHappened) {
+            return notPerformed(stepAsString);
+        }
+        
+    }
 
     
     public AutoPageStep createPageStep(PendingStep step, Object instance, Method method){
@@ -132,7 +156,7 @@ public class AutoStepCreator extends StepCreator {
                 stepMonitor.performing(stepAsString, dryRun);
                 if (!dryRun) {
                     Object result = method.invoke(instance, parameters);
-                    Log.info("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
+                    Log.debug("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                 }
                 return successful(stepAsString).withParameterValues(parametrisedStep);
             } catch (ParameterNotFound e) {
