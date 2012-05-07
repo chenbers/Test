@@ -23,7 +23,6 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.sbs.Sbs;
 
 public class WaysmartDevice extends DeviceBase {
 	
@@ -59,7 +58,6 @@ public class WaysmartDevice extends DeviceBase {
         state.setMcmID(MCM);
         state.setWaysDirection(comMethod);
         setState(147);
-        sbs = new Sbs(MCM, state.getSbsBaseRevision(), server);
     }
 
     public WaysmartDevice(String IMEI, String MCM, Direction comMethod) {
@@ -68,7 +66,6 @@ public class WaysmartDevice extends DeviceBase {
 
     public WaysmartDevice(DeviceState state, Addresses server) {
     	super(state, server);
-        sbs = new Sbs(state.getMcmID(), state.getSbsBaseRevision(), server);
 	}
 
 

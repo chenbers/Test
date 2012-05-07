@@ -39,7 +39,7 @@ public abstract class DeviceBase {
     protected final NoteManager notes;
     protected Addresses server;
     protected Object reply;
-    protected Sbs sbs;
+    protected final static Sbs sbs = new Sbs("555555555555555", 7, Addresses.QA);
     
 
     protected final ArrayList<GeoPoint> speed_loc;
@@ -53,7 +53,6 @@ public abstract class DeviceBase {
     	this.server = server;
         state = new DeviceState(IMEI, version);
         state.setSettings(settings);
-        sbs = new Sbs(IMEI, state.getSbsBaseRevision(), server);
         tripTracker = new TripTracker(state, sbs);
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<GeoPoint>();
@@ -63,7 +62,6 @@ public abstract class DeviceBase {
     }
 
     public DeviceBase(DeviceState state, Addresses server) {
-        sbs = new Sbs(state.getImei(), state.getSbsBaseRevision(), server);
     	this.server = server;	
     	this.state = state;
         tripTracker = new TripTracker(state);
