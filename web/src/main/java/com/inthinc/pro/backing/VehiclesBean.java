@@ -127,7 +127,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     
     @Override
     public void initBean() {
-
         super.initBean();
     }
     @Override
@@ -263,7 +262,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setSelected(false);
         if (!isBatchEdit())
             vehicleView.initForwardCommandDefs();
-
 
         return vehicleView;
     }
@@ -484,7 +482,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
             assignDriver(getItem());
-
         drivers = null;
     }
 
@@ -616,16 +613,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
             vehicle.setOldGroupID(vehicle.getGroupID());
 
-            if (vehicle.isDriverChanged())
+            if (vehicle.isDriverChanged()){
                 assignDriver(vehicle);
+                drivers = null;
+            }
                         
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
-
-        drivers = null;
     }
     private void dealWithSpecialSettings(VehicleView vehicle){
         
@@ -800,12 +797,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         @Override
-        public void setGroupID(Integer groupID)
-        {
-            super.setGroupID(groupID);
-            group = null;
-            driver = null;
-            bean.drivers = null;
+        public void setGroupID(Integer groupID) {
+            if (super.getGroupID() != groupID) {
+                super.setGroupID(groupID);
+                group = null;
+                driver = null;
+            }
         }
 
         public Group getGroup()

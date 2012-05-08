@@ -368,10 +368,9 @@
 
                     </rich:tab>
 
-                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}" ontabenter="reRenderTab()" ontableave="reRenderTab()">
+                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}" >
                         
                       <a4j:region>
-                         <a4j:jsFunction name="reRenderTab" reRender="speeedSettingsPanel"></a4j:jsFunction>
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
                           <h:commandButton id="editVehicleSave3" action="#{vehiclesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
