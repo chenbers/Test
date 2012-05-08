@@ -14,8 +14,8 @@ I want to see valid and invalid logins
 
 Scenario: TC1241: Log In - Blank User Name and Password Error
 Given I am on the login page
-When I click log in
-Then I get an alert 'Incorrect user name or password. Please try again.'
+When I click on the Login button
+I get an alert 'Incorrect user name or password. Please try again.'
 And I close the login error alert message
 And I should remain on the Login Page
 And the name and password fields are blank
