@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.ObjectConverter;
-import com.inthinc.pro.automation.utils.StackToString;
 
 public class RallyHTTP extends HTTPCommands {
     
@@ -205,18 +204,10 @@ public class RallyHTTP extends HTTPCommands {
     public void setWorkspace(RallyWebServices space, Boolean fetch) {
         workingSpace = space;
         try {
-            if (fetch)
-                constructQuery(1, 200, fetch);
-            else
-                constructQuery(1, 200);
-            getObjects(RallyWebServices.WORKSPACE);
-            workspace = results.getResults().getJSONObject(0);
-        } catch (HttpException e1) {
-            Log.error(StackToString.toString(e1));
-        } catch (JSONException e1) {
-            Log.error(StackToString.toString(e1));
+            workspace = new JSONObject(RallyWebServices.workSpaceString.replace("###", space.getID().toString()));
+        } catch (JSONException e) {
+            throw new NullPointerException("Worksace is bad: " + space);
         }
-        Log.debug(workspace);
     }
 
     public JSONObject getWorkspace() {

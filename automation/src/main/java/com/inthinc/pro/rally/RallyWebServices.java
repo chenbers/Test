@@ -12,6 +12,7 @@ public enum RallyWebServices {
 	
 	INTHINC(665449629), 
 	SANDBOX(558474157),   
+	
 	;
 	
 	
@@ -20,6 +21,12 @@ public enum RallyWebServices {
 	private static final int major = 1, minor = 33;
 	public static final String address = "rally1.rallydev.com";
 	public static final String host = "https://"+address+"/slm/webservice/"+major+"."+minor+"/";
+	
+	public static final String workSpaceString = "{\"_rallyAPIMinor\":\"33\"," +
+        "\"_rallyAPIMajor\":\"1\","+
+        "\"_type\":\"TestCase\","+
+        "\"_ref\":\"https://rally1.rallydev.com/slm/webservice/1.33/testcase/###.js\","+
+        "\"_refObjectName\":\"Reports &gt; Vehicles - Driver Link\",}";
 	
 
     public static final String username = "dtanner@inthinc.com";
