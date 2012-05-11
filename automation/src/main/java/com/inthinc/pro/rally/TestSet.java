@@ -74,7 +74,7 @@ public class TestSet extends RallyObject {
 
 	public JSONObject getTestSet(NameValuePair searchParams, Boolean fetch) {
 		try {
-			String filter = http.constructFilter(searchParams);
+			String filter = http.constructFilter(searchParams, false);
 			if (fetch)
 				http.constructQuery(filter, 1, 200, fetch);
 			else
