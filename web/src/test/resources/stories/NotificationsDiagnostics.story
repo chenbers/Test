@@ -18,9 +18,9 @@ And I bookmark the page
 And I click log out
 And I click the bookmark I just added
 And I am on the login page
-And I type a valid user name
-And I type a valid password
-And I click log in
+And I type a valid user name into the Username textfield
+And I type a valid password into the Password textfield
+And I click the Login button
 Then I validate I am on the Diagnostics page
 And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""

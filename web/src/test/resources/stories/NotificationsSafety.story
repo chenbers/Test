@@ -1,17 +1,17 @@
-Test Cases for TF388/TF411/TF489
+Test Cases for TF388/TF411/TF478
 
 Meta:
 @page login
 @testFolder TF388
 @testFolder TF411
-@testFolder TF489
+@testFolder TF478
 
 Narrative:
 
-Scenario: TC1434: Notifications - Red Flags - Bookmark Entry 
+Scenario: TC1475: Notifications - Safety - Bookmark Entry 
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I type "" into the Search textfield
 And I click the Search button
 And I bookmark the page
@@ -21,16 +21,16 @@ And I am on the login page
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-Then I validate I am on the RedFlags page
+Then I validate I am on the Safety page
 And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
-Scenario: TC1435: Notifications - Red Flags - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
+Scenario: TC1476: Notifications - Safety - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
 
-Scenario: TC1437: Notifications - Red Flags - Driver Link
+Scenario: TC1437: Notifications - Safety - Driver Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the first entry in the Team dropdown
 And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
@@ -39,28 +39,24 @@ And I save the first entry in the SortByDriver column as SavedEntry
 And I click the first entry in the SortByDriver column
 Then I validate the Driver Performance text is SavedEntry
 
-Scenario: TC1439: Notifications - Red Flags - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
+Scenario: TC1478: Notifications - Safety - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
 
-Scenario: TC1440: Notifications - Red Flags - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
+Scenario: TC1479: Notifications - Safety - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
 
-Scenario: TC1441: Notifications - Red Flags - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
+Scenario: TC1480: Notifications - Safety - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
 
-Scenario: TC1442: Notifications - Red Flags - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
+Scenario: TC1481: Notifications - Safety - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
 
-Scenario: TC1443: Notifications - Red Flags - Location Map Driver Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Scenario: TC1482: Notifications - Safety - Location Map Link CANNOT BE IMPLEMENTED YET DUE TO MAP
 
-Scenario: TC1445: Notifications - Red Flags - Location Map Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Scenario: TC1483: Notifications - Safety - Refresh CANNOT BE IMPLEMENTED YET DUE TO EVENT GENERATION
 
-Scenario: TC1446: Notifications - Red Flags - Page Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Scenario: TC1484: Notifications - Safety - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
 
-Scenario: TC1447: Notifications - Red Flags - Refresh CANNOT BE IMPLEMENTED YET DUE TO EVENT GENERATION
-
-Scenario: TC1448: Notifications - Red Flags - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
-
-Scenario: TC1450: Notifications - Red Flags - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
+Scenario: TC1486: Notifications - Safety - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the first entry in the Team dropdown
 And I click "Past 30 Days" in the TimeFrame dropdown
 And I click the Refresh button
@@ -72,28 +68,26 @@ And I click the sortByGroup link
 And I click the sortByVehicle link
 And I click the sortByVehicle link
 
-Scenario: TC1451: Notifications - Red Flags - Tools Button
+Scenario: TC1487: Notifications - Safety - Tools Button
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the Tools button
 Then I validate the EmailReport button is present
 Then I validate the ExportToPDF button is present
 Then I validate the ExportToExcel button is present
 
-Scenario: TC1452: Notifications - Red Flags - UI
+Scenario: TC1488: Notifications - Safety - UI
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-Then I validate I am on the Red Flags page
+And I click the Safety link
+Then I validate I am on the Safety page
 And I validate the Team dropdown is present
 And I validate the TimeFrame dropdown is present
 And I validate the Refresh button is present
 And I validate the EditColumns link is present
 And I validate the Tools button is present
 And I validate the Counter text is present
-And I validate the HeaderLevel text is present
-And I validate the HeaderAlertDetails text is present
 And I validate the SortByDateTime link is present
 And I validate the SortByGroup link is present
 And I validate the SortByDriver link is present
@@ -102,23 +96,22 @@ And I validate the HeaderCategory text is present
 And I validate the HeaderDetail text is present
 And I validate the HeaderStatus text is present
 
-Scenario: TC1453: Notifications - Red Flags - Vehicle Link
+Scenario: TC1489: Notifications - Safety - Vehicle Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the first entry in the Team dropdown
 And I click "Past 30 Days" in the TimeFrame dropdown
 And I click the Refresh button
-And I click the SortByVehicle link
-And I click the SortByVehicle link
+And I click the SortByDriver link
 And I save the first entry in the SortByVehicle column as SavedEntry
 And I click the first entry in the SortByVehicle column
 Then I validate the Vehicle Performance text is SavedEntry
 
-Scenario: TC1455: Notifications - Red Flags - Edit Columns - Cancel Button (Changes)
+Scenario: TC1491: Notifications - Safety - Edit Columns - Cancel Button (Changes)
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the EditColumns link
 And the EditColumns popup opens
 And I uncheck the checkbox of the first entry
@@ -136,10 +129,10 @@ And I validate the SortByVehicle link is present
 And I validate the HeaderCategory text is present
 And I validate the HeaderDetail text is present
 
-Scenario: TC1456: Notifications - Red Flags - Edit Columns - Cancel Button (No Changes)
+Scenario: TC1492: Notifications - Safety - Edit Columns - Cancel Button (No Changes)
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the EditColumns link
 And the EditColumns popup opens
 And I click the Cancel button
@@ -151,10 +144,10 @@ And I validate the SortByVehicle link is present
 And I validate the HeaderCategory text is present
 And I validate the HeaderDetail text is present
 
-Scenario: TC1457: Notifications - Red Flags - Edit Columns - Check Box Selection via Mouse
+Scenario: TC1493: Notifications - Safety - Edit Columns - Check Box Selection via Mouse
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the EditColumns link
 And the EditColumns popup opens
 And I uncheck the checkbox of the first entry
@@ -182,12 +175,12 @@ And I validate the checkbox of the fifth entry is checked
 And I check the checkbox of the sixth entry
 And I validate the checkbox of the sixth entry is checked
 
-Scenario: TC1458: Notifications - Red Flags - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Scenario: TC1494: Notifications - Safety - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
 
-Scenario: TC1459: Notifications - Red Flags - Edit Columns - Current Session Retention
+Scenario: TC1495: Notifications - Safety - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the EditColumns link
 And the EditColumns popup opens
 And I uncheck the checkbox of the first entry
@@ -197,7 +190,7 @@ And I click the Save button
 And the EditColumns popup closes
 And I click the Reports link
 And I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 Then I validate the SortByDateTime link is not present
 And I validate the SortByGroup link is not present
 And I validate the SortByDriver link is not present
@@ -205,12 +198,12 @@ And I validate the SortByVehicle link is present
 And I validate the HeaderCategory text is present
 And I validate the HeaderDetail text is present
 
-Scenario: TC1460: Notifications - Red Flags - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Scenario: TC1496: Notifications - Safety - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
 
-Scenario: TC1461: Notifications - Red Flags - Edit Columns - Save Button
+Scenario: TC1497: Notifications - Safety - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the EditColumns link
 And the EditColumns popup opens
 And I uncheck the checkbox of the first entry
@@ -225,10 +218,10 @@ And I click the Save button
 And the EditColumns popup closes
 And I validate the SortByDateTime link is present
 
-Scenario: TC1462: Notifications - Red Flags - Edit Columns - Subsequent Session Retention
+Scenario: TC1498: Notifications - Safety - Edit Columns - Subsequent Session Retention
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the EditColumns link
 And the EditColumns popup opens
 And I uncheck the checkbox of the first entry
@@ -239,7 +232,7 @@ And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 Then I validate the SortByDateTime link is not present
 And I click the EditColumns link
 And the EditColumns popup opens
@@ -251,15 +244,15 @@ And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I validate the SortByDateTime link is present
 
-Scenario: TC1463: Notifications - Red Flags - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Scenario: TC1499: Notifications - Safety - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
 
-Scenario: TC1464: Notifications - Red Flags - Edit Columns - UI
+Scenario: TC1500: Notifications - Safety - Edit Columns - UI
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the EditColumns link
 And the EditColumns popup opens
 Then I validate the first checkbox is present
@@ -277,52 +270,16 @@ And I validate the sixth checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
 
-Scenario: TC1465: Notifications - Red Flags - Exclude Link - Cancel Button
+Scenario: TC1501: Notifications - Safety - Exclude Link - Driving Style Event Interaction NEED HELP TO IMPLEMENT
+
+Scenario: TC1502: Notifications - Safety - Exclude Link - Seat Belt Event Interaction NEED HELP TO IMPLEMENT
+
+Scenario: TC1503: Notifications - Safety - Exclude Link - Speeding Event Interaction NEED HELP TO IMPLEMENT
+
+Scenario: TC1504: Notifications - Safety - Exclude Link - UI
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
-And I click the Refresh button
-And I save the text in the first EntryDateTime text as SavedDateTime
-And I save the text in the first EntryDetail text as SavedDetail
-And I click the first Exclude link in the Status column
-And the ExcludeEvent popup opens
-And I click the Cancel button
-And the ExcludeEvent popup closes
-Then I validate the text in the first EntryDateTime text is SavedDateTime
-And I validate the text in the first EntryDetail text is SavedDetail
-
-Scenario: TC1466: Notifications - Red Flags - Exclude Link - Crash Event Interaction HAS NOT BEEN IMPLEMENTED YET
-
-Scenario: TC1467: Notifications - Red Flags - Exclude Link  - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-
-Scenario: TC1468: Notifications - Red Flags - Exclude Link - Driving Style Event Interaction NEED HELP TO IMPLEMENT
-
-Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
-
-When I click the Notifications link
-Given I am logged in as a "Admin" user
-And I click the RedFlags link
-And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
-And I click the Refresh button
-And I save the number of entries in the RegFlags table as TableCount
-And I click the first Exclude link in the Status column
-And the ExcludeEvent popup opens
-And I click the Yes button
-And the ExcludeEvent popup closes
-Then I validate the number of entries in the RegFlags table is TableCount
-And I validate the first link in the Status column is "include"
-
-Scenario: TC1470: Notifications - Red Flags - Exclude Link - Seat Belt Event Interaction NEED HELP TO IMPLEMENT
-
-Scenario: TC1471: Notifications - Red Flags - Exclude Link - Speeding Event Interaction NEED HELP TO IMPLEMENT
-
-Scenario: TC1472: Notifications - Red Flags - Exclude Link - UI
-Given I am logged in as a "Admin" user
-When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the first entry in the Team dropdown
 And I click "Past 30 Days" in the TimeFrame dropdown
 And I click the Refresh button
@@ -335,27 +292,24 @@ And I validate the SavedDetail text is present
 And I validate the Yes button is present
 And I validate the No button is present
 
-Scenario: TC5739: Notifications - Red Flags - Include Link
+Scenario: TC5738: Notifications - Safety - Include Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the first entry in the Team dropdown
 And I click "Past 30 Days" in the TimeFrame dropdown
 And I click the Refresh button
-And I save the text in the first EntryDateTime text as SavedDateTime
-And I save the text in the first EntryDetail text as SavedDetail
 And I click the first Exclude link in the Status column
 And the ExcludeEvent popup opens
 And I click the Yes button
-And the ExcludeEvent popup closes
 Then I validate the first link in the Status column is "include"
 And I click the first link in the Status column
 And I validate the first link in the Status column is "exclude"
 
-Scenario: TC5744: Notifications - Red Flags - Time Frame
+Scenario: TC5743: Notifications - Safety - Time Frame
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Safety link
 And I click the first entry in the Team dropdown
 And I click "Today" in the TimeFrame dropdown
 And I click the Refresh button
