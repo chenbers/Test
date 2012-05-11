@@ -417,7 +417,7 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         if (vehicleID.equals(MOCK_VEHICLE_ID1))
             mileageMap.put(MOCK_DRIVER_ID1, VEHICLE1_MILEAGE);
         if (vehicleID.equals(MOCK_VEHICLE_ID2))
-            mileageMap.put(MOCK_DRIVER_ID2, VEHICLE2_MILEAGE);
+            mileageMap.put(MOCK_DRIVER_ID1, VEHICLE2_MILEAGE);
         return mileageMap;
     }
 }

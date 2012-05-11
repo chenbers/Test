@@ -368,26 +368,16 @@ public class HosDailyDriverLogReportCriteria {
         
         return true;
     }
-
     private Number getDriverMiles(Map<Integer, Long> mileageMap, List<HOSRecAdjusted> logListForDay, Integer driverID, Integer vehicleID) {
-        Long driverMiles = 0l;
-        Map<Object, HOSRecAdjusted> vehiclesAdded = new HashMap<Object, HOSRecAdjusted>();
         for (Entry<Integer, Long> entry : mileageMap.entrySet()) { 
             Integer vehicleDriverID = entry.getKey();
-            for (HOSRecAdjusted dayRec  : logListForDay) {
-//                if (dayRec.getStatus()== HOSStatus.DRIVING && vehicleDriverID.equals(driverID)) {
-                if ((dayRec.getStatus()== HOSStatus.DRIVING && vehicleDriverID.equals(driverID)) || 
-                    (dayRec.getStatus()== HOSStatus.ON_DUTY_OCCUPANT && !vehicleDriverID.equals(driverID)) && dayRec.getVehicleID() != null && dayRec.getVehicleID().equals(vehicleID)) {
-                    if (vehiclesAdded.containsKey(dayRec.getVehicleID()))
-                        continue;
-                    vehiclesAdded.put(dayRec.getVehicleID(), dayRec);
-                    driverMiles += entry.getValue();
-                }
+            if (vehicleDriverID.equals(driverID)) {
+                    return entry.getValue();
             }
         }
-        return driverMiles;
+        return 0l;
     }
-
+    
     private Number getVehicleMiles(Map<Integer, Long> mileageMap) {
         Long vehicleMiles = 0l;
         for (Entry<Integer, Long> entry : mileageMap.entrySet()) { 
