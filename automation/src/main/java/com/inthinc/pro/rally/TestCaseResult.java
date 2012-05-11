@@ -153,7 +153,7 @@ public class TestCaseResult extends RallyObject {
             Log.info(PrettyJSON.toString(testCaseResults));
             Log.info(StackToString.toString(e));
         } catch(Exception e){
-            Log.info("something bad happened with send_test_case_results() "+e);
+            Log.info("something bad happened with send_test_case_results()\n%s", e);
         }
         return testCaseResults;
     }

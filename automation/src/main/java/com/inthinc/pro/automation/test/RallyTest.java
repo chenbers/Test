@@ -45,8 +45,6 @@ public class RallyTest {
     
     public RallyTest(Test superTest){
         this.superTest = superTest;
-        Long id = Thread.currentThread().getId();
-        Log.info(id);
     }
     
     public void before() {

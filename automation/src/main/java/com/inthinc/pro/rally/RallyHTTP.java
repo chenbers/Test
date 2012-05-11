@@ -68,14 +68,14 @@ public class RallyHTTP extends HTTPCommands {
                 "start", startPosition.toString(), 
                 "pageSize", pageSize.toString(),
                 "fetch", fetch.toString());
-        Log.info(query);
+        Log.debug(query);
     }
 
     public String constructFilter(String filterString) throws URIException {
         if (filterString == null || filterString.equals(""))
             return "";
         String filter = encodeURLQuery(filterString);
-        Log.info(filter);
+        Log.debug(filter);
         return filter;
     }
 
@@ -128,7 +128,7 @@ public class RallyHTTP extends HTTPCommands {
     
     private void createResult(String response) throws JSONException{
         JSONObject jo = new JSONObject(response);
-        Log.info(jo);
+        Log.debug(jo);
         String type = (String) jo.keys().next();
         results = ObjectConverter.convertJSONToObject(response, type, RallyHTTPResults.class);
     }

@@ -208,7 +208,7 @@ public class ErrorCatcher implements InvocationHandler {
      *            text
      */
     private void addError(String name, String type, String error, ErrorLevel level) {
-        Log.info("\n" + level + ": " +name + "\n\t" + type + " :\n" + error + "\n");
+        Log.debug("\n" + level + ": " +name + "\n\t" + type + " :\n" + error + "\n");
         ErrorLevel temp = level;
         if (level.equals(ErrorLevel.FATAL)){
             level = ErrorLevel.FAIL;
