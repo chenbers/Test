@@ -23,10 +23,10 @@ import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.openqa.selenium.WebDriver;
 import org.springframework.util.ClassUtils;
 
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.Assert;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.Validate;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.interfaces.AutoElementTags.Assert;
-import com.inthinc.pro.automation.interfaces.AutoElementTags.Validate;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.jbehave.RegexTerms;

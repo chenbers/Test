@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
@@ -21,6 +22,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
+@Ignore
 public class NotificationsRedFlagsTest extends WebRallyTest {
 
     

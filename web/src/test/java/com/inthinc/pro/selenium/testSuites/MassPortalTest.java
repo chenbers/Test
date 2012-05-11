@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.models.AutomationUser;
@@ -8,6 +9,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
+@Ignore
 public class MassPortalTest extends WebTest {
     
 

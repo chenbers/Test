@@ -9,11 +9,12 @@ import java.util.List;
 import org.jbehave.core.annotations.AsParameterConverter;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.steps.CandidateSteps;
+import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
 import org.jbehave.core.steps.ParameterConverters.MethodReturningConverter;
 import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
 
-public class AutoStepsFactory extends InstanceStepsFactory {
+public class AutoStepsFactory extends InstanceStepsFactory implements InjectableStepsFactory {
     
     private final Configuration configuration;
     private final List<Object> instances;
@@ -55,6 +56,7 @@ public class AutoStepsFactory extends InstanceStepsFactory {
         return converters;
     }
 
+    @Override
     public Object createInstanceOfType(Class<?> type) {
         
         for (Object instance : instances){

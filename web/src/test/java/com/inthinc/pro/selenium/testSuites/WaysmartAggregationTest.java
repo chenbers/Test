@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.junit.Ignore;
+
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
@@ -29,6 +31,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.selenium.util.AutomationSiloService;
 
+@Ignore
 public class WaysmartAggregationTest {
 //    private static final int acctID = 398;
 //    private static final int groupID = 5260;

@@ -24,7 +24,7 @@ public class Project extends RallyObject{
 			String queryString = http.constructFilter("( Name = \"" + name + "\" )");
 			http.constructQuery(queryString, 1, 20, fetch);
 			http.getObjects(RallyWebServices.PROJECT);
-			return http.getResults().getJSONObject(0);
+			return http.getResponse().getResults().getJSONObject(0);
 		} catch (JSONException e) {
 			Log.error(e);
 		} catch (URIException e) {

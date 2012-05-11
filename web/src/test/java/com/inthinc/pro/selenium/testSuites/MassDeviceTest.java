@@ -42,14 +42,19 @@ import com.inthinc.pro.selenium.util.AutomationSiloService;
  */
 public class MassDeviceTest {
     
-//	private final Integer accountID=4342;
-//	private final Integer groupID=6533;
-//	private final Addresses portal = Addresses.DEV;
+//	private final Integer accountID=4342; // DEV
+//	private final Integer groupID=6533; // DEV
 	
 
-    private final Integer accountID=1;
-    private final Integer groupID=10;
-    private final Addresses portal = Addresses.TP_INTHINC;
+//    private final Integer accountID=1; // PROD
+//    private final Integer groupID=10; // PROD
+    
+
+  private final Integer accountID=32; // QA
+  private final Integer groupID=53; // QA
+    
+    
+    private final Addresses portal;
 	
 	private final String address;
 	
@@ -59,9 +64,10 @@ public class MassDeviceTest {
 	
 
     private static final String start = "40.710459,-111.993245";
-    private static final String stop = "35.446687,-112.003148";
+    private static final String stop = "40.672436,-111.836529";
 	
-	public MassDeviceTest(){
+	public MassDeviceTest(Addresses server){
+	    this.portal = server;
 	    Log.info(portal);
 	    portalHessian = new AutomationSiloService(portal);
 	    portalProxy = new AutomationHessianFactory().getPortalProxy(portal);
@@ -205,7 +211,7 @@ public class MassDeviceTest {
 		Iterator<Integer> itr = drivers.keySet().iterator();
 
         AutomationCalendar initialTime = new AutomationCalendar();
-//        initialTime.setDate(1319726981);
+        initialTime.setDate(1335922000);
 		Log.info(portal);
 		
         long start = System.currentTimeMillis();
@@ -216,7 +222,7 @@ public class MassDeviceTest {
 			tiwi.getState().getTime().setDate(initialTime);
         	TripDriver driver = new TripDriver(tiwi);
         	driver.getTripTracker().setPoints(points);
-        	driver.run();
+        	driver.start();
 			while (Thread.activeCount() > 40){
 			    AutomationThread.pause(500l);
 			}
@@ -241,13 +247,13 @@ public class MassDeviceTest {
 	}
 		
 	public static void main(String[] args){
-		MassDeviceTest test = new MassDeviceTest();
-        test.readDrivers();
-		test.create(8000);
+		MassDeviceTest test = new MassDeviceTest(Addresses.QA);
+//        test.readDrivers();
+		test.create(5000);
 //		MCMProxyObject.regularNote=false;
-//		test.readDrivers();
+		test.readDrivers();
 //		test.fixDevices();
-//		test.driveTiwis();
+		test.driveTiwis();
 		
 	}
 

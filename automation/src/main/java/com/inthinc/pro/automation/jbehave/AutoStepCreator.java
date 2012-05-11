@@ -106,6 +106,10 @@ public class AutoStepCreator extends StepCreator {
             return notPerformed(stepAsString);
         }
         
+        public String stepAsString(){
+            return stepAsString;
+        }
+        
     }
 
     
@@ -155,8 +159,13 @@ public class AutoStepCreator extends StepCreator {
             try {
                 stepMonitor.performing(stepAsString, dryRun);
                 if (!dryRun) {
-                    Object result = method.invoke(instance, parameters);
-                    Log.debug("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
+                    try {
+                        Object result = method.invoke(instance, parameters);
+                        Log.debug("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
+                    } catch (AssertionError e){
+                        return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, e)).withParameterValues(
+                        parametrisedStep);
+                    }
                 }
                 return successful(stepAsString).withParameterValues(parametrisedStep);
             } catch (ParameterNotFound e) {
@@ -176,6 +185,11 @@ public class AutoStepCreator extends StepCreator {
                 return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, t)).withParameterValues(
                         parametrisedStep);
             }
+        }
+
+
+        public String stepAsString() {
+            return stepAsString;
         }
     }
     
@@ -204,7 +218,10 @@ public class AutoStepCreator extends StepCreator {
             this.parameters = new Object[]{};
             
         }
-        
+
+        public String stepAsString(){
+            return stepAsString;
+        }
         
         public SaveVariableStep(Object instance, String stepAsString, Method method, String stepWithoutStartingWord, Object[] parameters) {
             this(instance, stepAsString, method, stepWithoutStartingWord, new HashMap<String, String>());
@@ -261,7 +278,10 @@ public class AutoStepCreator extends StepCreator {
             this.parameters = new Object[]{};
             
         }
-        
+
+        public String stepAsString(){
+            return stepAsString;
+        }
         
         public ValidationStep(Object instance, String stepAsString, Method method, String stepWithoutStartingWord, Object[] parameters) {
             this(instance, stepAsString, method, stepWithoutStartingWord, new HashMap<String, String>());

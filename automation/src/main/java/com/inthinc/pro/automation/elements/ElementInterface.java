@@ -2,8 +2,8 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
 
-import com.inthinc.pro.automation.interfaces.AutoElementTags.Assert;
-import com.inthinc.pro.automation.interfaces.AutoElementTags.Validate;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.Assert;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.Validate;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;

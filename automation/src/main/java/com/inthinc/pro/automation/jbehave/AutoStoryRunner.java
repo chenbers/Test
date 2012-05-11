@@ -34,6 +34,7 @@ import org.jbehave.core.steps.PendingStepMethodGenerator;
 import org.jbehave.core.steps.ProvidedStepsFactory;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCollector.Stage;
+import org.jbehave.core.steps.StepCreator.ParameterisedStep;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepResult;
 
@@ -60,6 +61,7 @@ public class AutoStoryRunner extends StoryRunner {
     
 
     private Map<Story, StoryDuration> cancelledStories = new HashMap<Story, StoryDuration>();
+    
 
     /**
      * Run steps before or after a collection of stories. Steps are execute only
@@ -183,6 +185,7 @@ public class AutoStoryRunner extends StoryRunner {
      * @param storyPath the story path
      * @return The parsed Story
      */
+    @Override
     public Story storyOfPath(Configuration configuration, String storyPath) {
         String storyAsText = configuration.storyLoader().loadStoryAsText(storyPath);
         return configuration.storyParser().parseStory(storyAsText, storyPath);
@@ -192,7 +195,7 @@ public class AutoStoryRunner extends StoryRunner {
         try {
             runCancellable(context, story, storyParameters);
         } catch (Throwable e) {
-            Log.error(e);
+            Log.debug(e);
             if (cancelledStories.containsKey(story)) {
                 reporter.get().storyCancelled(story, cancelledStories.get(story));
                 reporter.get().afterStory(context.givenStory);
@@ -316,6 +319,7 @@ public class AutoStoryRunner extends StoryRunner {
                         stepsToRemove.pop();
                     }
                 }
+                
                 state = state.run(step);
             } catch (RestartingScenarioFailure e) {
                 reporter.get().restarted(step.toString(), e);
@@ -325,10 +329,13 @@ public class AutoStoryRunner extends StoryRunner {
         steps.removeAll(stepsToRemove);
         context.stateIs(state);
     }
-
+    
     private final class FineSoFar implements State {
 
         public State run(Step step) {
+            if ( step instanceof ParameterisedStep ){
+                ((ParameterisedStep)step).describeTo(reporter.get());
+            }
             UUIDExceptionWrapper storyFailureIfItHappened = storyFailure.get();
             StepResult result = step.perform(storyFailureIfItHappened);
             result.describeTo(reporter.get());

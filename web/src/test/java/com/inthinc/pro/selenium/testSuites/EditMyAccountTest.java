@@ -17,6 +17,7 @@ import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
 import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
+@Ignore
 public class EditMyAccountTest extends WebRallyTest {
 //TODO for TC1275 Need to add story steps for Admin>User Account, Vehicle>Speed & Sensitivity, Red Flags>Add Red Flag>Speeding>Limit table, SBS>create a new SBS request>Speed Limit current column, once Admin has been rebuilt
 //TODO for TC1273 Need to add story steps for Admin>User once Admin has been rebuilt

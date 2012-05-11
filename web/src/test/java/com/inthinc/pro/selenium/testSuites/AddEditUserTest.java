@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
@@ -16,6 +17,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
+@Ignore
 public class AddEditUserTest extends WebRallyTest {
 
 // TEST BEING TAKEN OFFLINE FOR NOW

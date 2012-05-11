@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
@@ -15,6 +16,7 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
+@Ignore
 public class ReportsDriverTest extends WebRallyTest {
 //
 //    private PageReportsDrivers driver = new PageReportsDrivers();

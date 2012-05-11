@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
@@ -11,6 +12,7 @@ import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
+@Ignore
 public class PasswordChangeTest extends WebRallyTest {
 
     private PageMyAccount myAccountPage;

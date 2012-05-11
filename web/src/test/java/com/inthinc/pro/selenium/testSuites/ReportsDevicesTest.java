@@ -13,7 +13,7 @@ import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDevices;
 
-//@Ignore
+@Ignore
 public class ReportsDevicesTest extends WebRallyTest {
 //
 //    private PageReportsDevices device;

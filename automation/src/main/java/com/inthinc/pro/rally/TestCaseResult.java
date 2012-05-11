@@ -145,7 +145,7 @@ public class TestCaseResult extends RallyObject {
                 }
             }
             http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);
-            return http.getResults().getJSONObject(0);
+            return http.getResponse().getResults().getJSONObject(0);
         } catch (JSONException e) {
             Log.info("JSONException: "+e);
             Log.info("The " + fieldFailed

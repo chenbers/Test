@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
@@ -32,6 +33,7 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
  * -logins used for these tests must have access to the drivers/vehicles/devices used in NoteTesterGeneration
  *
  */
+@Ignore
 public class NotificationsDiagnosticsTest extends WebRallyTest {
 //    private AutomationUser user1, user2;
 //    private String GROUP;          

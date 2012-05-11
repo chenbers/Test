@@ -175,10 +175,10 @@ public class TestCase extends RallyObject {
         NameValuePair search = new NameValuePair("Name", "Test Case");
         String filter;
         try {
-            filter = http.constructFilter(search);
+            filter = http.constructFilter(search, false);
             http.constructQuery(filter, 1, 2, true);
             http.getObjects(RallyWebServices.TYPE_DEFINITION);
-            JSONObject rallyTestCase = http.getResults().getJSONObject(0);
+            JSONObject rallyTestCase = http.getResponse().getResults().getJSONObject(0);
             JSONArray attrs = rallyTestCase.getJSONArray("Attributes");
             for (int i = 0; i < attrs.length(); i++) {
                 JSONObject field = attrs.getJSONObject(i);
@@ -211,12 +211,12 @@ public class TestCase extends RallyObject {
             http.constructQuery(filter, 1, 200, fetch);
 
             http.getObjects(RallyWebServices.TEST_CASE);
-            return http.getResults().getJSONObject(0);
+            return http.getResponse().getResults().getJSONObject(0);
         } catch (HttpException e) {
             Log.warning(e);
         } catch (JSONException e) {
             Log.error(http.getQuery());
-            Log.error(http.getFullResults());
+            Log.error(http.getResponse());
             Log.error(e);
         }
         return null;
@@ -257,11 +257,10 @@ public class TestCase extends RallyObject {
                 else
                     http.constructQuery(filter, start, 200);
                 http.getObjects(RallyWebServices.TEST_CASE);
-                JSONArray reply = http.getResults();
+                JSONArray reply = http.getResponse().getResults();
                 received += reply.length();
                 getAll.add(reply);
-                Integer total = http.getQueryResult()
-                        .getInt("TotalResultCount");
+                Integer total = http.getResponse().getTotalResultCount();
                 if (total < received || start > total) {
                     more = false;
                     break;
@@ -272,9 +271,7 @@ public class TestCase extends RallyObject {
 
         } catch (HttpException e) {
             Log.error(e);
-        } catch (JSONException e) {
-            Log.error(e);
-        }
+        }          
         return getAll;
     }
 
@@ -346,14 +343,14 @@ public class TestCase extends RallyObject {
     public JSONArray[] update(JSONObject testCase) {
         http.postObjects(RallyWebServices.TEST_CASE,
                 processForCustomFields(testCase));
-        System.out.println(http.getQueryResult());
-        JSONArray[] sendme = new JSONArray[2];
-        try {
-            sendme[0] = http.getErrors();
-            sendme[0] = http.getWarnings();
-        } catch (JSONException e) {
-            Log.error(e);
-        }
+        JSONArray[] sendme = {http.getResponse().getErrors(), http.getResponse().getWarnings()};
+        return sendme;
+    }
+
+    public JSONArray[] update() {
+        http.postObjects(RallyWebServices.TEST_CASE,
+                processForCustomFields(testCase));
+        JSONArray[] sendme = {http.getResponse().getErrors(), http.getResponse().getWarnings()};
         return sendme;
     }
     
@@ -363,4 +360,5 @@ public class TestCase extends RallyObject {
         }
         return lastRun.compareDays(AutomationCalendar.now(WebDateFormat.RALLY_DATE_FORMAT));
     }
+
 }

@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.AccountCapability;
@@ -16,6 +17,7 @@ import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
+@Ignore
 public class HOSFuelStopsTest extends WebRallyTest {
     //TODO: on TC5703, steps 10 thru 15 are commented out, and not in Rally, need to see if they were moved to another test
     

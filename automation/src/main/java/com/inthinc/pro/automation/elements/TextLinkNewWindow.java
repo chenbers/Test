@@ -6,7 +6,6 @@ import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextLinkNewWindow extends TextLink implements Clickable, TextBased {

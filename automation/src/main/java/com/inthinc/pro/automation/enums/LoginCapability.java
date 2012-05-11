@@ -21,6 +21,8 @@ public enum LoginCapability implements AutoCapability  {
     TeamLevelLogin,
     FleetLevelLogin,
     DivisionLevelLogin,
+    
+    
     AccessPointUsers,
     AccessPointUserInfo,
     AccessPointDriverInfo,

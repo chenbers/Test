@@ -13,7 +13,7 @@ import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
 
-//@Ignore
+@Ignore
 public class AdminAddVehicleTest extends WebRallyTest {
 // TEST BEING TAKEN OFFLINE FOR NOW
 //

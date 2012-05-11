@@ -56,7 +56,6 @@ public class AutoPageRunner {
             pageMap.put(page.getUrl(), page);
             pageMap.put(className, page);
         }
-        Log.info(pageMap);
     }
     
     public void setEmbedder(Embedder embedder){
@@ -130,7 +129,7 @@ public class AutoPageRunner {
                 returnStep = then(step);
             }
         } catch (StepException e){
-            Log.info("Unable to finish step: %s\nError is: %s", workingOnStep, e.getError());
+            Log.debug("Unable to finish step: %s\nError is: %s", workingOnStep, e.getError());
         }
         
         return returnStep;

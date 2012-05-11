@@ -81,7 +81,7 @@ public class TestSet extends RallyObject {
 				http.constructQuery(filter, 1, 200);
 
 			http.getObjects(RallyWebServices.TEST_SET);
-			return http.getResults().getJSONObject(0);
+			return http.getResponse().getResults().getJSONObject(0);
 		} catch (HttpException e) {
 			Log.error(e);
 		} catch (JSONException e) {
@@ -116,11 +116,10 @@ public class TestSet extends RallyObject {
 				else
 					http.constructQuery(filter, start, 200);
 				http.getObjects(RallyWebServices.TEST_SET);
-				JSONArray reply = http.getResults();
+				JSONArray reply = http.getResponse().getResults();
 				received += reply.length();
 				getAll.add(reply);
-				Integer total = http.getQueryResult()
-						.getInt("TotalResultCount");
+				Integer total = http.getResponse().getTotalResultCount();
 				if (total < received || start > total) {
 					more = false;
 					break;
@@ -130,8 +129,6 @@ public class TestSet extends RallyObject {
 			} while (more);
 
 		} catch (HttpException e) {
-			Log.error(e);
-		} catch (JSONException e) {
 			Log.error(e);
 		}
 		return getAll;

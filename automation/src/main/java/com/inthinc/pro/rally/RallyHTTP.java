@@ -13,24 +13,25 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.HTTPCommands;
+import com.inthinc.pro.automation.utils.ObjectConverter;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class RallyHTTP extends HTTPCommands {
     
 
     
-    private JSONObject queryResults, workspace;
+    private JSONObject workspace;
     private String query;
 
     private RallyWebServices workingSpace;
+    
+    private RallyHTTPResults results;
 
-    private JSONObject results;
     
     public interface RallyFields{}
 
@@ -67,7 +68,7 @@ public class RallyHTTP extends HTTPCommands {
                 "start", startPosition.toString(), 
                 "pageSize", pageSize.toString(),
                 "fetch", fetch.toString());
-        Log.debug(query);
+        Log.info(query);
     }
 
     public String constructFilter(String filterString) throws URIException {
@@ -99,7 +100,6 @@ public class RallyHTTP extends HTTPCommands {
             throws URIException {
         String formatted = "( " + pair.getName() + " = \"" + pair.getValue()
                 + "\" )";
-        Log.debug(formatted);
         if (encode)
             return encodeURLQuery(formatted);
         else
@@ -107,17 +107,16 @@ public class RallyHTTP extends HTTPCommands {
     }
 
     public void getObjects(RallyWebServices request) {
+        
         try {
             GetMethod getRequest = new GetMethod(request.getMethod());
             getRequest.setQueryString(query);
-            httpRequest(getRequest);
-            results = new JSONObject(response);
-            setQueryResult(results.getJSONObject("QueryResult"));
-        } catch (JSONException e) {
-            Log.error(e);
+            createResult(httpRequest(getRequest));
         } catch (UnsupportedEncodingException e) {
             Log.error(e);
         } catch (IOException e) {
+            Log.error(e);
+        } catch (JSONException e) {
             Log.error(e);
         }
         response = null;
@@ -125,6 +124,13 @@ public class RallyHTTP extends HTTPCommands {
 
     public void postObjects(RallyWebServices request, JSONObject item) {
         postObjects(request, item, false);
+    }
+    
+    private void createResult(String response) throws JSONException{
+        JSONObject jo = new JSONObject(response);
+        Log.info(jo);
+        String type = (String) jo.keys().next();
+        results = ObjectConverter.convertJSONToObject(response, type, RallyHTTPResults.class);
     }
 
     public void postObjects(RallyWebServices request, JSONObject item,
@@ -145,20 +151,8 @@ public class RallyHTTP extends HTTPCommands {
             RequestEntity requestEntity = new StringRequestEntity(content,
                     "application/json", "UTF-8");
             postRequest.setRequestEntity(requestEntity);
-
-            httpRequest(postRequest);
-
-            JSONObject reply = new JSONObject(response);
-            Log.debug(PrettyJSON.toString(reply));
-            try {
-                setOperationResult(reply.getJSONObject("QueryResult"));
-            } catch (JSONException e) {
-                try {
-                    setOperationResult(reply.getJSONObject("OperationResult"));
-                } catch (JSONException e1) {
-                    setCreateResult(reply.getJSONObject("CreateResult"));
-                }
-            }
+            createResult(httpRequest(postRequest));
+            
         } catch (JSONException e) {
             Log.error(url);
             Log.error(response);
@@ -192,9 +186,7 @@ public class RallyHTTP extends HTTPCommands {
     public void deleteObject(String url) {
         try {
             DeleteMethod deleteRequest = new DeleteMethod(url);
-            httpRequest(deleteRequest);
-            JSONObject workspace = new JSONObject(response);
-            setQueryResult(workspace.getJSONObject("OperationResult"));
+            createResult(httpRequest(deleteRequest));
         } catch (JSONException e) {
             Log.error(url);
             Log.error(response);
@@ -204,19 +196,6 @@ public class RallyHTTP extends HTTPCommands {
         } catch (IOException e) {
             Log.error(e);
         }
-    }
-
-    private void setQueryResult(JSONObject queryResult) {
-        this.queryResults = queryResult;
-    }
-
-    private void setOperationResult(JSONObject queryResult) {
-        Log.info(PrettyJSON.toString(queryResult));
-        this.queryResults = queryResult;
-    }
-
-    private void setCreateResult(JSONObject queryResult) {
-        this.queryResults = queryResult;
     }
 
     public void setWorkspace(RallyWebServices sandbox) {
@@ -231,7 +210,7 @@ public class RallyHTTP extends HTTPCommands {
             else
                 constructQuery(1, 200);
             getObjects(RallyWebServices.WORKSPACE);
-            workspace = getResults().getJSONObject(0);
+            workspace = results.getResults().getJSONObject(0);
         } catch (HttpException e1) {
             Log.error(StackToString.toString(e1));
         } catch (JSONException e1) {
@@ -240,43 +219,16 @@ public class RallyHTTP extends HTTPCommands {
         Log.debug(workspace);
     }
 
-    /**
-     * Get the Query Result from Rally. Objects have the form JSONObject > JSONArray > JSONObject
-     * 
-     * @return
-     */
-    public JSONObject getQueryResult() {
-        return queryResults;
-    }
-
-    public JSONArray getResults() throws JSONException {
-        try {
-            return queryResults.getJSONArray("Results");
-        } catch (JSONException e) {
-            return new JSONArray().put(queryResults.getJSONObject("Object"));
-        } catch (Exception e){
-            return null;
-        }
-    }
-    
-    public JSONObject getFullResults(){
-        return results;
-    }
-
-    public JSONArray getErrors() throws JSONException {
-        return queryResults.getJSONArray("Warnings");
-    }
-
-    public JSONArray getWarnings() throws JSONException {
-        return queryResults.getJSONArray("Errors");
-    }
-
     public JSONObject getWorkspace() {
         return workspace;
     }
 
     public String getQuery() {
         return query;
+    }
+
+    public RallyHTTPResults getResponse() {
+        return results;
     }
 
 }

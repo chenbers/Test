@@ -1,28 +1,21 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.List;
+import org.jbehave.core.annotations.UsingSteps;
+import org.junit.Test;
 
-import org.jbehave.core.steps.CandidateSteps;
-
-import com.inthinc.pro.automation.selenium.AbstractPage;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
+import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
+import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
-
+@UsingSteps(instances={LoginSteps.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class})
+@StoryPath(path="login.story")
 public class LoginStory extends WebStories {
+    
+    @Test
+    public void test(){}
 
-
-	@Override
-	public List<CandidateSteps> candidateSteps() {
-		return candidateSteps(new LoginSteps());
-	}
-
-	@Override
-	protected List<String> storyPaths() {
-		return storyPaths("login.story");
-	}
-
-    @Override
-    public List<AbstractPage> requiredPageObjectsList() {
-        return pageList();
-    }
 }

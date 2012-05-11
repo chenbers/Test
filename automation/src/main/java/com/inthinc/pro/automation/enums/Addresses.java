@@ -25,35 +25,35 @@ public enum Addresses implements AddressInterface {
     TECK("teck.inthinc.com"),
 
     STAGE("stage.inthinc.com"),
-    
+
     mraby("mraby-node0.tiwipro.com"),
-    
+
     STAGE_DIRECT("ec2-50-18-81-171.us-west-1.compute.amazonaws.com"),
 
     DEV("dev.tiwipro.com", 8081, null, null, 8090, 8888, 7780),
-    
+
     DEV_NOTE_SERVER("192.168.11.111", 8081, null, null, 8091, 8888, 7780),
-    
+
     EC2("204.236.172.41", null, null, "stage.inthinc.com", null, null, null),
 
     QA("qa.tiwipro.com", 8423, 8199, "qa.tiwipro.com", 8190, 8988, 7880),
-    
+
     QA_NOTE_SERVER("192.168.11.115", 8423, 8199, null, 8091, 8988, 7880),
 
     // QA2("qa2.tiwipro.com", 8299, "qa2.tiwipro.com", 8290, 8988, 7980),
 
-    TEEN_QA("qaserv.iwiglobal.com", 8099, 9085, null, 9090, null, null ),
+    TEEN_QA("qaserv.iwiglobal.com", 8099, 9085, null, 9090, null, null),
 
-    TEEN_PROD("my.tiwi.com"), 
-    
+    TEEN_PROD("my.tiwi.com"),
+
     LDS("lds.inthinc.com"),
-    
+
     CONFIGURATOR("tiwipro0.tiwipro.com", 8080, "http", "configurator"),
-    
+
     CONFIGURATOROUTSIDE("dev.tiwipro.com", 8080, "http", "configurator"),
-    
+
     LOCALCONFIGURATOR("localhost", 8080, "http", "configurator"),
-    
+
     TP_INTHINC("my-web10.tiwipro.com"),
 
     // PROD_MCM_EC2("my.inthinc.com"),
@@ -76,14 +76,15 @@ public enum Addresses implements AddressInterface {
                 null);
     }
 
-    private Addresses(String url, Integer webPort, String protocol, String appName) {
+    private Addresses(String url, Integer webPort, String protocol,
+            String appName) {
         this(url, null, webPort, null, null, null, null);
         this.portalUrl = url;
         this.webPort = webPort;
         this.protocol = protocol;
         this.appName = appName;
     }
-    
+
     private Addresses(String portalUrl, Integer webPort, Integer portalPort,
             String mcmUrl, Integer mcmPort, Integer waysPort, Integer satPort) {
         this.portalUrl = portalUrl;
@@ -122,14 +123,21 @@ public enum Addresses implements AddressInterface {
         return portalUrl;
     }
 
-    public String getWebAddress() {
+    public String getBaseAddress() {
         return (protocol != null ? protocol : "https") + "://" + portalUrl
-                + (webPort != null ? ":" + webPort : "")
-                + (appName != null ? "/" + appName + "/" : "");
+                + (webPort != null ? ":" + webPort : "");
+    }
+
+    public String getWebAddress() {
+        return getBaseAddress() + (appName != null ? "/" + appName + "/" : "");
     }
 
     public void setProtocol(String protocol) {
         this.protocol = protocol;
+    }
+
+    public String getProtocol() {
+        return protocol;
     }
 
     public void setAppName(String appName) {

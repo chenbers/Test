@@ -12,7 +12,6 @@ import org.openqa.selenium.By;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class SeleniumEnumWrapper implements SeleniumEnums {
 

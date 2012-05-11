@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
@@ -14,6 +15,7 @@ import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageReportsWaysmart;
 
+@Ignore
 public class VerifyPagObjectsTest extends WebRallyTest {
 
 	private PageMyAccount my;

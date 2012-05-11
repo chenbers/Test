@@ -21,7 +21,7 @@ public class StepException extends RuntimeException {
         this.stepAsString = stepAsString;
         this.errorMessage = errorMessage;
         this.e = e;
-        Log.error("%s\n%s", errorMessage, e);
+        Log.debug("%s\n%s", errorMessage, e);
     }
     
     public String getStep(){

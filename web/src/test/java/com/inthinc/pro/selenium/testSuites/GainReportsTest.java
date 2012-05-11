@@ -1,8 +1,10 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class GainReportsTest extends WebRallyTest {
 
 	//private PageReportsWaysmart waySmartReportsPage;

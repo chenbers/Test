@@ -27,13 +27,30 @@ import com.inthinc.pro.automation.logging.Log;
 public class HTTPCommands {
     
     
-    protected HttpClient httpClient;
-
-    protected String response;
-
+    public static String getResponseBodyFromStream(InputStream is) {
+        String str = "";
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[128];
+            int size = 0;
+            while ((size = is.read(buffer)) > 0) {
+                baos.write(buffer, 0, size);
+            }
+            str = new String(baos.toByteArray());
+        } catch (IOException ioe) {}
+        return str;
+    }
 
     private DefaultHttpClient defaultClient;
     
+    protected HttpClient httpClient;
+
+
+
+    protected String response;
+    
+    protected boolean successful;
+
     public HTTPCommands(){
         httpClient = new HttpClient();
         defaultClient = new DefaultHttpClient();
@@ -42,9 +59,30 @@ public class HTTPCommands {
     public HTTPCommands(String userID, String password) {
         HttpClientParams params = new HttpClientParams();
         params.setAuthenticationPreemptive(true);
-        HttpClient httpClient = new HttpClient(params);
+        httpClient = new HttpClient(params);
         Credentials defaultcreds = new UsernamePasswordCredentials(userID, password);
         httpClient.getState().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM), defaultcreds);
+    }
+    
+
+    public String constructQuery(String ...items) {
+        StringWriter query = new StringWriter();
+        for (int i=0; i<items.length;i++){
+            if (i!=0){
+                query.write("&");
+            }
+            query.write(items[i] + "=" + items[++i]);
+        }
+        return encodeURLQuery(query.toString());
+    }
+    
+    public String encodeURLQuery(String string) {
+        try {
+            return URIUtil.encodeQuery(string);
+        } catch (URIException e) {
+            Log.debug("%s", e);
+        }
+        return "";
     }
 
     /**
@@ -64,10 +102,12 @@ public class HTTPCommands {
         try {
             int statusCode = httpClient.executeMethod(method);
             if (statusCode != HttpStatus.SC_OK) {
-                Log.debug(method.getName() + " method failed: " + method.getStatusLine());
+                successful = false;
+                Log.info(method.getName() + " method failed: " + method.getStatusLine());
                 response = getResponseBodyFromStream(method
                         .getResponseBodyAsStream());
             } else {
+                successful = true;
             	Log.debug(method.getName() + " method succeeded: " + method.getStatusLine());
                 response = getResponseBodyFromStream(method
                         .getResponseBodyAsStream());
@@ -79,40 +119,6 @@ public class HTTPCommands {
         }
         return response;
     }
-    
-    public String constructQuery(String ...items) {
-        StringWriter query = new StringWriter();
-        for (int i=0; i<items.length;i++){
-            if (i!=0){
-                query.write("&");
-            }
-            query.write(items[i] + "=" + items[++i]);
-        }
-        return encodeURLQuery(query.toString());
-    }
-
-    public String encodeURLQuery(String string) {
-        try {
-            return URIUtil.encodeQuery(string);
-        } catch (URIException e) {
-            Log.debug("%s", e);
-        }
-        return "";
-    }
-
-    public static String getResponseBodyFromStream(InputStream is) {
-        String str = "";
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[128];
-            int size = 0;
-            while ((size = is.read(buffer)) > 0) {
-                baos.write(buffer, 0, size);
-            }
-            str = new String(baos.toByteArray());
-        } catch (IOException ioe) {}
-        return str;
-    }
 
     public String httpRequest(HttpUriRequest method) throws ClientProtocolException, IOException {
         HttpResponse response;
@@ -121,6 +127,10 @@ public class HTTPCommands {
         String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
         Log.debug(returnResponse);
         return returnResponse;
+    }
+
+    public boolean isSuccessful() {
+        return successful;
     }
 
 }

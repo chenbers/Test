@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.device.devices.TiwiProDevice;
@@ -13,6 +14,7 @@ import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 
+@Ignore
 public class NoteTesterGeneration extends Thread{
     private TiwiProDevice tiwi1;
     private TiwiProDevice tiwi2;

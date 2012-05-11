@@ -14,7 +14,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageHOSReports;
 
-
+@Ignore
 public class HOSReportsTest extends WebRallyTest {
 //TODO: We can add this test case as well as the ones it depends on  back in once we have the other test cases working
 //    private PageHOSReports myHOSReports;

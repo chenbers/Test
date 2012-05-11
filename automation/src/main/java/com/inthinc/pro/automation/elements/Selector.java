@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class Selector extends SelectableObject implements Selectable {

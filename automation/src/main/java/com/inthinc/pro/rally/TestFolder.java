@@ -34,19 +34,14 @@ public class TestFolder extends RallyObject {
 		String queryString = http.constructFilter(parameters);
 		http.constructQuery(queryString, 1, 20, fetch);
 		http.getObjects(RallyWebServices.TEST_FOLDER);
-		return http.getResults().getJSONObject(0);
+		return http.getResponse().getResults().getJSONObject(0);
 	}
 	
 	public JSONArray[] updateFolder(JSONObject folder) {
-    	try {
-    		http.postObjects(RallyWebServices.TEST_FOLDER, folder);
-    		System.out.println(http.getQueryResult());
-    		JSONArray[] sendme ={http.getErrors(), http.getWarnings()}; 
-			return sendme;
-		} catch (JSONException e) {
-			Log.error(e);
-		}
-		return null;
+		http.postObjects(RallyWebServices.TEST_FOLDER, folder);
+		System.out.println(http.getResponse());
+		JSONArray[] sendme ={http.getResponse().getErrors(), http.getResponse().getWarnings()}; 
+		return sendme;
 	}
 	
 	public List<JSONArray> getFoldersByProject( String project){
@@ -80,11 +75,11 @@ public class TestFolder extends RallyObject {
     			if (fetch) http.constructQuery( filter, start, pageSize, fetch);
 		    	else http.constructQuery(filter, start, pageSize);
 				http.getObjects(RallyWebServices.TEST_FOLDER);
-				JSONArray reply =http.getResults();
+				JSONArray reply =http.getResponse().getResults();
 				received += reply.length();
 				getAll.add(reply);
 				
-				Integer total = http.getQueryResult().getInt("TotalResultCount");
+				Integer total = http.getResponse().getTotalResultCount();
 				if (total <= received || start > total) {
 					more = false;
 					break;
@@ -94,8 +89,6 @@ public class TestFolder extends RallyObject {
     		}while (more);
 			
 		} catch (HttpException e) {
-			Log.error(e);
-		} catch (JSONException e) {
 			Log.error(e);
 		}
 	    return getAll;

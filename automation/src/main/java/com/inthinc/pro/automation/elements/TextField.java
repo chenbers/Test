@@ -1,7 +1,6 @@
 package com.inthinc.pro.automation.elements;
 
 import java.lang.reflect.Method;
-import java.util.regex.Pattern;
 
 import org.jbehave.core.steps.StepCreator.PendingStep;
 
