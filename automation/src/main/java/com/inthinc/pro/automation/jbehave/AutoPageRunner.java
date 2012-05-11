@@ -163,8 +163,6 @@ public class AutoPageRunner {
                     pageClass = currentPageClass;
                 }
             } 
-        } catch (NullPointerException e){
-            
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
@@ -204,8 +202,6 @@ public class AutoPageRunner {
                 }
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
-        } catch (NullPointerException e){
-            Log.debug(e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } 
@@ -231,8 +227,6 @@ public class AutoPageRunner {
                 }
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
-        } catch (NullPointerException e){
-            Log.info(e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } 
@@ -246,8 +240,6 @@ public class AutoPageRunner {
                 return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("load"));
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
-        } catch (NullPointerException e){
-            Log.info(e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } catch (IllegalArgumentException e) {
@@ -263,8 +255,6 @@ public class AutoPageRunner {
             elementType = JBehaveTermMatchers.getAlias(workingOnStep); 
             Object elementCategory = pageClass.getMethod(JBehaveTermMatchers.getTypeFromString(workingOnStep)).invoke(pageObject);
             return (ElementBase) getElement(elementCategory);
-        } catch (NullPointerException e){
-            err = e;
         } catch (IllegalArgumentException e) {
             err = e;
         } catch (NoSuchMethodException e) {
