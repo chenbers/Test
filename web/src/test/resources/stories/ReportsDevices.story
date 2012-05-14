@@ -26,16 +26,22 @@ And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
 Scenario: TC1514: Reports - Devices - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
+Given this step is pending
 
 Scenario: TC1516: Reports - Devices - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
+Given this step is pending
 
 Scenario: TC1517: Reports - Devices - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
+Given this step is pending
 
 Scenario: TC1518: Reports - Devices - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
+Given this step is pending
 
 Scenario: TC1519: Reports - Devices - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1520: Reports - Devices - Page Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1527: Reports - Devices - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
@@ -140,6 +146,7 @@ And I check the checkbox of the fifth entry
 And I validate the checkbox of the fifth entry is checked
 
 Scenario: TC1533: Reports - Devices - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1534: Reports - Devices - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
@@ -162,6 +169,7 @@ And I validate the SortByDevicePhone link is present
 And I validate the HeaderStatus text is present
 
 Scenario: TC1535: Reports - Devices - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1536: Reports - Devices - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
@@ -211,6 +219,7 @@ And I click the Devices link
 And I validate the SortByDeviceID link is present
 
 Scenario: TC5731: Reports - Devices - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1539: Reports - Devices - Edit Columns - UI
 Given I am logged in as a "Admin" user

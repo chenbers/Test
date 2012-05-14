@@ -9,17 +9,17 @@ Narrative:
 Scenario: TC5627: HOS - Fuel Stops - Add Fuel Stop: generate error messages for required fields
 Given I am logged in as a "Admin" user
 When I click the HOS link
-And I click the Fuel Stops link
+And I click the FuelStops link
 And I type a Valid Vehicle Name into the Vehicle textfield
 And I click the Add button
 And I click the Save button
 Then I validate the text "2 error(s) occurred. Please verify all the data entered is correct." is in the errorMaster text
-And I validate the text "Vehicle fuel is required." is in the errorVehicleFuel text
+And I validate the text "VehicleFuel is required." is in the errorVehicleFuel text
 And I validate the text "Driver is required" is in the errorDriver text
 And I click the Cancel button
 And I click the Add button
 And I select a date in the future
-And I type "123" into the Vehicle Fuel textfield
+And I type "123" into the VehicleFuel textfield
 And I select a valid driver from the Driver drop down
 And I click the Save button
 And I validate the text "1 error(s) occurred. Please verify all the data entered is correct." is in the errorMaster text
@@ -29,7 +29,7 @@ And I click the Cancel button
 Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop
 Given I am logged in as a "Admin" user
 When I click the HOS link
-And I click the Fuel Stops link
+And I click the FuelStops link
 And I type a Valid Vehicle Name into the Vehicle textfield
 And I click the Add button
 And I validate the valueVehicle text is present
@@ -45,7 +45,7 @@ Then I validate the Trailer textfield is ""
 And I validate the VehicleFuel textfield is ""
 And I validate the TrailerFuel textfield is ""
 And I validate the Driver drop down is ""
-And I click on the Reports tab
+And I click on the Reports link
 When I click the HOS link
 And I click the Fuel Stops link
 And I type a Valid Vehicle Name into the Vehicle textfield
@@ -71,7 +71,7 @@ Then I validate the Trailer textfield is "123"
 And I validate the VehicleFuel textfield is "123"
 And I validate the TrailerFuel textfield is "123"
 And I validate the Driver drop down is CurrentDriver
-And I click on the Reports tab
+And I click on the Reports link
 And I click the HOS link
 And I click the Fuel Stops link
 And I type a Valid Vehicle Name into the Vehicle textfield
@@ -120,7 +120,7 @@ And I type "789" into the TrailerFuel textfield
 And I select a new valid driver from the Driver drop down
 And I click the Save button
 Then I validate the Fuel Stop table is SavedTable
-And I click on the Reports tab
+And I click on the Reports link
 And I click the HOS link
 And I click the Fuel Stops link
 And I type CurrentVehicle into the Vehicle textfield
@@ -139,7 +139,7 @@ And I click the Delete button
 And the FuelStops popup opens
 And I click the Cancel button
 And the FuelStops popup closes
-And I click on the Reports tab
+And I click on the Reports link
 And I click the HOS link
 And I click the Fuel Stops link
 And I type CurrentVehicle into the Vehicle textfield
@@ -159,7 +159,7 @@ And I click the Delete button
 And the FuelStops popup opens
 And I click the Delete button
 And the FuelStops popup closes
-And I click on the Reports tab
+And I click on the Reports link
 And I click the HOS link
 And I click the Fuel Stops link
 And I type CurrentVehicle into the Vehicle textfield
@@ -222,45 +222,45 @@ And I type a valid Vehicle Name "HOS/IFTA" into the Vehicle textfield
 And I click the Refresh button
 And I click the Add button
 And I type "123ABC" into the Trailer textfield
-And I type "abcdefg" into the Vehicle Fuel textfield
-And I type "abcdefg" into the Trailer Fuel textfield
+And I type "abcdefg" into the VehicleFuel textfield
+And I type "abcdefg" into the TrailerFuel textfield
 And I select a valid driver from the Driver drop down
 And I click the Save button
 Then I validate the text "3 error(s) occurred. Please verify all the data entered is correct." is in the errorMaster text
-And I validate the text "Vehicle or Trailer fuel required." is in the errorBothVehicleAndTrailerFuel text
+And I validate the text "Vehicle or TrailerFuel required." is in the errorBothVehicleAndTrailerFuel text
 And I validate the text "Must be a number greater than zero" is in the errorVehicleFuel text
 And I validate the text "Must be a number greater than zero" is in the errorTrailerFuel text
-And I type "&$#!" into the Vehicle Fuel textfield
-And I type "&$#!" into the Trailer Fuel textfield
+And I type "&$#!" into the VehicleFuel textfield
+And I type "&$#!" into the TrailerFuel textfield
 And I click the Save button
 And I validate the text "3 error(s) occurred. Please verify all the data entered is correct." is in the errorMaster text
-And I validate the text "Vehicle or Trailer fuel required." is in the errorBothVehicleAndTrailerFuel text
+And I validate the text "Vehicle or TrailerFuel required." is in the errorBothVehicleAndTrailerFuel text
 And I validate the text "Must be a number greater than zero" is in the errorVehicleFuel text
 And I validate the text "Must be a number greater than zero" is in the errorTrailerFuel text
-And I type "-1" into the Vehicle Fuel textfield
-And I type "-1" into the Trailer Fuel textfield
+And I type "-1" into the VehicleFuel textfield
+And I type "-1" into the TrailerFuel textfield
 And I click the Save button
 And I validate the text "3 error(s) occurred. Please verify all the data entered is correct." is in the errorMaster text
-And I validate the text "Vehicle or Trailer fuel required." is in the errorBothVehicleAndTrailerFuel text
+And I validate the text "Vehicle or TrailerFuel required." is in the errorBothVehicleAndTrailerFuel text
 And I validate the text "Must be a number greater than zero" is in the errorVehicleFuel text
 And I validate the text "Must be a number greater than zero" is in the errorTrailerFuel text
-And I type "-1" into the Vehicle Fuel textfield
-And I type "-1" into the Trailer Fuel textfield
+And I type "-1" into the VehicleFuel textfield
+And I type "-1" into the TrailerFuel textfield
 And I click the Save button
 And I validate the text "3 error(s) occurred. Please verify all the data entered is correct." is in the errorMaster text
-And I validate the text "Vehicle or Trailer fuel required." is in the errorBothVehicleAndTrailerFuel text
+And I validate the text "Vehicle or TrailerFuel required." is in the errorBothVehicleAndTrailerFuel text
 And I validate the text "Must be a number greater than zero" is in the errorVehicleFuel text
 And I validate the text "Must be a number greater than zero" is in the errorTrailerFuel text
-And I type "55.55" into the Vehicle Fuel textfield
-And I type "55.55" into the Trailer Fuel textfield
+And I type "55.55" into the VehicleFuel textfield
+And I type "55.55" into the TrailerFuel textfield
 And I click the Save button
 And I validate I am on the Fuel Stops page
 And I validate the ValueVehicleFuel text is "55.55 Gallons"
 And I validate the ValueTrailerFuel text is "55.55 Gallons"
 And I click the Add button
 And I type "456ABC" into the Trailer textfield
-And I type "5" into the Vehicle Fuel textfield
-And I type "5" into the Trailer Fuel textfield
+And I type "5" into the VehicleFuel textfield
+And I type "5" into the TrailerFuel textfield
 And I select a valid driver from the Driver drop down
 And I click the Save button
 And I validate the ValueVehicleFuel text is "5 Gallons"
@@ -275,16 +275,16 @@ And I type a valid Vehicle Name "HOS/IFTA" into the Vehicle textfield
 And I click the Refresh button
 And I click the Add button
 And I type "789ABC" into the Trailer textfield
-And I type "55.55" into the Vehicle Fuel textfield
-And I type "55.55" into the Trailer Fuel textfield
+And I type "55.55" into the VehicleFuel textfield
+And I type "55.55" into the TrailerFuel textfield
 And I select a valid driver from the Driver drop down
 And I click the Save button
 And I validate the ValueVehicleFuel text is "55.55 Liters"
 And I validate the ValueTrailerFuel text is "55.55 Liters"
 And I click the Add button
 And I type "123DEF" into the Trailer textfield
-And I type "5" into the Vehicle Fuel textfield
-And I type "5" into the Trailer Fuel textfield
+And I type "5" into the VehicleFuel textfield
+And I type "5" into the TrailerFuel textfield
 And I select a valid driver from the Driver drop down
 And I click the Save button
 And I validate the ValueVehicleFuel text is "5 Liters"
@@ -303,8 +303,8 @@ And I type a valid Vehicle Name "HOS/IFTA" into the Vehicle textfield
 And I click the Refresh button
 And I click the Add button
 And I type "123ABC" into the Trailer textfield
-And I type "6" into the Vehicle Fuel textfield
-And I type "6" into the Trailer Fuel textfield
+And I type "6" into the VehicleFuel textfield
+And I type "6" into the TrailerFuel textfield
 And I select a valid driver from the Driver drop down
 And I click the Save button
 And I click the first Edit link

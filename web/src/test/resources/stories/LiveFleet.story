@@ -32,8 +32,10 @@ And I click log in
 Then I validate I am on the Live Fleet page
 
 Scenario: TC1230: Live Fleet - Dispatch Table Properties NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS
+Given this step is pending
 
 Scenario: TC1231: Live Fleet - Display NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS
+Given this step is pending
 
 Scenario: TC1232: Live Fleet - Driver Link
 Given I am logged in as a "Admin" user
@@ -45,10 +47,13 @@ Then I validate I am on the Driver Performance page
 And I validate the Driver Performance Name text is SavedEntry 
 
 Scenario: TC1233: Live Fleet - Find Address NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS
+Given this step is pending
 
 Scenario: TC1234: Live Fleet - Hover Help REQUIRES MAP INTERACTION
+Given this step is pending
 
 Scenario: TC1235: Live Fleet - Map Navigation REQUIRES MAP INTERACTION
+Given this step is pending
 
 Scenario: TC1236: Live Fleet - Team Link
 Given I am logged in as a "Admin" user
@@ -103,4 +108,4 @@ Then I validate I am on the Vehicle Performance page
 And I validate the Vehicle Performance Name text is SavedEntry 
 
 Scenario: TC5740: Live Fleet - Refresh NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS
-
+Given this step is pending

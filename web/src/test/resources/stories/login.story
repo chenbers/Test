@@ -13,6 +13,7 @@ As varying types of users
 I want to see valid and invalid logins
 
 Scenario: TC1240: Log In - Access Blocked Error CAN'T IMPLEMENT YET
+Given this step is pending
 
 Scenario: TC1241: Log In - Blank User Name and Password Error
 Given I am on the login page
@@ -78,6 +79,7 @@ And I should remain on the Login Page
 And the name and password fields are blank
 
 Scenario: TC1249: Log In - Tabbing Order CAN'T IMPLEMENT YET
+Given this step is pending
 
 Scenario: TC1250 - Log In - UI
 Given I am on the login page 

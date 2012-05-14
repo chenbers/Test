@@ -26,6 +26,7 @@ And I validate the Search textfield is ""
 And I validate the Vehicle Report table is not ""
 
 Scenario: TC1615: Reports - Vehicles - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
+Given this step is pending
 
 Scenario: TC1617: Reports - Vehicles - Driver Link
 Given I am logged in as a "Admin" user
@@ -47,10 +48,13 @@ Then I validate the DrivingStyleOverall text is SavedStyle
 And I validate the Vehicle Performance text is SavedVehicle
 
 Scenario: TC1621: Reports - Vehicles - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
+Given this step is pending
 
 Scenario: TC1622: Reports - Vehicles - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
+Given this step is pending
 
 Scenario: TC1623: Reports - Vehicles - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
+Given this step is pending
 
 Scenario: TC1624: Reports - Vehicles - Group Link
 Given I am logged in as a "Admin" user
@@ -61,6 +65,7 @@ And I click the first entry in the SortByGroup column
 Then I validate the Group Performance text is SavedEntry
 
 Scenario: TC1626: Reports - Vehicles - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1627: Reports - Vehicles - Overall Score Link
 Given I am logged in as a "Admin" user
@@ -74,8 +79,10 @@ Then I validate the DrivingStyleOverall text is SavedOverall
 And I validate the Vehicle Performance text is SavedVehicle
 
 Scenario: TC1629: Reports - Vehicles - Page Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1634: Reports - Vehicles - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
+Given this step is pending
 
 Scenario: TC1637: Reports - Vehicles - Speed Score Link
 Given I am logged in as a "Admin" user
@@ -243,6 +250,7 @@ And I check the checkbox of the ninth entry
 And I validate the checkbox of the ninth entry is checked
 
 Scenario: TC1647: Reports - Vehicles - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1648: Reports - Vehicles - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
@@ -269,6 +277,7 @@ And I validate the SortBySpeed link is present
 And I validate the SortByStyle link is present
 
 Scenario: Reports - Vehicles - Edit Columns - Default Command Button DOES NOT EXIST, NEEDS TO BE ADDED TO RALLY
+Given this step is pending
 
 Scenario: TC1650: Reports - Vehicles - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
@@ -318,6 +327,7 @@ And I click the Vehicles link
 And I validate the SortByGroup link is present
 
 Scenario: Reports - Vehicles - Edit Columns - Tabbing Order DOES NOT EXIST, NEEDS TO BE ADDED TO RALLY
+Given this step is pending
 
 Scenario: TC1653: Reports - Vehicles - Edit Columns - UI
 Given I am logged in as a "Admin" user

@@ -26,6 +26,7 @@ And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
 Scenario: TC1369: Notifications - Diagnostics - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
+Given this step is pending
 
 Scenario: TC1371: Notifications - Diagnostics - Driver Link
 Given I am logged in as a "Admin" user
@@ -40,18 +41,25 @@ And I click the first entry in the SortByDriver column
 Then I validate the Driver Performance text is SavedEntry
 
 Scenario: TC1373: Notifications - Diagnostics - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
+Given this step is pending
 
 Scenario: TC1374: Notifications - Diagnostics - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
+Given this step is pending
 
 Scenario: TC1375: Notifications - Diagnostics - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
+Given this step is pending
 
 Scenario: TC1376: Notifications - Diagnostics - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1377: Notifications - Diagnostics - Location Map Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1378: Notifications - Diagnostics - Refresh CANNOT BE IMPLEMENTED YET DUE TO EVENT GENERATION
+Given this step is pending
 
 Scenario: TC1379: Notifications - Diagnostics - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
+Given this step is pending
 
 Scenario: TC1381: Notifications - Diagnostics - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
@@ -176,6 +184,7 @@ And I check the checkbox of the sixth entry
 And I validate the checkbox of the sixth entry is checked
 
 Scenario: TC1389: Notifications - Diagnostics - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1390: Notifications - Diagnostics - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
@@ -199,6 +208,7 @@ And I validate the HeaderCategory text is present
 And I validate the HeaderDetail text is present
 
 Scenario: TC1391: Notifications - Diagnostics - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1392: Notifications - Diagnostics - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
@@ -248,6 +258,7 @@ And I click the Diagnostics link
 And I validate the SortByDateTime link is present
 
 Scenario: TC1394: Notifications - Diagnostics - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1395: Notifications - Diagnostics - Edit Columns - UI
 Given I am logged in as a "Admin" user
@@ -271,8 +282,10 @@ And I validate the Save button is present
 And I validate the Cancel button is present
 
 Scenario: TC1397: Notifications - Diagnostics - Exclude Link - Idling Event NEED HELP TO IMPLEMENT
+Given this step is pending
 
 Scenario: TC1398: Notifications - Diagnostics - Exclude Link -Tampering Event NEED HELP TO IMPLEMENT
+Given this step is pending
 
 Scenario: TC1399: Notifications - Diagnostics - Exclude Link - UI
 Given I am logged in as a "Admin" user
@@ -291,6 +304,7 @@ And I validate the Yes button is present
 And I validate the No button is present
 
 Scenario: TC5737: Notifications - Diagnostics - Include Link NEED HELP WITH THIS ONE, STEPS IN RALLY DON'T MATCH PORTAL
+Given this step is pending
 
 Scenario: TC5742: Notifications - Diagnostics - Time Frame
 Given I am logged in as a "Admin" user

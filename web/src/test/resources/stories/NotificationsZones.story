@@ -26,6 +26,7 @@ And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
 Scenario: TC5711: Notifications - Zones - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
+Given this step is pending
 
 Scenario: TC5712: Notifications - Zones - Driver Link
 Given I am logged in as a "Admin" user
@@ -40,18 +41,25 @@ And I click the first entry in the SortByDriver column
 Then I validate the Driver Performance text is SavedEntry
 
 Scenario: TC5713: Notifications - Zones - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
+Given this step is pending
 
 Scenario: TC5714: Notifications - Zones - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
+Given this step is pending
 
 Scenario: TC5715: Notifications - Zones - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
+Given this step is pending
 
 Scenario: TC5716: Notifications - Zones - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC5717: Notifications - Zones - Location Map Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC5709: Notifications - Zones - Refresh CANNOT BE IMPLEMENTED YET DUE TO EVENT GENERATION
+Given this step is pending
 
 Scenario: TC5718: Notifications - Zones - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
+Given this step is pending
 
 Scenario: TC5719: Notifications - Zones - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
@@ -176,6 +184,7 @@ And I check the checkbox of the sixth entry
 And I validate the checkbox of the sixth entry is checked
 
 Scenario: TC5726: Notifications - Zones - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC5727: Notifications - Zones - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
@@ -199,6 +208,7 @@ And I validate the HeaderCategory text is present
 And I validate the HeaderDetail text is present
 
 Scenario: TC5728: Notifications - Zones - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC5729: Notifications - Zones - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
@@ -248,6 +258,7 @@ And I click the Zones link
 And I validate the SortByDateTime link is present
 
 Scenario: TC5731: Notifications - Zones - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC5732: Notifications - Zones - Edit Columns - UI
 Given I am logged in as a "Admin" user

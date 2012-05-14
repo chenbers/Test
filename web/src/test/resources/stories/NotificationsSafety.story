@@ -26,6 +26,7 @@ And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
 Scenario: TC1476: Notifications - Safety - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
+Given this step is pending
 
 Scenario: TC1437: Notifications - Safety - Driver Link
 Given I am logged in as a "Admin" user
@@ -40,18 +41,25 @@ And I click the first entry in the SortByDriver column
 Then I validate the Driver Performance text is SavedEntry
 
 Scenario: TC1478: Notifications - Safety - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
+Given this step is pending
 
 Scenario: TC1479: Notifications - Safety - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
+Given this step is pending
 
 Scenario: TC1480: Notifications - Safety - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
+Given this step is pending
 
 Scenario: TC1481: Notifications - Safety - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1482: Notifications - Safety - Location Map Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1483: Notifications - Safety - Refresh CANNOT BE IMPLEMENTED YET DUE TO EVENT GENERATION
+Given this step is pending
 
 Scenario: TC1484: Notifications - Safety - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
+Given this step is pending
 
 Scenario: TC1486: Notifications - Safety - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
@@ -176,6 +184,7 @@ And I check the checkbox of the sixth entry
 And I validate the checkbox of the sixth entry is checked
 
 Scenario: TC1494: Notifications - Safety - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1495: Notifications - Safety - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user

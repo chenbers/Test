@@ -26,6 +26,7 @@ And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
 Scenario: TC1435: Notifications - Red Flags - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
+Given this step is pending
 
 Scenario: TC1437: Notifications - Red Flags - Driver Link
 Given I am logged in as a "Admin" user
@@ -40,22 +41,31 @@ And I click the first entry in the SortByDriver column
 Then I validate the Driver Performance text is SavedEntry
 
 Scenario: TC1439: Notifications - Red Flags - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
+Given this step is pending
 
 Scenario: TC1440: Notifications - Red Flags - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
+Given this step is pending
 
 Scenario: TC1441: Notifications - Red Flags - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
+Given this step is pending
 
 Scenario: TC1442: Notifications - Red Flags - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1443: Notifications - Red Flags - Location Map Driver Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1445: Notifications - Red Flags - Location Map Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1446: Notifications - Red Flags - Page Link CANNOT BE IMPLEMENTED YET DUE TO MAP
+Given this step is pending
 
 Scenario: TC1447: Notifications - Red Flags - Refresh CANNOT BE IMPLEMENTED YET DUE TO EVENT GENERATION
+Given this step is pending
 
 Scenario: TC1448: Notifications - Red Flags - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
+Given this step is pending
 
 Scenario: TC1450: Notifications - Red Flags - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
@@ -183,6 +193,7 @@ And I check the checkbox of the sixth entry
 And I validate the checkbox of the sixth entry is checked
 
 Scenario: TC1458: Notifications - Red Flags - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1459: Notifications - Red Flags - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
@@ -206,6 +217,7 @@ And I validate the HeaderCategory text is present
 And I validate the HeaderDetail text is present
 
 Scenario: TC1460: Notifications - Red Flags - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1461: Notifications - Red Flags - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
@@ -255,6 +267,7 @@ And I click the RedFlags link
 And I validate the SortByDateTime link is present
 
 Scenario: TC1463: Notifications - Red Flags - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1464: Notifications - Red Flags - Edit Columns - UI
 Given I am logged in as a "Admin" user
@@ -294,12 +307,16 @@ Then I validate the text in the first EntryDateTime text is SavedDateTime
 And I validate the text in the first EntryDetail text is SavedDetail
 
 Scenario: TC1466: Notifications - Red Flags - Exclude Link - Crash Event Interaction HAS NOT BEEN IMPLEMENTED YET
+Given this step is pending
 
 Scenario: TC1467: Notifications - Red Flags - Exclude Link  - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1468: Notifications - Red Flags - Exclude Link - Driving Style Event Interaction NEED HELP TO IMPLEMENT
+Given this step is pending
 
 Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
+Given this step is pending
 
 When I click the Notifications link
 Given I am logged in as a "Admin" user
@@ -316,8 +333,10 @@ Then I validate the number of entries in the RegFlags table is TableCount
 And I validate the first link in the Status column is "include"
 
 Scenario: TC1470: Notifications - Red Flags - Exclude Link - Seat Belt Event Interaction NEED HELP TO IMPLEMENT
+Given this step is pending
 
 Scenario: TC1471: Notifications - Red Flags - Exclude Link - Speeding Event Interaction NEED HELP TO IMPLEMENT
+Given this step is pending
 
 Scenario: TC1472: Notifications - Red Flags - Exclude Link - UI
 Given I am logged in as a "Admin" user
