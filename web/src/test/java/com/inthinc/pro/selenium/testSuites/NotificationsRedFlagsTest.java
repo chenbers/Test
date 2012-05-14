@@ -3,10 +3,13 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jbehave.core.annotations.UsingSteps;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
@@ -18,12 +21,25 @@ import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationUsers;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
+import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.steps.LoginSteps;
 
-@Ignore
-public class NotificationsRedFlagsTest extends WebRallyTest {
+@UsingSteps(instances={LoginSteps.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageNotificationsRedFlags.class})
+@StoryPath(path="NotificationsRedFlags.story")
+public class NotificationsRedFlagsTest extends WebStories {
+    
+    @Test
+    public void test(){}
+
+}
+
+//@Ignore
+//public class NotificationsRedFlagsTest extends WebRallyTest {
 
     
 //    private String GROUP = "Test Group WR";
@@ -979,4 +995,4 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
 //          pnrf._popUp().editColumns()._button().save().click();
 //          
 //    }
-}
+//}

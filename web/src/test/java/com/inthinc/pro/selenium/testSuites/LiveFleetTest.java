@@ -1,22 +1,43 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.jbehave.core.annotations.UsingSteps;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationUsers;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
+import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
+import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditFuelStops;
+import com.inthinc.pro.selenium.pageObjects.PageHOSDriverLogs;
+import com.inthinc.pro.selenium.pageObjects.PageHOSEditDriverLogs;
+import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
+import com.inthinc.pro.selenium.steps.LoginSteps;
+
+@UsingSteps(instances={LoginSteps.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageLiveFleet.class})
+@StoryPath(path="LiveFleet.story")
+public class LiveFleetTest extends WebStories {
+    
+    @Test
+    public void test(){}
+
+}
+
 //TODO: Scenario: TC1230: Live Fleet - Dispatch Table Properties NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS
       //Scenario: TC1231: Live Fleet - Display NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS
       //Scenario: TC1233: Live Fleet - Find Address NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS

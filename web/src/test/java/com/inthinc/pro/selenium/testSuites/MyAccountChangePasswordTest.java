@@ -1,18 +1,39 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.jbehave.core.annotations.UsingSteps;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.utils.RandomValues;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
+import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
+import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditFuelStops;
+import com.inthinc.pro.selenium.pageObjects.PageHOSDriverLogs;
+import com.inthinc.pro.selenium.pageObjects.PageHOSEditDriverLogs;
+import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
+import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
+import com.inthinc.pro.selenium.steps.LoginSteps;
 
-public class MyAccountChangePasswordTest extends WebRallyTest {
+//public class MyAccountChangePasswordTest extends WebRallyTest {
+    
+    @UsingSteps(instances={LoginSteps.class})
+    @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageMyAccount.class})
+    @StoryPath(path="MyAccountChangePassword.story")
+    public class MyAccountChangePasswordTest extends WebStories {
+        
+        @Test
+        public void test(){}
 
+    }
+    
 //    private PageMyAccount myAccountPage;
 //    private RandomValues random;
 //    private AutomationUser login;
@@ -419,4 +440,4 @@ public class MyAccountChangePasswordTest extends WebRallyTest {
 //        myAccountPage._link().myAccount().click();
 //    }
 
-}
+//}

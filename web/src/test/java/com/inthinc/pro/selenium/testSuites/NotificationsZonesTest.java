@@ -2,10 +2,13 @@ package com.inthinc.pro.selenium.testSuites;
 
 import java.util.Iterator;
 
+import org.jbehave.core.annotations.UsingSteps;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
+import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
@@ -14,14 +17,25 @@ import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
+import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsZones;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
+import com.inthinc.pro.selenium.steps.LoginSteps;
 
+@UsingSteps(instances={LoginSteps.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageNotificationsZones.class})
+@StoryPath(path="NotificationsZones.story")
+public class NotificationsZonesTest extends WebStories {
+    
+    @Test
+    public void test(){}
 
+}
 
 //@Ignore
 //public class NotificationsZonesTest extends WebRallyTest {
