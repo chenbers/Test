@@ -11,7 +11,7 @@ Narrative:
 Scenario: TC1434: Notifications - Red Flags - Bookmark Entry 
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I type "" into the Search textfield
 And I click the Search button
 And I bookmark the page
@@ -21,86 +21,86 @@ And I am on the login page
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-Then I validate I am on the RedFlags page
+Then I validate I am on the Red Flags page
 And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
 Scenario: TC1437: Notifications - Red Flags - Driver Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
 And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I click the SortByDriver link
-And I save the first entry in the SortByDriver column as SavedEntry
-And I click the first entry in the SortByDriver column
+And I click the Sort By Driver link
+And I save the first entry in the Sort By Driver column as SavedEntry
+And I click the first entry in the Sort By Driver column
 Then I validate the Driver Performance text is SavedEntry
 
 Scenario: TC1450: Notifications - Red Flags - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
+And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I click the SortByDateTime link
-And I click the sortByDriver link
-And I click the sortByDriver link
-And I click the sortByGroup link
-And I click the sortByGroup link
-And I click the sortByVehicle link
-And I click the sortByVehicle link
+And I click the Sort By Date Time link
+And I click the Sort By Driver link
+And I click the Sort By Driver link
+And I click the Sort By Group link
+And I click the Sort By Group link
+And I click the Sort By Vehicle link
+And I click the Sort By Vehicle link
 
 Scenario: TC1451: Notifications - Red Flags - Tools Button
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the Tools button
-Then I validate the EmailReport button is present
-Then I validate the ExportToPDF button is present
-Then I validate the ExportToExcel button is present
+Then I validate the Email Report button is present
+Then I validate the Export To PDF button is present
+Then I validate the Export To Excel button is present
 
 Scenario: TC1452: Notifications - Red Flags - UI
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 Then I validate I am on the Red Flags page
 And I validate the Team dropdown is present
-And I validate the TimeFrame dropdown is present
+And I validate the Time Frame dropdown is present
 And I validate the Refresh button is present
-And I validate the EditColumns link is present
+And I validate the Edit Columns link is present
 And I validate the Tools button is present
 And I validate the Counter text is present
-And I validate the HeaderLevel text is present
-And I validate the HeaderAlertDetails text is present
-And I validate the SortByDateTime link is present
-And I validate the SortByGroup link is present
-And I validate the SortByDriver link is present
-And I validate the SortByVehicle link is present
-And I validate the HeaderCategory text is present
-And I validate the HeaderDetail text is present
-And I validate the HeaderStatus text is present
+And I validate the Header Level text is present
+And I validate the Header AlertDetails text is present
+And I validate the Sort By Date Time link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Header Category text is present
+And I validate the Header Detail text is present
+And I validate the Header Status text is present
 
 Scenario: TC1453: Notifications - Red Flags - Vehicle Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
+And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I click the SortByVehicle link
-And I click the SortByVehicle link
-And I save the first entry in the SortByVehicle column as SavedEntry
-And I click the first entry in the SortByVehicle column
+And I click the Sort By Vehicle link
+And I click the Sort By Vehicle link
+And I save the first entry in the Sort By Vehicle column as SavedEntry
+And I click the first entry in the Sort By Vehicle column
 Then I validate the Vehicle Performance text is SavedEntry
 
 Scenario: TC1455: Notifications - Red Flags - Edit Columns - Cancel Button (Changes)
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
 And I uncheck the checkbox of the second entry
 And I uncheck the checkbox of the third entry
@@ -108,35 +108,35 @@ And I uncheck the checkbox of the fourth entry
 And I uncheck the checkbox of the fifth entry
 And I uncheck the checkbox of the sixth entry
 And I click the Cancel button
-And the EditColumns popup closes
-Then I validate the SortByDateTime link is present
-And I validate the SortByGroup link is present
-And I validate the SortByDriver link is present
-And I validate the SortByVehicle link is present
-And I validate the HeaderCategory text is present
-And I validate the HeaderDetail text is present
+And the Edit Columns popup closes
+Then I validate the Sort By Date Time link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Header Category text is present
+And I validate the Header Detail text is present
 
 Scenario: TC1456: Notifications - Red Flags - Edit Columns - Cancel Button (No Changes)
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I click the Cancel button
-And the EditColumns popup closes
-Then I validate the SortByDateTime link is present
-And I validate the SortByGroup link is present
-And I validate the SortByDriver link is present
-And I validate the SortByVehicle link is present
-And I validate the HeaderCategory text is present
-And I validate the HeaderDetail text is present
+And the Edit Columns popup closes
+Then I validate the Sort By Date Time link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Header Category text is present
+And I validate the Header Detail text is present
 
 Scenario: TC1457: Notifications - Red Flags - Edit Columns - Check Box Selection via Mouse
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
 Then I validate the checkbox of the first entry is not checked
 And I uncheck the checkbox of the second entry
@@ -165,77 +165,77 @@ And I validate the checkbox of the sixth entry is checked
 Scenario: TC1459: Notifications - Red Flags - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
 And I uncheck the checkbox of the second entry
 And I uncheck the checkbox of the third entry
 And I click the Save button
-And the EditColumns popup closes
+And the Edit Columns popup closes
 And I click the Reports link
 And I click the Notifications link
-And I click the RedFlags link
-Then I validate the SortByDateTime link is not present
-And I validate the SortByGroup link is not present
-And I validate the SortByDriver link is not present
-And I validate the SortByVehicle link is present
-And I validate the HeaderCategory text is present
-And I validate the HeaderDetail text is present
+And I click the Red Flags link
+Then I validate the Sort By Date Time link is not present
+And I validate the Sort By Group link is not present
+And I validate the Sort By Driver link is not present
+And I validate the Sort By Vehicle link is present
+And I validate the Header Category text is present
+And I validate the Header Detail text is present
 
 Scenario: TC1461: Notifications - Red Flags - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
 And I click the Save button
-And the EditColumns popup closes
-Then I validate the SortByDateTime link is not present
-And I click the EditColumns link
-And the EditColumns popup opens
+And the Edit Columns popup closes
+Then I validate the Sort By Date Time link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I validate the checkbox of the first entry is not checked
 And I check the checkbox of the first entry
 And I click the Save button
-And the EditColumns popup closes
-And I validate the SortByDateTime link is present
+And the Edit Columns popup closes
+And I validate the Sort By Date Time link is present
 
 Scenario: TC1462: Notifications - Red Flags - Edit Columns - Subsequent Session Retention
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
 And I click the Save button
-And the EditColumns popup closes
+And the Edit Columns popup closes
 And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
 When I click the Notifications link
-And I click the RedFlags link
-Then I validate the SortByDateTime link is not present
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+Then I validate the Sort By Date Time link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
 And I check the checkbox of the first entry
 And I click the Save button
-And the EditColumns popup closes
+And the Edit Columns popup closes
 And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
 When I click the Notifications link
-And I click the RedFlags link
-And I validate the SortByDateTime link is present
+And I click the Red Flags link
+And I validate the Sort By Date Time link is present
 
 Scenario: TC1464: Notifications - Red Flags - Edit Columns - UI
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
-And I click the EditColumns link
-And the EditColumns popup opens
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
 Then I validate the first checkbox is present
 And I validate the second checkbox is present
 And I validate the third checkbox is present
@@ -254,42 +254,42 @@ And I validate the Cancel button is present
 Scenario: TC1465: Notifications - Red Flags - Exclude Link - Cancel Button
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
+And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first EntryDateTime text as SavedDateTime
-And I save the text in the first EntryDetail text as SavedDetail
+And I save the text in the first Entry Date Time text as SavedDateTime
+And I save the text in the first Entry Detail text as SavedDetail
 And I click the first Exclude link in the Status column
 And the ExcludeEvent popup opens
 And I click the Cancel button
-And the ExcludeEvent popup closes
-Then I validate the text in the first EntryDateTime text is SavedDateTime
-And I validate the text in the first EntryDetail text is SavedDetail
+And the Exclude Event popup closes
+Then I validate the text in the first Entry Date Time text is SavedDateTime
+And I validate the text in the first Entry Detail text is SavedDetail
 
 When I click the Notifications link
 Given I am logged in as a "Admin" user
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
+And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I save the number of entries in the RegFlags table as TableCount
+And I save the number of entries in the Red Flags table as TableCount
 And I click the first Exclude link in the Status column
-And the ExcludeEvent popup opens
+And the Exclude Event popup opens
 And I click the Yes button
-And the ExcludeEvent popup closes
-Then I validate the number of entries in the RegFlags table is TableCount
+And the Exclude Event popup closes
+Then I validate the number of entries in the Reg Flags table is TableCount
 And I validate the first link in the Status column is "include"
 
 Scenario: TC1472: Notifications - Red Flags - Exclude Link - UI
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
+And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first EntryDateTime text as SavedDateTime
-And I save the text in the first EntryDetail text as SavedDetail
+And I save the text in the first Entry Date Time text as SavedDateTime
+And I save the text in the first Entry Detail text as SavedDetail
 And I click the first Exclude link in the Status column
 And the ExcludeEvent popup opens
 Then I validate the SavedDateTime text is present
@@ -300,16 +300,18 @@ And I validate the No button is present
 Scenario: TC5739: Notifications - Red Flags - Include Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the TimeFrame dropdown
+And I click "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first EntryDateTime text as SavedDateTime
-And I save the text in the first EntryDetail text as SavedDetail
+And I save the text in the first Entry Date Time text as SavedDateTime
+And I save the text in the first Entry Detail text as SavedDetail
 And I click the first Exclude link in the Status column
-And the ExcludeEvent popup opens
+And the Exclude Event popup opens
+And I validate the text SavedDateTime is present
+And I validate the text SavedDetail is present
 And I click the Yes button
-And the ExcludeEvent popup closes
+And the Exclude Event popup closes
 Then I validate the first link in the Status column is "include"
 And I click the first link in the Status column
 And I validate the first link in the Status column is "exclude"
@@ -317,11 +319,11 @@ And I validate the first link in the Status column is "exclude"
 Scenario: TC5744: Notifications - Red Flags - Time Frame
 Given I am logged in as a "Admin" user
 When I click the Notifications link
-And I click the RedFlags link
+And I click the Red Flags link
 And I click the first entry in the Team dropdown
-And I click "Today" in the TimeFrame dropdown
+And I click "Today" in the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first EntryDateTime text as SavedDateTime
+And I save the text in the first Entry Date Time text as SavedDateTime
 And I click "Yesterday" in the TimeFrame dropdown
 And I click the Refresh button
 Then I validate the SavedDateTime text is not present

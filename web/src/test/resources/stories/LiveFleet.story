@@ -44,8 +44,8 @@ Scenario: TC1236: Live Fleet - Team Link
 Given I am logged in as a "Admin" user
 When I click the Live Fleet link
 And I validate I am on the Live Fleet page
-And I save the first entry in the EntryFleetLegend table as SavedEntry 
-And I click the first entry in the EntryFleetLegend table
+And I save the first entry in the Entry Fleet Legend table as SavedEntry 
+And I click the first entry in the Entry Fleet Legend table
 Then I validate I am on the Team Performance page
 And I validate the Team Name text is SavedEntry 
 
@@ -53,35 +53,35 @@ Scenario: TC1237: Live Fleet - UI
 Given I am logged in as a "Admin" user
 When I click the Live Fleet link
 Then I validate I am on the Live Fleet page
-And I validate the SortByNumber link is present
-And I validate the SortByDriver link is present
-And I validate the SortByVehicle link is present
-And I validate the SortByGroup link is present
-And I validate the HeaderFleetLegend text is present
-And I validate the EntryFleetLegend link is present
-And I validate the FindAddress textfield is present
-And I validate the NumNearestVehicles dropdown is present
+And I validate the Sort By Number link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Sort By Group link is present
+And I validate the Header Fleet Legend text is present
+And I validate the Entry Fleet Legend link is present
+And I validate the Find Address textfield is present
+And I validate the Num Nearest Vehicles dropdown is present
 And I validate the Locate button is present
-And I validate the EntryGroupIconByPosition link is present
-And I validate the ValueMapBubbleVehicleName link is present
+And I validate the Entry Group Icon By Position link is present
+And I validate the Value Map Bubble Vehicle Name link is present
 
 Scenario: TC1238: Live Fleet - Vehicle Image Link
 Given I am logged in as a "Admin" user
 When I click the Live Fleet link
-And I click the first EntryGroupIconByPosition link
+And I click the first Entry Group Icon By Position link
 Then I validate I am on the Live Fleet page
-And I validate the ValueMapBubbleVehicleName link is present
-And I validate the LabelMapBubbleDevice text is present
-And I validate the LabelMapBubbleDriver text is present
-And I validate the LabelMapBubbleLocation text is present
-And I validate the LabelMapBubblePhone1 text is present
-And I validate the LabelMapBubblePhone2 text is present
-And I validate the LabelMapBubbleUpdated text is present
-And I validate the ValueMapBubbleDriver link is present
-And I validate the ValueMapBubbleDevice text is present
-And I validate the ValueMapBubbleUpdated text is present
-And I validate the ValueMapBubbleLocation text is present
-And I validate the ValueMapBubbleDistToAddress text is present
+And I validate the Value Map Bubble Vehicle Name link is present
+And I validate the Label Map Bubble Device text is present
+And I validate the Label Map Bubble Driver text is present
+And I validate the Label Map Bubble Location text is present
+And I validate the Label Map Bubble Phone1 text is present
+And I validate the Label Map Bubble Phone2 text is present
+And I validate the Label Map Bubble Updated text is present
+And I validate the Value Map Bubble Driver link is present
+And I validate the Value Map Bubble Device text is present
+And I validate the Value Map Bubble Updated text is present
+And I validate the Value Map Bubble Location text is present
+And I validate the Value Map Bubble Dist To Address text is present
 
 Scenario: TC1239: Live Fleet - Vehicle Link
 Given I am logged in as a "Admin" user
