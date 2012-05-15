@@ -25,9 +25,6 @@ Then I validate I am on the Drivers page
 And I validate the Search textfield is ""
 And I validate the Driver Report table is not ""
 
-Scenario: TC1541: Reports - Drivers - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
-Given this step is pending
-
 Scenario: TC1543: Reports - Drivers - Driver Link
 Given I am logged in as a "Admin" user
 When I click the Reports link
@@ -47,15 +44,6 @@ And I click the 12Months link
 Then I validate the DrivingStyleOverall text is SavedStyle
 And I validate the Driver Performance text is SavedDriver
 
-Scenario: TC1547: Reports - Drivers - E-mail This Report CANNOT BE IMPLEMENTED YET DUE TO NEEDING EXTERNAL EMAIL PROGRAM
-Given this step is pending
-
-Scenario: TC1548: Reports - Drivers - Export To Excel CANNOT BE IMPLEMENTED YET DUE TO EXCEL
-Given this step is pending
-
-Scenario: TC1549: Reports - Drivers - Export To PDF CANNOT BE IMPLEMENTED YET DUE TO PDF
-Given this step is pending
-
 Scenario: TC1550: Reports - Drivers - Group Link
 Given I am logged in as a "Admin" user
 When I click the Reports link
@@ -63,9 +51,6 @@ And I click the Drivers link
 And I save the first entry in the SortByGroup column as SavedEntry
 And I click the first entry in the SortByGroup column
 Then I validate the Group Performance text is SavedEntry
-
-Scenario: TC1552: Reports - Drivers - Hover Help CANNOT BE IMPLEMENTED YET DUE TO MAP
-Given this step is pending
 
 Scenario: TC1553: Reports - Drivers - Overall Score Link
 Given I am logged in as a "Admin" user
@@ -77,12 +62,6 @@ And I click the first entry in the SortByOverall column
 And I click the 12Months link
 Then I validate the DrivingStyleOverall text is SavedOverall
 And I validate the Driver Performance text is SavedDriver
-
-Scenario: TC1555: Reports - Drivers - Page Link CANNOT BE IMPLEMENTED YET DUE TO MAP
-Given this step is pending
-
-Scenario: TC1560: Reports - Drivers - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
-Given this step is pending
 
 Scenario: TC1562: Reports - Drivers - Seat Belt Score Link
 Given I am logged in as a "Admin" user
@@ -255,9 +234,6 @@ And I validate the checkbox of the eighth entry is checked
 And I check the checkbox of the ninth entry
 And I validate the checkbox of the ninth entry is checked
 
-Scenario: TC1574: Reports - Drivers - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
 Scenario: TC1575: Reports - Drivers - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
 When I click the Reports link
@@ -280,9 +256,6 @@ And I validate the SortByOverall link is present
 And I validate the SortBySpeed link is present
 And I validate the SortByStyle link is present
 And I validate the SortBySeatbelt link is present
-
-Scenario: TC1576: Reports - Drivers - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
 
 Scenario: TC1577: Reports - Drivers - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
@@ -330,9 +303,6 @@ And I click the Login button
 When I click the Reports link
 And I click the Drivers link
 And I validate the SortByDriver link is present
-
-Scenario: TC1579: Reports - Drivers - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
 
 Scenario: TC1580: Reports - Drivers - Edit Columns - UI
 Given I am logged in as a "Admin" user

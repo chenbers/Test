@@ -135,9 +135,6 @@ And I click the Logout link
 And I am logged in as a "Admin" user
 And I validate I am not on the Login page
 
-Scenario: TC1293: My Account - Change Password - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYBOARD PRESS
-Given this step is pending
-
 Scenario: TC1294: My Account - Change Password - Missing Required Field
 Given I am logged in as a "Admin" user
 When I click the MyAccount link
@@ -180,9 +177,6 @@ And I click the Logout link
 And I am logged in as a "Admin" user
 And I validate I am not on the Login page
 
-Scenario: TC1297: My Account - Change Password - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYBOARD PRESS
-Given this step is pending
-
 Scenario: TC1298: My Account - Change Password - UI
 Given I am logged in as a "Admin" user
 When I click the MyAccount link
@@ -198,9 +192,6 @@ And the ChangeMyPassword popup closes
 And I click the Logout link
 And I am logged in as a "Admin" user
 And I validate I am not on the Login page
-
-Scenario: TC1299: My Account - Change Password - Validation THIS TEST IS VERY SIMILAR TO TC1288, DO WE NEED BOTH?
-Given this step is pending
 
 Scenario: TC1301: My Account - Change Password - Validation (Special Characters)
 Given I am logged in as a "Admin" user
