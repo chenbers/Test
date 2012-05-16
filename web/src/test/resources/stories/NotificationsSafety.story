@@ -29,8 +29,8 @@ Scenario: TC1437: Notifications - Safety - Driver Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
 And I click the Safety link
-And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select the first entry in the Team dropdown
+And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the first entry in the Sort By Driver column as SavedEntry
@@ -41,8 +41,8 @@ Scenario: TC1486: Notifications - Safety - Table Properties NEED ASSISTANCE IN I
 Given I am logged in as a "Admin" user
 When I click the Notifications link
 And I click the Safety link
-And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select the first entry in the Team dropdown
+And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Date Time link
 And I click the Sort By Driver link
@@ -84,8 +84,8 @@ Scenario: TC1489: Notifications - Safety - Vehicle Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
 And I click the Safety link
-And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select the first entry in the Team dropdown
+And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the first entry in the Sort By Vehicle column as SavedEntry
