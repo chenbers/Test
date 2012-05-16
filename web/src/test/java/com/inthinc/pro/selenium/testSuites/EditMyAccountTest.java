@@ -21,7 +21,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageMyAccount.class, PageExecutiveDashboard.class, 
         PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageNotificationsSafety.class })
-@StoryPath(path="HOSFuelStops.story")
+@StoryPath(path="EditMyAccount.story")
 public class EditMyAccountTest extends WebStories {
     
     @Test
