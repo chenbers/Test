@@ -195,7 +195,7 @@ public class AutoStoryRunner extends StoryRunner {
         try {
             runCancellable(context, story, storyParameters);
         } catch (Throwable e) {
-            Log.debug(e);
+            Log.info(e);
             if (cancelledStories.containsKey(story)) {
                 reporter.get().storyCancelled(story, cancelledStories.get(story));
                 reporter.get().afterStory(context.givenStory);

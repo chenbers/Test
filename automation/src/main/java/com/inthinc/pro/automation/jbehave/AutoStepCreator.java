@@ -20,6 +20,7 @@ import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.ParameterControls;
 import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.SilentStepMonitor;
+import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCreator;
 import org.jbehave.core.steps.StepMonitor;
 import org.jbehave.core.steps.StepResult;
@@ -81,6 +82,38 @@ public class AutoStepCreator extends StepCreator {
         @Override
         public StepPattern pattern() {
             return new StepPattern(StepType.GIVEN, "","");
+        }
+        
+    }
+    
+    public NullPointerStep createNullPointerStep(String stepAsString, String message){
+        return new NullPointerStep(stepAsString, new NullPointerException(message));
+    }
+    
+
+    public Step createNullPointerStep(String stepAsString, NullPointerException e) {
+        return new NullPointerStep(stepAsString, e);
+    }
+
+    
+    public class NullPointerStep extends AbstractStep {
+        
+        private final String stepAsString;
+        private final NullPointerException e;
+        
+        public NullPointerStep(String stepAsString, NullPointerException e){
+            this.stepAsString = stepAsString;
+            this.e = e;
+        }
+
+        @Override
+        public StepResult perform(UUIDExceptionWrapper storyFailureIfItHappened) {
+            return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, e));
+        }
+
+        @Override
+        public StepResult doNotPerform(UUIDExceptionWrapper storyFailureIfItHappened) {
+            return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, e));
         }
         
     }

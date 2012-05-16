@@ -55,7 +55,7 @@ public class AutoActionFinder {
         }
         
         
-        throw new NoSuchMethodError("Cannot find an action for " + step.stepAsString());
+        throw new NoSuchMethodException("Cannot find an action for " + step.stepAsString());
     }
 
 }

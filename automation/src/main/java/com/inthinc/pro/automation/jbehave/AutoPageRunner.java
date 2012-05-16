@@ -105,31 +105,34 @@ public class AutoPageRunner {
 
 
     public Step tryStep(PendingStep step) {
-         Step returnStep = step;
-        
-        StepType stepType = StepType.valueOf(keywords.startingWord(step.stepAsString()).toUpperCase());
-        if (stepType.equals(StepType.AND)){
-            stepType = StepType.valueOf(keywords.startingWord(step.previousNonAndStepAsString()).toUpperCase());
-        } 
-        
-        workingOnStep = keywords.stepWithoutStartingWord(step.stepAsString(), stepType);
-        if (popUpStep()){
-            return stepCreator.createPopupStep(workingOnStep);
-        }
-        
-        if (!pageSpecificStep(step.stepAsString())){ 
-            setCurrentPage();    
-        }
+        Step returnStep = step;
         try {
-            if (stepType == StepType.GIVEN){
-                returnStep = given(step);
-            } else if (stepType == StepType.WHEN) { 
-                returnStep = when(step);
-            } else {
-                returnStep = then(step);
+            StepType stepType = StepType.valueOf(keywords.startingWord(step.stepAsString()).toUpperCase());
+            if (stepType.equals(StepType.AND)){
+                stepType = StepType.valueOf(keywords.startingWord(step.previousNonAndStepAsString()).toUpperCase());
+            } 
+            
+            workingOnStep = keywords.stepWithoutStartingWord(step.stepAsString(), stepType);
+            if (popUpStep()){
+                return stepCreator.createPopupStep(workingOnStep);
             }
-        } catch (StepException e){
-            Log.debug("Unable to finish step: %s\nError is: %s", workingOnStep, e.getError());
+            
+            if (!pageSpecificStep(step.stepAsString())){ 
+                setCurrentPage();    
+            }
+            try {
+                if (stepType == StepType.GIVEN){
+                    returnStep = given(step);
+                } else if (stepType == StepType.WHEN) { 
+                    returnStep = when(step);
+                } else {
+                    returnStep = then(step);
+                }
+            } catch (StepException e){
+                Log.debug("Unable to finish step: %s\nError is: %s", workingOnStep, e.getError());
+            }
+        } catch (NullPointerException e){
+            return stepCreator.createNullPointerStep(step.stepAsString(), e);
         }
         
         return returnStep;
@@ -203,7 +206,7 @@ public class AutoPageRunner {
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
         } catch (NoSuchMethodException e) {
-            Log.info(e);
+            Log.debug(e);
         } 
         
         return step;
@@ -287,7 +290,7 @@ public class AutoPageRunner {
                 return tryElementName(elementClass, methods.get(elementName));
             }
             
-            throw new NoSuchMethodError("Could not find Element for " + workingOnStep);
+            throw new NoSuchMethodException("Could not find Element for " + workingOnStep);
     
         } catch (Exception e) {
             String currentError = String.format("Working on getting the elementName %s, with pageObject %s");    
@@ -320,7 +323,7 @@ public class AutoPageRunner {
                     }                
                 }
                 if (passParameters[i] == null){
-                    throw new NoSuchMethodError("We are missing parameters for " 
+                    throw new NoSuchMethodException("We are missing parameters for " 
                                 + method.getName());
                 }
             }

@@ -8,7 +8,6 @@ import java.util.List;
 import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.configuration.AnnotationBuilder;
 import org.jbehave.core.configuration.Configuration;
-import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.io.LoadFromRelativeFile;
 import org.jbehave.core.io.StoryFinder;
@@ -28,7 +27,7 @@ public class AutoAnnotationBuilder extends AnnotationBuilder {
     private final List<AbstractPage> pageList;
     private final Test test;
     private final String uri;
-    private final Configuration config;
+    private Configuration config;
     private Embedder embedder;
     private AutoStepsFactory stepsFactory;
 
@@ -36,8 +35,8 @@ public class AutoAnnotationBuilder extends AnnotationBuilder {
         super(testClass);
         this.test = test;
         this.uri = uri;
-        this.config = buildConfiguration();
         this.pageList = getPageObjects(testClass);
+        buildConfiguration();
     }
     
     
@@ -72,11 +71,11 @@ public class AutoAnnotationBuilder extends AnnotationBuilder {
     @Override
     public Configuration buildConfiguration() {
         if (config == null){
-            Configuration config;
             try {
-                config = new MostUsefulConfiguration()
+                config = new AutoConfiguration()
                     // where to find the stories
                     .useStoryLoader(new LoadFromRelativeFile(new File(uri).toURI().toURL()))
+//                    .useStoryParser(new AutoStoryParser())
                     // CONSOLE and TXT reporting
                     .useStoryReporterBuilder(
                             new AutoStoryReporterBuilder(test)
@@ -85,7 +84,6 @@ public class AutoAnnotationBuilder extends AnnotationBuilder {
     //                .useStepMonitor(new PrintStreamStepMonitor()) // default is SilentStepMonitor()
                     //.doDryRun(true)//helpful when generating new steps' methods
                     ;
-                return config;
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Unable to load file as a url: " + uri);
             }

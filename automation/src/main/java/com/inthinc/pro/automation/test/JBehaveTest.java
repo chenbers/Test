@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
-import org.jbehave.core.configuration.AnnotationBuilder;
 import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.io.StoryNameResolver;
 import org.jbehave.core.junit.AnnotatedPathRunner;
@@ -16,7 +15,8 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
 
 import com.inthinc.pro.automation.jbehave.AutoAnnotationBuilder;
-import com.inthinc.pro.automation.jbehave.AutoStoryReporter;
+import com.inthinc.pro.automation.jbehave.AutoConfiguration;
+import com.inthinc.pro.automation.logging.Log;
 
 /**
  * This class provides the abstract methods that<br />
@@ -30,7 +30,7 @@ import com.inthinc.pro.automation.jbehave.AutoStoryReporter;
  */
 public abstract class JBehaveTest extends AnnotatedPathRunner {
 
-    private final AnnotationBuilder annotationBuilder;
+    private final AutoAnnotationBuilder annotationBuilder;
     private final StoryNameResolver nameResolver;
     private final List<String> paths;
     private Description storyDescription;
@@ -43,7 +43,7 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
     }
 
     @Override
-    public AnnotationBuilder annotationBuilder() {
+    public AutoAnnotationBuilder annotationBuilder() {
         if (annotationBuilder != null) {
             return annotationBuilder;
         }
@@ -52,11 +52,16 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
 
     @Override
     public void run(RunNotifier notifier) {
-        AutoStoryReporter.registerRunNotifier(notifier);
         notifier.fireTestStarted(getDescription());
         Embedder embedder = annotationBuilder.buildEmbedder();
-        embedder.runStoriesAsPaths(paths);
-        
+        if (embedder.configuration() instanceof AutoConfiguration){
+            ((AutoConfiguration) embedder.configuration()).useJunitNotifier(notifier).setJunitStoryDescription(storyDescription);
+        }
+        try {
+            embedder.runStoriesAsPaths(paths);
+        } catch (Throwable e){
+            Log.debug(e);
+        }
     }
 
     /**
@@ -90,7 +95,7 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
         storyDescription = Description.createSuiteDescription(testClass());
         for (String path : paths)
             storyDescription.addChild(createDescriptionForPath(path));
-        AutoStoryReporter.registerDescription(storyDescription);
+        ((AutoConfiguration)annotationBuilder().buildEmbedder().configuration()).setJunitStoryDescription(storyDescription);
         return storyDescription;
     }
 
@@ -105,6 +110,9 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
         Story details = annotationBuilder().buildEmbedder().storyManager().storyOfPath(path);
         List<Scenario> scenarios = details.getScenarios();
         for (Scenario scenario : scenarios) {
+            if (scenario.getTitle().equals("")){
+                continue;
+            }
             Description desc = Description.createSuiteDescription(scenario.getTitle());
             createDescriptionForSteps(desc, scenario);
             story.addChild(desc);

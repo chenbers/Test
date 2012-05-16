@@ -7,6 +7,8 @@ import org.jbehave.core.reporters.DelegatingStoryReporter;
 import org.jbehave.core.reporters.NullStoryReporter;
 import org.jbehave.core.reporters.StoryReporter;
 import org.jbehave.core.reporters.StoryReporterBuilder;
+import org.junit.runner.Description;
+import org.junit.runner.notification.RunNotifier;
 
 import com.inthinc.pro.automation.test.Test;
 
@@ -21,6 +23,11 @@ public class AutoStoryReporterBuilder extends StoryReporterBuilder {
     
     @Override
     public StoryReporter build(String storyPath) {
+        return build(storyPath, null, null);
+    }
+
+
+    public StoryReporter build(String storyPath, RunNotifier notifier, Description storyDescription) {
         Map<org.jbehave.core.reporters.Format, StoryReporter> delegates = new HashMap<org.jbehave.core.reporters.Format, StoryReporter>();
         for (org.jbehave.core.reporters.Format format : this.formats()) {
             delegates.put(format, reporterFor(storyPath, format));
@@ -29,7 +36,7 @@ public class AutoStoryReporterBuilder extends StoryReporterBuilder {
         DelegatingStoryReporter delegate = new DelegatingStoryReporter(delegates.values());
         StoryReporter crossReferencing = (this.crossReference() == null ? new NullStoryReporter() : reporterFor(storyPath,
                 this.crossReference()));
-        return new AutoStoryReporter(crossReferencing, delegate, this.multiThreading(), test);
+        return new AutoStoryReporter(crossReferencing, delegate, this.multiThreading(), test, notifier, storyDescription);
     }
     
     
