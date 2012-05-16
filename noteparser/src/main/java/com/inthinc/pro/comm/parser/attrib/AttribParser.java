@@ -4,5 +4,5 @@ import java.util.Map;
 
 
 public interface AttribParser {
-	int parseAttrib(byte[] data, int offset, int code, Map attribMap);
+	int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap);
 }

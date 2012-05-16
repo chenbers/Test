@@ -16,13 +16,13 @@ public class LatLongParser implements AttribParser {
 		return parseAttrib(data, offset, code, attribMap, 3);
 	}
 
-	public int parseAttrib(byte[] data, int offset, int code, Map attribMap, int dataLen) {
+	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap, int dataLen) {
 
 		
 		assert data.length > (offset + 6);
 
-		double latitude = 0.0;
-		double longitude = 0.0;
+		Double latitude = 0.0;
+		Double longitude = 0.0;
 		
 		if (dataLen == 3)
 		{
@@ -70,7 +70,8 @@ public class LatLongParser implements AttribParser {
 //		logger.debug("longitude: " + longitude);
 //		LatLng latLng = new LatLng(latitude, longitude);
 		
-		attribMap.put(String.valueOf(code), String.valueOf(latitude) + "," + String.valueOf(longitude));
+		attribMap.put(Attrib.MAXLATITUDE.getCode(), latitude);
+		attribMap.put(Attrib.MAXLONGITUDE.getCode(), longitude);
 
 		return offset+6;
 	}

@@ -8,20 +8,24 @@ import java.util.Map;
 public enum Attrib {
 	
 	//////HEADER ATTRIBS/////////////
-	NOTETYPE(10, AttribParserType.BYTE),
-	NOTETIME(11, AttribParserType.INTEGER),
+	NOTETYPE(10, AttribParserType.BYTE, "type"),
+	NOTETIME(11, AttribParserType.INTEGER, "time"),
 	NOTEGPSLOCKFLAG(12, AttribParserType.BYTE),
 	NOTELATLONG(13, AttribParserType.LATLONG),
-	NOTESPEED(15, AttribParserType.BYTE),
-	NOTEODOMETER(16, AttribParserType.ODOMETER),
+	NOTESPEED(15, AttribParserType.BYTE, "speed"),
+	NOTEODOMETER(16, AttribParserType.ODOMETER, "odometer"),
 	NOTEDURATION(17, AttribParserType.SHORT),
 	NOTEFLAGS(18, AttribParserType.SHORT),  //Version 3
-	NOTESPEEDLIMIT(19, AttribParserType.BYTE),
-	NOTEMAPREV(20, AttribParserType.BYTE),
+	NOTESPEEDLIMIT(19, AttribParserType.BYTE, "speedlimit"),
+	NOTEMAPREV(20, AttribParserType.BYTE, "maprev"),
 
+	OBDPCT(49, AttribParserType.BYTE),
+	GPSFILTER(166, AttribParserType.SHORT),
 	
 	TYPE_FWDCMD_ID(194, AttribParserType.LONG),
 	TYPE_FWDCMD(195, AttribParserType.INTEGER),
+	
+	MPGODO(224, AttribParserType.INTEGER),
 	
 	/* byte */
 	AVGSPEED(2, AttribParserType.BYTE),
@@ -131,12 +135,12 @@ public enum Attrib {
 	COURSE(140, AttribParserType.SHORT),
 	CPUPERCENTAGE(16388, AttribParserType.SHORT),
 	DATALENGTH(16389, AttribParserType.SHORT),
-	DELTAVX(131, AttribParserType.SHORT),
-	DELTAVY(132, AttribParserType.SHORT),
-	DELTAVZ(133, AttribParserType.SHORT),
+	DELTAVX(131, AttribParserType.SHORT, "DELTAV_X"),
+	DELTAVY(132, AttribParserType.SHORT, "DELTAV_Y"),
+	DELTAVZ(133, AttribParserType.SHORT, "DELTAV_Z"),
 	DIGITALINPUTSTATUS(16390, AttribParserType.SHORT),
 	DIGITALOUTPUTSTATUS(16391, AttribParserType.SHORT),
-	DISTANCE(129, AttribParserType.SHORT),
+	DISTANCE(129, AttribParserType.SHORT, "distance"),
 	DURATION(16392, AttribParserType.SHORT),
 	ERRORCODE(16393, AttribParserType.SHORT),
 	ERRORDETAILS(16394, AttribParserType.SHORT),
@@ -208,7 +212,7 @@ public enum Attrib {
 	DOWNLOADWEEKLYTOTALTRIAXIIFIRMWARE(32785, AttribParserType.INTEGER),
 	DOWNLOADWEEKLYTOTALWITNESSIIFIRMWARE(32786, AttribParserType.INTEGER),
 	DOWNLOADWEEKLYTOTALZONES(32787, AttribParserType.INTEGER),
-	DRIVERID(227, AttribParserType.INTEGER),
+	DRIVERID(227, AttribParserType.INTEGER, "driverid"),
 	EMUNAMEVERIFIED(32789, AttribParserType.INTEGER),
 	ERROR(32790, AttribParserType.INTEGER),
 	ERRORCODECONF(32790, AttribParserType.INTEGER),
@@ -257,20 +261,20 @@ public enum Attrib {
 	COMPANYID(32830, AttribParserType.INTEGER),
 	EVENTCODEINT(32831, AttribParserType.INTEGER),
 
-	DEVICEID(32900, AttribParserType.INTEGER),
-	VEHICLEID(32901, AttribParserType.INTEGER),
+	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
+	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
 	
-	SEATBELTTOPSPEED(8285, AttribParserType.INTEGER),
-	SEATBELTOUTDISTANCE(16437, AttribParserType.INTEGER), //(distance miles x 100)
-	HEADLIGHTOFFDISTANCE(16438, AttribParserType.INTEGER), // (distance miles x 100)
-	NODRIVERDISTANCE(16439, AttribParserType.INTEGER), // (distance miles x 100)
-	NOTRAILERDISTANCE(16440, AttribParserType.INTEGER), // (distance miles x 100)
-	RFOFFDISTANCE(16441, AttribParserType.INTEGER), // (distance miles x 100)
+	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
+	SEATBELTOUTDISTANCE(16437, AttribParserType.SHORT), //(distance miles x 100)
+	HEADLIGHTOFFDISTANCE(16438, AttribParserType.SHORT), // (distance miles x 100)
+	NODRIVERDISTANCE(16439, AttribParserType.SHORT), // (distance miles x 100)
+	NOTRAILERDISTANCE(16440, AttribParserType.SHORT), // (distance miles x 100)
+	RFOFFDISTANCE(16441, AttribParserType.SHORT), // (distance miles x 100)
 	
 	// DOUBLE 
-	MAXLATITUDE(40960, AttribParserType.DOUBLE),
-	MAXLONGITUDE(40961, AttribParserType.DOUBLE),
+	MAXLATITUDE(40960, AttribParserType.DOUBLE, "latitude"),
+	MAXLONGITUDE(40961, AttribParserType.DOUBLE, "longitude"),
 	MINLATITUDE(40962, AttribParserType.DOUBLE),
 	MINLONGITUDE(40963, AttribParserType.DOUBLE),
 	
@@ -325,10 +329,17 @@ public enum Attrib {
 
 	private int code;
 	private AttribParserType attribParserType;
+	private String fieldName = "";
 	
-	private Attrib(int code, AttribParserType attribParserType) {
+	private Attrib(int code, AttribParserType attribParserType, String fieldName) {
 	     this.code = code;
 	     this.attribParserType = attribParserType;
+	     this.fieldName = fieldName;
+	}
+
+	private Attrib(int code, AttribParserType attribParserType) 
+	{
+		this(code, attribParserType, "");
 	}
 	
 	public int getCode() { return code; }

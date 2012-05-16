@@ -6,7 +6,7 @@ import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class ShortsAsStringParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map attribMap) {
+	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
 
 		int length = 0;
 		if (Attrib.get(code).getAttribParserType().equals(AttribParserType.THREE_SHORTS_AS_STRING))
@@ -27,7 +27,7 @@ public class ShortsAsStringParser implements AttribParser {
 		
 		}
 			
-		attribMap.put(String.valueOf(code), value);
+		attribMap.put(code, value);
 
 		return offset+(2*length);
 	}

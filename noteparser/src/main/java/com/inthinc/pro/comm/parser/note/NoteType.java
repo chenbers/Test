@@ -1,6 +1,5 @@
 package com.inthinc.pro.comm.parser.note;
 
-import com.inthinc.noteservice.aggregation.DailyAggUtil;
 import com.inthinc.pro.comm.parser.attrib.Attrib;
 import java.util.EnumSet;
 import java.util.HashMap;

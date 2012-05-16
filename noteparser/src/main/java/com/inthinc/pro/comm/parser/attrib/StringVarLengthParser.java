@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class StringVarLengthParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map attribMap) {
+	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
 
 		int maxLength = 500;
 		AttribParserType parserType = Attrib.get(code).getAttribParserType();
@@ -27,7 +27,7 @@ public class StringVarLengthParser implements AttribParser {
 		
 		assert(data.length > offset + length);
 		
-		attribMap.put(String.valueOf(code), new String(data, offset, length));
+		attribMap.put(code, new String(data, offset, length));
 
 		return offset+(length+1);
 	}

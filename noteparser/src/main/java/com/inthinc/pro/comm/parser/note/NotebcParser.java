@@ -104,6 +104,15 @@ public class NotebcParser implements NoteParser{
 	private AttribParser getAttribParser(int code)
 	{
 		AttribParser attribParser = null;
+
+        if (code <= 127)                     
+        	attribParser = new ByteParser();
+        
+        if (code >= 128 && 191 >= code) 
+        	attribParser = new ShortParser();
+        
+        if (code >= 192 && 254 >= code) 
+        	attribParser = new IntegerParser();
 		
 		if (code >= 8000 && code < 9000)
 			attribParser = new ByteParser();

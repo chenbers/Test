@@ -7,19 +7,20 @@ import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class DeltaVsAsStringParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map attribMap) {
+	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
 
 		int length = 0;
 		
 		assert data.length > (offset + 4);
 
-		double DELTA_V_RESOLUTION = .1;
-		int packedDeltaV = ReadUtil.read(data, offset, 4);
-		double deltaVX = ((packedDeltaV / 1464100)-600)*DELTA_V_RESOLUTION;
+//		double DELTA_V_RESOLUTION = .1;
+		double DELTA_V_RESOLUTION = 1.0;
+		long packedDeltaV = ReadUtil.readLong(data, offset, 4);
+		double deltaVX = ((packedDeltaV / 1464100)-600)*DELTA_V_RESOLUTION * -1;  //waysmart sends reverse deltaX, so need to correct with (* -1)
 		double deltaVY = (((packedDeltaV / 1210) % 1210)-600)*DELTA_V_RESOLUTION;
 		double deltaVZ = ((packedDeltaV % 1210)-600)*DELTA_V_RESOLUTION;
 		
-		DecimalFormat decimalFormat = new DecimalFormat("###.##");
+		DecimalFormat decimalFormat = new DecimalFormat("###.#");
 
 		String deltaVx = decimalFormat.format(deltaVX);
 		String deltaVy = decimalFormat.format(deltaVY);
@@ -27,11 +28,11 @@ public class DeltaVsAsStringParser implements AttribParser {
 		
 		String value = "DeltaVX: " + deltaVx + " DeltaVY: " + deltaVy + " DeltaVZ: " + deltaVz;
 			
-		attribMap.put(String.valueOf(code), value);
+		attribMap.put(code, value);
 		
-		attribMap.put(String.valueOf(Attrib.DELTAVX.getCode()), deltaVx);
-		attribMap.put(String.valueOf(Attrib.DELTAVY.getCode()), deltaVy);
-		attribMap.put(String.valueOf(Attrib.DELTAVZ.getCode()), deltaVz);
+		attribMap.put(Attrib.DELTAVX.getCode(), Integer.parseInt(deltaVx) * 10);
+		attribMap.put(Attrib.DELTAVY.getCode(), Integer.parseInt(deltaVy) * 10);
+		attribMap.put(Attrib.DELTAVZ.getCode(), Integer.parseInt(deltaVz) * 10);
 
 		return offset+4;
 	}

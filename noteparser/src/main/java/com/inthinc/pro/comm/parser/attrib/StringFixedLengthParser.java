@@ -6,7 +6,7 @@ import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class StringFixedLengthParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map attribMap) {
+	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
 
 		int length = 0;
 		AttribParserType parserType = Attrib.get(code).getAttribParserType();
@@ -34,7 +34,7 @@ public class StringFixedLengthParser implements AttribParser {
 			
 		assert(data.length > offset + 2 + length);
 
-		attribMap.put(String.valueOf(code), ReadUtil.createString(data, offset, length));
+		attribMap.put(code, ReadUtil.createString(data, offset, length));
 
 		return offset+length;
 	}
