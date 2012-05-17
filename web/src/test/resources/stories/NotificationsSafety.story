@@ -58,8 +58,8 @@ When I click the Notifications link
 And I click the Safety link
 And I click the Tools button
 Then I validate the Email Report button is present
-Then I validate the Export To PDF button is present
-Then I validate the Export To Excel button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1488: Notifications - Safety - UI
 Given I am logged in as a "Admin" user
@@ -211,7 +211,7 @@ And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-When I click the Notifications link
+And I click the Notifications link
 And I click the Safety link
 Then I validate the Sort By Date Time link is not present
 And I click the Edit Columns link
@@ -223,7 +223,7 @@ And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-When I click the Notifications link
+And I click the Notifications link
 And I click the Safety link
 And I validate the Sort By Date Time link is present
 

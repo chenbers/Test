@@ -110,8 +110,8 @@ When I click the Reports link
 And I click the Drivers link
 And I click the Tools button
 Then I validate the Email Report button is present
-Then I validate the Export To PDF button is present
-Then I validate the Export To Excel button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1568: Reports - Drivers - UI
 Given I am logged in as a "Admin" user
@@ -288,7 +288,7 @@ And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-When I click the Reports link
+And I click the Reports link
 And I click the Drivers link
 Then I validate the Sort By Driver link is not present
 And I click the Edit Columns link
@@ -300,7 +300,7 @@ And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-When I click the Reports link
+And I click the Reports link
 And I click the Drivers link
 And I validate the Sort By Driver link is present
 

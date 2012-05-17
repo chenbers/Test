@@ -6,7 +6,7 @@ Narrative:
 As a customer, I need to be see idling for vehicles even with no driver logged in,
 so that I don't have to rely on drivers logged in to see idling statistics for vehicles.
 On the "What Happened..." page, create a tab for Vehicle Statistics, 
-the same format as the Driver Statistics page but with the Driver and Vehicle columns swapped.
+with the same format as the Driver Statistics page but with the Driver and Vehicle columns swapped.
 
 Scenario: Can access Idling Vehicles page
 Given I am logged in as a user that has access to idling pages

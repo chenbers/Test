@@ -58,8 +58,8 @@ When I click the Notifications link
 And I click the Red Flags link
 And I click the Tools button
 Then I validate the Email Report button is present
-Then I validate the Export To PDF button is present
-Then I validate the Export To Excel button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1452: Notifications - Red Flags - UI
 Given I am logged in as a "Admin" user

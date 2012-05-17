@@ -178,7 +178,7 @@ And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-When I click the Reports link
+And I click the Reports link
 And I click the Devices link
 Then I validate the Sort By Device ID link is not present
 And I click the Edit Columns link
@@ -190,7 +190,7 @@ And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-When I click the Reports link
+And I click the Reports link
 And I click the Devices link
 And I validate the Sort By Device ID link is present
 

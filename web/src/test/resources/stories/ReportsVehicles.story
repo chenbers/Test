@@ -102,8 +102,8 @@ When I click the Reports link
 And I click the Vehicles link
 And I click the Tools button
 Then I validate the Email Report button is present
-Then I validate the Export To PDF button is present
-Then I validate the Export To Excel button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1641: Reports - Vehicles - UI
 Given I am logged in as a "Admin" user
@@ -286,7 +286,7 @@ And I click the Login button
 When I click the Reports link
 And I click the Vehicles link
 Then I validate the Sort By Group link is not present
-And I click the Edit Columns link
+When I click the Edit Columns link
 And the EditColumns popup opens
 And I check the checkbox of the first entry
 And I click the Save button
@@ -295,9 +295,9 @@ And I click the Logout link
 And I type a valid user name into the Username textfield
 And I type a valid password into the Password textfield
 And I click the Login button
-When I click the Reports link
+And I click the Reports link
 And I click the Vehicles link
-And I validate the Sort By Group link is present
+Then I validate the Sort By Group link is present
 
 Scenario: TC1653: Reports - Vehicles - Edit Columns - UI
 Given I am logged in as a "Admin" user
