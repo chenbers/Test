@@ -16,11 +16,11 @@ And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement Type dropdown is "Metric"
 And I click the Team Header link
-And I validate that "Crashes per million kilometers" text exists
+And I verify "Crashes per million kilometers" is on the page
 And I click the Driver Statistics link
 And I validate the Distance Driven column contains "km"
 And I click a driver name link
-And I validate "Crashes per million kilometers" is on the page 
+And I verify "Crashes per million kilometers" is on the page 
 And I validate "Kilometers" appears in the Overall Score chart
 And I validate "Kilometers Per Liter" appears in the Fuel Efficiency chart
 And I click the Speed Maximize button
@@ -47,7 +47,7 @@ And I click the Team Header link
 And I click the Vehicle Statistics link
 And I validate the Distance Driven column contains "km"
 And I click a vehicle name link
-And I validate "Crashes per million kilometers" is on the page 
+And I verify "Crashes per million kilometers" is on the page 
 And I validate "Kilometers" appears in the Overall Score chart
 And I validate "Kilometers Per Liter" appears in the Fuel Efficiency chart
 And I click the Speed Maximize button
@@ -100,7 +100,7 @@ And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement Type is "English"
 And I click the Team Header link
-And I validate that "Crashes per million miles" text exists
+And I verify "Crashes per million miles" is on the page
 And I click the Driver Statistics link
 And I validate the Distance Driven column contains "mi"
 And I click a driver name link
@@ -199,7 +199,7 @@ And I select "English" from the Measurement dropdown
 And I click the Save button
 And I click the My Messages link
 And I click the My Account link
-Then I validate the Measurement Type dropdown is "English"
+And I validate the Measurement Type dropdown is "English"
 And I click the Team Header link
 And I click the Driver Statistics link
 And I click the 365 Days link
@@ -219,7 +219,7 @@ And I type " " into the Phone2 field
 And I type " " into the TextMessage1 field
 And I type " " into the TextMessage2 field
 And I click the Save button
-Then I validate the text "Required" appears above the Email1 field.
+Then I validate the Error Email1 text is "Required"
 
 Scenario: TC1277: My Account - Edit Account - Phone Max Characters Error
 Given I am logged in as a "Admin" user
@@ -228,8 +228,8 @@ And I click the Edit button
 And I type "0000000000000000" into the Phone1 field
 And I type "1111111111111111" into the Phone2 field
 And I click the Save button
-Then I validate the text "Must consist of up to 15 numeric characters" appears above the errorPhone1 field
-And I validate the text "Must consist of up to 15 numeric characters" appears above the errorPhone2 field
+Then I validate the Error Phone1 text is "Must consist of up to 15 numeric characters"
+And I validate the Error Phone2 text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1278: My Account - Edit Account - Phone Missing Character Error
 Given I am logged in as a "Admin" user
@@ -238,8 +238,8 @@ And I click the Edit button
 And I type "00" into the Phone1 field
 And I type "11" into the Phone2 field
 And I click the Save button
-Then I validate the text "Must consist of up to 15 numeric characters" appears above the errorPhone1 field
-And I validate the text "Must consist of up to 15 numeric characters" appears above the errorPhone2 field
+Then I validate the Error Phone1 text is "Must consist of up to 15 numeric characters"
+And I validate the Error Phone2 text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1279: My Account - Edit Account - Phone Special Character Error
 Given I am logged in as a "Admin" user
@@ -248,8 +248,8 @@ And I click the Edit button
 And I type "& ^ $" into the Phone1 field
 And I type "& ^ $" into the Phone2 field
 And I click the Save button
-Then I validate the text "Must consist of up to 15 numeric characters" appears above the errorPhone1 field
-And I validate the text "Must consist of up to 15 numeric characters" appears above the errorPhone2 field
+Then I validate the Error Phone1 text is "Must consist of up to 15 numeric characters"
+And I validate the Error Phone2 text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1282: My Account - Edit Account - Text Message Format Error
 Given I am logged in as a "Admin" user
@@ -258,8 +258,8 @@ And I click the Edit button
 And I type "8015551234 @domain.com" into the TextMessage1 field
 And I type "801555123411111@domain@domain.com" into the TextMessage2 field
 And I click the Save button
-Then I validate the text "Incorrect format (8015551212@tmomail.com)" appears in the errorText1 field
-And I validate the text "Incorrect format (8015551212@tmomail.com)" appears in the errorText2 field
+Then I validate the Error Text1 text is "Incorrect format (8015551212@tmomail.com)"
+And I validate the Error Text2 text is "Incorrect format (8015551212@tmomail.com)"
 
 Scenario: TC1280: My Account - Edit Account - Save Button
 Given I am logged in as a "Admin" user
@@ -332,8 +332,8 @@ And I click the Edit button
 And I type "tlc1960@test" into the Email1 textfield
 And I type "tina1960test.com" into the Email2 textfield
 And I click the Save button
-Then I validate the text "Incorrect format (jdoe@tiwipro.com)" appears in the errorEmail1 field
-And I validate the text "Incorrect format (jdoe@tiwipro.com)" appears in the errorEmail2 field
+Then I validate the Error Email1 text is "Incorrect format (jdoe@tiwipro.com)"
+And I validate the Error Email2 text is "Incorrect format (jdoe@tiwipro.com)"
 
 Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes)
 Given I am logged in as a "Admin" user

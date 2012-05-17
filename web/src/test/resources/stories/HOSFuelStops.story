@@ -46,7 +46,7 @@ And I validate the Vehicle Fuel textfield is ""
 And I validate the Trailer Fuel textfield is ""
 And I validate the Driver drop down is ""
 And I click on the Reports link
-When I click the HOS link
+And I click the HOS link
 And I click the Fuel Stops link
 And I type a "Valid Vehicle Name" into the Vehicle textfield
 And I validate the Fuel Stops table is blank
@@ -183,7 +183,7 @@ And I check row 3
 And I check row 7
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the Sort Vehicle column is present
+And I validate the Sort Vehicle column is present
 And I validate the Sort Vehicle Fuel column is present
 
 Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi
