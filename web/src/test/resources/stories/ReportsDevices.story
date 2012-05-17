@@ -45,8 +45,8 @@ When I click the Reports link
 And I click the Devices link
 And I click the Tools button
 Then I validate the Email Report button is present
-Then I validate the Export To PDF button is present
-Then I validate the Export To Excel button is present
+And I validate the Export To PDF button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1529: Reports - Devices - UI
 Given I am logged in as a "Admin" user
