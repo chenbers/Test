@@ -11,6 +11,10 @@ public abstract class NavigationBar extends Masthead {
 
 	protected class NavigationBarButtons extends MastheadButtons {
 
+	    public Button logo(){
+	        return new Button(NavigationBarEnum.LOGO);
+	    }
+	    
 		public Button masterSearch() {
 			return new Button(NavigationBarEnum.SEARCH_BUTTON);
 		}

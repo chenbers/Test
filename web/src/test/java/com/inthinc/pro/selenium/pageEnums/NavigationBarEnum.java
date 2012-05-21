@@ -5,6 +5,9 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum NavigationBarEnum implements SeleniumEnums {
 
     HOME("Home", "tree_link", "//li[@class='tree_button current"),
+    
+
+    LOGO(null, "headerForm:headerInitDashboard"),
 
     REPORTS("Reports", "navigation:layout-navigationReports", "//li[2]/a[@class='nav_button_left']"),
     NOTIFICATIONS("Notifications", "navigation:layout-navigationNotifications", "//li[3]/a[@class='nav_button_left']"),
