@@ -41,8 +41,8 @@ public class PageMyAccount extends NavigationBar {
 		return new MyAccountButtons();
 	}
 
-	public MyAccountSelects _select() {
-		return new MyAccountSelects();
+	public MyAccountDropDowns _dropDown() {
+		return new MyAccountDropDowns();
 	}
 
 	public class MyAccountLinks extends NavigationBarLinks {
@@ -95,7 +95,7 @@ public class PageMyAccount extends NavigationBar {
 		}
 	}
 
-	public class MyAccountSelects {
+	public class MyAccountDropDowns {
 		public DropDown critical() {
 			return new DropDown(MyAccountEnum.CRITICAL_SELECT);
 		}
