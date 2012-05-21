@@ -60,35 +60,35 @@ public abstract class TeamBar extends NavigationBar {
             return new TextLink(timeFrame);
         }
         
-        public TextLink driverStatsTab() {
+        public TextLink driverStatistics() {
             return new TextLink(TeamBarEnum.DRIVER_STATISTICS);
         }
         
-        public TextLink vehicleStatsTab() {
+        public TextLink vehicleStatistics() {
             return new TextLink(TeamBarEnum.VEHICLE_STATISTICS);
         }
         
-        public TextLink tripsTab() {
+        public TextLink trips() {
             return new TextLink(TeamBarEnum.TRIPS);
         }
         
-        public TextLink stopsTab() {
+        public TextLink stops() {
             return new TextLink(TeamBarEnum.STOPS);
         }
         
-        public TextLink liveTeamTab() {
+        public TextLink liveTeam() {
             return new TextLink(TeamBarEnum.LIVE_TEAM);
         }
         
-        public TextLink overallScoreTab() {
+        public TextLink overallScore() {
             return new TextLink(TeamBarEnum.OVERALL_SCORE);
         }
         
-        public TextLink drivingStyleTab() {
+        public TextLink drivingStyle() {
             return new TextLink(TeamBarEnum.DRIVING_STYLE);
         }
         
-        public TextLink speedTab() {
+        public TextLink speed() {
             return new TextLink(TeamBarEnum.SPEED);
         }
         
