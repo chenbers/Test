@@ -16,6 +16,7 @@ import com.inthinc.pro.backing.importer.DriverTemplateFormat;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -159,13 +160,32 @@ public class DriverRowImporter extends RowImporter {
     }
 
     private Person findPersonByEmployeeID(Integer accountID, String employeeID) {
-        List<Person> persons = personDAO.getPeopleInGroupHierarchy(getTopGroupID(accountID));
-        for (Person person : persons) { 
-            if (person.getStatus()!=null && person.getStatus().equals(Status.ACTIVE) && employeeID.trim().equals(person.getEmpid())) {
-                return person;
-            }
+//        List<Person> persons = personDAO.getPeopleInGroupHierarchy(getTopGroupID(accountID));
+//        for (Person person : persons) { 
+//            if (person.getStatus()!=null && person.getStatus().equals(Status.ACTIVE) && employeeID.trim().equals(person.getEmpid())) {
+//                return person;
+//            }
+//        }
+//        return null;
+        
+        Person person =  null;
+        
+        try {
+            person = personDAO.findByEmpID(accountID, employeeID);
         }
-        return null;
+        catch (EmptyResultSetException e)
+        {
+            person = null;
+        }
+        if (person != null) {
+            person.setDriver(driverDAO.findByPersonID(person.getPersonID()));
+            person.setUser(userDAO.getUserByPersonID(person.getPersonID()));
+        }
+         
+        
+        return person;
+        
+        
     }
 
     private User createOrUpdateUser(User user, Person person, Integer groupID, Role adminRole, String username, String password) {
