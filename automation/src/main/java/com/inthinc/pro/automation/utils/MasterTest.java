@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jbehave.core.annotations.Aliases;
+import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.openqa.selenium.WebDriver;
@@ -274,7 +275,7 @@ public abstract class MasterTest {
         return passParameters;
     }
     
-    @When("I press the enter key on my keyboard")
+    @When("I hit the Enter Key")
     public void enterKey() {
         getSelenium().enterKey();
     }
@@ -287,7 +288,7 @@ public abstract class MasterTest {
     public void tabKey() {
         getSelenium().tabKey();
     }
-
+    
     @When("I hit the Spacebar")
     public static void spaceBar() {
         KeyCommands.typeKey(KeyEvent.VK_SPACE);
@@ -423,6 +424,16 @@ public abstract class MasterTest {
 
     public String getTextFromElementWithFocus() {// TODO: jwimmer please check this again against new code.
         return getSelenium().getTextFromElementWithFocus();
+    }
+    
+    @Then("I verify \"$lookfor\" is on the page")
+    public boolean verifyIsTextOnPage(String lookfor) { 
+        return validateTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
+    }
+    
+    @Then("I assert \"$lookfor\" is on the page")
+    public boolean assertIsTextOnPage(String lookfor) { 
+        return validateTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
     }
 
     public void open(SeleniumEnums pageToOpen) {
