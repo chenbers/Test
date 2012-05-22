@@ -151,7 +151,7 @@ And I select "Metric" from the Measurement dropdown
 And I click the Save button
 And I click the My Messages link
 And I click the My Account link
-Then I validate the Measurement Type dropdown is "Metric"
+Then I validate the Measurement text is "Metric"
 And I click the Logo button
 And I click the Driver Statistics link
 And I click the 365 Days link
@@ -165,7 +165,7 @@ And I select "English" from the Measurement dropdown
 And I click the Save button
 And I click the My Messages link
 And I click the My Account link
-And I validate the Measurement Type dropdown is "English"
+And I validate the Measurement text is "English"
 And I click the Logo button
 And I click the Driver Statistics link
 And I click the 365 Days link
