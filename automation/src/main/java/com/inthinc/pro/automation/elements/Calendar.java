@@ -1,21 +1,24 @@
 package com.inthinc.pro.automation.elements;
 
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.WordConverterEnum;
+import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.utils.AutomationThread;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 public class Calendar {
     
     private final SeleniumEnumWrapper myEnum;
     private final String id;
-    private static AutomationCalendar today = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS); 
     
     public Calendar(SeleniumEnums anEnum){
         myEnum = new SeleniumEnumWrapper(anEnum);
@@ -29,7 +32,7 @@ public class Calendar {
     }
     
     
-    public Calendar click(AutomationCalendar calendar){
+    public Calendar select(AutomationCalendar calendar){
         clickPopUpButton();
         changeMonths(calendar.getMonth());
         clickDay(calendar);
@@ -48,7 +51,11 @@ public class Calendar {
     }
     
     private boolean changeMonths(Integer desiredMonth){
-        int currentMonth = today.getMonth();
+        String monthID = "//td[@id='" + id + "Header']/table/tbody/tr/td[3]/div";
+        String month = CoreMethodLib.getSeleniumThread().getText(monthID);
+        AutomationCalendar now = new AutomationCalendar(month, WebDateFormat.MONTH_YEAR);
+
+        int currentMonth = now.getMonth();
         int changeBy = currentMonth - desiredMonth;
         int button;
         if (changeBy > 0){
@@ -76,28 +83,40 @@ public class Calendar {
     public static Object[] getParametersS(PendingStep step, Method method) {
         String stepAsString = step.stepAsString();
         
-        // TODO: dtanner: need a way to handle overloaded methods.
-        
         Class<?>[] parameters = method.getParameterTypes();
         Object[] passParameters = new Object[parameters.length];
-        
-        
-        for (int i=0;i<parameters.length;i++){
-            Class<?> next = parameters[i];
-            if (next.isAssignableFrom(AutomationCalendar.class)){
-                String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
-                String time = lastOfStep.substring(0, lastOfStep.indexOf("\""));
-                passParameters[i] = new AutomationCalendar(time, WebDateFormat.DATE_RANGE_FIELDS);
-            } else if (next.isAssignableFrom(Integer.class)) {
-                passParameters[i] = WordConverterEnum.getNumber(stepAsString);
-            }
-            
-            
-            if (passParameters[i] == null){
-                throw new NoSuchMethodError("We are missing parameters for " 
-                            + method.getName() + ", working on step " + step.stepAsString());
+
+        AutomationCalendar var = new AutomationCalendar();
+        passParameters[0] = var;
+        if (stepAsString.contains("from \"")){
+            int first = stepAsString.indexOf("\"");
+            int last = stepAsString.lastIndexOf("\"");
+            var = new AutomationCalendar(stepAsString.substring(first, last));
+        } else { 
+            for (Map.Entry<String, String> variable : MasterTest.getVariables(Thread.currentThread().getId()).entrySet()){
+                if (stepAsString.contains("from " + variable.getKey())){
+                    var = new AutomationCalendar(variable.getValue());
+                }
             }
         }
+        int sign = 1;
+        if (Pattern.compile(RegexTerms.calendarSubtract).matcher(stepAsString).find()){
+            sign = -1;
+        }
+        
+        String days = RegexTerms.getMatch(RegexTerms.calendarDayDelta, stepAsString);
+        String months = RegexTerms.getMatch(RegexTerms.calendarMonthDelta, stepAsString);
+        String years = RegexTerms.getMatch(RegexTerms.calendarYearDelta, stepAsString);
+        if (!days.equals("")){
+            var.addToDay(Integer.parseInt(days) * sign);
+        }
+        if (!months.equals("")){
+            var.addToMonth(Integer.parseInt(months) * sign);
+        }
+        if (!years.equals("")){
+            var.addToYear(Integer.parseInt(years) * sign);
+        }
+        
         return passParameters;
     }
 }

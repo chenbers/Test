@@ -19,8 +19,8 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.objects.DeviceAttributes;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 
 public abstract class DeviceNote {
 	

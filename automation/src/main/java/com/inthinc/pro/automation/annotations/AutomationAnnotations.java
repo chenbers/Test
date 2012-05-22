@@ -25,12 +25,14 @@ public class AutomationAnnotations {
     @Target(ElementType.METHOD)
     public @interface Validate{
         String englishName();
+        String testName() default "validate";
     }
     
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface Assert{
         String englishName();
+        String testName() default "assert";
     }
     
     @Retention(RetentionPolicy.RUNTIME)

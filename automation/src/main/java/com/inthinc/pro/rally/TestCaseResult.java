@@ -9,9 +9,9 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.RallyHTTP.RallyFields;

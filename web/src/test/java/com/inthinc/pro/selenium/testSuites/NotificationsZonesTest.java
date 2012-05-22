@@ -16,7 +16,6 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;

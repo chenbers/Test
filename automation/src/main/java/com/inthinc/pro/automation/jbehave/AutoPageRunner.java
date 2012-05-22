@@ -15,7 +15,6 @@ import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepType;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.JBehaveTermMatchers;
 import com.inthinc.pro.automation.logging.Log;
@@ -35,7 +34,6 @@ public class AutoPageRunner {
     
     private AbstractPage currentPage;
     private Class<? extends AbstractPage> currentPageClass;
-    private Map<String, Method> classMethods;
     
     private String workingOnStep;
     private String elementType;
@@ -78,7 +76,7 @@ public class AutoPageRunner {
             location = location.substring(0, location.indexOf(";"));
         } 
         
-        Matcher mat = Pattern.compile("[0-9]+").matcher(location); 
+        Matcher mat = Pattern.compile("\\p{Digit}+").matcher(location); 
         while (mat.find()){
             String start = location.substring(0, mat.start());
             String end = location.substring(mat.end());
@@ -222,12 +220,8 @@ public class AutoPageRunner {
     
     private Step when(PendingStep step){
         try {
-            if (pageSpecificStep(workingOnStep)){       
-                if (classMethods.containsKey("verifyOnPage".toLowerCase())){
-                    return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("verifyOnPage"), true);
-                } else {
-                    throw new NoSuchMethodException("Could not verify on page");
-                }
+            if (pageSpecificStep(workingOnStep)){
+                return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("verifyOnPage"), true);
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
         } catch (NoSuchMethodException e) {
@@ -252,12 +246,12 @@ public class AutoPageRunner {
         return step;
     }
     
-    private ElementBase getElement() {
+    private Object getElement() {
         Throwable err = null;
         try {
             elementType = JBehaveTermMatchers.getAlias(workingOnStep); 
             Object elementCategory = pageClass.getMethod(JBehaveTermMatchers.getTypeFromString(workingOnStep)).invoke(pageObject);
-            return (ElementBase) getElement(elementCategory);
+            return getElement(elementCategory);
         } catch (IllegalArgumentException e) {
             err = e;
         } catch (NoSuchMethodException e) {
@@ -280,47 +274,56 @@ public class AutoPageRunner {
                 methods.put(method.getName().toLowerCase(), method);
             }
             
-            elementName = getParameter(RegexTerms.getElementName.replace("***",elementType), workingOnStep)
+            elementName = RegexTerms.getMatch(RegexTerms.getElementName.replace("***",elementType), workingOnStep)
                     .replace(" ", "").toLowerCase();
-            if (elementType.equals("label")){
-                elementName = "label" + elementName;
+            if (elementName != null){
+                if (elementType.equals("label")){
+                    elementName = "label" + elementName; 
+                }
+                
+                if (methods.containsKey(elementName)){
+                    return tryElementName(elementClass, methods.get(elementName));
+                } else {
+                    for (Map.Entry<String, Method> entry : methods.entrySet()){
+                        if (entry.getKey().contains("column")){
+                            try {
+                                return tryElementName(elementClass, entry.getValue());
+                            } catch (Exception e){
+                                continue;
+                            }
+                        }
+                    }
+                }
             }
-            
-            if (elementName != null && methods.containsKey(elementName)){
-                return tryElementName(elementClass, methods.get(elementName));
-            }
-            
             throw new NoSuchMethodException("Could not find Element for " + workingOnStep);
     
         } catch (Exception e) {
-            String currentError = String.format("Working on getting the elementName %s, with pageObject %s");    
+            String currentError = String.format("Working on getting the elementName %s, with pageObject %s", elementName, pageClass);    
             throw new StepException(workingOnStep, currentError, e);
         }
     }
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    
+    private Object matchEnum(Class<?> clazz){
+        String step = workingOnStep.toLowerCase().replace(" ", "");
+        for (Object obj : clazz.getEnumConstants()){
+            String name = ((Enum<?>)obj).name().replace("_", "").toLowerCase();
+            if (step.contains(name)){
+                return obj;
+            }
+        }
+        return null;
+    }
+    
     private Object tryElementName(Object elementClass, Method method) {
         try {
             Class<?>[] parameters = method.getParameterTypes();
-            String columnName = getParameter(RegexTerms.getColumnName, workingOnStep);
-            String rowName = getParameter(RegexTerms.getRowName, workingOnStep);
             Object[] passParameters = new Object[parameters.length];
             
             for (int i=0;i<parameters.length;i++){
                 Class<?> next = parameters[i];
-                if (columnName != null && next.isAssignableFrom(Enum.class)){
-                    try {
-                        passParameters[i] = Enum.valueOf((Class<Enum>)next, columnName);
-                    } catch (IllegalArgumentException e){
-                        Log.warning("Column: %s enum does not contain %",next.getSimpleName(), columnName);
-                    }
-                }
-                if (rowName != null && next.isAssignableFrom(Enum.class)){
-                    try {
-                        passParameters[i] = Enum.valueOf((Class<Enum>)next, columnName);
-                    } catch (IllegalArgumentException e2){
-                        Log.warning("Row: %s enum does not contain %",next.getSimpleName(), rowName);
-                    }                
+                if (next.isEnum()){
+                    passParameters[i] = matchEnum(next);
                 }
                 if (passParameters[i] == null){
                     throw new NoSuchMethodException("We are missing parameters for " 
@@ -335,14 +338,4 @@ public class AutoPageRunner {
         }
     }
 
-    private String getParameter(String regex, String toMatch) {
-        Pattern pat = Pattern.compile(regex);
-        Matcher mat = pat.matcher(toMatch);
-        if (mat.find()){
-            return toMatch.substring(mat.start(), mat.end());
-        }
-        return null;
-    }
-    
-    
 }

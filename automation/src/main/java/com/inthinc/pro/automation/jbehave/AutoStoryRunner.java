@@ -310,7 +310,7 @@ public class AutoStoryRunner extends StoryRunner {
         List<Step> stepsToAdd = new ArrayList<Step>();
         for (Step step : steps) {
             try {
-                if (step instanceof PendingStep){
+                if (step instanceof PendingStep && state instanceof FineSoFar){
                     stepsToRemove.addElement(step);
                     step = page.tryStep((PendingStep) step);
                     if (!(step instanceof PendingStep)){

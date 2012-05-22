@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,10 +55,17 @@ public abstract class MasterTest {
         }
     }
     
+    public static Map<String, String> getVariables(Long threadID){
+        return variables.get(threadID);
+    }
+    
     public static String getComparator(String stepAsString){
-        String variable = getLastTerms(stepAsString);
-        if (variable == null){
-            return null;
+        String variable = RegexTerms.getMatch(RegexTerms.getVariable, stepAsString);
+        if (variable == ""){
+            if (stepAsString.contains("\"")){
+                return stepAsString.substring(stepAsString.indexOf("\"")+1, stepAsString.lastIndexOf("\""));
+            }
+            return "";
         }
         if (variable.contains("\"")){
             return variable.replace("\"", "");
@@ -89,53 +97,46 @@ public abstract class MasterTest {
         Map<String, List<Method>> methods = null;
         Map<Method, Object[]> validateMethod = new HashMap<Method, Object[]>(2);
         String validationType = "validate";
-        if (stepAsString.contains("validate")){
-            methods = getMethods(this.getClass(), Validate.class);
-        } else if (stepAsString.contains("assert")) {
-            methods = getMethods(this.getClass(), Assert.class);
+        Class<? extends Annotation> ann = Validate.class;
+        if (stepAsString.contains("assert")) {
+            ann = Assert.class;
             validationType = "assert";
         }
-        if (methods == null){
+        methods = getMethods(this.getClass(), ann);
+        if (methods == null){ 
             throw new NoSuchMethodException("Could not find a validation method for: " + stepAsString);
         }
         boolean trueFalse = checkBoolean(stepAsString);
         Set<String> names = methods.keySet();
         String variable = getComparator(stepAsString);
+        List<Method> methodList = new ArrayList<Method>();
+        for (String name : names) {
+            String shorter = name.replace(validationType, "");
+            if (stepAsString.contains(shorter) && shorter.length() > 0){
+                methodList = methods.get(name);
+                break;
+            }
+        }
+        if (methodList.isEmpty()){
+            if (methods.containsKey(validationType)) {
+                methodList = methods.get(validationType);
+            }
+        }
         
-        if (names.contains(validationType)){
-            List<Method> matches = methods.get(validationType);
-            for (Method match : matches){
+        if (methodList != null){
+            for (Method match : methodList){
                 Class<?>[] params = match.getParameterTypes();
                 if (params.length > 0){
-                    if (params[0].equals(variable.getClass())){
+                    if (variable != null && params[0].equals(variable.getClass())){
                         validateMethod.put(match, new Object[]{variable});
-                    } else if (params[0].equals(boolean.class)){
+                    } else if (params[0].equals(Boolean.class)){
                         validateMethod.put(match, new Object[]{trueFalse});
                     }
                     return validateMethod;
                 }
             }
         }
-        
-        String additional = validationType + getLastTerms(stepAsString).toLowerCase().replace(" ", "");// TODO;
-        if (names.contains(additional)){
-            List<Method> matches = methods.get(validationType);
-            for (Method match : matches){
-                Class<?>[] params = match.getParameterTypes();
-                if (params.length > 0){
-                    if (params[0].equals(variable.getClass())){
-                        validateMethod.put(match, new Object[]{variable});
-                    } else if (params[0].equals(boolean.class)){
-                        validateMethod.put(match, new Object[]{trueFalse});
-                    }
-                    return validateMethod;
-                }
-            }
-        }
-        
-        
-        
-        return null;
+        throw new NoSuchMethodException("Could not find a validation step for " + stepAsString);
     }
     
     
@@ -152,7 +153,7 @@ public abstract class MasterTest {
                 matchingMethods = methods.get(potentialMethod);
                 
             } else {
-                regex += RegexTerms.addLowercaseWord;
+                regex += RegexTerms.addLowercaseWordSpaceBefore;
                 pat = Pattern.compile(regex);
                 mat = pat.matcher(stepAsString);
             }
@@ -180,6 +181,32 @@ public abstract class MasterTest {
         }
     }
     
+    private static Set<Annotation> getAnnotations(Method method){
+        Set<Annotation> ann = new HashSet<Annotation>();
+        ann.addAll(asList(method.getAnnotations()));
+        for (Class<?> interfaces : ClassUtils.getAllInterfacesForClass(method.getDeclaringClass())){
+            try {
+                Method superMethod = interfaces.getMethod(method.getName(), method.getParameterTypes());
+                ann.addAll(asList(superMethod.getAnnotations()));
+            } catch (SecurityException e) {
+                Log.debug(e);
+            } catch (NoSuchMethodException e) {
+                Log.debug(e);
+            }
+        }
+        return ann;
+    }
+    
+    private static Annotation getAnnotation(Method method, Class<? extends Annotation> annotation){
+        Set<Annotation> set = getAnnotations(method);
+        for (Annotation ann : set){
+            if (annotation.equals(ann.annotationType())){
+                return ann;
+            }
+        }
+        return null;
+    }
+    
     public static Map<String, List<Method>> getMethods(Class<?> clazz, Class<? extends Annotation> filter) throws SecurityException, NoSuchMethodException{
         Map<String, List<Method>> methods = new HashMap<String, List<Method>>();
         for (Method method : clazz.getMethods()){ 
@@ -188,46 +215,34 @@ public abstract class MasterTest {
             String methodName = method.getName().toLowerCase();
             
             if (filter != null){
-                Annotation ann = (Annotation) method.getAnnotation(filter);
-                if (ann == null){
-                    Class<?>[] interfaces = ClassUtils.getAllInterfacesForClass(clazz);
-                    for (Class<?> implementation : interfaces){
-                        try {
-                            Method superMethod = implementation.getMethod(methodName, method.getParameterTypes());
-                            ann = superMethod.getAnnotation(filter);
-                            if (ann != null){
-                                String englishName = "";
-                                if (ann instanceof Validate){
-                                    englishName = ((Validate)ann).englishName();
-                                } else if (ann instanceof Assert){
-                                    englishName = ((Assert)ann).englishName();
-                                }
-                                if (englishName.isEmpty()){
-                                    break;
-                                }
-                                englishName = methodName + englishName.replace(" ", "").toLowerCase();
-                                if (!methods.containsKey(englishName)){
-                                    methods.put(englishName, new ArrayList<Method>());
-                                }  
-                                methods.get(englishName).add(method);
-                                break;
-                            }
-                        } catch (NoSuchMethodException e){
+                Annotation ann = getAnnotation(method, filter);
+                if (ann != null){
+                    if (ann != null){
+                        String englishName = "";
+                        String testName = "";
+                        if (ann instanceof Validate){
+                            englishName = ((Validate)ann).englishName();
+                            testName = ((Validate)ann).testName();
+                        } else if (ann instanceof Assert){
+                            englishName = ((Assert)ann).englishName();
+                            testName = ((Assert)ann).testName();
+                        } else {
                             continue;
                         }
+                        englishName = testName + englishName.replace(" ", "").toLowerCase();
+                        if (!methods.containsKey(englishName)){
+                            methods.put(englishName, new ArrayList<Method>());
+                        }  
+                        methods.get(englishName).add(method);
                     }
-                    if (ann == null){
-                        continue;
-                    }
-                } 
-
-                if (!methods.containsKey(methodName)){
-                    methods.put(methodName, new ArrayList<Method>());
-                }   
-                
-                methods.get(methodName).add(method);
-                continue;
-                
+                    if (!methods.containsKey(methodName)){
+                        methods.put(methodName, new ArrayList<Method>());
+                    } 
+                    methods.get(methodName).add(method);
+                    continue;
+                } else {
+                    continue;
+                }
             }
             
             if (!methods.containsKey(methodName)){
@@ -330,7 +345,7 @@ public abstract class MasterTest {
 
     private Boolean assertEquals(Object expected, Object actual, Boolean areObjectsEqual) {
         if (compare(expected, actual) != areObjectsEqual) {
-            Log.debug("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
+            Log.info("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
             addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FATAL);
             return false;
         }
@@ -491,6 +506,7 @@ public abstract class MasterTest {
             if (areObjectsEqual) {
                 match = "should match";
             }
+            Log.info("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match, ErrorLevel.FAIL);
             addError("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match, ErrorLevel.FAIL);
         }
         return result;

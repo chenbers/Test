@@ -44,9 +44,6 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
 
     @Override
     public AutoAnnotationBuilder annotationBuilder() {
-        if (annotationBuilder != null) {
-            return annotationBuilder;
-        }
         return new AutoAnnotationBuilder(testClass(), getTest(), getUri());
     }
 
@@ -132,7 +129,7 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
                 Map<String, String> example = table.get(i);
                 for (String step : scenario.getSteps()) {
                     for (Map.Entry<String, String> entry : example.entrySet()) {
-                        step.replace(entry.getKey(), entry.getValue());
+                        step = step.replace(entry.getKey(), entry.getValue());
                     }
                     Description line = Description.createSuiteDescription(step);
                     ex.addChild(line);

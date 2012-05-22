@@ -18,6 +18,8 @@ public enum JBehaveTermMatchers {
     _pager("pager", "paging", "index", "indexer"),
     _checkBox("checkbox"),
     
+    _navTree("navtree", "tree", "grouptree"),
+    
     _popUp,
     
     closePopup("is closed", "closes", "disappears", "is removed"),

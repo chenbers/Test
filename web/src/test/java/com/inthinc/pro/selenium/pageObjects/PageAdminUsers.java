@@ -233,7 +233,7 @@ public class PageAdminUsers extends AdminTables {
     
     public class AdminUsersTexts extends AdminTablesTexts {
 
-        public TextTable tableEntry(UserColumns column) {
+        public TextTable tableColumn(UserColumns column) {
             return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
         }
         
@@ -297,7 +297,7 @@ public class PageAdminUsers extends AdminTables {
     public PageAdminUsers clickFullNameMatching(UserColumns column, String value){
         this.showAllColumns();
         this.search(value);
-        Iterator<TextBased> rowIterator = this._text().tableEntry(column).iterator();
+        Iterator<TextBased> rowIterator = this._text().tableColumn(column).iterator();
         boolean clicked = false;
         int rowNumber = 0;
         while(rowIterator.hasNext()&&!clicked){

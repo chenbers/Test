@@ -54,7 +54,7 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
 
     @Override
     public void beforeStory(Story story, boolean givenStory) {
-        if (runNotifier != null || storyDescription != null){
+        if (runNotifier != null && storyDescription != null){
             runNotifier.fireTestStarted(storyDescription);
             for (Description desc : storyDescription.getChildren()){
                 String name = desc.getDisplayName();

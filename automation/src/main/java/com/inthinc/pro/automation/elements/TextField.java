@@ -57,7 +57,7 @@ public class TextField extends TextObject implements Typeable {
         
         
         for (int i=0;i<parameters.length;i++){
-            Class<?> next = parameters[i];
+            
             String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
             String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
             passParameters[i] = toType;

@@ -3,7 +3,6 @@ package com.inthinc.device.emulation;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +18,9 @@ import com.inthinc.device.scoring.ScoringFactory;
 import com.inthinc.device.scoring.ScoringNoteProcessor.UnitType;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.resources.FileRW;
 import com.inthinc.pro.automation.utils.AutomationThread;
 
@@ -122,8 +121,8 @@ public class ScoreTest {
 
     public void runScoring() {
         sendNotes();
+        
         AutomationCalendar start = new AutomationCalendar();
-
         AutomationCalendar agg = start.copy();
         agg.changeMinutesTo(0).changeMillisecondsTo(0).changeSecondsTo(0).addToHours(1);
         if (agg.compareTo(start) < 2) {
@@ -138,14 +137,23 @@ public class ScoreTest {
 
     private void compareToPortal(String key, Map<UnitType, Map<String, Double>> scores) {
         int did = Integer.parseInt(imeis.get(key).get("did"));
-        compareScores(scores.get(UnitType.DRIVER), proxy.getDTrendByDTC(did, 0, 1).get(0));
-
+        if (compareScores(scores.get(UnitType.DRIVER), proxy.getDTrendByDTC(did, 0, 1).get(0))){
+            Log.info("Driver scores matched for IMEI=%s", key);
+        } else {
+            Log.info("Driver scores did not match for IMEI=%s", key);
+        }
+        
         int vid = Integer.parseInt(imeis.get(key).get("vid"));
-        compareScores(scores.get(UnitType.VEHICLE), proxy.getVTrendByVTC(vid, 0, 1).get(0));
+        if (compareScores(scores.get(UnitType.VEHICLE), proxy.getVTrendByVTC(vid, 0, 1).get(0))){
+            Log.info("Vehicle scores matched for IMEI=%s", key);
+        } else {
+            Log.info("Driver scores did not match for IMEI=%s", key);
+        }
     }
 
-    private void compareScores(Map<String, Double> ours, Map<String, Object> thiers) {
+    private boolean compareScores(Map<String, Double> ours, Map<String, Object> thiers) {
         boolean equals = true;
+        
         equals |= ours.get("Hard Brake").equals(thiers.get("aggressiveBrake"));
         equals |= ours.get("Hard Acceleration").equals(thiers.get("aggressiveAccel"));
         equals |= ours.get("Hard Bump").equals(thiers.get("aggressiveBump"));
@@ -159,18 +167,17 @@ public class ScoreTest {
         equals |= ours.get("41-54").equals(thiers.get("speeding3"));
         equals |= ours.get("55-64").equals(thiers.get("speeding4"));
         equals |= ours.get("65-80").equals(thiers.get("speeding5"));
-        if (!equals) {
-            Log.info("The two maps are not equal");
-        }
+        
+        return equals;
     }
 
     public static void main(String[] args) {
 
-//        ScoreTest test = new ScoreTest();
-//        test.runScoring();
+        ScoreTest test = new ScoreTest();
+        test.runScoring();
 
 //        int did = 69198, vid = 53422;
-//        String startTime = new AutomationCalendar(1335574000 * 1000l).setFormat(WebDateFormat.NOTE_PRECISE_TIME).toString();
+//        String startTime = new AutomationCalendar(1335579000 * 1000l).setFormat(WebDateFormat.NOTE_PRECISE_TIME).toString();
 //        String imei = "FAKETIWISCORING";
 //        try {
 //            FileWriter fstream = new FileWriter(fileName);

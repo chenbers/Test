@@ -581,8 +581,8 @@ public void sometest() {
     public void pageAdminUsers_smokeTest() {
         PageAdminUsers page = new PageAdminUsers();
         int row = 1;
-        page._text().tableEntry(UserColumns.FULL_NAME).row(row).getText();
-        page._text().tableEntry(UserColumns.FULL_NAME).row(row).getText();
+        page._text().tableColumn(UserColumns.FULL_NAME).row(row).getText();
+        page._text().tableColumn(UserColumns.FULL_NAME).row(row).getText();
     }
 
     @Ignore

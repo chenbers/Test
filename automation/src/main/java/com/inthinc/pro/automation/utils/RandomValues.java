@@ -131,7 +131,7 @@ public class RandomValues {
 	}
 
 	public Long getLong(Integer length) {
-		assert (length < Long.MAX_VALUE);
+		assert (length < Integer.MAX_VALUE);
 		String randomInt = getIntString(length);
 		return Long.parseLong(randomInt);
 	}
@@ -144,6 +144,7 @@ public class RandomValues {
 			break;
 		case STATES:
 			value = getRandomState();
+			break;
 		default:
 			value = nextString(type);
 			break;
@@ -178,7 +179,7 @@ public class RandomValues {
 
 		while (itr.hasNext()) {
 			String state = itr.next();
-			if (states.get(state).get(productType) == id)
+			if (states.get(state).get(productType).equals(id))
 				return state;
 		}
 		return "Invalid ID";
@@ -198,7 +199,7 @@ public class RandomValues {
 		Iterator<String> itr = states.keySet().iterator();
 		while (itr.hasNext()) {
 			String next = itr.next();
-			if (x == y) {
+			if (x.equals(y)) {
 				state = states.get(next).get(type);
 				return state;
 			}

@@ -34,9 +34,9 @@ import com.inthinc.device.objects.ZoneManager;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DownloadServers;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 

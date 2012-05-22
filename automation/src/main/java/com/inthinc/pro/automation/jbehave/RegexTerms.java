@@ -2,47 +2,76 @@ package com.inthinc.pro.automation.jbehave;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+/**
+ * @see <code>Pattern</code>
+ * @author dtanner
+ *
+ */
+
 
 public class RegexTerms {
     
-    public final static List<String> typeReg = new ArrayList<String>();
+    public static final List<String> typeReg = new ArrayList<String>();
     static {
         typeReg.add("\\w*(?=\\s+as\\s+\\w*)\\b");  // Used when Saving a variable
         typeReg.add("\\w*(?=\\s+is\\s+\\w*)\\b");  // Used to compare a variable
         typeReg.add("\\w*(?=\\s+for\\s+\\w*)\\b"); // Used to compare a variable
         typeReg.add("\\w+$");                      // Standard action should end in the type.
+        
+
+        typeReg.add("\\w*(?=\\s+contains\\s+\\w*)\\b"); // Used to compare a variable or text
+        typeReg.add("\\w*(?=\\s+does\\s+\\w*)\\b"); // Used to compare a variable or text
     }
     
     
     public static final String onPage = "on\\s+the\\s+.*\\s+page";
-    public static final String getPageName = "(?<=the ).*(?= [Pp]age)";
+    public static final String getPageName = "(?<=the\\s).*(?=\\s+[Pp]age)";
     public static final String getElementName = "([A-Z][\\w-]*(\\s+[A-Z][\\w-]*)*)(?=\\s+***)";
-    public static final String getColumnName = "([A-Z][\\w-]*(\\s+[A-Z][\\w-]*)*)(?=\\s+column)";
-    public static final String getRowName = "([A-Z][\\w-]*(\\s+[A-Z][\\w-]*)*)(?=\\s+row)";
     
-    public static final String addLowercaseWord = "\\s+[a-z]+";
+    public static final String getRowNumber = "\\p{Digit}*(?=\\w+\\s+Row)"; // Grabs the number before the suffix
+    public static final String getRowTextNumber = "\\w+(?=\\s+Row)";
     
-    public static final String getMethod = "(?<=I )[a-z]+";
+    public static final String addLowercaseWordSpaceBefore = "\\s+[a-z]+"; // Matches any lower case word with a space in front
+    public static final String addAnyCaseWordSpaceAfter = "\\w+\\s+";
     
-    public static final String getVariable = "(?<=is ).*";
-    public static final String setVariable = "(?<=as ).*";
+    public static final String getMethod = "(?<=I\\s)[a-z]+"; // The method name should come right after I
     
-    public static final List<String> saveAlias = new ArrayList<String>();
-    static {
-        saveAlias.add("save");
-        saveAlias.add("retain");
-        saveAlias.add("remember");
-    }
+    public static final String getVariable = "(?<=is\\s).*";
+    public static final String setVariable = "(?<=as\\s).*";
     
-    
+    public static final String saveAlias = "(save|retain|remember)"; // Any of these just become an alias
 
-    public final static String testCase = "[Tt][Cc][0123456789]*";
-    public final static String defect = "[Dd][Ee][0123456789]*";
+    public static final String testCase = "[Tt][Cc]\\p{Digit}+"; // Rally test cases are TC####
+    public static final String defect = "[Dd][Ee]\\p{Digit}+"; // Rally defects are DE####
     
     
     public static final String popupStep = "([A-Z][\\w-]*(\\s+[A-Z][\\w-]*)*)(?=\\s+popup)";
     
+    public static final String calendarDayDelta = "\\p{Digit}*(?=\\s+days|day)";
+    public static final String calendarMonthDelta = "\\p{Digit}*(?=\\s+month|months)";
+    public static final String calendarYearDelta = "\\p{Digit}*(?=\\s+year|years)";
     
+    public static final String calendarSubtract = "[Pp]ast";
+    public static final String calendarAdd = "[Ff]uture";
+    
+    public static final String findRow = "find\\s+the\\s+[Rr]ow";
+    public static final String rowVariable = "(?<=has\\s).*(?=\\s+in)";
+    public static final String saveRowVariable = "(?<=save\\sit\\sas\\s).*";
+    
+    /**
+     * An abstracted method to extract matching strings.
+     * 
+     * @param pattern
+     * @param toSearch
+     * @return
+     */
+    public static String getMatch(String pattern, String toSearch){
+        Pattern pat = Pattern.compile(pattern);
+        Matcher mat = pat.matcher(toSearch);
+        return mat.find() ? toSearch.substring(mat.start(), mat.end()) : "";
+    }
 
     
 }

@@ -88,7 +88,7 @@ public class SimpleStress {
 //            throw new IllegalArgumentException("Please give us an epoch time stamp to start the test");
 //        }
 //        SimpleStress stress = new SimpleStress(Long.parseLong(args[0]));
-        SimpleStress stress = new SimpleStress(1333358400);
+        SimpleStress stress = new SimpleStress(1334534400);
 //        SimpleStress stress = new SimpleStress(1132328400);
     }
 

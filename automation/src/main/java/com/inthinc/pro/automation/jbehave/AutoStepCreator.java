@@ -162,7 +162,6 @@ public class AutoStepCreator extends StepCreator {
     
     public class AutoPageStep extends ParameterisedStep {
         
-        private String parametrisedStep;
         private final String stepAsString;
         private final Method method;
         private Object[] parameters;
@@ -196,14 +195,13 @@ public class AutoStepCreator extends StepCreator {
                         Object result = method.invoke(instance, parameters);
                         Log.debug("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                     } catch (AssertionError e){
-                        return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, e)).withParameterValues(
-                        parametrisedStep);
+                        return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, e));
                     }
                 }
-                return successful(stepAsString).withParameterValues(parametrisedStep);
+                return successful(stepAsString);
             } catch (ParameterNotFound e) {
                 // step parametrisation failed, return pending StepResult
-                return pending(stepAsString).withParameterValues(parametrisedStep);
+                return pending(stepAsString);
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof RestartingScenarioFailure) {
                     throw (RestartingScenarioFailure) e.getCause();
@@ -212,11 +210,9 @@ public class AutoStepCreator extends StepCreator {
                 if (failureCause instanceof UUIDExceptionWrapper) {
                     failureCause = failureCause.getCause();
                 }
-                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, failureCause)).withParameterValues(
-                        parametrisedStep);
+                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, failureCause));
             } catch (Throwable t) {
-                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, t)).withParameterValues(
-                        parametrisedStep);
+                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, t));
             }
         }
 
@@ -226,6 +222,24 @@ public class AutoStepCreator extends StepCreator {
         }
     }
     
+    public EmptyAutoStep createEmptyStep(String stepAsString){
+        return new EmptyAutoStep(stepAsString);
+    }
+    
+    public class EmptyAutoStep extends AbstractStep {
+        private final String stepAsString;
+        public EmptyAutoStep(String stepAsString){
+            this.stepAsString = stepAsString;
+        }
+        @Override
+        public StepResult perform(UUIDExceptionWrapper storyFailureIfItHappened) {
+            return successful(stepAsString);
+        }
+        @Override
+        public StepResult doNotPerform(UUIDExceptionWrapper storyFailureIfItHappened) {
+            return notPerformed(stepAsString);
+        }
+    }
 
     public SaveVariableStep createSaveVariableStep(PendingStep step, Object instance, Method method){
         return new SaveVariableStep(instance, step.stepAsString(), method, step.stepAsString().substring(step.stepAsString().indexOf(" ")), new HashMap<String, String>());
@@ -237,7 +251,6 @@ public class AutoStepCreator extends StepCreator {
     
     public class SaveVariableStep extends ParameterisedStep {
         
-        private String parametrisedStep;
         private final String stepAsString;
         private final Method method;
         private Object[] parameters;
@@ -269,10 +282,10 @@ public class AutoStepCreator extends StepCreator {
                     MasterTest.setComparator(stepAsString, result);
                     Log.info("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                 }
-                return successful(stepAsString).withParameterValues(parametrisedStep);
+                return successful(stepAsString);
             } catch (ParameterNotFound e) {
                 // step parametrisation failed, return pending StepResult
-                return pending(stepAsString).withParameterValues(parametrisedStep);
+                return pending(stepAsString);
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof RestartingScenarioFailure) {
                     throw (RestartingScenarioFailure) e.getCause();
@@ -281,11 +294,9 @@ public class AutoStepCreator extends StepCreator {
                 if (failureCause instanceof UUIDExceptionWrapper) {
                     failureCause = failureCause.getCause();
                 }
-                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, failureCause)).withParameterValues(
-                        parametrisedStep);
+                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, failureCause));
             } catch (Throwable t) {
-                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, t)).withParameterValues(
-                        parametrisedStep);
+                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, t));
             }
         }
     }
@@ -297,7 +308,6 @@ public class AutoStepCreator extends StepCreator {
     
     public class ValidationStep extends ParameterisedStep {
         
-        private String parametrisedStep;
         private final String stepAsString;
         private final Method method;
         private Object[] parameters;
@@ -330,19 +340,19 @@ public class AutoStepCreator extends StepCreator {
                         result = method.invoke(instance, parameters);
                     } catch (AssertionError e ){
                         result = false;
-                        Log.info(e);
+                        Log.debug(e);
                     }
                     if (result.equals(false)){
                         String failure = String.format("Executing method %s%s returned %s, for step %s", 
                                 method.getName(), asList(parameters), result, stepAsString);
-                        return failed(stepAsString, new UUIDExceptionWrapper(failure)).withParameterValues(parametrisedStep);
+                        return failed(stepAsString, new UUIDExceptionWrapper(failure));
                     }
-                    Log.info("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
+                    Log.debug("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                 }
-                return successful(stepAsString).withParameterValues(parametrisedStep);
+                return successful(stepAsString);
             } catch (ParameterNotFound e) {
                 // step parametrisation failed, return pending StepResult
-                return pending(stepAsString).withParameterValues(parametrisedStep);
+                return pending(stepAsString);
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof RestartingScenarioFailure) {
                     throw (RestartingScenarioFailure) e.getCause();
@@ -351,11 +361,9 @@ public class AutoStepCreator extends StepCreator {
                 if (failureCause instanceof UUIDExceptionWrapper) {
                     failureCause = failureCause.getCause();
                 }
-                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, failureCause)).withParameterValues(
-                        parametrisedStep);
+                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, failureCause));
             } catch (Throwable t) {
-                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, t)).withParameterValues(
-                        parametrisedStep);
+                return failed(stepAsString, new UUIDExceptionWrapper(stepAsString, t));
             }
         }
     }

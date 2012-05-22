@@ -105,12 +105,43 @@ public interface ElementInterface {
     }
     
     public interface TextBased extends ElementInterface {
+        /**
+         * Asserts that the Element is the same as that provided by the Page Enum
+         * @return
+         */
         @Assert(englishName="equals the default")
         public Boolean assertEquals();
+        
+        /**
+         * Asserts that the Element is the same as the provided text
+         * @param compareAgainst
+         * @return
+         */
         @Assert(englishName="equal to")
         public Boolean assertEquals(String compareAgainst);
+        
+        /**
+         * Asserts that the Element is not the same as the provided text
+         * @param compareAgainst
+         * @return
+         */
         @Assert(englishName="not equal to")
         public Boolean assertNotEquals(String compareAgainst);
+        
+        /**
+         * Asserts that the Element contains the provided text
+         * @return
+         */
+        @Assert(englishName="contains")
+        public Boolean assertContains(String compareAgainst);
+        
+        /**
+         * Asserts that the Element does not contain the provided text
+         * @param compareAgainst
+         * @return
+         */
+        @Assert(englishName="contain")
+        public Boolean assertDoesNotContain(String compareAgainst);
         
         /**
          * Compares the value of this Element to the expected value stored in the Elements enum.
@@ -129,14 +160,62 @@ public interface ElementInterface {
          * @return the actual (in browser at test runtime) value of this Element.
          */
         public String getText();
+        
+        /** 
+         * Validates the Element against the default value provided in the Page Enum object
+         * @return
+         */
         @Validate(englishName="the default value")
         public Boolean validate();
+        
+        /**
+         * Validates the Element equals the provided text
+         * @param expected
+         * @return
+         */
         @Validate(englishName="")
         public Boolean validate(String expected);
+        
+        /** 
+         * Validates the Element is not equal to the provided text
+         * @param expected
+         * @return
+         */
+        @Validate(englishName="")
+        public Boolean validateIsNot(String expected);
+        
+        /**
+         * Validates the Element is equal to the value provided in the TextEnum
+         * @param expected
+         * @return
+         */
         public Boolean validate(TextEnum expected);
+        
+        /**
+         * Validates the Element is equal to the value provided in the TextEnum with a value<br />
+         * that is to be specified at run time.
+         * @param expected
+         * @param replaceOld
+         * @param withNew
+         * @return
+         */
         public Boolean validate(TextEnum expected, String replaceOld, String withNew);
+        
+        /**
+         * Validates that the Element contains the provided text
+         * @param expectedPart
+         * @return
+         */
         @Validate(englishName="contains")
         public Boolean validateContains(String expectedPart);
+        
+        /**
+         * Validates that the Element does not contain the provided text
+         * @param expectedPart
+         * @return
+         */
+        @Validate(englishName="contain")
+        public Boolean validateDoesNotContain(String expectedPart);
     }
     
     public interface TextFieldWithSuggestions extends Typeable {

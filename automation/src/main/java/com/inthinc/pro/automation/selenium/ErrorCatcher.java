@@ -173,7 +173,7 @@ public class ErrorCatcher implements InvocationHandler {
      * @param level
      */
     public void addError(String name, Object error, ErrorLevel level) {
-        String errorStr = null;
+        String errorStr = error.toString();
         String type = error.getClass().getSimpleName();
         if (error instanceof String) {
             errorStr = addStackTrace((String) error);
