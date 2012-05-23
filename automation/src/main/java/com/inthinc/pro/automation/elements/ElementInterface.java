@@ -140,7 +140,7 @@ public interface ElementInterface {
          * @param compareAgainst
          * @return
          */
-        @Assert(englishName="contain")
+        @Assert(englishName="does not contain")
         public Boolean assertDoesNotContain(String compareAgainst);
         
         /**
@@ -214,7 +214,7 @@ public interface ElementInterface {
          * @param expectedPart
          * @return
          */
-        @Validate(englishName="contain")
+        @Validate(englishName="does not contain")
         public Boolean validateDoesNotContain(String expectedPart);
     }
     
