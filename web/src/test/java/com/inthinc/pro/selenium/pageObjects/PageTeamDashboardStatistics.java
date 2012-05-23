@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkScoreTable;
+import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.TeamDriverStatsEnum;
@@ -87,48 +88,48 @@ public class PageTeamDashboardStatistics extends TeamBar {
 
     public class TeamDashboardStatisticsTexts extends TeamBarTexts {
 
-        public Text tripsValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_TRIPS_ENTRY);
+        public TextTable tripsValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_TRIPS_ENTRY);
         }
 
-        public Text stopsValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_STOPS_ENTRY);
+        public TextTable stopsValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_STOPS_ENTRY);
         }
 
-        public Text distanceDrivenValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_DISTANCE_ENTRY);
+        public TextTable distanceDrivenValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_DISTANCE_ENTRY);
         }
 
-        public Text durationValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_DURATION_ENTRY);
+        public TextTable durationValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_DURATION_ENTRY);
         }
 
-        public Text idleTimeValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_IDLE_ENTRY);
+        public TextTable idleTimeValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_IDLE_ENTRY);
         }
 
-        public Text lowIdleValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_LOW_ENTRY);
+        public TextTable lowIdleValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_LOW_ENTRY);
         }
 
-        public Text highIdleValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_HIGH_ENTRY);
+        public TextTable highIdleValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_HIGH_ENTRY);
         }
 
-        public Text idlePercentValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_PERCENT_ENTRY);
+        public TextTable idlePercentValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_PERCENT_ENTRY);
         }
 
-        public Text fuelEfficiencyValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_FUEL_ENTRY);
+        public TextTable fuelEfficiencyValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_FUEL_ENTRY);
         }
 
-        public Text crashesValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_CRASHES_ENTRY);
+        public TextTable crashesValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_CRASHES_ENTRY);
         }
 
-        public Text safetyValue() {
-            return new Text(TeamDriverStatsEnum.DRIVER_SAFETY_ENTRY);
+        public TextTable safetyValue() {
+            return new TextTable(TeamDriverStatsEnum.DRIVER_SAFETY_ENTRY);
         }
 
         public Text driverTeamHeader() {
