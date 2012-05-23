@@ -756,7 +756,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodInterface click(String xpath, String desiredOption, Integer matchNumber) {
         getMatches(xpath, desiredOption, matchNumber).click();
-        return null;
+        return this;
     }
 
     @Override

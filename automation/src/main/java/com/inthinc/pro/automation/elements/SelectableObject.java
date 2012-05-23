@@ -53,7 +53,7 @@ public class SelectableObject extends Text implements Selectable {
 
     @Override
     public SelectableObject select(Integer optionNumber) {
-//        optionNumber--;
+        optionNumber--;
         getSelenium().select(myEnum, "index=" + optionNumber);
         pause(2, "Wait for propogation");
         String selected = getSelenium().getSelectedIndex(myEnum);
@@ -63,7 +63,7 @@ public class SelectableObject extends Text implements Selectable {
 
     @Override
     public SelectableObject select(String desiredOption, Integer matchNumber) {
-//        matchNumber--;
+        matchNumber--;
         String xpath = getSelectIDAsXpath();
         if (xpath == null) {
             xpath = getSelectXpath();

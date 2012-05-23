@@ -448,7 +448,7 @@ public abstract class MasterTest {
     
     @Then("I assert \"$lookfor\" is on the page")
     public boolean assertIsTextOnPage(String lookfor) { 
-        return validateTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
+        return assertTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
     }
 
     public void open(SeleniumEnums pageToOpen) {
