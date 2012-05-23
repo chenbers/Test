@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -8,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.HosReportsEnum;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
@@ -93,6 +95,10 @@ public class PageMyAccount extends NavigationBar {
 		public TextButton cancel() {
 			return new TextButton(MyAccountEnum.CANCEL_BUTTON);
 		}
+		
+		public Button downArrow() {
+            return new Button(MyAccountEnum.MAP_LAYERS_ARROW);
+		}
 	}
 
 	public class MyAccountDropDowns {
@@ -106,6 +112,14 @@ public class PageMyAccount extends NavigationBar {
 
 		public DropDown warning() {
 			return new DropDown(MyAccountEnum.WARNING_SELECT);
+		}
+		
+		public DropDown mapType() {
+		    return new DropDown(MyAccountEnum.MAP_TYPE);
+		}
+		
+		public DropDown mapLayers() {
+		    return new DropDown(MyAccountEnum.MAP_LAYERS_SELECTOR);
 		}
 
 		public DropDown fuelEfficiency() {
@@ -333,6 +347,10 @@ public class PageMyAccount extends NavigationBar {
 			return new Text(MyAccountEnum.RED_FLAGS_HEADER);
 		}
 		
+		public Text titleMapPreferences() {
+		    return new Text(MyAccountEnum.MAP_PREFERENCES_HEADER);
+		}
+		
 		public Text infoMessage(){
 			return new Text(MyAccountEnum.MESSAGE);
 		}
@@ -346,6 +364,7 @@ public class PageMyAccount extends NavigationBar {
 		_text().titleLoginInfo().validate();
 		_text().titleAccountInfo().validate();
 		_text().titleRedFlags().validate();
+		_text().titleMapPreferences().validate();
 		_text().titleContactInfo().validate();
 
 		/* Labels for the seperate rows */

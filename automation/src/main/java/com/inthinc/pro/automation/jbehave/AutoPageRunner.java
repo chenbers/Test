@@ -83,7 +83,7 @@ public class AutoPageRunner {
             location = start + end;
         }
         
-        if (pageMap.containsKey(location)){ 
+        if (pageMap.containsKey(location) && pageMap.get(location).isOnPage()){ 
             currentPage = pageMap.get(location);    
             currentPageClass = currentPage.getClass();
         } else {
@@ -247,7 +247,7 @@ public class AutoPageRunner {
     }
     
     private Object getElement() {
-        Throwable err = null;
+        Throwable err = new NullPointerException();
         try {
             elementType = JBehaveTermMatchers.getAlias(workingOnStep); 
             Object elementCategory = pageClass.getMethod(JBehaveTermMatchers.getTypeFromString(workingOnStep)).invoke(pageObject);

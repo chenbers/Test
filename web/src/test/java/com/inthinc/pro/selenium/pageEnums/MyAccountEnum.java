@@ -36,6 +36,12 @@ public enum MyAccountEnum implements SeleniumEnums {
     CRITICAL_ICON(null, "//td[@id='myAccountInfo']/../td[1]"),
     CRITICAL_TEXT("Critical", "myAccountCrit"),
 
+    /* Map Preferences */
+    MAP_PREFERENCES_HEADER("Map Preferences", "//span[@class='map']"),
+    MAP_TYPE("Map Type", "myAccountMapType"),
+    MAP_LAYERS_SELECTOR("Map Layers","my_form:myAccountMapLayersSelect"),
+    MAP_LAYERS_ARROW(null, "//span[@id='my_form:groupListSelect']/span[1]/span/div"), //TODO: MAKE SURE THE ID GETS HARD CODED, I HAVE ASKED JASON TO DO THIS
+    
     /* Contact Information */
     CONTACT_HEADER("Contact Information", "//span[@class='contact']", "//td[3]/div/div[@class='panel_nw']/div[@class='panel_title']/span"),
     EMAIL_SUB_HEADER("E-mail Addresses", "//div[@class='panel_content']/div[1]"),
