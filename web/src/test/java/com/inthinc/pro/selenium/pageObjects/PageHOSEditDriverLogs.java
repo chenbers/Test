@@ -160,7 +160,7 @@ public class PageHOSEditDriverLogs extends HOSBar {
         return new PageHOSEditDriverLogsPopUps();
     }
     
-    public TimeOfDay _timeSelector(){
+    public TimeOfDay duration(){
         return new TimeOfDay(HOSDriverLogsEditEnum.TIME_CHANGER);
     }
 
