@@ -22,7 +22,7 @@ public abstract class NavigationBar extends Masthead {
 
 	protected class NavigationBarDropDowns extends MastheadDropDowns {
 		public DropDown searchDrop() {
-			return new DropDown(NavigationBarEnum.SEARCH_BOX);
+			return new DropDown(NavigationBarEnum.SEARCH_DROP_DOWN);
 		}
 	}
 
