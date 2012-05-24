@@ -220,7 +220,7 @@
 					  					style="width:200px;size:auto">
 							<f:selectItems value="#{myAccountBean.mapLayers}"/>
 					  	</h:selectManyMenu>
-						<rich:jQuery selector="#myAccountMapLayersSelect" timing="onload"  
+						<rich:jQuery selector="#myAccountMapLayersSelect" timing="onload" id="layer" 
                             query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
                                                         textFormatFunction: function(options) {
 																return '#{messages.mapLayers}';
