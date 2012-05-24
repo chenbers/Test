@@ -76,6 +76,8 @@ public class AutoPageRunner {
         if (inPopUp){
             return;
         }
+        currentPage = null;
+        currentPageClass = null;
         
         CoreMethodInterface selenium = CoreMethodLib.getSeleniumThread();
         String location = selenium.getLocation();
@@ -105,6 +107,7 @@ public class AutoPageRunner {
                     break;
                 }
             }
+            
         }
         pageObject = currentPage;
         pageClass = currentPageClass;
@@ -298,7 +301,7 @@ public class AutoPageRunner {
                     for (Map.Entry<String, Method> entry : methods.entrySet()){
                         if (entry.getKey().contains("column")){
                             try {
-                                return tryElementName(elementClass, entry.getValue());
+                                return tryElementName(elementClass, entry.getValue()); 
                             } catch (Exception e){
                                 continue;
                             }
