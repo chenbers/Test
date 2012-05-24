@@ -56,7 +56,7 @@ public abstract class TeamBar extends NavigationBar {
     
     public class TeamBarLinks extends NavigationBarLinks{
         
-        public TextLink timeSelector(TeamTimeFrames timeFrame){
+        public TextLink duration(TeamTimeFrames timeFrame){
             return new TextLink(timeFrame);
         }
         
@@ -94,7 +94,7 @@ public abstract class TeamBar extends NavigationBar {
         
     }
 
-    public TeamBar timeSelectors_validate() {
+    public TeamBar duration_validate() {
         for (TeamTimeFrames selector : EnumSet.allOf(TeamTimeFrames.class)) {
             TextObject object = new TextObject(selector);
             object.validate(selector);
