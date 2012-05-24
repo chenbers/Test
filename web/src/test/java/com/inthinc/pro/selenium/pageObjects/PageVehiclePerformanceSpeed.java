@@ -52,28 +52,28 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 	
 	public class VehicleSpeedLinks{
 		
-		public TextLink _overall(){
+		public TextLink categoryOverallSpeeds(){
 			return new TextLink(VehiclePerformanceSpeedEnum.BREAKDOWN_OVERALL_LINK);
 		}
 		
-		public TextLink _1_30(){
+		public TextLink categoryOneSpeeds(){
 			return new TextLink(VehiclePerformanceSpeedEnum.BREAKDOWN_1_30_LINK);
 		}
 		
-		public TextLink _31_40(){
+		public TextLink categoryTwoSpeeds(){
 			return new TextLink(VehiclePerformanceSpeedEnum.BREAKDOWN_31_40_LINK);
 		}
 		
-		public TextLink _41_54(){
+		public TextLink categoryThreeSpeeds(){
 			return new TextLink(VehiclePerformanceSpeedEnum.BREAKDOWN_41_54_LINK);
 		}
 		
 		
-		public TextLink _55_64(){
+		public TextLink categoryFourSpeeds(){
 			return new TextLink(VehiclePerformanceSpeedEnum.BREAKDOWN_55_64_LINK);
 		}
 		
-		public TextLink _65_80(){
+		public TextLink categoryFiveSpeeds(){
 			return new TextLink(VehiclePerformanceSpeedEnum.BREAKDOWN_65_80_LINK);
 		}
 		
@@ -128,7 +128,7 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 	
 	public class VehicleSpeedTexts{
 		
-		public Text mainOverall(){
+		public Text mainOverallScore(){
 			return new Text(VehiclePerformanceSpeedEnum.OVERALL_SCORE_NUMBER);
 		}
 		
@@ -137,28 +137,28 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 		}
 		
 		
-		public Text _overall(){
+		public Text categoryOverallSpeedsScore(){
 			return new Text(VehiclePerformanceSpeedEnum.BREAKDOWN_OVERALL_SCORE);
 		}
 		
-		public Text _1_30(){
+		public Text categoryOneSpeedsScore(){
 			return new Text(VehiclePerformanceSpeedEnum.BREAKDOWN_1_30_SCORE);
 		}
 		
-		public Text _31_40(){
+		public Text categoryTwoSpeedsScore(){
 			return new Text(VehiclePerformanceSpeedEnum.BREAKDOWN_31_40_SCORE);
 		}
 		
-		public Text _41_54(){
+		public Text categoryThreeSpeedsScore(){
 			return new Text(VehiclePerformanceSpeedEnum.BREAKDOWN_41_54_SCORE);
 		}
 		
 		
-		public Text _55_64(){
+		public Text categoryFourSpeedsScore(){
 			return new Text(VehiclePerformanceSpeedEnum.BREAKDOWN_55_64_SCORE);
 		}
 		
-		public Text _65_80(){
+		public Text categoryFiveSpeedsScore(){
 			return new Text(VehiclePerformanceSpeedEnum.BREAKDOWN_65_80_SCORE);
 		}
 		
@@ -261,7 +261,7 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
     @Override
     protected boolean checkIsOnPage() {
         return _button().emailReport().isPresent() &&
-               _link()._overall().isPresent();
+               _link().categoryOverallSpeeds().isPresent();
     }
     
 
