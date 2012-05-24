@@ -469,7 +469,7 @@ public class Reports_Vehicles extends WebRallyTest {
                 vehicle_performance_speed.verifyOnPage();
 
                 vehicle_performance_speed._link().duration(TimeDuration.MONTHS_12).click();
-                vehicle_performance_speed._text().mainOverall().assertEquals(speed_value);
+                vehicle_performance_speed._text().mainOverallScore().assertEquals(speed_value);
 
             }else if(!reports_vehicles._link().speedValue().row(row).isPresent()){
                 break;
