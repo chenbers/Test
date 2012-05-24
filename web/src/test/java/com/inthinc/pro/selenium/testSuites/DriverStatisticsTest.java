@@ -14,7 +14,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 
 @Ignore
 public class DriverStatisticsTest extends WebRallyTest {
@@ -50,7 +50,7 @@ public class DriverStatisticsTest extends WebRallyTest {
     public void emailTest1695(){
         //set_test_case("TC1695");//TODO: when test is complete uncomment this line and remove @Ignore
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         
         //TODO Update when tools and email is on PageTeamDashboardStatistics page.
 //        ptds._button().tools().click();
@@ -77,7 +77,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         paeu._checkBox().userInformation().uncheck();
         paeu._button().saveTop().click();
         ped._navTree().groups().click("Test Group WR");
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Alpha Betical").assertPresence(true);
         deleteUser("Alpha Betical");
         
@@ -106,7 +106,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         //TODO test edit of vehicle.
         //TODO get driver information to check on.
         paud._navTree().groups().click("Test Group WR");
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Blooregard Kazoo").assertPresence(true);
         ptds.getLinkByText("Alma Mater").assertPresence(false);
         deleteUser("Blooregard Kazoo");
@@ -127,7 +127,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         paud._button().delete().click();
         paud._popUp().deleteUser()._button().delete().click();
         paud._navTree().groups().click("Test Group WR");
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Alto Soprano").assertPresence(false);
         
         //TODO test deletion of vehicle, zone, zone alert, and red flag.
@@ -139,7 +139,7 @@ public class DriverStatisticsTest extends WebRallyTest {
 
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
         
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         String team = ptds._text().teamName().getText();//TODO: this is failing so the var team is getting set to NULL
         savePageLink();
         ptds._link().logout().click();
@@ -173,7 +173,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         paeu._dropDown().driverTeam().select("Top - Test Group RW");
         paeu._button().saveBottom().click();
         paud._navTree().groups().click("Test Group WR");
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Swappy McGee").assertPresence(false);
         ptds._navTree().groups().click("Test Group RW");
         ptds.getLinkByText("Swappy McGee").assertPresence(true);

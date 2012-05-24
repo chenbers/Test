@@ -30,7 +30,7 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDevices;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageTeamLiveTeam;
 import com.inthinc.pro.selenium.pageObjects.PageTeamOverallScore;
 import com.inthinc.pro.selenium.pageObjects.PageTeamStops;
@@ -621,7 +621,7 @@ public void sometest() {
         instPage = new PageTeamStops();
         instPage = new PageTeamOverallScore();
         instPage = new PageTeamLiveTeam();
-        instPage = new PageTeamDashboardStatistics();
+        instPage = new PageTeamDriverStatistics();
         instPage = new PageReportsDevices();
         instPage = new PageAdminVehicleDetails();
 

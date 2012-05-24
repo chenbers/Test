@@ -16,7 +16,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
@@ -24,8 +24,8 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageMyAccount.class, PageExecutiveDashboard.class, 
-        PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageNotificationsSafety.class, PageTeamDashboardStatistics.class,
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageMyAccount.class,
+        PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageNotificationsSafety.class, PageTeamDriverStatistics.class,
         PageDriverPerformanceSpeed.class, PageDriverPerformanceSeatBelt.class, PageDriverPerformanceStyle.class, PageDriverPerformanceTrips.class,
         PageVehiclePerformanceSeatBelt.class, PageVehiclePerformanceSpeed.class, PageVehiclePerformanceStyle.class, PageVehiclePerformanceTrips.class
         })

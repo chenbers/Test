@@ -24,7 +24,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})

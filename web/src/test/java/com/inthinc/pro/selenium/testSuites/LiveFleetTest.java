@@ -24,7 +24,7 @@ import com.inthinc.pro.selenium.pageObjects.PageHOSEditDriverLogs;
 import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
