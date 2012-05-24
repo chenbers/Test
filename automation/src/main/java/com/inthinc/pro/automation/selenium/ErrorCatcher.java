@@ -219,7 +219,7 @@ public class ErrorCatcher implements InvocationHandler {
         }
         errors.get(name).put(type, error);
         if (temp.equals(ErrorLevel.FATAL)) {
-            throw new AssertionError(error);
+            throw new AssertionError(toString());
         }
     }
 

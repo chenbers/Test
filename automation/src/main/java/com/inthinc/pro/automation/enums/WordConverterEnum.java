@@ -52,13 +52,13 @@ public enum WordConverterEnum {
         }
     }
     
-    public static int getNumber(String sentence){
+    public static Integer getNumber(String sentence){
         for (String word : matcher.keySet()){
             if (sentence.contains(word)){
                 return matcher.get(word);
             }
         }
-        return 0;
+        return null;
     }
 
 }

@@ -71,7 +71,8 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
         for (int i=0;i<parameters.length;i++){
             Class<?> next = parameters[i];
             if (next.isAssignableFrom(Integer.class)) {
-                passParameters[i] = WordConverterEnum.getNumber(stepAsString);
+                Integer param = WordConverterEnum.getNumber(stepAsString);
+                passParameters[i] = param == null || param == 0 ? 1 : param;
             } else {
                 String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
                 String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));

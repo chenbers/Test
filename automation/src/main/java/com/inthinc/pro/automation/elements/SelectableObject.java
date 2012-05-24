@@ -124,7 +124,8 @@ public class SelectableObject extends Text implements Selectable {
                 String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
                 passParameters[i] = toType;    
             } else if (next.isAssignableFrom(Integer.class)) {
-                passParameters[i] = WordConverterEnum.getNumber(stepAsString);
+                Integer param = WordConverterEnum.getNumber(stepAsString);
+                passParameters[i] = param == null || param == 0 ? 1 : param;
             }
             
             
