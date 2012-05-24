@@ -1,10 +1,13 @@
 package com.inthinc.pro.automation;
 
+import java.util.Map;
+
 public class AutomationPropertiesBean {
     private String silo;
     private String browserName;
     private String operatingSystem;
     private Boolean addTestSet;
+    private Map<String, String> users;
 
     public String getOperatingSystem() {
         return operatingSystem;
@@ -40,5 +43,13 @@ public class AutomationPropertiesBean {
 
     public String getRallyName() {
         return "automation_" + operatingSystem + "_" + browserName;
+    }
+
+    public Map<String, String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Map<String, String> users) {
+        this.users = users;
     }
 }

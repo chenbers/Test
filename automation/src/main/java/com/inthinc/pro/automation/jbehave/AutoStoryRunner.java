@@ -28,6 +28,7 @@ import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.reporters.ConcurrentStoryReporter;
 import org.jbehave.core.reporters.StoryReporter;
+import org.jbehave.core.steps.BeforeOrAfterStep;
 import org.jbehave.core.steps.CandidateSteps;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.PendingStepMethodGenerator;
@@ -318,6 +319,8 @@ public class AutoStoryRunner extends StoryRunner {
                     } else {
                         stepsToRemove.pop();
                     }
+                } else if (step instanceof BeforeOrAfterStep){
+                    page.beforeOrAfter();
                 }
                 
                 state = state.run(step);

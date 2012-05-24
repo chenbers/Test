@@ -56,6 +56,17 @@ public class AutoPageRunner {
         }
     }
     
+    public void beforeOrAfter(){
+        inPopUp=false;
+        pageObject = null;
+        pageClass = null;
+        workingOnStep = null;
+        elementName = null;
+        elementType = null;
+        currentPage = null;
+        currentPageClass = null;
+    }
+    
     public void setEmbedder(Embedder embedder){
         stepCreator = new AutoStepCreator(embedder);
         methodFinder.setStepCreator(stepCreator);
@@ -112,7 +123,7 @@ public class AutoPageRunner {
             
             workingOnStep = keywords.stepWithoutStartingWord(step.stepAsString(), stepType);
             if (popUpStep()){
-                return stepCreator.createPopupStep(workingOnStep);
+                return stepCreator.createPopupStep(step.stepAsString());
             }
             
             if (!pageSpecificStep(step.stepAsString())){ 

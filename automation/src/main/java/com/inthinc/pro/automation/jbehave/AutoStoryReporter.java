@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.jbehave;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,12 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     private Test test;
 
     private Description story;
+    
+    private Iterator<Description> scenarios;
     private Description scenario;
+    
+    private Iterator<Description> steps;
+    private Description step;
     
     private RunNotifier runNotifier;
     
@@ -38,16 +44,9 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
         if (test instanceof BrowserRallyTest) {
             ((BrowserRallyTest) test).parseJBehaveStep(scenarioTitle);
         }
-        if (story != null) {
-            for (Description desc : story.getChildren()){
-                String name = desc.getDisplayName();
-                if (name.equals(scenarioTitle)){
-                    scenario = desc;
-                    runNotifier.fireTestStarted(scenario);
-                    break; 
-                } 
-                scenario = null;
-            }
+        if (scenarios != null) {
+            scenario = scenarios.next();
+            steps = scenario.getChildren().iterator();
         }
         super.beforeScenario(scenarioTitle);
     }
@@ -60,10 +59,17 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
                 String name = desc.getDisplayName();
                 if (name.equals(story.getName().replace(".story", ""))){
                     this.story = desc;
+                    scenarios = desc.getChildren().iterator();
                     runNotifier.fireTestStarted(this.story);
                     break; 
                 }
             }
+        } else {
+            this.story = null;
+            this.scenarios = null;
+            this.scenario = null;
+            this.steps = null;
+            this.step = null;
         }
         
         super.beforeStory(story, givenStory);
@@ -104,23 +110,12 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
         i++;
     }
     
-    private Description getStepDescription(String step){
-        if (runNotifier != null && scenario != null){
-            for (Description stepDesc : scenario.getChildren()){
-                String name = stepDesc.getDisplayName();
-                if (name.equals(step)){
-                    return stepDesc;
-                }
-            }
-        }
-        return null;
-    }
     
     @Override
     public void beforeStep(String step){
-        Description desc = getStepDescription(step);
-        if (runNotifier != null && desc != null){
-            runNotifier.fireTestStarted(desc);
+        if (runNotifier != null && scenario != null){
+            this.step = steps.next();
+            runNotifier.fireTestStarted(this.step);
         }
         super.beforeStep(step);
     }
@@ -134,36 +129,32 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
 
     @Override
     public void successful(String step) {
-        Description desc = getStepDescription(step);
-        if (runNotifier != null && desc != null){
-            runNotifier.fireTestFinished(desc);
+        if (runNotifier != null && this.step != null){
+            runNotifier.fireTestFinished(this.step);
         }
         super.successful(step);
     }
 
     @Override
     public void ignorable(String step) {
-        Description desc = getStepDescription(step);
-        if (runNotifier != null && desc != null){
-            runNotifier.fireTestIgnored(desc);
+        if (runNotifier != null && this.step != null){
+            runNotifier.fireTestIgnored(this.step);
         }
         super.ignorable(step);
     }
 
     @Override
     public void pending(String step) {
-        Description desc = getStepDescription(step);
-        if (runNotifier != null && desc != null){
-            runNotifier.fireTestIgnored(desc);
+        if (runNotifier != null && this.step != null){
+            runNotifier.fireTestIgnored(this.step);
         }
         super.pending(step);
     }
 
     @Override
     public void failed(String step, Throwable cause) {
-        Description desc = getStepDescription(step);
-        if (runNotifier != null && desc != null){
-            runNotifier.fireTestFailure(new Failure(desc, cause.getCause()));
+        if (runNotifier != null && this.step != null){
+            runNotifier.fireTestFailure(new Failure(this.step, cause.getCause()));
         }
         super.failed(step, cause);
     }
