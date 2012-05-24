@@ -112,8 +112,8 @@
 				<rich:column  rendered="#{tableColumns['vehicle'].visible}" id="newTeamStatsTab-totalsVehicle-empty">  
 					<h:outputText value=""/>
 				</rich:column>
-				<rich:column rendered="#{tableColumns['trips'].visible}" >
-					<f:facet name="header" id="newTeamStatsTab-totalsTrips">
+				<rich:column rendered="#{tableColumns['trips'].visible}" id="newTeamStatsTab-totalsTripTrips" >
+					<f:facet name="header" >
 						#{messages.team_trips}
 					</f:facet>
 					#{total.score.trips}
