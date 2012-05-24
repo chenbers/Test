@@ -26,16 +26,16 @@ public enum TeamStopsEnum implements SeleniumEnums {
     /* Driver Selection */
     DRIVER_HEADER("Driver Name", Xpath.start().table(Id.id("stopsTableForm:stopsDrivers:4")).thead().tr().th("2").toString()),
 
-    DRIVER_RADIO_BUTTON(null, "stopsTableForm:stopsDrivers:###:stopsCheckDriver:***",null ),
-    DRIVER_NAME(null, "stopsTableForm:stopsDrivers:###:teamStops-driverPerformance",null ),
+    DRIVER_RADIO_BUTTON(null, "stopsTableForm:stopsDrivers:###:stopsCheckDriver:***" ),
+    DRIVER_NAME(null, "stopsTableForm:stopsDrivers:###:teamStops-driverPerformance" ),
     DRIVER_LETTER(null, Xpath.start().tr("***").td("3").div().div(Id.clazz("trips_label")).toString()),
 
     /* Totals Section */
-    TOTAL_SUPERHEADER("Total Time At Stop(s)",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("1").th("5").toString()),
-    TOTAL_TOTAL_HEADER("Total",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("1").toString()),
-    TOTAL_LOW_IDLE_HEADER("Low Idle",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("2").toString()),
-    TOTAL_HIGH_IDLE_HEADER("High Idle",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("3").toString()),
-    TOTAL_WAIT_HEADER("Wait",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("4").toString()),
+    TOTAL_SUPERHEADER("Total Time At Stop(s)", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("1").th("5").toString()),
+    TOTAL_TOTAL_HEADER("Total", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("1").toString()),
+    TOTAL_LOW_IDLE_HEADER("Low Idle", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("2").toString()),
+    TOTAL_HIGH_IDLE_HEADER("High Idle", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("3").toString()),
+    TOTAL_WAIT_HEADER("Wait", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("2").th("4").toString()),
     TOTAL_DURATION_HEADER("Duration", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTripsSummary")).thead().tr("1").th("6").toString()),
 
     TOTAL_TOTAL_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTripsSummary:tb")).tr().td("5").toString()),
@@ -45,17 +45,17 @@ public enum TeamStopsEnum implements SeleniumEnums {
     TOTAL_DURATION_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTripsSummary:tb")).tr().td("9").toString()),
 
     /* Detailed Section */
-    DETAILED_SUPERHEADER("Time at Stop",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("5").toString()),
+    DETAILED_SUPERHEADER("Time at Stop", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("5").toString()),
 
-    ZONE_HEADER("Zone",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("1").toString()),
-    LOCATION_HEADER("Stop Location",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("2").toString()),
-    ARRIVE_HEADER("Arrive",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("3").toString()),
-    DEPART_HEADER("Depart",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("4").toString()),
-    TOTAL_HEADER("Total",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("1").toString()),
-    LOW_IDLE_HEADER("Low Idle",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("2").toString()),
-    HIGH_IDLE_HEADER("High Idle",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("3").toString()),
-    WAIT_HEADER("Wait",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("4").toString()),
-    DURATION_HEADER("Duration",null, Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("6").toString()),
+    ZONE_HEADER("Zone", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("1").toString()),
+    LOCATION_HEADER("Stop Location", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("2").toString()),
+    ARRIVE_HEADER("Arrive", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("3").toString()),
+    DEPART_HEADER("Depart", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("4").toString()),
+    TOTAL_HEADER("Total", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("1").toString()),
+    LOW_IDLE_HEADER("Low Idle", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("2").toString()),
+    HIGH_IDLE_HEADER("High Idle", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("3").toString()),
+    WAIT_HEADER("Wait", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("2").th("4").toString()),
+    DURATION_HEADER("Duration", Xpath.start().table(Id.id("stopsTripsTableForm:stopsTrips")).thead().tr("1").th("6").toString()),
     
     ZONE_ENTRY(null, Xpath.start().tbody(Id.id("stopsTripsTableForm:stopsTrips:tb")).tr("###").td("1").toString()),
     LOCATION_ENTRY(null, "stopsTripsTableForm:stopsTrips:###:address_column"),
