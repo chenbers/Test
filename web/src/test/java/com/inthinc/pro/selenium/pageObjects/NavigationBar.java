@@ -21,7 +21,7 @@ public abstract class NavigationBar extends Masthead {
 	}
 
 	protected class NavigationBarDropDowns extends MastheadDropDowns {
-		public DropDown searchDrop() {
+		public DropDown masterSearch() {
 			return new DropDown(NavigationBarEnum.SEARCH_DROP_DOWN);
 		}
 	}
