@@ -141,9 +141,10 @@ public class AutoPageRunner {
                     returnStep = then(step);
                 }
             } catch (StepException e){
-                Log.debug("Unable to finish step: %s\nError is: %s", workingOnStep, e.getError());
+                Log.info("Unable to finish step: %s\nError is: %s", workingOnStep, e.getError());
             }
         } catch (NullPointerException e){
+            Log.info("Logging a nullPointer exception: %e", e);
             return stepCreator.createNullPointerStep(step.stepAsString(), e);
         }
         
@@ -217,6 +218,11 @@ public class AutoPageRunner {
                 }
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
+        } catch (NullPointerException e){
+            String message = String.format("step: %s\nstepCreator: %s\ncurrentPage: %s\nmethodFinder: %s", 
+                    workingOnStep, stepCreator, currentPage, methodFinder);
+                    
+            return stepCreator.createNullPointerStep(message, e);
         } catch (NoSuchMethodException e) {
             Log.debug(e);
         } 
@@ -238,6 +244,11 @@ public class AutoPageRunner {
                 return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("verifyOnPage"), true);
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
+        } catch (NullPointerException e){
+            String message = String.format("step: %s\nstepCreator: %s\ncurrentPage: %s\nmethodFinder: %s", 
+                    workingOnStep, stepCreator, currentPage, methodFinder);
+                    
+            return stepCreator.createNullPointerStep(message, e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } 
@@ -251,6 +262,11 @@ public class AutoPageRunner {
                 return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("load"));
             }
             return methodFinder.findAction(getElement(), elementType, elementName, step); 
+        } catch (NullPointerException e){
+            String message = String.format("step: %s\nstepCreator: %s\ncurrentPage: %s\nmethodFinder: %s", 
+                    workingOnStep, stepCreator, currentPage, methodFinder);
+                    
+            return stepCreator.createNullPointerStep(message, e);
         } catch (NoSuchMethodException e) {
             Log.info(e);
         } catch (IllegalArgumentException e) {
@@ -261,11 +277,15 @@ public class AutoPageRunner {
     }
     
     private Object getElement() {
-        Throwable err = new NullPointerException();
+        Throwable err = null;
         try {
             elementType = JBehaveTermMatchers.getAlias(workingOnStep); 
             Object elementCategory = pageClass.getMethod(JBehaveTermMatchers.getTypeFromString(workingOnStep)).invoke(pageObject);
             return getElement(elementCategory);
+        } catch (NullPointerException e){
+            String message = String.format("step: %s\npageClass: %s\npageObject: %s", 
+                    workingOnStep, pageClass, pageObject);
+            throw new StepException(workingOnStep, message, e);
         } catch (IllegalArgumentException e) {
             err = e;
         } catch (NoSuchMethodException e) {
@@ -311,6 +331,9 @@ public class AutoPageRunner {
             }
             throw new NoSuchMethodException("Could not find Element for " + workingOnStep);
     
+        } catch (NullPointerException e){
+            String message = String.format("elementClass: %s\telementType: %s", elementClass, elementType);
+            throw new StepException(workingOnStep, message, e);
         } catch (Exception e) {
             String currentError = String.format("Working on getting the elementName %s, with pageObject %s", elementName, pageClass);    
             throw new StepException(workingOnStep, currentError, e);
@@ -319,12 +342,17 @@ public class AutoPageRunner {
     
     
     private Object matchEnum(Class<?> clazz){
-        String step = workingOnStep.toLowerCase().replace(" ", "");
-        for (Object obj : clazz.getEnumConstants()){
-            String name = ((Enum<?>)obj).name().replace("_", "").toLowerCase();
-            if (step.contains(name)){
-                return obj;
+        try {
+            String step = workingOnStep.toLowerCase().replace(" ", "");
+            for (Object obj : clazz.getEnumConstants()){
+                String name = ((Enum<?>)obj).name().replace("_", "").toLowerCase();
+                if (step.contains(name)){
+                    return obj;
+                }
             }
+        } catch (NullPointerException e){
+            String error = String.format("class: %s\tstep: %s", clazz, workingOnStep);
+            throw new StepException(workingOnStep, error, e);
         }
         return null;
     }
@@ -345,6 +373,9 @@ public class AutoPageRunner {
                 }
             }
             return method.invoke(elementClass, passParameters);
+        } catch (NullPointerException e){
+            String error = String.format("elementClass: %s\tmethod: %s", elementClass, method);
+            throw new StepException(workingOnStep, error, e);
         } catch (Exception e){
             String error = String.format("Trying to execute %s on object %s.", 
                     method.getName(), elementClass.getClass().getSimpleName());

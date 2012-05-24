@@ -421,7 +421,7 @@ public abstract class MasterTest {
         } else {
             results = actual.equals(expected);
         }
-        Log.debug("Expected: " + expected + " == Actual: " + actual + " is " + results);
+        Log.info("Expected: " + expected + " == Actual: " + actual + " is " + results);
         return results;
     }
 
