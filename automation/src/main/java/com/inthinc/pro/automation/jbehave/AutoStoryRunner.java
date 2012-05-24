@@ -319,7 +319,7 @@ public class AutoStoryRunner extends StoryRunner {
                     } else {
                         stepsToRemove.pop();
                     }
-                } else if (step instanceof BeforeOrAfterStep){
+                } else if (step.getClass().getSimpleName().equals(BeforeOrAfterStep.class.getSimpleName())){
                     page.beforeOrAfter();
                 }
                 
