@@ -181,7 +181,7 @@ public class PageHOSAddEditFuelStops extends HOSBar {
         return new AddEditFuelStopsPopUps();
     }
     
-    public TimeOfDay _timeSelector(){
+    public TimeOfDay duration(){
         return new TimeOfDay(FuelStopsEditEnum.TIME_CHANGER);
     }
 
