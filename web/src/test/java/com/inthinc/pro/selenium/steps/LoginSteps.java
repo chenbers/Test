@@ -14,7 +14,7 @@ import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.pageObjects.PopUps;
 
 public class LoginSteps extends WebSteps { 
@@ -25,7 +25,7 @@ public class LoginSteps extends WebSteps {
     private static final PageLogin page = new PageLogin();
     private static final PopUps popup = new PopUps();
     private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
-
+    //REPLACED BY AUTOSTORY
     @Given("I log in to the login page")
     public void givenIAmLoggedInToTheLoginPage() {
         if (!page.verifyOnPage()) {
@@ -34,24 +34,8 @@ public class LoginSteps extends WebSteps {
             page._textField().password().type(autouser.getPassword());
             whenIClickSignIn();
         }
-    }
-    
-    @When("I bookmark the page")
-    public void whenIBookmarkThePage() {
-        page.savePageLink();
-    }
-    
-    @When("I click log out")
-    @Alias("I click logout")
-    public void whenIClickLogOut() {
-        page._link().logout().click();
-    }    
-    
-    @When("I click the bookmark I just added")
-    public void whenIClickTheBookmarkIJustAdded() {
-        page.openSavedPage();
-    }    
-    
+    } 
+  
     @Given("I am on the login page")
     @Aliases(values = {"I open the Login Page"})    
     public void givenIAmOnTheLogInPage() {
@@ -59,7 +43,7 @@ public class LoginSteps extends WebSteps {
             page.load();
         }
     }    
-    
+
     @When("I am on the login page")
     @Aliases(values = {"I open the Login Page"})    
     public void whenIAmOnTheLogInPage() {
@@ -67,7 +51,7 @@ public class LoginSteps extends WebSteps {
             page.load();
         }
     }
-    
+  
     @Then("I should remain on the Login Page")
     @Alias("I am still on the Login Page")
     public void thenIShouldRemainOnTheLoginPage() {
@@ -112,28 +96,24 @@ public class LoginSteps extends WebSteps {
     public void whenICloseTheAlertMessage() {
         loginPage._popUp().loginError()._button().ok().click();
     }
-    
     @Then("I get an alert 'Incorrect user name or password. Please try again.'")
     public void thenIGetAnAlertIncorrectUserNameOrPasswordPleaseTryAgain() {
         page._popUp().loginError()._text().message().assertEquals();
     }
-
     @Then("the name and password fields are blank")
     public void thenTheNameAndPasswordFieldsAreBlank() {
 
         validateUserNameField("");
         validateUserPasswordField("");
         
-    }
-    
+    } 
     @Then("the name field is $text")
     public void validateUserNameField(String text) {
 
         page._textField().userName().validate(text);
         page._textField().userName().focus();
         
-    }
-    
+    }  
     @Then("the password field is $password")
     public void validateUserPasswordField(String password) {
         page._textField().password().validate(password);
@@ -149,7 +129,7 @@ public class LoginSteps extends WebSteps {
     public void whenIPressTheTabKey(){
         test.tabKey();
     }
-    
+    //REPLACED BY AUTOSTORY    
     @Then("I confirm the page contains all necessary elements")
     public void thenIConfirmThePageContainsAllNecessaryElements(){
         Boolean validate = page._textField().userName().isPresent() & 
@@ -163,12 +143,7 @@ public class LoginSteps extends WebSteps {
         page.validateTrue(validate, "All elements exist on this page");
     }
     
-    @Then("I select home")
-    public void thenISelectHome()
-    {
-        //NEEDS TO BE IMPLEMENTED
-    }
-    
+
     @Then("I click the 'Forgot your user name or password?' link")
     @When("I click the 'Forgot your user name or password?' link")
     public void whenIClickTheForgotYourUserNameOrPasswordLink(){
@@ -189,7 +164,6 @@ public class LoginSteps extends WebSteps {
     public void thenTheForgotYouUserNameOrPasswordWindowIsClosed(){
         page._popUp().forgotPassword()._text().header().validateVisibility(false);
     }
-
     @Then("I am on the login page")
     @Aliases(values = {"I open the Login Page"})    
     public void thenIAmOnTheLogInPage() {
@@ -197,7 +171,6 @@ public class LoginSteps extends WebSteps {
             page.load();
         }
     }  
-
     @Then("the email address text field is blank")
     public void thenTheEmailAddressTextFieldIsBlank(){
         page._popUp().forgotPassword()._textField().email().validate("");
@@ -223,7 +196,6 @@ public class LoginSteps extends WebSteps {
         page._popUp().forgotPassword()._textField().email().type("\"test\"@email.com");     /* doesn't conform to rule * All other characters, inclusive of a blank space 
                                                                                                and a quoted string (i.e. between double quotes), are NOT allowed Domain Name */
     }
-
     @When("I click send")
     public void whenIClickSend(){
         page._popUp().forgotPassword()._button().send().click();
@@ -233,17 +205,14 @@ public class LoginSteps extends WebSteps {
     public void thenTheAlertIncorrectFormatAppearsAboveTheEmailAddressField(){
         page._popUp().forgotPassword()._text().error().validate("Incorrect format (jdoe@tiwipro.com)");
     }
-    
     @Then("the alert 'Required' appears above the email address field")
     public void thenTheAlertRequiredAppearsAboveTheEmailAddressField(){
         page._popUp().forgotPassword()._text().error().validate("Required");
     }
-    
     @Then("the alert 'Incorrect e-mail address' appears above the email address field")
     public void thenTheAlertIncorrectEmailAddressAppearsAboveTheEmailAddressField(){
         page._popUp().forgotPassword()._text().error().validate("Incorrect e-mail address");        
     }
-
     @Then("the 'Forgot user name or password' pop up displays correctly with all elements")
     public void thenTheForgotUserNameOrPasswordPopUpDisplaysCorrectlyWithAllElements(){
         page._popUp().forgotPassword().equals(popup);
@@ -264,13 +233,32 @@ public class LoginSteps extends WebSteps {
         login.loginProcess(user);
     }
     
+    @When("I am logged in as TeamOnly user")
+    public void loggedInAsTeamOnlyUser(){
+        page._textField().userName().type("CaptainNemo");
+        page._textField().password().type("Muttley");
+        page._button().logIn().click();
+    }
+    
     @Given("I am logged in as a \"$roleName\" user")
     @When("I am logged in as a \"$roleName\" user")
     public void loginAsAUserofRole(String roleName) {
         LoginCapability hasThisCapability = null;
-        
+        //TODO: FIGURE OUT AUTOMATED USERS, IN THE MEANTIME, USE THIS CODE:        
+//        if(roleName.equals("TopUser"))
+//        {
+//            page._textField().userName().type("danniauto");
+//            page._textField().password().type("password");
+//            page._button().logIn().click();
+//        }
+//        if(roleName.equals("TeamOnly"))
+//        {
+//            page._textField().userName().type("CaptainNemo");
+//            page._textField().password().type("Muttley");
+//            page._button().logIn().click();
+//        }
         if(roleName.equals("Admin"))
-            hasThisCapability = LoginCapability.RoleAdmin;
+            hasThisCapability = LoginCapability.RoleAdmin;     
         else if(roleName.equals("HOS"))
             hasThisCapability = LoginCapability.RoleHOS;
         else if(roleName.equals("Live Fleet"))
@@ -283,6 +271,7 @@ public class LoginSteps extends WebSteps {
         PageLogin login = new PageLogin();
         login.loginProcess(user);  
     }
+    
     @Given("I am logged in as a user in a role that does not have the $accesspointName accesspoint")
     public void loginAsUserWithoutAccesspoint(String accesspointName){
         Log.error("I am logged in as a user in a role that does not have "+ accesspointName+" accesspoint");
@@ -374,7 +363,7 @@ public class LoginSteps extends WebSteps {
         loginPage._textField().userName().type(login.getUsername());// Type valid username
         loginPage._textField().password().type(login.getPassword());// Type valid password
     }
-
+    //REPLACED BY AUTOSTORY
     @When("I click log in")
     @Aliases(values={"I click sign in" 
                     ,"I click login"
@@ -383,11 +372,10 @@ public class LoginSteps extends WebSteps {
     public void whenIClickSignIn() {
         loginPage._button().logIn().click();
     }
-
     @Then("I should end up on the Overview page")
     @Alias("the Overview page is displayed")
     public void thenIShouldEndUpOnTheOverviewPage() {
-        PageTeamDashboardStatistics teamDashboardPage = new PageTeamDashboardStatistics();
+        PageTeamDriverStatistics teamDashboardPage = new PageTeamDriverStatistics();
         teamDashboardPage.verifyOnPage();
         
         // David - This part of the code you write is currently failing
@@ -401,7 +389,6 @@ public class LoginSteps extends WebSteps {
         login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusInactive);
         loginPage.loginProcess(login.getUsername(), login.getPassword());
     }
-
     @Then("I should get the Access Blocked message")
     @Aliases(values={"I get the Access Blocked message",
                      "I get the Access Blocked alert",
@@ -433,7 +420,6 @@ public class LoginSteps extends WebSteps {
         login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
         loginPage.loginProcess(login);
     }
-
     @Then("I should end up on the $pageName page")
     public void thenIShouldEndUpOnTheGivenPage(String pageName) {
       //TODO: jwimmer: this needs to Dynamically determine the pageObject to .verify... based on the pageName variable
@@ -456,7 +442,6 @@ public class LoginSteps extends WebSteps {
         
         loginPage.loginProcess(invalidUsername, validPassword);
     }
-
     @Then("the Login Page fields should be empty")
     public void thenTheLoginPageFieldsShouldBeEmpty() {
         loginPage.verifyOnPage();
@@ -540,11 +525,11 @@ public class LoginSteps extends WebSteps {
         if(!loginPage._link().support().hasFocus())
             test.addError("The "+finalFocusedElement+" does NOT have focus");
     }
-
-    @Then("the Login Page should render as expected")
-    public void thenTheLoginPageShouldRenderAsExpected() {
-        loginPage.verifyOnPage();
-    }
+    //REPLACED BY AUTOSTORY
+//    @Then("the Login Page should render as expected")
+//    public void thenTheLoginPageShouldRenderAsExpected() {
+//        loginPage.verifyOnPage();
+//    }
 
     @When("I change the username to an incorrect case")
     public void whenIChangeTheUsernameToAnIncorrectCase() {
