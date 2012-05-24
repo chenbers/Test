@@ -469,6 +469,7 @@ public abstract class MasterTest {
         getSelenium().open(url);
     }
 
+    @When("I click the bookmark I just added")
     public void openSavedPage() {
         open(savedPage);
     }
@@ -479,7 +480,8 @@ public abstract class MasterTest {
         AutomationThread.pause(timeout_in_secs, reasonForPause, element);
         return this;
     }
-
+    
+    @When("I bookmark the page")
     public void savePageLink() {
         savedPage = getCurrentLocation();
     }
