@@ -6,10 +6,10 @@ import java.util.List;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Xpath;
@@ -22,7 +22,7 @@ public class SelectableObject extends Text implements Selectable {
     @Override
     public SelectableObject select(String desiredOption) {
 
-        select(desiredOption, 1);
+        selectThe(desiredOption, 1);
         String selected = getSelenium().getSelectedLabel(myEnum);
         assertEquals(desiredOption, selected);
         return this;
@@ -30,7 +30,7 @@ public class SelectableObject extends Text implements Selectable {
 
     public SelectableObject select(TextEnum value) {
         if (value instanceof SeleniumValueEnums) {
-            return select(((SeleniumValueEnums) value).getPosition() + 1);
+            return selectRow(((SeleniumValueEnums) value).getPosition() + 1);
         }
         return select(value.getText());
     }
@@ -48,11 +48,11 @@ public class SelectableObject extends Text implements Selectable {
     public SelectableObject selectRandom() {
         String[] allOptions = getSelenium().getSelectOptions(myEnum);
         int randomIndex = RandomValues.newOne().getInt(allOptions.length);
-        return select(randomIndex);
+        return selectRow(randomIndex);
     }
 
     @Override
-    public SelectableObject select(Integer optionNumber) {
+    public SelectableObject selectRow(Integer optionNumber) {
         optionNumber--;
         getSelenium().select(myEnum, "index=" + optionNumber);
         pause(2, "Wait for propogation");
@@ -62,7 +62,7 @@ public class SelectableObject extends Text implements Selectable {
     }
 
     @Override
-    public SelectableObject select(String desiredOption, Integer matchNumber) {
+    public SelectableObject selectThe(String desiredOption, Integer matchNumber) {
         matchNumber--;
         String xpath = getSelectIDAsXpath();
         if (xpath == null) {
@@ -73,7 +73,7 @@ public class SelectableObject extends Text implements Selectable {
     }
 
     @Override
-    public SelectableObject selectPartMatch(String partialMatch, Integer matchNumber) {
+    public SelectableObject selectTheOptionContaining(String partialMatch, Integer matchNumber) {
         matchNumber--;
         String xpath = getSelectIDAsXpath();
         if (xpath == null) {
@@ -103,11 +103,6 @@ public class SelectableObject extends Text implements Selectable {
         return null;
     }
 
-    @Override
-    public SelectableObject selectPartMatch(String partialMatch) {
-        return selectPartMatch(partialMatch, 1);
-    }
-    
     public static Object[] getParametersS(PendingStep step, Method method) {
         String stepAsString = step.stepAsString();
         
@@ -124,7 +119,7 @@ public class SelectableObject extends Text implements Selectable {
                 String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
                 passParameters[i] = toType;    
             } else if (next.isAssignableFrom(Integer.class)) {
-                Integer param = WordConverterEnum.getNumber(stepAsString);
+                Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
                 passParameters[i] = param == null || param == 0 ? 1 : param;
             }
             

@@ -6,11 +6,11 @@ import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -127,13 +127,13 @@ public class DHXDropDown extends DropDown implements Selectable {
     @Override
     public SelectableObject select(TextEnum value) {
         if (value instanceof SeleniumValueEnums) {
-            return select(((SeleniumValueEnums) value).getPosition() + 1);
+            return selectRow(((SeleniumValueEnums) value).getPosition() + 1);
         }
         return select(value.getText());
     }
 
     @Override
-    public DHXDropDown select(Integer optionNumber) {
+    public DHXDropDown selectRow(Integer optionNumber) {
         assignIDs();
         getSelenium().click(makeDropDown);
         getSelenium().selectDhx(myEnum, optionNumber.toString());
@@ -142,17 +142,17 @@ public class DHXDropDown extends DropDown implements Selectable {
 
     public DHXDropDown select(SeleniumValueEnums option) {
         assignIDs();
-        return select(option.getPosition() + 1);
+        return selectRow(option.getPosition() + 1);
     }
 
     @Override
     public DHXDropDown select(String fullMatch) {
-        select(fullMatch, 1);
+        selectThe(fullMatch, 1);
         return this;
     }
 
     @Override
-    public DHXDropDown select(String fullMatch, Integer matchNumber) {
+    public DHXDropDown selectThe(String fullMatch, Integer matchNumber) {
         assignIDs();
         matchNumber--;
         String xpath = makeXpath(Id.text(fullMatch));
@@ -162,12 +162,7 @@ public class DHXDropDown extends DropDown implements Selectable {
     }
 
     @Override
-    public DHXDropDown selectPartMatch(String partialMatch) {
-        return selectPartMatch(partialMatch, 1);
-    }
-
-    @Override
-    public DHXDropDown selectPartMatch(String partialMatch, Integer matchNumber) {
+    public DHXDropDown selectTheOptionContaining(String partialMatch, Integer matchNumber) {
         assignIDs();
         matchNumber--;
         String xpath = makeXpath(Id.contains(Id.text(), partialMatch));
@@ -204,7 +199,7 @@ public class DHXDropDown extends DropDown implements Selectable {
                 String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
                 passParameters[i] = toType;    
             } else if (next.isAssignableFrom(Integer.class)) {
-                Integer param = WordConverterEnum.getNumber(stepAsString);
+                Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
                 passParameters[i] = param == null || param == 0 ? 1 : param;
             }
             

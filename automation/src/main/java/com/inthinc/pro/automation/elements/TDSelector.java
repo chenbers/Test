@@ -9,10 +9,10 @@ import org.openqa.selenium.WebElement;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.automation.utils.RandomValues;
 
 public class TDSelector extends SelectableObject implements Selectable {
@@ -39,12 +39,12 @@ public class TDSelector extends SelectableObject implements Selectable {
 
     @Override
     public SelectableObject select(String desiredOption) {
-        return select(desiredOption, 1);
+        return selectThe(desiredOption, 1);
     }
     
     public SelectableObject select(TextEnum value){
         if (value instanceof SeleniumValueEnums){
-            return select(((SeleniumValueEnums) value).getPosition()+1);
+            return selectRow(((SeleniumValueEnums) value).getPosition()+1);
         }
         return select(value.getText());
     }
@@ -87,32 +87,27 @@ public class TDSelector extends SelectableObject implements Selectable {
     }
     
     @Override
-    public SelectableObject select(Integer optionNumber) {
+    public SelectableObject selectRow(Integer optionNumber) {
         List<WebElement> elements = getSelenium().findElements(addQualifier(optionNumber.toString()));
         elements.get(optionNumber).click();
         return this;
     }
 
     @Override
-    public SelectableObject select(String desiredOption, Integer matchNumber) {
+    public SelectableObject selectThe(String desiredOption, Integer matchNumber) {
         List<WebElement> elements = getSelenium().findElements(addQualifier("", "text()='" + desiredOption+"'"));
         elements.get(matchNumber).click();
         return this;
     }
     
     @Override
-    public SelectableObject selectPartMatch(String partialMatch, Integer matchNumber) {
+    public SelectableObject selectTheOptionContaining(String partialMatch, Integer matchNumber) {
         List<WebElement> elements = getSelenium().findElements(addQualifier("", "contains(text(),'" + partialMatch+"')"));
         elements.get(matchNumber).click();
         return this;
     }
     
 
-    @Override
-    public SelectableObject selectPartMatch(String partialMatch) {
-        return selectPartMatch(partialMatch, 1);
-    }
-    
     public static Object[] getParametersS(PendingStep step, Method method) {
         String stepAsString = step.stepAsString();
         
@@ -129,7 +124,7 @@ public class TDSelector extends SelectableObject implements Selectable {
                 String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
                 passParameters[i] = toType;    
             } else if (next.isAssignableFrom(Integer.class)) {
-                Integer param = WordConverterEnum.getNumber(stepAsString);
+                Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
                 passParameters[i] = param == null || param == 0 ? 1 : param;
             }
             

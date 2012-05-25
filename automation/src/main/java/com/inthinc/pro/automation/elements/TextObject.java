@@ -62,7 +62,7 @@ public class TextObject extends ElementBase implements TextBased {
     }
 
     @Override
-    public Boolean compare() {
+    public Boolean compareDefault() {
         return compare(myEnum.getText());
     }
 

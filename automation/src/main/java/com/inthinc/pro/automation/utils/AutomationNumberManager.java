@@ -5,26 +5,57 @@ import com.inthinc.pro.automation.logging.Log;
 
 public class AutomationNumberManager {
 	
-	public static Integer extract(String stringWithIntegers) {
+	public static Integer extract(String string) {
 		
 	    
-	    if (stringWithIntegers == null) {
-	        return null;
+	    if (string == null) {
+	        throw new IllegalArgumentException("String cannot be null");
 	    }
 
 	    StringBuffer strBuff = new StringBuffer();
 	    char c;
 	    
-	    for (int i = 0; i < stringWithIntegers.length() ; i++) {
-	        c = stringWithIntegers.charAt(i);
+	    for (int i = 0; i < string.length() ; i++) {
+	        c = string.charAt(i);
 	        
 	        if (Character.isDigit(c)) {
 	            strBuff.append(c);
 	        }
 	    }
-	    Integer justTheNumbers = Integer.parseInt(strBuff.toString());
-	    Log.debug("String: " + stringWithIntegers + " to Integer: " + justTheNumbers);
-	    return justTheNumbers;
+	    Integer allNumbers = Integer.parseInt(strBuff.toString());
+	    Log.debug("String: " + string + " to Integer: " + allNumbers);
+	    return allNumbers;
+	}
+	
+	public static Integer extractXNumber(String string, int x){
+	    if (string == null) {
+            throw new IllegalArgumentException("String cannot be null");
+        } else if (x==0){
+            x = 1;
+        }
+	    
+	    int num = 0;
+	    StringBuffer strBuff = new StringBuffer();
+	    char c;
+	    boolean inNumber = false;
+	    int length = string.length();
+	    
+	    for (int i=0;i<length;i++){
+	        c = string.charAt(i);
+	        if (Character.isDigit(c)){
+	            if (!inNumber){
+	                inNumber = true;
+	                num++;
+	            }
+	            if (num==x){
+	                strBuff.append(c);
+	            }
+	        } else {
+	            inNumber = false;
+	        }
+	    }
+	    Integer xNumber = Integer.parseInt(strBuff.toString());
+	    return xNumber;
 	}
 	
 }

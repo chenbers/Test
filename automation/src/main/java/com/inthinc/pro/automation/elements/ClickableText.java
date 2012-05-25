@@ -50,8 +50,8 @@ public class ClickableText extends ClickableObject implements ClickableTextBased
     }
 
     @Override
-    public Boolean compare() {
-        return textStuff.compare();
+    public Boolean compareDefault() {
+        return textStuff.compareDefault();
     }
 
     @Override

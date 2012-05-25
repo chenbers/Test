@@ -72,7 +72,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageAdminAddEditUser paeu = new PageAdminAddEditUser();
         paeu._textField().personFields(UserColumns.FIRST_NAME).type("Alpha");
         paeu._textField().personFields(UserColumns.LAST_NAME).type("Betical");
-        paeu._dropDown().regularDropDowns(UserColumns.TIME_ZONE).selectPartMatch("US/Mount");
+        paeu._dropDown().regularDropDowns(UserColumns.TIME_ZONE).selectTheOptionContaining("US/Mount", 1);
         paeu._dropDown().driverTeam().select("Top - Test Group WR");
         paeu._checkBox().userInformation().uncheck();
         paeu._button().saveTop().click();
@@ -217,7 +217,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageAdminAddEditUser paeu = new PageAdminAddEditUser();
         paeu._textField().personFields(UserColumns.FIRST_NAME).type(first);
         paeu._textField().personFields(UserColumns.LAST_NAME).type(last);
-        paeu._dropDown().regularDropDowns(UserColumns.TIME_ZONE).selectPartMatch("US/Mount");
+        paeu._dropDown().regularDropDowns(UserColumns.TIME_ZONE).selectTheOptionContaining("US/Mount", 1);
         paeu._dropDown().driverTeam().select(team);
         paeu._checkBox().userInformation().uncheck();
         paeu._button().saveTop().click();

@@ -218,21 +218,21 @@ public void sometest() {
         page.load(); // TODO: jwimmer: WHY is this NOT loading the SAFETY page?
         page._link().safety().click();
 
-        page._dropDown().team().selectPartMatch("Software - Salt Lake");
+        page._dropDown().team().selectTheOptionContaining("Software - Salt Lake", 1);
         pause(3, "check to see if the right team was clicked");
-        page._dropDown().team().select(1);
+        page._dropDown().team().selectRow(1);
         pause(3, "check to see if the right team was clicked");
         page._dropDown().team().select("Top");
         pause(3, "check to see if the right team was clicked");
-        page._dropDown().team().select(2);
+        page._dropDown().team().selectRow(2);
         pause(3, "check to see if the right team was clicked");
-        page._dropDown().team().select(3);
+        page._dropDown().team().selectRow(3);
         pause(3, "check to see if the right team was clicked");
-        page._dropDown().team().select(4);
+        page._dropDown().team().selectRow(4);
         pause(3, "check to see if the right team was clicked");
-        page._dropDown().team().select(5);
+        page._dropDown().team().selectRow(5);
         pause(3, "check to see if the right team was clicked");
-        page._dropDown().team().select(6);
+        page._dropDown().team().selectRow(6);
         pause(3, "check to see if the right team was clicked");
     }
 

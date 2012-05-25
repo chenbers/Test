@@ -55,11 +55,11 @@ public interface ElementInterface {
     public interface Selectable extends ElementInterface{
         
 	/**
-         * Selects the optionNumber'th option in this Element's choices
+         * Selects the n'th option in this Element's choices
          * @param optionNumber
          * @return this Element
          */
-        public Selectable select(Integer matchNumber);
+        public Selectable selectRow(Integer matchNumber);
         
         /**
          * Selects the FIRST fullMatch in this Element.
@@ -74,14 +74,7 @@ public interface ElementInterface {
          * @param matchNumber
          * @return this Element
          */
-        public Selectable select(String fullMatch, Integer matchNumber);
-        
-        /**
-         * Selects the FIRST partialMatch
-         * @param partialMatch
-         * @return this Element
-         */
-        public Selectable selectPartMatch(String partialMatch);
+        public Selectable selectThe(String fullMatch, Integer matchNumber);
         
         /**
          * Selects the <code>matchNumber</code>th partialMatch 
@@ -89,7 +82,7 @@ public interface ElementInterface {
          * @param matchNumber
          * @return this Element
          */
-        public Selectable selectPartMatch(String partialMatch, Integer matchNumber);
+        public Selectable selectTheOptionContaining(String partialMatch, Integer matchNumber);
         
         /**
          * Returns the <code>entryNumber</code> text
@@ -147,7 +140,7 @@ public interface ElementInterface {
          * Compares the value of this Element to the expected value stored in the Elements enum.
          * @return this Element
          */
-        public Boolean compare();
+        public Boolean compareDefault();
         
         /**
          * Compares the value of this Element to the expected value provided as a parameter.
@@ -219,8 +212,8 @@ public interface ElementInterface {
     }
     
     public interface TextFieldWithSuggestions extends Typeable {
-        public ClickableTextBased getSuggestion(Integer row);
-        public ClickableTextBased getSuggestion(String fullName);
+        public ClickableTextBased getSuggestedRow(Integer row);
+        public ClickableTextBased getSuggestedText(String fullName);
     }
     
     public interface Typeable extends TextBased {

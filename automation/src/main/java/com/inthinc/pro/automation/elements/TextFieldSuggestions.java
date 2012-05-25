@@ -8,8 +8,8 @@ import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextFieldWithSuggestions;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.WordConverterEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.automation.utils.Id;
 
 public class TextFieldSuggestions extends TextField implements TextFieldWithSuggestions {
@@ -29,7 +29,7 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
     }
 
     @Override
-    public TextLink getSuggestion(Integer row) {
+    public TextLink getSuggestedRow(Integer row) {
         return new TextLink(setIds("["+row+"]/td"));
     }
     
@@ -55,7 +55,7 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
     }
 
     @Override
-    public TextLink getSuggestion(String fullName) {
+    public TextLink getSuggestedText(String fullName) {
         return new TextLink(setIds("/td[2]/span["+Id.text(fullName)+"]"));
     }
     
@@ -71,7 +71,7 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
         for (int i=0;i<parameters.length;i++){
             Class<?> next = parameters[i];
             if (next.isAssignableFrom(Integer.class)) {
-                Integer param = WordConverterEnum.getNumber(stepAsString);
+                Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
                 passParameters[i] = param == null || param == 0 ? 1 : param;
             } else {
                 String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);

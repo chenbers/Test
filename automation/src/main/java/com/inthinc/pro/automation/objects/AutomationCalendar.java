@@ -318,11 +318,10 @@ public class AutomationCalendar implements Comparable<Calendar> {
     public boolean equals(Object obj) {
         boolean match = false;
         if (obj instanceof AutomationCalendar){
-            match =  epochSecondsInt().equals(((AutomationCalendar) obj).epochSecondsInt());
-        } else if (obj instanceof Calendar){
-            match = date.equals(obj);
-        } else if (obj instanceof Date){
-            match = date.getTime().equals(obj);
+            match = epochSecondsInt().equals(((AutomationCalendar) obj).epochSecondsInt());
+        } else {
+            match |= date.equals(obj);
+            match |= date.getTime().equals(obj);
         }
         return match;
     }

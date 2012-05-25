@@ -42,7 +42,7 @@ public class VerifyPageObjectsTest extends WebRallyTest {
 	    //page._button().add().click();
 	    pause(15, "just clicked add() ");
 	    page._button().edit().click();
-	    page._dropDown().parentGroup().select(4);
+	    page._dropDown().parentGroup().selectRow(4);
 	    page._textField().editFindAddress().type("950 Laird Ave Salt Lake City");
 	    
 	}
