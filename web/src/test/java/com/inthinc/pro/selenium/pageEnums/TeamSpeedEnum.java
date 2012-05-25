@@ -13,7 +13,7 @@ public enum TeamSpeedEnum implements SeleniumEnums {
     SPEED_SCORE(null,null,Xpath.start().div(Id.clazz("middle")).table().tbody().tr().toString()),
     SPEED_SCORE_LABEL(null,null,Xpath.start().div(Id.clazz("middle")).text().toString()),
     
-    LIMIT_TABLE_SUBTITLE("Statistics reflect event count for 1 of 16 drivers with speed violations. ",null, Xpath.start().tr("1").td(Id.align("center")).text("2").toString()),
+    LIMIT_TABLE_SUBTITLE("Statistics reflect event count for 1 of ## drivers with speed violations. ",null, Xpath.start().tr("1").td(Id.align("center")).text("2").toString()),
     LIMIT_TABLE_TITLE("Limit",null, Xpath.start().table(Id.id("summarySpeedStats")).thead().tr("1").th().toString()),
     
     LIMIT_1_30_HEADER(null,null,Xpath.start().table(Id.id("summarySpeedStats")).thead().tr("2").th("1").toString()),
