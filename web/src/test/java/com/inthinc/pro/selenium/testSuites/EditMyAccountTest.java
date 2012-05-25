@@ -6,6 +6,7 @@ import org.junit.Test;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
+import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
@@ -25,7 +26,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageMyAccount.class,
-        PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageNotificationsSafety.class, PageTeamDriverStatistics.class,
+        PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageNotificationsSafety.class, PageTeamDriverStatistics.class, PageDriverPerformance.class,
         PageDriverPerformanceSpeed.class, PageDriverPerformanceSeatBelt.class, PageDriverPerformanceStyle.class, PageDriverPerformanceTrips.class,
         PageVehiclePerformanceSeatBelt.class, PageVehiclePerformanceSpeed.class, PageVehiclePerformanceStyle.class, PageVehiclePerformanceTrips.class
         })

@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -21,6 +22,10 @@ public class PageMyAccount extends NavigationBar {
 		public MyAccountChangePassword changeMyPassword(){
 			return new MyAccountChangePassword();
 		}
+	}
+	
+	public MyAccountCheckBoxes _checkBox() {
+	    return new MyAccountCheckBoxes();
 	}
 	
 	public MyAccountPopUps _popUp(){
@@ -45,6 +50,12 @@ public class PageMyAccount extends NavigationBar {
 
 	public MyAccountDropDowns _dropDown() {
 		return new MyAccountDropDowns();
+	}
+	
+	public class MyAccountCheckBoxes {
+	    public CheckBox mapLayer() {
+	        return new CheckBox(MyAccountEnum.MAP_LAYERS_CHECKBOX);
+	    }
 	}
 
 	public class MyAccountLinks extends NavigationBarLinks {
@@ -172,6 +183,14 @@ public class PageMyAccount extends NavigationBar {
 		public Text redFlagInfo() {
 			return new Text(MyAccountEnum.INFORMATION_TEXT);
 		}
+		
+		public Text mapType() {
+		    return new Text(MyAccountEnum.MAP_TYPE);
+		}
+		
+	    public Text mapLayers() {
+	        return new Text(MyAccountEnum.MAP_LAYERS_TEXT);
+	    }
 
 		public Text fuelEfficiency() {
 			return new Text(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TEXT);
