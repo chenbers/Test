@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
-import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
+import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceSeatBeltEnum;
 
@@ -35,7 +35,7 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 			return new TextTableLink(VehiclePerformanceEnum.EXPANDED_BREADCRUMB, page);
 		}
 		
-		public TextLink duration(TimeDuration duration){
+		public TextLink duration(DurationEnumeration duration){
 			return new TextLink(VehiclePerformanceSeatBeltEnum.OVERALL_TIME_FRAME_SELECTOR, duration);
 		}
 		

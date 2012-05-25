@@ -10,6 +10,7 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.ExecutiveDashBoardEnum;
+import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
@@ -101,7 +102,7 @@ public class PageExecutiveDashboard extends NavigationBar {
 	
 	public class DashboardLinks extends NavigationBarLinks {
 
-        public TextLink fuelEfficiencyDuration(TimeDuration duration) {
+        public TextLink fuelEfficiencyDuration(DurationEnumeration duration) {
             return new TextLink(ExecutiveDashBoardEnum.FUEL_EFFICIENCY_DURATION, duration);
         }
 
@@ -298,7 +299,7 @@ public class PageExecutiveDashboard extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _text().labelCrashesPerMil().isPresent() && _link().fuelEfficiencyDuration(TimeDuration.DAYS_30).isPresent();
+        return _text().labelCrashesPerMil().isPresent() && _link().fuelEfficiencyDuration(DurationEnumeration.DAYS_30).isPresent();
     }
 
 }

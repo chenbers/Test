@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSpeedEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
-import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
+import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
 
 
 public class PageDriverPerformanceSpeed extends NavigationBar {
@@ -85,7 +85,7 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 			return new TextTableLink(DriverPerformanceSpeedEnum.LOCATION_ENTRY);
 		}
 		
-		public TextLink duration(TimeDuration duration){
+		public TextLink duration(DurationEnumeration duration){
 			return new TextLink(DriverPerformanceSpeedEnum.TIME_FRAME_SELECTOR, duration);
 		}
 		

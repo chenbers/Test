@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
-import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
+import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceStyleEnum;
 
@@ -56,7 +56,7 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 					VehiclePerformanceEnum.EXPANDED_VEHICLE_NAME_LINK, page2);
 		}
 
-		public TextLink duration(TimeDuration timeFrame) {
+		public TextLink duration(DurationEnumeration timeFrame) {
 			return new TextLink(
 					VehiclePerformanceStyleEnum.OVERALL_TIME_FRAME_SELECTOR,
 					timeFrame);
