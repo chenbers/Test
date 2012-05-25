@@ -17,13 +17,13 @@
 			<list><!-- this list must contain any entries from web/applicationContext-bean.xml -->
 				<value>classpath:spring/automation.properties</value>
 				<value>classpath:tiwipro.properties</value>
-        		<value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
+				<value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
 			</list>
 		</property>
 	</bean>
 	<bean id="automatedTest" class="com.inthinc.pro.automation.test.Test"
 		scope="singleton">
-		<property name="automationPropertiesBean" ref="automationPropertiesBean"  />
+		<property name="automationPropertiesBean" ref="automationPropertiesBean" />
 	</bean>
 	<bean id="automationPropertiesBean" class="com.inthinc.pro.automation.AutomationPropertiesBean"
 		scope="singleton">
@@ -31,5 +31,18 @@
 		<property name="browserName" value="${automation.browser}" />
 		<property name="operatingSystem" value="${automation.operatingSystem}" />
 		<property name="addTestSet" value="${automation.addTestSet}" />
+		<property name="defaultUser" value="${users.defaultUser}" />
+		<property name="password" value="${users.password}" />
+		<property name="users">
+			<bean class="org.springframework.util.CollectionUtils" factory-method="arrayToList">
+				<constructor-arg type="java.lang.Object">
+					<bean class="org.springframework.util.StringUtils"
+						factory-method="tokenizeToStringArray">
+						<constructor-arg type="java.lang.String" value="${users.names}" />
+						<constructor-arg type="java.lang.String" value=" " />
+					</bean>
+				</constructor-arg>
+			</bean>
+		</property>
 	</bean>
 </beans>
