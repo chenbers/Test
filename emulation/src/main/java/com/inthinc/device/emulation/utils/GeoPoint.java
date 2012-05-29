@@ -1,5 +1,6 @@
 package com.inthinc.device.emulation.utils;
 
+import java.math.BigInteger;
 import java.util.EnumSet;
 import java.util.HashMap;
 
@@ -71,7 +72,7 @@ public class GeoPoint {
     private double lat;
     private double lng;
     
-    private final static Long notebc = 4294967295L;
+    private final static Long notebc = new BigInteger("FFFFFFFF",16).longValue(); // Same as 4294967295L
     private final static Integer note = 0x00FFFFFF;
     
     public GeoPoint(){
