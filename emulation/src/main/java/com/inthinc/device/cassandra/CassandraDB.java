@@ -1,6 +1,7 @@
 package com.inthinc.device.cassandra;
 
 import me.prettyprint.cassandra.model.AllOneConsistencyLevelPolicy;
+import me.prettyprint.cassandra.serializers.AsciiSerializer;
 import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
 import me.prettyprint.cassandra.serializers.CompositeSerializer;
@@ -25,6 +26,7 @@ public class CassandraDB {
     public static ByteBufferSerializer bbs = ByteBufferSerializer.get();
     public static BytesArraySerializer bas = BytesArraySerializer.get();
     public static CompositeSerializer cs = new CompositeSerializer();
+    public static AsciiSerializer as = AsciiSerializer.get();
 
     private static Cluster cluster;
     private static String clusterName = "";
@@ -50,11 +52,11 @@ public class CassandraDB {
         cassandraHostConfigurator.setUseSocketKeepalive(true);
 
         cluster = HFactory.getOrCreateCluster(clusterName, cassandraHostConfigurator);
-        Log.i("Cluster " + clusterName + " maxActive: " + maxActive + " created. Addresses: " + nodeAddress);
+        Log.info("Cluster " + clusterName + " maxActive: " + maxActive + " created. Addresses: " + nodeAddress);
     }
 
     public void shutdown() {
-        Log.i("cluster.getConnectionManager().shutdown() called");
+        Log.info("cluster.getConnectionManager().shutdown() called");
         cluster.getConnectionManager().shutdown();
     }
 
