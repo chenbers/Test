@@ -26,7 +26,7 @@ public enum TeamVehicleStatsEnum implements SeleniumEnums {
     /* Team rows */
     TEAM_NAME_HEADER("Team", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsTeamNameheader:sortDiv"),
     TEAM_SCORE_HEADER("Score", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsOverallScoreheader:sortDiv"),
-    TEAM_TRIPS_HEADER("Trips", "teamStatisticsVehicleForm:drivers:driverTotals:j_id386header:sortDiv"),
+    TEAM_TRIPS_HEADER("Trips", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsTripTripsheader:sortDiv"),
     TEAM_STOPS_HEADER("Stops", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsTripStopsheader:sortDiv"),
     TEAM_DISTANCE_HEADER("Distance Driven", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsMilesDrivenheader:sortDiv"),
     TEAM_DURATION_HEADER("Duration", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsDriveTimeheader:sortDiv"),
@@ -40,7 +40,7 @@ public enum TeamVehicleStatsEnum implements SeleniumEnums {
 
     TEAM_NAME_VALUE(null, "teamStatisticsVehicleForm:drivers:driverTotals:0:newTeamStatsTab-totalsTeamName"),
     TEAM_SCORE_VALUE(null, "teamStatisticsVehicleForm:drivers:driverTotals:0:newTeamStatsTab-totalsOverallScore"),
-    TEAM_TRIPS_VALUE(null, "teamStatisticsVehicleForm:drivers:driverTotals:0:newTeamStatsTab-totalsTripsTrips", Xpath.start().tr(Id.clazz("rich-subtable-row rich-subtable-firstrow tableOdd")).td("4").toString()),
+    TEAM_TRIPS_VALUE(null, "teamStatisticsVehicleForm:drivers:driverTotals:0:newTeamStatsTab-totalsTripTrips"),
     TEAM_STOPS_VALUE(null, "teamStatisticsVehicleForm:drivers:driverTotals:0:newTeamStatsTab-totalsTripStops"),
     TEAM_DISTANCE_VALUE(null, "teamStatisticsVehicleForm:drivers:driverTotals:0:newTeamStatsTab-totalsMilesDriven"),
     TEAM_DURATION_VALUE(null, "teamStatisticsVehicleForm:drivers:driverTotals:0:newTeamStatsTab-totalsDriveTime"),
