@@ -30,15 +30,15 @@ public class DriverStatisticsTest extends WebRallyTest {
     //TODO Finish TC4586 (requires mid-drive driver switch)
     //TODO Finish TC4625, 5515, 5516 (requires data)
 
-    @BeforeClass
-    public static void beforeClass() {
-        AutomationUser login = AutomationUsers.getUsers().getOneBy(LoginCapability.NoteTesterData);
-        CORRECT_USERNAME = login.getUsername();
-        CORRECT_PASSWORD = login.getPassword();
-        AutomationUser admin = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin);
-        CORRECT_ADMIN_USERNAME = admin.getUsername();
-        CORRECT_ADMIN_PASSWORD = admin.getPassword();
-    }
+//    @BeforeClass
+//    public static void beforeClass() {
+//        AutomationUser login = AutomationUsers.getUsers().getOneBy(LoginCapability.NoteTesterData);
+//        CORRECT_USERNAME = login.getUsername();
+//        CORRECT_PASSWORD = login.getPassword();
+//        AutomationUser admin = AutomationUsers.getUsers().getOneBy(LoginCapability.RoleAdmin);
+//        CORRECT_ADMIN_USERNAME = admin.getUsername();
+//        CORRECT_ADMIN_PASSWORD = admin.getPassword();
+//    }
     
     @Before
     public void before(){
@@ -76,7 +76,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         paeu._dropDown().driverTeam().select("Top - Test Group WR");
         paeu._checkBox().userInformation().uncheck();
         paeu._button().saveTop().click();
-        ped._navTree().groups().click("Test Group WR");
+        ped._navTree().groups().clickGroup("Test Group WR");
         PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Alpha Betical").assertPresence(true);
         deleteUser("Alpha Betical");
@@ -105,7 +105,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         paeu._button().saveBottom().click();
         //TODO test edit of vehicle.
         //TODO get driver information to check on.
-        paud._navTree().groups().click("Test Group WR");
+        paud._navTree().groups().clickGroup("Test Group WR");
         PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Blooregard Kazoo").assertPresence(true);
         ptds.getLinkByText("Alma Mater").assertPresence(false);
@@ -126,7 +126,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageAdminUserDetails paud = new PageAdminUserDetails();
         paud._button().delete().click();
         paud._popUp().deleteUser()._button().delete().click();
-        paud._navTree().groups().click("Test Group WR");
+        paud._navTree().groups().clickGroup("Test Group WR");
         PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Alto Soprano").assertPresence(false);
         
@@ -172,10 +172,10 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageAdminAddEditUser paeu = new PageAdminAddEditUser();
         paeu._dropDown().driverTeam().select("Top - Test Group RW");
         paeu._button().saveBottom().click();
-        paud._navTree().groups().click("Test Group WR");
+        paud._navTree().groups().clickGroup("Test Group WR");
         PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         ptds.getLinkByText("Swappy McGee").assertPresence(false);
-        ptds._navTree().groups().click("Test Group RW");
+        ptds._navTree().groups().clickGroup("Test Group RW");
         ptds.getLinkByText("Swappy McGee").assertPresence(true);
         deleteUser("Swappy McGee");
     }

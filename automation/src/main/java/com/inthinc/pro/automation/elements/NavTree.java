@@ -5,11 +5,10 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
-import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.elements.ElementInterface.NavigationTree;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public class NavTree extends TextLink implements Clickable, TextBased {
+public class NavTree extends TextLink implements NavigationTree {
 	
     public NavTree(SeleniumEnums anEnum, Object ...objects) {
         super(anEnum, objects);
@@ -25,11 +24,11 @@ public class NavTree extends TextLink implements Clickable, TextBased {
      * 
      */
     public NavTree click(){
-        return this;
+        throw new IllegalAccessError("Click doesn't work with a NavTree element");
     }
     
-    public NavTree click(String groupNameToMatch) {
-        return click(groupNameToMatch, 1);
+    public NavTree clickGroup(String groupNameToMatch) {
+        return clickThe(groupNameToMatch, 1);
     }
     
     /**
@@ -43,7 +42,7 @@ public class NavTree extends TextLink implements Clickable, TextBased {
      * @param matchNumber index position +1
      * @return
      */
-    public NavTree click(String groupNameToMatch, Integer matchNumber){
+    public NavTree clickThe(String groupNameToMatch, Integer matchNumber){
         matchNumber--;
         String xpath = "//a[text()='" + groupNameToMatch + "']";
         List<WebElement> elements = getSelenium().getWrappedDriver().findElements(By.xpath(xpath));

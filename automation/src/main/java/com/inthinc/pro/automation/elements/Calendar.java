@@ -15,7 +15,7 @@ import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
 
-public class Calendar {
+public class Calendar extends MasterTest{
     
     private final SeleniumEnumWrapper myEnum;
     private final String id;
@@ -80,7 +80,8 @@ public class Calendar {
         return true;
     }
     
-    public static Object[] getParametersS(PendingStep step, Method method) {
+    @Override
+    public Object[] getParameters(PendingStep step, Method method) {
         String stepAsString = step.stepAsString();
         
         Class<?>[] parameters = method.getParameterTypes();

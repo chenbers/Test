@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.embedder.Embedder;
+import org.jbehave.core.model.Scenario;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepType;
@@ -116,7 +117,7 @@ public class AutoPageRunner {
     
 
 
-    public Step tryStep(PendingStep step) {
+    public Step tryStep(PendingStep step, Scenario scenario) {
         Step returnStep = step;
         try {
             StepType stepType = StepType.valueOf(keywords.startingWord(step.stepAsString()).toUpperCase());

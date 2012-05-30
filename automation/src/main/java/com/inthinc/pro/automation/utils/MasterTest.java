@@ -18,21 +18,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.Aliases;
+import org.jbehave.core.annotations.BeforeStory;
+import org.jbehave.core.annotations.Composite;
+import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.openqa.selenium.WebDriver;
 import org.springframework.util.ClassUtils;
 
+import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.Assert;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.Validate;
 import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.enums.JBehaveTermMatchers;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.models.User;
+import com.inthinc.pro.automation.rest.RestCommands;
+import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
@@ -40,13 +49,52 @@ import com.inthinc.pro.automation.selenium.Page;
 
 public abstract class MasterTest {
     
+    private final AutomationPropertiesBean apb;
+    private RestCommands rest;
+    
+    @Given("I am logged in")
+    @Composite(steps = {
+            "Given I am on the Login page", 
+            "When I type defaultUser into the Username field", 
+            "When I type defaultPassword into the Password field", 
+            "When I click the Login button"})
+    public void givenIHaveLoggedIn(){
+    }
+    
+    @BeforeStory
+    public void setupUser(){
+        localVariables.put("defaultUser", apb.getUsers().get(0));
+        localVariables.put("defaultPassword", apb.getPassword());
+        rest = new RestCommands(apb.getDefaultUser(), apb.getPassword());
+        defaultUser = rest.getObject(User.class, apb.getUsers().get(0));
+        defaultUser.setPassword(apb.getPassword());
+    }
+    
+    @AfterScenario
+    public void clearUser(){
+        User isUpdated = rest.getObject(User.class, defaultUser.getUserID());
+        if (isUpdated.doesPasswordMatch(defaultUser.getPassword())){
+            return;
+        } 
+        User update = new User();
+        update.setPassword(apb.getPassword());
+        update.setUsername(isUpdated.getUsername());
+        update.setUserID(isUpdated.getUserID());
+        rest.putObject(User.class, update, null);
+    }
+    
+    private User defaultUser;
+    
     private final Long threadID = Thread.currentThread().getId();
 
     
     public static final Map<Long, Map<String, String>> variables = new HashMap<Long, Map<String, String>>();
+    
+    
     protected Map<String, String> localVariables;
     
     public MasterTest(){
+        apb = AutomationProperties.getPropertyBean(); 
         if (variables.containsKey(threadID)) {
             localVariables = variables.get(threadID);
         } else {
@@ -60,34 +108,33 @@ public abstract class MasterTest {
     }
     
     public static String getComparator(String stepAsString){
-        String variable = RegexTerms.getMatch(RegexTerms.getVariable, stepAsString);
-        if (variable == ""){
+        String elementType = JBehaveTermMatchers.getAlias(stepAsString);
+        String variable = RegexTerms.getMatch(RegexTerms.getVariable.replace("***", elementType), stepAsString);
+        Map<String, String> temp = variables.get(Thread.currentThread().getId());
+        if (variable.isEmpty()){
             if (stepAsString.contains("\"")){
-                return stepAsString.substring(stepAsString.indexOf("\"")+1, stepAsString.lastIndexOf("\""));
+                int quote = stepAsString.indexOf("\"") + 1;
+                return stepAsString.substring(quote, stepAsString.indexOf("\"", quote));
+            } else {
+                for (Map.Entry<String, String> entry : temp.entrySet()){
+                    if (stepAsString.contains(entry.getKey())){
+                        return entry.getValue();
+                    }
+                }
             }
-            return "";
         }
         if (variable.contains("\"")){
             return variable.replace("\"", "");
         } else {
-            return variables.get(Thread.currentThread().getId()).get(variable);
+            return temp.get(variable);
         }
-    }
-    
-    public static String getLastTerms(String stepAsString){
-        Pattern pat = Pattern.compile(RegexTerms.getVariable);
-        Matcher mat = pat.matcher(stepAsString);
-        if (mat.find()){
-            return stepAsString.substring(mat.start(), mat.end());
-        }
-        return null;
     }
     
     public static void setComparator(String stepAsString, Object value){
-        Pattern pat = Pattern.compile(RegexTerms.setVariable);
-        Matcher mat = pat.matcher(stepAsString);
-        if (mat.find()){
-            String key = stepAsString.substring(mat.start(), mat.end());
+        String elementType = JBehaveTermMatchers.getAlias(stepAsString);
+        String key = RegexTerms.getMatch(RegexTerms.setVariable.replace("***", elementType), stepAsString);
+        
+        if (!key.isEmpty()){
             variables.get(Thread.currentThread().getId()).put(key, value.toString());
         }
     }
@@ -151,12 +198,10 @@ public abstract class MasterTest {
             potentialMethod = stepAsString.substring(mat.start(), mat.end()).replace(" ", "");
             if (methods.containsKey(potentialMethod)){ 
                 matchingMethods = methods.get(potentialMethod);
-                
-            } else {
-                regex += RegexTerms.addLowercaseWordSpaceBefore;
-                pat = Pattern.compile(regex);
-                mat = pat.matcher(stepAsString);
-            }
+            } 
+            regex += RegexTerms.addLowercaseWordSpaceBefore;
+            pat = Pattern.compile(regex);
+            mat = pat.matcher(stepAsString);
         }
         
         if (matchingMethods == null ){
@@ -265,30 +310,31 @@ public abstract class MasterTest {
     
     public Object[] getParameters(PendingStep step, Method method) throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
         try {
-            return (Object[]) method.getDeclaringClass()
-                    .getMethod("getParametersS", step.getClass(), method.getClass())
-                    .invoke(null, step, method);
+            Class<?>[] parameters = method.getParameterTypes();
+            Object[] passParameters = new Object[parameters.length];
+            String stepAsString = step.stepAsString();
+            
+            for (int i=0;i<parameters.length;i++){
+                Class<?> next = parameters[i];
+                if (next.isAssignableFrom(Boolean.class)){
+                    passParameters[i] = checkBoolean(step.stepAsString());
+                } else if (next.isAssignableFrom(Integer.class)) {
+                    Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
+                    passParameters[i] = param == null || param == 0 ? 1 : param;
+                } else {
+                    passParameters[i] = getComparator(stepAsString);    
+                }
+                if (passParameters[i] == null){
+                    throw new NoSuchMethodError("We are missing parameters for " 
+                                + method.getName() + ", working on step " + step.stepAsString());
+                }
+            }
+            return passParameters;
         } catch (NullPointerException e){
             throw new NoSuchMethodException("Could not find a method for step: " + step.stepAsString());
         }
     }
 
-    public static Object[] getParametersS(PendingStep step, Method method) {
-        Class<?>[] parameters = method.getParameterTypes();
-        Object[] passParameters = new Object[parameters.length];
-        
-        for (int i=0;i<parameters.length;i++){
-            Class<?> next = parameters[i];
-            if (next.isAssignableFrom(Boolean.class)){
-                passParameters[i] = checkBoolean(step.stepAsString());
-            }
-            if (passParameters[i] == null){
-                throw new NoSuchMethodError("We are missing parameters for " 
-                            + method.getName() + ", working on step " + step.stepAsString());
-            }
-        }
-        return passParameters;
-    }
     
     @When("I hit the Enter Key")
     public void enterKey() {

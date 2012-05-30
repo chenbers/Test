@@ -33,7 +33,6 @@ public class MassPortalTest extends WebTest {
         
         @Override
         public void run(){
-            login = AutomationUsers.getUsers().getOne();
             try {
                 
             } catch (Exception e){

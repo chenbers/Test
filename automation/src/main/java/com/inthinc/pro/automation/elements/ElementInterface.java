@@ -52,6 +52,14 @@ public interface ElementInterface {
         public Boolean assertClickable(Boolean clickable);
     }
     
+    public interface NavigationTree extends ClickableTextBased {
+        @Override 
+        @Deprecated
+        public Clickable click();
+        public Clickable clickGroup(String group);
+        public Clickable clickThe(String group, Integer match);
+    }
+    
     public interface Selectable extends ElementInterface{
         
 	/**

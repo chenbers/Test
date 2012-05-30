@@ -1,16 +1,11 @@
 package com.inthinc.pro.automation.elements;
 
-import java.lang.reflect.Method;
-
-import org.jbehave.core.steps.StepCreator.PendingStep;
-
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -181,35 +176,4 @@ public class DHXDropDown extends DropDown implements Selectable {
         String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[0])).div(secondDiv).toString();
         return xpath;
     }
-    
-    
-    public static Object[] getParametersS(PendingStep step, Method method) {
-        String stepAsString = step.stepAsString();
-        
-        // TODO: dtanner: need a way to handle overloaded methods.
-        
-        Class<?>[] parameters = method.getParameterTypes();
-        Object[] passParameters = new Object[parameters.length];
-        
-        
-        for (int i=0;i<parameters.length;i++){
-            Class<?> next = parameters[i];
-            if (next.isAssignableFrom(String.class)){
-                String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
-                String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
-                passParameters[i] = toType;    
-            } else if (next.isAssignableFrom(Integer.class)) {
-                Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
-                passParameters[i] = param == null || param == 0 ? 1 : param;
-            }
-            
-            
-            if (passParameters[i] == null){
-                throw new NoSuchMethodError("We are missing parameters for " 
-                            + method.getName() + ", working on step " + step.stepAsString());
-            }
-        }
-        return passParameters;
-    }
-
 }

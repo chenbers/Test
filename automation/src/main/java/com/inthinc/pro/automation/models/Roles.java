@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Roles implements Serializable{
+public class Roles extends BaseEntity implements Serializable{
     
     /**
      * 
@@ -28,6 +28,11 @@ public class Roles implements Serializable{
     
     public List<Integer> getRole(){
         return role;
+    }
+    
+    @Override
+    public String toString(){
+        return role.toString();
     }
     
 

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 public class User extends BaseEntity {
@@ -69,33 +70,27 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
-    @JsonIgnore
-    public String getPlainTextPassword(){
-        return password;
+    @JsonProperty("password")
+    public String getEncryptedPassword(){
+        return encrypted;
     }
     
-    /**
-     * This method does not return the normal password<br />
-     * This is to accomodate interacting with the Services<br />
-     * API
-     * @return
-     */
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
-        if (password.length() < 16) {
-            encodePassword();
-        } else {
-            this.password = password;
-        }
+        encrypted = encryptor.encryptPassword(password);
+        this.password = password;
+    }
+    
+    @JsonProperty("password")
+    public void setEncryptedPassword(String encrypted){
+        this.password = null;
+        this.encrypted = encrypted;
     }
 
-    @JsonIgnore
-    public void encodePassword(){
-        encrypted = encryptor.encryptPassword(password);
-    }
     public Status getStatus() {
         return status;
     }
@@ -174,5 +169,9 @@ public class User extends BaseEntity {
 
     public void setMapType(GoogleMapType mapType) {
         this.mapType = mapType;
+    }
+
+    public boolean doesPasswordMatch(String testPassword) {
+        return encryptor.checkPassword(testPassword, encrypted);
     }
 }

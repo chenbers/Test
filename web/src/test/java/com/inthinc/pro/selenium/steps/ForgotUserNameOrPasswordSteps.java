@@ -10,7 +10,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 public class ForgotUserNameOrPasswordSteps extends LoginSteps {
     
     private static final PageLogin page = new PageLogin();
-    private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
+//    private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
     
     @Then("i click the forgot your user name or password link")
     public void thenIClickTheForgotYourUserNameOrPasswordLink(){

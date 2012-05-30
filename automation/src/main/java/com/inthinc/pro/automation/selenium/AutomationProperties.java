@@ -12,7 +12,7 @@ public class AutomationProperties {
     private static final AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
     
         public static AutomationPropertiesBean getPropertyBean(){
-            return apb;
+            return apb; 
         }
 
 }

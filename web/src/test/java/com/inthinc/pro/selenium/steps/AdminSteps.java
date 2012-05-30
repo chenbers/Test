@@ -55,11 +55,11 @@ public class AdminSteps extends LoginSteps {
  
     }    
     
-    @When("I attempt to login with the same username password combination")
-    public void whenIAttemptToLoginWithTheSameUsernamePasswordCombination() {
-        login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusInactive);
-        loginPage.loginProcess(login.getUsername(), login.getPassword());
-    }
+//    @When("I attempt to login with the same username password combination")
+//    public void whenIAttemptToLoginWithTheSameUsernamePasswordCombination() {
+//        login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusInactive);
+//        loginPage.loginProcess(login.getUsername(), login.getPassword());
+//    }
     
     @When("I am on the Live Fleet page")
     public void whenIAmOnTheLiveFleetPage(){

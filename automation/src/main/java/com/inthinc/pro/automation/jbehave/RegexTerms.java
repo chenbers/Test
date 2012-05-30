@@ -38,8 +38,8 @@ public class RegexTerms {
     
     public static final String getMethod = "(?<=I\\s)[a-z]+"; // The method name should come right after I
     
-    public static final String getVariable = "(?<=is\\s).*";
-    public static final String setVariable = "(?<=as\\s).*";
+    public static final String getVariable = "(?<=***\\sis\\s).*";
+    public static final String setVariable = "(?<=***\\sas\\s).*";
     
     public static final String saveAlias = "(save|retain|remember)"; // Any of these just become an alias
 

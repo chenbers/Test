@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.models;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class Vehicle extends BaseEntity {
     private static final long serialVersionUID = 6102998742224160619L;
 
@@ -100,6 +102,7 @@ public class Vehicle extends BaseEntity {
         return VIN;
     }
 
+    @JsonProperty("VIN")
     public void setVIN(String vin) {
         VIN = vin;
     }

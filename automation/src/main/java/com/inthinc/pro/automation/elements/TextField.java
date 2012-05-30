@@ -49,23 +49,4 @@ public class TextField extends TextObject implements Typeable {
     public Boolean assertNotEquals(String compareAgainst) {
         return assertNotEquals(compareAgainst, getText());
     }
-    
-    public static Object[] getParametersS(PendingStep step, Method method) {
-        Class<?>[] parameters = method.getParameterTypes();
-        Object[] passParameters = new Object[parameters.length];
-        String stepAsString = step.stepAsString();
-        
-        
-        for (int i=0;i<parameters.length;i++){
-            
-            String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
-            String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
-            passParameters[i] = toType;
-            if (passParameters[i] == null){
-                throw new NoSuchMethodError("We are missing parameters for " 
-                            + method.getName() + ", working on step " + step.stepAsString());
-            }
-        }
-        return passParameters;
-    }
 }

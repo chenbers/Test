@@ -122,7 +122,7 @@ public class ObjectConverter {
             for (int i=0; i<ja.length(); i++){
                 list.add(mapper.readValue(ja.getJSONObject(i).toString(), clazz));
             }
-            Log.info(list);
+            Log.debug(list);
             return list;
         } catch (JsonGenerationException e) {
             error = e;
@@ -133,7 +133,7 @@ public class ObjectConverter {
         } catch (IOException e) {
             error = e;
         }
-        
+        Log.info(object);
         throw new IllegalArgumentException(error);
     }
 

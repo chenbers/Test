@@ -59,33 +59,5 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
         return new TextLink(setIds("/td[2]/span["+Id.text(fullName)+"]"));
     }
     
-    public static Object[] getParametersS(PendingStep step, Method method) {
-        String stepAsString = step.stepAsString();
-        
-        // TODO: dtanner: need a way to handle overloaded methods.
-        
-        Class<?>[] parameters = method.getParameterTypes();
-        Object[] passParameters = new Object[parameters.length];
-        
-        
-        for (int i=0;i<parameters.length;i++){
-            Class<?> next = parameters[i];
-            if (next.isAssignableFrom(Integer.class)) {
-                Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
-                passParameters[i] = param == null || param == 0 ? 1 : param;
-            } else {
-                String lastOfStep = stepAsString.substring(stepAsString.indexOf("\"")+1);
-                String toType = lastOfStep.substring(0, lastOfStep.indexOf("\""));
-                passParameters[i] = toType;    
-            }
-            
-            
-            if (passParameters[i] == null){
-                throw new NoSuchMethodError("We are missing parameters for " 
-                            + method.getName() + ", working on step " + step.stepAsString());
-            }
-        }
-        return passParameters;
-    }
 
 }

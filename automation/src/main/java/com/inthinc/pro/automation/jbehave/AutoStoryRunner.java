@@ -86,7 +86,7 @@ public class AutoStoryRunner extends StoryRunner {
             context.stateIs(storiesState.get());
         }
         runStepsWhileKeepingState(context,
-                configuration.stepCollector().collectBeforeOrAfterStoriesSteps(context.candidateSteps(), stage));
+                configuration.stepCollector().collectBeforeOrAfterStoriesSteps(context.candidateSteps(), stage), null);
         reporter.get().afterStory(false);
         storiesState.set(context.state());
         // handle any after stories failure according to strategy
@@ -260,12 +260,12 @@ public class AutoStoryRunner extends StoryRunner {
     }
 
     private void runBeforeOrAfterStorySteps(RunContext context, Story story, Stage stage) {
-        runStepsWhileKeepingState(context, context.collectBeforeOrAfterStorySteps(story, stage));
+        runStepsWhileKeepingState(context, context.collectBeforeOrAfterStorySteps(story, stage), null);
     }
 
     private void runBeforeOrAfterScenarioSteps(RunContext context, Scenario scenario, Meta storyAndScenarioMeta,
             Stage stage, ScenarioType type) {
-        runStepsWhileKeepingState(context, context.collectBeforeOrAfterScenarioSteps(storyAndScenarioMeta, stage, type));
+        runStepsWhileKeepingState(context, context.collectBeforeOrAfterScenarioSteps(storyAndScenarioMeta, stage, type), scenario);
     }
 
     private void runScenarioSteps(RunContext context, Scenario scenario, Map<String, String> scenarioParameters) {
@@ -274,7 +274,7 @@ public class AutoStoryRunner extends StoryRunner {
             restart = false;
             List<Step> steps = context.collectScenarioSteps(scenario, scenarioParameters);
             try {
-                runStepsWhileKeepingState(context, steps);
+                runStepsWhileKeepingState(context, steps, scenario);
             } catch (RestartingScenarioFailure e) {
                 restart = true;
                 continue;
@@ -302,7 +302,7 @@ public class AutoStoryRunner extends StoryRunner {
         }
     }
 
-    private void runStepsWhileKeepingState(RunContext context, List<Step> steps) {
+    private void runStepsWhileKeepingState(RunContext context, List<Step> steps, Scenario scenario) {
         if (steps == null || steps.size() == 0) {
             return;
         }
@@ -313,7 +313,7 @@ public class AutoStoryRunner extends StoryRunner {
             try {
                 if (step instanceof PendingStep && state instanceof FineSoFar){
                     stepsToRemove.addElement(step);
-                    step = page.tryStep((PendingStep) step);
+                    step = page.tryStep((PendingStep) step, scenario);
                     if (!(step instanceof PendingStep)){
                         stepsToAdd.add(step);
                     } else {
