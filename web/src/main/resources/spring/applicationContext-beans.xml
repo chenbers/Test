@@ -481,7 +481,7 @@
     <property name="disabledGoogleMapsInReportsAddressLookupBean" ref="${disabledGoogleMapsInReportsAddressLookup}"></property>
   </bean>
   
-  <bean id="basePerformanceEventsBean" class="com.inthinc.pro.backing.BasePerformanceEventBean" scope="request" parent="basePerformanceBean">
+  <bean id="basePerformanceEventsBean" class="com.inthinc.pro.backing.BasePerformanceEventsBean" scope="request" parent="basePerformanceBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="eventDAO" ref="eventDAO"></property>
   </bean>
