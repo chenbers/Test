@@ -43,7 +43,7 @@ public class AutoSteps extends Steps {
     public AutoSteps(Configuration configuration, Object instance) {
         super(configuration, instance);
         this.instance = instance;
-        this.stepsFactory = new AutoStepsFactory(configuration, this);
+        this.stepsFactory = new AutoStepsFactory(configuration, instance, this);
         this.configuration = configuration;
     }
 

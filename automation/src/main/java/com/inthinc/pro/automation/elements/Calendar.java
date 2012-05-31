@@ -94,7 +94,7 @@ public class Calendar extends MasterTest{
             int last = stepAsString.lastIndexOf("\"");
             var = new AutomationCalendar(stepAsString.substring(first, last));
         } else { 
-            for (Map.Entry<String, String> variable : MasterTest.getVariables(Thread.currentThread().getId()).entrySet()){
+            for (Map.Entry<String, String> variable : MasterTest.getVariables().entrySet()){
                 if (stepAsString.contains("from " + variable.getKey())){
                     var = new AutomationCalendar(variable.getValue());
                 }

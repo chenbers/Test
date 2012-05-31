@@ -52,13 +52,13 @@ public class AutoStoryRunner extends StoryRunner {
     
 
 
-    private ThreadLocal<FailureStrategy> currentStrategy = new ThreadLocal<FailureStrategy>();
-    private ThreadLocal<FailureStrategy> failureStrategy = new ThreadLocal<FailureStrategy>();
-    private ThreadLocal<PendingStepStrategy> pendingStepStrategy = new ThreadLocal<PendingStepStrategy>();
-    private ThreadLocal<UUIDExceptionWrapper> storyFailure = new ThreadLocal<UUIDExceptionWrapper>();
-    private ThreadLocal<StoryReporter> reporter = new ThreadLocal<StoryReporter>();
-    private ThreadLocal<String> reporterStoryPath = new ThreadLocal<String>();
-    private ThreadLocal<State> storiesState = new ThreadLocal<State>();
+    private static ThreadLocal<FailureStrategy> currentStrategy = new ThreadLocal<FailureStrategy>();
+    private static ThreadLocal<FailureStrategy> failureStrategy = new ThreadLocal<FailureStrategy>();
+    private static ThreadLocal<PendingStepStrategy> pendingStepStrategy = new ThreadLocal<PendingStepStrategy>();
+    private static ThreadLocal<UUIDExceptionWrapper> storyFailure = new ThreadLocal<UUIDExceptionWrapper>();
+    private static ThreadLocal<StoryReporter> reporter = new ThreadLocal<StoryReporter>();
+    private static ThreadLocal<String> reporterStoryPath = new ThreadLocal<String>();
+    private static ThreadLocal<State> storiesState = new ThreadLocal<State>();
     
 
     private Map<Story, StoryDuration> cancelledStories = new HashMap<Story, StoryDuration>();

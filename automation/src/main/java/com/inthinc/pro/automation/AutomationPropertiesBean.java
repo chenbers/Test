@@ -5,11 +5,11 @@ import java.util.List;
 public class AutomationPropertiesBean {
     private Boolean addTestSet;
     private String browserName;
-    private String defaultUser;
+    private List<String> editableAccount;
+    private List<String> mainAutomation;
     private String operatingSystem;
     private String password;
     private String silo;
-    private List<String> users;
 
     public Boolean getAddTestSet() {
         return addTestSet;
@@ -19,8 +19,12 @@ public class AutomationPropertiesBean {
         return browserName;
     }
 
-    public String getDefaultUser() {
-        return defaultUser;
+    public List<String> getEditableAccount() {
+        return editableAccount;
+    }
+
+    public List<String> getMainAutomation() {
+        return mainAutomation;
     }
 
     public String getOperatingSystem() {
@@ -39,10 +43,6 @@ public class AutomationPropertiesBean {
         return silo;
     }
 
-    public List<String> getUsers() {
-        return users;
-    }
-
     public void setAddTestSet(Boolean addTestSet) {
         this.addTestSet = addTestSet;
     }
@@ -51,8 +51,12 @@ public class AutomationPropertiesBean {
         this.browserName = browserName;
     }
 
-    public void setDefaultUser(String defaultUser) {
-        this.defaultUser = defaultUser;
+    public void setEditableAccount(List<String> editableAccount) {
+        this.editableAccount = editableAccount;
+    }
+
+    public void setMainAutomation(List<String> mainAutomation) {
+        this.mainAutomation = mainAutomation;
     }
 
     public void setOperatingSystem(String operatingSystem) {
@@ -65,9 +69,5 @@ public class AutomationPropertiesBean {
 
     public void setSilo(String silo) {
         this.silo = silo;
-    }
-
-    public void setUsers(List<String> users) {
-        this.users = users;
     }
 }

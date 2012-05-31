@@ -36,11 +36,11 @@ public class TableNavigator <T extends ElementBase>{
         } else {
             Pattern pat = Pattern.compile(RegexTerms.getRowTextNumber);
             Matcher mat = pat.matcher(stepAsString);
-            Map<String, String> variables = MasterTest.getVariables(Thread.currentThread().getId());
+            Map<String, String> variables = MasterTest.getVariables();
             while (mat.find()){
                 String variableName = stepAsString.substring(mat.start(), mat.end()).toLowerCase();
                 if (variables.containsKey(variableName)){
-                    rowNumber = Integer.parseInt(MasterTest.getVariables(Thread.currentThread().getId()).get(variableName));
+                    rowNumber = Integer.parseInt(MasterTest.getVariables().get(variableName));
                     break;
                 }
                 pat = Pattern.compile(RegexTerms.addAnyCaseWordSpaceAfter + RegexTerms.getRowTextNumber);
@@ -62,7 +62,7 @@ public class TableNavigator <T extends ElementBase>{
             textToFind = stepAsString.substring(stepAsString.indexOf("\"")+1, stepAsString.lastIndexOf("\"")-1);
         } else {
             String varName = RegexTerms.getMatch(RegexTerms.rowVariable, stepAsString).toLowerCase();
-            textToFind = MasterTest.getVariables(Thread.currentThread().getId()).get(varName);
+            textToFind = MasterTest.getVariables().get(varName);
         }
         String variableToSave = RegexTerms.getMatch(RegexTerms.saveRowVariable, stepAsString);
         Iterator<T> itr = instance.iterator();
@@ -71,7 +71,7 @@ public class TableNavigator <T extends ElementBase>{
             if (next instanceof TextBased & itr instanceof TableIterator){
                 if (((TextBased) next).getText().equals(textToFind)){
                     int rowNum = ((TableIterator<T>)itr).getRowNumber();
-                    MasterTest.getVariables(Thread.currentThread().getId()).put(variableToSave, rowNum + "");
+                    MasterTest.getVariables().put(variableToSave, rowNum + "");
                     return;
                 }
             } else {

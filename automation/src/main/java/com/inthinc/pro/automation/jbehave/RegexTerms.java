@@ -15,14 +15,14 @@ public class RegexTerms {
     
     public static final List<String> typeReg = new ArrayList<String>();
     static {
-        typeReg.add("\\w*(?=\\s+as\\s+\\w*)\\b");  // Used when Saving a variable
-        typeReg.add("\\w*(?=\\s+is\\s+\\w*)\\b");  // Used to compare a variable
-        typeReg.add("\\w*(?=\\s+for\\s+\\w*)\\b"); // Used to compare a variable
+        typeReg.add("\\w+(?=\\s+as\\s+\\w*)\\b");  // Used when Saving a variable
+        typeReg.add("\\w+(?=\\s+is\\s+\\w*)\\b");  // Used to compare a variable
+        typeReg.add("\\w+(?=\\s+for\\s+\\w*)\\b"); // Used to compare a variable
         typeReg.add("\\w+$");                      // Standard action should end in the type.
         
 
-        typeReg.add("\\w*(?=\\s+contains\\s+\\w*)\\b"); // Used to compare a variable or text
-        typeReg.add("\\w*(?=\\s+does\\s+\\w*)\\b"); // Used to compare a variable or text
+        typeReg.add("\\w+(?=\\s+contains\\s+\\w*)\\b"); // Used to compare a variable or text
+        typeReg.add("\\w+(?=\\s+does\\s+\\w*)\\b"); // Used to compare a variable or text
     }
     
     

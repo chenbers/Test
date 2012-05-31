@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.Aliases;
-import org.jbehave.core.annotations.BeforeStory;
 import org.jbehave.core.annotations.Composite;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
@@ -49,181 +48,67 @@ import com.inthinc.pro.automation.selenium.Page;
 
 public abstract class MasterTest {
     
-    private final AutomationPropertiesBean apb;
-    private RestCommands rest;
+    private static final String editableAccountUser = "an account that can be edited";
+    private static final String editableUser = "as a user that can be edited";
+    private static final String mainUser = "as the default user";
     
-    @Given("I am logged in")
-    @Composite(steps = {
-            "Given I am on the Login page", 
-            "When I type defaultUser into the Username field", 
-            "When I type defaultPassword into the Password field", 
-            "When I click the Login button"})
-    public void givenIHaveLoggedIn(){
-    }
-    
-    @BeforeStory
-    public void setupUser(){
-        localVariables.put("defaultUser", apb.getUsers().get(0));
-        localVariables.put("defaultPassword", apb.getPassword());
-        rest = new RestCommands(apb.getDefaultUser(), apb.getPassword());
-        defaultUser = rest.getObject(User.class, apb.getUsers().get(0));
-        defaultUser.setPassword(apb.getPassword());
-    }
-    
-    @AfterScenario
-    public void clearUser(){
-        User isUpdated = rest.getObject(User.class, defaultUser.getUserID());
-        if (isUpdated.doesPasswordMatch(defaultUser.getPassword())){
-            return;
-        } 
-        User update = new User();
-        update.setPassword(apb.getPassword());
-        update.setUsername(isUpdated.getUsername());
-        update.setUserID(isUpdated.getUserID());
-        rest.putObject(User.class, update, null);
-    }
-    
-    private User defaultUser;
-    
-    private final Long threadID = Thread.currentThread().getId();
+    private static ThreadLocal<User> myUser = new ThreadLocal<User>();
 
-    
-    public static final Map<Long, Map<String, String>> variables = new HashMap<Long, Map<String, String>>();
-    
-    
-    protected Map<String, String> localVariables;
+    private static ThreadLocal<Map<String, String>> variables = new ThreadLocal<Map<String, String>>();
+    static {
+        variables.set(new HashMap<String, String>());
+    }
+
     
     public MasterTest(){
         apb = AutomationProperties.getPropertyBean(); 
-        if (variables.containsKey(threadID)) {
-            localVariables = variables.get(threadID);
-        } else {
-            localVariables = new HashMap<String, String>();
-            variables.put(threadID, localVariables);
-        }
     }
     
-    public static Map<String, String> getVariables(Long threadID){
-        return variables.get(threadID);
-    }
     
-    public static String getComparator(String stepAsString){
-        String elementType = JBehaveTermMatchers.getAlias(stepAsString);
-        String variable = RegexTerms.getMatch(RegexTerms.getVariable.replace("***", elementType), stepAsString);
-        Map<String, String> temp = variables.get(Thread.currentThread().getId());
-        if (variable.isEmpty()){
-            if (stepAsString.contains("\"")){
-                int quote = stepAsString.indexOf("\"") + 1;
-                return stepAsString.substring(quote, stepAsString.indexOf("\"", quote));
-            } else {
-                for (Map.Entry<String, String> entry : temp.entrySet()){
-                    if (stepAsString.contains(entry.getKey())){
-                        return entry.getValue();
-                    }
-                }
-            }
-        }
-        if (variable.contains("\"")){
-            return variable.replace("\"", "");
-        } else {
-            return temp.get(variable);
-        }
+    public static String capitalizeFirstLettersTokenizer ( final String s ) {
+        return capitalizeString(s, " ");
     }
-    
-    public static void setComparator(String stepAsString, Object value){
-        String elementType = JBehaveTermMatchers.getAlias(stepAsString);
-        String key = RegexTerms.getMatch(RegexTerms.setVariable.replace("***", elementType), stepAsString);
+
+    public static String capitalizeString(final String s, final String split){
+        final StringTokenizer st = new StringTokenizer( s, split, true );
+        final StringBuilder sb = new StringBuilder();
+         
+        while ( st.hasMoreTokens() ) {
+            String token = st.nextToken();
+            token = String.format( "%s%s",
+                                    Character.toUpperCase(token.charAt(0)),
+                                    token.substring(1).toLowerCase() );
+            sb.append( token );
+        }
+            
+        return sb.toString();
+    }
+
+    public static String captalizeEnumName(final String s){
+        String formatted = capitalizeString(s, "_").replace("_", "");
+        return Character.toLowerCase(formatted.charAt(0)) + formatted.substring(1);
         
-        if (!key.isEmpty()){
-            variables.get(Thread.currentThread().getId()).put(key, value.toString());
-        }
     }
-    
-    public Map<Method, Object[]> parseValidationStep(PendingStep step, String elementType) throws NoSuchMethodException {
-        String stepAsString = step.stepAsString();
-        Map<String, List<Method>> methods = null;
-        Map<Method, Object[]> validateMethod = new HashMap<Method, Object[]>(2);
-        String validationType = "validate";
-        Class<? extends Annotation> ann = Validate.class;
-        if (stepAsString.contains("assert")) {
-            ann = Assert.class;
-            validationType = "assert";
+
+    public static boolean checkBoolean(String stepAsString){
+        if (stepAsString.contains("not")){
+            return false;
         }
-        methods = getMethods(this.getClass(), ann);
-        if (methods == null){ 
-            throw new NoSuchMethodException("Could not find a validation method for: " + stepAsString);
-        }
-        boolean trueFalse = checkBoolean(stepAsString);
-        Set<String> names = methods.keySet();
-        String variable = getComparator(stepAsString);
-        List<Method> methodList = new ArrayList<Method>();
-        for (String name : names) {
-            String shorter = name.replace(validationType, "");
-            if (stepAsString.contains(shorter) && shorter.length() > 0){
-                methodList = methods.get(name);
-                break;
-            }
-        }
-        if (methodList.isEmpty()){
-            if (methods.containsKey(validationType)) {
-                methodList = methods.get(validationType);
-            }
-        }
-        
-        if (methodList != null){
-            for (Method match : methodList){
-                Class<?>[] params = match.getParameterTypes();
-                if (params.length > 0){
-                    if (variable != null && params[0].equals(variable.getClass())){
-                        validateMethod.put(match, new Object[]{variable});
-                    } else if (params[0].equals(Boolean.class)){
-                        validateMethod.put(match, new Object[]{trueFalse});
-                    }
-                    return validateMethod;
-                }
-            }
-        }
-        throw new NoSuchMethodException("Could not find a validation step for " + stepAsString);
+        return true;
     }
-    
-    
-    public Method parseStep(String stepAsString, String elementType) throws NoSuchMethodException{        
-        Map<String, List<Method>> methods = getMethods(this.getClass(), null);
-        String regex = RegexTerms.getMethod;
-        Pattern pat = Pattern.compile(regex);
-        Matcher mat = pat.matcher(stepAsString);
-        String potentialMethod;
-        List<Method> matchingMethods = null;
-        while (mat.find()){
-            potentialMethod = stepAsString.substring(mat.start(), mat.end()).replace(" ", "");
-            if (methods.containsKey(potentialMethod)){ 
-                matchingMethods = methods.get(potentialMethod);
-            } 
-            regex += RegexTerms.addLowercaseWordSpaceBefore;
-            pat = Pattern.compile(regex);
-            mat = pat.matcher(stepAsString);
-        }
-        
-        if (matchingMethods == null ){
-            throw new NoSuchMethodException("Could not find a method for : " + stepAsString);
-        }
-        
-        if (matchingMethods.size() == 1){
-            return matchingMethods.get(0);
-        } else {
-            String name = getComparator(stepAsString);
-            if (name == null){
-                
-            } else {
-                for (Method method : matchingMethods){
-                    List<Class<?>> classes = asList(method.getParameterTypes());
-                    if (classes.contains(String.class) || classes.contains(Object.class)){
-                        return method;
-                    }
-                }
+
+
+    public static String escapeHtml(String original) {
+        return StringEscapeUtils.escapeHtml(original);
+    }
+    private static Annotation getAnnotation(Method method, Class<? extends Annotation> annotation){
+        Set<Annotation> set = getAnnotations(method);
+        for (Annotation ann : set){
+            if (annotation.equals(ann.annotationType())){
+                return ann;
             }
-            return matchingMethods.get(0);
         }
+        return null;
     }
     
     private static Set<Annotation> getAnnotations(Method method){
@@ -242,14 +127,40 @@ public abstract class MasterTest {
         return ann;
     }
     
-    private static Annotation getAnnotation(Method method, Class<? extends Annotation> annotation){
-        Set<Annotation> set = getAnnotations(method);
-        for (Annotation ann : set){
-            if (annotation.equals(ann.annotationType())){
-                return ann;
+    public static String getComparator(String stepAsString){
+        String elementType = JBehaveTermMatchers.getAlias(stepAsString);
+        String variable = RegexTerms.getMatch(RegexTerms.getVariable.replace("***", elementType), stepAsString);
+        Map<String, String> temp = variables.get();
+        if (variable.isEmpty()){
+            if (stepAsString.contains("\"")){
+                int quote = stepAsString.indexOf("\"") + 1;
+                return stepAsString.substring(quote, stepAsString.indexOf("\"", quote));
+            } else {
+                for (Map.Entry<String, String> entry : temp.entrySet()){
+                    if (stepAsString.contains(entry.getKey())){
+                        return entry.getValue();
+                    }
+                }
             }
         }
-        return null;
+        if (variable.contains("\"")){
+            return variable.replace("\"", "");
+        } else {
+            return temp.get(variable);
+        }
+    }
+        
+    public static String getEditableaccountuser() {
+        return editableAccountUser;
+    }
+    
+    public static String getEditableuser() {
+        return editableUser;
+    }
+    
+    
+    public static String getMainuser() {
+        return mainUser;
     }
     
     public static Map<String, List<Method>> getMethods(Class<?> clazz, Class<? extends Annotation> filter) throws SecurityException, NoSuchMethodException{
@@ -300,14 +211,195 @@ public abstract class MasterTest {
         }
         return methods;
     }
+    
+    public static Map<String, String> getVariables(){
+        return variables.get();
+    }
+    
+    @When("I hit the Period key")
+    public static void keyPeriod() {
+        KeyCommands.typeKey(KeyEvent.VK_PERIOD);
+    }
+    
+    public static void setComparator(String stepAsString, Object value){
+        String elementType = JBehaveTermMatchers.getAlias(stepAsString);
+        String key = RegexTerms.getMatch(RegexTerms.setVariable.replace("***", elementType), stepAsString);
+        
+        if (!key.isEmpty()){
+            variables.get().put(key, value.toString());
+        }
+    }
+    
+    
+    @When("I hit the Spacebar")
+    public static void spaceBar() {
+        KeyCommands.typeKey(KeyEvent.VK_SPACE);
+    }
+    
+    public static String switchCase(final String s){
+        StringWriter writer = new StringWriter();
+        for (Character c : s.toCharArray()){
+            if(Character.isUpperCase(c)){
+                writer.write(Character.toLowerCase(c));
+            } else {
+                writer.write(Character.toUpperCase(c));
+            }
+        }
+        return writer.toString();
+    }
+    
+    public static String unescapeHtml(String original) {
+        return StringEscapeUtils.unescapeHtml(original);
+    }
+    
+    private final AutomationPropertiesBean apb;
 
-    public static boolean checkBoolean(String stepAsString){
-        if (stepAsString.contains("not")){
+    private RestCommands rest;
+    
+    private String savedPage;
+
+    
+
+    /**
+     * Adds an error for this test, WARNING: default ErrorLevel is set to FAIL.
+     * @param errorName
+     */
+    public void addError(String errorName){
+        addError(errorName, ErrorLevel.FAIL);
+    }
+
+    public void addError(String errorName, ErrorLevel level) {
+        getSelenium().getErrorCatcher().addError(errorName, Thread.currentThread().getStackTrace(), level);
+    }
+    
+    public void addError(String errorName, String error, ErrorLevel level) {
+        getSelenium().getErrorCatcher().addError(errorName, error, level);
+    }
+    
+    public void addError(String errorName, Throwable stackTrace, ErrorLevel level) {
+        getSelenium().getErrorCatcher().addError(errorName, stackTrace, level);
+    }
+
+    public Boolean assertEquals(Object expected, Object actual) {
+        return assertEquals(expected, actual, true);
+    }
+
+    private Boolean assertEquals(Object expected, Object actual, Boolean areObjectsEqual) {
+        if (compare(expected, actual) != areObjectsEqual) {
+            Log.info("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
+            addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FATAL);
             return false;
         }
         return true;
     }
+
+    public Boolean assertEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
+        if (!compare(expected, actual)) {
+            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
+            return false;
+        }
+        return true;
+    }
+    public Boolean assertEquals(Object expected, SeleniumEnumWrapper actual) {
+        return assertEquals(expected, getSelenium().getText(actual));
+    }
+
+    public Boolean assertEquals(SeleniumEnumWrapper anEnum) {
+        return assertEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
+    }
+
+    public Boolean assertFalse(Boolean test, String error) {
+        if (test) {
+            addError(error, ErrorLevel.FATAL);
+            return false;
+        }
+        return true;
+    }
+
+    @Then("I assert \"$lookfor\" is on the page")
+    public boolean assertIsTextOnPage(String lookfor) { 
+        return assertTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
+    }
+
+    public Boolean assertNotEquals(Object expected, Object actual) {
+        return assertEquals(expected, actual, false);
+    }
+
+    public Boolean assertNotEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
+        if (compare(expected, actual)) {
+            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean assertNotEquals(Object expected, SeleniumEnumWrapper anEnum) {
+        return assertNotEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
+    }
+
+    public Boolean assertStringContains(String partialString, String fullString) {
+        if (!fullString.contains(partialString)) {
+            addError(partialString + " not in " + fullString, ErrorLevel.FATAL);
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean assertTrue(Boolean test, String error) {
+        return assertTrue(test, error, ErrorLevel.FATAL);
+    }
+
+    public Boolean assertTrue(Boolean test, String error, ErrorLevel level) {
+        if (!test) {
+            addError(error, level);
+            return false;
+        }
+        return true;   
+    }
+
+    @AfterScenario
+    public void clearUser(){
+        User isUpdated = rest.getObject(User.class, myUser.get().getUserID());
+        if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
+            return;
+        } 
+        User update = new User();
+        update.setPassword(apb.getPassword());
+        update.setUsername(isUpdated.getUsername());
+        update.setUserID(isUpdated.getUserID());
+        rest.putObject(User.class, update, null);
+    }
+
+    public Boolean compare(Object expected, Object actual) {
+        Boolean results = false;
+        if (actual instanceof SeleniumEnumWrapper) {
+            results = compare(expected, getSelenium().getText((SeleniumEnumWrapper) actual));
+        } else if (expected instanceof TextEnum) {
+            results = compare(((TextEnum) expected).getText(), actual);
+        } else {
+            results = actual.equals(expected);
+        }
+        Log.info("Expected: " + expected + " == Actual: " + actual + " is " + results);
+        return results;
+    }
+
+    @When("I hit the Enter Key")
+    public void enterKey() {
+        getSelenium().enterKey();
+    }
     
+    public String getCurrentLocation() {
+        return getSelenium().getLocation();
+    }
+
+    public ErrorCatcher getErrors() {
+        return getSelenium().getErrorCatcher();
+    }
+
+    public User getMyUser() {
+        return myUser.get();
+    }
+
     public Object[] getParameters(PendingStep step, Method method) throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
         try {
             Class<?>[] parameters = method.getParameterTypes();
@@ -335,150 +427,6 @@ public abstract class MasterTest {
         }
     }
 
-    
-    @When("I hit the Enter Key")
-    public void enterKey() {
-        getSelenium().enterKey();
-    }
-
-    public static String escapeHtml(String original) {
-        return StringEscapeUtils.escapeHtml(original);
-    }
-
-    @When("I hit the Tab Key")
-    public void tabKey() {
-        getSelenium().tabKey();
-    }
-    
-    @When("I hit the Spacebar")
-    public static void spaceBar() {
-        KeyCommands.typeKey(KeyEvent.VK_SPACE);
-    }
-    
-    @When("I hit the Period key")
-    public static void keyPeriod() {
-        KeyCommands.typeKey(KeyEvent.VK_PERIOD);
-    }
-
-    public static String unescapeHtml(String original) {
-        return StringEscapeUtils.unescapeHtml(original);
-    }
-
-    private String savedPage;
-
-    /**
-     * Adds an error for this test, WARNING: default ErrorLevel is set to FAIL.
-     * @param errorName
-     */
-    public void addError(String errorName){
-        addError(errorName, ErrorLevel.FAIL);
-    }
-    public void addError(String errorName, ErrorLevel level) {
-        getSelenium().getErrorCatcher().addError(errorName, Thread.currentThread().getStackTrace(), level);
-    }
-
-    public void addError(String errorName, String error, ErrorLevel level) {
-        getSelenium().getErrorCatcher().addError(errorName, error, level);
-    }
-
-    public void addError(String errorName, Throwable stackTrace, ErrorLevel level) {
-        getSelenium().getErrorCatcher().addError(errorName, stackTrace, level);
-    }
-
-    public Boolean assertEquals(Object expected, Object actual) {
-        return assertEquals(expected, actual, true);
-    }
-
-    private Boolean assertEquals(Object expected, Object actual, Boolean areObjectsEqual) {
-        if (compare(expected, actual) != areObjectsEqual) {
-            Log.info("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
-            addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FATAL);
-            return false;
-        }
-        return true;
-    }
-
-    public Boolean assertEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
-        if (!compare(expected, actual)) {
-            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
-            return false;
-        }
-        return true;
-    }
-
-    public Boolean assertEquals(Object expected, SeleniumEnumWrapper actual) {
-        return assertEquals(expected, getSelenium().getText(actual));
-    }
-
-    public Boolean assertEquals(SeleniumEnumWrapper anEnum) {
-        return assertEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
-    }
-
-    public Boolean assertFalse(Boolean test, String error) {
-        if (test) {
-            addError(error, ErrorLevel.FATAL);
-            return false;
-        }
-        return true;
-    }
-
-    public Boolean assertNotEquals(Object expected, Object actual) {
-        return assertEquals(expected, actual, false);
-    }
-
-    public Boolean assertNotEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
-        if (compare(expected, actual)) {
-            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
-            return false;
-        }
-        return true;
-    }
-
-    public Boolean assertNotEquals(Object expected, SeleniumEnumWrapper anEnum) {
-        return assertNotEquals(anEnum.getText(), getSelenium().getText(anEnum), anEnum);
-    }
-
-    public Boolean assertStringContains(String partialString, String fullString) {
-        if (!fullString.contains(partialString)) {
-            addError(partialString + " not in " + fullString, ErrorLevel.FATAL);
-            return false;
-        }
-        return true;
-    }
-    
-    public Boolean assertTrue(Boolean test, String error, ErrorLevel level) {
-        if (!test) {
-            addError(error, level);
-            return false;
-        }
-        return true;   
-    }
-
-    public Boolean assertTrue(Boolean test, String error) {
-        return assertTrue(test, error, ErrorLevel.FATAL);
-    }
-
-    public Boolean compare(Object expected, Object actual) {
-        Boolean results = false;
-        if (actual instanceof SeleniumEnumWrapper) {
-            results = compare(expected, getSelenium().getText((SeleniumEnumWrapper) actual));
-        } else if (expected instanceof TextEnum) {
-            results = compare(((TextEnum) expected).getText(), actual);
-        } else {
-            results = actual.equals(expected);
-        }
-        Log.info("Expected: " + expected + " == Actual: " + actual + " is " + results);
-        return results;
-    }
-
-    public String getCurrentLocation() {
-        return getSelenium().getLocation();
-    }
-
-    public ErrorCatcher getErrors() {
-        return getSelenium().getErrorCatcher();
-    }
-
     public CoreMethodInterface getSelenium() {
         return CoreMethodLib.getSeleniumThread();
     }
@@ -486,23 +434,34 @@ public abstract class MasterTest {
     public String getTextFromElementWithFocus() {// TODO: jwimmer please check this again against new code.
         return getSelenium().getTextFromElementWithFocus();
     }
-    
-    @Then("I verify \"$lookfor\" is on the page")
-    public boolean verifyIsTextOnPage(String lookfor) { 
-        return validateTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
+
+    @Given("I am logged in $params")
+    @Composite(steps = {
+            "Given I am using $params for my user",
+            "Given I am logged in"})
+    public void givenIAmLoggedInAs(String params){
     }
     
-    @Then("I assert \"$lookfor\" is on the page")
-    public boolean assertIsTextOnPage(String lookfor) { 
-        return assertTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
+    @Given("I am logged in")
+    @Composite(steps = {
+            "Given I am using as the default user for my user",
+            "Given I am on the Login page", 
+            "When I type my user name into the Username field", 
+            "When I type my password into the Password field", 
+            "When I click the Login button"})
+    public void givenIHaveAmIn(){
+    }
+    
+    public void killSelenium() {
+    	CoreMethodLib.closeSeleniumThread();
     }
 
-    public void open(SeleniumEnums pageToOpen) {
-        getSelenium().open(new SeleniumEnumWrapper(pageToOpen));
-    }
-    
     public void open(Page page){
         getSelenium().open(page.getExpectedPath());
+    }
+    
+    public void open(SeleniumEnums pageToOpen) {
+        getSelenium().open(new SeleniumEnumWrapper(pageToOpen));
     }
 
     public void open(SeleniumEnums pageToOpen, Integer replaceNumber) {
@@ -520,20 +479,107 @@ public abstract class MasterTest {
         open(savedPage);
     }
     
+    public Method parseStep(String stepAsString, String elementType) throws NoSuchMethodException{        
+        Map<String, List<Method>> methods = getMethods(this.getClass(), null);
+        String regex = RegexTerms.getMethod;
+        Pattern pat = Pattern.compile(regex);
+        Matcher mat = pat.matcher(stepAsString);
+        String potentialMethod;
+        List<Method> matchingMethods = null;
+        while (mat.find()){
+            potentialMethod = stepAsString.substring(mat.start(), mat.end()).replace(" ", "");
+            if (methods.containsKey(potentialMethod)){ 
+                matchingMethods = methods.get(potentialMethod);
+            } 
+            regex += RegexTerms.addLowercaseWordSpaceBefore;
+            pat = Pattern.compile(regex);
+            mat = pat.matcher(stepAsString);
+        }
+        
+        if (matchingMethods == null ){
+            throw new NoSuchMethodException("Could not find a method for : " + stepAsString);
+        }
+        
+        if (matchingMethods.size() == 1){
+            return matchingMethods.get(0);
+        } else {
+            String name = getComparator(stepAsString);
+            if (name == null){
+                
+            } else {
+                for (Method method : matchingMethods){
+                    List<Class<?>> classes = asList(method.getParameterTypes());
+                    if (classes.contains(String.class) || classes.contains(Object.class)){
+                        return method;
+                    }
+                }
+            }
+            return matchingMethods.get(0);
+        }
+    }
+    
+    public Map<Method, Object[]> parseValidationStep(PendingStep step, String elementType) throws NoSuchMethodException {
+        String stepAsString = step.stepAsString();
+        Map<String, List<Method>> methods = null;
+        Map<Method, Object[]> validateMethod = new HashMap<Method, Object[]>(2);
+        String validationType = "validate";
+        Class<? extends Annotation> ann = Validate.class;
+        if (stepAsString.contains("assert")) {
+            ann = Assert.class;
+            validationType = "assert";
+        }
+        methods = getMethods(this.getClass(), ann);
+        if (methods == null){ 
+            throw new NoSuchMethodException("Could not find a validation method for: " + stepAsString);
+        }
+        boolean trueFalse = checkBoolean(stepAsString);
+        Set<String> names = methods.keySet();
+        String variable = getComparator(stepAsString);
+        List<Method> methodList = new ArrayList<Method>();
+        for (String name : names) {
+            String shorter = name.replace(validationType, "");
+            if (stepAsString.contains(shorter) && shorter.length() > 0){
+                methodList = methods.get(name);
+                break;
+            }
+        }
+        if (methodList.isEmpty()){
+            if (methods.containsKey(validationType)) {
+                methodList = methods.get(validationType);
+            }
+        }
+        
+        if (methodList != null){
+            for (Method match : methodList){
+                Class<?>[] params = match.getParameterTypes();
+                if (params.length > 0){
+                    if (variable != null && params[0].equals(variable.getClass())){
+                        validateMethod.put(match, new Object[]{variable});
+                    } else if (params[0].equals(Boolean.class)){
+                        validateMethod.put(match, new Object[]{trueFalse});
+                    }
+                    return validateMethod;
+                }
+            }
+        }
+        throw new NoSuchMethodException("Could not find a validation step for " + stepAsString);
+    }
+
     public MasterTest pause(Integer timeout_in_secs, String reasonForPause) {
         System.out.println("pausing for: "+reasonForPause);
         StackTraceElement element = Thread.currentThread().getStackTrace()[2];
         AutomationThread.pause(timeout_in_secs, reasonForPause, element);
         return this;
     }
-    
+
     @When("I bookmark the page")
     public void savePageLink() {
         savedPage = getCurrentLocation();
     }
 
-    public void killSelenium() {
-    	CoreMethodLib.closeSeleniumThread();
+    @When("I hit the Tab Key")
+    public void tabKey() {
+        getSelenium().tabKey();
     }
 
     @When("I type to the active field")
@@ -542,11 +588,30 @@ public abstract class MasterTest {
         WebDriver web = getSelenium().getWrappedDriver();
         web.switchTo().activeElement().sendKeys(type);
     }
+    
+    
+
+    @Given("I am using $params for my user")
+    public void useParamsToSetDefaultUser(String params){
+        if (params.equalsIgnoreCase(mainUser)){
+            List<String> users = apb.getMainAutomation();
+            rest = new RestCommands(users.get(0), apb.getPassword());
+            myUser.set(rest.getObject(User.class, users.get(1)));
+        } else if (params.equalsIgnoreCase(editableUser)){
+            
+        } else if (params.equalsIgnoreCase(editableAccountUser)){
+            List<String> users = apb.getEditableAccount();
+            rest = new RestCommands(users.get(0), apb.getPassword());
+            myUser.set(rest.getObject(User.class, users.get(1)));
+        }
+        variables.get().put("my user name", myUser.get().getUsername());
+        variables.get().put("my password", apb.getPassword());
+    }
 
     public Boolean validateEquals(Object expected, Object actual) {
         return validateEquals(expected, actual, true);
     }
-
+    
     private Boolean validateEquals(Object expected, Object actual, Boolean areObjectsEqual) {
         Boolean result = compare(expected, actual);
         if (areObjectsEqual != result) {
@@ -560,12 +625,18 @@ public abstract class MasterTest {
         return result;
     }
     
+    public Boolean validateFalse(Boolean test, String error) {
+        if (test) {
+            addError(error, ErrorLevel.FAIL);
+            return false;
+        }
+        return true;
+    }
     
-
     public Boolean validateNotEquals(Object expected, Object actual) {
         return validateEquals(expected, actual, false);
     }
-
+    
     public Boolean validateStringContains(String partialString, String fullString) {
         if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
@@ -582,49 +653,9 @@ public abstract class MasterTest {
         return true;
     }
     
-    public Boolean validateFalse(Boolean test, String error) {
-        if (test) {
-            addError(error, ErrorLevel.FAIL);
-            return false;
-        }
-        return true;
-    }
-    
-    public static String capitalizeFirstLettersTokenizer ( final String s ) {
-        return capitalizeString(s, " ");
-    }
-    
-    public static String capitalizeString(final String s, final String split){
-        final StringTokenizer st = new StringTokenizer( s, split, true );
-        final StringBuilder sb = new StringBuilder();
-         
-        while ( st.hasMoreTokens() ) {
-            String token = st.nextToken();
-            token = String.format( "%s%s",
-                                    Character.toUpperCase(token.charAt(0)),
-                                    token.substring(1).toLowerCase() );
-            sb.append( token );
-        }
-            
-        return sb.toString();
-    }
-    
-    public static String captalizeEnumName(final String s){
-        String formatted = capitalizeString(s, "_").replace("_", "");
-        return Character.toLowerCase(formatted.charAt(0)) + formatted.substring(1);
-        
-    }
-    
-    public static String switchCase(final String s){
-        StringWriter writer = new StringWriter();
-        for (Character c : s.toCharArray()){
-            if(Character.isUpperCase(c)){
-                writer.write(Character.toLowerCase(c));
-            } else {
-                writer.write(Character.toUpperCase(c));
-            }
-        }
-        return writer.toString();
+    @Then("I verify \"$lookfor\" is on the page")
+    public boolean verifyIsTextOnPage(String lookfor) { 
+        return validateTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
     }
 
 
