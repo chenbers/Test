@@ -13,6 +13,7 @@ import java.util.Map;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCandidate;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.jbehave.AutoSteps;
@@ -20,6 +21,7 @@ import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
 
+@Ignore
 public class ParseStepForElementMethodTest {
     
     private MasterTest test;
