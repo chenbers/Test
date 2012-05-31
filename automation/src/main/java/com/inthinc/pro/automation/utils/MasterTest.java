@@ -62,6 +62,9 @@ public abstract class MasterTest {
     
     public MasterTest(){
         apb = AutomationProperties.getPropertyBean(); 
+        if (variables.get()==null){
+            variables.set(new HashMap<String, String>());
+        }
     }
     
     
