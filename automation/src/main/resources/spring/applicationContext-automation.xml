@@ -31,15 +31,25 @@
 		<property name="browserName" value="${automation.browser}" />
 		<property name="operatingSystem" value="${automation.operatingSystem}" />
 		<property name="addTestSet" value="${automation.addTestSet}" />
-		<property name="defaultUser" value="${users.defaultUser}" />
 		<property name="password" value="${users.password}" />
-		<property name="users">
+		<property name="mainAutomation">
 			<bean class="org.springframework.util.CollectionUtils" factory-method="arrayToList">
 				<constructor-arg type="java.lang.Object">
 					<bean class="org.springframework.util.StringUtils"
 						factory-method="tokenizeToStringArray">
-						<constructor-arg type="java.lang.String" value="${users.names}" />
-						<constructor-arg type="java.lang.String" value=" " />
+						<constructor-arg type="java.lang.String" value="${users.mainAutomation}" />
+						<constructor-arg type="java.lang.String" value="," />
+					</bean>
+				</constructor-arg>
+			</bean>
+		</property>
+		<property name="editableAccount">
+			<bean class="org.springframework.util.CollectionUtils" factory-method="arrayToList">
+				<constructor-arg type="java.lang.Object">
+					<bean class="org.springframework.util.StringUtils"
+						factory-method="tokenizeToStringArray">
+						<constructor-arg type="java.lang.String" value="${users.editableAccount}" />
+						<constructor-arg type="java.lang.String" value="," />
 					</bean>
 				</constructor-arg>
 			</bean>
