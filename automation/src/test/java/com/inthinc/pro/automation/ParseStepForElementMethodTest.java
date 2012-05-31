@@ -23,9 +23,11 @@ import com.inthinc.pro.automation.utils.MasterTest;
 public class ParseStepForElementMethodTest {
     
     private MasterTest test;
+    private AutomationPropertiesBean apb;
     
     public ParseStepForElementMethodTest(){
         test = new MasterTest(){};
+        apb = AutomationProperties.getPropertyBean();
     }
     
     /**
@@ -33,7 +35,6 @@ public class ParseStepForElementMethodTest {
      */
     @Test
     public void testDefaultCreds(){
-        AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
         test.useParamsToSetDefaultUser(MasterTest.getMainuser());
         assertEquals("Unable to get the default user from the string", 
                 apb.getMainAutomation().get(1), MasterTest.getComparator("When I type my user name into the Username field"));
@@ -98,7 +99,6 @@ public class ParseStepForElementMethodTest {
      */
     @Test
     public void testCompositeLoginStep(){
-        AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
         String mainAutomationStep = "Given I am logged in";
         MasterTestSteps steps = new MasterTestSteps();
         List<StepCandidate> candidates = steps.listCandidates();
