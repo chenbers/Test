@@ -84,8 +84,10 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 				.append("u.userID, u.status, u.username, u.groupID, d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
 				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
 		
-		if(!pageParams.getSort().getField().isEmpty() && pageParams.getSort().getOrder() != null)
-			personSelect.append(" ORDER BY " + columnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "asc" : "desc"));
+		if(pageParams.getSort() == null || pageParams.getSort().getField().isEmpty() || pageParams.getSort().getOrder() == null)
+			personSelect.append(" ORDER BY p.first ASC");
+		else
+			personSelect.append(" ORDER BY " + columnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 		
 		if(pageParams.getStartRow() != null && pageParams.getEndRow() != null)
 			personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + (pageParams.getEndRow() - pageParams.getStartRow()) );
