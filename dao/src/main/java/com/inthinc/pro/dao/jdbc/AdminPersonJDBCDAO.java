@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +12,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -25,7 +22,6 @@ import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.States;
@@ -43,8 +39,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
     //States;
     final Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
-    //	private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
-    private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (:dglist) OR u.groupID IN (:uglist) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+    private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:dglist) OR u.groupID IN (:uglist)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
 	
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
 
@@ -86,17 +81,12 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 	}
 	
 	public Integer getCount(List<Integer> groupIDs, List<TableFilterField> filters) {
-		
-//		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
-//		Integer cnt =  getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, groupIDsForSQL, groupIDsForSQL);
-	    
 	    Map<String,Object>  params = new HashMap<String, Object>();
         params.put("dglist",groupIDs);
         params.put("uglist",groupIDs);
 
-
         Integer cnt =  getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, params);
-logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
+        logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 		
 		return cnt;
 	}
@@ -110,7 +100,7 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
 				.append("u.userID, u.status, u.username, u.groupID, u.mapType, u.password,  ")
 		         .append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
-				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (:dglist) OR u.groupID IN (:uglist) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
+				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:dglist) OR u.groupID IN (:uglist)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
         Map<String,Object>  params = new HashMap<String, Object>();
         params.put("dglist",groupIDs);
         params.put("uglist",groupIDs);
@@ -122,11 +112,6 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 		
 		if(pageParams.getStartRow() != null && pageParams.getEndRow() != null)
 			personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + (pageParams.getEndRow() - pageParams.getStartRow()) );
-		
-		
-//		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
-		
-       
 		
 		
 		List<Person> personList = getSimpleJdbcTemplate().query(personSelect.toString(), new ParameterizedRowMapper<Person>() {
