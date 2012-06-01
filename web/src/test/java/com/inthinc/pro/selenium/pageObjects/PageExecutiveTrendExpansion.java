@@ -153,7 +153,7 @@ public class PageExecutiveTrendExpansion extends ExecutiveExpansionBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().duration(DurationEnumeration.DAYS_30).isPresent();
+        return _link().duration(DurationEnumeration.THIRTY_DAYS).isPresent();
     }
 
 }

@@ -81,10 +81,10 @@ public class TAE {
 	}
 	
 	public static enum TimeDuration implements TextEnum {
-		DAYS_30("Days"),
-	    MONTHS_3("ThreeMonths"),
-	    MONTHS_6("SixMonths"),
-	    MONTHS_12("TwelveMonths"), 
+		THIRTY_DAYS("Days"),
+	    THREE_MONTHS("ThreeMonths"),
+	    SIX_MONTHS("SixMonths"),
+	    TWELVE_MONTHS("TwelveMonths"), 
 	    ;
 
 	    private String duration;
@@ -101,10 +101,10 @@ public class TAE {
 	
 	
 	public static enum DurationEnumeration implements TextEnum {
-	    DAYS_30("durationPanelHeaderDays"),
-	    MONTHS_3("durationPanelHeaderThreeMonths"),
-	    MONTHS_6("durationPanelHeaderSixMonths"),
-	    MONTHS_12("durationPanelHeaderTwelveMonths"), 
+	    THIRTY_DAYS("durationPanelHeaderDays"),
+	    THREE_MONTHS("durationPanelHeaderThreeMonths"),
+	    SIX_MONTHS("durationPanelHeaderSixMonths"),
+	    TWELVE_MONTHS("durationPanelHeaderTwelveMonths"), 
 	    ;
 
 	    private String duration;

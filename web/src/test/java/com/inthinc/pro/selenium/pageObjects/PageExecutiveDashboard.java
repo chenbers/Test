@@ -299,7 +299,7 @@ public class PageExecutiveDashboard extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _text().labelCrashesPerMil().isPresent() && _link().fuelEfficiencyDuration(DurationEnumeration.DAYS_30).isPresent();
+        return _text().labelCrashesPerMil().isPresent() && _link().fuelEfficiencyDuration(DurationEnumeration.THIRTY_DAYS).isPresent();
     }
 
 }

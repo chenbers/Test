@@ -12,7 +12,7 @@ import com.inthinc.pro.selenium.pageEnums.AdminVehicleDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceStyleEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
-import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
+import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 
 public class PageDriverPerformanceStyle extends NavigationBar {
 	private static String page2 = "Style";
@@ -66,10 +66,10 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 					DriverPerformanceEnum.EXPANDED_DRIVER_NAME_LINK, page2);
 		}
 
-		public TextLink duration(DurationEnumeration timeFrame) {
+		public TextLink duration(TimeDuration duration) {
 			return new TextLink(
 					DriverPerformanceStyleEnum.OVERALL_TIME_FRAME_SELECTOR,
-					timeFrame);
+					duration);
 		}
 
 		public TextLink eventSort() {

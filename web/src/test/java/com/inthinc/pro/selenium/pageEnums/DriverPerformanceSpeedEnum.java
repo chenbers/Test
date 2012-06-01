@@ -51,21 +51,21 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     DATE_TIME_ENTRY(null, "driverSpeedForm:notificationsTable:###:time"),
 
     POSTED_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:speedLimitValue"),
-    POSTED_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:speedLimit")).strong().toString()),
+    POSTED_ENTRY_SPEED_UNITS(null, "driverSpeedForm:notificationsTable:###:speedLimit"),
 
     POSTED_ENTRY_SBS_BUTTON(null, "driverSpeedForm:notificationsTable:###:driverSpeedSlcr"),
 
     AVERAGE_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:###:averageSpeedValue"),
-    AVERAGE_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:averageSpeed")).strong().toString()),
+    AVERAGE_ENTRY_SPEED_UNITS(null, "driverSpeedForm:notificationsTable:###:averageSpeed"),
     AVERAGE_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:averageSpeed")).span("1").toString()),
     AVERAGE_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:###:averageSpeedDifference"),
 
     TOP_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:###:topSpeedValue"),
-    TOP_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:topSpeed")).strong().toString()),
+    TOP_ENTRY_SPEED_UNITS(null, "driverSpeedForm:notificationsTable:###:topSpeed"),
     TOP_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:topSpeed")).span("1").toString()),
     TOP_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:###:topSpeedDifference"),
 
-    DISTANCE_ENTRY(null, "driverSpeedForm:notificationsTable:##:distance"),
+    DISTANCE_ENTRY_UNITS(null, "driverSpeedForm:notificationsTable:###:distance"),
 
     EXCLUDE("exclude", "driverSpeedForm:notificationsTable:###:driverSpeedInclude"),
     INCLUDE("include", "driverSpeedForm:notificationsTable:###:driverSpeed_excluded"),

@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -10,13 +11,11 @@ import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.HosReportsEnum;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class PageMyAccount extends NavigationBar {
 	public PageMyAccount() {
-	    //TODO: addd elements to test for onPage
 	}
 	public class MyAccountPopUps extends MastheadPopUps{
 		public MyAccountChangePassword changeMyPassword(){
@@ -24,9 +23,24 @@ public class PageMyAccount extends NavigationBar {
 		}
 	}
 	
-	public MyAccountCheckBoxes _checkBox() {
-	    return new MyAccountCheckBoxes();
-	}
+    public class MyAccountTablesCheckBoxes {
+
+        public CheckBoxTable mapLayer() {
+            return new CheckBoxTable(MyAccountEnum.MAP_LAYERS_CHECKBOX);
+        }
+    }
+    
+    public MyAccountTablesCheckBoxes _checkBox() {
+        return new MyAccountTablesCheckBoxes();
+    }
+
+    public class MyAccountTablesTexts extends MyAccountTexts {
+        
+        public Text mapText() {
+            return new Text(MyAccountEnum.MAP_LAYERS_TEXT);
+        }
+        
+    }
 	
 	public MyAccountPopUps _popUp(){
 		return new MyAccountPopUps();
@@ -50,12 +64,6 @@ public class PageMyAccount extends NavigationBar {
 
 	public MyAccountDropDowns _dropDown() {
 		return new MyAccountDropDowns();
-	}
-	
-	public class MyAccountCheckBoxes {
-	    public CheckBox mapLayer() {
-	        return new CheckBox(MyAccountEnum.MAP_LAYERS_CHECKBOX);
-	    }
 	}
 
 	public class MyAccountLinks extends NavigationBarLinks {
@@ -227,7 +235,6 @@ public class PageMyAccount extends NavigationBar {
 		public Text errorEmail2() {
 			return new TextFieldError(MyAccountEnum.EMAIL2_TEXTFIELD);
 		}
-
 
 		public Text errorPhone1() {
 			return new TextFieldError(MyAccountEnum.PHONE1_TEXTFIELD);

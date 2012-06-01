@@ -129,7 +129,7 @@ public class PageHOSFuelStops extends HOSBar {
             return new Text(HOSFuelStopsEnum.DATE_RANGE_LABEL);
         }
 
-        public TextFieldLabel labelVehicleField() {
+        public Text labelVehicleField() {
             return new TextFieldLabel(HOSFuelStopsEnum.VEHICLE_TEXT_FIELD);
         }
 

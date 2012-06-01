@@ -8,7 +8,7 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSeatBeltEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
-import com.inthinc.pro.selenium.pageEnums.TAE.DurationEnumeration;
+import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 
 
 public class PageDriverPerformanceSeatBelt extends NavigationBar {
@@ -39,7 +39,7 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 			return new TextLink(DriverPerformanceSeatBeltEnum.BREADCRUMB, position);
 		}
 		
-		public TextLink duration(DurationEnumeration duration){
+		public TextLink duration(TimeDuration duration){
 			return new TextLink(DriverPerformanceSeatBeltEnum.OVERALL_TIME_FRAME_SELECTOR, duration);
 		}
 		
@@ -78,15 +78,15 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 			return new TextTable(DriverPerformanceSeatBeltEnum.DATE_TIME_ENTRY);
 		}
 		
-		public TextTable avgSpeed(){
+		public TextTable avgSpeedUnits(){
 			return new TextTable(DriverPerformanceSeatBeltEnum.AVERAGE_SPEED_ENTRY);
 		}
 		
-		public TextTable topSpeed(){
+		public TextTable topSpeedUnits(){
 			return new TextTable(DriverPerformanceSeatBeltEnum.TOP_SPEED_ENTRY);
 		}
 		
-		public TextTable distance(){
+		public TextTable distanceUnits(){
 			return new TextTable(DriverPerformanceSeatBeltEnum.DISTANCE_ENTRY);
 		}
 		
@@ -164,7 +164,7 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
     }
     @Override
     protected boolean checkIsOnPage() {
-        return _link().dateTimeSort().isPresent() && _link().duration(DurationEnumeration.DAYS_30).isPresent();
+        return _link().dateTimeSort().isPresent() && _link().duration(TimeDuration.TWELVE_MONTHS).isPresent();
     }
     
 }
