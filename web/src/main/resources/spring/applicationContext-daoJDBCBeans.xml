@@ -5,29 +5,32 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 default-autowire="byName">
     <!-- Service Related Beans -->
 
-    <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
-        <property name="dataSource" ref="tiwiJDBCDataSource" />
-    </bean>
+	<bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 
-<!-- Un-comment and comment out mock DAOs below this to use real data  -->
-  <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
-  <bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
-  <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
-  <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO"></bean>
-  
-<!-- Un-comment and comment out DAOs above this to use mock data    
-  <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>-->
-    
-<!--  <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean>-->
-  <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
-  <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
+	<!-- Un-comment and comment out mock DAOs below this to use real data -->
+	<bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
+	<bean id="waysmartDAO" class="com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
+	<bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
+	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO"></bean>
 
-  <bean id="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO"/>
-  <bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO" parent="genericJDBCDAO"/>
-  <bean id="fwdCmdSpoolWS" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS"/>
+	<!-- Un-comment and comment out DAOs above this to use mock data <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean> -->
 
-  <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO"/>
-	
-    <bean id="customMapDAO" class="com.inthinc.pro.dao.jdbc.CustomMapJDBCDAO" parent="genericJDBCDAO"></bean>
+	<!-- <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean> -->
+	<bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO" />
+	<bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO" />
+
+	<bean id="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO" />
+	<bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO" parent="genericJDBCDAO" />
+	<bean id="fwdCmdSpoolWS" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS" />
+
+	<bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO" />
+
+	<bean id="customMapDAO" class="com.inthinc.pro.dao.jdbc.CustomMapJDBCDAO" parent="genericJDBCDAO"></bean>
+
+	<bean id="adminPersonJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminPersonJDBCDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 	
 </beans>

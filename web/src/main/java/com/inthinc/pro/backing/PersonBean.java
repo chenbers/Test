@@ -349,7 +349,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }   
         }
         //get all the cellblocks for the account in one go so we don't have to get them individually
-        createCellblockMap();
+//        createCellblockMap();
         // convert the people to PersonViews
         final List<PersonView> items = new ArrayList<PersonView>();
         for (final Person person : plainPeople) {
