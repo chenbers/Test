@@ -22,9 +22,12 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
+import com.inthinc.pro.model.pagination.TableFilterField;
 
 public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 
+	private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+	
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
 
 	static {
@@ -64,8 +67,15 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		columnMap.put("driver_groupID", "d.groupID");
 	}
 	
+	public Integer getCount(List<Integer> groupIDs, List<TableFilterField> filters) {
+		
+		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
+		
+		return getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, groupIDsForSQL, groupIDsForSQL);
+	}
 	
-	public List<Person> getPeople(List<Integer> groupIDList, PageParams pageParams) {
+	
+	public List<Person> getPeople(List<Integer> groupIDs, PageParams pageParams) {
 				
 		StringBuilder personSelect = new StringBuilder();
 		
@@ -81,7 +91,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 			personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + (pageParams.getEndRow() - pageParams.getStartRow()) );
 		
 		
-		String groupIDs = groupIDList.toString().substring(1, groupIDList.toString().length() - 1);
+		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
 		
 		
 		
@@ -135,7 +145,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                 driver.setStatus(Status.valueOf(rs.getInt(30)));
                 driver.setLicense(rs.getString(31));
                 driver.setLicenseClass(rs.getString(32));
-                driver.setState(State.valueOf(rs.getInt(33)));
+//                driver.setState(State.valueOf(rs.getInt(33)));
                 driver.setExpiration(rs.getDate(34));
                 driver.setCertifications(rs.getString(35));
                 driver.setDot(RuleSetType.valueOf(rs.getInt(36)));
@@ -146,7 +156,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                 
 				return person;
 			}
-		}, groupIDs, groupIDs);
+		}, groupIDsForSQL, groupIDsForSQL);
 		return personList;
 	}
 	
