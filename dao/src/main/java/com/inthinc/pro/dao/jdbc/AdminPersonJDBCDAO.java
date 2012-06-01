@@ -2,12 +2,14 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -25,8 +27,12 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
 public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
+    
+    private static final Logger logger = Logger.getLogger(AdminPersonJDBCDAO.class);
 
-	private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+
+//	private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+    private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (:dglist) OR u.groupID IN (:uglist) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
 	
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
 
@@ -69,9 +75,18 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 	
 	public Integer getCount(List<Integer> groupIDs, List<TableFilterField> filters) {
 		
-		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
+//		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
+//		Integer cnt =  getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, groupIDsForSQL, groupIDsForSQL);
+	    
+	    Map<String,Object>  params = new HashMap<String, Object>();
+        params.put("dglist",groupIDs);
+        params.put("uglist",groupIDs);
+
+
+        Integer cnt =  getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, params);
+logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 		
-		return getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, groupIDsForSQL, groupIDsForSQL);
+		return cnt;
 	}
 	
 	
@@ -82,7 +97,10 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		personSelect
 				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, ")
 				.append("u.userID, u.status, u.username, u.groupID, d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
-				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
+				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (:dglist) OR u.groupID IN (:uglist) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
+        Map<String,Object>  params = new HashMap<String, Object>();
+        params.put("dglist",groupIDs);
+        params.put("uglist",groupIDs);
 		
 		if(pageParams.getSort() == null || pageParams.getSort().getField().isEmpty() || pageParams.getSort().getOrder() == null)
 			personSelect.append(" ORDER BY p.first ASC");
@@ -93,7 +111,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 			personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + (pageParams.getEndRow() - pageParams.getStartRow()) );
 		
 		
-		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
+//		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
 		
 		
 		
@@ -158,7 +176,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                 
 				return person;
 			}
-		}, groupIDsForSQL, groupIDsForSQL);
+		}, params); //groupIDsForSQL, groupIDsForSQL);
 		return personList;
 	}
 	
