@@ -38,6 +38,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.models.Account;
 import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.rest.RestCommands;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
@@ -260,6 +261,7 @@ public abstract class MasterTest {
     private RestCommands rest;
     
     private String savedPage;
+    private static ThreadLocal<Account> account = new ThreadLocal<Account>();
 
     
 
@@ -362,15 +364,15 @@ public abstract class MasterTest {
 
     @AfterScenario
     public void clearUser(){
-        User isUpdated = rest.getObject(User.class, myUser.get().getUserID());
-        if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
-            return;
-        } 
-        User update = new User();
-        update.setPassword(apb.getPassword());
-        update.setUsername(isUpdated.getUsername());
-        update.setUserID(isUpdated.getUserID());
-        rest.putObject(User.class, update, null);
+//        User isUpdated = rest.getObject(User.class, myUser.get().getUserID());
+//        if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
+//            return;
+//        } 
+//        User update = new User();
+//        update.setPassword(apb.getPassword());
+//        update.setUsername(isUpdated.getUsername());
+//        update.setUserID(isUpdated.getUserID());
+//        rest.putObject(User.class, update, null);
     }
 
     public Boolean compare(Object expected, Object actual) {
@@ -606,9 +608,17 @@ public abstract class MasterTest {
             List<String> users = apb.getEditableAccount();
             rest = new RestCommands(users.get(0), apb.getPassword());
             myUser.set(rest.getObject(User.class, users.get(1)));
+            account.set(rest.getObject(Account.class, null));
         }
         variables.get().put("my user name", myUser.get().getUsername());
         variables.get().put("my password", apb.getPassword());
+    }
+    
+    @AfterScenario
+    public void afterScenario(){
+        if (account.get()!= null){
+            rest.putObject(Account.class, account.get(), null);
+        }
     }
 
     public Boolean validateEquals(Object expected, Object actual) {
