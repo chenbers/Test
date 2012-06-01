@@ -19,7 +19,7 @@ public enum DriverPerformanceSeatBeltEnum implements SeleniumEnums {
     OVERALL_PDF_TOOL(exportPDF, "dateLinksForm:export_menu_item:anchor"),
     OVERALL_EXCEL_TOOL("Export to Excel", "seatBeltForm:driverSeatBelt-exportExcelMenuItem:anchor"),
 
-    RETURN(null, "seatBeltForm:driverSeatBelt-dateLinksToolsDetailShow"),
+    RETURN(null, "seatBeltForm:driversSeatBelt-dateLinksToolsDetailShow"),
 
     /* Details */
     DETAILS_TITLE("Details", Xpath.start().span(Id.clazz("details")).toString()),
