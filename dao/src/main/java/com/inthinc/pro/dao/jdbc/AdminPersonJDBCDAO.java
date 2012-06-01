@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -183,7 +185,6 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
                 }
 
                 Integer driverID = rs.getInt(32);
-System.out.println("driverID " + driverID);                
                 if (driverID != 0) {
                     Driver driver = new Driver();
                     driver.setDriverID(driverID);
@@ -208,9 +209,67 @@ System.out.println("driverID " + driverID);
 				return person;
 			}
 		}, params); //groupIDsForSQL, groupIDsForSQL);
+		
+		
+		addUserRoles(personList);
+		
+		
+		
 		return personList;
 	}
+
+
+	// TODO: cj = couldn't figure out how to do this without a separate query (also did the jdbc template wrong I'm sure)
+    private void addUserRoles(List<Person> personList) {
+        
+        List<Integer> userIDs = new ArrayList<Integer>();
+        for (Person person : personList) {
+            if (person.getUserID() != null)
+                userIDs.add(person.getUserID());
+        }
+        if (userIDs.size() == 0)
+            return;
+        
+        StringBuilder roleSelect = new StringBuilder();
+
+        roleSelect
+                .append("SELECT r.userID, r.roleID ")
+                .append("FROM userRole AS r LEFT JOIN user as u USING (userID) WHERE r.userID IN (:ulist) order by r.userID");
+        Map<String,Object>  params = new HashMap<String, Object>();
+        params.put("ulist",userIDs);
+        
+        RoleMapper mapper = new RoleMapper(personList);
+        getSimpleJdbcTemplate().query(roleSelect.toString(), (ParameterizedRowMapper<List<Integer>>) mapper, params); 
+        
+        
+    }
 	
+    class RoleMapper implements ParameterizedRowMapper<List<Integer>>
+    {
+        List<Person> personList;
+        
+        public RoleMapper(List<Person> personList) {
+            this.personList = personList;
+        }
+
+        @Override
+        public List<Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Integer userID = rs.getInt(1);
+            Integer roleID = rs.getInt(2);
+            for (Person person : personList) {
+                if (person.getUserID() != null && person.getUserID().equals(userID)) {
+                    
+                    if (person.getUser().getRoles() == null) {
+                        person.getUser().setRoles(new ArrayList<Integer>());
+                    }
+                    person.getUser().getRoles().add(roleID);
+                    person.getUser().getRoles();
+                }
+            }
+            return null;
+        }
+        
+    }
 
 
 }

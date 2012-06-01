@@ -34,6 +34,14 @@ public class GroupHierarchy implements Serializable
         return new ArrayList<Group>(groupMap.values());
     }
 
+    public List<Integer> getGroupIDList(Integer groupID) {
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(groupID);
+        groupIDList.addAll(getSubGroupIDList(groupID));
+        
+        return groupIDList;
+    }
+    
     public void setGroupList(List<Group> groupList)
     {
         groupMap = new TreeMap<Integer,Group>();

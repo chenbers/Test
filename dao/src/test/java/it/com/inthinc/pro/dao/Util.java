@@ -84,7 +84,7 @@ public class Util
                 }
                 else if (value2 == null)
                 {
-                    assertNotNull(value1.getClass().getSimpleName() + " Field: " + key + " expected value is not null, but returned value is", value2 );
+                    assertNotNull(value1.getClass().getSimpleName() + " Field: " + key + " expected value is not null, but returned value is -- expected = " + value1, value2 );
                 }
     
                 if (List.class.isInstance(value1))
