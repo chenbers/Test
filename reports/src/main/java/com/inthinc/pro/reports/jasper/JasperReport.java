@@ -76,7 +76,7 @@ public class JasperReport implements Report
                 break;
             }
             }catch(JRException e){
-                logger.error(e);
+                logger.error(String.format("Error occurred while exporting report to %s",formatType.name()),e);
             }
         }else{
             logger.error("Jasper Print is null");

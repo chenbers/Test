@@ -15,7 +15,6 @@ import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.inthinc.pro.map.ReportAddressLookupBean;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -34,10 +33,8 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.map.ReportAddressLookupBean;
 import com.inthinc.pro.model.DriverStopReport;
-import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
@@ -45,7 +42,6 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
@@ -82,9 +78,11 @@ import com.inthinc.pro.reports.ifta.StateMileageFuelByVehicleReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
+import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
+import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria.Builder;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
-import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceKeyMetricsReportCriteria;
+import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollReportCompensatedHoursCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
@@ -621,6 +619,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
+    
+    
 
     @Override
     public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
@@ -1183,6 +1183,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.setDriverPerformanceDAO(driverPerformanceDAO);
         criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
         return criteria;
+    }
+    
+    @Override
+    public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval,Locale locale) {
+//        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval)
+        return null;
+    }
+    
+    @Override
+    public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval,Locale locale) {
+        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval);
+        builder.setLocale(locale);
+        return builder.build();
     }
 
     

@@ -183,9 +183,13 @@ public class ReportCriteria
      * @param timeZone Time Zone to 
      */
     public void setReportDate(Date date,TimeZone timeZone){
+        addDateParameter(REPORT_DATE_STRING,date,timeZone);
+    }
+    
+    public void addDateParameter(String parameter,Date date,TimeZone timeZone){
         SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat", locale), locale);
         sdf.setTimeZone(timeZone);
-        paramMap.put(REPORT_DATE_STRING, sdf.format(date));
+        paramMap.put(parameter, sdf.format(date));
     }
 
     public Integer getRecordsPerReport()

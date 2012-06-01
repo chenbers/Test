@@ -95,7 +95,7 @@ public enum ReportGroup
                ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT),
              
              
-    // IFTA
+     // IFTA
      MILEAGE_BY_VEHICLE("Mileage by vehicle", 20, EntityType.ENTITY_GROUP_LIST,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
@@ -159,17 +159,17 @@ public enum ReportGroup
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
              EnumSet.of(ReportAccountType.WAYSMART),
              ReportType.TEN_HOUR_DAY_VIOLATIONS),
-    DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP,
+     DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             EnumSet.of(ReportAccountType.WAYSMART),
             ReportType.DRIVER_HOURS),
-    DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", 38, EntityType.ENTITY_GROUP_LIST,
+     DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", 38, EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME_ALT}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
-    DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)", 34, EntityType.ENTITY_GROUP,
+     DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)", 34, EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
@@ -184,11 +184,16 @@ public enum ReportGroup
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_RYG_TEAM),
-      DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver Performance RYG (Individual)", 37, EntityType.ENTITY_INDIVIDUAL_DRIVER,
+     DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver Performance RYG (Individual)", 37, EntityType.ENTITY_INDIVIDUAL_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
-            ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
+            ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL),
+     DRIVER_COACHING_BY_GROUP("Driver Coaching", 41, EntityType.ENTITY_GROUP_OR_DRIVER,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.WAYSMART),
+            ReportType.DRIVER_COACHING);
 
     
     private ReportType[] reports;
