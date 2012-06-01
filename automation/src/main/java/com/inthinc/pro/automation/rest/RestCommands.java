@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.rest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
@@ -17,7 +18,7 @@ import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.BaseEntity;
 import com.inthinc.pro.automation.models.Event;
-import com.inthinc.pro.automation.models.Person;
+import com.inthinc.pro.automation.models.Roles;
 import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
@@ -49,11 +50,11 @@ public class RestCommands {
             String response = http.httpRequest(post);
             return ObjectConverter.convertXMLToObject(response, name, type);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.error(e);
         } catch (HttpException e) {
-            e.printStackTrace();
+            Log.error(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return null;
     }
@@ -69,11 +70,11 @@ public class RestCommands {
             String response = http.httpRequest(post);
             return ObjectConverter.convertXMLToObject(response, name, type);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.error(e);
         } catch (HttpException e) {
-            e.printStackTrace();
+            Log.error(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return null;
     }
@@ -84,11 +85,11 @@ public class RestCommands {
             http.httpRequest(delete);
             return http.isSuccessful();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.error(e);
         } catch (HttpException e) {
-            e.printStackTrace();
+            Log.error(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error(e);
         }
         return false;
     }
@@ -118,7 +119,7 @@ public class RestCommands {
     
     public <T extends BaseEntity> T getObject(Class<T> type, Object id){
         String name = type.getSimpleName().toLowerCase();
-        GetMethod get = new GetMethod(baseUrl + name + "/" + id);
+        GetMethod get = new GetMethod(baseUrl + name + (id==null ? "" : "/" + id));
         try {
             return ObjectConverter.convertXMLToObject(http.httpRequest(get), name, type);
         } catch (HttpException e) {
@@ -143,24 +144,6 @@ public class RestCommands {
         return null;
     }
     
-    
-    public static void main(String[] args){
-        RestCommands rc = new RestCommands("0001", "password");
-        User test = rc.getObject(Person.class, 68768).getUser();
-        Log.info(test.getEncryptedPassword());
-//        test.setPerson(rc.getObject(Person.class, test.getPersonID()));
-        User update = new User();
-        update.setUserID(test.getUserID());
-        update.setUsername(test.getUsername());
-//        update.setEncryptedPassword(test.getEncryptedPassword());
-        update.setEncryptedPassword("usiDvrL3lhX70Gbf/0I6d7DjgrzzrgJBXbkdYfDINOLgv9MuLovqOv3EaiNpAHmn");
-//        update.setPassword("password");
-        User result = rc.putObject(User.class, update, null);
-        Log.info(result);
-        Log.info(result.getEncryptedPassword());
-        
-        
-    }
 
 }
 

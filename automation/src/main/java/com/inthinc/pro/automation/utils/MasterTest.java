@@ -59,6 +59,13 @@ public abstract class MasterTest {
     static {
         variables.set(new HashMap<String, String>());
     }
+    
+
+    private final AutomationPropertiesBean apb;
+    private static ThreadLocal<RestCommands> rest = new ThreadLocal<RestCommands>();
+    
+    private static ThreadLocal<String> savedPage = new ThreadLocal<String>();
+    private static ThreadLocal<Account> account = new ThreadLocal<Account>();
 
     
     public MasterTest(){
@@ -256,12 +263,6 @@ public abstract class MasterTest {
         return StringEscapeUtils.unescapeHtml(original);
     }
     
-    private final AutomationPropertiesBean apb;
-
-    private RestCommands rest;
-    
-    private String savedPage;
-    private static ThreadLocal<Account> account = new ThreadLocal<Account>();
 
     
 
@@ -364,15 +365,16 @@ public abstract class MasterTest {
 
     @AfterScenario
     public void clearUser(){
-//        User isUpdated = rest.getObject(User.class, myUser.get().getUserID());
-//        if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
-//            return;
-//        } 
-//        User update = new User();
-//        update.setPassword(apb.getPassword());
-//        update.setUsername(isUpdated.getUsername());
-//        update.setUserID(isUpdated.getUserID());
-//        rest.putObject(User.class, update, null);
+        User isUpdated = rest.get().getObject(User.class, myUser.get().getUserID());
+        if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
+            return;
+        } 
+        User update = new User();
+        update.setPassword(apb.getPassword());
+        update.setUsername(isUpdated.getUsername());
+        update.setUserID(isUpdated.getUserID());
+        update.setRoles(myUser.get().getRoles());
+        rest.get().putObject(User.class, update, null);
     }
 
     public Boolean compare(Object expected, Object actual) {
@@ -481,7 +483,7 @@ public abstract class MasterTest {
 
     @When("I click the bookmark I just added")
     public void openSavedPage() {
-        open(savedPage);
+        open(savedPage.get());
     }
     
     public Method parseStep(String stepAsString, String elementType) throws NoSuchMethodException{        
@@ -579,7 +581,7 @@ public abstract class MasterTest {
 
     @When("I bookmark the page")
     public void savePageLink() {
-        savedPage = getCurrentLocation();
+        savedPage.set(getCurrentLocation());
     }
 
     @When("I hit the Tab Key")
@@ -600,15 +602,15 @@ public abstract class MasterTest {
     public void useParamsToSetDefaultUser(String params){
         if (params.equalsIgnoreCase(mainUser)){
             List<String> users = apb.getMainAutomation();
-            rest = new RestCommands(users.get(0), apb.getPassword());
-            myUser.set(rest.getObject(User.class, users.get(1)));
+            rest.set(new RestCommands(users.get(0), apb.getPassword()));
+            myUser.set(rest.get().getObject(User.class, users.get(1)));
         } else if (params.equalsIgnoreCase(editableUser)){
             
         } else if (params.equalsIgnoreCase(editableAccountUser)){
             List<String> users = apb.getEditableAccount();
-            rest = new RestCommands(users.get(0), apb.getPassword());
-            myUser.set(rest.getObject(User.class, users.get(1)));
-            account.set(rest.getObject(Account.class, null));
+            rest.set(new RestCommands(users.get(0), apb.getPassword()));
+            myUser.set(rest.get().getObject(User.class, users.get(1)));
+            account.set(rest.get().getObject(Account.class, null));
         }
         variables.get().put("my user name", myUser.get().getUsername());
         variables.get().put("my password", apb.getPassword());
@@ -617,7 +619,7 @@ public abstract class MasterTest {
     @AfterScenario
     public void afterScenario(){
         if (account.get()!= null){
-            rest.putObject(Account.class, account.get(), null);
+            rest.get().putObject(Account.class, account.get(), null);
         }
     }
 

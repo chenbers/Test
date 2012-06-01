@@ -102,10 +102,10 @@ public class HTTPCommands {
         try {
             int statusCode = httpClient.executeMethod(method);
             if (statusCode != HttpStatus.SC_OK) {
-                successful = false;
-                Log.info(method.getName() + " method failed: " + method.getStatusLine());
                 response = getResponseBodyFromStream(method
                         .getResponseBodyAsStream());
+                successful = false;
+                throw new HttpException(method.getName() + " method failed: " + method.getStatusLine());
             } else {
                 successful = true;
             	Log.debug(method.getName() + " method succeeded: " + method.getStatusLine());
