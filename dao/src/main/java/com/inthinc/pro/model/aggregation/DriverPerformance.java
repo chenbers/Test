@@ -18,6 +18,7 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     private Integer speedCount0to7Over;
     private Integer speedCount8to14Over;
     private Integer speedCount15Over;
+    private Number totalIdleTime;
     private Boolean ryg;
     
     List<VehiclePerformance> vehiclePerformanceBreakdown;
@@ -135,6 +136,14 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     }
     public void setRyg(Boolean ryg) {
         this.ryg = ryg;
+    }
+    
+    public Number getTotalIdleTime() {
+        return totalIdleTime;
+    }
+    
+    public void setTotalIdleTime(Number totalIdleTime) {
+        this.totalIdleTime = totalIdleTime;
     }
 /*
  *  
