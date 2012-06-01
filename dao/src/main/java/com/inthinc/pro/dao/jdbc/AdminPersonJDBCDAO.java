@@ -2,7 +2,10 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,11 +20,14 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
+import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
@@ -29,9 +35,13 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
     
     private static final Logger logger = Logger.getLogger(AdminPersonJDBCDAO.class);
+    
+    // these are created as application level beans in spring context (need to do that for tests too)
+    //SupportedTimeZones;
+    //States;
+    final Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
-
-//	private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+    //	private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (?) OR u.groupID IN (?) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
     private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (:dglist) OR u.groupID IN (:uglist) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
 	
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
@@ -93,10 +103,11 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 	public List<Person> getPeople(List<Integer> groupIDs, PageParams pageParams) {
 				
 		StringBuilder personSelect = new StringBuilder();
-		
+
 		personSelect
-				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, ")
-				.append("u.userID, u.status, u.username, u.groupID, d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
+				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
+				.append("u.userID, u.status, u.username, u.groupID, u.mapType, u.password,  ")
+		         .append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
 				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE d.groupID IN (:dglist) OR u.groupID IN (:uglist) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
         Map<String,Object>  params = new HashMap<String, Object>();
         params.put("dglist",groupIDs);
@@ -113,7 +124,7 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 		
 //		String groupIDsForSQL = groupIDs.toString().substring(1, groupIDs.toString().length() - 1);
 		
-		
+       
 		
 		
 		List<Person> personList = getSimpleJdbcTemplate().query(personSelect.toString(), new ParameterizedRowMapper<Person>() {
@@ -131,11 +142,12 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 				person.setInfo(rs.getInt(9));
 				person.setWarn(rs.getInt(10));
 				person.setCrit(rs.getInt(11));
-				person.setTimeZone(TimeZone.getTimeZone(Integer.toString(rs.getInt(12))));
+				Integer tzID = rs.getInt(12);
+				person.setTimeZone(TimeZone.getTimeZone(SupportedTimeZones.lookup(tzID)));
 				person.setEmpid(rs.getString(13));
 				person.setReportsTo(rs.getString(14));
 				person.setTitle(rs.getString(15));
-				person.setDob(rs.getDate(16));
+				person.setDob(rs.getDate(16, calendar));
 				person.setGender(Gender.valueOf(rs.getInt(17)));
 				
                 String[] locale = rs.getString(18).split("_");
@@ -149,30 +161,49 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
                 person.setFirst(rs.getString(21));
                 person.setMiddle(rs.getString(22));
                 person.setLast(rs.getString(23));
+                person.setSuffix(rs.getString(24));
+                person.setStatus(Status.valueOf(rs.getInt(25)));
                 
-                User user = new User();
-                user.setUserID(rs.getInt(24));
-                user.setStatus(Status.valueOf(rs.getInt(25)));
-                user.setUsername(rs.getString(26));
-                user.setGroupID(rs.getInt(27));
-                user.setPerson(person);
-                user.setPersonID(person.getPersonID());
-                person.setUser(user);
-                
-                Driver driver = new Driver();
-                driver.setDriverID(rs.getInt(28));
-                driver.setGroupID(rs.getInt(29));
-                driver.setStatus(Status.valueOf(rs.getInt(30)));
-                driver.setLicense(rs.getString(31));
-                driver.setLicenseClass(rs.getString(32));
-//                driver.setState(State.valueOf(rs.getInt(33)));
-                driver.setExpiration(rs.getDate(34));
-                driver.setCertifications(rs.getString(35));
-                driver.setDot(RuleSetType.valueOf(rs.getInt(36)));
-                driver.setBarcode(rs.getString(37));
-                driver.setRfid1(rs.getLong(38));
-                driver.setRfid2(rs.getLong(39));
-                person.setDriver(driver);
+                Integer userID= rs.getInt(26);
+                if (userID != 0) {
+                    User user = new User();
+                    user.setUserID(userID);
+                    user.setStatus(Status.valueOf(rs.getInt(27)));
+                    user.setUsername(rs.getString(28));
+                    user.setGroupID(rs.getInt(29));
+                    user.setMapType(GoogleMapType.valueOf(rs.getInt(30)));
+                    user.setPassword(rs.getString(31));
+                    user.setPerson(person);
+                    user.setPersonID(person.getPersonID());
+                    person.setUser(user);
+                    user.setPerson(person);
+                }
+                else {
+                    person.setUser(null);
+                }
+
+                Integer driverID = rs.getInt(32);
+System.out.println("driverID " + driverID);                
+                if (driverID != 0) {
+                    Driver driver = new Driver();
+                    driver.setDriverID(driverID);
+                    driver.setGroupID(rs.getInt(33));
+                    driver.setStatus(Status.valueOf(rs.getInt(34)));
+                    driver.setLicense(rs.getString(35));
+                    driver.setLicenseClass(rs.getString(36));
+                    driver.setState(States.getStateById(rs.getInt(37)));
+                    driver.setExpiration(rs.getDate(38, calendar));
+                    driver.setCertifications(rs.getString(39));
+                    driver.setDot(RuleSetType.valueOf(rs.getInt(40)));
+                    driver.setBarcode(rs.getString(41));
+                    driver.setRfid1(rs.getLong(42) == 0l ? null : rs.getLong(42));
+                    driver.setRfid2(rs.getLong(43)== 0l ? null : rs.getLong(43));
+                    person.setDriver(driver);
+                    driver.setPerson(person);
+                }
+                else {
+                    person.setDriver(null);
+                }
                 
 				return person;
 			}
@@ -180,4 +211,6 @@ logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
 		return personList;
 	}
 	
+
+
 }
