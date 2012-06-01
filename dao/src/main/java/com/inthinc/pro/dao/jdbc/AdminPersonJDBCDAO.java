@@ -17,6 +17,7 @@ import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.pagination.PageParams;
