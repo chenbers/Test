@@ -1,0 +1,106 @@
+<ui:composition template="adminPagedTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="bean" value="#{pagingAdminDevicesBean}" />
+  <ui:param name="editorBean" value="#{devicesBean}" />
+  <ui:param name="context" value="devicesTable"/>		
+
+  <ui:define name="columns">
+    <rich:column id="name" rendered="#{devicesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING" filterBy="#{item.name}" >
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_name}"/></f:facet>
+      <a4j:htmlCommandLink id="devicesTableName" action="#{devicesBean.display}" value="#{item.name}">
+        <f:param name="displayID" value="#{item.id}" />
+      </a4j:htmlCommandLink>
+    </rich:column>
+    <rich:column id="vehicle" rendered="#{devicesBean.tableColumns['vehicleID'].visible}" sortBy="#{item.vehicle.name}" filterBy="#{item.vehicle.name}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
+      <h:outputText value="#{item.vehicle.name}" />
+    </rich:column>
+    <!--  TODO: CJ REMOVED SORT BECAUSE OF SORT BY IS ON A UI RENDERED FIELD, I.E. ONLY DATABASE SORT IS SUPPORTED  -->
+    <rich:column id="productVersion" rendered="#{devicesBean.tableColumns['productVer'].visible}" 
+								    custFilterBy="#{item.productVersion}" 
+								    filterValue="#{bean.productTypeFilter.value}">
+      <f:facet name="header">
+        <h:panelGroup>
+			<h:outputText value="#{messages.devicesHeader_productVer}" />
+			<h:panelGroup>
+		       	<rich:spacer style="display:block" height="2"/>
+		       	<h:selectOneMenu value="#{bean.productTypeFilter.value}"  id="editDevice-productChoice" style="width:120px;size:auto;margin-top:3px;">
+		           	<f:selectItems value="#{bean.productTypeFilter.selectItems}" />
+		           	<a4j:support event="onchange" 
+		           		reRender="#{context},#{context}-form:header,#{context}-form:#{context}-dataTableScroller" />
+		       	</h:selectOneMenu>
+		       	<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 		<ui:param name="selectBoxID" value="#{context}-form:#{context}:editDevice-productChoice" />
+				</ui:include>
+			</h:panelGroup>
+      	</h:panelGroup>
+      </f:facet>
+      <h:outputText value="#{item.productDisplayName}" />
+    </rich:column>
+    <rich:column id="imei" rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}" filterBy="#{item.imei}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_imei}" /></f:facet>
+      <h:outputText value="#{item.imei}" />
+    </rich:column>
+    <rich:column id="altimei" rendered="#{devicesBean.tableColumns['altimei'].visible}" sortBy="#{item.altimei}" filterBy="#{item.altimei}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_altimei}" /></f:facet>
+      <h:outputText value="#{item.altimei}" />
+    </rich:column>
+    <rich:column id="sim" rendered="#{devicesBean.tableColumns['sim'].visible}" sortBy="#{item.sim}" filterBy="#{item.sim}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_sim}" /></f:facet>
+      <h:outputText value="#{item.sim}" />
+    </rich:column>
+    <rich:column id="serialNumber" rendered="#{devicesBean.tableColumns['serialNum'].visible}" sortBy="#{item.serialNum}"  filterBy="#{item.serialNum}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_serialNum}" /></f:facet>
+      <h:outputText value="#{item.serialNum}" />
+    </rich:column>
+    <rich:column id="phone" rendered="#{devicesBean.tableColumns['phone'].visible}" sortBy="#{item.phone}" filterBy="#{item.phone}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_phone}" /></f:facet>
+      <h:outputText value="#{item.phone}" />
+    </rich:column>
+<!--     
+TODO: CJ REMOVED THIS COLUMN SINCE IT'S NOT LISTED IN AVAILABLE COLUMNS IN DEVICES BEAN SO WILL NEVER BE VISIBLE
+    <rich:column id="activated" rendered="#{devicesBean.tableColumns['activated'].visible}" sortBy="#{item.activated}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
+      <h:outputText value="#{item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
+    </rich:column>
+ -->    
+    <!--  TODO: CJ REMOVED SORT BECAUSE OF SORT BY IS ON A UI RENDERED FIELD, I.E. ONLY DATABASE SORT IS SUPPORTED  -->
+	<rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" 
+								custFilterBy="#{item.status}" 
+								filterValue="#{bean.deviceStatusFilter.value}"> 
+      <f:facet name="header">
+      	<h:panelGroup>
+			<h:outputText value="#{messages.devicesHeader_status}" />
+			<h:panelGroup>
+		       	<rich:spacer style="display:block" height="2"/>
+		       	<h:selectOneMenu value="#{bean.deviceStatusFilter.value}" style="width:80px;size:auto;margin-top:3px;"
+		      		id="editDevice-statusChoice" >
+		           	<f:selectItems value="#{bean.deviceStatusFilter.selectItems}" />
+		           	<a4j:support event="onchange" 
+		           		reRender="#{context},#{context}-form:header,#{context}-form:#{context}-dataTableScroller" />
+		       	</h:selectOneMenu>
+		       	<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 		<ui:param name="selectBoxID" value="#{context}-form:#{context}:editDevice-statusChoice" />
+				</ui:include>
+			</h:panelGroup>
+		</h:panelGroup>
+      </f:facet>
+      <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
+    </rich:column>
+
+
+    <rich:column id="mcmid" rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{item.mcmid}"  filterBy="#{item.mcmid}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
+      <h:outputText value="#{item.mcmid}" />
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

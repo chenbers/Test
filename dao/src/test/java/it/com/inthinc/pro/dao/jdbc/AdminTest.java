@@ -9,11 +9,13 @@ import it.config.IntegrationConfig;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
@@ -94,16 +96,18 @@ public class AdminTest extends BaseJDBCTest {
         
         
 //        List<Person> hessianPersonList = personHessianDAO.getPeopleInGroupHierarchy(itData.fleetGroup.getGroupID());
-        List<Person> hessianPersonList = personHessianDAO.getPeopleInGroupHierarchy(itData.fleetGroup.getGroupID(), itData.fleetUser.getGroupID());
-
-        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(itData.account.getAccountID()));
+//        List<Person> hessianPersonList = personHessianDAO.getPeopleInGroupHierarchy(itData.fleetGroup.getGroupID(), itData.fleetUser.getGroupID());
+        List<Person> hessianPersonList = personHessianDAO.getPeopleInGroupHierarchy(1,1);
+//        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(itData.account.getAccountID()));
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(1));
         List<TableFilterField> filters = new ArrayList<TableFilterField>();
         
         PageParams pageParams = new PageParams();
         pageParams.setFilterList(filters);
         pageParams.setStartRow(0);
         
-        List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(itData.fleetGroup.getGroupID());
+//        List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(itData.fleetGroup.getGroupID());
+        List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(1);
         
         Integer cnt = adminPersonJDBCDAO.getCount(groupIDList, filters);
         assertEquals("hessian vs jdbc person cnt", hessianPersonList.size(), cnt.intValue());
@@ -132,7 +136,8 @@ public class AdminTest extends BaseJDBCTest {
                 "modified",
                 "selectedMapLayerIDs",
 
-                
+                "lastLogin",
+                "passwordDT",
                 
         };
         String driverIgnoreFields[] = {
@@ -150,6 +155,7 @@ public class AdminTest extends BaseJDBCTest {
                     Util.compareObjects(hessianPerson, jdbcPerson, personIgnoreFields);
 
                     if (hessianPerson.getUser() != null) {
+//System.out.println(hessianPerson.getUser().getUserID() + " " + DateUtil.getDisplayDate(hessianPerson.getUser().getLastLogin(), TimeZone.getTimeZone("UTC")) + " " + DateUtil.getDisplayDate(jdbcPerson.getUser().getLastLogin(), TimeZone.getTimeZone("UTC")));                        
                         assertTrue("user should not be null " + hessianPerson.getPersonID(), jdbcPerson.getUser() != null);
                         Util.compareObjects(hessianPerson.getUser(), jdbcPerson.getUser(), userIgnoreFields);
                     }

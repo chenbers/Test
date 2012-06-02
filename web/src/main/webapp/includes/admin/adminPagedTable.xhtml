@@ -1,0 +1,174 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  A table that supports picking columns, sorting, searching, editing, batch editing and batch deleting.
+
+  Required parameters:
+  ==============
+  		 bean : A child of BasePagingAdminBean
+         editorBean:  A child of BaseAdminBean.
+         context: for id's
+
+  To use:
+  ==============
+  1. Create an include (we'll call it myTable.xhtml) that defines the columns:
+      <ui:composition template="adminTable.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:rich="http://richfaces.org/rich"
+        xmlns:security="http://www.springframework.org/security/tags">
+
+        <ui:define name="columns">
+          <rich:column sortBy="#{item.score}">
+            <f:facet name="header"><h:outputText value="Score" /></f:facet>
+            <ui:include src="scoreBox.xhtml">
+              <ui:param name="score" value="#{item.score}" />
+              <ui:param name="scoreStyle" value="#{item.scoreStyle}" />
+            </ui:include>
+          </rich:column>
+          <rich:column sortBy="#{item.name}">
+            <f:facet name="header"><h:outputText value="Name" /></f:facet>
+            <h:outputText value="#{item.name}" />
+          </rich:column>
+        </ui:define>
+
+      </ui:composition>
+
+  2. Include it:
+      <ui:include src="/includes/myTable.xhtml">
+		  <ui:param name="bean" value="#{pagingBean}"/>
+	      <ui:param name="editorBean" value="#{editorBean}" />
+          <ui:param name="context" value="personTable"/>		
+      </ui:include>
+-->
+  
+  
+
+
+    <a4j:region id="admin-table-region">
+<!-- 
+    <a4j:form id="admin-table-form">
+      <a4j:queue name="itemSelectQueue" ignoreDupResponses="false" />
+ -->      
+      <div class="panel_w">
+        <div class="panel_content">
+        <h:form id="#{context}-form">	
+        
+          <ul id="grid_nav" style="margin: 0;">
+            <li class="l">
+            <!-- this rendered check should probably be re-factored? -->
+            	<a4j:commandButton id="#{context}-adminTableDelete" styleClass="left" rendered="#{(editorBean.tableType != 'ADMIN_DEVICES') and editorBean.userAllowedDeleteAccess}"
+            		action="#{editorBean['waitForSelects']}"
+            		eventsQueue="itemSelectQueue" oncomplete="Richfaces.showModalPanel('confirmDelete'); return false;">
+            		<span class="delete">
+            			<h:outputText value="#{messages.button_delete}" />
+            		</span>
+            	</a4j:commandButton>
+            </li>
+            <li class="l"><h:commandButton id="#{context}-adminTableEdit" action="#{editorBean['batchEdit']}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></h:commandButton></li>
+            <li class="l text">
+				<a4j:commandLink id="#{context}-adminTableEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+					reRender="editColumnsForm:#{context}-editColumnsGrid">
+					#{messages.button_editColumns}
+				</a4j:commandLink>
+            </li>
+            <li class="r text">
+              <a4j:status 
+				id="tableActionStatus" for="admin-table-region">
+      				<f:facet name="start">
+      					<h:outputText>
+      						<img 
+      							src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" 
+      							align="top" />&#160;</h:outputText>
+      				</f:facet>
+			   </a4j:status>
+            </li>
+          </ul>
+          
+          <div align="right" style="width: 100%"> 
+				<ui:include src="/includes/table/statsHeader.xhtml">	
+						<ui:param name="title" value="#{messages.recordCountHeader}" />
+						<ui:param name="pageData" value="#{bean.table.pageData}" />
+				</ui:include>
+          </div>
+		  
+          <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+          <div class="spacer"></div>
+
+         <!--
+         
+          <a4j:outputPanel id="tablePanel">
+          <a4j:region>
+         -->
+          <div class="datagrid_panel" style="width: 790px">
+            <rich:dataTable id="#{context}" value="#{bean.table.model}" var="item"  
+                styleClass="datagrid filterabledatagrid"
+	        	 reRender="#{context}-form:header,#{context}-form:#{context}-dataTableScroller"
+                rowClasses="tableOdd,tableEven"
+        		rows="#{bean.table.pageData.rowsPerPage}" width="100%">
+              <rich:column>
+                <f:facet name="header">
+                  <h:selectBooleanCheckbox value="#{editorBean.selectAll}" id="selectAll">
+                    <a4j:support event="onclick" action="#{editorBean.doSelectAll}" ajaxSingle="true" reRender="#{context}" limitToList="true" />
+                  </h:selectBooleanCheckbox>
+                </f:facet>
+                <h:selectBooleanCheckbox id="select" value="#{item.selected}">
+                  <a4j:support event="onclick" eventsQueue="itemSelectQueue" reRender="select,confirmDelete" limitToList="true" />
+                </h:selectBooleanCheckbox>
+              </rich:column>
+              <ui:insert name="columns" />
+              <rich:column>
+                <f:facet name="header">
+                  <h:outputText value=" " />
+                </f:facet>
+                <a4j:htmlCommandLink id="edit" action="#{editorBean['edit']}" value="#{messages.adminTable_edit}">
+                  <f:param name="editID" value="#{item.id}" />
+                </a4j:htmlCommandLink>
+              </rich:column>
+            </rich:dataTable>
+
+          </div>
+    	  <rich:spacer style="display:block" height="5px"/>
+		  <rich:datascroller id="#{context}-dataTableScroller" 
+                                          for="#{context}" immediate="true" 
+                                          scrollerListener="#{bean.table.scrollerListener}" 
+                                          reRender="#{context}-form:#{context},#{context}-form:header"
+										  requestDelay="200" eventsQueue="pagerQueue"  
+                                          page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
+<!--           
+          </a4j:region>
+          </a4j:outputPanel>
+ -->          
+          </h:form>
+        </div>
+      </div>
+<!-- 
+    </a4j:form>
+ -->
+   
+    <ui:include src="../confirmDelete.xhtml">
+      <ui:param name="deleteBean" value="#{editorBean}" />
+      <ui:param name="reRender" value="#{context}-form:header,#{context}-form:{context},#{context}-form:#{context}-dataTableScroller" />
+      <ui:param name="deleteItems" value="#{editorBean.selectedItems}" />
+      <ui:param name="context" value="#{context}" />
+    </ui:include>
+
+    <ui:include src="../editColumnsPopup.xhtml">
+      <ui:param name="bean" value="#{editorBean}" />
+      <ui:param name="reRender" value="#{context}, #{context}-dataTableScroller" />
+      <ui:param name="deleteItems" value="#{editorBean.selectedItems}" />
+      <ui:param name="context" value="#{context}" />
+    </ui:include>
+    </a4j:region>
+ 
+</ui:composition>
+

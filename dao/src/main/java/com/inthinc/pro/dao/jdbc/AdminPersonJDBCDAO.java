@@ -2,8 +2,10 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +18,16 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.util.DateUtil;
+import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.States;
@@ -29,6 +35,7 @@ import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
+import com.inthinc.pro.model.security.AccessPoint;
 
 public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
     
@@ -95,10 +102,27 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 	public List<Person> getPeople(List<Integer> groupIDs, PageParams pageParams) {
 				
 		StringBuilder personSelect = new StringBuilder();
+/*
+    private String dept;
+    private Integer height; // inches
+    private Integer weight; // pounds
+    
+    
+    private List<AccessPoint> accessPoints;
+    private Date lastLogin;
+    private Date passwordDT;
+    
+    private GoogleMapType mapType;
+    
+    @Column(name="maplayers")
+    private List<Integer> selectedMapLayerIDs;
+    
+ */
+		
 
 		personSelect
 				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
-				.append("u.userID, u.status, u.username, u.groupID, u.mapType, u.password,  ")
+				.append("u.userID, u.status, u.username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
 		         .append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
 				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:dglist) OR u.groupID IN (:uglist)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
         Map<String,Object>  params = new HashMap<String, Object>();
@@ -126,9 +150,9 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 				person.setSecEmail(rs.getString(6));
 				person.setPriText(rs.getString(7));
 				person.setSecText(rs.getString(8));
-				person.setInfo(rs.getInt(9));
-				person.setWarn(rs.getInt(10));
-				person.setCrit(rs.getInt(11));
+				person.setInfo(rs.getObject(9) == null ? null : rs.getInt(9));
+				person.setWarn(rs.getObject(10) == null ? null : rs.getInt(10));
+				person.setCrit(rs.getObject(11) == null ? null : rs.getInt(11));
 				Integer tzID = rs.getInt(12);
 				person.setTimeZone(TimeZone.getTimeZone(SupportedTimeZones.lookup(tzID)));
 				person.setEmpid(rs.getString(13));
@@ -160,6 +184,12 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                     user.setGroupID(rs.getInt(29));
                     user.setMapType(GoogleMapType.valueOf(rs.getInt(30)));
                     user.setPassword(rs.getString(31));
+//                    user.setLastLogin(new Date(rs.getLong(32)));
+//                    user.setPasswordDT(new Date(rs.getLong(33)));
+                    Timestamp ts = rs.getTimestamp(32, calendar);
+                    user.setLastLogin(new Date(ts.getTime()));
+                    System.out.println(user.getUserID() + " ms: " + ts.getTime() + " " + DateUtil.getDisplayDate(user.getLastLogin(), TimeZone.getTimeZone("UTC")));
+                    user.setPasswordDT(rs.getTimestamp(33, calendar));
                     user.setPerson(person);
                     user.setPersonID(person.getPersonID());
                     person.setUser(user);
@@ -169,21 +199,21 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                     person.setUser(null);
                 }
 
-                Integer driverID = rs.getInt(32);
+                Integer driverID = rs.getInt(34);
                 if (driverID != 0) {
                     Driver driver = new Driver();
                     driver.setDriverID(driverID);
-                    driver.setGroupID(rs.getInt(33));
-                    driver.setStatus(Status.valueOf(rs.getInt(34)));
-                    driver.setLicense(rs.getString(35));
-                    driver.setLicenseClass(rs.getString(36));
-                    driver.setState(States.getStateById(rs.getInt(37)));
-                    driver.setExpiration(rs.getDate(38, calendar));
-                    driver.setCertifications(rs.getString(39));
-                    driver.setDot(RuleSetType.valueOf(rs.getInt(40)));
-                    driver.setBarcode(rs.getString(41));
-                    driver.setRfid1(rs.getLong(42) == 0l ? null : rs.getLong(42));
-                    driver.setRfid2(rs.getLong(43)== 0l ? null : rs.getLong(43));
+                    driver.setGroupID(rs.getInt(35));
+                    driver.setStatus(Status.valueOf(rs.getInt(36)));
+                    driver.setLicense(rs.getString(37));
+                    driver.setLicenseClass(rs.getString(38));
+                    driver.setState(States.getStateById(rs.getInt(39)));
+                    driver.setExpiration(rs.getDate(40, calendar));
+                    driver.setCertifications(rs.getString(41));
+                    driver.setDot(RuleSetType.valueOf(rs.getInt(42)));
+                    driver.setBarcode(rs.getString(43));
+                    driver.setRfid1(rs.getObject(44) == null ? null : rs.getLong(44));
+                    driver.setRfid2(rs.getObject(45)== null ? null : rs.getLong(45));
                     person.setDriver(driver);
                     driver.setPerson(person);
                 }
@@ -193,7 +223,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                 
 				return person;
 			}
-		}, params); //groupIDsForSQL, groupIDsForSQL);
+		}, params); 
 		
 		
 		addUserRoles(personList);

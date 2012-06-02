@@ -64,6 +64,7 @@ public class TablePref<T>
         }
         setTablePreference(pref);
         tablePrefOptions.getTablePreferenceDAO().update(pref);
+        tablePrefOptions.columnsChanged();
         return null;
     
     }

@@ -241,6 +241,10 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 		wrappedData.clear();
 		rowKey = null;
 	}
+	public void resetSortsAndFilters() {
+	    this.filterFields = null;
+	    this.sortFields = null;
+	}
 
 	public DataProvider<T> getDataProvider() {
 		return dataProvider;

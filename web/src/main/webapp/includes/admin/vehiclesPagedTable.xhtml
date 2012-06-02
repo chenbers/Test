@@ -1,0 +1,165 @@
+<ui:composition template="adminPagedTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="bean" value="#{pagingAdminVehiclesBean}"/>
+  <ui:param name="editorBean" value="#{vehiclesBean}" />
+  <ui:param name="context" value="vehiclesTable"/>		
+
+  <ui:define name="columns">
+    <rich:column id="name" rendered="#{vehiclesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING" filterBy="#{item.name}" >
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
+      <a4j:htmlCommandLink id="vehiclesTableName" action="#{vehiclesBean.display}" value="#{item.name}">
+        <f:param name="displayID" value="#{item.id}" />
+      </a4j:htmlCommandLink>
+    </rich:column>
+    <rich:column id="fullName" rendered="#{vehiclesBean.tableColumns['driverID'].visible}" sortBy="#{item.driver.person.fullName}" filterBy="#{item.driver.person.fullName}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
+      <h:outputText value="#{item.driver.person.fullName}" />
+    </rich:column>
+    <rich:column id="productVersion" rendered="#{vehiclesBean.tableColumns['productType'].visible}"
+    			custFilterBy="#{item.editableVehicleSettings.productType}" 
+    			filterValue="#{bean.productTypeFilter.value}">
+      <f:facet name="header">
+        <h:panelGroup>
+			<h:outputText value="#{messages.vehiclesHeader_productType}" />
+			<h:panelGroup>
+	       	<rich:spacer style="display:block" height="2"/>
+	       	<h:selectOneMenu value="#{bean.productTypeFilter.value}" style="width:120px;size:auto;margin-top:3px;"
+	       					id="editVehicle-productChoice" >
+	           	<f:selectItems value="#{bean.productTypeFilter.selectItems}" />
+	           	<a4j:support event="onchange" 
+           	        		reRender="#{context},#{context}-form:header,#{context}-form:#{context}-dataTableScroller" />
+	       	</h:selectOneMenu>
+			<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+			 	<ui:param name="selectBoxID" value="#{context}-form:#{context}:editVehicle-productChoice" />
+			</ui:include>
+			</h:panelGroup>
+        </h:panelGroup>
+      </f:facet>
+      <h:outputText value="#{item.editableVehicleSettings.productDisplayName}" />
+    </rich:column>
+    <rich:column id="group" rendered="#{vehiclesBean.tableColumns['groupID'].visible}" sortBy="#{item.group.name}" filterBy="#{item.group.name}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>
+      <h:outputText value="#{item.group.name}" />
+    </rich:column>
+    <rich:column id="year" rendered="#{vehiclesBean.tableColumns['year'].visible}" sortBy="#{item.year}" filterBy="#{item.year}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_year}" /></f:facet>
+      <h:outputText value="#{item.year}" />
+    </rich:column>
+    <rich:column id="make" rendered="#{vehiclesBean.tableColumns['make'].visible}" sortBy="#{item.make}" filterBy="#{item.make}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_make}" /></f:facet>
+      <h:outputText value="#{item.make}" />
+    </rich:column>
+    <rich:column id="model" rendered="#{vehiclesBean.tableColumns['model'].visible}" sortBy="#{item.model}" filterBy="#{item.model}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_model}" /></f:facet>
+      <h:outputText value="#{item.model}" />
+    </rich:column>
+    <rich:column id="color" rendered="#{vehiclesBean.tableColumns['color'].visible}" sortBy="#{item.color}" filterBy="#{item.color}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_color}" /></f:facet>
+      <h:outputText value="#{item.color}" />
+    </rich:column>
+    <rich:column id="vtype" rendered="#{vehiclesBean.tableColumns['vtype'].visible}" 
+						    custFilterBy="#{item.vtype.name}" 
+						    filterValue="#{bean.vehicleTypeFilter.value}"> 
+      <f:facet name="header">
+	      <h:panelGroup>
+			<h:outputText value="#{messages.vehiclesHeader_vtype}" />
+			<h:panelGroup>
+	       		<rich:spacer style="display:block" height="2"/>
+		       	<h:selectOneMenu value="#{bean.vehicleTypeFilter.value}" style="width:120px;size:auto;margin-top:3px;"
+		      		id="editVehicle-vehicleTypeChoice" >
+		           	<f:selectItems value="#{bean.vehicleTypeFilter.selectItems}" />
+		           	<a4j:support event="onchange" 
+           	        		reRender="#{context},#{context}-form:header,#{context}-form:#{context}-dataTableScroller" />
+		       	</h:selectOneMenu>
+				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+				 	<ui:param name="selectBoxID" value="#{context}-form:#{context}:editVehicle-vehicleTypeChoice" />
+				</ui:include>
+			</h:panelGroup>
+		  </h:panelGroup>
+      </f:facet>
+      <h:outputText value="#{item.vehicleTypeString}" />
+    </rich:column>
+    <rich:column id="device" rendered="#{vehiclesBean.tableColumns['deviceID'].visible}" sortBy="#{item.device.name}" filterBy="#{item.device.name}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_deviceID}" /></f:facet>
+      <h:outputText value="#{item.device.name}" />
+    </rich:column>
+    <rich:column id="vin" rendered="#{vehiclesBean.tableColumns['VIN'].visible}" sortBy="#{item.VIN}" filterBy="#{item.VIN}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_VIN}" /></f:facet>
+      <h:outputText value="#{item.VIN}" />
+    </rich:column>
+    <rich:column id="weight" rendered="#{vehiclesBean.tableColumns['weight'].visible}" sortBy="#{item.weight}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_weight}" /></f:facet>
+      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.weight ne null}">
+         <a4j:actionparam value="#{item.weight}" converter="LbsToKgConverter"/>
+         <a4j:actionparam value="lbs" converter="MeasurementTextConverter"/>
+      </h:outputFormat>
+    </rich:column>
+    <rich:column id="license" rendered="#{vehiclesBean.tableColumns['license'].visible}" sortBy="#{item.license}" filterBy="#{item.license}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_license}" /></f:facet>
+      <h:outputText value="#{item.license}" />
+    </rich:column>
+    <rich:column id="state" rendered="#{vehiclesBean.tableColumns['state'].visible}" filterValue="#{vehiclesBean.filterValues['state']}" sortBy="#{item.state.name}" filterBy="#{item.state.name}">
+      <f:facet name="header">
+		<h:outputText value="#{messages.vehiclesHeader_state}" />
+      </f:facet>
+      <h:outputText value="#{item.state.name}" />
+    </rich:column>
+    <rich:column id="status" rendered="#{vehiclesBean.tableColumns['status'].visible}" 
+    						custFilterBy="#{item.status}" 
+    						filterValue="#{bean.deviceStatusFilter.value}" >
+      <f:facet name="header">
+      	<h:panelGroup>
+			<h:outputText value="#{messages.vehiclesHeader_status}" />
+			<h:panelGroup>
+		       	<rich:spacer style="display:block" height="2"/>
+		       	<h:selectOneMenu value="#{bean.deviceStatusFilter.value}" style="width:80px;size:auto;margin-top:3px;"
+		      		id="editVehicle-statusChoice" >
+		           	<f:selectItems value="#{bean.deviceStatusFilter.selectItems}" />
+		           	<a4j:support event="onchange" 
+		           		reRender="#{context},#{context}-form:header,#{context}-form:#{context}-dataTableScroller" />
+		       	</h:selectOneMenu>
+				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 		<ui:param name="selectBoxID" value="#{context}-form:#{context}:editVehicle-statusChoice" />
+				</ui:include>
+			</h:panelGroup>
+		</h:panelGroup>
+      </f:facet>
+      <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
+    </rich:column>
+    <rich:column id="odometer" rendered="#{vehiclesBean.tableColumns['odometer'].visible}" sortBy="#{item.odometer}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_odometer}" /></f:facet>
+      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.odometer ne null}">
+         <a4j:actionparam value="#{item.odometer}" converter="MilesToKilometersConverterInput"/>
+         <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+      </h:outputFormat>
+    </rich:column>    
+    
+    <rich:column id="DOT" rendered="#{vehiclesBean.tableColumns['DOT'].visible}" filterValue="#{vehiclesBean.filterValues['DOT']}" sortBy="#{item.dotVehicleType}">
+      <f:facet name="header">
+		<h:outputText value="#{messages.vehiclesHeader_DOT}" />    
+      </f:facet>
+      <h:outputText value="#{messages[item.dotVehicleType]}" />
+    </rich:column>
+    <rich:column id="ePhone" rendered="#{vehiclesBean.tableColumns['ephone'].visible}" filterValue="#{vehiclesBean.filterValues['ephone']}" sortBy="#{item.editableVehicleSettings.ephone}">
+      <f:facet name="header">
+		<h:outputText value="#{messages.vehiclesHeader_ephone}" />    
+      </f:facet>
+      <h:outputText value="#{item.editableVehicleSettings.ephone}" />
+    </rich:column>
+    <rich:column id="IFTA" rendered="#{vehiclesBean.tableColumns['IFTA'].visible}" filterValue="#{vehiclesBean.filterValues['IFTA']}" sortBy="#{item.ifta}">
+      <f:facet name="header">
+		<h:outputText value="#{messages.vehiclesHeader_IFTA}" />      
+      </f:facet>
+      <h:outputText value="#{item.ifta eq null?'':messages[item.ifta]}" />
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

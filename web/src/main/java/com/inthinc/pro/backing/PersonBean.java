@@ -39,6 +39,7 @@ import com.inthinc.pro.dao.PhoneControlDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
@@ -339,6 +340,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
     @Override
     protected List<PersonView> loadItems() {
+/*        
         // get the people
         final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID(), getUser().getGroupID());
         // filter out people who don't belong
@@ -358,6 +360,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             items.add(createPersonView(person));
         }
         return items;
+*/
+        
+        // don't want this method anymore due to pagination
+        return null;
     }
     private void createCellblockMap(){
         final List<Cellblock> cellblocks = phoneControlDAO.getCellblocksByAcctID(getUser().getPerson().getAccountID());
@@ -375,7 +381,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
      *            The person.
      * @return The new PersonView object.
      */
-    private PersonView createPersonView(Person person) {
+// CJ: MADE THIS PUBLIC    
+    public PersonView createPersonView(Person person) {
         final PersonView personView = new PersonView();
         if (logger.isTraceEnabled())
             logger.trace("createPersonView: BEGIN " + person);
@@ -386,14 +393,21 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setUserSelected(person.getUser() != null);
         personView.setDriverSelected(person.getDriver() != null);
         
+        personView.setProviderInfoSelected(false);
+        personView.setProviderInfoExists(false);
+        
         if (person.getDriver() != null) {
-            Cellblock cellblock = cellblockMap.get(person.getDriverID());
-            if(cellblock != null) cellblock.setProviderPassword("");
-            personView.setProviderInfoSelected(cellblock != null);
-            personView.setProviderInfoExists(cellblock != null);
-            personView.setCellblock(personView.isProviderInfoExists()?cellblock:new Cellblock());
-            
-            personView.setConfirmProviderPassword("");
+// CJ: ADDED THIS IF STMT (could probably make this a session bean or something)
+//if (cellblockMap == null)
+//    createCellblockMap();
+//            
+//            Cellblock cellblock = cellblockMap.get(person.getDriverID());
+//            if(cellblock != null) cellblock.setProviderPassword("");
+//            personView.setProviderInfoSelected(cellblock != null);
+//            personView.setProviderInfoExists(cellblock != null);
+//            personView.setCellblock(personView.isProviderInfoExists()?cellblock:new Cellblock());
+//            
+//            personView.setConfirmProviderPassword("");
         }
         
         personView.setSelected(false);
@@ -775,18 +789,34 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (!isBatchEdit() && (person.getEmpid() != null) && (person.getEmpid().length() > 0)) {
             // when checking for duplicate employee id, use the logged-in user's groupID and check from there.
             Integer groupID = this.getProUser().getUser().getGroupID();
-            List<Person> personsInGroup = personDAO.getPeopleInGroupHierarchy(groupID);
-            for(Person p: personsInGroup) {
-                // Augment to NOT check against themselves
-                if (!p.getPersonID().equals(person.getPersonID())) {
-                    if(p.getEmpid() != null && person.getEmpid() != null && p.getEmpid().equalsIgnoreCase(person.getEmpid())){
-                        valid = false;
-                        final String summary = MessageUtil.getMessageString("editPerson_empidTaken");
-                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                        context.addMessage("edit-form:editPerson-empId", message);
-                    }
+// TODO: CJ THIS IS LIKELY EXPENSIVE, SO replaced this       
+//            List<Person> personsInGroup = personDAO.getPeopleInGroupHierarchy(groupID);
+//            for(Person p: personsInGroup) {
+//                // Augment to NOT check against themselves
+//                if (!p.getPersonID().equals(person.getPersonID())) {
+//                    if(p.getEmpid() != null && person.getEmpid() != null && p.getEmpid().equalsIgnoreCase(person.getEmpid())){
+//                        valid = false;
+//                        final String summary = MessageUtil.getMessageString("editPerson_empidTaken");
+//                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                        context.addMessage("edit-form:editPerson-empId", message);
+//                    }
+//                }
+//            }
+// with this:            
+                Person lookupPerson = null;
+                try {
+                    lookupPerson = personDAO.findByEmpID(person.getAcctID(), person.getEmpid());
                 }
-            }
+                catch (EmptyResultSetException ex) {
+                    lookupPerson = null;
+                }
+        
+                if(lookupPerson != null && !lookupPerson.getPersonID().equals(person.getPersonID()) ){
+                    valid = false;
+                    final String summary = MessageUtil.getMessageString("editPerson_empidTaken");
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    context.addMessage("edit-form:editPerson-empId", message);
+                }
         }
         // unique primary e-mail
         if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0)) {
@@ -991,6 +1021,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return createPersonView(personDAO.findByID(editItem.getPersonID()));
     }
 
+    // TODO: This is inefficient in that it saves driver/user when it is not necessary.  for example, batch edit and change the gender field (person object)
+    // and it will call the update on the user and driver records also
     @Override
     protected void doSave(List<PersonView> saveItems, boolean create) {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -1533,5 +1565,22 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
     public void setPhoneControlDAO(PhoneControlDAO phoneControlDAO) {
         this.phoneControlDAO = phoneControlDAO;
+    }
+
+    // overriding because the pagination doesn't use the filtered list 
+
+
+    @Override
+    public List<PersonBean.PersonView> getFilteredItems() {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+        return filteredItems;
+    }
+
+    @Override
+    protected void applyFilter(int page)
+    {
+        filteredItems.clear();
+        filteredItems.addAll(items);
     }
 }

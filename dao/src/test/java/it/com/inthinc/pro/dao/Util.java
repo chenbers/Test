@@ -80,7 +80,7 @@ public class Util
                         else continue;
                         
                     }
-                    else assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " expected value is null, but returned value is not", value1 );
+                    else assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " expected value is null, but returned value is not " + value2, value1 );
                 }
                 else if (value2 == null)
                 {

@@ -31,6 +31,7 @@ import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.security.jsftaglib.SecurityJsfUtils;
+import com.inthinc.pro.table.columns.ColumnsChangedListener;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
@@ -67,6 +68,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 //    protected Map<String,Object>      filterValues;
     protected ColumnFiltering<T> columnFiltering;
     protected int  filteredListSize;
+    private ColumnsChangedListener  columnsChangedListener;
 
     public void initBean()
     {
@@ -120,6 +122,21 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         tablePref.setTableColumns(tableColumns);
     }
+    
+    @Override
+    public void columnsChanged()
+    {
+        if (columnsChangedListener != null)
+            columnsChangedListener.columnChangedHandler();
+        
+    }
+    public ColumnsChangedListener getColumnsChangedListener() {
+        return columnsChangedListener;
+    }
+    public void setColumnsChangedListener(ColumnsChangedListener columnsChangedListener) {
+        this.columnsChangedListener = columnsChangedListener;
+    }
+
 
     /**
      * @return A list of all available groups.
@@ -161,6 +178,13 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             applyFilter(getPage());
         }
         return items;
+    }
+    
+    // CJ: ADDED THIS METHOD
+    public void setItems(List<T> items )
+    {
+        this.items = items;
+        this.filteredItems = getFilteredItems();
     }
 
     /**
@@ -479,9 +503,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         {
             // get the fields to update
             final LinkedList<String> ignoreFields = new LinkedList<String>();
-            for (final String key : updateField.keySet())
+            for (final String key : updateField.keySet()) {
                 if (!updateField.get(key))
                     ignoreFields.add(key);
+System.out.println("key: " + key + " update: " + updateField.get(key));                
+            }
             
             ignoreFields.add("rolePicker");
             ignoreFields.add("escEmailsDataTable");

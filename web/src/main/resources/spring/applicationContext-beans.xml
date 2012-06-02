@@ -725,4 +725,33 @@
   
   <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.report.impl.DriverPerformanceDAOImpl"/>
 
+
+  <!-- Admin Pagination Beans -->
+  <bean id="basePagingAdminBean" class="com.inthinc.pro.backing.paging.BasePagingAdminBean" scope="request" init-method="init" parent="baseBean">
+  </bean>
+
+  <bean id="adminPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.AdminPaginationTableDataProvider" scope="request">
+    <property name="adminDAO" ref="adminDAO"></property>
+  </bean>
+
+  <bean id="pagingAdminPersonsBean" class="com.inthinc.pro.backing.paging.PagingAdminPersonsBean" scope="request" init-method="init" parent="basePagingAdminBean">
+    <property name="tableDataProvider" ref="adminPersonPaginationTableDataProvider"></property>
+  </bean>
+
+  <bean id="adminPersonPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.AdminPersonPaginationTableDataProvider" scope="request" parent="adminPaginationTableDataProvider" />
+
+  <bean id="pagingAdminVehiclesBean" class="com.inthinc.pro.backing.paging.PagingAdminVehiclesBean" scope="request" init-method="init" parent="basePagingAdminBean">
+    <property name="tableDataProvider" ref="adminVehiclePaginationTableDataProvider"></property>
+  </bean>
+
+  <bean id="adminVehiclePaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.AdminVehiclePaginationTableDataProvider" scope="request" parent="adminPaginationTableDataProvider" />
+
+
+  <bean id="pagingAdminDevicesBean" class="com.inthinc.pro.backing.paging.PagingAdminDevicesBean" scope="request" init-method="init" parent="basePagingAdminBean">
+    <property name="tableDataProvider" ref="adminDevicePaginationTableDataProvider"></property>
+  </bean>
+
+  <bean id="adminDevicePaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.AdminDevicePaginationTableDataProvider" scope="request" parent="adminPaginationTableDataProvider" />
+
+
 </beans>

@@ -58,4 +58,8 @@ public class BasePaginationTable<T> {
     	pageData.initPage(pageData.getCurrentPage(), model.getRowCount());
     }
 
+    public void resetSortsAndFilters()
+    {
+        model.resetSortsAndFilters();
+    }
 }

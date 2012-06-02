@@ -55,5 +55,7 @@ default-autowire="byName">
   <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"/>
   
   
+<!-- TODO:temp -->  
+  <bean id="adminDAO" class="com.inthinc.pro.dao.mock.MockAdminDAO"/>
    
 </beans>

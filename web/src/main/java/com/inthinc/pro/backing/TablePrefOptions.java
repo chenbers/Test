@@ -25,5 +25,7 @@ public interface TablePrefOptions<T>
      * @return The field value, as a user-visible string.
      */
     public String fieldValue(T o, String column);
+    
+    public void columnsChanged();
 
 }

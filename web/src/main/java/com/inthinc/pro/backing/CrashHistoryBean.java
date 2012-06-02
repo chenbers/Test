@@ -348,4 +348,10 @@ logger.info("initTableData() - end");
         return getReportCriteriaService().getCrashHistoryReportCriteria(getUser().getGroupID(), getLocale());
     }
 
+    @Override
+    public void columnsChanged() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
