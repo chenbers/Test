@@ -115,7 +115,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 			personSelect.append(" ORDER BY " + columnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 		
 		if(pageParams.getStartRow() != null && pageParams.getEndRow() != null)
-			personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + (pageParams.getEndRow() - pageParams.getStartRow()) );
+			personSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow())+1) );
 		
 		
 		List<Person> personList = getSimpleJdbcTemplate().query(personSelect.toString(), new ParameterizedRowMapper<Person>() {
@@ -187,7 +187,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                     driver.setLicense(rs.getString("d.license"));
                     driver.setLicenseClass(rs.getString("d.class"));
                     driver.setState(States.getStateById(rs.getInt("d.stateID")));
-                    driver.setExpiration(rs.getDate("d.expiration"));
+                    driver.setExpiration(rs.getDate("d.expiration", calendar));
                     driver.setCertifications(rs.getString("d.certs"));
                     driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
                     driver.setBarcode(rs.getString("d.barcode"));
