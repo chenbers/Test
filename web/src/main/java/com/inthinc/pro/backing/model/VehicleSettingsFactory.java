@@ -23,6 +23,21 @@ public class VehicleSettingsFactory {
     public VehicleSetting getVehicleSetting(Integer vehicleID){
         return configuratorDAO.getVehicleSettings(vehicleID);
     }
+
+    // TODO: CJ ADDED THIS DURING PAGINATION REFACTOR - REVIEW IT WITH JACQUIE
+    public Map<Integer, VehicleSettingManager> retrieveVehicleSettings(List<Vehicle> vehicles){
+        
+        Map<Integer, VehicleSettingManager>   vehicleSettingManagers = new HashMap<Integer, VehicleSettingManager>();
+        for (Vehicle vehicle : vehicles) {
+            Integer vehicleID = vehicle.getVehicleID();
+            VehicleSetting vehicleSetting = getVehicleSetting(vehicleID);
+            vehicleSettingManagers.put(vehicleID,getSettingManagerForExistingSetting(vehicleSetting.getProductType(),vehicleSetting));
+            setToSettingManagerIfSettingsDontExist(vehicleSettingManagers, vehicle);
+        }
+        return vehicleSettingManagers;
+    }
+
+    
     public Map<Integer, VehicleSettingManager> retrieveVehicleSettings(Integer groupID, List<Vehicle> vehicles){
         
         Map<Integer, VehicleSettingManager>   vehicleSettingManagers = new HashMap<Integer, VehicleSettingManager>();

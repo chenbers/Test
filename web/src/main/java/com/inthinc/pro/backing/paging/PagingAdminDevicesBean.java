@@ -8,18 +8,12 @@ import com.inthinc.pro.backing.paging.filters.ProductTypeFilter;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 
-
 @KeepAlive
-public class PagingAdminDevicesBean extends BasePagingAdminBean<DevicesBean.DeviceView>{
-
+public class PagingAdminDevicesBean extends BasePagingAdminBean<DevicesBean.DeviceView> {
     private static final long serialVersionUID = 1239753414611862228L;
-
     private DeviceStatusFilter deviceStatusFilter;
-    
     private ProductTypeFilter productTypeFilter;
-    
     private DevicesBean devicesBean;
-    
 
     @Override
     public void init() {
@@ -49,6 +43,7 @@ public class PagingAdminDevicesBean extends BasePagingAdminBean<DevicesBean.Devi
     public void setProductTypeFilter(ProductTypeFilter productTypeFilter) {
         this.productTypeFilter = productTypeFilter;
     }
+
     public DevicesBean getDevicesBean() {
         return devicesBean;
     }
@@ -56,5 +51,4 @@ public class PagingAdminDevicesBean extends BasePagingAdminBean<DevicesBean.Devi
     public void setDevicesBean(DevicesBean devicesBean) {
         this.devicesBean = devicesBean;
     }
-
 }

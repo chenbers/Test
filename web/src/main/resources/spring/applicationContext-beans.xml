@@ -731,7 +731,6 @@
   </bean>
 
   <bean id="adminPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.AdminPaginationTableDataProvider" scope="request">
-    <property name="adminDAO" ref="adminDAO"></property>
   </bean>
 
   <bean id="pagingAdminPersonsBean" class="com.inthinc.pro.backing.paging.PagingAdminPersonsBean" scope="request" init-method="init" parent="basePagingAdminBean">

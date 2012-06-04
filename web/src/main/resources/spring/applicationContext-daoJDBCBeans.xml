@@ -32,5 +32,11 @@ default-autowire="byName">
 	<bean id="adminPersonJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminPersonJDBCDAO">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<bean id="adminVehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="adminDeviceJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminDeviceJDBCDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 	
 </beans>

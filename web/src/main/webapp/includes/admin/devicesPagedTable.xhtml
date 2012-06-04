@@ -13,13 +13,13 @@
   <ui:param name="context" value="devicesTable"/>		
 
   <ui:define name="columns">
-    <rich:column id="name" rendered="#{devicesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING" filterBy="#{item.name}" >
+    <rich:column id="name" rendered="#{devicesBean.tableColumns['name'].visible}" sortBy="#{name}" sortOrder="ASCENDING" filterBy="#{name}" >
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_name}"/></f:facet>
       <a4j:htmlCommandLink id="devicesTableName" action="#{devicesBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </a4j:htmlCommandLink>
     </rich:column>
-    <rich:column id="vehicle" rendered="#{devicesBean.tableColumns['vehicleID'].visible}" sortBy="#{item.vehicle.name}" filterBy="#{item.vehicle.name}">
+    <rich:column id="vehicle" rendered="#{devicesBean.tableColumns['vehicleID'].visible}" sortBy="#{vehicleID}" filterBy="#{vehicleID}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
@@ -45,33 +45,26 @@
       </f:facet>
       <h:outputText value="#{item.productDisplayName}" />
     </rich:column>
-    <rich:column id="imei" rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}" filterBy="#{item.imei}">
+    <rich:column id="imei" rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{imei}" filterBy="#{imei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_imei}" /></f:facet>
       <h:outputText value="#{item.imei}" />
     </rich:column>
-    <rich:column id="altimei" rendered="#{devicesBean.tableColumns['altimei'].visible}" sortBy="#{item.altimei}" filterBy="#{item.altimei}">
+    <rich:column id="altimei" rendered="#{devicesBean.tableColumns['altimei'].visible}" sortBy="#{altimei}" filterBy="#{altimei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_altimei}" /></f:facet>
       <h:outputText value="#{item.altimei}" />
     </rich:column>
-    <rich:column id="sim" rendered="#{devicesBean.tableColumns['sim'].visible}" sortBy="#{item.sim}" filterBy="#{item.sim}">
+    <rich:column id="sim" rendered="#{devicesBean.tableColumns['sim'].visible}" sortBy="#{sim}" filterBy="#{sim}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_sim}" /></f:facet>
       <h:outputText value="#{item.sim}" />
     </rich:column>
-    <rich:column id="serialNumber" rendered="#{devicesBean.tableColumns['serialNum'].visible}" sortBy="#{item.serialNum}"  filterBy="#{item.serialNum}">
+    <rich:column id="serialNumber" rendered="#{devicesBean.tableColumns['serialNum'].visible}" sortBy="#{serialNum}"  filterBy="#{serialNum}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_serialNum}" /></f:facet>
       <h:outputText value="#{item.serialNum}" />
     </rich:column>
-    <rich:column id="phone" rendered="#{devicesBean.tableColumns['phone'].visible}" sortBy="#{item.phone}" filterBy="#{item.phone}">
+    <rich:column id="phone" rendered="#{devicesBean.tableColumns['phone'].visible}" sortBy="#{phone}" filterBy="#{phone}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_phone}" /></f:facet>
       <h:outputText value="#{item.phone}" />
     </rich:column>
-<!--     
-TODO: CJ REMOVED THIS COLUMN SINCE IT'S NOT LISTED IN AVAILABLE COLUMNS IN DEVICES BEAN SO WILL NEVER BE VISIBLE
-    <rich:column id="activated" rendered="#{devicesBean.tableColumns['activated'].visible}" sortBy="#{item.activated}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
-      <h:outputText value="#{item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
-    </rich:column>
- -->    
     <!--  TODO: CJ REMOVED SORT BECAUSE OF SORT BY IS ON A UI RENDERED FIELD, I.E. ONLY DATABASE SORT IS SUPPORTED  -->
 	<rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" 
 								custFilterBy="#{item.status}" 
@@ -97,7 +90,7 @@ TODO: CJ REMOVED THIS COLUMN SINCE IT'S NOT LISTED IN AVAILABLE COLUMNS IN DEVIC
     </rich:column>
 
 
-    <rich:column id="mcmid" rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{item.mcmid}"  filterBy="#{item.mcmid}">
+    <rich:column id="mcmid" rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{mcmid}"  filterBy="#{mcmid}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
       <h:outputText value="#{item.mcmid}" />
     </rich:column>

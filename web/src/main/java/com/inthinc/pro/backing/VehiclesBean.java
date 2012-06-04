@@ -198,6 +198,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected List<VehicleView> loadItems()
     {
+/*        
         
         // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
@@ -217,8 +218,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         return items;
+        
+*/
+        // shouldn't need this with pagination
+        return null;
     }
     
+    public void setVehicleSettingManagers(Map<Integer, VehicleSettingManager> vehicleSettingManagers) {
+        this.vehicleSettingManagers = vehicleSettingManagers;
+    }
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
         return vehicleSettingManagers;
     }
@@ -252,7 +260,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
      *            The vehicle.
      * @return The new VehicleView object.
      */
-    private VehicleView createVehicleView(Vehicle vehicle)
+    public VehicleView createVehicleView(Vehicle vehicle)
     {
         final VehicleView vehicleView = new VehicleView();
         vehicleView.bean = this;

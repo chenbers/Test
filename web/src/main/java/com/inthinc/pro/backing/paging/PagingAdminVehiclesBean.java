@@ -9,18 +9,12 @@ import com.inthinc.pro.backing.paging.filters.VehicleTypeFilter;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 
-
 @KeepAlive
-public class PagingAdminVehiclesBean extends BasePagingAdminBean<VehiclesBean.VehicleView>{
-
+public class PagingAdminVehiclesBean extends BasePagingAdminBean<VehiclesBean.VehicleView> {
     private static final long serialVersionUID = 1239753414611862228L;
-
     private DeviceStatusFilter deviceStatusFilter;
-    
     private ProductTypeFilter productTypeFilter;
-    
     private VehicleTypeFilter vehicleTypeFilter;
-
     private VehiclesBean vehiclesBean;
 
     public VehiclesBean getVehiclesBean() {
