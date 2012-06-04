@@ -44,7 +44,8 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 
     private static final String ROLE_ACCESS_SELECT = "SELECT DISTINCT roleID, accessPtID, mode FROM roleAccess WHERE roleID IN (:rlist)";
     private static final String ROLE_SELECT = "SELECT u.userID, u.roleID FROM role as r JOIN userRole as u USING (roleID) WHERE u.userID IN (:ulist)";
-    private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:dglist) OR u.groupID IN (:uglist)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+    private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+    private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
 	
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
 
@@ -85,29 +86,28 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		columnMap.put("driver_groupID", "d.groupID");
 	}
 	
-	public Integer getCount(List<Integer> groupIDs, List<TableFilterField> filters) {
-	    Map<String,Object>  params = new HashMap<String, Object>();
-        params.put("dglist",groupIDs);
-        params.put("uglist",groupIDs);
-
-        Integer cnt =  getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, params);
-        logger.info("getCount " + cnt + " " + groupIDs + " " + PERSON_COUNT);
-		
-		return cnt;
+	public Integer getCount(final List<Integer> groupIDs, final List<TableFilterField> filters) {
+        return getSimpleJdbcTemplate().queryForInt(PERSON_COUNT, new HashMap<String, Object>(){{put("group_list", groupIDs);}});
+	}
+	
+	public List<Integer> getAllPersonIDs(final List<Integer> groupIDs) {
+		return getSimpleJdbcTemplate().query(ALL_PERSON_IDS_SELECT, new ParameterizedRowMapper<Integer>() {
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getInt(1);
+			}			
+		} , new HashMap<String, Object>(){{put("group_list", groupIDs);}});
 	}
 	
 	
-	public List<Person> getPeople(List<Integer> groupIDs, PageParams pageParams) {
+	public List<Person> getPeople(final List<Integer> groupIDs, final PageParams pageParams) {
 				
 		StringBuilder personSelect = new StringBuilder();
 		personSelect
 				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
 				.append("u.userID, u.status, u.username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
 				.append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
-				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:dglist) OR u.groupID IN (:uglist)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("dglist", groupIDs);
-		params.put("uglist", groupIDs);
+				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
 		
 		if(pageParams.getSort() == null || pageParams.getSort().getField().isEmpty() || pageParams.getSort().getOrder() == null)
 			personSelect.append(" ORDER BY p.first ASC");
@@ -202,7 +202,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                 
 				return person;
 			}
-		}, params); 
+		}, new HashMap<String, Object>(){{put("group_list", groupIDs);}}); 
 		
 		addUserRoles(personList);
 		return personList;
