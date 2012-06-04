@@ -6,6 +6,7 @@ import java.util.List;
 import com.inthinc.pro.automation.elements.ElementInterface.TextFieldWithSuggestions;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
 
 public class TextFieldSuggestions extends TextField implements TextFieldWithSuggestions {
@@ -21,12 +22,29 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
     public TextFieldSuggestions type(Object toType) {
         getSelenium().type(myEnum, "");
         getSelenium().typeKeys(myEnum, toType.toString());
+        
         return this;
     }
 
     @Override
     public TextLink getSuggestedRow(Integer row) {
         return new TextLink(setIds("["+row+"]/td"));
+    }
+    
+    private TextLink wait(TextLink option){
+        String identifier = "//span[contains(@id,'status.start')]";
+        while (getSelenium().isVisible(identifier)){
+            AutomationThread.pause(1);
+        }
+        return option;
+    }
+    
+    public ClickableObject clickTheSuggestedRow(Integer row){
+        return wait(getSuggestedRow(row)).click();
+    }
+
+    public String getTextFromSuggestedRow(Integer row){
+        return wait(getSuggestedRow(row)).getText();
     }
     
     private SeleniumEnumWrapper setIds(String qualifier){
@@ -53,6 +71,10 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
     @Override
     public TextLink getSuggestedText(String fullName) {
         return new TextLink(setIds("/td[2]/span["+Id.text(fullName)+"]"));
+    }
+    
+    public ClickableObject clickTheSuggestedText(String fullName){
+        return wait(getSuggestedText(fullName)).click();
     }
     
 

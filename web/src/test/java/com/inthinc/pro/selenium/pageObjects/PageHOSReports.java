@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.Calendar;
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
@@ -64,22 +64,7 @@ public class PageHOSReports extends HOSBar {
     }
     public class HOSReportsTextFields extends HOSBarTextFields{}
     
-    public HosReportsDateSelectors _dateSelector(){
-        return new HosReportsDateSelectors();
-    }
-    
-    public class HosReportsDateSelectors{
-        
-        public Calendar startDate(){
-            return new Calendar(HosReportsEnum.START_DATE);
-        }
-        
-        public Calendar stopDate(){
-            return new Calendar(HosReportsEnum.STOP_DATE);
-        }
 
-    }
-    
     public class HOSReportsButtons extends HOSBarButtons{
         
         public Button groupDownArrow(){
@@ -106,6 +91,15 @@ public class PageHOSReports extends HOSBar {
         
         public DropDown driver(){
             return new DropDown(HosReportsEnum.DRIVER_DROP_DOWN);
+        }
+        
+
+        public CalendarObject startDate(){
+            return new CalendarObject(HosReportsEnum.START_DATE);
+        }
+        
+        public CalendarObject stopDate(){
+            return new CalendarObject(HosReportsEnum.STOP_DATE);
         }
     }
     public class HOSReportsPopUps extends MastheadPopUps{

@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.Calendar;
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -8,19 +8,20 @@ import com.inthinc.pro.automation.elements.TextDateFieldLabel;
 import com.inthinc.pro.automation.elements.TextDropDownLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TimeOfDay;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.HOSDriverLogsEditEnum;
 
-public class PageHOSEditDriverLogs extends HOSBar {
+public class PageHOSAddEditDriverLogs extends HOSBar {
 
-    public PageHOSEditDriverLogs() {
+    public PageHOSAddEditDriverLogs() {
         // TODO Auto-generated constructor stub
     }
     
-    public class PageHOSEditDriverLogsLinks extends HOSBarLinks {}
+    public class HOSEditDriverLogsLinks extends HOSBarLinks {}
 
-    public class PageHOSEditDriverLogsTexts extends HOSBarTexts {
+    public class HOSEditDriverLogsTexts extends HOSBarTexts {
         
         public Text labelDate() {
             return new TextDateFieldLabel(HOSDriverLogsEditEnum.DATE);
@@ -53,10 +54,30 @@ public class PageHOSEditDriverLogs extends HOSBar {
         public Text labelDOT() {
             return new TextDropDownLabel(HOSDriverLogsEditEnum.DOT);
         }
+
+        public Text timeZone(){
+            return duration().timeZone();
+        }
         
+        public Text durationLabel(){
+            return duration().label();
+        }
     }
 
-    public class PageHOSEditDriverLogsTextFields extends HOSBarTextFields {
+    public class HOSEditDriverLogsTextFields extends HOSBarTextFields {
+
+        
+        public TextFieldWithSpinner hours(){
+            return duration().hours();
+        }
+        
+        public TextFieldWithSpinner minutes(){
+            return duration().minutes();
+        }
+        
+        public TextFieldWithSpinner seconds(){
+            return duration().seconds();
+        }
         
         
         public TextField trailer() {
@@ -72,18 +93,8 @@ public class PageHOSEditDriverLogs extends HOSBar {
         }
     }
     
-    public FuelStopsDateSelectors _dateSelector(){
-        return new FuelStopsDateSelectors();
-    }
-    
-    public class FuelStopsDateSelectors{
 
-        public Calendar date() {
-            return new Calendar(HOSDriverLogsEditEnum.DATE);
-        }
-    }
-
-    public class PageHOSEditDriverLogsButtons extends HOSBarButtons {
+    public class HOSEditDriverLogsButtons extends HOSBarButtons {
         
         public TextButton topSave() {
             return new TextButton(HOSDriverLogsEditEnum.SAVE_TOP);
@@ -104,7 +115,7 @@ public class PageHOSEditDriverLogs extends HOSBar {
         
     }
 
-    public class PageHOSEditDriverLogsDropDowns extends HOSBarDropDowns {
+    public class HOSEditDriverLogsDropDowns extends HOSBarDropDowns {
         
         public DropDown status() {
             return new DropDown(HOSDriverLogsEditEnum.STATUS);
@@ -121,48 +132,57 @@ public class PageHOSEditDriverLogs extends HOSBar {
         public DropDown dot() {
             return new DropDown(HOSDriverLogsEditEnum.DOT);
         }
+
+        public DropDown amPm(){
+            return duration().amPm();
+        }
         
+        public CalendarObject date() {
+            return new CalendarObject(HOSDriverLogsEditEnum.DATE);
+        }
     }
 
-    public class PageHOSEditDriverLogsPopUps extends MastheadPopUps {}
+    public class HOSEditDriverLogsPopUps extends MastheadPopUps {}
 
-    public class PageHOSEditDriverLogsPager {
+    public class HOSEditDriverLogsPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageHOSEditDriverLogsPager _page() {
-        return new PageHOSEditDriverLogsPager();
+    public HOSEditDriverLogsPager _page() {
+        return new HOSEditDriverLogsPager();
     }
 
-    public PageHOSEditDriverLogsLinks _link() {
-        return new PageHOSEditDriverLogsLinks();
+    public HOSEditDriverLogsLinks _link() {
+        return new HOSEditDriverLogsLinks();
     }
 
-    public PageHOSEditDriverLogsTexts _text() {
-        return new PageHOSEditDriverLogsTexts();
+    public HOSEditDriverLogsTexts _text() {
+        return new HOSEditDriverLogsTexts();
     }
 
-    public PageHOSEditDriverLogsButtons _button() {
-        return new PageHOSEditDriverLogsButtons();
+    public HOSEditDriverLogsButtons _button() {
+        return new HOSEditDriverLogsButtons();
     }
 
-    public PageHOSEditDriverLogsTextFields _textField() {
-        return new PageHOSEditDriverLogsTextFields();
+    public HOSEditDriverLogsTextFields _textField() {
+        return new HOSEditDriverLogsTextFields();
     }
 
-    public PageHOSEditDriverLogsDropDowns _dropDown() {
-        return new PageHOSEditDriverLogsDropDowns();
+    public HOSEditDriverLogsDropDowns _dropDown() {
+        return new HOSEditDriverLogsDropDowns();
     }
 
-    public PageHOSEditDriverLogsPopUps _popUp() {
-        return new PageHOSEditDriverLogsPopUps();
+    public HOSEditDriverLogsPopUps _popUp() {
+        return new HOSEditDriverLogsPopUps();
     }
     
-    public TimeOfDay duration(){
-        return new TimeOfDay(HOSDriverLogsEditEnum.TIME_CHANGER);
+
+    private TimeOfDay duration(){
+        return new TimeOfDay(HOSDriverLogsEditEnum.TIME_CHANGER); 
     }
+    
 
     @Override
     public SeleniumEnums setUrl() {

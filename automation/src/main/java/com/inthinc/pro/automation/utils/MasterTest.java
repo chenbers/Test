@@ -176,10 +176,19 @@ public abstract class MasterTest {
     
     public static Map<String, List<Method>> getMethods(Class<?> clazz, Class<? extends Annotation> filter) throws SecurityException, NoSuchMethodException{
         Map<String, List<Method>> methods = new HashMap<String, List<Method>>();
+        Set<String> deprecated = new HashSet<String>();
         for (Method method : clazz.getMethods()){ 
-            
-            
+
             String methodName = method.getName().toLowerCase();
+            
+            if (getAnnotation(method, Deprecated.class)!=null && !deprecated.contains(methodName)){
+                deprecated.add(methodName);
+                if (methods.containsKey(methodName)){
+                    methods.remove(methodName);
+                }
+                continue;
+            }
+            
             
             if (filter != null){
                 Annotation ann = getAnnotation(method, filter);

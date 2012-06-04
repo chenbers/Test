@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import org.jbehave.core.steps.StepCreator.PendingStep;
 
+import com.inthinc.pro.automation.elements.ElementInterface.Calendar;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
@@ -15,13 +16,12 @@ import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.MasterTest;
 
-public class Calendar extends MasterTest{
+public class CalendarObject extends DropDown implements Calendar{
     
-    private final SeleniumEnumWrapper myEnum;
     private final String id;
     
-    public Calendar(SeleniumEnums anEnum){
-        myEnum = new SeleniumEnumWrapper(anEnum);
+    public CalendarObject(SeleniumEnums anEnum){
+        super(anEnum);
         id = myEnum.getLocators().get(0);
     }
     
@@ -29,6 +29,33 @@ public class Calendar extends MasterTest{
         SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
         temp.setID(id + "PopupButton");
         new Button(temp).click();
+    }
+    
+    @Override
+    @Deprecated
+    public SelectableObject selectRow(Integer row){
+        throw new IllegalAccessError("This method is deprecated, please use select(AutomationCalendar)");
+    }
+    
+    @Override 
+    @Deprecated
+    public SelectableObject select(String fullMatch){
+        throw new IllegalAccessError("This method is deprecated, please use select(AutomationCalendar)");
+    }
+    @Override 
+    @Deprecated
+    public SelectableObject selectThe(String partialMatch, Integer row){
+        throw new IllegalAccessError("This method is deprecated, please use select(AutomationCalendar)");
+    }
+    @Override 
+    @Deprecated
+    public SelectableObject selectTheOptionContaining(String partialMatch, Integer row){
+        throw new IllegalAccessError("This method is deprecated, please use select(AutomationCalendar)");
+    }
+    @Override 
+    @Deprecated
+    public String getText(Integer row){
+        throw new IllegalAccessError("This method is deprecated, there is no method for Get Text on calendars");
     }
     
     

@@ -16,7 +16,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageHOSDriverLogs;
-import com.inthinc.pro.selenium.pageObjects.PageHOSEditDriverLogs;
+import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditDriverLogs;
 import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;

@@ -2,11 +2,8 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.utils.Id;
-import com.inthinc.pro.automation.utils.MasterTest;
-import com.inthinc.pro.automation.utils.Xpath;
 
-public class TimeOfDay extends MasterTest{
+public class TimeOfDay {
 	
 	private final static String hours = "hh";
 	private final static String minutes = "mm";
@@ -23,8 +20,11 @@ public class TimeOfDay extends MasterTest{
     
     private SeleniumEnumWrapper setID(){
         String[] newIDs = myEnum.getIDs();
+        
         int last = newIDs.length - 1;
-        newIDs[last] = Xpath.start().table(Id.id(newIDs[last])).tbody().tr().td(Id.id(newIDs[last]+"Edit")).input().toString();
+        String buttons = "//table[@id='" + newIDs[last] + "']";
+        String textField = "//td[@id='" + newIDs[last] + "']/input";
+        myEnum.setID(textField, buttons);
         return myEnum;
     }
 

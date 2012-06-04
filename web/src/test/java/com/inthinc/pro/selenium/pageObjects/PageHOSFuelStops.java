@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.Calendar;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
@@ -208,21 +207,6 @@ public class PageHOSFuelStops extends HOSBar {
         return new FuelStopsTextFields();
     }
     
-    public FuelStopsDateSelectors _dateSelector(){
-        return new FuelStopsDateSelectors();
-    }
-    
-    public class FuelStopsDateSelectors{
-
-        public Calendar dateStart() {
-            return new Calendar(HOSFuelStopsEnum.DATE_START_BOX);
-        }
-
-        public Calendar dateStop() {
-            return new Calendar(HOSFuelStopsEnum.DATE_STOP_BOX);
-        }
-    }
-
     @Override
     public SeleniumEnums setUrl() {
         return HOSFuelStopsEnum.DEFAULT_URL;

@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.Calendar;
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextDateFieldLabel;
@@ -119,21 +119,6 @@ public class PageHOSDriverLogs extends HOSBar {
     }
     
     
-    public DriverLogsSelectors _dateSelector(){
-        return new DriverLogsSelectors();
-    }
-    
-    public class DriverLogsSelectors{
-        public Calendar startDate() {
-            return new Calendar(HOSDriverLogsEnum.START_FIELD);
-        }
-        
-        public Calendar stopDate() {
-            return new Calendar(HOSDriverLogsEnum.STOP_FIELD);
-        }
-
-    }
-
     public class HOSDriverLogsButtons extends HOSBarButtons {
         
         public TextButton refresh() {
@@ -157,7 +142,15 @@ public class PageHOSDriverLogs extends HOSBar {
         }
     }
 
-    public class HOSDriverLogsDropDowns extends HOSBarDropDowns {}
+    public class HOSDriverLogsDropDowns extends HOSBarDropDowns {
+        public CalendarObject startDate() {
+            return new CalendarObject(HOSDriverLogsEnum.START_FIELD);
+        }
+        
+        public CalendarObject stopDate() {
+            return new CalendarObject(HOSDriverLogsEnum.STOP_FIELD);
+        }
+    }
 
     public class HOSDriverLogsPopUps extends MastheadPopUps {
         

@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.Calendar;
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldValue;
+import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TimeOfDay;
@@ -19,6 +20,14 @@ public class PageHOSAddEditFuelStops extends HOSBar {
     
     public class AddEditFuelStopsLinks extends HOSBarLinks{}
     public class AddEditFuelStopsTexts extends HOSBarTexts{
+        
+        public Text durationLabel(){
+            return duration().label();
+        }
+        
+        public Text timeZone(){
+            return duration().timeZone();
+        }
         
         public Text errorMaster(){
             return new Text(FuelStopsEditEnum.MASTER_ERROR);
@@ -117,18 +126,21 @@ public class PageHOSAddEditFuelStops extends HOSBar {
         public TextField trailerFuel(){
             return new TextField(FuelStopsEditEnum.TRAILER_FUEL_FIELD);
         }
-    }
-    
-    public FuelStopsAddEditDateSelectors _dateSelector(){
-        return new FuelStopsAddEditDateSelectors();
-    }
-    
-    public class FuelStopsAddEditDateSelectors{
-
-        public Calendar date(){
-            return new Calendar(FuelStopsEditEnum.DATE_BOX);
+        
+        public TextFieldWithSpinner hours(){
+            return duration().hours();
         }
+        
+        public TextFieldWithSpinner minutes(){
+            return duration().minutes();
+        }
+        
+        public TextFieldWithSpinner seconds(){
+            return duration().seconds();
+        }
+        
     }
+    
     public class AddEditFuelStopsButtons extends HOSBarButtons{
         
         public TextButton topSave(){
@@ -151,6 +163,14 @@ public class PageHOSAddEditFuelStops extends HOSBar {
         
         public DropDown driver(){
             return new DropDown(FuelStopsEditEnum.DRIVER_DROP_DOWN);
+        }
+        
+        public DropDown amPm(){
+            return duration().amPm();
+        }
+        
+        public CalendarObject date(){
+            return new CalendarObject(FuelStopsEditEnum.DATE_BOX);
         }
         
     }
@@ -181,8 +201,8 @@ public class PageHOSAddEditFuelStops extends HOSBar {
         return new AddEditFuelStopsPopUps();
     }
     
-    public TimeOfDay duration(){
-        return new TimeOfDay(FuelStopsEditEnum.TIME_CHANGER);
+    private TimeOfDay duration(){
+        return new TimeOfDay(FuelStopsEditEnum.TIME_CHANGER); 
     }
 
     @Override

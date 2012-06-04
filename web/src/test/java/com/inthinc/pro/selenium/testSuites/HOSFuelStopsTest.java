@@ -17,7 +17,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageHOSDriverLogs;
-import com.inthinc.pro.selenium.pageObjects.PageHOSEditDriverLogs;
+import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditDriverLogs;
 import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -27,7 +27,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageHOSDriverLogs.class, PageHOSFuelStops.class, 
-        PageHOSAddEditFuelStops.class, PageMyAccount.class, PageHOSEditDriverLogs.class})
+        PageHOSAddEditFuelStops.class, PageMyAccount.class, PageHOSAddEditDriverLogs.class})
 @StoryPath(path="HOSFuelStops.story")
 public class HOSFuelStopsTest extends WebStories {
     

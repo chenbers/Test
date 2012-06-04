@@ -22,30 +22,28 @@ public class TextFieldWithSpinner extends TextField {
     private SeleniumEnumWrapper setIds(Integer upOrDown) {
         String[] newIDs = spinnerEnum.getIDs();
         int last = newIDs.length - 1;
-        return new SeleniumEnumWrapper(spinnerEnum).setID("//table[@id='"
-                + newIDs[last] + "']/tbody/tr[" + upOrDown.toString()
-                + "]/td/input");
+        String ID;
+        if (!newIDs[last].startsWith("//")){
+            ID = "//table[@id='" + newIDs[last] + "']";
+        } else {
+            ID = newIDs[last];
+        }
+        return new SeleniumEnumWrapper(spinnerEnum).setID(ID + "/tbody/tr[" + upOrDown.toString() + "]/td/input");
     }
 
-    public Button up() {
-        return new Button(setIds(1)) {
-            @Override
-            public Button click() {
-                getSelenium().mouseDown(myEnum);
-                getSelenium().mouseUp(myEnum);
-                return this;
-            }
-        };
+    public SpinnerButton up() {
+        return new SpinnerButton(setIds(1));
+    }
+    
+    public ClickableObject clickTheUp(){
+        return up().click();
     }
 
-    public Button down() {
-        return new Button(setIds(2)) {
-            @Override
-            public Button click() {
-                getSelenium().mouseDown(myEnum);
-                getSelenium().mouseUp(myEnum);
-                return this;
-            }
-        };
+    public SpinnerButton down() {
+        return new SpinnerButton(setIds(2));
+    }
+    
+    public ClickableObject clickTheDown(){
+        return down().click();
     }
 }

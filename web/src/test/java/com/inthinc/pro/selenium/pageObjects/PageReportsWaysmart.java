@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.Calendar;
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
@@ -55,19 +55,6 @@ public class PageReportsWaysmart extends ReportsBar {
     
 
     
-    public WaysmartReportDateSelectors _dateSelector(){
-        return new WaysmartReportDateSelectors();
-    }
-    
-    public class WaysmartReportDateSelectors{
-        public Calendar startDate(){
-            return new Calendar(WaysmartReportEnum.START_DATE);
-        }
-    
-        public Calendar stopDate(){
-            return new Calendar(WaysmartReportEnum.STOP_DATE);
-        }
-    }
 
     
     public class WaysmartReportDropDowns extends NavigationBarDropDowns{
@@ -90,6 +77,14 @@ public class PageReportsWaysmart extends ReportsBar {
         
         public DropDown reportOn(){
             return new DropDown(WaysmartReportEnum.REPORT_ON_DROP_DOWN);
+        }
+        
+        public CalendarObject startDate(){
+            return new CalendarObject(WaysmartReportEnum.START_DATE);
+        }
+    
+        public CalendarObject stopDate(){
+            return new CalendarObject(WaysmartReportEnum.STOP_DATE);
         }
     }
 

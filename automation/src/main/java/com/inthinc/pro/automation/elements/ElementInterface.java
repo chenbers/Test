@@ -7,6 +7,7 @@ import com.inthinc.pro.automation.annotations.AutomationAnnotations.Validate;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 
 public interface ElementInterface {
@@ -58,6 +59,27 @@ public interface ElementInterface {
         public Clickable click();
         public Clickable clickGroup(String group);
         public Clickable clickThe(String group, Integer match);
+    }
+    
+    public interface Calendar extends Selectable{
+        @Override 
+        @Deprecated
+        public Selectable selectRow(Integer row);
+        @Override 
+        @Deprecated
+        public Selectable select(String fullMatch);
+        @Override 
+        @Deprecated
+        public Selectable selectThe(String partialMatch, Integer row);
+        @Override 
+        @Deprecated
+        public Selectable selectTheOptionContaining(String partialMatch, Integer row);
+        @Override 
+        @Deprecated
+        public String getText(Integer row);
+        
+        public Selectable select(AutomationCalendar date);
+        
     }
     
     public interface Selectable extends ElementInterface{

@@ -19,7 +19,7 @@ public enum WebDateFormat implements TextEnum {
     
     FILE_NAME("yyyy-MM-dd"), 
     
-    MONTH_YEAR("MM, yyyy"), 
+    MONTH_YEAR("MMM, yyyy"), 
     WEB_SERVICE("yyyyMMdd"),
     
     ;
