@@ -456,7 +456,7 @@ public abstract class MasterTest {
             "When I type my user name into the Username field", 
             "When I type my password into the Password field", 
             "When I click the Login button"})
-    public void givenIHaveAmIn(){
+    public void givenIAmLoggedIn(){
     }
     
     public void killSelenium() {

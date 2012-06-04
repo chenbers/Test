@@ -1,10 +1,8 @@
 package com.inthinc.pro.automation.elements;
 
 
-import java.lang.reflect.Method;
 import java.util.List;
 
-import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.openqa.selenium.WebElement;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
@@ -12,7 +10,6 @@ import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
-import com.inthinc.pro.automation.utils.AutomationNumberManager;
 import com.inthinc.pro.automation.utils.RandomValues;
 
 public class TDSelector extends SelectableObject implements Selectable {

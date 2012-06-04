@@ -2,7 +2,6 @@ package com.inthinc.pro.automation.rest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
@@ -18,8 +17,6 @@ import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.BaseEntity;
 import com.inthinc.pro.automation.models.Event;
-import com.inthinc.pro.automation.models.Roles;
-import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.HTTPCommands;
