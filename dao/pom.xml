@@ -18,6 +18,20 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>com.inthinc.pro.noteparser</groupId>
+			<artifactId>noteparser</artifactId>
+			<version>2.0.10-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>me.prettyprint</groupId>
+			<artifactId>hector-core</artifactId>
+			<version>1.0-2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
