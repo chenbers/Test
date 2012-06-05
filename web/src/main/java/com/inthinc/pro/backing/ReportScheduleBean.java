@@ -10,8 +10,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -19,6 +21,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -42,7 +45,6 @@ import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportCategory;
@@ -59,11 +61,17 @@ import com.inthinc.pro.util.TimeFrameUtil;
  * 
  */
 public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportScheduleView> implements TablePrefOptions<ReportScheduleBean.ReportScheduleView>, Serializable {
+    
+    private static Logger logger = Logger.getLogger(ReportScheduleBean.class);
+    
     /**
      * 
      */
     private static final long serialVersionUID = -8422069679000248942L;
+    
+    
     private static final List<String> AVAILABLE_COLUMNS;
+    private static final Set<ReportGroup> REPORT_FILTER_FOR_MANAGER_NOTIFICATION;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
     private static final int[] DEFAULT_ADMIN_COLUMN_INDICES = new int[] { 5 };
 
@@ -74,8 +82,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     protected final static String BLANK_SELECTION = " ";
     public static final Integer ALL_DRIVERS_ID = Integer.valueOf(0);
     private TimeFrameSelect timeFrameSelect;
-
-
+    
+    
+    
     /*
      * Spring managed beans
      */
@@ -83,6 +92,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
+    
+    
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
@@ -92,6 +103,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("report");
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("owner");     // only admins see this
+        
+        REPORT_FILTER_FOR_MANAGER_NOTIFICATION = new HashSet<ReportGroup>();
+        REPORT_FILTER_FOR_MANAGER_NOTIFICATION.add(ReportGroup.DRIVER_COACHING);
     }
     List<User> fullUserList;
     
@@ -329,6 +343,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         final ReportSchedule reportSchedule = new ReportSchedule();
         reportSchedule.setAccountID(getAccountID());
         reportSchedule.setUserID(getUserID());
+        reportSchedule.setDeliverToManagers(Boolean.FALSE);
         List<Boolean> booleanList = new ArrayList<Boolean>();
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
@@ -378,7 +393,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     @Override
     protected void doSave(List<ReportScheduleView> saveItems, boolean create) {
+        logger.debug(String.format("doSave() - ENTER"));
         for (final ReportScheduleView reportSchedule : saveItems) {
+            if(reportSchedule.getDeliverToManagers() != null)
+                logger.debug(String.format("reportSchedule.notifyGroupManagers = %s",reportSchedule.getDeliverToManagers().toString()));
             if (reportSchedule.getOccurrence().equals(Occurrence.DAILY) || reportSchedule.getOccurrence().equals(Occurrence.WEEKLY)) {
 //                Calendar now = Calendar.getInstance();
                 DateTime now = new DateTime(DateTimeZone.forID(getPerson().getTimeZone().getID()));
@@ -461,8 +479,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             return buffer.toString().split("~");
             
     }
-    
-
 
     @Override
     public ReportScheduleView getItem() {
@@ -713,6 +729,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
         return false;
     }
+    
     public Boolean getShowGroupInput() {
         if (getItem() == null || getItem().getReport() == null)
             return false;
@@ -725,6 +742,23 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 return true;
         }
         return false;
+    }
+    
+    public Boolean getEnableDeliverToGroupManager(){
+        Boolean result = Boolean.FALSE;
+        if (getItem() == null || getItem().getReport() == null)
+            result = Boolean.FALSE;
+        
+        if(REPORT_FILTER_FOR_MANAGER_NOTIFICATION.contains(getItem().getReport())){
+            result = Boolean.TRUE;
+        }else{
+            getItem().setDeliverToManagers(Boolean.FALSE);
+        }
+        if(getItem() != null && getItem().getReport() != null){
+            logger.debug(String.format("Report Groups Filter %s", REPORT_FILTER_FOR_MANAGER_NOTIFICATION.toString()));
+            logger.debug(String.format("notify group managers for report [%s] : %s", getItem().getReport().toString(), result.toString()));
+        }
+        return result;
     }
 
     
@@ -745,8 +779,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
         }
         return teamDrivers;
-
-    
     }
 
     
@@ -789,6 +821,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     
     public static class ReportScheduleView extends ReportSchedule implements EditItem {
         private static final long serialVersionUID = 8954277815270194338L;
+        
         @Column(updateable = false)
         private boolean selected;
         @Column(updateable = false)
@@ -950,6 +983,5 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         public Integer getDayOfMonth() {
             return dayOfMonth;
         }
-
     }
 }

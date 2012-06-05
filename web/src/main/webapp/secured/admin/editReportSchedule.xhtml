@@ -401,12 +401,25 @@
 							<h:outputText value="#{messages.reportSchedule_email}" />
 						</div>
 						
-						<table width="370" border="0" cellspacing="2" cellpadding="4"
-							align="center">
+						<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+							<tr>
+								<td>
+									<div>
+										<h:selectOneRadio value="#{reportScheduleBean.item.deliverToManagers}" layout="pageDirection">
+											<f:selectItem itemDisabled="#{!reportScheduleBean.enableDeliverToGroupManager}" itemValue="TRUE" itemLabel="#{messages.reportSchedule_notifyGroupManager}"></f:selectItem>
+											<f:selectItem itemValue="FALSE" itemLabel="#{messages.reportSchedule_notifyByEmail}"></f:selectItem>
+										</h:selectOneRadio>
+									</div>
+								</td>
+							</tr>						
 							<tr>
 								<td>
 									<div class="instructions"><h:outputText value="#{messages.editReportSchedule_reportsByEmailInstructions}" /></div>
 									<h:inputTextarea cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
+								</td>
+							</tr>
+							<tr>
+								<td>
 								</td>
 							</tr>
 						</table>
