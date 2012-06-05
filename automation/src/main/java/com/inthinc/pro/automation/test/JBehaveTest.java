@@ -49,7 +49,8 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
 
     @Override
     public void run(RunNotifier notifier) {
-        notifier.fireTestStarted(getDescription());
+        Description desc = getDescription();
+        notifier.fireTestStarted(desc);
         Embedder embedder = annotationBuilder.buildEmbedder();
         if (embedder.configuration() instanceof AutoConfiguration){
             ((AutoConfiguration) embedder.configuration()).useJunitNotifier(notifier).setJunitStoryDescription(storyDescription);
@@ -58,6 +59,8 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
             embedder.runStoriesAsPaths(paths);
         } catch (Throwable e){
             Log.debug(e);
+        } finally {
+            notifier.fireTestFinished(desc);
         }
     }
 
@@ -92,7 +95,6 @@ public abstract class JBehaveTest extends AnnotatedPathRunner {
         storyDescription = Description.createSuiteDescription(testClass());
         for (String path : paths)
             storyDescription.addChild(createDescriptionForPath(path));
-        ((AutoConfiguration)annotationBuilder().buildEmbedder().configuration()).setJunitStoryDescription(storyDescription);
         return storyDescription;
     }
 

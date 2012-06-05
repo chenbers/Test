@@ -235,6 +235,7 @@ public abstract class MasterTest {
         return variables.get();
     }
     
+    @Given("I hit the Period key")
     @When("I hit the Period key")
     public static void keyPeriod() {
         KeyCommands.typeKey(KeyEvent.VK_PERIOD);
@@ -249,7 +250,7 @@ public abstract class MasterTest {
         }
     }
     
-    
+    @Given("I hit the Spacebar")
     @When("I hit the Spacebar")
     public static void spaceBar() {
         KeyCommands.typeKey(KeyEvent.VK_SPACE);
@@ -590,16 +591,19 @@ public abstract class MasterTest {
         return this;
     }
 
+    @Given("I bookmark the page")
     @When("I bookmark the page")
     public void savePageLink() {
         savedPage.set(getCurrentLocation());
     }
 
+    @Given("I hit the Tab Key")
     @When("I hit the Tab Key")
     public void tabKey() {
         getSelenium().tabKey();
     }
 
+    @Given("I type to the active field")
     @When("I type to the active field")
     @Aliases(values={"I type to the element with focus"})
     public void typeToElementWithFocus(String type) {

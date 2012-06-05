@@ -35,8 +35,8 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     public AutoStoryReporter(StoryReporter crossReferencing, StoryReporter delegate, boolean multiThreading, Test test, RunNotifier notifier, Description storyDescription) {
         super(crossReferencing, delegate, multiThreading);
         this.test = test;
-        this.runNotifier = notifier;
-        this.storyDescription = storyDescription;
+//        this.runNotifier = notifier;
+//        this.storyDescription = storyDescription;
     }
     
     @Override
@@ -53,24 +53,24 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
 
     @Override
     public void beforeStory(Story story, boolean givenStory) {
-        if (runNotifier != null && storyDescription != null){
-            runNotifier.fireTestStarted(storyDescription);
-            for (Description desc : storyDescription.getChildren()){
-                String name = desc.getDisplayName();
-                if (name.equals(story.getName().replace(".story", ""))){
-                    this.story = desc;
-                    scenarios = desc.getChildren().iterator();
-                    runNotifier.fireTestStarted(this.story);
-                    break; 
-                }
-            }
-        } else {
-            this.story = null;
-            this.scenarios = null;
-            this.scenario = null;
-            this.steps = null;
-            this.step = null;
-        }
+//        if (runNotifier != null && storyDescription != null){
+//            runNotifier.fireTestStarted(storyDescription);
+//            for (Description desc : storyDescription.getChildren()){
+//                String name = desc.getDisplayName();
+//                if (name.equals(story.getName().replace(".story", ""))){
+//                    this.story = desc;
+//                    scenarios = desc.getChildren().iterator();
+//                    runNotifier.fireTestStarted(this.story);
+//                    break; 
+//                }
+//            }
+//        } else {
+//            this.story = null;
+//            this.scenarios = null;
+//            this.scenario = null;
+//            this.steps = null;
+//            this.step = null;
+//        }
         
         super.beforeStory(story, givenStory);
     }

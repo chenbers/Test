@@ -23,7 +23,7 @@ import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
 
-@Ignore
+//@Ignore
 public class ParseStepForElementMethodTest {
     
     private MasterTest test;
