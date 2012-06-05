@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
@@ -11,7 +10,6 @@ import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class PageMyAccount extends NavigationBar {
@@ -439,7 +437,7 @@ public class PageMyAccount extends NavigationBar {
 
     @Override
     public SeleniumEnums setUrl() {
-        return LoginEnum.LOGIN_URL; 
+        return MyAccountEnum.MY_ACCOUNT_URL; 
     }
 
     @Override
