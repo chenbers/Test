@@ -51,6 +51,10 @@ public class PageHOSFuelStops extends HOSBar {
         public TextLink sortDateTime() {
             return new TextLink(HOSFuelStopsEnum.SORT_DATE_TIME);
         }
+        
+        public TextLink sortDriver() {
+            return new TextLink(HOSFuelStopsEnum.SORT_DRIVER);
+        }
 
         public TextLink sortEdited() {
             return new TextLink(HOSFuelStopsEnum.SORT_EDITED);
@@ -132,8 +136,12 @@ public class PageHOSFuelStops extends HOSBar {
             return new TextFieldLabel(HOSFuelStopsEnum.VEHICLE_TEXT_FIELD);
         }
 
-        public TextTable sortDateTime() {
+        public TextTable dateTime() {
             return new TextTable(HOSFuelStopsEnum.VALUE_DATE_TIME);
+        }
+        
+        public TextTable valueDriver() {
+            return new TextTable(HOSFuelStopsEnum.VALUE_DRIVER);
         }
 
         public Text title() {
