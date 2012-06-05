@@ -424,9 +424,9 @@ public abstract class MasterTest {
             
             for (int i=0;i<parameters.length;i++){
                 Class<?> next = parameters[i];
-                if (next.isAssignableFrom(Boolean.class)){
+                if (Boolean.class.isAssignableFrom(next)){
                     passParameters[i] = checkBoolean(step.stepAsString());
-                } else if (next.isAssignableFrom(Integer.class)) {
+                } else if (Integer.class.isAssignableFrom(next)) {
                     Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
                     passParameters[i] = param == null || param == 0 ? 1 : param;
                 } else {
