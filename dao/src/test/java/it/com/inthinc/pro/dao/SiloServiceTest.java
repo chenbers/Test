@@ -173,8 +173,7 @@ public class SiloServiceTest {
     	ForwardCommandDefHessianDAO forwardCommandDefDAO = new ForwardCommandDefHessianDAO();
     	forwardCommandDefDAO.setSiloService(siloService);
 
-//  TODO: CJ temporarily commented out - need to fix!!!    	
-//    	forwardCommandDefDAO.deleteByID(666);
+    	forwardCommandDefDAO.deleteByID(666);
     }
     
 
@@ -217,7 +216,6 @@ public class SiloServiceTest {
     }
     
     @Test
-    @Ignore
     public void forwardCommandDefs() {
     	ForwardCommandDefHessianDAO forwardCommandDefDAO = new ForwardCommandDefHessianDAO();
     	forwardCommandDefDAO.setSiloService(siloService);
@@ -645,8 +643,7 @@ public class SiloServiceTest {
         zoneAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID(),person.getUser().getUserID());
         redFlagAlertProfiles(acctID, fleetGroup.getGroupID(), team1Group.getGroupID(),person.getUser().getUserID());
         
-// TODO: CJ Commented out for now so build would run, but definitely something is wrong!!!
-//        superuser(team1Group.getGroupID());
+        superuser(team1Group.getGroupID());
     }
 
 
