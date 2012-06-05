@@ -189,7 +189,7 @@ public enum ReportGroup
             new GroupType[]{GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL),
-     DRIVER_COACHING_BY_GROUP("Driver Coaching", 41, EntityType.ENTITY_GROUP_OR_DRIVER,
+     DRIVER_COACHING("Driver Coaching", 41, EntityType.ENTITY_GROUP_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.WAYSMART),

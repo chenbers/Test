@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportGroup;
@@ -17,6 +18,8 @@ import com.inthinc.pro.util.MessageUtil;
 
 @KeepAlive
 public class PerformanceReportsBean extends ReportsBean {
+    
+    private static Logger logger = Logger.getLogger(PerformanceReportsBean.class);
 
     private static final long serialVersionUID = 224700504785842562L;
 
@@ -66,10 +69,12 @@ public class PerformanceReportsBean extends ReportsBean {
      * @return Array of report types as Faces SelectItems
      */
 	private SelectItem[] getItemsByCategory(ReportCategory category, ReportGroup... excludeItem) {
+	    //logger.trace(String.format("Loading report into SelectItem[] for category %s", category.name()));
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
+            //logger.trace(String.format("Evaluatin report %s", rt.name()));
             if (!rt.isCategory(category)) continue;
-            
+            //logger.trace(String.format("Report %s was in categroy", rt.name()));
             boolean exclude = false;
             for(int i=0;i<excludeItem.length;i++)
                 if(excludeItem[i] == rt) {

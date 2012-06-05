@@ -97,7 +97,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore((Integer)$P{DRIVER_SCORES_MAP}.get("THREE_MONTHS"),$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="388" y="0" width="165" height="20"/>
+				<reportElement mode="Transparent" x="387" y="1" width="165" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.date} + " - " + $P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
 			</textField>
@@ -106,14 +106,14 @@
 	<pageHeader>
 		<band height="29">
 			<textField>
-				<reportElement mode="Transparent" x="0" y="7" width="66" height="20"/>
+				<reportElement mode="Transparent" x="0" y="7" width="67" height="20"/>
 				<textElement verticalAlignment="Bottom">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{driver.name} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="176" y="7" width="61" height="20"/>
+				<reportElement mode="Transparent" x="176" y="7" width="68" height="20"/>
 				<textElement verticalAlignment="Bottom">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -128,10 +128,10 @@
 				<reportElement mode="Opaque" x="67" y="27" width="101" height="1"/>
 			</line>
 			<line>
-				<reportElement mode="Opaque" x="237" y="27" width="188" height="1"/>
+				<reportElement mode="Opaque" x="244" y="27" width="188" height="1"/>
 			</line>
 			<textField>
-				<reportElement mode="Transparent" x="239" y="7" width="258" height="20"/>
+				<reportElement mode="Transparent" x="243" y="7" width="258" height="20"/>
 				<textElement verticalAlignment="Bottom"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_START_DATE} + " - " + $P{REPORT_END_DATE}]]></textFieldExpression>
 			</textField>
@@ -175,7 +175,7 @@
 			<printWhenExpression><![CDATA[($F{childViolations}.size() > 0)]]></printWhenExpression>
 			<componentElement>
 				<reportElement mode="Opaque" x="25" y="0" width="528" height="21"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="subdataset">
 						<datasetParameter name="REPORT_RESOURCE_BUNDLE">
 							<datasetParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></datasetParameterExpression>

@@ -79,7 +79,6 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
-import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria.Builder;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceKeyMetricsReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
@@ -1186,14 +1185,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
     
     @Override
-    public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval,Locale locale) {
-//        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval)
-        return null;
+    public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval,Locale locale,DateTimeZone timeZone) {
+        /* To get this done quick, we're going to use services which are available which will result in short development time, but possibly a somewhat slower processing time */
+        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO,driverID, interval);
+        builder.setDateTimeZone(timeZone);
+        builder.setLocale(locale);
+        return builder.buildSingle();
     }
     
     @Override
-    public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval,Locale locale) {
+    public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval,Locale locale,DateTimeZone timeZone) {
         DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval);
+        builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         return builder.build();
     }

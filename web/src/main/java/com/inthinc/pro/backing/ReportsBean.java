@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -13,7 +12,6 @@ import java.util.ResourceBundle;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
-import org.joda.time.DateTimeZone;
 import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.ui.ReportParams;
@@ -23,7 +21,6 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ReportParamType;
-import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
@@ -240,7 +237,17 @@ public abstract class ReportsBean extends BaseBean {
             case TEAM_STOPS_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getTeamStopsReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), 
                         getDateTimeZone(), getLocale()));
-                break;     
+                break;    
+            case DRIVER_COACHING:
+                if (params.getParamType().equals(ReportParamType.DRIVER)){
+                    reportCriteriaList.add(getReportCriteriaService().getDriverCoachingReportCriteriaByDriver(getAccountGroupHierarchy(),params.getDriverID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
+                   
+                }
+                if (params.getParamType().equals(ReportParamType.GROUPS)){
+                    reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
+                   
+                }
+                break;
             default:
                 break;
 
