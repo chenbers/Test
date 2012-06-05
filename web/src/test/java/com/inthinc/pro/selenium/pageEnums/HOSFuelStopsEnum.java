@@ -22,6 +22,7 @@ public enum HOSFuelStopsEnum implements SeleniumEnums {
     
     /* Links */
     SORT_DATE_TIME(null, "fuelStops-table-form:fuelStopsTable:datetimeheader:sortDiv"),
+    SORT_DRIVER(null, "fuelStops-table-form:fuelStopsTable:datetimeheader:sortDiv"),
     SORT_VEHICLE(null, "fuelStops-table-form:fuelStopsTable:vehicleheader:sortDiv"),
     SORT_VEHICLE_FUEL(null, "fuelStops-table-form:fuelStopsTable:truckGallonsheader:sortDiv"),
     SORT_TRAILER_FUEL(null, "fuelStops-table-form:fuelStopsTable:trailerGallonsheader:sortDiv"),
@@ -35,6 +36,7 @@ public enum HOSFuelStopsEnum implements SeleniumEnums {
     
     /* Text */
     VALUE_DATE_TIME(null, "fuelStops-table-form:fuelStopsTable:###:datetime"),
+    VALUE_DRIVER(null, "fuelStops-table-form:fuelStopsTable:###:driver"),
     VALUE_VEHICLE(null, "fuelStops-table-form:fuelStopsTable:###:vehicle"),
     VALUE_VEHICLE_FUEL(null, "fuelStops-table-form:fuelStopsTable:###:truckGallons"),
     VALUE_TRAILER_FUEL(null, "fuelStops-table-form:fuelStopsTable:###:trailerGallons"),
