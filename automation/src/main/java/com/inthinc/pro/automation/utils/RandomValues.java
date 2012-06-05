@@ -13,10 +13,14 @@ import com.inthinc.pro.automation.interfaces.ListEnum;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.logging.Log;
 
-public class RandomValues {
+public class RandomValues extends Random{
 
 	
-	private static HashMap<String, HashMap<String, String>> rfid = new HashMap<String, HashMap<String, String>>();
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -2972722681438757618L;
+    private static HashMap<String, HashMap<String, String>> rfid = new HashMap<String, HashMap<String, String>>();
 	private static HashMap<String, HashMap<ProductType, Integer>> states = new HashMap<String, HashMap<ProductType, Integer>>();
 
 	public static final char[] special = { ' ', '!', '"', '#', '$', '%', '&',
@@ -102,7 +106,9 @@ public class RandomValues {
 	}
 	
 	public Integer getInt(Integer max) {
-		return random.nextInt(max+1);
+	    if (max != Integer.MAX_VALUE)
+	        max ++;
+		return random.nextInt(max);
 	}
 
 	public String getIntString(Integer length) {

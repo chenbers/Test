@@ -21,6 +21,7 @@ import com.inthinc.pro.automation.jbehave.AutoSteps;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.utils.RandomValues;
 
 @Ignore
 public class ParseStepForElementMethodTest {
@@ -138,28 +139,37 @@ public class ParseStepForElementMethodTest {
     
     @Test
     public void testParameterParser(){
-        int first=1, second=43;
-        String firstString = "Testing if this works", secondString = "Why should this work";
-        String falseStep = "Then I am not getting " + first + " field as my \"" + firstString + "\"";
+        RandomValues rand = new RandomValues();
+        int randInt;
+        String string;
         
+        for (int i=0; i<100; i++){
+            randInt = rand.getInt(Integer.MAX_VALUE);
+            string = rand.getCharString(15);
+            String falseStep = "Then I am not getting " + randInt + " field as my \"" + string + "\"";
         
-        for (Method method : parseMethods){
-            try {
-                Object[] params = test.getParameters(falseStep, method);
-                checkParams(params, false, first, firstString);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+            for (Method method : parseMethods){
+                try {
+                    Object[] params = test.getParameters(falseStep, method);
+                    checkParams(params, false, randInt, string);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
             }
         }
         
-        String trueStep = "Then I will get " + second + " field as my \"" + secondString + "\"";
-        
-        for (Method method : parseMethods){
-            try {
-                Object[] params = test.getParameters(trueStep, method);
-                checkParams(params, true, second, secondString);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+        for (int i=0; i<100;i++){
+            randInt = rand.getInt(Integer.MAX_VALUE);
+            string = rand.getCharString(15);
+            String trueStep = "Then I will get " + randInt + " field as my \"" + string + "\"";
+            
+            for (Method method : parseMethods){
+                try {
+                    Object[] params = test.getParameters(trueStep, method);
+                    checkParams(params, true, randInt, string);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
