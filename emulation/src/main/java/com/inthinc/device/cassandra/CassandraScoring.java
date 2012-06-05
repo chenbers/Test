@@ -147,49 +147,49 @@ public class CassandraScoring
     }
 	
 
-	public Map<String, Object> getDriverScoresForDays(long driverId, String startDay, String endDay)
+	public Map<String, Object> getDriverScoresForDays(int driverId, String startDay, String endDay)
 	{
 		return getScoresForPeriod(AGGDAY_CF, DRIVERAGGINDEX_CF, driverId, createComposite(startDay, Long.MIN_VALUE), createComposite(endDay, Long.MAX_VALUE));
 	}
 	
-	public Map<String, Object> getVehicleScoresForDays(long vehicleId, String startDay, String endDay)
+	public Map<String, Object> getVehicleScoresForDays(int vehicleId, String startDay, String endDay)
 	{
 		return getScoresForPeriod(AGGDAY_CF, VEHICLEAGGINDEX_CF, vehicleId, createComposite(startDay, Long.MIN_VALUE), createComposite(endDay, Long.MAX_VALUE));
 	}
 	
-	public Map<String, Object> getDriverScoresForMonths(long driverId, String startMonth, String endMonth)
+	public Map<String, Object> getDriverScoresForMonths(int driverId, String startMonth, String endMonth)
 	{
 		return getScoresForPeriod(AGGMONTH_CF, DRIVERAGGMONTHINDEX_CF, driverId, createComposite(startMonth, Long.MIN_VALUE), createComposite(endMonth, Long.MAX_VALUE));
 	}
 	
-	public Map<String, Object> getVehicleScoresForMonths(long vehicleId, String startMonth, String endMonth)
+	public Map<String, Object> getVehicleScoresForMonths(int vehicleId, String startMonth, String endMonth)
 	{
 		return getScoresForPeriod(AGGMONTH_CF, VEHICLEAGGMONTHINDEX_CF, vehicleId, createComposite(startMonth, Long.MIN_VALUE), createComposite(endMonth, Long.MAX_VALUE));
 	}
 
-	public Map<String, Object> getDriverGroupScoresForDays(long driverGroupId, String startDay, String endDay)
+	public Map<String, Object> getDriverGroupScoresForDays(int driverGroupId, String startDay, String endDay)
 	{
 		return getScoresForPeriod(AGGDRIVERGROUP_CF, AGGDRIVERGROUPINDEX_CF, driverGroupId, createComposite(startDay), createComposite(endDay));
 	}
 	
-	public Map<String, Object> getVehicleGroupScoresForDays(long vehicleGroupId, String startDay, String endDay)
+	public Map<String, Object> getVehicleGroupScoresForDays(int vehicleGroupId, String startDay, String endDay)
 	{
 		return getScoresForPeriod(AGGVEHICLEGROUP_CF, AGGVEHICLEGROUPINDEX_CF, vehicleGroupId, createComposite(startDay), createComposite(endDay));
 	}
 	
-	public Map<String, Object> getDriverGroupScoresForMonths(long driverGroupId, String startMonth, String endMonth)
+	public Map<String, Object> getDriverGroupScoresForMonths(int driverGroupId, String startMonth, String endMonth)
 	{
 		return getScoresForPeriod(AGGMONTHDRIVERGROUP_CF, AGGMONTHDRIVERGROUPINDEX_CF, driverGroupId, createComposite(startMonth), createComposite(endMonth));
 	}
 	
-	public Map<String, Object> getVehicleGroupScoresForMonths(long vehicleGroupId, String startMonth, String endMonth)
+	public Map<String, Object> getVehicleGroupScoresForMonths(int vehicleGroupId, String startMonth, String endMonth)
 	{
 		return getScoresForPeriod(AGGMONTHVEHICLEGROUP_CF, AGGMONTHVEHICLEGROUPINDEX_CF, vehicleGroupId, createComposite(startMonth), createComposite(endMonth));
 	}
 	
-	private Map<String, Object> getScoresForPeriod(String aggColumnFamily, String indexColumnFamily, long id, Composite startRange, Composite endRange)
+	private Map<String, Object> getScoresForPeriod(String aggColumnFamily, String indexColumnFamily, int id, Composite startRange, Composite endRange)
 	{
-        List<Long> indexRowKeys = new ArrayList<Long>();
+        List<Integer> indexRowKeys = new ArrayList<Integer>();
 		indexRowKeys.add(id);
 
         List<Composite> rowKeys = fetchRowKeysFromIndex(indexColumnFamily, indexRowKeys, startRange, endRange);
@@ -199,9 +199,9 @@ public class CassandraScoring
 	}
 
 	
-	private List<Composite> fetchRowKeysFromIndex(String INDEX_CF, List<Long> indexRowKeys, Composite startRange, Composite endRange)
+	private List<Composite> fetchRowKeysFromIndex(String INDEX_CF, List<Integer> indexRowKeys, Composite startRange, Composite endRange)
     {
-        MultigetSliceQuery<Long, Composite, Composite> sliceQuery = HFactory.createMultigetSliceQuery(CassandraDB.getKeyspace(), CassandraDB.ls, CassandraDB.cs, CassandraDB.cs);
+        MultigetSliceQuery<Integer, Composite, Composite> sliceQuery = HFactory.createMultigetSliceQuery(CassandraDB.getKeyspace(), CassandraDB.is, CassandraDB.cs, CassandraDB.cs);
 
         sliceQuery.setRange(startRange, endRange, false, 1000);
         
@@ -209,11 +209,11 @@ public class CassandraScoring
         sliceQuery.setKeys(indexRowKeys);
         //rangeSlicesQuery.setReturnKeysOnly();
         
-        QueryResult<Rows<Long, Composite, Composite>> result = sliceQuery.execute();
-        Rows<Long, Composite, Composite> rows = result.get();            
+        QueryResult<Rows<Integer, Composite, Composite>> result = sliceQuery.execute();
+        Rows<Integer, Composite, Composite> rows = result.get();            
         
         List<Composite> keyList = new ArrayList<Composite>();
-        for(Row<Long, Composite, Composite> row : rows)
+        for(Row<Integer, Composite, Composite> row : rows)
         {
         	ColumnSlice<Composite, Composite> columnSlice = row.getColumnSlice();
         	List<HColumn<Composite, Composite>> columnList = columnSlice.getColumns();
