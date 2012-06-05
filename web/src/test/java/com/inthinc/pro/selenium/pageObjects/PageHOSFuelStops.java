@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
@@ -44,7 +45,17 @@ public class PageHOSFuelStops extends HOSBar {
         }
     }
 
-    public class FuelStopsDropDowns extends HOSBarDropDowns {}
+    public class FuelStopsDropDowns extends HOSBarDropDowns {
+        
+        public CalendarObject startDate(){
+            return new CalendarObject(HOSFuelStopsEnum.START_DATE_BOX);
+        }
+        
+        public CalendarObject endDate(){
+            return new CalendarObject(HOSFuelStopsEnum.END_DATE_BOX);
+        }
+        
+    }
 
     public class FuelStopsLinks extends HOSBarLinks {
 
@@ -129,7 +140,7 @@ public class PageHOSFuelStops extends HOSBar {
         }
 
         public Text labelDateRange() {
-            return new Text(HOSFuelStopsEnum.DATE_RANGE_LABEL);
+            return new Text(HOSFuelStopsEnum.START_DATE_BOX);
         }
 
         public Text labelVehicleField() {
