@@ -14,15 +14,15 @@ import java.util.Map;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCandidate;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 
 import com.inthinc.pro.automation.jbehave.AutoSteps;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
 
-//@Ignore
+@Ignore
 public class ParseStepForElementMethodTest {
     
     private MasterTest test;
@@ -146,15 +146,7 @@ public class ParseStepForElementMethodTest {
         for (Method method : parseMethods){
             try {
                 Object[] params = test.getParameters(falseStep, method);
-                for (Object param : params){
-                    if (param instanceof Integer){
-                        assertEquals("Parameter Parser didn't parse the Integer correctly", first, param);
-                    }  else if (param instanceof Boolean){
-                        assertEquals("Parameter Parser didn't parse the Boolean correctly", false, param);
-                    }   else {
-                        assertEquals("Parameter Parser didn't parse the String correctly", firstString, param);
-                    }
-                }
+                checkParams(params, false, first, firstString);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }
@@ -165,17 +157,21 @@ public class ParseStepForElementMethodTest {
         for (Method method : parseMethods){
             try {
                 Object[] params = test.getParameters(trueStep, method);
-                for (Object param : params){
-                    if (param instanceof Integer){
-                        assertEquals("Parameter Parser didn't parse the Integer correctly", second, param);
-                    }  else if (param instanceof Boolean){
-                        assertEquals("Parameter Parser didn't parse the Boolean correctly", true, param);
-                    } else {
-                        assertEquals("Parameter Parser didn't parse the String correctly", secondString, param);
-                    }
-                }
+                checkParams(params, true, second, secondString);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+    
+    private void checkParams(Object[] params, Boolean bool, Integer integer, String string){
+        for (Object param : params){
+            if (param instanceof Integer){
+                assertEquals("Parameter Parser didn't parse the Integer correctly", integer, param);
+            }  else if (param instanceof Boolean){
+                assertEquals("Parameter Parser didn't parse the Boolean correctly", bool, param);
+            } else {
+                assertEquals("Parameter Parser didn't parse the String correctly", string, param);
             }
         }
     }
