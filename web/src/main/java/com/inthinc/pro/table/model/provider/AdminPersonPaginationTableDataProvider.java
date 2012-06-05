@@ -33,8 +33,11 @@ public class AdminPersonPaginationTableDataProvider extends AdminPaginationTable
     public int getRowCount() {
         Integer rowCount = adminPersonJDBCDAO.getCount(personBean.getGroupIDList(), getFilters());
         logger.info("getRowCount returns: " + rowCount + " for groups " + personBean.getGroupIDList() + " filters " + getFilters().toString());
+		personBean.initPersonIdentifierList(adminPersonJDBCDAO.getFilteredPersonIDs(personBean.getGroupIDList(), getFilters()));
+
         return rowCount;
     }
+
 
     public PersonBean getPersonBean() {
         return personBean;

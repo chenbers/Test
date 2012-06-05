@@ -506,7 +506,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             for (final String key : updateField.keySet()) {
                 if (!updateField.get(key))
                     ignoreFields.add(key);
-System.out.println("key: " + key + " update: " + updateField.get(key));                
             }
             
             ignoreFields.add("rolePicker");

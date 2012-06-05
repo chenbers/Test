@@ -12,7 +12,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +50,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.PreferenceLevelOption;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -60,11 +60,8 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.model.phone.CellStatusType;
-import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
-import com.inthinc.pro.security.jsftaglib.SecurityJsfUtils;
-import com.inthinc.pro.security.userdetails.ProUser;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
@@ -141,7 +138,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             WEIGHTS.put(String.valueOf(i), i);
         // time zones
         final List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
-        // sort by offset from GMT
         Collections.sort(timeZones, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -175,8 +171,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private RoleDAO roleDAO;
     private PasswordEncryptor passwordEncryptor;
     private List<PersonChangeListener> changeListeners;
-
-    private FuelEfficiencyBean fuelEfficiencyBean;
+    
+    
+	private FuelEfficiencyBean fuelEfficiencyBean;
     private UpdateCredentialsBean updateCredentialsBean;
 //    private AccountOptionsBean accountOptionsBean;
     private Roles accountRoles;
@@ -185,6 +182,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private Account account;
     private Map<Integer, Cellblock> cellblockMap;
     private boolean passwordUpdated = false;
+    
+    private List<PersonIdentifiers> personIdentifiersList;
+	private Map<Integer, Boolean> selectedMap = new HashMap<Integer, Boolean>();
+
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -410,7 +411,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 //            personView.setConfirmProviderPassword("");
         }
         
-        personView.setSelected(false);
         if (person.getUser() != null) {
             personView.getUser().setPerson(personView);
         }
@@ -788,21 +788,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         //unique employee ID
         if (!isBatchEdit() && (person.getEmpid() != null) && (person.getEmpid().length() > 0)) {
             // when checking for duplicate employee id, use the logged-in user's groupID and check from there.
-            Integer groupID = this.getProUser().getUser().getGroupID();
-// TODO: CJ THIS IS LIKELY EXPENSIVE, SO replaced this       
-//            List<Person> personsInGroup = personDAO.getPeopleInGroupHierarchy(groupID);
-//            for(Person p: personsInGroup) {
-//                // Augment to NOT check against themselves
-//                if (!p.getPersonID().equals(person.getPersonID())) {
-//                    if(p.getEmpid() != null && person.getEmpid() != null && p.getEmpid().equalsIgnoreCase(person.getEmpid())){
-//                        valid = false;
-//                        final String summary = MessageUtil.getMessageString("editPerson_empidTaken");
-//                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-//                        context.addMessage("edit-form:editPerson-empId", message);
-//                    }
-//                }
-//            }
-// with this:            
                 Person lookupPerson = null;
                 try {
                     lookupPerson = personDAO.findByEmpID(person.getAcctID(), person.getEmpid());
@@ -1020,11 +1005,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             logger.trace("revertItem" + editItem);
         return createPersonView(personDAO.findByID(editItem.getPersonID()));
     }
+    
 
-    // TODO: This is inefficient in that it saves driver/user when it is not necessary.  for example, batch edit and change the gender field (person object)
-    // and it will call the update on the user and driver records also
+
+
     @Override
     protected void doSave(List<PersonView> saveItems, boolean create) {
+    	
+    	if (isBatchEdit()) {
+    		batchSave(saveItems);
+    		return;
+    	}
+
+    	
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final PersonView person : saveItems) {
             if ((person.getPassword() != null) && (person.getPassword().length() > 0)) {
@@ -1128,7 +1121,138 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
     }
 
-    @Override
+    private void batchSave(List<PersonView> saveItems) {
+//        final FacesContext context = FacesContext.getCurrentInstance();
+
+        Person updatePersonTemplate = null;
+    	Driver updateDriverTemplate = null;
+    	User updateUserTemplate = null;
+        for (Map.Entry<String, Boolean> entry: getUpdateField().entrySet()) {
+        	if (entry.getValue().equals(Boolean.TRUE))  {
+	        	if (entry.getKey().startsWith("user.")) {
+	        		User sourceUser = findSourceUser(saveItems);
+	        		if (sourceUser == null)
+	        			continue;
+	        		if (updateUserTemplate == null) {
+	        			updateUserTemplate = new User();
+	        		}
+	        		
+	        		String propertyName = entry.getKey().substring(5);
+	        		BeanUtil.copyProperty(sourceUser, updateUserTemplate, propertyName);
+	        	}
+	        	else if (entry.getKey().startsWith("driver.")) { 
+	        		Driver sourceDriver = findSourceDriver(saveItems);
+	        		if (sourceDriver == null)
+	        			continue;
+	        		if (updateDriverTemplate == null) {
+	        			updateDriverTemplate = new Driver();
+	        		}
+	        		String propertyName = entry.getKey().substring(7);
+	        		BeanUtil.copyProperty(sourceDriver, updateDriverTemplate, propertyName);
+	        	}
+	        	else {
+	        		if (updatePersonTemplate == null) {
+	        			updatePersonTemplate = new Person();
+	        		}
+	        		Person sourcePerson = saveItems.get(0);
+	        		BeanUtil.copyProperty(sourcePerson, updatePersonTemplate, entry.getKey());
+	        	}
+        	}
+        }
+        
+        for (Map.Entry<Integer, Boolean> entry : selectedMap.entrySet()) {
+        	if (entry.getValue().equals(Boolean.TRUE)) {
+            	Integer personID = entry.getKey();
+        		if (updatePersonTemplate != null) {
+        			updatePersonTemplate.setPersonID(personID);
+        			logger.info("person update: " + updatePersonTemplate.toString());
+        			personDAO.update(updatePersonTemplate);
+        		}
+        		
+        		if (updateDriverTemplate != null) {
+        			Integer driverID = findDriverIDForPersonID(personID);
+        			if (driverID != null) {
+        				updateDriverTemplate.setDriverID(driverID);
+        				driverDAO.update(updateDriverTemplate);
+            			logger.info("updateDriver: " + updateDriverTemplate.toString());
+        			}
+        		}
+        		
+        		if (updateUserTemplate != null) {
+        			Integer userID = findUserIDForPersonID(personID);
+        			if (userID != null) {
+        				updateUserTemplate.setUserID(userID);
+        				userDAO.update(updateUserTemplate);
+            			logger.info("updateUser: " + updateUserTemplate.toString());
+            			
+
+        			}
+        		}
+        		
+        		// TODO: Do we need this?  if so should person first, last to the PersonIdentifier class
+//                final String summary = MessageUtil.formatMessageString("person_updated", person.getFirst(), person.getLast());
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+//                context.addMessage(null, message);
+        	}
+        }
+
+        
+        // if updating the currently-logged-in person, update the proUser
+        if (selectedMap.containsKey(getPerson().getPersonID()) && selectedMap.get(getPerson().getPersonID()).equals(Boolean.TRUE)) {
+        	if (updatePersonTemplate != null) {
+        		updatePersonTemplate.setPersonID(null);
+        		BeanUtil.deepCopyNonNull(updatePersonTemplate, getPerson());
+        		
+        	}
+        	if (updateUserTemplate != null) {
+        		updateUserTemplate.setUserID(null);
+        		BeanUtil.deepCopyNonNull(updateUserTemplate, getPerson().getUser());
+        		
+        	}
+        }
+	}
+
+	private Integer findDriverIDForPersonID(Integer personID) {
+		if (personIdentifiersList == null)
+			return null;
+		for (PersonIdentifiers personIdentifiers : personIdentifiersList) {
+			if (personIdentifiers.getPersonID().equals(personID)) {
+				return personIdentifiers.getDriverID();
+			}
+		}
+		return null;
+	}
+	private Integer findUserIDForPersonID(Integer personID) {
+		if (personIdentifiersList == null)
+			return null;
+		for (PersonIdentifiers personIdentifiers : personIdentifiersList) {
+			if (personIdentifiers.getPersonID().equals(personID)) {
+				return personIdentifiers.getUserID();
+			}
+		}
+		return null;
+	}
+
+	private Driver findSourceDriver(List<PersonView> saveItems) {
+
+		for (PersonView personView :saveItems) {
+			if (personView.isDriverSelected() && personView.getDriver() != null)
+				return personView.getDriver();
+		}
+			
+		return null;
+	}
+
+	private User findSourceUser(List<PersonView> saveItems) {
+		for (PersonView personView :saveItems) {
+			if (personView.isUserSelected() && personView.getUser() != null)
+				return personView.getUser();
+		}
+			
+		return null;
+	}
+
+	@Override
     protected String getDisplayRedirect() {
         return "pretty:adminPerson";
     }
@@ -1267,8 +1391,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         @Column(updateable = false)
         private String confirmProviderPassword;
         @Column(updateable = false)
-        private boolean selected;
-        @Column(updateable = false)
         private Cellblock cellblock;
 
         public Integer getId() {
@@ -1375,11 +1497,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
 
         public boolean isSelected() {
-            return selected;
+            return bean.getSelectedMap().containsKey(getPersonID()) ? bean.getSelectedMap().get(getPersonID()) : false; 
         }
 
         public void setSelected(boolean selected) {
-            this.selected = selected;
+            bean.getSelectedMap().put(getPersonID(), selected);
+            
         }
         
         @Override
@@ -1569,7 +1692,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     // overriding because the pagination doesn't use the filtered list 
 
-
     @Override
     public List<PersonBean.PersonView> getFilteredItems() {
         filteredItems.clear();
@@ -1583,4 +1705,53 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         filteredItems.clear();
         filteredItems.addAll(items);
     }
+
+    @Override
+    public void setSelectAll(boolean selectAll)
+    {
+        this.selectAll = selectAll;
+    }
+    
+    @Override
+    public boolean isSelectAll() {
+    	return this.selectAll;
+    }
+
+
+    @Override
+    public void doSelectAll() {
+		selectedMap = new HashMap<Integer, Boolean>();
+		if (selectAll == true) {
+			for (PersonIdentifiers personIdentifiers : personIdentifiersList) {
+				selectedMap.put(personIdentifiers.getPersonID(),  Boolean.TRUE);
+			}
+		}
+    }
+
+    @Override
+    public void setItems(List<PersonView> items )
+    {
+    	super.setItems(items);
+    }
+    
+    public void initPersonIdentifierList(List<PersonIdentifiers> personIdentifiersList )
+    {
+    	this.personIdentifiersList = personIdentifiersList;
+        this.selectAll = Boolean.FALSE;
+    	selectedMap = new HashMap<Integer, Boolean>();
+    }
+
+    public void updateItemSelect(Integer id, Boolean selected) {
+		selectedMap.put(id,  selected);
+    	
+    }
+
+	public Map<Integer, Boolean> getSelectedMap() {
+		return selectedMap;
+	}
+
+	public void setSelectedMap(Map<Integer, Boolean> selectedMap) {
+		this.selectedMap = selectedMap;
+	}
+
 }

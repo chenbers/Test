@@ -24,6 +24,7 @@ import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.States;
@@ -46,7 +47,9 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
     private static final String ROLE_SELECT = "SELECT u.userID, u.roleID FROM role as r JOIN userRole as u USING (roleID) WHERE u.userID IN (:ulist)";
     private static final String PERSON_COUNT = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
     private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
-	
+    private static final String FILTERED_PERSON_IDS_SELECT = "SELECT p.personID, u.userID, d.driverID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+    
+    
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
 
 	static {
@@ -99,6 +102,18 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		} , new HashMap<String, Object>(){{put("group_list", groupIDs);}});
 	}
 	
+	public List<PersonIdentifiers> getFilteredPersonIDs(final List<Integer> groupIDs, final List<TableFilterField> filters) {
+		return getSimpleJdbcTemplate().query(FILTERED_PERSON_IDS_SELECT, new ParameterizedRowMapper<PersonIdentifiers>() {
+			@Override
+			public PersonIdentifiers mapRow(ResultSet rs, int rowNum) throws SQLException {
+				PersonIdentifiers personIdentifiers = new PersonIdentifiers();
+				personIdentifiers.setPersonID(rs.getInt("p.personID"));
+				personIdentifiers.setUserID(rs.getObject("u.userID") == null ? null : rs.getInt("u.userID"));
+				personIdentifiers.setDriverID(rs.getObject("d.driverID") == null ? null : rs.getInt("d.driverID"));
+				return personIdentifiers;
+			}			
+		} , new HashMap<String, Object>(){{put("group_list", groupIDs);}});
+	}
 	
 	public List<Person> getPeople(final List<Integer> groupIDs, final PageParams pageParams) {
 				

@@ -145,6 +145,7 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 			Integer actualRowCount = dataProvider.getRowCount();
 			tableRowCount = actualRowCount;
 			if (pageData != null) {
+				pageData.initPage(tableRowCount);
 				pageData.updatePage(tableRowCount);
 			}
 		} 

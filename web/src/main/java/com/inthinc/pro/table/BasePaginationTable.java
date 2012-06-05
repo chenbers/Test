@@ -29,7 +29,7 @@ public class BasePaginationTable<T> {
 	{
         model = new PaginationTableDataModel<T>(dataProvider);
         pageData = new PageData();
-        pageData.initPage(model.getRowCount());
+//        pageData.initPage(model.getRowCount());
         model.setPageData(pageData);
 	}
 	public PaginationTableDataModel<T> getModel() {

@@ -329,13 +329,14 @@ public abstract class AbstractMapper implements Mapper {
                     }
                 } else if (value != null) {
                     map.put(name, convertToHessian(value, handled, field, includeNonUpdateables));
-                } else if (BaseEnum.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())) {
-                    map.put(name, 0);
-                } else if (EnumIntegerMapping.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())) {
-                    map.put(name, 0);
-                } else if (Date.class.isAssignableFrom(field.getType())) {
-                    // use 1 to mean an empty date: January 1, 1970 at 12:01am
-                    map.put(name, 1L);
+// cj. this breaks update where null fields mean don't update, so hopefully commentting out won't have bad side effects                    
+//                } else if (BaseEnum.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())) {
+//                    map.put(name, 0);
+//                } else if (EnumIntegerMapping.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())) {
+//                    map.put(name, 0);
+//                } else if (Date.class.isAssignableFrom(field.getType())) {
+//                    // use 1 to mean an empty date: January 1, 1970 at 12:01am
+//                    map.put(name, 1L);
                 }
             }
             clazz = clazz.getSuperclass();

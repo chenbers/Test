@@ -15,12 +15,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanInitializationException;
 
+import com.inthinc.pro.backing.BaseAdminBean;
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.dao.util.SimpleType;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ReferenceEntity;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -31,6 +35,9 @@ import com.inthinc.pro.model.configurator.ProductType;
  */
 public class BeanUtil
 {
+	
+    protected static final Logger logger        = LogManager.getLogger(BeanUtil.class);
+
     /**
      * Creates a deep clone of the given source object. Requires that all complex members must have a no-argument constructor.
      * 
@@ -78,9 +85,13 @@ public class BeanUtil
     {
         final HashMap<Object, Object> map = new HashMap<Object, Object>();
         map.put(source, target);
-        deepCopy(source, target, ignoreProperties, map);
+        deepCopy(source, target, ignoreProperties, map, false);
     }
 
+	public static void deepCopyNonNull(Object source, Object target) {
+        deepCopy(source, target, null, null, true);
+		
+	}
     /**
      * Deep copies the source object into the target object. Requires that all complex members must have a no-argument constructor.
      * 
@@ -96,7 +107,7 @@ public class BeanUtil
      * @throws FatalBeanException
      */
     @SuppressWarnings("unchecked")
-    private static void deepCopy(Object source, Object target, List<String> ignoreProperties, Map<Object, Object> map)
+    private static void deepCopy(Object source, Object target, List<String> ignoreProperties, Map<Object, Object> map, boolean skipNull)
     {
         // deep-copy children
         for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(source.getClass()))
@@ -120,8 +131,10 @@ public class BeanUtil
                             final Object sourceProperty = readMethod.invoke(source, new Object[0]);
 
                             //if the value is null, just write it to the target.
-                            if(sourceProperty == null)
-                                writeMethod.invoke(target, sourceProperty);
+                            if(sourceProperty == null) {
+                            	if (!skipNull)
+                            		writeMethod.invoke(target, sourceProperty);
+                            }
                             // simple copy
                             else if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray() || clazz.isAssignableFrom(Date.class) 
                                     || clazz.isAssignableFrom(TimeZone.class) || ReferenceEntity.class.isAssignableFrom(clazz) 
@@ -169,7 +182,7 @@ public class BeanUtil
 
                                     // recurse
                                     map.put(sourceProperty, targetProperty);
-                                    deepCopy(sourceProperty, targetProperty, childIgnore, map);
+                                    deepCopy(sourceProperty, targetProperty, childIgnore, map, skipNull);
                                     map.remove(sourceProperty);
                                 }
                             }
@@ -413,4 +426,26 @@ public class BeanUtil
         }
         
     }
+
+
+
+    public static void copyProperty(Object source, Object dest, String propertyName) {
+        Class clazz = source.getClass();
+        try{
+            PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(clazz, propertyName);
+            Object [] nullArgs = {};
+            Object property = propertyDescriptor.getReadMethod().invoke(source, nullArgs);
+            
+            PropertyDescriptor writePropertyDescriptor = BeanUtils.getPropertyDescriptor(dest.getClass(), propertyName);
+            Method writeMethod = writePropertyDescriptor.getWriteMethod();
+            writeMethod.invoke(dest, property);
+        }
+        catch(Exception e){
+        	logger.error("error in copyProperty" , e);
+            return;
+        }
+        
+    }
+
+
 }
