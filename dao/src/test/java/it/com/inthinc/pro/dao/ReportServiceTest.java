@@ -902,6 +902,7 @@ public class ReportServiceTest {
     
     
     @Test
+    @Ignore
     public void driverPerformanceMetrics() {
         DriverPerformanceDAOImpl driverPerformanceReportHessianDAO = new DriverPerformanceDAOImpl();
         GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
