@@ -22,6 +22,10 @@ public enum WebDateFormat implements TextEnum {
     MONTH_YEAR("MMM, yyyy"), 
     WEB_SERVICE("yyyyMMdd"),
     
+    STANDARD_DATE("MM/dd/yyyy"),
+    
+    CASSANDRA("yyyy-MM-dd"),
+    
     ;
 
     private String format;

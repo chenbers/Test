@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +18,20 @@ import org.jbehave.core.steps.StepCandidate;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.elements.CalendarObject;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.jbehave.AutoSteps;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
 
-//@Ignore
+@Ignore
 public class ParseStepForElementMethodTest {
+    
+    private static final int numOfTimesToLoop = 1000;
     
     private MasterTest test;
     private AutomationPropertiesBean apb;
@@ -143,7 +150,7 @@ public class ParseStepForElementMethodTest {
         int randInt;
         String string;
         
-        for (int i=0; i<100; i++){
+        for (int i=0; i<numOfTimesToLoop; i++){
             randInt = rand.getInt(Integer.MAX_VALUE);
             string = rand.getCharString(15);
             String falseStep = "Then I am not getting " + randInt + " field as my \"" + string + "\"";
@@ -158,7 +165,7 @@ public class ParseStepForElementMethodTest {
             }
         }
         
-        for (int i=0; i<100;i++){
+        for (int i=0; i<numOfTimesToLoop;i++){
             randInt = rand.getInt(Integer.MAX_VALUE);
             string = rand.getCharString(15);
             String trueStep = "Then I will get " + randInt + " field as my \"" + string + "\"";
@@ -214,5 +221,45 @@ public class ParseStepForElementMethodTest {
         }
     }
     
+    
+    @Test
+    public void testParsingCalendar() throws SecurityException, NoSuchMethodException{
+        RandomValues rand = new RandomValues();
+        SeleniumEnumWrapper id = new SeleniumEnumWrapper("TestingParsing","someFakeID");
+        CalendarObject co = new CalendarObject(id);
+        Method method = co.getClass().getMethod("select", AutomationCalendar.class);
+        for (int i=0;i<numOfTimesToLoop;i++){
+            int epochStamp = Integer.parseInt(rand.getIntString(9)) + 1000000000;
+            for (WebDateFormat format : EnumSet.allOf(WebDateFormat.class)) {
+                AutomationCalendar time = new AutomationCalendar(epochStamp, format);
+                String step = "And I select \"" + time + "\" in the Start dropdown";
+                Object[] params = co.getParameters(step, method);
+                assertEquals("We should only have gotten 1 parameter", 1, params.length);
+                assertEquals("The date was not parsed correctly", time, params[0]);
+            }
+        }
+    }
+    
+    @Test
+    public void testParsingCalendarFromVariable() throws SecurityException, NoSuchMethodException{
+        RandomValues rand = new RandomValues();
+        String variableName = "my big long variable that you will not guess";
+        String saveStep = "I want to save this param for Start field as " + variableName;
+        String step = "And I select " + variableName + " in the Start dropdown";
+        
+        SeleniumEnumWrapper id = new SeleniumEnumWrapper("TestingParsing","someFakeID");
+        CalendarObject co = new CalendarObject(id);
+        Method method = co.getClass().getMethod("select", AutomationCalendar.class);
+        for (int i=0;i<numOfTimesToLoop;i++){
+            int epochStamp = Integer.parseInt(rand.getIntString(9)) + 1000000000;
+            for (WebDateFormat format : EnumSet.allOf(WebDateFormat.class)) {
+                AutomationCalendar time = new AutomationCalendar(epochStamp, format);
+                MasterTest.setComparator(saveStep, time);
+                Object[] params = co.getParameters(step, method);
+                assertEquals("We should only have gotten 1 parameter", 1, params.length);
+                assertEquals("The date was not parsed correctly", time, params[0]);
+            }
+        }
+    }
     
 }

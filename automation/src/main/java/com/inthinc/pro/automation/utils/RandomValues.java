@@ -112,7 +112,7 @@ public class RandomValues extends Random{
 	}
 
 	public String getIntString(Integer length) {
-		return getString(length, Types.CHARACTER);
+		return getString(length, Types.INTEGER);
 	}
 
 	public String getPhoneNumber() {

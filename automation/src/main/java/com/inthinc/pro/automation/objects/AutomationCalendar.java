@@ -127,7 +127,13 @@ public class AutomationCalendar implements Comparable<Calendar> {
     }
 
     public AutomationCalendar(String potentialDate) {
+        if (potentialDate.endsWith("Z")){
+            potentialDate = potentialDate.substring(0, potentialDate.indexOf(".")) + "-0000";
+        }
         for (WebDateFormat format : EnumSet.allOf(WebDateFormat.class)){
+            if ((format.toString().length() + 5) < potentialDate.length()){
+                continue;
+            }
             SimpleDateFormat matcher = new SimpleDateFormat(format.toString());
             try {
                 matcher.parse(potentialDate);
@@ -318,7 +324,11 @@ public class AutomationCalendar implements Comparable<Calendar> {
     public boolean equals(Object obj) {
         boolean match = false;
         if (obj instanceof AutomationCalendar){
+            AutomationCalendar ours = new AutomationCalendar(toString(), format);
+            AutomationCalendar thiers = new AutomationCalendar(((AutomationCalendar) obj).toString(), ((AutomationCalendar) obj).format);
+            
             match = epochSecondsInt().equals(((AutomationCalendar) obj).epochSecondsInt());
+            match |= ours.toString().equals(thiers.toString());
         } else {
             match |= date.equals(obj);
             match |= date.getTime().equals(obj);
@@ -376,6 +386,9 @@ public class AutomationCalendar implements Comparable<Calendar> {
     }
     
     public AutomationCalendar setDate(String dateTime) {
+        if (date == null){
+            date = Calendar.getInstance();
+        }
         try {
             date.setTime(formatter.parse(dateTime));
         } catch (ParseException e) {

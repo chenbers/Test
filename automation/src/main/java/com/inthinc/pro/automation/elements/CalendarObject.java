@@ -18,8 +18,8 @@ public class CalendarObject extends DropDown implements Calendar{
     
     private final String id;
     
-    public CalendarObject(SeleniumEnums anEnum){
-        super(anEnum);
+    public CalendarObject(SeleniumEnums anEnum, Object ...objects){
+        super(anEnum, objects);
         id = myEnum.getLocators().get(0);
     }
     
@@ -112,18 +112,25 @@ public class CalendarObject extends DropDown implements Calendar{
         Object[] passParameters = new Object[parameters.length];
 
         AutomationCalendar var = new AutomationCalendar();
-        passParameters[0] = var;
-        if (stepAsString.contains("from \"")){
-            int first = stepAsString.indexOf("\"");
+        if (stepAsString.contains("\"")){
+            int first = stepAsString.indexOf("\"") + 1;
             int last = stepAsString.lastIndexOf("\"");
             var = new AutomationCalendar(stepAsString.substring(first, last));
-        } else { 
+        } else {
             for (Map.Entry<String, String> variable : MasterTest.getVariables().entrySet()){
-                if (stepAsString.contains("from " + variable.getKey())){
-                    var = new AutomationCalendar(variable.getValue());
+                if (stepAsString.contains(variable.getKey())){
+                    try {
+                        var = new AutomationCalendar(variable.getValue());
+                        break;
+                    } catch (IllegalArgumentException e){
+                        continue;
+                    }
                 }
             }
         }
+        
+        passParameters[0] = var;
+        
         int sign = 1;
         if (Pattern.compile(RegexTerms.calendarSubtract).matcher(stepAsString).find()){
             sign = -1;

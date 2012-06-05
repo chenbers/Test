@@ -1,10 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.jbehave.core.steps.StepCreator.PendingStep;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -85,23 +82,6 @@ public abstract class ElementBase extends MasterTest implements ElementInterface
         return myEnum;
     }
     
-    public static Object[] getParametersS(PendingStep step, Method method) {
-        Class<?>[] parameters = method.getParameterTypes();
-        Object[] passParameters = new Object[parameters.length];
-        
-        for (int i=0;i<parameters.length;i++){
-            Class<?> next = parameters[i];
-            if (next.isAssignableFrom(Boolean.class)){
-                passParameters[i] = checkBoolean(step.stepAsString());
-            }
-            if (passParameters[i] == null){
-                throw new NoSuchMethodError("We are missing parameters for " 
-                            + method.getName() + ", working on step " + step.stepAsString());
-            }
-        }
-        return passParameters;
-    }
-
     @Override
     public Boolean hasFocus() {
         return getSelenium().hasFocus(myEnum);
