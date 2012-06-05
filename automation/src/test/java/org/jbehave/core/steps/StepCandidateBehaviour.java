@@ -17,7 +17,7 @@ public class StepCandidateBehaviour {
                 return candidate;
             } else if (Pattern.matches(candidate.getPatternAsString(), stepAsString)){
                 return candidate;
-            }
+            } 
         }
         return null;
     }    

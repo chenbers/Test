@@ -117,7 +117,7 @@ public class ParseStepForElementMethodTest {
      * Create a step from the MasterTest methods and test them.
      */
     @Test
-    public void testCompositeLoginStep(){
+    public void testCompositeDefaultLoginStep(){
         String mainAutomationStep = "Given I am logged in";
         MasterTestSteps steps = new MasterTestSteps();
         List<StepCandidate> candidates = steps.listCandidates();
@@ -126,13 +126,37 @@ public class ParseStepForElementMethodTest {
         List<Step> composedSteps = new ArrayList<Step>();
         candidate.addComposedSteps(composedSteps, mainAutomationStep, noNamedParameters, candidates);
         for (Step step : composedSteps) {
-            Log.info(step);
             Log.info(step.perform(null));
             
         }
         
         assertThat("The Usernames didn't match", test.getMyUser().getUsername(), is(apb.getMainAutomation().get(1)));
         assertThat("The Usernames didn't match", getUsername(), is(apb.getMainAutomation().get(1)));
+        assertEquals("The password didn't match, if it is changed it should be fixed", true, 
+                test.getMyUser().doesPasswordMatch(apb.getPassword()));
+        assertThat("The password didn't match, if it is changed it should be fixed", getPassword(), is(apb.getPassword()));
+    }
+    
+    /**
+     * Create a step from the MasterTest methods and test them.
+     */
+    @Test
+    public void testCompositeEditAccountLoginStep(){
+        String editAccountStep = "Given I am logged in " + MasterTest.getEditableaccountuser();
+        MasterTestSteps steps = new MasterTestSteps();
+        List<StepCandidate> candidates = steps.listCandidates();
+        StepCandidate candidate = candidateMatchingStep(candidates, editAccountStep);
+        Map<String, String> namedParameters = new HashMap<String, String>();
+        namedParameters.put("params", MasterTest.getEditableaccountuser());
+        List<Step> composedSteps = new ArrayList<Step>();
+        candidate.addComposedSteps(composedSteps, editAccountStep, namedParameters, candidates);
+        for (Step step : composedSteps) {
+            Log.info(step.perform(null));
+            
+        }
+        
+        assertThat("The Usernames didn't match", test.getMyUser().getUsername(), is(apb.getEditableAccount().get(1)));
+        assertThat("The Usernames didn't match", getUsername(), is(apb.getEditableAccount().get(1)));
         assertEquals("The password didn't match, if it is changed it should be fixed", true, 
                 test.getMyUser().doesPasswordMatch(apb.getPassword()));
         assertThat("The password didn't match, if it is changed it should be fixed", getPassword(), is(apb.getPassword()));

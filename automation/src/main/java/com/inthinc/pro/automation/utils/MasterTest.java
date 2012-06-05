@@ -22,6 +22,7 @@ import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.Composite;
 import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.steps.StepCreator.PendingStep;
@@ -457,19 +458,23 @@ public abstract class MasterTest {
     @Given("I am logged in $params")
     @Composite(steps = {
             "Given I am using $params for my user",
-            "Given I am logged in"})
-    public void givenIAmLoggedInAs(String params){
+            "Given I log in"})
+    public void givenIAmLoggedInAs(){
     }
     
     @Given("I am logged in")
     @Composite(steps = {
             "Given I am using as the default user for my user",
+            "Given I log in"})
+    public void givenIAmLoggedIn(){}
+    
+    @Given("I log in")
+    @Composite(steps = {
             "Given I am on the Login page", 
             "When I type my user name into the Username field", 
             "When I type my password into the Password field", 
             "When I click the Login button"})
-    public void givenIAmLoggedIn(){
-    }
+    public void loginProcess(){}
     
     public void killSelenium() {
     	CoreMethodLib.closeSeleniumThread();
@@ -614,7 +619,7 @@ public abstract class MasterTest {
     
 
     @Given("I am using $params for my user")
-    public void useParamsToSetDefaultUser(String params){
+    public void useParamsToSetDefaultUser(@Named("params")String params){
         if (params.equalsIgnoreCase(mainUser)){
             List<String> users = apb.getMainAutomation();
             rest.set(new RestCommands(users.get(0), apb.getPassword()));
@@ -626,6 +631,9 @@ public abstract class MasterTest {
             rest.set(new RestCommands(users.get(0), apb.getPassword()));
             myUser.set(rest.get().getObject(User.class, users.get(1)));
             account.set(rest.get().getObject(Account.class, null));
+        }
+        if (myUser == null){
+            throw new NullPointerException("Type of user was bad: " + params);
         }
         variables.get().put("my user name", myUser.get().getUsername());
         variables.get().put("my password", apb.getPassword());

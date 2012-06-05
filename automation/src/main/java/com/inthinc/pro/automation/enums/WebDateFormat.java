@@ -24,7 +24,8 @@ public enum WebDateFormat implements TextEnum {
     
     STANDARD_DATE("MM/dd/yyyy"),
     
-    CASSANDRA("yyyy-MM-dd"),
+    CASSANDRA_MONTHS("yyyy-MM"),
+    CASSANDRA_DAYS("yyyy-MM-dd"),
     
     ;
 

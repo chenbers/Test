@@ -133,6 +133,8 @@ public class AutomationCalendar implements Comparable<Calendar> {
         for (WebDateFormat format : EnumSet.allOf(WebDateFormat.class)){
             if ((format.toString().length() + 5) < potentialDate.length()){
                 continue;
+            } else if (potentialDate.contains("-") ^ format.toString().contains("-")){
+                continue;
             }
             SimpleDateFormat matcher = new SimpleDateFormat(format.toString());
             try {
