@@ -194,7 +194,7 @@ public abstract class AbstractMapper implements Mapper {
         if (propertyType != null) {
             if (propertyType.equals(Date.class) && value instanceof Number) {
                 // note: negative values represent dates before 1/1/1970, 1 means null
-                Long seconds = (Long) value;
+                Long seconds = ((Number) value).longValue();
                 if (seconds != 1)
                     value = new Date(seconds.longValue() * 1000l);
                 else

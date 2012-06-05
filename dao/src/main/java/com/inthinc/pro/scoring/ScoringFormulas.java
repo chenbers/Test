@@ -22,6 +22,9 @@ public class ScoringFormulas {
     public final static double MAX_SCORE = 5.0;
     public final static double MIN_SCORE = 0.0;
 
+    public final static double agg_a = -10.4888220818923;
+    public final static double agg_b = 1.16563268601352;
+
 	
     /**
      * Typical Aggressive events have deltaX/Y/Z values between 70 and 200. <br />
@@ -165,7 +168,24 @@ public class ScoringFormulas {
 		return penalty;
 	}
 	
-	/**
+    public static double getSpeedingScore(double totalMiles, double speedPenalty) {
+        return p2s(1.0, 0.2, speedPenalty, totalMiles);
+    }
+    public static double getStyleScore(double totalMiles, double stylePenalty) {
+        return ap2s(agg_a, agg_b, stylePenalty, totalMiles, 1.0);
+    }
+    public static double getSeatBeltScore(double totalMiles, double seatbeltPenalty) {
+        return p2s(0.3d ,0.2d, seatbeltPenalty, totalMiles);
+    }
+
+    public static double getOverallFromPenalty(double totalMiles, double seatbeltPenalty, double stylePenalty, double speedingPenalty) {
+        double seatbelt = getSeatBeltScore(totalMiles, seatbeltPenalty);
+        double style = getStyleScore(totalMiles, stylePenalty);
+        double speeding = getSpeedingScore(totalMiles, speedingPenalty);
+        return overallScore(speeding, style, seatbelt);
+    }
+    
+    /**
 	 * This is now a weighted RMS of the other scores.
 	 * @param speed
 	 * @param style

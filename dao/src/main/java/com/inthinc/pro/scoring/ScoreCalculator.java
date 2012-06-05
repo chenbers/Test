@@ -47,17 +47,11 @@ public class ScoreCalculator {
         return result;
     }
 
-    public double getSeatBeltScore(double totalMiles, double seatbeltPenalty) {
-        return penaltyToScore(seatbeltPenalty, totalMiles, 0.3d ,0.2d);
-    }
     
     public double getStyleScore(double totalMiles, double bumpPenalty, double turnPenalty, double accelPenalty, double brakePenalty) {
         return scaledPenaltyToScore(bumpPenalty+turnPenalty+accelPenalty+brakePenalty, totalMiles, agg_a, agg_b, 1.0);
     }
 
-    public double getStyleScore(double totalMiles, double stylePenalty) {
-        return scaledPenaltyToScore(stylePenalty, totalMiles, agg_a, agg_b, 1.0);
-    }
     
     public double getSpeedingScore(double totalMiles, Double... speedPenaltyList) {
         Double totalPenalty = 0.0;
@@ -66,8 +60,16 @@ public class ScoreCalculator {
         }
         return penaltyToScore(totalPenalty, totalMiles, 1.0, 0.2);
     }
+
+    
     public double getSpeedingScore(double totalMiles, double speedPenalty) {
         return penaltyToScore(speedPenalty, totalMiles, 1.0, 0.2);
+    }
+    public double getStyleScore(double totalMiles, double stylePenalty) {
+        return scaledPenaltyToScore(stylePenalty, totalMiles, agg_a, agg_b, 1.0);
+    }
+    public double getSeatBeltScore(double totalMiles, double seatbeltPenalty) {
+        return penaltyToScore(seatbeltPenalty, totalMiles, 0.3d ,0.2d);
     }
     
     public double getOverall(double seatbelt, double style, double speeding) {

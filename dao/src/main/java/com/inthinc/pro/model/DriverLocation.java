@@ -27,6 +27,21 @@ public class DriverLocation
     private Group group;
 
 
+    public DriverLocation()
+    {
+    }
+
+    public DriverLocation(LastLocation lastLocation, Driver driver, Vehicle vehicle)
+    {
+    	setHead(lastLocation.getHead());
+    	setLoc(lastLocation.getLoc());
+    	setSpeed(lastLocation.getSpeed());
+    	setTime(lastLocation.getTime());
+    	setDriver(driver);
+    	setVehicle(vehicle);
+//    	setGroup(driver.)
+    }
+    
 	public Group getGroup() {
 		return group;
 	}
@@ -107,6 +122,9 @@ public class DriverLocation
 		return head;
 	}
 	public void setHead(Integer head) {
+		this.head = head;
+	}
+	public void setHeading(Integer head) {
 		this.head = head;
 	}
 

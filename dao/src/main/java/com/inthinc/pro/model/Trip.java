@@ -177,4 +177,10 @@ public class Trip extends BaseEntity {
     public void setQuality(TripQuality quality) {
         this.quality = quality;
     }
+    
+	public String toString()
+	{
+        return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + ", locations Count=" + route.size() + "route=" + route + "]";
+	}
+
 }

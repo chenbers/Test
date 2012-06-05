@@ -320,7 +320,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 
     @Override
     public String toString() {
-        return "Event [driverID=" + driverID + ", latLng=" + latLng + ", latitude=" + latitude + ", noteID=" + noteID + ", type=" + type + ", vehicleID=" + vehicleID + "]";
+        return "Event [driverID=" + driverID + ", latLng=" + getLatLng() + ", time=" + time + ", noteID=" + noteID + ", type=" + type + ", vehicleID=" + vehicleID + "]";
     }
 
     public boolean isValidEvent() {

@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +91,25 @@ public enum Duration implements BaseEnum
         this.dvqCode = dvqCode;
         this.dvqCount = dvqCount;
     }
+
+    public int getCalendarPeriod()
+    {
+    	int calendarPeriod = Calendar.DATE;
+    	
+    	switch (getCode())
+    	{
+	        case Duration.BINSIZE_1_MONTH:
+	        case Duration.BINSIZE_3_MONTHS:
+	        case Duration.BINSIZE_6_MONTHS:
+	        case Duration.BINSIZE_12_MONTHS:
+	        	calendarPeriod = Calendar.MONTH;
+	        	break;
+	        default:	
+	        	calendarPeriod = Calendar.DATE;
+    	}
+    	return calendarPeriod;
+    }
+    
 
     public int getNumberOfDays()
     {

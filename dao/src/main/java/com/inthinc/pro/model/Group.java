@@ -43,9 +43,11 @@ public class Group extends BaseEntity implements HasAccountId
     private Address           address;
 
     private DOTOfficeType   dotOfficeType;
+    private String   path;
+    private String aggDate;
 
 
-    public Group()
+	public Group()
     {
         super();
     }
@@ -259,10 +261,28 @@ public class Group extends BaseEntity implements HasAccountId
         this.dotOfficeType = dotOfficeType;
     }
 
-    @Override
+    public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	
+	public String getAggDate() {
+		return aggDate;
+	}
+
+	public void setAggDate(String aggDate) {
+		this.aggDate = aggDate;
+	}
+
+	@Override
     public String toString() {
         return "Group [accountID=" + accountID + ", description=" + description + ", groupID=" + groupID + ", managerID=" + managerID + ", mapLat=" + mapLat + ", mapLng=" + mapLng + ", mapZoom="
                 + mapZoom + ", name=" + name + ", parentID=" + parentID + ", status=" + status + ", type=" + type + ", zoneRev=" + zoneRev + "]";
     }
+
     
 }

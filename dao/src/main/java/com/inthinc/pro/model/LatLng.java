@@ -52,6 +52,9 @@ public class LatLng implements Serializable, Comparable<LatLng> {
     public void setLat(double lat) {
         this.lat = lat;
     }
+    public void setLatitude(double lat) {
+        this.lat = lat;
+    }
 
     public double getLng() {
         return lng;
@@ -60,12 +63,18 @@ public class LatLng implements Serializable, Comparable<LatLng> {
     public void setLng(double lng) {
         this.lng = lng;
     }
+    public void setLongitude(double lng) {
+        this.lng = lng;
+    }
 
     public Integer getHead() {
         return head;
     }
 
     public void setHead(Integer head) {
+        this.head = head;
+    }
+    public void setHeading(Integer head) {
         this.head = head;
     }
 
@@ -88,11 +97,17 @@ public class LatLng implements Serializable, Comparable<LatLng> {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("(");
+        buffer.append("time=");
+        buffer.append(time);
+        buffer.append(",speed=");
+        buffer.append(speed);
+        buffer.append(",head=");
+        buffer.append(head);
+        buffer.append(",(");
         buffer.append(getLat());
         buffer.append(",");
         buffer.append(getLng());
-        buffer.append(")");
+        buffer.append(")\n");
         return buffer.toString();
     }
 
