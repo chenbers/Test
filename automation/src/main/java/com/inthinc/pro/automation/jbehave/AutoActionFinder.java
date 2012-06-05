@@ -35,7 +35,7 @@ public class AutoActionFinder {
                 String save = RegexTerms.getMatch(RegexTerms.saveAlias, stepAsString);
                 if (!save.equals("")){
                     Method method = ((MasterTest) elementInstance).parseStep(stepAsString.replace(save, "get text"), elementType);
-                    Object[] parameters = ((MasterTest) elementInstance).getParameters(step, method);
+                    Object[] parameters = ((MasterTest) elementInstance).getParameters(step.stepAsString(), method);
                     
                     return stepCreator.createSaveVariableStep(step, elementInstance, method, parameters);
                 
@@ -48,7 +48,7 @@ public class AutoActionFinder {
                     
                     
                 Method method = ((MasterTest) elementInstance).parseStep(stepAsString, elementType);
-                Object[] parameters = ((MasterTest) elementInstance).getParameters(step, method);
+                Object[] parameters = ((MasterTest) elementInstance).getParameters(step.stepAsString(), method);
                 return stepCreator.createPageStep(step, elementInstance, method, parameters);
             } else if (elementInstance instanceof TableBased<?>){
                 @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.jbehave.core.steps.StepCandidateBehaviour.candidateMatchingStep;
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,15 +14,15 @@ import java.util.Map;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCandidate;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.internal.runners.statements.Fail;
 
 import com.inthinc.pro.automation.jbehave.AutoSteps;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.MasterTest;
 
-@Ignore
+//@Ignore
 public class ParseStepForElementMethodTest {
     
     private MasterTest test;
@@ -39,15 +40,23 @@ public class ParseStepForElementMethodTest {
     public void testDefaultCreds(){
         test.useParamsToSetDefaultUser(MasterTest.getMainuser());
         assertEquals("Unable to get the default user from the string", 
-                apb.getMainAutomation().get(1), MasterTest.getComparator("When I type my user name into the Username field"));
+                apb.getMainAutomation().get(1), getUsername());
         assertEquals("Unable to get the default user from the string", 
-                apb.getPassword(), MasterTest.getComparator("When I type my password into the Password field"));
+                apb.getPassword(), getPassword());
         
         test.useParamsToSetDefaultUser(MasterTest.getEditableaccountuser());
         assertEquals("Unable to get the default user from the string", 
-                apb.getEditableAccount().get(1), MasterTest.getComparator("When I type my user name into the Username field"));
+                apb.getEditableAccount().get(1), getUsername());
         assertEquals("Unable to get the default user from the string", 
-                apb.getPassword(), MasterTest.getComparator("When I type my password into the Password field"));
+                apb.getPassword(), getPassword());
+    }
+    
+    private String getPassword(){
+        return MasterTest.getComparator("When I type my password into the Password field");
+    }
+    
+    private String getUsername(){
+        return MasterTest.getComparator("When I type my user name into the Username field");
     }
     
     /**
@@ -109,17 +118,93 @@ public class ParseStepForElementMethodTest {
         List<Step> composedSteps = new ArrayList<Step>();
         candidate.addComposedSteps(composedSteps, mainAutomationStep, noNamedParameters, candidates);
         for (Step step : composedSteps) {
+            Log.info(step);
             Log.info(step.perform(null));
             
         }
-        assertThat(test.getMyUser().getUsername(), is(apb.getMainAutomation().get(1)));
+        
+        assertThat("The Usernames didn't match", test.getMyUser().getUsername(), is(apb.getMainAutomation().get(1)));
+        assertThat("The Usernames didn't match", getUsername(), is(apb.getMainAutomation().get(1)));
         assertEquals("The password didn't match, if it is changed it should be fixed", true, 
                 test.getMyUser().doesPasswordMatch(apb.getPassword()));
+        assertThat("The password didn't match, if it is changed it should be fixed", getPassword(), is(apb.getPassword()));
     }
     
     static class MasterTestSteps extends AutoSteps{
         public MasterTestSteps(){
             super(new MostUsefulConfiguration(), new MasterTest(){});
+        }
+    }
+    
+    @Test
+    public void testParameterParser(){
+        int first=1, second=43;
+        String firstString = "Testing if this works", secondString = "Why should this work";
+        String falseStep = "Then I am not getting " + first + " field as my \"" + firstString + "\"";
+        
+        
+        for (Method method : parseMethods){
+            try {
+                Object[] params = test.getParameters(falseStep, method);
+                for (Object param : params){
+                    if (param instanceof Integer){
+                        assertEquals("Parameter Parser didn't parse the Integer correctly", first, param);
+                    }  else if (param instanceof Boolean){
+                        assertEquals("Parameter Parser didn't parse the Boolean correctly", false, param);
+                    }   else {
+                        assertEquals("Parameter Parser didn't parse the String correctly", firstString, param);
+                    }
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        String trueStep = "Then I will get " + second + " field as my \"" + secondString + "\"";
+        
+        for (Method method : parseMethods){
+            try {
+                Object[] params = test.getParameters(trueStep, method);
+                for (Object param : params){
+                    if (param instanceof Integer){
+                        assertEquals("Parameter Parser didn't parse the Integer correctly", second, param);
+                    }  else if (param instanceof Boolean){
+                        assertEquals("Parameter Parser didn't parse the Boolean correctly", true, param);
+                    } else {
+                        assertEquals("Parameter Parser didn't parse the String correctly", secondString, param);
+                    }
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+        
+    public void getBoolean(boolean bool){}
+    public void getStringByObj(Object obj){}
+    public void getString(String str){}
+    public void getInt(int integer){}
+    public void getInteger(Integer integer){}
+    public void getOneOfEach(Boolean bool, Integer integer, Object string){}
+    public void getOneOfEach(boolean bool, int integer, String string){}
+    
+    private static final List<Method> parseMethods = new ArrayList<Method>();
+    static {
+        Class<ParseStepForElementMethodTest> clazz = ParseStepForElementMethodTest.class;
+        try {
+            parseMethods.add(clazz.getMethod("getBoolean", boolean.class));
+            parseMethods.add(clazz.getMethod("getStringByObj", Object.class));
+            parseMethods.add(clazz.getMethod("getString", String.class));
+            parseMethods.add(clazz.getMethod("getInteger", Integer.class));
+            parseMethods.add(clazz.getMethod("getInt", int.class));
+            parseMethods.add(clazz.getMethod("getOneOfEach", Boolean.class, Integer.class, Object.class));
+            parseMethods.add(clazz.getMethod("getOneOfEach", boolean.class, int.class, String.class));
+        } catch (SecurityException e) {
+            Log.error(e);
+            throw new NullPointerException("Could not add all of the methods: " + e.getLocalizedMessage());
+        } catch (NoSuchMethodException e) {
+            Log.error(e);
+            throw new NullPointerException("Could not add all of the methods: " + e.getLocalizedMessage());
         }
     }
     

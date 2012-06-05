@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.jbehave.core.steps.StepCreator.PendingStep;
-
 import com.inthinc.pro.automation.elements.ElementInterface.Calendar;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.WebDateFormat;
@@ -108,8 +106,7 @@ public class CalendarObject extends DropDown implements Calendar{
     }
     
     @Override
-    public Object[] getParameters(PendingStep step, Method method) {
-        String stepAsString = step.stepAsString();
+    public Object[] getParameters(String stepAsString, Method method) {
         
         Class<?>[] parameters = method.getParameterTypes();
         Object[] passParameters = new Object[parameters.length];

@@ -5,7 +5,6 @@ import static java.util.Arrays.asList;
 import java.awt.event.KeyEvent;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.Aliases;
@@ -26,7 +26,6 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.openqa.selenium.WebDriver;
-import org.springframework.util.ClassUtils;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.Assert;
@@ -125,9 +124,9 @@ public abstract class MasterTest {
     private static Set<Annotation> getAnnotations(Method method){
         Set<Annotation> ann = new HashSet<Annotation>();
         ann.addAll(asList(method.getAnnotations()));
-        for (Class<?> interfaces : ClassUtils.getAllInterfacesForClass(method.getDeclaringClass())){
+        for (Object interfaces : ClassUtils.getAllInterfaces(method.getDeclaringClass())){
             try {
-                Method superMethod = interfaces.getMethod(method.getName(), method.getParameterTypes());
+                Method superMethod = ((Class<?>)interfaces).getMethod(method.getName(), method.getParameterTypes());
                 ann.addAll(asList(superMethod.getAnnotations()));
             } catch (SecurityException e) {
                 Log.debug(e);
@@ -416,30 +415,33 @@ public abstract class MasterTest {
         return myUser.get();
     }
 
-    public Object[] getParameters(PendingStep step, Method method) throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    public Object[] getParameters(String stepAsString, Method method) throws NoSuchMethodException{
         try {
             Class<?>[] parameters = method.getParameterTypes();
             Object[] passParameters = new Object[parameters.length];
-            String stepAsString = step.stepAsString();
             
             for (int i=0;i<parameters.length;i++){
                 Class<?> next = parameters[i];
-                if (Boolean.class.isAssignableFrom(next)){
-                    passParameters[i] = checkBoolean(step.stepAsString());
-                } else if (Integer.class.isAssignableFrom(next)) {
+                if (next.isPrimitive()){
+                    next = ClassUtils.primitiveToWrapper(next);
+                }
+                if (next.equals(Boolean.class)) {
+                    passParameters[i] = checkBoolean(stepAsString);
+                } else if (next.equals(Integer.class)) {
                     Integer param = AutomationNumberManager.extractXNumber(stepAsString, 1);
                     passParameters[i] = param == null || param == 0 ? 1 : param;
                 } else {
+                    next = String.class;
                     passParameters[i] = getComparator(stepAsString);    
                 }
-                if (passParameters[i] == null){
-                    throw new NoSuchMethodError("We are missing parameters for " 
-                                + method.getName() + ", working on step " + step.stepAsString());
+                if (passParameters[i] == null || !passParameters[i].getClass().equals(next)){
+                    throw new NoSuchMethodException("We are missing parameters for " 
+                                + method.getName() + ", working on step " + stepAsString);
                 }
             }
             return passParameters;
         } catch (NullPointerException e){
-            throw new NoSuchMethodException("Could not find a method for step: " + step.stepAsString());
+            throw new NoSuchMethodException("Could not find a method for step: " + stepAsString);
         }
     }
 
