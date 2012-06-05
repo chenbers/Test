@@ -52,7 +52,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final String imeiRegex = "[0-9]{15}";
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 6, 9};
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 6};
     private static final List<String> CHOOSE_VEHICLE_COLUMNS;
     static
     {
@@ -176,7 +176,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     @Override
     protected List<DeviceView> loadItems()
     {
-/*        
+        
         // get the devices
         final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
         // convert the Devices to DeviceViews
@@ -188,26 +188,27 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
        
         return items;
-*/
-        
-        return null;
+
+
+       // for pagination version
+//        return null;
     }
 
-    // TODO: CJ MOVED THIS FROM loadItems() to here and added refreshItems override -- TEST THIS!!! 
-    public void initBean()
-    {
-        super.initBean();
-        loadSupportData();
-        vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
-    }
-    
-    public void refreshItems()
-    {
-        super.refreshItems();
-        loadSupportData();
-        vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
-    }
-    
+    // TODO: CJ MOVED THIS FROM loadItems() to here and added refreshItems override (Pagination version) 
+//    public void initBean()
+//    {
+//        super.initBean();
+//        loadSupportData();
+//        vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
+//    }
+//    
+//    public void refreshItems()
+//    {
+//        super.refreshItems();
+//        loadSupportData();
+//        vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
+//    }
+//    
     @SuppressWarnings("unchecked")
     private void loadSupportData(){
         
