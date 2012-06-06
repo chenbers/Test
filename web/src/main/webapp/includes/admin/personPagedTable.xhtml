@@ -118,7 +118,7 @@
       </h:outputText>
     </rich:column>
     
-    <rich:column id="displayName" rendered="#{personBean.tableColumns['locale'].visible}" sortBy="#{item.locale.displayName}">
+    <rich:column id="displayName" rendered="#{personBean.tableColumns['locale'].visible}" sortBy="#{locale}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_locale}" /></f:facet>
       <h:outputText value="#{item.locale.displayName}" />
     </rich:column>
@@ -130,29 +130,29 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_fuelEfficiencyType}" /></f:facet>
       <h:outputText value="#{messages[item.fuelEfficiencyType]}" />
     </rich:column>
-    <rich:column id="description" rendered="#{personBean.tableColumns['driver_status'].visible}" sortBy="#{item.driver.status.description}">
+    <rich:column id="description" rendered="#{personBean.tableColumns['driver_status'].visible}" >
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
       <c:set var="status" value="status#{item.driver.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
-    <rich:column id="license" rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{item.driver.license}">
+    <rich:column id="license" rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{driver_license}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_license}" /></f:facet>
       <h:outputText value="#{item.driver.license}" />
     </rich:column>
-    <rich:column id="licenseClass" rendered="#{personBean.tableColumns['driver_licenseClass'].visible}" sortBy="#{item.driver.licenseClass}">
+    <rich:column id="licenseClass" rendered="#{personBean.tableColumns['driver_licenseClass'].visible}" sortBy="#{driver_licenseClass}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_licenseClass}" /></f:facet>
       <h:outputText value="#{item.driver.licenseClass}" />
     </rich:column>
-    <rich:column id="state" rendered="#{personBean.tableColumns['driver_state'].visible}" sortBy="#{item.driver.state}">
+    <rich:column id="state" rendered="#{personBean.tableColumns['driver_state'].visible}" sortBy="#{driver_state}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_state}" /></f:facet>
       <h:outputText value="#{item.driver.state.name}" />
     </rich:column>
-    <rich:column id="expiration" rendered="#{personBean.tableColumns['driver_expiration'].visible}" sortBy="#{item.driver.expiration}">
+    <rich:column id="expiration" rendered="#{personBean.tableColumns['driver_expiration'].visible}" sortBy="#{driver_expiration}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_expiration}" /></f:facet>
       <h:outputText value="#{item.driver.expiration}">
         <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" />
       </h:outputText>
     </rich:column>
-    <rich:column id="certification" rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{item.driver.certifications}">
+    <rich:column id="certification" rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{driver_certifications}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_certifications}" /></f:facet>
       <h:outputText value="#{item.driver.certifications}" />
     </rich:column>
@@ -160,13 +160,13 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_dot}" /></f:facet>
       <h:outputText value="#{messages[item.driver.dot]}" />
     </rich:column>
-    <rich:column id="RFID" rendered="#{personBean.tableColumns['driver_RFID'].visible}" sortBy="#{item.driver.RFID}">
+    <rich:column id="RFID" rendered="#{personBean.tableColumns['driver_RFID'].visible}" sortBy="#{driver_RFID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_RFID}" /></f:facet>
       <h:outputText value="#{item.driver.RFID}">
         <f:converter converterId="HexConverter" />
       </h:outputText>
     </rich:column>
-    <rich:column id="teamName" rendered="#{personBean.tableColumns['driver_groupID'].visible}" sortBy="#{item.team.name}">
+    <rich:column id="teamName" rendered="#{personBean.tableColumns['driver_groupID'].visible}" sortBy="#{driver_groupID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_groupID}" /></f:facet>
       <h:outputText value="#{item.team.name}" />
     </rich:column>
