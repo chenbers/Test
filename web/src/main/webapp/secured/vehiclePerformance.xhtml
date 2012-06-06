@@ -122,6 +122,7 @@
 	<rich:panel id="mapPopups">
 
       	<h:form id="tripsMapForm">
+		<a4j:queue requestDelay="500" />
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
@@ -176,6 +177,7 @@
 <div id="wrapper">
 
 <h:form id="vehiclePerformanceBreadCrumb">
+		<a4j:queue requestDelay="500" />
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
@@ -220,6 +222,7 @@
 						<span class="overall">#{messages.vehicle_overallscore}</span>
 						<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
+							<a4j:queue requestDelay="500" />
 							<span class="panel_links_ico" style="right: 30px;">
 								<a4j:status id="dateLinksStatus" for="dateLinksForm_region">
 									<f:facet name="start">
@@ -547,6 +550,7 @@
 						</span>
 						<span class="panel_links">
 						   <a4j:form id="reqGPSLocForm" style="float:left;">
+							  <a4j:queue requestDelay="500" />
 						   	  <a4j:commandLink action="#{vehiclePerformanceBean.deviceBean.requestGPSLocation}" value="#{messages.GPS_get_location}" rendered="#{vehiclePerformanceBean.deviceBean.waysmart}" oncomplete="javascript:Richfaces.showModalPanel('GPSRequested')"/>
 						   </a4j:form>
 						   <rich:spacer width="5"/>
@@ -690,9 +694,11 @@
 </table>
 </div>
 					<a4j:form id="dispatchForm">
+						<a4j:queue requestDelay="500" />
 								<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>					
 					</a4j:form>
 	<a4j:form id="bubbleForm">
+		<a4j:queue requestDelay="500" />
 		<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
 			<a4j:actionparam name="eventId" assignTo="#{vehiclePerformanceBean.selectedViolationID}"/>
 		</a4j:jsFunction>
