@@ -128,7 +128,7 @@
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.gender}" id="editPerson-gender" disabled="#{!personBean.item.userEditable  or personBean.userInfoDisabled }" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
-                              <f:selectItem itemLabel="" />
+<!--                               <f:selectItem itemLabel="" />  -->
                               <f:selectItems value="#{personBean.genders}" />
                             </h:selectOneMenu>
                           </td>
