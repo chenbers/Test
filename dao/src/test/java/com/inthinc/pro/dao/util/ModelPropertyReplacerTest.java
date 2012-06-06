@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
@@ -10,9 +11,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.junit.Before;
@@ -62,6 +65,26 @@ public class ModelPropertyReplacerTest {
 		replaceLastLoc.setVehicleID(new Integer(1));
 	}
 	@Test
+	public void nullTest(){
+		 
+		controlLatLng = new LatLng(45.0000d, -111.11111d);
+		//null properties
+		replacelLatLng = null; 
+		LatLng nullLatLng = null;
+		ModelPropertyReplacer.compareAndReplace(nullLatLng, replacelLatLng);
+		assertEquals(null,nullLatLng);
+	}
+	@Test
+	public void originalNullTest(){
+		 
+		controlLatLng = new LatLng(45.0000d, -111.11111d);
+		//null properties
+		replacelLatLng = new LatLng(56.0000d, -111.11111d);; 
+		LatLng nullLatLng = null;
+		ModelPropertyReplacer.compareAndReplace(nullLatLng, replacelLatLng);
+		assertEquals(null,nullLatLng);
+	}
+	@Test
 	public void simplestTest(){
 		 
 		controlLatLng = new LatLng(45.0000d, -111.11111d);
@@ -93,6 +116,20 @@ public class ModelPropertyReplacerTest {
 		
 		controlLastLoc.setTime(replaceLastLoc.getTime());
 		
+		ModelPropertyReplacer.compareAndReplace(originalLastLoc, replaceLastLoc);
+		
+		assertEquals(controlLastLoc.getDriverID(),originalLastLoc.getDriverID());
+		assertEquals(controlLastLoc.getLoc(),originalLastLoc.getLoc());
+		assertEquals(controlLastLoc.getTime(),originalLastLoc.getTime());
+		assertEquals(controlLastLoc.getVehicleID(),originalLastLoc.getVehicleID());
+	}
+	@Test
+	public void lastLocationNullTest(){
+		 
+		replacelLatLng = new LatLng(56.0000d, -111.11111d);
+		replaceLastLoc.setLoc(replacelLatLng);
+		controlLastLoc.setLoc(replacelLatLng);
+		originalLastLoc.setLoc(null);
 		ModelPropertyReplacer.compareAndReplace(originalLastLoc, replaceLastLoc);
 		
 		assertEquals(controlLastLoc.getDriverID(),originalLastLoc.getDriverID());
@@ -191,6 +228,31 @@ public class ModelPropertyReplacerTest {
         && !(SimpleType.valueOf(itemClass) != null && SimpleType.valueOf(itemClass).getSimpleTypes().contains(propertyClass))
         && !Locale.class.isAssignableFrom(propertyClass);
     }
+    
+    @Test
+    public void testIsReplaceCandidate(){
+    	Set<Object> compared = new HashSet<Object>();
+		replacelLatLng = new LatLng(56.0000d, -111.11111d);; 
+		replaceLastLoc.setLoc(replacelLatLng);
+
+    	assertTrue(isReplaceCandidate(originalLastLoc.getLoc(), replaceLastLoc.getLoc(), compared));
+    	
+    	compared.add(originalLastLoc.getLoc());
+    	assertFalse(isReplaceCandidate(originalLastLoc.getLoc(), replaceLastLoc.getLoc(), compared));
+    	
+    	compared = new HashSet<Object>();
+		replacelLatLng = new LatLng(45.0000d, -111.11111d);; 
+		replaceLastLoc.setLoc(replacelLatLng);
+    	assertFalse(isReplaceCandidate(originalLastLoc.getLoc(), replaceLastLoc.getLoc(), compared));
+    	assertTrue(isReplaceCandidate(null, replaceLastLoc.getLoc(), compared));
+    	
+    }
+    //Copy of
+    private static boolean isReplaceCandidate(Object itemProperty, Object replaceProperty, Set<Object> compared){
+    	return ((itemProperty != null) && !compared.contains(itemProperty) && !itemProperty.equals(replaceProperty))
+    			|| (itemProperty == null);
+    }
+
     //from ModelPropertyReplace
 	@Test
 	public void personTest(){

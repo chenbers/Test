@@ -27,11 +27,12 @@ public class ModelPropertyReplacer {
      * @throws BeanInitializationException
      * @throws FatalBeanException
      */
-    public static void compareAndReplace(Object item, Object replacefrom)
+    public static void compareAndReplace(Object item, Object replaceFrom)
     {
+    	if ((item == null) || (replaceFrom == null)) return;
         final HashSet<Object> compared = new HashSet<Object>();
         compared.add(item);
-        compareAndReplace(item, replacefrom, compared);
+        compareAndReplace(item, replaceFrom, compared);
     }
     /**
      * Deeply compares all properties of the item to the given replace item, replacing the property of the item if they aren't equal and the replacement item is not null. 
@@ -66,18 +67,15 @@ public class ModelPropertyReplacer {
                         if (replaceProperty != null)
                         {
 	                        Object itemProperty = itemRead.invoke(item, new Object[0]);
-	                        if ((itemProperty == null) || !itemProperty.equals(replaceProperty))
-	                        {
-	                            if (compared.contains(itemProperty))
-	                                continue;
+	                        if (isReplaceCandidate(itemProperty, replaceProperty, compared)){
 
                                 final Class<?> propertyClass = itemPropertyDescriptor.getPropertyType();
                                 if (propertyClass != null)
                                 {
-                                    // recursive compare
-                                	if(notASimpleClass(item.getClass(), propertyClass)){
-                                        compared.add(itemProperty);
-                                        compareAndReplace(itemProperty, replaceProperty, compared);
+                                    // recursive compare, but if the item is null just replace with the whole replaceFrom property
+                                	if((itemProperty != null) && notASimpleClass(item.getClass(), propertyClass)){
+                            			compared.add(itemProperty);
+                            			compareAndReplace(itemProperty, replaceProperty, compared);
                                     }
                                 	else{
 	                                    // replace the item property with replace property
@@ -94,6 +92,10 @@ public class ModelPropertyReplacer {
         {
             throw new FatalBeanException("Could not compare and init properties", ex);
         }
+    }
+    private static boolean isReplaceCandidate(Object itemProperty, Object replaceProperty, Set<Object> compared){
+    	return ((itemProperty != null) && !compared.contains(itemProperty) && !itemProperty.equals(replaceProperty))
+    			|| (itemProperty == null);
     }
     private static boolean notASimpleClass(Class<?> itemClass, Class<?> propertyClass){
     	return !BeanUtils.isSimpleProperty(propertyClass) && !propertyClass.isEnum() && !Collection.class.isAssignableFrom(propertyClass) && !Map.class.isAssignableFrom(propertyClass)
