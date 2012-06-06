@@ -54,10 +54,7 @@
 
 
     <a4j:region id="admin-table-region">
-<!-- 
-    <a4j:form id="admin-table-form">
       <a4j:queue name="itemSelectQueue" ignoreDupResponses="false" />
- -->      
       <div class="panel_w">
         <div class="panel_content">
         <h:form id="#{context}-form">	
@@ -104,11 +101,6 @@
 
           <div class="spacer"></div>
 
-         <!--
-         
-          <a4j:outputPanel id="tablePanel">
-          <a4j:region>
-         -->
           <div class="datagrid_panel" style="width: 790px">
             <rich:dataTable id="#{context}" value="#{bean.table.model}" var="item"  
                 styleClass="datagrid filterabledatagrid"
@@ -144,20 +136,13 @@
                                           reRender="#{context}-form:#{context},#{context}-form:header"
 										  requestDelay="200" eventsQueue="pagerQueue"  
                                           page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
-<!--           
-          </a4j:region>
-          </a4j:outputPanel>
- -->          
           </h:form>
         </div>
       </div>
-<!-- 
-    </a4j:form>
- -->
    
     <ui:include src="../confirmDelete.xhtml">
       <ui:param name="deleteBean" value="#{editorBean}" />
-      <ui:param name="reRender" value="#{context}-form:header,#{context}-form:{context},#{context}-form:#{context}-dataTableScroller" />
+      <ui:param name="reRender" value="header,#{context},#{context}-dataTableScroller" />
       <ui:param name="deleteItems" value="#{editorBean.selectedItems}" />
       <ui:param name="context" value="#{context}" />
     </ui:include>

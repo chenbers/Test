@@ -647,6 +647,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public String delete() {
         final String result = super.delete();
         notifyChangeListeners();
+        // forces the paginated table to reinit
+        super.columnsChanged();
         return result;
     }
 
