@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
@@ -42,12 +43,12 @@ public class AccountCreationITCase extends BaseITCase {
     private static int randomInt = RandomUtils.nextInt(99999);
     
     @Test 
-//    @Ignore
+    @Ignore
     public void accountDummyTest() throws Exception {
         
     }
     @Test 
-//    @Ignore
+    @Ignore
     public void accountTest() throws Exception {
     	
         // TODO: This test really needs some help. I'll come back to it, just need to get something going right now.
