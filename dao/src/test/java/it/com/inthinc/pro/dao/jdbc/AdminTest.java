@@ -74,10 +74,11 @@ public class AdminTest extends BaseJDBCTest {
 
     @Test
     public void comparePersonTest() {
-        Integer groupID = 1;
+        Integer groupID = itData.fleetGroup.getGroupID();
+        Integer acctID = itData.account.getAccountID();
         GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
         groupHessianDAO.setSiloService(siloService);
-        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(groupID));
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(acctID));
         List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(groupID);
 
         PersonHessianDAO personHessianDAO = new PersonHessianDAO();
@@ -99,10 +100,10 @@ public class AdminTest extends BaseJDBCTest {
 
         String personIgnoreFields[] = {
         // person ok to ignore, unused fields
-                "addressID", "dept", "height", "weight", "modified", "driver", "user", "driverID", "userID", };
+                "addressID", "dept", "height", "weight", "modified", "driver", "user", "driverID", "userID"};
         String userIgnoreFields[] = { "person", "modified", "selectedMapLayerIDs",
         // TODO: talk to Matt about these.
-                "lastLogin", "passwordDT", };
+                "lastLogin", "passwordDT"};
         String driverIgnoreFields[] = { "person", "modified", };
         for (Person hessianPerson : hessianPersonList) {
             boolean found = false;
