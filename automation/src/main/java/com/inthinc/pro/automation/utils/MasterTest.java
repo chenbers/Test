@@ -400,6 +400,7 @@ public abstract class MasterTest {
         return results;
     }
 
+    @Given("I hit the Enter Key")
     @When("I hit the Enter Key")
     public void enterKey() {
         getSelenium().enterKey();
@@ -469,6 +470,7 @@ public abstract class MasterTest {
     public void givenIAmLoggedIn(){}
     
     @Given("I log in")
+    @When("I log in")
     @Composite(steps = {
             "Given I am on the Login page", 
             "When I type my user name into the Username field", 
@@ -498,6 +500,7 @@ public abstract class MasterTest {
         getSelenium().open(url);
     }
 
+    @Given("I click the bookmark I just added")
     @When("I click the bookmark I just added")
     public void openSavedPage() {
         open(savedPage.get());
