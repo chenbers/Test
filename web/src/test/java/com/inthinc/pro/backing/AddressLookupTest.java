@@ -34,6 +34,7 @@ public class AddressLookupTest extends BaseBeanTest{
 	}
 
     @Test
+    @Ignore
     public void addressLookupZoneTest(){
         ZoneHessianDAO zoneHessianDAO = new ZoneHessianDAO();
         zoneHessianDAO.setSiloService(new SiloServiceCreator().getService());
