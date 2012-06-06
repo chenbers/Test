@@ -190,7 +190,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 				person.setWarn(rs.getObject("p.warn") == null ? null : rs.getInt("p.warn"));
 				person.setCrit(rs.getObject("p.crit") == null ? null : rs.getInt("p.crit"));
 				Integer tzID = rs.getInt("p.tzID");
-//				person.setTimeZone(tzID != null ? TimeZone.getTimeZone(SupportedTimeZones.lookup(tzID)) : TimeZone.getDefault());
+				person.setTimeZone(tzID != null ? TimeZone.getTimeZone(SupportedTimeZones.lookup(tzID)) : TimeZone.getDefault());
 				person.setEmpid(rs.getString("p.empID"));
 				person.setReportsTo(rs.getString("p.reportsTo"));
 				person.setTitle(rs.getString("p.title"));
@@ -240,7 +240,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                     driver.setStatus(Status.valueOf(rs.getInt("d.status")));
                     driver.setLicense(rs.getString("d.license"));
                     driver.setLicenseClass(rs.getString("d.class"));
-//                    driver.setState(States.getStateById(rs.getInt("d.stateID")));
+                    driver.setState(States.getStateById(rs.getInt("d.stateID")));
                     driver.setExpiration(rs.getDate("d.expiration", calendar));
                     driver.setCertifications(rs.getString("d.certs"));
                     driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
