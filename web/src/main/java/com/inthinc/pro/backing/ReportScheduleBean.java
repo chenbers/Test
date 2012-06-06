@@ -747,15 +747,23 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public Boolean getEnableDeliverToGroupManager(){
         Boolean result = Boolean.FALSE;
         if (getItem() == null || getItem().getReport() == null)
-            result = Boolean.FALSE;
-        
-        if(REPORT_FILTER_FOR_MANAGER_NOTIFICATION.contains(getItem().getReport())){
-            result = Boolean.TRUE;
-        }else{
-            getItem().setDeliverToManagers(Boolean.FALSE);
+            return Boolean.FALSE;
+       
+        switch (getItem().getReport().getEntityType()) {
+            case ENTITY_GROUP:
+                result = Boolean.TRUE;
+                break;
+            case ENTITY_GROUP_AND_EXPIRED:
+            case ENTITY_GROUP_OR_DRIVER:
+                if(getItem().getParamType().equals(ReportParamType.GROUPS)){
+                    result = Boolean.TRUE;
+                }
+                break;
+            default:
+                getItem().setDeliverToManagers(Boolean.FALSE);
+                break;
         }
         if(getItem() != null && getItem().getReport() != null){
-            logger.debug(String.format("Report Groups Filter %s", REPORT_FILTER_FOR_MANAGER_NOTIFICATION.toString()));
             logger.debug(String.format("notify group managers for report [%s] : %s", getItem().getReport().toString(), result.toString()));
         }
         return result;
