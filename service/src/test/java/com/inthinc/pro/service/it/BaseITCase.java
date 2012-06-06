@@ -36,7 +36,7 @@ public abstract class BaseITCase implements ApplicationContextAware {
             HttpClientParams params = new HttpClientParams();
             params.setAuthenticationPreemptive(true);
             httpClient = new HttpClient(params);
-            Credentials defaultcreds = new UsernamePasswordCredentials("mraby", "password");
+            Credentials defaultcreds = new UsernamePasswordCredentials("jhoward", "password");
             httpClient.getState().setCredentials(new AuthScope(domain, port, AuthScope.ANY_REALM), defaultcreds);
             clientExecutor = new ApacheHttpClientExecutor(httpClient);
 
