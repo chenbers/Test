@@ -72,7 +72,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		columnMap.put("measurementType", "p.measureType");
 		columnMap.put("fuelEfficiencyType", "p.fuelEffType");
 		columnMap.put("user_status", "u.status");
-		columnMap.put("user_username", "u.username");
+		columnMap.put("user_username", "username");
 		columnMap.put("user_groupID", "u.groupID");
 		columnMap.put("user_role", "u.role");
 		columnMap.put("driver_status", "d.status");
@@ -144,7 +144,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		StringBuilder personSelect = new StringBuilder();
 		personSelect
 				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
-				.append("u.userID, u.status, u.username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
+				.append("u.userID, u.status, convert(u.username using utf8) as username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
 				.append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
 				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
 		
@@ -162,10 +162,10 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 
 
 		/***SORTING***/
-		if(pageParams.getSort() == null || pageParams.getSort().getField().isEmpty() || pageParams.getSort().getOrder() == null)
+		if(pageParams.getSort() == null || pageParams.getSort().getField().isEmpty())
 			personSelect.append(" ORDER BY p.first ASC");
-		else
-			personSelect.append(" ORDER BY " + columnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
+		else 
+		    personSelect.append(" ORDER BY " + columnMap.get(pageParams.getSort().getField()) + " " + (pageParams.getSort().getOrder() == SortOrder.ASCENDING ? "ASC" : "DESC"));
 		
 		/***PAGING***/
 		if(pageParams.getStartRow() != null && pageParams.getEndRow() != null)
@@ -190,7 +190,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 				person.setWarn(rs.getObject("p.warn") == null ? null : rs.getInt("p.warn"));
 				person.setCrit(rs.getObject("p.crit") == null ? null : rs.getInt("p.crit"));
 				Integer tzID = rs.getInt("p.tzID");
-				person.setTimeZone(tzID != null ? TimeZone.getTimeZone(SupportedTimeZones.lookup(tzID)) : TimeZone.getDefault());
+//				person.setTimeZone(tzID != null ? TimeZone.getTimeZone(SupportedTimeZones.lookup(tzID)) : TimeZone.getDefault());
 				person.setEmpid(rs.getString("p.empID"));
 				person.setReportsTo(rs.getString("p.reportsTo"));
 				person.setTitle(rs.getString("p.title"));
@@ -216,7 +216,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                     User user = new User();
                     user.setUserID(userID);
                     user.setStatus(Status.valueOf(rs.getInt("u.status")));
-                    user.setUsername(rs.getString("u.username"));
+                    user.setUsername(rs.getString("username"));
                     user.setGroupID(rs.getInt("u.groupID"));
                     user.setMapType(GoogleMapType.valueOf(rs.getInt("u.mapType")));
                     user.setPassword(rs.getString("u.password"));
@@ -240,7 +240,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                     driver.setStatus(Status.valueOf(rs.getInt("d.status")));
                     driver.setLicense(rs.getString("d.license"));
                     driver.setLicenseClass(rs.getString("d.class"));
-                    driver.setState(States.getStateById(rs.getInt("d.stateID")));
+//                    driver.setState(States.getStateById(rs.getInt("d.stateID")));
                     driver.setExpiration(rs.getDate("d.expiration", calendar));
                     driver.setCertifications(rs.getString("d.certs"));
                     driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
