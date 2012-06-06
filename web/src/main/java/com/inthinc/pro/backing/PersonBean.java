@@ -1151,6 +1151,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	        		}
 	        		String propertyName = entry.getKey().substring(7);
 	        		BeanUtil.copyProperty(sourceDriver, updateDriverTemplate, propertyName);
+	        		// special case for clearing out the state
+	        		if (propertyName.equals("state") && updateDriverTemplate.getState() == null) {
+	        			updateDriverTemplate.setState(new State(0, "", ""));
+	        		}
 	        	}
 	        	else {
 	        		if (updatePersonTemplate == null) {

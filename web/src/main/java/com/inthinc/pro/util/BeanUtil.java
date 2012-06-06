@@ -436,6 +436,15 @@ public class BeanUtil
             Object [] nullArgs = {};
             Object property = propertyDescriptor.getReadMethod().invoke(source, nullArgs);
             
+            if (property == null) {
+            	if (propertyDescriptor.getPropertyType().isAssignableFrom(Date.class)) {
+            		property = new Date(0);
+            	}
+            	else if (propertyDescriptor.getPropertyType().isAssignableFrom(String.class)) {
+            		property = new String("");
+            	}
+            }
+            
             PropertyDescriptor writePropertyDescriptor = BeanUtils.getPropertyDescriptor(dest.getClass(), propertyName);
             Method writeMethod = writePropertyDescriptor.getWriteMethod();
             writeMethod.invoke(dest, property);
