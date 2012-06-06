@@ -17,7 +17,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
-//@Ignore
+@Ignore
 public class AccountServiceITCaseTest extends BaseITCase {
     private static Logger logger = Logger.getLogger(AccountServiceITCaseTest.class);
 
