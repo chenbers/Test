@@ -279,7 +279,7 @@ public class AutoStoryRunner extends StoryRunner {
                 restart = true;
                 continue;
             }
-            generatePendingStepMethods(context, steps);
+//            generatePendingStepMethods(context, steps);
         }
     }
 

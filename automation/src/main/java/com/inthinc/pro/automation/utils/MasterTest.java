@@ -375,6 +375,9 @@ public abstract class MasterTest {
 
     @AfterScenario
     public void clearUser(){
+        if (rest.get() == null || myUser == null){
+            return;
+        }
         User isUpdated = rest.get().getObject(User.class, myUser.get().getUserID());
         if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
             return;
