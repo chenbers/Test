@@ -64,6 +64,8 @@ public class TempConversionUtil
             }
     
             Method getMethod = propertyDescriptors[i].getReadMethod();
+            if (getMethod == null)
+            	continue;
             Object value;
             try
             {
