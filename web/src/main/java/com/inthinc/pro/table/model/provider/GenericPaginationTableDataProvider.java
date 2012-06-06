@@ -63,6 +63,20 @@ public abstract class GenericPaginationTableDataProvider<T> implements Paginatio
 		}
 		return filters;
 	}
+	
+	protected List<TableFilterField> removeBlankFilters(List<TableFilterField> filters) {
+		List<TableFilterField>  newFilters = new ArrayList<TableFilterField>();
+		if (filters != null) {
+			for (TableFilterField filter : filters) {
+				if (filter.getFilter() == null || filter.getFilter().toString().isEmpty())
+					continue;
+				
+				newFilters.add(filter);
+			}
+		}
+		return newFilters;
+	}
+
 	public void setFilters(List<TableFilterField> filters) {
 		this.filters = filters;
 	}

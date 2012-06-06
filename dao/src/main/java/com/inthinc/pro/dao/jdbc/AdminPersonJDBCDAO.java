@@ -91,17 +91,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 	public Integer getCount(final List<Integer> groupIDs, final List<TableFilterField> filters) {
 		String personCount = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(filters != null && !filters.isEmpty()) {
-			StringBuilder countFilter = new StringBuilder();
-			for(TableFilterField filter : filters) {
-				if(filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
-					String paramName = "filter_"+columnMap.get(filter.getField());
-					countFilter.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
-					params.put(paramName, "%"+filter.getFilter()+"%");
-				}
-			}
-			personCount = personCount + countFilter.toString();
-		}
+		personCount = addFiltersToQuery(filters, personCount, params);
 		params.put("group_list", groupIDs);
         return getSimpleJdbcTemplate().queryForInt(personCount, params);
 	}
@@ -116,7 +106,11 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 	}
 	
 	public List<PersonIdentifiers> getFilteredPersonIDs(final List<Integer> groupIDs, final List<TableFilterField> filters) {
-		return getSimpleJdbcTemplate().query(FILTERED_PERSON_IDS_SELECT, new ParameterizedRowMapper<PersonIdentifiers>() {
+		String personIdentifiers = FILTERED_PERSON_IDS_SELECT;
+		Map<String, Object> params = new HashMap<String, Object>();
+		personIdentifiers = addFiltersToQuery(filters, personIdentifiers, params);
+		params.put("group_list", groupIDs);
+		return getSimpleJdbcTemplate().query(personIdentifiers, new ParameterizedRowMapper<PersonIdentifiers>() {
 			@Override
 			public PersonIdentifiers mapRow(ResultSet rs, int rowNum) throws SQLException {
 				PersonIdentifiers personIdentifiers = new PersonIdentifiers();
@@ -125,7 +119,23 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 				personIdentifiers.setDriverID(rs.getObject("d.driverID") == null ? null : rs.getInt("d.driverID"));
 				return personIdentifiers;
 			}			
-		} , new HashMap<String, Object>(){{put("group_list", groupIDs);}});
+		} , params);
+	}
+
+	private String addFiltersToQuery(final List<TableFilterField> filters,
+			String queryStr, Map<String, Object> params) {
+		if(filters != null && !filters.isEmpty()) {
+			StringBuilder countFilter = new StringBuilder();
+			for(TableFilterField filter : filters) {
+				if(filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
+					String paramName = "filter_"+columnMap.get(filter.getField());
+					countFilter.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
+					params.put(paramName, "%"+filter.getFilter()+"%");
+				}
+			}
+			queryStr = queryStr + countFilter.toString();
+		}
+		return queryStr;
 	}
 	
 	public List<Person> getPeople(final List<Integer> groupIDs, final PageParams pageParams) {

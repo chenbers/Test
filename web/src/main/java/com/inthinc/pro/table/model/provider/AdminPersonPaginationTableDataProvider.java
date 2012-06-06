@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.backing.PersonBean;
 import com.inthinc.pro.backing.PersonBean.PersonView;
 import com.inthinc.pro.dao.jdbc.AdminPersonJDBCDAO;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.pagination.PageParams;
 
 public class AdminPersonPaginationTableDataProvider extends AdminPaginationTableDataProvider<PersonBean.PersonView> {
@@ -19,7 +21,7 @@ public class AdminPersonPaginationTableDataProvider extends AdminPaginationTable
 
     @Override
     public List<PersonBean.PersonView> getItemsByRange(int firstRow, int endRow) {
-        PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
+        PageParams pageParams = new PageParams(firstRow, endRow, getSort(), removeBlankFilters(getFilters()));
         List<Person> personList = adminPersonJDBCDAO.getPeople(personBean.getGroupIDList(), pageParams);
         List<PersonView> items = new ArrayList<PersonView>();
         for (final Person person : personList) {
@@ -31,12 +33,16 @@ public class AdminPersonPaginationTableDataProvider extends AdminPaginationTable
 
     @Override
     public int getRowCount() {
-        Integer rowCount = adminPersonJDBCDAO.getCount(personBean.getGroupIDList(), getFilters());
-        logger.info("getRowCount returns: " + rowCount + " for groups " + personBean.getGroupIDList() + " filters " + getFilters().toString());
-		personBean.initPersonIdentifierList(adminPersonJDBCDAO.getFilteredPersonIDs(personBean.getGroupIDList(), getFilters()));
-
+        Integer rowCount = adminPersonJDBCDAO.getCount(personBean.getGroupIDList(), removeBlankFilters(getFilters()));
+        logger.info("getRowCount returns: " + rowCount + " for groups " + personBean.getGroupIDList() + " filters " + removeBlankFilters(getFilters()).toString());
+		List<PersonIdentifiers> personIdentifierList = adminPersonJDBCDAO.getFilteredPersonIDs(personBean.getGroupIDList(), removeBlankFilters(getFilters()));
+		if (rowCount != personIdentifierList.size()) {
+			throw new ProDAOException("row count from adminPersonJDBCDAO.getCount should match list count from adminPersonJDBCDAO.getFilteredPersonIDs groupIDs: " + personBean.getGroupIDList() + " filters: " + removeBlankFilters(getFilters()) );
+		}
+		personBean.initPersonIdentifierList(personIdentifierList);
         return rowCount;
     }
+    
 
 
     public PersonBean getPersonBean() {

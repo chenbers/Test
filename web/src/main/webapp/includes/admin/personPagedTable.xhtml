@@ -20,7 +20,7 @@
         <h:outputText value="#{item.fullName}" />
       </a4j:htmlCommandLink>
     </rich:column>
-    <rich:column id="status" rendered="#{personBean.tableColumns['user_status'].visible}" sortBy="#{user_status}" filterBy="#{user_status}" >
+    <rich:column id="status" rendered="#{personBean.tableColumns['user_status'].visible}" sortBy="#{user_status}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_status}" /></f:facet>
       <c:set var="status" value="status#{item.user.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
@@ -28,11 +28,11 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_username}" /></f:facet>
       <h:outputText value="#{item.user.username}" />
     </rich:column>
-    <rich:column id="groupName" rendered="#{personBean.tableColumns['user_groupID'].visible}" sortBy="#{user_groupID}" filterBy="#{user_groupID}">
+    <rich:column id="groupName" rendered="#{personBean.tableColumns['user_groupID'].visible}" sortBy="#{user_groupID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_groupID}" /></f:facet>
       <h:outputText value="#{item.group.name}" />
     </rich:column>
-    <rich:column id="role" rendered="#{personBean.tableColumns['user_role'].visible}" sortBy="#{user_role}" filterBy="#{user_role}">
+    <rich:column id="role" rendered="#{personBean.tableColumns['user_role'].visible}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_role}" /></f:facet>
       <h:outputText value="#{item.rolesString}" />
     </rich:column>
