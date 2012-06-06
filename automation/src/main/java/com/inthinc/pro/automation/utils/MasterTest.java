@@ -457,9 +457,9 @@ public abstract class MasterTest {
 
     @Given("I am logged in $params")
     @Composite(steps = {
-            "Given I am using $params for my user",
+            "Given I am using <params> for my user",
             "Given I log in"})
-    public void givenIAmLoggedInAs(){
+    public void givenIAmLoggedInAs(@Named("params")String params){
     }
     
     @Given("I am logged in")

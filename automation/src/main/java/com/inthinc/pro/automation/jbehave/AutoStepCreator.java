@@ -35,12 +35,24 @@ public class AutoStepCreator extends StepCreator {
     private StepMonitor stepMonitor;
     private boolean dryRun = false;
     private Object instance;
+    private final StepMatcher stepMatcher;
 
     public AutoStepCreator(Object stepsType, InjectableStepsFactory stepsFactory, ParameterConverters parameterConverters, StepMatcher stepMatcher, StepMonitor stepMonitor) {
         super((Class<?>) ((stepsType instanceof Class<?>) ? stepsType : stepsType.getClass())
         , stepsFactory, parameterConverters, new ParameterControls(), stepMatcher, stepMonitor);
         this.stepMonitor = stepMonitor;
         this.instance = stepsType;
+        this.stepMatcher = stepMatcher;
+    }
+    
+    @Override
+    public Map<String, String> matchedParameters(final Method method, final String stepAsString, 
+            final String stepWithoutStartingWord, final Map<String, String> namedParameters) {
+        Map<String, String> temp = new HashMap<String, String>();
+        if (stepMatcher.find(stepWithoutStartingWord)){
+            temp = super.matchedParameters(method, stepAsString, stepWithoutStartingWord, namedParameters);
+        }
+        return temp;
     }
     
     @Override
