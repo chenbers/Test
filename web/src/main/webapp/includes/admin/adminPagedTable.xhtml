@@ -103,7 +103,6 @@
 
           <div class="datagrid_panel" style="width: 790px">
             <rich:dataTable id="#{context}" value="#{bean.table.model}" var="item"  
-            	onkeypress="if (event.keyCode == 13) {document.getElementById('personTable-form:personTable:namefsp').blur();return false;} else {return true;}"
                 styleClass="datagrid filterabledatagrid"
 	        	reRender="#{context}-form:header,#{context}-form:#{context}-dataTableScroller"
                 rowClasses="tableOdd,tableEven"
@@ -155,6 +154,13 @@
       <ui:param name="context" value="#{context}" />
     </ui:include>
     </a4j:region>
- 
+ <script>
+ 	jQuery(".rich-filter-input").keypress(function(){
+ 		if ( event.which == 13 ) {
+ 			this.blur();
+ 			return false;
+ 		}
+ 	});
+ </script>
 </ui:composition>
 
