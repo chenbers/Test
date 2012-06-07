@@ -57,7 +57,7 @@
       <a4j:queue name="itemSelectQueue" ignoreDupResponses="false" />
       <div class="panel_w">
         <div class="panel_content">
-        <a4j:form id="#{context}-form">	
+        <h:form id="#{context}-form">	
         
           <ul id="grid_nav" style="margin: 0;">
             <li class="l">
@@ -74,7 +74,7 @@
             <li class="l text">
 				<a4j:commandLink id="#{context}-adminTableEditColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
 					reRender="editColumnsForm:#{context}-editColumnsGrid">
-					#{messages.button_editColumns}
+					#{messages.button_editColumns}xx
 				</a4j:commandLink>
             </li>
             <li class="r text">
@@ -136,7 +136,7 @@
                                           reRender="#{context}-form:#{context},#{context}-form:header"
 										  requestDelay="200" eventsQueue="pagerQueue"  
                                           page="#{bean.table.pageData.currentPage}" renderIfSinglePage="false"/>
-          </a4j:form>
+          </h:form>
         </div>
       </div>
    
@@ -155,8 +155,15 @@
     </ui:include>
     </a4j:region>
  <script>
- 	jQuery(".rich-filter-input").keypress(function(){
- 		if ( event.which == 13 ) {
+ 	jQuery(".rich-filter-input").keypress(function(e){
+		var characterCode;
+   		if(e.which) {  
+   			characterCode = e.which; // firefox
+		}
+   		else{
+   			characterCode = event.keyCode; // ie
+   		}
+		if(characterCode == 13) {    				
  			this.blur();
  			return false;
  		}
