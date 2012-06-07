@@ -62,7 +62,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		columnMap.put("info", "p.info");
 		columnMap.put("warn", "p.warn");
 		columnMap.put("crit", "p.crit");
-		columnMap.put("timeZone", "p,tzID");
+		columnMap.put("timeZone", "p.tzID");
 		columnMap.put("empid", "p.empID");
 		columnMap.put("reportsTo", "p.reportsTo");
 		columnMap.put("title", "p.title");
