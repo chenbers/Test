@@ -211,47 +211,49 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
                 person.setSuffix(rs.getString("p.suffix"));
                 person.setStatus(Status.valueOf(rs.getInt("p.status")));
                 
+                person.setUser(null);
                 Integer userID= rs.getInt("u.userID");
                 if (userID != 0) {
-                    User user = new User();
-                    user.setUserID(userID);
-                    user.setStatus(Status.valueOf(rs.getInt("u.status")));
-                    user.setUsername(rs.getString("username"));
-                    user.setGroupID(rs.getInt("u.groupID"));
-                    user.setMapType(GoogleMapType.valueOf(rs.getInt("u.mapType")));
-                    user.setPassword(rs.getString("u.password"));
-                    user.setLastLogin(rs.getTimestamp("u.lastLogin"));
-                    user.setPasswordDT(rs.getTimestamp("u.passwordDT"));
-                    user.setPerson(person);
-                    user.setPersonID(person.getPersonID());
-                    person.setUser(user);
-                    user.setPerson(person);
-                }
-                else {
-                    person.setUser(null);
+                	Status status = Status.valueOf(rs.getInt("u.status"));
+                	if (status != Status.DELETED) {
+	                    User user = new User();
+	                    user.setUserID(userID);
+	                    user.setStatus(status);
+	                    user.setUsername(rs.getString("username"));
+	                    user.setGroupID(rs.getInt("u.groupID"));
+	                    user.setMapType(GoogleMapType.valueOf(rs.getInt("u.mapType")));
+	                    user.setPassword(rs.getString("u.password"));
+	                    user.setLastLogin(rs.getTimestamp("u.lastLogin"));
+	                    user.setPasswordDT(rs.getTimestamp("u.passwordDT"));
+	                    user.setPerson(person);
+	                    user.setPersonID(person.getPersonID());
+	                    person.setUser(user);
+	                    user.setPerson(person);
+                	}
                 }
 
                 
+                person.setDriver(null);
                 Integer driverID = rs.getInt("d.driverID");
                 if (driverID != 0) {
-                    Driver driver = new Driver();
-                    driver.setDriverID(driverID);
-                    driver.setGroupID(rs.getInt("d.groupID"));
-                    driver.setStatus(Status.valueOf(rs.getInt("d.status")));
-                    driver.setLicense(rs.getString("d.license"));
-                    driver.setLicenseClass(rs.getString("d.class"));
-                    driver.setState(States.getStateById(rs.getInt("d.stateID")));
-                    driver.setExpiration(rs.getDate("d.expiration", calendar));
-                    driver.setCertifications(rs.getString("d.certs"));
-                    driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
-                    driver.setBarcode(rs.getString("d.barcode"));
-                    driver.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
-                    driver.setRfid2(rs.getObject("d.rfid2")== null ? null : rs.getLong("d.rfid2"));
-                    person.setDriver(driver);
-                    driver.setPerson(person);
-                }
-                else {
-                    person.setDriver(null);
+                	Status status = Status.valueOf(rs.getInt("d.status"));
+                	if (status != Status.DELETED) {
+	                    Driver driver = new Driver();
+	                    driver.setDriverID(driverID);
+	                    driver.setGroupID(rs.getInt("d.groupID"));
+	                    driver.setStatus(status);
+	                    driver.setLicense(rs.getString("d.license"));
+	                    driver.setLicenseClass(rs.getString("d.class"));
+	                    driver.setState(States.getStateById(rs.getInt("d.stateID")));
+	                    driver.setExpiration(rs.getDate("d.expiration", calendar));
+	                    driver.setCertifications(rs.getString("d.certs"));
+	                    driver.setDot(RuleSetType.valueOf(rs.getInt("d.dot")));
+	                    driver.setBarcode(rs.getString("d.barcode"));
+	                    driver.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
+	                    driver.setRfid2(rs.getObject("d.rfid2")== null ? null : rs.getLong("d.rfid2"));
+	                    person.setDriver(driver);
+	                    driver.setPerson(person);
+                	}
                 }
                 
 				return person;
