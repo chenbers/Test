@@ -10,10 +10,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -71,7 +69,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     
     
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final Set<ReportGroup> REPORT_FILTER_FOR_MANAGER_NOTIFICATION;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
     private static final int[] DEFAULT_ADMIN_COLUMN_INDICES = new int[] { 5 };
 
@@ -104,8 +101,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("owner");     // only admins see this
         
-        REPORT_FILTER_FOR_MANAGER_NOTIFICATION = new HashSet<ReportGroup>();
-        REPORT_FILTER_FOR_MANAGER_NOTIFICATION.add(ReportGroup.DRIVER_COACHING);
     }
     List<User> fullUserList;
     
