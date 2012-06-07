@@ -1578,7 +1578,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	                	rolesbuffer.append(", ");
                 	}
                 }
-                rolesbuffer.setLength(rolesbuffer.length()-2);
+                if (rolesbuffer.length() > 2)
+                	rolesbuffer.setLength(rolesbuffer.length()-2);
         		return rolesbuffer.toString();
     		}
     		return "";
