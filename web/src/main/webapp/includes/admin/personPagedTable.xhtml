@@ -101,7 +101,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_gender}" /></f:facet>
       <h:outputText value="#{messages[item.gender]}" />
     </rich:column>
-    <rich:column id="barcode" rendered="#{personBean.tableColumns['barcode'].visible}" sortBy="#{barcode}">
+    <rich:column id="barcode" rendered="#{personBean.tableColumns['barcode'].visible}" sortBy="#{barcode}"  filterBy="#{barcode}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_barcode}" /></f:facet>
       <h:outputText value="#{item.driver.barcode}" />
     </rich:column>
@@ -134,11 +134,11 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
       <c:set var="status" value="status#{item.driver.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
-    <rich:column id="license" rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{driver_license}">
+    <rich:column id="license" rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{driver_license}" filterBy="#{driver_license}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_license}" /></f:facet>
       <h:outputText value="#{item.driver.license}" />
     </rich:column>
-    <rich:column id="licenseClass" rendered="#{personBean.tableColumns['driver_licenseClass'].visible}" sortBy="#{driver_licenseClass}">
+    <rich:column id="licenseClass" rendered="#{personBean.tableColumns['driver_licenseClass'].visible}" sortBy="#{driver_licenseClass}" filterBy="#{driver_licenseClass}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_licenseClass}" /></f:facet>
       <h:outputText value="#{item.driver.licenseClass}" />
     </rich:column>
@@ -152,19 +152,13 @@
         <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" />
       </h:outputText>
     </rich:column>
-    <rich:column id="certification" rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{driver_certifications}">
+    <rich:column id="certification" rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{driver_certifications}" filterBy="#{driver_certifications}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_certifications}" /></f:facet>
       <h:outputText value="#{item.driver.certifications}" />
     </rich:column>
     <rich:column id="dot" rendered="#{personBean.accountIsHOS and personBean.tableColumns['driver_dot'].visible}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_dot}" /></f:facet>
       <h:outputText value="#{messages[item.driver.dot]}" />
-    </rich:column>
-    <rich:column id="RFID" rendered="#{personBean.tableColumns['driver_RFID'].visible}" sortBy="#{driver_RFID}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_RFID}" /></f:facet>
-      <h:outputText value="#{item.driver.RFID}">
-        <f:converter converterId="HexConverter" />
-      </h:outputText>
     </rich:column>
     <rich:column id="teamName" rendered="#{personBean.tableColumns['driver_groupID'].visible}" sortBy="#{driver_groupID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_groupID}" /></f:facet>

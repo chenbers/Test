@@ -1171,7 +1171,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             	Integer personID = entry.getKey();
         		if (updatePersonTemplate != null) {
         			updatePersonTemplate.setPersonID(personID);
-        			logger.info("person update: " + updatePersonTemplate.toString());
         			personDAO.update(updatePersonTemplate);
         		}
         		
@@ -1180,7 +1179,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         			if (driverID != null) {
         				updateDriverTemplate.setDriverID(driverID);
         				driverDAO.update(updateDriverTemplate);
-            			logger.info("updateDriver: " + updateDriverTemplate.toString());
         			}
         		}
         		
@@ -1189,9 +1187,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         			if (userID != null) {
         				updateUserTemplate.setUserID(userID);
         				userDAO.update(updateUserTemplate);
-            			logger.info("updateUser: " + updateUserTemplate.toString());
-            			
-
         			}
         		}
         		
