@@ -36,11 +36,11 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 
-import com.inthinc.pro.comm.parser.note.NoteType;
-import com.inthinc.pro.comm.parser.note.NoteParser;
-import com.inthinc.pro.comm.parser.note.NoteParserFactory;
-import com.inthinc.pro.comm.parser.util.ReadUtil;
-
+//import com.inthinc.pro.comm.parser.note.NoteType;
+//import com.inthinc.pro.comm.parser.note.NoteParser;
+//import com.inthinc.pro.comm.parser.note.NoteParserFactory;
+//import com.inthinc.pro.comm.parser.util.ReadUtil;
+//
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
 import me.prettyprint.hector.api.beans.AbstractComposite.Component;
 import me.prettyprint.hector.api.beans.ColumnSlice;
@@ -106,6 +106,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 		String startTime = (String) args[1];
 		String endTime = (String) args[2];
 */		
+/*    	
         SiloService siloService = new SiloServiceCreator("localhost", 8092).getService();
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
@@ -130,8 +131,9 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 		System.out.println("Trip: " + trip);
     	
     	dao.shutdown();
+*/    	
     }
-    
+  /*  
     private void logLocation(List<LastLocation> locations)
     {
     	for (LastLocation location : locations)
@@ -148,7 +150,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     }
     
 
-    
 	@Override
     public VehicleDAO getVehicleDAO() {
 		return vehicleDAO;
@@ -643,4 +644,86 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 	    }
 	}
 
+*/
+
+
+	@Override
+	public LastLocation getLastLocationForDriver(Integer driverID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<DriverLocation> getDriverLocations(Integer groupID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public LastLocation getLastLocationForVehicle(Integer vehicleID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Trip getLastTripForVehicle(Integer vehicleID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Trip> getTripsForVehicle(Integer vehicleID, Date startDate,
+			Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Trip getLastTripForDriver(Integer driverID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Trip> getTripsForDriver(Integer driverID, Date startDate,
+			Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public VehicleDAO getVehicleDAO() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setVehicleDAO(VehicleDAO vehicleDAO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public DriverDAO getDriverDAO() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setDriverDAO(DriverDAO driverDAO) {
+		// TODO Auto-generated method stub
+		
+	}
 }
+
+

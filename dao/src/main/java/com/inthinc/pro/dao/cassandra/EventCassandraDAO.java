@@ -33,9 +33,9 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
-import com.inthinc.pro.comm.parser.note.NoteParser;
-import com.inthinc.pro.comm.parser.note.NoteParserFactory;
-import com.inthinc.pro.comm.parser.util.ReadUtil;
+//import com.inthinc.pro.comm.parser.note.NoteParser;
+//import com.inthinc.pro.comm.parser.note.NoteParserFactory;
+//import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
 import me.prettyprint.hector.api.beans.AbstractComposite.Component;
@@ -83,7 +83,8 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 		String filePath = (String) args[0];
 		String startTime = (String) args[1];
 		String endTime = (String) args[2];
-*/		
+*/
+/*    	
         SiloService siloService = new SiloServiceCreator("192.168.11.115", 8091).getService();
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
@@ -201,15 +202,14 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public Integer forgive(Integer driverID, Long noteID)
     {
-/*
-    	try{
-    		return getChangedCount(getSiloService().forgive(driverID, noteID));
-    	}
-    	catch (ProDAOException pDAOe){
-    		
-    		return 1; //It as already been changed either here or elsewhere
-    	}
-*/
+//    	try{
+//    		return getChangedCount(getSiloService().forgive(driverID, noteID));
+//    	}
+//    	catch (ProDAOException pDAOe){
+//    		
+//    		return 1; //It as already been changed either here or elsewhere
+//    	}
+
     	return 1;
     }
 
@@ -269,17 +269,16 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public Event findByID(Long id)
     {
-/*    	
-        try
-        {
-            Map<String, Object> returnMap = getSiloService().getNote(id);
-            return getMapper().convertToModelObject(returnMap, Event.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-*/
+//        try
+//        {
+//            Map<String, Object> returnMap = getSiloService().getNote(id);
+//            return getMapper().convertToModelObject(returnMap, Event.class);
+//        }
+//        catch (EmptyResultSetException e)
+//        {
+//            return null;
+//        }
+
     	return null;
     }
     
@@ -306,18 +305,17 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 			Integer includeForgiven, List<NoteType> noteTypes,
 			List<TableFilterField> filters) {
 		
-/*
-	    filters = fixFilters(filters);
-			try {
-			return getChangedCount(getSiloService().getDriverEventCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
-									includeForgiven, getMapper().convertList(filters), 
-									getMapper().convertToArray(noteTypes, Integer.class)));
-		}
-        catch (EmptyResultSetException e)
-        {
-            return 0;
-        }
- */
+//	    filters = fixFilters(filters);
+//			try {
+//			return getChangedCount(getSiloService().getDriverEventCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
+//									includeForgiven, getMapper().convertList(filters), 
+//									getMapper().convertToArray(noteTypes, Integer.class)));
+//		}
+//        catch (EmptyResultSetException e)
+//        {
+//            return 0;
+//        }
+ 
 		return 0;
 	}
 
@@ -325,18 +323,17 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 	public List<Event> getEventPage(Integer groupID, Date startDate, Date endDate,
 			Integer includeForgiven, List<NoteType> noteTypes,
 			PageParams pageParams) {
-/*
-	    pageParams.setFilterList(fixFilters(pageParams.getFilterList()));
-		try {
-			return getMapper().convertToModelObject(getSiloService().getDriverEventPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
-									includeForgiven, getMapper().convertToMap(pageParams), 
-									getMapper().convertToArray(noteTypes, Integer.class)), Event.class);
-		}
-		catch (EmptyResultSetException e)
-		{
-			return Collections.emptyList();
-		}
-*/		
+//	    pageParams.setFilterList(fixFilters(pageParams.getFilterList()));
+//		try {
+//			return getMapper().convertToModelObject(getSiloService().getDriverEventPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
+//									includeForgiven, getMapper().convertToMap(pageParams), 
+//									getMapper().convertToArray(noteTypes, Integer.class)), Event.class);
+//		}
+//		catch (EmptyResultSetException e)
+//		{
+//			return Collections.emptyList();
+//		}
+		
 		return Collections.emptyList();
 	}
 
@@ -489,4 +486,166 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 
 		return eventList;
     }
+*/
+    }
+
+
+	@Override
+	public Event findByID(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Integer create(Integer id, Event entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Integer update(Event entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Integer deleteByID(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getMostRecentEvents(Integer groupID, Integer eventCnt) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getMostRecentWarnings(Integer groupID, Integer eventCount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getMostRecentEmergencies(Integer groupID,
+			Integer eventCount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getViolationEventsForDriver(Integer driverID,
+			Date startDate, Date endDate, Integer includeForgiven) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getWarningEventsForDriver(Integer driverID,
+			Date startDate, Date endDate, Integer includeForgiven) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getEmergencyEventsForDriver(Integer driverID,
+			Date startDate, Date endDate, Integer includeForgiven) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getEventsForDriver(Integer driverID, Date startDate,
+			Date endDate, List<NoteType> noteTypes, Integer includeForgiven) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getEventsForVehicle(Integer vehicleID, Date startDate,
+			Date endDate, List<NoteType> noteTypes, Integer includeForgiven) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Integer forgive(Integer driverID, Long noteID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Integer unforgive(Integer driverID, Long noteID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getEventsForGroupFromVehicles(Integer groupID,
+			List<NoteType> eventTypes, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getEventsForGroupFromVehicles(Integer groupID,
+			List<NoteType> noteTypes, Integer daysBack) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Event getEventNearLocation(Integer driverID, Double latitude,
+			Double longitude, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public <T> T getEventByType(Long noteID, Class<T> clazz) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Event findByID(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Integer getEventCount(Integer groupID, Date startDate, Date endDate,
+			Integer includeForgiven, List<NoteType> noteTypes,
+			List<TableFilterField> filters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Event> getEventPage(Integer groupID, Date startDate,
+			Date endDate, Integer includeForgiven, List<NoteType> noteTypes,
+			PageParams pageParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
