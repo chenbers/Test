@@ -33,14 +33,14 @@ public class AdminPersonPaginationTableDataProvider extends AdminPaginationTable
 
     @Override
     public int getRowCount() {
-        Integer rowCount = adminPersonJDBCDAO.getCount(personBean.getGroupIDList(), removeBlankFilters(getFilters()));
+//        Integer rowCount = adminPersonJDBCDAO.getCount(personBean.getGroupIDList(), removeBlankFilters(getFilters()));
         //logger.info("getRowCount returns: " + rowCount + " for groups " + personBean.getGroupIDList() + " filters " + removeBlankFilters(getFilters()).toString());
 		List<PersonIdentifiers> personIdentifierList = adminPersonJDBCDAO.getFilteredPersonIDs(personBean.getGroupIDList(), removeBlankFilters(getFilters()));
-		if (rowCount != personIdentifierList.size()) {
-			throw new ProDAOException("row count from adminPersonJDBCDAO.getCount should match list count from adminPersonJDBCDAO.getFilteredPersonIDs groupIDs: " + personBean.getGroupIDList() + " filters: " + removeBlankFilters(getFilters()) );
-		}
+//		if (rowCount != personIdentifierList.size()) {
+//			throw new ProDAOException("row count from adminPersonJDBCDAO.getCount should match list count from adminPersonJDBCDAO.getFilteredPersonIDs groupIDs: " + personBean.getGroupIDList() + " filters: " + removeBlankFilters(getFilters()) );
+//		}
 		personBean.initPersonIdentifierList(personIdentifierList);
-        return rowCount;
+        return personIdentifierList.size();
     }
     
 
