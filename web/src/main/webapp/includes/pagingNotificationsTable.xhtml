@@ -237,5 +237,13 @@
 		</a4j:jsFunction>
 	</a4j:form>   
     
+ <script>
+ 	jQuery(".rich-filter-input").keypress(function(){
+ 		if ( event.which == 13 ) {
+ 			this.blur();
+ 			return false;
+ 		}
+ 	});
+ </script>
 
 </ui:composition>
