@@ -7,6 +7,11 @@ import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+
 @XmlRootElement
 public class Person extends BaseEntity implements Comparable<Person> {
 
@@ -38,7 +43,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
     private Gender gender;
     private Integer height; // inches
     private Integer weight; // pounds
-    private Date dob;
+    private final AutomationCalendar dob = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
     // user, driver (may be null)
     private User user;
     private Driver driver;
@@ -82,7 +87,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.gender = gender;
         this.height = height;
         this.weight = weight;
-        this.dob = dob;
+        this.dob.setDate(dob.getTime());
         this.status = status;
         this.measurementType = measurementType;
         this.fuelEfficiencyType = fuelEfficiencyType;
@@ -374,12 +379,18 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.weight = weight;
     }
 
-    public Date getDob() {
+    @JsonProperty("dob")
+    public String getDobString(){
+        return dob.toString();
+    }
+    
+    public AutomationCalendar getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
+    @JsonProperty("dob")
+    public void setDob(String dob) {
+        this.dob.setDate(dob);
     }
     public User getUser() {
         return user;

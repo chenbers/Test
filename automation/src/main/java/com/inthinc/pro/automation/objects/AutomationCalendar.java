@@ -1,11 +1,14 @@
 package com.inthinc.pro.automation.objects;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.inthinc.pro.automation.enums.TimeZones;
 import com.inthinc.pro.automation.enums.WebDateFormat;
@@ -14,8 +17,13 @@ import com.inthinc.pro.automation.enums.WebDateFormat;
  * @author dtanner
  * 
  */
-public class AutomationCalendar implements Comparable<Calendar> {
+public class AutomationCalendar implements Comparable<Calendar>, Serializable {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1571925441932456423L;
+
     public static final String getCurrentMonth() {
         Calendar today = GregorianCalendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("MMMMM");
@@ -114,6 +122,7 @@ public class AutomationCalendar implements Comparable<Calendar> {
         if (dateTime.endsWith("Z")){
             dateTime = dateTime.substring(0, dateTime.indexOf(".")) + "-0000";
         }
+        
         setDate(dateTime);
         if (format == WebDateFormat.RALLY_DATE_FORMAT){
             date.setTimeZone(TimeZones.US_MOUNTAIN.getTimeZone());
@@ -391,6 +400,12 @@ public class AutomationCalendar implements Comparable<Calendar> {
         if (date == null){
             date = Calendar.getInstance();
         }
+        Pattern pat = Pattern.compile("(?<=\\d\\d:\\d\\d-?\\d\\d):(?=\\d\\d)"); // looking to make format fit for SimpleDateFormat Z -0800
+        Matcher mat = pat.matcher(dateTime);
+        if (mat.find()){
+            dateTime = dateTime.substring(0, mat.start()) + dateTime.substring(mat.end());
+        }
+        
         try {
             date.setTime(formatter.parse(dateTime));
         } catch (ParseException e) {

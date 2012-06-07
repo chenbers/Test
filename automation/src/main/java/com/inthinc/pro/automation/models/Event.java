@@ -8,6 +8,11 @@ import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+
 @XmlRootElement
 public class Event extends BaseEntity implements Comparable<Event>, Serializable {
     /**
@@ -26,7 +31,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer maprev;
     private Integer odometer;
     private Integer speed;
-    private Date time;
+    private final AutomationCalendar time = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
     private String type;
     private String eventType;
     private String eventCategory;
@@ -72,7 +77,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         this.noteID = noteID;
         this.vehicleID = vehicleID;
         this.type = type;
-        this.time = time;
+        this.time.setDate(time.getTime());
         this.speed = speed;
         this.odometer = odometer;
         this.latitude = latitude;
@@ -137,7 +142,12 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         return speed;
     }
 
-    public Date getTime() {
+    @JsonProperty("time")
+    public String getTimeString(){
+        return time.toString();
+    }
+    
+    public AutomationCalendar getTime() {
         return time;
     }
 
@@ -157,7 +167,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     public int hashCode() {
         int result = 17;
         result = 31 * result + (int) (noteID ^ (noteID >>> 32));
-        result = 31 * result + (int) (time.getTime() / 1000);
+        result = 31 * result + (int) (time.toInt() / 1000);
         return result;
     }
 
@@ -193,8 +203,8 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         this.speed = speed;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTime(String time) {
+        this.time.setDate(time);
     }
 
     public void setType(String type) {

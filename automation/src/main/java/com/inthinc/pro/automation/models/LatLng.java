@@ -1,9 +1,12 @@
 package com.inthinc.pro.automation.models;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class LatLng implements Serializable, Comparable<LatLng> {
     /**
@@ -17,7 +20,7 @@ public class LatLng implements Serializable, Comparable<LatLng> {
     // Now i'm adding heading, speed, and time which turns it into something more than LatLng. For cleanness, this object should be refactored and renamed to something else. Not
     // now though.
     private Integer head;
-    private Date time;
+    private final AutomationCalendar time = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
     private Integer speed;
 
     public LatLng() {
@@ -61,12 +64,17 @@ public class LatLng implements Serializable, Comparable<LatLng> {
         this.head = head;
     }
 
-    public Date getTime() {
+    @JsonProperty("time")
+    public String getTimeString(){
+        return time.toString();
+    }
+    
+    public AutomationCalendar getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTime(String time) {
+        this.time.setDate(time);
     }
 
     public Integer getSpeed() {

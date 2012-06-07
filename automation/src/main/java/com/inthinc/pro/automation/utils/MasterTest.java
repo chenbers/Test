@@ -382,12 +382,7 @@ public abstract class MasterTest {
         if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
             return;
         } 
-        User update = new User();
-        update.setPassword(apb.getPassword());
-        update.setUsername(isUpdated.getUsername());
-        update.setUserID(isUpdated.getUserID());
-        update.setRoles(myUser.get().getRoles());
-        rest.get().putObject(User.class, update, null);
+        rest.get().putObject(User.class, myUser.get(), null);
     }
 
     public Boolean compare(Object expected, Object actual) {

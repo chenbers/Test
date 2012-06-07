@@ -3,29 +3,46 @@ package com.inthinc.pro.automation.models;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
+
 public abstract class BaseEntity implements Serializable {
 
     /**
      * Auto generated serial version
      */
     private static final long serialVersionUID = 514782827757426880L;
-    private Date modified;
-    private Date created;
+    private final AutomationCalendar modified = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
+    private final AutomationCalendar created = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
 
-    public Date getModified() {
+    @JsonProperty("modified")
+    public String getModifiedString(){
+        return modified.toString();
+    }
+    
+    public AutomationCalendar getModified() {
         return modified;
     }
-
-    public void setModified(Date modified) {
-        this.modified = modified;
+    
+    @JsonProperty("modified")
+    public void setModified(String modified) {
+        this.modified.setDate(modified);
     }
 
-    public Date getCreated() {
+    @JsonProperty("created")
+    public String getCreatedString(){
+        return created.toString();
+    }
+    
+    public AutomationCalendar getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    @JsonProperty("created")
+    public void setCreated(String created) {
+        this.created.setDate(created);
     }
     
 }

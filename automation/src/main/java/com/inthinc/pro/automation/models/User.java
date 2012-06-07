@@ -1,12 +1,14 @@
 package com.inthinc.pro.automation.models;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.jasypt.util.password.StrongPasswordEncryptor;
+
+import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class User extends BaseEntity {
     /**
@@ -14,7 +16,7 @@ public class User extends BaseEntity {
      */
     private static final long serialVersionUID = 1L;
     private static final StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
-    
+
     private Integer userID;
     private Integer personID;
     private Person person;
@@ -26,8 +28,8 @@ public class User extends BaseEntity {
     @JsonIgnore
     private String encrypted;
     private Integer groupID;
-    private Date lastLogin;
-    private Date passwordDT;
+    private final AutomationCalendar lastLogin = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
+    private final AutomationCalendar passwordDT = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
 
     private GoogleMapType mapType;
 
@@ -71,10 +73,10 @@ public class User extends BaseEntity {
     }
 
     @JsonProperty("password")
-    public String getEncryptedPassword(){
+    public String getEncryptedPassword() {
         return encrypted;
     }
-    
+
     @JsonIgnore
     public String getPassword() {
         return password;
@@ -84,9 +86,9 @@ public class User extends BaseEntity {
         encrypted = encryptor.encryptPassword(password);
         this.password = password;
     }
-    
+
     @JsonProperty("password")
-    public void setEncryptedPassword(String encrypted){
+    public void setEncryptedPassword(String encrypted) {
         this.password = null;
         this.encrypted = encrypted;
     }
@@ -120,51 +122,63 @@ public class User extends BaseEntity {
 
     @Override
     public String toString() {
-        return "User [groupID=" + groupID + ", password=" + password + ", personID=" + personID + ", role=" + roles==null?null:roles.toString() + ", status=" + status + ", userID=" + userID + ", username="
-                + username + "]";
+        return "User [groupID=" + groupID + ", password=" + password + ", personID=" + personID + ", role=" + roles == null ? null : roles.toString() + ", status=" + status + ", userID=" + userID
+                + ", username=" + username + "]";
     }
 
-	public Roles getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Roles roles) {
-		this.roles = roles;
-	}
-
-	public List<AccessPoint> getAccessPoints() {
-	    if(accessPoints == null)
-	        return Collections.emptyList();
-		return accessPoints;
-	}
-
-	public void setAccessPoints(List<AccessPoint> accessPoints) {
-	    Collections.sort(accessPoints);
-		this.accessPoints = accessPoints;
-	}
-
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
+    public Roles getRoles() {
+        return roles;
     }
 
-    public Date getLastLogin() {
+    public void setRoles(Roles roles) {
+        this.roles = roles;
+    }
+
+    public List<AccessPoint> getAccessPoints() {
+        if (accessPoints == null)
+            return Collections.emptyList();
+        return accessPoints;
+    }
+
+    public void setAccessPoints(List<AccessPoint> accessPoints) {
+        Collections.sort(accessPoints);
+        this.accessPoints = accessPoints;
+    }
+
+    @JsonProperty("lastLogin")
+    public void setLastLogin(String lastLogin) {
+        this.lastLogin.setDate(lastLogin);
+    }
+
+    @JsonProperty("lastLogin")
+    public String getLastLoginString() {
+        return lastLogin.toString();
+    }
+
+    public AutomationCalendar getLastLogin() {
         return lastLogin;
     }
 
-    public void setPasswordDT(Date passwordDT) {
-        this.passwordDT = passwordDT;
+    @JsonProperty("passwordDT")
+    public void setPasswordDT(String passwordDT) {
+        this.passwordDT.setDate(passwordDT);
     }
 
-    public Date getPasswordDT() {
+    @JsonProperty("passwordDT")
+    public String getPasswordDTString() {
+        return passwordDT.toString();
+    }
+
+    public AutomationCalendar getPasswordDT() {
         return passwordDT;
     }
-    public boolean hasRoles(){
-    	return roles != null;
+
+    public boolean hasRoles() {
+        return roles != null;
     }
-    
 
     public GoogleMapType getMapType() {
-            return mapType;
+        return mapType;
     }
 
     public void setMapType(GoogleMapType mapType) {

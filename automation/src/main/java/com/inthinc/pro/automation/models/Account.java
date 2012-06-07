@@ -1,8 +1,11 @@
 package com.inthinc.pro.automation.models;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 @XmlRootElement
 public class Account extends BaseEntity implements Comparable<Account> {
@@ -30,7 +33,7 @@ public class Account extends BaseEntity implements Comparable<Account> {
     
     private AccountHOSType            hos;
     
-    private Date    zonePublishDate;                      
+    private final AutomationCalendar    zonePublishDate = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);                      
 
     public Account()
     {
@@ -147,13 +150,19 @@ public class Account extends BaseEntity implements Comparable<Account> {
     public void setHos(AccountHOSType hos) {
         this.hos = hos;
     }
+    
+    @JsonProperty("zonePublishDate")
+    public String getZonePublishDateString(){
+        return zonePublishDate.toString();
+    }
 
-    public Date getZonePublishDate() {
+    public AutomationCalendar getZonePublishDate() {
         return zonePublishDate;
     }
 
-    public void setZonePublishDate(Date zonePublishDate) {
-        this.zonePublishDate = zonePublishDate;
+    @JsonProperty("zonePublishDate")
+    public void setZonePublishDate(String zonePublishDate) {
+        this.zonePublishDate.setDate(zonePublishDate);
     }
 
     

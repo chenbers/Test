@@ -5,7 +5,11 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 /**
  * You'll see this through out this bean. It is mainly used so that the table sorting on these fields treats "" and null the same. if(fieldName != null && fieldName.equals(""))
@@ -26,7 +30,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private String license; // max 10 characters
     private State state;
     private String licenseClass; // max 4 characters
-    private Date expiration;
+    private final AutomationCalendar expiration = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
     private String certifications;
     private RuleSetType dot;
     private Person person;
@@ -45,7 +49,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.license = license;
         this.state = state;
         this.licenseClass = licenseClass;
-        this.expiration = expiration;
+        this.expiration.setDate(expiration.getTime());
         this.certifications = certifications;
         this.dot = dot;
         this.groupID = groupID;
@@ -126,12 +130,18 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.licenseClass = licenseClass;
     }
 
-    public Date getExpiration() {
+    @JsonProperty("expiration")
+    public String getExpirationString(){
+        return expiration.toString();
+    }
+    
+    public AutomationCalendar getExpiration() {
         return expiration;
     }
 
-    public void setExpiration(Date expiration) {
-        this.expiration = expiration;
+    @JsonProperty("expiration")
+    public void setExpiration(String expiration) {
+        this.expiration.setDate(expiration);
     }
 
     public String getCertifications() {

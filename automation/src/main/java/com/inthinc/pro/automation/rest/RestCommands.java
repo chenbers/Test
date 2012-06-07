@@ -15,6 +15,7 @@ import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.models.Account;
 import com.inthinc.pro.automation.models.BaseEntity;
 import com.inthinc.pro.automation.models.Event;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
@@ -141,7 +142,6 @@ public class RestCommands {
         return null;
     }
     
-
 }
 
 
