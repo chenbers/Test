@@ -52,7 +52,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
 
 	static {
-		columnMap.put("fullName", "p.first");
+		columnMap.put("fullName", "CONCAT(p.first, ' ', p.last)");
 		columnMap.put("priPhone", "p.priPhone");
 		columnMap.put("secPhone", "p.secPhone");
 		columnMap.put("priEmail", "p.priEmail");
@@ -128,7 +128,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 			StringBuilder countFilter = new StringBuilder();
 			for(TableFilterField filter : filters) {
 				if(filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
-					String paramName = "filter_"+columnMap.get(filter.getField());
+					String paramName = "filter_"+filter.getField();
 					countFilter.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
 					params.put(paramName, "%"+filter.getFilter()+"%");
 				}
@@ -153,7 +153,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		if(filters != null && !filters.isEmpty()) {
 			for(TableFilterField filter : filters) {
 				if(filter.getField() != null && columnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
-					String paramName = "filter_"+columnMap.get(filter.getField());
+					String paramName = "filter_"+filter.getField();
 					personSelect.append(" AND " + columnMap.get(filter.getField()) + " LIKE :" + paramName);
 					params.put(paramName, "%"+filter.getFilter()+"%");
 				}
