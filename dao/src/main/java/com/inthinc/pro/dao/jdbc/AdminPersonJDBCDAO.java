@@ -45,8 +45,8 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 
     private static final String ROLE_ACCESS_SELECT = "SELECT DISTINCT roleID, accessPtID, mode FROM roleAccess WHERE roleID IN (:rlist)";
     private static final String ROLE_SELECT = "SELECT u.userID, u.roleID FROM role as r JOIN userRole as u USING (roleID) WHERE u.userID IN (:ulist)";
-    private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
-    private static final String FILTERED_PERSON_IDS_SELECT = "SELECT p.personID, u.userID, d.driverID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+    private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
+    private static final String FILTERED_PERSON_IDS_SELECT = "SELECT p.personID, u.userID, d.driverID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
     
     
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
