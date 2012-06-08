@@ -86,7 +86,7 @@ public abstract class ZoneEvent extends Event {
             {
                 if (sb.length() > 0)
                     sb.append(';');
-                sb.append(point);
+                sb.append(point.latLngStr());
             }
         return sb.toString();
 
