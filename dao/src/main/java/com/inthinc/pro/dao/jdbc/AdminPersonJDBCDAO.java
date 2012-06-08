@@ -45,8 +45,8 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 
     private static final String ROLE_ACCESS_SELECT = "SELECT DISTINCT roleID, accessPtID, mode FROM roleAccess WHERE roleID IN (:rlist)";
     private static final String ROLE_SELECT = "SELECT u.userID, u.roleID FROM role as r JOIN userRole as u USING (roleID) WHERE u.userID IN (:ulist)";
-    private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
-    private static final String FILTERED_PERSON_IDS_SELECT = "SELECT p.personID, u.userID, d.driverID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
+    private static final String ALL_PERSON_IDS_SELECT = "SELECT p.personID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
+    private static final String FILTERED_PERSON_IDS_SELECT = "SELECT p.personID, u.userID, d.driverID FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
     
     
 	private static final Map<String,String> columnMap = new HashMap<String, String>();
@@ -88,27 +88,32 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		columnMap.put("driver_groupID", "d.groupID");
 	}
 	
-	public Integer getCount(final List<Integer> groupIDs, final List<TableFilterField> filters) {
-		String personCount = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)";
+	public Integer getCount(final Integer acctID, final List<Integer> groupIDs, final List<TableFilterField> filters) {
+		String personCount = "SELECT COUNT(*) FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))";
 		Map<String, Object> params = new HashMap<String, Object>();
 		personCount = addFiltersToQuery(filters, personCount, params);
+		params.put("acct_id", acctID);
 		params.put("group_list", groupIDs);
         return getSimpleJdbcTemplate().queryForInt(personCount, params);
 	}
 	
-	public List<Integer> getAllPersonIDs(final List<Integer> groupIDs) {
+	public List<Integer> getAllPersonIDs(final Integer acctID, final List<Integer> groupIDs) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("acct_id", acctID);
+		params.put("group_list", groupIDs);
 		return getSimpleJdbcTemplate().query(ALL_PERSON_IDS_SELECT, new ParameterizedRowMapper<Integer>() {
 			@Override
 			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return rs.getInt(1);
 			}			
-		} , new HashMap<String, Object>(){{put("group_list", groupIDs);}});
+		} , params);
 	}
 	
-	public List<PersonIdentifiers> getFilteredPersonIDs(final List<Integer> groupIDs, final List<TableFilterField> filters) {
+	public List<PersonIdentifiers> getFilteredPersonIDs(final Integer acctID, final List<Integer> groupIDs, final List<TableFilterField> filters) {
 		String personIdentifiers = FILTERED_PERSON_IDS_SELECT;
 		Map<String, Object> params = new HashMap<String, Object>();
 		personIdentifiers = addFiltersToQuery(filters, personIdentifiers, params);
+		params.put("acct_id", acctID);
 		params.put("group_list", groupIDs);
 		return getSimpleJdbcTemplate().query(personIdentifiers, new ParameterizedRowMapper<PersonIdentifiers>() {
 			@Override
@@ -138,15 +143,16 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		return queryStr;
 	}
 	
-	public List<Person> getPeople(final List<Integer> groupIDs, final PageParams pageParams) {
+	public List<Person> getPeople(final Integer acctID, final List<Integer> groupIDs, final PageParams pageParams) {
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("acct_id", acctID);
 		params.put("group_list", groupIDs);
 		StringBuilder personSelect = new StringBuilder();
 		personSelect
 				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
 				.append("u.userID, u.status, convert(u.username using utf8) as username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
 				.append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
-				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 OR d.status != 3 OR u.status !=3)");
+				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))");
 		
 		/***FILTERING***/
 		List<TableFilterField> filters = pageParams.getFilterList();
@@ -190,7 +196,8 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 				person.setWarn(rs.getObject("p.warn") == null ? null : rs.getInt("p.warn"));
 				person.setCrit(rs.getObject("p.crit") == null ? null : rs.getInt("p.crit"));
 				Integer tzID = rs.getInt("p.tzID");
-				person.setTimeZone(tzID != null ? TimeZone.getTimeZone(SupportedTimeZones.lookup(tzID)) : TimeZone.getDefault());
+				String tzString = tzID != null ? SupportedTimeZones.lookup(tzID) : null;
+				person.setTimeZone(tzString != null ? TimeZone.getTimeZone(tzString) : TimeZone.getDefault());
 				person.setEmpid(rs.getString("p.empID"));
 				person.setReportsTo(rs.getString("p.reportsTo"));
 				person.setTitle(rs.getString("p.title"));

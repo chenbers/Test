@@ -30,6 +30,7 @@ import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
@@ -76,6 +77,7 @@ public class AdminTest extends BaseJDBCTest {
     public void comparePersonTest() {
         Integer groupID = itData.fleetGroup.getGroupID();
         Integer acctID = itData.account.getAccountID();
+        
         GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
         groupHessianDAO.setSiloService(siloService);
         GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(acctID));
@@ -88,14 +90,14 @@ public class AdminTest extends BaseJDBCTest {
         AdminPersonJDBCDAO adminPersonJDBCDAO = new AdminPersonJDBCDAO();
         adminPersonJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         List<TableFilterField> filters = new ArrayList<TableFilterField>();
-        Integer cnt = adminPersonJDBCDAO.getCount(groupIDList, filters);
+        Integer cnt = adminPersonJDBCDAO.getCount(acctID, groupIDList, filters);
         assertEquals("hessian vs jdbc person cnt", hessianPersonList.size(), cnt.intValue());
         
         PageParams pageParams = new PageParams();
         pageParams.setFilterList(filters);
         pageParams.setStartRow(0);
         pageParams.setEndRow(cnt-1);
-        List<Person> jdbcPersonList = adminPersonJDBCDAO.getPeople(groupIDList, pageParams);
+        List<Person> jdbcPersonList = adminPersonJDBCDAO.getPeople(acctID, groupIDList, pageParams);
         assertEquals("hessian vs jdbc person cnt", hessianPersonList.size(), jdbcPersonList.size());
 
         String personIgnoreFields[] = {
@@ -127,6 +129,84 @@ public class AdminTest extends BaseJDBCTest {
                 }
             }
             assertTrue("Unable to find match for person " + hessianPerson.getPersonID(), found);
+        }
+    }
+
+
+    @Test
+    @Ignore
+    public void comparePersonDevonTest() {
+        // need to point to devon
+        Integer groupID = 528;
+        Integer acctID = 70;
+        
+        
+        GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
+        groupHessianDAO.setSiloService(siloService);
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(acctID));
+        List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(groupID);
+
+        PersonHessianDAO personHessianDAO = new PersonHessianDAO();
+        personHessianDAO.setSiloService(siloService);
+        List<Person> hessianPersonList = personHessianDAO.getPeopleInGroupHierarchy(groupID, groupID);
+        
+        AdminPersonJDBCDAO adminPersonJDBCDAO = new AdminPersonJDBCDAO();
+        adminPersonJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        List<TableFilterField> filters = new ArrayList<TableFilterField>();
+        int cnt = adminPersonJDBCDAO.getCount(acctID, groupIDList, filters);
+        List<PersonIdentifiers> jdbcList = adminPersonJDBCDAO.getFilteredPersonIDs(acctID, groupIDList, filters);
+        assertEquals(cnt, jdbcList.size());
+        
+        PageParams pageParams = new PageParams();
+        pageParams.setFilterList(filters);
+        pageParams.setStartRow(0);
+        pageParams.setEndRow(cnt-1);
+        List<Person> jdbcPersonList = adminPersonJDBCDAO.getPeople(acctID, groupIDList, pageParams);
+
+        for (Person jdbcPerson : jdbcPersonList) {
+        	boolean found = false;
+        	for (Person person : hessianPersonList) {
+        		if (person.getPersonID().equals(jdbcPerson.getPersonID())) {
+        			found = true;
+        			break;
+        		}
+        	}
+        	if (!found) {
+        		System.out.println(jdbcPerson.toString());
+        	}
+        }
+
+        String personIgnoreFields[] = {
+        // person ok to ignore, unused fields
+                "addressID", "dept", "height", "weight", "modified", "driver", "user", "driverID", "userID", "gender"};
+        String userIgnoreFields[] = { "person", "modified", "selectedMapLayerIDs",
+        // TODO: talk to Matt about these.
+                "lastLogin", "passwordDT", "mapType"};
+        String driverIgnoreFields[] = { "person", "modified", "dot"};
+        for (Person hessianPerson : hessianPersonList) {
+            boolean found = false;
+            for (Person jdbcPerson : jdbcPersonList) {
+                if (jdbcPerson.getPersonID().equals(hessianPerson.getPersonID())) {
+                    found = true;
+                    Util.compareObjects(hessianPerson, jdbcPerson, personIgnoreFields);
+                    if (hessianPerson.getUser() != null) {
+                        assertTrue("user should not be null " + hessianPerson.getPersonID(), jdbcPerson.getUser() != null);
+                        Util.compareObjects(hessianPerson.getUser(), jdbcPerson.getUser(), userIgnoreFields);
+                    } else {
+                        assertTrue("user should be null " + hessianPerson.getPersonID(), jdbcPerson.getUser() == null);
+                    }
+                    if (hessianPerson.getDriver() != null) {
+                        assertTrue("driver should not be null " + hessianPerson.getFullName(), jdbcPerson.getDriver() != null);
+                        Util.compareObjects(hessianPerson.getDriver(), jdbcPerson.getDriver(), driverIgnoreFields);
+                    } else {
+                        assertTrue("driver should be null " + hessianPerson.getPersonID(), jdbcPerson.getDriver() == null);
+                    }
+                    break;
+                }
+            }
+//            assertTrue("Unable to find match for person " + hessianPerson.getPersonID(), found);
+            if (!found)
+            	System.out.println("Unable to find match for hessian person " + hessianPerson.toString());
         }
     }
 
