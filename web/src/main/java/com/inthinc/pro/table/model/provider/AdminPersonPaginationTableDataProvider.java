@@ -22,7 +22,7 @@ public class AdminPersonPaginationTableDataProvider extends AdminPaginationTable
     @Override
     public List<PersonBean.PersonView> getItemsByRange(int firstRow, int endRow) {
         PageParams pageParams = new PageParams(firstRow, endRow, getSort(), removeBlankFilters(getFilters()));
-        List<Person> personList = adminPersonJDBCDAO.getPeople(personBean.getGroupIDList(), pageParams);
+        List<Person> personList = adminPersonJDBCDAO.getPeople(personBean.getAccountID(), personBean.getGroupIDList(), pageParams);
         List<PersonView> items = new ArrayList<PersonView>();
         for (final Person person : personList) {
             items.add(personBean.createPersonView(person));
@@ -33,12 +33,7 @@ public class AdminPersonPaginationTableDataProvider extends AdminPaginationTable
 
     @Override
     public int getRowCount() {
-//        Integer rowCount = adminPersonJDBCDAO.getCount(personBean.getGroupIDList(), removeBlankFilters(getFilters()));
-        //logger.info("getRowCount returns: " + rowCount + " for groups " + personBean.getGroupIDList() + " filters " + removeBlankFilters(getFilters()).toString());
-		List<PersonIdentifiers> personIdentifierList = adminPersonJDBCDAO.getFilteredPersonIDs(personBean.getGroupIDList(), removeBlankFilters(getFilters()));
-//		if (rowCount != personIdentifierList.size()) {
-//			throw new ProDAOException("row count from adminPersonJDBCDAO.getCount should match list count from adminPersonJDBCDAO.getFilteredPersonIDs groupIDs: " + personBean.getGroupIDList() + " filters: " + removeBlankFilters(getFilters()) );
-//		}
+		List<PersonIdentifiers> personIdentifierList = adminPersonJDBCDAO.getFilteredPersonIDs(personBean.getAccountID(), personBean.getGroupIDList(), removeBlankFilters(getFilters()));
 		personBean.initPersonIdentifierList(personIdentifierList);
         return personIdentifierList.size();
     }
