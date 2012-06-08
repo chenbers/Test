@@ -25,6 +25,7 @@ import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.ZonePublishDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.zone.ZonePublish;
 import com.inthinc.pro.model.zone.ZonePublisher;
@@ -135,6 +136,7 @@ public class ZonesBean extends BaseBean
     {
         item = new Zone();
         item.setCreated(new Date());
+        item.setStatus(Status.ACTIVE);
         editing = true;
         return "adminEditZone";
     }
