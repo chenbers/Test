@@ -110,6 +110,16 @@ public class LatLng implements Serializable, Comparable<LatLng> {
         buffer.append(")\n");
         return buffer.toString();
     }
+    public String latLngStr() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("(");
+        buffer.append(getLat());
+        buffer.append(",");
+        buffer.append(getLng());
+        buffer.append(")");
+        return buffer.toString();
+
+    }
 
     @Override
     public boolean equals(Object obj) {

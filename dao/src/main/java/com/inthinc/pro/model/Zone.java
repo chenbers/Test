@@ -111,7 +111,7 @@ public class Zone extends BaseEntity implements Cloneable
             {
                 if (sb.length() > 0)
                     sb.append(';');
-                sb.append(point);
+                sb.append(point.latLngStr());
             }
         return sb.toString();
     }
