@@ -190,10 +190,15 @@ public class GeoPoint {
     		GeoPoint other = (GeoPoint) obj;
     		return (Math.abs(lat - other.lat) < epsilon) && 
     				(Math.abs(lng - other.lng) < epsilon);
-    	} else {
-    		return false;
     	}
+		return false;
     }
+    
+    @Override
+    public int hashCode(){
+        return encodeLat() + encodeLng();
+    }
+    
     private final static double epsilon = 0.00001;
     
     

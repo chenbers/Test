@@ -30,7 +30,6 @@ import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
-import com.inthinc.device.objects.ZoneManager;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DownloadServers;
 import com.inthinc.pro.automation.enums.ProductType;
@@ -43,8 +42,6 @@ import com.inthinc.pro.automation.utils.SHA1Checksum;
 public class TiwiProDevice extends DeviceBase {
 
     private AutomationCalendar trip_start, trip_stop;
-
-    private ZoneManager zones;
 
     private int baseVer = 6;
     
@@ -252,9 +249,6 @@ public class TiwiProDevice extends DeviceBase {
         return false;
     }
 
-    public ZoneManager getLoadedZones() {
-        return zones;
-    }
 
     public Map<String, Object> getSbsBase(int fileHash) {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -416,7 +410,7 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice set_settings(DeviceProps key, String value) {
-        set_settings(key, value);
+        state.setSetting(key, value);
         return this;
     }
 

@@ -139,8 +139,8 @@ public class TiwiNote extends DeviceNote {
     public boolean equals(Object obj){
     	if (obj instanceof TiwiNote){
     		TiwiNote other = (TiwiNote) obj;
-    		return sats == other.sats && maprev == other.maprev &&
-    				speed == other.speed && odometer == other.odometer &&
+    		return sats.equals(other.sats) && maprev.equals(other.maprev) &&
+    				speed.equals(other.speed) && odometer.equals(other.odometer) &&
     				heading.equals(other.heading) && time.equals(other.time) &&
     				location.equals(other.location) && type.equals(other.type);
     	} else {
@@ -148,6 +148,11 @@ public class TiwiNote extends DeviceNote {
     	}
     }
 
+
+    @Override
+    public int hashCode(){
+        return location.hashCode();
+    }
 
 
 }

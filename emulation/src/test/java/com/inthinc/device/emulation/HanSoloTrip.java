@@ -13,6 +13,7 @@ import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.objects.TripTracker;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class HanSoloTrip extends Thread{
@@ -70,7 +71,7 @@ public class HanSoloTrip extends Thread{
         state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
         driver.addEvent(35, AutomationDeviceEvents.speeding(state, null));
 
-        driver.run();
+        driver.start();
         
 
     }
@@ -234,11 +235,12 @@ public class HanSoloTrip extends Thread{
         AutomationCalendar initialTime = new AutomationCalendar();
         Addresses address;
         String imei = "FAKEIMEIDEVICE"; address=Addresses.DEV;
-//        imei = "DEVICEDOESNTEXIST";
+        imei = "DEVICEDOESNTEXIST";
 //        imei = "500000000007272"; address=Addresses.DEV;// initialTime.setDate(time)
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1335460214);  // vehicleID=37706       deviceID=34506
 //        address=Addresses.QA;           initialTime.setDate(1334940345);  // vehicleID=7293        deviceID=3753
+        trip.hanSolosFirstTrip( imei, address, initialTime);
 //          address=Addresses.DEV;		initialTime.setDate(1334940345);
 //        address=Addresses.STAGE;        initialTime.setDate(1334940345);  // vehicleID=117441441   deviceID=117441936 
 //        address=Addresses.PROD;         initialTime.setDate(1334941814);  // vehicleID=1           deviceID=1
@@ -270,6 +272,8 @@ public class HanSoloTrip extends Thread{
 //        satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=Addresses.QA; initialTime = 1316471529; vehicleID="dddd"; accountID=3;//deviceID=3763
 //        
 //        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
+        
+        Log.info(trip);
     }
 
 

@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.emulation.enums.UnitType;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GoogleTrips;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.scoring.ScoringFactory;
-import com.inthinc.device.scoring.ScoringNoteProcessor.UnitType;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.WebDateFormat;

@@ -46,7 +46,7 @@ public abstract class SbsMap implements SbsRegion{
 			throw new NullPointerException();
 		}
 		
-		if(mapData.get(0) != 255){
+		if((mapData.get(0) & 0xFF) != 0xFF){
 			return new SpeedBaseMap(mapData);
 		}else{
 			return null;

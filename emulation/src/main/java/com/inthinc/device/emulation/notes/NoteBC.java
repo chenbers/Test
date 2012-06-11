@@ -249,13 +249,18 @@ public class NoteBC extends DeviceNote {
 			NoteBC other = (NoteBC) obj;
 			return type.equals(other.type) &&
 					time.equals(other.time) && heading.equals(other.heading) &&
-					sats == other.sats && speed == other.speed && 
-					odometer == other.odometer && speedLimit == other.speedLimit &&
+					sats.equals(other.sats) && speed.equals(other.speed) && 
+					odometer.equals(other.odometer) && speedLimit.equals(other.speedLimit) &&
 					location.equals(other.location);
 			
 		}else {
 			return false;	
 		}
+	}
+	
+	@Override
+	public int hashCode(){
+	    return location.hashCode();
 	}
 
 }

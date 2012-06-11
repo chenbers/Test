@@ -9,8 +9,6 @@ import android.util.Log;
 
 public class ScoringNoteProcessor {
 	
-	public static enum UnitType {DRIVER, VEHICLE}; 
-
 	private final Double a = -10.4888220818923; // Offset for scores in log scale.
 	private final Double b = 1.16563268601352;  // Scale factor for scores in log scale.
 	private final Double agg_bump = 0.270663;   // Percent of scores for bump  (scale factor used to compute bump-only scores)

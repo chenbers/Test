@@ -156,7 +156,7 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 					packetList.add(compressedData);
 				else
 				{
-					int settingsPerPacket = (int) Math.ceil((double)(map.size()/packets));
+					int settingsPerPacket = ((Double) Math.ceil((map.size()*1.0)/(packets*1.0))).intValue();
 					Log.debug("settingsPerPacket: " + settingsPerPacket);
 					Map<DeviceProps, String> partialMap = new HashMap<DeviceProps, String>();
 					int totalCounter = 0;

@@ -175,11 +175,14 @@ public abstract class DeviceNote {
             dos.writeLong(toAdd);
             dos.flush();
             array = bos.toByteArray();
+            
+
+            for (int i=array.length-numOfBytes; i<array.length;i++){
+                baos.write(array[i]);
+            }
+            
         } catch (IOException e) {
             Log.wtf("%s", e);
-        }
-        for (int i=array.length-numOfBytes; i<array.length;i++){
-            baos.write(array[i]);
         }
     }
     
@@ -361,9 +364,10 @@ public abstract class DeviceNote {
             state.setOdometerX100(0);
         }
         
-        if (state.getViolationFlags() != 0x00 && note.getClass().equals(TiwiNote.class)){
-        	note.addAttr(EventAttr.VIOLATION_FLAGS, state.getViolationFlags());	
-        }
+        if (state != null) 
+            if (state.getViolationFlags() != 0x00 && note.getClass().equals(TiwiNote.class)){
+                note.addAttr(EventAttr.VIOLATION_FLAGS, state.getViolationFlags());	
+            }
         
         return note;
     }

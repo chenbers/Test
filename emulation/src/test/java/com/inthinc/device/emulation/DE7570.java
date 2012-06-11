@@ -54,7 +54,7 @@ public class DE7570 {
             } else {
                 driver.addToTrip(stop, start);
             }
-            driver.run();
+            driver.start();
             waysmart.getState().getTime().addToHours(2);
         }
         waysmart.flushNotes();

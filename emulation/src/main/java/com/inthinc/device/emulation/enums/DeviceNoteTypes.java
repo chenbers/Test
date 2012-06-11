@@ -1,7 +1,18 @@
 package com.inthinc.device.emulation.enums;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import android.util.Log;
+
+import com.inthinc.device.emulation.utils.AutomationFileHandler;
+import com.inthinc.pro.automation.utils.AutomationNumberManager;
 
 
 public enum DeviceNoteTypes  {
@@ -91,11 +102,11 @@ public enum DeviceNoteTypes  {
     BOUNDARY_CHANGE(39, EventAttr.BOUNDARY_ID),
     
 
-    DRIVERSTATE_CHANGE(40, EventAttr.CLEAR_DRIVER_FLAG, EventAttr.TRIP_REPORT_FLAG, EventAttr.TRIP_INSPECTION_FLAG, EventAttr.CLEAR_DRIVER_FLAG_WHAT, EventAttr.DRIVER_ID_STR, EventAttr.NO_GPS_LOCK_LOCATION, EventAttr.DRIVER_HOS_STATE),
-    ENDOFMONTH(41),
+    HOS_CHANGE_STATE(40, EventAttr.CLEAR_DRIVER_FLAG, EventAttr.TRIP_REPORT_FLAG, EventAttr.TRIP_INSPECTION_FLAG, EventAttr.CLEAR_DRIVER_FLAG_WHAT, EventAttr.DRIVER_ID_STR, EventAttr.NO_GPS_LOCK_LOCATION, EventAttr.DRIVER_HOS_STATE),
+    MONTHLY_UPDATE(41),
     TIMESTAMP(42),
     HOS_RECEIVED(43),
-    LOCATIONDEBUG(44),
+    LOCATION_DEBUG(44),
     CRASH_DATA(45),
 
 	/**
@@ -192,7 +203,7 @@ public enum DeviceNoteTypes  {
 	 * Attributes ATTR_MSP_CRASH_X, ATTR_MSP_CRASH_Y, ATTR_MSP_CRASH_Z, ATTR_MSP_HARD_ACCEL_LEVEL, ATTR_MSP_HARD_ACCEL_DV, ATTR_MSP_HARD_BRAKE_LEVEL, ATTR_MSP_HARD_BRAKE_DV, ATTR_MSP_HARD_TURN_LEVEL, ATTR_MSP_HARD_TURN_DV, ATTR_MSP_HARD_BUMP_RMSLEV, ATTR_MSP_HARD_BUMP_PK2PKLEV, ATTR_MSP_TEMPSLOPE_U, ATTR_MSP_TEMPSLOPE_V, ATTR_MSP_TEMPSLOPE_W,, [ATTR_VIOLATION_FLAGS]
 	 */
     DMM_STATUS(95, EventAttr.MAGICA, EventAttr.ORIENTATION_TRIAX, EventAttr.DMM_ZLEVEL, EventAttr.RMS_LEVEL, EventAttr.RMS_WINDWO, EventAttr.YWINDOW, EventAttr.DMM_YLEVEL, EventAttr.XACCEL, EventAttr.SLOPE, EventAttr.DVX, EventAttr.CAL_VERSION, EventAttr.NUMERATOR, EventAttr.DENOMINATOR, EventAttr.INTERCEPTS, EventAttr.G_TRIGGER_LEVEL, EventAttr.DIAGNOSTIC),
-    DRIVERSTATE_CHANGE_EX(96, EventAttr.DRIVER_HOS_STATE, EventAttr.CLEAR_DRIVER_FLAG, EventAttr.DRIVER_ID_STR),
+    HOS_CHANGE_STATE_EX(96, EventAttr.DRIVER_HOS_STATE, EventAttr.CLEAR_DRIVER_FLAG, EventAttr.DRIVER_ID_STR),
     LIGHT_DUTY(97),
     HEAVY_DUTY(98),
     MISSING_IWI_CONF(99),
@@ -202,7 +213,7 @@ public enum DeviceNoteTypes  {
 
     TRIAX_STATUS_EX(110, EventAttr.MAGICA, EventAttr.ORIENTATION_TRIAX, EventAttr.DMM_ZLEVEL, EventAttr.RMS_LEVEL, EventAttr.RMS_WINDWO, EventAttr.YWINDOW, EventAttr.DMM_YLEVEL, EventAttr.XACCEL, EventAttr.SLOPE, EventAttr.DVX, EventAttr.CAL_VERSION, EventAttr.NUMERATOR, EventAttr.DENOMINATOR, EventAttr.INTERCEPTS, EventAttr.G_TRIGGER_LEVEL, EventAttr.DIAGNOSTIC),
     CRASH_DATA_EXTENDED(112),
-    A_AND_D_SPACE___HOS_CHANGE_STATE_NO_GPS_LOCK(113, EventAttr.DRIVER_HOS_STATE, EventAttr.CLEAR_DRIVER_FLAG, EventAttr.DRIVER_ID_STR, EventAttr.NO_GPS_LOCK_LOCATION),
+    HOS_CHANGE_STATE_NO_GPS_LOCK(113, EventAttr.DRIVER_HOS_STATE, EventAttr.CLEAR_DRIVER_FLAG, EventAttr.DRIVER_ID_STR, EventAttr.NO_GPS_LOCK_LOCATION),
     NEWDRIVER_HOSRULE(116, EventAttr.DRIVER_ID_STR, EventAttr.CURRENT_HOS_RULESET),
 
     /**
@@ -237,9 +248,11 @@ public enum DeviceNoteTypes  {
     ACKNOWLEDGE_UPDATE(135),
     BOUNDARYDAT_UP_TO_DATE(136),
     PLACES2DAT_UP_TO_DATE(137),
+    SBDRING_NULL(138), // not uploaded to portal
+    SBDRING(139), // not uploaded to portal
     
     IDLE_STATS(140, EventAttr.DURATION, EventAttr.LOW_IDLE_2, EventAttr.HIGH_IDLE_2),
-    WITNESSII_EVENT_DIAGNOSTIC(141),
+    WITNESSII_DIAGNOSTIC(141),
     AUTOMANDOWN(142),
     AUTO_MAN_OK(143),
     SMTOOLS_EMULATION_UP_TO_DATE(144, EventAttr.UP_TO_DATE_STATUS),
@@ -276,22 +289,22 @@ public enum DeviceNoteTypes  {
     WIRELINE_IGN_TEST_PASS(162),
     SHELL_OUTPUT(163),
     NO_MAPS_DRIVE(164),
-    AUTODETECT(165),
+    AUTO_DETECT(165),
     FUEL_STOP_EX(166, EventAttr.VEHICLE_GALLONS, EventAttr.ODOMETER, EventAttr.TRAILER_GALLONS, EventAttr.NO_GPS_LOCK_LOCATION),
-    LOWPOWER_TAMPER_EVENT(167),
-    FULLEVENT_BELOW_THRESHOLD(168),
+    LOW_POWER_TAMPER_EVENT(167),
+    FULL_EVENT_BELOW_THRESHOLD(168),
     ROLLOVER_WAYS(169, EventAttr.PACKED_DELTAV, EventAttr.DURATION),
     
     TRIAX_STATUS_WITNESSIII_TEMPCOMP(170),
-    VERTICALEVENT(171, EventAttr.PACKED_DELTAV, EventAttr.DURATION),
-    PARKINGBRAKE(172, EventAttr.HOS_STATE),
+    VERTICAL_EVENT(171, EventAttr.PACKED_DELTAV, EventAttr.DURATION),
+    PARKING_BRAKE(172, EventAttr.HOS_STATE),
     UNIT_INFO(173, EventAttr.DATA),
-    FULLEVENT_CONFIDENCE_LEVEL(174, EventAttr.PACKED_DELTAV, EventAttr.CONFIDENCE_LEVEL),
+    FULL_EVENT_CONFIDENCE_LEVEL(174, EventAttr.PACKED_DELTAV, EventAttr.CONFIDENCE_LEVEL),
     CRASH_DATA_HIRES(175),
     DSS_MICROSLEEP(176, EventAttr.DATA),
     DSS_STATISTICS(177, EventAttr.DATA),
-    NOTEEVENT_SECONDARY(178, EventAttr.PACKED_DELTAV),
-    VERTICALEVENT_SECONDARY(179),
+    SECONDARY_NOTE_EVENT(178, EventAttr.PACKED_DELTAV),
+    VERTICAL_EVENT_SECONDARY(179),
     
     WEEKLY_GPRS_USAGE(180, EventAttr.OPT_WEEKLY_WRITE_COUNT, EventAttr.UPLOAD_WEEKLY_TOTAL_WITNESSII_TRACE, EventAttr.DOWNLOAD_WEEKLY_TOTAL_FIRMWARE, EventAttr.DOWNLOAD_WEEKLY_TOTAL_MAPS, EventAttr.DOWNLOAD_WEEKLY_TOTAL_ZONES, EventAttr.DOWNLOAD_WEEKLY_TOTAL_BOOT_LOADER, EventAttr.DOWNLOAD_WEEKLY_TOTAL_QSI_FIRMWARE,
             EventAttr.DOWNLOAD_WEEKLY_TOTAL_WITNESSII_FIRMWARE, EventAttr.DOWNLOAD_WEEKLY_TOTAL_TRIAXII_FIRMWARE, EventAttr.DOWNLOAD_WEEKLY_TOTAL_BOUNDARY_DAT, EventAttr.DOWNLOAD_WEEKLY_TOTAL_BOUNDARY_DAT, EventAttr.DOWNLOAD_WEEKLY_TOTAL_SMTOOLS_EMULATION, EventAttr.DOWNLOAD_WEEKLY_TOTAL_SMTOOLS_FIRMWARE, EventAttr.DOWNLOAD_WEEKLY_TOTAL_SBS_EXMAPS_CHECK_BYTES,
@@ -302,7 +315,7 @@ public enum DeviceNoteTypes  {
     REMOTE_OK_MANDOWN(184), // mandown cancelled
     REMOTE_OFF_MANDOWN(185), // remote turned off
     REMOTE_LOW_BATT_MANDOWN(186), // low battery on remote
-    REMOTE_ON_MANDONW(187), // remote turned on
+    REMOTE_ON_MANDOWN(187), // remote turned on
     REMOTE_AACK_MANDOWN(188),
 
 
@@ -431,6 +444,8 @@ public enum DeviceNoteTypes  {
     RF_KILL(219), // reserved for tiwiPro
     
     DIAGNOSTIC(220), // send general diagnostic info to server
+    MAN_DOWN_EX(221),
+    STATS2(222),
 
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
@@ -497,13 +512,188 @@ public enum DeviceNoteTypes  {
         }
     }
     
-    public static DeviceNoteTypes valueOf(Integer code){
-        return lookupByCode.get(code);
+    /**
+     * Only the key value is passed around, so with this method<br />
+     * we can quickly get the right EventAttr and use it as a key
+     * @param code
+     * @return
+     */
+    public static DeviceNoteTypes valueOf(Integer code) {
+        if (!(code>0)){
+            return null;
+//            throw new IllegalArgumentException("Code cannot be 0");
+        }
+        DeviceNoteTypes result = lookupByCode.get(code);
+        if(result == null){
+            Log.info("Unknown EventAttr.code: " + code);
+            updateAttr(code);
+        }
+        return result;
+    }
+    
+    
+    /**
+     * If we are missing a key then download the current<br />
+     * firmware source code and find out what we should have.<br />
+     * This also prints out a recommended addition in this enums<br />
+     * current format, which is with the ATTR_ removed.
+     * @param code
+     */
+    private static void updateAttr(int code){
+        for (File file : downloadNotifications()){
+            searchForKey(file, code);
+        }
+
+        printUnknownAttrs();    
+        
+    }
+    
+    /**
+     * Loop through a file to see if we can find a matching Attr key
+     * @param file
+     * @param code
+     */
+    private static void searchForKey(File file, int code){
+        String line;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            while ((line = br.readLine()) != null){
+                if (line.contains(code + "") && line.contains("SAT_EVENT_")){
+                    Log.debug(formatNoteType(line));
+                }
+            }
+        } catch (IOException e) {
+            Log.wtf("%s", e);
+        }
+    }
+    
+    private static Object formatNoteType(String line) {
+        String tiwiName = "SAT_EVENT_[A-Z_0-9]*(?=\\s+[=])";
+        String waysName = "(?<=#define\\s)SAT_EVENT_[A-Z_0-9]*";
+
+        Pattern tiwiPat = Pattern.compile(tiwiName);
+        Pattern waysPat = Pattern.compile(waysName);
+        
+        Matcher tiwiMat, waysMat;
+        
+        tiwiMat = tiwiPat.matcher(line);
+        waysMat = waysPat.matcher(line);
+        
+        String name = "";
+        int value = 0;
+        
+        if (tiwiMat.find()){
+            name = line.substring(tiwiMat.start(), tiwiMat.end());
+            value = AutomationNumberManager.extract(line.substring(tiwiMat.end()));
+        } else if (waysMat.find()){
+            name = line.substring(waysMat.start(), waysMat.end());
+            value = AutomationNumberManager.extract(line.substring(waysMat.end()));
+        }
+        
+        return String.format("%s(%d),", name, value);
+    }
+
+    /**
+     * Download the Firmware source code from SVN for both<br />
+     * Waysmarts and TiwiPros.
+     * @return
+     */
+    public static File[] downloadNotifications(){
+       
+        String base = "sat_events";
+        String waysFile = base + "-ways.h";
+        String tiwiFile = base + "-tiwi.h";
+        String ways = "https://svn.iwiglobal.com/iwi/uClinux/trunk/user/iwi/src/common/";
+        String tiwi = "https://svn.iwiglobal.com/iwi/snitch/Firmware/trunk/inc/";
+        
+        String directory = "target/test/resources/downloads/";
+
+        File file = new File(directory);
+        file.mkdirs();
+        
+        File[] files = {new File(directory + waysFile), new File(directory + tiwiFile)};
+        
+        AutomationFileHandler.downloadSvnDirectory(ways, "iwi.h", files[0]);
+
+        AutomationFileHandler.downloadSvnDirectory(tiwi, "notifications.h", files[1]);
+        
+        return files;
+    }
+    
+        
+    /** 
+     * Find ALL of the keys in source code and print them out<br />
+     * so we can add them to the enum.
+     * @param file
+     */
+    public static void searchForUnknowns(File file){
+        String tiwiName = "SAT_EVENT_[A-Z_0-9]*(?=\\s+[=])";
+        String waysName = "(?<=#define\\s)SAT_EVENT_[A-Z_0-9]*";
+        
+        Pattern tiwiPat = Pattern.compile(tiwiName);
+        Pattern waysPat = Pattern.compile(waysName);
+        Matcher tiwiMat, waysMat;
+        
+        String line;
+        Log.info(file.getName());
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            while ((line = br.readLine()) != null){
+                if (line.contains("} NotificationType;")){
+                    break;
+                }
+                if(Pattern.compile("^(?>\\s*)//").matcher(line).find() || 
+                        line.startsWith("//")){ // Ignore the line if it is all commented.
+                    continue;
+                }
+                
+                tiwiMat = tiwiPat.matcher(line);
+                waysMat = waysPat.matcher(line);
+                if (tiwiMat.find()){
+                    String eventName = line.substring(tiwiMat.start(), tiwiMat.end());
+                    Integer value = AutomationNumberManager.extract(line.substring(tiwiMat.end()));
+                    if (!lookupByCode.containsKey(value)){
+                        Log.info("%s(%d),", eventName, value);
+                    } else {
+                        String ourName = "SAT_EVENT_" + lookupByCode.get(value).name();
+                        if (!ourName.equals(eventName)){
+                            printName(value, ourName, eventName);
+                        }
+                    }
+                } else if (waysMat.find()){
+                    String eventName = line.substring(waysMat.start(), waysMat.end());
+                    Integer value = AutomationNumberManager.extract(line.substring(waysMat.end()));
+                    if (!lookupByCode.containsKey(value)){
+                        Log.info("%s(%d),", eventName, value);
+                    } else {
+                        String ourName = "SAT_EVENT_" + lookupByCode.get(value).name();
+                        if (!ourName.equals(eventName)){
+                            printName(value, ourName, eventName);
+                        }
+                    }
+                }
+            }
+        }catch (IOException e) {
+            Log.i("%s", e);
+        }
+    }
+    
+    private static void printName(int value, String portal, String firmware){
+        Log.info("\n%d\n\nPortal:   %s\nFirmware: %s", value, portal, firmware);
+    }
+    
+    /**
+     * Loop through all of the source code files to find<br />
+     * missing key values.
+     */
+    public static void printUnknownAttrs(){
+        for (File file: downloadNotifications()){
+            searchForUnknowns(file);
+        }
     }
     
     @Override
     public String toString(){
-        return this.name() + "(" + code + ")";
+        return String.format("%s(%d)", name(), code);
     }
-    
 }

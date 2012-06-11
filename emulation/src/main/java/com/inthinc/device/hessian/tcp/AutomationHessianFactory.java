@@ -98,9 +98,7 @@ public class AutomationHessianFactory {
     }
 
     public SiloService getPortalProxy() {
-        if (portalProxy == null)
-            getPortalProxy();
-        return portalProxy;
+        return portalProxy == null ? getPortalProxy(Addresses.QA) : portalProxy;
     }
     
     public SiloService getPortalProxy(String server, int port){

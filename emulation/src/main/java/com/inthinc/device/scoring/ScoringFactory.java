@@ -2,9 +2,9 @@ package com.inthinc.device.scoring;
 
 import java.util.Map;
 
+import com.inthinc.device.emulation.enums.UnitType;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.device.scoring.ScoringNoteProcessor.UnitType;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;

@@ -1,6 +1,5 @@
 package com.inthinc.device.hessian.tcp;
 
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,105 +12,73 @@ import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.inthinc.pro.automation.logging.Log;
 
-public class HessianDebug
-{
+public class HessianDebug {
     public static boolean debugIn = false;
     public static boolean debugOut = false;
     public static boolean debugRequest = false;
-    public static String debugInFileNamePrefix = "c:/debugHessianReq" ; 
-    public static String debugOutFileNamePrefix = "c:/debugHessianOut" ; 
-    
+    public static String debugInFileNamePrefix = "c:/debugHessianReq";
+    public static String debugOutFileNamePrefix = "c:/debugHessianOut";
 
+    public static void debugInput(String methodName, Object[] args, HessianProxyFactory factory) throws IOException {
 
-    public static void debugInput(String methodName, Object[] args, HessianProxyFactory factory) throws IOException
-    {
-        
         Log.debug("methodName: " + methodName);
 
         FileOutputStream fos = null;
-        try
-        {
+        try {
             fos = new FileOutputStream(debugInFileNamePrefix + methodName + ".dmp");
-        }
-        catch (FileNotFoundException e1)
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (FileNotFoundException e) {
+            Log.error(e);
         }
         AbstractHessianOutput debugOut = factory.getHessianOutput(fos);
         debugOut.call(methodName, args);
         debugOut.flush();
     }
 
-    public static InputStream debugOutput(String methodName, InputStream ins)
-    {
-        
+    public static InputStream debugOutput(String methodName, InputStream ins) {
+
         String fileName = debugOutFileNamePrefix + methodName + ".dmp";
         BufferedInputStream is = new BufferedInputStream(ins);
         FileOutputStream fos = null;
-        try
-        {
+        try {
             fos = new FileOutputStream(fileName);
-        }
-        catch (FileNotFoundException e1)
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        try
-        {
             int c = is.read();
-            while (c >= 0)
-            {
+            while (c >= 0) {
                 c = is.read();
                 fos.write(c);
 
             }
             is.close();
             fos.close();
-        }
-        catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (IOException e) {
+            Log.error(e);
         }
 
-        try
-        {
+        try {
             return new FileInputStream(fileName);
-        }
-        catch (FileNotFoundException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            Log.error(e);
         }
         return null;
 
     }
 
-    public static void debugRequest(String methodName, Object[] args)
-    {
-        
+    @SuppressWarnings("unchecked")
+    public static void debugRequest(String methodName, Object[] args) {
+
         Log.debug("methodName: " + methodName);
-        if (args != null)
-        {
-            for (int i = 0; i < args.length; i++)
-            {
-                if (args[i] instanceof Map)
-                {
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                if (args[i] instanceof Map) {
                     dumpParams((Map<String, Object>) args[i]);
-                }
-                else if (args[i] != null)
-                {
+                } else if (args[i] != null) {
                     Log.debug("arg[" + i + "] " + args[i].toString());
                 }
             }
         }
     }
-    public static void dumpParams(Map<String, Object> params)
-    {
-        for (String param : params.keySet())
-        {
+
+    public static void dumpParams(Map<String, Object> params) {
+        for (String param : params.keySet()) {
             Object value = params.get(param);
             Log.debug(param + " = " + ((value == null) ? "<null>" : value.toString()));
         }

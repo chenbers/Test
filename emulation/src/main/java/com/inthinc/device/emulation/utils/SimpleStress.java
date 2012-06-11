@@ -10,6 +10,7 @@ import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.resources.FileRW;
 import com.inthinc.pro.automation.utils.AutomationThread;
@@ -90,6 +91,7 @@ public class SimpleStress {
 //        SimpleStress stress = new SimpleStress(Long.parseLong(args[0]));
         SimpleStress stress = new SimpleStress(1334534400);
 //        SimpleStress stress = new SimpleStress(1132328400);
+        Log.info(stress);
     }
 
 }

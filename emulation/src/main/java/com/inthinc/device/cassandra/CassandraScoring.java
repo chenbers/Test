@@ -133,16 +133,22 @@ public class CassandraScoring
 		String endTime = (String) args[2];
 */		
     	
-    	CassandraDB cassandraDB = new CassandraDB("Iridium Archive", "note", "localhost:9160", 10, false);
+    	CassandraDB cassandraDB = new CassandraDB("Iridium Archive", "note", "10.0.35.40:9160", 10, false);
 		
     	CassandraScoring cs = new CassandraScoring();
     	Map<String, Object> scoreMap = null;
 		scoreMap = cs.getDriverScoresForDays(66462, "2012-04-10", "2012-04-10");
+		Log.info(scoreMap);
 		scoreMap = cs.getDriverScoresForMonths(66462, "2012-04", "2012-04");
-		scoreMap = cs.getVehicleScoresForDays(52721, "2012-04-10", "2012-04-10");    	
-		scoreMap = cs.getVehicleScoresForMonths(52721, "2012-04", "2012-04");    	
+        Log.info(scoreMap);
+		scoreMap = cs.getVehicleScoresForDays(52721, "2012-04-10", "2012-04-10");
+        Log.info(scoreMap);    	
+		scoreMap = cs.getVehicleScoresForMonths(52721, "2012-04", "2012-04");
+        Log.info(scoreMap);    	
 		scoreMap = cs.getVehicleGroupScoresForDays(5260, "2012-04-10", "2012-04-10");
+        Log.info(scoreMap);
 		scoreMap = cs.getVehicleGroupScoresForMonths(5260, "2012-04", "2012-04");
+        Log.info(scoreMap);
 		cassandraDB.shutdown();
     }
 	
@@ -189,8 +195,12 @@ public class CassandraScoring
 	
 	private Map<String, Object> getScoresForPeriod(String aggColumnFamily, String indexColumnFamily, int id, Composite startRange, Composite endRange)
 	{
+	    Log.info("column (%s) index (%s)", aggColumnFamily, indexColumnFamily);
         List<Integer> indexRowKeys = new ArrayList<Integer>();
 		indexRowKeys.add(id);
+
+        Log.info(startRange);
+        Log.info(endRange);
 
         List<Composite> rowKeys = fetchRowKeysFromIndex(indexColumnFamily, indexRowKeys, startRange, endRange);
         CounterRows<Composite, String> rows = fetchRowsForKeys(aggColumnFamily, rowKeys);

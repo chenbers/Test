@@ -155,7 +155,7 @@ public class AutomationDeviceEvents {
 	public class HOSChangeNoGPSEvent extends AutomationDeviceEvents {
 		
 		private HOSChangeNoGPSEvent(DeviceState state, GeoPoint location, String locationStr){
-			super(DeviceNoteTypes.A_AND_D_SPACE___HOS_CHANGE_STATE_NO_GPS_LOCK, state, location);
+			super(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK, state, location);
 			if (locationStr.length() > EventAttr.NO_GPS_LOCK_LOCATION.getSize()){
 				throw new IllegalArgumentException("Cannot have a location string longer than " + EventAttr.NO_GPS_LOCK_LOCATION.getSize());
 			}
@@ -212,7 +212,7 @@ public class AutomationDeviceEvents {
 	 */
 	public class DriverStateChangeEvent extends AutomationDeviceEvents {
 		private DriverStateChangeEvent(DeviceState state, GeoPoint location, String locationStr){
-			super(DeviceNoteTypes.DRIVERSTATE_CHANGE, state, location);
+			super(DeviceNoteTypes.HOS_CHANGE_STATE, state, location);
 			
 			note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
 			note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, locationStr);
