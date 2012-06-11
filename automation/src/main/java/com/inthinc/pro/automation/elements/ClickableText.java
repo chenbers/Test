@@ -10,7 +10,7 @@ public class ClickableText extends ClickableObject implements ClickableTextBased
 
     public ClickableText(SeleniumEnums anEnum, Object... objects) {
         super(anEnum, objects);
-        textStuff = new Text(anEnum);
+        textStuff = new Text(anEnum, objects);
     }
 
     @Override
