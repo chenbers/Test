@@ -60,8 +60,8 @@ public class AutoActionFinder {
                     return findAction(navigator.getRow(), elementType, elementName, step);
                 }
             }
-        } catch (Exception e){
-            Log.info(e);
+        } catch (StepException e){
+            Log.info(e.toString());
         }
         
         

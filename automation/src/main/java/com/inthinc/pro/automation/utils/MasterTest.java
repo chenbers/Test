@@ -140,6 +140,7 @@ public abstract class MasterTest {
     
     public static String getComparator(String stepAsString){
         String elementType = JBehaveTermMatchers.getAlias(stepAsString);
+        elementType = elementType == null ? "": elementType;
         String variable = RegexTerms.getMatch(RegexTerms.getVariable.replace("***", elementType), stepAsString);
         Map<String, String> temp = variables.get();
         if (variable.isEmpty()){
@@ -692,9 +693,10 @@ public abstract class MasterTest {
         return true;
     }
     
-    @Then("I verify \"$lookfor\" is on the page")
+    @Then("I verify $lookfor is on the page")
     public boolean verifyIsTextOnPage(String lookfor) { 
-        return validateTrue(getSelenium().isTextPresent(lookfor), lookfor + " was not found on this page.");
+        String actualString = getComparator(lookfor);
+        return validateTrue(getSelenium().isTextPresent(actualString), actualString + " was not found on this page.");
     }
 
 

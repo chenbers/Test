@@ -35,4 +35,9 @@ public class StepException extends RuntimeException {
     public Throwable getTrace(){
         return e;
     }
+    
+    @Override
+    public String toString(){
+        return String.format("Step:%s\nMessage:%s\n", stepAsString, errorMessage);
+    }
 }
