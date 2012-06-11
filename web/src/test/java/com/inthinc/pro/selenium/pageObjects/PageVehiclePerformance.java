@@ -189,7 +189,7 @@ private String page = "vehicle";
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().maximizeDrivingStyle().isPresent() &&
-                _link().viewAllTrips().isPresent();
+        return  _link().viewAllTrips().isPresent()  &&
+                _link().vehicleName().isPresent();
     }
 }
