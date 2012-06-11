@@ -1,43 +1,18 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.jbehave.core.annotations.UsingSteps;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.device.devices.TiwiProDevice;
-import com.inthinc.device.emulation.utils.GeoPoint;
-import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.ErrorLevel;
-import com.inthinc.pro.automation.enums.LoginCapability;
-import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
-import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSeatBelt;
-import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSpeed;
-import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
-import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceTrips;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
-import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditFuelStops;
-import com.inthinc.pro.selenium.pageObjects.PageHOSDriverLogs;
-import com.inthinc.pro.selenium.pageObjects.PageHOSAddEditDriverLogs;
-import com.inthinc.pro.selenium.pageObjects.PageHOSFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
-import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
-import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
-import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSeatBelt;
-import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
-import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
-import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
