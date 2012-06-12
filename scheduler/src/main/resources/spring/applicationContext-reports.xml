@@ -27,6 +27,7 @@
     <property name="deviceDAO" ref="deviceDAO" />
     <property name="groupReportDAO" ref="groupReportDAO" />
     <property name="reportDAO" ref="reportDAO" />
+    <property name="eventAggregationDAO" ref="eventAggregationDAO" />
   </bean>
 
   <!-- Forgot username/password Beans -->

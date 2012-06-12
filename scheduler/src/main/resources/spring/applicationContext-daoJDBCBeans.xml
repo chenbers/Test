@@ -17,6 +17,7 @@ default-autowire="byName">
   <bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
   <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
   <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO"/>
   <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO">
     	<property name="personDAO"     ref="personDAO"></property>
     	<property name="driverDAO"     ref="driverDAO"></property>
