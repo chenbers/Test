@@ -112,12 +112,12 @@ public class JasperReport implements Report
             attachments.add(reportAttatchment);
             String[] emails = email.split(",");
             List<String> emailList = Arrays.asList(emails);           
-            reportMailer.emailReport(emailList, attachments,subject,message, noReplyEmailAddress);
+            //reportMailer.emailReport(emailList, attachments,subject,message, noReplyEmailAddress);
         }
         catch (JRException e)
         {
             // We want to know why the report isn't sent but because this is used in the scheduler, we don't want to push it up.
-            logger.error(e);
+            logger.error("Could not send out the report",e);
         }
     }
 

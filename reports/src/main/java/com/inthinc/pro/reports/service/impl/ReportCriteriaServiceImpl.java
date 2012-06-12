@@ -20,6 +20,7 @@ import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.EventAggregationDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
@@ -79,6 +80,7 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
+import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteria;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceKeyMetricsReportCriteria;
 import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
@@ -101,6 +103,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private VehicleDAO vehicleDAO;
     private EventDAO eventDAO;
     private RedFlagDAO redFlagDAO;
+    private EventAggregationDAO eventAggregationDAO;
 
     private DeviceDAO deviceDAO;
     private ReportDAO reportDAO;
@@ -1186,7 +1189,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     
     @Override
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval,Locale locale,DateTimeZone timeZone) {
-        /* To get this done quick, we're going to use services which are available which will result in short development time, but possibly a somewhat slower processing time */
         DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO,driverID, interval);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
@@ -1198,6 +1200,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
+        return builder.build();
+    }
+    
+    @Override
+    public ReportCriteria getDriverExcludedViolationCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale,DateTimeZone timeZone) {
+        //Load the group id list for the parent group and it's children
+        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
+        DriverExcludedViolationsCriteria.Builder builder = new DriverExcludedViolationsCriteria.Builder(accountGroupHierarchy,eventAggregationDAO,groupDAO,driverDAO,groupIDs,interval);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
         return builder.build();
     }
 
@@ -1226,6 +1238,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     public void setReportAddressLookupBean(ReportAddressLookupBean reportAddressLookupBean) {
         this.reportAddressLookupBean = reportAddressLookupBean;
+    }
+    
+    public void setEventAggregationDAO(EventAggregationDAO eventAggregationDAO) {
+        this.eventAggregationDAO = eventAggregationDAO;
+    }
+    
+    public EventAggregationDAO getEventAggregationDAO() {
+        return eventAggregationDAO;
     }
 
     public List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person) {
@@ -1428,7 +1448,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                             reportSchedule.getGroupIDList(), timeFrame,  
                             person.getLocale(), person.getMeasurementType()));
                     break;
-
+                    
+                case DRIVER_COACHING:
+                    DateTimeZone dtz = DateTimeZone.forTimeZone(person.getTimeZone());
+                    if(reportSchedule.getGroupID() != null){                        
+                        reportCriteriaList.addAll(getDriverCoachingReportCriteriaByGroup(groupHierarchy,  reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale(),dtz));
+                    }else{
+                        reportCriteriaList.add(getDriverCoachingReportCriteriaByDriver(groupHierarchy,  reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale(),dtz));
+                    }
+                    break;
+                case DRIVER_EXCLUDED_VIOLATIONS:
+                    reportCriteriaList.add(getDriverExcludedViolationCriteria(groupHierarchy,reportSchedule.getGroupID(),timeFrame.getInterval(),person.getLocale(),DateTimeZone.forTimeZone(person.getTimeZone())));
+                    break;
                 default:
                     break;
 

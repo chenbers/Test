@@ -80,6 +80,7 @@ public enum ReportType
     WARRANTY_LIST("Warranty List","warrantyListReport.jrxml","warrantyListReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.asset.i18n.warrantyList", null, false),
 
     //DEVON ENERGY CORP
+    DRIVER_EXCLUDED_VIOLATIONS("Driver Excluded Violations","driverExludedViolationsReport.jrxml","driverExcludedViolationsReport.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.driverExcludedViolationsReport"),
     DRIVER_COACHING("Driver Coaching Report","driverCoachingReport.jrxml","driverCoachingReport.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverCoachingReport", null, false);
     
     private String prettyTemplate;
