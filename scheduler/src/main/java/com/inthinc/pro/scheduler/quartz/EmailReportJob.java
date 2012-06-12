@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -15,11 +17,13 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
@@ -61,6 +65,7 @@ public class EmailReportJob extends QuartzJobBean {
     private GroupDAO groupDAO;
     private AccountDAO accountDAO;
     private DriverDAO driverDAO;
+    private PersonDAO personDAO;
 
     private String webContextPath;
     private String encryptPassword;
@@ -83,7 +88,11 @@ public class EmailReportJob extends QuartzJobBean {
     private List<ReportSchedule> getReportSchedules(){
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         
-        List<Account> accounts = accountDAO.getAllAcctIDs();
+        Account testAccount =  accountDAO.findByID(1);
+        List<Account> accounts = new ArrayList<Account>();
+        accounts.add(testAccount);
+        //TODO uncomment
+//        List<Account> accounts = accountDAO.getAllAcctIDs();
         logger.debug("Account Count: " + accounts.size());
         
         initTextEncryptor();
@@ -94,6 +103,7 @@ public class EmailReportJob extends QuartzJobBean {
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAccountID()));
             }
         }
+        logger.debug("Report Schedule Acount Count: " + reportSchedules.size());
         return reportSchedules;
     }
     
@@ -114,6 +124,7 @@ public class EmailReportJob extends QuartzJobBean {
         }
         return a != null && a.getStatus() != null && !a.getStatus().equals(Status.DELETED);
     }
+    
     protected int dispatchReports(List<ReportSchedule> reportSchedules){
         int count = 0;
         userMap = new HashMap<Integer,User>();
@@ -122,7 +133,7 @@ public class EmailReportJob extends QuartzJobBean {
             if(reportSchedule.getStatus().equals(Status.ACTIVE)){// If the reports status is not active, then the reports will no longer go out.
                 User user = getUser(reportSchedule.getUserID());
                 if (user != null && user.getStatus().equals(Status.ACTIVE)) { // If the users status is not active, then the reports will no longer go out for that user
-                    if (isTimeToEmailReport(reportSchedule, user.getPerson())) {
+                    if (isTimeToEmailReport(reportSchedule, user.getPerson())) { //Is it time to email the report out the participating recipients?
                         if (logger.isDebugEnabled()) {
                             logger.debug("-------BEGIN PROCESSING REPORT-------");
                             logger.debug(reportSchedule.toString());
@@ -144,8 +155,9 @@ public class EmailReportJob extends QuartzJobBean {
                                     reportScheduleDAO.update(reportSchedule);
                                 }
                                 
-                            }
-                            else {
+                            }else if (reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)){
+                                deliverReportToGroupManagers(reportSchedule,user);
+                            }else{
                                 List<ReportCriteria> reportCriteriaList = reportCriteriaService.getReportCriteria(reportSchedule, getAccountGroupHierarchy(reportSchedule.getAccountID()),  user.getPerson());
                                 emailReport(reportSchedule, user.getPerson(), reportCriteriaList, null);
                                 reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
@@ -154,7 +166,7 @@ public class EmailReportJob extends QuartzJobBean {
                         }
                         catch (Throwable t) {
                             // log the exception, but keep processing the rest of the the reports
-                            logger.error(t);
+                            logger.error(String.format("Error occurred while attempting to email from report schedule %d",reportSchedule.getReportID()),t);
                         }
                     }
                 }
@@ -162,6 +174,51 @@ public class EmailReportJob extends QuartzJobBean {
         }
         return count;
     }
+    
+    /**
+     * Depending on the delivery strategy for the report, we might need to break up the reportSchedule and create one per Group
+     * 
+     * By creating a seperate ReportSchedule for each group
+     * 
+     * The group manager will be sent the report if
+     * 1. The group has a manager.
+     * 2. The manager is active.
+     * 
+     * @param reportSchedule
+     * @return
+     */
+    
+    private void deliverReportToGroupManagers(ReportSchedule source,User user){
+        //For each group, we're going to build a ReportSchedule if there is a group manager.
+        List<Integer> groupIds = getAccountGroupHierarchy(source.getAccountID()).getGroupIDList(source.getGroupID());
+        
+        //The groupIds can contain duplicates so we're going to put them in a set. This takes time and needs
+        //to be refactored TODO
+        Set<Integer> groupIdSet = new HashSet<Integer>();
+        for(Integer groupID:groupIds){
+            groupIdSet.add(groupID);
+        }
+        for(Integer groupID:groupIdSet){
+            Group group = getAccountGroupHierarchy(source.getAccountID()).getGroup(groupID);
+            if(group.getManagerID() != null && group.getManagerID() > 0){
+                Person manager = personDAO.findByID(group.getManagerID());
+                if(manager.getStatus().equals(Status.ACTIVE)){
+                    ReportSchedule reportSchedule = new ReportSchedule();
+                    BeanUtils.copyProperties(source, reportSchedule);
+                    reportSchedule.setGroupID(groupID);
+                    if(logger.isDebugEnabled()){
+                        logger.debug(String.format("Creating report [%d] for group [%d] to be sent to manager [%d]", source.getReportID(),group.getGroupID(),manager.getPersonID()));
+                    }
+                    List<ReportCriteria> reportCriteriaList = reportCriteriaService.getReportCriteria(reportSchedule, getAccountGroupHierarchy(reportSchedule.getAccountID()),  user.getPerson());
+                    emailReport(reportSchedule, manager, reportCriteriaList, user.getPerson());
+                }
+            }
+        }
+        
+        source.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
+        reportScheduleDAO.update(source);
+    }
+    
     
     private boolean processIndividualDriverReportSchedule(ReportSchedule reportSchedule, Person person) {
         
@@ -278,15 +335,17 @@ public class EmailReportJob extends QuartzJobBean {
             if (reportCriteria.getReport().getPrettyTemplate() == null)
                 formatType = FormatType.EXCEL;
         }
-
         Report report = reportCreator.getReport(reportCriteriaList);
-        for (String address : reportSchedule.getEmailTo()) {
+        
+        //Create the subject/message for emails sent to group managers.
+        
+        if(reportSchedule.getDeliverToManagers() != null && reportSchedule.getDeliverToManagers().equals(Boolean.TRUE)){
+            Person groupManager = person;
             String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
-            String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
-            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), 
+            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage.groupManager", person.getLocale(), 
                     (owner == null) ? person.getFullName() : owner.getFullName(), 
                     (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
-                    unsubscribeURL);
+                    "");
             
             // Change noreplyemail address based on account
             String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
@@ -297,9 +356,29 @@ public class EmailReportJob extends QuartzJobBean {
                 noReplyEmailAddress = acct.getProps().getNoReplyEmail();
             }
             
-            
-            
-            report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
+            report.exportReportToEmail(groupManager.getPriEmail(), formatType, message, subject, noReplyEmailAddress);
+        }else{
+            for (String address : reportSchedule.getEmailTo()) {
+                String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
+                String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
+                String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), 
+                        (owner == null) ? person.getFullName() : owner.getFullName(), 
+                        (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
+                        unsubscribeURL);
+                
+                // Change noreplyemail address based on account
+                String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
+                Account acct = accountDAO.findByID(reportSchedule.getAccountID());
+                if (    (acct.getProps() != null) && 
+                        (acct.getProps().getNoReplyEmail() != null) && 
+                        (acct.getProps().getNoReplyEmail().trim().length() > 0) ) {
+                    noReplyEmailAddress = acct.getProps().getNoReplyEmail();
+                }
+                
+                
+                
+                report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
+            }
         }
     }
 
@@ -567,6 +646,14 @@ public class EmailReportJob extends QuartzJobBean {
 
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+    
+    public PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+    
+    public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
     }
 
 }
