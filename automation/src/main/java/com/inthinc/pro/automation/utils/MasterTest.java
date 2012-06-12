@@ -139,6 +139,10 @@ public abstract class MasterTest {
     }
     
     public static String getComparator(String stepAsString){
+        
+        stepAsString = StringEscapeUtils.unescapeJava(stepAsString);
+        stepAsString = StringEscapeUtils.unescapeHtml(stepAsString);
+        
         String elementType = JBehaveTermMatchers.getAlias(stepAsString);
         elementType = elementType == null ? "": elementType;
         String variable = RegexTerms.getMatch(RegexTerms.getVariable.replace("***", elementType), stepAsString);
@@ -146,7 +150,10 @@ public abstract class MasterTest {
         if (variable.isEmpty()){
             if (stepAsString.contains("\"")){
                 int quote = stepAsString.indexOf("\"") + 1;
-                return stepAsString.substring(quote, stepAsString.indexOf("\"", quote));
+                String toReturn = stepAsString.substring(quote, stepAsString.indexOf("\"", quote));
+                toReturn = StringEscapeUtils.unescapeJava(toReturn);
+                toReturn = StringEscapeUtils.unescapeHtml(toReturn);
+                return toReturn;
             } else {
                 for (Map.Entry<String, String> entry : temp.entrySet()){
                     if (stepAsString.contains(entry.getKey())){
@@ -243,7 +250,11 @@ public abstract class MasterTest {
         KeyCommands.typeKey(KeyEvent.VK_PERIOD);
     }
     
-    public static void setComparator(String stepAsString, Object value){
+    public static void setComparator(final String stepAsString, final Object obj){
+        String value = obj.toString();
+        value = StringEscapeUtils.unescapeJava(value);
+        value = StringEscapeUtils.unescapeHtml(value);
+        
         String elementType = JBehaveTermMatchers.getAlias(stepAsString);
         String key = RegexTerms.getMatch(RegexTerms.setVariable.replace("***", elementType), stepAsString);
         

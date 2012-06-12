@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.interfaces.IndexEnum;
@@ -34,7 +35,8 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
             url = new String(myEnum.getURL());
         }
         if (myEnum.getText() != null) {
-            text = new String(myEnum.getText());
+            text = StringEscapeUtils.unescapeHtml(myEnum.getText());
+            text = StringEscapeUtils.unescapeJava(text);
         }
     }
     

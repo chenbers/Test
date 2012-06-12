@@ -1,19 +1,17 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminRedFlagsDetailsEnum implements SeleniumEnums {
     
     TITLE("Admin - NAME_OF_ALERT Details", "//span[@class='admin']"),
     
-    BACK_TO_RED_FLAGS(StringEscapeUtils.unescapeHtml("&lt; Back to Red Flags"), "redFlagForm:redFlagCancel"),
+    BACK_TO_RED_FLAGS("&lt; Back to Red Flags", "redFlagForm:redFlagCancel"),
     
     DELETE(delete, "redFlagForm:redFlagDelete"),
     EDIT("Edit", "redFlagForm:redFlagEdit"),
     
-    NAME_DESCRIPTION_TYPE_HEADER(StringEscapeUtils.unescapeHtml("Name, Description &amp; Type"), "//table[1]/tbody/tr/td[1]/div[@class='add_section_title']"),
+    NAME_DESCRIPTION_TYPE_HEADER("Name, Description &amp; Type", "//table[1]/tbody/tr/td[1]/div[@class='add_section_title']"),
     ASSIGN_TO_HEADER("Assign To", "//table[1]/tbody/tr/td[3]/div[@class='add_section_title']"),
     RED_FLAG_TYPE_HEADER("Red Flag Type", "//div/div[@class='add_section_title']"),
     NOTIFICATIONS_BY_NAME_HEADER("Notifications by Name", "//table[3]/tbody/tr/td[1]/div[@class='add_section_title']"),

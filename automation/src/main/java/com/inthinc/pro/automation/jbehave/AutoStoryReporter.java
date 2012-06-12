@@ -24,19 +24,19 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     private Iterator<Description> scenarios;
     private Description scenario;
     
-    private Iterator<Description> steps;
-    private Description step;
     
     private RunNotifier runNotifier;
     
     private Description storyDescription;
     
+    private Description step;
+    private Iterator<Description> steps;
 
     public AutoStoryReporter(StoryReporter crossReferencing, StoryReporter delegate, boolean multiThreading, Test test, RunNotifier notifier, Description storyDescription) {
         super(crossReferencing, delegate, multiThreading);
         this.test = test;
-//        this.runNotifier = notifier;
-//        this.storyDescription = storyDescription;
+        this.runNotifier = notifier;
+        this.storyDescription = storyDescription;
     }
     
     @Override
@@ -53,24 +53,22 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
 
     @Override
     public void beforeStory(Story story, boolean givenStory) {
-//        if (runNotifier != null && storyDescription != null){
-//            runNotifier.fireTestStarted(storyDescription);
-//            for (Description desc : storyDescription.getChildren()){
-//                String name = desc.getDisplayName();
-//                if (name.equals(story.getName().replace(".story", ""))){
-//                    this.story = desc;
-//                    scenarios = desc.getChildren().iterator();
-//                    runNotifier.fireTestStarted(this.story);
-//                    break; 
-//                }
-//            }
-//        } else {
-//            this.story = null;
-//            this.scenarios = null;
-//            this.scenario = null;
-//            this.steps = null;
-//            this.step = null;
-//        }
+        if (runNotifier != null && storyDescription != null){
+            runNotifier.fireTestStarted(storyDescription);
+            for (Description desc : storyDescription.getChildren()){
+                String name = desc.getDisplayName();
+                if (name.equals(story.getName().replace(".story", ""))){
+                    this.story = desc; 
+                    scenarios = desc.getChildren().iterator();
+                    runNotifier.fireTestStarted(this.story);
+                    break; 
+                }
+            }
+        } else {
+            this.story = null;
+            this.scenarios = null;
+            this.scenario = null;
+        }
         
         super.beforeStory(story, givenStory);
     }
@@ -78,7 +76,7 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     @Override
     public void afterStory(boolean paramBoolean) {
         if (this.story != null){
-            runNotifier.fireTestStarted(this.story);
+            runNotifier.fireTestFinished(this.story);
             this.story = null;
         }
         
@@ -89,11 +87,13 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     public void afterScenario() {
         if (runNotifier != null && scenario != null){
             runNotifier.fireTestFinished(scenario);
+            scenario = null;
         }
         super.afterScenario();
     }
     
     private int i = 0;
+
 
     @Override
     public void beforeExamples(List<String> steps, ExamplesTable table) {
@@ -110,14 +110,28 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
         i++;
     }
     
+    private Description nextStep;
     
     @Override
     public void beforeStep(String step){
         if (runNotifier != null && scenario != null){
-            this.step = steps.next();
-            runNotifier.fireTestStarted(this.step);
+            if (nextStep == null){
+                nextStep = steps.next();    
+            }
+            if (nextStep.getDisplayName().equals(step)){
+                this.step = nextStep;
+                runNotifier.fireTestStarted(this.step);
+                
+            }
         }
         super.beforeStep(step);
+    }
+    
+    public void afterStep(){
+        if (step != null){
+            nextStep = null;
+            step = null;
+        }
     }
 
     @Override
@@ -131,6 +145,7 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     public void successful(String step) {
         if (runNotifier != null && this.step != null){
             runNotifier.fireTestFinished(this.step);
+            afterStep();
         }
         super.successful(step);
     }
@@ -139,6 +154,7 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     public void ignorable(String step) {
         if (runNotifier != null && this.step != null){
             runNotifier.fireTestIgnored(this.step);
+            afterStep();
         }
         super.ignorable(step);
     }
@@ -147,6 +163,7 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     public void pending(String step) {
         if (runNotifier != null && this.step != null){
             runNotifier.fireTestIgnored(this.step);
+            afterStep();
         }
         super.pending(step);
     }
@@ -155,6 +172,7 @@ public class AutoStoryReporter extends ConcurrentStoryReporter {
     public void failed(String step, Throwable cause) {
         if (runNotifier != null && this.step != null){
             runNotifier.fireTestFailure(new Failure(this.step, cause.getCause()));
+            afterStep();
         }
         super.failed(step, cause);
     }

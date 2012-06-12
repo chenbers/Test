@@ -68,7 +68,7 @@ public class RegexTerms {
      * @return
      */
     public static String getMatch(String pattern, String toSearch){
-        Pattern pat = Pattern.compile(pattern);
+        Pattern pat = Pattern.compile(pattern, Pattern.DOTALL | Pattern.MULTILINE);
         Matcher mat = pat.matcher(toSearch);
         return mat.find() ? toSearch.substring(mat.start(), mat.end()) : "";
     }

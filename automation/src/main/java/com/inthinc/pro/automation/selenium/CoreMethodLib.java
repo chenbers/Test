@@ -3,7 +3,6 @@ package com.inthinc.pro.automation.selenium;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,7 +58,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private final Browsers browser;
     private final Addresses silo;
     
-    private volatile static HashMap<Long, CoreMethodInterface> seleniumByThread = new HashMap<Long, CoreMethodInterface>();
+    private static ThreadLocal<CoreMethodInterface> instance = new ThreadLocal<CoreMethodInterface>();
     
     public CoreMethodLib(Browsers browser, Addresses silo) {
         super(browser.getDriver(), silo.getWebAddress());
@@ -783,45 +782,35 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     
     
     public static CoreMethodInterface getSeleniumThread() {
-        CoreMethodLib selenium;
-        Long currentThread = getThreadID();
+        CoreMethodInterface selenium = instance.get();
         //System.out.println("getSeleniumThread() currentThread: "+currentThread);
-        if (seleniumByThread.containsKey(currentThread)){
-            return seleniumByThread.get(currentThread);
+        if (selenium != null){
+            return selenium;
         }
         try {
             AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
             selenium = new CoreMethodLib(Browsers.getBrowserByName(apb.getBrowserName()), Addresses.getSilo(apb.getSilo()));
-//            selenium.open("http://www.google.com");
-//            selenium.open("http://www.inthinc.com");
-//            selenium.open("http://www.google.com");
-            
         } catch (BeansException e) {
-            Log.error(StackToString.toString(e));
+            Log.error(e);
             selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);
         } 
-        seleniumByThread.put(currentThread, selenium.getErrorCatcher().newInstanceOfSelenium());
-        return seleniumByThread.get(currentThread);
+        instance.set(selenium.getErrorCatcher().newInstanceOfSelenium());
+        return instance.get();
     }
 
     public static void closeSeleniumThread() {
-        Long currentThread = getThreadID();
         try{
-            seleniumByThread.get(currentThread).close();
-            seleniumByThread.get(currentThread).stop();
+            instance.get().close();
+            instance.get().stop();
         }catch(NullPointerException e){
-            Log.debug("Selenium already closed.");
+            Log.info("Selenium already closed.");
         }catch(Exception e){
             if(!e.getMessage().contains("session") && !e.getMessage().contains("does not exist"))
-                Log.debug(StackToString.toString(e));
+                Log.info(e);
         }
-        seleniumByThread.remove(currentThread);
+        instance.set(null);
     }
     
-    
-    private static long getThreadID(){
-        return Thread.currentThread().getId();
-    }
     
     /**
      * Returns the best locator string to use for this element.

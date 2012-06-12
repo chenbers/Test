@@ -30,7 +30,7 @@ public enum MastheadEnum implements SeleniumEnums {
     MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a"),
 
     /* Footer Elements */
-    COPYRIGHT(StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc"), "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]"),
+    COPYRIGHT("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc", "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]"),
     LEGAL("Legal Notice", "footerForm:legal", "//form[@id='footerForm']/ul/li[5]/a", "link=Legal Notice"),
     PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a"),
     SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]"),
@@ -47,11 +47,11 @@ public enum MastheadEnum implements SeleniumEnums {
             + "YOU, NOT INTHINC, ASSUME THE ENTIRE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION DUE TO YOUR USE OF THIS WEBSITE.  "
             + "INTHINC WILL NOT BE LIABLE FOR THE ACTIONS OF THIRD PARTIES.", "//p[8]"),
 
-    PRIVACY_POLICY(StringEscapeUtils.unescapeHtml("We at inthinc take your privacy very seriously. " + "This Privacy Policy describes how we handle personally identifiable information "
+    PRIVACY_POLICY("We at inthinc take your privacy very seriously. " + "This Privacy Policy describes how we handle personally identifiable information "
             + "(&#8220;Personal Information&#8221;) and other information that we collect or receive " + "through the operation of inthinc products and services, any websites, portals, "
             + "telecommunications, technical or customer service support or information and as part " + "of any of our other business activities.  &#8220;Personal Information&#8221; "
             + "in this context is information that is identifiable to a particular person, including " + "when the information is combined with other information about that individual.  "
-            + "We endeavor to carefully guard and protect the privacy of any " + "Personal Information that we collect or otherwise receive."), "//p[4]"),
+            + "We endeavor to carefully guard and protect the privacy of any " + "Personal Information that we collect or otherwise receive.", "//p[4]"),
 
     CUSTOMER_SUPPORT_DEFAULT("For assistance, please contact Customer Support at:", "//h3"),
     

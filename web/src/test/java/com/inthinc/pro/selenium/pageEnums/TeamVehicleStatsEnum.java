@@ -1,7 +1,5 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
@@ -33,7 +31,7 @@ public enum TeamVehicleStatsEnum implements SeleniumEnums {
     TEAM_IDLE_HEADER("Idle Time", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsIdleTimeheader:sortDiv"),
     TEAM_LOW_HEADER("Low Idle", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsLoIdleheader:sortDiv"),
     TEAM_HIGH_HEADER("High Idle", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsHiIdleheader:sortDiv"),
-    TEAM_PERCENT_HEADER(StringEscapeUtils.unescapeHtml("Idle &#37;"), "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsIdlePercentageheader:sortDiv"),
+    TEAM_PERCENT_HEADER("Idle &#37;", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsIdlePercentageheader:sortDiv"),
     TEAM_FUEL_HEADER("Fuel Eff.", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsMpgheader:sortDiv"),
     TEAM_CRASHES_HEADER("Crashes", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsCrashesheader:sortDiv"),
     TEAM_SAFETY_HEADER("Safety", "teamStatisticsVehicleForm:drivers:driverTotals:newTeamStatsTab-totalsSafetyheader:sortDiv"),
@@ -62,7 +60,7 @@ public enum TeamVehicleStatsEnum implements SeleniumEnums {
     DRIVER_IDLE_HEADER("Idle Time", "teamStatisticsVehicleForm:drivers:newTeamStatsTab-idleTimeheader:sortDiv"),
     DRIVER_LOW_HEADER("Low Idle", "teamStatisticsVehicleForm:drivers:newTeamStatsTab-loIdleheader:sortDiv"),
     DRIVER_HIGH_HEADER("High Idle", "teamStatisticsVehicleForm:drivers:newTeamStatsTab-hiIdleheader:sortDiv"),
-    DRIVER_PERCENT_HEADER(StringEscapeUtils.unescapeHtml("Idle &#37;"), "teamStatisticsVehicleForm:drivers:newTeamStatsTab-idlePercentageheader:sortDiv"),
+    DRIVER_PERCENT_HEADER("Idle &#37;", "teamStatisticsVehicleForm:drivers:newTeamStatsTab-idlePercentageheader:sortDiv"),
     DRIVER_FUEL_HEADER("Fuel Eff.", "teamStatisticsVehicleForm:drivers:newTeamStatsTab-mpgheader:sortDiv"),
     DRIVER_CRASHES_HEADER("Crashes", "teamStatisticsVehicleForm:drivers:newTeamStatsTab-crashesheader:sortDiv"),
     DRIVER_SAFETY_HEADER("Safety", "teamStatisticsVehicleForm:drivers:newTeamStatsTab-safetyheader:sortDiv"),
