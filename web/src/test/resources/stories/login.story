@@ -14,7 +14,9 @@ Scenario: TC1241: Log In - Blank User Name and Password Error
 Given I am on the Login page
 When I click the Login button
 And the Login Error popup opens
-Then I validate the Login Error text is "Incorrect user name or password. Please try again."
+Then I validate the Header text is "Log In Error"
+And I validate the Message text contains "Incorrect user name or password."
+And I validate the Message text contains "Please try again."
 And I click the Ok button
 And the Login Error popup closes
 And I validate I am on the Login page
@@ -22,26 +24,27 @@ And I validate the User Name textfield is ""
 And I validate the Password textfield is "" 
 
 Scenario: TC1242: Log In - Bookmark Page Entry
-Given I log in to the Login page
+Given I am logged in
 When I bookmark the page
-And I click the Logout button
+And I click the Logout link
 And I click the bookmark I just added
 And I validate I am on the Login page
-And I am logged in as a "Admin" user
-Then I validate I am on the Overview page
+Given I am logged in
+Then I validate I am on the Executive Dashboard page
 
 Scenario: TC1245: Log In - Invalid Password Error
 Given I am on the Login page
-When I type a valid user name into the User Name textfield
+When I type "secondPrime" into the User Name textfield
 And I type "this will never be a valid password" into the Password textfield
 And I click the Login button
 And the Login Error popup opens
-Then I validate the Login Error text is "Incorrect user name or password. Please try again."
+Then I validate the Message text contains "Incorrect user name or password."
+And I validate the Message text contains "Please try again."
 And I click the Ok button
 And the Login Error popup closes
 And I validate I am on the Login page
 And I validate the User Name textfield is "" 
-And I validate the Password textfield is "" 
+And I validate the Password textfield is ""  
 
 Scenario: TC1246: Log In - Invalid User Name Error
 Given I am on the Login page
@@ -49,7 +52,8 @@ And I type "this will never be a valid User Name" into the User Name textfield
 And I type "password" into the Password textfield
 And I click the Login button
 And the Login Error popup opens
-Then I validate the Login Error text is "Incorrect user name or password. Please try again."
+Then I validate the Message text contains "Incorrect user name or password."
+And I validate the Message text contains "Please try again."
 And I click the Ok button
 And the Login Error popup closes
 And I validate I am on the Login page
@@ -57,17 +61,17 @@ And I validate the User Name textfield is ""
 And I validate the Password textfield is "" 
 
 Scenario: TC1247: Log In - Log In Button
-Given I am on the Login page
-When I am logged in as a "Admin" user
-Then I validate I am on the Overview page
+Given I am logged in
+Then I validate I am on the Executive Dashboard page
 
 Scenario: TC1248: Log In - Password Incorrect Case Error
 Given I am on the Login page
-When I type a valid user name into the User Name textfield
-And I type a password in the wrong case into the Password textfield
+When I type "secondPrime" into the User Name textfield
+And I type "2UT2CFMNH$F!" into the Password textfield
 And I click the Login button
 And the Login Error popup opens
-Then I validate the Login Error text is "Incorrect user name or password. Please try again."
+Then I validate the Message text contains "Incorrect user name or password."
+And I validate the Message text contains "Please try again."
 And I click the Ok button
 And the Login Error popup closes
 And I validate I am on the Login page
@@ -76,16 +80,15 @@ And I validate the Password textfield is ""
 
 Scenario: TC1250 - Log In - UI
 Given I am on the Login page 
-When I validate the focus should be on the User Name textfield
-Then the Login page should render as expected
 
 Scenario: TC1251 - Log In - User Name Incorrect Case Error
 Given I am on the Login page
-When I type a user name in the wrong case into the User Name textfield
-And I type "password" into the Password textfield
+When I type "SECONDPRIME" into the User Name textfield
+And I type "2ut2CFmnH$f!" into the Password textfield
 And I click the Login button
 And the Login Error popup opens
-Then I validate the Login Error text is "Incorrect user name or password. Please try again."
+Then I validate the Message text contains "Incorrect user name or password."
+And I validate the Message text contains "Please try again."
 And I click the Ok button
 And the Login Error popup closes
 And I validate I am on the Login page
