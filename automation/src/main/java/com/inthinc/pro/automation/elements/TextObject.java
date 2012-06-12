@@ -96,11 +96,12 @@ public class TextObject extends ElementBase implements TextBased {
 
     @Override
     public Boolean validateDoesNotContain(String expectedPart) {
-        return assertFalse(getText().contains(expectedPart), myEnum + " should not, but does contain the text: \"" + expectedPart +"\"");
+        String actual = getText();
+        return super.validateStringDoesNotContain(expectedPart, actual);
     }
 
     @Override
     public Boolean validateIsNot(String expected) {
-        return assertTrue(getText().contains(expected), myEnum + " does not contain the text: \"" + expected +"\"");
+        return validateNotEquals(expected, getText());
     }
 }

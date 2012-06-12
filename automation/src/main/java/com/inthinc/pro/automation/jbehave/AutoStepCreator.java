@@ -108,12 +108,13 @@ public class AutoStepCreator extends StepCreator {
     }
 
     
-    public class NullPointerStep extends AbstractStep {
+    public class NullPointerStep extends ParameterisedStep {
         
         private final String stepAsString;
         private final NullPointerException e;
         
         public NullPointerStep(String stepAsString, NullPointerException e){
+            super(stepAsString, null, null, null);
             this.stepAsString = stepAsString;
             this.e = e;
         }
@@ -134,10 +135,11 @@ public class AutoStepCreator extends StepCreator {
         return new PopupStep(stepAsString);
     }
     
-    public class PopupStep extends AbstractStep {
+    public class PopupStep extends ParameterisedStep {
         private final String stepAsString;
         
         public PopupStep(String stepAsString){
+            super(stepAsString, null, null, null);
             this.stepAsString = stepAsString;
         }
 

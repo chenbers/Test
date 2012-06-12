@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -143,6 +144,8 @@ public class AutoPageRunner {
                 }
             } catch (StepException e){
                 Log.info("Unable to finish step: %s\nError is: %s", workingOnStep, e.getError());
+            } catch (NoSuchElementException e){
+                Log.info("Unable to get a method for step: %s", step.stepAsString());
             }
         } catch (NullPointerException e){
             Log.info("Logging a nullPointer exception: %e", e);

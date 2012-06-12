@@ -3,6 +3,7 @@ package com.inthinc.pro.automation.selenium;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -89,6 +90,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib check(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         check(element);
+        loadPause();
         return this;
     }
 
@@ -103,7 +105,24 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getClickable(getLocator(myEnum));
         click(element);
         AutomationThread.pause(2, "click(" + myEnum + ")");
+        loadPause();
         return this;
+    }
+    
+    private void loadPause(){
+        List<WebElement> pauseFor = getWrappedDriver().findElements(By.xpath("//span[contains(@id,'status.start')]"));
+        int size=pauseFor.size();
+        while(size>0){
+            AutomationThread.pause(1, "Waiting for elements to load");
+            Iterator<WebElement> itr = pauseFor.iterator();
+            while(itr.hasNext()){
+                WebElement next = itr.next();
+                if(!next.isDisplayed()){
+                    itr.remove();
+                }
+            }
+            size=pauseFor.size();
+        }
     }
 
     @Override
@@ -586,7 +605,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
         select(element, label);
         AutomationThread.pause(5, "Pausing so browser has a chance to catch up");
-
+        loadPause();
         return this;
     }
 
@@ -596,6 +615,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String xpath = Xpath.start().body().div(Id.id(element)).div(option).toString();
         click(xpath);
         AutomationThread.pause(3, "Pause so the browser has a chance to catch up");
+        loadPause();
         return this;
     }
     
@@ -663,6 +683,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         fireEvent(element, "keyup");
         fireEvent(element, "blur");
         AutomationThread.pause(500l, "Give the page a second to catch up if it has some refreshing to do");
+        loadPause();
         return this;
     }
 
@@ -671,6 +692,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getLocator(myEnum);
         typeKeys(element, value);
         AutomationThread.pause(5, "Let the portal catch up");
+        loadPause();
         return this;
     }
 
@@ -678,6 +700,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib uncheck(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         uncheck(element);
+        loadPause();
         return this;
     }
 

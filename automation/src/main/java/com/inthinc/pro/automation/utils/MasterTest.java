@@ -214,10 +214,13 @@ public abstract class MasterTest {
                             continue;
                         }
                         englishName = testName + englishName.replace(" ", "").toLowerCase();
-                        if (!methods.containsKey(englishName)){
-                            methods.put(englishName, new ArrayList<Method>());
-                        }  
-                        methods.get(englishName).add(method);
+                        
+                        if (!englishName.equals(methodName)){
+                            if (!methods.containsKey(englishName)){
+                                methods.put(englishName, new ArrayList<Method>());
+                            }  
+                            methods.get(englishName).add(method);
+                        }
                     }
                     if (!methods.containsKey(methodName)){
                         methods.put(methodName, new ArrayList<Method>());
@@ -571,11 +574,12 @@ public abstract class MasterTest {
         }
         boolean trueFalse = checkBoolean(stepAsString);
         Set<String> names = methods.keySet();
-        String variable = getComparator(stepAsString);
+        String variable = getComparator(stepAsString.replace(" not ", " "));
         List<Method> methodList = new ArrayList<Method>();
+        String shortLowerName = stepAsString.replace(" ", "").toLowerCase(); 
         for (String name : names) {
             String shorter = name.replace(validationType, "");
-            if (stepAsString.contains(shorter) && shorter.length() > 0){
+            if (shortLowerName.contains(shorter) && shorter.length() > 0){
                 methodList = methods.get(name);
                 break;
             }
@@ -691,6 +695,14 @@ public abstract class MasterTest {
     public Boolean validateStringContains(String partialString, String fullString) {
         if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
+            return false;
+        }
+        return true;
+    }
+    
+    public Boolean validateStringDoesNotContain(String partialString, String fullString){
+        if (fullString.contains(partialString)) {
+            addError(partialString + " is, but should not be, in " + fullString, ErrorLevel.FAIL);
             return false;
         }
         return true;
