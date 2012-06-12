@@ -38,7 +38,7 @@ public class ModelPropertyReplacer {
      * Deeply compares all properties of the item to the given replace item, replacing the property of the item if they aren't equal and the replacement item is not null. 
      * 
      * @param item
-     *            The item to properties in.
+     *            The item to update.
      * @param replacefrom
      *            The item to replace properties from.
      * @param compared

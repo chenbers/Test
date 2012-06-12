@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import com.inthinc.pro.dao.util.IdExtractor;
+import com.inthinc.pro.dao.util.FieldExtractor;
 import com.inthinc.pro.dao.util.ModelPropertyReplacer;
 import com.inthinc.pro.service.GenericService;
 import com.inthinc.pro.service.adapters.BaseDAOAdapter;
@@ -25,8 +25,8 @@ public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implemen
         Integer id = dao.create(object);
         if (id != null) {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            URI uri = uriBuilder.path(id.toString()).build();            
-            T t = dao.findByID(id);         
+            URI uri = uriBuilder.path(id.toString()).build();
+            T t = dao.findByID(id);
             return Response.created(uri).entity(t).build();
         }
         return Response.serverError().build();
@@ -78,42 +78,36 @@ public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implemen
 
     @Override
     public Response update(T object) {
-    	
-    	//Get the original
-    	Integer id = IdExtractor.getID(object);
-    	if(id == null) {
-            return Response.status(Status.NOT_FOUND).build();
-    	}
-        T original = dao.findByID(id);
-    	//swap in the changed fields from the object
-    	ModelPropertyReplacer.compareAndReplace(original, object);
-    	//update all the values
-        T t = dao.update(original);
-        if (t != null) { 
-            return Response.ok(t).build();
+        try {
+            T t = updateItem(object);
+            if (t != null) {
+                return Response.ok(t).build();
+            }
+            return Response.status(Status.NOT_MODIFIED).build();
+        } catch (IllegalStateException ise) {
+            return Response.status(Status.PRECONDITION_FAILED).build();
         }
-        return Response.status(Status.NOT_MODIFIED).build();
     }
 
-//    @Override
-//    public Response create(List<T> list) {
-//
-//        List<BatchResponse> responseList = new ArrayList<BatchResponse>();
-//        for (T t : list) {
-//            BatchResponse batchResponse = new BatchResponse();
-//            UriBuilder uriBuilder = uriInfo.getBaseUriBuilder().path("address");
-//            Integer id = dao.create(t);
-//            if (id == null) {
-//                batchResponse.setStatus(Status.INTERNAL_SERVER_ERROR.getStatusCode());
-//            } else {
-//                batchResponse.setStatus(Status.CREATED.getStatusCode());
-//                batchResponse.setUri(uriBuilder.path(id.toString()).build().toString());
-//            }
-//            responseList.add(batchResponse);
-//        }
-//        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
-//        }).build();
-//    }
+    // @Override
+    // public Response create(List<T> list) {
+    //
+    // List<BatchResponse> responseList = new ArrayList<BatchResponse>();
+    // for (T t : list) {
+    // BatchResponse batchResponse = new BatchResponse();
+    // UriBuilder uriBuilder = uriInfo.getBaseUriBuilder().path("address");
+    // Integer id = dao.create(t);
+    // if (id == null) {
+    // batchResponse.setStatus(Status.INTERNAL_SERVER_ERROR.getStatusCode());
+    // } else {
+    // batchResponse.setStatus(Status.CREATED.getStatusCode());
+    // batchResponse.setUri(uriBuilder.path(id.toString()).build().toString());
+    // }
+    // responseList.add(batchResponse);
+    // }
+    // return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
+    // }).build();
+    // }
 
     @Override
     public Response update(List<T> list) {
@@ -121,23 +115,20 @@ public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implemen
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (T t : list) {
             BatchResponse batchResponse = new BatchResponse();
-        	//Get the original
-        	Integer id = IdExtractor.getID(t);
-        	if(id == null) {
-                return Response.status(Status.NOT_FOUND).build();
-        	}
-            T original = dao.findByID(id);
-        	ModelPropertyReplacer.compareAndReplace(original, t);
-            T tUpdate = dao.update(original);
+            try {
+            T tUpdate = updateItem(t);
             if (tUpdate == null) {
                 batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
             } else {
                 batchResponse.setStatus(Status.OK.getStatusCode());
             }
+            }
+            catch(IllegalStateException ise){
+                batchResponse.setStatus(Status.PRECONDITION_FAILED.getStatusCode());
+            }
             responseList.add(batchResponse);
         }
-        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
-        }).build();
+        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {}).build();
     }
 
     @Override
@@ -153,8 +144,7 @@ public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implemen
             }
             responseList.add(batchResponse);
         }
-        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {
-        }).build();
+        return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {}).build();
     }
 
     public DAO getDao() {
@@ -165,4 +155,22 @@ public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implemen
         this.dao = dao;
     }
 
+    private T updateItem(T t) throws IllegalStateException {
+        // Get the original
+        Integer id = FieldExtractor.getID(t);
+        if (id == null) {
+            return null;
+        }
+        T original = dao.findByID(id);
+        if (original == null)
+            return null;
+        Integer tAcctID = (Integer) FieldExtractor.getProperty("acctID", t);
+        Integer originalAcctID = (Integer) FieldExtractor.getProperty("acctID", original);
+        if ((tAcctID != null) && (!tAcctID.equals(originalAcctID))) {
+            throw new IllegalStateException();
+        }
+        ModelPropertyReplacer.compareAndReplace(original, t);
+        T tUpdate = dao.update(original);
+        return tUpdate;
+    }
 }

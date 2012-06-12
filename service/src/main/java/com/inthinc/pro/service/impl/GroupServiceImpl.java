@@ -6,71 +6,132 @@ import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
 
 import org.jboss.resteasy.spi.BadRequestException;
 import org.joda.time.Interval;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 import com.inthinc.pro.service.GroupService;
+import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.exceptionMappers.BaseExceptionMapper;
 import com.inthinc.pro.service.model.BatchResponse;
 import com.inthinc.pro.util.DateUtil;
 
 public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> implements GroupService {
-    
-	@Override
+
+    @Autowired
+    PersonService personService;
+
+    @Override
     public Response getAll() {
         List<Group> list = getDao().getAll();
+        checkManagersExist(list);
         return Response.ok(new GenericEntity<List<Group>>(list) {}).build();
     }
-	@Override
-	public Response update(Group object) {
-		Group original = getDao().findByID(object.getGroupID());
-		if(!original.getAccountID().equals(object.getAccountID()))
-			return Response.status(Status.FORBIDDEN).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "Changing the accountID on a group is not allowed").build();
-		
-		return super.update(object);
-	}
-	@Override
-	public Response delete(Integer id){
-		if(groupHasActiveAssets(id))
-			throw new BadRequestException("Cannot delete a group that contains a subordinate group, driver, or vehicle.");
-		
-		return super.delete(id);
-	}
-	
-	public boolean groupHasActiveAssets(Integer groupID){
-		boolean groupHasActiveChildren = false;
-		boolean groupHasActiveDrivers = false;
-		boolean groupHasActiveVehicles = false;
-		Group original = getDao().findByID(groupID);
-		groupHasActiveDrivers = !getDao().getGroupDriverNames(groupID).isEmpty();
-		groupHasActiveVehicles = !getDao().getGroupVehicleNames(groupID).isEmpty();
-		
-		List<Group> subGroups = getDao().getSubGroups(original.getGroupID());
-		if(!subGroups.isEmpty()){
-			for(Group group: subGroups){
-				if(group.getStatus() != GroupStatus.GROUP_DELETED){
-					groupHasActiveChildren = true;//can stop as soon as true
-					break;
-				}
-				else
-					groupHasActiveChildren |= groupHasActiveAssets(group.getGroupID());//don't return false until all have been checked
-			}
-		}
-		return groupHasActiveChildren || groupHasActiveDrivers || groupHasActiveVehicles;
-	}
+
+    private void checkManagersExist(List<Group> list) {
+        for (Group group : list) {
+            group.setManagerID(adjustForDeletedManager(group.getManagerID()));
+        }
+    }
+
+    private Integer adjustForDeletedManager(Integer managerID) {
+        if (managerID == null)
+            return managerID;
+        Person manager = (Person) personService.get(managerID).getEntity();
+        return manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED) ? null : managerID;
+
+    }
+
+    @Override
+    public Response create(Group object, UriInfo uriInfo) {
+        try {
+            // Check manager exists if supplied
+            if (isGoodManager(object.getAccountID(), object.getManagerID())) {
+                return super.create(object, uriInfo);
+            } else {
+
+                return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "managerID:" + object.getManagerID() + " doesn't exist.").build();
+            }
+        } catch (Exception e) {
+            return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "parentID:" + object.getParentID() + " doesn't exist.").build();
+        }
+    }
+
+    private boolean isGoodManager(Integer accountID, Integer managerID) {
+
+        if (managerID == null)
+            return true;
+        Person manager = (Person) personService.get(managerID).getEntity();
+        return (manager != null) && (!manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED)) && manager.getAccountID().equals(accountID);
+    }
+
+    @Override
+    public Response update(Group object) {
+        Group original = getDao().findByID(object.getGroupID());
+        // Should check that if the parent id is different that it exists in the
+        // same account
+        if (!original.getAccountID().equals(object.getAccountID()))
+            return Response.status(Status.FORBIDDEN).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "Changing the accountID on a group is not allowed").build();
+
+        try {
+            if (isGoodManager(object.getAccountID(), object.getManagerID())) {
+
+                return super.update(object);
+            } else {
+
+                return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "managerID:" + object.getManagerID() + " doesn't exist.").build();
+            }
+
+        } catch (GenericHessianException ghe) {
+            return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "parentID:" + object.getParentID() + " doesn't exist.").build();
+        }
+    }
+
+    @Override
+    public Response delete(Integer id) {
+        if (groupHasActiveAssets(id))
+            throw new BadRequestException("Cannot delete a group that contains a subordinate group, driver, or vehicle.");
+
+        return super.delete(id);
+    }
+
+    public boolean groupHasActiveAssets(Integer groupID) {
+        boolean groupHasActiveChildren = false;
+        boolean groupHasActiveDrivers = false;
+        boolean groupHasActiveVehicles = false;
+        Group original = getDao().findByID(groupID);
+        groupHasActiveDrivers = !getDao().getGroupDriverNames(groupID).isEmpty();
+        groupHasActiveVehicles = !getDao().getGroupVehicleNames(groupID).isEmpty();
+
+        List<Group> subGroups = getDao().getSubGroups(original.getGroupID());
+        if (!subGroups.isEmpty()) {
+            for (Group group : subGroups) {
+                if (group.getStatus() != GroupStatus.GROUP_DELETED) {
+                    groupHasActiveChildren = true;// can stop as soon as true
+                    break;
+                } else
+                    groupHasActiveChildren |= groupHasActiveAssets(group.getGroupID());// don't return false until all have
+                                                                                       // been checked
+            }
+        }
+        return groupHasActiveChildren || groupHasActiveDrivers || groupHasActiveVehicles;
+    }
+
     @Override
     public Response getGroupDriverNames(Integer groupID) {
         List<DriverName> list = getDao().getGroupDriverNames(groupID);
@@ -88,6 +149,17 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     }
 
     @Override
+    public Response get(Integer id) {
+        // TODO Auto-generated method stub
+        Response response = super.get(id);
+        Group group = (Group) response.getEntity();
+        if (group != null){
+            group.setManagerID(adjustForDeletedManager(group.getManagerID()));
+        }
+        return response;
+    }
+
+    @Override
     public Response getDriverScores(Integer groupID, Integer numberOfDays) {
         Duration duration = Duration.getDurationByDays(numberOfDays);
         if (duration != null) {
@@ -99,49 +171,51 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     }
 
     @Override
-	public Response getDriverScoresByMonth(Integer groupID, String month) {
-    	
-    	try {
-			Interval interval = DateUtil.getIntervalFromMonth(month);
-			List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(groupID, interval);
-			if (!list.isEmpty())
-			    return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
-			
-		} catch (ParseException e) {
-	        return Response.status(Status.BAD_REQUEST).build();
-		}
-        
+    public Response getDriverScoresByMonth(Integer groupID, String month) {
+
+        try {
+            Interval interval = DateUtil.getIntervalFromMonth(month);
+            List<DriverVehicleScoreWrapper> list = getDao().getDriverScores(groupID, interval);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<DriverVehicleScoreWrapper>>(list) {}).build();
+
+        } catch (ParseException e) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+
         return Response.status(Status.NOT_FOUND).build();
-	}
-	@Override
-	public Response getDriverScoresByMonth(Integer groupID) {
-    	
-		return getDriverScoresByMonth(groupID, "");
-	}
+    }
 
     @Override
-	public Response getSubGroupsDriverScores(Integer groupID, String month) {
-    	try {
-    		//round about way of getting scores for subgroups that just uses existing hessian methods
-			Interval interval = DateUtil.getIntervalFromMonth(month);
-			
-			List<GroupScoreWrapper> list = getDao().getChildGroupsDriverScores(groupID, interval);
-			if (!list.isEmpty())
-			    return Response.ok(new GenericEntity<List<GroupScoreWrapper>>(list) {}).build();
-			
-		} catch (ParseException e) {
-	        return Response.status(Status.BAD_REQUEST).build();
-		}
-        
+    public Response getDriverScoresByMonth(Integer groupID) {
+
+        return getDriverScoresByMonth(groupID, "");
+    }
+
+    @Override
+    public Response getSubGroupsDriverScores(Integer groupID, String month) {
+        try {
+            // round about way of getting scores for subgroups that just uses
+            // existing hessian methods
+            Interval interval = DateUtil.getIntervalFromMonth(month);
+
+            List<GroupScoreWrapper> list = getDao().getChildGroupsDriverScores(groupID, interval);
+            if (!list.isEmpty())
+                return Response.ok(new GenericEntity<List<GroupScoreWrapper>>(list) {}).build();
+
+        } catch (ParseException e) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+
         return Response.status(Status.NOT_FOUND).build();
-	}
+    }
 
-	@Override
-	public Response getSubGroupsDriverScores(Integer groupID) {
-		return getSubGroupsDriverScores(groupID, "");
-	}
+    @Override
+    public Response getSubGroupsDriverScores(Integer groupID) {
+        return getSubGroupsDriverScores(groupID, "");
+    }
 
-	@Override
+    @Override
     public Response getVehicleScores(Integer groupID, Integer numberOfDays) {
         Duration duration = Duration.getDurationByDays(numberOfDays);
         if (duration != null) {
