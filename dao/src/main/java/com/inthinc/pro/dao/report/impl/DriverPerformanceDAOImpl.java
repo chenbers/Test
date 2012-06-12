@@ -33,10 +33,10 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
         // tiwipro
         loginNoteType.add(NoteType.NEW_DRIVER);
         // waysmart
-        loginNoteType.add(NoteType.WAYSMART_INVALID_DRIVER);
-        loginNoteType.add(NoteType.WAYSMART_INVALID_OCCUPANT);
-        loginNoteType.add(NoteType.WAYSMART_VALID_OCCUPANT);
-        loginNoteType.add(NoteType.WAYSMART_NEWDRIVER_HOSRULE);
+        loginNoteType.add(NoteType.INVALID_DRIVER);
+        loginNoteType.add(NoteType.INVALID_OCCUPANT);
+        loginNoteType.add(NoteType.VALID_OCCUPANT);
+        loginNoteType.add(NoteType.NEWDRIVER_HOSRULE);
     }    
 
     @Override

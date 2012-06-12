@@ -331,7 +331,7 @@ public class MessagesBean extends BaseBean {
     public void loadCannedMessageTexts() {
         if(this.messageList != null && !this.messageList.isEmpty()) { 
             for(MessageItem item: this.messageList) { 
-                if(NoteType.WAYSMART_DMR.getCode().equals(item.getType()) && item.getDmrOffset() != null) {
+                if(NoteType.DMR.getCode().equals(item.getType()) && item.getDmrOffset() != null) {
                     item.setMessage(MessageUtil.getMessageString("txtMsg_wsDMR_"+item.getDmrOffset(), getLocale()));
                 }
             }

@@ -195,12 +195,12 @@ public class EventGenerator
                 switch (idx) {
                     case ReportTestConst.NOTE_EVENT_SECONDARY_IDX:
                         // hard vert
-                           event = new AggressiveDrivingEvent(0l, 0, NoteType.WAYSMART_NOTEEVENT_SECONDARY,
+                           event = new AggressiveDrivingEvent(0l, 0, NoteType.NOTE_EVENT_SECONDARY,
                                     eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
                                     55, 11, -22, -33, data.severity);
                            break;
                     case ReportTestConst.SPEEDING_EXT_IDX:
-                        event = new SpeedingEvent(0l, 0, NoteType.WAYSMART_SPEEDING_EX4,
+                        event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX4,
                                            eventTime, 80, odometer,  locations[i].getLat(), locations[i].getLng(),
                                            90, 65, 60, ReportTestConst.MILES_PER_EVENT, 10);
                         break;
