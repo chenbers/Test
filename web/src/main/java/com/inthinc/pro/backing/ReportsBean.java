@@ -245,8 +245,10 @@ public abstract class ReportsBean extends BaseBean {
                 }
                 if (params.getParamType().equals(ReportParamType.GROUPS)){
                     reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
-                   
                 }
+                break;
+            case DRIVER_EXCLUDED_VIOLATIONS:
+                reportCriteriaList.add(getReportCriteriaService().getDriverExcludedViolationCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
                 break;
             default:
                 break;
