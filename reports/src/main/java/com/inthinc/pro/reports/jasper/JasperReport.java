@@ -112,7 +112,7 @@ public class JasperReport implements Report
             attachments.add(reportAttatchment);
             String[] emails = email.split(",");
             List<String> emailList = Arrays.asList(emails);           
-            //reportMailer.emailReport(emailList, attachments,subject,message, noReplyEmailAddress);
+            reportMailer.emailReport(emailList, attachments,subject,message, noReplyEmailAddress);
         }
         catch (JRException e)
         {
