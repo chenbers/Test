@@ -88,11 +88,7 @@ public class EmailReportJob extends QuartzJobBean {
     private List<ReportSchedule> getReportSchedules(){
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         
-        Account testAccount =  accountDAO.findByID(1);
-        List<Account> accounts = new ArrayList<Account>();
-        accounts.add(testAccount);
-        //TODO uncomment
-//        List<Account> accounts = accountDAO.getAllAcctIDs();
+        List<Account> accounts = accountDAO.getAllAcctIDs();
         logger.debug("Account Count: " + accounts.size());
         
         initTextEncryptor();
