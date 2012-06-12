@@ -36,7 +36,7 @@
 				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" mode="Transparent" x="0" y="27" width="555" height="40"/>
+				<reportElement key="textField-3" mode="Transparent" x="0" y="40" width="555" height="27"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

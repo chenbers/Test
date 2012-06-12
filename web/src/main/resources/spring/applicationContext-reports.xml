@@ -30,6 +30,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="driverPerformanceDAO" ref="driverPerformanceDAO" />
     <property name="userDAO" ref="userDAO" />
     <property name="reportAddressLookupBean" ref="reportAddressLookupBean" />
+    <property name="eventAggregationDAO" ref="eventAggregationDAO" />
   </bean>
 
 </beans>

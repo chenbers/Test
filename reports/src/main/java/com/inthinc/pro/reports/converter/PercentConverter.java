@@ -8,7 +8,7 @@ public class PercentConverter {
     /**
      * Converts a double to a string representation of percent using a locale
      * 
-     * Example: 0.125 = 12.5%
+     * Example: 0.125 = 12.50%
      * 
      * @param percent
      * @param locale
@@ -16,7 +16,7 @@ public class PercentConverter {
      */
     public static String doubleToString(Double percent,Locale locale){
         NumberFormat numberFormat = NumberFormat.getPercentInstance(locale);
-        numberFormat.setMaximumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(2);
         return numberFormat.format(percent);
     }
 

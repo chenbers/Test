@@ -98,12 +98,12 @@ public class DriverExcludedViolationsCriteriaTest extends BaseUnitTest{
             driverForgivenEventTotal.setDriverName("Test Driver " + driverForgivenEventTotal.getDriverID());
             
             driverForgivenEventTotal.setEventType(EventType.getEventType(eventIDPickList.get(random.nextInt(6))));
-            driverForgivenEventTotal.setEventCount(12);
-            driverForgivenEventTotal.setEventCountForgiven(5);
+            driverForgivenEventTotal.setEventCount(99);
+            driverForgivenEventTotal.setEventCountForgiven(1);
             int listId = random.nextInt(3);
             driverForgivenEventTotal.setGroupID(groupIDPickList.get(listId));
             driverForgivenEventTotal.setGroupName(groupHierarchy.getGroup(driverForgivenEventTotal.getGroupID()).getName());
-            double percent = 5D / 12D;
+            double percent = 1D / 189D;
             driverForgivenEventTotal.setPercentForgiven(Double.valueOf(percent));
             driverForgivenEventTotals.add(driverForgivenEventTotal);
         }

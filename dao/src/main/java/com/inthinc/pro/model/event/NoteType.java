@@ -527,6 +527,16 @@ public enum NoteType implements BaseEnum {
         }
         return eventType;
     }
+    
+    
+    public EventType getEventType(Integer subTypeCode){
+        EventType eventType = getEventType();
+        //Check for aggressive driving event.
+        if((eventType == null || EventType.UNKNOWN.equals(eventType)) && getEventTypes() != null){
+           eventType = EventType.getEventTypeFromSubTypeCode(subTypeCode);
+        }
+        return eventType;
+    }
 
     public Set<EventType> getEventTypes() {
         if (eventType == null) {

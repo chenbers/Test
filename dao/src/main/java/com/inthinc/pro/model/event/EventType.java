@@ -77,10 +77,16 @@ public enum EventType implements BaseEnum {
     }
 
     private static final Map<Integer, EventType> lookup = new HashMap<Integer, EventType>();
+    private static final Map<Integer, EventType> subTypeLookup = new HashMap<Integer, EventType>();
     static {
         for (EventType p : EnumSet.allOf(EventType.class)) {
             lookup.put(p.code, p);
+            if(p.noteSubType != null){
+                subTypeLookup.put(p.noteSubType.getCode(), p);
+            }
         }
+        
+       
     }
 
     @Override
@@ -90,6 +96,10 @@ public enum EventType implements BaseEnum {
 
     public static EventType getEventType(Integer code) {
         return lookup.get(code);
+    }
+    
+    public static EventType getEventTypeFromSubTypeCode(Integer code){
+        return subTypeLookup.get(code);
     }
 
     @Override
@@ -131,10 +141,13 @@ public enum EventType implements BaseEnum {
         return noteTypeList;
         
     }
+    
+    
 
     public Boolean isWaysmartOnlyEvent() {
         return eventAccountFilters != null && eventAccountFilters.contains(EventAccountFilter.WAYSMART);
     }
+    
     public Boolean isHOSOnlyEvent() {
         return eventAccountFilters != null && eventAccountFilters.contains(EventAccountFilter.HOS);
     }
