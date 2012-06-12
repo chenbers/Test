@@ -249,7 +249,8 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().eventSort().isPresent() && _link().hardAccel().isPresent();
+        return _link().eventSort().isPresent() && 
+               _link().hardAccel().isPresent();
     }
     
 }

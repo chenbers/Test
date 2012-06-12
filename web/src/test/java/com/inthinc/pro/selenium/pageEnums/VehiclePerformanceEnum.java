@@ -10,7 +10,7 @@ public enum VehiclePerformanceEnum implements SeleniumEnums {
     BREADCRUMB_ITEM(null, "vehiclePerformanceBreadCrumb:breadcrumbitem:###:vehiclePerformance-dashboard"), 
     VEHICLE_NAME_LINK(null, "vehiclePerformanceBreadCrumb:vehiclePerformance"),
     
-    EXPANDED_VEHICLE_NAME_LINK(null, "//a[contains(@id,'vehicleSeatBeltTitle')]"), 
+    EXPANDED_VEHICLE_NAME_LINK(null, "//a[contains(@id,'vehicle***Title')]"), 
     
     EXPANDED_BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:vehicle***-dashboard')]"),
     
