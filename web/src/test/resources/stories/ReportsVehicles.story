@@ -9,24 +9,20 @@ Meta:
 Narrative:
 
 Scenario: TC1614: Reports - Vehicles - Bookmark Entry 
-Given I am logged in as a "Admin" user
-When I click the Reports link
-And I click the Vehicles link
-And I type "" into the Search textfield
-And I click the Search button
-And I bookmark the page
-And I click log out
+Given I am logged in
+And I type "" into the Master Search textfield
+And I select "Vehicle" from the Master Search dropdown
+And I click the Master Search button
+When I bookmark the page
+And I click the Log Out link
 And I click the bookmark I just added
-And I am on the login page
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
+*And I am logged in
 Then I validate I am on the Vehicles page
-And I validate the Search textfield is ""
+And I validate the Master Search textfield is ""
 And I validate the Vehicle Report table is not ""
 
 Scenario: TC1617: Reports - Vehicles - Driver Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I save the first entry in the Sort By Driver column as SavedEntry
@@ -34,18 +30,18 @@ And I click the first entry in the Sort By Driver column
 Then I validate the Driver Performance text is SavedEntry
 
 Scenario: TC1619: Reports - Vehicles - Driving Style Score Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I save the first entry in the Sort By Vehicle ID column as SavedVehicle
 And I save the first entry in the Sort By Style column as SavedStyle
 And I click the first entry in the Sort By Style column
-And I click the 12Months link
+*And I click the 12Months link
 Then I validate the Driving Style Overall text is SavedStyle
 And I validate the Vehicle Performance text is SavedVehicle
 
 Scenario: TC1624: Reports - Vehicles - Group Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I save the first entry in the Sort By Group column as SavedEntry
@@ -53,66 +49,58 @@ And I click the first entry in the Sort By Group column
 Then I validate the Group Performance text is SavedEntry
 
 Scenario: TC1627: Reports - Vehicles - Overall Score Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I save the first entry in the Sort By Vehicle ID column as SavedVehicle
 And I save the first entry in the Sort By Overall column as SavedOverall
 And I click the first entry in the Sort By Overall column
-And I click the 12Months link
+*And I click the twelve months OverallDuration link
 Then I validate the Driving Style Overall text is SavedOverall
 And I validate the Vehicle Performance text is SavedVehicle
 
 Scenario: TC1637: Reports - Vehicles - Speed Score Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I save the first entry in the Sort By Vehicle ID column as SavedVehicle
 And I save the first entry in the Sort By Speed column as SavedSpeed
 And I click the first entry in the Sort By Seatbelt column
-And I click the 12Months link
+*And I click the twelve months OverallDuration link
 Then I validate the Driving Style Seatbelt text is SavedSpeed
 And I validate the Vehicle Performance text is SavedVehicle
 
 Scenario: TC1639: Reports - Vehicles - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Sort By Vehicle ID link
 And I click the Sort By Group link
-And I click the Sort By Group link
 And I click the Sort By Year Make Model link
-And I click the Sort By Year Make Model link
-And I click the Sort By Driver link
-And I click the Sort By Driver link
-And I click the Sort By Distance Driven link
+*And I click the Sort By Driver link
 And I click the Sort By Distance Driven link
 And I click the Sort By Odometer link
-And I click the Sort By Odometer link
-And I click the Sort By Overall link
 And I click the Sort By Overall link
 And I click the Sort By Speed link
-And I click the Sort By Speed link
-And I click the Sort By Style link
 And I click the Sort By Style link
 
 Scenario: TC1640: Reports - Vehicles - Tools Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Tools button
 Then I validate the Email Report button is present
 And I validate the Export To PDF button is present
-And I validate the Export To Excel button is present
+*And I validate the Export To Excel button is present
 
 Scenario: TC1641: Reports - Vehicles - UI
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 Then I validate I am on the Vehicles page
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-And I validate the Counter text is present
+*And I validate the Counter text is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Year Make Model link is present
@@ -131,23 +119,23 @@ And I validate the Overall dropdown is present
 And I validate the Style dropdown is present
 
 Scenario: TC1642: Reports - Vehicles - Vehicle ID Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Sort By Vehicle ID link
 And I click the Sort By Vehicle ID link
 And I save the first entry in the Sort By Vehicle ID column as SavedEntry
-And I click the first entry in the Sort By Vehicle ID column
+*And I click the first entry in the Sort By Vehicle ID column
 Then I validate the Vehicle Performance text is SavedEntry
 
 Scenario: TC1644: Reports - Vehicles - Edit Columns - Cancel Button (Changes)
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
-And I uncheck the checkbox of the second entry
+*And I uncheck the checkbox of the second entry
 And I uncheck the checkbox of the third entry
 And I uncheck the checkbox of the fourth entry
 And I uncheck the checkbox of the fifth entry
@@ -168,13 +156,13 @@ And I validate the Sort By Speed link is present
 And I validate the Sort By Style link is present
 
 Scenario: TC1645: Reports - Vehicles - Edit Columns - Cancel Button (No Changes)
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I click the Cancel button
-And the Edit Columns popup closes
+*And the Edit Columns popup closes
 Then I validate the Sort By Group link is present
 And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Year Make Model link is present
@@ -186,13 +174,13 @@ And I validate the Sort By Speed link is present
 And I validate the Sort By Style link is present
 
 Scenario: TC1646: Reports - Vehicles - Edit Columns - Check Box Selection via Mouse
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
-Then I validate the checkbox of the first entry is not checked
+*Then I validate the checkbox of the first entry is not checked
 And I uncheck the checkbox of the second entry
 And I validate the checkbox of the second entry is not checked
 And I uncheck the checkbox of the third entry
@@ -229,13 +217,13 @@ And I check the checkbox of the ninth entry
 And I validate the checkbox of the ninth entry is checked
 
 Scenario: TC1648: Reports - Vehicles - Edit Columns - Current Session Retention
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I uncheck the checkbox of the first entry
-And I uncheck the checkbox of the second entry
+*And I uncheck the checkbox of the second entry
 And I uncheck the checkbox of the third entry
 And I click the Save button
 And the Edit Columns popup closes
