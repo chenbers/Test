@@ -33,12 +33,12 @@ Scenario: TC1619: Reports - Vehicles - Driving Style Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the first entry in the Sort By Vehicle ID column as SavedVehicle
-And I save the first entry in the Sort By Style column as SavedStyle
-And I click the first entry in the Sort By Style column
-*And I click the 12Months link
-Then I validate the Driving Style Overall text is SavedStyle
-And I validate the Vehicle Performance text is SavedVehicle
+And I save the 1st Row of the Vehicle Value link as SavedVehicle
+And I save the 1st Row of the Style Value link as SavedStyle
+And I click the 1st Row of the Style Value link
+And I click the twelve months Duration link
+Then I validate the Overall Breakdown Score text is SavedStyle
+And I validate the Vehicle Name link is SavedVehicle
 
 Scenario: TC1624: Reports - Vehicles - Group Link
 Given I am logged in
