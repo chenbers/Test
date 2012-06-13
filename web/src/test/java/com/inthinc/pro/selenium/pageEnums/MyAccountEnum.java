@@ -9,7 +9,7 @@ public enum MyAccountEnum implements SeleniumEnums {
     MY_ACCOUNT_URL(appUrl + "/account"),
 
     /* Buttons and Title */
-    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword"),
+    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountpassword"),
     EDIT_BUTTON("Edit", "myAccountEdit"),
     MAIN_TITLE("My Account", "//div[@class='account']"),
     MESSAGE(null, "//dt[@class='info']/span"),
