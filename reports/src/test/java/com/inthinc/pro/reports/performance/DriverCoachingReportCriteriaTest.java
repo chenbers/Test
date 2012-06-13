@@ -83,10 +83,10 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
             returns(driverVehicleScoreWrappers);
         }};
         
-        DriverCoachingReportCriteria.Builder reportCriteriaBuilder = new DriverCoachingReportCriteria.Builder(groupReportDAO,driverPerformanceDAO,1,TimeFrame.PAST_SEVEN_DAYS.getInterval());
-        reportCriteriaBuilder.setLocale(Locale.US);
-        List<ReportCriteria> reportCriterias = reportCriteriaBuilder.build();
-        dump("DriverCoaching", 2, reportCriterias, FormatType.PDF);
+//        DriverCoachingReportCriteria.Builder reportCriteriaBuilder = new DriverCoachingReportCriteria.Builder(groupReportDAO,driverPerformanceDAO,1,TimeFrame.PAST_SEVEN_DAYS.getInterval());
+//        reportCriteriaBuilder.setLocale(Locale.US);
+//        List<ReportCriteria> reportCriterias = reportCriteriaBuilder.build();
+//        dump("DriverCoaching", 2, reportCriterias, FormatType.PDF);
     }
 
 }
