@@ -23,7 +23,7 @@ public class PageMyAccount extends NavigationBar {
 	
     public class MyAccountTablesCheckBoxes {
 
-        public CheckBoxTable mapLayer() {
+        public CheckBoxTable mapLayers() {
             return new CheckBoxTable(MyAccountEnum.MAP_LAYERS_CHECKBOX);
         }
     }
