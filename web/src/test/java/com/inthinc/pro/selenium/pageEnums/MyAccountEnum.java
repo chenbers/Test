@@ -38,7 +38,8 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     /* Map Preferences */
     MAP_PREFERENCES_HEADER("Map Preferences", "//span[@class='map']"),
-    MAP_TYPE("Map Type", "myAccountMapType"),
+    MAP_TYPE_TEXT("Map Type", "myAccountMapType"),
+    MAP_TYPE_SELECTOR(null, "my_form:editAccount-mapType"),
     MAP_LAYERS_TEXT("Map Layers", "myAccountMayLayers"),
     MAP_LAYERS_SELECTOR("Layers","my_form:myAccountMapLayersSelect"),
     MAP_LAYERS_ARROW(null, "//span[@id='my_form:j_id204']/span[1]/span/div"),

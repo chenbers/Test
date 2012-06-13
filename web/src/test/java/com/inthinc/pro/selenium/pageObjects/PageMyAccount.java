@@ -132,7 +132,7 @@ public class PageMyAccount extends NavigationBar {
 		}
 		
 		public DropDown mapType() {
-		    return new DropDown(MyAccountEnum.MAP_TYPE);
+		    return new DropDown(MyAccountEnum.MAP_TYPE_SELECTOR);
 		}
 		
 		public DropDown mapLayers() {
@@ -191,7 +191,7 @@ public class PageMyAccount extends NavigationBar {
 		}
 		
 		public Text mapType() {
-		    return new Text(MyAccountEnum.MAP_TYPE);
+		    return new Text(MyAccountEnum.MAP_TYPE_TEXT);
 		}
 		
 	    public Text mapLayers() {
