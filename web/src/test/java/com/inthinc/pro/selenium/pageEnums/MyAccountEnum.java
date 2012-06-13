@@ -9,8 +9,8 @@ public enum MyAccountEnum implements SeleniumEnums {
     MY_ACCOUNT_URL(appUrl + "/account"),
 
     /* Buttons and Title */
-    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", "//ul[@id='grid_nav']/li/button[1]"),
-    EDIT_BUTTON("Edit", "myAccountEdit", "//ul[@id='grid_nav']/li/button[2]"),
+    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword"),
+    EDIT_BUTTON("Edit", "myAccountEdit"),
     MAIN_TITLE("My Account", "//div[@class='account']"),
     MESSAGE(null, "//dt[@class='info']/span"),
 
@@ -61,11 +61,11 @@ public enum MyAccountEnum implements SeleniumEnums {
     TEXT_MESSAGES2_TEXT("Text Message 2:", "myAccountSecText"),
 
     /* Edit Page Buttons */
-    SAVE_BUTTON("Save", "my_form:editAccountSave", "//li/button[@type='submit']", "//li/button[@class='left'][1]"),
-    CANCEL_BUTTON("Cancel", "editAccountCancel", "//li/button[@type='button']", "//li/button[@class='left'][2]"),
+    SAVE_BUTTON("Save", "my_form:editAccountSave"),
+    CANCEL_BUTTON("Cancel", "editAccountCancel"),
 
     /* Edit Page Selects */
-    LOCALE_SELECT(null, "my_form:editAccountLocale", "//select[@name='my_form:editAccountLocale']"),
+    LOCALE_SELECT(null, "my_form:editAccountLocale"),
     MEASUREMENT_SELECT(null, "my_form:editAccountMeasurement", "//selct[@name='my_form:editAccountMeasurement']"),
     FUEL_EFFICIENCY_SELECT(null, "my_form:editAccountFuelEfficiency", "//select[@name='my_form:editAccountFuelEfficiency']"),
     INFORMATION_SELECT(null, "my_form:editAccount-info", "//select[@name='my_form:editAccount-info'"),
