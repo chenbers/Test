@@ -227,7 +227,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{total}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{total} + ":"]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>
