@@ -312,12 +312,16 @@ public abstract class MasterTest {
     }
 
     private Boolean assertEquals(Object expected, Object actual, Boolean areObjectsEqual) {
-        if (compare(expected, actual) != areObjectsEqual) {
-            Log.info("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
-            addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FATAL);
-            return false;
+        Boolean result = compare(expected, actual);
+        if (areObjectsEqual != result) {
+            String match = "shouldn't match";
+            if (areObjectsEqual) {
+                match = "should match";
+            }
+            Log.info("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match);
+            addError("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match, ErrorLevel.FATAL);
         }
-        return true;
+        return result == areObjectsEqual;
     }
 
     public Boolean assertEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
@@ -670,10 +674,10 @@ public abstract class MasterTest {
             if (areObjectsEqual) {
                 match = "should match";
             }
-            Log.info("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match, ErrorLevel.FAIL);
+            Log.info("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match);
             addError("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match, ErrorLevel.FAIL);
         }
-        return result;
+        return result == areObjectsEqual;
     }
     
     public Boolean validateFalse(Boolean test, String error) {
