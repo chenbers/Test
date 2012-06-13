@@ -25,7 +25,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 //public class MyAccountChangePasswordTest extends WebRallyTest {
     
     @UsingSteps(instances={LoginSteps.class})
-    @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageMyAccount.class})
+    @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageMyAccount.class})
     @StoryPath(path="MyAccountChangePassword.story")
     public class MyAccountChangePasswordTest extends WebStories {
         
