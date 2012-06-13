@@ -204,7 +204,7 @@ public interface ElementInterface {
          * @param expected
          * @return
          */
-        @Validate(englishName="")
+        @Validate(englishName="is not")
         public Boolean validateIsNot(String expected);
         
         /**

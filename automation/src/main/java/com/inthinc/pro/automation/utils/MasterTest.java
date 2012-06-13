@@ -201,31 +201,29 @@ public abstract class MasterTest {
             if (filter != null){
                 Annotation ann = getAnnotation(method, filter);
                 if (ann != null){
-                    if (ann != null){
-                        String englishName = "";
-                        String testName = "";
-                        if (ann instanceof Validate){
-                            englishName = ((Validate)ann).englishName();
-                            testName = ((Validate)ann).testName();
-                        } else if (ann instanceof Assert){
-                            englishName = ((Assert)ann).englishName();
-                            testName = ((Assert)ann).testName();
-                        } else {
-                            continue;
-                        }
-                        englishName = testName + englishName.replace(" ", "").toLowerCase();
-                        
-                        if (!englishName.equals(methodName)){
-                            if (!methods.containsKey(englishName)){
-                                methods.put(englishName, new ArrayList<Method>());
-                            }  
-                            methods.get(englishName).add(method);
-                        }
+                    String englishName = "";
+                    String testName = "";
+                    if (ann instanceof Validate){
+                        englishName = ((Validate)ann).englishName();
+                        testName = ((Validate)ann).testName();
+                    } else if (ann instanceof Assert){
+                        englishName = ((Assert)ann).englishName();
+                        testName = ((Assert)ann).testName();
+                    } else {
+                        continue;
                     }
+                    englishName = testName + englishName.replace(" ", "").toLowerCase();
+                    
+                    if (!methods.containsKey(englishName)){
+                        methods.put(englishName, new ArrayList<Method>());
+                    }  
+                    methods.get(englishName).add(method);
+                    
                     if (!methods.containsKey(methodName)){
                         methods.put(methodName, new ArrayList<Method>());
                     } 
                     methods.get(methodName).add(method);
+                    
                     continue;
                 } else {
                     continue;
@@ -236,9 +234,7 @@ public abstract class MasterTest {
                 methods.put(methodName, new ArrayList<Method>());
             }
             
-            if (!method.getReturnType().isInterface()) {
-                methods.get(methodName).add(method);
-            }
+            methods.get(methodName).add(method);
         }
         return methods;
     }
