@@ -56,8 +56,11 @@ public class PerformanceReportsBean extends ReportsBean {
         itemGroups.add(getBlankGroup());
         
         String catLabel = MessageUtil.getMessageString(ReportCategory.DriverPerformance.toString());
+        String mileageLabel = MessageUtil.getMessageString(ReportCategory.Mileage.toString());
         itemGroups.add(new SelectItemGroup(catLabel, 
         		catLabel, false, getItemsByCategory(ReportCategory.DriverPerformance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL, ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL)));
+        itemGroups.add(new SelectItemGroup(mileageLabel, 
+                catLabel, false, getItemsByCategory(ReportCategory.Mileage)));
         
         return itemGroups;
     }

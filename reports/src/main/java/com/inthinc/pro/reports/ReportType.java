@@ -47,6 +47,9 @@ public enum ReportType
     STATE_MILEAGE_COMPARE_BY_GROUP("Group Comparison By State/Province","stateMileageCompareByGroup.jrxml","stateMileageCompareByGroupRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
     STATE_MILEAGE_BY_MONTH("State Mileage By Month","stateMileageByMonth.jrxml","stateMileageByMonthRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
     
+    //MILEAGE
+    STATE_MILEAGE_BY_VEHICLE_TIWI("State Mileage By Vehicle","stateMileageByVehicle.jrxml","stateMileageByVehicleRaw.jrxml", "ifta","com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage", null, false),
+    
     // HOS
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report","HOSDailyDriverLog.jrxml", null, "hos", "com.inthinc.pro.reports.jasper.hos.i18n.HOSDriverDailyLog"),
     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report","hosViolations.jrxml", "hosViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.hosViolations", null, true),

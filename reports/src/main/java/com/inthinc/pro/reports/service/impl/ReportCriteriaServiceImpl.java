@@ -721,6 +721,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
         
     }
+    
     @Override
     public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale)
     {
@@ -906,6 +907,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(accountGroupHierarchy, groupID, accountID, accountName, expiredOnly);
         return criteria;
     }
+    
+    /* Mileage */
+    @Override
+    public ReportCriteria getStateMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, MeasurementType measurementType) {
+        StateMileageByVehicleReportCriteria criteria = new StateMileageByVehicleReportCriteria(locale);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setStateMileageDAO(stateMileageDAO);
+        criteria.setMeasurementType(measurementType);
+        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
+        criteria.init(accountGroupHierarchy, groupIDs, interval, true,false);
+        return criteria;
+    }
+    
     public UserDAO getUserDAO() {
         return userDAO;
     }
@@ -1212,6 +1226,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         builder.setDateTimeZone(timeZone);
         return builder.build();
     }
+    
+   
 
     
     public DriveTimeDAO getDriveTimeDAO() {
@@ -1402,6 +1418,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     reportCriteriaList.add(getStateMileageFuelByVehicleReportCriteria(groupHierarchy,
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
+                    break;
+                case STATE_MILEAGE_BY_VEHICLE_TIWI:
+                    reportCriteriaList.add(getStateMileageByVehicleReportCriteria(groupHierarchy,
+                            reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                            person.getLocale(), person.getMeasurementType()));
                     break;
                 case DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT:
                     reportCriteriaList.add(getDrivingTimeViolationsSummaryReportCriteria(groupHierarchy, 

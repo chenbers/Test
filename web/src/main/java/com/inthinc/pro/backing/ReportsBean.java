@@ -195,7 +195,7 @@ public abstract class ReportsBean extends BaseBean {
 
             case STATE_MILEAGE_BY_VEHICLE:
                 reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
+                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta()));
                 break;
 
             case STATE_MILEAGE_FUEL_BY_VEHICLE:
@@ -215,7 +215,10 @@ public abstract class ReportsBean extends BaseBean {
                         params.getLocale(), 
                         getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
-            
+            case STATE_MILEAGE_BY_VEHICLE_TIWI:
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), 
+                        params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType()));
+                break;
             case WARRANTY_LIST:
                 reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(
                         getAccountGroupHierarchy(), params.getGroupID(), getAccountID(),

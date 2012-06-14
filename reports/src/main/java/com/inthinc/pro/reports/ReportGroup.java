@@ -131,8 +131,14 @@ public enum ReportGroup
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.IFTA,
              EnumSet.of(ReportAccountType.WAYSMART),
              ReportType.STATE_MILEAGE_COMPARE_BY_GROUP),
-                     
              
+     /* Mileage */
+     STATE_MILEAGE_BY_VEHICLE_TIWI("State Mileage By Vehicle", 26, EntityType.ENTITY_GROUP,   
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Mileage,
+             EnumSet.of(ReportAccountType.PERFORMANCE),
+             ReportType.STATE_MILEAGE_BY_VEHICLE_TIWI),        
+                     
      // Performance    
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
                      new CriteriaType[]{CriteriaType.TIMEFRAME}, 
@@ -192,12 +198,12 @@ public enum ReportGroup
      DRIVER_COACHING("Driver Coaching", 41, EntityType.ENTITY_GROUP_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
-            EnumSet.of(ReportAccountType.WAYSMART),
+            EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_COACHING),
      DRIVER_EXCLUDED_VIOLATIONS("Driver Coaching", 42, EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
-            EnumSet.of(ReportAccountType.WAYSMART),
+            EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_EXCLUDED_VIOLATIONS)
     ;
 

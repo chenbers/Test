@@ -27,6 +27,21 @@ public class MockStateMileageDAO implements StateMileageDAO {
     private static final Integer GROUP_GOOD = 180;
 
     private SimpleDateFormat monthOnlyDateFormat = new SimpleDateFormat("MMMM");
+    
+    @Override
+    public List<StateMileage> getStateMileageByVehicle(List<Integer> groupIDs, Interval interval) {
+        List<StateMileage> list = new ArrayList<StateMileage>();
+        StateMileage bean = newInstance(GROUP_FLEET, STATE_1, "257547", 1500L);
+        bean.setMonth("October");
+        list.add(bean);
+        bean = newInstance(GROUP_FLEET, STATE_1, "257547", 1540L);
+        bean.setMonth("September");
+        list.add(bean);
+        bean = newInstance(GROUP_FLEET, STATE_1, "224547", 1360L);
+        bean.setMonth("October");
+        list.add(bean);
+        return list;
+    }
 
     /**
      * Default constructor.
