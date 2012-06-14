@@ -101,7 +101,8 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().editColumns().isPresent();
+        return 
+               _text().title().isPresent();
     }
     
 }
