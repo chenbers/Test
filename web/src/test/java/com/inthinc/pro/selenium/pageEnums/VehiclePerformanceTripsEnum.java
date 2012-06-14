@@ -3,8 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum VehiclePerformanceTripsEnum implements SeleniumEnums {
-
-    
+   
     DEFAULT_URL(appUrl + "/vehicle/trips/"),
 	
 	DATE_ENTRY(null, "tripsTableForm:tripsTable:###:date_column"),
@@ -56,7 +55,7 @@ public enum VehiclePerformanceTripsEnum implements SeleniumEnums {
 	SHOW_TAMPERING("Show device tampering markers on map", "showTamperingCheckBox"),
 	
 	
-	VEHICLE_NAME(null, "//a[contains(@id,'driverTripsDriverPerformance1')]"),
+	VEHICLE_NAME(null, "//a[contains(@id,'vehicleTripsVehiclePerformance1')]"),
 	
 	BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:vehicleTrips-dashboard')]"),
 	DRIVER_NAME(null, "selectDriverForm:vehicleTrips-driverPerformance"),
