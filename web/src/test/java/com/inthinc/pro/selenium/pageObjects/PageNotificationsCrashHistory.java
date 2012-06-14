@@ -114,6 +114,26 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
     }
     
+    public class NotificationsCrashHistoryPopUps extends MastheadPopUps {
+        
+        public NotificationsCrashHistoryPopUps() {
+            super(page, Types.REPORT, 3);
+        }
+        
+        public EditColumns editColumns() {
+            return new EditColumns();
+        }
+        
+        public Email emailReport() {
+            return new Email();
+        }
+        
+        public LocationPopUp location(){
+            return new LocationPopUp();
+        }
+        
+    }
+    
     public class NotificationsCrashHistoryTextFields extends NotificationsBarTextFields {
         
         public TextField SearchBox() {
@@ -158,6 +178,10 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     
     public NotificationsCrashHistoryDropDown _dropDown() {
         return new NotificationsCrashHistoryDropDown();
+    }
+    
+    public NotificationsCrashHistoryPopUps _popUp() {
+        return new NotificationsCrashHistoryPopUps();
     }
     
     public NotificationsCrashHistoryTextFields _textField() {
