@@ -5,10 +5,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.joda.time.Interval;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -25,7 +23,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', " + 
                     "(SELECT count(*) FROM cachedNoteView cnv1 WHERE cnv1.driverID = cnv.driverID AND cnv1.type = cnv.type AND forgiven = 1) AS 'eventCountForgiven' " + 
                     "FROM cachedNoteView cnv  INNER JOIN groups g ON g.groupID = cnv.driverGroupID " + 
-                    "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time >= :startDate AND cnv.time < :endDate GROUP BY cnv.driverID,cnv.type";
+                    "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type";
     
     /*
      * (non-Javadoc)
