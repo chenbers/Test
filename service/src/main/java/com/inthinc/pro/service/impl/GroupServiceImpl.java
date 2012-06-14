@@ -29,6 +29,7 @@ import com.inthinc.pro.service.PersonService;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.exceptionMappers.BaseExceptionMapper;
 import com.inthinc.pro.service.model.BatchResponse;
+import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.DateUtil;
 
 public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> implements GroupService {
@@ -49,57 +50,24 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         }
     }
 
-    private Integer adjustForDeletedManager(Integer managerID) {
-        if (managerID == null)
-            return managerID;
-        Person manager = (Person) personService.get(managerID).getEntity();
-        return manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED) ? null : managerID;
-
-    }
-
     @Override
+    @ValidParams
     public Response create(Group object, UriInfo uriInfo) {
-        try {
-            // Check manager exists if supplied
-            if (isGoodManager(object.getAccountID(), object.getManagerID())) {
-                return super.create(object, uriInfo);
-            } else {
-
-                return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "managerID:" + object.getManagerID() + " doesn't exist.").build();
-            }
-        } catch (Exception e) {
-            return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "parentID:" + object.getParentID() + " doesn't exist.").build();
-        }
+        return super.create(object, uriInfo);
     }
 
-    private boolean isGoodManager(Integer accountID, Integer managerID) {
-
-        if (managerID == null)
-            return true;
-        Person manager = (Person) personService.get(managerID).getEntity();
-        return (manager != null) && (!manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED)) && manager.getAccountID().equals(accountID);
-    }
+    // private boolean isGoodManager(Integer accountID, Integer managerID) {
+    //
+    // if (managerID == null)
+    // return true;
+    // Person manager = (Person) personService.get(managerID).getEntity();
+    // return (manager != null) && (!manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED)) && manager.getAccountID().equals(accountID);
+    // }
 
     @Override
+    @ValidParams
     public Response update(Group object) {
-        Group original = getDao().findByID(object.getGroupID());
-        // Should check that if the parent id is different that it exists in the
-        // same account
-        if (!original.getAccountID().equals(object.getAccountID()))
-            return Response.status(Status.FORBIDDEN).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "Changing the accountID on a group is not allowed").build();
-
-        try {
-            if (isGoodManager(object.getAccountID(), object.getManagerID())) {
-
-                return super.update(object);
-            } else {
-
-                return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "managerID:" + object.getManagerID() + " doesn't exist.").build();
-            }
-
-        } catch (GenericHessianException ghe) {
-            return Response.status(Status.PRECONDITION_FAILED).header(BaseExceptionMapper.HEADER_ERROR_MESSAGE, "parentID:" + object.getParentID() + " doesn't exist.").build();
-        }
+        return super.update(object);
     }
 
     @Override
@@ -153,10 +121,18 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         // TODO Auto-generated method stub
         Response response = super.get(id);
         Group group = (Group) response.getEntity();
-        if (group != null){
+        if (group != null) {
             group.setManagerID(adjustForDeletedManager(group.getManagerID()));
         }
         return response;
+    }
+
+    private Integer adjustForDeletedManager(Integer managerID) {
+        if (managerID == null)
+            return managerID;
+        Person manager = (Person) personService.get(managerID).getEntity();
+        return manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED) ? null : managerID;
+
     }
 
     @Override

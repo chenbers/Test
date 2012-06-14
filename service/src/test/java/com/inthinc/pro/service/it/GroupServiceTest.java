@@ -60,7 +60,8 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     // private static Integer deletedManagerID = 18779; //DEV - this person is in account 3793
     // private static Integer parentIDOfDeletedManager = 5813; //this is a DEV parentID
     // private static Integer accountIDOfDeletedManager = 3793; //this is a DEV accountID
-    //
+    // private static Integer driverID = 30;
+    // private static Integer vehicleID = 30;
 
     // qa option
     private static int GROUP_ID = 2;
@@ -72,9 +73,13 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     private static Integer parentIDOfDeletedManager = 4917;
     private static Integer accountIDOfDeletedManager = 2;
     private static Integer managerToDelete = 3;
-
+    private static Integer driverID = 10;
+    private static Integer vehicleID = 305;
+    
     private ServiceClient client;
-
+    private static final String INVALID_MANAGER = "Manager ID not found:";
+    private static final String INVALID_PARENT = "Parent group ID not found:";
+    private static final String FORBIDDEN_ACCOUNT_CHANGE = "Changing the accountID on a group is not allowed:";
     @Test
     public void testDummy() {}
 
@@ -126,7 +131,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupDriverScores() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/drivers/30");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/drivers/"+driverID);
         try {
             ClientResponse<List<DriverVehicleScoreWrapper>> response = request.get();
             // ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
@@ -148,7 +153,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupVehicleScores() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/vehicles/30");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/vehicles/"+vehicleID);
         try {
             ClientResponse<List<DriverVehicleScoreWrapper>> response = request.get();
             // ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
@@ -170,7 +175,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupSubgroupsTrendsDriver() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/trends/driver/30");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/trends/driver/"+driverID);
         try {
             ClientResponse<List<GroupTrendWrapper>> response = request.get();
             // ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
@@ -192,7 +197,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupSubgroupsScoresDriver() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/scores/driver/30");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/scores/driver/"+driverID);
         try {
             ClientResponse<List<GroupScoreWrapper>> response = request.get();
             // ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
@@ -214,7 +219,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupDriverScoresJSON() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/drivers/30.json");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/drivers/"+driverID+".json");
         try {
             ClientResponse<List<DriverVehicleScoreWrapper>> response = request.get();
             logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
@@ -235,7 +240,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupVehicleScoresJSON() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/vehicles/30.json");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/scores/vehicles/"+vehicleID+".json");
         try {
             ClientResponse<List<DriverVehicleScoreWrapper>> response = request.get();
             // ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
@@ -257,7 +262,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupSubgroupsTrendsDriverJSON() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/trends/driver/30.json");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/trends/driver/"+driverID+".json");
         try {
             ClientResponse<List<GroupTrendWrapper>> response = request.get();
             // ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
@@ -279,7 +284,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetGroupSubgroupsScoresDriverJSON() {
         logger.info("Testing getDriverScores service");
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/scores/driver/30.json");
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/" + GROUP_ID + "/subgroups/scores/driver/"+driverID+".json");
         try {
             ClientResponse<List<GroupScoreWrapper>> response = request.get();
             // ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
@@ -389,7 +394,6 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void updateGroupTest_changeAccount() throws Exception {
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
-        String expectedErrorMessage = "Changing the accountID on a group is not allowed";
         Integer createdGroupID = null;
         String description = "updateGroupTest description";
         String name = "updateGroupTest name";
@@ -420,7 +424,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             // request.accept(MediaType.TEXT_HTML_TYPE).body(MediaType.TEXT_HTML_TYPE, xmlString.toString());
             ClientResponse<Group> clientResponse = request.put(Group.class);
 
-            assertEquals(expectedErrorMessage, clientResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0));
+            assertTrue(clientResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0).contains(FORBIDDEN_ACCOUNT_CHANGE));
             assertEquals(accountID, response.getAccountID());
             assertNotSame("AccountID should NOT change", newAccountID, response.getAccountID());
 
@@ -586,8 +590,9 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             request.accept("application/xml").body(MediaType.APPLICATION_XML, xmlString.toString());
             // request.accept(MediaType.TEXT_HTML_TYPE).body(MediaType.TEXT_HTML_TYPE, xmlString.toString());
             ClientResponse<Group> clientResponse = request.put(Group.class);
+            assertFalse(clientResponse.getStatus() == Status.OK.getStatusCode());
 
-            assertEquals(expectedErrorMessage, clientResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0));
+            assertTrue(clientResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0).contains(INVALID_PARENT));
 
             System.out.println(response);
         } finally {
@@ -601,7 +606,6 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void createGroupTest_createToNonExistentParent() throws Exception {
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
-        String expectedErrorMessage = "parentID:" + nonExistentParentID + " doesn't exist.";
         String description = "updateGroupTest description";
         String name = "updateGroupTest name";
         String type = "TEAM";
@@ -615,7 +619,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
 
             ClientResponse<Group> createResponse = request.post(Group.class);
             assertFalse(createResponse.getStatus() == Status.OK.getStatusCode());
-            assertEquals(expectedErrorMessage, createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0));
+            assertTrue(createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0).contains(INVALID_PARENT));
 
         } finally {}
     }
@@ -623,7 +627,6 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void createGroupTest_createToNonExistentManager() throws Exception {
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
-        String expectedErrorMessage = "managerID:" + nonExistentManagerID + " doesn't exist.";
         String description = "updateGroupTest description";
         String name = "updateGroupTest name";
         String type = "TEAM";
@@ -638,9 +641,9 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             request.accept("application/xml").body(MediaType.APPLICATION_XML, xmlString.toString());
 
             ClientResponse<Group> createResponse = request.post(Group.class);
-            assertTrue(createResponse.getStatus() == Status.PRECONDITION_FAILED.getStatusCode());
+            assertTrue(createResponse.getStatus() == Status.BAD_REQUEST.getStatusCode());
             assertTrue(createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE) != null);
-            assertEquals(expectedErrorMessage, createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0));
+            assertTrue(createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0).contains(INVALID_MANAGER));
             createdGroup = createResponse.getEntity();
         } catch (JAXBUnmarshalException jue) {
             assertTrue(jue instanceof JAXBUnmarshalException);
@@ -655,7 +658,6 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void createGroupTest_createToExistingManagerInWrongAccount() throws Exception {
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
-        String expectedErrorMessage = "managerID:" + managerIDInOtherAccount + " doesn't exist.";
         String description = "updateGroupTest description";
         String name = "updateGroupTest name";
         String type = "TEAM";
@@ -670,9 +672,9 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             request.accept("application/xml").body(MediaType.APPLICATION_XML, xmlString.toString());
 
             ClientResponse<Group> createResponse = request.post(Group.class);
-            assertTrue(createResponse.getStatus() == Status.PRECONDITION_FAILED.getStatusCode());
+            assertTrue(createResponse.getStatus() == Status.BAD_REQUEST.getStatusCode());
             assertTrue(createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE) != null);
-            assertEquals(expectedErrorMessage, createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0));
+            assertTrue(createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0).contains(INVALID_MANAGER));
             createdGroup = createResponse.getEntity();
         } catch (JAXBUnmarshalException jue) {
             assertTrue(jue instanceof JAXBUnmarshalException);
@@ -687,7 +689,6 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void createGroupTest_createToDeletedManagerInRightAccount() throws Exception {
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
-        String expectedErrorMessage = "managerID:" + deletedManagerID + " doesn't exist.";
         String description = "updateGroupTest description";
         String name = "updateGroupTest name";
         String type = "TEAM";
@@ -702,9 +703,9 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             request.accept("application/xml").body(MediaType.APPLICATION_XML, xmlString.toString());
 
             ClientResponse<Group> createResponse = request.post(Group.class);
-            assertTrue(createResponse.getStatus() == Status.PRECONDITION_FAILED.getStatusCode());
+            assertTrue(createResponse.getStatus() == Status.BAD_REQUEST.getStatusCode());
             assertTrue(createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE) != null);
-            assertEquals(expectedErrorMessage, createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0));
+            assertTrue(createResponse.getHeaders().get(BaseExceptionMapper.HEADER_ERROR_MESSAGE).get(0).contains(INVALID_MANAGER));
             createdGroup = createResponse.getEntity();
         } catch (JAXBUnmarshalException jue) {
             assertTrue(jue instanceof JAXBUnmarshalException);

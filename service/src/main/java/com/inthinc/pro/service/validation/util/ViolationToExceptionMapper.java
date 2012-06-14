@@ -13,6 +13,7 @@ import org.jboss.resteasy.spi.NotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.service.exceptions.ForbiddenException;
+import com.inthinc.pro.service.params.GroupParam;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 import com.inthinc.pro.service.validation.rules.AbstractServiceValidator;
 
@@ -131,5 +132,49 @@ public class ViolationToExceptionMapper {
 		String[] parts = violationMessage.split(DELIMITER);
 		return parts[1];
 	}
-	
+	   public void raiseGroupExceptionIfConstraintViolated(
+	            Set<ConstraintViolation<GroupParam>> constraintViolations) {
+
+	        if (constraintViolations.isEmpty()) return;
+	            
+	        if (constraintViolations.size() > 1) handleMultipleGroupViolations(constraintViolations);
+	        else handleSingleGroupViolation(constraintViolations.iterator().next());
+	    }   
+	    /**
+	     * Handle single violation depending on the annotation type.
+	     * This method will throw an exception depending on the constraint violation.</br></br>
+	     * 
+	     * @param violation The constraint violation.
+	     */
+	    private void handleSingleGroupViolation(ConstraintViolation<GroupParam> violation) {
+
+	            // Get the exception corresponding to the violation
+	            Class<? extends RuntimeException> exceptionClass = map.get(extractStatusTypeName(violation.getMessage()));
+
+	            // Default exception: BadRequestException
+	            if (exceptionClass == null) exceptionClass = BadRequestException.class;
+	            
+	            // Throw the exception
+	            RuntimeException exception;
+	            try {
+	                exception = exceptionClass.getDeclaredConstructor(String.class).newInstance(extractUserMessage(violation.getMessage()));
+	            } catch (Exception e) {
+	                throw new BadRequestException(e);
+	            }
+	            throw exception;
+	    }
+
+	    /**
+	     * Handle multiple violations by concatenating messages and raising a 400. 
+	     * @param constraintViolations The constraint violations
+	     */
+	    private void handleMultipleGroupViolations(
+	            Set<ConstraintViolation<GroupParam>> constraintViolations) {
+
+	            StringBuffer fullMessage = new StringBuffer(MULTIPLE_VIOLATIONS); 
+	            Iterator<ConstraintViolation<GroupParam>>  it = constraintViolations.iterator();
+	            while (it.hasNext()) fullMessage.append("* " + extractUserMessage(it.next().getMessage()) + "\n");
+	            throw new BadRequestException(fullMessage.toString());
+	    }
+
 }

@@ -10,11 +10,13 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
@@ -37,8 +39,14 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
     private DriverDAO driverDAO;
     @Autowired
     private VehicleDAO vehicleDAO;
+    @Autowired
+    private PersonDAO personDAO;
     
-	@Override
+	public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
+
+    @Override
 	public List<Group> getAll() {
         return groupDAO.getGroupHierarchy(getAccountID(), getGroupID());
 	}
@@ -111,6 +119,9 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
     	return vehicleDAO.getVehicleNames(groupID);
     }
 
+    public Person getPersonByID(Integer id){
+        return personDAO.findByID(id);
+    }
     
 	// Getters and setters -----------------------------------------------------
     
