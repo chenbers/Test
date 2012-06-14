@@ -51,17 +51,17 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
     DATE_TIME_ENTRY(null, "notificationsTableForm:notificationsTable:###:time"),
 
     POSTED_ENTRY_SPEED(null, "notificationsTableForm:notificationsTable:###:speedLimitValue"),
-    POSTED_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:speedLimit")).strong().toString()),
+    POSTED_ENTRY_SPEED_UNITS(null, "notificationsTableForm:notificationsTable:###:speedLimit"),
 
     POSTED_ENTRY_SBS_BUTTON(null, "notificationsTableForm:notificationsTable:###:notificationsTableSlcr"),
 
     AVERAGE_ENTRY_SPEED(null, "notificationsTableForm:notificationsTable:###:averageSpeedValue"),
-    AVERAGE_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:averageSpeed")).strong().toString()),
+    AVERAGE_ENTRY_SPEED_UNITS(null, "notificationsTableForm:notificationsTable:###:averageSpeed"),
     AVERAGE_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:averageSpeed")).span("1").toString()),
     AVERAGE_ENTRY_DIFF(null, "notificationsTableForm:notificationsTable:###:averageSpeedDifference"),
 
     TOP_ENTRY_SPEED(null, "notificationsTableForm:notificationsTable:###:topSpeedValue"),
-    TOP_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:topSpeed")).strong().toString()),
+    TOP_ENTRY_SPEED_UNITS(null, "notificationsTableForm:notificationsTable:###:topSpeed"),
     TOP_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:topSpeed")).span("1").toString()),
     TOP_ENTRY_DIFF(null, "notificationsTableForm:notificationsTable:###:topSpeedDifference"),
 
