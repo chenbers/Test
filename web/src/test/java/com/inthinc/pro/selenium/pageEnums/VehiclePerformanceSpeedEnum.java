@@ -19,7 +19,7 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
     OVERALL_PDF_TOOL(exportPDF, "dateLinksForm:export_menu_item:anchor"),
     OVERALL_EXCEL_TOOL("Export to Excel", "speedForm:vehicleSpeed-exportExcelMenuItem:anchor"),
 
-    RETURN(null, "speedForm:notificationsTable-dateLinksToolsDetailShow"),
+    RETURN(null, "speedForm:vehicleSpeed-dateLinksToolsDetailShow"),
 
     /* Breakdown by Speed Limit */
     BREAKDOWN_OVERALL_LINK("Overall", "vehicleChartOverallForm:vehicleSpeedOverall"),
