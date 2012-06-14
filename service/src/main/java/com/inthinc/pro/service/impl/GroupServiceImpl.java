@@ -56,14 +56,6 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         return super.create(object, uriInfo);
     }
 
-    // private boolean isGoodManager(Integer accountID, Integer managerID) {
-    //
-    // if (managerID == null)
-    // return true;
-    // Person manager = (Person) personService.get(managerID).getEntity();
-    // return (manager != null) && (!manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED)) && manager.getAccountID().equals(accountID);
-    // }
-
     @Override
     @ValidParams
     public Response update(Group object) {
