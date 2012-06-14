@@ -5,6 +5,7 @@ import java.util.List;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
+import com.inthinc.pro.model.event.Event;
 
 /**
  * 
@@ -24,5 +25,14 @@ public interface EventAggregationDAO {
      * @return
      */
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIds,Interval interval);
+    
+    /**
+     * Returns the last event that was sent in for devices currently assigned to vehicles for the groups.
+     * 
+     * @param groupIds
+     * @param interval
+     * @return
+     */
+    public List<Event> findRecentEventByDevice(List<Integer> groupIds,Interval interval);
 
 }
