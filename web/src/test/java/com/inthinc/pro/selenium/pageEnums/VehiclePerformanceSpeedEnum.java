@@ -9,7 +9,7 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
     DEFAULT_URL(appUrl + "/vehicle/seatBelt/"),
 
 	 /* Overall Score */
-    TIME_FRAME_SELECTOR(null, "speedForm:notificationsTable-dateLinksToolsDetail***"),
+    TIME_FRAME_SELECTOR(null, "speedForm:vehicleSpeed-dateLinksToolsDetail***"),
     OVERALL_TITLE("Speed: Overall", "titleSpan"),
     OVERALL_SCORE_LABEL("Overall Score", Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("1").h4().toString()),
     OVERALL_SCORE_NUMBER(null, Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("2").table().tbody().tr().td().toString()),
