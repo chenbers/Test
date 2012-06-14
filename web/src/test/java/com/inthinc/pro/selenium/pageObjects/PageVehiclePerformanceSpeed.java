@@ -8,13 +8,21 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
+import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSpeedEnum;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceSpeedEnum;
+
 
 public class PageVehiclePerformanceSpeed extends NavigationBar {
 	
 	private static String page = "speedForm";
 	private static String page2 = "Speed";
+	
+	   public PageVehiclePerformanceSpeed(){
+	        checkMe.add(VehiclePerformanceSpeedEnum.DETAILS_TITLE);
+	        checkMe.add(VehiclePerformanceSpeedEnum.OVERALL_TITLE);
+	        checkMe.add(VehiclePerformanceSpeedEnum.RETURN);
+	    }
 	
 	public VehicleSpeedButtons _button(){
 		return new VehicleSpeedButtons();
@@ -205,8 +213,8 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 			return new TextTable(VehiclePerformanceSpeedEnum.TOP_ENTRY_DIFF);
 		}
 		
-		public TextTable distance(){
-			return new TextTable(VehiclePerformanceSpeedEnum.DISTANCE_ENTRY);
+		public TextTable distanceUnits(){
+			return new TextTable(VehiclePerformanceSpeedEnum.DISTANCE_ENTRY_UNITS);
 		}
 		
 		public Text counter(){
@@ -260,8 +268,7 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().emailReport().isPresent() &&
-               _link().categoryOverallSpeeds().isPresent();
+        return _link().categoryOneSpeeds().isPresent() && _link().dateTimeSort().isPresent();
     }
     
 

@@ -65,7 +65,7 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
     TOP_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:topSpeed")).span("1").toString()),
     TOP_ENTRY_DIFF(null, "notificationsTableForm:notificationsTable:###:topSpeedDifference"),
 
-    DISTANCE_ENTRY(null, "notificationsTableForm:notificationsTable:###:distance"),
+    DISTANCE_ENTRY_UNITS(null, "notificationsTableForm:notificationsTable:###:distance"),
     
 
     ;
