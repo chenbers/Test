@@ -74,15 +74,15 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 			return new TextTable(VehiclePerformanceSeatBeltEnum.DATE_TIME_ENTRY);
 		}
 		
-		public TextTable avgSpeed(){
+		public TextTable avgSpeedUnits(){
 			return new TextTable(VehiclePerformanceSeatBeltEnum.AVERAGE_SPEED_ENTRY);
 		}
 		
-		public TextTable topSpeed(){
+		public TextTable topSpeedUnits(){
 			return new TextTable(VehiclePerformanceSeatBeltEnum.TOP_SPEED_ENTRY);
 		}
 		
-		public TextTable distance(){
+		public TextTable distanceUnits(){
 			return new TextTable(VehiclePerformanceSeatBeltEnum.DISTANCE_ENTRY);
 		}
 		
