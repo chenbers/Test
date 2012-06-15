@@ -8,46 +8,46 @@ import com.inthinc.pro.automation.elements.TextDateFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.WaysmartReportEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsWaysmartEnum;
 
 public class PageReportsWaysmart extends ReportsBar {
     
     public PageReportsWaysmart() {
-        checkMe.add(WaysmartReportEnum.REPORT_DROP_DOWN);
-        checkMe.add(WaysmartReportEnum.TITLE);
+        checkMe.add(ReportsWaysmartEnum.REPORT_DROP_DOWN);
+        checkMe.add(ReportsWaysmartEnum.TITLE);
     }
     
     public class WaysmartReportLinks extends NavigationBarLinks {
         
             public TextLink html(){
-                return new TextLink(WaysmartReportEnum.HTML);
+                return new TextLink(ReportsWaysmartEnum.HTML);
             }
         
             public TextLink pdf(){
-                return new TextLink(WaysmartReportEnum.PDF);
+                return new TextLink(ReportsWaysmartEnum.PDF);
             }
         
             public TextLink excel(){
-                return new TextLink(WaysmartReportEnum.EXCEL);
+                return new TextLink(ReportsWaysmartEnum.EXCEL);
             }
         
             public TextLink email(){
-                return new TextLink(WaysmartReportEnum.EMAIL);
+                return new TextLink(ReportsWaysmartEnum.EMAIL);
             }
         }
 
     public class WaysmartReportTexts extends NavigationBarTexts{
     
         public TextDateFieldLabel labelDateRange(){
-            return new TextDateFieldLabel(WaysmartReportEnum.START_DATE);
+            return new TextDateFieldLabel(ReportsWaysmartEnum.START_DATE);
         }
     
         public Text labelReportOn(){
-            return new TextLabelDropDown(WaysmartReportEnum.REPORT_ON_DROP_DOWN);
+            return new TextLabelDropDown(ReportsWaysmartEnum.REPORT_ON_DROP_DOWN);
         }
     
         public Text labelGroups(){
-            return new Text(WaysmartReportEnum.GROUP_LABEL);
+            return new Text(ReportsWaysmartEnum.GROUP_LABEL);
         }
         
     }
@@ -60,31 +60,31 @@ public class PageReportsWaysmart extends ReportsBar {
     public class WaysmartReportDropDowns extends NavigationBarDropDowns{
         
         public DropDown report(){
-            return new DropDown(WaysmartReportEnum.REPORT_DROP_DOWN);
+            return new DropDown(ReportsWaysmartEnum.REPORT_DROP_DOWN);
         }
         
         public Selector group(){
-            return new Selector(WaysmartReportEnum.GROUP_SELECTOR);
+            return new Selector(ReportsWaysmartEnum.GROUP_SELECTOR);
         }
         
         public DropDown reportOnDriver(){
-            return new DropDown(WaysmartReportEnum.REPORT_ON_DRIVER_DROP_DOWN);
+            return new DropDown(ReportsWaysmartEnum.REPORT_ON_DRIVER_DROP_DOWN);
         }
         
         public DropDown driver(){
-            return new DropDown(WaysmartReportEnum.DRIVER_DROP_DOWN);
+            return new DropDown(ReportsWaysmartEnum.DRIVER_DROP_DOWN);
         }
         
         public DropDown reportOn(){
-            return new DropDown(WaysmartReportEnum.REPORT_ON_DROP_DOWN);
+            return new DropDown(ReportsWaysmartEnum.REPORT_ON_DROP_DOWN);
         }
         
         public CalendarObject startDate(){
-            return new CalendarObject(WaysmartReportEnum.START_DATE);
+            return new CalendarObject(ReportsWaysmartEnum.START_DATE);
         }
     
         public CalendarObject stopDate(){
-            return new CalendarObject(WaysmartReportEnum.STOP_DATE);
+            return new CalendarObject(ReportsWaysmartEnum.STOP_DATE);
         }
     }
 
@@ -106,7 +106,7 @@ public class PageReportsWaysmart extends ReportsBar {
 
     @Override
     public SeleniumEnums setUrl() {
-        return WaysmartReportEnum.DEFAULT_URL;
+        return ReportsWaysmartEnum.DEFAULT_URL;
     }
 
     @Override

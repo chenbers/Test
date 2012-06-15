@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.DeviceReportEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsDevicesEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
@@ -44,7 +44,7 @@ public class PageReportsDevices extends ReportsBar {
 	public class DeviceReportDropDowns extends ReportsBarDropDowns{
 		
 		public DHXDropDown status() {
-			return new DHXDropDown(DeviceReportEnum.STATUS_DHX);
+			return new DHXDropDown(ReportsDevicesEnum.STATUS_DHX);
 		}
 	}
 	public DeviceReportsLinks _link(){
@@ -62,19 +62,19 @@ public class PageReportsDevices extends ReportsBar {
 		}
 		
 		public TextLink deviceIDSort(){
-			return new TextLink(DeviceReportEnum.DEVICE_ID_SORT);
+			return new TextLink(ReportsDevicesEnum.DEVICE_ID_SORT);
 		}
 		
 		public TextLink assignedVehicleSort(){
-			return new TextLink(DeviceReportEnum.VEHICLE_SORT);
+			return new TextLink(ReportsDevicesEnum.VEHICLE_SORT);
 		}
 		
 		public TextLink imeiSort(){
-			return new TextLink(DeviceReportEnum.IMEI_SORT);
+			return new TextLink(ReportsDevicesEnum.IMEI_SORT);
 		}
 		
 		public TextLink devicePhoneSort(){
-			return new TextLink(DeviceReportEnum.PHONE_SORT);
+			return new TextLink(ReportsDevicesEnum.PHONE_SORT);
 		}
 
 	}
@@ -86,23 +86,23 @@ public class PageReportsDevices extends ReportsBar {
 	public class DeviceReportsTexts extends ReportsBarTexts{
 		
 		public Text statusColumnHeader(){
-			return new Text(DeviceReportEnum.STATUS_NONSORT);
+			return new Text(ReportsDevicesEnum.STATUS_NONSORT);
 		}
 		
 		public TextTable deviceIDValue(){
-			return new TextTable(DeviceReportEnum.DEVICE_ID_VALUE);
+			return new TextTable(ReportsDevicesEnum.DEVICE_ID_VALUE);
 		}
 		
 		public TextTable imeiValue(){
-			return new TextTable(DeviceReportEnum.IMEI_VALUE);
+			return new TextTable(ReportsDevicesEnum.IMEI_VALUE);
 		}
 		
 		public TextTable phoneNumberValue(){
-			return new TextTable(DeviceReportEnum.PHONE_VALUE);
+			return new TextTable(ReportsDevicesEnum.PHONE_VALUE);
 		}
 		
 		public TextTable statusValue(){
-			return new TextTable(DeviceReportEnum.STATUS_VALUE);
+			return new TextTable(ReportsDevicesEnum.STATUS_VALUE);
 		}
 		
 		public Text counter(){
@@ -141,19 +141,19 @@ public class PageReportsDevices extends ReportsBar {
 	public class DeviceReportsTextFields extends ReportsBarTextFields{
 		
 		public TextField deviceIDSearch(){
-			return new TextField(DeviceReportEnum.DEVICE_ID_SEARCH);
+			return new TextField(ReportsDevicesEnum.DEVICE_ID_SEARCH);
 		}
 		
 		public TextField assignedVehicleSearch(){
-			return new TextField(DeviceReportEnum.VEHICLE_SEARCH);
+			return new TextField(ReportsDevicesEnum.VEHICLE_SEARCH);
 		}
 		
 		public TextField imeiSearch(){
-			return new TextField(DeviceReportEnum.IMEI_SEARCH);
+			return new TextField(ReportsDevicesEnum.IMEI_SEARCH);
 		}
 		
 		public TextField devicePhoneNumberSearch(){
-			return new TextField(DeviceReportEnum.PHONE_SEARCH);
+			return new TextField(ReportsDevicesEnum.PHONE_SEARCH);
 		}		
 	}
 	
@@ -170,7 +170,7 @@ public class PageReportsDevices extends ReportsBar {
 
     @Override
     public SeleniumEnums setUrl() {
-        return DeviceReportEnum.DEFAULT_URL;
+        return ReportsDevicesEnum.DEFAULT_URL;
     }
 
     @Override

@@ -12,12 +12,12 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
-import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsVehiclesEnum;
 
 public class PageReportsVehicles extends ReportsBar {
 	
 	public PageReportsVehicles(){
-		checkMe.add(VehicleReportEnum.TITLE);
+		checkMe.add(ReportsVehiclesEnum.TITLE);
 	}
 	
 	public class VehicleReportButtons extends ReportsBarButtons {
@@ -62,63 +62,63 @@ public class PageReportsVehicles extends ReportsBar {
 	    }
 
 		public TextLink distanceDrivenSort() {
-			return new TextLink(VehicleReportEnum.DISTANCE_DRIVEN_SORT);
+			return new TextLink(ReportsVehiclesEnum.DISTANCE_DRIVEN_SORT);
 		}
 
 		public TextLink driverSort() {
-			return new TextLink(VehicleReportEnum.DRIVER_SORT);
+			return new TextLink(ReportsVehiclesEnum.DRIVER_SORT);
 		}
 
 		public TextTableLink driverValue() {
-			return new TextTableLink(VehicleReportEnum.DRIVER_VALUE);
+			return new TextTableLink(ReportsVehiclesEnum.DRIVER_VALUE);
 		}
 
 		public TextLink groupSort() {
-			return new TextLink(VehicleReportEnum.GROUP_SORT);
+			return new TextLink(ReportsVehiclesEnum.GROUP_SORT);
 		}
 
 		public TextTableLink groupValue() {
-			return new TextTableLink(VehicleReportEnum.GROUP_VALUE);
+			return new TextTableLink(ReportsVehiclesEnum.GROUP_VALUE);
 		}
 
 		public TextLink odometerSort() {
-			return new TextLink(VehicleReportEnum.ODOMETER_SORT);
+			return new TextLink(ReportsVehiclesEnum.ODOMETER_SORT);
 		}
 
 		public TextLink overallSort() {
-			return new TextLink(VehicleReportEnum.OVERALL_SCORE_SORT);
+			return new TextLink(ReportsVehiclesEnum.OVERALL_SCORE_SORT);
 		}
 
 		public TextLinkScoreTable overallValue() {
-			return new TextLinkScoreTable(VehicleReportEnum.OVERALL_SCORE_VALUE);
+			return new TextLinkScoreTable(ReportsVehiclesEnum.OVERALL_SCORE_VALUE);
 		}
 
 		public TextLink speedSort() {
-			return new TextLink(VehicleReportEnum.SPEED_SCORE_SORT);
+			return new TextLink(ReportsVehiclesEnum.SPEED_SCORE_SORT);
 		}
 
 		public TextLinkScoreTable speedValue() {
-			return new TextLinkScoreTable(VehicleReportEnum.SPEED_SCORE_VALUE);
+			return new TextLinkScoreTable(ReportsVehiclesEnum.SPEED_SCORE_VALUE);
 		}
 
 		public TextLink styleSort() {
-			return new TextLink(VehicleReportEnum.STYLE_SCORE_SORT);
+			return new TextLink(ReportsVehiclesEnum.STYLE_SCORE_SORT);
 		}
 
 		public TextLinkScoreTable styleValue() {
-			return new TextLinkScoreTable(VehicleReportEnum.STYLE_SCORE_VALUE);
+			return new TextLinkScoreTable(ReportsVehiclesEnum.STYLE_SCORE_VALUE);
 		}
 
 		public TextLink vehicleIDSort() {
-			return new TextLink(VehicleReportEnum.VEHICLE_SORT);
+			return new TextLink(ReportsVehiclesEnum.VEHICLE_SORT);
 		}
 
 		public TextTableLink vehicleValue() {
-			return new TextTableLink(VehicleReportEnum.VEHICLE_VALUE);
+			return new TextTableLink(ReportsVehiclesEnum.VEHICLE_VALUE);
 		}
 
 		public TextLink yearMakeModelSort() {
-			return new TextLink(VehicleReportEnum.YEAR_MAKE_MODEL_SORT);
+			return new TextLink(ReportsVehiclesEnum.YEAR_MAKE_MODEL_SORT);
 		}
 
 	}
@@ -126,26 +126,26 @@ public class PageReportsVehicles extends ReportsBar {
 	public class VehicleReportTextFields extends ReportsBarTextFields {
 
 		public TextField driverSearch() {
-			return new TextField(VehicleReportEnum.DRIVER_SEARCH);
+			return new TextField(ReportsVehiclesEnum.DRIVER_SEARCH);
 		}
 
 		public TextField groupSearch() {
-			return new TextField(VehicleReportEnum.GROUP_SEARCH);
+			return new TextField(ReportsVehiclesEnum.GROUP_SEARCH);
 		}
 
 		public TextField vehicleSearch() {
-			return new TextField(VehicleReportEnum.VEHICLE_SEARCH);
+			return new TextField(ReportsVehiclesEnum.VEHICLE_SEARCH);
 		}
 
 		public TextField yearMakeModelSearch() {
-			return new TextField(VehicleReportEnum.YEAR_MAKE_MODEL_SEARCH);
+			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_SEARCH);
 		}
 	}
 
 	public class VehicleReportTexts extends ReportsBarTexts {
 		
 		public Text title(){
-			return new Text(VehicleReportEnum.TITLE);
+			return new Text(ReportsVehiclesEnum.TITLE);
 		}
 		
 		public Text counter(){
@@ -153,15 +153,15 @@ public class PageReportsVehicles extends ReportsBar {
 		}
 		
 		public TextTable distanceDrivenValue() {
-			return new TextTable(VehicleReportEnum.DISTANCE_DRIVEN_VALUE);
+			return new TextTable(ReportsVehiclesEnum.DISTANCE_DRIVEN_VALUE);
 		}
 		
 		public TextTable odometerValue() {
-			return new TextTable(VehicleReportEnum.ODOMETER_VALUE);
+			return new TextTable(ReportsVehiclesEnum.ODOMETER_VALUE);
 		}
 
 		public TextTable yearMakeModelValue() {
-			return new TextTable(VehicleReportEnum.YEAR_MAKE_MODEL_VALUE);
+			return new TextTable(ReportsVehiclesEnum.YEAR_MAKE_MODEL_VALUE);
 		}
 
 	}
@@ -218,7 +218,7 @@ public class PageReportsVehicles extends ReportsBar {
 
     @Override
     public SeleniumEnums setUrl() {
-        return VehicleReportEnum.DEFAULT_URL;
+        return ReportsVehiclesEnum.DEFAULT_URL;
     }
 
     @Override

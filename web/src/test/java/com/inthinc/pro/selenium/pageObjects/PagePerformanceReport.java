@@ -6,25 +6,25 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.PerformanceReportEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsPerformanceEnum;
 
 
 public class PagePerformanceReport extends ReportsBar {
     
     public PagePerformanceReport() {
-        checkMe.add(PerformanceReportEnum.REPORT_DROP_DOWN);
-        checkMe.add(PerformanceReportEnum.TITLE);
+        checkMe.add(ReportsPerformanceEnum.REPORT_DROP_DOWN);
+        checkMe.add(ReportsPerformanceEnum.TITLE);
     }
     
     public class PerformanceReportLinks extends ReportsBarLinks {
         
                            
             public TextLink excel(){
-                return new TextLink(PerformanceReportEnum.EXCEL);
+                return new TextLink(ReportsPerformanceEnum.EXCEL);
             }
         
             public TextLink email(){
-                return new TextLink(PerformanceReportEnum.EMAIL);
+                return new TextLink(ReportsPerformanceEnum.EMAIL);
             }
         }
 
@@ -32,11 +32,11 @@ public class PagePerformanceReport extends ReportsBar {
     
             
         public Text labelReport(){
-            return new TextLabelDropDown(PerformanceReportEnum.REPORT_DROP_DOWN);
+            return new TextLabelDropDown(ReportsPerformanceEnum.REPORT_DROP_DOWN);
         }
     
         public Text labelGroups(){
-            return new Text(PerformanceReportEnum.GROUP_LABEL);
+            return new Text(ReportsPerformanceEnum.GROUP_LABEL);
         }
         
     }
@@ -44,15 +44,15 @@ public class PagePerformanceReport extends ReportsBar {
     public class PerformanceReportDropDowns extends ReportsBarDropDowns{
         
         public DropDown report(){
-            return new DropDown(PerformanceReportEnum.REPORT_DROP_DOWN);
+            return new DropDown(ReportsPerformanceEnum.REPORT_DROP_DOWN);
         }
         
         public Selector group(){
-            return new Selector(PerformanceReportEnum.GROUP_SELECTOR);
+            return new Selector(ReportsPerformanceEnum.GROUP_SELECTOR);
         }
         
         public Selector timeFrame(){
-            return new Selector(PerformanceReportEnum.TIME_FRAME_DROP_DOWN);
+            return new Selector(ReportsPerformanceEnum.TIME_FRAME_DROP_DOWN);
         }
 
     }
@@ -71,7 +71,7 @@ public class PagePerformanceReport extends ReportsBar {
 
     @Override
     public SeleniumEnums setUrl() {
-        return PerformanceReportEnum.DEFAULT_URL;
+        return ReportsPerformanceEnum.DEFAULT_URL;
     }
 
     @Override
