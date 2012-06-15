@@ -20,7 +20,7 @@ And I validate the Error Vehicle Fuel text is "Vehicle fuel is required."
 And I validate the Error Driver text is "Driver is required"
 And I click the Cancel button
 And I click the Add button
-And I select 1 day in the future from the Calendar drop down
+And I select 1 day in the future from the Date drop down
 And I type "123" into the Vehicle Fuel textfield
 And I select "tiwi00" from the Driver drop down
 And I click the Save button
@@ -70,7 +70,7 @@ And I select "tiwi00" from the Driver drop down
 And I save the Driver drop down as Current Driver 
 And I validate the Value Location text is present
 And I click the Save button
-And I click the 1st Row of the Edit link
+And I click the 1st Row of the Value Edited link
 Then I validate the Trailer textfield is "123"
 And I validate the Vehicle Fuel textfield is "123"
 And I validate the Trailer Fuel textfield is "123"
@@ -106,8 +106,8 @@ And I save the 1st Row of the Value Trailer text as TRAILER
 And I save the 1st Row of the Value Location text as LOCATION
 And I save the 1st Row of the Value Edited text as EDITED
 And I click the 1st Row of the Value Edited link
-And I select 1 day in the past from the Calendar drop down
-And I select 1 hour in the past from the duration TIME_CHANGER
+And I select 1 day in the past from the Date drop down
+And I select 1 hour in the past from the Duration TIME_CHANGER
 And I type "456" into the Trailer textfield
 And I type "456" into the Vehicle Fuel textfield
 And I type "456" into the Trailer Fuel textfield
@@ -135,8 +135,8 @@ And I save the 1st Row of the Value Vehicle Fuel Fuel text as VEHICLEFUEL
 And I save the 1st Row of the Value Trailer Fuel text as TRAILERFUEL
 And I save the 1st Row of the Value Trailer text as TRAILER
 And I click the 1st Row of the Value Edited link
-And I select 1 day in the past from the Calendar drop down
-And I select 1 hour in the past from the duration TIME_CHANGER
+And I select 1 day in the past from the Date drop down
+And I select 1 hour in the past from the Duration TIME_CHANGER
 And I type "789" into the Trailer textfield
 And I type "789" into the VehicleFuel textfield
 And I type "789" into the TrailerFuel textfield
@@ -370,9 +370,9 @@ And I type "6" into the Vehicle Fuel textfield
 And I type "6" into the Trailer Fuel textfield
 And I select a valid driver from the Driver drop down
 And I click the Save button
-And I click the 1st Row of the Edit link
-And I select the date "4/1/12"
+And I click the 1st Row of the Value Edited link
+And I select 1 day in the past from the Date drop down
 And I click the Save button
-And I set the first Date Range to "4/1/12"
+And I select 1 day in the past from the Start Date drop down
 And I click the Refresh button
-Then I validate the 1st Row of the Edit link is not clickable
+Then I validate the 1st Row of the Value Edited link is not clickable

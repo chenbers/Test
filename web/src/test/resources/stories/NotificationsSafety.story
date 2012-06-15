@@ -9,40 +9,34 @@ Meta:
 Narrative:
 
 Scenario: TC1475: Notifications - Safety - Bookmark Entry 
-Given I am logged in as a "Admin" user
+Given I am logged
 When I click the Notifications link
 And I click the Safety link
-And I type "" into the Search textfield
-And I click the Search button
 And I bookmark the page
-And I click log out
+And I click the Logout link
 And I click the bookmark I just added
-And I am on the login page
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-Then I validate I am on the Safety page
-And I validate the Search textfield is ""
-And I validate the Driver Report table is not ""
+And I validate I am on the Login page
+Given I am logged
+Then I validate I am on the Notifications Safety page
 
 Scenario: TC1437: Notifications - Safety - Driver Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Safety link
-And I select the first entry in the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the first entry in the Sort By Driver column as SavedEntry
-And I click the first entry in the Sort By Driver column
-Then I validate the Driver Performance text is SavedEntry
+And I save the 1st Row of the Entry Driver link as SavedEntry
+And I click the 1st Row of the Entry Driver link
+Then I validate the Driver Name link is SavedEntry
 
 Scenario: TC1486: Notifications - Safety - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user
 When I click the Notifications link
 And I click the Safety link
-And I select the first entry in the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Date Time link
 And I click the Sort By Driver link
@@ -53,7 +47,7 @@ And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
 
 Scenario: TC1487: Notifications - Safety - Tools Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I click the Tools button
@@ -65,7 +59,7 @@ Scenario: TC1488: Notifications - Safety - UI
 Given I am logged in as a "Admin" user
 When I click the Notifications link
 And I click the Safety link
-Then I validate I am on the Safety page
+Then I validate I am on the Notifications Safety page
 And I validate the Team dropdown is present
 And I validate the Time Frame dropdown is present
 And I validate the Refresh button is present
@@ -84,8 +78,8 @@ Scenario: TC1489: Notifications - Safety - Vehicle Link
 Given I am logged in as a "Admin" user
 When I click the Notifications link
 And I click the Safety link
-And I select the first entry in the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the first entry in the Sort By Vehicle column as SavedEntry

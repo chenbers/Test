@@ -9,21 +9,15 @@ Meta:
 Narrative:
 
 Scenario: TC1513: Reports - Devices - Bookmark Entry 
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
-And I type "" into the Search textfield
-And I click the Search button
 And I bookmark the page
-And I click log out
+And I click the Logout link
 And I click the bookmark I just added
-And I am on the login page
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-Then I validate I am on the Devices page
-And I validate the Search textfield is ""
-And I validate the Driver Report table is not ""
+Then I validate I am on the Login page
+Given I am logged in
+Then I validate I am on the Reports Devices page
 
 Scenario: TC1527: Reports - Devices - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in as a "Admin" user

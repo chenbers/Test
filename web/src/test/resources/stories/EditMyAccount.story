@@ -7,7 +7,8 @@ Meta:
 Narrative: 
 
 Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart drivers TEST WILL WORK CORRECTLY AS LONG AS USER HAS DATA
-Given I am logged in
+Given I am on the Login page
+Given I am logged in as a "TopUser" user
 And I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
@@ -15,7 +16,7 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement text is "Metric"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I verify "Crashes per million kilometers" is on the page
 And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
@@ -23,7 +24,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
 And I click the Distance Driven Sort link
 And I click the Distance Driven Sort link
-And I click the 2nd Row of the Driver Value link
+And I click the 1st Row of the Driver Value link
 And I verify "Crashes per million kilometers" is on the page
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -49,11 +50,14 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
-And I click the 2nd Row of the Driver Value link
+And I click the year Duration link
+And I click the Distance Driven Sort link
+And I click the Distance Driven Sort link
+And I click the 5th Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -79,13 +83,13 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Speed link
-And I validate the Category One Speeds text contains "kph"
-And I validate the Category Two Speeds text contains "kph"
-And I validate the Category Three Speeds text contains "kph"
-And I validate the Category Four Speeds text contains "kph"
-And I validate the Category Five Speeds text contains "kph"
+And I validate the Category One Speeds Header text contains "kph"
+And I validate the Category Two Speeds Header text contains "kph"
+And I validate the Category Three Speeds Header text contains "kph"
+And I validate the Category Four Speeds Header text contains "kph"
+And I validate the Category Five Speeds Header text contains "kph"
 And I click on the Reports link
 And I click on the Drivers link
 And I validate the 1st Row of the Distance Driven Value text contains "km"
@@ -94,7 +98,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I validate the 1st Row of the Odometer Value text contains "km"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Test Group WR" from the Team dropdown
+And I select "Top - Top - Top - Firmware Team" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "kph"
 And I click the Logo button
@@ -110,12 +114,12 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement text is "English"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I verify "Crashes per million miles" is on the page
 And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
-And I click the 2nd Row of the Driver Value link
+And I click the 1st Row of the Driver Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -141,11 +145,14 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
-And I click the 1st Row of the Vehicle Value link
+And I click the year Duration link
+And I click the Distance Driven Sort link
+And I click the Distance Driven Sort link
+And I click the 5th Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -172,13 +179,13 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Speed link
-And I validate the Category One Speeds text contains "mph"
-And I validate the Category Two Speeds text contains "mph"
-And I validate the Category Three Speeds text contains "mph"
-And I validate the Category Four Speeds text contains "mph"
-And I validate the Category Five Speeds text contains "mph"
+And I validate the Category One Speeds Header text contains "mph"
+And I validate the Category Two Speeds Header text contains "mph"
+And I validate the Category Three Speeds Header text contains "mph"
+And I validate the Category Four Speeds Header text contains "mph"
+And I validate the Category Five Speeds Header text contains "mph"
 And I click on the Reports link
 And I click on the Drivers link
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
@@ -187,7 +194,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Top" from the Team dropdown
+And I select "Firmware Team" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "mph"
 And I click the Logo button
@@ -198,8 +205,8 @@ And I validate the Number Speeding Total Distance Speeding text contains "mi"
 And I validate the Title Speeding text contains "mi"
 
 Scenario: TC6139: My Account - Edit Account - Measurement Validation for Tiwi drivers TEST WILL WORK CORRECTLY AS LONG AS USER HAS DATA
-Given I am on the login page
-When I am logged in as TeamOnly user
+Given I am on the Login page
+Given I am logged in as a "TopUser" user
 And I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
@@ -207,12 +214,15 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement text is "Metric"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I verify "Crashes per million kilometers" is on the page
 And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
-And I click the 14th Row of the Driver Value link
+And I click the year Duration link
+And I click the Distance Driven Sort link
+And I click the Distance Driven Sort link
+And I click the 1st Row of the Driver Value link
 And I verify "Crashes per million kilometers" is on the page
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -227,7 +237,7 @@ And I validate the 1st Row of the Top Speed Units text contains "kph"
 And I validate the 1st Row of the Distance Units text contains "km"
 And I click the Return To Performance Page button
 And I click the Maximize Driving Style button
-And I click the twelve months Duration link
+And I click the six months Duration link
 And I validate the 1st Row of the Speed text contains "kph"
 And I click the Return To Performance Page button
 And I click the Maximize Seat Belt button
@@ -239,11 +249,14 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
-And I click the 14th Row of the Driver Value link
+And I click the year Duration link
+And I click the Distance Driven Sort link
+And I click the Distance Driven Sort link
+And I click the 5th Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -270,13 +283,13 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Speed link
-And I validate the Category One Speeds text contains "kph"
-And I validate the Category Two Speeds text contains "kph"
-And I validate the Category Three Speeds text contains "kph"
-And I validate the Category Four Speeds text contains "kph"
-And I validate the Category Five Speeds text contains "kph"
+And I validate the Category One Speeds Header text contains "kph"
+And I validate the Category Two Speeds Header text contains "kph"
+And I validate the Category Three Speeds Header text contains "kph"
+And I validate the Category Four Speeds Header text contains "kph"
+And I validate the Category Five Speeds Header text contains "kph"
 And I click on the Reports link
 And I click on the Drivers link
 And I validate the 1st Row of the Distance Driven Value text contains "km"
@@ -285,7 +298,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I validate the 1st Row of the Odometer Value text contains "km"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Test Group WR" from the Team dropdown
+And I select "Top - Top - Top - Firmware Team" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "kph"
 And I click the Logo button
@@ -301,12 +314,12 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement text is "English"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I verify "Crashes per million miles" is on the page
 And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
-And I click the 14th Row of the Driver Value link
+And I click the 1st Row of the Driver Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -333,11 +346,14 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
-And I click the 1st Row of the Vehicle Value link
+And I click the year Duration link
+And I click the Distance Driven Sort link
+And I click the Distance Driven Sort link
+And I click the 5th Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -365,13 +381,13 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Test Group WR" Groups navtree
+And I click group "Firmware Team" Groups navtree
 And I click the Speed link
-And I validate the Category One Speeds text contains "mph"
-And I validate the Category Two Speeds text contains "mph"
-And I validate the Category Three Speeds text contains "mph"
-And I validate the Category Four Speeds text contains "mph"
-And I validate the Category Five Speeds text contains "mph"
+And I validate the Category One Speeds Header text contains "mph"
+And I validate the Category Two Speeds Header text contains "mph"
+And I validate the Category Three Speeds Header text contains "mph"
+And I validate the Category Four Speeds Header text contains "mph"
+And I validate the Category Five Speeds Header text contains "mph"
 And I click on the Reports link
 And I click on the Drivers link
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
@@ -380,7 +396,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Top" from the Team dropdown
+And I select "Firmware Team" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "mph"
 And I click the Logo button
@@ -503,7 +519,7 @@ And I select the option containing "E-mail 2" from the Warning dropdown
 And I select the option containing "Phone 1" from the Critical dropdown
 And I select "Hyb (Hybrid)" from the Map Type dropdown
 And I click the Down Arrow button
-And I click the 1st Row of the Map Layer checkbox
+And I click the 1st Row of the Map Layers checkbox
 And I select "Deutsch" from the Locale dropdown
 And I select "Metric" from the Measurement dropdown
 And I select "Kilometers Per Liter" from the Fuel Efficiency dropdown
@@ -533,7 +549,7 @@ And I select ORIGINALinfo from the Information dropdown
 And I select ORIGINALwarn from the Warning dropdown
 And I select ORIGINALcrit from the Critical dropdown
 And I select ORIGINALmapType from the Map Type dropdown
-And I click the 1st Row of the Map Layer checkbox
+And I click the 1st Row of the Map Layers checkbox
 And I select ORIGINALlocale from the Locale dropdown
 And I select ORIGINALmeasurement from the Measurement dropdown
 And I select ORIGINALfuelEff from the Fuel Efficiency Ratio dropdown
@@ -578,7 +594,7 @@ And I select the option containing "E-mail 2" from the Warning dropdown
 And I select the option containing "Phone 1" from the Critical dropdown
 And I select "Hyb (Hybrid)" from the Map Type dropdown
 And I click the Down Arrow button
-And I click the 1st Row of the Map Layer checkbox
+And I click the 1st Row of the Map Layers checkbox
 And I select "Deutsch" from the Locale dropdown
 And I select "Metric" from the Measurement dropdown
 And I select "Kilometers Per Liter" from the Fuel Efficiency dropdown

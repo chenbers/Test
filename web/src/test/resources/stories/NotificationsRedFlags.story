@@ -9,51 +9,46 @@ Meta:
 Narrative:
 
 Scenario: TC1434: Notifications - Red Flags - Bookmark Entry 
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
-And I type "" into the Search textfield
-And I click the Search button
 And I bookmark the page
 And I click log out
 And I click the bookmark I just added
-And I am on the login page
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
+And I click the Logout link
+And I validate I am on the Login page
+Given I am logged in
 Then I validate I am on the Red Flags page
-And I validate the Search textfield is ""
-And I validate the Driver Report table is not ""
 
 Scenario: TC1437: Notifications - Red Flags - Driver Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
-And I select the first entry in the Team dropdown
+And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the first entry in the Sort By Driver column as SavedEntry
-And I click the first entry in the Sort By Driver column
-Then I validate the Driver Performance text is SavedEntry
+And I save the 1st Row of the Entry Driver link as SavedEntry
+And I click the 1st Row of the Entry Driver link
+Then I validate the Driver Name link is SavedEntry
 
 Scenario: TC1450: Notifications - Red Flags - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
-And I select the first entry in the Team dropdown
+And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I click the Sort By Date Time link
-And I click the Sort By Driver link
-And I click the Sort By Driver link
-And I click the Sort By Group link
-And I click the Sort By Group link
-And I click the Sort By Vehicle link
-And I click the Sort By Vehicle link
+Then I validate the Sort By Date Time column sorts correctly
+Then I validate the Sort By Driver column sorts correctly
+Then I validate the Sort By Driver column sorts correctly
+Then I validate the Sort By Group column sorts correctly
+Then I validate the Sort By Group column sorts correctly
+Then I validate the Sort By Vehicle column sorts correctly
+Then I validate the Sort By Vehicle column sorts correctly
 
 Scenario: TC1451: Notifications - Red Flags - Tools Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I click the Tools button
@@ -62,10 +57,10 @@ And I validate the Export To PDF button is present
 And I validate the Export To Excel button is present
 
 Scenario: TC1452: Notifications - Red Flags - UI
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
-Then I validate I am on the Red Flags page
+Then I validate I am on the Notifications Red Flags page
 And I validate the Team dropdown is present
 And I validate the Time Frame dropdown is present
 And I validate the Refresh button is present
@@ -83,30 +78,30 @@ And I validate the Header Detail text is present
 And I validate the Header Status text is present
 
 Scenario: TC1453: Notifications - Red Flags - Vehicle Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
-And I select the first entry in the Team dropdown
+And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I save the first entry in the Sort By Vehicle column as SavedEntry
-And I click the first entry in the Sort By Vehicle column
-Then I validate the Vehicle Performance text is SavedEntry
+And I save the 1st Row of the Entry Vehicle link as SavedEntry
+And I click the 1st Row of the Entry Vehicle link
+Then I validate the Vehicle Name link is SavedEntry
 
 Scenario: TC1455: Notifications - Red Flags - Edit Columns - Cancel Button (Changes)
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-And I uncheck the checkbox of the second entry
-And I uncheck the checkbox of the third entry
-And I uncheck the checkbox of the fourth entry
-And I uncheck the checkbox of the fifth entry
-And I uncheck the checkbox of the sixth entry
+And I click the 1st Row of the Edit Columns checkbox
+And I uncheck the 2nd Row of the Edit Columns checkbox
+And I uncheck the 3rd Row of the Edit Columns checkbox
+And I uncheck the 4th Row of the Edit Columns checkbox
+And I uncheck the 5th Row of the Edit Columns checkbox
+And I uncheck the 6th Row of the Edit Columns checkbox
 And I click the Cancel button
 And the Edit Columns popup closes
 Then I validate the Sort By Date Time link is present
@@ -267,6 +262,7 @@ And the Exclude Event popup closes
 Then I validate the text in the first Entry Date Time text is SavedDateTime
 And I validate the text in the first Entry Detail text is SavedDetail
 
+Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
 When I click the Notifications link
 Given I am logged in as a "Admin" user
 And I click the Red Flags link

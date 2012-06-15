@@ -9,51 +9,44 @@ Meta:
 Narrative:
 
 Scenario: TC1368: Notifications - Diagnostics - Bookmark Entry
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I type "" into the Search textfield
-And I click the Search button
 And I bookmark the page
-And I click log out
+And I click the Logout link
 And I click the bookmark I just added
-And I am on the login page
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-Then I validate I am on the Diagnostics page
-And I validate the Search textfield is ""
-And I validate the Driver Report table is not ""
+And I validate I am on the Login page
+Given I am logged in
+Then I validate I am on the Notifications Diagnostics page
 
 Scenario: TC1371: Notifications - Diagnostics - Driver Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I select the first entry in the Team dropdown
+And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I click the Sort By Driver link
-And I save the first entry in the Sort By Driver column as SavedEntry
-And I click the first entry in the Sort By Driver column
-Then I validate the Driver Performance text is SavedEntry
+And I save the 1st Row of the Entry Driver link as SavedEntry
+And I click the 1st Row of the Entry Driver link
+Then I validate the Driver Name link is SavedEntry
 
-Scenario: TC1381: Notifications - Diagnostics - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
-Given I am logged in as a "Admin" user
+Scenario: TC1381: Notifications - Diagnostics - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I select the first entry in the Team dropdown
-And I select "Past 30 Days" in the TimeFrame dropdown
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I click the Sort By Date Time link
-And I click the Sort By Driver link
-And I click the Sort By Driver link
-And I click the Sort By Group link
-And I click the Sort By Group link
-And I click the Sort By Vehicle link
-And I click the Sort By Vehicle link
+Then I validate the Sort By Date Time column sorts correctly
+Then I validate the Sort By Driver column sorts correctly
+Then I validate the Sort By Driver column sorts correctly
+Then I validate the Sort By Group column sorts correctly
+Then I validate the Sort By Group column sorts correctly
+Then I validate the Sort By Vehicle column sorts correctly
+Then I validate the Sort By Vehicle column sorts correctly
 
 Scenario: TC1382: Notifications - Diagnostics - Tools Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Tools button
@@ -62,10 +55,10 @@ And I validate the Export To PDF button is present
 And I validate the Export To Excel button is present
 
 Scenario: TC1383: Notifications - Diagnostics - UI
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-Then I validate I am on the Diagnostics page
+Then I validate I am on the Notifications Diagnostics page
 And I validate the Team dropdown is present
 And I validate the Time Frame dropdown is present
 And I validate the Refresh button is present
@@ -81,29 +74,29 @@ And I validate the Header Detail text is present
 And I validate the Header Status text is present
 
 Scenario: TC1384: Notifications - Diagnostics - Vehicle Link
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I select the first entry in the Team dropdown
+And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the first entry in the Sort By Vehicle column as SavedEntry
-And I click the first entry in the Sort By Vehicle column
-Then I validate the Vehicle Performance text is SavedEntry
+And I save the 1st Row of the Entry Vehicle link as SavedEntry
+And I click the 1st Row of the Entry Vehicle link
+Then I validate the Vehicle Name link is SavedEntry
 
 Scenario: TC1386: Notifications - Diagnostics - Edit Columns - Cancel Button (Changes)
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-And I uncheck the checkbox of the second entry
-And I uncheck the checkbox of the third entry
-And I uncheck the checkbox of the fourth entry
-And I uncheck the checkbox of the fifth entry
-And I uncheck the checkbox of the sixth entry
+And I click the 1st Row of the Edit Columns checkbox
+And I uncheck the 2nd Row of the Edit Columns checkbox
+And I uncheck the 3rd Row of the Edit Columns checkbox
+And I uncheck the 4th Row of the Edit Columns checkbox
+And I uncheck the 5th Row of the Edit Columns checkbox
+And I uncheck the 6th Row of the Edit Columns checkbox
 And I click the Cancel button
 And the Edit Columns popup closes
 Then I validate the Sort By Date Time link is present
@@ -249,29 +242,29 @@ And I validate the Save button is present
 And I validate the Cancel button is present
 
 Scenario: TC1399: Notifications - Diagnostics - Exclude Link - UI
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first Entry Date Time text as SavedDateTime
-And I save the text in the first Entry Detail text as SavedDetail
-And I click the first Exclude link in the Status column
+And I save the 1st Row of the Entry Date Time text as SavedDateTime
+And I save the 1st Row of the Entry Detail text as SavedDetail
+And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the SavedDateTime text is present
-And I validate the SavedDetail text is present
+Then I validate the Saved Date Time text is present
+And I validate the Saved Detail text is present
 And I validate the Yes button is present
 And I validate the No button is present
 
 Scenario: TC5742: Notifications - Diagnostics - Time Frame
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I click the first entry in the Team dropdown
-And I click "Today" in the Time Frame dropdown
+And I select "Top" from the Team dropdown
+And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first Entry Date Time text as SavedDateTime
-And I click "Yesterday" in the Time Frame dropdown
+And I save the 1st Row of the Entry Date Time text as SavedDateTime
+And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
 Then I validate the SavedDateTime text is not present
