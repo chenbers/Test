@@ -22,10 +22,6 @@ public class PageReportsVehicles extends ReportsBar {
 	
 	public class VehicleReportButtons extends ReportsBarButtons {
 
-		public TextButton editColumns() {
-			return new TextButton(PopUpEnum.EDIT_COLUMNS, page);
-		}
-
 		public TextButton emailReport() {
 			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
 		}
@@ -63,6 +59,10 @@ public class PageReportsVehicles extends ReportsBar {
 	}
 
 	public class VehicleReportLinks extends ReportsBarLinks {
+	    
+	    public TextLink editColumns() {
+	        return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
+	    }
 
 		public TextLink distanceDrivenSort() {
 			return new TextLink(VehicleReportEnum.DISTANCE_DRIVEN_SORT);
@@ -228,6 +228,6 @@ public class PageReportsVehicles extends ReportsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().editColumns().isPresent();
+        return _link().editColumns().isPresent();
     }
 }

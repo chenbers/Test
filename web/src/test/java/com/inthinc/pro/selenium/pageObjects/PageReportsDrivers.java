@@ -23,10 +23,6 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportButtons extends ReportsBarButtons {
 
-        public TextButton editColumns() {
-            return new TextButton(PopUpEnum.EDIT_COLUMNS, page);
-        }
-
         public TextButton exportEmail() {
             return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
         }
@@ -67,6 +63,10 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportLinks extends ReportsBarLinks {
 
+        public TextLink editColumns() {
+            return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
+        }
+        
         public TextLink distanceDrivenSort() {
             return new TextLink(ReportsDriversEnum.DISTANCE_DRIVEN_SORT);
         }
@@ -225,7 +225,7 @@ public class PageReportsDrivers extends ReportsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().editColumns().isPresent();
+        return _link().editColumns().isPresent();
     }
 
 }

@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
@@ -75,10 +76,6 @@ public class PageReportsIdling extends ReportsBar {
 	    public TextButton refresh() {
 	        return new TextButton(IdlingReportEnum.REFRESH);
 	    }
-	    
-	    public TextButton editColumns() {
-			return new TextButton(PopUpEnum.EDIT_COLUMNS, page);
-		}
 
 		public TextButton exportEmail() {
 			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
@@ -99,6 +96,10 @@ public class PageReportsIdling extends ReportsBar {
     
 	public class IdlingReportLinks extends ReportsBarLinks{
 		
+	    public TextLink editColumns() {
+	        return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
+	    }
+	    
 	    public TextTableLink groupValue() {
 	        return new TextTableLink(IdlingReportEnum.GROUP_VALUE);   
 	    }  
@@ -146,6 +147,6 @@ public class PageReportsIdling extends ReportsBar {
     }
     @Override
     protected boolean checkIsOnPage() {
-        return _button().editColumns().isPresent();
+        return _link().editColumns().isPresent();
     }
 }
