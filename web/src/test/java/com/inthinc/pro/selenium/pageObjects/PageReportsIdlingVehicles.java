@@ -12,8 +12,6 @@ import com.inthinc.pro.selenium.pageEnums.ReportsIdlingVehiclesEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
-// TODO: Page needs to be split into two, there is now a Idling Drivers and Idling Vehicles page
-
 public class PageReportsIdlingVehicles extends ReportsBar {
 	private String page = "idling";
 	
