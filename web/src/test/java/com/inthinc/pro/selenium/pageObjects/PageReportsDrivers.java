@@ -18,7 +18,6 @@ public class PageReportsDrivers extends ReportsBar {
 
     public PageReportsDrivers() {
         checkMe.add(ReportsDriversEnum.TITLE);
-        checkMe.add(ReportsDriversEnum.EDIT_COLUMNS);
     }
 
     public class DriverReportButtons extends ReportsBarButtons {

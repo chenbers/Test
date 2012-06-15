@@ -42,18 +42,15 @@ public class PageReportsVehicles extends ReportsBar {
 	public class VehicleReportDropDowns extends ReportsBarDropDowns {
 
 		public DHXDropDown overallFilter() {
-			return new ReportsBarDropDowns().score(
-					ReportsBarEnum.OVERALL_SCORE_DHX, page);
+			return new ReportsBarDropDowns().score(ReportsBarEnum.OVERALL_SCORE_DHX, page);
 		}
 
 		public DHXDropDown speedFilter() {
-			return new ReportsBarDropDowns().score(
-					ReportsBarEnum.SPEED_SCORE_DHX, page);
+			return new ReportsBarDropDowns().score(ReportsBarEnum.SPEED_SCORE_DHX, page);
 		}
 
 		public DHXDropDown styleFilter() {
-			return new ReportsBarDropDowns().score(
-					ReportsBarEnum.STYLE_SCORE_DHX, page);
+			return new ReportsBarDropDowns().score(ReportsBarEnum.STYLE_SCORE_DHX, page);
 		}
 
 	}
@@ -87,7 +84,6 @@ public class PageReportsVehicles extends ReportsBar {
 		public TextLink odometerSort() {
 			return new TextLink(VehicleReportEnum.ODOMETER_SORT);
 		}
-
 
 		public TextLink overallSort() {
 			return new TextLink(VehicleReportEnum.OVERALL_SCORE_SORT);
@@ -215,7 +211,6 @@ public class PageReportsVehicles extends ReportsBar {
     }
 
     public class VehicleReportPager {
-
         public Paging pageIndex() {
             return new Paging();
         }

@@ -8,7 +8,6 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     
     /* Permanent Items */
     TITLE("Driver Report", "//span[@class='driver']"),
-    EDIT_COLUMNS("Edit Columns", "drivers-form:driversEditColumns"),
     TOOLS(null, "drivers-form:drivers_reportToolImageId"),
 
     GROUP_SEARCH(null, "drivers-form:drivers:groupfsp"),

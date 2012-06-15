@@ -29,7 +29,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     
     REFRESH(null, "***_search:***_refresh"),
     
-    EDIT_COLUMNS(null, "***_search:***_editColumns"),
+    EDIT_COLUMNS("Edit Columns", "***_search:***_editColumns"),
     
     TOOLS(null, "***_search:***_reportToolImageId"),
     EMAIL_REPORT(null, "***_search:***-emailMenuItem:anchor"),
