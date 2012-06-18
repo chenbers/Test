@@ -49,7 +49,7 @@ Scenario: TC767: Admin - Users - Table Properties
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users link
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm Edit Columns popup opens
 And I checkmark all boxes in the Edit Columns box
 And I click the Save Button
@@ -67,7 +67,7 @@ Scenario: TC769: Admin - Users - Edit Columns - Cancel Button (Changes)
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users link 
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm the Edit Columns popup opens
 And I uncheckmark a checkmarked box
 And I confirm the box becomes unchecked
@@ -76,7 +76,7 @@ And I confirm the box becomes checked
 And I click the Cancel Button
 Then I confirm the Edit Columns popup closes 
 And I confirm the table does not change
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm the Edit Columns popup opens
 And I confirm my changes were not saved
 
@@ -84,7 +84,7 @@ Scenario: TC770: Admin - Users - Edit Columns - Cancel Button (No Changes)
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users link 
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm the Edit Columns popup opens
 And I click the Cancel Button
 Then I confirm the Edit Columns popup closes 
@@ -94,7 +94,7 @@ Scenario: TC771: Admin - Users - Edit Columns - Check Box Selection via Mouse
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users link 
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm Edit Columns popup opens
 And I uncheckmark a checkmarked box
 Then I confirm the box becomes unchecked
@@ -107,7 +107,7 @@ Scenario: TC773: Admin - Users - Edit Columns - Current Session Retention
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users link 
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm the Edit Columns popup opens
 And I uncheckmark a selection
 And I checkmark a selection
@@ -124,7 +124,7 @@ Scenario: TC775: Admin - Users - Edit Columns - Save Button
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users tab
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm the Edit Columns popup opens
 And I uncheckmark a checkmarked box
 And I confirm the box becomes unchecked
@@ -133,7 +133,7 @@ And I confirm the box becomes checked
 And I click the Save Button
 Then I confirm the Edit Columns popup closes 
 And I confirm the table columns update correctly
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm the Edit Columns popup opens
 And I confirm my changes were saved
 
@@ -141,7 +141,7 @@ Scenario: TC776: Admin - Users - Edit Columns - Subsequent Session Retention
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users link 
-And I click the Edit Columns button
+And I click the Edit Columns link
 And I confirm the Edit Columns popup opens
 And I uncheckmark a checkmarked box
 And I confirm the box becomes unchecked
@@ -160,7 +160,7 @@ Scenario: TC778: Admin - Users - Edit Columns - UI
 Given I am logged in as a "Admin" user
 When I am on the Admin page
 And I click the Users link 
-And I click the Edit Columns button
+And I click the Edit Columns link
 Then I confirm the Edit Columns popup opens
 And I verify the Edit Columns popup renders correctly
 
