@@ -439,6 +439,7 @@ And I click the Distance Driven Sort link
 And I click the Distance Driven Sort link
 And I validate the Fuel Efficiency Team Value text is not DFE1
 And I click the Vehicle Statistics link
+And I validate I am on the Team Vehicle Statistics page
 And I click the Distance Driven Sort link
 And I click the Distance Driven Sort link
 And I validate the Fuel Efficiency Team Value text is not DFE2

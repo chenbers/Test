@@ -9,21 +9,15 @@ Meta:
 Narrative:
 
 Scenario: TC5710: Notifications - Zones - Bookmark Entry 
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Zones link
-And I type "" into the Search textfield
-And I click the Search button
 And I bookmark the page
-And I click log out
+And I click the Logout link
 And I click the bookmark I just added
-And I am on the login page
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-Then I validate I am on the Zones page
-And I validate the Search textfield is ""
-And I validate the Driver Report table is not ""
+Then I validate I am on the Login page
+Given I am logged in
+Then I validate I am on the Notifications Zones page
 
 Scenario: TC5712: Notifications - Zones - Driver Link
 Given I am logged in as a "Admin" user
@@ -53,7 +47,7 @@ And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
 
 Scenario: TC5720: Notifications - Zones - Tools Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I click the Tools button

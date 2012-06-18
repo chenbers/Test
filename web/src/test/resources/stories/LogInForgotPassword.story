@@ -37,7 +37,7 @@ Scenario: TC1187: Log In - Forgot User Name or Password - Email Address Verifica
 Given I am on the Login page
 When I click the Forgot Username Password link
 And the Forgot Password popup opens
-And I type an "test@test.com" into the Email textfield
+And I type an "testtesttesttest@test.com" into the Email textfield
 And I click the Send button
 Then I verify "Incorrect e-mail address" is on the page
 

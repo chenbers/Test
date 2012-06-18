@@ -38,12 +38,12 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 Then I validate the Sort By Date Time column sorts correctly
-Then I validate the Sort By Driver column sorts correctly
-Then I validate the Sort By Driver column sorts correctly
-Then I validate the Sort By Group column sorts correctly
-Then I validate the Sort By Group column sorts correctly
-Then I validate the Sort By Vehicle column sorts correctly
-Then I validate the Sort By Vehicle column sorts correctly
+And I validate the Sort By Driver column sorts correctly
+And I validate the Sort By Driver column sorts correctly
+And I validate the Sort By Group column sorts correctly
+And I validate the Sort By Group column sorts correctly
+And I validate the Sort By Vehicle column sorts correctly
+And I validate the Sort By Vehicle column sorts correctly
 
 Scenario: TC1382: Notifications - Diagnostics - Tools Button
 Given I am logged in
@@ -91,12 +91,7 @@ When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I click the 1st Row of the Edit Columns checkbox
-And I uncheck the 2nd Row of the Edit Columns checkbox
-And I uncheck the 3rd Row of the Edit Columns checkbox
-And I uncheck the 4th Row of the Edit Columns checkbox
-And I uncheck the 5th Row of the Edit Columns checkbox
-And I uncheck the 6th Row of the Edit Columns checkbox
+And I uncheck all of the Notifications Diagnostics Edit Columns checkboxes
 And I click the Cancel button
 And the Edit Columns popup closes
 Then I validate the Sort By Date Time link is present
@@ -107,7 +102,7 @@ And I validate the Header Category text is present
 And I validate the Header Detail text is present
 
 Scenario: TC1387: Notifications - Diagnostics - Edit Columns - Cancel Button (No Changes)
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
@@ -122,45 +117,20 @@ And I validate the Header Category text is present
 And I validate the Header Detail text is present
 
 Scenario: TC1388: Notifications - Diagnostics - Edit Columns - Check Box Selection via Mouse
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-Then I validate the checkbox of the first entry is not checked
-And I uncheck the checkbox of the second entry
-And I validate the checkbox of the second entry is not checked
-And I uncheck the checkbox of the third entry
-And I validate the checkbox of the third entry is not checked
-And I uncheck the checkbox of the fourth entry
-And I validate the checkbox of the fourth entry is not checked
-And I uncheck the checkbox of the fifth entry
-And I validate the checkbox of the fifth entry is not checked
-And I uncheck the checkbox of the sixth entry
-And I validate the checkbox of the sixth entry is not checked
-And I check the checkbox of the first entry
-And I validate the checkbox of the first entry is checked
-And I check the checkbox of the second entry
-And I validate the checkbox of the second entry is checked
-And I check the checkbox of the third entry
-And I validate the checkbox of the third entry is checked
-And I check the checkbox of the fourth entry
-And I validate the checkbox of the fourth entry is checked
-And I check the checkbox of the fifth entry
-And I validate the checkbox of the fifth entry is checked
-And I check the checkbox of the sixth entry
-And I validate the checkbox of the sixth entry is checked
+Then TC1388
 
 Scenario: TC1390: Notifications - Diagnostics - Edit Columns - Current Session Retention
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-And I uncheck the checkbox of the second entry
-And I uncheck the checkbox of the third entry
+And TC1390
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Reports link
@@ -172,72 +142,67 @@ And I validate the Sort By Driver link is not present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And TC1390
+And I click the Save button
+And the Edit Columns popup closes
+And I validate the Sort By Date Time link is present
+And I validate the Sort By Group link is present
+And I validate the Sort By Driver link is present
+And I validate the Sort By Vehicle link is present
+And I validate the Header Category text is present
+And I validate the Header Detail text is present
 
 Scenario: TC1392: Notifications - Diagnostics - Edit Columns - Save Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
+And TC1392
 And I click the Save button
 And the Edit Columns popup closes
 Then I validate the Sort By Date Time link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I validate the checkbox of the first entry is not checked
-And I check the checkbox of the first entry
+And TC1392
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Date Time link is present
 
 Scenario: TC1393: Notifications - Diagnostics - Edit Columns - Subsequent Session Retention
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
+And TC1393
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-And I click the Notifications link
+Given I am logged in
+When I click the Notifications link
 And I click the Diagnostics link
 Then I validate the Sort By Date Time link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I check the checkbox of the first entry
+And TC1393
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-And I click the Notifications link
+Given I am logged in
+When I click the Notifications link
 And I click the Diagnostics link
 And I validate the Sort By Date Time link is present
 
 Scenario: TC1395: Notifications - Diagnostics - Edit Columns - UI
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-Then I validate the first checkbox is present
-And I validate the second checkbox is present
-And I validate the third checkbox is present
-And I validate the fourth checkbox is present
-And I validate the fifth checkbox is present
-And I validate the sixth checkbox is present
-And I validate the first checkbox is checked
-And I validate the second checkbox is checked
-And I validate the third checkbox is checked
-And I validate the fourth checkbox is checked
-And I validate the fifth checkbox is checked
-And I validate the sixth checkbox is checked
+Then TC1395
 And I validate the Save button is present
 And I validate the Cancel button is present
 
