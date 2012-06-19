@@ -26,9 +26,10 @@ And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Driver link as SavedEntry
+And I click the Sort By Driver link
+And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
-Then I validate the Driver Name link is SavedEntry
+Then I validate the Driver Name link is SAVEDENTRY
 
 Scenario: TC1381: Notifications - Diagnostics - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
 Given I am logged in
@@ -78,9 +79,9 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Vehicle link as SavedEntry
+And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SavedEntry
+Then I validate the Vehicle Name link is SAVEDENTRY
 
 Scenario: TC1386: Notifications - Diagnostics - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -258,13 +259,14 @@ And I save the 1st Row of the Entry Date Time text as SavedDateTime
 And I save the 1st Row of the Entry Detail text as SavedDetail
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the SavedDateTime text is present
-And I validate the SavedDetail text is present
+Then I validate the Message text contains SavedDateTime
+And I validate the Message text contains SavedDetail
 And I validate the Yes button is present
 And I validate the No button is present
 
 Scenario: TC5742: Notifications - Diagnostics - Time Frame
-Given I am logged in
+Given I am on the Login page
+Given I am logged in as a "TopUser" user
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
@@ -273,4 +275,4 @@ And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SavedDateTime
 And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the SavedDateTime text is not present
+Then I validate the 1st Row of the Entry Date Time text is not SavedDateTime
