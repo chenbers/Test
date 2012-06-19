@@ -9,8 +9,12 @@ import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 
 public class PageVehiclePerformance extends NavigationBar {
-private String page = "vehicle";
+    private String page = "vehicle";
 	
+    public PageVehiclePerformance(){
+        checkMe.add(VehiclePerformanceEnum.VEHICLE_NAME_LINK);
+        checkMe.add(VehiclePerformanceEnum.VIEW_ALL_TRIPS);
+    }
 	
 	public class VehiclePerformanceButtons extends NavigationBarButtons {
 		public Button tools(){
