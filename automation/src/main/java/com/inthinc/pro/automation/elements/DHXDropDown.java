@@ -117,8 +117,12 @@ public class DHXDropDown extends DropDown implements Selectable {
                 div++;
             }
         }
-        makeDropDown.setID("//input[@name='" + makeDropDown.replaceWord(page).getIDs()[0] + "']/../img");
+        setDropDownID();
         return this;
+    }
+    
+    private void setDropDownID(){
+    	makeDropDown.setID("//input[@name='" + makeDropDown.replaceWord(page).getIDs()[0] + "']/../img");
     }
 
     @Override
@@ -188,18 +192,14 @@ public class DHXDropDown extends DropDown implements Selectable {
     
     @Override
     public Boolean isPresent(){
-        assignIDs();
-        myEnum.setID(xpath);
-        myEnum.replaceNumber(1).replaceWord(myEnum.toString());
-        return getSelenium().isElementPresent(myEnum);
+    	setDropDownID();
+        return getSelenium().isElementPresent(makeDropDown);
     }
     
     @Override
     public Boolean isVisible(){
-        assignIDs();
-        myEnum.setID(xpath);
-        myEnum.replaceNumber(1).replaceWord(myEnum.toString());
-        return getSelenium().isVisible(myEnum);
+    	setDropDownID();
+        return getSelenium().isVisible(makeDropDown);
     }
     
 }
