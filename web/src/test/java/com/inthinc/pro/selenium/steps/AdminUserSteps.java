@@ -27,7 +27,7 @@ public class AdminUserSteps extends AdminSteps {
         if(adminUsers._link().sortByName().validatePresence(false))
         {
             adminUsers._link().editColumns().click();
-            adminUsers._popUp().editColumns()._checkBox().row(1).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(1).check();
             adminUsers._popUp().editColumns()._button().save().click();
         }
         adminUsers._link().tableEntryUserFullName().row(1).click();
@@ -66,196 +66,196 @@ public class AdminUserSteps extends AdminSteps {
 
     @When("I checkmark Email 1")
     public void whenICheckmarkEmail1(){
-        if(!adminUsers._popUp().editColumns()._checkBox().row(4).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(4).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(4).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(4).check();
         }
     }
 
     @When("I checkmark Email 2")
     public void whenICheckmarkEmail2(){
-        if(!adminUsers._popUp().editColumns()._checkBox().row(5).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(5).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(5).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(5).check();
         }
     }
     
     @When("I checkmark all boxes in the Edit Columns box")
     public void whenICheckmarkAllBoxesInTheEditColumnsBox(){
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(1).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(1).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(1).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(1).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(2).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(2).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(2).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(2).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(3).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(3).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(3).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(3).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(4).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(4).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(4).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(4).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(5).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(5).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(5).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(5).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(6).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(6).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(6).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(6).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(7).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(7).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(7).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(7).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(8).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(8).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(8).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(8).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(9).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(9).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(9).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(9).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(10).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(10).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(10).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(10).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(11).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(11).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(11).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(11).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(12).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(12).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(12).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(12).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(13).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(13).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(13).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(13).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(14).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(14).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(14).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(14).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(5).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(5).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(5).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(5).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(15).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(15).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(15).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(15).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(16).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(16).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(16).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(16).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(17).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(17).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(17).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(17).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(18).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(18).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(18).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(18).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(19).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(19).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(19).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(19).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(20).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(20).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(20).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(20).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(21).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(21).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(21).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(21).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(22).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(22).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(22).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(22).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(23).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(23).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(23).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(23).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(24).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(24).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(24).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(24).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(25).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(25).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(25).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(25).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(26).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(26).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(26).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(26).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(27).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(27).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(27).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(27).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(28).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(28).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(28).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(28).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(29).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(29).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(29).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(29).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(30).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(30).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(30).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(30).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(31).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(31).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(31).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(31).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(32).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(32).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(32).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(32).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(33).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(33).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(33).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(33).check();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(34).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(34).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(34).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(34).check();
         }
 
     }    
@@ -263,179 +263,179 @@ public class AdminUserSteps extends AdminSteps {
     @When("I uncheckmark all boxes in the Edit Columns box")
     public void whenIUncheckmarkAllBoxesInTheEditColumnsBox(){
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(1).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(1).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(1).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(1).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(2).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(2).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(2).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(2).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(3).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(3).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(3).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(3).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(4).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(4).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(4).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(4).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(5).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(5).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(5).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(5).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(6).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(6).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(6).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(6).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(7).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(7).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(7).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(7).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(8).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(8).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(8).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(8).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(9).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(9).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(9).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(9).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(10).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(10).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(10).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(10).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(11).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(11).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(11).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(11).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(12).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(12).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(12).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(12).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(13).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(13).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(13).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(13).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(14).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(14).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(14).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(14).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(5).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(5).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(5).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(5).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(15).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(15).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(15).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(15).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(16).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(16).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(16).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(16).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(17).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(17).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(17).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(17).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(18).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(18).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(18).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(18).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(19).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(19).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(19).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(19).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(20).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(20).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(20).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(20).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(21).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(21).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(21).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(21).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(22).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(22).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(22).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(22).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(23).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(23).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(23).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(23).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(24).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(24).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(24).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(24).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(25).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(25).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(25).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(25).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(26).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(26).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(26).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(26).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(27).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(27).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(27).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(27).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(28).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(28).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(28).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(28).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(29).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(29).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(29).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(29).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(30).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(30).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(30).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(30).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(31).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(31).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(31).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(31).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(32).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(32).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(32).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(32).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(33).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(33).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(33).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(33).uncheck();
         }
         
-        if(!adminUsers._popUp().editColumns()._checkBox().row(34).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(34).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(34).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(34).uncheck();
         }
 
     }  
@@ -453,25 +453,25 @@ public class AdminUserSteps extends AdminSteps {
     
     @When("I uncheckmark a checkmarked box")
     public void whenIUncheckmarkACheckmarkedBox() {
-        if(adminUsers._popUp().editColumns()._checkBox().row(1).check().isChecked())
+        if(adminUsers._popUp().editColumns()._checkBox().column().row(1).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(1).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(1).uncheck();
         }
     }
     
     @When("I uncheckmark a selection")
     public void whenIUncheckmarkASelection(){
-        if(adminUsers._popUp().editColumns()._checkBox().row(1).check().isChecked())
+        if(adminUsers._popUp().editColumns()._checkBox().column().row(1).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(1).uncheck();
+            adminUsers._popUp().editColumns()._checkBox().column().row(1).uncheck();
         }
     }
 
     @When("I checkmark a selection")
     public void whenICheckmarkASelection(){
-        if(!adminUsers._popUp().editColumns()._checkBox().row(30).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(30).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(30).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(30).check();
         }
     }
     
@@ -497,20 +497,20 @@ public class AdminUserSteps extends AdminSteps {
     
     @Then("the box becomes unchecked")
     public void thenTheBoxBecomesUnchecked() {
-        adminUsers._popUp().editColumns()._checkBox().row(1).assertChecked(false);
+        adminUsers._popUp().editColumns()._checkBox().column().row(1).assertChecked(false);
     }
     
     @Then("I checkmark a uncheckmarked box")
     public void thenICheckmarkAUncheckmarkedBox() {
-        if(!adminUsers._popUp().editColumns()._checkBox().row(1).check().isChecked())
+        if(!adminUsers._popUp().editColumns()._checkBox().column().row(1).check().isChecked())
         {
-            adminUsers._popUp().editColumns()._checkBox().row(1).check();
+            adminUsers._popUp().editColumns()._checkBox().column().row(1).check();
         }
     }
 
     @Then("the box becomes checked")
     public void thenTheBoxBecomesChecked() {
-        adminUsers._popUp().editColumns()._checkBox().row(1).assertChecked(true);
+        adminUsers._popUp().editColumns()._checkBox().column().row(1).assertChecked(true);
     }
 
     @Then("the Edit User page information matches the user name from the table")

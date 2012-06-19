@@ -106,7 +106,7 @@ public class PopUps extends MasterTest {
 
         public class EditColumnsLinks {
 
-            public TextCheckboxLabel entry() {
+            public TextTableLink entry() {
                 return new TextCheckboxLabel(PopUpEnum.EDIT_LABEL, page);
             }
         }
@@ -137,9 +137,15 @@ public class PopUps extends MasterTest {
             }
 
         }
+        
+        public class EditColumnsCheckbox {
+            public CheckBoxTable column(){
+                return new CheckBoxTable(PopUpEnum.EDIT_CHECKBOX, page);
+            }
+        }
 
-        public CheckBoxTable _checkBox() {
-            return new CheckBoxTable(PopUpEnum.EDIT_CHECKBOX, page);
+        public EditColumnsCheckbox _checkBox() {
+            return new EditColumnsCheckbox();
         }
 
     }

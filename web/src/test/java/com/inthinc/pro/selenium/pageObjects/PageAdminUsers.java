@@ -282,7 +282,7 @@ public class PageAdminUsers extends AdminTables {
     //Helper methods
     public PageAdminUsers showAllColumns() {//TODO: davidTanner: is there already something tying the checkbox and it's label together?  it could be very handy to be able to ensure that a specific column was visible instead of having to cycle through them ALL?
         this._link().editColumns().click();
-        Iterator<Checkable> colCheckBoxes = this._popUp().editColumns()._checkBox().iterator();
+        Iterator<Checkable> colCheckBoxes = this._popUp().editColumns()._checkBox().column().iterator();
         while(colCheckBoxes.hasNext()){
             colCheckBoxes.next().check();
         }

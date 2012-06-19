@@ -100,7 +100,7 @@ public class PageAdminReports extends AdminTables {
     //Helper methods
     public PageAdminReports showAllColumns() {
         this._link().editColumns().click();
-        Iterator<Checkable> colCheckBoxes = this._popUp().editColumns()._checkBox().iterator();
+        Iterator<Checkable> colCheckBoxes = this._popUp().editColumns()._checkBox().column().iterator();
         while(colCheckBoxes.hasNext()){
             colCheckBoxes.next().check();
         }
