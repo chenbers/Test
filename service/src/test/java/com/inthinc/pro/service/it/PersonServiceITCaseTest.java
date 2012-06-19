@@ -23,11 +23,12 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
-//@Ignore
+@Ignore
 public class PersonServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static final Logger logger = Logger.getLogger(PersonServiceITCaseTest.class);
     private static final int PERSON_ID = 31;
