@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextCheckboxLabel;
@@ -133,17 +134,17 @@ public class PageDriverPerformanceTrips extends NavigationBar {
 			return new TextCheckboxLabel(DriverPerformanceTripsEnum.SHOW_TAMPERING);
 		}
 	}
-	public class DriverTripsTextFields extends NavigationBarTextFields{
-		
-		public TextField startDate(){
-			return new TextField(DriverPerformanceTripsEnum.START_DATE);
-		}
-		
-		public TextField endDate(){
-			return new TextField(DriverPerformanceTripsEnum.END_DATE);
-		}
+	public class DriverTripsTextFields extends NavigationBarTextFields{}
+	public class DriverTripsDropDowns extends NavigationBarDropDowns{
+	    
+	     public DropDown startDate(){
+	        return new DropDown(DriverPerformanceTripsEnum.START_DATE);
+	     }
+	        
+	     public DropDown endDate(){
+	        return new DropDown(DriverPerformanceTripsEnum.END_DATE);
+	     }
 	}
-	public class DriverTripsDropDowns extends NavigationBarDropDowns{}
 	public class DriverTripsButtons extends NavigationBarButtons{
 		
 		public TextButton updateDateRange(){
@@ -204,7 +205,8 @@ public class PageDriverPerformanceTrips extends NavigationBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().updateDateRange().isPresent() && _textField().startDate().isPresent();
+        return _button().updateDateRange().isPresent() && 
+               _dropDown().startDate().isPresent();
     }
     
 
