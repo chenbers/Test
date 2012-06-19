@@ -7,7 +7,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.EventAggregationDAO;
 import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
-import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.LastReportedEvent;
 
 public class MockEventAggregationDAO implements EventAggregationDAO{
     
@@ -17,9 +17,8 @@ public class MockEventAggregationDAO implements EventAggregationDAO{
     }
     
     @Override
-    public List<Event> findRecentEventByDevice(List<Integer> groupIds, Interval interval) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<LastReportedEvent> findRecentEventByDevice(List<Integer> groupIds, Interval interval) {
+        return Collections.emptyList();
     }
 
 }

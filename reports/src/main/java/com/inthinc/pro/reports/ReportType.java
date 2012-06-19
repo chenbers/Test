@@ -81,6 +81,9 @@ public enum ReportType
 
     // ASSET
     WARRANTY_LIST("Warranty List","warrantyListReport.jrxml","warrantyListReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.asset.i18n.warrantyList", null, false),
+    
+    //COMMUNICATION
+    NON_COMM("Non Comm Report","nonCommReport.jrxml","nonCommReportRaw.jrxml","communication","com.inthinc.pro.reports.jasper.communication.i18n.nonCommReport"),
 
     //DEVON ENERGY CORP
     DRIVER_EXCLUDED_VIOLATIONS("Driver Excluded Violations","driverExcludedViolationsReport.jrxml","driverExcludedViolationsReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.driverExcludedViolationsReport"),

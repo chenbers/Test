@@ -58,6 +58,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.asset.WarrantyListReportCriteria;
+import com.inthinc.pro.reports.communication.NonCommReportCriteria;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.hos.DotHoursRemainingReportCriteria;
 import com.inthinc.pro.reports.hos.DrivingTimeViolationsDetailReportCriteria;
@@ -856,6 +857,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(accountGroupHierarchy, groupIDList, interval, iftaOnly);
         return criteria;
     }
+    
 
   
 	@Override
@@ -893,6 +895,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(accountGroupHierarchy, groupIDList, interval, iftaOnly);
         return criteria;
     }
+    
+   
 
     /**
      * {@inheritDoc}
@@ -1227,6 +1231,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return builder.build();
     }
     
+    
+    /* Communication */
+    @Override
+    public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone) {
+        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
+        NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy,eventAggregationDAO,groupIDs,timeFrame);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
    
 
     
@@ -1480,6 +1494,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     break;
                 case DRIVER_EXCLUDED_VIOLATIONS:
                     reportCriteriaList.add(getDriverExcludedViolationCriteria(groupHierarchy,reportSchedule.getGroupID(),timeFrame.getInterval(),person.getLocale(),DateTimeZone.forTimeZone(person.getTimeZone())));
+                    break;
+                case NON_COMM:
+                    reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy,reportSchedule.getGroupID(),timeFrame,person.getLocale(),DateTimeZone.forTimeZone(person.getTimeZone())));
                     break;
                 default:
                     break;

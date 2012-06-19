@@ -7,7 +7,8 @@ public enum ReportCategory {
         Asset(3, "Asset", "Asset"),
         HOS(4,"HOS", "Hours of Service"),
         DriverPerformance(5, "Driver Performance", "Driver Performance"),
-        Mileage(6,"Mileage","Mileage");
+        Mileage(6,"Mileage","Mileage"),
+        Communication(7,"Communication","Communication");
         
         /**
          * 

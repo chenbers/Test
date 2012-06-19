@@ -137,7 +137,14 @@ public enum ReportGroup
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Mileage,
              EnumSet.of(ReportAccountType.PERFORMANCE),
-             ReportType.STATE_MILEAGE_BY_VEHICLE_TIWI),        
+             ReportType.STATE_MILEAGE_BY_VEHICLE_TIWI), 
+             
+     /* Communication */
+     NON_COMM("Vehicles Not Communicating Report", 27, EntityType.ENTITY_GROUP,   
+             new CriteriaType[]{CriteriaType.TIMEFRAME_ALT}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Communication,
+             EnumSet.of(ReportAccountType.PERFORMANCE),
+             ReportType.NON_COMM), 
                      
      // Performance    
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
