@@ -31,10 +31,8 @@ import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutomationThread;
-import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.KeyCommands;
 import com.inthinc.pro.automation.utils.StackToString;
-import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 
@@ -607,23 +605,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         AutomationThread.pause(5, "Pausing so browser has a chance to catch up");
         loadPause();
         return this;
-    }
-
-    @Override
-    public CoreMethodLib selectDhx(SeleniumEnumWrapper myEnum, String option) {
-        String element = getLocator(myEnum);
-        String xpath = Xpath.start().body().div(Id.id(element)).div(option).toString();
-        click(xpath);
-        AutomationThread.pause(3, "Pause so the browser has a chance to catch up");
-        loadPause();
-        return this;
-    }
-    
-    @Override
-    public String getDHXText(SeleniumEnumWrapper myEnum, String option){
-        String element = getLocator(myEnum);
-        String xpath = Xpath.start().body().div(Id.id(element)).div(option).toString();
-        return getText(xpath);
     }
 
     /**

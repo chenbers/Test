@@ -60,7 +60,6 @@ public interface CoreMethodInterface extends Selenium {
 	public CoreMethodInterface removeAllSelections(SeleniumEnumWrapper myEnum);
 	public CoreMethodInterface removeSelection(SeleniumEnumWrapper myEnum,String optionLocator);
 	public CoreMethodInterface select(SeleniumEnumWrapper myEnum,String optionLocator);
-	public CoreMethodInterface selectDhx(SeleniumEnumWrapper myEnum, String option);
 	public CoreMethodInterface selectWindowByID(String ID);
 	public CoreMethodInterface selectWindowByName(String name);
 	public CoreMethodInterface selectWindowByTitle(String title);
@@ -76,8 +75,6 @@ public interface CoreMethodInterface extends Selenium {
 	public Boolean isClickable(SeleniumEnumWrapper myEnum);
 
     public String[] getSelectOptions(SeleniumEnumWrapper myEnum);
-
-    public String getDHXText(SeleniumEnumWrapper myEnum, String option);
 
     public CoreMethodInterface click(String xpath, Integer matchNumber);
     public CoreMethodInterface click(String xpath, String desiredOption, Integer matchNumber);
