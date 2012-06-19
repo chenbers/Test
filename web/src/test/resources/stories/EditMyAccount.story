@@ -516,7 +516,7 @@ And I save the Text Message1 text as ORIGINALtextOne
 And I save the Text Message2 text as ORIGINALtextTwo
 And I click the Edit button
 And I select the option containing "E-mail 1" from the Information dropdown
-And I select the option containing "E-mail 2" from the Warning dropdown
+And I select the option containing "Text Message 1" from the Warning dropdown
 And I select the option containing "Phone 1" from the Critical dropdown
 And I select "Hyb (Hybrid)" from the Map Type dropdown
 And I click the Down Arrow button
@@ -591,7 +591,7 @@ And I save the Text Message1 text as ORIGINALtextOne
 And I save the Text Message2 text as ORIGINALtextTwo
 And I click the Edit button
 And I select the option containing "E-mail 1" from the Information dropdown
-And I select the option containing "E-mail 2" from the Warning dropdown
+And I select the option containing "Text Message 1" from the Warning dropdown
 And I select the option containing "Phone 1" from the Critical dropdown
 And I select "Hyb (Hybrid)" from the Map Type dropdown
 And I click the Down Arrow button
