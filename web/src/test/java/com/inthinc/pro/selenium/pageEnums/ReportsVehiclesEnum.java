@@ -27,7 +27,7 @@ public enum ReportsVehiclesEnum implements SeleniumEnums {
     
     GROUP_SORT(null,"vehicles-form:vehicles:groupheader:sortDiv"),
     VEHICLE_SORT(null,"vehicles-form:vehicles:nameheader:sortDiv"),
-    YEAR_MAKE_MODEL_SORT(null, "vehicles-form:vehicles:makeModelYearheader:sortDiv"),
+    YEAR_MAKE_MODEL(null, "vehicles-form:vehicles:makeModelYearheader:sortDiv"),
     DRIVER_SORT(null,"vehicles-form:vehicles:fullNameheader:sortDiv"),
     DISTANCE_DRIVEN_SORT(null, "vehicles-form:vehicles:distanceheader:sortDiv"),
     ODOMETER_SORT(null, "vehicles-form:vehicles:odometerheader:sortDiv"),

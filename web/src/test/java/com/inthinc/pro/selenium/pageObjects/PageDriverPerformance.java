@@ -12,7 +12,7 @@ public class PageDriverPerformance extends NavigationBar {
 	private String page = "driver";
 	
 	public PageDriverPerformance(){
-		checkMe.add(DriverPerformanceEnum.DRIVER_NAME_LINK);
+		checkMe.add(DriverPerformanceEnum.DRIVER_NAME);
 		checkMe.add(DriverPerformanceEnum.VIEW_ALL_TRIPS);
 	}
 	
@@ -57,7 +57,7 @@ public class PageDriverPerformance extends NavigationBar {
 		}
 		
 		public TextLink driverName(){
-			return new TextLink(DriverPerformanceEnum.DRIVER_NAME_LINK);
+			return new TextLink(DriverPerformanceEnum.DRIVER_NAME);
 		}
 		
 		public TextLink viewAllTrips() {

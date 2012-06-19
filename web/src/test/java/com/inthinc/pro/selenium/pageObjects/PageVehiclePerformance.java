@@ -12,7 +12,7 @@ public class PageVehiclePerformance extends NavigationBar {
     private String page = "vehicle";
 	
     public PageVehiclePerformance(){
-        checkMe.add(VehiclePerformanceEnum.VEHICLE_NAME_LINK);
+        checkMe.add(VehiclePerformanceEnum.VEHICLE_NAME);
         checkMe.add(VehiclePerformanceEnum.VIEW_ALL_TRIPS);
     }
 	
@@ -57,7 +57,7 @@ public class PageVehiclePerformance extends NavigationBar {
 		}
 		
 		public TextLink vehicleName(){
-			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME_LINK);
+			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME);
 		}
 		
 		public TextLink viewAllTrips() {

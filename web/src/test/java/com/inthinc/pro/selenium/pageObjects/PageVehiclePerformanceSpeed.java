@@ -101,7 +101,7 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 		}
 		
 		public TextLink vehicleName(){
-			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME_LINK, page2);
+			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME, page2);
 		}
 		
 		public TextLink breadCrumb(Integer selection){

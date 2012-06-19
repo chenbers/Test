@@ -69,8 +69,8 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextLink(ReportsVehiclesEnum.DRIVER_SORT);
 		}
 
-		public TextTableLink driverValue() {
-			return new TextTableLink(ReportsVehiclesEnum.DRIVER_VALUE);
+		public TextLink driverValue() {
+			return new TextLink(ReportsVehiclesEnum.DRIVER_VALUE);
 		}
 
 		public TextLink groupSort() {
@@ -118,7 +118,7 @@ public class PageReportsVehicles extends ReportsBar {
 		}
 
 		public TextLink yearMakeModelSort() {
-			return new TextLink(ReportsVehiclesEnum.YEAR_MAKE_MODEL_SORT);
+			return new TextLink(ReportsVehiclesEnum.YEAR_MAKE_MODEL);
 		}
 
 	}

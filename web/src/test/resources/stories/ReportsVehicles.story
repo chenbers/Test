@@ -10,24 +10,24 @@ Narrative:
 
 Scenario: TC1614: Reports - Vehicles - Bookmark Entry 
 Given I am logged in
-And I type "" into the Master Search textfield
-And I select "Vehicle" from the Master Search dropdown
+And I select "Vehicles" from the Master Search dropdown
 And I click the Master Search button
+And I save the 1st Row of the Vehicle Value link as SavedVehicle
 When I bookmark the page
 And I click the Log Out link
 And I click the bookmark I just added
-*And I am logged in
-Then I validate I am on the Vehicles page
+Given I am logged in
+Then I validate I am on the Reports Vehicles page
 And I validate the Master Search textfield is ""
-And I validate the Vehicle Report table is not ""
+And I validate that the 1st Row of the Vehicle Value link is SavedVehicle
 
 Scenario: TC1617: Reports - Vehicles - Driver Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the first entry in the Sort By Driver column as SavedEntry
-And I click the first entry in the Sort By Driver column
-Then I validate the Driver Performance text is SavedEntry
+And I save the 1st Row of the Driver Value link as SavedEntry
+And I click the 1st Row of the Driver Value link
+Then I validate the Driver Name textlink is SavedEntry
 
 Scenario: TC1619: Reports - Vehicles - Driving Style Score Link
 Given I am logged in
@@ -44,31 +44,31 @@ Scenario: TC1624: Reports - Vehicles - Group Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the first entry in the Sort By Group column as SavedEntry
-And I click the first entry in the Sort By Group column
-Then I validate the Group Performance text is SavedEntry
+And I save the 1st Row of the Group Value link as SavedEntry
+And I click the the 1st Row of the Group Value link
+Then I validate the Driver Team Value text is SavedEntry
 
 Scenario: TC1627: Reports - Vehicles - Overall Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the first entry in the Sort By Vehicle ID column as SavedVehicle
-And I save the first entry in the Sort By Overall column as SavedOverall
-And I click the first entry in the Sort By Overall column
-*And I click the twelve months OverallDuration link
-Then I validate the Driving Style Overall text is SavedOverall
-And I validate the Vehicle Performance text is SavedVehicle
+And I save the 1st Row of the Vehicle Value textlink as SavedVehicle
+And I save the 1st Row of the Overall Value textlink as SavedOverall
+And I click the 1st Row of the Overall Value textlink
+And I click the twelve months OverallDuration link
+Then I validate the Overall Score text is SavedOverall
+And I validate the Vehicle Name textlink is SavedVehicle
 
 Scenario: TC1637: Reports - Vehicles - Speed Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the first entry in the Sort By Vehicle ID column as SavedVehicle
-And I save the first entry in the Sort By Speed column as SavedSpeed
-And I click the first entry in the Sort By Seatbelt column
-*And I click the twelve months OverallDuration link
-Then I validate the Driving Style Seatbelt text is SavedSpeed
-And I validate the Vehicle Performance text is SavedVehicle
+And I save the 1st Row of the Vehicle Value textlink as SavedVehicle
+And I save the 1st Row of the Speed Value textlink as SavedSpeed
+And I click the 1st Row of the Vehicle Value textlink as SavedVehicle
+And I click the twelve months Overall Duration link
+Then I validate the Speed Score text is SavedSpeed
+And I validate the Vehicle Name textlink is SavedVehicle
 
 Scenario: TC1639: Reports - Vehicles - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in
@@ -91,16 +91,16 @@ And I click the Vehicles link
 And I click the Tools button
 Then I validate the Email Report button is present
 And I validate the Export To PDF button is present
-*And I validate the Export To Excel button is present
+And I validate the Export To Excel button is present
 
 Scenario: TC1641: Reports - Vehicles - UI
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-Then I validate I am on the Vehicles page
+Then I validate I am on the Reports Vehicles page
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
-*And I validate the Counter text is present
+And I validate the Counter text is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Year Make Model link is present
@@ -110,13 +110,13 @@ And I validate the Sort By Odometer link is present
 And I validate the Sort By Overall link is present
 And I validate the Sort By Speed link is present
 And I validate the Sort By Style link is present
-And I validate the Group textfield is present
-And I validate the Vehicle ID textfield is present
-And I validate the Year Make Model textfield is present
-And I validate the Driver textfield is present
-And I validate the Speed dropdown is present
-And I validate the Overall dropdown is present
-And I validate the Style dropdown is present
+And I validate the Group Value text table link is present
+And I validate the Vehicle Value text table link is present
+And I validate the Year Make Model textlink is present
+And I validate the Driver Sort textlink is present
+And I validate the Overall Filter dropdown is present
+And I validate the Speed Filter dropdown is present
+And I validate the Style Filter dropdown is present
 
 Scenario: TC1642: Reports - Vehicles - Vehicle ID Link
 Given I am logged in

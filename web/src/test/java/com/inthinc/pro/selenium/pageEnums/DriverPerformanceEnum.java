@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum DriverPerformanceEnum implements SeleniumEnums {
 
-    DRIVER_NAME_LINK(null, "breadcrumbForm:driverPerformancePerson"),
+    DRIVER_NAME(null, "breadcrumbForm:driverPerformancePerson"),
     BREADCRUMB_ITEM(null, "breadcrumbForm:breadcrumbitem:###:driverPerformance-dashboard"),
 
     VIEW_ALL_TRIPS("View all trips", "driverPerformanceDriverTrips"), 
