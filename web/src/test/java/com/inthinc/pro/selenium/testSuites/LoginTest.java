@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -13,7 +12,7 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageTeamDriverStatistics.class, PageExecutiveOverallExpansion.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageTeamDriverStatistics.class, PageExecutiveOverallExpansion.class})
 @StoryPath(path="login.story")
 public class LoginTest extends WebStories {
     

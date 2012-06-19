@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSpeed;
@@ -15,9 +14,11 @@ import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
+import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageTeamVehicleStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
@@ -25,10 +26,11 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageMyAccount.class,
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageMyAccount.class, PageMyMessages.class,
         PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageNotificationsSafety.class, PageTeamDriverStatistics.class, PageDriverPerformance.class,
         PageDriverPerformanceSpeed.class, PageDriverPerformanceSeatBelt.class, PageDriverPerformanceStyle.class, PageDriverPerformanceTrips.class,
-        PageVehiclePerformanceSeatBelt.class, PageVehiclePerformanceSpeed.class, PageVehiclePerformanceStyle.class, PageVehiclePerformanceTrips.class
+        PageVehiclePerformanceSeatBelt.class, PageVehiclePerformanceSpeed.class, PageVehiclePerformanceStyle.class, PageVehiclePerformanceTrips.class,
+        PageTeamVehicleStatistics.class,
         })
 @StoryPath(path="EditMyAccount.story")
 public class EditMyAccountTest extends WebStories {

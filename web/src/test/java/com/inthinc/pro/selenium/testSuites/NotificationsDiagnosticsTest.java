@@ -2,34 +2,16 @@ package com.inthinc.pro.selenium.testSuites;
 
 //TODO: TC1379 needs to be rewitten in Rally, this test no longer applies to the current page elements
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.jbehave.core.annotations.UsingSteps;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
-import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
-import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.elements.TextField;
-import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.automation.enums.ErrorLevel;
-import com.inthinc.pro.automation.enums.LoginCapability;
-import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
-import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
+import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 /**
@@ -40,7 +22,8 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
  */
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageNotificationsDiagnostics.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageNotificationsDiagnostics.class, PageNotificationsRedFlags.class, 
+        PageReportsDrivers.class})
 @StoryPath(path="NotificationsDiagnostics.story")
 public class NotificationsDiagnosticsTest extends WebStories {
     
