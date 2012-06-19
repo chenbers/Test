@@ -22,7 +22,7 @@ Then I validate I am on the My Account page
 And I validate the Info Message text is not present
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1286: My Account - Change Password - Cancel Button (No Changes)
 Given I am logged in
@@ -34,7 +34,7 @@ And the Change My Password popup closes
 Then I validate I am on the My Account page
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1287: My Account - Change Password - Case Error
 Given I am logged in
@@ -50,7 +50,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1288: My Account - Change Password - Change Button
 Given I am logged in an account that can be edited
@@ -86,7 +86,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1290: My Account - Change Password - Test New Password Required Fields
 Given I am logged in
@@ -102,7 +102,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1291: My Account - Change Password - Confirm New Password Required Field
 Given I am logged in
@@ -117,7 +117,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1292: My Account - Change Password - Current Password Error
 Given I am logged in
@@ -133,7 +133,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1294: My Account - Change Password - Missing Required Field
 Given I am logged in
@@ -148,7 +148,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1295: My Account - Change Password - New Password 12 characters Max
 Given I am logged in
@@ -161,7 +161,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1296: My Account - Change Password - New Password Min Character Error
 Given I am logged in
@@ -176,7 +176,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1298: My Account - Change Password - UI
 Given I am logged in
@@ -192,7 +192,7 @@ And I click the Cancel button
 And the Change My Password popup closes
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
 
 Scenario: TC1301: My Account - Change Password - Validation (Special Characters)
 Given I am logged in an account that can be edited
@@ -228,4 +228,4 @@ Then I validate I am on the My Account page
 And I validate the Info Message text is not present
 And I click the Logout link
 Given I am logged in
-And I validate I am not on the Login page
+Then I validate I am not on the Login page
