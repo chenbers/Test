@@ -143,7 +143,9 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{lastReportedEvent.vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="149" y="0" width="164" height="20"/>
+				<reportElement mode="Transparent" x="149" y="0" width="164" height="20">
+					<printWhenExpression><![CDATA[$F{lastReportedEvent.type} != null && $F{lastReportedEvent.lastUnassignedDate} == null]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{lastReportedEvent.deviceSerialNum}]]></textFieldExpression>
 			</textField>
