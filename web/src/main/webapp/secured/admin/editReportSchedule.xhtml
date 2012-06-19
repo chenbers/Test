@@ -405,7 +405,7 @@
 							<tr>
 								<td>
 									<div>
-										<h:selectOneRadio value="#{reportScheduleBean.item.deliverToManagers}" layout="pageDirection">
+										<h:selectOneRadio id="editReportSchedule-deliverToManagers" value="#{reportScheduleBean.item.deliverToManagers}" layout="pageDirection">
 											<f:selectItem itemDisabled="#{!reportScheduleBean.enableDeliverToGroupManager}" itemValue="TRUE" itemLabel="#{messages.reportSchedule_notifyGroupManager}"></f:selectItem>
 											<f:selectItem itemValue="FALSE" itemLabel="#{messages.reportSchedule_notifyByEmail}"></f:selectItem>
 										</h:selectOneRadio>
