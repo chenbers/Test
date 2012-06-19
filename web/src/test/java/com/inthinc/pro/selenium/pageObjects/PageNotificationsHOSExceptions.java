@@ -12,9 +12,9 @@ public class PageNotificationsHOSExceptions extends NotificationsEventsBar {
         checkMe.add(NotificationsHOSExceptionsEnum.MESSAGE);
     }
     
-    public class PageNotificationsHOSExceptionsLinks extends EventsBarLinks {}
+    public class NotificationsHOSExceptionsLinks extends EventsBarLinks {}
 
-    public class PageNotificationsHOSExceptionsTexts extends EventsBarTexts {
+    public class NotificationsHOSExceptionsTexts extends EventsBarTexts {
         
         public Text title(){
             return new Text(NotificationsHOSExceptionsEnum.TITLE);
@@ -25,15 +25,15 @@ public class PageNotificationsHOSExceptions extends NotificationsEventsBar {
         }
     }
 
-    public class PageNotificationsHOSExceptionsTextFields extends EventsBarTextFields {}
+    public class NotificationsHOSExceptionsTextFields extends EventsBarTextFields {}
 
-    public class PageNotificationsHOSExceptionsButtons extends EventsBarButtons {}
+    public class NotificationsHOSExceptionsButtons extends EventsBarButtons {}
 
-    public class PageNotificationsHOSExceptionsDropDowns extends EventsBarDropDowns {}
+    public class NotificationsHOSExceptionsDropDowns extends EventsBarDropDowns {}
 
-    public class PageNotificationsHOSExceptionsPopUps extends MastheadPopUps {
+    public class NotificationsHOSExceptionsPopUps extends MastheadPopUps {
         
-        public PageNotificationsHOSExceptionsPopUps(){
+        public NotificationsHOSExceptionsPopUps(){
             super(page, Types.REPORT, 3);
         }
         
@@ -46,38 +46,38 @@ public class PageNotificationsHOSExceptions extends NotificationsEventsBar {
         }
     }
 
-    public class PageNotificationsHOSExceptionsPager {
+    public class NotificationsHOSExceptionsPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageNotificationsHOSExceptionsPager _page() {
-        return new PageNotificationsHOSExceptionsPager();
+    public NotificationsHOSExceptionsPager _page() {
+        return new NotificationsHOSExceptionsPager();
     }
 
-    public PageNotificationsHOSExceptionsLinks _link() {
-        return new PageNotificationsHOSExceptionsLinks();
+    public NotificationsHOSExceptionsLinks _link() {
+        return new NotificationsHOSExceptionsLinks();
     }
 
-    public PageNotificationsHOSExceptionsTexts _text() {
-        return new PageNotificationsHOSExceptionsTexts();
+    public NotificationsHOSExceptionsTexts _text() {
+        return new NotificationsHOSExceptionsTexts();
     }
 
-    public PageNotificationsHOSExceptionsButtons _button() {
-        return new PageNotificationsHOSExceptionsButtons();
+    public NotificationsHOSExceptionsButtons _button() {
+        return new NotificationsHOSExceptionsButtons();
     }
 
-    public PageNotificationsHOSExceptionsTextFields _textField() {
-        return new PageNotificationsHOSExceptionsTextFields();
+    public NotificationsHOSExceptionsTextFields _textField() {
+        return new NotificationsHOSExceptionsTextFields();
     }
 
-    public PageNotificationsHOSExceptionsDropDowns _dropDown() {
-        return new PageNotificationsHOSExceptionsDropDowns();
+    public NotificationsHOSExceptionsDropDowns _dropDown() {
+        return new NotificationsHOSExceptionsDropDowns();
     }
 
-    public PageNotificationsHOSExceptionsPopUps _popUp() {
-        return new PageNotificationsHOSExceptionsPopUps();
+    public NotificationsHOSExceptionsPopUps _popUp() {
+        return new NotificationsHOSExceptionsPopUps();
     }
 
     @Override
