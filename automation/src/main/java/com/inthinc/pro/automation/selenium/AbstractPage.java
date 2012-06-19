@@ -2,7 +2,6 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.ArrayList;
 
-import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -38,12 +37,23 @@ public abstract class AbstractPage extends MasterTest implements Page {
     }
 
     public Boolean verifyOnPage() {
-        ElementBase test = new ElementBase() {};
-        return test.validateElementsPresent(checkMe);
+        return validateTrue(isOnPage(), "Could not validate on " + getSimpleName());
+    }
+    
+    private String getSimpleName(){
+        return this.getClass().getSimpleName();
+    }
+    
+    public Boolean verifyNotOnPage(){
+        return validateFalse(isOnPage(), "We are still on " + getSimpleName());
     }
     
     public Boolean assertOnPage(){
-        return assertTrue(isOnPage(), "Could not assert on " + this.getClass().getSimpleName());
+        return assertTrue(isOnPage(), "Could not assert on " + getSimpleName());
+    }
+    
+    public Boolean assertNotOnPage(){
+        return assertFalse(isOnPage(), "We are still on " + getSimpleName());
     }
     
     

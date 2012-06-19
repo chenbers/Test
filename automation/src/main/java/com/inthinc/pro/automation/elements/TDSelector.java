@@ -39,7 +39,7 @@ public class TDSelector extends SelectableObject implements Selectable {
         return selectThe(desiredOption, 1);
     }
     
-    public SelectableObject select(TextEnum value){
+    public SelectableObject selectValue(TextEnum value){
         if (value instanceof SeleniumValueEnums){
             return selectRow(((SeleniumValueEnums) value).getPosition()+1);
         }

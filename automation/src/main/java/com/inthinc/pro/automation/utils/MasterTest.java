@@ -574,7 +574,7 @@ public abstract class MasterTest {
         }
         boolean trueFalse = checkBoolean(stepAsString);
         Set<String> names = methods.keySet();
-        String variable = getComparator(stepAsString.replace(" not ", " "));
+        String variable = getComparator(stepAsString.replace("is not ", "is "));
         List<Method> methodList = new ArrayList<Method>();
         String shortLowerName = stepAsString.replace(" ", "").toLowerCase(); 
         for (String name : names) {

@@ -7,7 +7,6 @@ import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.Id;
-import com.inthinc.pro.automation.utils.Xpath;
 
 public class DHXDropDown extends DropDown implements Selectable {
 
@@ -15,7 +14,7 @@ public class DHXDropDown extends DropDown implements Selectable {
     private String page;
     
 
-    private final static String xpath = "//body/div[@id='***']/div[###]";
+    private String xpath = "//body/div[@id='***']/div[###]";
 
     private SeleniumEnums[] enums;
 
@@ -92,6 +91,7 @@ public class DHXDropDown extends DropDown implements Selectable {
      */
     private void init(SeleniumEnums anEnum, String replaceWord, SeleniumEnums[] enums) {
         page = replaceWord;
+        xpath = xpath.replace("***", page);
         if (enums == null) {
             this.enums = new SeleniumEnums[] { myEnum };
         } else {
@@ -118,13 +118,11 @@ public class DHXDropDown extends DropDown implements Selectable {
             }
         }
         makeDropDown.setID("//input[@name='" + makeDropDown.replaceWord(page).getIDs()[0] + "']/../img");
-        String name = myEnum.toString();
-        myEnum.setID(xpath.replace("***", name));
         return this;
     }
 
     @Override
-    public SelectableObject select(TextEnum value) {
+    public SelectableObject selectValue(TextEnum value) {
         if (value instanceof SeleniumValueEnums) {
             return selectRow(((SeleniumValueEnums) value).getPosition() + 1);
         }
@@ -135,7 +133,8 @@ public class DHXDropDown extends DropDown implements Selectable {
     public DHXDropDown selectRow(Integer optionNumber) {
         assignIDs();
         getSelenium().click(makeDropDown);
-        myEnum.replaceNumber(optionNumber);
+        myEnum.setID(xpath);
+        myEnum.replaceNumber(optionNumber).replaceWord(myEnum.toString());
         getSelenium().click(myEnum);
         pause(3, "Pause so the browser has a chance to catch up");
         return this;
@@ -143,7 +142,7 @@ public class DHXDropDown extends DropDown implements Selectable {
     
     
     
-    public DHXDropDown select(SeleniumValueEnums option) {
+    public DHXDropDown selectPosition(SeleniumValueEnums option) {
         return selectRow(option.getPosition() + 1);
     }
 
@@ -176,26 +175,30 @@ public class DHXDropDown extends DropDown implements Selectable {
     @Override
     public String getText(Integer optionNumber){
         assignIDs();
-        myEnum.replaceNumber(optionNumber);
+        myEnum.setID(xpath);
+        myEnum.replaceNumber(optionNumber).replaceWord(myEnum.toString());
         return getSelenium().getText(myEnum);
     }
 
     private String makeXpath(String secondDiv) {
-        String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[0])).div(secondDiv).toString();
+        String xpath = "//div["+Id.id(myEnum.toString())+"]/div["+secondDiv+"]";
         return xpath;
     }
+    
     
     @Override
     public Boolean isPresent(){
         assignIDs();
-        myEnum.replaceNumber(1);
+        myEnum.setID(xpath);
+        myEnum.replaceNumber(1).replaceWord(myEnum.toString());
         return getSelenium().isElementPresent(myEnum);
     }
     
     @Override
     public Boolean isVisible(){
         assignIDs();
-        myEnum.replaceNumber(1);
+        myEnum.setID(xpath);
+        myEnum.replaceNumber(1).replaceWord(myEnum.toString());
         return getSelenium().isVisible(myEnum);
     }
     

@@ -24,7 +24,7 @@ public class SelectableObject extends Text implements Selectable {
         return this;
     }
 
-    public SelectableObject select(TextEnum value) {
+    public SelectableObject selectValue(TextEnum value) {
         if (value instanceof SeleniumValueEnums) {
             return selectRow(((SeleniumValueEnums) value).getPosition() + 1);
         }

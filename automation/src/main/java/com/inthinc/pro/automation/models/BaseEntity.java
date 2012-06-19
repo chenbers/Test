@@ -1,8 +1,11 @@
 package com.inthinc.pro.automation.models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonAnyGetter;
+import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.inthinc.pro.automation.enums.WebDateFormat;
@@ -16,6 +19,8 @@ public abstract class BaseEntity implements Serializable {
     private static final long serialVersionUID = 514782827757426880L;
     private final AutomationCalendar modified = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
     private final AutomationCalendar created = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
+    
+    private final Map<String, Object> unknowns = new HashMap<String, Object>();
 
     @JsonProperty("modified")
     public String getModifiedString(){
@@ -43,6 +48,16 @@ public abstract class BaseEntity implements Serializable {
     @JsonProperty("created")
     public void setCreated(String created) {
         this.created.setDate(created);
+    }
+    
+    @JsonAnySetter
+    public void setUnknown(String key, Object value){
+        unknowns.put(key, value);
+    }
+    
+    @JsonAnyGetter
+    public Map<String, Object> getUnknown(){
+        return unknowns;
     }
     
 }

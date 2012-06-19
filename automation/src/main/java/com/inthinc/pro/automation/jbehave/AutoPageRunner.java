@@ -24,6 +24,7 @@ import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutoPageRunner {
     
@@ -216,7 +217,12 @@ public class AutoPageRunner {
             if (pageSpecificStep(workingOnStep)){
                 findPageFromStep();
                 if (currentPage!=null){
-                    return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod("assertOnPage"), true);
+                    String validate = step.stepAsString().contains("validate") ? "verify" : "assert";
+                    if (MasterTest.checkBoolean(step.stepAsString())){
+                        return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod(validate + "OnPage"), true);
+                    } else {
+                        return stepCreator.createPageStep(step, currentPage, currentPageClass.getMethod(validate + "NotOnPage"), true);
+                    }
                 } else {
                     return step;
                 }
