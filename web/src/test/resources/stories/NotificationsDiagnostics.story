@@ -15,7 +15,7 @@ And I click the Diagnostics link
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-And I validate I am on the Login page
+Then I validate I am on the Login page
 Given I am logged in
 Then I validate I am on the Notifications Diagnostics page
 
@@ -39,10 +39,7 @@ And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 Then I validate the Sort By Date Time column sorts correctly
 And I validate the Sort By Driver column sorts correctly
-And I validate the Sort By Driver column sorts correctly
 And I validate the Sort By Group column sorts correctly
-And I validate the Sort By Group column sorts correctly
-And I validate the Sort By Vehicle column sorts correctly
 And I validate the Sort By Vehicle column sorts correctly
 
 Scenario: TC1382: Notifications - Diagnostics - Tools Button
@@ -65,7 +62,7 @@ And I validate the Refresh button is present
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
 And I validate the Counter text is present
-And I validate the Sort By DateTime link is present
+And I validate the Sort By Date Time link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
@@ -131,6 +128,26 @@ Then I check the 1st Row of the Edit Columns checkbox
 And I validate the 1st Row of the Edit Columns checkbox is checked
 And I uncheck the 1st Row of the Edit Columns checkbox
 And I validate the 1st Row of the Edit Columns checkbox is not checked
+And I check the 2nd Row of the Edit Columns checkbox
+And I validate the 2nd Row of the Edit Columns checkbox is checked
+And I uncheck the 2nd Row of the Edit Columns checkbox
+And I validate the 2nd Row of the Edit Columns checkbox is not checked
+And I check the 3rd Row of the Edit Columns checkbox
+And I validate the 3rd Row of the Edit Columns checkbox is checked
+And I uncheck the 3rd Row of the Edit Columns checkbox
+And I validate the 3rd Row of the Edit Columns checkbox is not checked
+And I check the 4th Row of the Edit Columns checkbox
+And I validate the 4th Row of the Edit Columns checkbox is checked
+And I uncheck the 4th Row of the Edit Columns checkbox
+And I validate the 4th Row of the Edit Columns checkbox is not checked
+And I check the 5th Row of the Edit Columns checkbox
+And I validate the 5th Row of the Edit Columns checkbox is checked
+And I uncheck the 5th Row of the Edit Columns checkbox
+And I validate the 5th Row of the Edit Columns checkbox is not checked
+And I check the 6th Row of the Edit Columns checkbox
+And I validate the 6th Row of the Edit Columns checkbox is checked
+And I uncheck the 6th Row of the Edit Columns checkbox
+And I validate the 6th Row of the Edit Columns checkbox is not checked
 
 Scenario: TC1390: Notifications - Diagnostics - Edit Columns - Current Session Retention
 Given I am logged in
@@ -207,7 +224,7 @@ And I click the Logout link
 Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I validate the Sort By Date Time link is present
+Then I validate the Sort By Date Time link is present
 
 Scenario: TC1395: Notifications - Diagnostics - Edit Columns - UI
 Given I am logged in
@@ -241,8 +258,8 @@ And I save the 1st Row of the Entry Date Time text as SavedDateTime
 And I save the 1st Row of the Entry Detail text as SavedDetail
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Saved Date Time text is present
-And I validate the Saved Detail text is present
+Then I validate the SavedDateTime text is present
+And I validate the SavedDetail text is present
 And I validate the Yes button is present
 And I validate the No button is present
 
@@ -251,7 +268,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SavedDateTime
 And I select "Yesterday" from the Time Frame dropdown
