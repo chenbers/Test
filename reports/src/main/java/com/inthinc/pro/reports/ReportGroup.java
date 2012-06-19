@@ -141,7 +141,7 @@ public enum ReportGroup
              
      /* Communication */
      NON_COMM("Vehicles Not Communicating Report", 27, EntityType.ENTITY_GROUP,   
-             new CriteriaType[]{CriteriaType.TIMEFRAME_ALT}, 
+             new CriteriaType[]{CriteriaType.TIMEFRAME_STRICT}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Communication,
              EnumSet.of(ReportAccountType.PERFORMANCE),
              ReportType.NON_COMM), 

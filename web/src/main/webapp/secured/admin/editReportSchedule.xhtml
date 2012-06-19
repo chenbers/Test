@@ -233,7 +233,7 @@
 										</td>
 									</tr>
 								</h:outputText>
-								<h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
+								<h:outputText rendered="#{criteria eq 'TIMEFRAME' || criteria eq 'TIMEFRAME_STRICT'}">
 									<tr>
 										<td width="115" valign="top">
 											<h:outputText value="#{messages.reportSchedule_daysReported}"/>

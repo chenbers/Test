@@ -107,8 +107,16 @@
                     </ui:include>
                   </li>
                 </h:outputText>
+                <h:outputText rendered="#{criteria eq 'TIMEFRAME_STRICT'}">
+                   <li class="l">   
+                    <ui:include src="/includes/component/timeFrame.xhtml" >
+                        <ui:param name="timeFrameSelect" value="#{params.timeFrameSelect}"/> 
+                        <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
+                    </ui:include>
+                  </li>
+                </h:outputText>
                 <h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT'}">
-                    <li class="l">   
+                  <li class="l">   
                     <ui:include src="/includes/component/timeFrameAlt.xhtml" >
                         <ui:param name="timeFrameSelect" value="#{params.timeFrameSelect}"/> 
                         <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 

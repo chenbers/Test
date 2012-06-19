@@ -7,6 +7,11 @@ public enum CriteriaType
 {
     DURATION(Duration.class),
     TIMEFRAME(TimeFrame.class),
+    /* 
+     * TIMEFRAME_STRICT This represents a time frame with strict requirements. No date range should be available
+     * for the user to select.
+     */
+    TIMEFRAME_STRICT(TimeFrame.class), 
     TIMEFRAME_ALT(TimeFrame.class),
     TIMEFRAME_ALT_DAYS(TimeFrame.class);
     
