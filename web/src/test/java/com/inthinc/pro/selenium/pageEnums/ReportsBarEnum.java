@@ -12,10 +12,10 @@ public enum ReportsBarEnum implements SeleniumEnums {
     PERFORMANCE("Performance","subNavForm:drivers-performanceReport"),
     WAYSMART("waySmart", "subNavForm:drivers-waysmartReport"),
 
-    OVERALL_SCORE_DHX(null, "//input[@name='***-form:***:overallScoreFilter']"),
-    SPEED_SCORE_DHX(null, "//input[@name='***-form:***:speedScoreFilter']"),
-    STYLE_SCORE_DHX(null, "//input[@name='***-form:***:styleScoreFilter']"),
-    SEATBELT_SCORE_DHX(null, "//input[@name='***-form:***:seatbeltScoreFilter']"),
+    OVERALL_SCORE_DHX(null, "***-form:***:overallScoreFilter"),
+    SPEED_SCORE_DHX(null, "***-form:***:speedScoreFilter"),
+    STYLE_SCORE_DHX(null, "***-form:***:styleScoreFilter"),
+    SEATBELT_SCORE_DHX(null, "***-form:***:seatbeltScoreFilter"),
 
     OVERALL_SCORE_SORT(null, "***-form:***:overallScoreheader:sortDiv"),
     SPEED_SCORE_SORT(null, "***-form:***:speedScoreheader:sortDiv"),
