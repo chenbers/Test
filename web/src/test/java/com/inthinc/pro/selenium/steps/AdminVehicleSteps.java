@@ -13,16 +13,6 @@ public class AdminVehicleSteps extends StepsAdmin {
     private PageAdminVehicleDetails vehicleDetails = new PageAdminVehicleDetails();
     private PageAdminAddEditVehicle vehicleAddEdit = new PageAdminAddEditVehicle();
     
-    @When ("I click any user link")
-    public void whenIClickAnyUserLink(){
-        vehicles._link().edit().row(1).click();
-    }
-    
-    @When("I click the edit button")
-    public void whenIClickTheEditButton(){
-        vehicleDetails._button().edit().click();
-    }
-    
     @Then ("I should be able to edit Vehicle information")
     public void thenIShouldBeAbleToEditVehicleInformation(){
         test.assertEquals(true, vehicleAddEdit._textField().VIN().isEditable());
@@ -107,7 +97,7 @@ public class AdminVehicleSteps extends StepsAdmin {
         test.assertEquals(false, vehicleAddEdit._link().assignDriver().isClickable());
     }
     
-    @Then ("I should notbe able to edit 'Speed and Sensitivity' information")
+    @Then ("I should not be able to edit 'Speed and Sensitivity' information")
     public void thenIShouldNotBeAbleToEditSpeedAndSensitivityinformation(){
         test.assertEquals(false, vehicleAddEdit._textField().maxSpeed().isEditable());
         test.assertEquals(false, vehicleAddEdit._textField().speedBuffer().isEditable());
