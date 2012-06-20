@@ -215,7 +215,7 @@ public abstract class ReportsBean extends BaseBean {
                         params.getLocale(), 
                         getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
-            case STATE_MILEAGE_BY_VEHICLE_TIWI:
+            case STATE_MILEAGE_BY_VEHICLE_NON_IFTA:
                 reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), 
                         params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType()));
                 break;

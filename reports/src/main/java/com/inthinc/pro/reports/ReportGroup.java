@@ -133,11 +133,11 @@ public enum ReportGroup
              ReportType.STATE_MILEAGE_COMPARE_BY_GROUP),
              
      /* Mileage */
-     STATE_MILEAGE_BY_VEHICLE_TIWI("State Mileage By Vehicle", 26, EntityType.ENTITY_GROUP,   
+     STATE_MILEAGE_BY_VEHICLE_NON_IFTA("State Mileage By Vehicle", 26, EntityType.ENTITY_GROUP,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Mileage,
              EnumSet.of(ReportAccountType.PERFORMANCE),
-             ReportType.STATE_MILEAGE_BY_VEHICLE_TIWI), 
+             ReportType.STATE_MILEAGE_BY_VEHICLE_NON_IFTA), 
              
      /* Communication */
      NON_COMM("Vehicles Not Communicating Report", 27, EntityType.ENTITY_GROUP,   

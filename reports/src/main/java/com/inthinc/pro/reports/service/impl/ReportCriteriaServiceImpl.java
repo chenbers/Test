@@ -1433,7 +1433,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                     break;
-                case STATE_MILEAGE_BY_VEHICLE_TIWI:
+                case STATE_MILEAGE_BY_VEHICLE_NON_IFTA:
                     reportCriteriaList.add(getStateMileageByVehicleReportCriteria(groupHierarchy,
                             reportSchedule.getGroupID(), timeFrame.getInterval(),  
                             person.getLocale(), person.getMeasurementType()));
