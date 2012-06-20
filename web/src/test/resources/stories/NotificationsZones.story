@@ -24,11 +24,12 @@ Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Driver link as SavedEntry
+And I click the Sort By Driver link
+And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
-Then I validate the Driver Name link is SavedEntry
+Then I validate the Driver Name link is SAVEDENTRY
 
 Scenario: TC5719: Notifications - Zones - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in
@@ -69,18 +70,23 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC5722: Notifications - Zones - Vehicle Link
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Vehicle link as SavedEntry
+And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SavedEntry
+Then I validate the Vehicle Name link is SAVEDENTRY
 
 Scenario: TC5723: Notifications - Zones - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -102,6 +108,12 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC5724: Notifications - Zones - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
@@ -117,6 +129,12 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC5725: Notifications - Zones - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
@@ -212,7 +230,7 @@ And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
 Given I am logged in
-And I click the Notifications link
+When I click the Notifications link
 And I click the Zones link
 Then I validate the Sort By Date Time link is not present
 And I click the Edit Columns link
@@ -222,9 +240,9 @@ And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
 Given I am logged in
-And I click the Notifications link
+When I click the Notifications link
 And I click the Zones link
-And I validate the Sort By Date Time link is present
+Then I validate the Sort By Date Time link is present
 
 Scenario: TC5732: Notifications - Zones - Edit Columns - UI
 Given I am logged in
@@ -251,8 +269,8 @@ Scenario: TC5733: Notifications - Zones - Exclude Link - Zone Arrival Event NEED
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
-And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I click the first entry from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I save the text in the first Entry Date Time text as SavedDateTime
 And I save the text in the first Entry Detail text as SavedDetail
@@ -268,7 +286,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I click the first entry in the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I save the text in the first Entry Date Time text as SavedDateTime
 And I save the text in the first Entry Detail text as SavedDetail
@@ -286,37 +304,45 @@ And I click the Zones link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
-And I save the 1st Row of the Entry Detail text as SavedDetail
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the SavedDateTime text is present
-And I validate the SavedDetail text is present
+Then I validate the Message text contains SAVEDDATETIME
+And I validate the Message text contains SAVEDDETAIL
 And I validate the Yes button is present
 And I validate the No button is present
+And I validate the Close button is present
 
 Scenario: TC5736: Notifications - Zones - Include Link 
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I select "Top" from the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
+Then I validate the Message text contains SAVEDDATETIME
+And I validate the Message text contains SAVEDDETAIL
 And I click the Yes button
-Then I validate the 1st Row in the Status link is "include"
-And I click the 1st Row in the Status link
-And I validate the 1st Row in the Status link is "exclude"
+And the Exclude Event popup closes
+And I validate the 1st Row of the Entry Status link is "include"
+And I click the 1st Row of the Entry Status link
+And I validate the 1st Row of the Entry Status link is "exclude"
 
 Scenario: TC5741: Notifications - Zones - Time Frame
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I select "Top" from the Team dropdown
-And I click "Today" in the TimeFrame dropdown
+And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
-And I click "Yesterday" in the TimeFrame dropdown
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I click the Zones link
+And I select "Top" from the Team dropdown
+And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the SavedDateTime text is not present
+Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME

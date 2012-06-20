@@ -24,7 +24,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Driver link as SAVEDENTRY
@@ -36,7 +36,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 Then I validate the Sort By Date Time column sorts correctly
 And I validate the Sort By Driver column sorts correctly
@@ -81,7 +81,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
@@ -290,6 +290,8 @@ And I select "Top" from the Team dropdown
 And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I click the Diagnostics link
+And I select "Top" from the Team dropdown
 And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
 Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME

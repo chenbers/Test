@@ -9,14 +9,14 @@ Meta:
 Narrative:
 
 Scenario: TC1475: Notifications - Safety - Bookmark Entry 
-Given I am logged
+Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
 And I validate I am on the Login page
-Given I am logged
+Given I am logged in
 Then I validate I am on the Notifications Safety page
 
 Scenario: TC1437: Notifications - Safety - Driver Link
@@ -26,9 +26,10 @@ And I click the Safety link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Driver link as SavedEntry
+And I click the Sort By Driver link
+And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
-Then I validate the Driver Name link is SavedEntry
+Then I validate the Driver Name link is SAVEDENTRY
 
 Scenario: TC1486: Notifications - Safety - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in
@@ -72,6 +73,11 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1489: Notifications - Safety - Vehicle Link
 Given I am logged in
@@ -81,9 +87,9 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Vehicle link as SavedEntry
+And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SavedEntry
+Then I validate the Vehicle Name link is SAVEDENTRY
 
 Scenario: TC1491: Notifications - Safety - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -105,6 +111,12 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1492: Notifications - Safety - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
@@ -120,6 +132,12 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1493: Notifications - Safety - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
@@ -255,30 +273,36 @@ Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
-And I save the 1st Row of the Entry Detail text as SavedDetail
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the SavedDateTime text is present
-And I validate the SavedDetail text is present
+Then I validate the Message text contains SAVEDDATETIME
+And I validate the Message text contains SAVEDDETAIL
 And I validate the Yes button is present
 And I validate the No button is present
+And I validate the Close button is present
 
 Scenario: TC5738: Notifications - Safety - Include Link
 Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
-And I click "Past 30 Days" in the Time Frame dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
+Then I validate the Message text contains SAVEDDATETIME
+And I validate the Message text contains SAVEDDETAIL
 And I click the Yes button
-Then I validate the 1st Row in the Entry Status link is "include"
-And I click the 1st Row in the Entry Status link
-And I validate the 1st Row in the Entry Status link is "exclude"
+And the Exclude Event popup closes
+And I validate the 1st Row of the Entry Status link is "include"
+And I click the 1st Row of the Entry Status link
+And I validate the 1st Row of the Entry Status link is "exclude"
 
 Scenario: TC5743: Notifications - Safety - Time Frame
 Given I am logged in
@@ -287,7 +311,9 @@ And I click the Safety link
 And I select "Top" from the Team dropdown
 And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I click the Safety link
+And I select "Top" from the Team dropdown
 And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the SavedDateTime text is not present
+Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME
