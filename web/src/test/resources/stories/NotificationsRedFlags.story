@@ -13,12 +13,11 @@ Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I bookmark the page
-And I click log out
-And I click the bookmark I just added
 And I click the Logout link
-And I validate I am on the Login page
+And I click the bookmark I just added
+Then I validate I am on the Login page
 Given I am logged in
-Then I validate I am on the Red Flags page
+Then I validate I am on the Notifications Red Flags page
 
 Scenario: TC1437: Notifications - Red Flags - Driver Link
 Given I am logged in
@@ -28,9 +27,9 @@ And I select "Top" from the Team dropdown
 And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
-And I save the 1st Row of the Entry Driver link as SavedEntry
+And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
-Then I validate the Driver Name link is SavedEntry
+Then I validate the Driver Name link is SAVEDENTRY
 
 Scenario: TC1450: Notifications - Red Flags - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in
@@ -68,7 +67,7 @@ And I validate the Edit Columns link is present
 And I validate the Tools button is present
 And I validate the Counter text is present
 And I validate the Header Level text is present
-And I validate the Header AlertDetails text is present
+And I validate the Header Alert Details text is present
 And I validate the Sort By Date Time link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Driver link is present
@@ -76,6 +75,12 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 And I validate the Header Status text is present
+And I validate the Level Filter dropdown is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1453: Notifications - Red Flags - Vehicle Link
 Given I am logged in
@@ -86,9 +91,9 @@ And I select "Past 30 Days" in the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
-And I save the 1st Row of the Entry Vehicle link as SavedEntry
+And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SavedEntry
+Then I validate the Vehicle Name link is SAVEDENTRY
 
 Scenario: TC1455: Notifications - Red Flags - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -106,14 +111,21 @@ And I uncheck the 7th Row of the Edit Columns checkbox
 And I uncheck the 8th Row of the Edit Columns checkbox
 And I click the Cancel button
 And the Edit Columns popup closes
-Then I validate the Sort By Date Time link is present
+Then I validate the Header Level text is present
+And I validate the Header Alert Details text is present
+And I validate the Sort By Date Time link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
-And I validate the Level text is present
-And I validate the Alert Details text is present
+And I validate the Header Status text is present
+And I validate the Level Filter dropdown is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1456: Notifications - Red Flags - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
@@ -123,12 +135,21 @@ And I click the Edit Columns link
 And the Edit Columns popup opens
 And I click the Cancel button
 And the Edit Columns popup closes
-Then I validate the Sort By Date Time link is present
+Then I validate the Header Level text is present
+And I validate the Header Alert Details text is present
+And I validate the Sort By Date Time link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Level Filter dropdown is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1457: Notifications - Red Flags - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
@@ -160,6 +181,14 @@ And I check the 6th Row of the Edit Columns checkbox
 And I validate the 6th Row of the Edit Columns checkbox is checked
 And I uncheck the 6th Row of the Edit Columns checkbox
 And I validate the 6th Row of the Edit Columns checkbox is not checked
+And I check the 7th Row of the Edit Columns checkbox
+And I validate the 7th Row of the Edit Columns checkbox is checked
+And I uncheck the 7th Row of the Edit Columns checkbox
+And I validate the 7th Row of the Edit Columns checkbox is not checked
+And I check the 8th Row of the Edit Columns checkbox
+And I validate the 8th Row of the Edit Columns checkbox is checked
+And I uncheck the 8th Row of the Edit Columns checkbox
+And I validate the 8th Row of the Edit Columns checkbox is not checked
 
 Scenario: TC1459: Notifications - Red Flags - Edit Columns - Current Session Retention
 Given I am logged in
@@ -175,9 +204,9 @@ And the Edit Columns popup closes
 And I click the Reports link
 And I click the Notifications link
 And I click the Red Flags link
-Then I validate the Sort By Date Time link is not present
-And I validate the Sort By Group link is not present
-And I validate the Sort By Driver link is not present
+Then I validate the Header Level text is not present
+And I validate the Header Alert Details text is not present
+And I validate the Sort By Date Time link is not present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
@@ -188,9 +217,9 @@ And I check the 2nd Row of the Edit Columns checkbox
 And I check the 3rd Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
+Then I validate the Header Level text is present
+And I validate the Header Alert Details text is present
 And I validate the Sort By Date Time link is present
-And I validate the Sort By Group link is present
-And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
@@ -204,14 +233,14 @@ And the Edit Columns popup opens
 And I uncheck the 1st Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the Sort By Date Time link is not present
+Then I validate the Header Level text is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I validate the 1st Row of the Edit Columns checkbox is not checked
 And I check the 1st Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
-And I validate the Sort By Date Time link is present
+And I validate the Header Level text is present
 
 Scenario: TC1462: Notifications - Red Flags - Edit Columns - Subsequent Session Retention
 Given I am logged in
@@ -226,7 +255,7 @@ And I click the Logout link
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
-Then I validate the Sort By Date Time link is not present
+Then I validate the Header Level text is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I check the 1st Row of the Edit Columns checkbox
@@ -236,7 +265,7 @@ And I click the Logout link
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
-Then I validate the Sort By Date Time link is present
+Then I validate the Header Level text is present
 
 Scenario: TC1464: Notifications - Red Flags - Edit Columns - UI
 Given I am logged in
@@ -250,12 +279,16 @@ And I validate the 3rd Row of the Edit Columns checkbox is present
 And I validate the 4th Row of the Edit Columns checkbox is present
 And I validate the 5th Row of the Edit Columns checkbox is present
 And I validate the 6th Row of the Edit Columns checkbox is present
+And I validate the 7th Row of the Edit Columns checkbox is present
+And I validate the 8th Row of the Edit Columns checkbox is present
 And I validate the 1st Row of the Edit Columns checkbox is checked
 And I validate the 2nd Row of the Edit Columns checkbox is checked
 And I validate the 3rd Row of the Edit Columns checkbox is checked
 And I validate the 4th Row of the Edit Columns checkbox is checked
 And I validate the 5th Row of the Edit Columns checkbox is checked
 And I validate the 6th Row of the Edit Columns checkbox is checked
+And I validate the 7th Row of the Edit Columns checkbox is checked
+And I validate the 8th Row of the Edit Columns checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
 
@@ -266,14 +299,14 @@ And I click the Red Flags link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
-And I save the 1st Row of the Entry Detail text as SavedDetail
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-And I click the Cancel button
+And I click the No button
 And the Exclude Event popup closes
-Then I validate the 1st Row Entry Date Time text is SavedDateTime
-And I validate the 1st Row Entry Detail text is SavedDetail
+Then I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
+And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
 
 Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
 Given I am logged in
@@ -282,12 +315,12 @@ And I click the Red Flags link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the Counter text as TableCount
-And I click the 1st Row of the Exclude link
+And I save the Counter text as TABLECOUNT
+And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I click the Yes button
 And the Exclude Event popup closes
-Then I validate the Counter text is TableCount
+Then I validate the Counter text is TABLECOUNT
 And I validate the 1st Row of the Entry Status link is "include"
 
 Scenario: TC1472: Notifications - Red Flags - Exclude Link - UI
@@ -297,14 +330,15 @@ And I click the Red Flags link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row Entry Date Time text as SavedDateTime
-And I save the 1st Row Entry Detail text as SavedDetail
-And I click the 1st Row Entry Status link
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the SavedDateTime text is present
-And I validate the SavedDetail text is present
+Then I validate the Message text contains SAVEDDATETIME
+And I validate the Message text contains SAVEDDETAIL
 And I validate the Yes button is present
 And I validate the No button is present
+And I validate the Close button is present
 
 Scenario: TC5739: Notifications - Red Flags - Include Link
 Given I am logged in
@@ -313,26 +347,27 @@ And I click the Red Flags link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row Entry Date Time text as SavedDateTime
-And I save the 1st Row Entry Detail text as SavedDetail
-And I click the 1st Row Entry Status link
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-And I validate the text SavedDateTime is present
-And I validate the text SavedDetail is present
+Then I validate the Message text contains SAVEDDATETIME
+And I validate the Message text contains SAVEDDETAIL
 And I click the Yes button
 And the Exclude Event popup closes
-Then I validate the 1st Row of the Entry Status link is "include"
+And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
 And I validate the 1st Row of the Entry Status link is "exclude"
 
 Scenario: TC5744: Notifications - Red Flags - Time Frame
-Given I am logged in
+Given I am on the Login page
+Given I am logged in as a "TopUser" user
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I click "Today" in the Time Frame dropdown
+And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
-And I select "Yesterday" from the TimeFrame dropdown
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the SavedDateTime text is not present
+Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME

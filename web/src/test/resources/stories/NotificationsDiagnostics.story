@@ -70,6 +70,11 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1384: Notifications - Diagnostics - Vehicle Link
 Given I am logged in
@@ -103,6 +108,12 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1387: Notifications - Diagnostics - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
@@ -118,6 +129,12 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
+And I validate the Header Status text is present
+And I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Category dropdown is present
+And I validate the Status Filter dropdown is present
 
 Scenario: TC1388: Notifications - Diagnostics - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
@@ -255,24 +272,24 @@ And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
-And I save the 1st Row of the Entry Detail text as SavedDetail
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text contains SavedDateTime
-And I validate the Message text contains SavedDetail
+Then I validate the Message text contains SAVEDDATETIME
+And I validate the Message text contains SAVEDDETAIL
 And I validate the Yes button is present
 And I validate the No button is present
+And I validate the Close button is present
 
 Scenario: TC5742: Notifications - Diagnostics - Time Frame
-Given I am on the Login page
-Given I am logged in as a "TopUser" user
+Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
-And I save the 1st Row of the Entry Date Time text as SavedDateTime
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I select "Yesterday" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the 1st Row of the Entry Date Time text is not SavedDateTime
+Then I validate the 1st Row of the Entry Date Time text is not SAVEDDATETIME
