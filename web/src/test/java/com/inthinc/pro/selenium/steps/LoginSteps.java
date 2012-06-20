@@ -10,16 +10,18 @@ import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
+import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PopUps;
 
 public class LoginSteps extends WebSteps {
 
     PageLogin loginPage = new PageLogin();
     AutomationUser login;
+    PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
 
     private static final PageLogin page = new PageLogin();
     private static final PopUps popup = new PopUps();
-
+    
     // private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
     // REPLACED BY AUTOSTORY
     // @Given("I log in to the login page")
@@ -235,28 +237,28 @@ public class LoginSteps extends WebSteps {
 
     @When("I am logged in as TeamOnly user")
     public void loggedInAsTeamOnlyUser() {
-        page._textField().userName().type("CaptainNemo");
-        page._textField().password().type("Muttley");
+        page._textField().userName().type("mweiss");
+        page._textField().password().type("password");
         page._button().logIn().click();
     }
 
-    // @Given("I am logged in as a \"$roleName\" user")
-    // @When("I am logged in as a \"$roleName\" user")
-    // public void loginAsAUserofRole(String roleName) {
-    // LoginCapability hasThisCapability = null;
-    // //TODO: FIGURE OUT AUTOMATED USERS, IN THE MEANTIME, USE THIS CODE:
-    // // if(roleName.equals("TopUser"))
-    // // {
-    // // page._textField().userName().type("danniauto");
-    // // page._textField().password().type("password");
-    // // page._button().logIn().click();
-    // // }
-    // // if(roleName.equals("TeamOnly"))
-    // // {
-    // // page._textField().userName().type("CaptainNemo");
-    // // page._textField().password().type("Muttley");
-    // // page._button().logIn().click();
-    // // }
+     @Given("I am logged in as a \"$roleName\" user")
+     @When("I am logged in as a \"$roleName\" user")
+     public void loginAsAUserofRole(String roleName) {
+//     LoginCapability hasThisCapability = null;
+//     TODO: FIGURE OUT AUTOMATED USERS, IN THE MEANTIME, USE THIS CODE:
+      if(roleName.equals("TopUser"))
+      {
+      page._textField().userName().type("danniauto");
+      page._textField().password().type("password");
+      page._button().logIn().click();
+      }
+      if(roleName.equals("TeamOnly"))
+      {
+      page._textField().userName().type("CaptainNemo");
+      page._textField().password().type("Muttley");
+      page._button().logIn().click();
+      }
     // if(roleName.equals("Admin"))
     // hasThisCapability = LoginCapability.RoleAdmin;
     // else if(roleName.equals("HOS"))
@@ -270,7 +272,7 @@ public class LoginSteps extends WebSteps {
     //
     // PageLogin login = new PageLogin();
     // login.loginProcess(user);
-    // }
+     }
 
     // @Given("I am logged in as a user in a role that does not have the $accesspointName accesspoint")
     // public void loginAsUserWithoutAccesspoint(String accesspointName){
@@ -524,5 +526,27 @@ public class LoginSteps extends WebSteps {
         // TODO: jwimmer: watch the loggers and see if this works... I wouldn't be surprised if we do NOT get the original password correctly???
         loginPage._textField().password().type(incorrectCaseUserName);
     }
-
+    
+    @Then("the Sort By Date Time column sorts correctly")
+    public void thenIValidateTheSortByDateTimeColumnSortsCorrectly() {
+        
+        notifdiag._link().sortByDateTime().click();
+        
+        String text1 = notifdiag._text().entryDateTime().row(1).getText();
+        String text2 = notifdiag._text().entryDateTime().row(15).getText();
+        
+        int result = text1.compareTo(text2);
+        
+        if (result == 0) {
+            System.out.println("The names are equal.");
+       }
+       else if (result > 0) {
+            System.out.println(
+                "name2 comes before name1 alphabetically.");
+       }
+       else if (result < 0) {
+            System.out.println(
+               "name1 comes before name2 alphabetically.");
+       }
+    }
 }
