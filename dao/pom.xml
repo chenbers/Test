@@ -16,15 +16,13 @@
 		<finalName>dao</finalName>
 	</build>
 	<dependencies>
-<!-- 	
 		<dependency>
 			<groupId>com.inthinc.pro.noteparser</groupId>
 			<artifactId>noteparser</artifactId>
-			<version>2.0.10-SNAPSHOT</version>
+			<version>2.0.10</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
- -->
 		<dependency>
 			<groupId>me.prettyprint</groupId>
 			<artifactId>hector-core</artifactId>
