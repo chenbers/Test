@@ -36,11 +36,11 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 
-//import com.inthinc.pro.comm.parser.note.NoteType;
-//import com.inthinc.pro.comm.parser.note.NoteParser;
-//import com.inthinc.pro.comm.parser.note.NoteParserFactory;
-//import com.inthinc.pro.comm.parser.util.ReadUtil;
-//
+import com.inthinc.pro.comm.parser.note.NoteType;
+import com.inthinc.pro.comm.parser.note.NoteParser;
+import com.inthinc.pro.comm.parser.note.NoteParserFactory;
+import com.inthinc.pro.comm.parser.util.ReadUtil;
+
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
 import me.prettyprint.hector.api.beans.AbstractComposite.Component;
 import me.prettyprint.hector.api.beans.ColumnSlice;
@@ -106,7 +106,6 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 		String startTime = (String) args[1];
 		String endTime = (String) args[2];
 */		
-/*    	
         SiloService siloService = new SiloServiceCreator("localhost", 8092).getService();
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
@@ -117,7 +116,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     	dao.setCassandraDB(cassandraDB);
     	dao.setVehicleDAO(vehicleDAO);
     	dao.setDriverDAO(driverDAO);
-    	
+/*    	
     	LastLocation ll = dao.getLastLocationForVehicle(52721);
 		System.out.println("Location: " + ll);
     	
@@ -129,17 +128,23 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 		
 	    trip = dao.getLastTripForDriver(66462);
 		System.out.println("Trip: " + trip);
-    	
-    	dao.shutdown();
 */    	
+	    List<Trip> trips = dao.getTripsForVehicle(52721, new Date(0), new Date());
+	    dao.logTrips(trips);
+	    
+        trips =  dao.getTripsForDriver(66462, new Date(0), new Date());
+//       	List<DriverLocation> driverLocations = getDriverLocations(Integer groupID)		
+
+	    dao.shutdown();
     }
-  /*  
-    private void logLocation(List<LastLocation> locations)
+    
+
+    private void logTrips(List<Trip> trips)
     {
-    	for (LastLocation location : locations)
+    	for (Trip t : trips)
     	{
-    		logger.info("Location: " + location);
-    		System.out.println("Location: " + location);
+    		logger.info("Trip: " + t);
+    		System.out.println("Trip: " + t);
     	}
     	System.out.println("**************************************************");
     }
@@ -150,6 +155,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     }
     
 
+    
 	@Override
     public VehicleDAO getVehicleDAO() {
 		return vehicleDAO;
@@ -288,10 +294,10 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     	List<HColumn<Composite, Composite>> columnList = columnSlice.getColumns();
     	for (HColumn<Composite, Composite> column : columnList)
         {
-    		//bigIntegerSerializer.fromByteBuffer((ByteBuffer) row.getKey().get(0)).intValue();
-    		Integer colStartTime = (Integer) column.getName().get(0);
-    		Integer colEndTime = (Integer) column.getName().get(0);
+    		Integer colStartTime = bigIntegerSerializer.fromByteBuffer((ByteBuffer) column.getName().get(0)).intValue();
+    		Integer colEndTime = bigIntegerSerializer.fromByteBuffer((ByteBuffer) column.getName().get(1)).intValue();
     		
+    		//Make sure trip within date range
     		if ((colStartTime >= startTime && colStartTime <= endTime) || (colEndTime >= startTime && colEndTime <= endTime))
     			 rowKeysList.add(column.getValue());
         }
@@ -403,6 +409,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     	    
     	    if (startTime != null && endTime != null)
     	    {
+    	    	//Make sure trip really falls within date range.
 	    		if ((DateUtil.convertDateToSeconds(trip.getStartTime()) >= startTime && DateUtil.convertDateToSeconds(trip.getStartTime()) <= endTime) || (DateUtil.convertDateToSeconds(trip.getEndTime()) >= startTime && DateUtil.convertDateToSeconds(trip.getEndTime()) <= endTime))
 	    			trip.setRoute(fetchRouteForTrip(id, (int)DateUtil.convertDateToSeconds(trip.getStartTime()), (int)DateUtil.convertDateToSeconds(trip.getEndTime()), isDriver));
 	    		else
@@ -644,86 +651,4 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 	    }
 	}
 
-*/
-
-
-	@Override
-	public LastLocation getLastLocationForDriver(Integer driverID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<DriverLocation> getDriverLocations(Integer groupID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public LastLocation getLastLocationForVehicle(Integer vehicleID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public Trip getLastTripForVehicle(Integer vehicleID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<Trip> getTripsForVehicle(Integer vehicleID, Date startDate,
-			Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public Trip getLastTripForDriver(Integer driverID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<Trip> getTripsForDriver(Integer driverID, Date startDate,
-			Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public VehicleDAO getVehicleDAO() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public void setVehicleDAO(VehicleDAO vehicleDAO) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public DriverDAO getDriverDAO() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public void setDriverDAO(DriverDAO driverDAO) {
-		// TODO Auto-generated method stub
-		
-	}
 }
-
-
