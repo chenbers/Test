@@ -1,16 +1,11 @@
 package com.inthinc.pro.selenium.steps;
 
 import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleDetails;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 
 public class AdminVehicleSteps extends StepsAdmin { 
     
-    private PageAdminVehicles vehicles = new PageAdminVehicles();
-    private PageAdminVehicleDetails vehicleDetails = new PageAdminVehicleDetails();
     private PageAdminAddEditVehicle vehicleAddEdit = new PageAdminAddEditVehicle();
     
     @Then ("I should be able to edit Vehicle information")
