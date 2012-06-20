@@ -21,42 +21,6 @@ public class LoginSteps extends WebSteps {
 
     private static final PageLogin page = new PageLogin();
     private static final PopUps popup = new PopUps();
-    
-    // private static final AutomationUser autouser = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
-    // REPLACED BY AUTOSTORY
-    // @Given("I log in to the login page")
-    // public void givenIAmLoggedInToTheLoginPage() {
-    // if (!page.verifyOnPage()) {
-    // page.load();
-    // page._textField().userName().type(autouser.getUsername());
-    // page._textField().password().type(autouser.getPassword());
-    // whenIClickSignIn();
-    // }
-    // }
-
-    @Given("I am on the login page")
-    @Aliases(values = { "I open the Login Page" })
-    public void givenIAmOnTheLogInPage() {
-        if (!page.verifyOnPage()) {
-            page.load();
-        }
-    }
-
-    @When("I am on the login page")
-    @Aliases(values = { "I open the Login Page" })
-    public void whenIAmOnTheLogInPage() {
-        if (!page.verifyOnPage()) {
-            page.load();
-        }
-    }
-
-    @Then("I should remain on the Login Page")
-    @Alias("I am still on the Login Page")
-    public void thenIShouldRemainOnTheLoginPage() {
-        if (!page.verifyOnPage()) {
-            page.load();
-        }
-    }
 
     // @When("I type an user name in the wrong case")
     // public void whenITypeAnUserNameInTheWrongCase() {
@@ -64,105 +28,10 @@ public class LoginSteps extends WebSteps {
     //
     // }
 
-    // @When("I type a valid user name")
-    // public void whenITypeAValidUserName() {
-    // page._textField().userName().type(autouser.getUsername());
-    // }
-
-    @When("I type an invalid user name")
-    public void whenITypeAnInvalidUserName() {
-        page._textField().userName().type("thiswillneverbeavalidusername");
-    }
-
-    // @When("I type a valid password")
-    // public void whenITypeAValidPassword() {
-    // page._textField().password().type(autouser.getPassword());
-    // }
-
-    @When("I type an invalid password")
-    public void whenITypeAnInvalidPassword() {
-        page._textField().password().type("invalidpasswordentered");
-    }
-
     // @When("I type a password in the wrong case")
     // public void whenITypeAPasswordInTheWrongCase() {
     // page._textField().password().type(MasterTest.switchCase(autouser.getPassword()));
     // }
-
-    @When("I close the login error alert message")
-    @Then("I close the login error alert message")
-    public void whenICloseTheAlertMessage() {
-        loginPage._popUp().loginError()._button().ok().click();
-    }
-
-    @Then("I get an alert 'Incorrect user name or password. Please try again.'")
-    public void thenIGetAnAlertIncorrectUserNameOrPasswordPleaseTryAgain() {
-        page._popUp().loginError()._text().message().assertEquals();
-    }
-
-    @Then("the name and password fields are blank")
-    public void thenTheNameAndPasswordFieldsAreBlank() {
-
-        validateUserNameField("");
-        validateUserPasswordField("");
-
-    }
-
-    @Then("the name field is $text")
-    public void validateUserNameField(String text) {
-
-        page._textField().userName().validate(text);
-        page._textField().userName().focus();
-
-    }
-
-    @Then("the password field is $password")
-    public void validateUserPasswordField(String password) {
-        page._textField().password().validate(password);
-    }
-
-    // REPLACED BY AUTOSTORY
-    @Then("I confirm the page contains all necessary elements")
-    public void thenIConfirmThePageContainsAllNecessaryElements() {
-        Boolean validate = page._textField().userName().isPresent() & page._textField().userName().focus().isPresent() & page._textField().password().isPresent() & page._button().logIn().isPresent()
-                & page._link().forgotUsernamePassword().isPresent() & page._text().version().isPresent();
-
-        page.validateTrue(validate, "All elements exist on this page");
-    }
-
-    @Then("I click the 'Forgot your user name or password?' link")
-    @When("I click the 'Forgot your user name or password?' link")
-    public void whenIClickTheForgotYourUserNameOrPasswordLink() {
-        page._link().forgotUsernamePassword().click();
-    }
-
-    @When("I enter a email address not in the database into the email address field")
-    public void whenIEnterTextIntoTheEmailAddressField() {
-        page._popUp().forgotPassword()._textField().email().type("test@test.com");
-    }
-
-    @When("I click cancel")
-    public void whenIClickCancel() {
-        page._popUp().forgotPassword()._button().cancel().click();
-    }
-
-    @Then("the 'Forgot you user name or password?' window is closed")
-    public void thenTheForgotYouUserNameOrPasswordWindowIsClosed() {
-        page._popUp().forgotPassword()._text().header().validateVisibility(false);
-    }
-
-    @Then("I am on the login page")
-    @Aliases(values = { "I open the Login Page" })
-    public void thenIAmOnTheLogInPage() {
-        if (!page.verifyOnPage()) {
-            page.load();
-        }
-    }
-
-    @Then("the email address text field is blank")
-    public void thenTheEmailAddressTextFieldIsBlank() {
-        page._popUp().forgotPassword()._textField().email().validate("");
-    }
 
     @When("I enter non valid email text into the email address field")
     public void whenIEnterNonValidEmailTextIntoTheEmailAddressField() {
@@ -193,32 +62,6 @@ public class LoginSteps extends WebSteps {
                                                                                          * doesn't conform to rule * All other characters, inclusive of a blank space and a quoted
                                                                                          * string (i.e. between double quotes), are NOT allowed Domain Name
                                                                                          */
-    }
-
-    @When("I click send")
-    public void whenIClickSend() {
-        page._popUp().forgotPassword()._button().send().click();
-    }
-
-    @Then("the alert 'Incorrect format' appears above the email address field")
-    public void thenTheAlertIncorrectFormatAppearsAboveTheEmailAddressField() {
-        page._popUp().forgotPassword()._text().error().validate("Incorrect format (jdoe@tiwipro.com)");
-    }
-
-    @Then("the alert 'Required' appears above the email address field")
-    public void thenTheAlertRequiredAppearsAboveTheEmailAddressField() {
-        page._popUp().forgotPassword()._text().error().validate("Required");
-    }
-
-    @Then("the alert 'Incorrect e-mail address' appears above the email address field")
-    public void thenTheAlertIncorrectEmailAddressAppearsAboveTheEmailAddressField() {
-        page._popUp().forgotPassword()._text().error().validate("Incorrect e-mail address");
-    }
-
-    @Then("the 'Forgot user name or password' pop up displays correctly with all elements")
-    public void thenTheForgotUserNameOrPasswordPopUpDisplaysCorrectlyWithAllElements() {
-        page._popUp().forgotPassword().equals(popup);
-
     }
 
     //
@@ -345,93 +188,6 @@ public class LoginSteps extends WebSteps {
     // adminUsers.load();
     // }
 
-    // @Given("I am on the $firstWord $secondWord $thirdWord page")
-    // public void givenIAmOnThePage(String firstWord, String secondWord, String thirdWord){
-    // MasterTest.print("public void givenIAmOnThePage(String "+firstWord+", String "+secondWord+", String "+thirdWord+")", Level.DEBUG);
-    // PageTeamDashboardStatistics dummyPage = new PageTeamDashboardStatistics();
-    //
-    // if(firstWord.equalsIgnoreCase("live") && secondWord.equalsIgnoreCase("fleet"))
-    // dummyPage._link().liveFleet().click();
-    // else
-    // test.addError("Automation Framework does not know about the '"+firstWord+" "+secondWord+" "+thirdWord+"' page");
-    //
-    // PageAdminUsers adminUsers = new PageAdminUsers();
-    // adminUsers.load();
-    // }
-
-    // @When("I enter a valid username password combination")
-    // public void whenIEnterAValidUsernamePasswordCombination() {
-    // login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
-    // loginPage._textField().userName().type(login.getUsername());// Type valid username
-    // loginPage._textField().password().type(login.getPassword());// Type valid password
-    // }
-
-    // @When("I attempt to login with a blocked username password combination")
-    // public void whenIAttemptToLoginWithABlockedUsernamePasswordCombination() {
-    // login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusInactive);
-    // loginPage.loginProcess(login.getUsername(), login.getPassword());
-    // }
-
-    @Then("I should get the Access Blocked message")
-    @Aliases(values = { "I get the Access Blocked message", "I get the Access Blocked alert", "I get a Access Blocked alert" })
-    public void thenIShouldGetAccessBlockedMessage() {
-        String BLOCK_TEXT = "Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.";
-        loginPage._popUp().loginError()._text().message().assertEquals(BLOCK_TEXT);
-    }
-
-    @When("I attempt to login with a empty username password combination")
-    public void whenIAttemptToLoginWithAEmptyUsernamePasswordCombination() {
-        loginPage.loginProcess("", "");
-    }
-
-    @Given("I am not already logged into the portal")
-    public void givenIAmNotAlreadyLoggedIntoThePortal() {
-        loginPage.verifyNotLoggedIn();
-    }
-
-    @When("I navigate directly to the $pageName page")
-    public void whenINavigateDirectlyToAGivenPage(String pageName) {
-        // TODO: jwimmer: this needs to Dynamically determine the pageObject to .load() based on the pageName variable
-        PageMyMessages myMessagesPage = new PageMyMessages();
-        myMessagesPage.load();
-    }
-
-//    @When("I attempt to login with a valid username password combination")
-//    public void whenIAttemptToLoginWithAValidUsernamePasswordCombination() {
-//        login = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive);
-//        loginPage.loginProcess(login);
-//    }
-
-    @Then("I should end up on the $pageName page")
-    public void thenIShouldEndUpOnTheGivenPage(String pageName) {
-        // TODO: jwimmer: this needs to Dynamically determine the pageObject to .verify... based on the pageName variable
-        PageMyMessages myMessagesPage = new PageMyMessages();
-        myMessagesPage.verifyOnPage();
-    }
-
-//    @When("I attempt to login with a valid username invalid password combination")
-//    public void whenIAttemptToLoginWithAValidUsernameInvalidPasswordCombination() {
-//        String validUsername = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive).getUsername();
-//        String invalidPassword = AutomationUsers.getUsers().getOneBy(LoginCapability.PasswordInvalid).getPassword();
-//
-//        loginPage.loginProcess(validUsername, invalidPassword);
-//    }
-
-//    @When("I attempt to login with an invalid username valid password combination")
-//    public void whenIAttemptToLoginWithAnInvalidUsernameValidPasswordCombination() {
-//        String invalidUsername = AutomationUsers.getUsers().getOneBy(LoginCapability.PasswordInvalid).getUsername();
-//        String validPassword = AutomationUsers.getUsers().getOneBy(LoginCapability.StatusActive).getPassword();
-//
-//        loginPage.loginProcess(invalidUsername, validPassword);
-//    }
-
-    @Then("the Login Page fields should be empty")
-    public void thenTheLoginPageFieldsShouldBeEmpty() {
-        loginPage.verifyOnPage();
-        loginPage._textField().userName().assertEquals();
-        loginPage._textField().password().assertEquals();
-    }
-
     private String flipCase(String original) {
         char[] charArray = new char[original.length()];
         original.getChars(0, original.length(), charArray, 0);
@@ -510,12 +266,6 @@ public class LoginSteps extends WebSteps {
             test.addError("The " + finalFocusedElement + " does NOT have focus");
     }
 
-    // REPLACED BY AUTOSTORY
-    // @Then("the Login Page should render as expected")
-    // public void thenTheLoginPageShouldRenderAsExpected() {
-    // loginPage.verifyOnPage();
-    // }
-
     @When("I change the username to an incorrect case")
     public void whenIChangeTheUsernameToAnIncorrectCase() {
         String originalUserName = loginPage._textField().userName().getText();
@@ -527,6 +277,7 @@ public class LoginSteps extends WebSteps {
         loginPage._textField().password().type(incorrectCaseUserName);
     }
     
+    //TODO: MWEISS - I am still working on how this will work
     @Then("the Sort By Date Time column sorts correctly")
     public void thenIValidateTheSortByDateTimeColumnSortsCorrectly() {
         
