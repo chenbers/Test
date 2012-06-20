@@ -91,8 +91,8 @@
 		<log4j.version>1.2.12</log4j.version>
 		<jmockit.version>0.999.4</jmockit.version>
 		<hos.version>0.0.16</hos.version>
-		<selenium.version>2.21.0</selenium.version>
-		<jbehave.core.version>3.6.4</jbehave.core.version>
+		<selenium.version>2.24.1</selenium.version>
+		<jbehave.core.version>3.6.7</jbehave.core.version>
 	</properties>
 	<build>
 		<finalName>pro</finalName>

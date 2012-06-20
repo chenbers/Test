@@ -169,7 +169,8 @@ public enum DeviceNoteTypes  {
      * Attributes ATTR_GPS_SATS_SNR_MEDIAN, [ATTR_VIOLATION_FLAGS]
      */
     WSZONES_ARRIVAL(78),
-    
+
+    WHAT_THE_HECK(79),
 
     TEXT_MSG_CANNED(80, EventAttr.EVENT_CODE),
     QUEUE_FULL(81),
