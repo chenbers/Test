@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
 
 public class DHXDropDown extends DropDown implements Selectable {
@@ -140,7 +141,7 @@ public class DHXDropDown extends DropDown implements Selectable {
         myEnum.setID(xpath);
         myEnum.replaceNumber(optionNumber).replaceWord(myEnum.toString());
         getSelenium().click(myEnum);
-        pause(3, "Pause so the browser has a chance to catch up");
+        AutomationThread.pause(3, "Pause so the browser has a chance to catch up");
         return this;
     }
     

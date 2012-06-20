@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 
 public abstract class AdminTables extends AdminBar {
@@ -25,7 +26,7 @@ public abstract class AdminTables extends AdminBar {
             return new TextButton(AdminBarEnum.SEARCH_BUTTON, page){
                 public ClickableObject click() {
                     super.click();
-                    pause(2, "arbitrary 2 second wait for ajax table refresh");
+                    AutomationThread.pause(2, "arbitrary 2 second wait for ajax table refresh");
                     return this;
                 }
             };

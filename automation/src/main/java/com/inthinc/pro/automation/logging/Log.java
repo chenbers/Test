@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.rally.PrettyJSON;
 
 /**
@@ -177,11 +177,11 @@ public class Log {
             if (item == null){
                 converted[i] = "error";
             } else if (item instanceof Throwable){
-                converted[i] = StackToString.toString((Throwable) item);
+                converted[i] = AutomationStringUtil.toString((Throwable) item);
             } else if (item instanceof JSONObject){
                 converted[i] = PrettyJSON.toString(item);
             } else if (item instanceof StackTraceElement[]){
-                converted[i] = StackToString.toString((StackTraceElement[]) item);
+                converted[i] = AutomationStringUtil.toString((StackTraceElement[]) item);
             } else if (item instanceof Number){
                 converted[i] = item;
             } else {

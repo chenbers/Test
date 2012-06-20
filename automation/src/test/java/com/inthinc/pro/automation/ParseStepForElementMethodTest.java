@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCandidate;
@@ -21,11 +22,13 @@ import org.junit.Test;
 import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.jbehave.AutoCustomSteps;
+import com.inthinc.pro.automation.jbehave.AutoMethodParser;
+import com.inthinc.pro.automation.jbehave.AutoStepVariables;
 import com.inthinc.pro.automation.jbehave.AutoSteps;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.RandomValues;
 
 @Ignore
@@ -33,11 +36,11 @@ public class ParseStepForElementMethodTest {
     
     private static final int numOfTimesToLoop = 1000;
     
-    private MasterTest test;
+    private AutoCustomSteps test;
     private AutomationPropertiesBean apb;
     
     public ParseStepForElementMethodTest(){
-        test = new MasterTest(){};
+        test = new AutoCustomSteps();
         apb = AutomationProperties.getPropertyBean();
     }
     
@@ -46,13 +49,13 @@ public class ParseStepForElementMethodTest {
      */
     @Test
     public void testDefaultCreds(){
-        test.useParamsToSetDefaultUser(MasterTest.getMainuser());
+        test.useParamsToSetDefaultUser(AutoCustomSteps.getMainuser());
         assertEquals("Unable to get the default user from the string", 
                 apb.getMainAutomation().get(1), getUsername());
         assertEquals("Unable to get the default user from the string", 
                 apb.getPassword(), getPassword());
         
-        test.useParamsToSetDefaultUser(MasterTest.getEditableaccountuser());
+        test.useParamsToSetDefaultUser(AutoCustomSteps.getEditableaccountuser());
         assertEquals("Unable to get the default user from the string", 
                 apb.getEditableAccount().get(1), getUsername());
         assertEquals("Unable to get the default user from the string", 
@@ -60,11 +63,11 @@ public class ParseStepForElementMethodTest {
     }
     
     private String getPassword(){
-        return MasterTest.getComparator("When I type my password into the Password field");
+        return AutoStepVariables.getComparator("When I type my password into the Password field");
     }
     
     private String getUsername(){
-        return MasterTest.getComparator("When I type my user name into the Username field");
+        return AutoStepVariables.getComparator("When I type my user name into the Username field");
     }
     
     /**
@@ -74,20 +77,28 @@ public class ParseStepForElementMethodTest {
     public void testQuotedValue(){
         String value = "This is my test value 123 *(&";
         String stepAsString = "I type \"" + value +"\" into the Username field";
-        assertEquals("Was unable to get the value from the step", value, MasterTest.getComparator(stepAsString));
+        assertEquals("Was unable to get the value from the step", value, AutoStepVariables.getComparator(stepAsString));
     }
+    
+    private final static String[] variableStrings = {"This is my test value 321 !@#$", "Idle &#37;", 
+        "Incorrect user name or password.\n\nPlease try again.", "!@\t#$%\n^&*() &#37;", "New and Confirm New Password do not match"};
+    private final static String[] variableNames = {"my stinking variable name"};
     
     /**
      * Test that we can save any variable and get it again
      */
     @Test
     public void testSavingVariable(){
-        String value = "This is my test value 321 !@#$";
-        String variableName = "my stinking variable name";
-        String saveStep = "Then I save the Login button as " + variableName;
-        MasterTest.setComparator(saveStep, value);
-        String useStep = "I type " + variableName + " into the Login field";
-        assertEquals("Was unable to get the value from the step", value, MasterTest.getComparator(useStep));
+        for (String value : variableStrings){
+            String unescaped = StringEscapeUtils.unescapeJava(value);
+            unescaped = StringEscapeUtils.unescapeHtml(value);
+            for (String variableName : variableNames){
+                String saveStep = "Then I save the Login button as " + variableName;
+                AutoStepVariables.setComparator(saveStep, value);
+                String useStep = "I type " + variableName + " into the Login field";
+                assertEquals("Was unable to get the value from the step", unescaped, AutoStepVariables.getComparator(useStep));
+            }
+        }
     }
     
     /**
@@ -95,12 +106,17 @@ public class ParseStepForElementMethodTest {
      */
     @Test
     public void testGettingSavedVariable(){
-        String value = "This is my test value 321 !@#$";
-        String variableName = "my stinking variable name";
-        String saveStep = "Then I save the Login button as " + variableName;
-        MasterTest.setComparator(saveStep, value);
-        String useStep = "I validate the Login button is " + variableName;
-        assertEquals("Was unable to get the value from the step", value, MasterTest.getComparator(useStep));
+        for (String value : variableStrings){
+
+            String unescaped = StringEscapeUtils.unescapeJava(value);
+            unescaped = StringEscapeUtils.unescapeHtml(value);
+            for (String variableName : variableNames){
+            String saveStep = "Then I save the Login button as " + variableName;
+            AutoStepVariables.setComparator(saveStep, value);
+            String useStep = "I validate the Login button is " + variableName;
+            assertEquals("Was unable to get the value from the step", unescaped, AutoStepVariables.getComparator(useStep));
+            }
+        }
     }
     
     /**
@@ -108,9 +124,13 @@ public class ParseStepForElementMethodTest {
      */
     @Test
     public void testComparingToQuoted(){
-        String value = "This is my test value 321 !@#$";
-        String useStep = "I validate the Login button is \"" + value + "\"";
-        assertEquals("Was unable to get the value from the step", value, MasterTest.getComparator(useStep));
+
+        for (String value : variableStrings){
+            String unescaped = StringEscapeUtils.unescapeJava(value);
+            unescaped = StringEscapeUtils.unescapeHtml(value);
+            String useStep = "I validate the Login button is \"" + value + "\"";
+            assertEquals("Was unable to get the value from the step", unescaped, AutoStepVariables.getComparator(useStep));
+        }
     }
     
     /**
@@ -119,7 +139,7 @@ public class ParseStepForElementMethodTest {
     @Test
     public void testCompositeDefaultLoginStep(){
         String mainAutomationStep = "Given I am logged in";
-        MasterTestSteps steps = new MasterTestSteps();
+        CustomAutomationSteps steps = new CustomAutomationSteps();
         List<StepCandidate> candidates = steps.listCandidates();
         StepCandidate candidate = candidateMatchingStep(candidates, mainAutomationStep);
         Map<String, String> noNamedParameters = new HashMap<String, String>();
@@ -142,12 +162,12 @@ public class ParseStepForElementMethodTest {
      */
     @Test
     public void testCompositeEditAccountLoginStep(){
-        String editAccountStep = "Given I am logged in " + MasterTest.getEditableaccountuser();
-        MasterTestSteps steps = new MasterTestSteps();
+        String editAccountStep = "Given I am logged in " + AutoCustomSteps.getEditableaccountuser();
+        CustomAutomationSteps steps = new CustomAutomationSteps();
         List<StepCandidate> candidates = steps.listCandidates();
         StepCandidate candidate = candidateMatchingStep(candidates, editAccountStep);
         Map<String, String> namedParameters = new HashMap<String, String>();
-        namedParameters.put("params", MasterTest.getEditableaccountuser());
+        namedParameters.put("params", AutoCustomSteps.getEditableaccountuser());
         List<Step> composedSteps = new ArrayList<Step>();
         candidate.addComposedSteps(composedSteps, editAccountStep, namedParameters, candidates);
         for (Step step : composedSteps) {
@@ -162,9 +182,9 @@ public class ParseStepForElementMethodTest {
         assertThat("The password didn't match, if it is changed it should be fixed", getPassword(), is(apb.getPassword()));
     }
     
-    static class MasterTestSteps extends AutoSteps{
-        public MasterTestSteps(){
-            super(new MostUsefulConfiguration(), new MasterTest(){});
+    static class CustomAutomationSteps extends AutoSteps{
+        public CustomAutomationSteps(){
+            super(new MostUsefulConfiguration(), new AutoCustomSteps());
         }
     }
     
@@ -181,7 +201,7 @@ public class ParseStepForElementMethodTest {
         
             for (Method method : parseMethods){
                 try {
-                    Object[] params = test.getParameters(falseStep, method);
+                    Object[] params = AutoMethodParser.getParameters(falseStep, method);
                     checkParams(params, false, randInt, string);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
@@ -196,7 +216,7 @@ public class ParseStepForElementMethodTest {
             
             for (Method method : parseMethods){
                 try {
-                    Object[] params = test.getParameters(trueStep, method);
+                    Object[] params = AutoMethodParser.getParameters(trueStep, method);
                     checkParams(params, true, randInt, string);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
@@ -257,7 +277,7 @@ public class ParseStepForElementMethodTest {
             for (WebDateFormat format : EnumSet.allOf(WebDateFormat.class)) {
                 AutomationCalendar time = new AutomationCalendar(epochStamp, format);
                 String step = "And I select \"" + time + "\" in the Start dropdown";
-                Object[] params = co.getParameters(step, method);
+                Object[] params = AutoMethodParser.getParameters(step, method);
                 assertEquals("We should only have gotten 1 parameter", 1, params.length);
                 assertEquals("The date was not parsed correctly", time, params[0]);
             }
@@ -278,8 +298,8 @@ public class ParseStepForElementMethodTest {
             int epochStamp = Integer.parseInt(rand.getIntString(9)) + 1000000000;
             for (WebDateFormat format : EnumSet.allOf(WebDateFormat.class)) {
                 AutomationCalendar time = new AutomationCalendar(epochStamp, format);
-                MasterTest.setComparator(saveStep, time);
-                Object[] params = co.getParameters(step, method);
+                AutoStepVariables.setComparator(saveStep, time);
+                Object[] params = AutoMethodParser.getParameters(step, method);
                 assertEquals("We should only have gotten 1 parameter", 1, params.length);
                 assertEquals("The date was not parsed correctly", time, params[0]);
             }

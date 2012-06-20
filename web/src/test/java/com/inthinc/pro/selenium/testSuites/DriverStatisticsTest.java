@@ -1,13 +1,10 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.LoginCapability;
-import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationUsers;
+import com.inthinc.pro.automation.jbehave.AutoCustomSteps;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
 import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
@@ -138,12 +135,12 @@ public class DriverStatisticsTest extends WebRallyTest {
         set_test_case("TC4578");
 
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
-        
+        AutoCustomSteps pageStuff = new AutoCustomSteps();
         PageTeamDriverStatistics ptds = new PageTeamDriverStatistics();
         String team = ptds._text().teamName().getText();//TODO: this is failing so the var team is getting set to NULL
-        savePageLink();
+        pageStuff.savePageLink();
         ptds._link().logout().click();
-        openSavedPage();
+        pageStuff.openSavedPage();
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
         assertStringContains("dashboard", ptds.getCurrentLocation());
         ptds._text().teamName().assertEquals(team);

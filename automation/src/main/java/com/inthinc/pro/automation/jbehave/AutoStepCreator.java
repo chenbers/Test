@@ -28,7 +28,6 @@ import org.jbehave.core.steps.StepType;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutoStepCreator extends StepCreator {
     
@@ -293,7 +292,7 @@ public class AutoStepCreator extends StepCreator {
                 stepMonitor.performing(stepAsString, dryRun);
                 if (!dryRun) {
                     Object result = method.invoke(instance, parameters);
-                    MasterTest.setComparator(stepAsString, result);
+                    AutoStepVariables.setComparator(stepAsString, result);
                     Log.info("Executing method %s%s returned %s", method.getName(), asList(parameters), result);
                 }
                 return successful(stepAsString);

@@ -7,6 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.ErrorLevel;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
@@ -82,7 +83,7 @@ public class VerifyPagObjectsTest extends WebRallyTest {
         for(String desiredOption: desiredOptions){
             waysmartReport._dropDown().report().select(desiredOption);
             waysmartReport._dropDown().report().assertEquals(desiredOption);
-            pause(5, "just pausing to manually inspect test");
+            AutomationThread.pause(5, "just pausing to manually inspect test");
         }
 //		Click Notifications.
 //        deviceReport._link().notifications().click();
@@ -106,7 +107,7 @@ public class VerifyPagObjectsTest extends WebRallyTest {
 //		Click Live Fleet.
 //		Click HOS.
 //		Select a Driver and click Refresh.
-        addError("pageObjects don't exist", "notification pageObjects need created", ErrorLevel.ERROR.FAIL);
+        addError("pageObjects don't exist", "notification pageObjects need created", ErrorLevel.FAIL);
         
 //		Click Reports.
         //deviceReport._link().reports().click();

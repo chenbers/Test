@@ -149,6 +149,7 @@ public class AutoAnnotationBuilder extends AnnotationBuilder {
                     stepsInstances.add(instanceOf(Object.class, stepsClass));
                 }
                 stepsInstances.add(test);
+                stepsInstances.add(new AutoCustomSteps());
                 stepsFactory = new AutoStepsFactory(configuration, stepsInstances);
             }
         }

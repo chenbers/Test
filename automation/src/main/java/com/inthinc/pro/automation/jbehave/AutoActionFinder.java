@@ -34,21 +34,21 @@ public class AutoActionFinder {
             if (elementInstance instanceof MasterTest){ 
                 String save = RegexTerms.getMatch(RegexTerms.saveAlias, stepAsString);
                 if (!save.equals("")){
-                    Method method = ((MasterTest) elementInstance).parseStep(stepAsString.replace(save, "get text"), elementType);
-                    Object[] parameters = ((MasterTest) elementInstance).getParameters(step.stepAsString(), method);
+                    Method method = AutoMethodParser.parseStep(stepAsString.replace(save, "get text"), elementType, elementInstance.getClass());
+                    Object[] parameters = AutoMethodParser.getParameters(step.stepAsString(), method);
                     
                     return stepCreator.createSaveVariableStep(step, elementInstance, method, parameters);
                 
                 } else if (stepAsString.contains("validate") || stepAsString.contains("assert")){
-                    Map<Method, Object[]> methods = ((MasterTest) elementInstance).parseValidationStep(step, elementType);
+                    Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, elementType, elementInstance.getClass());
                     Entry<Method, Object[]> method = methods.entrySet().iterator().next();
 
                     return stepCreator.createValidationStep(step, elementInstance, method.getKey(), method.getValue());
                 }
                     
                     
-                Method method = ((MasterTest) elementInstance).parseStep(stepAsString, elementType);
-                Object[] parameters = ((MasterTest) elementInstance).getParameters(step.stepAsString(), method);
+                Method method = AutoMethodParser.parseStep(stepAsString, elementType, elementInstance.getClass());
+                Object[] parameters = AutoMethodParser.getParameters(step.stepAsString(), method);
                 return stepCreator.createPageStep(step, elementInstance, method, parameters);
             } else if (elementInstance instanceof TableBased<?>){
                 @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.automation.interfaces.IndexEnum;
-import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 
 
 
@@ -513,7 +513,7 @@ public enum DeviceProps implements IndexEnum {
         for (DeviceProps p : EnumSet.allOf(DeviceProps.class)) {
             lookupByCode.put(p.getIndex(), p);
             String name = p.name();
-            String fixedName = MasterTest.capitalizeString(name.substring(0,name.length()-2), "_").replace("_", " ");
+            String fixedName = AutomationStringUtil.capitalizeString(name.substring(0,name.length()-2), "_").replace("_", " ");
             
             if (name.endsWith("_T")){
             	tiwiByName.put(fixedName, p);

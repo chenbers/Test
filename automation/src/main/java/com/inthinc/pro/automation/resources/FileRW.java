@@ -16,7 +16,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.net.URLCodec;
 
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 
 public class FileRW {
 	
@@ -84,7 +84,7 @@ public class FileRW {
 				results.add(in.readLine());
 			}
 		} catch (IOException e) {
-			Log.debug(StackToString.toString(e));
+			Log.debug(AutomationStringUtil.toString(e));
 		}
 		close();
 		return results;
@@ -98,7 +98,7 @@ public class FileRW {
 //			stream.close();
 			in.close();
 		} catch (IOException e) {
-			Log.debug(StackToString.toString(e));
+			Log.debug(AutomationStringUtil.toString(e));
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class FileRW {
             // Create file on disk (if it doesn't exist)
             success = file.createNewFile();
         } catch (IOException e) {
-            Log.debug(StackToString.toString(e));
+            Log.debug(AutomationStringUtil.toString(e));
         }
 
         if (success) {
@@ -128,7 +128,7 @@ public class FileRW {
 			image = ImageIO.read(new File(fileName));
 			return image;
 		} catch (IOException e) {
-			Log.debug(StackToString.toString(e));
+			Log.debug(AutomationStringUtil.toString(e));
 		}
 		return null;
 	}

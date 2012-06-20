@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.inthinc.pro.automation.interfaces.IndexEnum;
-import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 
 public enum EditColumnsEnums implements IndexEnum {
     
@@ -114,7 +114,7 @@ public enum EditColumnsEnums implements IndexEnum {
     
     @Override
     public String toString(){
-        return MasterTest.captalizeEnumName(name());
+        return AutomationStringUtil.captalizeEnumName(name());
     }
     
     private static final Map<Tabs, Set<EditColumnsEnums>> pages = new HashMap<Tabs, Set<EditColumnsEnums>>();

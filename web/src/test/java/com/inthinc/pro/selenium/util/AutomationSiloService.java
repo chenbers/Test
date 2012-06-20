@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.DeviceMapper;
@@ -108,10 +108,10 @@ public class AutomationSiloService {
 			return mapper.convertToModelObject(portalProxy.getDevice(id),
 					Device.class);
 		} catch (EmptyResultSetException error) {
-			logger.debug(StackToString.toString(error));
+			logger.debug(AutomationStringUtil.toString(error));
 			return null;
 		} catch (Exception e) {
-			logger.debug(StackToString.toString(e));
+			logger.debug(AutomationStringUtil.toString(e));
 			return null;
 		}
 	}
@@ -123,10 +123,10 @@ public class AutomationSiloService {
 			return mapper.convertToModelObject(portalProxy.getDevice(id),
 					Device.class);
 		} catch (EmptyResultSetException error) {
-			logger.debug(StackToString.toString(error));
+			logger.debug(AutomationStringUtil.toString(error));
 			return null;
 		} catch (Exception e) {
-			logger.debug(StackToString.toString(e));
+			logger.debug(AutomationStringUtil.toString(e));
 			return null;
 		}
 	}
@@ -178,10 +178,10 @@ public class AutomationSiloService {
 			return mapper.convertToModelObject(portalProxy.getUser(userID),
 					User.class);
 		} catch (EmptyResultSetException e) {
-			logger.debug(StackToString.toString(e));
+			logger.debug(AutomationStringUtil.toString(e));
 			return null;
 		} catch (Exception e) {
-			logger.debug(StackToString.toString(e));
+			logger.debug(AutomationStringUtil.toString(e));
 			return null;
 		}
 	}

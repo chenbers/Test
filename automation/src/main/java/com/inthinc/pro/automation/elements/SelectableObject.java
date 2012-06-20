@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Xpath;
@@ -51,7 +52,7 @@ public class SelectableObject extends Text implements Selectable {
     public SelectableObject selectRow(Integer optionNumber) {
         optionNumber--;
         getSelenium().select(myEnum, "index=" + optionNumber);
-        pause(2, "Wait for propogation");
+        AutomationThread.pause(2, "Wait for propogation");
         String selected = getSelenium().getSelectedIndex(myEnum);
         assertEquals(optionNumber.toString(), selected);
         return this;

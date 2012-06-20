@@ -13,7 +13,7 @@ import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.rally.RallyHTTP.RallyFields;
 
 /**
@@ -151,7 +151,7 @@ public class TestCaseResult extends RallyObject {
             Log.info("The " + fieldFailed
                     + " is missing from the test case results.");
             Log.info(PrettyJSON.toString(testCaseResults));
-            Log.info(StackToString.toString(e));
+            Log.info(AutomationStringUtil.toString(e));
         } catch(Exception e){
             Log.debug("something bad happened with send_test_case_results()\n%s", e);
         }

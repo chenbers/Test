@@ -3,7 +3,7 @@ package com.inthinc.pro.automation.test;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 
 public class BrowserTest extends Test{
 
@@ -22,7 +22,7 @@ public class BrowserTest extends Test{
             try {
                 setBuildNumber(getSelenium().getText(webVersionID));
             } catch (Exception e) {
-                Log.error(StackToString.toString(e));
+                Log.error(AutomationStringUtil.toString(e));
             }finally{
                     killSelenium();
             }

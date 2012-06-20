@@ -32,7 +32,7 @@ import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.KeyCommands;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 
@@ -309,7 +309,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             try{
                 return replaceSpacers(innerHtml);
             } catch (Exception e){
-                Log.info(StackToString.toString(e));
+                Log.info(AutomationStringUtil.toString(e));
             }
         }
         String text = getText(element);

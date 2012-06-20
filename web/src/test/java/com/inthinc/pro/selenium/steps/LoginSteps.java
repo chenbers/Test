@@ -6,15 +6,10 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
-import com.inthinc.pro.automation.enums.ErrorLevel;
-import com.inthinc.pro.automation.enums.LoginCapability;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
 import com.inthinc.pro.selenium.pageObjects.PopUps;
 
 public class LoginSteps extends WebSteps {
@@ -122,17 +117,6 @@ public class LoginSteps extends WebSteps {
     @Then("the password field is $password")
     public void validateUserPasswordField(String password) {
         page._textField().password().validate(password);
-    }
-
-    @When("I press the enter key")
-    public void whenIPressTheEnterKey() {
-        page.enterKey();
-    }
-
-    // Tab key is not working yet
-    @When("I press the tab key")
-    public void whenIPressTheTabKey() {
-        test.tabKey();
     }
 
     // REPLACED BY AUTOSTORY

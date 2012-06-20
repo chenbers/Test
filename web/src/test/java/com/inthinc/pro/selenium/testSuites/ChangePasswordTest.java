@@ -11,6 +11,7 @@ import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 
@@ -75,7 +76,7 @@ public class ChangePasswordTest extends WebTest {
 	public void passwordStrengthTest(){
 		resetPasswordExpiry(_90DaysAgo);
 		resetLoginExpiry(_15DaysAgo);
-		pause(5, "");
+		AutomationThread.pause(5, "");
 		login.loginProcess("passwords", initialPassword);
 		redFlags._popUp().updatePasswordReminder()._link().changePassword().click();
 		assertTrue(redFlags._popUp().changePassword()._textField().currentPassword().isPresent()==true,"The popup didn't appear");
@@ -84,7 +85,7 @@ public class ChangePasswordTest extends WebTest {
 		redFlags._popUp().changePassword()._textField().confirmNewPassword().type(weakPassword);
 		redFlags._popUp().changePassword()._text().passwordStrength().compare("Minimum Password Strength Not Met");
 		redFlags._popUp().changePassword()._button().change().click();
-		pause(30, "");
+		AutomationThread.pause(30, "");
 		redFlags._popUp().changePassword()._textField().currentPassword().assertVisibility(true);
 		redFlags._popUp().changePassword()._text().newPasswordError().compare("Minimum Password Strength Not Met");
 	}
@@ -94,7 +95,7 @@ public class ChangePasswordTest extends WebTest {
 	public void onlyHaveToChangeOnce(){
 		resetPasswordExpiry(_90DaysAgo);
 		resetLoginExpiry(_15DaysAgo);
-		pause(5, "");
+		AutomationThread.pause(5, "");
 		login.loginProcess("passwords", initialPassword);
 		redFlags._popUp().updatePasswordReminder()._link().changePassword().click();
 		assertTrue(redFlags._popUp().changePassword()._textField().currentPassword().isPresent()==true,"The popup didn't appear");
@@ -103,7 +104,7 @@ public class ChangePasswordTest extends WebTest {
 		redFlags._popUp().changePassword()._textField().confirmNewPassword().type(strongPassword);
 		redFlags._popUp().changePassword()._button().change().click();
 		redFlags._link().notifications().click();
-		pause(30, "");
+		AutomationThread.pause(30, "");
 		redFlags._popUp().updatePasswordReminder()._link().changePassword().assertVisibility(false);
 	}
 

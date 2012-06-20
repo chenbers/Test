@@ -56,7 +56,7 @@ import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.utils.HTTPCommands;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 
 
 public class MCMProxyObject implements MCMService{
@@ -563,7 +563,7 @@ public class MCMProxyObject implements MCMService{
 	        	continue;
 	        } catch (Exception e) {
 	        	Log.wtf("Error from Note with IMEI: " + state.getImei() + "  "
-	                            + StackToString.toString(e) + "\n"
+	                            + AutomationStringUtil.toString(e) + "\n"
 	                            + sendingQueue + "\nCurrent Note Count is "
 	                            + DeviceStatistics.getHessianCalls()
 	                            + "\nCurrent time is: "

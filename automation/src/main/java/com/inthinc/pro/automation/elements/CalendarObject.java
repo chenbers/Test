@@ -1,18 +1,12 @@
 package com.inthinc.pro.automation.elements;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import com.inthinc.pro.automation.elements.ElementInterface.Calendar;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.utils.AutomationThread;
-import com.inthinc.pro.automation.utils.MasterTest;
 
 public class CalendarObject extends DropDown implements Calendar{
     
@@ -103,52 +97,5 @@ public class CalendarObject extends DropDown implements Calendar{
             AutomationThread.pause(250l);
         }
         return true;
-    }
-    
-    @Override
-    public Object[] getParameters(String stepAsString, Method method) {
-        
-        Class<?>[] parameters = method.getParameterTypes();
-        Object[] passParameters = new Object[parameters.length];
-
-        AutomationCalendar var = new AutomationCalendar();
-        if (stepAsString.contains("\"")){
-            int first = stepAsString.indexOf("\"") + 1;
-            int last = stepAsString.lastIndexOf("\"");
-            var = new AutomationCalendar(stepAsString.substring(first, last));
-        } else {
-            for (Map.Entry<String, String> variable : MasterTest.getVariables().entrySet()){
-                if (stepAsString.contains(variable.getKey())){
-                    try {
-                        var = new AutomationCalendar(variable.getValue());
-                        break;
-                    } catch (IllegalArgumentException e){
-                        continue;
-                    }
-                }
-            }
-        }
-        
-        passParameters[0] = var;
-        
-        int sign = 1;
-        if (Pattern.compile(RegexTerms.calendarSubtract).matcher(stepAsString).find()){
-            sign = -1;
-        }
-        
-        String days = RegexTerms.getMatch(RegexTerms.calendarDayDelta, stepAsString);
-        String months = RegexTerms.getMatch(RegexTerms.calendarMonthDelta, stepAsString);
-        String years = RegexTerms.getMatch(RegexTerms.calendarYearDelta, stepAsString);
-        if (!days.equals("")){
-            var.addToDay(Integer.parseInt(days) * sign);
-        }
-        if (!months.equals("")){
-            var.addToMonth(Integer.parseInt(months) * sign);
-        }
-        if (!years.equals("")){
-            var.addToYear(Integer.parseInt(years) * sign);
-        }
-        
-        return passParameters;
     }
 }
