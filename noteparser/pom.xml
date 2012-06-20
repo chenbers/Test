@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
 		<artifactId>root</artifactId>
-		<version>2.0.10-SNAPSHOT</version>
+		<version>2.0.10</version>
 	</parent>
 
 	<groupId>com.inthinc.pro.noteparser</groupId>
 	<artifactId>noteparser</artifactId>
-	<version>2.0.10-SNAPSHOT</version>
+	<version>2.0.10</version>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
 
