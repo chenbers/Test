@@ -30,8 +30,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
         PageExecutiveOverallExpansion.class, PageReportsDrivers.class, PageNotificationsSafety.class, PageTeamDriverStatistics.class, PageDriverPerformance.class,
         PageDriverPerformanceSpeed.class, PageDriverPerformanceSeatBelt.class, PageDriverPerformanceStyle.class, PageDriverPerformanceTrips.class,
         PageVehiclePerformanceSeatBelt.class, PageVehiclePerformanceSpeed.class, PageVehiclePerformanceStyle.class, PageVehiclePerformanceTrips.class,
-        PageTeamVehicleStatistics.class,
-        })
+        PageTeamVehicleStatistics.class })
 @StoryPath(path="EditMyAccount.story")
 public class EditMyAccountTest extends WebStories {
     
