@@ -6,17 +6,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextLinkNewWindow extends TextLink implements Clickable, TextBased {
 	
-	public TextLinkNewWindow(SeleniumEnums anEnum) {
-        super(anEnum);
-    }
-    public TextLinkNewWindow(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
-    }
-    public TextLinkNewWindow(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
-    }
-    public TextLinkNewWindow(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+	public TextLinkNewWindow(SeleniumEnums anEnum, Object ...objects) {
+        super(anEnum, objects);
     }
     
     @Override

@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public class DropDown extends SelectableObject implements Selectable {
     
     public DropDown(SeleniumEnums anEnum, Object ...objects) {
-        super(anEnum);
+        super(anEnum, objects);
     }
     
 }
