@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
@@ -138,11 +139,11 @@ public class PageDriverPerformanceTrips extends NavigationBar {
 	public class DriverTripsDropDowns extends NavigationBarDropDowns{
 	    
 	     public DropDown startDate(){
-	        return new DropDown(DriverPerformanceTripsEnum.START_DATE);
+	        return new CalendarObject(DriverPerformanceTripsEnum.START_DATE);
 	     }
 	        
 	     public DropDown endDate(){
-	        return new DropDown(DriverPerformanceTripsEnum.END_DATE);
+	        return new CalendarObject(DriverPerformanceTripsEnum.END_DATE);
 	     }
 	}
 	public class DriverTripsButtons extends NavigationBarButtons{
