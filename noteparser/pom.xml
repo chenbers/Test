@@ -38,14 +38,14 @@
 	</distributionManagement>
 -->
 	<dependencies>
-
+<!--
 		<dependency>
 			<groupId>com.inthinc.pro.dao</groupId>
 			<artifactId>dao</artifactId>
 			<version>2.0.10-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-
+-->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
