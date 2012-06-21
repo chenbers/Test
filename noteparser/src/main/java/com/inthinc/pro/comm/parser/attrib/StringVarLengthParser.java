@@ -4,10 +4,10 @@ import java.util.Map;
 
 public class StringVarLengthParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
+	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
 		int maxLength = 500;
-		AttribParserType parserType = Attrib.get(code).getAttribParserType();
+		AttribParserType parserType = Attrib.get(Integer.parseInt(code)).getAttribParserType();
 			
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH4))
         	maxLength = 4;

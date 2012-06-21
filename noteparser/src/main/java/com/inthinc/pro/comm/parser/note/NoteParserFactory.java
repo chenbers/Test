@@ -17,6 +17,10 @@ public class NoteParserFactory {
 	public final static int NOTE_WAYSMART_V3 = 3;
 	public final static int NOTEBC = 4;
 	
+	public final static String NOTEBC_METHOD = "notebc";
+	public final static String NOTEWS_METHOD = "notews";
+	public final static String NOTE_METHOD = "note";
+	
     public static NoteParser getParserForNoteVersion(int version)
     {
     	switch (version)
@@ -40,11 +44,11 @@ public class NoteParserFactory {
     {
     	
     	NoteParser parser = null;
-		if (method.equalsIgnoreCase("notebc")) 
+		if (method.equalsIgnoreCase(NOTEBC_METHOD)) 
 			parser =  NOTEBC_PARSER;
-		if (method.equalsIgnoreCase("notews")) 
+		if (method.equalsIgnoreCase(NOTEWS_METHOD)) 
 			parser = NOTEWS2_PARSER;
-		if (method.equalsIgnoreCase("note")) 
+		if (method.equalsIgnoreCase(NOTE_METHOD)) 
 			parser = TIWIPRO_PARSER;
 		
 		if (parser == null)

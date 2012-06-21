@@ -17,6 +17,7 @@ public class AttribParserFactory {
 	private static AttribParser STRING_FIXED_LENGTH_PARSER = new StringFixedLengthParser();
 	private static AttribParser STRING_VAR_LENGTH_PARSER = new StringVarLengthParser();
 	private static AttribParser ODOMETER_PARSER = new OdometerParser();
+	private static AttribParser NOTESFLAGS_PARSER = new NoteFlagsParser();
 
 	private static AttribParser LATLONG_PARSER = new LatLongParser();
 	private static AttribParser GPS_LOCK_FLAG_PARSER = new GpsLockFlagParser();
@@ -105,6 +106,9 @@ public class AttribParserFactory {
 		if (parserType.equals(AttribParserType.ACKDATA))
 			return ACKDATA_PARSER;
         
+		if (parserType.equals(AttribParserType.NOTEFLAGS))
+			return NOTESFLAGS_PARSER;
+		
         logger.info("Unrecognized parser type: " + parserType);
         return null;
     }

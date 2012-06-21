@@ -263,7 +263,9 @@ public enum NoteType {
 				|| get(code) == IGNITION_OFF 
 				|| get(code) == RF_KILL 
 				|| get(code) == HOS_CHANGE_STATE_EX 
-				|| get(code) == HOS_CHANGE_STATE_NO_GPS_LOCK);
+				|| get(code) == HOS_CHANGE_STATE_NO_GPS_LOCK
+//				|| get(code) == LOW_POWER_MODE
+				);
 	}
 
 	public boolean isIdleNoteType()

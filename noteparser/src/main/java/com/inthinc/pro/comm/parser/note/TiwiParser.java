@@ -16,9 +16,9 @@ public class TiwiParser implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(TiwiParser.class);
 
-	public Map parseNote(byte[] data)
+	public Map<String, Object> parseNote(byte[] data)
 	{
-		HashMap attribMap = new HashMap();
+		HashMap<String, Object> attribMap = new HashMap<String, Object>();
 
 		parseHeader(data, attribMap);
 		int offset = 16;
@@ -28,8 +28,10 @@ public class TiwiParser implements NoteParser{
 		{
 			attrID = ReadUtil.unsign(data[offset++]);
 			
-			if (attrID < 128) 
-				attrVal = data[offset++];
+			if (attrID < 128)
+			{
+				attrVal = ReadUtil.unsign(data[offset++]); 
+			}
 			else if(attrID < 192)
 			{
 				attrVal =  ReadUtil.read(data, offset, 2);
@@ -46,36 +48,37 @@ public class TiwiParser implements NoteParser{
 				while ((offset < data.length) && (data[offset] != '\0'))
 					offset++;
 			}
-			attribMap.put(String.valueOf(attrID), String.valueOf(attrVal));
+			Attrib attrib = Attrib.get(attrID);
+			attribMap.put((attrib == null) ? String.valueOf(attrID) : attrib.getFieldName(), attrVal);
 		}
 		return attribMap;
 	}
 	
-	private static Map parseHeader(byte[] data, Map attribMap)
+	private static Map<String, Object> parseHeader(byte[] data, Map<String, Object> attribMap)
 	{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
 //			attribParser.parseAttrib(data, 2, Attrib.NOTETYPE, attribMap);
-		attribMap.put(String.valueOf(Attrib.NOTETYPE.getCode()), String.valueOf(ReadUtil.unsign(data[0])));
+		attribMap.put(String.valueOf(Attrib.NOTETYPE.getFieldName()), ReadUtil.unsign(data[0]));
 
 //        	logger.info("Note Type: " + ReadUtil.unsign(data[0]));
 		
 		AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
-		attribParser.parseAttrib(data, 1, Attrib.NOTETIME.getCode(), attribMap);
+		attribParser.parseAttrib(data, 1, Attrib.NOTETIME.getFieldName(), attribMap);
 		
-		attribMap.put(String.valueOf(Attrib.NOTEFLAGS.getCode()), String.valueOf(ReadUtil.unsign(data[5])));
+		attribMap.put(Attrib.NOTEFLAGS.getFieldName(), ReadUtil.unsign(data[5]));
 
-		attribMap.put(String.valueOf(Attrib.NOTEMAPREV.getCode()), String.valueOf(ReadUtil.unsign(data[6])));
+		attribMap.put(Attrib.NOTEMAPREV.getFieldName(), ReadUtil.unsign(data[6]));
 		
 		//TO DO: KLUDGE here deciding between version 2 & 3 lat/lng.  Need to fix
 		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
-		((LatLongParser)attribParser).parseAttrib(data, 7, Attrib.NOTELATLONG.getCode(), attribMap, 3);
+		((LatLongParser)attribParser).parseAttrib(data, 7, Attrib.NOTELATLONG.getFieldName(), attribMap, 3);
 
 		attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEED.getAttribParserType()); 
-		attribParser.parseAttrib(data, 13, Attrib.NOTESPEED.getCode(), attribMap);
+		attribParser.parseAttrib(data, 13, Attrib.NOTESPEED.getFieldName(), attribMap);
 
 		//Odometer size/value different between version 2 and 3 notes, so just read it raw
 		short odometer = (short) ReadUtil.read(data, 14, 2);
-		attribMap.put(String.valueOf(Attrib.NOTEODOMETER.getCode()), String.valueOf(odometer));
+		attribMap.put(Attrib.NOTEODOMETER.getFieldName(), odometer);
 		return attribMap;
 	}
 }

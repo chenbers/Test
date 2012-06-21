@@ -15,8 +15,8 @@ public enum Attrib {
 	NOTESPEED(15, AttribParserType.BYTE, "speed"),
 	NOTEODOMETER(16, AttribParserType.ODOMETER, "odometer"),
 	NOTEDURATION(17, AttribParserType.SHORT),
-	NOTEFLAGS(18, AttribParserType.SHORT),  //Version 3
-	NOTESPEEDLIMIT(19, AttribParserType.BYTE, "speedlimit"),
+	NOTEFLAGS(18, AttribParserType.NOTEFLAGS),  //Version 3
+	NOTESPEEDLIMIT(19, AttribParserType.BYTE, "speedLimit"),
 	NOTEMAPREV(20, AttribParserType.BYTE, "maprev"),
 
 	OBDPCT(49, AttribParserType.BYTE),
@@ -28,8 +28,8 @@ public enum Attrib {
 	MPGODO(224, AttribParserType.INTEGER),
 	
 	/* byte */
-	AVGSPEED(2, AttribParserType.BYTE),
-	AVGRPM(4, AttribParserType.BYTE),
+	AVGSPEED(2, AttribParserType.BYTE, "avgSpeed"),
+	AVGRPM(4, AttribParserType.BYTE, "avgRPM"),
 	BASELINEVERSION(63, AttribParserType.BYTE),
 	BOOTLOADERREV(8193, AttribParserType.BYTE),
 	BRAKECOLLECTED(8194, AttribParserType.BYTE),
@@ -97,7 +97,7 @@ public enum Attrib {
 	STATUS(8255, AttribParserType.BYTE),
 	TEMPCOMPENABLED(8256, AttribParserType.BYTE),
 	TEMPCOMPSLOPESINBUFFER(8257, AttribParserType.BYTE),
-	TOPSPEED(1, AttribParserType.BYTE),
+	TOPSPEED(1, AttribParserType.BYTE, "topSpeed"),
 	TRIPINSPECTIONFLAG(8258, AttribParserType.BYTE),
 	TRIPREPORTFLAG(8259, AttribParserType.BYTE),
 	UPTODATESTATUS(8260, AttribParserType.BYTE),
@@ -151,7 +151,7 @@ public enum Attrib {
 	HARDVERTDMMPEAKTOPEAKLEVEL(161, AttribParserType.SHORT),
 	LATLONGDIST(16399, AttribParserType.SHORT),
 	LOGGEDMESSAGECOUNT(16400, AttribParserType.SHORT),
-	MAXRPM(130, AttribParserType.SHORT),
+	MAXRPM(130, AttribParserType.SHORT, "maxRPM"),
 	MAXTIME(16400, AttribParserType.SHORT),
 	MESSAGESLATENT(16401, AttribParserType.SHORT),
 	MODEOFOPERATIONS(16402, AttribParserType.SHORT),
@@ -179,8 +179,8 @@ public enum Attrib {
 	WEICOUNT(16422, AttribParserType.SHORT),
 	WIGGLETRIGGERCOUNTTOTAL(16423, AttribParserType.SHORT),
 	ANALOGSENSOR(16424, AttribParserType.SHORT),
-	LOWIDLE2(16425, AttribParserType.SHORT),
-	HIGHIDLE2(16426, AttribParserType.SHORT),
+	LOWIDLE2(16425, AttribParserType.SHORT, "LOW_IDLE"),
+	HIGHIDLE2(16426, AttribParserType.SHORT, "HIGH_IDLE"),
 
 	
 	MILESUNDER30(16442, AttribParserType.SHORT),
@@ -218,10 +218,10 @@ public enum Attrib {
 	ERRORCODECONF(32790, AttribParserType.INTEGER),
 	FILESIZES(32791, AttribParserType.INTEGER),
 	FLAGS(32792, AttribParserType.INTEGER),
-	HIGHIDLE(220, AttribParserType.INTEGER),
+	HIGHIDLE(220, AttribParserType.INTEGER, "HIGH_IDLE"),
 	LINKID(231, AttribParserType.INTEGER),
 	LOOPS(32794, AttribParserType.INTEGER),
-	LOWIDLE(219, AttribParserType.INTEGER),
+	LOWIDLE(219, AttribParserType.INTEGER, "LOW_IDLE"),
 	MAPFILESIZE(32795, AttribParserType.INTEGER),
 	MAPID(32796, AttribParserType.INTEGER),
 	MAXPOSGS(32797, AttribParserType.INTEGER),
@@ -343,7 +343,15 @@ public enum Attrib {
 	}
 	
 	public int getCode() { return code; }
+	
 	public String getCodeString() { return String.valueOf(code); }
+
+	public String getFieldName() 
+	{ 
+		if (!fieldName.equalsIgnoreCase(""))
+			return fieldName;
+		return getCodeString();
+	}
 
 	
 	public static Attrib get(int code) { 

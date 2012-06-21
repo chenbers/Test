@@ -16,9 +16,9 @@ public class NotewsParser3 implements NoteParser{
 
 	private static Logger logger = LoggerFactory.getLogger(NotewsParser3.class);
 
-	public Map parseNote(byte[] data)
+	public Map<String, Object> parseNote(byte[] data)
 	{
-		HashMap attribMap = new HashMap();
+		HashMap<String, Object> attribMap = new HashMap<String, Object>();
 
 		int noteTypeCode = ReadUtil.read(data, 0, 1);
 		NoteType noteType = NoteType.get(noteTypeCode);
@@ -34,14 +34,14 @@ public class NotewsParser3 implements NoteParser{
 				int attribCode = ReadUtil.read(data, offset, 2);
 				offset += 2;
 
-				logger.info("attribCode: " + attribCode);
+//				logger.debug("attribCode: " + attribCode);
 				
 				Attrib attrib = Attrib.get(attribCode);
 				
 				if (attrib != null)
 				{
 					AttribParser parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
-					offset = parser.parseAttrib(data, offset, attrib.getCode(), attribMap);
+					offset = parser.parseAttrib(data, offset, (attrib == null) ? String.valueOf(attribCode) : attrib.getFieldName(), attribMap);
 				}
 				else
 				{
@@ -57,45 +57,45 @@ public class NotewsParser3 implements NoteParser{
 		return attribMap;
 	}
 	
-	private static Map parseHeader(byte[] data, NoteType noteType, Map attribMap)
+	private static Map<String, Object> parseHeader(byte[] data, NoteType noteType, Map<String, Object> attribMap)
 	{
 		{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
 //			attribParser.parseAttrib(data, 2, Attrib.NOTETYPE, attribMap);
 			
-			attribMap.put(String.valueOf(Attrib.NOTETYPE.getCode()), String.valueOf(noteType.getCode()));
+			attribMap.put(Attrib.NOTETYPE.getFieldName(), noteType.getCode());
 			
 			if (!noteType.isStrippedNote())
 			{
 				AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
-				attribParser.parseAttrib(data, 3, Attrib.NOTETIME.getCode(), attribMap);
+				attribParser.parseAttrib(data, 3, Attrib.NOTETIME.getFieldName(), attribMap);
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTEFLAGS.getAttribParserType()); 
-				attribParser.parseAttrib(data, 7, Attrib.NOTEFLAGS.getCode(), attribMap);
+				attribParser.parseAttrib(data, 7, Attrib.NOTEFLAGS.getFieldName(), attribMap);
 
 				//TO DO: KLUDGE here deciding between version 2 & 3 lat/lng.  Need to fix
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
-				((LatLongParser)attribParser).parseAttrib(data, 9, Attrib.NOTELATLONG.getCode(), attribMap, 4);
+				((LatLongParser)attribParser).parseAttrib(data, 9, Attrib.NOTELATLONG.getFieldName(), attribMap, 4);
 		
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEED.getAttribParserType()); 
-				attribParser.parseAttrib(data, 17, Attrib.NOTESPEED.getCode(), attribMap);
+				attribParser.parseAttrib(data, 17, Attrib.NOTESPEED.getFieldName(), attribMap);
 
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEEDLIMIT.getAttribParserType()); 
-				attribParser.parseAttrib(data, 18, Attrib.NOTESPEEDLIMIT.getCode(), attribMap);
+				attribParser.parseAttrib(data, 18, Attrib.NOTESPEEDLIMIT.getFieldName(), attribMap);
 
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.LINKID.getAttribParserType()); 
-				attribParser.parseAttrib(data, 19, Attrib.LINKID.getCode(), attribMap);
+				attribParser.parseAttrib(data, 19, Attrib.LINKID.getFieldName(), attribMap);
 
 				//Odometer size/value different between version 2 and 3 notes, so just read it raw
 				int odometer = ReadUtil.read(data, 23, 4);
-				attribMap.put(String.valueOf(Attrib.NOTEODOMETER.getCode()), String.valueOf(odometer));
+				attribMap.put(Attrib.NOTEODOMETER.getFieldName(), odometer);
 
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.BOUNDARYID.getAttribParserType()); 
-				attribParser.parseAttrib(data, 27, Attrib.BOUNDARYID.getCode(), attribMap);
+				attribParser.parseAttrib(data, 27, Attrib.BOUNDARYID.getFieldName(), attribMap);
 
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.DRIVERID.getAttribParserType()); 
-				attribParser.parseAttrib(data, 29, Attrib.DRIVERID.getCode(), attribMap);
+				attribParser.parseAttrib(data, 29, Attrib.DRIVERID.getFieldName(), attribMap);
 			}
 		}
 		return attribMap;

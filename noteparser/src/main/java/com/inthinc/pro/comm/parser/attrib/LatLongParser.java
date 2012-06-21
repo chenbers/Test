@@ -12,11 +12,11 @@ import com.inthinc.pro.comm.parser.util.LatLngUtil;
 public class LatLongParser implements AttribParser {
 	private static Logger logger = LoggerFactory.getLogger(LatLongParser.class);
 
-	public int parseAttrib(byte[] data, int offset, int code, Map attribMap) {
+	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 		return parseAttrib(data, offset, code, attribMap, 3);
 	}
 
-	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap, int dataLen) {
+	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap, int dataLen) {
 
 		
 		assert data.length > (offset + 6);
@@ -70,8 +70,8 @@ public class LatLongParser implements AttribParser {
 //		logger.debug("longitude: " + longitude);
 //		LatLng latLng = new LatLng(latitude, longitude);
 		
-		attribMap.put(Attrib.MAXLATITUDE.getCode(), latitude);
-		attribMap.put(Attrib.MAXLONGITUDE.getCode(), longitude);
+		attribMap.put(Attrib.MAXLATITUDE.getFieldName(), latitude);
+		attribMap.put(Attrib.MAXLONGITUDE.getFieldName(), longitude);
 
 		return offset+6;
 	}

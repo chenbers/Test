@@ -6,13 +6,14 @@ import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class ShortsAsStringParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
+	@Override
+	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
 		int length = 0;
-		if (Attrib.get(code).getAttribParserType().equals(AttribParserType.THREE_SHORTS_AS_STRING))
+		if (Attrib.get(Integer.parseInt(code)).getAttribParserType().equals(AttribParserType.THREE_SHORTS_AS_STRING))
 			length = 3;
 
-		if (Attrib.get(code).getAttribParserType().equals(AttribParserType.FOUR_SHORTS_AS_STRING))
+		if (Attrib.get(Integer.parseInt(code)).getAttribParserType().equals(AttribParserType.FOUR_SHORTS_AS_STRING))
 			length = 4;
 		
 		assert data.length > (offset + (2*length));
@@ -31,5 +32,4 @@ public class ShortsAsStringParser implements AttribParser {
 
 		return offset+(2*length);
 	}
-
 }

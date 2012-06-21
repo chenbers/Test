@@ -6,10 +6,10 @@ import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class StringFixedLengthParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
+	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
 		int length = 0;
-		AttribParserType parserType = Attrib.get(code).getAttribParserType();
+		AttribParserType parserType = Attrib.get(Integer.parseInt(code)).getAttribParserType();
 			
         if (parserType.equals(AttribParserType.STRING_FIXED_LENGTH4))
 			length = 4;

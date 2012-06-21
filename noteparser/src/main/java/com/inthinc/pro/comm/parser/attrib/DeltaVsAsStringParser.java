@@ -7,7 +7,7 @@ import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 public class DeltaVsAsStringParser implements AttribParser {
 
-	public int parseAttrib(byte[] data, int offset, int code, Map<Integer, Object> attribMap) {
+	public int parseAttrib(byte[] data, int offset, String code, Map<String, Object> attribMap) {
 
 		int length = 0;
 		
@@ -30,9 +30,9 @@ public class DeltaVsAsStringParser implements AttribParser {
 			
 		attribMap.put(code, value);
 		
-		attribMap.put(Attrib.DELTAVX.getCode(), Integer.parseInt(deltaVx) * 10);
-		attribMap.put(Attrib.DELTAVY.getCode(), Integer.parseInt(deltaVy) * 10);
-		attribMap.put(Attrib.DELTAVZ.getCode(), Integer.parseInt(deltaVz) * 10);
+		attribMap.put(Attrib.DELTAVX.getFieldName(), Integer.parseInt(deltaVx) * 10);
+		attribMap.put(Attrib.DELTAVY.getFieldName(), Integer.parseInt(deltaVy) * 10);
+		attribMap.put(Attrib.DELTAVZ.getFieldName(), Integer.parseInt(deltaVz) * 10);
 
 		return offset+4;
 	}

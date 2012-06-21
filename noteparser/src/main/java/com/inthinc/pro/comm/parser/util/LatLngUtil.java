@@ -1,6 +1,6 @@
 package com.inthinc.pro.comm.parser.util;
 
-import com.inthinc.pro.model.LatLng;
+//import com.inthinc.pro.model.LatLng;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class LatLngUtil {
 		
 		return position_encoded_bytes;
 	}
-	
+/*	
 	public static LatLng readLatLng(byte[] data)
 	{
 		double latitude = 0.0;
@@ -99,5 +99,6 @@ public class LatLngUtil {
 		
 		return latLng;
 	}
+*/
 }
 	
