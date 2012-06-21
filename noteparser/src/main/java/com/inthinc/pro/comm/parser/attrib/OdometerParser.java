@@ -10,8 +10,8 @@ public class OdometerParser implements AttribParser {
 		//Called for version 2 notes only.
 		assert data.length > (offset + 3);
 		
-		Long odometer = (long) ReadUtil.read(data, offset, 3);
-		odometer = odometer * 100L; //Multiply by 100 to match Version 3 notes.
+		Integer odometer = ReadUtil.read(data, offset, 3);
+		odometer = odometer * 100; //Multiply by 100 to match Version 3 notes.
 		attribMap.put(code, odometer);
 
 		return offset+3;

@@ -77,7 +77,7 @@ public class TiwiParser implements NoteParser{
 		attribParser.parseAttrib(data, 13, Attrib.NOTESPEED.getFieldName(), attribMap);
 
 		//Odometer size/value different between version 2 and 3 notes, so just read it raw
-		short odometer = (short) ReadUtil.read(data, 14, 2);
+		int odometer =  ReadUtil.read(data, 14, 2);
 		attribMap.put(Attrib.NOTEODOMETER.getFieldName(), odometer);
 		return attribMap;
 	}
