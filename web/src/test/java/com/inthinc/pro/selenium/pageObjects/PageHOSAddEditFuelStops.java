@@ -169,7 +169,7 @@ public class PageHOSAddEditFuelStops extends HOSBar {
             return duration().amPm();
         }
         
-        public CalendarObject date(){
+        public DropDown date(){
             return new CalendarObject(FuelStopsEditEnum.DATE_BOX);
         }
         
