@@ -141,6 +141,7 @@ public class PageHOSAddEditFuelStops extends HOSBar {
         
     }
     
+    
     public class AddEditFuelStopsButtons extends HOSBarButtons{
         
         public TextButton topSave(){
@@ -159,6 +160,8 @@ public class PageHOSAddEditFuelStops extends HOSBar {
             return new TextButton(FuelStopsEditEnum.CANCEL_BOTTOM);
         }
     }
+    
+    
     public class AddEditFuelStopsDropDowns extends HOSBarDropDowns{
         
         public DropDown driver(){

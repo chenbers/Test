@@ -62,29 +62,13 @@ public interface ElementInterface {
     }
     
     public interface Calendar extends Selectable{
-        @Override 
-        @Deprecated
-        public Selectable selectRow(Integer row);
-        @Override 
-        @Deprecated
-        public Selectable select(String fullMatch);
-        @Override 
-        @Deprecated
-        public Selectable selectThe(String partialMatch, Integer row);
-        @Override 
-        @Deprecated
-        public Selectable selectTheOptionContaining(String partialMatch, Integer row);
-        @Override 
-        @Deprecated
-        public String getText(Integer row);
-        
         public Selectable select(AutomationCalendar date);
         
     }
     
-    public interface Selectable extends ElementInterface{
+    public interface Selectable extends TextBased {
         
-	/**
+        /**
          * Selects the n'th option in this Element's choices
          * @param optionNumber
          * @return this Element
@@ -119,7 +103,7 @@ public interface ElementInterface {
          * @param entryNumber
          * @return
          */
-        public String getText(Integer optionNumber);
+        public String getTextFromOption(Integer optionNumber);
     }
     
     public interface TableBased<T> extends Iterable<T> {

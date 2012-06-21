@@ -20,7 +20,13 @@ public class AutoStepVariables {
         return true;
     }
     
-    
+    public static String getValue(String variable){
+        if (variable.startsWith("\"") && variable.endsWith("\"")){
+            return variable.substring(1, variable.length()-1);
+        } else {
+            return getVariables().get(variable);
+        }
+    }
 
 
     public static String getComparator(String stepAsString){

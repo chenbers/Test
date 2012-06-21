@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -111,7 +112,7 @@ public class AutoMethodParser {
             ann = Assert.class;
             validationType = "assert";
         }
-        methods = getMethods(clazz, ann);
+        methods = getMethods(clazz, ann); 
         if (methods == null){ 
             throw new NoSuchMethodException("Could not find a validation method for: " + stepAsString);
         }
@@ -150,7 +151,7 @@ public class AutoMethodParser {
     }
     
 
-    public static Method parseStep(String stepAsString, String elementType, Class<?> clazz) throws NoSuchMethodException{        
+    public static Method parseStep(String stepAsString, String elementType, Class<?> clazz) throws SecurityException, NoSuchMethodException {        
         Map<String, List<Method>> methods = getMethods(clazz, null);
         String regex = RegexTerms.getMethod;
         Pattern pat = Pattern.compile(regex);
@@ -189,19 +190,46 @@ public class AutoMethodParser {
         }
     }
 
+    public static boolean methodsMatch(Method methodA, Method methodB){
+        boolean matches = true;
+        for (Class<?> methodClass : methodA.getParameterTypes()){
+            for (Class<?> deprecatedClass : methodB.getParameterTypes()){
+                matches &= methodClass == deprecatedClass;
+            }
+        }
+        return matches;
+    }
 
 
     public static Map<String, List<Method>> getMethods(Class<?> clazz, Class<? extends Annotation> filter) throws SecurityException, NoSuchMethodException{
         Map<String, List<Method>> methods = new HashMap<String, List<Method>>();
-        Set<String> deprecated = new HashSet<String>();
+        Set<Method> deprecated = new HashSet<Method>();
+        Set<String> deprecatedNames = new HashSet<String>();
         for (Method method : clazz.getMethods()){ 
 
             String methodName = method.getName().toLowerCase();
+            boolean matchesDeprecated = false;
+            if (deprecatedNames.contains(methodName)){
+                for (Method methodD : deprecated){
+                    if (methodD.getName().equals(methodName)){
+                        matchesDeprecated |= methodsMatch(method, methodD);
+                    }
+                }
+            }
+            if (matchesDeprecated){
+                continue;
+            }
             
-            if (getAnnotation(method, Deprecated.class)!=null && !deprecated.contains(methodName)){
-                deprecated.add(methodName);
+            if (getAnnotation(method, Deprecated.class)!=null){
+                deprecated.add(method);
+                deprecatedNames.add(methodName);
                 if (methods.containsKey(methodName)){
-                    methods.remove(methodName);
+                    Iterator<Method> itr = methods.get(methodName).iterator();
+                    while (itr.hasNext()){
+                        if (methodsMatch(method, itr.next())){
+                            itr.remove();        
+                        }
+                    }
                 }
                 continue;
             }

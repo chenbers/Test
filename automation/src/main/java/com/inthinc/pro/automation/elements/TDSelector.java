@@ -47,7 +47,7 @@ public class TDSelector extends SelectableObject implements Selectable {
     }
     
     @Override
-    public String getText(Integer optionNumber){
+    public String getTextFromOption(Integer optionNumber){
         return getSelenium().getText(addQualifier(optionNumber.toString()));
     }
     

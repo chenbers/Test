@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.jbehave;
 
 import java.awt.event.KeyEvent;
+import java.io.StringWriter;
 import java.util.List;
 
 import org.jbehave.core.annotations.AfterScenario;
@@ -182,6 +183,18 @@ public class AutoCustomSteps {
     public boolean verifyIsTextOnPage(String lookfor) { 
         String actualString = AutoStepVariables.getComparator(lookfor);
         return test.validateTrue(CoreMethodLib.getSeleniumThread().isTextPresent(actualString), actualString + " was not found on this page.");
+    }
+    
+    @Given("I combine $variableList and save them as $variableName")
+    @When("I combine $variableList and save them as $variableName")
+    @Then("I combine $variableList and save them as $variableName")
+    public void combineVariables(@Named("variableList")String variableList, @Named("variableName")String variableName){
+        String[] variables = variableList.split("\\s+with\\s+");
+        StringWriter writer = new StringWriter();
+        for (String variable : variables){
+            writer.write(AutoStepVariables.getValue(variable));
+        }
+        AutoStepVariables.getVariables().put(variableName, writer.toString());
     }
 
 }

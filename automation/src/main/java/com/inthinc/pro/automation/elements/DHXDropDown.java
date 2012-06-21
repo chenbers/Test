@@ -178,7 +178,7 @@ public class DHXDropDown extends DropDown implements Selectable {
     }
     
     @Override
-    public String getText(Integer optionNumber){
+    public String getTextFromOption(Integer optionNumber){
         assignIDs();
         myEnum.setID(xpath);
         myEnum.replaceNumber(optionNumber).replaceWord(myEnum.toString());

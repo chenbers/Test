@@ -233,7 +233,7 @@ public class AutoPageRunner {
                     
             return stepCreator.createNullPointerStep(message, e);
         } catch (NoSuchMethodException e) {
-            Log.debug(e);
+            Log.info(e);
         } 
         
         return step;

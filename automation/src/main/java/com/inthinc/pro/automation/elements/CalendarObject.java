@@ -46,8 +46,22 @@ public class CalendarObject extends DropDown implements Calendar{
     }
     @Override 
     @Deprecated
-    public String getText(Integer row){
+    public String getTextFromOption(Integer row){
+        throw new IllegalAccessError("This method is deprecated, there is no method for Get Text From Option on calendars");
+    }
+    
+    @Override 
+    @Deprecated
+    public SelectableObject selectRandom(){
         throw new IllegalAccessError("This method is deprecated, there is no method for Get Text on calendars");
+    }
+    
+    @Override
+    public String getText(){
+        Text temp = new Text(myEnum);
+        String id = temp.getMyEnum().getIDs()[0] + "InputDate";
+        temp.getMyEnum().getIDs()[0] = id;
+        return temp.getText();
     }
     
     

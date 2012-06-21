@@ -11,7 +11,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Xpath;
 
-public class SelectableObject extends Text implements Selectable {
+public class SelectableObject extends TextObject implements Selectable {
     public SelectableObject(SeleniumEnums anEnum, Object ...objects) {
         super(anEnum, objects);
     }
@@ -38,7 +38,7 @@ public class SelectableObject extends Text implements Selectable {
     }
 
     @Override
-    public String getText(Integer optionNumber) {
+    public String getTextFromOption(Integer optionNumber) {
         return getSelenium().getSelectOptions(myEnum)[--optionNumber];
     }
 
