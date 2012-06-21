@@ -938,7 +938,24 @@
                         	<rich:panel id="namePickerHintEnabled" rendered="#{redFlagOrZoneAlertsBean.item.severityLevel eq null}">
                         		<h:inputText id="hint" value="Please select a Notification type above." size="50" disabled="true"/>
                         	</rich:panel>
-                        </h:panelGroup>                
+                        </h:panelGroup>  
+                        
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_editRedFlag-notifyDriverManagers" value="#{redFlagOrZoneAlertsBean.updateField['notifyManagers']}" />
+                          <h:outputText value="#{messages.editAlerts_notificationsByManager}" />
+                        </div>    
+                        
+                        <div class="spacer"></div>        
+                        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                        	<tr>
+	                            <td width="150" valign="top">
+	                              <h:outputText value="#{messages.editAlerts_notificationsByManager_notifyDriver}:" />
+	                            </td>
+	                            <td>
+	                              <h:selectBooleanCheckbox id="update_editRedFlag-notifyDriverManagersCheckBox" value="#{redFlagOrZoneAlertsBean.item.notifyManagers}" />
+	                            </td>
+                            </tr>
+                        </table>
                         
 <!--                        <div class="add_section_title">-->
 <!--                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_emailToString" value="#{redFlagOrZoneAlertsBean.updateField['emailToString']}" />-->

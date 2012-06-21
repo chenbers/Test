@@ -51,6 +51,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     private List<Integer>       vehicleIDs;
     private List<VehicleType>   vehicleTypes;
 	private List<Integer>       notifyPersonIDs;
+	private Boolean             notifyManagers;
 	
 //    private List<String>        emailTo;
     private Status              status;
@@ -501,6 +502,14 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     }
     public void setUseMaxSpeed(Boolean useMaxSpeed) {
         this.useMaxSpeed = useMaxSpeed;
+    }
+
+    public Boolean getNotifyManagers() {
+        return notifyManagers;
+    }
+
+    public void setNotifyManagers(Boolean notifyManagers) {
+        this.notifyManagers = notifyManagers;
     }
 
     

@@ -37,7 +37,7 @@
               </div>
 
               <div class="panel_w">
-
+              
                 <div class="panel_content">
 
                   <ul id="grid_nav" style="margin: 0;">
@@ -328,6 +328,20 @@
                             <h:outputText value="#{person.label}" />
                           </ui:repeat>
                         </div>
+                        
+                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByManager}" /></div>
+                        
+                        <div class="spacer"></div>        
+                        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                        	<tr>
+	                            <td width="150" valign="top">
+	                              <h:outputText value="#{messages.editAlerts_notificationsByManager_notifyDriver}:" />
+	                            </td>
+	                            <td>
+	                              <h:selectBooleanCheckbox disabled="true" id="redFlag-notifyDriverManagersCheckBox" value="#{redFlagOrZoneAlertsBean.item.notifyManagers}" />
+	                            </td>
+                            </tr>
+                        </table>
 
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
