@@ -54,7 +54,7 @@ public enum HOSFuelStopsEnum implements SeleniumEnums {
     
     /* CheckBoxes */
     CHECK_ALL(null, "fuelStops-table-form:fuelStopsTable:selectAll"),
-    VALUE_CHECK(null, "fuelStops-table-form:fuelStopsTable:###:selectItem"),
+    VALUE_CHECK(null, "fuelStops-table-form:fuelStopsTable:###:select"),
     
     ;
     private String text, url;
