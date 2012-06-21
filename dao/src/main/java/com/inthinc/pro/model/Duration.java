@@ -92,11 +92,11 @@ public enum Duration implements BaseEnum
         this.dvqCount = dvqCount;
     }
 
-    public int getCalendarPeriod()
+    public static int getCalendarPeriod(int binSize)
     {
     	int calendarPeriod = Calendar.DATE;
     	
-    	switch (getCode())
+    	switch (binSize)
     	{
 	        case Duration.BINSIZE_1_MONTH:
 	        case Duration.BINSIZE_3_MONTHS:
