@@ -49,9 +49,9 @@ public class RegexTerms {
     
     public static final String popupStep = "([A-Z][\\w-]*(\\s+[A-Z][\\w-]*)*)(?=\\s+popup)";
     
-    public static final String calendarDayDelta = "\\p{Digit}*(?=\\s+days|day)";
-    public static final String calendarMonthDelta = "\\p{Digit}*(?=\\s+month|months)";
-    public static final String calendarYearDelta = "\\p{Digit}*(?=\\s+year|years)";
+    public static final String calendarDayDelta = "\\p{Digit}*(?=\\s+day|\\s+days)";
+    public static final String calendarMonthDelta = "\\p{Digit}*(?=\\s+month|\\s+months)";
+    public static final String calendarYearDelta = "\\p{Digit}*(?=\\s+year|\\s+years)";
     
     public static final String calendarSubtract = "[Pp]ast";
     public static final String calendarAdd = "[Ff]uture";
