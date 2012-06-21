@@ -32,10 +32,10 @@ public class WebRallyTest extends BrowserRallyTest {
     @AfterScenario
     @Override
     public void after() {
-        Log.info("get_test_case(): '" + get_test_case() + "'");
-        super.after();
+        Log.debug("get_test_case(): '" + get_test_case() + "'");
         if (get_test_case() == null || get_test_case().equals(""))
             Log.info("This test did NOT have a testcase?!", Level.WARN);
+        super.after();
         didTestFail();
     }
 
