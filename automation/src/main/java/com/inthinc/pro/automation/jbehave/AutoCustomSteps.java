@@ -14,7 +14,9 @@ import org.jbehave.core.annotations.When;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.Account;
+import com.inthinc.pro.automation.models.Person;
 import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.rest.RestCommands;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
@@ -29,13 +31,13 @@ public class AutoCustomSteps {
     private static final String editableUser = "as a user that can be edited";
     private static final String mainUser = "as the default user";
     
-    private static ThreadLocal<User> myUser = new ThreadLocal<User>();
+    private static ThreadLocal<User> loginUser = new ThreadLocal<User>();
+    private static ThreadLocal<Account> loginAccount = new ThreadLocal<Account>();
 
     private final AutomationPropertiesBean apb;
     private static ThreadLocal<RestCommands> rest = new ThreadLocal<RestCommands>();
     
     private static ThreadLocal<String> savedPage = new ThreadLocal<String>();
-    private static ThreadLocal<Account> account = new ThreadLocal<Account>();
     private MasterTest test;
 
     
@@ -59,7 +61,7 @@ public class AutoCustomSteps {
     }
 
     public User getMyUser() {
-        return myUser.get();
+        return loginUser.get();
     }
     
     @Given("I hit the Period key")
@@ -79,18 +81,6 @@ public class AutoCustomSteps {
         return test.assertTrue(CoreMethodLib.getSeleniumThread().isTextPresent(lookfor), lookfor + " was not found on this page.");
     }
     
-
-    @AfterScenario
-    public void clearUser(){
-        if (rest.get() == null || myUser == null){
-            return;
-        }
-        User isUpdated = rest.get().getObject(User.class, myUser.get().getUserID());
-        if (isUpdated.doesPasswordMatch(myUser.get().getPassword())){
-            return;
-        } 
-        rest.get().putObject(User.class, myUser.get(), null);
-    }
 
 
     @Given("I hit the Enter Key")
@@ -152,30 +142,36 @@ public class AutoCustomSteps {
 
     @Given("I am using $params for my user")
     public void useParamsToSetDefaultUser(@Named("params")String params){
+        List<String> users;
+
         if (params.equalsIgnoreCase(mainUser)){
-            List<String> users = apb.getMainAutomation();
-            rest.set(new RestCommands(users.get(0), apb.getPassword()));
-            myUser.set(rest.get().getObject(User.class, users.get(1)));
+            users = apb.getMainAutomation();
         } else if (params.equalsIgnoreCase(editableUser)){
-            
+            users = apb.getEditableAccount();
         } else if (params.equalsIgnoreCase(editableAccountUser)){
-            List<String> users = apb.getEditableAccount();
-            rest.set(new RestCommands(users.get(0), apb.getPassword()));
-            myUser.set(rest.get().getObject(User.class, users.get(1)));
-            account.set(rest.get().getObject(Account.class, null));
+            users = apb.getEditableAccount();
+        } else {
+            return;
         }
-        if (myUser == null){
-            throw new NullPointerException("Type of user was bad: " + params);
-        }
-        AutoStepVariables.getVariables().put("my user name", myUser.get().getUsername());
-        AutoStepVariables.getVariables().put("my password", apb.getPassword());
+        
+        rest.set(new RestCommands(users.get(0), apb.getPassword()));
+        loginUser.set(rest.get().getObject(User.class, users.get(1)));
+        loginUser.get().setPerson(rest.get().getObject(Person.class, loginUser.get().getPersonID()));
+        loginAccount.set(rest.get().getObject(Account.class, null));
+
+        changeUserNameAndPassword(loginUser.get().getUsername(), apb.getPassword());
     }
     
     @AfterScenario
     public void afterScenario(){
-        if (account.get()!= null){
-            rest.get().putObject(Account.class, account.get(), null);
+        if (loginAccount.get() == null || loginUser.get() == null || rest.get() == null){
+            Log.info("The default login info was not set");
+            return;
         }
+        
+        rest.get().putObject(Account.class, loginAccount.get(), null);
+        rest.get().putObject(User.class, loginUser.get(), null);
+        
     }
 
 
@@ -183,6 +179,19 @@ public class AutoCustomSteps {
     public boolean verifyIsTextOnPage(String lookfor) { 
         String actualString = AutoStepVariables.getComparator(lookfor);
         return test.validateTrue(CoreMethodLib.getSeleniumThread().isTextPresent(actualString), actualString + " was not found on this page.");
+    }
+    
+    @Given("I change my username to $username and my password to $password")
+    public void changeUserNameAndPassword(@Named("username")String username, @Named("password")String password){
+        AutoStepVariables.getVariables().put("my user name", loginUser.get().getUsername());
+        AutoStepVariables.getVariables().put("my password", apb.getPassword());
+    }
+    
+    @Given("I go back to the default user")
+    public void resetUsernameAndPassword(){
+        if (loginUser.get() != null){
+            changeUserNameAndPassword(loginUser.get().getUsername(), apb.getPassword());
+        }
     }
     
     @Given("I combine $variableList and save them as $variableName")
