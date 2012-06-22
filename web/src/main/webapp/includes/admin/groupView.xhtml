@@ -6,32 +6,38 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security">
-	
-	
+
+<a4j:region id="groupViewRegion">	
 	<ul id="grid_nav_dark">
-	
 		<li class="r">
 			<a4j:commandButton id="#{context}-groupViewAdd"
-				action="#{organizationBean.add}"  onclick="clearMap();"
-				reRender="contentPanel" styleClass="left" oncomplete="initMap();">
+				action="#{organizationBean.add}"  onclick="clearMap(); this.disabled=true;"
+				reRender="contentPanel" styleClass="left" oncomplete="initMap(); this.disabled=false;">
 				<span class="add"><h:outputText
 					value="#{messages.button_add}" /></span></a4j:commandButton>
 		</li>
 		<li class="r">
 			<a4j:commandButton id="#{context}-groupViewEdit"
 				action="#{organizationBean.edit}" onclick="clearMap();"
-				reRender="contentPanel" styleClass="left" oncomplete="initMap();">
+				reRender="contentPanel" styleClass="left" oncomplete="initMap(); this.disabled=false;">
 				<span class="edit"><h:outputText
 					value="#{messages.button_edit}" /></span></a4j:commandButton>
 		</li>
 		<li class="r">
 			<a4j:commandButton id="#{context}-groupViewDelete" rendered="#{organizationBean.selectedGroupNode.treeNodeType ne 'FLEET'}"
-				onclick="Richfaces.showModalPanel('confirmDelete'); return false;" styleClass="left">
+				onclick="Richfaces.showModalPanel('confirmDelete'); this.disabled=false; return false;" styleClass="left">
 				<span class="delete"><h:outputText
 					value="#{messages.button_delete}" /></span></a4j:commandButton>
 		</li>
 	</ul>
-	
+<a4j:status	id="groupView_ajax_status" for="groupViewRegion">
+	<f:facet name="start">
+		<h:outputText>
+		<img
+			 src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
+			align="top" />&#160;</h:outputText>
+	</f:facet>
+</a4j:status>	
 	<div style="padding-left: 11px; padding-bottom: 10px">
 	<rich:messages globalOnly="false" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 	<table>
@@ -140,4 +146,5 @@
         <ui:param name="mapId" value="#{organizationBean.mapType.mapId}"/>
 	</ui:include>
 	</div>
+</a4j:region>
 </ui:composition>

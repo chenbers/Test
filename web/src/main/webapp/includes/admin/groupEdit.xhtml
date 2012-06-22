@@ -8,19 +8,19 @@
 	xmlns:security="http://pro.tiwi.com/jsf/security">
 
   <ui:param name="helpMapIDOverride" value="#{(organizationBean.groupState eq 'ADD') ? '4' :''}"/>
-
+<a4j:region id="groupEditRegion">
 	<h:panelGroup id="buttonPanel">
 		<ul id="grid_nav_dark">
 			<li class="r">
-				<h:commandButton id="groupEditPanelView" rendered="#{organizationBean.groupState ne 'VIEW'}" tabindex="11"
-					action="#{organizationBean.view}" oncomplete="refreshNavigationTree();"
+				<a4j:commandButton id="groupEditPanelView" rendered="#{organizationBean.groupState ne 'VIEW'}" tabindex="11"
+					action="#{organizationBean.view}" onclick="this.disabled=true;" oncomplete="refreshNavigationTree(); this.disabled=false;"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" immediate="true" styleClass="left">
 					<span class="cancel"><h:outputText
-						value="#{messages.button_cancel}" /></span></h:commandButton>
+						value="#{messages.button_cancel}" /></span></a4j:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="10"
-					action="#{organizationBean.update}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
+					action="#{organizationBean.update}" onclick="clearMap(); this.disabled=true;"  oncomplete="refreshNavigationTree();initMap(); this.disabled=false;"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -28,7 +28,7 @@
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="10"
-					action="#{organizationBean.save}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
+					action="#{organizationBean.save}" onclick="clearMap(); this.disabled=true;" oncomplete="refreshNavigationTree();initMap(); this.disabled=false;"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -37,7 +37,14 @@
 				
 		</ul>
 	</h:panelGroup>
-	
+<a4j:status	id="groupEdit_ajax_status" for="groupEditRegion">
+	<f:facet name="start">
+		<h:outputText>
+		<img
+			 src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
+			align="top" />&#160;</h:outputText>
+	</f:facet>
+</a4j:status>
 	<div style="padding-left: 11px">
 	<rich:messages id="message" globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 	<table>
@@ -256,5 +263,6 @@
 		setFocus("#{groupTreeNode.group.type eq 'FLEET'? '#{formName}:group_name' : '#{formName}:parent_group'}");
 		updateAddressRequired(document.getElementById("display-form:editgroup-addr-type"));
 									
-	</script> 
+	</script>
+</a4j:region> 
 </ui:composition>
