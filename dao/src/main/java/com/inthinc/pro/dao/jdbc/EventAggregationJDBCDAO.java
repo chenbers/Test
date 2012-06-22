@@ -22,7 +22,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
     
     /* Query to return the total number of forgiven events for a single driver by event type */
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', " + 
-                    "(SELECT count(*) FROM cachedNoteView cnv1 WHERE cnv1.driverID = cnv.driverID AND cnv1.type = cnv.type AND forgiven = 1) AS 'eventCountForgiven' " + 
+                    "(SELECT count(*) FROM cachedNoteView cnv1 WHERE cnv1.driverID = cnv.driverID AND cnv1.type = cnv.type AND (cnv1.aggType = cnv.aggType OR cnv1.aggType is null) AND forgiven = 1) AS 'eventCountForgiven' " + 
                     "FROM cachedNoteView cnv  INNER JOIN groups g ON g.groupID = cnv.driverGroupID " + 
                     "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type,cnv.aggType";
    
@@ -38,11 +38,11 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         params.put("groupList", groupIDs);
         params.put("endDate", interval.getEnd().toDate());
         params.put("startDate", interval.getStart().toDate());
-        if(logger.isTraceEnabled()){
-            logger.trace("Executing query for findDriverForgivenEventTotalsByGroups()");
-            logger.trace(String.format("Executing query: %s", forgivenEventTotals));
-            logger.trace(String.format("Query parameters: %s", params));
-        }
+//        if(logger.isTraceEnabled()){
+//            logger.trace("Executing query for findDriverForgivenEventTotalsByGroups()");
+//            logger.trace(String.format("Executing query: %s", forgivenEventTotals));
+//            logger.trace(String.format("Query parameters: %s", params));
+//        }
         /*
          * Create a map to allow us to aggregate the totals by grouping by EventType.java which is unknown to the database. Otherwise,
          * we would allow the database to group by.
