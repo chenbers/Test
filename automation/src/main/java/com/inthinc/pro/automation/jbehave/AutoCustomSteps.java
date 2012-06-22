@@ -29,40 +29,26 @@ public class AutoCustomSteps {
 
     private static final String editableAccountUser = "an account that can be edited";
     private static final String editableUser = "as a user that can be edited";
-    private static final String mainUser = "as the default user";
+    private static ThreadLocal<Account> loginAccount = new ThreadLocal<Account>();
     
     private static ThreadLocal<User> loginUser = new ThreadLocal<User>();
-    private static ThreadLocal<Account> loginAccount = new ThreadLocal<Account>();
+    private static final String mainUser = "as the default user";
 
-    private final AutomationPropertiesBean apb;
     private static ThreadLocal<RestCommands> rest = new ThreadLocal<RestCommands>();
-    
     private static ThreadLocal<String> savedPage = new ThreadLocal<String>();
-    private MasterTest test;
-
-    
-    public AutoCustomSteps(){
-        apb = AutomationProperties.getPropertyBean(); 
-        test = new MasterTest(){};
-    }
-
     
     public static String getEditableaccountuser() {
         return editableAccountUser;
     }
-    
     public static String getEditableuser() {
         return editableUser;
     }
-    
+
     
     public static String getMainuser() {
         return mainUser;
     }
 
-    public User getMyUser() {
-        return loginUser.get();
-    }
     
     @Given("I hit the Period key")
     @When("I hit the Period key")
@@ -76,6 +62,28 @@ public class AutoCustomSteps {
         KeyCommands.typeKey(KeyEvent.VK_SPACE);
     }
     
+    
+    private final AutomationPropertiesBean apb;
+
+    private MasterTest test;
+    
+    public AutoCustomSteps(){
+        apb = AutomationProperties.getPropertyBean(); 
+        test = new MasterTest(){};
+    }
+    
+    @AfterScenario
+    public void afterScenario(){
+        if (loginAccount.get() == null || loginUser.get() == null || rest.get() == null){
+            Log.info("The default login info was not set");
+            return;
+        }
+        
+        rest.get().putObject(Account.class, loginAccount.get(), null);
+        rest.get().putObject(User.class, loginUser.get(), null);
+        
+    }
+    
     @Then("I assert \"$lookfor\" is on the page")
     public boolean assertIsTextOnPage(String lookfor) { 
         return test.assertTrue(CoreMethodLib.getSeleniumThread().isTextPresent(lookfor), lookfor + " was not found on this page.");
@@ -83,12 +91,41 @@ public class AutoCustomSteps {
     
 
 
+    @Given("I change my username to $username and my password to $password")
+    public void changeUserNameAndPassword(@Named("username")String username, @Named("password")String password){
+        AutoStepVariables.getVariables().put("my user name", loginUser.get().getUsername());
+        AutoStepVariables.getVariables().put("my password", apb.getPassword());
+    }
+    
+
+    @Given("I combine $variableList and save them as $variableName")
+    @When("I combine $variableList and save them as $variableName")
+    @Then("I combine $variableList and save them as $variableName")
+    public void combineVariables(@Named("variableList")String variableList, @Named("variableName")String variableName){
+        String[] variables = variableList.split("\\s+with\\s+");
+        StringWriter writer = new StringWriter();
+        for (String variable : variables){
+            writer.write(AutoStepVariables.getValue(variable));
+        }
+        AutoStepVariables.getVariables().put(variableName, writer.toString());
+    }
+    
     @Given("I hit the Enter Key")
     @When("I hit the Enter Key")
     public void enterKey() {
         CoreMethodLib.getSeleniumThread().enterKey();
     }
     
+    public User getMyUser() {
+        return loginUser.get();
+    }
+
+    @Given("I am logged in")
+    @Composite(steps = {
+            "Given I am using as the default user for my user",
+            "Given I log in"})
+    public void givenIAmLoggedIn(){}
+
 
     @Given("I am logged in $params")
     @Composite(steps = {
@@ -96,13 +133,7 @@ public class AutoCustomSteps {
             "Given I log in"})
     public void givenIAmLoggedInAs(@Named("params")String params){
     }
-    
-    @Given("I am logged in")
-    @Composite(steps = {
-            "Given I am using as the default user for my user",
-            "Given I log in"})
-    public void givenIAmLoggedIn(){}
-    
+
     @Given("I log in")
     @When("I log in")
     @Composite(steps = {
@@ -117,20 +148,28 @@ public class AutoCustomSteps {
     public void openSavedPage() {
         test.open(savedPage.get());
     }
+    
 
-
+    @Given("I go back to the default user")
+    public void resetUsernameAndPassword(){
+        if (loginUser.get() != null){
+            changeUserNameAndPassword(loginUser.get().getUsername(), apb.getPassword());
+        }
+    }
+    
     @Given("I bookmark the page")
     @When("I bookmark the page")
     public void savePageLink() {
         savedPage.set(test.getCurrentLocation());
     }
 
+
     @Given("I hit the Tab Key")
     @When("I hit the Tab Key")
     public void tabKey() {
         CoreMethodLib.getSeleniumThread().tabKey();
     }
-
+    
     @Given("I type to the active field")
     @When("I type to the active field")
     @Aliases(values={"I type to the element with focus"})
@@ -139,7 +178,6 @@ public class AutoCustomSteps {
         web.switchTo().activeElement().sendKeys(type);
     }
     
-
     @Given("I am using $params for my user")
     public void useParamsToSetDefaultUser(@Named("params")String params){
         List<String> users;
@@ -162,48 +200,10 @@ public class AutoCustomSteps {
         changeUserNameAndPassword(loginUser.get().getUsername(), apb.getPassword());
     }
     
-    @AfterScenario
-    public void afterScenario(){
-        if (loginAccount.get() == null || loginUser.get() == null || rest.get() == null){
-            Log.info("The default login info was not set");
-            return;
-        }
-        
-        rest.get().putObject(Account.class, loginAccount.get(), null);
-        rest.get().putObject(User.class, loginUser.get(), null);
-        
-    }
-
-
     @Then("I verify $lookfor is on the page")
     public boolean verifyIsTextOnPage(String lookfor) { 
         String actualString = AutoStepVariables.getComparator(lookfor);
         return test.validateTrue(CoreMethodLib.getSeleniumThread().isTextPresent(actualString), actualString + " was not found on this page.");
-    }
-    
-    @Given("I change my username to $username and my password to $password")
-    public void changeUserNameAndPassword(@Named("username")String username, @Named("password")String password){
-        AutoStepVariables.getVariables().put("my user name", loginUser.get().getUsername());
-        AutoStepVariables.getVariables().put("my password", apb.getPassword());
-    }
-    
-    @Given("I go back to the default user")
-    public void resetUsernameAndPassword(){
-        if (loginUser.get() != null){
-            changeUserNameAndPassword(loginUser.get().getUsername(), apb.getPassword());
-        }
-    }
-    
-    @Given("I combine $variableList and save them as $variableName")
-    @When("I combine $variableList and save them as $variableName")
-    @Then("I combine $variableList and save them as $variableName")
-    public void combineVariables(@Named("variableList")String variableList, @Named("variableName")String variableName){
-        String[] variables = variableList.split("\\s+with\\s+");
-        StringWriter writer = new StringWriter();
-        for (String variable : variables){
-            writer.write(AutoStepVariables.getValue(variable));
-        }
-        AutoStepVariables.getVariables().put(variableName, writer.toString());
     }
 
 }
