@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CalendarObject;
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextDateFieldLabel;
@@ -143,11 +144,11 @@ public class PageHOSDriverLogs extends HOSBar {
     }
 
     public class HOSDriverLogsDropDowns extends HOSBarDropDowns {
-        public CalendarObject startDate() {
+        public DropDown startDate() {
             return new CalendarObject(HOSDriverLogsEnum.START_FIELD);
         }
         
-        public CalendarObject stopDate() {
+        public DropDown stopDate() {
             return new CalendarObject(HOSDriverLogsEnum.STOP_FIELD);
         }
     }
