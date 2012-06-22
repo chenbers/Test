@@ -177,12 +177,7 @@ public class TreeNavigationBean extends BaseBean {
      * @return possible parent groups
      */
     public List<SelectItem> getParentGroupsSelect(){
-        long start = System.currentTimeMillis();
-        System.out.println("start getParentGroups() "+start);
-        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-        selectItemList.addAll(getParentGroupsSelect(navigationTree.getNavigationTree().getChildren()));
-        System.out.println("end getParentGroups() "+(System.currentTimeMillis() - start)+" milli");
-        return selectItemList;
+        return getParentGroupsSelect(navigationTree.getNavigationTree().getChildren());
     }
     private List<SelectItem> getParentGroupsSelect(List<JsTreeNode> children){
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
