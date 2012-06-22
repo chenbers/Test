@@ -64,6 +64,12 @@ public class ParseStepForElementMethodTest {
                 apb.getEditableAccount().get(1), getUsername());
         assertEquals("Unable to get the default user from the string", 
                 apb.getPassword(), getPassword());
+        
+        test.useParamsToSetDefaultUser(AutoCustomSteps.getEditableuser());
+        assertEquals("Unable to get the default user from the string", 
+                apb.getEditableAccount().get(1), getUsername());
+        assertEquals("Unable to get the default user from the string", 
+                apb.getPassword(), getPassword());
     }
     
     private String getPassword(){
@@ -172,6 +178,31 @@ public class ParseStepForElementMethodTest {
         StepCandidate candidate = candidateMatchingStep(candidates, editAccountStep);
         Map<String, String> namedParameters = new HashMap<String, String>();
         namedParameters.put("params", AutoCustomSteps.getEditableaccountuser());
+        List<Step> composedSteps = new ArrayList<Step>();
+        candidate.addComposedSteps(composedSteps, editAccountStep, namedParameters, candidates);
+        for (Step step : composedSteps) {
+            Log.info(step.perform(null));
+            
+        }
+        
+        assertThat("The Usernames didn't match", test.getMyUser().getUsername(), is(apb.getEditableAccount().get(1)));
+        assertThat("The Usernames didn't match", getUsername(), is(apb.getEditableAccount().get(1)));
+        assertEquals("The password didn't match, if it is changed it should be fixed", true, 
+                test.getMyUser().doesPasswordMatch(apb.getPassword()));
+        assertThat("The password didn't match, if it is changed it should be fixed", getPassword(), is(apb.getPassword()));
+    }
+    
+    /**
+     * Create a step from the MasterTest methods and test them.
+     */
+    @Test
+    public void testCompositeEditUserLoginStep(){
+        String editAccountStep = "Given I am logged in " + AutoCustomSteps.getEditableuser();
+        CustomAutomationSteps steps = new CustomAutomationSteps();
+        List<StepCandidate> candidates = steps.listCandidates();
+        StepCandidate candidate = candidateMatchingStep(candidates, editAccountStep);
+        Map<String, String> namedParameters = new HashMap<String, String>();
+        namedParameters.put("params", AutoCustomSteps.getEditableuser());
         List<Step> composedSteps = new ArrayList<Step>();
         candidate.addComposedSteps(composedSteps, editAccountStep, namedParameters, candidates);
         for (Step step : composedSteps) {
