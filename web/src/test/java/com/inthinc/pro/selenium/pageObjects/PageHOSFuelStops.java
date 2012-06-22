@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
@@ -47,11 +48,11 @@ public class PageHOSFuelStops extends HOSBar {
 
     public class FuelStopsDropDowns extends HOSBarDropDowns {
         
-        public CalendarObject startDate(){
+        public DropDown startDate(){
             return new CalendarObject(HOSFuelStopsEnum.START_DATE_BOX);
         }
         
-        public CalendarObject endDate(){
+        public DropDown endDate(){
             return new CalendarObject(HOSFuelStopsEnum.END_DATE_BOX);
         }
         
