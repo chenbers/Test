@@ -8,6 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.model.SelectItem;
+
+import com.inthinc.pro.backing.model.BaseTreeNodeImpl;
+import com.inthinc.pro.backing.model.TreeNodeType;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
@@ -165,6 +169,35 @@ public class TreeNavigationBean extends BaseBean {
         checkRecents();
         openParentPath(group);
     }
+    
+    /**
+     * Returns a list of possible parent groups suitable for a drop down (select) list.
+     * replaces {@link OrganizationBean#getParentGroups()}
+     * this version pulls the list from the already populated tree, rather than re-pulling all necessary data via hessian or database calls.
+     * @return possible parent groups
+     */
+    public List<SelectItem> getParentGroupsSelect(){
+        long start = System.currentTimeMillis();
+        System.out.println("start getParentGroups() "+start);
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.addAll(getParentGroupsSelect(navigationTree.getNavigationTree().getChildren()));
+        System.out.println("end getParentGroups() "+(System.currentTimeMillis() - start)+" milli");
+        return selectItemList;
+    }
+    private List<SelectItem> getParentGroupsSelect(List<JsTreeNode> children){
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        if(children != null && !children.isEmpty()){
+            for(JsTreeNode node: children){
+                if(node.getType().equals("fleet") || node.getType().equals("group")){
+                    NodeData  data = node.getData();
+                    selectItemList.add(new SelectItem(node.getAttributes().get("groupid"), node.getData().getTitle()));
+                    selectItemList.addAll(getParentGroupsSelect(node.getChildren()));
+                }
+            }
+        }
+        return selectItemList;
+    }
+
     public class JsTreeRoot {
         
         private Map<Integer, JsTreeNode> navigationTreeMap;

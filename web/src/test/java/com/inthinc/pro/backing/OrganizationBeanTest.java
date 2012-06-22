@@ -73,7 +73,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         selectedGroup.setMapZoom(5);
         selectedGroup.setManagerID(220);
         
-        organizationBean.setSelectedParentGroup(selectedGroup); //Causes validation to fail. Tests will still pass though
+        organizationBean.setSelectedParentGroupID(selectedGroup.getGroupID()); //Causes validation to fail. Tests will still pass though
         organizationBean.update();
     }
 
@@ -99,7 +99,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         selectedGroup.setMapCenter(new LatLng(0, 0));
         selectedGroup.setMapZoom(5);
         selectedGroup.setManagerID(220);
-        organizationBean.setSelectedParentGroup(treeNode.getGroup());
+        organizationBean.setSelectedParentGroupID(treeNode.getGroup().getGroupID());
         //assertEquals(treeNode, organizationBean.getTopLevelNodes());
         organizationBean.save();
         assertEquals(treeNode, organizationBean.getRootGroupNode());
@@ -140,7 +140,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         organizationBean.save();
        
         assertNull(organizationBean.getTempGroupTreeNode());
-        assertNull(organizationBean.getSelectedParentGroup());
+        assertNull(organizationBean.getSelectedParentGroupID());
         assertEquals(topLevelTreeNode,organizationBean.getSelectedGroupNode().getParent());
         assertEquals("Test",organizationBean.getSelectedGroupNode().getLabel());
         saveState(organizationBean);
@@ -185,7 +185,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         conversationContext.put("topLevelNodes",organizationBean.getRootGroupNode());
         conversationContext.put("selectedGroupNode",organizationBean.getSelectedGroupNode());
         conversationContext.put("inProgressGroupNode",organizationBean.getTempGroupTreeNode());
-        conversationContext.put("selectedParentGroup",organizationBean.getSelectedParentGroup());
+        conversationContext.put("selectedParentGroupID",organizationBean.getSelectedParentGroupID());
         conversationContext.put("treeStateMap",organizationBean.getTreeStateMap());
         conversationContext.put("organizationHierarchy",organizationBean.getOrganizationHierarchy());
     }
@@ -195,7 +195,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         organizationBean.setRootGroupNode((GroupTreeNodeImpl)conversationContext.get("topLevelNodes"));
         organizationBean.setSelectedGroupNode((GroupTreeNodeImpl)conversationContext.get("selectedGroupNode"));
         organizationBean.setTempGroupTreeNode((GroupTreeNodeImpl)conversationContext.get("inProgressGroupNode"));
-        organizationBean.setSelectedParentGroup((Group)conversationContext.get("selectedParentGroup"));
+        organizationBean.setSelectedParentGroupID((Integer)conversationContext.get("selectedParentGroupID"));
         organizationBean.setTreeStateMap((Map)conversationContext.get("treeStateMap"));
         organizationBean.setOrganizationHierarchy((GroupHierarchy)conversationContext.get("organizationHierarchy"));
     }

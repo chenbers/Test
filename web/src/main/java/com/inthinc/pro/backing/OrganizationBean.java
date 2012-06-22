@@ -106,7 +106,7 @@ public class OrganizationBean extends BaseBean
     private State groupState;
     private Person selectedPerson;
     private GroupTreeNodeImpl tempGroupTreeNode;
-    private Group selectedParentGroup;
+    private Integer selectedParentGroupID;
     private static final Map<String, com.inthinc.pro.model.State> STATES;
     static {
     // states
@@ -300,7 +300,7 @@ public class OrganizationBean extends BaseBean
     private void cleanFields()
     {
         tempGroupTreeNode = null;
-        selectedParentGroup = null;
+        selectedParentGroupID = null;
     }
 
     /**
@@ -314,7 +314,7 @@ public class OrganizationBean extends BaseBean
         copyGroupTreeNode((GroupTreeNodeImpl) selectedGroupNode, (GroupTreeNodeImpl) tempGroupTreeNode, false);
         if (selectedGroupNode.getParent() != null && selectedGroupNode.getParent().getBaseEntity() != null)
         {
-            selectedParentGroup = (Group) selectedGroupNode.getParent().getBaseEntity();
+            selectedParentGroupID = ((Group)selectedGroupNode.getParent().getBaseEntity()).getGroupID();
         }
     }
 
@@ -332,7 +332,7 @@ public class OrganizationBean extends BaseBean
     {
         groupState = State.ADD;
         logger.debug("Adding New Group");
-        selectedParentGroup = (Group) selectedGroupNode.getBaseEntity();
+        selectedParentGroupID = ((Group) selectedGroupNode.getBaseEntity()).getGroupID(); 
 
         tempGroupTreeNode = createNewGroupNode(null);
 
@@ -353,7 +353,7 @@ public class OrganizationBean extends BaseBean
             copyGroupTreeNode((GroupTreeNodeImpl) tempGroupTreeNode, (GroupTreeNodeImpl) selectedGroupNode, true);
 //            selectedGroupNode.getBaseEntity().setAddressID(updateAddress(selectedGroupNode.getBaseEntity()));
             groupDAO.update((Group) selectedGroupNode.getBaseEntity());
-            if (selectedParentGroup != null)
+            if (selectedParentGroupID != null)
             {
                 setExpandedNode(selectedGroupNode.getParent());
                 // treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
@@ -373,7 +373,7 @@ public class OrganizationBean extends BaseBean
     public void save()
     {
         BaseTreeNodeImpl parentNode = null;
-        parentNode = rootGroupNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
+        parentNode = rootGroupNode.findTreeNodeByGroupId(selectedParentGroupID);
         tempGroupTreeNode.setParent(parentNode);
         ((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().setParentID(((GroupTreeNodeImpl) parentNode).getBaseEntity().getGroupID());
         tempGroupTreeNode.setLabel(((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().getName());
@@ -391,7 +391,7 @@ public class OrganizationBean extends BaseBean
                 updateUsersGroupHierarchy();
 
                 // Set the current parent node as expanded and all of its parents up to the root node.
-                setExpandedNode(getRootGroupNode().findTreeNodeByGroupId(selectedParentGroup.getGroupID()));
+                setExpandedNode(getRootGroupNode().findTreeNodeByGroupId(selectedParentGroupID));
                 cleanFields();
 
                 // Reset the state back to display
@@ -477,14 +477,14 @@ public class OrganizationBean extends BaseBean
         }
 
         // Rule 3
-        if (groupState == State.EDIT && selectedParentGroup != null && selectedParentGroup.getGroupID().equals(treeNode.getBaseEntity().getGroupID()))
+        if (groupState == State.EDIT && selectedParentGroupID != null && selectedParentGroupID.equals(treeNode.getBaseEntity().getGroupID()))
         {
             addErrorMessage(MessageUtil.getMessageString("groupEdit_selfParentError"));
             return false;
         }
 
         // Rule 4
-        if (groupState == State.EDIT && selectedParentGroup != null && treeNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID()) != null)
+        if (groupState == State.EDIT && selectedParentGroupID != null && treeNode.findTreeNodeByGroupId(selectedParentGroupID) != null)
         {
             addErrorMessage(MessageUtil.getMessageString("groupEdit_childToParentError"));
             return false;
@@ -557,9 +557,9 @@ public class OrganizationBean extends BaseBean
         copyToNode.setUserDAO(userDAO);
         copyToNode.setDeviceDAO(deviceDAO);
         GroupTreeNodeImpl parentNode = null;
-        if (selectedParentGroup != null && updateTree)
+        if (selectedParentGroupID != null && updateTree)
         {
-            parentNode = rootGroupNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
+            parentNode = rootGroupNode.findTreeNodeByGroupId(selectedParentGroupID);
             copyToNode.getBaseEntity().setParentID(parentNode.getBaseEntity().getGroupID());
             copyToNode.setParent(parentNode);
         }
@@ -609,6 +609,7 @@ public class OrganizationBean extends BaseBean
      */
     public List<SelectItem> getPeopleSelectItems()
     {
+        logger.debug("start getPeopleSelectItems()");
         List<Person> personList = personDAO.getPeopleInGroupHierarchy(getUser().getGroupID());
 
         List<SelectItem> selectItems = new ArrayList<SelectItem>(0);
@@ -618,10 +619,14 @@ public class OrganizationBean extends BaseBean
         {
             selectItems.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
         }
-
+        logger.debug("end getPeopleSelectItems()");
         return selectItems;
     }
-
+    /**
+     * @deprecated slow, relies on making (at least) one hessian call per group, replaced by {@link TreeNavigationBean#getParentGroupsSelect()}}
+     * @return
+     */
+    @Deprecated
     public List<SelectItem> getParentGroups()
     {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
@@ -781,16 +786,6 @@ public class OrganizationBean extends BaseBean
         return selectedGroupDriverCount;
     }
 
-    public void setSelectedParentGroup(Group selectedParentGroup)
-    {
-        this.selectedParentGroup = selectedParentGroup;
-    }
-
-    public Group getSelectedParentGroup()
-    {
-        return selectedParentGroup;
-    }
-
     public Map<Integer, Boolean> getTreeStateMap()
     {
         return treeStateMap;
@@ -896,11 +891,20 @@ public class OrganizationBean extends BaseBean
     public void setAddressDAO(AddressDAO addressDAO) {
         this.addressDAO = addressDAO;
     }
+    
     public ReportDAO getReportDAO() {
         return reportDAO;
     }
 
     public void setReportDAO(ReportDAO reportDAO) {
         this.reportDAO = reportDAO;
+    }
+
+    public void setSelectedParentGroupID(Integer selectedParentGroupID) {
+        this.selectedParentGroupID = selectedParentGroupID;
+    }
+
+    public Integer getSelectedParentGroupID() {
+        return selectedParentGroupID;
     }
 }

@@ -63,11 +63,11 @@
 									warnClass="field-warning" infoClass="field-info"
 									styleClass="field-msg" />
 							<h:selectOneMenu
-									value="#{organizationBean.selectedParentGroup}"
-									id="parent_group" converter="SimpleBeanConverter"
+									value="#{organizationBean.selectedParentGroupID}"
+									id="parent_group"
 									required="true" requiredMessage="#{messages.required}"
 									tabindex="1">
-									<f:selectItems value="#{organizationBean.parentGroups}" />
+									<f:selectItems value="#{treeNavigationBean.parentGroupsSelect}" />
 							</h:selectOneMenu>
 						</td>
 					</tr>
