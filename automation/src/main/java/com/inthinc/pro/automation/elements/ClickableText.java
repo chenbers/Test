@@ -24,18 +24,18 @@ public class ClickableText extends ClickableObject implements ClickableTextBased
     }
 
     @Override
-    public Boolean assertEquals() {
-        return textStuff.assertEquals();
+    public Boolean assertTheDefaultValue() {
+        return textStuff.assertTheDefaultValue();
     }
 
     @Override
-    public Boolean assertEquals(String compareAgainst) {
-        return textStuff.assertEquals(compareAgainst);
+    public Boolean assertTheSameAs(String compareAgainst) {
+        return textStuff.assertTheSameAs(compareAgainst);
     }
 
     @Override
-    public Boolean assertNotEquals(String compareAgainst) {
-        return textStuff.assertNotEquals(compareAgainst);
+    public Boolean assertIsNot(String compareAgainst) {
+        return textStuff.assertIsNot(compareAgainst);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class ClickableText extends ClickableObject implements ClickableTextBased
     }
 
     @Override
-    public Boolean validate() {
-        return textStuff.validate();
+    public Boolean validateTheDefaultValue() {
+        return textStuff.validateTheDefaultValue();
     }
 
     @Override

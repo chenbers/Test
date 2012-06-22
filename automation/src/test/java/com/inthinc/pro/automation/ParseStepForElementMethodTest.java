@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.jbehave.core.steps.StepCandidateBehaviour.candidateMatchingStep;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,10 +17,13 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCandidate;
+import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.CalendarObject;
+import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.jbehave.AutoCustomSteps;
@@ -302,6 +306,131 @@ public class ParseStepForElementMethodTest {
                 Object[] params = AutoMethodParser.getParameters(step, method);
                 assertEquals("We should only have gotten 1 parameter", 1, params.length);
                 assertEquals("The date was not parsed correctly", time, params[0]);
+            }
+        }
+    }
+    
+    /**
+     * Each array of arrays is a single test.  The first entry of the <br />
+     * second array is the step that isn't really necessary for this <br />
+     * test, but makes it fit the standard form. <br />
+     * The second entry is the actual string variable we want to validate.
+     */
+    private static final String[][] textValidationSteps = {
+        {"the Error Date text", "Date/Time in the future is not valid."},
+        {"the Category One Speeds link", "kph"},
+        {"the Confirm Password Error text", "New and Confirm New Password do not match"}
+        
+        };
+    
+    /**
+     * The map key is the method name. <br />
+     * The array of arrays represent each way a method can be found in a step string. <br />
+     * The first entry in each array is "is" or nothing, and the second entry is what we <br />
+     * are expecting to use to match the method to the step.
+     */
+    private static final Map<String, String[][]> testTextMethods = new HashMap<String, String[][]>();
+    static {
+        testTextMethods.put("assertTheSameAs", new String[][]{{"is","the same as"}, {"is",""}});
+        testTextMethods.put("assertIsNot", new String[][]{{"is","is not"}, {"is","not the same as"}});
+        testTextMethods.put("assertContains", new String[][]{{"","contains"}, {"is","close to"}});
+        testTextMethods.put("assertDoesNotContain", new String[][]{{"","does not contain"}, {"is","not close to"}});
+        
+        testTextMethods.put("validate", new String[][]{{"is",""}, {"is","the same as"}});
+        testTextMethods.put("validateIsNot", new String[][]{{"is","not"}, {"is","not equal to"}});
+        testTextMethods.put("validateContains", new String[][]{{"","contains"}, {"is","close to"}});
+        testTextMethods.put("validateDoesNotContain", new String[][]{{"","does not contain"}, {"is","not close to"}});
+    }
+    
+    @Test
+    public void testValidationParser(){
+        for (Map.Entry<String, String[][]> methodEntry : testTextMethods.entrySet()){
+            String methodName = methodEntry.getKey();
+            String testPart = methodName.contains("validate") ? "validate": "assert";
+            for (String[] possibles : methodEntry.getValue()){
+                String isPart = possibles[0];
+                String methodPart = possibles[1];
+                
+                for (String[] validation : textValidationSteps){
+                    String stepPart = validation[0];
+                    String stringPart = validation[1];
+                    
+                    String stepAsString = String.format("And I %s %s %s %s \"%s\"", 
+                            testPart, stepPart, isPart, methodPart, stringPart); 
+                    try {
+                        PendingStep step = new PendingStep(stepAsString, stepAsString);
+                        Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, Text.class);
+                        
+                        
+                        for (Map.Entry<Method, Object[]> entry : methods.entrySet()){
+                            assertEquals("Wrong method for step: " + stepAsString, 
+                                    methodName, entry.getKey().getName());
+                            assertEquals("Parser retrieved incorrect variable",
+                                    stringPart, entry.getValue()[0]);
+                        }
+                    } catch (NoSuchMethodException e){
+                        fail("Was unable to find method: " + methodName + " for step \"" + stepAsString + "\"");
+                    }
+                }
+            }
+        }
+    }
+    
+    private static final String[] booleanSteps = {"the Sort By Number link", "the Status Filter dropdown"};
+    
+    /**
+     * The map key is the method name. <br />
+     * The array of arrays represent each way a method can be found in a step string. <br />
+     * The first entry in each array is "is" or nothing, and the second entry is what we <br />
+     * are expecting to use to match the method to the step.
+     */
+    private static final Map<String, String[][]> testBooleanMethods = new HashMap<String, String[][]>();
+    static {
+        testBooleanMethods.put("assertPresence", new String[][]{{"is","present"}});
+        testBooleanMethods.put("assertVisibility", new String[][]{{"is","visible"}});
+        testBooleanMethods.put("assertChecked", new String[][]{{"is","checked"}});
+        testBooleanMethods.put("assertClickable", new String[][]{{"is","clickable"}});
+        
+        testBooleanMethods.put("validatePresence", new String[][]{{"is","present"}});
+        testBooleanMethods.put("validateVisibility", new String[][]{{"is","visible"}});
+        testBooleanMethods.put("validateChecked", new String[][]{{"is","checked"}});
+        testBooleanMethods.put("validateClickable", new String[][]{{"is","clickable"}});
+    }
+    
+    
+
+    @Test
+    public void testBooleanValidationParser(){
+        for (Map.Entry<String, String[][]> methodEntry : testBooleanMethods.entrySet()){
+            String methodName = methodEntry.getKey();
+            String testPart = methodName.contains("validate") ? "validate": "assert";
+            for (String[] possibles : methodEntry.getValue()){
+                String isPart = possibles[0];
+                String methodPart = possibles[1];
+                
+                for (String stepPart : booleanSteps){
+                    String booleanPart = "";
+                    for (int i=0; i<4;i++){
+                        boolean trueFalse = ((i%2) == 0);
+                        booleanPart = trueFalse ? "" : "not";
+                        
+                        String stepAsString = String.format("And I %s %s %s %s %s", 
+                                testPart, stepPart, isPart, booleanPart, methodPart); 
+                        try {
+                            PendingStep step = new PendingStep(stepAsString, stepAsString);
+                            Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, CheckBox.class);
+                            
+                            for (Map.Entry<Method, Object[]> entry : methods.entrySet()){
+                                assertEquals("Wrong method for step: " + stepAsString, 
+                                        methodName, entry.getKey().getName());
+                                assertEquals("Parser retrieved incorrect variable",
+                                        trueFalse, entry.getValue()[0]);
+                            }
+                        } catch (NoSuchMethodException e){
+                            fail("Was unable to find method: " + methodName + " for step \"" + stepAsString + "\"");
+                        }
+                    }
+                }
             }
         }
     }

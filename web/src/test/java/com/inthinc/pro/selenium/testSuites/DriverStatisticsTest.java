@@ -143,7 +143,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         pageStuff.openSavedPage();
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
         assertStringContains("dashboard", ptds.getCurrentLocation());
-        ptds._text().teamName().assertEquals(team);
+        ptds._text().teamName().assertTheSameAs(team);
         
     }
     

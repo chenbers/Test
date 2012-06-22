@@ -116,30 +116,30 @@ public interface ElementInterface {
          * Asserts that the Element is the same as that provided by the Page Enum
          * @return
          */
-        @Assert(englishName="equals the default")
-        public Boolean assertEquals();
+        @Assert(englishName="the same as the default value")
+        public Boolean assertTheDefaultValue();
         
         /**
          * Asserts that the Element is the same as the provided text
          * @param compareAgainst
          * @return
          */
-        @Assert(englishName="equal to")
-        public Boolean assertEquals(String compareAgainst);
+        @Assert(englishName="")
+        public Boolean assertTheSameAs(String compareAgainst);
         
         /**
          * Asserts that the Element is not the same as the provided text
          * @param compareAgainst
          * @return
          */
-        @Assert(englishName="not equal to")
-        public Boolean assertNotEquals(String compareAgainst);
+        @Assert(englishName="not the same as")
+        public Boolean assertIsNot(String compareAgainst);
         
         /**
          * Asserts that the Element contains the provided text
          * @return
          */
-        @Assert(englishName="contains")
+        @Assert(englishName="close to")
         public Boolean assertContains(String compareAgainst);
         
         /**
@@ -147,7 +147,7 @@ public interface ElementInterface {
          * @param compareAgainst
          * @return
          */
-        @Assert(englishName="does not contain")
+        @Assert(englishName="not close to")
         public Boolean assertDoesNotContain(String compareAgainst);
         
         /**
@@ -172,15 +172,15 @@ public interface ElementInterface {
          * Validates the Element against the default value provided in the Page Enum object
          * @return
          */
-        @Validate(englishName="the default value")
-        public Boolean validate();
+        @Validate(englishName="the same as the default value")
+        public Boolean validateTheDefaultValue();
         
         /**
          * Validates the Element equals the provided text
          * @param expected
          * @return
          */
-        @Validate(englishName="")
+        @Validate(englishName="the same as")
         public Boolean validate(String expected);
         
         /** 
@@ -188,7 +188,7 @@ public interface ElementInterface {
          * @param expected
          * @return
          */
-        @Validate(englishName="is not")
+        @Validate(englishName="not the same as")
         public Boolean validateIsNot(String expected);
         
         /**
@@ -213,7 +213,7 @@ public interface ElementInterface {
          * @param expectedPart
          * @return
          */
-        @Validate(englishName="contains")
+        @Validate(englishName="close to")
         public Boolean validateContains(String expectedPart);
         
         /**
@@ -221,7 +221,7 @@ public interface ElementInterface {
          * @param expectedPart
          * @return
          */
-        @Validate(englishName="does not contain")
+        @Validate(englishName="not close to")
         public Boolean validateDoesNotContain(String expectedPart);
     }
     

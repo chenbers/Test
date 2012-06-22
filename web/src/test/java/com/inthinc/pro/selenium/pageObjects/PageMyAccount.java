@@ -384,42 +384,42 @@ public class PageMyAccount extends NavigationBar {
 	public PageMyAccount page_titlesAndLabels_validate() {
 
 		/* Titles for the separate sections */
-		_text().titleAccountMain().validate();
-		_text().titleLoginInfo().validate();
-		_text().titleAccountInfo().validate();
-		_text().titleRedFlags().validate();
-		_text().titleMapPreferences().validate();
-		_text().titleContactInfo().validate();
+		_text().titleAccountMain().validateTheDefaultValue();
+		_text().titleLoginInfo().validateTheDefaultValue();
+		_text().titleAccountInfo().validateTheDefaultValue();
+		_text().titleRedFlags().validateTheDefaultValue();
+		_text().titleMapPreferences().validateTheDefaultValue();
+		_text().titleContactInfo().validateTheDefaultValue();
 
 		/* Labels for the seperate rows */
 		/* Account Information */
-		_text().labelName().validate();
-		_text().labelGroup().validate();
-		_text().labelTeam().validate();
+		_text().labelName().validateTheDefaultValue();
+		_text().labelGroup().validateTheDefaultValue();
+		_text().labelTeam().validateTheDefaultValue();
 
 		/* Login Information */
-		_text().labelUserName().validate();
-		_text().labelLocale().validate();
-		_text().labelMeasurement().validate();
-		_text().labelFuelEfficiency().validate();
+		_text().labelUserName().validateTheDefaultValue();
+		_text().labelLocale().validateTheDefaultValue();
+		_text().labelMeasurement().validateTheDefaultValue();
+		_text().labelFuelEfficiency().validateTheDefaultValue();
 
 		/* Red Flag Preferences */
-		_text().labelRedFlagInfo().validate();
-		_text().labelRedFlagWarning().validate();
-		_text().labelRedFlagCritical().validate();
+		_text().labelRedFlagInfo().validateTheDefaultValue();
+		_text().labelRedFlagWarning().validateTheDefaultValue();
+		_text().labelRedFlagCritical().validateTheDefaultValue();
 
 		/* Contact Information */
-		_text().titleEmailAddresses().validate();
-		_text().labelEmail1().validate();
-		_text().labelEmail2().validate();
+		_text().titleEmailAddresses().validateTheDefaultValue();
+		_text().labelEmail1().validateTheDefaultValue();
+		_text().labelEmail2().validateTheDefaultValue();
 
-		_text().titlePhoneNumbers().validate();
-		_text().labelPhone1().validate();
-		_text().labelPhone2().validate();
+		_text().titlePhoneNumbers().validateTheDefaultValue();
+		_text().labelPhone1().validateTheDefaultValue();
+		_text().labelPhone2().validateTheDefaultValue();
 
-		_text().titleTextMessages().validate();
-		_text().labelTextMessage1().validate();
-		_text().labelTextMessage2().validate();
+		_text().titleTextMessages().validateTheDefaultValue();
+		_text().labelTextMessage1().validateTheDefaultValue();
+		_text().labelTextMessage2().validateTheDefaultValue();
 
 		return this;
 	}

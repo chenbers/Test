@@ -182,7 +182,7 @@ public class PageVehiclePerformance extends NavigationBar {
     public PageVehiclePerformance validate() {
         assertStringContains("app/vehicle", getCurrentLocation());
         //TODO: it would be nice if every page had some level of "am I even on the right page" validation
-        _text().overallTitle().validate();
+        _text().overallTitle().validateTheDefaultValue();
         return this;
     }
 

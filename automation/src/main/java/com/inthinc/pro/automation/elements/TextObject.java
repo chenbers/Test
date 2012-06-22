@@ -23,17 +23,17 @@ public class TextObject extends ElementBase implements TextBased {
     }
 
     @Override
-    public Boolean assertEquals() {
+    public Boolean assertTheDefaultValue() {
         return assertEquals(myEnum, myEnum, myEnum);
     }
 
     @Override
-    public Boolean assertEquals(String compareAgainst) {
+    public Boolean assertTheSameAs(String compareAgainst) {
         return assertEquals(compareAgainst, myEnum);
     }
 
     @Override
-    public Boolean assertNotEquals(String compareAgainst) {
+    public Boolean assertIsNot(String compareAgainst) {
         return assertNotEquals(compareAgainst, myEnum);
     }
 
@@ -69,7 +69,7 @@ public class TextObject extends ElementBase implements TextBased {
     }
 
     @Override
-    public Boolean validate() {
+    public Boolean validateTheDefaultValue() {
         return validateEquals(myEnum.getText(), getText());
     }
 

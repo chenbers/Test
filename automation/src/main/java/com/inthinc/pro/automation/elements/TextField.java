@@ -32,17 +32,17 @@ public class TextField extends TextObject implements Typeable {
     }
     
     @Override
-    public Boolean assertEquals() {
+    public Boolean assertTheDefaultValue() {
         return assertEquals(myEnum, getText(), myEnum);
     }
 
     @Override
-    public Boolean assertEquals(String compareAgainst) {
+    public Boolean assertTheSameAs(String compareAgainst) {
         return assertEquals(compareAgainst, getText());
     }
 
     @Override
-    public Boolean assertNotEquals(String compareAgainst) {
+    public Boolean assertIsNot(String compareAgainst) {
         return assertNotEquals(compareAgainst, getText());
     }
 }

@@ -82,7 +82,7 @@ public class VerifyPagObjectsTest extends WebRallyTest {
         desiredOptions.add("Group Comparison By State/Province");
         for(String desiredOption: desiredOptions){
             waysmartReport._dropDown().report().select(desiredOption);
-            waysmartReport._dropDown().report().assertEquals(desiredOption);
+            waysmartReport._dropDown().report().assertTheSameAs(desiredOption);
             AutomationThread.pause(5, "just pausing to manually inspect test");
         }
 //		Click Notifications.

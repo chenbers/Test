@@ -102,7 +102,7 @@ public class AutoMethodParser {
         return parameter;
     }
 
-    public static Map<Method, Object[]> parseValidationStep(PendingStep step, String elementType, Class<?> clazz) throws NoSuchMethodException {
+    public static Map<Method, Object[]> parseValidationStep(PendingStep step, Class<?> clazz) throws NoSuchMethodException {
         String stepAsString = step.stepAsString();
         Map<String, List<Method>> methods = null;
         Map<Method, Object[]> validateMethod = new HashMap<Method, Object[]>(2);
@@ -118,14 +118,18 @@ public class AutoMethodParser {
         }
         boolean trueFalse = AutoStepVariables.checkBoolean(stepAsString);
         Set<String> names = methods.keySet();
-        String variable = AutoStepVariables.getComparator(stepAsString.replace("is not ", "is "));
+        String variable = AutoStepVariables.getComparator(stepAsString);
+        
         List<Method> methodList = new ArrayList<Method>();
-        String shortLowerName = stepAsString.replace(" ", "").toLowerCase(); 
+        String shortLowerName = "";
+        shortLowerName = stepAsString.replaceAll(variable, "").replace(" ", "").toLowerCase();
+
+        String current = "";
         for (String name : names) {
             String shorter = name.replace(validationType, "");
-            if (shortLowerName.contains(shorter) && shorter.length() > 0){
+            if (shortLowerName.contains(shorter) && shorter.length() > 0 && shorter.length() > current.length()){
                 methodList = methods.get(name);
-                break;
+                current = shorter;
             }
         }
         if (methodList.isEmpty()){

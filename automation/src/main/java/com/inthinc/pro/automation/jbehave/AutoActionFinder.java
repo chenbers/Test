@@ -40,7 +40,7 @@ public class AutoActionFinder {
                     return stepCreator.createSaveVariableStep(step, elementInstance, method, parameters);
                 
                 } else if (stepAsString.contains("validate") || stepAsString.contains("assert")){
-                    Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, elementType, elementInstance.getClass());
+                    Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, elementInstance.getClass());
                     Entry<Method, Object[]> method = methods.entrySet().iterator().next();
 
                     return stepCreator.createValidationStep(step, elementInstance, method.getKey(), method.getValue());
