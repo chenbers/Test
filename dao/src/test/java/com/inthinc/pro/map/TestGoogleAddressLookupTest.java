@@ -123,7 +123,7 @@ public class TestGoogleAddressLookupTest {
         } catch (NoAddressFoundException e) {
             fail();
         }
-        assertTrue("The given LatLng should reside in Jersey Village", address.contains("Jersey Village"));
+        assertTrue("The given LatLng should reside in 79705", address.contains("79705"));
     }
     @Test
     public final void getAddressLatLngBoolean_invalidLatLng() {
