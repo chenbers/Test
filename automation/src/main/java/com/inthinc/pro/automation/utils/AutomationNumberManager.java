@@ -33,7 +33,7 @@ public class AutomationNumberManager {
         } else if (x==0){
             x = 1;
         }
-	    
+
 	    int num = 0;
 	    StringBuffer strBuff = new StringBuffer();
 	    char c;
@@ -54,8 +54,12 @@ public class AutomationNumberManager {
 	            inNumber = false;
 	        }
 	    }
-	    Integer xNumber = Integer.parseInt(strBuff.toString());
-	    return xNumber;
+	    String asString = strBuff.toString();
+	    if (!asString.isEmpty()){
+	        return Integer.parseInt(asString);
+	    }else {
+	        return 1;
+	    }
 	}
 	
 }
