@@ -7,8 +7,7 @@ Meta:
 Narrative: 
 
 Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart drivers TEST WILL WORK CORRECTLY AS LONG AS USER HAS DATA
-Given I am on the Login page
-Given I am logged in as a "TopUser" user
+Given I am logged in
 And I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
@@ -205,8 +204,7 @@ And I validate the Number Speeding Total Distance Speeding text contains "mi"
 And I validate the Title Speeding text contains "mi"
 
 Scenario: TC6139: My Account - Edit Account - Measurement Validation for Tiwi drivers TEST WILL WORK CORRECTLY AS LONG AS USER HAS DATA
-Given I am on the Login page
-Given I am logged in as a "TopUser" user
+Given I am logged in
 And I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
@@ -545,22 +543,6 @@ And I validate the Phone1 text is not ORIGINALphoneOne
 And I validate the Phone2 text is not ORIGINALphoneTwo
 And I validate the Text Message1 text is not ORIGINALtextOne
 And I validate the Text Message2 text is not ORIGINALtextTwo
-And I click the Edit button
-And I select ORIGINALinfo from the Information dropdown
-And I select ORIGINALwarn from the Warning dropdown
-And I select ORIGINALcrit from the Critical dropdown
-And I select ORIGINALmapType from the Map Type dropdown
-And I click the 1st Row of the Map Layers checkbox
-And I select ORIGINALlocale from the Locale dropdown
-And I select ORIGINALmeasurement from the Measurement dropdown
-And I select ORIGINALfuelEff from the Fuel Efficiency Ratio dropdown
-And I type ORIGINALemailOne into the Email1 textfield
-And I type ORIGINALemailTwo into the Email2 textfield
-And I type ORIGINALphoneOne into the Phone1 textfield
-And I type ORIGINALphoneTwo into the Phone2 textfield
-And I type ORIGINALtextOne into the Text Message1 textfield
-And I type ORIGINALtextTwo into the Text Message2 textfield
-And I click the Save button
 
 Scenario: TC1272: My Account - Edit Account - E-mail Address Format Error
 Given I am logged in
