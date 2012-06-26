@@ -15,7 +15,7 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement text is "Metric"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I verify "Crashes per million kilometers" is on the page
 And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
@@ -49,7 +49,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
@@ -82,7 +82,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Speed link
 And I validate the Category One Speeds Header text contains "kph"
 And I validate the Category Two Speeds Header text contains "kph"
@@ -113,7 +113,7 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement text is "English"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I verify "Crashes per million miles" is on the page
 And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
@@ -144,7 +144,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
@@ -178,7 +178,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Speed link
 And I validate the Category One Speeds Header text contains "mph"
 And I validate the Category Two Speeds Header text contains "mph"
@@ -193,7 +193,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Firmware Team" from the Team dropdown
+And I select "Test Group WR" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "mph"
 And I click the Logo button
@@ -212,7 +212,7 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 Then I validate the Measurement text is "Metric"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I verify "Crashes per million kilometers" is on the page
 And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
@@ -247,7 +247,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
@@ -281,7 +281,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Kilometers Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "km"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Speed link
 And I validate the Category One Speeds Header text contains "kph"
 And I validate the Category Two Speeds Header text contains "kph"
@@ -312,7 +312,7 @@ And I click the Save button
 And I click the My Messages link
 And I click the My Account link
 And I validate the Measurement text is "English"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I verify "Crashes per million miles" is on the page
 And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
@@ -344,7 +344,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
@@ -379,7 +379,7 @@ And I click the Return To Performance Page button
 And I click the View All Trips link
 And I verify "Total Miles Driven" is on the page
 And I validate the 1st Row of the Distance Entry text contains "mi"
-And I click group "Firmware Team" Groups navtree
+And I click group "Test Group WR" Groups navtree
 And I click the Speed link
 And I validate the Category One Speeds Header text contains "mph"
 And I validate the Category Two Speeds Header text contains "mph"
@@ -394,7 +394,7 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Firmware Team" from the Team dropdown
+And I select "Test Group WR" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "mph"
 And I click the Logo button

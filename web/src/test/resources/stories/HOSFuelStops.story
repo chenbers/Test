@@ -20,7 +20,7 @@ And I validate the Error Vehicle Fuel text is "Vehicle fuel is required."
 And I validate the Error Driver text is "Driver is required"
 And I click the Top Cancel button
 And I click the Add button
-And I select 1 day in the past from the Date dropdown
+And I select 1 day in the future from the Date dropdown
 And I type "5627" into the Vehicle Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
 And I click the Top Save button
@@ -64,8 +64,8 @@ And I click the Add button
 And I validate the Value Vehicle text is present
 And I validate the Time Message text is present
 And I type "5631" into the Trailer textfield
-And I type "5631.00" into the Vehicle Fuel textfield
-And I type "5631.00" into the Trailer Fuel textfield
+And I type "5,631.00" into the Vehicle Fuel textfield
+And I type "5,631.00" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
 Then I validate the Value Location text is present
 And I save the Date dropdown as DATE
@@ -78,8 +78,8 @@ And I click the Top Save button
 And I click the Refresh button
 And I click the 1st Row of the Value Edit link
 And I validate the Trailer textfield is "5631"
-And I validate the Vehicle Fuel textfield is "5631.00"
-And I validate the Trailer Fuel textfield is "5631.00"
+And I validate the Vehicle Fuel textfield is "5,631.00"
+And I validate the Trailer Fuel textfield is "5,631.00"
 And I validate the Driver dropdown is "tiwi 00"
 And I click the Reports link
 And I click the HOS link
@@ -221,7 +221,7 @@ And I validate the 1st Row of the Value Trailer text is TRAILER
 And I validate the 1st Row of the Value Location text is LOCATION
 And I validate the 1st Row of the Value Edited text is EDITED
 
-Scenario: TC5629: HOS - Fuel Stops - Delete Fuel Stop Entry
+Scenario: TC5629: HOS - Fuel Stops - Delete Fuel Stop Entry (removed checking location as there is no way to select one)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
@@ -241,7 +241,6 @@ And I save the 1st Row of the Value Vehicle text as VEHICLE
 And I save the 1st Row of the Value Vehicle Fuel text as VEHICLEFUEL
 And I save the 1st Row of the Value Trailer Fuel text as TRAILERFUEL
 And I save the 1st Row of the Value Trailer text as TRAILER
-And I save the 1st Row of the Value Location text as LOCATION
 And I save the 1st Row of the Value Edited text as EDITED
 And I check the 1st Row of the Entry Check Box checkbox
 And I click the Delete button
@@ -260,7 +259,6 @@ And I validate the 1st Row of the Value Vehicle text is not VEHICLE
 And I validate the 1st Row of the Value Vehicle Fuel text is not VEHICLEFUEL
 And I validate the 1st Row of the Value Trailer Fuel text is not TRAILERFUEL
 And I validate the 1st Row of the Value Trailer text is not TRAILER
-And I validate the 1st Row of the Value Location text is not LOCATION
 And I validate the 1st Row of the Value Edited text is not EDITED
 
 Scenario: TC5702: HOS - Fuel Stops - Edit Columns
@@ -309,7 +307,7 @@ And I validate the Sort Trailer Fuel link is present
 And I validate the Sort Edited link is present
 
 Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi
-Given I am logged in as a "Admin Tiwi" user
+Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
 And I type "" into the Vehicle textfield
