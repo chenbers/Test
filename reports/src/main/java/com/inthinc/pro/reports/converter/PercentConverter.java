@@ -16,7 +16,7 @@ public class PercentConverter {
      */
     public static String doubleToString(Double percent,Locale locale){
         NumberFormat numberFormat = NumberFormat.getPercentInstance(locale);
-        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(1);
         return numberFormat.format(percent);
     }
 
