@@ -30,7 +30,7 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
 		}
 
-		public TextButton exportPDF() {
+		public TextButton exportPdf() {
 			return new TextButton(ReportsBarEnum.TOOL_PDF, page);
 		}
 

@@ -1,5 +1,3 @@
-Test Cases for TF388/TF416/TF502
-
 Meta:
 @page login
 @testFolder TF388
@@ -77,7 +75,7 @@ And I click the Vehicles link
 And I click the Sort By Vehicle ID link
 And I click the Sort By Group link
 And I click the Sort By Year Make Model link
-*And I click the Sort By Driver link
+And I click the Sort By Driver link
 And I click the Sort By Distance Driven link
 And I click the Sort By Odometer link
 And I click the Sort By Overall link
@@ -90,8 +88,8 @@ When I click the Reports link
 And I click the Vehicles link
 And I click the Tools button
 Then I validate the Email Report button is present
-And I validate the Export To PDF button is present
-And I validate the Export To Excel button is present
+And I validate the Export Pdf button is present
+And I validate the Export Excel button is present
 
 Scenario: TC1641: Reports - Vehicles - UI
 Given I am logged in
@@ -122,11 +120,9 @@ Scenario: TC1642: Reports - Vehicles - Vehicle ID Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I click the Sort By Vehicle ID link
-And I click the Sort By Vehicle ID link
-And I save the first entry in the Sort By Vehicle ID column as SavedEntry
-*And I click the first entry in the Sort By Vehicle ID column
-Then I validate the Vehicle Performance text is SavedEntry
+And I save the 1st Row of the Vehicle Value link as SavedEntry
+And I click the 1st Row of the Vehicle Value link
+Then I validate the Vehicle Name link is SavedEntry
 
 Scenario: TC1644: Reports - Vehicles - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -134,15 +130,15 @@ When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-*And I uncheck the checkbox of the second entry
-And I uncheck the checkbox of the third entry
-And I uncheck the checkbox of the fourth entry
-And I uncheck the checkbox of the fifth entry
-And I uncheck the checkbox of the sixth entry
-And I uncheck the checkbox of the seventh entry
-And I uncheck the checkbox of the eighth entry
-And I uncheck the checkbox of the ninth entry
+And I uncheck 1st Row of the of the Edit Columns checkbox
+And I uncheck 2nd Row of the of the Edit Columns checkbox
+And I uncheck 3rd Row of the of the Edit Columns checkbox
+And I uncheck 4th Row of the of the Edit Columns checkbox
+And I uncheck 5th Row of the of the Edit Columns checkbox
+And I uncheck 6th Row of the of the Edit Columns checkbox
+And I uncheck 7th Row of the of the Edit Columns checkbox
+And I uncheck 8th Row of the of the Edit Columns checkbox
+And I uncheck 9th Row of the of the Edit Columns checkbox
 And I click the Cancel button
 And the Edit Columns popup closes
 Then I validate the Sort By Group link is present
@@ -162,7 +158,7 @@ And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I click the Cancel button
-*And the Edit Columns popup closes
+And the Edit Columns popup closes
 Then I validate the Sort By Group link is present
 And I validate the Sort By Vehicle ID link is present
 And I validate the Sort By Year Make Model link is present
@@ -179,42 +175,24 @@ When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-*Then I validate the checkbox of the first entry is not checked
-And I uncheck the checkbox of the second entry
-And I validate the checkbox of the second entry is not checked
-And I uncheck the checkbox of the third entry
-And I validate the checkbox of the third entry is not checked
-And I uncheck the checkbox of the fourth entry
-And I validate the checkbox of the fourth entry is not checked
-And I uncheck the checkbox of the fifth entry
-And I validate the checkbox of the fifth entry is not checked
-And I uncheck the checkbox of the sixth entry
-And I validate the checkbox of the sixth entry is not checked
-And I uncheck the checkbox of the seventh entry
-And I validate the checkbox of the seventh entry is not checked
-And I uncheck the checkbox of the eighth entry
-And I validate the checkbox of the eighth entry is not checked
-And I uncheck the checkbox of the ninth entry
-And I validate the checkbox of the ninth entry is not checked
-And I check the checkbox of the first entry
-And I validate the checkbox of the first entry is checked
-And I check the checkbox of the second entry
-And I validate the checkbox of the second entry is checked
-And I check the checkbox of the third entry
-And I validate the checkbox of the third entry is checked
-And I check the checkbox of the fourth entry
-And I validate the checkbox of the fourth entry is checked
-And I check the checkbox of the fifth entry
-And I validate the checkbox of the fifth entry is checked
-And I check the checkbox of the sixth entry
-And I validate the checkbox of the sixth entry is checked
-And I check the checkbox of the seventh entry
-And I validate the checkbox of the seventh entry is checked
-And I check the checkbox of the eighth entry
-And I validate the checkbox of the eighth entry is checked
-And I check the checkbox of the ninth entry
-And I validate the checkbox of the ninth entry is checked
+And I uncheck 1st Row of the Edit Columns checkbox
+Then I validate the 1st Row of the Edit Columns checkbox is not checked
+And I uncheck 2nd Row of the Edit Columns checkbox
+And I validate the 2nd Row of the Edit Columns checkbox is not checked
+And I uncheck 3rd Row of the Edit Columns checkbox
+And I validate the 3rd Row of the Edit Columns checkbox is not checked
+And I uncheck 4th Row of the Edit Columns checkbox
+And I validate the 4th Row of the Edit Columns checkbox is not checked
+And I uncheck 5th Row of the of the Edit Columns checkbox
+And I validate the 5th Row of the Edit Columns checkbox is not checked
+And I uncheck 6th Row of the of the Edit Columns checkbox
+And I validate the 6th Row of the Edit Columns checkbox is not checked
+And I uncheck 7th Row of the of the Edit Columns checkbox
+And I validate the 7th Row of the Edit Columns checkbox is not checked
+And I uncheck 8th Row of the of the Edit Columns checkbox
+And I validate the 8th Row of the Edit Columns checkbox is not checked
+And I uncheck 9th Row of the of the Edit Columns checkbox
+And I validate the 9th Row of the Edit Columns checkbox is not checked
 
 Scenario: TC1648: Reports - Vehicles - Edit Columns - Current Session Retention
 Given I am logged in
@@ -222,17 +200,13 @@ When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-*And I uncheck the checkbox of the second entry
-And I uncheck the checkbox of the third entry
+And I uncheck 1st Row of the Edit Columns checkbox
+And I uncheck 2nd Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
-And I click the Notifications link
-And I click the Reports link
-And I click the Vehicles link
-Then I validate the Sort By Group link is not present
-And I validate the Sort By Vehicle ID link is not present
-And I validate the Sort By Year Make Model link is not present
+Then I validate the 1st Row of the Group Value textlink is not present
+And I validate the 1st Row of the Vehicle Value textlink is not present
+And I validate the 1st Row of the Sort By Year Make Model textlink is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Distance Driven link is present
 And I validate the Sort By Odometer link is present
@@ -241,75 +215,80 @@ And I validate the Sort By Speed link is present
 And I validate the Sort By Style link is present
 
 Scenario: TC1650: Reports - Vehicles - Edit Columns - Save Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
+And I uncheck the 1st Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the Sort By Group link is not present
+Then I validate the 1st Row of the Group Value textlink is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I validate the checkbox of the first entry is not checked
-And I check the checkbox of the first entry
+And I validate the 1st Row of the Edit Columns checkbox is not checked
+And I check the 1st Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
-And I validate the Sort By Group link is present
+And I validate the 1st Row of the Group Value textlink is present
 
 Scenario: TC1651: Reports - Vehicles - Edit Columns - Subsequent Session Retention
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
+And I uncheck the 1st Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-Then I validate the Sort By Group link is not present
+Then I validate the 1st Row of the Group Value textlink is not present
 When I click the Edit Columns link
 And the EditColumns popup opens
-And I check the checkbox of the first entry
+And I check the 1st Row of the Edit Columns checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
+Given I am logged in
 And I click the Reports link
 And I click the Vehicles link
-Then I validate the Sort By Group link is present
+Then I validate the 1st Row of the Group Value textlink is present
 
 Scenario: TC1653: Reports - Vehicles - Edit Columns - UI
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-Then I validate the first checkbox is present
-And I validate the second checkbox is present
-And I validate the third checkbox is present
-And I validate the fourth checkbox is present
-And I validate the fifth checkbox is present
-And I validate the sixth checkbox is present
-And I validate the seventh checkbox is present
-And I validate the eighth checkbox is present
-And I validate the ninth checkbox is present
-And I validate the first checkbox is checked
-And I validate the second checkbox is unchecked
-And I validate the third checkbox is checked
-And I validate the fourth checkbox is checked
-And I validate the fifth checkbox is checked
-And I validate the sixth checkbox is checked
-And I validate the seventh checkbox is checked
-And I validate the eighth checkbox is checked
-And I validate the ninth checkbox is checked
+Then I validate the 1st Row of the Edit Columns checkbox is present
+And I validate the 2nd Row of the Edit Columns checkbox is present
+And I validate the 3rd Row of the Edit Columns checkbox is present
+And I validate the 4th Row of the Edit Columns checkbox is present
+And I validate the 5th Row of the Edit Columns checkbox is present
+And I validate the 6th Row of the Edit Columns checkbox is present
+And I validate the 7th Row of the Edit Columns checkbox is present
+And I validate the 8th Row of the Edit Columns checkbox is present
+And I validate the 9th Row of the Edit Columns checkbox is present
+And I check 1st Row of the of the Edit Columns checkbox
+And I check 2nd Row of the of the Edit Columns checkbox
+And I check 3rd Row of the of the Edit Columns checkbox
+And I check 4th Row of the of the Edit Columns checkbox
+And I check 5th Row of the of the Edit Columns checkbox
+And I check 6th Row of the of the Edit Columns checkbox
+And I check 7th Row of the of the Edit Columns checkbox
+And I check 8th Row of the of the Edit Columns checkbox
+And I check 9th Row of the of the Edit Columns checkbox
+And I validate the 1st Row of the Edit Columns checkbox is checked
+And I validate the 2nd Row of the Edit Columns checkbox is checked
+And I validate the 3rd Row of the Edit Columns checkbox is checked
+And I validate the 4th Row of the Edit Columns checkbox is checked
+And I validate the 5th Row of the Edit Columns checkbox is checked
+And I validate the 6th Row of the Edit Columns checkbox is checked
+And I validate the 7th Row of the Edit Columns checkbox is checked
+And I validate the 8th Row of the Edit Columns checkbox is checked
+And I validate the 9th Row of the Edit Columns checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
