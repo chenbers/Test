@@ -265,35 +265,37 @@ And I validate the 6th Row of the Edit Columns checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
 
-Scenario: TC5733: Notifications - Zones - Exclude Link - Zone Arrival Event NEED HELP TO IMPLEMENT
+Scenario: TC5733: Notifications - Zones - Exclude Link - Zone Arrival Event
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I click the first entry from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first Entry Date Time text as SavedDateTime
-And I save the text in the first Entry Detail text as SavedDetail
+And I select "Zone Arrival" from the Category dropdown
+And I save the text in the first Entry Date Time text as SAVEDDATETIME
+And I save the text in the first Entry Detail text as SAVEDDETAIL
 And I click the first Exclude link in the Status column
 And the Exclude Event popup opens
-Then I validate the SavedDateTime text is present
-And I validate the SavedDetail text is present
+Then I validate the SAVEDDATETIME text is present
+And I validate the SAVEDDETAIL text is present
 And I click the Yes button
 And I validate the first link in the Status column is "include"
 
-Scenario: TC5734: Notifications - Zones - Exclude Link - Zone Departure Event NEED HELP TO IMPLEMENT
+Scenario: TC5734: Notifications - Zones - Exclude Link - Zone Departure Event
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
 And I click the first entry in the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-And I save the text in the first Entry Date Time text as SavedDateTime
-And I save the text in the first Entry Detail text as SavedDetail
+And I select "Zone Departure" from the Category dropdown
+And I save the text in the first Entry Date Time text as SAVEDDATETIME
+And I save the text in the first Entry Detail text as SAVEDDETAIL
 And I click the first Exclude link in the Status column
 And the Exclude Event popup opens
-Then I validate the SavedDateTime text is present
-And I validate the SavedDetail text is present
+Then I validate the SAVEDDATETIME text is present
+And I validate the SAVEDDETAIL text is present
 And I click the Yes button
 And I validate the first link in the Status column is "include"
 
