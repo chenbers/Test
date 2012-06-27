@@ -6,6 +6,23 @@ Meta:
 
 Narrative:
 
+Scenario: Check all boxes on vehicles edit columns and save
+Given I am logged in
+When I click the Reports link
+And I click the Vehicles link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check 1st Row of the of the Edit Columns checkbox
+And I check 2nd Row of the of the Edit Columns checkbox
+And I check 3rd Row of the of the Edit Columns checkbox
+And I check 4th Row of the of the Edit Columns checkbox
+And I check 5th Row of the of the Edit Columns checkbox
+And I check 6th Row of the of the Edit Columns checkbox
+And I check 7th Row of the of the Edit Columns checkbox
+And I check 8th Row of the of the Edit Columns checkbox
+And I check 9th Row of the of the Edit Columns checkbox
+And I click the Save button
+
 Scenario: TC1614: Reports - Vehicles - Bookmark Entry 
 Given I am logged in
 And I select "Vehicles" from the Master Search dropdown
@@ -18,14 +35,6 @@ Given I am logged in
 Then I validate I am on the Reports Vehicles page
 And I validate the Master Search textfield is ""
 And I validate that the 1st Row of the Vehicle Value link is SavedVehicle
-
-Scenario: TC1617: Reports - Vehicles - Driver Link
-Given I am logged in
-When I click the Reports link
-And I click the Vehicles link
-And I save the 1st Row of the Driver Value link as SavedEntry
-And I click the 1st Row of the Driver Value link
-Then I validate the Driver Name textlink is SavedEntry
 
 Scenario: TC1619: Reports - Vehicles - Driving Style Score Link
 Given I am logged in
@@ -193,6 +202,7 @@ And I uncheck 8th Row of the of the Edit Columns checkbox
 And I validate the 8th Row of the Edit Columns checkbox is not checked
 And I uncheck 9th Row of the of the Edit Columns checkbox
 And I validate the 9th Row of the Edit Columns checkbox is not checked
+And I click the cancel button
 
 Scenario: TC1648: Reports - Vehicles - Edit Columns - Current Session Retention
 Given I am logged in
@@ -213,6 +223,11 @@ And I validate the Sort By Odometer link is present
 And I validate the Sort By Overall link is present
 And I validate the Sort By Speed link is present
 And I validate the Sort By Style link is present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check 1st Row of the Edit Columns checkbox
+And I check 2nd Row of the Edit Columns checkbox
+And I click the Save button
 
 Scenario: TC1650: Reports - Vehicles - Edit Columns - Save Button
 Given I am logged in
@@ -272,15 +287,15 @@ And I validate the 6th Row of the Edit Columns checkbox is present
 And I validate the 7th Row of the Edit Columns checkbox is present
 And I validate the 8th Row of the Edit Columns checkbox is present
 And I validate the 9th Row of the Edit Columns checkbox is present
-And I check 1st Row of the of the Edit Columns checkbox
-And I check 2nd Row of the of the Edit Columns checkbox
-And I check 3rd Row of the of the Edit Columns checkbox
-And I check 4th Row of the of the Edit Columns checkbox
-And I check 5th Row of the of the Edit Columns checkbox
-And I check 6th Row of the of the Edit Columns checkbox
-And I check 7th Row of the of the Edit Columns checkbox
-And I check 8th Row of the of the Edit Columns checkbox
-And I check 9th Row of the of the Edit Columns checkbox
+And I check the 1st Row of the of the Edit Columns checkbox
+And I check the 2nd Row of the of the Edit Columns checkbox
+And I check the 3rd Row of the of the Edit Columns checkbox
+And I check the 4th Row of the of the Edit Columns checkbox
+And I check the 5th Row of the of the Edit Columns checkbox
+And I check the 6th Row of the of the Edit Columns checkbox
+And I check the 7th Row of the of the Edit Columns checkbox
+And I check the 8th Row of the of the Edit Columns checkbox
+And I check the 9th Row of the of the Edit Columns checkbox
 And I validate the 1st Row of the Edit Columns checkbox is checked
 And I validate the 2nd Row of the Edit Columns checkbox is checked
 And I validate the 3rd Row of the Edit Columns checkbox is checked
@@ -292,3 +307,4 @@ And I validate the 8th Row of the Edit Columns checkbox is checked
 And I validate the 9th Row of the Edit Columns checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
+And I click the save button
