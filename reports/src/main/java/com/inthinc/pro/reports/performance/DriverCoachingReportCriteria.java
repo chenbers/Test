@@ -226,7 +226,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             aggressiveViolationSummary.addChildViolation(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.HARD_BRAKE, driverPerformance.getHardBrakeCount() == null?"0":driverPerformance.getHardBrakeCount().toString()));
             aggressiveViolationSummary.addChildViolation(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.HARD_TURN, driverPerformance.getHardTurnCount() == null?"0":driverPerformance.getHardTurnCount().toString()));
             aggressiveViolationSummary.addChildViolation(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.HARD_BUMP, driverPerformance.getHardVerticalCount() == null?"0":driverPerformance.getHardVerticalCount().toString()));
-            violationsSummaryList.add(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.IDLE_DURATION, DateUtil.getDurationFromSeconds(driverPerformance.getTotalIdleTime().intValue())));
+            violationsSummaryList.add(new DriverCoachingReportViolationSummary(DriverCoachingReportViolation.IDLE_DURATION, DateUtil.getDurationFromSeconds(driverPerformance.getIdleLo().intValue())));
             
             return violationsSummaryList;
         }

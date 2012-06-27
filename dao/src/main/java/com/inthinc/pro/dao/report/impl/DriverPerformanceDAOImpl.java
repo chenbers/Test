@@ -77,6 +77,7 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             dp.setSpeedCount8to14Over(s.getSpeedEvents8To14MphOver() == null ? 0 : s.getSpeedEvents8To14MphOver().intValue());
             dp.setSpeedCount15Over(s.getSpeedEvents15PlusMphOver() == null ? 0 : s.getSpeedEvents15PlusMphOver().intValue());
             dp.setTotalIdleTime(s.getIdleTotal() == null ?0:s.getIdleTotal());
+            dp.setIdleLo(s.getIdleLo() == null ?0:s.getIdleLo());
             
             List<VehiclePerformance> vehiclePerformanceBreakdown = vehiclePerformanceDAO.getVehiclePerformance(score.getDriver().getDriverID(), interval);
             if (vehiclePerformanceBreakdown != null && vehiclePerformanceBreakdown.size() > 0) 
