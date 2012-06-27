@@ -189,7 +189,7 @@ public enum ReportGroup
             ReportType.DRIVER_PERFORMANCE_TEAM),
      DRIVER_PERFORMANCE_INDIVIDUAL("Driver Performance (Individual)", 35, EntityType.ENTITY_INDIVIDUAL_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-            new GroupType[]{GroupType.TEAM}, ReportCategory.DriverPerformance,
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_INDIVIDUAL),
      DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG (Team)", 36, EntityType.ENTITY_GROUP,
