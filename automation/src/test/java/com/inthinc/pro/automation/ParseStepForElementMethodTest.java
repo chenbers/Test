@@ -407,6 +407,46 @@ public class ParseStepForElementMethodTest {
         }
     }
     
+    public static final String[] varNames = {"TRAILER", "LOCATION", "this is my variable"};
+    
+    @Test
+    public void testValidationParserWithSavedVariable(){
+        for (String variableName : varNames){
+            String saveStep = "And I save my Variable text as " + variableName;
+            for (Map.Entry<String, String[][]> methodEntry : testTextMethods.entrySet()){
+                String methodName = methodEntry.getKey();
+                String testPart = methodName.contains("validate") ? "validate": "assert";
+                for (String[] possibles : methodEntry.getValue()){
+                    String isPart = possibles[0];
+                    String methodPart = possibles[1];
+                    
+                    for (String[] validation : textValidationSteps){
+                        String stepPart = validation[0];
+                        String stringPart = validation[1];
+                        
+                        AutoStepVariables.setComparator(saveStep, stringPart);
+                        String stepAsString = String.format("And I %s %s %s %s %s", 
+                                testPart, stepPart, isPart, methodPart, variableName); 
+                        try {
+                            PendingStep step = new PendingStep(stepAsString, stepAsString);
+                            Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, Text.class);
+                            
+                            
+                            for (Map.Entry<Method, Object[]> entry : methods.entrySet()){
+                                assertEquals("Wrong method for step: " + stepAsString, 
+                                        methodName, entry.getKey().getName());
+                                assertEquals("Parser retrieved incorrect variable for step: " + stepAsString,
+                                        stringPart, entry.getValue()[0]);
+                            }
+                        } catch (NoSuchMethodException e){
+                            fail("Was unable to find method: " + methodName + " for step \"" + stepAsString + "\"");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private static final String[] booleanSteps = {"the Sort By Number link", "the Status Filter dropdown"};
     
     /**

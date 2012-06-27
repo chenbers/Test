@@ -40,28 +40,32 @@ public class AutoStepVariables {
         String variable = RegexTerms.getMatch(RegexTerms.getVariable.replace("***", elementType), stepAsString);
         
         Map<String, String> temp = getVariables();
-        
-        if (variable.contains("\"")){
+        if (temp.containsKey(variable)){
+            toReturn = temp.get(variable);   
+        } else if (variable.contains("\"")){
             toReturn = variable.substring(variable.indexOf("\"") + 1, variable.lastIndexOf("\""));
-        } else if (variable.isEmpty()){
-            if (stepAsString.contains("\"")){
+        } else {
+            variable = getVariableName(stepAsString);
+            if (!variable.isEmpty()){
+                return temp.get(variable);
+            } else if (stepAsString.contains("\"")){
                 int quote = stepAsString.indexOf("\"") + 1;
                 toReturn = stepAsString.substring(quote, stepAsString.indexOf("\"", quote));
                 toReturn = StringEscapeUtils.unescapeJava(toReturn);
                 toReturn = StringEscapeUtils.unescapeHtml(toReturn);
-            } else {
-                for (Map.Entry<String, String> entry : temp.entrySet()){
-                    if (stepAsString.contains(entry.getKey())){
-                        toReturn = entry.getValue();
-                        break;
-                    }
-                }
             }
-        } else {
-            toReturn = temp.get(variable);
         }
         toReturn = toReturn == null ? "" : toReturn;
         return toReturn;
+    }
+    
+    public static String getVariableName(String stepAsString){
+        for (String key : getVariables().keySet()){
+            if (stepAsString.contains(key)){
+                return key;
+            }
+        }
+        return "";
     }
     
 
