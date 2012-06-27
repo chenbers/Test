@@ -4,24 +4,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inthinc.pro.automation.logging.Log;
 
 public class ObjectConverter {
     
     private static final ObjectMapper mapper = new ObjectMapper();
+    static {
+        mapper.setSerializationInclusion(Include.NON_NULL);
+    }
+    
     
     
     public static String convertToXML(JSONObject jsonObject){
         try {
-            return XML.toString(jsonObject);
+            String xml = XML.toString(jsonObject);
+            Log.debug(xml);
+            return xml;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -46,7 +53,7 @@ public class ObjectConverter {
         } catch (IOException e) {
             error = e;
         }
-        
+        Log.info(entity);
         throw new IllegalArgumentException(error);
     }
     
@@ -89,7 +96,8 @@ public class ObjectConverter {
     private static <T> T convertJSONObjectToObject(JSONObject source, String objectName, Class<T> clazz){
         Throwable error;
         try {
-            return mapper.readValue(source.getJSONObject(objectName).toString(), clazz);
+            String object = source.getJSONObject(objectName).toString();
+            return mapper.readValue(object, clazz);
         } catch (JsonGenerationException e) {
             error = e;
         } catch (JsonMappingException e) {
@@ -114,12 +122,14 @@ public class ObjectConverter {
     
     public static <T> List<T> convertXMLToList(String object, String listName, Class<T> clazz){
         Throwable error;
+        JSONObject last = null;
         try {
             String name = clazz.getSimpleName().toLowerCase();
             JSONArray ja = XML.toJSONObject(object).getJSONObject(listName).getJSONArray(name);
             Log.debug(ja);
             List<T> list = new ArrayList<T>();
             for (int i=0; i<ja.length(); i++){
+                last = ja.getJSONObject(i);
                 list.add(mapper.readValue(ja.getJSONObject(i).toString(), clazz));
             }
             Log.debug(list);
@@ -133,7 +143,7 @@ public class ObjectConverter {
         } catch (IOException e) {
             error = e;
         }
-        Log.info(object);
+        Log.info(last);
         throw new IllegalArgumentException(error);
     }
 

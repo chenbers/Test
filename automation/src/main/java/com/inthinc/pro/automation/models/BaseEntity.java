@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonAnyGetter;
-import org.codehaus.jackson.annotate.JsonAnySetter;
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.utils.ObjectConverter;
+import com.inthinc.pro.rally.PrettyJSON;
 
 public abstract class BaseEntity implements Serializable {
 
@@ -17,15 +21,15 @@ public abstract class BaseEntity implements Serializable {
      * Auto generated serial version
      */
     private static final long serialVersionUID = 514782827757426880L;
+    
+    @JsonIgnore
     private final AutomationCalendar modified = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
+    
+    @JsonIgnore
     private final AutomationCalendar created = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
     
     private final Map<String, Object> unknowns = new HashMap<String, Object>();
 
-    @JsonProperty("modified")
-    public String getModifiedString(){
-        return modified.toString();
-    }
     
     public AutomationCalendar getModified() {
         return modified;
@@ -36,10 +40,6 @@ public abstract class BaseEntity implements Serializable {
         this.modified.setDate(modified);
     }
 
-    @JsonProperty("created")
-    public String getCreatedString(){
-        return created.toString();
-    }
     
     public AutomationCalendar getCreated() {
         return created;
@@ -58,6 +58,19 @@ public abstract class BaseEntity implements Serializable {
     @JsonAnyGetter
     public Map<String, Object> getUnknown(){
         return unknowns;
+    }
+    
+    public String toJsonString(){
+        JSONObject jsonA = ObjectConverter.convertToJSONObject(this, "object");
+        return PrettyJSON.toString(jsonA);
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof BaseEntity){
+            return toJsonString().equals(((BaseEntity)obj).toJsonString());
+        }
+        return false;
     }
     
 }

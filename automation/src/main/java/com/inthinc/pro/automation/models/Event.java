@@ -8,8 +8,7 @@ import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 

@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.BaseEntity;
 import com.inthinc.pro.automation.models.Device;
 import com.inthinc.pro.automation.models.Driver;
 import com.inthinc.pro.automation.models.Group;
 import com.inthinc.pro.automation.models.Person;
-import com.inthinc.pro.automation.models.Roles;
 import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.models.Vehicle;
 
@@ -83,12 +81,6 @@ public class RestFilters {
         return getBulk(Device.class, idList);
     }
     
-    public List<Roles> getRoles(){
-        List<Roles> list = rest.getBulk(Roles.class);
-        
-        return list;
-    }
-    
     private <T extends BaseEntity> List<T> getBulk(Class<T> clazz, List<Integer> ids){
         Iterator<Integer> itr = ids.iterator();
         List<T> fullList = new ArrayList<T>();
@@ -102,7 +94,6 @@ public class RestFilters {
     
     public static void main(String[] args){
         RestFilters test = new RestFilters("darth", "password");
-        Log.info(test.getRoles());
     }
     
     

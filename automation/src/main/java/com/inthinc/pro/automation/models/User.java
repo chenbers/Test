@@ -3,10 +3,10 @@ package com.inthinc.pro.automation.models;
 import java.util.Collections;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -28,7 +28,11 @@ public class User extends BaseEntity {
     @JsonIgnore
     private String encrypted;
     private Integer groupID;
+    
+    @JsonIgnore
     private final AutomationCalendar lastLogin = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
+    
+    @JsonIgnore
     private final AutomationCalendar passwordDT = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
 
     private GoogleMapType mapType;
@@ -150,11 +154,6 @@ public class User extends BaseEntity {
         this.lastLogin.setDate(lastLogin);
     }
 
-    @JsonProperty("lastLogin")
-    public String getLastLoginString() {
-        return lastLogin.toString();
-    }
-
     public AutomationCalendar getLastLogin() {
         return lastLogin;
     }
@@ -162,11 +161,6 @@ public class User extends BaseEntity {
     @JsonProperty("passwordDT")
     public void setPasswordDT(String passwordDT) {
         this.passwordDT.setDate(passwordDT);
-    }
-
-    @JsonProperty("passwordDT")
-    public String getPasswordDTString() {
-        return passwordDT.toString();
     }
 
     public AutomationCalendar getPasswordDT() {

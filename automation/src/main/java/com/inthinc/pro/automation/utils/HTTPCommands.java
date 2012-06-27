@@ -128,6 +128,10 @@ public class HTTPCommands {
         Log.debug(returnResponse);
         return returnResponse;
     }
+    
+    public String getResults(){
+        return response;
+    }
 
     public boolean isSuccessful() {
         return successful;

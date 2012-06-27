@@ -1,19 +1,5 @@
 package com.inthinc.pro.automation.objects;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang.math.RandomUtils;
-
-import com.inthinc.pro.automation.enums.AccountCapability;
-import com.inthinc.pro.automation.enums.AutoAccounts;
-import com.inthinc.pro.automation.enums.DriverCapability;
-import com.inthinc.pro.automation.enums.LoginCapability;
-import com.inthinc.pro.automation.interfaces.Capability;
-import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.models.AutomationUser;
 
 public class AutomationUsers {
 

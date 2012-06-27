@@ -2,8 +2,8 @@ package com.inthinc.pro.automation.models;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -33,6 +33,7 @@ public class Account extends BaseEntity implements Comparable<Account> {
     
     private AccountHOSType            hos;
     
+    @JsonIgnore
     private final AutomationCalendar    zonePublishDate = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);                      
 
     public Account()
@@ -151,11 +152,6 @@ public class Account extends BaseEntity implements Comparable<Account> {
         this.hos = hos;
     }
     
-    @JsonProperty("zonePublishDate")
-    public String getZonePublishDateString(){
-        return zonePublishDate.toString();
-    }
-
     public AutomationCalendar getZonePublishDate() {
         return zonePublishDate;
     }
@@ -163,6 +159,32 @@ public class Account extends BaseEntity implements Comparable<Account> {
     @JsonProperty("zonePublishDate")
     public void setZonePublishDate(String zonePublishDate) {
         this.zonePublishDate.setDate(zonePublishDate);
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof Account){
+            Account other = (Account)obj;
+            boolean isEqual;
+            isEqual = getAccountID().equals(other.getAccountID()) ||
+                    getAcctName().equals(other.getAcctName()) ||
+                    getAddress().equals(other.getAddress()) ||
+                    getAddressID().equals(other.getAddressID()) ||
+                    getBillID().equals(other.getBillID()) ||
+                    getCreated().equals(other.getCreated()) ||
+                    getHos().equals(other.getHos()) ||
+                    getProps().equals(other.getProps()) ||
+                    getStatus().equals(other.getStatus()) ||
+                    getUnkDriverID().equals(other.getUnkDriverID());
+            
+            return isEqual;
+        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode(){
+        return getAccountID();
     }
 
     

@@ -15,7 +15,6 @@ import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.models.Account;
 import com.inthinc.pro.automation.models.BaseEntity;
 import com.inthinc.pro.automation.models.Event;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
@@ -70,7 +69,8 @@ public class RestCommands {
         } catch (UnsupportedEncodingException e) {
             Log.error(e);
         } catch (HttpException e) {
-            Log.error(e);
+            Log.error(e.getMessage());
+            Log.error(http.getResults());
         } catch (IOException e) {
             Log.error(e);
         }
@@ -140,6 +140,10 @@ public class RestCommands {
             Log.error(e);
         }
         return null;
+    }
+
+    public HTTPCommands getHttp() {
+        return http;
     }
     
 }

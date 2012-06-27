@@ -1,6 +1,6 @@
 package com.inthinc.pro.automation.models;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Vehicle extends BaseEntity {
     private static final long serialVersionUID = 6102998742224160619L;
@@ -211,6 +211,19 @@ public class Vehicle extends BaseEntity {
 
     public void setFullName(String fullName) {
         // just to keep the Jackson JSON marshaller happy
+    }
+    
+    @Override
+    public int hashCode(){
+        return getVehicleID();
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof Vehicle){
+            return toString().equals(obj.toString());
+        }
+        return false;
     }
 
     @Override

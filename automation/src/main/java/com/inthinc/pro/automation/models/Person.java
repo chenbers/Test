@@ -7,8 +7,10 @@ import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -21,6 +23,8 @@ public class Person extends BaseEntity implements Comparable<Person> {
     // contact information
     private Integer addressID;
     private Address address;
+    
+    @JsonSerialize(include = Inclusion.NON_NULL)
     private String priEmail;
     private String secEmail;
     private String priPhone;
@@ -31,9 +35,13 @@ public class Person extends BaseEntity implements Comparable<Person> {
     private Integer warn;
     private Integer crit;
     // employee information
+
+    @JsonSerialize(include = Inclusion.NON_NULL)
     private String empid;
     private String reportsTo;
     private String title;
+
+    @JsonSerialize(include = Inclusion.NON_NULL)
     private String dept;
     // personal information
     private String first;
@@ -43,6 +51,8 @@ public class Person extends BaseEntity implements Comparable<Person> {
     private Gender gender;
     private Integer height; // inches
     private Integer weight; // pounds
+    
+    @JsonIgnore
     private final AutomationCalendar dob = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
     // user, driver (may be null)
     private User user;
@@ -105,6 +115,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
     public TimeZone getTimeZone() {
         return timeZone;
     }
+    
     public void setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
     }
@@ -116,6 +127,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
             return null;
     }
 
+    @JsonSerialize(include = Inclusion.NON_NULL)
     public Address getAddress() {
         return address;
     }
@@ -228,101 +240,6 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.dept = dept;
     }
 
-    public String getFullName() {
-        StringBuilder result = new StringBuilder();
-        if (first != null)
-            result.append(first);
-        if (middle != null && !middle.isEmpty()) {
-            if (result.length() > 0)
-                result.append(' ');
-            result.append(middle);
-        }
-        if (last != null && !last.isEmpty()) {
-            if (result.length() > 0)
-                result.append(' ');
-            result.append(last);
-        }
-        if (suffix != null && !suffix.isEmpty()) {
-            if (result.length() > 0)
-                result.append(' ');
-            result.append(suffix);
-        }
-        return result.toString();
-    }
-    public String getFullNameLastFirst() {
-        StringBuilder result = new StringBuilder();
-        if (last != null) {
-            result.append(last);
-            result.append(",");
-        }
-        if (first != null && !first.isEmpty()) {
-            if (result.length() > 0)
-                result.append(' ');
-            result.append(first);
-        }
-        if (middle != null && !middle.isEmpty()) {
-            if (result.length() > 0)
-                result.append(' ');
-            result.append(middle);
-        }
-        if (suffix != null && !suffix.isEmpty()) {
-            if (result.length() > 0)
-                result.append(' ');
-            result.append(suffix);
-        }
-        return result.toString();
-    }
-
-    public String getFullNameWithId() {
-        StringBuilder result = new StringBuilder();
-        if (empid != null && !empid.isEmpty()) {
-            result.append(getFullName());
-            result.append(' ');
-            result.append("(" + empid + ")");
-        }
-        else {
-            result.append(getFullName());
-        }
-        return result.toString();
-    }
-    public String getFullNameWithPriEmail() {
-        StringBuilder result = new StringBuilder();
-        if (this.priEmail != null && !this.priEmail.isEmpty()) {
-            result.append(getFullName());
-            result.append(' ');
-            result.append("[ " + this.priEmail + " ]");
-        }
-        else {
-            result.append(getFullName());
-        }
-        return result.toString();
-    }
-    public String getFullNameWithPriPhone() {
-        StringBuilder result = new StringBuilder();
-        if (this.priPhone != null && !this.priPhone.isEmpty()) {
-            result.append(getFullName());
-            result.append(' ');
-            result.append("[ " + this.priPhone + " ]");
-        }
-        else {
-            result.append(getFullName());
-        }
-        return result.toString();
-    }
-    
-    public String getFullNameWithSecPhone() {
-        StringBuilder result = new StringBuilder();
-        if (this.secPhone != null && !this.secPhone.isEmpty()) {
-            result.append(getFullName());
-            result.append(' ');
-            result.append("[ " + this.secPhone + " ]");
-        }
-        else {
-            result.append(getFullName());
-        }
-        return result.toString();
-    }
-
     public String getFirst() {
         return first;
     }
@@ -379,11 +296,6 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.weight = weight;
     }
 
-    @JsonProperty("dob")
-    public String getDobString(){
-        return dob.toString();
-    }
-    
     public AutomationCalendar getDob() {
         return dob;
     }
@@ -392,6 +304,8 @@ public class Person extends BaseEntity implements Comparable<Person> {
     public void setDob(String dob) {
         this.dob.setDate(dob);
     }
+    
+    @JsonSerialize(include = Inclusion.NON_NULL)
     public User getUser() {
         return user;
     }
@@ -400,12 +314,14 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.user = user;
     }
 
+    @JsonIgnore
     public Integer getUserID() {
     	if(user==null)
     		return null;
         return user.getUserID();
     }
 
+    @JsonSerialize(include = Inclusion.NON_NULL)
     public Driver getDriver() {
         return driver;
     }
@@ -414,6 +330,7 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.driver = driver;
     }
 
+    @JsonIgnore
     public Integer getDriverID() {
     	if(driver==null)
     		return null;
@@ -437,14 +354,6 @@ public class Person extends BaseEntity implements Comparable<Person> {
     }
 
     public Integer getAcctID()
-    {
-        return acctID;
-    }
-
-    /*
-     * Note: The getAcctID() method should be flagged as deprecated and this method should be used instead.
-     */
-    public Integer getAccountID()
     {
         return acctID;
     }
@@ -497,6 +406,11 @@ public class Person extends BaseEntity implements Comparable<Person> {
         
         return n1.toUpperCase().compareTo(n2.toUpperCase());
         
+    }
+    
+    @Override
+    public int hashCode(){
+        return getPersonID();
     }
 
     @Override

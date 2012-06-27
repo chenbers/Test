@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.inthinc.pro.automation.enums.TimeZones;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 
@@ -17,6 +18,7 @@ import com.inthinc.pro.automation.enums.WebDateFormat;
  * @author dtanner
  * 
  */
+@JsonIgnoreType
 public class AutomationCalendar implements Comparable<Calendar>, Serializable {
     
     /**

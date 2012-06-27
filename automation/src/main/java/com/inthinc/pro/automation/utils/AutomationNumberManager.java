@@ -1,9 +1,5 @@
 package com.inthinc.pro.automation.utils;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.inthinc.pro.automation.logging.Log;
 
 

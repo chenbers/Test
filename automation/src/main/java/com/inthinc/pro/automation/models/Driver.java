@@ -5,8 +5,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
@@ -24,9 +25,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private Integer driverID;
     private Integer personID;
     private Status status;
-    private String barcode;
-    private Long rfid1;
-    private Long rfid2;
+    
     private String license; // max 10 characters
     private State state;
     private String licenseClass; // max 4 characters
@@ -35,6 +34,11 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private RuleSetType dot;
     private Person person;
     private Integer groupID;
+
+    @JsonInclude(Include.NON_NULL)
+    private String barcode;
+    private Long rfid1;
+    private Long rfid2;
 
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
@@ -78,38 +82,12 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.personID = personID;
     }
 
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
-    }
-
-    public Long getRfid1() {
-        return rfid1;
-    }
-
-    public void setRfid1(Long rfid1) {
-        this.rfid1 = rfid1;
-    }
-
-    public Long getRfid2() {
-        return rfid2;
-    }
-
-    public void setRfid2(Long rfid2) {
-        this.rfid2 = rfid2;
-    }
-
     public String getLicense() {
-        if (license != null && license.equals(""))
-            return null;
         return license;
     }
 
     public void setLicense(String license) {
-        this.license = license;
+        this.license = license == null ? "" : license;
     }
 
     public State getState() {
@@ -127,10 +105,10 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     }
 
     public void setLicenseClass(String licenseClass) {
-        this.licenseClass = licenseClass;
+        this.licenseClass = licenseClass == null ? "" : licenseClass;
     }
 
-    @JsonProperty("expiration")
+    @JsonProperty(value="expiration")
     public String getExpirationString(){
         return expiration.toString();
     }
@@ -139,7 +117,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         return expiration;
     }
 
-    @JsonProperty("expiration")
+    @JsonProperty(value="expiration")
     public void setExpiration(String expiration) {
         this.expiration.setDate(expiration);
     }
@@ -151,7 +129,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     }
 
     public void setCertifications(String certifications) {
-        this.certifications = certifications;
+        this.certifications = certifications == null ? "" : certifications;
     }
 
     public RuleSetType getDot() {
@@ -189,6 +167,31 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.groupID = groupID;
     }
 
+
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public Long getRfid1() {
+        return rfid1;
+    }
+
+    public void setRfid1(Long rfid1) {
+        this.rfid1 = rfid1;
+    }
+
+    public Long getRfid2() {
+        return rfid2;
+    }
+
+    public void setRfid2(Long rfid2) {
+        this.rfid2 = rfid2;
+    }
    
 
     @Override

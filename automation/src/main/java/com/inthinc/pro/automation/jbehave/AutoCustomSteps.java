@@ -3,6 +3,7 @@ package com.inthinc.pro.automation.jbehave;
 import java.awt.event.KeyEvent;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.Aliases;
@@ -204,6 +205,38 @@ public class AutoCustomSteps {
     public boolean verifyIsTextOnPage(String lookfor) { 
         String actualString = AutoStepVariables.getComparator(lookfor);
         return test.validateTrue(CoreMethodLib.getSeleniumThread().isTextPresent(actualString), actualString + " was not found on this page.");
+    }
+    
+    @Given("I split $varName with \"$symbol\" and save it again as $varList")
+    @When("I split $varName with \"$symbol\" and save it again as $varList")
+    @Then("I split $varName with \"$symbol\" and save it again as $varList")
+    public void splitVariable(@Named("varName")String varName, @Named("symbol")String symbol, @Named("varList")String varList){
+        String[] splitList = AutoStepVariables.getValue(varName).split(symbol);
+        String[] varNames = varList.split(", ");
+        int length = varNames.length;
+        if (splitList.length < length){
+            throw new IllegalArgumentException(String.format("The variable: '%s' cannot be split %d ways", varName, varNames.length));
+        }
+        Map<String, String> variables = AutoStepVariables.getVariables();
+        for (int i=0;i<length;i++){
+            variables.put(varNames[i], splitList[i]);
+        }
+    }
+    
+    @Given("I replace \"$replaced\" with \"$toReplace\" in variable $variable")
+    @When("I replace \"$replaced\" with \"$toReplace\" in variable $variable")
+    @Then("I replace \"$replaced\" with \"$toReplace\" in variable $variable")
+    public void replaceString(@Named("replaced")String replaced, @Named("toReplace")String toReplace, @Named("variable")String variable){
+        String oldVar = AutoStepVariables.getValue(variable);
+        String newVar = oldVar.replace(replaced, toReplace);
+        AutoStepVariables.getVariables().put(variable, newVar);
+    }
+    
+    @Given("I save \"$toSave\" as $variableName")
+    @When("I save \"$toSave\" as $variableName")
+    @Then("I save \"$toSave\" as $variableName")
+    public void saveString(@Named("toSave")String toSave, @Named("variableName")String variableName){
+        AutoStepVariables.getVariables().put(variableName, toSave);
     }
 
 }

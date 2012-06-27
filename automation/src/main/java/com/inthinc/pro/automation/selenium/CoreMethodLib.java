@@ -30,9 +30,9 @@ import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.KeyCommands;
-import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 

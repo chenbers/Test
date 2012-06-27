@@ -1,9 +1,9 @@
 package com.inthinc.pro.rally;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.utils.ObjectConverter;
 
 public class RallyHTTPResults {
