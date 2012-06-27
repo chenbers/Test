@@ -33,7 +33,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font size="14" isBold="false" pdfFontName="Helvetica"/>
+						<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["  " + ($F{groupPath} == null?"":$F{groupPath})]]></textFieldExpression>
 				</textField>
@@ -89,7 +89,9 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_START_DATE} + " to " + $P{REPORT_END_DATE}]]></textFieldExpression>
 			</textField>
 		</band>
