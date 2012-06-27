@@ -3100,6 +3100,10 @@ ul.legend {
 	color: gray;
 }
 
+.disabled {
+	color: gray;
+}
+
 /*  Trend table definitions  */
 .trendTableOdd {
 	background: #ffffff;

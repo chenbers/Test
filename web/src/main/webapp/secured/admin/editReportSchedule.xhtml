@@ -405,8 +405,8 @@
 							<tr>
 								<td>
 									<div>
-										<h:selectOneRadio id="editReportSchedule-deliverToManagers" value="#{reportScheduleBean.item.deliverToManagers}" layout="pageDirection">
-											<f:selectItem itemDisabled="#{!reportScheduleBean.enableDeliverToGroupManager}" itemValue="TRUE" itemLabel="#{messages.reportSchedule_notifyGroupManager}"></f:selectItem>
+										<h:selectOneRadio id="editReportSchedule-deliverToManagers" value="#{reportScheduleBean.item.deliverToManagers}" layout="pageDirection" disabledClass="disabled">
+											<f:selectItem itemDisabled="#{!reportScheduleBean.enableDeliverToGroupManager}" itemValue="TRUE" itemLabel="#{messages.reportSchedule_notifyGroupManager}" ></f:selectItem>
 											<f:selectItem itemValue="FALSE" itemLabel="#{messages.reportSchedule_notifyByEmail}"></f:selectItem>
 										</h:selectOneRadio>
 									</div>

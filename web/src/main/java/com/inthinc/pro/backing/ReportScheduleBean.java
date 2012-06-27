@@ -752,6 +752,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             case ENTITY_GROUP_OR_DRIVER:
                 if(getItem().getParamType().equals(ReportParamType.GROUPS)){
                     result = Boolean.TRUE;
+                }else{
+                    getItem().setDeliverToManagers(Boolean.FALSE);
                 }
                 break;
             default:
@@ -759,7 +761,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 break;
         }
         if(getItem() != null && getItem().getReport() != null){
-            logger.debug(String.format("notify group managers for report [%s] : %s", getItem().getReport().toString(), result.toString()));
+            logger.debug(String.format("notify group managers enabled for report [%s] : %s", getItem().getReport().toString(), result.toString()));
         }
         return result;
     }
