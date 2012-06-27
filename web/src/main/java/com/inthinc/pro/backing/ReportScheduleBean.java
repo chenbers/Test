@@ -771,15 +771,18 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         final TreeMap<String, Integer> teamDrivers = new TreeMap<String, Integer>();
         teamDrivers.put(MessageUtil.getMessageString("reportSchedule_allDrivers", getLocale()), ALL_DRIVERS_ID);
 
-        Integer teamID =  item == null || item.getGroupID() == null ? null : item.getGroupID();
-        if (teamID == null)
+        Integer groupID =  item == null || item.getGroupID() == null ? null : item.getGroupID();
+        if (groupID == null)
             return teamDrivers;
         
         // all eligible drivers for report owner
         List<Driver> driverList = this.getDriverList();
 
+        // all groups in the group hierarchy from the selected group down. 
+        List<Integer> groupList = this.getAccountGroupHierarchy().getGroupIDList(groupID);
+        
         for (Driver driver : driverList) {
-            if (driver.getGroupID().equals(teamID)) {
+            if (groupList.contains(driver.getGroupID())) {
                 teamDrivers.put(driver.getPerson().getFullName(), driver.getDriverID());
             }
         }
