@@ -21,6 +21,7 @@ public enum Addresses implements AddressInterface {
 
     BARRICK("barrick.inthinc.com"),
     BARRICK_WEB_10("barrick-web10.tiwipro.com"),
+    TP_WEB_11("tp-web11.tiwipro.com"),
 
     TECK("teck.inthinc.com"),
 
