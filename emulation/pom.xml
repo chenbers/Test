@@ -12,9 +12,9 @@
 		<url>https://devserv.tiwipro.com:8585/hudson/</url>
 	</ciManagement>
 	<scm>
-		<connection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</connection>
-		<developerConnection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</developerConnection>
-		<url>http://svn.iwiglobal.com/pro</url>
+		<connection>scm:svn:https://svn.iwiglobal.com/pro/emulation/tags/root-2.0.18/trunk</connection>
+		<developerConnection>scm:svn:https://svn.iwiglobal.com/pro/emulation/tags/root-2.0.18/trunk</developerConnection>
+		<url>http://svn.iwiglobal.com/pro/tags/root-2.0.18/pro</url>
 	</scm>
 
 	<properties>
@@ -141,7 +141,7 @@
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
 		<artifactId>root</artifactId>
-		<version>2.0.18-SNAPSHOT</version>
+		<version>2.0.18</version>
 	</parent>
-	<version>2.0.18-SNAPSHOT</version>
+	<version>2.0.18</version>
 </project>
