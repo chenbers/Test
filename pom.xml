@@ -57,7 +57,6 @@
 		</developer>	
 	</developers>
 	<modules>
-		<module>dao</module>
 		<module>web</module>
 		<module>webutil</module>
 		<module>scheduler</module>
@@ -65,6 +64,7 @@
 		<module>reports</module>
 <!-- 		<module>webfulfillment</module> -->
 		<module>hoskiosk</module>
+		<module>dao</module>
 		<module>i18nutil</module>
 		<module>automation</module>
 <!--		<module>noteparser</module> -->
