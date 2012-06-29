@@ -576,6 +576,7 @@ public class OrganizationBean extends BaseBean
             g.setStatus(GroupStatus.GROUP_ACTIVE);
             g.setMapZoom(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getMapZoom());
             g.setMapCenter(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getMapCenter());
+            g.setDotOfficeType(DOTOfficeType.NONE);
         }
         fetchGroupAddress(g);
 
