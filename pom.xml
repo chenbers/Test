@@ -293,12 +293,6 @@ WWUUnm]]>
 				<groupId>com.inthinc.pro.automation</groupId>
 				<artifactId>automation</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.inthinc.pro.dao</groupId>
-				<artifactId>dao</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>com.inthinc.pro.emulation</groupId>
 				<artifactId>emulation</artifactId>
@@ -312,6 +306,12 @@ WWUUnm]]>
 			<dependency>
 				<groupId>com.inthinc.pro.aggregation</groupId>
 				<artifactId>aggregation</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			</dependency>
+			<dependency>
+				<groupId>com.inthinc.pro.dao</groupId>
+				<artifactId>dao</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
