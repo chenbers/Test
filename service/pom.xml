@@ -9,7 +9,6 @@
 	<artifactId>service</artifactId>
 	<packaging>war</packaging>
 	<name>Pro Portal - Services</name>
-	<version>2.0.18-SNAPSHOT</version>
 	<properties>
 		<resteasy.version>2.1.0.GA</resteasy.version>
 	</properties>

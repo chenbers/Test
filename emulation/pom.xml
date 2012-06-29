@@ -143,5 +143,4 @@
 		<artifactId>root</artifactId>
 		<version>2.0.18-SNAPSHOT</version>
 	</parent>
-	<version>2.0.18-SNAPSHOT</version>
 </project>

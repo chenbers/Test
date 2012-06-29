@@ -9,7 +9,6 @@
     <groupId>com.inthinc.pro.scheduler</groupId>
     <artifactId>scheduler</artifactId>
     <packaging>war</packaging>
-    <version>2.0.18-SNAPSHOT</version>
     <name>Pro Portal - Scheduler App</name>
     <profiles>
         <profile>

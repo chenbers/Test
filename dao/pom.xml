@@ -27,7 +27,6 @@
 			<artifactId>hector-core</artifactId>
 			<version>1.0-2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -183,8 +182,6 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.1.2</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.apache.httpcomponents</groupId> <artifactId>httpcore</artifactId> 
-			<version>4.1</version> </dependency> -->
 	</dependencies>
 	<reporting>
 		<plugins>

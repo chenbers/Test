@@ -10,8 +10,6 @@
   <artifactId>reports</artifactId>
   <name>Pro Portal - Reporting</name>
   <packaging>jar</packaging>
-  
-  <version>2.0.18-SNAPSHOT</version>
   <properties>
   	<jasperreports.version>3.7.1</jasperreports.version>
   </properties>
