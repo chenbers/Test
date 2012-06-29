@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
@@ -13,7 +14,7 @@ import com.inthinc.pro.automation.models.Person;
 import com.inthinc.pro.automation.models.Vehicle;
 import com.inthinc.pro.automation.rest.RestCommands;
 import com.inthinc.pro.automation.selenium.AutomationProperties;
-
+@Ignore
 public class TestUpdateNoChanges {
     
     @Test
