@@ -98,12 +98,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
-  			<artifactId>jackson-annotations</artifactId>
-  			<version>${JacksonVersion}</version>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${JacksonVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
-  			<artifactId>jackson-databind</artifactId>
+			<artifactId>jackson-databind</artifactId>
 			<version>${JacksonVersion}</version>
 		</dependency>
 		<dependency>

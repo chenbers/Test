@@ -1,169 +1,170 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <artifactId>root</artifactId>
-    <groupId>com.inthinc.pro</groupId>
-    <version>2.0.18-SNAPSHOT</version>
-  </parent>
-  
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.inthinc.pro.reports</groupId>
-  <artifactId>reports</artifactId>
-  <name>Pro Portal - Reporting</name>
-  <packaging>jar</packaging>
-  <properties>
-  	<jasperreports.version>3.7.1</jasperreports.version>
-  </properties>
-  
-  <build>  
-    <finalName>reports</finalName>
-    <plugins>
-    	<plugin>
-    		<groupId>org.codehaus.mojo</groupId>
-    		<artifactId>jasperreports-maven-plugin</artifactId>
-			<configuration>
-           		<outputDirectory>${project.build.directory}/classes/com/inthinc/pro/reports/jasper</outputDirectory>
-           		<sourceDirectory>${basedir}/src/main/resources/com/inthinc/pro/reports/jasper</sourceDirectory>
-        	</configuration>
-        	<executions>
-          		<execution>
-          			<phase>compile</phase>
-          			<goals>
-              			<goal>compile-reports</goal>
-            		</goals>
-					<configuration>
-    					<systemProperties>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>root</artifactId>
+		<groupId>com.inthinc.pro</groupId>
+		<version>2.0.18-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.inthinc.pro.reports</groupId>
+	<artifactId>reports</artifactId>
+	<name>Pro Portal - Reporting</name>
+	<packaging>jar</packaging>
+	<properties>
+		<jasperreports.version>3.7.1</jasperreports.version>
+	</properties>
+
+	<build>
+		<finalName>reports</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jasperreports-maven-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/classes/com/inthinc/pro/reports/jasper</outputDirectory>
+					<sourceDirectory>${basedir}/src/main/resources/com/inthinc/pro/reports/jasper</sourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile-reports</goal>
+						</goals>
+						<configuration>
+							<systemProperties>
 								<property>
 									<name>javax.xml.parsers.SAXParserFactory</name>
 									<value>com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl</value>
 								</property>
 							</systemProperties>
-        			</configuration>    		
-          		</execution>
-        	</executions>
-        	<dependencies>
-            	<dependency>
-              		<groupId>jasperreports</groupId>
-              		<artifactId>jasperreports</artifactId>
-              		<version>${jasperreports.version}</version>
-            	</dependency>
-        		<dependency>
-					<groupId>apache-xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-					<version>2.7.0</version>
-					<scope>compile</scope>
-				</dependency>
-				<dependency>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-					<version>1.2.12</version>
-					<scope>compile</scope>
-				</dependency>
-          	</dependencies>
-    	</plugin>
-    </plugins>
-    <pluginManagement>
-    	<plugins>
-    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-    		<plugin>
-    			<groupId>org.eclipse.m2e</groupId>
-    			<artifactId>lifecycle-mapping</artifactId>
-    			<version>1.0.0</version>
-    			<configuration>
-    				<lifecycleMappingMetadata>
-    					<pluginExecutions>
-    						<pluginExecution>
-    							<pluginExecutionFilter>
-    								<groupId>org.codehaus.mojo</groupId>
-    								<artifactId>
-    									jasperreports-maven-plugin
-    								</artifactId>
-    								<versionRange>
-    									[1.0-beta-2,)
-    								</versionRange>
-    								<goals>
-    									<goal>compile-reports</goal>
-    								</goals>
-    							</pluginExecutionFilter>
-    							<action>
-    								<ignore />
-    							</action>
-    						</pluginExecution>
-    					</pluginExecutions>
-    				</lifecycleMappingMetadata>
-    			</configuration>
-    		</plugin>
-    	</plugins>
-    </pluginManagement>
-  </build>
-  
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-         <groupId>com.inthinc.pro.dao</groupId>
-         <artifactId>dao</artifactId>
-         <scope>compile</scope>
-     </dependency>
-     <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>jasperreports</groupId>
+						<artifactId>jasperreports</artifactId>
+						<version>${jasperreports.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>apache-xerces</groupId>
+						<artifactId>xercesImpl</artifactId>
+						<version>2.7.0</version>
+						<scope>compile</scope>
+					</dependency>
+					<dependency>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+						<version>1.2.12</version>
+						<scope>compile</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>
+											jasperreports-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0-beta-2,)
+										</versionRange>
+										<goals>
+											<goal>compile-reports</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>com.inthinc.pro.dao</groupId>
+			<artifactId>dao</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
-     	<dependency>
-            <groupId>jasperreports</groupId>
-            <artifactId>jasperreports</artifactId>
-            <version>${jasperreports.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>2.6</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
+		<dependency>
+			<groupId>jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasperreports.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.1.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.5-FINAL</version>
 			<scope>compile</scope>
-        </dependency>
-         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-        </dependency>
-         <dependency>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
-         </dependency>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>2.5.6</version>
 			<scope>test</scope>
 		</dependency>
-	    <dependency>
-	    	<groupId>net.sourceforge.jtds</groupId>
-		  	<artifactId>jtds</artifactId>
-  			<version>1.2</version>
-  			<scope>test</scope>
-    	</dependency>
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>1.2</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<!-- JMockit MUST appear before JUnit -->
 			<groupId>mockit</groupId>
@@ -177,8 +178,8 @@
 			<version>4.5</version>
 			<scope>test</scope>
 		</dependency>
-         
-  </dependencies>
+
+	</dependencies>
 	<reporting>
 		<plugins>
 			<plugin>

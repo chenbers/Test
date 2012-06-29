@@ -54,7 +54,7 @@
 			<name>Jason Wimmer</name>
 			<email>jwimmer@inthinc.com</email>
 			<url>pro.tiwi.com</url>
-		</developer>	
+		</developer>
 	</developers>
 	<modules>
 		<module>web</module>
@@ -62,7 +62,7 @@
 		<module>scheduler</module>
 		<module>service</module>
 		<module>reports</module>
-<!-- 		<module>webfulfillment</module> -->
+		<!-- <module>webfulfillment</module> -->
 		<module>hoskiosk</module>
 		<module>dao</module>
 		<module>i18nutil</module>
@@ -277,9 +277,9 @@ WWUUnm]]>
 	</distributionManagement>
 
 
-	<!--                       -->
+	<!-- -->
 	<!-- Dependency Management -->
-	<!--                       -->
+	<!-- -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -483,7 +483,7 @@ WWUUnm]]>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core-test</artifactId>
 				<version>${spring.security.version}</version>
-<!-- 				<classifier>tests</classifier> -->
+				<!-- <classifier>tests</classifier> -->
 				<exclusions>
 					<exclusion>
 						<artifactId>spring-support</artifactId>
@@ -566,10 +566,10 @@ WWUUnm]]>
 				<version>5.1.9</version>
 			</dependency>
 			<dependency>
-        		<groupId>org.seleniumhq.selenium</groupId>
-        		<artifactId>selenium-java</artifactId>
-     		   <version>${selenium.version}</version>
-			</dependency> 
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-java</artifactId>
+				<version>${selenium.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.seleniumhq.selenium</groupId>
 				<artifactId>selenium-firefox-driver</artifactId>
@@ -593,17 +593,11 @@ WWUUnm]]>
 		</dependencies>
 	</dependencyManagement>
 
-	<!--              -->
+	<!-- -->
 	<!-- Dependencies -->
-	<!--              -->
+	<!-- -->
 	<dependencies>
-<!-- 		<dependency>
-			JMockit MUST appear before JUnit
-			<groupId>mockit</groupId>
-			<artifactId>jmockit</artifactId>
-			<version>${jmockit.version}</version>
-			<scope>test</scope>
-		</dependency> -->
+		<!-- <dependency> JMockit MUST appear before JUnit <groupId>mockit</groupId> <artifactId>jmockit</artifactId> <version>${jmockit.version}</version> <scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -616,11 +610,11 @@ WWUUnm]]>
 			<version>${log4j.version}</version>
 			<scope>compile</scope>
 		</dependency>
-			<dependency>
-				<groupId>com.inthinc.hos</groupId>
-				<artifactId>hos</artifactId>
-				<scope>compile</scope>
-			</dependency>
+		<dependency>
+			<groupId>com.inthinc.hos</groupId>
+			<artifactId>hos</artifactId>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>

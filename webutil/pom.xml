@@ -137,12 +137,12 @@
 			<version>1.3</version>
 			<scope>compile</scope>
 		</dependency>
-        <dependency>
+		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.7</version>
 			<scope>compile</scope>
-        </dependency>
+		</dependency>
 		<dependency>
 			<groupId>com.iwi</groupId>
 			<artifactId>teenserverdao</artifactId>

@@ -1,16 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>root</artifactId>
-    <groupId>com.inthinc.pro</groupId>
-    <version>2.0.18-SNAPSHOT</version>
-  </parent>
-  <groupId>com.inthinc.pro.hoskiosk</groupId>
-  <artifactId>hoskiosk</artifactId>
-  <packaging>war</packaging>
-  <name>Pro Portal - HOS Driver Kiosk</name>
-  <build>
-    <finalName>hoskiosk</finalName>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>root</artifactId>
+		<groupId>com.inthinc.pro</groupId>
+		<version>2.0.18-SNAPSHOT</version>
+	</parent>
+	<groupId>com.inthinc.pro.hoskiosk</groupId>
+	<artifactId>hoskiosk</artifactId>
+	<packaging>war</packaging>
+	<name>Pro Portal - HOS Driver Kiosk</name>
+	<build>
+		<finalName>hoskiosk</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -45,7 +46,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-  	</build>
+	</build>
 	<profiles>
 		<profile>
 			<id>local</id>
