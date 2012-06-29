@@ -619,7 +619,6 @@ WWUUnm]]>
 			<dependency>
 				<groupId>com.inthinc.hos</groupId>
 				<artifactId>hos</artifactId>
-				<version>${hos.version}</version>
 				<scope>compile</scope>
 			</dependency>
 	</dependencies>
