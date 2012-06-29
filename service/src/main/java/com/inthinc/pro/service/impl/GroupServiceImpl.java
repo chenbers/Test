@@ -123,7 +123,7 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
         if (managerID == null)
             return managerID;
         Person manager = (Person) personService.get(managerID).getEntity();
-        return manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED) ? null : managerID;
+        return manager == null?null:manager.getStatus().equals(com.inthinc.pro.model.Status.DELETED) ? null : managerID;
 
     }
 
