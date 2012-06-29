@@ -67,7 +67,7 @@
 		<module>dao</module>
 		<module>i18nutil</module>
 		<module>automation</module>
-<!--		<module>noteparser</module> -->
+		<module>noteparser</module>
 		<module>emulation</module>
 		<module>aggregation</module>
 	</modules>
@@ -292,6 +292,11 @@ WWUUnm]]>
 			<dependency>
 				<groupId>com.inthinc.pro.automation</groupId>
 				<artifactId>automation</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.inthinc.pro.noteparser</groupId>
+				<artifactId>noteparser</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
