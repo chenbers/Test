@@ -103,7 +103,7 @@ public class AdminTest extends BaseJDBCTest {
         String personIgnoreFields[] = {
         // person ok to ignore, unused fields
                 "addressID", "dept", "height", "weight", "modified", "driver", "user", "driverID", "userID"};
-        String userIgnoreFields[] = { "person", "modified", "selectedMapLayerIDs",
+        String userIgnoreFields[] = { "person", "modified", "selectedMapLayerIDs", "mapType",
         // TODO: talk to Matt about these.
                 "lastLogin", "passwordDT"};
         String driverIgnoreFields[] = { "person", "modified", };
