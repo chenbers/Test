@@ -44,6 +44,7 @@ public class LatLngUtil {
 		
 		return position_encoded_bytes;
 	}
+	
 /*	
 	public static LatLng readLatLng(byte[] data)
 	{

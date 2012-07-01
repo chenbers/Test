@@ -30,9 +30,9 @@ public class DeltaVsAsStringParser implements AttribParser {
 			
 		attribMap.put(code, value);
 		
-		attribMap.put(Attrib.DELTAVX.getFieldName(), Integer.parseInt(deltaVx) * 10);
-		attribMap.put(Attrib.DELTAVY.getFieldName(), Integer.parseInt(deltaVy) * 10);
-		attribMap.put(Attrib.DELTAVZ.getFieldName(), Integer.parseInt(deltaVz) * 10);
+		attribMap.put(Attrib.DELTAVX.getFieldName(), Integer.parseInt(deltaVx));
+		attribMap.put(Attrib.DELTAVY.getFieldName(), Integer.parseInt(deltaVy));
+		attribMap.put(Attrib.DELTAVZ.getFieldName(), Integer.parseInt(deltaVz));
 
 		return offset+4;
 	}

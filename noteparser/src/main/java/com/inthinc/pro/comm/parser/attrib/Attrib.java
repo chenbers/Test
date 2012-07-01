@@ -29,6 +29,7 @@ public enum Attrib {
 	
 	/* byte */
 	AVGSPEED(2, AttribParserType.BYTE, "avgSpeed"),
+	POSTEDSPEED(3, AttribParserType.BYTE, "speedLimit"),
 	AVGRPM(4, AttribParserType.BYTE, "avgRPM"),
 	BASELINEVERSION(63, AttribParserType.BYTE),
 	BOOTLOADERREV(8193, AttribParserType.BYTE),
@@ -72,7 +73,6 @@ public enum Attrib {
 	ODOMETERCOLLECTED(8229, AttribParserType.BYTE),
 	ORIENTATIONTRIAX(8230, AttribParserType.BYTE),
 	PERCENTMEMORYAVAILABLE(8231, AttribParserType.BYTE),
-	POSTEDSPEED(3, AttribParserType.BYTE),
 	PREINSTALLFULLEVENTSENABLED(8232, AttribParserType.BYTE),
 	REASONCODEDOT(8233, AttribParserType.BYTE),
 	REASONCODEHOS(8234, AttribParserType.BYTE),
@@ -135,9 +135,9 @@ public enum Attrib {
 	COURSE(140, AttribParserType.SHORT),
 	CPUPERCENTAGE(16388, AttribParserType.SHORT),
 	DATALENGTH(16389, AttribParserType.SHORT),
-	DELTAVX(131, AttribParserType.SHORT, "DELTAV_X"),
-	DELTAVY(132, AttribParserType.SHORT, "DELTAV_Y"),
-	DELTAVZ(133, AttribParserType.SHORT, "DELTAV_Z"),
+	DELTAVX(131, AttribParserType.SHORT, "deltaX"),
+	DELTAVY(132, AttribParserType.SHORT, "deltaY"),
+	DELTAVZ(133, AttribParserType.SHORT, "deltaZ"),
 	DIGITALINPUTSTATUS(16390, AttribParserType.SHORT),
 	DIGITALOUTPUTSTATUS(16391, AttribParserType.SHORT),
 	DISTANCE(129, AttribParserType.SHORT, "distance"),

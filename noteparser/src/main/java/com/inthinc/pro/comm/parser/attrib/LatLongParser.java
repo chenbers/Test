@@ -1,5 +1,6 @@
 package com.inthinc.pro.comm.parser.attrib;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +67,15 @@ public class LatLongParser implements AttribParser {
 			latitude = 90. - (latCode/ ((double)4294967295L)) * 180.;
 		}
 			
-//		logger.debug("latitude: " + latitude);
-//		logger.debug("longitude: " + longitude);
+		logger.debug("latitude: " + latitude);
+		logger.debug("longitude: " + longitude);
+		
+		DecimalFormat df = new DecimalFormat("###.#####");
+		latitude = Double.parseDouble(df.format(latitude));
+		longitude = Double.parseDouble(df.format(longitude));
+		
+		logger.debug("latitude2: " + latitude);
+		logger.debug("longitude2: " + longitude);
 //		LatLng latLng = new LatLng(latitude, longitude);
 		
 		attribMap.put(Attrib.MAXLATITUDE.getFieldName(), latitude);
@@ -75,5 +83,5 @@ public class LatLongParser implements AttribParser {
 
 		return offset+6;
 	}
-
+	
 }
