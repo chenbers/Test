@@ -22,7 +22,25 @@ Scenario: TC1185: Log In - Forgot User Name or Password - Email Address Format E
 Given I am on the Login page
 When I click the Forgot Username Password link
 And the Forgot Password popup opens
-And I type an "Invalid Format Email Address" into the Email textfield
+And I type "Invalid Format Email Address" into the Email textfield
+And I click the Send button
+Then I verify "Incorrect format (jdoe@tiwipro.com)" is on the page
+And I type "z" into the Email textfield
+And I click the Send button
+Then I verify "Incorrect format (jdoe@tiwipro.com)" is on the page
+And I type "test@@test.com" into the Email textfield
+And I click the Send button
+Then I verify "Incorrect format (jdoe@tiwipro.com)" is on the page
+And I type "test@test@test.com" into the Email textfield
+And I click the Send button
+Then I verify "Incorrect format (jdoe@tiwipro.com)" is on the page
+And I type "!@#...com" into the Email textfield
+And I click the Send button
+Then I verify "Incorrect format (jdoe@tiwipro.com)" is on the page
+And I type "test test@email.com" into the Email textfield
+And I click the Send button
+Then I verify "Incorrect format (jdoe@tiwipro.com)" is on the page
+And I type ""test"@email.com" into the Email textfield
 And I click the Send button
 Then I verify "Incorrect format (jdoe@tiwipro.com)" is on the page
 

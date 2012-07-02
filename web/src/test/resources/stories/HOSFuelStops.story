@@ -27,7 +27,7 @@ And I click the Top Save button
 And I validate the Error Master text is "1 error(s) occurred. Please verify all the data entered is correct." 
 And I validate the Error Date text is "Date/Time in the future is not valid."
 
-Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop
+Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop - has a defect DE7966 on the page that needs to be resolved
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
@@ -316,7 +316,7 @@ And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
 
-Scenario: TC5702: HOS - Fuel Stops - Edit Columns
+Scenario: TC5702: HOS - Fuel Stops - Edit Columns - will need to be updated once defect DE7975 is fixed
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
@@ -361,7 +361,7 @@ And I validate the Sort Vehicle Fuel link is present
 And I validate the Sort Trailer Fuel link is present
 And I validate the Sort Edited link is present
 
-Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi
+Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi- need answer from Jacquie about how page should operate
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link

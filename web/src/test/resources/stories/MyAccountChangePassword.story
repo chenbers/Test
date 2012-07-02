@@ -214,7 +214,7 @@ And I click the Change button
 And the Change My Password popup closes
 And I validate the Info Message text is "Password successfully changed"
 
-Scenario: TC1302: My Account - Change Password - X Window Control Button (Changes)
+Scenario: TC1302: My Account - Change Password - X Window Control Button (Changes) - having trouble finding the X close window button
 Given I am logged in
 When I click the My Account link
 And I click the Change Password button

@@ -554,7 +554,7 @@ And I click the Save button
 Then I validate the Error Email1 text is "Incorrect format (jdoe@tiwipro.com)"
 And I validate the Error Email2 text is "Incorrect format (jdoe@tiwipro.com)"
 
-Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes)
+Scenario: TC1271: My Account - Edit Account - Cancel Button (Changes) -  will not run till DE7955 is fixed
 Given I am logged in
 When I click the My Account link
 And I save the Red Flag Info text as ORIGINALinfo

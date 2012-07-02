@@ -323,7 +323,7 @@ And the Exclude Event popup closes
 Then I validate the Counter text is TABLECOUNT
 And I validate the 1st Row of the Entry Status link is "include"
 
-Scenario: TC1472: Notifications - Red Flags - Exclude Link - UI
+Scenario: TC1472: Notifications - Red Flags - Exclude Link - UI - pop up blank Defect DE7965
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
@@ -340,7 +340,7 @@ And I validate the Yes button is present
 And I validate the No button is present
 And I validate the Close button is present
 
-Scenario: TC5739: Notifications - Red Flags - Include Link
+Scenario: TC5739: Notifications - Red Flags - Include Link - pop up blank Defect DE7965
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
