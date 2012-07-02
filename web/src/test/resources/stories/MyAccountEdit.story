@@ -6,6 +6,26 @@ Meta:
 
 Narrative: 
 
+Scenario: TC1267: My Account - Edit Account - Bookmark Entry
+Given I am logged in
+When I click the My Account link
+And I click the Edit button
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Given I am logged in
+Then I validate I am on the My Account page
+
+Scenario: TC1269: My Account - Edit Account - Bookmark Entry to Different Account
+Given I am logged in
+When I click the My Account link
+And I click the Edit button
+And I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+Given I am logged in an account that can be edited
+Then I validate I am on the My Account page
+
 Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart drivers TEST WILL WORK CORRECTLY AS LONG AS USER HAS DATA
 Given I am logged in
 And I click the My Account link
