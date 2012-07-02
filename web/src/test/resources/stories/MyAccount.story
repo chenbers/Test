@@ -29,9 +29,9 @@ And I save the Text Message1 text as MESSAGE1
 And I save the Text Message2 text as MESSAGE2
 And I save the Phone1 text as PHONE1
 And I save the Phone2 text as PHONE2
-And I save the Information text as INFORMATION
-And I save the Warning text as WARNING
-And I save the Critical text as CRITICAL
+And I save the Red Flag Info text as INFORMATION
+And I save the Red Flag Warn text as WARNING
+And I save the Red Flag Critical text as CRITICAL
 And I click the My Account link
 Then I validate the Name text is FULLNAME
 And I validate the Locale text is LOCALE
@@ -46,9 +46,9 @@ And I validate the Text Message1 text is MESSAGE1
 And I validate the Text Message2 text is MESSAGE2
 And I validate the Phone1 text is PHONE1
 And I validate the Phone2 text is PHONE2
-And I validate the Information text is INFORMATION
-And I validate the Warning text is WARNING
-And I validate the Critical text is CRITICAL
+And I validate the Red Flag Info text is INFORMATION
+And I validate the Red Flag Warn text is WARNING
+And I validate the Red Flag Critical text is CRITICAL
 
 Scenario: TC1268: My Account - Bookmark Entry
 Given I am logged in
@@ -77,15 +77,15 @@ And I validate the Edit button is present
 And I validate the Name text is present
 And I validate the Group text is present
 And I validate the Team text is present
-And I validate the Information text is present
-And I validate the Warning text is present
-And I validate the Critical text is present
+And I validate the Red Flag Info text is present
+And I validate the Red Flag Warn text is present
+And I validate the Red Flag Critical text is present
 And I validate the Map Type text is present
 And I validate the Map Layers text is present
 And I validate the User Name text is present
 And I validate the Locale text is present
 And I validate the Measurement text is present
-And I validate the Fuel Efficiency Ratio text is present
+And I validate the Fuel Efficiency text is present
 And I validate the Email1 link is present
 And I validate the Email2 link is present
 And I validate the Text Message1 text is present
