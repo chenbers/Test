@@ -30,8 +30,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 import com.inthinc.pro.selenium.steps.WebSteps;
 
 
-@UsingSteps(instances={LoginSteps.class,
-		WebSteps.class})
+@UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, 
 		PageExecutiveDashboard.class,
 		PageAdminUsers.class, 
@@ -52,8 +51,7 @@ import com.inthinc.pro.selenium.steps.WebSteps;
         PageVehiclePerformanceStyle.class, 
         PageVehiclePerformanceTrips.class, 
         PageVehiclePerformance.class,
-        PageReportsVehicles.class,
-        })
+        PageReportsVehicles.class})
 @StoryPath(path="ReportsDriver.story")
 public class ReportsDriverTest extends WebStories {
     
