@@ -63,7 +63,7 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 
 		public TextLink driverName() {
 			return new TextLink(
-					DriverPerformanceEnum.EXPANDED_DRIVER_NAME_LINK, page2);
+					DriverPerformanceEnum.STYLE_DRIVER);
 		}
 
 		public TextLink duration(TimeDuration duration) {
