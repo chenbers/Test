@@ -27,7 +27,6 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
 import com.inthinc.pro.selenium.steps.LoginSteps;
-import com.inthinc.pro.selenium.steps.WebSteps;
 
 
 @UsingSteps(instances={LoginSteps.class})
