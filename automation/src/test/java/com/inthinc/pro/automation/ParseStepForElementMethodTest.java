@@ -18,6 +18,7 @@ import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCandidate;
 import org.jbehave.core.steps.StepCreator.PendingStep;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.CalendarObject;
@@ -33,7 +34,7 @@ import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.utils.RandomValues;
 
-//@Ignore
+@Ignore
 public class ParseStepForElementMethodTest {
     
     private static final int numOfTimesToLoop = 1000;
