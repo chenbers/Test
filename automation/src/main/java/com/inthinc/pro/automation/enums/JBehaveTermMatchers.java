@@ -15,7 +15,7 @@ public enum JBehaveTermMatchers {
     _link("link", "textlink", "tab"),
     _dropDown("dropdown", "select"),
     _text("text", "error", "label"),
-    _pager("pager", "paging", "index", "indexer"),
+    _pager("pager", "paging", "index", "indexer", "pagescroller"),
     _checkBox("checkbox"),
     
     _navTree("navtree", "tree", "grouptree"),

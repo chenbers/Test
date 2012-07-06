@@ -82,7 +82,7 @@ public class RallyHTTPResults {
 
     @JsonProperty("Errors")
     public void setErrors(Object errors) {
-        Errors = ObjectConverter.converToJSONArray(errors);
+        Errors = ObjectConverter.convertToJSONArray(errors);
     }
 
     @JsonProperty("PageSize")
@@ -92,7 +92,7 @@ public class RallyHTTPResults {
     
     @JsonProperty("Results")
     public void setResults(Object results) {
-        Results = ObjectConverter.converToJSONArray(results);
+        Results = ObjectConverter.convertToJSONArray(results);
     }
 
     @JsonProperty("StartIndex")
@@ -111,7 +111,7 @@ public class RallyHTTPResults {
 
     @JsonProperty("Warnings")
     public void setWarnings(Object warnings) {
-        Warnings = ObjectConverter.converToJSONArray(warnings);
+        Warnings = ObjectConverter.convertToJSONArray(warnings);
     }
 
     public JSONObject getObject() {

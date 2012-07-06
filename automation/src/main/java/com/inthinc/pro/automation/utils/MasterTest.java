@@ -1,12 +1,10 @@
 package com.inthinc.pro.automation.utils;
 
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
@@ -142,8 +140,8 @@ public abstract class MasterTest {
         return getSelenium().getTextFromElementWithFocus();
     }
     
-    public Addresses getServer(){
-        return Addresses.getSilo(AutomationProperties.getPropertyBean().getSilo());
+    public AutoServers getServer(){
+        return new AutoServers();
     }
 
     public void killSelenium() {

@@ -58,7 +58,7 @@ public class ObjectConverter {
     }
     
 
-    public static JSONArray converToJSONArray(Object entity) {
+    public static JSONArray convertToJSONArray(Object entity) {
         Throwable error;
         try {
             JSONArray jsonType = new JSONArray(mapper.writeValueAsString(entity));
@@ -125,12 +125,17 @@ public class ObjectConverter {
         JSONObject last = null;
         try {
             String name = clazz.getSimpleName().toLowerCase();
-            JSONArray ja = XML.toJSONObject(object).getJSONObject(listName).getJSONArray(name);
-            Log.debug(ja);
+            JSONObject jo = XML.toJSONObject(object).getJSONObject(listName);
             List<T> list = new ArrayList<T>();
-            for (int i=0; i<ja.length(); i++){
-                last = ja.getJSONObject(i);
-                list.add(mapper.readValue(ja.getJSONObject(i).toString(), clazz));
+            if (jo.get(name) instanceof JSONArray){
+                JSONArray ja = jo.getJSONArray(name);
+                Log.debug(ja);
+                for (int i=0; i<ja.length(); i++){
+                    last = ja.getJSONObject(i);
+                    list.add(mapper.readValue(ja.getJSONObject(i).toString(), clazz));
+                }
+            } else {
+                list.add(mapper.readValue(jo.getJSONObject(name).toString(), clazz));
             }
             Log.debug(list);
             return list;
@@ -143,7 +148,8 @@ public class ObjectConverter {
         } catch (IOException e) {
             error = e;
         }
-        Log.info(last);
+        Log.info(error);
+        Log.info(last); 
         throw new IllegalArgumentException(error);
     }
 

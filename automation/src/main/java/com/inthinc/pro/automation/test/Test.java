@@ -1,7 +1,6 @@
 package com.inthinc.pro.automation.test;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
@@ -40,7 +39,7 @@ public class Test extends MasterTest {
     
     public AutomationPropertiesBean getAutomationPropertiesBean() {
         if(automationPropertiesBean == null)
-            automationPropertiesBean = AutomationProperties.getPropertyBean();
+            automationPropertiesBean = AutomationPropertiesBean.getPropertyBean();
         return automationPropertiesBean;
     }
 

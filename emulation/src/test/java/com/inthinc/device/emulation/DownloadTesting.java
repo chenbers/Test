@@ -14,7 +14,7 @@ import android.util.Log;
 import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.hessian.tcp.HessianException;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 
 public class DownloadTesting {
@@ -33,7 +33,7 @@ public class DownloadTesting {
     public void audioFilesFromHessianMatchSVN() {
 
         TiwiProDevice tiwi;
-        Addresses silo = Addresses.QA;
+        AutoSilos silo = AutoSilos.QA;
         List<String> errors = new ArrayList<String>();
 
         boolean result = true;
@@ -58,7 +58,7 @@ public class DownloadTesting {
         boolean results = true;
         List<String> errors = new ArrayList<String>();
         for (ProductType type : tiwiSet){
-            TiwiProDevice tiwi = new TiwiProDevice(tiwiImei, type, Addresses.QA);
+            TiwiProDevice tiwi = new TiwiProDevice(tiwiImei, type, AutoSilos.QA);
             for (Integer version : fw){
                 try {
                     boolean thisOne = tiwi.firmwareCompare(version); 

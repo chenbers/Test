@@ -9,8 +9,6 @@ import org.junit.Test;
 
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
@@ -34,9 +32,7 @@ public class ChangePasswordTest extends WebTest {
 	
     
 	public void updateUser(){
-	    AutomationPropertiesBean apb = getAutomationPropertiesBean();
-	    Addresses address = Addresses.getSilo(apb.getSilo());
-		SiloService portalProxy = (new AutomationHessianFactory()).getPortalProxy(address);
+		SiloService portalProxy = (new AutomationHessianFactory()).getPortalProxy();
 		portalProxy.updateUser(userID, user);
 	}
 	

@@ -1,6 +1,5 @@
 package com.inthinc.device.emulation.utils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.inthinc.pro.automation.utils.AutoHTTPException;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 
 public class GoogleTrips {
@@ -46,11 +46,11 @@ public class GoogleTrips {
             
         } catch (HttpException e) {
         	Log.wtf("%s", e);
-        } catch (IOException e) {
-        	Log.wtf("%s", e);
         } catch (JSONException e) {
         	Log.wtf("%s", e);
-        }
+        } catch (AutoHTTPException e) {
+			Log.error(e);
+		}
     	return null;
     }
     

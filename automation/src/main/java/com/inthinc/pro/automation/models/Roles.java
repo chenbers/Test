@@ -14,7 +14,9 @@ public class Roles implements Serializable{
      */
     private static final long serialVersionUID = 8931077543995177409L;
 
-    public Roles(){}
+    public Roles(){
+        role = new ArrayList<Integer>();
+    }
 
     public Roles(List<Integer> role) {
         this.role = role;
@@ -42,6 +44,10 @@ public class Roles implements Serializable{
     
     public List<Integer> getRole(){
         return role;
+    }
+    
+    public void addRole(int role){
+        this.role.add(role);
     }
     
     @Override

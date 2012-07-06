@@ -1,12 +1,15 @@
 package com.inthinc.pro.automation.elements;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.jbehave.AutoMethodParser;
 import com.inthinc.pro.automation.jbehave.AutoStepVariables;
 import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.jbehave.StepException;
@@ -16,6 +19,8 @@ public class TableNavigator <T extends ElementBase>{
     private final TableBased<T> instance;
     private final String stepAsString;
     private final PageScroller scroller;
+    
+    private Method matchingMethod;
     
     public TableNavigator(TableBased<T> instance, String stepAsString){
         this(instance, stepAsString, null);
@@ -83,6 +88,29 @@ public class TableNavigator <T extends ElementBase>{
                 }
             }
         }
+    }
+
+    public boolean isMethodStep() throws SecurityException, NoSuchMethodException {
+        Map<String, List<Method>> methods = AutoMethodParser.getMethods(instance.getClass(), null);
+        String match = "";
+        String shortened = stepAsString.replace(" ", "").toLowerCase();
+        for (String methodName : methods.keySet()){
+            if (shortened.contains(methodName.toLowerCase()) && methodName.length() > match.length()){
+                match = methodName;
+            }
+        }
+        if (!match.isEmpty() && methods.containsKey(match)){
+            matchingMethod = methods.get(match).get(0);
+        }
+        return !match.isEmpty() && matchingMethod != null;
+    }
+
+    public Object getInstance() {
+        return instance;
+    }
+
+    public Method getMethod() {
+        return matchingMethod;
     }
 
 }

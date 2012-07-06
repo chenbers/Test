@@ -20,11 +20,10 @@ public class AutoActionFinder {
         this.stepCreator = stepCreator;
     }
     
-    
-    public AutoActionFinder(){
+    public AutoStepCreator getStepCreator(){
+        return stepCreator;
     }
     
-
     public Step findAction(Object elementInstance, String elementType, String elementName, PendingStep step) throws SecurityException, NoSuchMethodException {
         if (stepCreator == null){ 
             throw new NullPointerException("We need a copy of the StepCreator");
@@ -56,6 +55,8 @@ public class AutoActionFinder {
                 if (navigator.isLoopingStep()){
                     navigator.loopForRow();
                     return stepCreator.createEmptyStep(stepAsString);
+                } else if (navigator.isMethodStep()){
+                    return stepCreator.createPageStep(step, navigator.getInstance(), navigator.getMethod());
                 } else {
                     return findAction(navigator.getRow(), elementType, elementName, step);
                 }
@@ -63,8 +64,7 @@ public class AutoActionFinder {
         } catch (StepException e){
             Log.info(e.toString());
         }
-        
-        
+
         throw new NoSuchMethodException("Cannot find an action for " + step.stepAsString());
     }
 

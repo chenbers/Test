@@ -12,13 +12,12 @@ import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GoogleTrips;
-import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.emulation.utils.Unique;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.resources.DeviceStatistics;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
@@ -54,7 +53,7 @@ public class MassDeviceTest {
   private final Integer groupID=53; // QA
     
     
-    private final Addresses portal;
+    private final AutoSilos portal;
 	
 	private final String address;
 	
@@ -66,7 +65,7 @@ public class MassDeviceTest {
     private static final String start = "40.710459,-111.993245";
     private static final String stop = "40.672436,-111.836529";
 	
-	public MassDeviceTest(Addresses server){
+	public MassDeviceTest(AutoSilos server){
 	    this.portal = server;
 	    Log.info(portal);
 	    portalHessian = new AutomationSiloService(portal);
@@ -234,10 +233,6 @@ public class MassDeviceTest {
 		    AutomationThread.pause(1);
 		    Log.info("There are " + Thread.activeCount() + " threads still running");
 		}
-        try{
-            MCMProxyObject.closeService();
-        } catch (Exception e) {
-        }
         Log.info("Starting time is " + DeviceStatistics.getStart());
         Log.info("Ending time is " + DeviceStatistics.getStop());
 		Log.info("We made " + DeviceStatistics.getHessianCalls() + " calls");
@@ -247,10 +242,9 @@ public class MassDeviceTest {
 	}
 		
 	public static void main(String[] args){
-		MassDeviceTest test = new MassDeviceTest(Addresses.QA);
+		MassDeviceTest test = new MassDeviceTest(AutoSilos.QA);
 //        test.readDrivers();
 		test.create(5000);
-//		MCMProxyObject.regularNote=false;
 		test.readDrivers();
 //		test.fixDevices();
 		test.driveTiwis();

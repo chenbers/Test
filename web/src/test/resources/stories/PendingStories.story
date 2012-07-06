@@ -1,45 +1,5 @@
 This file is used to store the story files that cannot yet be implemented.
 
-AdminUsers.story
-
-Scenario: TC760:TC761 Admin - Users - Bookmark Entry to Different Account (CANNOT BE IMPLEMENTED YET)
-
-Scenario: TC763: Admin - Users - Email Address link (CANNOT BE IMPLEMENTED YET DUE TO EXTERNAL EMAIL PROGRAM LAUNCHING)
-
-Scenario: TC765: Admin - Users - Page link (THIS PAGE NEEDS TO BE TESTED MANUALLY BECAUSE YOU CAN'T VERIFY IF THE BAR IS ABOVE THE PAGE NUMBER WITHOUT LOOKING AT IT)
-
-Scenario: TC772: Admin - Users - Edit Columns - Check Box Selection via Spacebar (CANNOT IMPLEMENT KEY PRESS YET)
-
-Scenario: TC774: Admin - Users - Edit Columns - Default Command Button (CANNOT IMPLEMENT KEY PRESS YET)
-
-Scenario: TC777: Admin - Users - Edit Columns - Tabbing Order (CANNOT IMPLEMENT KEY PRESS YET)
-
-Scenario: TC824:TC825: Admin - Users - View User - Bookmark Entry to a different account (CANNOT BE IMPLEMENTED YET)
-
-@testFolder TF447
-
-Scenario: TC479: Admin - Users - Delete User - Delete Button Activation via Spacebar (CANNOT IMPLEMENT KEY PRESS YET)
-
-Scenario: TC483: Admin - Users - Delete User - Red Flags Interaction (Notification) (CANNOT IMPLEMENT REQUIRES USING AN EXTERNAL EMAIL PROGRAM)
-
-Scenario: TC486: Admin - Users - Delete User - Add Alert Interaction (Notification) (CANNOT IMPLEMENT REQUIRES USING AN EXTERNAL EMAIL PROGRAM)
-
-Scenario: TC1896: Admin - Users - Delete User - Customers are able to delete the primary user in their account (UNABLE TO IMPLEMENT YET DUE TO MULTIPLE ACCOUNTS)
-
-@testFolder TF469
-
-Scenario: TC266:TC267 Admin - Users - Add User - Bookmark Entry to Different Account (UNABLE TO IMPLEMENT RIGHT NOW DUE TO MULTIPLE SIGN IN'S BEING NEEDED)
-
-
-
-AdminSpeedByStreet.story
-
-Scenario: TC749-TC756 : Admin - Speed By Street - HAS STEPS THAT NEED TO BE DONE MANUALLY DUE TO THE MAP
-
-Scenario: TC757 : Admin - Speed By Street - HAS TO BE DONE MANUALLY DUE TO EXTERNAL EMAIL PROGRAM
-
-Scenario: TC5405-TC5546: Admin - Speed By Street -  HAS TO BE DONE MANUALLY DUE TO EXTERNAL EMAIL PROGRAM
-
 LiveFleet.story:
 
 Scenario: TC1230: Live Fleet - Dispatch Table Properties NEED HELP IMPLEMENTING, NOT SURE HOW TO DO THIS
@@ -353,62 +313,15 @@ Scenario: Reports - Vehicles - Edit Columns - Tabbing Order DOES NOT EXIST, NEED
 Given this step is pending
 
 
-LogInAccessBlockedError
-//STORY WILL NOT RUN UNTIL WE FIGURE OUT HOW TO ATTEMPT TO LOG BACK IN AS THE SAME USER
-Given I am logged in as a "Admin" user
-When I select admin
-And I select users
-And I select a valid user
-And I click the edit link
-And I change the user's login status to inactive
-And I click save
-And I click log out
-And I am on the login page
-And I attempt to login with the same username password combination
-Then I get a Access Blocked alert
-And I close the login error alert message
-And I should remain on the Login Page
-And the name and password fields are blank
 
-LogInForgotUserNameOrPasswordChangePasswordUI
-Given I am on the login page
-Then I click the forgot your user name or password link
-And I type a valid email address in the email address field
-And I click send
-And I log in to my email account
-And I open the 'Update Your Password' message
-And I click on the link provided in the email message
-Then the 'change password' page appears
-And the page contains the user name static text string
-And the page contains the new password text field
-And the page contains the confirm new password text field
-And the page contains the change button in the left position
-And the page contains the cancel button in the right position
-And the portal version is displayed in the lower right corner
 
-Scenario: TC1189: Log In - Forgot User Name or Password - Send Button
-Given I am on the login page
-When I click the 'Forgot your user name or password?' link
-And I enter a email address in the database into the email address field
-And I click send
-Then the web page 'Message Sent Successfully' appears
-And a 'Update Your Password' message is sent to the e-mail address provided
 
-Scenario: TC1249: Log In - Tabbing Order
-Given I am on the login page
-When the focus should be on the User Name Field
-And I press the tab key 
-Then the focus should be on the Password Field
-And I press the tab key
-And the focus should be on the Log In Button
-And I press the tab key
-And the focus should be on the Forgot User Name or Password Link
-And I press the tab key
-And the focus should be on the Privacy Policy Link
-And I press the tab key
-And the focus should be on the Legal Notice Link
-And I press the tab key
-And the focus should be on the Support Link
+
+
+
+
+
+
 
 
 
