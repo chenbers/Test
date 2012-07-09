@@ -202,7 +202,7 @@ And I uncheck 8th Row of the of the Edit Columns checkbox
 And I validate the 8th Row of the Edit Columns checkbox is not checked
 And I uncheck 9th Row of the of the Edit Columns checkbox
 And I validate the 9th Row of the Edit Columns checkbox is not checked
-And I click the Cancel button
+And I click the cancel button
 
 Scenario: TC1648: Reports - Vehicles - Edit Columns - Current Session Retention
 Given I am logged in
@@ -307,4 +307,4 @@ And I validate the 8th Row of the Edit Columns checkbox is checked
 And I validate the 9th Row of the Edit Columns checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
-And I click the Save button
+And I click the save button

@@ -2,7 +2,6 @@ package com.inthinc.pro.automation.enums;
 
 public enum DownloadServers {
     
-    TEEN_QA("192.168.11.81"),
     DEV("192.168.11.111"),
     QA("192.168.11.115"),
     

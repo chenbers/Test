@@ -13,14 +13,14 @@ import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.resources.DeviceStatistics;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationThread;
 
 public class VariableTripCreator {
 
-    private final Addresses portal;
+    private final AutoSilos portal;
     
     private final String address;
     
@@ -28,7 +28,7 @@ public class VariableTripCreator {
 
     private boolean once = false;
     
-    public VariableTripCreator(Addresses address){
+    public VariableTripCreator(AutoSilos address){
         portal = address;
         this.address = "records_created_on_" + address.name();
     }
@@ -103,7 +103,7 @@ public class VariableTripCreator {
         CassandraPropertiesBean cpb = CassandraProperties.getPropertyBean();
         
         Integer totalTime = cpb.getMinutes() * 60 + cpb.getSeconds();
-        VariableTripCreator test = new VariableTripCreator(Addresses.QA);
+        VariableTripCreator test = new VariableTripCreator(AutoSilos.QA);
         if (totalTime == 0){
             test.once  = true;
         }

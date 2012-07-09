@@ -9,7 +9,7 @@ import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.objects.TripDriver;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.resources.FileRW;
@@ -20,7 +20,7 @@ public class SimpleStress {
     private final List<String> imeis;
     private final Map<String, String> ways;
     
-    private static final Addresses address = Addresses.TP_INTHINC;
+    private static final AutoSilos address = AutoSilos.TP_INTHINC;
     
     private static final String start = "40.710459,-111.993245";
     private static final String stop = "35.446687,-112.003148";
@@ -54,6 +54,7 @@ public class SimpleStress {
         List<GeoPoint> points = trip.getTrip(start, stop);
         for (String imei : imeis){
             TiwiProDevice tiwi = new TiwiProDevice(imei, address);
+            tiwi.set_server(address);
 //            TiwiProDevice tiwi = new TiwiProDevice("DEVICEDOESNTEXIST", address);
             tiwi.getState().getTime().setDate(startTime);
             tiwi.getTripTracker().setPoints(points);
@@ -71,7 +72,8 @@ public class SimpleStress {
         GoogleTrips trip = new GoogleTrips();
         List<GeoPoint> points = trip.getTrip(start, stop);
         for (Map.Entry<String, String> entry : ways.entrySet()){
-            WaysmartDevice ways = new WaysmartDevice(entry.getKey(), entry.getValue(), Addresses.QA, Direction.sat);
+            WaysmartDevice ways = new WaysmartDevice(entry.getKey(), entry.getValue(), Direction.sat);
+            ways.set_server(address);
             ways.getState().getTime().setDate(startTime);
             ways.getTripTracker().setPoints(points);
             new TripDriver(ways).start();

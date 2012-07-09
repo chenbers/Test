@@ -8,7 +8,7 @@ import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.TripDriver;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 
 public class DE7570 {
     
@@ -23,8 +23,8 @@ public class DE7570 {
         int odometer = 0;
         
         
-        WaysmartDevice waysmart = new WaysmartDevice("30023FKE1DE7570", "F1DE7570", Addresses.PROD, Direction.sat);
-//        WaysmartDevice waysmart = new WaysmartDevice("FAKETESTER", "NOPE", Addresses.QA, Direction.wifi);
+        WaysmartDevice waysmart = new WaysmartDevice("30023FKE1DE7570", "F1DE7570", AutoSilos.MY, Direction.sat);
+//        WaysmartDevice waysmart = new WaysmartDevice("FAKETESTER", "NOPE", AutoSilos.QA, Direction.wifi);
         waysmart.firstLocation(new GeoPoint());
         waysmart.getState().setVehicleID("1DE7570").setAccountID(accountID).setEmployeeID("1DE7570").setOdometerX100(odometer);
         waysmart.getState().getTime().addToMinutes(1);
@@ -35,7 +35,7 @@ public class DE7570 {
         Log.info(waysmart.getOdometer() + " Trip for number 1");
         
         
-//        waysmart = new WaysmartDevice("30023FKE2DE7570", "F2DE7570", Addresses.QA, Direction.sat);
+//        waysmart = new WaysmartDevice("30023FKE2DE7570", "F2DE7570", AutoSilos.QA, Direction.sat);
 //        waysmart.firstLocation(new GeoPoint());
 //        waysmart.getState().setVehicleID("2DE7570").setAccountID(accountID).setEmployeeID("2DE7570").setOdometerX100(odometer);
 //        waysmart.getState().getTime()

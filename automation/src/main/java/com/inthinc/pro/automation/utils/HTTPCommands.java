@@ -95,17 +95,17 @@ public class HTTPCommands {
      * @param method
      * @throws IOException
      * @throws HttpException
+     * @throws AutoHTTPException 
      */
-    public String httpRequest(HttpMethod method) throws IOException,
-            HttpException {
+    public String httpRequest(HttpMethod method) throws AutoHTTPException {
         response = null;
         try {
             int statusCode = httpClient.executeMethod(method);
-            if (statusCode != HttpStatus.SC_OK) {
+            if (!(statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED)) {
                 response = getResponseBodyFromStream(method
                         .getResponseBodyAsStream());
                 successful = false;
-                throw new HttpException(method.getName() + " method failed: " + method.getStatusLine());
+                throw new AutoHTTPException(method.getName() + " method failed: " + method.getStatusLine(), statusCode);
             } else {
                 successful = true;
             	Log.debug(method.getName() + " method succeeded: " + method.getStatusLine());
@@ -115,7 +115,10 @@ public class HTTPCommands {
             method.releaseConnection();
         } catch (URIException e) {
             Log.error(method.getQueryString());
-            throw new URIException("Failed");
+        } catch (HttpException e) {
+            Log.error(e);
+        } catch (IOException e) {
+            Log.error(e);
         }
         return response;
     }

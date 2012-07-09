@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCase;
 import com.inthinc.pro.rally.TestCaseResult;
@@ -35,7 +34,7 @@ public class RallyTest {
     }
     
     private TestCaseResult tcr;
-    private AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
+    private AutomationPropertiesBean apb = AutomationPropertiesBean.getPropertyBean();
     private String testCase;
     private JSONObject deletelastResults;
     private Test superTest;

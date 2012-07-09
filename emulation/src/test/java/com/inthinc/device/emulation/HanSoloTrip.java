@@ -11,7 +11,7 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.objects.TripTracker;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
@@ -21,7 +21,7 @@ public class HanSoloTrip extends Thread{
     private WaysmartDevice waySmart;
     
     private String IMEI;
-    private Addresses server;
+    private AutoSilos server;
     private AutomationCalendar initialTime;
     
     
@@ -31,7 +31,7 @@ public class HanSoloTrip extends Thread{
     }
 
 
-    public boolean start(String IMEI, Addresses server, AutomationCalendar initialTime) {
+    public boolean start(String IMEI, AutoSilos server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime.copy();
@@ -39,7 +39,7 @@ public class HanSoloTrip extends Thread{
         return true;
     }
     
-    public void hanSolosFirstTrip(String IMEI, Addresses server, AutomationCalendar initialTime) {
+    public void hanSolosFirstTrip(String IMEI, AutoSilos server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime.copy();
@@ -49,7 +49,7 @@ public class HanSoloTrip extends Thread{
 
     public void rfSwitchTestTrip() {
         String imei = "FAKEIMEIDEVICE"; 
-        Addresses address=Addresses.QA; 
+        AutoSilos address=AutoSilos.QA; 
         tiwi = new TiwiProDevice(imei, address);
         tiwi.set_time(new AutomationCalendar());
         
@@ -79,7 +79,7 @@ public class HanSoloTrip extends Thread{
     
     public void de6739_funkyTrip() {
         String imei = "FAKEIMEIDEVICE"; 
-        Addresses address=Addresses.QA; 
+        AutoSilos address=AutoSilos.QA; 
         tiwi = new TiwiProDevice(imei, address);
         tiwi.set_time(new AutomationCalendar());
         tiwi.getState().setWMP(17116);
@@ -176,7 +176,7 @@ public class HanSoloTrip extends Thread{
         String mcmID = "virt_MCM39731";
         String driverID = "CANADA";
         String occupantID = "TWO";
-        Addresses server = Addresses.QA; 
+        AutoSilos server = AutoSilos.QA; 
         AutomationCalendar initialTime = new AutomationCalendar();
         String vehicleID="virtualWS"; 
         int accountID=2;
@@ -206,7 +206,7 @@ public class HanSoloTrip extends Thread{
         waySmart.power_off_device(100);
     }
     
-    public void chewiesTurn(String mcmID, String satImei, String vehicleID, int accountID, Addresses server, AutomationCalendar initialTime){
+    public void chewiesTurn(String mcmID, String satImei, String vehicleID, int accountID, AutoSilos server, AutomationCalendar initialTime){
         waySmart = new WaysmartDevice(satImei, mcmID, server, Direction.wifi);
         waySmart.set_time(initialTime);
         waySmart.firstLocation(new GeoPoint(33.0104, -117.111));
@@ -233,31 +233,31 @@ public class HanSoloTrip extends Thread{
 //        generateTrip("Vancouver Canada", "Abbotsford Canada", new TiwiProDevice("0000"));
         HanSoloTrip trip = new HanSoloTrip();
         AutomationCalendar initialTime = new AutomationCalendar();
-        Addresses address;
-        String imei = "FAKEIMEIDEVICE"; address=Addresses.DEV;
+        AutoSilos address;
+        String imei = "FAKEIMEIDEVICE"; address=AutoSilos.DEV;
         imei = "DEVICEDOESNTEXIST";
-//        imei = "500000000007272"; address=Addresses.DEV;// initialTime.setDate(time)
-//        imei = "011596000100366";     address=Addresses.TEEN_PROD;
-//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime.setDate(1335460214);  // vehicleID=37706       deviceID=34506
-//        address=Addresses.QA;           initialTime.setDate(1334940345);  // vehicleID=7293        deviceID=3753
+//        imei = "500000000007272"; address=AutoSilos.DEV;// initialTime.setDate(time)
+//        imei = "011596000100366";     address=AutoSilos.TEEN_PROD;
+//        imei = "javadeviceindavidsaccount"; address=AutoSilos.QA;   initialTime.setDate(1335460214);  // vehicleID=37706       deviceID=34506
+//        address=AutoSilos.QA;           initialTime.setDate(1334940345);  // vehicleID=7293        deviceID=3753
         trip.hanSolosFirstTrip( imei, address, initialTime);
-//          address=Addresses.DEV;		initialTime.setDate(1334940345);
-//        address=Addresses.STAGE;        initialTime.setDate(1334940345);  // vehicleID=117441441   deviceID=117441936 
-//        address=Addresses.PROD;         initialTime.setDate(1334941814);  // vehicleID=1           deviceID=1
+//          address=AutoSilos.DEV;		initialTime.setDate(1334940345);
+//        address=AutoSilos.STAGE;        initialTime.setDate(1334940345);  // vehicleID=117441441   deviceID=117441936 
+//        address=AutoSilos.PROD;         initialTime.setDate(1334941814);  // vehicleID=1           deviceID=1
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CHEVRON;      initialTime.setDate(1334941814);  // vehicleID=117441441   deviceID=117441936
+//        address=AutoSilos.CHEVRON;      initialTime.setDate(1334941814);  // vehicleID=117441441   deviceID=117441936
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.SCHLUMBERGER; initialTime.setDate(1334941814);  // vehicleID=150994955   deviceID=150994955
+//        address=AutoSilos.SCHLUMBERGER; initialTime.setDate(1334941814);  // vehicleID=150994955   deviceID=150994955
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.WEATHERFORD;  initialTime.setDate(1334941814);  // vehicleID=184549575   deviceID=184549735
+//        address=AutoSilos.WEATHERFORD;  initialTime.setDate(1334941814);  // vehicleID=184549575   deviceID=184549735
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.TECK;         initialTime.setDate(1334943283);  // vehicleID=251658249   deviceID=251658248
+//        address=AutoSilos.TECK;         initialTime.setDate(1334943283);  // vehicleID=251658249   deviceID=251658248
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.BARRICK;      initialTime.setDate(1334941814);  // vehicleID=83886085    deviceID=83886086
+//        address=AutoSilos.BARRICK;      initialTime.setDate(1334941814);  // vehicleID=83886085    deviceID=83886086
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CINTAS;       initialTime.setDate(1334941814);  // vehicleID=234881465   deviceID=234881624
+//        address=AutoSilos.CINTAS;       initialTime.setDate(1334941814);  // vehicleID=234881465   deviceID=234881624
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.LDS;       initialTime.setDate(1334941814);  // vehicleID=100663298   deviceID=100663298
+//        address=AutoSilos.LDS;       initialTime.setDate(1334941814);  // vehicleID=100663298   deviceID=100663298
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
         
         
@@ -268,8 +268,8 @@ public class HanSoloTrip extends Thread{
 //        String vehicleID;
 //        int accountID;
         
-//        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1316471529; vehicleID=7284; accountID=3;//deviceID=3763
-//        satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=Addresses.QA; initialTime = 1316471529; vehicleID="dddd"; accountID=3;//deviceID=3763
+//        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=AutoSilos.QA; initialTime = 1316471529; vehicleID=7284; accountID=3;//deviceID=3763
+//        satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=AutoSilos.QA; initialTime = 1316471529; vehicleID="dddd"; accountID=3;//deviceID=3763
 //        
 //        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
         

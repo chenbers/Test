@@ -81,6 +81,10 @@ public class AutoStepVariables {
             getVariables().put(key, value.toString());
         }
     }
+    
+    public static void saveVariable(final String variableName, final Object value){
+        getVariables().put(variableName, value.toString());
+    }
 
     public static Map<String, String> getVariables(){
         if (variables.get()==null){

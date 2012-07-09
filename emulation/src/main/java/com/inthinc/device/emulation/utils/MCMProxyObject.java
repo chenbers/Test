@@ -53,10 +53,11 @@ import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.hessian.tcp.ProDAOException;
 import com.inthinc.device.noteservice.NoteService;
 import com.inthinc.device.resources.DeviceStatistics;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
-import com.inthinc.pro.automation.utils.HTTPCommands;
+import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
+import com.inthinc.pro.automation.utils.HTTPCommands;
 
 
 public class MCMProxyObject implements MCMService{
@@ -71,7 +72,7 @@ public class MCMProxyObject implements MCMService{
     private MCMService proxy;
 
 
-    private Addresses server;
+    private AutoServers server;
 
 
     public static boolean regularNote = true;
@@ -86,7 +87,11 @@ public class MCMProxyObject implements MCMService{
         return notes;
     }
     
-    public MCMProxyObject(Addresses server) {
+    public MCMProxyObject(AutoSilos silo){
+    	this(new AutoServers(silo));
+    }
+    
+    public MCMProxyObject(AutoServers server) {
         this.server = server;
         AutomationHessianFactory getHessian = new AutomationHessianFactory();
         Log.info("MCM Server is " + server);
@@ -313,7 +318,7 @@ public class MCMProxyObject implements MCMService{
 	    	try {
 	    		Log.info("Sending " + note);
 	    		Log.info("Creating socket");
-	        	Socket socket =  new Socket(server.getMCMUrl(), server.getSatPort());
+	        	Socket socket =  new Socket(server.getMcmUrl(), server.getSatPort());
 	    		ByteArrayOutputStream out =  new ByteArrayOutputStream(); 
 	    		out.write(packaged, 0, packaged.length);
 	    		Log.info("Writing to socket");

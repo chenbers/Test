@@ -7,7 +7,8 @@ import android.util.Log;
 import com.inthinc.device.emulation.interfaces.HessianService;
 import com.inthinc.device.emulation.interfaces.MCMService;
 import com.inthinc.device.emulation.interfaces.SiloService;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.utils.AutoServers;
 
 public class AutomationHessianFactory {
 
@@ -36,14 +37,33 @@ public class AutomationHessianFactory {
     	}
     }
     
+    public AutomationHessianFactory(){
+    	setUrls(new AutoServers());
+    	
+    }
+    
+    private void setUrls(AutoServers server) {
+    	this.server = new Server(server.getPortalUrl(), server.getPortalPort(), server.getMcmUrl(), server.getMcmPort());
+	}
+
+	public AutomationHessianFactory(AutoServers server){
+    	setUrls(server);
+    }
+    
+    public AutomationHessianFactory(AutoSilos silo){
+    	AutoServers server = new AutoServers();
+    	server.setBySilo(silo);
+    	setUrls(server);
+    }
+    
     public void setUrls(String portalUrl, int portalPort, String mcmUrl, int mcmPort){
     	server = new Server(portalUrl, portalPort, mcmUrl, mcmPort);
     	createPortalProxy();
     	createMcmProxy();
     }
 
-    public void setUrls(Addresses server, Boolean portal) {
-        this.server = new Server(server.getPortalUrl(), server.getPortalPort(), server.getMCMUrl(), server.getMCMPort());
+    public void setUrls(AutoServers server, Boolean portal) {
+        setUrls(server);
         if (portal) {
             createPortalProxy();
         } else {
@@ -92,13 +112,18 @@ public class AutomationHessianFactory {
     	return mcmProxy;
     }
 
-    public MCMService getMcmProxy(Addresses server) {
+    public MCMService getMcmProxy(AutoSilos server) {
         setUrls(server, false);
         return mcmProxy;
     }
+    
+    public MCMService getMcmProxy(AutoServers server){
+    	setUrls(server, false);
+    	return mcmProxy;
+    }
 
     public SiloService getPortalProxy() {
-        return portalProxy == null ? getPortalProxy(Addresses.QA) : portalProxy;
+        return portalProxy == null ? getPortalProxy(AutoSilos.QA) : portalProxy;
     }
     
     public SiloService getPortalProxy(String server, int port){
@@ -106,12 +131,23 @@ public class AutomationHessianFactory {
     	return portalProxy;
     }
 
-    public SiloService getPortalProxy(Addresses server) {
+    public SiloService getPortalProxy(AutoSilos server) {
         setUrls(server, true);
         return portalProxy;
     }
+    
+    public MCMService getPortalProxy(AutoServers server){
+    	setUrls(server, true);
+    	return mcmProxy;
+    }
 
-    public Server getServer(){
+    private void setUrls(AutoSilos silo, boolean portal) {
+    	AutoServers server = new AutoServers();
+    	server.setBySilo(silo);
+    	setUrls(server, portal);
+	}
+
+	public Server getServer(){
     	return server;
     }
 }

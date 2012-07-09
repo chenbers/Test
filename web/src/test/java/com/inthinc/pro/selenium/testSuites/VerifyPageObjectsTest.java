@@ -1,19 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
-
-import com.inthinc.pro.automation.enums.ErrorLevel;
-import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
-import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
-import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
-import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
-import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 
 @Ignore
 public class VerifyPageObjectsTest extends WebRallyTest {

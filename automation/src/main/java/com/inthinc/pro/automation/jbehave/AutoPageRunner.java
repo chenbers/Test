@@ -16,14 +16,12 @@ import org.jbehave.core.steps.Step;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepType;
 
-import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.JBehaveTermMatchers;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.utils.AutoServers;
 
 public class AutoPageRunner {
     
@@ -83,8 +81,7 @@ public class AutoPageRunner {
         
         CoreMethodInterface selenium = CoreMethodLib.getSeleniumThread();
         String location = selenium.getLocation();
-        AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
-        Addresses server = Addresses.getSilo(apb.getSilo()); 
+        AutoServers server = new AutoServers(); 
         location = location.replace(server.getWebAddress(), "");
 
         if (location.contains(";")){

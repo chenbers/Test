@@ -12,7 +12,7 @@ import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripTracker;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -31,12 +31,13 @@ public class HOSRuleSets extends WebRallyTest {
         String mcmID = "virt_MCM39731";
         String driverID = "CANADA";
         String occupantID = "TWO";
-        Addresses server = Addresses.QA; 
+        AutoSilos server = AutoSilos.QA; 
         AutomationCalendar initialTime = new AutomationCalendar();
         String vehicleID="virtualWS"; 
         int accountID=2;
         
-        waySmart = new WaysmartDevice(satImei, mcmID, server, Direction.wifi);
+        waySmart = new WaysmartDevice(satImei, mcmID, Direction.wifi);
+        waySmart.set_server(server);
         waySmart.set_time(initialTime);
 
         TripTracker trip = waySmart.getTripTracker();

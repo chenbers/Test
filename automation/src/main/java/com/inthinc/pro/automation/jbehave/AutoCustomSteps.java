@@ -20,7 +20,6 @@ import com.inthinc.pro.automation.models.Account;
 import com.inthinc.pro.automation.models.Person;
 import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.rest.RestCommands;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.utils.KeyCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
@@ -37,6 +36,18 @@ public class AutoCustomSteps {
 
     private static ThreadLocal<RestCommands> rest = new ThreadLocal<RestCommands>();
     private static ThreadLocal<String> savedPage = new ThreadLocal<String>();
+    
+    private static final String userVariable = "my user name";
+    private static final String passwordVariable = "my password";
+    
+    public static final String getUserVariable(){
+        return userVariable;
+    }
+    
+    public static final String getPasswordVariable(){
+        return passwordVariable;
+    }
+    
     
     public static String getEditableaccountuser() {
         return editableAccountUser;
@@ -69,7 +80,7 @@ public class AutoCustomSteps {
     private MasterTest test;
     
     public AutoCustomSteps(){
-        apb = AutomationProperties.getPropertyBean(); 
+        apb = AutomationPropertiesBean.getPropertyBean(); 
         test = new MasterTest(){};
     }
     
@@ -94,8 +105,8 @@ public class AutoCustomSteps {
 
     @Given("I change my username to $username and my password to $password")
     public void changeUserNameAndPassword(@Named("username")String username, @Named("password")String password){
-        AutoStepVariables.getVariables().put("my user name", loginUser.get().getUsername());
-        AutoStepVariables.getVariables().put("my password", apb.getPassword());
+        AutoStepVariables.getVariables().put(userVariable, loginUser.get().getUsername());
+        AutoStepVariables.getVariables().put(passwordVariable, apb.getPassword());
     }
     
 

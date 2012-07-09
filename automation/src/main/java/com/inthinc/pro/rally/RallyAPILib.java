@@ -22,6 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
+
 
 /**
  * 
@@ -158,7 +160,7 @@ public class RallyAPILib {
 		setNotes(notes);
 		setVerdict(verdict);
 		this.testCase.put("TestCaseResult", testCaseResults);
-		System.out.println(PrettyJSON.toString(this.testCase));
+		System.out.println(AutomationStringUtil.toString(this.testCase));
 		results = sendTestCaseResults();
 		return results;
     } 

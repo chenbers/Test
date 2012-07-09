@@ -3,20 +3,20 @@ package com.inthinc.device.emulation;
 import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class CaptainNemoTrip extends Thread{
     private TiwiProDevice tiwi;
     
     private String IMEI;
-    private Addresses server;
+    private AutoSilos server;
     private AutomationCalendar initialTime;
     
     
 
 
-    public void start(String IMEI, Addresses server, AutomationCalendar initialTime) {
+    public void start(String IMEI, AutoSilos server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime;
@@ -24,7 +24,7 @@ public class CaptainNemoTrip extends Thread{
         
     }
     
-    public void captainNemosFirstTrip(String IMEI, Addresses server, AutomationCalendar initialTime) {
+    public void captainNemosFirstTrip(String IMEI, AutoSilos server, AutomationCalendar initialTime) {
         this.IMEI=IMEI;
         this.server=server;
         this.initialTime = initialTime;
@@ -76,16 +76,16 @@ public class CaptainNemoTrip extends Thread{
     public static void main(String[] args){
         CaptainNemoTrip trip = new CaptainNemoTrip();
         AutomationCalendar initialTime = new AutomationCalendar();
-        Addresses address;
+        AutoSilos address;
         String imei;
-        imei = "999999000109751"; address=Addresses.QA;//         initialTime = initialTime; // NO VEHICLE            NO DEVICE
-//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1307479805;  // vehicleID=37706       deviceID=34506
-//        imei = "444444444444444";   address=Addresses.QA;           initialTime = 1307309503;  // vehicleID=7293        deviceID=3753
-//        imei = "111111111111111";   address=Addresses.PROD;         initialTime = 1307310972;  // vehicleID=1           deviceID=1
-//        imei = "thisisajavadevice"; address=Addresses.CHEVRON;      initialTime = 1307491773;  // vehicleID=117441441   deviceID=117441936 
-//        imei = "999456789012345";   address=Addresses.SCHLUMBERGER; initialTime = 1307310972;  // vehicleID=150994955   deviceID=150994955
-//        imei = "FAKEIMEIFORTINA";   address=Addresses.WEATHORFORD;  initialTime = 1307315379;  // vehicleID=184549575   deviceID=184549735
-//        imei = "011596000100366";     address=Addresses.TEEN_PROD;
+        imei = "999999000109751"; address=AutoSilos.QA;//         initialTime = initialTime; // NO VEHICLE            NO DEVICE
+//        imei = "javadeviceindavidsaccount"; address=AutoSilos.QA;   initialTime = 1307479805;  // vehicleID=37706       deviceID=34506
+//        imei = "444444444444444";   address=AutoSilos.QA;           initialTime = 1307309503;  // vehicleID=7293        deviceID=3753
+//        imei = "111111111111111";   address=AutoSilos.PROD;         initialTime = 1307310972;  // vehicleID=1           deviceID=1
+//        imei = "thisisajavadevice"; address=AutoSilos.CHEVRON;      initialTime = 1307491773;  // vehicleID=117441441   deviceID=117441936 
+//        imei = "999456789012345";   address=AutoSilos.SCHLUMBERGER; initialTime = 1307310972;  // vehicleID=150994955   deviceID=150994955
+//        imei = "FAKEIMEIFORTINA";   address=AutoSilos.WEATHORFORD;  initialTime = 1307315379;  // vehicleID=184549575   deviceID=184549735
+//        imei = "011596000100366";     address=AutoSilos.TEEN_PROD;
         
         
         trip.captainNemosFirstTrip( imei, address, initialTime);

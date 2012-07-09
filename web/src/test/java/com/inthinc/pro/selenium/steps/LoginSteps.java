@@ -1,5 +1,7 @@
 package com.inthinc.pro.selenium.steps;
 
+import org.jbehave.core.annotations.Alias;
+import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -7,8 +9,9 @@ import org.jbehave.core.annotations.When;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
+import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
-
+import com.inthinc.pro.selenium.pageObjects.PopUps;
 
 public class LoginSteps extends WebSteps {
 
@@ -17,6 +20,49 @@ public class LoginSteps extends WebSteps {
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
 
     private static final PageLogin page = new PageLogin();
+    private static final PopUps popup = new PopUps();
+
+    // @When("I type an user name in the wrong case")
+    // public void whenITypeAnUserNameInTheWrongCase() {
+    // page._textField().userName().type(MasterTest.switchCase(autouser.getUsername()));
+    //
+    // }
+
+    // @When("I type a password in the wrong case")
+    // public void whenITypeAPasswordInTheWrongCase() {
+    // page._textField().password().type(MasterTest.switchCase(autouser.getPassword()));
+    // }
+
+    @When("I enter non valid email text into the email address field")
+    public void whenIEnterNonValidEmailTextIntoTheEmailAddressField() {
+        page._popUp().forgotPassword()._textField().email().type("z"); // doesn't conform to rule * x to y characters ??
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("test@@test.com"); /*
+                                                                                     * doesn't conform to rule * Only one commercial at (@) is allowed to separate the user name
+                                                                                     * from the domain name User Name
+                                                                                     */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("test@test@test.com"); /*
+                                                                                         * doesn't conform to rule * Only one commercial at (@) is allowed to separate the user name
+                                                                                         * from the domain name User Name
+                                                                                         */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("!@#...com"); /*
+                                                                                * doesn't conform to rule * A - Z, a - z, 0 - 9, underscore (_), hyphen (-), and period (.)
+                                                                                * characters are allowed (Note: A period at the beginning, a period at the end, and 2 consecutive
+                                                                                * periods are allowed.)
+                                                                                */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("test test@email.com"); /*
+                                                                                          * doesn't conform to rule * All other characters, inclusive of a blank space and a quoted
+                                                                                          * string (i.e. between double quotes), are NOT allowed Domain Name
+                                                                                          */
+        page._popUp().forgotPassword()._button().send().click();
+        page._popUp().forgotPassword()._textField().email().type("\"test\"@email.com"); /*
+                                                                                         * doesn't conform to rule * All other characters, inclusive of a blank space and a quoted
+                                                                                         * string (i.e. between double quotes), are NOT allowed Domain Name
+                                                                                         */
+    }
 
     //
     // @Given("I am logged in as a user in a role that does have the $accessPointName accesspoint")
@@ -38,6 +84,38 @@ public class LoginSteps extends WebSteps {
         page._textField().password().type("password");
         page._button().logIn().click();
     }
+
+     @Given("I am logged in as a \"$roleName\" user")
+     @When("I am logged in as a \"$roleName\" user")
+     public void loginAsAUserofRole(String roleName) {
+//     LoginCapability hasThisCapability = null;
+//     TODO: FIGURE OUT AUTOMATED USERS, IN THE MEANTIME, USE THIS CODE:
+      if(roleName.equals("TopUser"))
+      {
+      page._textField().userName().type("danniauto");
+      page._textField().password().type("password");
+      page._button().logIn().click();
+      }
+      if(roleName.equals("TeamOnly"))
+      {
+      page._textField().userName().type("CaptainNemo");
+      page._textField().password().type("Muttley");
+      page._button().logIn().click();
+      }
+    // if(roleName.equals("Admin"))
+    // hasThisCapability = LoginCapability.RoleAdmin;
+    // else if(roleName.equals("HOS"))
+    // hasThisCapability = LoginCapability.RoleHOS;
+    // else if(roleName.equals("Live Fleet"))
+    // hasThisCapability = LoginCapability.RoleLiveFleet;
+    // else
+    // test.addError("there is no defined role of "+roleName, ErrorLevel.ERROR);
+    //
+    // AutomationUser user = AutomationUsers.getUsers().getOneBy(hasThisCapability);
+    //
+    // PageLogin login = new PageLogin();
+    // login.loginProcess(user);
+     }
 
     // @Given("I am logged in as a user in a role that does not have the $accesspointName accesspoint")
     // public void loginAsUserWithoutAccesspoint(String accesspointName){
@@ -199,4 +277,27 @@ public class LoginSteps extends WebSteps {
         loginPage._textField().password().type(incorrectCaseUserName);
     }
     
+    //TODO: MWEISS - I am still working on how this will work
+    @Then("the Sort By Date Time column sorts correctly")
+    public void thenIValidateTheSortByDateTimeColumnSortsCorrectly() {
+        
+        notifdiag._link().sortByDateTime().click();
+        
+        String text1 = notifdiag._text().entryDateTime().row(1).getText();
+        String text2 = notifdiag._text().entryDateTime().row(15).getText();
+        
+        int result = text1.compareTo(text2);
+        
+        if (result == 0) {
+            System.out.println("The names are equal.");
+       }
+       else if (result > 0) {
+            System.out.println(
+                "name2 comes before name1 alphabetically.");
+       }
+       else if (result < 0) {
+            System.out.println(
+               "name1 comes before name2 alphabetically.");
+       }
+    }
 }

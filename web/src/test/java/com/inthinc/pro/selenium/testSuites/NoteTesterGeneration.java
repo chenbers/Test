@@ -9,10 +9,9 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripDriver;
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
+import com.inthinc.pro.automation.utils.AutoServers;
 
 @Ignore
 public class NoteTesterGeneration extends Thread{
@@ -25,38 +24,35 @@ public class NoteTesterGeneration extends Thread{
     private String IMEI2;
     private String IMEI3;
     private String IMEI4;
-    private Addresses server;
     private AutomationCalendar initialTime;
     
     
 
 
-    public void start(String IMEI1, String IMEI2, String IMEI3, String IMEI4, Addresses server, AutomationCalendar initialTime) {
+    public void start(String IMEI1, String IMEI2, String IMEI3, String IMEI4, AutomationCalendar initialTime) {
         this.IMEI1=IMEI1;
         this.IMEI2=IMEI2;
         this.IMEI3=IMEI3;
         this.IMEI4=IMEI4;
-        this.server=server;
         this.initialTime = initialTime;
         super.start();
         
     }
     
-    public void noteTesterFirstGeneration(String IMEI1, String IMEI2, String IMEI3, String IMEI4, Addresses server, AutomationCalendar initialTime) {
+    public void noteTesterFirstGeneration(String IMEI1, String IMEI2, String IMEI3, String IMEI4, AutomationCalendar initialTime) {
         this.IMEI1=IMEI1;
         this.IMEI2=IMEI2;
         this.IMEI3=IMEI3;
         this.IMEI4=IMEI4;
-        this.server=server;
         this.initialTime = initialTime;
         noteTesterFirstGeneration();
     }
 
     public void noteTesterFirstGeneration() {
-        tiwi1 = new TiwiProDevice(IMEI1, server);
-        tiwi2 = new TiwiProDevice(IMEI2, server);
-        tiwi3 = new TiwiProDevice(IMEI3, server);
-        tiwi4 = new TiwiProDevice(IMEI4, server);
+        tiwi1 = new TiwiProDevice(IMEI1);
+        tiwi2 = new TiwiProDevice(IMEI2);
+        tiwi3 = new TiwiProDevice(IMEI3);
+        tiwi4 = new TiwiProDevice(IMEI4);
         
         
         TiwiProDevice[] tiwiArray = new TiwiProDevice[4];
@@ -132,16 +128,15 @@ public class NoteTesterGeneration extends Thread{
     public static void main(String[] args){
         NoteTesterGeneration trip = new NoteTesterGeneration();
         AutomationCalendar initialTime = new AutomationCalendar();
-        Addresses address;
         String imei1; String imei2; String imei3; String imei4;
         imei1 = "999999000109741";
         imei2 = "999999000109742";
         imei3 = "999999000109743";
         imei4 = "999999000109744";
-        address = Addresses.getSilo(AutomationProperties.getPropertyBean().getSilo()); 
-        System.out.println("NoteTesterGeneration ran on address:"+address+"; address.webAddress:"+address.getWebAddress());
+        AutoServers server = new AutoServers();
+        System.out.println("NoteTesterGeneration ran on address:"+server.getMcmUrl()+"; address.webAddress:"+server.getWebAddress());
         
-        trip.noteTesterFirstGeneration( imei1, imei2, imei3, imei4, address, initialTime);
+        trip.noteTesterFirstGeneration( imei1, imei2, imei3, imei4, initialTime);
     }
     
 
@@ -150,8 +145,7 @@ public class NoteTesterGeneration extends Thread{
     	TiwiProDevice tiwi;
     	//String imei = "FAKEIMEIDEVICE2";
     	String imei = "FAKEIMEIDEVICE";
-        Addresses address=Addresses.mraby; 
-        tiwi = new TiwiProDevice(imei, address);
+        tiwi = new TiwiProDevice(imei);
         tiwi.set_time(new AutomationCalendar());
         
         String start = "980 N 1050 E, Pleasant Grove, UT 84062";

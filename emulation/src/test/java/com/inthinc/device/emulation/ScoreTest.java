@@ -16,7 +16,7 @@ import com.inthinc.device.emulation.utils.GoogleTrips;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.scoring.ScoringFactory;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
@@ -31,7 +31,7 @@ public class ScoreTest {
     private ConcurrentHashMap<String, Map<String, String>> imeis;
     private SiloService proxy;
 
-    private static final Addresses server = Addresses.QA;
+    private static final AutoSilos server = AutoSilos.QA;
 
     private static final String first = "40.709922,-111.993513";
     private static final String second = "40.707547,-111.801918";

@@ -23,10 +23,11 @@ import com.inthinc.device.emulation.utils.NoteManager;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripTracker;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.sbs.Sbs;
 
@@ -37,9 +38,9 @@ public abstract class DeviceBase {
     protected MCMProxyObject mcmProxy;
     protected int note_count = 4;
     protected final NoteManager notes;
-    protected Addresses server;
+    protected final AutoServers server = new AutoServers();
     protected Object reply;
-    protected final static Sbs sbs = new Sbs("555555555555555", 7, Addresses.QA);
+    protected final static Sbs sbs = new Sbs("555555555555555", 7);
     
 
     protected final ArrayList<GeoPoint> speed_loc;
@@ -47,10 +48,11 @@ public abstract class DeviceBase {
 
     protected final DeviceState state;
     protected final TripTracker tripTracker;
+    
 
     public DeviceBase(String IMEI, ProductType version,
-            Map<DeviceProps, String> settings, Addresses server) {
-    	this.server = server;
+            Map<DeviceProps, String> settings, AutoSilos silo) {
+    	server.setBySilo(silo);
         state = new DeviceState(IMEI, version);
         state.setSettings(settings);
         tripTracker = new TripTracker(state, sbs);
@@ -61,8 +63,8 @@ public abstract class DeviceBase {
         initiate_device();
     }
 
-    public DeviceBase(DeviceState state, Addresses server) {
-    	this.server = server;	
+    public DeviceBase(DeviceState state, AutoSilos silo) {
+    	server.setBySilo(silo);
     	this.state = state;
         tripTracker = new TripTracker(state);
         speed_points = new ArrayList<Integer>();
@@ -119,7 +121,7 @@ public abstract class DeviceBase {
 
 
     private DeviceBase configurate_device() {
-        if (server == Addresses.TEEN_PROD) {
+        if (server.getSilo().equals(AutoSilos.TEEN_PROD.name().toLowerCase())) {
             return this;
         }
         dump_settings();
@@ -134,7 +136,7 @@ public abstract class DeviceBase {
     protected abstract DeviceBase createAckNote(Map<String, Object> reply);
 
     public DeviceBase dump_settings() {
-		if (server == Addresses.TEEN_PROD) {
+    	if (server.getSilo().equals(AutoSilos.TEEN_PROD.name().toLowerCase())) {
 			return this;
 		}
 
@@ -232,8 +234,6 @@ public abstract class DeviceBase {
         state.setExceedingRPMLimit(false);
         state.setSeatbeltEngaged(false);
 
-        set_server(server);
-
         return this;
     }
 
@@ -327,7 +327,7 @@ public abstract class DeviceBase {
     protected abstract Integer processCommand(Map<String, Object> reply);
 
     public DeviceBase requestSettings() {
-		if (server == Addresses.TEEN_PROD) {
+    	if (server.getSilo().equals(AutoSilos.TEEN_PROD.name().toLowerCase())) {
 			return this;
 		}
 		if (state.getWMP() >= 17013) {
@@ -383,7 +383,7 @@ public abstract class DeviceBase {
         return this;
     }
 
-    public abstract DeviceBase set_server(Addresses server);
+    public abstract DeviceBase set_server(AutoSilos server);
 
     public DeviceBase set_settings(DeviceProps key, Integer value) {
         return set_settings(key, value.toString());
