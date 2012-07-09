@@ -381,11 +381,12 @@ public class AutoPageRunner {
                                 + method.getName());
                 }
             }
-            return method.invoke(elementClass, passParameters);
+            return method.invoke(elementClass, passParameters); 
         } catch (NullPointerException e){
             String error = String.format("elementClass: %s\tmethod: %s", elementClass, method);
             throw new StepException(workingOnStep, error, e);
         } catch (Exception e){
+        	Log.info(e);
             String error = String.format("Trying to execute %s on object %s.", 
                     method.getName(), elementClass.getClass().getSimpleName());
             throw new StepException(workingOnStep, error, e);
