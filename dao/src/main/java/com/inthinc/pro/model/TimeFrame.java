@@ -107,7 +107,16 @@ public enum TimeFrame implements BaseEnum {
         public Interval getInterval(DateTimeZone dateTimeZone) {
             return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
         }
+    },
+    CUSTOM_RANGE(AggregationDuration.ONE_DAY, 18){
+        public Interval getInterval(DateTimeZone dateTimeZone) {
+            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
+        }
+        public Interval getInterval(long startInstant, long endInstant, DateTimeZone zone){
+        	return new Interval(startInstant, endInstant, zone);
+        }
     };
+    
 
     private AggregationDuration driveQDuration;
     private Integer code;

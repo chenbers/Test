@@ -1,5 +1,7 @@
 package com.inthinc.pro.model.aggregation;
 
+import org.joda.time.Interval;
+
 import com.inthinc.pro.model.TimeFrame;
 
 
@@ -12,6 +14,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private String driverPosition;
     private Integer loginCount;
     private TimeFrame timeFrame;
+    private Interval interval;
     private Integer totalMiles;
     private Integer overallScore;
     private Integer speedingScore;
@@ -20,20 +23,17 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private Integer idleViolationsCount;
     private Integer loIdleViolationsMinutes;
     private Integer hiIdleViolationsMinutes;
+    private String color;
     
-    public DriverPerformanceKeyMetrics()
-    {
-        
-    }
-    public DriverPerformanceKeyMetrics(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, TimeFrame timeFrame, Integer totalMiles,
-            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer idleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsMinutes) {
-        super();
+    private void init(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, TimeFrame timeFrame, Integer totalMiles,
+            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer idleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsMinutes, Interval interval, String color){
         this.groupName = groupName;
         this.teamName = teamName;
         this.driverName = driverName;
         this.driverPosition = driverPosition;
         this.loginCount = loginCount;
         this.timeFrame = timeFrame;
+        this.setInterval(interval);
         this.totalMiles = totalMiles;
         this.overallScore = overallScore;
         this.speedingScore = speedingScore;
@@ -42,8 +42,25 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
         this.idleViolationsCount = idleViolationsCount;
         this.loIdleViolationsMinutes = loIdleViolationsMinutes;
         this.hiIdleViolationsMinutes = hiIdleViolationsMinutes;
+        this.color = color;
     }
-    
+    public DriverPerformanceKeyMetrics()
+    {
+        
+    }
+    public DriverPerformanceKeyMetrics(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, Interval interval, Integer totalMiles,
+            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer idleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsMinutes, String color) {
+        super();
+        init(groupName, teamName, driverName, driverPosition, loginCount, timeFrame, totalMiles,
+                overallScore, speedingScore, styleScore, seatbeltScore, idleViolationsCount, loIdleViolationsMinutes, hiIdleViolationsMinutes, interval, color);
+    }
+    public DriverPerformanceKeyMetrics(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, TimeFrame timeFrame, Integer totalMiles,
+            Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer idleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsMinutes) {
+        super();
+        init(groupName, teamName, driverName, driverPosition, loginCount, timeFrame, totalMiles,
+                overallScore, speedingScore, styleScore, seatbeltScore, idleViolationsCount, loIdleViolationsMinutes, hiIdleViolationsMinutes, null, null);
+    }
+
     public String getGroupName() {
         return groupName;
     }
@@ -138,4 +155,16 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
             cmp = driverName.compareToIgnoreCase(o.getDriverName());
         return cmp;
     }
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public Interval getInterval() {
+		return interval;
+	}
+	public void setInterval(Interval interval) {
+		this.interval = interval;
+	}
 }

@@ -178,7 +178,7 @@ public enum ReportGroup
             EnumSet.of(ReportAccountType.WAYSMART),
             ReportType.DRIVER_HOURS),
      DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", 38, EntityType.ENTITY_GROUP_LIST,
-            new CriteriaType[]{CriteriaType.TIMEFRAME_ALT}, 
+            new CriteriaType[]{CriteriaType.TIMEFRAME_ALT, CriteriaType.TIMEFRAME, CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS),

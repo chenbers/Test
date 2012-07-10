@@ -150,6 +150,24 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
             Collections.sort(list);
             return list;
         }
+		@Override
+		public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, Interval interval) {
+            List<DriverPerformanceKeyMetrics> list = new ArrayList<DriverPerformanceKeyMetrics>();
+            DateTime weekEndDateTime = new DateMidnight(new DateTime().minusDays(1)).toDateTime();
+            list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver NA", "Position", 0, interval, 0, 0, 0,0,0,0,0,0, " "));
+            for (int i = 0; i < 5; i++) {
+                list.add(new DriverPerformanceKeyMetrics("Division", "Team", "Driver " + i, "Position", i, interval, i*1000, i*10,i*10,i*10,i*10,i,i*30*60,i*60*60, " "));//TODO: jwimmer: FYI: color is NOT getting set correctly here
+            }
+            Collections.sort(list);
+            return list;
+		}
+		@Override
+		public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame, Interval interval) {
+			if(interval != null)
+			    return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, interval);
+			else
+			    return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, timeFrame);
+		}
     }
 
 }
