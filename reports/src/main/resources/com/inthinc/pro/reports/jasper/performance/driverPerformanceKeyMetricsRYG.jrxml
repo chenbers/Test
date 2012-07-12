@@ -87,16 +87,20 @@
     </style>
     <style name="IdlingViolations" style="RYGNormal">
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean(($F{idleViolationsPerDay}) < (1.0/7) )]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("green"))]]></conditionExpression>
             <style name="green" backcolor="#6B9D1B"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{idleViolationsPerDay}> (1.0/7) && $F{idleViolationsPerDay}<=(4.0/7))]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("yellow"))]]></conditionExpression>
             <style name="yellow" backcolor="#F6B305"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{idleViolationsPerDay}>(4.0/7))]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("red"))]]></conditionExpression>
             <style name="red" backcolor="#FF0000"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("white"))]]></conditionExpression>
+            <style name="red" backcolor="#FFFFFF"/>
         </conditionalStyle>
     </style>
     <style name="NamePosStyle" style="RYGNormal">
@@ -136,6 +140,7 @@
     <field name="speedingScoreColor" class="java.lang.String" />
     <field name="styleScoreColor" class="java.lang.String" />
     <field name="seatbeltScoreColor" class="java.lang.String" />
+    <field name="idlingColor" class="java.lang.String" />
     <columnHeader>
         <band height="20">
             <textField isStretchWithOverflow="true" isBlankWhenNull="false">
