@@ -75,17 +75,32 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     public double getIdleViolationsPerDay(){
         return idleViolationsCount.doubleValue() / (DateUtil.differenceInDays(timeFrame, interval));
     }
+    public String getIdlingColor() {
+        String color = WHITE;
+        double greenMax = 1.0/7;
+        double yellowMax = 4.0/7;
+        double idleViolationsPerDay = getIdleViolationsPerDay();
+        if(idleViolationsCount != null){
+            if(idleViolationsPerDay < greenMax)
+                color =  GREEN;
+            else if(idleViolationsPerDay < yellowMax)
+                color = YELLOW;
+            else
+                color = RED;
+        }
+        return color;
+    }
     private String getScoreColor(Integer scoreToTest){
         String color = WHITE;
         if(totalMiles > 0){
-            if(scoreToTest == null)
+            if(scoreToTest == null || scoreToTest < 0)
                 return color;
-            if(scoreToTest > GREEN_MIN_LIMIT)
-                return GREEN;
-            if(scoreToTest > YELLOW_MIN_LIMIT)
-                return YELLOW;
-            if(scoreToTest < YELLOW_MIN_LIMIT)
-                return RED;
+            else if(scoreToTest > GREEN_MIN_LIMIT)
+                color = GREEN;
+            else if(scoreToTest > YELLOW_MIN_LIMIT)
+                color = YELLOW;
+            else if(scoreToTest < YELLOW_MIN_LIMIT)
+                color = RED;
         }
         return color;
     }
@@ -98,14 +113,14 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     public String getStyleScoreColor(){
         return getScoreColor(styleScore);
     }
-    public String getSeatBeltScoreColor(){
+    public String getSeatbeltScoreColor(){
         return getScoreColor(seatbeltScore);
     }
     public String getDriverColor(){
         String color = "white";
         if(totalMiles > 0){
             color = "green";
-            List<String> otherColors = Arrays.asList(getOverallScoreColor(), getSpeedingScoreColor(), getStyleScoreColor(), getSeatBeltScoreColor());
+            List<String> otherColors = Arrays.asList(getOverallScoreColor(), getSpeedingScoreColor(), getStyleScoreColor(), getSeatbeltScoreColor());
             if(otherColors.contains(RED))
                 color = RED;
             else if(otherColors.contains(YELLOW))

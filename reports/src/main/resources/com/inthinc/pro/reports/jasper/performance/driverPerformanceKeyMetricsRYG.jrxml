@@ -15,73 +15,73 @@
     <style name="RYGNormal" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" forecolor="#000000"/>
     <style name="OverAllScore" style="RYGNormal">
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{overallScore}>45)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("green"))]]></conditionExpression>
             <style name="green" backcolor="#6B9D1B"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{overallScore}<=45 && $F{overallScore}>30)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("yellow"))]]></conditionExpression>
             <style name="yellow" backcolor="#F6B305"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{overallScore}<=30 && $F{overallScore}>=0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("red"))]]></conditionExpression>
             <style name="red" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{overallScore} == null || $F{overallScore}<0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("white"))]]></conditionExpression>
             <style name="white" backcolor="#FFFFFF"/>
         </conditionalStyle>
     </style>
     <style name="SpeedingScore" style="RYGNormal">
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{speedingScore}>45)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("green"))]]></conditionExpression>
             <style name="green" backcolor="#6B9D1B"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{speedingScore}<=45 && $F{speedingScore}>30)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("yellow"))]]></conditionExpression>
             <style name="yellow" backcolor="#F6B305"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{speedingScore}<=30 && $F{speedingScore}>=0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("red"))]]></conditionExpression>
             <style name="red" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{speedingScore} == null || $F{speedingScore}<0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("white"))]]></conditionExpression>
             <style name="white" backcolor="#FFFFFF"/>
         </conditionalStyle>
     </style>
     <style name="StyleScore" style="RYGNormal">
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{styleScore}>45)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("green"))]]></conditionExpression>
             <style name="green" backcolor="#6B9D1B"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{styleScore}<=45 && $F{styleScore}>30)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("yellow"))]]></conditionExpression>
             <style name="yellow" backcolor="#F6B305"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{styleScore}<=30 && $F{styleScore}>=0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("red"))]]></conditionExpression>
             <style name="red" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{styleScore} == null || $F{styleScore}<0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("white"))]]></conditionExpression>
             <style name="white" backcolor="#FFFFFF"/>
         </conditionalStyle>
     </style>
     <style name="SeatbeltScore" style="RYGNormal">
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore}>45)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("green"))]]></conditionExpression>
             <style name="green" backcolor="#6B9D1B"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore}<=45 && $F{seatbeltScore}>30)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("yellow"))]]></conditionExpression>
             <style name="yellow" backcolor="#F6B305"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore}<=30 && $F{seatbeltScore}>=0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("red"))]]></conditionExpression>
             <style name="red" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore} == null || $F{seatbeltScore}<0)]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("white"))]]></conditionExpression>
             <style name="white" backcolor="#FFFFFF"/>
         </conditionalStyle>
     </style>
@@ -132,6 +132,10 @@
     <field name="hiIdleViolationsMinutes" class="java.lang.Integer"/>
     <field name="idleViolationsPerDay" class="java.lang.Double"/>
     <field name="driverColor" class="java.lang.String" />
+    <field name="overallScoreColor" class="java.lang.String" />
+    <field name="speedingScoreColor" class="java.lang.String" />
+    <field name="styleScoreColor" class="java.lang.String" />
+    <field name="seatbeltScoreColor" class="java.lang.String" />
     <columnHeader>
         <band height="20">
             <textField isStretchWithOverflow="true" isBlankWhenNull="false">
