@@ -1,7 +1,12 @@
 package com.inthinc.pro.model.aggregation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.joda.time.Interval;
 
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.TimeFrame;
 
 
@@ -24,6 +29,12 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private Integer loIdleViolationsMinutes;
     private Integer hiIdleViolationsMinutes;
     private String color;
+    static private Integer GREEN_MIN_LIMIT = 45;
+    static private Integer YELLOW_MIN_LIMIT = 30;
+    static private String WHITE = "white";
+    static private String RED = "red";
+    static private String YELLOW = "yellow";
+    static private String GREEN = "green";
     
     private void init(String groupName, String teamName, String driverName, String driverPosition, Integer loginCount, TimeFrame timeFrame, Integer totalMiles,
             Integer overallScore, Integer speedingScore, Integer styleScore, Integer seatbeltScore, Integer idleViolationsCount, Integer loIdleViolationsMinutes, Integer hiIdleViolationsMinutes, Interval interval, String color){
@@ -60,7 +71,48 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
         init(groupName, teamName, driverName, driverPosition, loginCount, timeFrame, totalMiles,
                 overallScore, speedingScore, styleScore, seatbeltScore, idleViolationsCount, loIdleViolationsMinutes, hiIdleViolationsMinutes, null, null);
     }
-
+    
+    public double getIdleViolationsPerDay(){
+        return idleViolationsCount.doubleValue() / (DateUtil.differenceInDays(timeFrame, interval));
+    }
+    private String getScoreColor(Integer scoreToTest){
+        String color = WHITE;
+        if(totalMiles > 0){
+            if(scoreToTest == null)
+                return color;
+            if(scoreToTest > GREEN_MIN_LIMIT)
+                return GREEN;
+            if(scoreToTest > YELLOW_MIN_LIMIT)
+                return YELLOW;
+            if(scoreToTest < YELLOW_MIN_LIMIT)
+                return RED;
+        }
+        return color;
+    }
+    public String getOverallScoreColor(){
+        return getScoreColor(overallScore);
+    }
+    public String getSpeedingScoreColor(){
+        return getScoreColor(speedingScore);
+    }
+    public String getStyleScoreColor(){
+        return getScoreColor(styleScore);
+    }
+    public String getSeatBeltScoreColor(){
+        return getScoreColor(seatbeltScore);
+    }
+    public String getDriverColor(){
+        String color = "white";
+        if(totalMiles > 0){
+            color = "green";
+            List<String> otherColors = Arrays.asList(getOverallScoreColor(), getSpeedingScoreColor(), getStyleScoreColor(), getSeatBeltScoreColor());
+            if(otherColors.contains(RED))
+                color = RED;
+            else if(otherColors.contains(YELLOW))
+                color = YELLOW;
+        }
+        return color;
+    }
     public String getGroupName() {
         return groupName;
     }

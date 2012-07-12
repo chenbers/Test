@@ -101,15 +101,15 @@
     </style>
     <style name="NamePosStyle" style="RYGNormal">
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean(($V{idleViolationsPerDay}) < (1.0/7) )]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{driverColor}.equals("green"))]]></conditionExpression>
             <style name="green" backcolor="#6B9D1B"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($V{idleViolationsPerDay}> (1.0/7) && $V{idleViolationsPerDay}<=(4.0/7))]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{driverColor}.equals("yellow"))]]></conditionExpression>
             <style name="yellow" backcolor="#F6B305"/>
         </conditionalStyle>
         <conditionalStyle>
-            <conditionExpression><![CDATA[new Boolean($V{idleViolationsPerDay}>(4.0/7))]]></conditionExpression>
+            <conditionExpression><![CDATA[new Boolean($F{driverColor}.equals("red"))]]></conditionExpression>
             <style name="red" backcolor="#FF0000"/>
         </conditionalStyle>
     </style>
@@ -131,6 +131,7 @@
     <field name="loIdleViolationsMinutes" class="java.lang.Integer"/>
     <field name="hiIdleViolationsMinutes" class="java.lang.Integer"/>
     <field name="idleViolationsPerDay" class="java.lang.Double"/>
+    <field name="driverColor" class="java.lang.String" />
     <columnHeader>
         <band height="20">
             <textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -232,12 +233,12 @@
                 <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrameOrInterval($F{timeFrame}, $F{interval},$P{REPORT_LOCALE}, $P{TIME_ZONE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement key="textField-42" mode="Opaque" x="270" y="0" width="120" height="20" backcolor="#FFFFFF"/>
+                <reportElement key="textField-42" mode="Opaque" x="270" y="0" width="120" height="20" style="NamePosStyle"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement key="textField-53" mode="Opaque" x="390" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+                <reportElement key="textField-53" mode="Opaque" x="390" y="0" width="50" height="20" style="NamePosStyle"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression class="java.lang.String"><![CDATA[$F{driverPosition}]]></textFieldExpression>
             </textField>
