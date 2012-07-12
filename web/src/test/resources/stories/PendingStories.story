@@ -323,6 +323,49 @@ Given this step is pending
 
 
 
+NotificationsCrashHistory.story
+
+Scenario: TC1342: Notifications - Crash History - E-mail This Report
+Given I am logged in
+When I click the Notifications link
+And I click the Crash History link
+And I click the Tools button
+And I click the Email This Report button
+//need to be able to test external email program
+
+Scenario: TC1343: Notifications - Crash History - Export To Excel
+Given I am logged in
+When I click the Notifications link
+And I click the Crash History link
+And I click the Tools button
+And I click the Export To Excel button
+//need to be able to test external excel program
+
+Scenario: TC1344: Notifications - Crash History - Export To PDF
+Given I am logged in
+When I click the Notifications link
+And I click the Crash History link
+And I click the Tools button
+And I click the Export To PDF button
+//need to be able to test external excel program
+
+Scenario: TC1345: Notifications - Crash History - Hover Help
+//need a way to test hover
+
+Scenario: TC1346: Notifications - Crash History - Location Map Link
+//need A map of the surrounding area and a marker indicating where the 
+//event occurred appears in the pop-up window.
+
+Scenario: TC1347: Notifications - Crash History - Refresh
+Given I am logged in
+When I click the Notifications link
+And I click the Crash History link
+And I click the Forward One pagescroller
+
+
+
+
+
 
 
 

@@ -27,50 +27,50 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
             return new TextLink(NotificationsCrashHistoryEnum.EDIT_COLUMNS_LINK);    
         }
         
-        public TextLink AddCrashReport() {
+        public TextLink addCrashReport() {
             return new TextLink(NotificationsCrashHistoryEnum.ADD_CRASH_REPORT_LINK);
         }
         
-        public TextTableLink GroupName() {
+        public TextTableLink groupName() {
             return new TextTableLink(NotificationsCrashHistoryEnum.GROUP_TABLE);
         }
         
-        public TextTableLink DriverName() {
+        public TextTableLink driverName() {
             return new TextTableLink(NotificationsCrashHistoryEnum.DRIVER_TABLE);
         }
         
-        public TextTableLink VehicleName() {
+        public TextTableLink vehicleName() {
             return new TextTableLink(NotificationsCrashHistoryEnum.VEHICLE_TABLE);
         }
         
-        public TextTableLink Details() {
+        public TextTableLink details() {
             return new TextTableLink(NotificationsCrashHistoryEnum.DETAIL_TABLE);
         }
     }
     
     public class NotificationsCrashHistoryButtons extends NotificationsBarButtons {
         
-        public Button RefreshButton() {
+        public Button refresh() {
             return new Button(NotificationsCrashHistoryEnum.REFRESH_BUTTON);
         }
         
-        public Button SearchButton() {
+        public Button search() {
             return new Button(NotificationsCrashHistoryEnum.SEARCH_BUTTON);
         }
         
-        public Button ToolsButton() {
+        public Button tools() {
             return new Button(NotificationsCrashHistoryEnum.TOOLS_BUTTON);
         }
         
-        public Button ExportPDF() {
+        public Button exportToPDF() {
             return new Button(NotificationsCrashHistoryEnum.EXPORT_PDF);
         }
         
-        public Button ExportEmail() {
+        public Button emailThisReport() {
             return new Button(NotificationsCrashHistoryEnum.EXPORT_EMAIL);
         }
         
-        public Button ExportExcel() {
+        public Button exportToExcel() {
             return new Button(NotificationsCrashHistoryEnum.EXPORT_EXCEL);
         }
         
@@ -104,13 +104,14 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     }
     
     public class NotificationsCrashHistoryDropDown extends NotificationsBarDropDowns {
+    	SeleniumEnums[] enums = {NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, NotificationsCrashHistoryEnum.TEAM_DROP_DOWN};
         
-        public DHXDropDown TeamDropDown() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
+        public DHXDropDown team() {
+            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, enums);
         }
         
-        public DHXDropDown TimeFrameDropDown() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN);
+        public DHXDropDown timeFrame() {
+            return new DHXDropDown(NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, enums );
         }
     }
     
@@ -136,26 +137,26 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     
     public class NotificationsCrashHistoryTextFields extends NotificationsBarTextFields {
         
-        public TextField SearchBox() {
+        public TextField search() {
             return new TextField(NotificationsCrashHistoryEnum.SEARCH_BOX);
         }
     }
     
     public class NotificationsCrashHistoryTexts extends NotificationsBarTexts {
         
-        public TextTable DateTime() {
+        public TextTable dateTime() {
             return new TextTable(NotificationsCrashHistoryEnum.DATE_TIME_TABLE);
         }
         
-        public TextTable Occupants() {
+        public TextTable occupants() {
             return new TextTable(NotificationsCrashHistoryEnum.OCCUPANTS_TABLE);
         }
         
-        public TextTable Status() {
+        public TextTable status() {
             return new TextTable(NotificationsCrashHistoryEnum.STATUS_TABLE);
         }
         
-        public TextTable Weather() {
+        public TextTable weather() {
             return new TextTable(NotificationsCrashHistoryEnum.WEATHER_TABLE);
         }
         
@@ -199,7 +200,6 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().editColumns().isPresent() &&
-               _link().AddCrashReport().isPresent();
+        return _link().addCrashReport().isPresent();
     }
 }

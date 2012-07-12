@@ -37,11 +37,11 @@ public abstract class NotificationsBar extends NavigationBar {
         }
     
         public TextLinkContextSense emergency() {
-            return new TextLinkContextSense(NotificationsBarEnum.SAFETY, page);
+            return new TextLinkContextSense(NotificationsBarEnum.EMERGENCY, page);
         }
     
         public TextLinkContextSense crashHistory() {
-            return new TextLinkContextSense(NotificationsBarEnum.SAFETY);
+            return new TextLinkContextSense(NotificationsBarEnum.CRASH_HISTORY, page);
         }
         
         public TextLink editColumns(){
