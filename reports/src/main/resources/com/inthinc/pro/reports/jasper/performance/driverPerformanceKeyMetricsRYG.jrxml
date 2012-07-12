@@ -16,7 +16,7 @@
     <style name="OverAllScore" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScore}>45)]]></conditionExpression>
-            <style name="green" backcolor="#FF0000"/>
+            <style name="green" backcolor="#6B9D1B"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScore}<=45 && $F{overallScore}>30)]]></conditionExpression>
@@ -24,14 +24,95 @@
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScore}<=30 && $F{overallScore}>=0)]]></conditionExpression>
-            <style name="red" backcolor="#6B9D1B"/>
+            <style name="red" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScore} == null || $F{overallScore}<0)]]></conditionExpression>
             <style name="white" backcolor="#FFFFFF"/>
         </conditionalStyle>
     </style>
-
+    <style name="SpeedingScore" style="RYGNormal">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScore}>45)]]></conditionExpression>
+            <style name="green" backcolor="#6B9D1B"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScore}<=45 && $F{speedingScore}>30)]]></conditionExpression>
+            <style name="yellow" backcolor="#F6B305"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScore}<=30 && $F{speedingScore}>=0)]]></conditionExpression>
+            <style name="red" backcolor="#FF0000"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{speedingScore} == null || $F{speedingScore}<0)]]></conditionExpression>
+            <style name="white" backcolor="#FFFFFF"/>
+        </conditionalStyle>
+    </style>
+    <style name="StyleScore" style="RYGNormal">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{styleScore}>45)]]></conditionExpression>
+            <style name="green" backcolor="#6B9D1B"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{styleScore}<=45 && $F{styleScore}>30)]]></conditionExpression>
+            <style name="yellow" backcolor="#F6B305"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{styleScore}<=30 && $F{styleScore}>=0)]]></conditionExpression>
+            <style name="red" backcolor="#FF0000"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{styleScore} == null || $F{styleScore}<0)]]></conditionExpression>
+            <style name="white" backcolor="#FFFFFF"/>
+        </conditionalStyle>
+    </style>
+    <style name="SeatbeltScore" style="RYGNormal">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore}>45)]]></conditionExpression>
+            <style name="green" backcolor="#6B9D1B"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore}<=45 && $F{seatbeltScore}>30)]]></conditionExpression>
+            <style name="yellow" backcolor="#F6B305"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore}<=30 && $F{seatbeltScore}>=0)]]></conditionExpression>
+            <style name="red" backcolor="#FF0000"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{seatbeltScore} == null || $F{seatbeltScore}<0)]]></conditionExpression>
+            <style name="white" backcolor="#FFFFFF"/>
+        </conditionalStyle>
+    </style>
+    <style name="IdlingViolations" style="RYGNormal">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean(($F{idleViolationsPerDay}) < (1.0/7) )]]></conditionExpression>
+            <style name="green" backcolor="#6B9D1B"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{idleViolationsPerDay}> (1.0/7) && $F{idleViolationsPerDay}<=(4.0/7))]]></conditionExpression>
+            <style name="yellow" backcolor="#F6B305"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{idleViolationsPerDay}>(4.0/7))]]></conditionExpression>
+            <style name="red" backcolor="#FF0000"/>
+        </conditionalStyle>
+    </style>
+    <style name="NamePosStyle" style="RYGNormal">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean(($V{idleViolationsPerDay}) < (1.0/7) )]]></conditionExpression>
+            <style name="green" backcolor="#6B9D1B"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($V{idleViolationsPerDay}> (1.0/7) && $V{idleViolationsPerDay}<=(4.0/7))]]></conditionExpression>
+            <style name="yellow" backcolor="#F6B305"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($V{idleViolationsPerDay}>(4.0/7))]]></conditionExpression>
+            <style name="red" backcolor="#FF0000"/>
+        </conditionalStyle>
+    </style>
     <parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
     <parameter name="TIME_ZONE" class="java.util.TimeZone" isForPrompting="false"/>
     <field name="groupName" class="java.lang.String"/>
@@ -40,6 +121,7 @@
     <field name="driverPosition" class="java.lang.String"/>
     <field name="loginCount" class="java.lang.Integer"/>
     <field name="timeFrame" class="com.inthinc.pro.model.TimeFrame"/>
+    <field name="interval" class="org.joda.time.Interval"/>
     <field name="totalMiles" class="java.lang.Integer"/>
     <field name="overallScore" class="java.lang.Integer"/>
     <field name="speedingScore" class="java.lang.Integer"/>
@@ -48,6 +130,7 @@
     <field name="idleViolationsCount" class="java.lang.Integer"/>
     <field name="loIdleViolationsMinutes" class="java.lang.Integer"/>
     <field name="hiIdleViolationsMinutes" class="java.lang.Integer"/>
+    <field name="idleViolationsPerDay" class="java.lang.Double"/>
     <columnHeader>
         <band height="20">
             <textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -146,7 +229,7 @@
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement key="textField-77" mode="Opaque" x="180" y="0" width="90" height="20" backcolor="#FFFFFF"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrameInterval($F{timeFrame},$P{REPORT_LOCALE}, $P{TIME_ZONE})]]></textFieldExpression>
+                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeFrameConverter.convertTimeFrameOrInterval($F{timeFrame}, $F{interval},$P{REPORT_LOCALE}, $P{TIME_ZONE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement key="textField-42" mode="Opaque" x="270" y="0" width="120" height="20" backcolor="#FFFFFF"/>
@@ -174,22 +257,22 @@
                 <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{overallScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                <reportElement key="textField-77" mode="Opaque" x="590" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+                <reportElement key="textField-77" mode="Opaque" x="590" y="0" width="50" height="20" style="SpeedingScore"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{speedingScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement key="textField-77" mode="Opaque" x="640" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+                <reportElement key="textField-77" mode="Opaque" x="640" y="0" width="50" height="20" style="StyleScore"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{styleScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement key="textField-77" mode="Opaque" x="690" y="0" width="50" height="20" forecolor="#000000" backcolor="#FF0000"/>
+                <reportElement key="textField-77" mode="Opaque" x="690" y="0" width="50" height="20" forecolor="#000000" style="SeatbeltScore"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{seatbeltScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement key="textField-77" mode="Opaque" x="740" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+                <reportElement key="textField-77" mode="Opaque" x="740" y="0" width="50" height="20" style="IdlingViolations"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression class="java.lang.String"><![CDATA[$F{idleViolationsCount}.toString()]]></textFieldExpression>
             </textField>

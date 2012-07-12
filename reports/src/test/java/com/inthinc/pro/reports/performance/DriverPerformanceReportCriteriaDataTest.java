@@ -5,8 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import junit.framework.Assert;
+
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.Test;
 
@@ -19,9 +23,37 @@ import com.inthinc.pro.model.aggregation.VehiclePerformance;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportType;
 
-
 public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnitTest {
-    
+    @Test
+    public void scratchPad(){
+        TimeFrame timeFrame = TimeFrame.CUSTOM_RANGE;
+        Integer days_one = (int) (timeFrame.getDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
+        System.out.println("days: "+days_one);
+        
+        DateTime startDate = new DateTime(2012, 1, 1, 12, 0, 0, 0);
+        DateTime endDate =   new DateTime(2012, 2, 1, 12, 0, 0, 0);
+
+        Integer days_two = (int) (timeFrame.getInterval(startDate.getMillis(), endDate.getMillis(), DateTimeZone.UTC).toDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
+        System.out.println("days_two: "+days_two);
+        
+        try{
+            TimeFrame timeFrameThatDoesNotSupportCustomInteval = TimeFrame.THREE_MONTHS;
+            Integer days_three = (int) (timeFrameThatDoesNotSupportCustomInteval.getInterval(startDate.getMillis(), endDate.getMillis(), DateTimeZone.UTC).toDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
+            System.out.println("days_three: "+days_three);
+            Assert.assertTrue("expected IllegalArgumentException",false);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("expected IllegalArgumentException was thrown: "+iae);
+        }
+        Integer days_four = timeFrame.getNumberOfDays();
+        System.out.println("days_four: "+days_four);
+        
+        Double violations = new Integer(4).doubleValue();
+        Integer days_five = 7;
+        for(int i = 0; i < 70; i++){
+            System.out.println("how does this compare to 1/7? "+(violations/(days_five+i)));
+            System.out.println("how does this compare to "+(1.0/7)+"? "+((1.0/7)<(violations/(days_five+i))));
+        }
+    }
     @Test
     public void individualDriverTestrgy() {
         
