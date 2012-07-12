@@ -1,42 +1,43 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.annotations.AutomationAnnotations.Assert;
-import com.inthinc.pro.automation.annotations.AutomationAnnotations.Validate;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
-import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TextTableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.thoughtworks.selenium.SeleniumException;
 
-public class TextTableLink implements TableBased<ClickableTextBased> {
+public class TextTableLink implements ClickableTableBased<ClickableTextBased>, TextTableBased<ClickableTextBased> {
 
     protected SeleniumEnumWrapper myEnum;
+    private final TextTable textPart;
 
     public TextTableLink(SeleniumEnums anEnum, Object ...objects) {
         myEnum = new SeleniumEnumWrapper(anEnum);
         myEnum.makeReplacements(objects);
+        textPart = new TextTable(myEnum);
     }
 
     public TextTableLink(SeleniumEnums anEnum, String page, TextEnum column) {
         myEnum = new SeleniumEnumWrapper(anEnum);
         myEnum.replaceWord(page);
         myEnum.replaceOldWithNew("*column*", column.getText());
+        textPart = new TextTable(myEnum);
     }
 
-    @Override
     public TableIterator<ClickableTextBased> iterator() {
         return new TableIterator<ClickableTextBased>(this);
     }
 
-    @Override
-    public TextLink row(int rowNumber) {
+    @SuppressWarnings("unchecked")
+	public TextLink row(int rowNumber) {
         return new TextLink(myEnum, rowNumber);
     }
     
-    @Override
-    public ClickableTextBased row(IndexEnum indexByName) {
+    @SuppressWarnings("unchecked")
+	public ClickableTextBased row(IndexEnum indexByName) {
         return row(indexByName.getIndex());
     }
     
@@ -85,33 +86,46 @@ public class TextTableLink implements TableBased<ClickableTextBased> {
     }
     
 
+	@Override
     public boolean isAscending(){
-        return new TextTable(myEnum).isAscending();
+        return textPart.isAscending();
     }
-    
+
+	@Override
     public boolean isDescending(){
-        return new TextTable(myEnum).isDescending();
+        return textPart.isDescending();
     }
-    
-    @Validate(englishName = "sorted in ascending order")
+
+	@Override
     public boolean validateAscending(){
-        return new TextTable(myEnum).validateAscending();
+        return textPart.validateAscending();
     }
-    
-    @Validate(englishName = "sorted in descending order")
+
+	@Override
     public boolean validateDescending(){
-        return new TextTable(myEnum).validateDescending();
+        return textPart.validateDescending();
     }
-    
-    @Assert(englishName = "sorted in ascending order")
-    public boolean assetAscending(){
-        return new TextTable(myEnum).assertAscending();
-    }
-    
-    @Assert(englishName = "sorted in descending order")
+
+
+	@Override
     public boolean assertDescending(){
-        return new TextTable(myEnum).assertDescending();
+        return textPart.assertDescending();
     }
-    
+
+
+	@Override
+	public boolean assertAscending() {
+		return textPart.assertAscending();
+	}
+
+	@Override
+	public boolean validateContains(String text) {
+		return textPart.validateContains(text);
+	}
+
+	@Override
+	public boolean assertContains(String text) {
+		return textPart.assertContains(text);
+	}
 
 }

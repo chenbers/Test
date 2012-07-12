@@ -107,8 +107,58 @@ public interface ElementInterface {
     }
     
     public interface TableBased<T> extends Iterable<T> {
-        public T row(int rowNumber);
-        public T row(IndexEnum indexByName);
+        public <S extends T> S row(int rowNumber);
+        public <S extends T> S row(IndexEnum indexByName);
+    }
+    
+    public interface TextTableBased<S extends TextBased> extends TableBased<S> {
+
+		boolean isAscending();
+
+		boolean isDescending();
+
+		boolean validateAscending();
+
+		boolean validateDescending();
+
+		boolean assertAscending();
+
+		boolean assertDescending();
+
+		boolean validateContains(String text);
+
+		boolean assertContains(String text);
+    	
+    }
+    
+    public interface TypeableTableBased<T extends Typeable> extends TableBased<T> {
+    	
+    }
+    
+    public interface ClickableTableBased<T extends Clickable> extends TableBased<T> {
+    	
+    }
+    
+    public interface CheckBoxTableBased<T extends Checkable> extends TableBased<T> {
+
+		boolean allChecked();
+
+		boolean allUnchecked();
+
+		boolean assertAllUnChecked();
+
+		boolean assertAllChecked();
+
+		boolean validateAllUnChecked();
+
+		boolean validateAllChecked();
+
+		void unCheckAll();
+
+		void clickAll();
+
+		void checkAll();
+    	
     }
     
     public interface TextBased extends ElementInterface {
