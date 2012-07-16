@@ -178,7 +178,7 @@ public enum ReportGroup
             EnumSet.of(ReportAccountType.WAYSMART),
             ReportType.DRIVER_HOURS),
      DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", 38, EntityType.ENTITY_GROUP_LIST,
-            new CriteriaType[]{CriteriaType.TIMEFRAME_ALT, CriteriaType.TIMEFRAME, CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE}, 
+            new CriteriaType[]{CriteriaType.TIMEFRAME_ALT, CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
@@ -211,7 +211,12 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
-            ReportType.DRIVER_EXCLUDED_VIOLATIONS)
+            ReportType.DRIVER_EXCLUDED_VIOLATIONS),
+     DRIVER_PERFORMANCE_KEY_METRICS_RYG("Driver Performance Key Metrics RYG Timeframe", 43, EntityType.ENTITY_GROUP_LIST,
+            new CriteriaType[]{CriteriaType.TIMEFRAME_ALT, CriteriaType.TIMEFRAME, CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.PERFORMANCE),
+            ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
     ;
 
     
