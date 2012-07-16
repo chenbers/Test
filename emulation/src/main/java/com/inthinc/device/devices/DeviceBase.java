@@ -52,8 +52,8 @@ public abstract class DeviceBase {
 
     public DeviceBase(String IMEI, ProductType version,
             Map<DeviceProps, String> settings, AutoSilos silo) {
-    	server.setBySilo(silo);
         state = new DeviceState(IMEI, version);
+    	set_server(silo);
         state.setSettings(settings);
         tripTracker = new TripTracker(state, sbs);
         speed_points = new ArrayList<Integer>();
@@ -64,8 +64,8 @@ public abstract class DeviceBase {
     }
 
     public DeviceBase(DeviceState state, AutoSilos silo) {
-    	server.setBySilo(silo);
     	this.state = state;
+    	set_server(silo);
         tripTracker = new TripTracker(state);
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<GeoPoint>();

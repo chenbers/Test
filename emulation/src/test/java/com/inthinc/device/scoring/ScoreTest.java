@@ -1,4 +1,4 @@
-package com.inthinc.device.emulation;
+package com.inthinc.device.scoring;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.inthinc.device.cassandra.CassandraDB;
 import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.emulation.enums.ScoringTypes;
 import com.inthinc.device.emulation.enums.UnitType;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.emulation.utils.GeoPoint;
@@ -39,10 +41,19 @@ public class ScoreTest {
 
     private AutomationCalendar aggTime;
 
+	private ScoresFromCassandra cs;
+
     public ScoreTest() {
         proxy = new AutomationHessianFactory().getPortalProxy(server);
         imeis = new ConcurrentHashMap<String, Map<String, String>>();
+        
+        CassandraDB cassandraDB = new CassandraDB("Iridium Archive", "note", "10.0.35.40:9160", 10, false);
+
+        cs = new ScoresFromCassandra();
+        
         List<String> temp = new FileRW().read(fileName);
+        
+        
 
         for (String line : temp) {
             String[] value = line.split(":::");
@@ -53,6 +64,9 @@ public class ScoreTest {
 
             imeis.put(value[0], elements);
         }
+        
+
+        cassandraDB.shutdown();
     }
 
     private void writeValues() {
@@ -131,20 +145,46 @@ public class ScoreTest {
         AutomationThread.pause(agg.addToMinutes(5).compareTo(start));
         aggTime = agg.copy().changeMinutesTo(0).changeSecondsTo(0).changeMillisecondsTo(0);
         for (Map.Entry<String, Map<String, String>> entry : imeis.entrySet()) {
-            compareToPortal(entry.getKey(), getSevenDayScores(entry.getKey()));
+        	Map<UnitType, Map<String, Double>> ourScore = getSevenDayScores(entry.getKey());
+            compareToPortal(entry.getKey(), ourScore);
+            cassandraScores(entry.getKey(), ourScore, agg);
+        }
+    }
+    
+    private void cassandraScores(String key, Map<UnitType, Map<String, Double>> scores, AutomationCalendar endTime){
+    	AutomationCalendar startDate = endTime.addToDay(-7).zeroTimeOfDay();
+    	int did = Integer.parseInt(imeis.get(key).get("did"));
+    	int vid = Integer.parseInt(imeis.get(key).get("vid"));
+    	UnitType type = UnitType.DRIVER;
+    	Map<String, Object> cass;
+    	
+        cass = cs.getScores(type, ScoringTypes.DAYS, did, startDate, endTime);
+        if (compareScores(scores.get(type), cass)){
+            Log.info("Driver scores matched for IMEI=%s", key);
+        } else {
+            Log.info("Driver scores did not match for IMEI=%s", key);
+        }
+        
+        cass = cs.getScores(type, ScoringTypes.DAYS, vid, startDate, new AutomationCalendar());
+        if (compareScores(scores.get(type), cass)){
+            Log.info("Vehicle scores matched for IMEI=%s", key);
+        } else {
+            Log.info("Driver scores did not match for IMEI=%s", key);
         }
     }
 
     private void compareToPortal(String key, Map<UnitType, Map<String, Double>> scores) {
         int did = Integer.parseInt(imeis.get(key).get("did"));
-        if (compareScores(scores.get(UnitType.DRIVER), proxy.getDTrendByDTC(did, 0, 1).get(0))){
+        UnitType type = UnitType.DRIVER;
+        if (compareScores(scores.get(type), proxy.getDTrendByDTC(did, 0, 1).get(0))){
             Log.info("Driver scores matched for IMEI=%s", key);
         } else {
             Log.info("Driver scores did not match for IMEI=%s", key);
         }
         
         int vid = Integer.parseInt(imeis.get(key).get("vid"));
-        if (compareScores(scores.get(UnitType.VEHICLE), proxy.getVTrendByVTC(vid, 0, 1).get(0))){
+        type = UnitType.VEHICLE;
+        if (compareScores(scores.get(type), proxy.getVTrendByVTC(vid, 0, 1).get(0))){
             Log.info("Vehicle scores matched for IMEI=%s", key);
         } else {
             Log.info("Driver scores did not match for IMEI=%s", key);
