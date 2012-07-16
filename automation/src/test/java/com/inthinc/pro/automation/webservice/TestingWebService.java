@@ -31,7 +31,7 @@ import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.models.Vehicle;
 import com.inthinc.pro.automation.rest.RestCommands;
 
-@Ignore
+//@Ignore
 public class TestingWebService {
     
     /**

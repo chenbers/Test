@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.ObjectConverter;
 
 public abstract class BaseEntity implements Serializable {
@@ -62,7 +61,7 @@ public abstract class BaseEntity implements Serializable {
     
     public String toJsonString(){
         JSONObject jsonA = ObjectConverter.convertToJSONObject(this, "object");
-        return AutomationStringUtil.toString(jsonA);
+        return jsonA.toString();
     }
     
     @SuppressWarnings("unchecked")

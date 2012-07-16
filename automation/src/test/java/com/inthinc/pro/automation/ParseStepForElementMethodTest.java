@@ -34,7 +34,7 @@ import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.utils.RandomValues;
 
-@Ignore
+//@Ignore
 public class ParseStepForElementMethodTest {
     
     private static final int numOfTimesToLoop = 1000;
@@ -205,7 +205,7 @@ public class ParseStepForElementMethodTest {
         List<Step> composedSteps = new ArrayList<Step>();
         candidate.addComposedSteps(composedSteps, editAccountStep, namedParameters, candidates);
         for (Step step : composedSteps) {
-            Log.info(step.perform(null));
+            step.perform(null);
             
         }
         
