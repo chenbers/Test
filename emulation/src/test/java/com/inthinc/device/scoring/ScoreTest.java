@@ -51,7 +51,7 @@ public class ScoreTest {
 
         cs = new ScoresFromCassandra();
         
-        List<String> temp = new FileRW().read(fileName);
+        List<String> temp = new FileRW().read(ScoreTest.class, fileName);
         
         
 
@@ -217,7 +217,8 @@ public class ScoreTest {
         test.runScoring();
 
 //        int did = 69198, vid = 53422;
-//        String startTime = new AutomationCalendar(1335579000 * 1000l).setFormat(WebDateFormat.NOTE_PRECISE_TIME).toString();
+//        AutomationCalendar now = new AutomationCalendar().addToDay(-1);
+//        String startTime = now.setFormat(WebDateFormat.NOTE_PRECISE_TIME).toString();
 //        String imei = "FAKETIWISCORING";
 //        try {
 //            FileWriter fstream = new FileWriter(fileName);
