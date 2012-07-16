@@ -411,7 +411,12 @@ public class AutomationCalendar implements Comparable<Calendar>, Serializable {
         try {
             date.setTime(formatter.parse(dateTime));
         } catch (ParseException e) {
-            throw new IllegalArgumentException(dateTime + " does not match the pattern " + formatter.toPattern());
+            try {
+                date.setTimeInMillis(Integer.parseInt(dateTime) * 1000l);
+                return this;
+            } catch (NumberFormatException e1){
+                throw new IllegalArgumentException(dateTime + " does not match the pattern " + formatter.toPattern());    
+            }
         }
         return this;
     }

@@ -194,27 +194,6 @@ And I click the Logout link
 Given I am logged in
 Then I validate I am not on the Login page
 
-Scenario: TC1299: My Account - Change Password - Validation
-Given I am logged in an account that can be edited
-When I click the My Account link
-And I click the Change Password button
-And the Change My Password popup opens
-And I type "2ut2CFmnH$f!" into the Current Password textfield
-And I type "password" into the New Password textfield
-And I type "password" into the Confirm New Password textfield
-And I click the Change button
-And the Change My Password popup closes
-And I click the Logout button
-Given I am logged in an account that can be edited
-When I click the My Account link
-And I click the Change Password button
-And the Change My Password popup opens
-And I type "password" into the Current Password textfield
-And I type "2ut2CFmnH$f!" into the New Password textfield
-And I type "2ut2CFmnH$f!" into the Confirm New Password textfield
-And I click the Change button
-And the Change My Password popup closes
-
 Scenario: TC1301: My Account - Change Password - Validation (Special Characters)
 Given I am logged in an account that can be edited
 When I click the My Account link
@@ -235,7 +214,7 @@ And I click the Change button
 And the Change My Password popup closes
 And I validate the Info Message text is "Password successfully changed"
 
-Scenario: TC1302: My Account - Change Password - X Window Control Button (Changes) - having trouble finding the X close window button
+Scenario: TC1302: My Account - Change Password - X Window Control Button (Changes)
 Given I am logged in
 When I click the My Account link
 And I click the Change Password button

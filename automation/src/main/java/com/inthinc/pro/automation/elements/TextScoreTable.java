@@ -1,10 +1,8 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
-import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public class TextScoreTable extends TextTable implements TableBased<TextBased> {
+public class TextScoreTable extends TextTable {
 
     public TextScoreTable(SeleniumEnums anEnum, Object ...objects) {
         super(anEnum, objects);

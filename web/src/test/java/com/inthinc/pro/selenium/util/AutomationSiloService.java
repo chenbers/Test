@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
@@ -34,7 +34,7 @@ public class AutomationSiloService {
 	private EventHessianMapper noteMapper = new EventHessianMapper();
 	private AutomationHessianFactory hessian;
 
-	public AutomationSiloService(Addresses silo) {
+	public AutomationSiloService(AutoSilos silo) {
 		hessian = new AutomationHessianFactory();
 		this.portalProxy = hessian.getPortalProxy(silo);
 	}

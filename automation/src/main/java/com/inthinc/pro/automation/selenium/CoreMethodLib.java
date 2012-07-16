@@ -18,18 +18,17 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
-import org.springframework.beans.BeansException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.ErrorLevel;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.KeyCommands;
@@ -55,21 +54,14 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
     private final Browsers browser;
-    private final Addresses silo;
     
     private static ThreadLocal<CoreMethodInterface> instance = new ThreadLocal<CoreMethodInterface>();
     
-    public CoreMethodLib(Browsers browser, Addresses silo) {
+    public CoreMethodLib(Browsers browser, AutoServers silo) {
         super(browser.getDriver(), silo.getWebAddress());
         errors = new ErrorCatcher(this);
         this.browser = browser;
-        this.silo = silo;
         this.setTimeout("999999999");
-    }
-    
-    @Override
-    public Addresses getSilo(){
-        return silo;
     }
     
     @Override
@@ -791,13 +783,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         if (selenium != null){
             return selenium;
         }
-        try {
-            AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
-            selenium = new CoreMethodLib(Browsers.getBrowserByName(apb.getBrowserName()), Addresses.getSilo(apb.getSilo()));
-        } catch (BeansException e) {
-            Log.error(e);
-            selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);
-        } 
+        
+        AutomationPropertiesBean apb = AutomationPropertiesBean.getPropertyBean();
+        selenium = new CoreMethodLib(Browsers.getBrowserByName(apb.getBrowserName()), new AutoServers());
         instance.set(selenium.getErrorCatcher().newInstanceOfSelenium());
         return instance.get();
     }
@@ -849,4 +837,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         By by = getLocator(myEnum.getLocatorsForWebDriver());
         return getWrappedDriver().findElement(by);
     }
+
+	@Override
+	public CoreMethodInterface hoverOver(SeleniumEnumWrapper myEnum) {
+		String mouseOverScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('mouseover', true, false); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('onmouseover');}";
+		JavascriptExecutor js = (JavascriptExecutor) getWrappedDriver();
+        By by = getLocator(myEnum.getLocatorsForWebDriver());
+		WebElement someElem = getWrappedDriver().findElement(by); //replace with your own WebElement call/code here
+		Object results = js.executeScript(mouseOverScript, someElem);
+		Log.info(results);
+		return this;
+	}
 }

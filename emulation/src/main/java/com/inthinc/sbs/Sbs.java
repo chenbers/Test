@@ -14,7 +14,7 @@ import android.util.Log;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.hessian.tcp.HessianException;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.sbs.downloadmanager.ConcreteDownloadManager;
 import com.inthinc.sbs.regions.SbsMap;
 import com.inthinc.sbs.simpledatatypes.SbsPoint;
@@ -42,7 +42,7 @@ public class Sbs implements SpeedLimitProvider{
 	public static final String TAG = "%s";
 	
 	private CoverageStrategy coverageStrategy;
-	private final ConcreteDownloadManager downloadManager;
+	private ConcreteDownloadManager downloadManager;
 	private final Map<Integer,SbsMap> loadedMaps = new HashMap<Integer, SbsMap>();
 	
 	private Future<List<SbsMap>> loader = null;
@@ -62,6 +62,8 @@ public class Sbs implements SpeedLimitProvider{
 	private String prefix;
 	private int entryCountThreshold;
 
+	private String mcmid;
+
 
 	/**
 	 * Create a new Sbs object.
@@ -77,8 +79,12 @@ public class Sbs implements SpeedLimitProvider{
 	 * @throws IllegalArgumentException - if any input parameters are null, or the
 	 * required baseline is less than 7.
 	 */
-	public Sbs(String mcmid, int requiredBaseline, Addresses server) throws IllegalArgumentException{
-		this(mcmid, requiredBaseline, server.getMCMUrl(), server.getMCMPort());
+	public Sbs(String mcmid, int requiredBaseline) throws IllegalArgumentException{
+		this(mcmid, requiredBaseline, null, 0);
+	}
+	
+	public void setDownloadManager(AutoServers server){
+		downloadManager = new ConcreteDownloadManager(mcmid, "target/", mapsVisited, server.getMcmUrl(), server.getMcmPort());
 	}
 	
 	public Sbs(String mcmid, int requiredBaseline, String server, int port) throws IllegalArgumentException{
@@ -87,10 +93,15 @@ public class Sbs implements SpeedLimitProvider{
 			throw new IllegalArgumentException("Baseline HAS to be over 7");
 		}
 		
-		
+		this.mcmid = mcmid;
 		requiredBaselineVersion = requiredBaseline;
 		mapsVisited = new HashMap<Integer, VisitedMap>();
-		downloadManager = new ConcreteDownloadManager(mcmid, "target/", mapsVisited, server, port);
+		
+		if (server != null && !server.isEmpty()){
+			downloadManager = new ConcreteDownloadManager(mcmid, "target/", mapsVisited, server, port);
+		}
+		
+		
 		coverageStrategy = new FivePointWindowStrategy();
 		speedlimitStrat = new ProximityAndHeadingStrategy(12000, 45);
 		

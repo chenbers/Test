@@ -19,7 +19,7 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.objects.AutomationDeviceEvents;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -32,7 +32,7 @@ public class NoteDemo {
 	private int odometer = 3;
 	
 
-	public NoteDemo(Addresses server) {
+	public NoteDemo(AutoSilos server) {
 		proxy = new MCMProxyObject(server);
 	}
 
@@ -123,7 +123,7 @@ public class NoteDemo {
 		String imei = "999456789012345";
 		String mcmID = "";
 		
-		NoteDemo demo = new NoteDemo(Addresses.QA);
+		NoteDemo demo = new NoteDemo(AutoSilos.QA);
 		demo.tiwiNoteBasic("483548625738283");
 		demo.tiwiNoteAdvanced("483548625738283");
 		

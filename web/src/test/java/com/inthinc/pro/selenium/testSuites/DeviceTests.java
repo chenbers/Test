@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.hessian.tcp.HessianException;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
 
@@ -61,9 +61,10 @@ public class DeviceTests {
     
             TiwiProDevice tiwi;
 //            for (Addresses silo : EnumSet.allOf(Addresses.class)) {
-            Addresses silo = Addresses.QA;
+            AutoSilos silo = AutoSilos.QA;
                 try{
-                    tiwi = new TiwiProDevice("FAKEIMEIDEVICE", silo);
+                    tiwi = new TiwiProDevice("FAKEIMEIDEVICE");
+                    tiwi.set_server(silo);
                     tiwi.getState().setWMP(17207);
                     for (int i = 1; i <= 33; i++) {
         

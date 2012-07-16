@@ -30,7 +30,7 @@ import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.DownloadServers;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.WebDateFormat;
@@ -53,39 +53,39 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     public TiwiProDevice(String IMEI) {
-        this(IMEI, Addresses.QA);
+        this(IMEI, AutoSilos.QA);
     }
     
     public TiwiProDevice(ProductType type){
-        this(defaultIMEI, type, Addresses.QA);
+        this(defaultIMEI, type, AutoSilos.QA);
     }
     
     public TiwiProDevice(String IMEI, ProductType type){
-        this(IMEI, type, Addresses.QA);
+        this(IMEI, type, AutoSilos.QA);
     }
     
-    public TiwiProDevice(Addresses server){
+    public TiwiProDevice(AutoSilos server){
         this(defaultIMEI, server);
     }
 
-    public TiwiProDevice(String IMEI, Addresses server) {
+    public TiwiProDevice(String IMEI, AutoSilos server) {
         this(IMEI, server, DeviceProps.getTiwiDefaults());
     }
     
-    public TiwiProDevice(ProductType type, Addresses server){
+    public TiwiProDevice(ProductType type, AutoSilos server){
         this(defaultIMEI, type, server);
     }
     
-    public TiwiProDevice(String IMEI, ProductType type, Addresses server){
+    public TiwiProDevice(String IMEI, ProductType type, AutoSilos server){
         this(IMEI, type, server, DeviceProps.getTiwiDefaults());
     }
 
-    public TiwiProDevice(String IMEI, Addresses server,
+    public TiwiProDevice(String IMEI, AutoSilos server,
             Map<DeviceProps, String> map) {
         super(IMEI, ProductType.TIWIPRO_R74, map, server);
     }
     
-    public TiwiProDevice(String IMEI, ProductType type, Addresses server,
+    public TiwiProDevice(String IMEI, ProductType type, AutoSilos server,
             Map<DeviceProps, String> map) {
         super(IMEI, type, map, server);
     }
@@ -401,11 +401,12 @@ public class TiwiProDevice extends DeviceBase {
     }
 
     @Override
-    public TiwiProDevice set_server(Addresses server) {
+    public TiwiProDevice set_server(AutoSilos silo) {
+    	server.setBySilo(silo);
         mcmProxy = new MCMProxyObject(server);
-        state.setSetting(DeviceProps.SERVER_PORT_T, server.getMCMPort()
+        state.setSetting(DeviceProps.SERVER_PORT_T, server.getMcmPort()
                 .toString());
-        state.setSetting(DeviceProps.SERVER_URL_T, server.getMCMUrl());
+        state.setSetting(DeviceProps.SERVER_URL_T, server.getMcmUrl());
         return this;
     }
 
@@ -464,7 +465,7 @@ public class TiwiProDevice extends DeviceBase {
         try {
             getFirmwareFromSVN(version);
             
-            DownloadServers server = DownloadServers.valueOf(this.server.name());
+            DownloadServers server = DownloadServers.valueOf(this.server.getSilo().toUpperCase());
             DownloadService upload = (DownloadService) new AutomationHessianFactory().createProxy(DownloadService.class, server.getAddress(), server.getPort());
             File svnFile = new File(getLastDownload());
             FileInputStream fis = new FileInputStream(svnFile);

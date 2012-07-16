@@ -1,11 +1,9 @@
 package com.inthinc.pro.automation.logging;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
-import com.inthinc.pro.rally.PrettyJSON;
 
 /**
  * Simple class to handle different levels of debugging,<br />
@@ -175,17 +173,11 @@ public class Log {
         for (int i=0+2;i<converted.length;i++){
             Object item = items[i-2];
             if (item == null){
-                converted[i] = "error";
-            } else if (item instanceof Throwable){
-                converted[i] = AutomationStringUtil.toString((Throwable) item);
-            } else if (item instanceof JSONObject){
-                converted[i] = PrettyJSON.toString(item);
-            } else if (item instanceof StackTraceElement[]){
-                converted[i] = AutomationStringUtil.toString((StackTraceElement[]) item);
+                converted[i] = "Received a null item in print statement";
             } else if (item instanceof Number){
                 converted[i] = item;
             } else {
-                converted[i] = item.toString();
+                converted[i] = AutomationStringUtil.toString(item);
             }
         }
         String msg = String.format("(%s:%3s) - " + format + "\n", converted);

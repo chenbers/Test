@@ -1,17 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
-
-import com.inthinc.device.emulation.utils.Unique;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.LoginCapability;
-import com.inthinc.pro.automation.enums.UniqueValues;
-import com.inthinc.pro.automation.logging.Log;
-import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
 
 @Ignore
 public class AdminAddVehicleTest extends WebRallyTest {

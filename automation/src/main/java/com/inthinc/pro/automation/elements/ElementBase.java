@@ -86,6 +86,12 @@ public abstract class ElementBase extends MasterTest implements ElementInterface
     public Boolean hasFocus() {
         return getSelenium().hasFocus(myEnum);
     }
+    
+    @Override
+    public ElementBase hover(){
+    	getSelenium().hoverOver(myEnum);
+    	return this;
+    }
 
     @Override
     public Boolean isEditable() {

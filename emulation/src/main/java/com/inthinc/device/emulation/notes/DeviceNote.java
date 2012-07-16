@@ -22,7 +22,7 @@ import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
-public abstract class DeviceNote {
+public abstract class DeviceNote implements Comparable<DeviceNote> {
 	
 	
 	
@@ -397,4 +397,9 @@ public abstract class DeviceNote {
 		}
 		return note;
 	}
+	
+
+    public int compareTo(DeviceNote o){
+    	return time.compareTo(o.getTime());
+    }
 }

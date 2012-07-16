@@ -7,16 +7,16 @@ import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 
 public class TripFaker {
 	
 	
 	public static void main(String args[]) {
 		
-        TiwiProDevice tiwi = new TiwiProDevice("011596000038897", Addresses.DEV);
+        TiwiProDevice tiwi = new TiwiProDevice("011596000038897", AutoSilos.DEV);
 		
-		//WaysmartDevice tiwi = new WaysmartDevice("300235555777777", "MCM013795", Addresses.PROD, Direction.gprs);
+		//WaysmartDevice tiwi = new WaysmartDevice("300235555777777", "MCM013795", AutoSilos.PROD, Direction.gprs);
         DeviceState state = tiwi.getState();
         tiwi.increment_time(60);
         tiwi.getState().setWMP(17116);

@@ -32,7 +32,6 @@ import com.inthinc.pro.automation.jbehave.AutoStepVariables;
 import com.inthinc.pro.automation.jbehave.AutoSteps;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
 import com.inthinc.pro.automation.utils.RandomValues;
 
 @Ignore
@@ -45,7 +44,7 @@ public class ParseStepForElementMethodTest {
     
     public ParseStepForElementMethodTest(){
         test = new AutoCustomSteps();
-        apb = AutomationProperties.getPropertyBean();
+        apb = AutomationPropertiesBean.getPropertyBean();
     }
     
     /**
@@ -506,4 +505,172 @@ public class ParseStepForElementMethodTest {
         }
     }
     
+    
+    
+
+    private static final String[] textTableSteps = {"the Sort By Number link", "the Status Filter dropdown"};
+    
+    /**
+     * The map key is the method name. <br />
+     * The array of arrays represent each way a method can be found in a step string. <br />
+     * The first entry in each array is "is" or nothing, and the second entry is what we <br />
+     * are expecting to use to match the method to the step.
+     */
+    private static final Map<String, String[][]> textTableBooleanMethods = new HashMap<String, String[][]>();
+    static {
+        textTableBooleanMethods.put("assertPresence", new String[][]{{"is","present"}});
+    }
+    
+    
+
+    @Test
+    public void testTextTableBooleanValidationParser(){
+        for (Map.Entry<String, String[][]> methodEntry : textTableBooleanMethods.entrySet()){
+            String methodName = methodEntry.getKey();
+            String testPart = methodName.contains("validate") ? "validate": "assert";
+            for (String[] possibles : methodEntry.getValue()){
+                String isPart = possibles[0];
+                String methodPart = possibles[1];
+                
+                for (String stepPart : textTableSteps){
+                    String booleanPart = "";
+                    for (int i=0; i<4;i++){
+                        boolean trueFalse = ((i%2) == 0);
+                        booleanPart = trueFalse ? "" : "not";
+                        
+                        String stepAsString = String.format("And I %s %s %s %s %s", 
+                                testPart, stepPart, isPart, booleanPart, methodPart); 
+                        try {
+                            PendingStep step = new PendingStep(stepAsString, stepAsString);
+                            Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, CheckBox.class);
+                            
+                            for (Map.Entry<Method, Object[]> entry : methods.entrySet()){
+                                assertEquals("Wrong method for step: " + stepAsString, 
+                                        methodName, entry.getKey().getName());
+                                assertEquals("Parser retrieved incorrect variable",
+                                        trueFalse, entry.getValue()[0]);
+                            }
+                        } catch (NoSuchMethodException e){
+                            fail("Was unable to find method: " + methodName + " for step \"" + stepAsString + "\"");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+
+    private static final String[] textLinkTableSteps = {"the Sort By Number link", "the Status Filter dropdown"};
+    
+    /**
+     * The map key is the method name. <br />
+     * The array of arrays represent each way a method can be found in a step string. <br />
+     * The first entry in each array is "is" or nothing, and the second entry is what we <br />
+     * are expecting to use to match the method to the step.
+     */
+    private static final Map<String, String[][]> textLinkTableMethods = new HashMap<String, String[][]>();
+    static {
+        textLinkTableMethods.putAll(textTableBooleanMethods);
+        textLinkTableMethods.put("assertPresence", new String[][]{{"is","present"}});
+    }
+    
+    
+
+//    @Test
+//    public void testBooleanValidationParser(){
+//        for (Map.Entry<String, String[][]> methodEntry : textLinkTableMethods.entrySet()){
+//            String methodName = methodEntry.getKey();
+//            String testPart = methodName.contains("validate") ? "validate": "assert";
+//            for (String[] possibles : methodEntry.getValue()){
+//                String isPart = possibles[0];
+//                String methodPart = possibles[1];
+//                
+//                for (String stepPart : textLinkTableSteps){
+//                    String booleanPart = "";
+//                    for (int i=0; i<4;i++){
+//                        boolean trueFalse = ((i%2) == 0);
+//                        booleanPart = trueFalse ? "" : "not";
+//                        
+//                        String stepAsString = String.format("And I %s %s %s %s %s", 
+//                                testPart, stepPart, isPart, booleanPart, methodPart); 
+//                        try {
+//                            PendingStep step = new PendingStep(stepAsString, stepAsString);
+//                            Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, CheckBox.class);
+//                            
+//                            for (Map.Entry<Method, Object[]> entry : methods.entrySet()){
+//                                assertEquals("Wrong method for step: " + stepAsString, 
+//                                        methodName, entry.getKey().getName());
+//                                assertEquals("Parser retrieved incorrect variable",
+//                                        trueFalse, entry.getValue()[0]);
+//                            }
+//                        } catch (NoSuchMethodException e){
+//                            fail("Was unable to find method: " + methodName + " for step \"" + stepAsString + "\"");
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
+//    
+//
+//    private static final String[] booleanSteps = {"the Sort By Number link", "the Status Filter dropdown"};
+//    
+//    /**
+//     * The map key is the method name. <br />
+//     * The array of arrays represent each way a method can be found in a step string. <br />
+//     * The first entry in each array is "is" or nothing, and the second entry is what we <br />
+//     * are expecting to use to match the method to the step.
+//     */
+//    private static final Map<String, String[][]> testBooleanMethods = new HashMap<String, String[][]>();
+//    static {
+//        testBooleanMethods.put("assertPresence", new String[][]{{"is","present"}});
+//        testBooleanMethods.put("assertVisibility", new String[][]{{"is","visible"}});
+//        testBooleanMethods.put("assertChecked", new String[][]{{"is","checked"}});
+//        testBooleanMethods.put("assertClickable", new String[][]{{"is","clickable"}});
+//        
+//        testBooleanMethods.put("validatePresence", new String[][]{{"is","present"}});
+//        testBooleanMethods.put("validateVisibility", new String[][]{{"is","visible"}});
+//        testBooleanMethods.put("validateChecked", new String[][]{{"is","checked"}});
+//        testBooleanMethods.put("validateClickable", new String[][]{{"is","clickable"}});
+//    }
+//    
+//    
+//
+//    @Test
+//    public void testBooleanValidationParser(){
+//        for (Map.Entry<String, String[][]> methodEntry : testBooleanMethods.entrySet()){
+//            String methodName = methodEntry.getKey();
+//            String testPart = methodName.contains("validate") ? "validate": "assert";
+//            for (String[] possibles : methodEntry.getValue()){
+//                String isPart = possibles[0];
+//                String methodPart = possibles[1];
+//                
+//                for (String stepPart : booleanSteps){
+//                    String booleanPart = "";
+//                    for (int i=0; i<4;i++){
+//                        boolean trueFalse = ((i%2) == 0);
+//                        booleanPart = trueFalse ? "" : "not";
+//                        
+//                        String stepAsString = String.format("And I %s %s %s %s %s", 
+//                                testPart, stepPart, isPart, booleanPart, methodPart); 
+//                        try {
+//                            PendingStep step = new PendingStep(stepAsString, stepAsString);
+//                            Map<Method, Object[]> methods = AutoMethodParser.parseValidationStep(step, CheckBox.class);
+//                            
+//                            for (Map.Entry<Method, Object[]> entry : methods.entrySet()){
+//                                assertEquals("Wrong method for step: " + stepAsString, 
+//                                        methodName, entry.getKey().getName());
+//                                assertEquals("Parser retrieved incorrect variable",
+//                                        trueFalse, entry.getValue()[0]);
+//                            }
+//                        } catch (NoSuchMethodException e){
+//                            fail("Was unable to find method: " + methodName + " for step \"" + stepAsString + "\"");
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

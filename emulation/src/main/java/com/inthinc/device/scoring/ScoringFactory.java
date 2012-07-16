@@ -5,7 +5,7 @@ import java.util.Map;
 import com.inthinc.device.emulation.enums.UnitType;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -16,14 +16,14 @@ public class ScoringFactory {
     private ScoringNoteProcessor processor;
     private ScoringNoteSorter sorter;
     
-    public ScoringFactory(Addresses server){
+    public ScoringFactory(AutoSilos server){
         hessian = new AutomationHessianFactory().getPortalProxy(server);
         sorter = new ScoringNoteSorter();
         processor = new ScoringNoteProcessor(sorter);
     }
     
 
-    public void setServer(Addresses server){
+    public void setServer(AutoSilos server){
         hessian = new AutomationHessianFactory().getPortalProxy(server);
     }
 

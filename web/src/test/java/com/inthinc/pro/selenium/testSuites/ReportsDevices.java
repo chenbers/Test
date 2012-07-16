@@ -1,17 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.EnumSet;
-
-import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
-
-import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
-import com.inthinc.pro.automation.enums.ErrorLevel;
-import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.selenium.pageEnums.EditColumnsEnums;
-import com.inthinc.pro.selenium.pageObjects.PageReportsDevices;
 
 @Ignore
 public class ReportsDevices extends WebRallyTest {
