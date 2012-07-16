@@ -1203,10 +1203,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         return criteria;
     }
     @Override
-    public ReportCriteria getDriverPerformanceKeyMetricsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Locale locale, MeasurementType measurementType) {
+    public ReportCriteria getDriverPerformanceKeyMetricsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale, MeasurementType measurementType) {
         DriverPerformanceKeyMetricsReportCriteria criteria = new DriverPerformanceKeyMetricsReportCriteria (ReportType.DRIVER_PERFORMANCE_KEY_METRICS, locale);
         criteria.setDriverPerformanceDAO(driverPerformanceDAO);
-        criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
+        if(!timeFrame.equals(TimeFrame.CUSTOM_RANGE))
+            criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
+        else
+            criteria.init(accountGroupHierarchy, groupIDList, interval, measurementType);
         return criteria;
     }
     
@@ -1485,7 +1488,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     break;
                 case DRIVER_PERFORMANCE_KEY_METRICS:
                     reportCriteriaList.add(getDriverPerformanceKeyMetricsReportCriteria(groupHierarchy, 
-                            reportSchedule.getGroupIDList(), timeFrame,  
+                            reportSchedule.getGroupIDList(), timeFrame, timeFrame.getInterval(), 
                             person.getLocale(), person.getMeasurementType()));
                     break;
                     
