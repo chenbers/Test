@@ -88,4 +88,6 @@ public interface CoreMethodInterface extends Selenium {
     public WebElement findElement(SeleniumEnumWrapper myEnum);
     public By getLocator(List<By> list);
     
+    public CoreMethodInterface hoverOver(SeleniumEnumWrapper myEnum);
+    
 }

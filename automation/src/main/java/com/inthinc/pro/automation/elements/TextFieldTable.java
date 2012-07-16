@@ -1,12 +1,12 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TypeableTableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 
-public class TextFieldTable implements TableBased<TextField>{
+public class TextFieldTable implements TypeableTableBased<TextField>{
     protected SeleniumEnumWrapper myEnum;
 
     public TextFieldTable(SeleniumEnums anEnum, Object ...objects) {
@@ -26,12 +26,14 @@ public class TextFieldTable implements TableBased<TextField>{
         return new TableIterator<TextField>(this);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public TextField row(int rowNumber) {
         return new TextField(myEnum, rowNumber);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public TextField row(IndexEnum indexByName) {
         return row(indexByName.getIndex());
     }

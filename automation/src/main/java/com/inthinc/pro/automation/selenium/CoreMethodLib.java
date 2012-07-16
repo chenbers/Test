@@ -837,4 +837,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         By by = getLocator(myEnum.getLocatorsForWebDriver());
         return getWrappedDriver().findElement(by);
     }
+
+	@Override
+	public CoreMethodInterface hoverOver(SeleniumEnumWrapper myEnum) {
+		String mouseOverScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('mouseover', true, false); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('onmouseover');}";
+		JavascriptExecutor js = (JavascriptExecutor) getWrappedDriver();
+        By by = getLocator(myEnum.getLocatorsForWebDriver());
+		WebElement someElem = getWrappedDriver().findElement(by); //replace with your own WebElement call/code here
+		Object results = js.executeScript(mouseOverScript, someElem);
+		Log.info(results);
+		return this;
+	}
 }
