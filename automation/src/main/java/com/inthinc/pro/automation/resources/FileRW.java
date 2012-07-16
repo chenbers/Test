@@ -44,8 +44,17 @@ public class FileRW {
 //	}
 	
 	private void openReader(){
+		openReader(this.getClass());
+	}
+	
+	private void openReader(Class<?> local){
 		try {
-	        String location = this.getClass().getResource(fileName).getFile();
+			String location;
+			try {
+				location = local.getResource(fileName).getFile();
+			} catch (NullPointerException e){
+				location = fileName;
+			}
 	        location = new URLCodec().decode(location);
 	        File file = new File(location);
             in = new BufferedReader(new FileReader(file));
@@ -74,10 +83,14 @@ public class FileRW {
 //			}
 //		}
 //	}
-
-	public ArrayList<String> read(String fileName){
+	
+	public ArrayList<String> read(Class<?> localized, String fileName){
 		this.fileName = fileName;
-		openReader();
+		openReader(localized);
+		return readFromFile();
+	}
+	
+	private ArrayList<String> readFromFile(){
 		ArrayList<String> results = new ArrayList<String>();
 		try {
 			while (in.ready()){
@@ -88,6 +101,12 @@ public class FileRW {
 		}
 		close();
 		return results;
+	}
+
+	public ArrayList<String> read(String fileName){
+		this.fileName = fileName;
+		openReader();
+		return readFromFile();
 	}
 	
 	
