@@ -28,9 +28,36 @@
 -->
 
 <ui:composition>
-custom range included
 <script type="text/javascript">
-$("performanceReports_form:timeframe:1:performanceReports_startCalendarInputDate")
+console.log("first.....");
+
+	console.log("second");
+	var timeframeSelector = jQuery("#performanceReports_form\\:timeframe\\:0\\:performanceReports_reportTimeFrame");
+	console.log("third");
+	var customDateRangeFields = jQuery("#dateRangeTable");
+	customDateRangeFields.hide();
+	console.log("fourth");
+	console.log("fifth");//ONLY getting to here
+    console.log("timeFrameSelector: "+timeframeSelector);
+    console.log("timeFrameSelector.html(): "+timeframeSelector.html());
+    timeframeSelector.append('&lt;option value=&quot;&quot;&gt;<h:outputText value="#{messages.timeFrame_CUSTOM_RANGE}"/>&lt;/option&gt;');
+    console.log("timeFrameSelector.html(): "+timeframeSelector.html());
+    console.log("sixth");
+	timeframeSelector.bind('change',function(){
+		if(timeframeSelector.val() == "")
+			customDateRangeFields.show();
+		else
+			customDateRangeFields.hide();
+	});
+	console.log("seventh");
+/* 	timeframeSelector.bind('change', function() {
+		console.log("got here");
+	    var optionValue = timeframeSelector.val();
+	    console.log("optionValue: "+optionValue);
+	}); */
+	console.log("done");
+	//$('input[id*="timeframe"]')
+	//$("performanceReports_form:timeframe:0:performanceReports_reportTimeFrame")
 </script>
 </ui:composition>
 </html>

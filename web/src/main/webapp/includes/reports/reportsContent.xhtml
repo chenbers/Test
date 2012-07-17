@@ -20,7 +20,7 @@
 						<h:outputText value="#{messages.reports_report}"/>
 					</td>
 					<td>
-					<h:selectOneMenu id="#{context}-report" value="#{reportsBean.selected}" style="width:250px;size:auto;">
+					<h:selectOneMenu id="#{context}-report" value="#{reportsBean.selected}" style="width:280px;size:auto;">
 						<f:selectItems value="#{reportsBean.reportGroups}"/> 
 						<a4j:support event="onchange" reRender="#{context}_form,#{context}_tableForm,#{context}_viewPanel" />
 					</h:selectOneMenu>

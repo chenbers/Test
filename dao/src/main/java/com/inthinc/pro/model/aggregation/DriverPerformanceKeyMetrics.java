@@ -80,13 +80,15 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
         double greenMax = 1.0/7;
         double yellowMax = 4.0/7;
         double idleViolationsPerDay = getIdleViolationsPerDay();
-        if(idleViolationsCount != null){
-            if(idleViolationsPerDay < greenMax)
-                color =  GREEN;
-            else if(idleViolationsPerDay < yellowMax)
-                color = YELLOW;
-            else
-                color = RED;
+        if(totalMiles > 0){
+            if(idleViolationsCount != null){
+                if(idleViolationsPerDay < greenMax)
+                    color =  GREEN;
+                else if(idleViolationsPerDay < yellowMax)
+                    color = YELLOW;
+                else
+                    color = RED;
+            }
         }
         return color;
     }
