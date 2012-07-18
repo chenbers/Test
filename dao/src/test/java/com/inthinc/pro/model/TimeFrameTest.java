@@ -62,6 +62,7 @@ public class TimeFrameTest {
 	           "2011-11-27 00:00:00 UTC", "2011-12-04 00:00:00 UTC",// SUN_SAT WEEK
 	           "2011-11-01 00:00:00 UTC", "2011-12-01 00:00:00 UTC",// LAST_MONTH
                "2011-11-29 00:00:00 UTC", "2011-12-07 00:00:00 UTC",// PAST 7 DAYS
+               "2011-12-06 00:00:00 UTC", "2011-12-07 00:00:00 UTC",//CUSTOM_RANGE
 
 	   };
        public String[] expectedMountain = {
@@ -83,6 +84,7 @@ public class TimeFrameTest {
                "2011-11-27 00:00:00 MST", "2011-12-04 00:00:00 MST",// SUN_SAT WEEK
                "2011-11-01 00:00:00 MDT", "2011-12-01 00:00:00 MST",// LAST_MONTH
                "2011-11-28 00:00:00 MST", "2011-12-06 00:00:00 MST",// PAST 7 DAYS
+               "2011-12-05 00:00:00 MST", "2011-12-06 00:00:00 MST",// CUSTOM RANGE
        };
        
        public static long TEST_TIME = 1323129600000l; // 2011-12-06 00:00:00 UTC
