@@ -94,21 +94,20 @@
         );  
         }
     </script>-->
-
     <a4j:outputPanel  id="#{context}_paramsPanel">
         <a4j:region id="#{context}_paramsRegion">
             <ul id="grid_nav" style="margin: 0;">
                 <ui:repeat id="timeframe" value="#{params.selectedCriteria}" var="criteria">
                 <h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
-                    <li class="l">   
+                    <li class="l">
                     <ui:include src="/includes/component/dateRange.xhtml" >
                         <ui:param name="dateRange" value="#{params.dateRange}"/> 
                         <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
                     </ui:include>
                   </li>
                 </h:outputText>
-                <h:outputText rendered="#{criteria eq 'TIMEFRAME_STRICT'}">
-                   <li class="l">   
+                <h:outputText  rendered="#{criteria eq 'TIMEFRAME_STRICT'}">
+                   <li class="l">
                     <ui:include src="/includes/component/timeFrame.xhtml" >
                         <ui:param name="timeFrameSelect" value="#{params.timeFrameSelect}"/> 
                         <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
@@ -131,6 +130,14 @@
                     </ui:include>
                   </li>
                 </h:outputText>
+                <h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT_PLUS_CUSTOM_RANGE'}">
+                    <li class="l">
+                    <ui:include src="/includes/component/timeFrameAltPlusCustomRange.xhtml" >
+                        <ui:param name="timeFrameSelect" value="#{params.timeFrameSelect}"/> 
+                        <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
+                    </ui:include>
+                  </li>
+                </h:outputText>
                 </ui:repeat>
                 <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
                 <li  class="l select">
@@ -148,7 +155,7 @@
                             </h:selectOneMenu>
                             <ui:include src="/includes/dhtmlSelectBox.xhtml">   
                                         <ui:param name="selectBoxID" value="#{context}_form:#{context}-groupParam" />
-                            </ui:include>                                               
+                            </ui:include>
                             </a4j:outputPanel>
                             
                         </td>

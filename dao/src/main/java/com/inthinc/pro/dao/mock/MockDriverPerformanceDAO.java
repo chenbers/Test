@@ -31,7 +31,61 @@ public class MockDriverPerformanceDAO implements DriverPerformanceDAO {
 
     @Override
     public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
-        // TODO Auto-generated method stub
-        return null;
+        List<DriverPerformanceKeyMetrics> list = new ArrayList<DriverPerformanceKeyMetrics>();
+
+        Integer hiIdleViolationsMinutes = 0;
+        Integer totalMiles = 0;
+        Integer loginCount = 0;
+        Integer overallScore = 0;
+        Integer loIdleViolationsMinutes = 0;
+        Integer seatbeltScore = 0;
+        Integer speedingScore = 0;
+        String driverPosition = "Position NA";
+        Integer styleScore = 0;
+        Integer idleViolationsCount = 1;
+        String driverName = "Driver NA";
+        String groupName = "Group NA";
+        list.add(new DriverPerformanceKeyMetrics(groupName , divisionName, driverName, driverPosition, loginCount, timeFrame, totalMiles, overallScore, speedingScore, styleScore, seatbeltScore, idleViolationsCount, loIdleViolationsMinutes, hiIdleViolationsMinutes));
+        for (int i = 0; i < 5; i++) {
+            list.add(new DriverPerformanceKeyMetrics(groupName , divisionName, driverName, driverPosition, loginCount++, timeFrame, totalMiles++, overallScore++, speedingScore++, styleScore, seatbeltScore++, idleViolationsCount++, loIdleViolationsMinutes++, hiIdleViolationsMinutes++));
+        }
+        return list;  
+    }
+
+    @Override
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, Interval interval) {
+        List<DriverPerformanceKeyMetrics> list = new ArrayList<DriverPerformanceKeyMetrics>();
+
+        Integer hiIdleViolationsMinutes = 0;
+        Integer totalMiles = 0;
+        Integer loginCount = 0;
+        Integer overallScore = 0;
+        Integer loIdleViolationsMinutes = 0;
+        Integer seatbeltScore = 0;
+        Integer speedingScore = 0;
+        String driverPosition = "Position NA";
+        Integer styleScore = 0;
+        Integer idleViolationsCount = 1;
+        String driverName = "Driver NA";
+        String groupName = "Group NA";
+        ArrayList<String> colors = new ArrayList<String>();
+        colors.add("R");
+        colors.add("O");
+        colors.add("Y");
+        colors.add("B");
+        colors.add("G");
+        list.add(new DriverPerformanceKeyMetrics(groupName , divisionName, driverName, driverPosition, loginCount, interval, totalMiles, overallScore, speedingScore, styleScore, seatbeltScore, idleViolationsCount, loIdleViolationsMinutes, hiIdleViolationsMinutes, " "));
+        for (String color: colors){
+            list.add(new DriverPerformanceKeyMetrics(groupName , divisionName, driverName, driverPosition, loginCount++, interval, totalMiles++, overallScore++, speedingScore++, styleScore, seatbeltScore++, idleViolationsCount++, loIdleViolationsMinutes++, hiIdleViolationsMinutes++, color));
+        }
+        return list;
+    }
+
+    @Override
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame, Interval interval) {
+        if(interval != null)
+            return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, interval);
+        else
+            return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, timeFrame);
     }
 }

@@ -16,6 +16,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
+import com.inthinc.pro.model.TimeFrame;
+
 public class DateUtil
 {
 	public static int SECONDS_IN_DAY = 86400;
@@ -204,7 +206,6 @@ public class DateUtil
         return gc.getTime();
     }  
     
-    
     public static Integer differenceInDays(Date startDate,Date endDate)
     {
         Integer difInDays = (int) ((endDate.getTime() - startDate.getTime())/(1000*60*60*24));
@@ -241,10 +242,11 @@ public class DateUtil
         return new Interval(startDate, endDate);
 
     }
-
-
-    
-    
+    public static Integer differenceInDays(TimeFrame timeFrame, Interval interval){
+        if(timeFrame != null)
+            interval = timeFrame.getInterval();
+        return differenceInDays(interval.getStart().toDate(), interval.getEnd().toDate());
+    }
 }
 
 
