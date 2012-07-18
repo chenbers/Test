@@ -273,15 +273,15 @@ public class TiwiProDevice extends DeviceBase {
         return reply;
     }
 
-    public boolean getZones() {
+    public boolean updateZones() {
         try {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("hardwareVersion", state.getProductVersion().getIndex());
             map.put("fileVersion", 1);
             map.put("formatVersion", 1);
-            Map<String, Object> reply = mcmProxy.zoneUpdate(state.getImei(),
-                    map);
-//            zones = new ZoneManager((byte[]) reply.get("f"));
+            Map<String, Object> results = mcmProxy.zoneUpdate(state.getImei(), map); 
+            zones.processArray((byte[]) results.get("f"));
+            
         } catch (Exception e) {
         	Log.error(e);
             return false;
@@ -491,6 +491,7 @@ public class TiwiProDevice extends DeviceBase {
         }
         return 0;
     }
+
 
     
 }

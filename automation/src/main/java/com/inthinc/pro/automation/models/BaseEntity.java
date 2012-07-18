@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.ObjectConverter;
 
 public abstract class BaseEntity implements Serializable {
@@ -61,12 +62,13 @@ public abstract class BaseEntity implements Serializable {
     
     public String toJsonString(){
         JSONObject jsonA = ObjectConverter.convertToJSONObject(this, "object");
-        return jsonA.toString();
+        return AutomationStringUtil.toString(jsonA);
     }
     
     @SuppressWarnings("unchecked")
     public <T extends BaseEntity> T autoCopy(){
-        return (T) ObjectConverter.convertJSONToObject(toJsonString(), "object", this.getClass());
+    	String json = ObjectConverter.convertToJSONObject(this, "object").toString();
+        return (T) ObjectConverter.convertJSONToObject(json, "object", this.getClass());
     }
     
     @Override
