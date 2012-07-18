@@ -14,6 +14,7 @@ public enum NavigationBarEnum implements SeleniumEnums {
     LIVE_FLEET("Live Fleet", "navigation:layout-navigationLiveFleet", "//li[4]/a[@class='nav_button_left']"),
     HOS("HOS", "navigation:layout-navigationHos", "//li[5]/a[@class='nav_button_left']"),
     ADMIN("Admin", "navigation:layout-navigationAdmin", "//li[6]/a[@class='nav_button_left']"),
+    FORMS("Forms", "navigation:layout-navigationForms", "//li[7]/a[@class='nav_button_left']"),
     SEARCH_BOX(null, "navigation:layout-redirectSearch", "//input[@class='text']"),
     SEARCH_DROP_DOWN("  Drivers\n    Vehicles\n    Idling\n    Devices", "navigation:layout-navigationRedirectTo", "//select[@class='text']"),
     SEARCH_BUTTON(null, "navigation:layout-navigation_search_button", "//input[@title='Search']"),

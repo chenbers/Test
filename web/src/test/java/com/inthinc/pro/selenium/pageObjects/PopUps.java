@@ -651,6 +651,56 @@ public class PopUps extends MasterTest {
             }
         }
     }
+      
+    public class FormsDelete {
+
+        private PopUpEnum delete;
+        private PopUpEnum cancel;
+
+        public FormsDelete(Boolean table) {
+            if (table) {
+                delete = PopUpEnum.DELETE_CONFIRM;
+                cancel = PopUpEnum.DELETE_CANCEL;
+            } else {
+                delete = PopUpEnum.DETAILS_DELETE_CONFIRM;
+                cancel = PopUpEnum.DETAILS_DELETE_CANCEL;
+            }
+        }
+
+        public FormsDeleteButtons _button() {
+            return new FormsDeleteButtons();
+        }
+
+        public class FormsDeleteButtons {
+
+            public TextButton delete() {
+                return new TextButton(delete, page);
+            }
+
+            public TextButton cancel() {
+                return new CloseTextButton(cancel, page);
+            }
+
+            public Button close() {
+                return new CloseButton(PopUpEnum.DELETE_CLOSE);
+            }
+        }
+
+        public FormsDeleteText _text() {
+            return new FormsDeleteText();
+        }
+
+        public class FormsDeleteText {
+
+            public Text header() {
+                return new Text(PopUpEnum.DELETE_HEADER);
+            }
+
+            public Text message() {
+                return new Text(PopUpEnum.DELETE_MESSAGE);
+            }
+        }
+    }
 
     public class PasswordChangeRequired {
 
