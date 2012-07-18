@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  timeFrameAltPlusCustomRange.xhtml
+  Parameters:
+  ==============
+  		 timeFrameSelect : Instance of the com.inthinc.pro.backing.ui.TimeFrameSelect class. 
+
+  Optional Parameters:
+  ==============
+       context: If more than one timeFrame used on a page, must be a unique value for the timeFrame's ID.
+       reRenderList: comma separated list of components to reRerender on timeframe change
+
+  To use:
+  ==============
+  <ui:include src="/includes/component/timeFrameAlt.xhtml" >
+      <ui:param name="context" value="mypagename"/> 
+      <ui:param name="dateRange" value="#{backingBean.timeFrame}"/> 
+      <ui:param name="reRenderList" value="comp1,comp2"/> 
+  </ui:include>
+  
+-->
+
+<ui:composition>
+<script type="text/javascript">
+console.log("first.....");
+
+	console.log("second");
+	var timeframeSelector = jQuery("#performanceReports_form\\:timeframe\\:0\\:performanceReports_reportTimeFrame");
+	console.log("third");
+	var customDateRangeFields = jQuery("#dateRangeTable");
+	customDateRangeFields.hide();
+	console.log("fourth");
+	console.log("fifth");//ONLY getting to here
+    console.log("timeFrameSelector: "+timeframeSelector);
+    console.log("timeFrameSelector.html(): "+timeframeSelector.html());
+    timeframeSelector.append('&lt;option value=&quot;&quot;&gt;<h:outputText value="#{messages.timeFrame_CUSTOM_RANGE}"/>&lt;/option&gt;');
+    console.log("timeFrameSelector.html(): "+timeframeSelector.html());
+    console.log("sixth");
+	timeframeSelector.bind('change',function(){
+		if(timeframeSelector.val() == "")
+			customDateRangeFields.show();
+		else
+			customDateRangeFields.hide();
+	});
+	console.log("seventh");
+/* 	timeframeSelector.bind('change', function() {
+		console.log("got here");
+	    var optionValue = timeframeSelector.val();
+	    console.log("optionValue: "+optionValue);
+	}); */
+	console.log("done");
+	//$('input[id*="timeframe"]')
+	//$("performanceReports_form:timeframe:0:performanceReports_reportTimeFrame")
+</script>
+</ui:composition>
+</html>

@@ -25,8 +25,6 @@ public class DriverPerformanceReportCriteria extends GroupListReportCriteria {
     
     private List<ReportCriteria> criteriaList;
 
-
-    
     public DriverPerformanceReportCriteria(ReportType reportType, Locale locale) {
         super(reportType, locale);
         
@@ -46,11 +44,11 @@ public class DriverPerformanceReportCriteria extends GroupListReportCriteria {
             dp.setRyg(ryg);
             driverDataList.add(dp);
             reportCriteria.setMainDataset(driverDataList);
-        
+
             reportCriteria.addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
             reportCriteria.addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
             reportCriteria.addParameter("RYG", ryg);
-            
+
             criteriaList.add(reportCriteria);
         }
     }

@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -13,7 +14,6 @@ import org.joda.time.Interval;
 import org.joda.time.Period;
 
 public enum TimeFrame implements BaseEnum {
-
     TODAY(AggregationDuration.ONE_DAY, 0) {
         public Interval getInterval(DateTimeZone dateTimeZone) {
             return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
@@ -107,8 +107,18 @@ public enum TimeFrame implements BaseEnum {
         public Interval getInterval(DateTimeZone dateTimeZone) {
             return new Interval(new DateMidnight(getCurrent().minusDays(7), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
         }
+    },
+    CUSTOM_RANGE(AggregationDuration.ONE_DAY, 18){
+        public Interval getInterval(DateTimeZone dateTimeZone) {
+            return new Interval(new DateMidnight(getCurrent(), dateTimeZone), new DateMidnight(getCurrent().plusDays(1), dateTimeZone));
+        }
+        @Override
+        public Interval getInterval(long startInstant, long endInstant, DateTimeZone zone){
+        	return new Interval(startInstant, endInstant, zone);
+        }
     };
-
+    
+    private static final Logger logger = Logger.getLogger(TimeFrame.class);
     private AggregationDuration driveQDuration;
     private Integer code;
     public static DateTime current;
@@ -119,6 +129,15 @@ public enum TimeFrame implements BaseEnum {
     }
 
     abstract public Interval getInterval(DateTimeZone dateTimeZone);
+    public Interval getInterval(long startInstant, long endInstant, DateTimeZone zone){
+        logger.warn("getInterval(long, long, DateTimeZone) does NOT change the interval for TimeFrame."+this.toString());
+        throw new IllegalArgumentException("getInterval(long, long, DateTimeZone) does NOT change the interval for TimeFrame."+this.toString()+"; and should not be called");
+    }
+    public Integer getNumberOfDays(){
+        System.out.println(this.getDuration().getMillis()+"/"+DateTimeConstants.MILLIS_PER_DAY+" == "+this.getDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
+        return (int) (this.getDuration().getMillis()/DateTimeConstants.MILLIS_PER_DAY);
+
+    }
 
     public DateTime getCurrent() {
         if (current == null)

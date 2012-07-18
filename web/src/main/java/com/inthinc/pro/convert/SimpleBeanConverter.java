@@ -14,7 +14,8 @@ public class SimpleBeanConverter implements Converter{
 	
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent uiComponent, String serializedString) {
-		return deSerializeBean(serializedString);
+	    Object test = deSerializeBean(serializedString);
+	    return deSerializeBean(serializedString);
 	}
 	
 	@Override
