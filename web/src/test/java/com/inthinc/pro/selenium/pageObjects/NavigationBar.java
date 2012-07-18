@@ -47,6 +47,10 @@ public abstract class NavigationBar extends Masthead {
 		public TextLink reports() {
 			return new TextLink(NavigationBarEnum.REPORTS);
 		}
+		
+		public TextLink forms() {
+			return new TextLink(NavigationBarEnum.FORMS);
+		}
 	}
 
 	protected class NavigationBarTextFields extends MastheadTextFields {
