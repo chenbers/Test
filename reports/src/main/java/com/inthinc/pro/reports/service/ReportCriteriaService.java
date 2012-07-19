@@ -75,7 +75,7 @@ public interface ReportCriteriaService
     ReportCriteria getVehicleUsageReportCriteria(Integer id, Interval interval, Locale locale, boolean group);
     ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, Boolean ryg);
     List<ReportCriteria> getDriverPerformanceIndividualReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, List<Integer> driverID, Interval interval, Locale locale, Boolean ryg);
-    ReportCriteria getDriverPerformanceKeyMetricsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Locale locale, MeasurementType measurementType);
+    ReportCriteria getDriverPerformanceKeyMetricsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale, MeasurementType measurementType);
     List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy,Integer groupID,Interval interval,Locale locale,DateTimeZone timeZone);
     ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy,Integer driverID,Interval interval,Locale locale,DateTimeZone timeZone);
     ReportCriteria getDriverExcludedViolationCriteria(GroupHierarchy accountGroupHierarchy,Integer groupID,Interval interval,Locale locale,DateTimeZone timeZone);

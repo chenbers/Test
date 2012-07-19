@@ -99,6 +99,9 @@ public class Sbs implements SpeedLimitProvider{
 		
 		if (server != null && !server.isEmpty()){
 			downloadManager = new ConcreteDownloadManager(mcmid, "target/", mapsVisited, server, port);
+		} else {
+			AutoServers servers = new AutoServers();
+			downloadManager = new ConcreteDownloadManager(mcmid, "target/", mapsVisited, servers.getMcmUrl(), servers.getMcmPort());
 		}
 		
 		

@@ -122,14 +122,12 @@ public class ScoresFromCassandra {
             endRange = createComposite(end);
         }
 
-        Log.info(startRange);
-        Log.info(endRange);
         return getScoresForPeriod(interval.getColumnFamily(type), interval.getIndex(type), id, startRange, endRange); 
     }
 
 
     private Map<String, Object> getScoresForPeriod(String aggColumnFamily, String indexColumnFamily, int id, Composite startRange, Composite endRange) {
-        Log.info("column (%s) index (%s)", aggColumnFamily, indexColumnFamily);
+        Log.debug("column (%s) index (%s)", aggColumnFamily, indexColumnFamily);
         List<Integer> indexRowKeys = new ArrayList<Integer>();
         indexRowKeys.add(id);
 

@@ -23,6 +23,7 @@ import com.inthinc.device.emulation.utils.NoteManager;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.TripTracker;
+import com.inthinc.device.objects.ZoneManager;
 import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
@@ -48,30 +49,28 @@ public abstract class DeviceBase {
 
     protected final DeviceState state;
     protected final TripTracker tripTracker;
+    protected final ZoneManager zones;
     
 
     public DeviceBase(String IMEI, ProductType version,
             Map<DeviceProps, String> settings, AutoSilos silo) {
-    	server.setBySilo(silo);
-        state = new DeviceState(IMEI, version);
-        state.setSettings(settings);
-        tripTracker = new TripTracker(state, sbs);
-        speed_points = new ArrayList<Integer>();
-        speed_loc = new ArrayList<GeoPoint>();
-        notes = new NoteManager();
-        state.setMapRev(0);
+    	this(new DeviceState(IMEI, version), silo);
+        
+    	state.setSettings(settings);
         initiate_device();
     }
 
     public DeviceBase(DeviceState state, AutoSilos silo) {
-    	server.setBySilo(silo);
     	this.state = state;
+    	set_server(silo);
+    	sbs.setDownloadManager(server);
         tripTracker = new TripTracker(state);
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<GeoPoint>();
         notes = new NoteManager();
         state.setMapRev(0);
         initiate_device();
+        zones = new ZoneManager();
 	}
 
 	private DeviceBase ackFwdCmds(List<Map<String, Object>> reply) {
@@ -178,6 +177,8 @@ public abstract class DeviceBase {
         return writeTiwiFile(fileName,
                 mcmProxy.audioUpdate(state.getImei(), map));
     }
+    
+    
 
     public GeoPoint getCurrentLocation() {
 		return tripTracker.currentLocation();
@@ -194,6 +195,11 @@ public abstract class DeviceBase {
     public int getOdometer() {
         return state.getOdometerX100();
     }
+    
+
+	public AutoServers getServer() {
+		return server;
+	}
 
     public DeviceState getState() {
         return state;
@@ -201,6 +207,10 @@ public abstract class DeviceBase {
 
     public TripTracker getTripTracker() {
         return tripTracker;
+    }
+    
+    public ZoneManager getZoneManager(){
+    	return zones;
     }
 
     public DeviceBase goToNextLocation(int value, boolean time) {

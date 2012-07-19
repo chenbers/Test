@@ -67,7 +67,8 @@ public abstract class BaseEntity implements Serializable {
     
     @SuppressWarnings("unchecked")
     public <T extends BaseEntity> T autoCopy(){
-        return (T) ObjectConverter.convertJSONToObject(toJsonString(), "object", this.getClass());
+    	String json = ObjectConverter.convertToJSONObject(this, "object").toString();
+        return (T) ObjectConverter.convertJSONToObject(json, "object", this.getClass());
     }
     
     @Override

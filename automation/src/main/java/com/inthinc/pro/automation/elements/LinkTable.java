@@ -1,32 +1,12 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
-import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
-import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public class LinkTable implements TableBased<Clickable> {
+public class LinkTable extends ClickableTableObject {
 
-    private SeleniumEnumWrapper myEnum;
 
     public LinkTable(SeleniumEnums anEnum, Object ...objects) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
-        myEnum.makeReplacements(objects);
+        super(anEnum, objects);
     }
 
-    @Override
-    public TableIterator<Clickable> iterator() {
-        return new TableIterator<Clickable>(this);
-    }
-
-    @Override
-    public Clickable row(int rowNumber) {
-        return new ClickableObject(myEnum, rowNumber);
-    }
-
-    @Override
-    public Clickable row(IndexEnum indexByName) {
-        return row(indexByName.getIndex());
-    }
 }

@@ -73,7 +73,9 @@ public enum ReportType
     DRIVER_HOURS("Driver Hours","driverHoursReport.jrxml","driverHoursReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverHours", null, false), 
     VEHICLE_USAGE("Vehicle usage","vehicleUsageReport.jrxml","vehicleUsageReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.vehicleUsageReport", null, false),
 
-    DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics",null,"driverPerformanceKeyMetrics.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false), 
+    DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", null,"driverPerformanceKeyMetrics.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),//TODO: jwimmer this one needs NO RYG the one below needs BOTH(IF excel will pick up backcolors?!)
+    DRIVER_PERFORMANCE_KEY_METRICS_TF("Driver Performance Key Metrics Time Frame","driverPerformanceKeyMetrics.jrxml","driverPerformanceKeyMetrics.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, true),
+    DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG","driverPerformanceKeyMetricsRYG.jrxml","driverPerformanceKeyMetrics.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, true),
     DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_INDIVIDUAL("Driver  Performance (Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG(Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 

@@ -179,6 +179,11 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.inthinc.pro.emulation</groupId>
+			<artifactId>emulation</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>

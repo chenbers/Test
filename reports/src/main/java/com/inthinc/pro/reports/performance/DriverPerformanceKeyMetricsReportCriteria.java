@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -36,8 +38,7 @@ public class DriverPerformanceKeyMetricsReportCriteria extends GroupListReportCr
         dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
 
     }
-
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, MeasurementType measurementType) {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, MeasurementType measurementType) {
         List<DriverPerformanceKeyMetrics> dataList = new ArrayList<DriverPerformanceKeyMetrics>();
 
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
@@ -45,7 +46,7 @@ public class DriverPerformanceKeyMetricsReportCriteria extends GroupListReportCr
         for (Group group : reportGroupList) {
             if (group.getGroupID() != null && group.getType() == GroupType.TEAM) {
                 String divisionName = accountGroupHierarchy.getFullGroupName(group.getParentID(), "->");
-                List<DriverPerformanceKeyMetrics> groupList = driverPerformanceDAO.getDriverPerformanceKeyMetricsListForGroup(group.getGroupID(), divisionName, group.getName(), timeFrame);
+                List<DriverPerformanceKeyMetrics> groupList = driverPerformanceDAO.getDriverPerformanceKeyMetricsListForGroup(group.getGroupID(), divisionName, group.getName(), interval);
                 Collections.sort(groupList);
                 dataList.addAll(groupList);
             }
@@ -53,9 +54,30 @@ public class DriverPerformanceKeyMetricsReportCriteria extends GroupListReportCr
         
         setMainDataset(dataList);
         
-        addParameter(REPORT_START_DATE, dateTimeFormatter.print(timeFrame.getInterval().getStart()));
-        addParameter(REPORT_END_DATE, dateTimeFormatter.print(timeFrame.getInterval().getEnd()));
+        addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
+        addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
         setUseMetric(measurementType == MeasurementType.METRIC);
+    }
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, MeasurementType measurementType) {
+//        List<DriverPerformanceKeyMetrics> dataList = new ArrayList<DriverPerformanceKeyMetrics>();
+//
+//        List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
+//
+//        for (Group group : reportGroupList) {
+//            if (group.getGroupID() != null && group.getType() == GroupType.TEAM) {
+//                String divisionName = accountGroupHierarchy.getFullGroupName(group.getParentID(), "->");
+//                List<DriverPerformanceKeyMetrics> groupList = driverPerformanceDAO.getDriverPerformanceKeyMetricsListForGroup(group.getGroupID(), divisionName, group.getName(), timeFrame);
+//                Collections.sort(groupList);
+//                dataList.addAll(groupList);
+//            }
+//        }
+//        
+//        setMainDataset(dataList);
+//        
+//        addParameter(REPORT_START_DATE, dateTimeFormatter.print(timeFrame.getInterval().getStart()));
+//        addParameter(REPORT_END_DATE, dateTimeFormatter.print(timeFrame.getInterval().getEnd()));
+//        setUseMetric(measurementType == MeasurementType.METRIC);
+    	init(accountGroupHierarchy, groupIDList, timeFrame.getInterval(), measurementType);
         
     }
 
