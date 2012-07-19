@@ -1212,6 +1212,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             criteria.init(accountGroupHierarchy, groupIDList, interval, measurementType);
         return criteria;
     }
+    @Override
+    public ReportCriteria getDriverPerformanceKeyMetricsTimeFrameReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale, MeasurementType measurementType) {
+        DriverPerformanceKeyMetricsReportCriteria criteria = new DriverPerformanceKeyMetricsReportCriteria (ReportType.DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG, locale);
+        criteria.setDriverPerformanceDAO(driverPerformanceDAO);
+        if(timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
+            criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
+        else
+            criteria.init(accountGroupHierarchy, groupIDList, interval, measurementType);
+        return criteria;
+    }
     
     @Override
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval,Locale locale,DateTimeZone timeZone) {

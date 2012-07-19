@@ -181,7 +181,7 @@ public enum ReportGroup
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
-     DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics RYG Time Frame", 43, EntityType.ENTITY_GROUP_LIST,
+     DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG", 43, EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME_ALT, CriteriaType.TIMEFRAME, CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
