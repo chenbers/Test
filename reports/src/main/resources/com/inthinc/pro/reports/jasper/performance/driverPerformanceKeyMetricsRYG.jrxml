@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
-<jasperReport name="driverPerformanceKeyMetrics" pageWidth="942" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="942" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/driverPerformanceKeyMetrics" isIgnorePagination="true">
+<jasperReport name="driverPerformanceKeyMetricsRYG" pageWidth="942" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="942" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/driverPerformanceKeyMetrics" isIgnorePagination="true">
     <property name="ireport.scriptlethandling" value="0"/>
     <property name="ireport.encoding" value="UTF-8"/>
     <property name="ireport.zoom" value="1.0"/>
