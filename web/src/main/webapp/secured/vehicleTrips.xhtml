@@ -27,8 +27,7 @@
 		var ajaxCount = 0;
 		var currentElement;
 		
-		function initMap(lat,lng,zoom)
-		{
+		function initMap(lat,lng,zoom)	{
 			portalmap.init();
 			initLayers();
 			map = portalmap.getMap();
@@ -43,30 +42,26 @@
 			
 
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
-	    function showWarningsChanged()
-	    {
+	    function showWarningsChanged()	    {
 	    	showWarnings = document.getElementById('showWarningsCheckBox').checked;
 	    	drawSelectedTrips();
 		}
 
 		// Show Idle Markers Checkbox changed
-	    function showIdleChanged()
-	    {
+	    function showIdleChanged()	    {
 	    	showIdleMarkers = document.getElementById('showIdleCheckBox').checked;
       		drawSelectedTrips();
 	    	
 		}
 
 	 	// Show Tampering Markers Checkbox changed
-	    function showTamperingChanged(tamperingCheckBox)
-	    {
+	    function showTamperingChanged(tamperingCheckBox)	    {
 	    	showTamperMarkers = tamperingCheckBox.checked;
       		drawSelectedTrips();
 		}
 
 		//On page load and A4J Re-render
-		function showTrips()
-		{
+		function showTrips()		{
 			drawSelectedTrips();
 			
 			if ( map != null ) {
@@ -75,8 +70,6 @@
 			}
 	    }
 
-// 		var isReady;
-// 		isReady = false;
 		function dynamicTableStyles() {
 			
 			jQuery('#tripsTableForm\\:tripsTable tr').click(function(){				
@@ -98,24 +91,10 @@
 			jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
 		}
 		
-		function onTableRender()
-		{
-			console.log("onTableRender");
-// 			isReady = true;
+		function onTableRender() {
 			dynamicTableStyles();
-//             jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
             addressLookup.findAddresses();
-//             getAddresses();
 		}
-// 		function onReRenderWithSelection()
-// 		{	
-// // 			if (ajaxCount == 0){				
-// // 				isReady = true;
-// 				dynamicTableStyles();
-// 	            jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();				
-// // 	            getAddresses();
-// // 			}
-// 		}
 
 		function setZoneNameSync(obj) {
 			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
@@ -140,8 +119,7 @@
 		<script type="text/javascript">
 		
 		// This is called on pageLoad and A4J re-renders
-		function bodyLoad()
-		{
+		function bodyLoad()		{
 			GUnload();
 			map=null;
 			initMap(#{vehicleTripsBean.anchorLat}, #{vehicleTripsBean.anchorLng}, 14);
@@ -149,55 +127,6 @@
 		   		showTrips();
 			}
 		}
-		
-//         function getAddresses()
-//         {
-//             if (#{vehicleTripsBean.addressFormat == 3}){
-//             	console.log("getAddresses");
-//   	    		jQuery('td[id$="end_column"]').each(function(n) {
-//   	         		var lat = jQuery(this).find('*[id$="lat"]');
-//   	        		var lng = jQuery(this).find('*[id$="lng"]');
-//   	        		var address = jQuery(this).find('*[id$="address"]');
-// 	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');
-  						
-//   					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-// // 					populateAddresses.findAddresses();
-  	    		
-//   	    		});	
-//   	    		jQuery('td[id$="address_column"]').each(
-  	    				
-//   	    		function() {
-//   	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-//   	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-//   	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-// 	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        		
-//   					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-// // 					populateAddresses.findAddresses();
-//   	    		}
-  	    		
-//   	    		);
-//             } else {
-//                 ajaxCount++;
-//             }
-            
-//         }
-
-//         function getEventAddresses()
-//         {
-//             if (#{vehicleTripsBean.addressFormat == 3}){
-
-// 	    		jQuery('td[id$="address_column"]').each(function(n){
-
-// 	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-// 	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-// 	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-// 	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        			        		
-						
-// 					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-// 	    		});
-//             }
-            
-//         }        
 
         var addressLookup = (function() {
         	var addresses = {};
@@ -231,7 +160,7 @@
         		findAddresses : function() {
         			console.log("findAddresses");
 		    		if (geocoder == null) geocoder = new GClientGeocoder();
-		    		var delay = 500;
+		    		var delay = 250;
 		    		collectAddressElements();
 					var reverseGeocode = function() {
 	        			console.log("reverseGeocode");
@@ -249,8 +178,7 @@
 		         				console.log("reverse geo response: " + response.Status.code);
 		         				if (!response) {
 		    			        	element.address[0].innerHTML = element.zoneName[0].value;
-		         				}
-		         				else if (response.Status.code == 200) {
+		         				} else if (response.Status.code == 200) {
 		    			        	element.address[0].innerHTML = response.Placemark[0].address;
 		    			        	addresses[element.lat + element.lng] = response.Placemark[0].address;
 		    			        } else if (response.Status.code == 620) {
@@ -266,35 +194,11 @@
         		},
         	}
         }());
-        
-
-//         function reverseGeocodeTripAddress(latlng, addressElement, zoneAddress){
-//             ajaxCount++;        	
-//     		if (geocoder == null) geocoder = new GClientGeocoder();
-//             console.log("calling reverse geo for " + addressElement.id );
-//             geocoder.getLocations(latlng, 
-//         			function(response){
-//          				console.log("reverse geo response: " + response.Status.code);
-//     			        if (!response || response.Status.code != 200) {
-	        				 
-// 							// Couldn't find one, use the one we calculated on the server
-// //   			         	  	addressElement.innerHTML = zoneAddress;
-
-//     			        } 
-//     			        else {
-// //   			             	addressElement.innerHTML = response.Placemark[0].address;
-//     			        }
-//     			        ajaxCount = ajaxCount - 1;
-//     		    	});
-//         }
-  			    
-		
    		
 		</script>
  		<rich:panel id="mapScript">	
 		<script type="text/javascript">
-   		function drawSelectedTrips()
-   		{
+   		function drawSelectedTrips()   		{
 				var polyline;
 				var marker;
 				var startlatlng;
@@ -510,7 +414,7 @@
 																		</tr>
 																		<tr>
 																				<td colspan="2" align="center"><a4j:commandButton id="vehicleTripsDate" action="#{vehicleTripsBean.DateChangedAction}"
-																						reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedEvents,noTripsMessage,calendarStart,calendarEnd" immediate="false" styleClass="left" oncomplete="showTrips();">
+																						reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedEvents,noTripsMessage,calendarStart,calendarEnd" immediate="false" styleClass="left" oncomplete="showTrips();onTableRender();highlightFirstRow();">
 																						<span class="edit"> <h:outputText value="#{messages.vehciletrip_updateDateRange}" /> </span>
 																				</a4j:commandButton></td>
 																		</tr>
@@ -839,8 +743,6 @@
 														</rich:dataTable>
 														<rich:spacer height="5" />
 														<rich:datascroller align="center" for="tripsTable" id="scroller" styleClass="dataScrollerSmall" oncomplete="onTableRender();clickFirstRow();" reRender="tripsTable" renderIfSinglePage="false" />
-
-<!-- 														<rich:jQuery selector="document" query="ready(function(){onReRender()})" /> -->
 														<!-- End Trip table -->
 												</rich:panel></div>
 										</a4j:form>
@@ -885,7 +787,6 @@
 								<!-- END PANEL --></td>
 						</tr>
 				</table>
-				<BUTTON onclick="addressLookup.findAddresses();"> hello </BUTTON>
 				</div>
 				<a4j:form id="dispatchForm">
 						<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}" />
