@@ -233,7 +233,6 @@ public abstract class ReportsBean extends BaseBean {
                         params.getLocale(), true));
                 break;
             case DRIVER_PERFORMANCE_KEY_METRICS:
-            case DRIVER_PERFORMANCE_KEY_METRICS_TF:
             case DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG:
                 reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType()));
                 break;
