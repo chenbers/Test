@@ -17,6 +17,12 @@
         
  		<ui:include src="/includes/map/portalMap.xhtml"/>
         <script type="text/javascript">
+        
+        jQuery().ready(function() {        
+        	onTableRender();
+			highlightFirstRow();
+        });
+        
 		var map;
 		var showWarnings = true;
 		var showIdleMarkers = true;
@@ -28,8 +34,7 @@
 		var ajaxCount = 0;
 		var currentElement;
 		
-		function initMap(lat,lng,zoom)
-		{
+		function initMap(lat,lng,zoom)		{
 			portalmap.init();
 			initLayers();
 			map = portalmap.getMap();
@@ -44,30 +49,26 @@
 
 
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
-	    function showWarningsChanged()
-	    {
+	    function showWarningsChanged()    {
 	    	showWarnings = document.getElementById('showWarningsCheckBox').checked;
 	    	drawSelectedTrips();
 		}
 
 		// Show Idle Markers Checkbox changed
-	    function showIdleChanged()
-	    {
+	    function showIdleChanged()    {
 	    	showIdleMarkers = document.getElementById('showIdleCheckBox').checked;
       		drawSelectedTrips();
 	    	
 		}
 
 	 	// Show Tampering Markers Checkbox changed
-	    function showTamperingChanged(tamperingCheckBox)
-	    {
+	    function showTamperingChanged(tamperingCheckBox)   {
 	    	showTamperMarkers = tamperingCheckBox.checked;
       		drawSelectedTrips();
 		}
 
 		//On page load and A4J Re-render
-		function showTrips()
-		{
+		function showTrips()	{
 			drawSelectedTrips();
 
 			if ( map != null ) {
@@ -78,8 +79,7 @@
 
    		var isReady;
 		isReady = false;
-		function dynamicTableStyles()
-		{
+		function dynamicTableStyles()	{
 			
 			jQuery('#tripsTableForm\\:tripsTable tr').click(function(){
                 			jQuery('#tripsTableForm\\:tripsTable tr').each(function() {
@@ -92,21 +92,17 @@
 			});
 			
 		}
-		function onReRender()
-		{
-			isReady = true;
-			dynamicTableStyles();
-            jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
-            getAddresses();
+		
+		function highlightFirstRow() {
+			jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').addClass('selected-row');
 		}
-		function onReRenderWithSelection()
-		{
-			if (ajaxCount == 0) {
-				isReady = true;
-				dynamicTableStyles();
-	            jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();							
-	        	getAddresses();
-			}
+		function clickFirstRow() {
+			jQuery('#tripsTableForm\\:tripsTable tr:eq(1)').click();
+		}
+		
+		function onTableRender() {
+			dynamicTableStyles();
+            addressLookup.findAddresses();
 		}
 
 		function setZoneNameSync(obj) {
@@ -132,8 +128,7 @@
         <script type="text/javascript">
 		
 	    // This is called on pageLoad 
-		function bodyLoad()
-		{
+		function bodyLoad()		{
 			GUnload();
 			map=null;
 			initMap(#{driverTripsBean.anchorLat}, #{driverTripsBean.anchorLng}, 14);
@@ -142,75 +137,78 @@
 			}
 		}
 
-        function getAddresses()
-        {
-            if (#{driverTripsBean.addressFormat == 3}){
-	    		geocoder = new GClientGeocoder();
-	    		jQuery('td[id$="end_column"]').each(function(n){
-	
-	         		var lat = jQuery(this).find('*[id$="lat"]');
-	        		var lng = jQuery(this).find('*[id$="lng"]');
-	        		var address = jQuery(this).find('*[id$="address"]');
-	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');
-	
-					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-	    		});	
-	    		jQuery('td[id$="address_column"]').each(function(n){
-
-	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        		
-				
-					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);
-	    		});
-            } else {
-                ajaxCount++;
-            }
-            
-        }
-
-        function getEventAddresses()
-        {
-            if (#{driverTripsBean.addressFormat == 3}){
-	    		geocoder = new GClientGeocoder();
-
-	    		jQuery('td[id$="address_column"]').each(function(n){
-
-	        		var lat = jQuery(this).find('*[id$="eventLat"]');
-	        		var lng = jQuery(this).find('*[id$="eventLng"]');
-	        		var address = jQuery(this).find('*[id$="eventAddress"]');
-	        		var zoneName = jQuery(this).find('*[id$="zoneName"]');	        			        		
-	
-					reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0],zoneName[0].value);					
-	    		});
-            }
-            
-        }        
-
-        function reverseGeocodeTripAddress(latlng, addressElement, zoneAddress){
-            ajaxCount++;
-         	geocoder.getLocations(latlng, 
-        			function(response){
-    			        if (!response || response.Status.code != 200) {
-	        			        				 
-							// Couldn't find one, use the one we calculated on the server
-  			         	  	addressElement.innerHTML = zoneAddress;
-
-    			        } 
-    			        else {						
-			             	addressElement.innerHTML = response.Placemark[0].address;
-    			        }
-    			        ajaxCount--;
-    		    	});
-	        }
+		var addressLookup = (function() {
+        	var addresses = {};
+        	var addressElements; //an array of the html elements that need the address after the point is reverse geocoded
+    		var collectAddressElements = function() {
+        		addressElements = [];
+   				jQuery('td[id$="address_column"]').each( function() {
+	   					var addressElement = {
+	   						"element" : this,
+	   						"lat" : jQuery(this).find('*[id$="eventLat"]')[0].value,
+	   						"lng" : jQuery(this).find('*[id$="eventLng"]')[0].value,
+	   						"address" : jQuery(this).find('*[id$="eventAddress"]'),
+	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   					};		
+	   					addressElements.push(addressElement);
+	   				}
+   				)
+   				jQuery('td[id$="end_column"]').each( function() {
+	   					var addressElement = {
+	   						"element" : this,
+	   						"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
+	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
+	   						"address" : jQuery(this).find('*[id$="address"]'),
+	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   					};		
+	   					addressElements.push(addressElement);
+	   				}
+   				)
+    		}
+        	return {
+        		findAddresses : function() {
+        			console.log("findAddresses");
+		    		if (geocoder == null) geocoder = new GClientGeocoder();
+		    		var delay = 250;
+		    		collectAddressElements();
+					var reverseGeocode = function() {
+	        			console.log("reverseGeocode");
+						if (addressElements.length == 0) return;
+						
+						
+						var element = addressElements.shift();
+						
+						if(addresses[element.lat + element.lng]) {
+							console.log("got a cache hit!");
+    			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
+    			        	reverseGeocode();
+						} else {
+							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
+		         				console.log("reverse geo response: " + response.Status.code);
+		         				if (!response) {
+		    			        	element.address[0].innerHTML = element.zoneName[0].value;
+		         				} else if (response.Status.code == 200) {
+		    			        	element.address[0].innerHTML = response.Placemark[0].address;
+		    			        	addresses[element.lat + element.lng] = response.Placemark[0].address;
+		    			        } else if (response.Status.code == 620) {
+		    			        	addressElements.push(element);
+		    			        } else {
+		    			        	element.address[0].innerHTML = element.zoneName[0].value;
+		    			        }
+		    			        reverseGeocode();
+							}) }, delay);
+						}
+					}
+					reverseGeocode();
+        		},
+        	}
+        }());
 	
 		</script>
  		<rich:panel id="mapScript">
  		
         <script type="text/javascript">
-	   		function drawSelectedTrips()
-	   		{
+	   		function drawSelectedTrips()	{
 					var polyline;
 					var marker;
 					var startlatlng;
@@ -442,7 +440,7 @@
                                         <a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
                                             reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedTrip,selectedEvents,noTripsMessage,calendarStart,calendarEnd" 
                                             immediate="false" styleClass="left"
-                                            oncomplete="showTrips();getAddresses()">   
+                                            oncomplete="showTrips();onTableRender();highlightFirstRow();">   
                                             <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
                                         </a4j:commandButton></td>                                      
                                     </tr>                                    
@@ -588,7 +586,7 @@
                      
                         <table align="center"><tr><td>
                         <rich:datascroller align="center" for="selectedTripTable" id="eventScroller"  maxPages="5"
-                        	oncomplete="getEventAddresses();"                                             	                      	                     	
+                        	oncomplete="addressLookup.findAddresses();"                                             	                      	                     	
                     		reRender="selectedTripTable"  styleClass="dataScrollerSmall" renderIfSinglePage="false"/>
                         </td></tr></table>
                     </a4j:form>
@@ -689,7 +687,7 @@
                     <div class="panel_title">
                         <h:outputText value="#{messages.drivertrip_trips_by} #{driverTripsBean.identifiableEntityBean.name}" styleClass="vehicle" />            
                         <span class="panel_links">
-                        <a4j:status onstop="onReRenderWithSelection();">
+                        <a4j:status onstop="onTableRender();">
                             <f:facet name="start">
                                 <h:graphicImage value="/images/progress2.gif" style="padding-left: 10px" />
                             </f:facet>
@@ -769,10 +767,9 @@
                                 </rich:column>
                             </rich:dataTable>
                           <rich:datascroller align="center" for="tripsTable" id="scroller" styleClass="dataScrollerSmall"
-                          	oncomplete="onReRender()" reRender="tripsTable"
+                          	oncomplete="onTableRender();clickFirstRow();" reRender="tripsTable"
                           	renderIfSinglePage="false"/>
                         
-                        <rich:jQuery selector="document" query="ready(function(){onReRender()})" />
                         <!-- End Trip table -->
                     </rich:panel>                    
                     </div>                    
