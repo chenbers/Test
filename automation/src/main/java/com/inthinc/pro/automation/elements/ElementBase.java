@@ -112,6 +112,18 @@ public abstract class ElementBase extends MasterTest implements ElementInterface
         return getSelenium().isVisible(myEnum);
     }
     
+    @Override
+    public ElementBase mouseDown(){
+    	getSelenium().mouseDown(myEnum);
+    	return this;
+    }
+    
+    @Override
+    public ElementBase mouseUp(){
+    	getSelenium().mouseUp(myEnum);
+    	return this;
+    }
+    
 
     protected ElementBase replaceNumber(Integer number) {
         myEnum.replaceNumber(number);

@@ -312,6 +312,10 @@ public enum EventAttr implements IndexEnum{
 	SEATBELT_TOP_SPEED(8285),
 	DRIVER_HISTOGRAM_STATS_VERSION(8286),
 	NUM_TIME_CHANGES(8287),
+	MAPS_MOUNTED_RO_PERCENTAGE(8288),
+	MAPS_MOUNTED_RW_PERCENTAGE(8289),
+	
+	MAPS_NOT_MOUNTED_PERCENTAGE(8290),
     
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
@@ -708,6 +712,7 @@ public enum EventAttr implements IndexEnum{
                     Log.debug(formatAttr(line));
                 }
             }
+            br.close();
         } catch (IOException e) {
             Log.wtf("%s", e);
         }
@@ -806,6 +811,7 @@ public enum EventAttr implements IndexEnum{
                     }
                 }
             }
+            br.close();
         }catch (IOException e) {
             Log.i("%s", e);
         }

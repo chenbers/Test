@@ -563,6 +563,7 @@ public enum DeviceNoteTypes  {
                     Log.debug(formatNoteType(line));
                 }
             }
+            br.close();
         } catch (IOException e) {
             Log.wtf("%s", e);
         }
@@ -674,6 +675,7 @@ public enum DeviceNoteTypes  {
                     }
                 }
             }
+            br.close();
         }catch (IOException e) {
             Log.i("%s", e);
         }

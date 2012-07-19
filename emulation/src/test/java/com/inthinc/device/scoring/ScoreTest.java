@@ -43,11 +43,13 @@ public class ScoreTest {
 
 	private ScoresFromCassandra cs;
 
+	private CassandraDB cassandraDB;
+
     public ScoreTest() {
         proxy = new AutomationHessianFactory().getPortalProxy(server);
         imeis = new ConcurrentHashMap<String, Map<String, String>>();
         
-        CassandraDB cassandraDB = new CassandraDB("Iridium Archive", "note", "10.0.35.40:9160", 10, false);
+        cassandraDB = new CassandraDB("Iridium Archive", "note", "10.0.35.40:9160", 10, false);
 
         cs = new ScoresFromCassandra();
         
@@ -65,8 +67,6 @@ public class ScoreTest {
             imeis.put(value[0], elements);
         }
         
-
-        cassandraDB.shutdown();
     }
 
     private void writeValues() {
@@ -147,8 +147,9 @@ public class ScoreTest {
         for (Map.Entry<String, Map<String, String>> entry : imeis.entrySet()) {
         	Map<UnitType, Map<String, Double>> ourScore = getSevenDayScores(entry.getKey());
             compareToPortal(entry.getKey(), ourScore);
-            cassandraScores(entry.getKey(), ourScore, agg);
+            cassandraScores(entry.getKey(), ourScore, start);
         }
+        cassandraDB.shutdown();
     }
     
     private void cassandraScores(String key, Map<UnitType, Map<String, Double>> scores, AutomationCalendar endTime){
@@ -160,16 +161,16 @@ public class ScoreTest {
     	
         cass = cs.getScores(type, ScoringTypes.DAYS, did, startDate, endTime);
         if (compareScores(scores.get(type), cass)){
-            Log.info("Driver scores matched for IMEI=%s", key);
+            Log.info("Driver Cassandra Matches for IMEI=%s", key);
         } else {
-            Log.info("Driver scores did not match for IMEI=%s", key);
+            Log.info("Driver Cassandra doesn't match for IMEI=%s", key);
         }
         
         cass = cs.getScores(type, ScoringTypes.DAYS, vid, startDate, new AutomationCalendar());
         if (compareScores(scores.get(type), cass)){
-            Log.info("Vehicle scores matched for IMEI=%s", key);
+            Log.info("Vehicle Cassandra Matches for IMEI=%s", key);
         } else {
-            Log.info("Driver scores did not match for IMEI=%s", key);
+            Log.info("Vehicke Cassandra doesn't match for IMEI=%s", key);
         }
     }
 
@@ -177,17 +178,17 @@ public class ScoreTest {
         int did = Integer.parseInt(imeis.get(key).get("did"));
         UnitType type = UnitType.DRIVER;
         if (compareScores(scores.get(type), proxy.getDTrendByDTC(did, 0, 1).get(0))){
-            Log.info("Driver scores matched for IMEI=%s", key);
+            Log.info("Driver Hessian Matches for IMEI=%s", key);
         } else {
-            Log.info("Driver scores did not match for IMEI=%s", key);
+            Log.info("Driver Hessian doesn't match for IMEI=%s", key);
         }
         
         int vid = Integer.parseInt(imeis.get(key).get("vid"));
         type = UnitType.VEHICLE;
         if (compareScores(scores.get(type), proxy.getVTrendByVTC(vid, 0, 1).get(0))){
-            Log.info("Vehicle scores matched for IMEI=%s", key);
+            Log.info("Vehicle Hessian Matches for IMEI=%s", key);
         } else {
-            Log.info("Driver scores did not match for IMEI=%s", key);
+            Log.info("Driver Hessian doesn't match for IMEI=%s", key);
         }
     }
 

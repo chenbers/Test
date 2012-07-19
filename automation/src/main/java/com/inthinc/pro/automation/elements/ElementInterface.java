@@ -32,6 +32,8 @@ public interface ElementInterface {
     public void waitForElement(int i);
     public String getAttribute(String attributeToGet);
     public ElementInterface hover();
+    public ElementInterface mouseUp();
+    public ElementInterface mouseDown();
 
     public interface Checkable extends Clickable {
         @Assert(englishName="checked")
