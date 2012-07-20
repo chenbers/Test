@@ -29,34 +29,16 @@
 
 <ui:composition>
 <script type="text/javascript">
-console.log("first.....");
-
-	console.log("second");
 	var timeframeSelector = jQuery('##{context}_form\\:timeframe\\:0\\:#{context}_reportTimeFramePlusRange');
-	console.log("third");
 	var customDateRangeFields = jQuery("#dateRangeTable");
 	customDateRangeFields.hide();
-	console.log("fourth");
-	console.log("fifth");//ONLY getting to here
-    console.log("timeFrameSelector: "+timeframeSelector);
-    console.log("timeFrameSelector.html(): "+timeframeSelector.html());
-    timeframeSelector.append('&lt;option value=&quot;&quot;&gt;<h:outputText value="#{messages.timeFrame_CUSTOM_RANGE}"/>&lt;/option&gt;');
-    console.log("timeFrameSelector.html(): "+timeframeSelector.html());
-    console.log("sixth");
+
 	timeframeSelector.bind('change',function(){
         if(timeframeSelector.children('option:selected').text() == '<h:outputText value="#{messages.timeFrame_CUSTOM_RANGE}"/>')
 			customDateRangeFields.show();
 		else
 			customDateRangeFields.hide();
 	});
-	console.log("seventh");
-/* 	timeframeSelector.bind('change', function() {
-		console.log("got here");
-	    var optionValue = timeframeSelector.val();
-	    console.log("optionValue: "+optionValue);
-	}); */
-	console.log("done");
-	//$('input[id*="timeframe"]')
 </script>
 
 <table border="0" cellspacing="0" cellpadding="6">

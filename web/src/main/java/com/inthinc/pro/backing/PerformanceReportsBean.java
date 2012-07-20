@@ -78,7 +78,7 @@ public class PerformanceReportsBean extends ReportsBean {
 	    //logger.trace(String.format("Loading report into SelectItem[] for category %s", category.name()));
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
-            logger.info(String.format("Evaluating report %s", rt.name()));
+            //logger.trace(String.format("Evaluating report %s", rt.name()));
             if (!rt.isCategory(category)) continue;
             //logger.trace(String.format("Report %s was in category", rt.name()));
             boolean exclude = false;
