@@ -32,7 +32,7 @@
 console.log("first.....");
 
 	console.log("second");
-	var timeframeSelector = jQuery("#performanceReports_form\\:timeframe\\:0\\:performanceReports_reportTimeFrame");
+	var timeframeSelector = jQuery('##{context}_form\\:timeframe\\:0\\:#{context}_reportTimeFramePlusRange');
 	console.log("third");
 	var customDateRangeFields = jQuery("#dateRangeTable");
 	customDateRangeFields.hide();
@@ -44,7 +44,7 @@ console.log("first.....");
     console.log("timeFrameSelector.html(): "+timeframeSelector.html());
     console.log("sixth");
 	timeframeSelector.bind('change',function(){
-		if(timeframeSelector.val() == "")
+        if(timeframeSelector.children('option:selected').text() == '<h:outputText value="#{messages.timeFrame_CUSTOM_RANGE}"/>')
 			customDateRangeFields.show();
 		else
 			customDateRangeFields.hide();
@@ -57,7 +57,21 @@ console.log("first.....");
 	}); */
 	console.log("done");
 	//$('input[id*="timeframe"]')
-	//$("performanceReports_form:timeframe:0:performanceReports_reportTimeFrame")
 </script>
+
+<table border="0" cellspacing="0" cellpadding="6">
+    <tr>
+        <td>
+            <h:outputText value="#{messages.timeFrame_label} " />
+        </td>
+        <td>        
+            <h:selectOneMenu id="#{context}_reportTimeFramePlusRange" value="#{timeFrameSelect.timeFrame}" converter="SimpleBeanConverter" style="height:21px;">
+                <f:selectItems value="#{timeFrameSelect.altTimeFramesPlusRange}"/> 
+            </h:selectOneMenu>
+        </td>
+    </tr>
+</table>
+
+
 </ui:composition>
 </html>
