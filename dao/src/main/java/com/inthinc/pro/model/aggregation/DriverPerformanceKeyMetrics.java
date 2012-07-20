@@ -1,6 +1,5 @@
 package com.inthinc.pro.model.aggregation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,8 +7,6 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.TimeFrame;
-
-
 
 public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformanceKeyMetrics> {
     
@@ -101,7 +98,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
                 color = GREEN;
             else if(scoreToTest > YELLOW_MIN_LIMIT)
                 color = YELLOW;
-            else if(scoreToTest < YELLOW_MIN_LIMIT)
+            else if(scoreToTest <= YELLOW_MIN_LIMIT)
                 color = RED;
         }
         return color;
