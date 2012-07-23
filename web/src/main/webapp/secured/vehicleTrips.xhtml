@@ -26,6 +26,72 @@
 		var showTamperMarkers = true;
 		var ajaxCount = 0;
 		var currentElement;
+        var addressLookup = (function() {
+        	var addresses = {};
+        	var addressElements; //an array of the html elements that need the address after the point is reverse geocoded
+    		var collectAddressElements = function() {
+        		addressElements = [];
+   				jQuery('td[id$="address_column"]').each( function() {
+	   					var addressElement = {
+	   						"element" : this,
+	   						"lat" : jQuery(this).find('*[id$="eventLat"]')[0].value,
+	   						"lng" : jQuery(this).find('*[id$="eventLng"]')[0].value,
+	   						"address" : jQuery(this).find('*[id$="eventAddress"]'),
+	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   					};		
+	   					addressElements.push(addressElement);
+	   				}
+   				)
+   				jQuery('td[id$="end_column"]').each( function() {
+	   					var addressElement = {
+	   						"element" : this,
+	   						"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
+	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
+	   						"address" : jQuery(this).find('*[id$="address"]'),
+	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   					};		
+	   					addressElements.push(addressElement);
+	   				}
+   				)
+    		}
+        	return {
+        		findAddresses : function() {
+        			console.log("findAddresses");
+		    		if (geocoder == null) geocoder = new GClientGeocoder();
+		    		var delay = 250;
+		    		collectAddressElements();
+					var reverseGeocode = function() {
+	        			console.log("reverseGeocode");
+						if (addressElements.length == 0) return;
+						
+						
+						var element = addressElements.shift();
+						
+						if(addresses[element.lat + element.lng]) {
+							console.log("got a cache hit!");
+    			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
+    			        	reverseGeocode();
+						} else {
+							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
+		         				console.log("reverse geo response: " + response.Status.code);
+		         				if (!response) {
+		    			        	element.address[0].innerHTML = element.zoneName[0].value;
+		         				} else if (response.Status.code == 200) {
+		    			        	element.address[0].innerHTML = response.Placemark[0].address;
+		    			        	addresses[element.lat + element.lng] = response.Placemark[0].address;
+		    			        } else if (response.Status.code == 620) {
+		    			        	addressElements.push(element);
+		    			        } else {
+		    			        	element.address[0].innerHTML = element.zoneName[0].value;
+		    			        }
+		    			        reverseGeocode();
+							}) }, delay);
+						}
+					}
+					reverseGeocode();
+        		},
+        	}
+        }());
 		
 		function initMap(lat,lng,zoom)	{
 			portalmap.init();
@@ -128,72 +194,6 @@
 			}
 		}
 
-        var addressLookup = (function() {
-        	var addresses = {};
-        	var addressElements; //an array of the html elements that need the address after the point is reverse geocoded
-    		var collectAddressElements = function() {
-        		addressElements = [];
-   				jQuery('td[id$="address_column"]').each( function() {
-	   					var addressElement = {
-	   						"element" : this,
-	   						"lat" : jQuery(this).find('*[id$="eventLat"]')[0].value,
-	   						"lng" : jQuery(this).find('*[id$="eventLng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="eventAddress"]'),
-	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
-	   					};		
-	   					addressElements.push(addressElement);
-	   				}
-   				)
-   				jQuery('td[id$="end_column"]').each( function() {
-	   					var addressElement = {
-	   						"element" : this,
-	   						"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
-	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="address"]'),
-	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
-	   					};		
-	   					addressElements.push(addressElement);
-	   				}
-   				)
-    		}
-        	return {
-        		findAddresses : function() {
-        			console.log("findAddresses");
-		    		if (geocoder == null) geocoder = new GClientGeocoder();
-		    		var delay = 250;
-		    		collectAddressElements();
-					var reverseGeocode = function() {
-	        			console.log("reverseGeocode");
-						if (addressElements.length == 0) return;
-						
-						
-						var element = addressElements.shift();
-						
-						if(addresses[element.lat + element.lng]) {
-							console.log("got a cache hit!");
-    			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
-    			        	reverseGeocode();
-						} else {
-							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
-		         				console.log("reverse geo response: " + response.Status.code);
-		         				if (!response) {
-		    			        	element.address[0].innerHTML = element.zoneName[0].value;
-		         				} else if (response.Status.code == 200) {
-		    			        	element.address[0].innerHTML = response.Placemark[0].address;
-		    			        	addresses[element.lat + element.lng] = response.Placemark[0].address;
-		    			        } else if (response.Status.code == 620) {
-		    			        	addressElements.push(element);
-		    			        } else {
-		    			        	element.address[0].innerHTML = element.zoneName[0].value;
-		    			        }
-		    			        reverseGeocode();
-							}) }, delay);
-						}
-					}
-					reverseGeocode();
-        		},
-        	}
-        }());
    		
 		</script>
  		<rich:panel id="mapScript">	
