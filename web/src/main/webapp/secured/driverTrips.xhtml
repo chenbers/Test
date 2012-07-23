@@ -704,7 +704,7 @@
                                 
     
                                 <a4j:support event="onRowClick" reRender="tripBubbles,mapScript,selectedEvents,showLastTenForm,selectVehicleForm" 
-                                	oncomplete="showTrips();getAddresses();">
+                                	oncomplete="showTrips();">
                                     <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
                                 </a4j:support>
     
