@@ -1,6 +1,5 @@
 package com.inthinc.pro.model.aggregation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,8 +7,6 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.TimeFrame;
-
-
 
 public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformanceKeyMetrics> {
     
@@ -25,6 +22,10 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private Integer speedingScore;
     private Integer styleScore;
     private Integer seatbeltScore;
+    private Integer timeFrameBasedOverallScore;
+    private Integer timeFrameBasedSpeedingScore;
+   	private Integer timeFrameBasedStyleScore;
+    private Integer timeFrameBasedSeatbeltScore;
     private Integer idleViolationsCount;
     private Integer loIdleViolationsMinutes;
     private Integer hiIdleViolationsMinutes;
@@ -101,7 +102,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
                 color = GREEN;
             else if(scoreToTest > YELLOW_MIN_LIMIT)
                 color = YELLOW;
-            else if(scoreToTest < YELLOW_MIN_LIMIT)
+            else if(scoreToTest <= YELLOW_MIN_LIMIT)
                 color = RED;
         }
         return color;
@@ -190,7 +191,37 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     public void setSeatbeltScore(Integer seatbeltScore) {
         this.seatbeltScore = seatbeltScore;
     }
-    public Integer getLoIdleViolationsMinutes() {
+    public Integer getTimeFrameBasedOverallScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedOverallScore = this.getOverallScore();
+		else
+			this.timeFrameBasedOverallScore = -1;
+		return timeFrameBasedOverallScore;
+	}
+	public Integer getTimeFrameBasedSpeedingScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedSpeedingScore = this.getSpeedingScore();
+		else
+			this.timeFrameBasedSpeedingScore = -1;
+		
+		return timeFrameBasedSpeedingScore;
+	}
+	public Integer getTimeFrameBasedStyleScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedStyleScore = this.getStyleScore();
+		else
+			this.timeFrameBasedStyleScore = -1;
+		
+		return timeFrameBasedStyleScore;
+	}
+	public Integer getTimeFrameBasedSeatbeltScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedSeatbeltScore = this.getSeatbeltScore();
+		else
+			this.timeFrameBasedSeatbeltScore = -1;		
+		return timeFrameBasedSeatbeltScore;
+	}
+	public Integer getLoIdleViolationsMinutes() {
         return loIdleViolationsMinutes;
     }
     public void setLoIdleViolationsMinutes(Integer loIdleViolationsMinutes) {

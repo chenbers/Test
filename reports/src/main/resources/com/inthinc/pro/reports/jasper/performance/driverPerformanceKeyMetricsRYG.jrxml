@@ -127,10 +127,10 @@
     <field name="timeFrame" class="com.inthinc.pro.model.TimeFrame"/>
     <field name="interval" class="org.joda.time.Interval"/>
     <field name="totalMiles" class="java.lang.Integer"/>
-    <field name="overallScore" class="java.lang.Integer"/>
-    <field name="speedingScore" class="java.lang.Integer"/>
-    <field name="styleScore" class="java.lang.Integer"/>
-    <field name="seatbeltScore" class="java.lang.Integer"/>
+    <field name="timeFrameBasedOverallScore" class="java.lang.Integer"/>
+    <field name="timeFrameBasedSpeedingScore" class="java.lang.Integer"/>
+    <field name="timeFrameBasedStyleScore" class="java.lang.Integer"/>
+    <field name="timeFrameBasedSeatbeltScore" class="java.lang.Integer"/>
     <field name="idleViolationsCount" class="java.lang.Integer"/>
     <field name="loIdleViolationsMinutes" class="java.lang.Integer"/>
     <field name="hiIdleViolationsMinutes" class="java.lang.Integer"/>
@@ -264,22 +264,22 @@
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement key="textField-77" style="OverAllScore" mode="Opaque" x="540" y="0" width="50" height="20"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{overallScore},$P{REPORT_LOCALE})]]></textFieldExpression>
+                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{timeFrameBasedOverallScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                 <reportElement key="textField-77" mode="Opaque" x="590" y="0" width="50" height="20" style="SpeedingScore"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{speedingScore},$P{REPORT_LOCALE})]]></textFieldExpression>
+                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{timeFrameBasedSpeedingScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement key="textField-77" mode="Opaque" x="640" y="0" width="50" height="20" style="StyleScore"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{styleScore},$P{REPORT_LOCALE})]]></textFieldExpression>
+                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{timeFrameBasedStyleScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement key="textField-77" mode="Opaque" x="690" y="0" width="50" height="20" forecolor="#000000" style="SeatbeltScore"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{seatbeltScore},$P{REPORT_LOCALE})]]></textFieldExpression>
+                <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{timeFrameBasedSeatbeltScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement key="textField-77" mode="Opaque" x="740" y="0" width="50" height="20" style="IdlingViolations"/>
