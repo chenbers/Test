@@ -99,49 +99,55 @@ public class ReportParams implements Cloneable {
     }
 
     public String getErrorMsg() {
-        
+        String badDates = "";
         if (reportGroup == null)
             return MessageUtil.getMessageString("reportParams_noReportSelected",getLocale());
         
         for (CriteriaType criteriaType : reportGroup.getCriterias()) {
-            if (criteriaType == CriteriaType.TIMEFRAME) {
-                if (!(getDateRange() != null && getDateRange().getBadDates() == null))
-                    return getDateRange().getBadDates();
+            if (criteriaType == CriteriaType.TIMEFRAME || criteriaType == CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE) {
+                if (!(getDateRange() != null && getDateRange().getBadDates() == null)){
+                    badDates = getDateRange().getBadDates()+" ";
+                }
+                if(criteriaType == CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE){
+                    if(getDateRange() != null && getDateRange().isMoreThanOneYear())
+                        badDates += MessageUtil.getMessageString("dateRange_moreThanOneYear",getLocale());
+                }
             }
         }
         if (reportGroup.getEntityType() == EntityType.ENTITY_DRIVER && getDriverID() == null) 
-            return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale());
+            return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale())+" "+badDates;
         
         if ( ( reportGroup.getEntityType() == EntityType.ENTITY_GROUP 
                || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_AND_EXPIRED 
               )
               && getGroupID() == null) 
-            return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
+            return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
         
         if ( (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST 
               || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_AND_IFTA
               ) 
               && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0)
            ) 
-            return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
+            return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
         
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
             if (getParamType() == null || getParamType() == ReportParamType.NONE)
-                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale());
+                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale())+" "+badDates;
             else if (getParamType() == ReportParamType.DRIVER && getDriverID() == null)
-                    return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale());
+                return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale())+" "+badDates;
             else if (getParamType() == ReportParamType.GROUPS && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0))
-                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
+                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
         }
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_OR_DRIVER) {
             if (getParamType() == null || getParamType() == ReportParamType.NONE)
-                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale());
+                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale())+" "+badDates;
             else if (getParamType() == ReportParamType.DRIVER && getDriverID() == null)
-                    return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale());
+                return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale())+" "+badDates;
             else if (getParamType() == ReportParamType.GROUPS && getGroupID() == null)
-                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale());
+                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
         }
-        
+        if(badDates != null && !badDates.isEmpty())
+            return badDates;
         return null;
     }
     
