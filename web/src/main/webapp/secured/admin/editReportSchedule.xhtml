@@ -247,7 +247,7 @@
 										</td>
 									</tr>
 								</h:outputText>
-								<h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT'}">
+								<h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT'  ||  criteria eq 'TIMEFRAME_ALT_PLUS_CUSTOM_RANGE'}">
 									<tr>
 										<td width="115" valign="top">
 											<h:outputText value="#{messages.reportSchedule_daysReported}"/>
