@@ -12,7 +12,10 @@
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
 	
 	<script language="javascript" type="text/javascript">
-
+	    jQuery().ready(function() {      
+			onStopTabSelectionComplete();
+			addressLookup.findAddresses();
+	    });
 		function onStopTabSelectionComplete(){								
 			initStopTimeFrameChangeListener();
 		}
@@ -39,7 +42,7 @@
             			"element" : this,
 						"lat" : jQuery(this).find('*[id$="latStart"]')[0].value,
    						"lng" : jQuery(this).find('*[id$="lngStart"]')[0].value,
-   						"address" : jQuery(this).find('*[id$="addressStart"]'),
+   						"address" : jQuery(this).find('*[id$="addressStart"]')
 					};
    					addressElements.push(addressElement);
     	    	})
@@ -49,7 +52,7 @@
 	            			"element" : this,
 							"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
 	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="address"]'),
+	   						"address" : jQuery(this).find('*[id$="address"]')
 						};
 	   					addressElements.push(addressElement);
     	    	})
@@ -410,12 +413,6 @@
 		  
 	    </a4j:outputPanel>
 	     
-    	<script language="javascript" type="text/javascript">
-    		jQuery(function(){
-    			onStopTabSelectionComplete();
-    			addressLookup.findAddresses();
-			});    				
-    	</script>
 
     </rich:tab>
  </ui:composition>
