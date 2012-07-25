@@ -12,7 +12,7 @@
     <import value="net.sf.jasperreports.engine.*"/>
     <import value="java.util.*"/>
     <import value="net.sf.jasperreports.engine.data.*"/>
-    <style name="RYGNormal" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" forecolor="#000000"/>
+    <style name="RYGNormal"  forecolor="#000000"/>
     <style name="OverAllScore" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("green"))]]></conditionExpression>
@@ -277,7 +277,7 @@
                 <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{timeFrameBasedStyleScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement key="textField-77" mode="Opaque" x="690" y="0" width="50" height="20" forecolor="#000000" style="SeatbeltScore"/>
+                <reportElement key="textField-77" mode="Opaque" x="690" y="0" width="50" height="20" style="SeatbeltScore"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                 <textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{timeFrameBasedSeatbeltScore},$P{REPORT_LOCALE})]]></textFieldExpression>
             </textField>
