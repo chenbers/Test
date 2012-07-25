@@ -327,9 +327,14 @@ public class EmailReportJob extends QuartzJobBean {
             reportCriteria.setMeasurementType(person.getMeasurementType());
             reportCriteria.setFuelEfficiencyType(person.getFuelEfficiencyType());
             reportCriteria.setTimeZone(person.getTimeZone());
+            logger.error("reportCriteria.getReport(): "+reportCriteria.getReport());
+            logger.error("reportCriteria.getReport().getPrettyTemplate(): "+reportCriteria.getReport().getPrettyTemplate());
+            logger.error("formatType: "+formatType);
             
             if (reportCriteria.getReport().getPrettyTemplate() == null)
                 formatType = FormatType.EXCEL;
+            
+            logger.error("formatType: "+formatType);
         }
         Report report = reportCreator.getReport(reportCriteriaList);
         
