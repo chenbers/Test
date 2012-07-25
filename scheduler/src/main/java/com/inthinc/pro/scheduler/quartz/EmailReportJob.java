@@ -318,6 +318,7 @@ public class EmailReportJob extends QuartzJobBean {
     }
 
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
+        logger.error("private void emailReport(ReportSchedule "+reportSchedule+", Person "+person+", List<ReportCriteria> "+reportCriteriaList+", Person "+owner+")");
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         for (ReportCriteria reportCriteria : reportCriteriaList) {
@@ -327,6 +328,7 @@ public class EmailReportJob extends QuartzJobBean {
             reportCriteria.setMeasurementType(person.getMeasurementType());
             reportCriteria.setFuelEfficiencyType(person.getFuelEfficiencyType());
             reportCriteria.setTimeZone(person.getTimeZone());
+            logger.error("reportCriteria: "+reportCriteria);
             logger.error("reportCriteria.getReport(): "+reportCriteria.getReport());
             logger.error("reportCriteria.getReport().getPrettyTemplate(): "+reportCriteria.getReport().getPrettyTemplate());
             logger.error("formatType: "+formatType);
@@ -336,6 +338,8 @@ public class EmailReportJob extends QuartzJobBean {
             
             logger.error("formatType: "+formatType);
         }
+        logger.error("reportCriteriaList: "+reportCriteriaList);
+        logger.error("reportCriteriaList.size: "+reportCriteriaList.size());
         Report report = reportCreator.getReport(reportCriteriaList);
         
         //Create the subject/message for emails sent to group managers.
