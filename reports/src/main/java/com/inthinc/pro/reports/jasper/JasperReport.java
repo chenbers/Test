@@ -118,7 +118,6 @@ public class JasperReport implements Report
         {
             // We want to know why the report isn't sent but because this is used in the scheduler, we don't want to push it up.
             logger.error("Could not send out the report",e);
-            logger.error("public void exportReportToEmail(String "+email+", FormatType "+formatType+", String "+noReplyEmailAddress+")");
         }
     }
 
