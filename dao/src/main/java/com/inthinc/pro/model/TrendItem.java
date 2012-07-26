@@ -33,4 +33,9 @@ public class TrendItem  extends ScoreItem {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	public String toString()
+	{
+		return "Date: " + date + " score: " + getScore();
+	}
 }

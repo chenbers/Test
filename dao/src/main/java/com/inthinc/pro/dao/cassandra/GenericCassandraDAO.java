@@ -61,7 +61,9 @@ public abstract class GenericCassandraDAO  implements Serializable {
 	
 	final static String ATTRIBS_COL = "a"; 
 	final static String RAW_COL = "r"; 
-	final static String DRIVERID_COL = "d"; 
+	final static String DRIVERID_COL = "dr"; 
+	final static String DEVICEID_COL = "d"; 
+	final static String VEHICLEID_COL = "v"; 
 	final static String FORGIVEN_COL = "f"; 
 	final static String METHOD_COL = "m"; 
     

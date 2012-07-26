@@ -1,19 +1,17 @@
 package com.inthinc.pro.dao.cassandra;
 
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -34,6 +32,7 @@ import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
@@ -43,6 +42,7 @@ import com.inthinc.pro.model.SpeedPercentItem;
 import com.inthinc.pro.model.TrendItem;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.scoring.ScoringFormulas;
 
 import me.prettyprint.hector.api.beans.Composite;
@@ -54,83 +54,11 @@ import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.MultigetSliceCounterQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 
-public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
+public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreDAO
 {
-
-	//COLUMN FAMILY NAMES
-	public final static String AGGDAY_CF = "agg";
-	public final static String VEHICLEAGGINDEX_CF = "vehicleAggIndex";
-	public final static String DRIVERAGGINDEX_CF = "driverAggIndex";
-	public final static String AGGDRIVER_CF = "aggDriver";
-	public final static String AGGVEHICLE_CF = "aggVehicle";
-	public final static String AGGDRIVERMONTH_CF = "aggDriverMonth";
-	public final static String AGGVEHICLEMONTH_CF = "aggVehicleMonth";
-	public final static String AGGDRIVERGROUP_CF = "aggDriverGroup";
-	public final static String AGGDRIVERGROUPMONTH_CF = "aggDriverGroupMonth";
-
-	//COLUMN NAMES
-	public static final String DRIVETIME = "driveTime";
-	public static final String SPEEDPENALTY1 = "speedPenalty1";
-	public static final String SPEEDPENALTY2 = "speedPenalty2";
-	public static final String SPEEDPENALTY3 = "speedPenalty3";
-	public static final String SPEEDPENALTY4 = "speedPenalty4";
-	public static final String SPEEDPENALTY5 = "speedPenalty5";
-	public static final String SPEEDEVENTS1 = "speedEvents1";
-	public static final String SPEEDEVENTS2 = "speedEvents2";
-	public static final String SPEEDEVENTS3 = "speedEvents3";
-	public static final String SPEEDEVENTS4 = "speedEvents4";
-	public static final String SPEEDEVENTS5 = "speedEvents5";
-	public static final String SPEEDODOMETER1 = "speedOdometer1";
-	public static final String SPEEDODOMETER2 = "speedOdometer2";
-	public static final String SPEEDODOMETER3 = "speedOdometer3";
-	public static final String SPEEDODOMETER4 = "speedOdometer4";
-	public static final String SPEEDODOMETER5 = "speedOdometer5";
-
-	public static final String SPEEDEVENTS_1TO7_OVER = "speedEvents1To7MphOver";
-	public static final String SPEEDEVENTS_8TO14_OVER = "speedEvents8To14MphOver";
-	public static final String SPEEDEVENTS_15PLUS_OVER = "speedEvents15PlusMphOver";
-	public static final String SPEEDEVENTS_OVER_80 = "speedEventsOver80Mph";
-
-	public static final String SPEEDOVER = "speedOver";
-	public static final String SPEEDCOACHING1 = "speedCoaching1";	
-	public static final String SPEEDCOACHING2 = "speedCoaching2";	
-	public static final String SPEEDCOACHING3 = "speedCoaching3";	
-	public static final String SPEEDCOACHING4 = "speedCoaching4";	
-	public static final String SPEEDCOACHING5 = "speedCoaching5";	
-	public static final String SEATBELTPENALTY = "seatbeltPenalty";
-	public static final String SEATBELTEVENTS = "seatbeltEvents";
-	public static final String IDLELO = "idleLo";
-	public static final String IDLELOEVENTS = "idleLoEvents";
-	public static final String IDLEHI = "idleHi";
-	public static final String IDLEHIEVENTS = "idleHiEvents";
-	public static final String CRASHEVENTS = "crashEvents";
-	public static final String RPMEVENTS = "rpmEvents";
-	public static final String AGGRESSIVEBRAKEPENALTY = "aggressiveBrakePenalty";
-	public static final String AGGRESSIVEBRAKEEVENTS = "aggressiveBrakeEvents";
-	public static final String AGGRESSIVEACCELPENALTY = "aggressiveAccelPenalty";
-	public static final String AGGRESSIVEACCELEVENTS = "aggressiveAccelEvents";
-	public static final String AGGRESSIVELEFTPENALTY = "aggressiveLeftPenalty";
-	public static final String AGGRESSIVELEFTEVENTS = "aggressiveLeftEvents";
-	public static final String AGGRESSIVERIGHTPENALTY = "aggressiveRightPenalty";
-	public static final String AGGRESSIVERIGHTEVENTS = "aggressiveRightEvents";
-	public static final String AGGRESSIVEBUMPPENALTY = "aggressiveBumpPenalty";
-	public static final String AGGRESSIVEBUMPEVENTS = "aggressiveBumpEvents";
-	public static final String EFFICIENCYPENALTY = "efficiencyPenalty";
-	public static final String PENALTY = "penalty";
-	public final static String ODOMETER = "odometer";
-	public final static String ODOMETER6 = "odometer6";
-	public final static String MPGODOMETER = "mpgOdometer";	
-	public final static String MPGGAL = "mpgGal";
-	public final static String EMUFEATUREMASK = "emuFeatureMask";
-
-	
-	
 	private static final Logger logger = Logger.getLogger(ScoreCassandraDAO.class);
     private static final Integer NO_SCORE = -1;
 
-    private GroupDAO groupDAO;
-    private VehicleDAO vehicleDAO;
-    private DriverDAO driverDAO;
     
     
     public static void main(String[] args)
@@ -166,39 +94,13 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 	    trip = dao.getLastTripForDriver(66462);
 		System.out.println("Trip: " + trip);
 */    	
-    	List<DriverScore> driverScoreList = dao.getSortedDriverScoreList(5260, Duration.DAYS);    	
+//    	List<DriverScore> driverScoreList = dao.getSortedDriverScoreList(5260, Duration.DAYS);    	
 
 //    	List<TrendItem> trendItemList = dao.getTrendScores(66475, EntityType.ENTITY_DRIVER, Duration.DAYS);
 
 	    dao.shutdown();
     }
     
-
-    public GroupDAO getGroupDAO() {
-		return groupDAO;
-	}
-
-    public void setGroupDAO(GroupDAO groupDAO) {
-		this.groupDAO = groupDAO;
-	}
-    
-
-	public VehicleDAO getVehicleDAO() {
-		return vehicleDAO;
-	}
-
-	public void setVehicleDAO(VehicleDAO vehicleDAO) {
-		this.vehicleDAO = vehicleDAO;
-	}
-
-	public DriverDAO getDriverDAO() {
-		return driverDAO;
-	}
-
-	public void setDriverDAO(DriverDAO driverDAO) {
-		this.driverDAO = driverDAO;
-	}
-
     
 	@Override
 	public ScoreableEntity findByID(Integer id) {
@@ -221,7 +123,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 	}
     
     @Override
-    public List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration)
+    public List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration, GroupHierarchy gh)
     {
     	/* try
         {
@@ -244,18 +146,19 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
             return Collections.emptyList();
         }
         */
-        
+
+    	logger.debug("getSortedDriverScoreList groupID: " + groupID);
         List<DriverScore> scoreList = new ArrayList<DriverScore>();
-        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
         String endDate = getToday(TimeZone.getDefault()); //TO DO: set correct timezone
         for (Driver driver : driverList)
         {
-        	Vehicle vehicle = vehicleDAO.findByDriverID(driver.getDriverID());
+        	Vehicle vehicle = getVehicleDAO().findByDriverID(driver.getDriverID());
         	
 	        List<Composite> rowKeys = createDateIDKeys(endDate, driver.getDriverID(), duration.getCode(), 1); 
 	
 	        CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverAggCF(duration.getCode()), rowKeys);
-	        Map<String, Map<String, Long>> driverMap = summarizeByID(rows);
+	        Map<String, Map<String, Long>> driverMap = summarizeByID(rows, 1);
 	        
 	        for (Map.Entry<String, Map<String, Long>> entry : driverMap.entrySet())
 	        {
@@ -275,8 +178,9 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 
     
     @Override
-    public ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration, ScoreType scoreType)
+    public ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getAverageScoreByType groupID: " + groupID);
 /*        try
         {
 
@@ -303,38 +207,42 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
     	}
 
         ScoreableEntity scoreableEntity = null;
-        List<Integer> groupIDList = new ArrayList<Integer>();
-        groupIDList.add(groupID);
-        groupIDList.addAll(getSubgroups(groupID));
+        List<Integer> groupIDList = gh.getGroupIDList(groupID);
+//        groupIDList.add(groupID);
+//        groupIDList.addAll(getSubgroups(groupID));
 
         List<Composite> rowKeys = new ArrayList<Composite>(); 
         for (Integer groupId : groupIDList)
-        	rowKeys.addAll(createDateIDKeys(getToday(TimeZone.getDefault()), groupId, binSize, 1));
+        	rowKeys.addAll(createDateIDKeys(getToday(TimeZone.getDefault()), groupId, binSize, duration.getDvqCount()));
         	
         CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverGroupAggCF(duration.getCode()), rowKeys);
-        Map<String, Map<String, Long>> scoreMap = summarizeByID(rows);
+    	logger.debug("getAverageScoreByType row count: " + rows.getCount());
+        Map<String, Map<String, Long>> scoreMap = summarize(rows, 1);
+    	logger.debug("getAverageScoreByType scoreMap: " + scoreMap);
         
         for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet())
         {
             scoreableEntity = new ScoreableEntity();
         	Map<String, Long> columnMap = entry.getValue();
-            scoreableEntity.setEntityID(groupID);
+
+        	logger.debug("getAverageScoreByType columnMap: " + columnMap);
+            
+        	scoreableEntity.setEntityID(groupID);
             scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
             scoreableEntity.setScoreType(scoreType);
             
             
             scoreableEntity.setScore(getResultForScoreType(scoreType, columnMap));
             scoreableEntity.setDate(new Date());
-            
-            break;
         }
     	
     	return scoreableEntity;    	
     }
 
     @Override
-    public ScoreableEntity getSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
+    public ScoreableEntity getSummaryScore(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getSummaryScore groupID: " + groupID);
 /*    	
       	Integer binSize = duration.getAggregationBinSize();
     	if (duration.equals(Duration.DAYS)) {
@@ -363,12 +271,13 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
         }
         return null;
 */      
-    	return getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL);    	//Duration should be set to either one or one month.  That's why we are returning from here a ScoreableEntity rather than List<ScoreableEntity> 
+    	return getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL, gh);    	//Duration should be set to either one or one month.  That's why we are returning from here a ScoreableEntity rather than List<ScoreableEntity> 
     }
     
     @Override
-    public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
+    public List<ScoreableEntity> getScores(Integer topGroupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getScores groupID: " + topGroupID);
 /*
     	try
         {
@@ -412,26 +321,39 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
     
     	
         List<ScoreableEntity> scoreableEntityList = new ArrayList<ScoreableEntity>();
-        List<Integer> groupIDList = new ArrayList<Integer>();
-//        groupIDList.add(groupID);
-        groupIDList.addAll(getSubgroups(groupID));
-
+        List<Integer> groupIDList = gh.getGroupIDList(topGroupID);
+        
+       
         List<Composite> rowKeys = new ArrayList<Composite>(); 
         for (Integer groupId : groupIDList)
-        	rowKeys.addAll(createDateIDKeys(getToday(TimeZone.getDefault()), groupId, binSize, 1));
+        {
+        	if (groupId.intValue() != topGroupID.intValue())
+        	{
+	        	logger.debug("groupId: " + groupId);
+	        	rowKeys.addAll(createDateIDKeys(getToday(TimeZone.getDefault()), groupId, binSize, duration.getDvqCount()));
+        	}
+        }
         	
+    	logger.debug("rowKeys: " + rowKeys);
+        
         CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverGroupAggCF(binSize), rowKeys);
-        Map<String, Map<String, Long>> scoreMap = summarizeByID(rows);
+    	logger.debug("rows: " + rows.getCount());
+        Map<String, Map<String, Long>> scoreMap = summarizeByID(rows, groupIDList.size());
+    	logger.debug("scoreMape: " + scoreMap);
         
         Date currentDate = new Date();
         for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet())
         {
         	ScoreableEntity scoreableEntity = new ScoreableEntity();
         	Map<String, Long> columnMap = entry.getValue();
-            scoreableEntity.setEntityID(Integer.parseInt(entry.getKey()));
+        	int id = Integer.parseInt(entry.getKey());
+            scoreableEntity.setEntityID(id);
             scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
             scoreableEntity.setScoreType(scoreType);
             
+            String groupName = gh.getGroup(id).getName();
+        	logger.debug("getTrendSummaryScore group: " + id + " " + groupName);
+            scoreableEntity.setIdentifier((groupName == null || groupName.isEmpty()) ? "unknown" : groupName);
             
             scoreableEntity.setScore(getResultForScoreType(scoreType, columnMap));
             scoreableEntity.setDate(currentDate);
@@ -443,14 +365,17 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
     
     @Override
 	//NOT USED
-    public ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
+    public ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
-    	return this.getAverageScoreByType(groupID, duration, scoreType);
+    	logger.debug("getTrendSummaryScore groupID: " + groupID);
+
+    	return this.getAverageScoreByType(groupID, duration, scoreType, gh);
     }
 
     @Override
-    public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration)
+    public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer topGroupID, Duration duration, GroupHierarchy gh)
     {
+    	logger.debug("getTrendScores groupID: " + topGroupID);
 /*
         try
         {
@@ -494,63 +419,73 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
     		binSize = Duration.BINSIZE_7_DAY;
 
     	Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
-		List<Integer> groupIDList = new ArrayList<Integer>();
-		//	        groupIDList.add(groupID);
-	    groupIDList.addAll(getSubgroups(groupID));
+        List<Integer> groupIDList = gh.getGroupIDList(topGroupID);
 	
 	    List<Composite> rowKeys = new ArrayList<Composite>(); 
 	    for (Integer groupId : groupIDList)
 	    	rowKeys.addAll(createDateIDKeys(getToday(TimeZone.getDefault()), groupId, binSize, duration.getDvqCount()));
+ logger.debug("rowKeys: " + rowKeys);
 	    	
 	    CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverGroupAggCF(binSize), rowKeys);
+logger.debug("row returned: " + rows.getCount());
 	
 	    //Calculate score tends for top group (District)
-	    Map<String, Map<String, Long>> scoreMap = (binSize == Duration.BINSIZE_1_MONTH) ? summarizeByDate(rows) : summarizeByWeek(rows, getDateStringfromDate(new Date()));
-		List<ScoreableEntity> scoreableEntityList = new ArrayList<ScoreableEntity>();
+	    Map<String, Map<String, Long>> scoreMap = (binSize == Duration.BINSIZE_1_MONTH) ? summarizeByDate(rows, duration.getDvqCount()) : summarizeByWeek(rows, duration.getDvqCount());
+logger.debug("scoreMap: " + scoreMap);
+	    
+	    List<ScoreableEntity> scoreableEntityList = new ArrayList<ScoreableEntity>();
 	    for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet())
 	    {
 	    	ScoreableEntity scoreableEntity = new ScoreableEntity();
 	    	Map<String, Long> columnMap = entry.getValue();
-	        scoreableEntity.setEntityID(groupID);
+	        scoreableEntity.setEntityID(topGroupID);
 	        scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
 	        scoreableEntity.setScoreType(ScoreType.SCORE_OVERALL);
-	        
-	        
-	        scoreableEntity.setScore(getResultForScoreType(ScoreType.SCORE_OVERALL, columnMap));
-	        scoreableEntity.setDate(getDatefromString(entry.getKey(), TimeZone.getDefault()));
+	        scoreableEntity.setScore((columnMap.size() == 0) ? -1 : getResultForScoreType(ScoreType.SCORE_OVERALL, columnMap));
+	        Date date = getDatefromString(entry.getKey());
+	        logger.debug("Date: " + date);
+	        scoreableEntity.setDate(date);
 	        scoreableEntityList.add(scoreableEntity);
 	    }
-	    returnMap.put(groupID, scoreableEntityList);
-	    
+	    returnMap.put(topGroupID, scoreableEntityList);
+        logger.debug("topGroupID scoreableEntityList.size(): " + returnMap.get(topGroupID).size());
+
 	    //Calculate score tends for each subgroup (Team)
-	    scoreMap = (binSize == Duration.BINSIZE_1_MONTH) ? summarizeByDateID(rows) : summarizeByWeekID(rows, getDateStringfromDate(new Date()));
+	    scoreMap = (binSize == Duration.BINSIZE_1_MONTH) ? summarizeByDateID(rows, duration.getDvqCount()) : summarizeByWeekID(rows, duration.getDvqCount());
+	    scoreMap.remove(String.valueOf(topGroupID));
 	    for (int currentGroupId : groupIDList)
 	    {
-			scoreableEntityList = new ArrayList<ScoreableEntity>();
-	        for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet())
-	        {
-	        	int subGroupId = Integer.parseInt(getKeyPart(entry.getKey(), 2));
-	        	if (currentGroupId == subGroupId)
-	        	{
-		        	ScoreableEntity scoreableEntity = new ScoreableEntity();
-		        	Map<String, Long> columnMap = entry.getValue();
-		            scoreableEntity.setEntityID(subGroupId);
-		            scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
-		            scoreableEntity.setScoreType(ScoreType.SCORE_OVERALL);
-		            scoreableEntity.setScore(getResultForScoreType(ScoreType.SCORE_OVERALL, columnMap));
-		            scoreableEntity.setDate(getDatefromString(entry.getKey(), TimeZone.getDefault()));
-		            scoreableEntityList.add(scoreableEntity);
-	        	}
-	        }
-	        returnMap.put(groupID, scoreableEntityList);
+	    	if (currentGroupId != topGroupID)
+	    	{
+				scoreableEntityList = new ArrayList<ScoreableEntity>();
+		        for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet())
+		        {
+		        	int subGroupId = Integer.parseInt(getKeyPart(entry.getKey(), 2));
+		        	if (currentGroupId == subGroupId)
+		        	{
+			        	ScoreableEntity scoreableEntity = new ScoreableEntity();
+			        	Map<String, Long> columnMap = entry.getValue();
+			            scoreableEntity.setEntityID(subGroupId);
+			            scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
+			            scoreableEntity.setScoreType(ScoreType.SCORE_OVERALL);
+			            scoreableEntity.setScore((columnMap.size() == 0) ? -1 : getResultForScoreType(ScoreType.SCORE_OVERALL, columnMap));
+			            scoreableEntity.setDate(getDatefromString(entry.getKey()));
+			            scoreableEntityList.add(scoreableEntity);
+		        	}
+		        }
+		        returnMap.put(currentGroupId, scoreableEntityList);
+	    	}
 	    }
-    	return returnMap;
+        logger.debug("topGroupID scoreableEntityList.size()2: " + returnMap.get(topGroupID).size());
+
+        return returnMap;
     }
     	
 
       @Override
-    public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType)
+    public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+      	logger.debug("getScoreBreakdown groupID: " + groupID + " Duration: " + duration);
 		//Create quintileList
 		List<ScoreableEntity> quintileScoreList = new ArrayList<ScoreableEntity>();
 		for (int i = 0; i < 5; i++)
@@ -559,20 +494,28 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 		    entity.setEntityID(groupID);
 		    entity.setEntityType(EntityType.ENTITY_GROUP);
 		    entity.setScoreType(scoreType);
+		    entity.setScore(0);
 		    quintileScoreList.add(entity);
 		}
 
-        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
+        logger.debug("driverList.size(): " + driverList.size());
         for (Driver driver : driverList)
         {
-	        List<Composite> rowKeys = createDateIDKeys(getToday(TimeZone.getDefault()), driver.getDriverID(), duration.getCode(), 1); //TO DO: set correct timezone
+          	logger.debug("getScoreBreakdown driverID: " + driver.getDriverID());
+
+          	List<Composite> rowKeys = createDateIDKeys(getToday(TimeZone.getTimeZone("UTC")), driver.getDriverID(), duration.getDvqCode(), duration.getDvqCount()); //TO DO: set correct timezone
+          	logger.debug("getScoreBreakdown rowKeys: " + rowKeys);
 	
 	        CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverAggCF(duration.getCode()), rowKeys);
-	        Map<String, Map<String, Long>> driverMap = summarizeByID(rows);
+	        Map<String, Map<String, Long>> driverMap = summarizeByID(rows, 1);
 	        for (Map.Entry<String, Map<String, Long>> entry : driverMap.entrySet())
 	        {
+	          	logger.debug("getScoreBreakdownkey value: " + entry.getKey() + " " + entry.getValue());
 	        	int quintile = getScoreQuintile(getResultForScoreType(scoreType, entry.getValue()));
+	          	logger.debug("quintile: " + quintile);
 	        	ScoreableEntity entity = quintileScoreList.get(quintile);
+	          	logger.debug("quintile entity: " + entity);
 	        	entity.setScore(entity.getScore()+1);
 	        }
         }
@@ -580,8 +523,9 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
     }
 	
   	@Override
-    public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType)
+    public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+      	logger.debug("getScoreBreakdownByType groupID: " + groupID);
         try
         {
 
@@ -593,7 +537,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
                 ScoreTypeBreakdown scoreTypeBreakdown = new ScoreTypeBreakdown();
 
                 scoreTypeBreakdown.setScoreType(subType);
-                scoreTypeBreakdown.setPercentageList(getScoreBreakdown(groupID, (subType.getDuration() == null) ? duration : subType.getDuration(), subType));
+                scoreTypeBreakdown.setPercentageList(getScoreBreakdown(groupID, (subType.getDuration() == null) ? duration : subType.getDuration(), subType, gh));
                 scoreTypeBreakdownList.add(scoreTypeBreakdown);
             }
             return scoreTypeBreakdownList;
@@ -608,6 +552,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 	@Override
     public List<TrendItem> getTrendCumulative(Integer id, EntityType entityType, Duration duration)
     {
+      	logger.debug("getTrendCumulative ID: " + id);
 /*		
         try
         {
@@ -678,6 +623,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 	@Override
     public List<TrendItem> getTrendScores(Integer id, EntityType entityType, Duration duration)
     {
+      	logger.debug("getTrendScores ID: " + id);
 		/*
         try
         {
@@ -729,55 +675,17 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 
     }
 
-    private List<TrendItem> getTrendForAsset(Integer id, EntityType entityType, Integer binSize, Integer count)
-    {
-    	List<TrendItem> trendItemList = new ArrayList<TrendItem>();
-    	
-        List<Composite> rowKeys = createDateIDKeys(getToday(TimeZone.getDefault()), id, binSize, count); //TO DO: set correct timezone
-
-        String cf = (entityType.equals(EntityType.ENTITY_DRIVER)) ? getDriverAggCF(binSize) : getVehicleAggCF(binSize); 
-        CounterRows<Composite, String> rows = fetchAggsForKeys(cf, rowKeys);
-        Map<String, Map<String, Long>> driverMap = (binSize == Duration.BINSIZE_1_MONTH) ? summarizeByDate(rows) : summarizeByWeekID(rows, getDateStringfromDate(new Date()));;
-        
-        for (Map.Entry<String, Map<String, Long>> entry : driverMap.entrySet())
-        {
-        	Map<String, Long> columnMap = entry.getValue();
-            for (ScoreType scoreType : EnumSet.allOf(ScoreType.class)) {
-            	TrendItem item = new TrendItem();
-                item.setScoreType(scoreType);
-                item.setScore(getResultForScoreType(scoreType, columnMap));
-                item.setDate(getDatefromString(entry.getKey(), TimeZone.getDefault()));
-                if(scoreType == ScoreType.SCORE_SPEEDING_21_30)
-                	item.setDistance(getValue(columnMap,SPEEDODOMETER1));
-                else if(scoreType == ScoreType.SCORE_SPEEDING_31_40)
-                	item.setDistance(getValue(columnMap,SPEEDODOMETER2));
-                else if(scoreType == ScoreType.SCORE_SPEEDING_41_54)
-                	item.setDistance(getValue(columnMap,SPEEDODOMETER3));
-                else if(scoreType == ScoreType.SCORE_SPEEDING_55_64)
-                	item.setDistance(getValue(columnMap,SPEEDODOMETER4));
-                else if(scoreType == ScoreType.SCORE_SPEEDING_65_80)
-                	item.setDistance(getValue(columnMap,SPEEDODOMETER5));
-                else
-                	item.setDistance(getValue(columnMap,ODOMETER6));
-            	trendItemList.add(item);
-        	}
-        }
-        return trendItemList;
-    	
-    }
-
-	
     @Override
     public List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap)
     {
 
         List<VehicleReportItem> vehicleReportItemList = new ArrayList<VehicleReportItem>();
-        List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
+        List<Vehicle> vehicleList = getVehicleDAO().getVehiclesInGroupHierarchy(groupID);
         for (Vehicle vehicle : vehicleList)
         {
 	        List<Composite> rowKeys = createDateIDKeys(getToday(TimeZone.getDefault()), vehicle.getVehicleID(), duration.getDvqCode(), 1); //TO DO: set correct timezone
 	        CounterRows<Composite, String> rows = fetchAggsForKeys(getVehicleAggCF(duration.getDvqCode()), rowKeys);
-	        Map<String, Map<String, Long>> vehicleMap = summarizeByID(rows);
+	        Map<String, Map<String, Long>> vehicleMap = summarizeByID(rows, 1);
     
 	        VehicleReportItem vehicleReportItem = new VehicleReportItem();
         	Group group = groupMap.get(vehicle.getGroupID());
@@ -792,7 +700,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
             if (vehicleMap.size() > 0)
 	        {
             	
-            	Driver driver = driverDAO.findByID(vehicle.getDriverID());
+            	Driver driver = getDriverDAO().findByID(vehicle.getDriverID());
 
                 // May or may not have a driver assigned
                 if (driver != null)
@@ -831,13 +739,13 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
     public List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap)
     {
         List<DriverReportItem> driverReportItemList = new ArrayList<DriverReportItem>();
-        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
         for (Driver driver : driverList)
         {
 	        List<Composite> rowKeys = createDateIDKeys(getToday(TimeZone.getDefault()), driver.getDriverID(), duration.getDvqCode(), 1); //TO DO: set correct timezone
 	
 	        CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverAggCF(duration.getDvqCode()), rowKeys);
-	        Map<String, Map<String, Long>> driverMap = summarizeByID(rows);
+	        Map<String, Map<String, Long>> driverMap = summarizeByID(rows, 1);
         	DriverReportItem driverReportItem = new DriverReportItem();
         	Group group = groupMap.get(driver.getGroupID());
             driverReportItem.setGroupName((group != null) ? group.getName() : "");
@@ -847,7 +755,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
             driverReportItem.setEmployeeID((driver.getPerson() != null) ? driver.getPerson().getEmpid() : "");
 	        if (driverMap.size() > 0)
 	        {
-            	Vehicle vehicle = vehicleDAO.findByDriverID(driver.getDriverID());
+            	Vehicle vehicle = getVehicleDAO().findByDriverID(driver.getDriverID());
 
                 // May or may not have a vehicle assigned
                 if (vehicle != null)
@@ -920,7 +828,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 
         String cf = (entityType.equals(EntityType.ENTITY_DRIVER)) ? getDriverAggCF(duration.getDvqCode()) : getVehicleAggCF(duration.getDvqCode()); 
         CounterRows<Composite, String> rows = fetchAggsForKeys(cf, rowKeys);
-        Map<String, Map<String, Long>> driverMap = summarize(rows);
+        Map<String, Map<String, Long>> driverMap = summarize(rows, 1);
         
         for (Map.Entry<String, Map<String, Long>> entry : driverMap.entrySet())
         {
@@ -937,7 +845,9 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
     }
 
     @Override
-	public CrashSummary getGroupCrashSummaryData(Integer groupID) {
+	public CrashSummary getGroupCrashSummaryData(Integer groupID, GroupHierarchy gh) {
+      	logger.debug("getGroupCrashSummaryData groupID: " + groupID);
+    	
 /*		try {
 			
 	        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getCode());
@@ -1008,7 +918,7 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 	}
 
 	@Override
-	public List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration) {
+	public List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration, GroupHierarchy gh) {
   /*      try
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
@@ -1059,31 +969,43 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 */        
         Date currentDate = new Date();
         List<SpeedPercentItem> speedPercentItemList = new ArrayList<SpeedPercentItem>();
-        List<Integer> groupIDList = new ArrayList<Integer>();
-//        groupIDList.add(groupID);
-        groupIDList.addAll(getSubgroups(groupID));
+        List<Integer> groupIDList = gh.getGroupIDList(groupID);
 
         List<Composite> rowKeys = new ArrayList<Composite>(); 
         for (Integer groupId : groupIDList)
         	rowKeys.addAll(createDateIDKeys(getToday(TimeZone.getDefault()), groupId, duration.getAggregationBinSize(), duration.getDvqCount()));
         	
         CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverGroupAggCF(duration.getAggregationBinSize()), rowKeys);
-        Map<String, Map<String, Long>> scoreMap = (duration.getAggregationBinSize() == Duration.BINSIZE_7_DAY) ? summarizeByWeek(rows, getDateStringfromDate(currentDate)) : summarizeByDate(rows);
+        Map<String, Map<String, Long>> scoreMap = (duration.getAggregationBinSize() == Duration.BINSIZE_7_DAY) ? summarizeByWeek(rows, duration.getDvqCount()) : summarizeByDate(rows, duration.getDvqCount());
+        
+        long totalDistance = 0L;
+        long totalSpeeding = 0L;
         
         for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet())
         {
-        	Date endDate = getDatefromString(entry.getKey(), TimeZone.getDefault());  //TODO fix timezone
+        	Date endDate = getDatefromString(entry.getKey());  //TODO fix timezone
         	Map<String, Long> columnMap = entry.getValue();
         	Long distance = getValue(columnMap,ODOMETER6);
         	Long speeding = getValue(columnMap,SPEEDODOMETER1) + getValue(columnMap,SPEEDODOMETER2) + getValue(columnMap,SPEEDODOMETER3) + getValue(columnMap,SPEEDODOMETER4) + getValue(columnMap,SPEEDODOMETER5);
-       		speedPercentItemList.add(new SpeedPercentItem(distance, speeding, endDate));
+
+        	logger.debug("speeding1: " + getValue(columnMap,SPEEDODOMETER1));
+        	logger.debug("speeding2: " + getValue(columnMap,SPEEDODOMETER2));
+        	logger.debug("speeding3: " + getValue(columnMap,SPEEDODOMETER3));
+        	logger.debug("speeding4: " + getValue(columnMap,SPEEDODOMETER4));
+        	logger.debug("speeding5: " + getValue(columnMap,SPEEDODOMETER5));
+        	
+        	logger.debug("distance: " + distance);
+        	logger.debug("speeding: " + speeding);
+        	speedPercentItemList.add(new SpeedPercentItem(distance, speeding, endDate));
         }
+    	logger.debug("total distance: " + totalDistance);
+    	logger.debug("total speeding: " + totalSpeeding);
         Collections.sort(speedPercentItemList);
         return speedPercentItemList;
 	}
 
 	@Override
-	public List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration) {
+	public List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration, GroupHierarchy gh) {
 /*        try
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
@@ -1134,27 +1056,31 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
-        }
+       
 */
         Date currentDate = new Date();
         List<IdlePercentItem> idlePercentItemList = new ArrayList<IdlePercentItem>();
-        List<Integer> groupIDList = new ArrayList<Integer>();
-//        groupIDList.add(groupID);
-        groupIDList.addAll(getSubgroups(groupID));
-
+        List<Integer> groupIDList = gh.getGroupIDList(groupID);
         List<Composite> rowKeys = new ArrayList<Composite>(); 
         for (Integer groupId : groupIDList)
         	rowKeys.addAll(createDateIDKeys(getToday(TimeZone.getDefault()), groupId, duration.getAggregationBinSize(), duration.getDvqCount()));
         	
-        CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverGroupAggCF(duration.getAggregationBinSize()), rowKeys);
-        Map<String, Map<String, Long>> scoreMap = (duration.getAggregationBinSize() == Duration.BINSIZE_7_DAY) ? summarizeByWeek(rows, getDateStringfromDate(currentDate)) : summarizeByDate(rows);
+
+        String cf = getDriverGroupAggCF(duration.getAggregationBinSize());
+        logger.debug("CF Idle: " + cf);        	
+
+        CounterRows<Composite, String> rows = fetchAggsForKeys(cf, rowKeys);
+        Map<String, Map<String, Long>> scoreMap = (duration.getAggregationBinSize() == Duration.BINSIZE_7_DAY) ? summarizeByWeek(rows, duration.getDvqCount()) : summarizeByDate(rows, duration.getDvqCount());
+
+        logger.debug("scoreMapIdle: " + scoreMap);        	
         
         for (Map.Entry<String, Map<String, Long>> entry : scoreMap.entrySet())
         {
-        	Date endDate = getDatefromString(entry.getKey(), TimeZone.getDefault());  //TODO fix timezone
+        	Date endDate = getDatefromString(entry.getKey());  //TODO fix timezone
         	Map<String, Long> columnMap = entry.getValue();
 
         	Long driveTime = getValue(columnMap,DRIVETIME); 
+logger.debug("driveTime2: " + driveTime);        	
         	Long idleTime = getValue(columnMap,IDLELO) + getValue(columnMap,IDLEHI);
         	Integer numVehicles = 0;  //TODO
         	Integer numEMUVehicles = 0; //TODO
@@ -1167,391 +1093,4 @@ public class ScoreCassandraDAO extends GenericCassandraDAO implements ScoreDAO
 
 
 
-    private Group getGroup(Integer groupID)
-	{
-		Group group = groupDAO.findByID(groupID);
-		return group;
-	}
-
-	private List<Integer> getSubgroups(Integer groupID)
-	{
-		List<Group> groupList = groupDAO.getGroupHierarchy(-1, groupID);
-		List<Integer> groupIDList = new ArrayList<Integer>();  
-		for (Group group : groupList)
-			groupIDList.add(group.getGroupID());
-
-		return groupIDList;
-	}
-
-	private List<Composite> createDateIDKeys(String aggDate, Integer ID, int binSize, int count)
-	{
-		List<Composite> dateIDList = new ArrayList<Composite>();
-		GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance();
-	    int year = Integer.parseInt(aggDate.substring(0,4));
-	    int month = Integer.parseInt(aggDate.substring(5,7));
-	    int day = Integer.parseInt(aggDate.substring(8,10));
-	    cal.set(year, month-1, day, 0, 0, 0);
-
-
-        int period = Duration.getCalendarPeriod(binSize);
-        int amount = -1;
-        switch (binSize)
-        {
-	        case Duration.BINSIZE_1_DAY:
-	        	amount = (1*count)-1;
-	        	break;
-	        case Duration.BINSIZE_7_DAY:
-	        	amount = (7*count)-1;
-	        	break;
-	        case Duration.BINSIZE_30_DAYS:
-	        	amount = (30*count)-1;
-	        	break;
-
-	        case Duration.BINSIZE_1_MONTH:
-	        	amount = (1*count)-1;
-	        	break;
-	        case Duration.BINSIZE_3_MONTHS:
-	        	amount = (3*count)-1;
-	        	break;
-	        case Duration.BINSIZE_6_MONTHS:
-	        	amount = (6*count)-1;
-	        	break;
-	        case Duration.BINSIZE_12_MONTHS:
-	        	amount = (12*count)-1;
-	        	break;
-        }
-
-        
-        if (amount != -1)
-        {
-        	String format = "yyyy-MM-dd";
-        	if (period == Calendar.MONTH)
-        		format = "yyyy-MM";
-        	
-        	SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        	for(; amount >= 0; amount-- )
-        	{
-    			Composite key = new Composite();
-    			key.add(0, dateFormat.format(cal.getTime().getTime()));
-    			key.add(1, ID);
-    			dateIDList.add(key);
-        		cal.add(period, -1);
-        	}
-        	
-        	
-        }
-        return dateIDList;
-	}
-    
-    private CounterRows<Composite, String> fetchAggsForKeys(String AGG_CF, List<Composite> keys)
-    {
-        MultigetSliceCounterQuery<Composite, String> sliceQuery = HFactory.createMultigetSliceCounterQuery(getKeyspace(), compositeSerializer, stringSerializer);
-        
-        sliceQuery.setColumnFamily(AGG_CF);            
-        sliceQuery.setRange("", "", false, 1000);  //get all the columns
-        sliceQuery.setKeys(keys);
-        
-        QueryResult<CounterRows<Composite, String>> result = sliceQuery.execute();
-        CounterRows<Composite, String> rows = result.get();            
-        return rows;
-		
-    }
-    
-    Map<String, Map<String, Long>>  summarizeByID(CounterRows<Composite, String> rows)
-    {
-    	return summarize(rows, false, true, false, "");
-    }
-    
-    Map<String, Map<String, Long>>  summarizeByDate(CounterRows<Composite, String> rows)
-    {
-    	return summarize(rows, true, false, false, "");
-    }
-
-    Map<String, Map<String, Long>>  summarizeByDateID(CounterRows<Composite, String> rows)
-    {
-    	return summarize(rows, true, true, false, "");
-    }
-
-    Map<String, Map<String, Long>>  summarizeByWeekID(CounterRows<Composite, String> rows, String endDate)
-    {
-    	return summarize(rows, true, true, true, endDate);
-    }
-
-    Map<String, Map<String, Long>>  summarizeByWeek(CounterRows<Composite, String> rows, String endDate)
-    {
-    	return summarize(rows, true, false, true, endDate);
-    }
-
-    Map<String, Map<String, Long>>  summarize(CounterRows<Composite, String> rows)
-    {
-    	return summarize(rows, false, false, false, "");
-    }
-
-    private Map<String, Map<String, Long>> summarize(CounterRows<Composite, String> rows, boolean includeAggDate, boolean includeID, boolean bucketByWeek, String endDate)
-    {
-    	//An Aggregate composite rowkey consists of 1.) AggDate (2.) ID of either driver,vehicle,group
-        Map<String, Map<String, Long>>keys2ColumnsMap = new HashMap<String, Map<String, Long>>();
-
-        for (CounterRow<Composite, String> row : rows)
-        {
-        	String key = "";
-        	
-//        	String aggDate = row.getKey().getComponent(0).toString();
-        	String aggDate = stringSerializer.fromByteBuffer((ByteBuffer) row.getKey().get(0));
-
-        	if (bucketByWeek)
-        		aggDate = convertDayToWeek(endDate, aggDate);
-        	
-        	
-        	String id = bigIntegerSerializer.fromByteBuffer((ByteBuffer) row.getKey().get(1)).toString();
-        	
-        	if (includeAggDate)
-        		key += aggDate;
-        	
-        	if (includeID)
-        	{
-        		if (!key.isEmpty())
-        			key += ":";
-        		key += id;
-        	}
-
-
-        	Map<String, Long> columnMap = (Map<String, Long>) keys2ColumnsMap.get(key);
-        	if (columnMap == null)
-        		columnMap = new HashMap<String, Long>();
-
-			CounterSlice<String> columnSlice = row.getColumnSlice();
-        	List<HCounterColumn<String>> columnList = columnSlice.getColumns();
-        	for (HCounterColumn<String> column : columnList)
-        	{
-    			Long value = getValue(columnMap,column.getName());
-    			if (value == null)
-    				value = 0L;
-    			value += column.getValue();
-    			
-    			columnMap.put(column.getName(), value);
-        	}
-			keys2ColumnsMap.put(key, columnMap);
-        }
-        return keys2ColumnsMap;
-    }
-    
-    private Integer getResultForScoreType(ScoreType scoreType, Map<String, Long> columnMap)
-    {
-    	Double score = 0.0;
-    	long totalMiles = getValue(columnMap,ODOMETER6)/100;
-
-    	long speedPenalty = 0;
-    	long stylePenalty = 0;
-    	long seatbeltPenalty = 0;
-    	
-    	switch (scoreType)
-    	{
-    		case SCORE_OVERALL:
-    	    	speedPenalty = getValue(columnMap, SPEEDPENALTY1)+getValue(columnMap, SPEEDPENALTY2)+getValue(columnMap, SPEEDPENALTY3)+getValue(columnMap, SPEEDPENALTY4)+getValue(columnMap, SPEEDPENALTY5);
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVEBRAKEPENALTY)+getValue(columnMap, AGGRESSIVEACCELPENALTY)+getValue(columnMap,AGGRESSIVELEFTPENALTY)+getValue(columnMap,AGGRESSIVERIGHTPENALTY)+getValue(columnMap,AGGRESSIVEBUMPPENALTY);
-    	    	seatbeltPenalty = getValue(columnMap,SEATBELTPENALTY);
-    	    	score = ScoringFormulas.getOverallFromPenalty(totalMiles, convertLong2Double(seatbeltPenalty), convertLong2Double(stylePenalty), convertLong2Double(speedPenalty));
-    	    	break;
-    		case SCORE_SPEEDING:
-    	    	speedPenalty = getValue(columnMap,SPEEDPENALTY1)+getValue(columnMap,SPEEDPENALTY2)+getValue(columnMap,SPEEDPENALTY3)+getValue(columnMap,SPEEDPENALTY4)+getValue(columnMap,SPEEDPENALTY5);
-    	    	score = ScoringFormulas.getSpeedingScore(totalMiles, convertLong2Double(speedPenalty));
-    			break;
-    		case SCORE_SEATBELT:
-    	    	seatbeltPenalty = getValue(columnMap,SEATBELTPENALTY);
-    	    	score = ScoringFormulas.getSeatBeltScore(totalMiles, convertLong2Double(seatbeltPenalty));
-    			break;
-    		case SCORE_DRIVING_STYLE:
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVEBRAKEPENALTY)+getValue(columnMap,AGGRESSIVEACCELPENALTY)+getValue(columnMap,AGGRESSIVELEFTPENALTY)+getValue(columnMap,AGGRESSIVERIGHTPENALTY)+getValue(columnMap,AGGRESSIVEBUMPPENALTY);
-    	    	score = ScoringFormulas.getStyleScore(totalMiles, convertLong2Double(stylePenalty));
-    		case SCORE_COACHING_EVENTS:
-    	    	score = (double)getValue(columnMap,SPEEDCOACHING1)+getValue(columnMap,SPEEDCOACHING2)+getValue(columnMap,SPEEDCOACHING3)+getValue(columnMap,SPEEDCOACHING4)+getValue(columnMap,SPEEDCOACHING5);
-    	    // subTypes of SPEEDING
-    		case SCORE_SPEEDING_21_30:
-    	    	speedPenalty = getValue(columnMap,SPEEDPENALTY1);
-    	    	score = ScoringFormulas.getSpeedingScore(totalMiles, convertLong2Double(speedPenalty));
-    			break;
-    		case SCORE_SPEEDING_31_40:
-    	    	speedPenalty = getValue(columnMap,SPEEDPENALTY2);
-    	    	score = ScoringFormulas.getSpeedingScore(totalMiles, convertLong2Double(speedPenalty));
-    			break;
-    		case SCORE_SPEEDING_41_54:
-    	    	speedPenalty = getValue(columnMap,SPEEDPENALTY3);
-    	    	score = ScoringFormulas.getSpeedingScore(totalMiles, convertLong2Double(speedPenalty));
-    			break;
-    		case SCORE_SPEEDING_55_64:
-    	    	speedPenalty = getValue(columnMap,SPEEDPENALTY4);
-    	    	score = ScoringFormulas.getSpeedingScore(totalMiles, convertLong2Double(speedPenalty));
-    			break;
-    		case SCORE_SPEEDING_65_80:
-    	    	speedPenalty = getValue(columnMap,SPEEDPENALTY5);
-    	    	score = ScoringFormulas.getSpeedingScore(totalMiles, convertLong2Double(speedPenalty));
-    			break;
-    		case SCORE_SEATBELT_30_DAYS:
-    		case SCORE_SEATBELT_3_MONTHS:
-    		case SCORE_SEATBELT_6_MONTHS:
-    		case SCORE_SEATBELT_12_MONTHS:
-    	    // subTypes of DRIVING_STYLE
-    		case SCORE_DRIVING_STYLE_HARD_BRAKE:
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVEBRAKEPENALTY);
-    	    	score = ScoringFormulas.getStyleScore(totalMiles, convertLong2Double(stylePenalty));
-    	    	break;
-    		case SCORE_DRIVING_STYLE_HARD_ACCEL:
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVEACCELPENALTY);
-    	    	score = ScoringFormulas.getStyleScore(totalMiles, convertLong2Double(stylePenalty));
-    	    	break;
-    		case SCORE_DRIVING_STYLE_HARD_TURN:
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVELEFTPENALTY) + getValue(columnMap,AGGRESSIVERIGHTPENALTY);
-    	    	score = ScoringFormulas.getStyleScore(totalMiles, convertLong2Double(stylePenalty));
-    	    	break;
-    		case SCORE_DRIVING_STYLE_HARD_BUMP:
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVEBUMPPENALTY);
-    	    	score = ScoringFormulas.getStyleScore(totalMiles, convertLong2Double(stylePenalty));
-    	    	break;
-    		case SCORE_DRIVING_STYLE_HARD_LTURN:
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVELEFTPENALTY);
-    	    	score = ScoringFormulas.getStyleScore(totalMiles, convertLong2Double(stylePenalty));
-    	    	break;
-    		case SCORE_DRIVING_STYLE_HARD_RTURN:
-    	    	stylePenalty = getValue(columnMap,AGGRESSIVERIGHTPENALTY);
-    	    	score = ScoringFormulas.getStyleScore(totalMiles, convertLong2Double(stylePenalty));
-    	    	break;
-    		
-    	}
-    	return (int) Math.round(score);
-    }
-    
-    private String getKeyPart(String key, int part)
-    {
-    	String keyPart = "";
-    	if (part == 1)
-    		keyPart = key.substring(0, key.indexOf(":") - 1);  
-    	if (part == 2)
-    		keyPart = key.substring(key.indexOf(":") + 1);
-    	
-    	return keyPart;
-    }
-    
-    private Date getEndingDate(String strDate)
-    {
-		//We are converting a Trip Day (UTC) into a Driver Day (Driver TZ)
-	    GregorianCalendar cal = new GregorianCalendar();
-//	    cal.setTimeZone(driverTZ);
-	    int year = Integer.parseInt(strDate.substring(0,4));
-	    int month = Integer.parseInt(strDate.substring(5,7));
-	    int day = (strDate.length() < 8) ? 1 :Integer.parseInt(strDate.substring(8,10));
-	    cal.set(year, month-1, day, 0, 0, 0);
-
-	    if (strDate.length() < 8)
-	    	cal.add(Calendar.DATE, 1);
-	    else
-	    	cal.add(Calendar.MONTH, 1);
-
-	    return cal.getTime();
-    }
-    
-	private double convertLong2Double(long penaltyAsDouble)
-	{
-		return penaltyAsDouble/1000000D;
-	}
-
-
-	private String getDriverAggCF(Integer binSize)
-	{
-	    String aggCF = AGGDRIVER_CF;
-	    if (Duration.getCalendarPeriod(binSize) == Calendar.MONTH)
-	    	aggCF = AGGDRIVERMONTH_CF;
-	    return aggCF;
-	}
-
-	private String getVehicleAggCF(Integer binSize)
-	{
-	    String aggCF = AGGVEHICLE_CF;
-	    if (Duration.getCalendarPeriod(binSize) == Calendar.MONTH)
-	    	aggCF = AGGVEHICLEMONTH_CF;
-	    return aggCF;
-	}
-
-	private String getDriverGroupAggCF(Integer binSize)
-	{
-	    String aggCF = AGGDRIVERGROUP_CF;
-	    if (Duration.getCalendarPeriod(binSize) == Calendar.MONTH)
-	    	aggCF = AGGDRIVERGROUPMONTH_CF;
-	    return aggCF;
-	}
-
-
-	private int getScoreQuintile(int score)
-	{
-	  	if (score >= 41)
-	  		return 4;
-	  	else if (score >= 31)
-	  		return 3;
-	  	else if (score >= 21)
-	  		return 2;
-	  	else if (score >= 11)
-	  		return 1;
-	  	else return 0;
-	}
-
-	private String getToday(TimeZone tz)
-	{
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setTimeZone(tz);
-        return dateFormat.format(new Date());
-	}
-
-	private Date getDatefromString(String strDate, TimeZone tz)
-	{
-		//if passing in a month
-		if (strDate.length() < 8)
-			strDate += "-01";
-			
-	    Calendar cal = new GregorianCalendar();
-	    cal.setTimeZone(tz);
-	    int year = Integer.parseInt(strDate.substring(0,4));
-	    int month = Integer.parseInt(strDate.substring(5,7));
-	    int day = Integer.parseInt(strDate.substring(8,10));
-	    cal.set(year, month-1, day, 0, 0, 0);
-	    return cal.getTime();
-	}
-	
-	private String getDateStringfromDate(Date date)
-	{
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(date);
-	}
-	
-	private String convertDayToWeek(String endDate, String date)
-	{
-		int DAY_IN_MILLISECS = (24 * 60 * 60 * 1000);
-		
-	    Calendar endCal = Calendar.getInstance();
-	    int year = Integer.parseInt(endDate.substring(0,4));
-	    int month = Integer.parseInt(endDate.substring(5,7));
-	    int day = Integer.parseInt(endDate.substring(8,10));
-	    endCal.set(year, month-1, day, 0, 0, 0);
-	    
-	    Calendar cal = Calendar.getInstance();
-	    year = Integer.parseInt(date.substring(0,4));
-	    month = Integer.parseInt(date.substring(5,7));
-	    day = Integer.parseInt(date.substring(8,10));
-	    cal.set(year, month-1, day, 0, 0, 0);
-	    
-	    int dayDiff = (int) (endCal.getTimeInMillis() - cal.getTimeInMillis())/DAY_IN_MILLISECS;
-	    int weekDiff = (int) Math.floor(dayDiff/7.0);
-	    
-	    endCal.add(Calendar.DATE, 7*weekDiff*-1);
-	    
-        return getDateStringfromDate(endCal.getTime());
-	}
-
-	private long getValue(Map<String, Long> columnMap, String column)
-	{
-		Long value = columnMap.get(column);
-		if (value == null)
-			value = 0L;
-		
-		return value;
-	}
 }

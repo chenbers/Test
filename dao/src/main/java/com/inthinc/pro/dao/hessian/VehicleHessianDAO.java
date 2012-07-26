@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.FindByKey;
+import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -26,7 +27,8 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     private static final String CENTRAL_ID_KEY = "vin";
     private static final Integer VEHICLE_TYPE = 2;
     private DeviceDAO deviceDAO;
-
+    private LocationDAO locationDAO;
+    
     @Override
     public List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID) {
         try {
@@ -85,11 +87,7 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
 
     @Override
     public LastLocation getLastLocation(Integer vehicleID) {
-        try {
-            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(vehicleID, VEHICLE_TYPE), LastLocation.class);
-        } catch (EmptyResultSetException e) {
-            return null;
-        }
+    	return locationDAO.getLastLocationForVehicle(vehicleID);
     }
 
     @Override
@@ -132,23 +130,28 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
 
     @Override
     public Trip getLastTrip(Integer vehicleID) {
-        try {
+/*    	try {
             return getMapper().convertToModelObject(this.getSiloService().getLastTrip(vehicleID, VEHICLE_TYPE), Trip.class);
         } catch (EmptyResultSetException e) {
             return null;
         }
+*/        
+    	return locationDAO.getLastTripForVehicle(vehicleID);
     }
 
     @Override
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
         logger.debug("getTrips() vehicleID = " + vehicleID);
-        try {
+/*        try {
             List<Trip> tripList = getMapper().convertToModelObject(
                     this.getSiloService().getTrips(vehicleID, VEHICLE_TYPE, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Trip.class);
             return tripList;
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
+*/
+    	return locationDAO.getTripsForVehicle(vehicleID, startDate, endDate);
+
     }
 
     @Override
@@ -168,7 +171,15 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         return deviceDAO;
     }
 
-    @Override
+    public LocationDAO getLocationDAO() {
+		return locationDAO;
+	}
+
+	public void setLocationDAO(LocationDAO locationDAO) {
+		this.locationDAO = locationDAO;
+	}
+
+	@Override
     public List<VehicleName> getVehicleNames(Integer groupID)
     {
         

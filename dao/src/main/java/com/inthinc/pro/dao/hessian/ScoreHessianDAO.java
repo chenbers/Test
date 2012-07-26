@@ -23,6 +23,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ScoreItem;
@@ -52,8 +53,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration)
+    public List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration, GroupHierarchy gh)
     {
+    	logger.debug("getSortedDriverScoreList: " + groupID);
         try
         {
 	        List<DVQMap> dvqList = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
@@ -77,8 +79,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration, ScoreType scoreType)
+    public ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getAverageScoreByType: " + groupID);
         try
         {
 
@@ -100,8 +103,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     @Override
-    public ScoreableEntity getSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
+    public ScoreableEntity getSummaryScore(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getSummaryScore: " + groupID);
       	Integer binSize = duration.getAggregationBinSize();
     	if (duration.equals(Duration.DAYS)) {
     		binSize = 1;
@@ -130,8 +134,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         return null;
     }
     @Override
-    public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
+    public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getScores: " + groupID);
         try
         {
         	Integer binSize = Duration.BINSIZE_1_MONTH;
@@ -169,15 +174,15 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
     
     @Override
-    public ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType)
+    public ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
-    	return this.getAverageScoreByType(groupID, duration, scoreType);
+    	return this.getAverageScoreByType(groupID, duration, scoreType, gh);
     }
 
     @Override
-    public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration)
+    public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration, GroupHierarchy gh)
     {
-
+    	logger.debug("getTrendScores: " + groupID);
         try
         {
         	// subgroups
@@ -251,8 +256,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	}
 
 	@Override
-    public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType)
+    public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getScoreBreakdown: " + groupID);
         try
         {
             Map<String, Object> returnMap = reportService.getDPctByGT(groupID, duration.getCode(), scoreType.getDriveQMetric());
@@ -286,6 +292,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	@Override
     public List<TrendItem> getTrendCumulative(Integer id, EntityType entityType, Duration duration)
     {
+    	logger.debug("getTrendCumulative: " + id);
         try
         {
         	Integer binSize = Duration.BINSIZE_1_MONTH;
@@ -328,6 +335,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 	trendItemList.add(item);
             	}
             }
+        	logger.debug("TrendItemList count(): " + trendItemList.size());
             return trendItemList;
         }
         catch (EmptyResultSetException e)
@@ -347,6 +355,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	@Override
     public List<TrendItem> getTrendScores(Integer id, EntityType entityType, Duration duration)
     {
+    	logger.debug("getTrendScores: " + id);
         try
         {
         	List<Map<String, Object>> dailyList = null; 
@@ -393,8 +402,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     @Override
-    public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType)
+    public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh)
     {
+    	logger.debug("getScoreBreakdownByType: " + groupID);
         try
         {
 
@@ -406,7 +416,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 ScoreTypeBreakdown scoreTypeBreakdown = new ScoreTypeBreakdown();
 
                 scoreTypeBreakdown.setScoreType(subType);
-                scoreTypeBreakdown.setPercentageList(getScoreBreakdown(groupID, (subType.getDuration() == null) ? duration : subType.getDuration(), subType));
+                scoreTypeBreakdown.setPercentageList(getScoreBreakdown(groupID, (subType.getDuration() == null) ? duration : subType.getDuration(), subType, gh));
                 scoreTypeBreakdownList.add(scoreTypeBreakdown);
             }
             return scoreTypeBreakdownList;
@@ -422,6 +432,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap)
     {
+    	logger.debug("getVehicleReportData: " + groupID);
         try
         {
         	List<Map<String, Object>> list = reportService.getVDScoresByGT(groupID, duration.getDvqCode());
@@ -473,6 +484,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap)
     {
+    	logger.debug("getDriverReportData: " + groupID);
         try
         {
             List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getDvqCode()), DVQMap.class);
@@ -524,6 +536,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	@Override
     public List<ScoreItem> getAverageScores(Integer id, EntityType entityType, Duration duration)
     {
+    	logger.debug("getAverageScores: " + id);
         try
         {
             DriveQMap driveQMap = null;
@@ -553,7 +566,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 	@Override
-	public CrashSummary getGroupCrashSummaryData(Integer groupID) {
+	public CrashSummary getGroupCrashSummaryData(Integer groupID, GroupHierarchy gh) {
 		try {
 			
 	        Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, Duration.TWELVE.getCode());
@@ -616,7 +629,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	}
 
 	@Override
-	public List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration) {
+	public List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration, GroupHierarchy gh) {
+    	logger.debug("getSpeedPercentItems: " + groupID);
         try
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());
@@ -668,7 +682,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 	}
 
 	@Override
-	public List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration) {
+	public List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration, GroupHierarchy gh) {
+    	logger.debug("getIdlePercentItems: " + groupID);
         try
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getAggregationBinSize(), duration.getDvqCount());

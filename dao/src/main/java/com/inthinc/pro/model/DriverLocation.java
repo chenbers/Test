@@ -33,10 +33,12 @@ public class DriverLocation
 
     public DriverLocation(LastLocation lastLocation, Driver driver, Vehicle vehicle)
     {
-    	setHead(lastLocation.getHead());
-    	setLoc(lastLocation.getLoc());
-    	setSpeed(lastLocation.getSpeed());
-    	setTime(lastLocation.getTime());
+    	if (lastLocation != null) {
+	    	setHead(lastLocation.getHead());
+	    	setLoc(lastLocation.getLoc());
+	    	setSpeed(lastLocation.getSpeed());
+	    	setTime(lastLocation.getTime());
+    	}
     	setDriver(driver);
     	setVehicle(vehicle);
 //    	setGroup(driver.)

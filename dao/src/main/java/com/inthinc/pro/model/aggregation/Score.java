@@ -89,6 +89,69 @@ public class Score {
     private Number speedEvents8To14MphOver;
     private Number speedEvents15PlusMphOver;
     private Number speedEventsOver80Mph;
+
+
+    public Score()
+    {
+	    aggressiveAccelEvents = 0;
+	    aggressiveBrakeEvents = 0;
+	    aggressiveBumpEvents = 0;
+	    aggressiveEvents = 0;
+	    aggressiveLeftEvents = 0;
+	    aggressiveRightEvents = 0;
+	    avgSpeed = 0;
+	    crashEvents = 0;
+	    crashTotal = 0;
+	    driveTime = 0;
+	    emuRpmDriveTime = 0;
+	    emuRpmVehicles = 0;
+	    endingOdometer = 0;
+	    idleHi = 0;
+	    idleHiEvents = 0;
+	    idleLo = 0;
+	    idleLoEvents = 0;
+	    mpgHeavy = 0;
+	    mpgLight = 0;
+	    mpgMedium = 0;
+	    nVehicles = 0;
+	    odometer = 0;
+	    odometer1 = 0;
+	    odometer2 = 0;
+	    odometer3 = 0;
+	    odometer4 = 0;
+	    odometer5 = 0;
+	    odometer6 = 0;
+	    rpmEvents = 0;
+	    seatbeltEvents = 0;
+	    speedEvents = 0;
+	    speedEvents1 = 0;
+	    speedEvents2 = 0;
+	    speedEvents3 = 0;
+	    speedEvents4 = 0;
+	    speedEvents5 = 0;
+	    speedOdometer = 0;
+	    speedOdometer1 = 0;
+	    speedOdometer2 = 0;
+	    speedOdometer3 = 0;
+	    speedOdometer4 = 0;
+	    speedOdometer5 = 0;
+	    speedOver = 0;
+	    speedOver1 = 0;
+	    speedOver2 = 0;
+	    speedOver3 = 0;
+	    speedOver4 = 0;
+	    speedOver5 = 0;
+	    startingOdometer = 0;
+	    trips = 0;
+	    odometerLight = 0;
+	    odometerMedium = 0;
+	    odometerHeavy = 0;
+	    speedEvents1To7MphOver = 0;
+	    speedEvents8To14MphOver = 0;
+	    speedEvents15PlusMphOver = 0;
+	    speedEventsOver80Mph = 0;
+    }
+    
     
     public Date getStartingDate() {
         return startingDate;
@@ -339,7 +402,10 @@ public class Score {
     }
 
     public Number getOdometer() {
-        return odometer;
+    	if (odometer == null || odometer.intValue() == 0)
+    		return getOdometer1().intValue()+getOdometer2().intValue()+getOdometer3().intValue()+getOdometer4().intValue()+getOdometer5().intValue();
+    	else
+    		return odometer;
     }
 
     public void setOdometer(Number odometer) {
@@ -483,6 +549,8 @@ public class Score {
     }
 
     public Number getSpeedEvents() {
+    	if (speedEvents == null || speedEvents.intValue() == 0)
+    		return speedEvents1.intValue()+speedEvents2.intValue()+speedEvents3.intValue()+speedEvents4.intValue()+speedEvents5.intValue();  
         return speedEvents;
     }
 
@@ -717,7 +785,7 @@ public class Score {
     // getter methods that aggregate some of the existing fields
     public Number getSafetyTotal() {
     	return ((seatbeltEvents == null) ? 0 : seatbeltEvents.longValue()) + 
-    			((speedEvents == null) ? 0 : speedEvents.longValue()) + 
+    			getSpeedEvents().longValue() + 
     			((aggressiveAccelEvents == null) ? 0 : aggressiveAccelEvents.longValue()) + 
     			((aggressiveBrakeEvents == null) ? 0 : aggressiveBrakeEvents.longValue()) + 
     			((aggressiveBumpEvents == null) ? 0 : aggressiveBumpEvents.longValue()) + 
@@ -805,7 +873,7 @@ public class Score {
                 + mpgLight + ", mpgMedium=" + mpgMedium + ", nVehicles=" + nVehicles + ", odometer=" + odometer + ", odometer1=" + odometer1 + ", odometer2=" + odometer2 + ", odometer3=" + odometer3
                 + ", odometer4=" + odometer4 + ", odometer5=" + odometer5 + ", overall=" + overall + ", rpmEvents=" + rpmEvents + ", seatbelt=" + seatbelt + ", seatbeltCoaching=" + seatbeltCoaching
                 + ", seatbeltEvents=" + seatbeltEvents + ", speedCoaching=" + speedCoaching + ", speedCoaching1=" + speedCoaching1 + ", speedCoaching2=" + speedCoaching2 + ", speedCoaching3="
-                + speedCoaching3 + ", speedCoaching4=" + speedCoaching4 + ", speedCoaching5=" + speedCoaching5 + ", speedEvents=" + speedEvents + ", speedEvents1=" + speedEvents1 + ", speedEvents2="
+                + speedCoaching3 + ", speedCoaching4=" + speedCoaching4 + ", speedCoaching5=" + speedCoaching5 + ", speedEvents=" + getSpeedEvents() + ", speedEvents1=" + speedEvents1 + ", speedEvents2="
                 + speedEvents2 + ", speedEvents3=" + speedEvents3 + ", speedEvents4=" + speedEvents4 + ", speedEvents5=" + speedEvents5 + ", speedOdometer=" + speedOdometer + ", speedOdometer1="
                 + speedOdometer1 + ", speedOdometer2=" + speedOdometer2 + ", speedOdometer3=" + speedOdometer3 + ", speedOdometer4=" + speedOdometer4 + ", speedOdometer5=" + speedOdometer5
                 + ", speedOver=" + speedOver + ", speedOver1=" + speedOver1 + ", speedOver2=" + speedOver2 + ", speedOver3=" + speedOver3 + ", speedOver4=" + speedOver4 + ", speedOver5=" + speedOver5

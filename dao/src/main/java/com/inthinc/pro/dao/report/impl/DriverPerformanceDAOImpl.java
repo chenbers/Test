@@ -21,6 +21,8 @@ import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.VehiclePerformance;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.GroupHierarchy;
+
 
 public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
 
@@ -50,7 +52,8 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
     }
 
     private List<DriverPerformance> getFilteredDriverPerformanceListForGroup(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
-        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval);
+	
+        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval, null);
         
         List<DriverPerformance> driverPerformanceList = new ArrayList<DriverPerformance>();
         if (scoreList == null || scoreList.isEmpty())
@@ -127,7 +130,7 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
     public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
         List<DriverPerformanceKeyMetrics> driverPerformanceList = new ArrayList<DriverPerformanceKeyMetrics>();
         Interval interval = timeFrame.getInterval();
-        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd().minusDays(1));
+        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd().minusDays(1), null);
         
         if (scoreList == null || scoreList.isEmpty())
             return driverPerformanceList;

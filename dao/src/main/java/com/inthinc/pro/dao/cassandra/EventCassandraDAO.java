@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -17,6 +18,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 ///////////////////////////////////////
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
@@ -25,6 +27,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
@@ -44,12 +47,13 @@ import me.prettyprint.hector.api.query.SliceQuery;
 
 
 @SuppressWarnings("serial")
-public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
+public class EventCassandraDAO extends AggregationCassandraDAO implements EventDAO
 {
 	private final static int MAX_EVENTS = 1000;
 	
     private Mapper mapper = new EventHessianMapper();
     private VehicleDAO vehicleDAO;
+    private DriverDAO driverDAO;
 
 
     @SuppressWarnings("unused")
@@ -70,7 +74,9 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 		String startTime = (String) args[1];
 		String endTime = (String) args[2];
 */		
-        SiloService siloService = new SiloServiceCreator("192.168.11.115", 8091).getService();
+//        SiloService siloService = new SiloServiceCreator("192.168.11.115", 8091).getService();
+//        SiloService siloService = new SiloServiceCreator("dev-pro.inthinc.com", 8199).getService();
+        SiloService siloService = new SiloServiceCreator("localhost", 8199).getService();
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
 
@@ -78,7 +84,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     	EventCassandraDAO dao = new EventCassandraDAO();
     	dao.setCassandraDB(cassandraDB);
     	dao.setVehicleDAO(vehicleDAO);
-    	
+  /*  	
     	List<Event> events = dao.getViolationEventsForDriver(66462, new Date(1334078768000L), new Date(1334081277000L), 1);
     	dao.logEvents(events);
 
@@ -96,9 +102,9 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 
     	events = dao.getMostRecentEmergencies(0, 100);
     	dao.logEvents(events);
-
-//    	List<Event> events = dao.getEventsForGroupFromVehicles(5260, EventCategory.VIOLATION.getNoteTypesInCategory(), new Date(1334078768000L), new Date(1334081277000L));
-//    	dao.logEvents(events);
+*/
+    	List<Event> events = dao.getEventsForGroupFromVehicles(5260, EventCategory.VIOLATION.getNoteTypesInCategory(), new Date(1334078768000L), new Date(1334081277000L));
+    	dao.logEvents(events);
     	
     	dao.shutdown();
     }
@@ -125,10 +131,21 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
         return vehicleDAO;
     }
     
-    @Override
+    
+    public DriverDAO getDriverDAO() {
+		return driverDAO;
+	}
+
+	public void setDriverDAO(DriverDAO driverDAO) {
+		this.driverDAO = driverDAO;
+	}
+
+	@Override
     public List<Event> getMostRecentEvents(Integer groupID, Integer eventCount)
     {
-        Integer[] eventTypes = getMapper().convertToArray(EventCategory.VIOLATION.getNoteTypesInCategory(), Integer.class);
+        logger.debug("EventCassandraDAO getMostRecentEvents() groupID = " + groupID);
+
+    	Integer[] eventTypes = getMapper().convertToArray(EventCategory.VIOLATION.getNoteTypesInCategory(), Integer.class);
         return fetchMostRecentForGroup(groupID, eventTypes, eventCount, true);
     }
 
@@ -137,6 +154,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public List<Event> getMostRecentWarnings(Integer groupID, Integer eventCount)
     {
+        logger.debug("EventCassandraDAO getMostRecentWarnings() groupID = " + groupID);
         Integer[] eventTypes = getMapper().convertToArray(EventCategory.WARNING.getNoteTypesInCategory(), Integer.class);
         return fetchMostRecentForGroup(groupID, eventTypes, eventCount, true);
     }
@@ -144,6 +162,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public List<Event> getMostRecentEmergencies(Integer groupID, Integer eventCount)
     {
+        logger.debug("EventCassandraDAO getMostRecentEmergencies() groupID = " + groupID);
         Integer[] eventTypes = getMapper().convertToArray(EventCategory.EMERGENCY.getNoteTypesInCategory(), Integer.class);
         return fetchMostRecentForGroup(groupID, eventTypes, eventCount, true);
     }
@@ -154,6 +173,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<NoteType> types, Integer includeForgiven)
     {
+        logger.debug("EventCassandraDAO getEventsForDriver() driverID = " + driverID);
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
         return fetchEventsForAsset(driverNoteTypeTimeIndex_CF, driverID, startDate, endDate, eventTypesArray, includeForgiven);
     }
@@ -161,6 +181,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public List<Event> getEventsForVehicle(Integer vehicleID, Date startDate, Date endDate, List<NoteType> types, Integer includeForgiven)
     {
+        logger.debug("EventCassandraDAO getEventsForvehicle() vehicleID = " + vehicleID);
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
         return fetchEventsForAsset(vehicleNoteTypeTimeIndex_CF, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
     }
@@ -169,24 +190,31 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
     {
+        logger.debug("EventCassandraDAO getViolationEventsForDriver() driverID = " + driverID);
         return getEventsForDriver(driverID, startDate, endDate, EventCategory.VIOLATION.getNoteTypesInCategory(), includeForgiven);
     }
 
     @Override
     public List<Event> getWarningEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
     {
+        logger.debug("EventCassandraDAO getWarningEventsForDriver() driverID = " + driverID);
         return getEventsForDriver(driverID, startDate, endDate, EventCategory.WARNING.getNoteTypesInCategory(), includeForgiven);
     }
     
     @Override
     public List<Event> getEmergencyEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
     {
+        logger.debug("EventCassandraDAO getEmergencyEventsForDriver() driverID = " + driverID);
         return getEventsForDriver(driverID, startDate, endDate, EventCategory.EMERGENCY.getNoteTypesInCategory(), includeForgiven);
     }    
 
     @Override
     public Integer forgive(Integer driverID, Long noteID)
     {
+    	Event event = findByID(noteID);    	
+    	
+    	if (event != null)
+    		updateAggregates(event, -1);
 /*
     	try{
     		return getChangedCount(getSiloService().forgive(driverID, noteID));
@@ -203,12 +231,17 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     public Integer unforgive(Integer driverID, Long noteID)
     {
 //        return getChangedCount(getSiloService().unforgive(driverID, noteID));
+    	Event event = findByID(noteID);    	
+    	
+    	if (event != null)
+    		updateAggregates(event, 1);
     	return 1;
     }
 
     @Override
     public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate) {
 
+        logger.debug("EventCassandraDAO getEventsForGroupFromVehicles() groupID = " + groupID);
 //        List<Vehicle> vehicleList = getMapper().convertToModelObject(this.getSiloService().getVehiclesByGroupIDDeep(groupID), Vehicle.class);
         List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
         List<Event> eventList = new ArrayList<Event>();
@@ -217,7 +250,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
             List<Event>vehicleEvents = getEventsForVehicle(vehicle.getVehicleID(), startDate, endDate, eventTypes, 1);
             for (Event event : vehicleEvents)
             {
-                event.setVehicle(vehicle);
+            	event.setVehicle(vehicle);
                 event.setVehicleName(vehicle.getName());
                 eventList.add(event);
             }
@@ -255,17 +288,13 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     @Override
     public Event findByID(Long id)
     {
-/*    	
-        try
-        {
-            Map<String, Object> returnMap = getSiloService().getNote(id);
-            return getMapper().convertToModelObject(returnMap, Event.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-*/
+    	
+    	List<Long> keys = new ArrayList<Long>();
+    	keys.add(id);
+    	List<Event> eventList = fetchNotes(keys, true);
+    	if (eventList.size() > 0)
+    		return eventList.get(0);
+    	
     	return null;
     }
     
@@ -353,7 +382,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 
     private List<Event> fetchMostRecentForGroup(Integer groupID, Integer[] eventTypes, Integer eventCount, boolean includeForgiven)
     {
-        List<Composite> keyList = new ArrayList<Composite>();
+        List<Long> keyList = new ArrayList<Long>();
     	for(Integer eventType : eventTypes)
     	{
     		Composite startRange = new Composite();
@@ -379,7 +408,7 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     
     private List<Event> fetchEventsForAsset(String index_cf, Integer ID, Date startDate, Date endDate, Integer[] eventTypes, Integer includeForgiven)
     {
-        List<Composite> keyList = new ArrayList<Composite>();
+        List<Long> keyList = new ArrayList<Long>();
     	for(Integer eventType : eventTypes)
     	{
     		
@@ -399,9 +428,9 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
     	return fetchNotes(keyList, (includeForgiven == 1));
     }
 
-    private List<Composite> fetchRowKeysFromIndex(String INDEX_CF, Integer rowKey, Composite startRange, Composite endRange, Integer count)
+    private List<Long> fetchRowKeysFromIndex(String INDEX_CF, Integer rowKey, Composite startRange, Composite endRange, Integer count)
     {
-        SliceQuery<Composite, Composite, Composite> sliceQuery = HFactory.createSliceQuery(getKeyspace(), compositeSerializer, compositeSerializer, compositeSerializer);
+        SliceQuery<Composite, Composite, Long> sliceQuery = HFactory.createSliceQuery(getKeyspace(), compositeSerializer, compositeSerializer, longSerializer);
 
         sliceQuery.setRange(startRange, endRange, false, count);
         
@@ -412,43 +441,41 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
         sliceQuery.setKey(rowKeyComp);
         //rangeSlicesQuery.setReturnKeysOnly();
         
-        QueryResult<ColumnSlice<Composite, Composite>> result = sliceQuery.execute();
-        ColumnSlice<Composite, Composite> columnSlice = result.get();            
+        QueryResult<ColumnSlice<Composite, Long>> result = sliceQuery.execute();
+        ColumnSlice<Composite, Long> columnSlice = result.get();            
         
-        List<Composite> keyList = new ArrayList<Composite>();
-    	List<HColumn<Composite, Composite>> columnList = columnSlice.getColumns();
-        for (HColumn<Composite, Composite> column : columnList)
+        List<Long> keyList = new ArrayList<Long>();
+    	List<HColumn<Composite, Long>> columnList = columnSlice.getColumns();
+        for (HColumn<Composite, Long> column : columnList)
         {
         	keyList.add(column.getValue());
         }
     	return keyList;
      }
 
-    private List<Event> fetchNotes(List<Composite> keys, boolean includeForgiven)
+    private List<Event> fetchNotes(List<Long> keys, boolean includeForgiven)
     {
     	List <Event> eventList = new ArrayList<Event>();
-    	MultigetSliceQuery<Composite, String, byte[]> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), compositeSerializer, stringSerializer, bytesArraySerializer);
+    	MultigetSliceQuery<Long, String, byte[]> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), longSerializer, stringSerializer, bytesArraySerializer);
         
         sliceQuery.setColumnFamily(note_CF);            
         sliceQuery.setRange(ATTRIBS_COL + "!", "~", false, 1000);  //get all the columns
         sliceQuery.setKeys(keys);
         
-        QueryResult<Rows<Composite, String, byte[]>> result = sliceQuery.execute();
+        QueryResult<Rows<Long, String, byte[]>> result = sliceQuery.execute();
         
-        Rows<Composite, String, byte[]> rows = result.get();     
-        for (Row<Composite, String, byte[]> row : rows)
+        Rows<Long, String, byte[]> rows = result.get();     
+        for (Row<Long, String, byte[]> row : rows)
         {
         	ColumnSlice<String, byte[]> columnSlice = row.getColumnSlice();
         	List<HColumn<String, byte[]>> columnList = columnSlice.getColumns();
 
-    		int vehicleId = bigIntegerSerializer.fromByteBuffer((ByteBuffer) row.getKey().get(0)).intValue();
-    		
-    		
     		byte[] raw = null;
     		String method = "";
     		boolean forgiven = false;
     		int driverId = 0;
-        	for (HColumn<String, byte[]> column : columnList)
+    		int vehicleId = 0; 
+    		for (HColumn<String, byte[]> column : columnList)
         	{
         		if (column.getName().equalsIgnoreCase(RAW_COL))
         			raw = column.getValue();
@@ -456,6 +483,8 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
         			method = new String(column.getValue());
         		else if (column.getName().equalsIgnoreCase(DRIVERID_COL))
         			driverId = bigIntegerSerializer.fromBytes(column.getValue()).intValue();
+        		else if (column.getName().equalsIgnoreCase(VEHICLEID_COL))
+        			vehicleId = bigIntegerSerializer.fromBytes(column.getValue()).intValue();
             	else if (column.getName().equalsIgnoreCase(FORGIVEN_COL))
             		forgiven = true;
         	}
@@ -466,11 +495,15 @@ public class EventCassandraDAO extends GenericCassandraDAO implements EventDAO
 		    fieldMap.put("vehicleID", new Integer(vehicleId));
             
             Event event = getMapper().convertToModelObject(fieldMap, Event.class);
+            event.setNoteID(row.getKey());
+            logger.debug("fieldMap: " + fieldMap);
+            logger.debug("Event: " + event);
             
             if (event.isValidEvent() && (includeForgiven || (!includeForgiven && forgiven == false)))
             	eventList.add(event);
         }
     		
+        logger.debug("EventList size: " + eventList.size());
     	Collections.sort(eventList, new LatestTimeEventComparator());
 
 		return eventList;
