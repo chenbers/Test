@@ -59,23 +59,17 @@
     		}
         	return {
         		findAddresses : function() {
-        			console.log("findAddresses");
 		    		if (geocoder == null) geocoder = new GClientGeocoder();
 		    		var delay = 250;
 		    		collectAddressElements();
 					var reverseGeocode = function() {
-	        			console.log("reverseGeocode");
 						if (addressElements.length == 0) return;
-						
 						var element = addressElements.shift();
-						
 						if(addresses[element.lat + element.lng]) {
-							console.log("got a cache hit!");
     			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
     			        	reverseGeocode();
 						} else {
 							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
-		         				console.log("reverse geo response: " + response.Status.code);
 		         				if (!response) {
 		  			         	  	element.address[0].innerHTML = "#{messages.teamStopsNoAddressFound}";
 		         				} else if (response.Status.code == 200) {
