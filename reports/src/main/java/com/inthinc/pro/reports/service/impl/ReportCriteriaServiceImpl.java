@@ -1497,8 +1497,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                             person.getLocale(), ryg));
                     break;
                 case DRIVER_PERFORMANCE_KEY_METRICS:
-                case DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG:
                     reportCriteriaList.add(getDriverPerformanceKeyMetricsReportCriteria(groupHierarchy, 
+                            reportSchedule.getGroupIDList(), timeFrame, timeFrame.getInterval(), 
+                            person.getLocale(), person.getMeasurementType()));
+                    break;
+                case DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG:
+                    reportCriteriaList.add(getDriverPerformanceKeyMetricsTimeFrameReportCriteria(groupHierarchy, 
                             reportSchedule.getGroupIDList(), timeFrame, timeFrame.getInterval(), 
                             person.getLocale(), person.getMeasurementType()));
                     break;
