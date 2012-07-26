@@ -8,21 +8,24 @@ default-autowire="byName">
   <bean id="reportService" factory-bean="reportServiceCreator" factory-method="getService" />
 
   <!-- DAO -->
+ <!--
+ <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO"/>
+  <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO"></bean>
+  <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO"></bean>
+  <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO"/>
+  <bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" />
+  <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" />
+  <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" />
+-->
   <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
   <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO"></bean>
   <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>
   <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
-  <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO"/>
-  <bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" />
-  <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" />
-  <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" />
   <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO"/>
-  <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO"></bean>
   <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO"/>
   <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
   <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO"></bean>
   <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
-  <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO"/>
   <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
   <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
 <!--  <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean>-->

@@ -92,20 +92,20 @@ public class TeamStatisticsBean extends BaseBean {
             switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
                 case 0:
                     driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart());
+                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(), getGroupHierarchy());
                     break;
                 case 1:
                     driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
                     break;
                 case 2:
                     driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                            teamCommonBean.getTimeFrame().getAggregationDuration());
+                            teamCommonBean.getTimeFrame().getAggregationDuration(), getGroupHierarchy());
                     break;
                 case 3:
                 	driverStatistics = groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), 
                 			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
-                			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd());
+                			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd(), getGroupHierarchy());
             }
 
             cleanData(driverStatistics);
@@ -205,7 +205,7 @@ public class TeamStatisticsBean extends BaseBean {
     }
 
     protected ReportCriteria getReportCriteria() {
-        return getReportCriteriaService().getTeamStatisticsReportCriteria(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame(), getDateTimeZone(), getLocale(), false);
+        return getReportCriteriaService().getTeamStatisticsReportCriteria(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame(), getDateTimeZone(), getLocale(), false, getAccountGroupHierarchy());
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer) {

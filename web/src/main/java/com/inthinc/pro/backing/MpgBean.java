@@ -107,7 +107,7 @@ public class MpgBean extends BaseBean implements Serializable {
 
     public List<MpgEntity> getMpgEntities() {
         if (mpgEntities == null) {
-            mpgEntities = mpgDAO.getEntities(group, durationBean.getDuration());
+            mpgEntities = mpgDAO.getEntities(group, durationBean.getDuration(), getGroupHierarchy());
             Collections.sort(mpgEntities);
         }
         return mpgEntities;
@@ -124,7 +124,7 @@ public class MpgBean extends BaseBean implements Serializable {
     }
 
     public ReportCriteria buildReportCriteria() {
-        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration(), getLocale());
+        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration(), getLocale(), getGroupHierarchy());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setMeasurementType(getMeasurementType());

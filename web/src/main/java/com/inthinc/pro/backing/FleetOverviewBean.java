@@ -44,7 +44,7 @@ public class FleetOverviewBean extends BaseBean
         {
             groupID = getUser().getGroupID();
         }
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL, getGroupHierarchy());
         setOverallScore(scoreableEntity.getScore());
     }
 

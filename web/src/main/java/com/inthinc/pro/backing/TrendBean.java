@@ -82,13 +82,14 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
         int count = 0;
         ColorSelectorStandard cs = new ColorSelectorStandard();
         for (ScoreableEntity score : s) {
+		
             TrendBeanItem trendBeanItem = new TrendBeanItem();
             ScoreableEntityPkg se = new ScoreableEntityPkg();
             se.setSe(score);
             se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
             se.setColorKey(cs.getEntityColorKey(count++));
 
-            CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(score.getEntityID());
+            CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(score.getEntityID(), getGroupHierarchy());
             trendBeanItem.setCrashSummary(crashSummary);
             trendBeanItem.setScoreableEntityPkg(se);
             trendBeanItem.setScoreableEntity(score);
@@ -105,7 +106,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
     private List<ScoreableEntity> getScores() {
         List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
         try {
-            s = scoreDAO.getScores(getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
+            s = scoreDAO.getScores(getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL, getGroupHierarchy());
             if (s == null) {
                 s = Collections.emptyList();
             }
@@ -165,7 +166,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
 
     public Map<Integer, List<ScoreableEntity>> getGroupTrendMap() {
         if (groupTrendMap == null) {
-            groupTrendMap = getScoreDAO().getTrendScores(getGroupID(), getDurationBean().getDuration());
+            groupTrendMap = getScoreDAO().getTrendScores(getGroupID(), getDurationBean().getDuration(), getGroupHierarchy());
         }
         return groupTrendMap;
     }
@@ -220,7 +221,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
 
             // check the case of a fresh install
             if (!getGroupTrendMap().isEmpty()) {
-                List<ScoreableEntity> summaryList = getGroupTrendMap().get(summaryPkg.getSe().getEntityID());
+				List<ScoreableEntity> summaryList = getGroupTrendMap().get(summaryPkg.getSe().getEntityID());
                 List<Date> dateList = new ArrayList<Date>();
                 for (ScoreableEntity item : summaryList) {
                     dateList.add(item.getDate());
@@ -252,6 +253,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
             // Fetch to get children's observations
             List<ScoreableEntity> ss = getGroupTrendMap().get(se.getSe().getEntityID());
 
+			
             // Y-coordinates
             addDataSet(sb, se, ss);
         }
@@ -303,7 +305,8 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
     private TrendBeanItem createSummaryItem() {
         TrendBeanItem summaryTrendBeanItem = new TrendBeanItem();
         // ScoreableEntity score = getScoreDAO().getTrendSummaryScore(trendBeanState.getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
-        ScoreableEntity score = getScoreDAO().getSummaryScore(getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
+        ScoreableEntity score = getScoreDAO().getSummaryScore(getGroupID(), getDurationBean().getDuration(), ScoreType.SCORE_OVERALL, getGroupHierarchy());
+		
         if (score == null) {
             return null;
         }
@@ -324,7 +327,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
             se.setShow((Boolean) getGroupVisibleState().get(getGroupID()));
         }
 
-        CrashSummary crashSummary = getScoreDAO().getGroupCrashSummaryData(score.getEntityID());
+        CrashSummary crashSummary = getScoreDAO().getGroupCrashSummaryData(score.getEntityID(), getGroupHierarchy());
 
         summaryTrendBeanItem.setCrashSummary(crashSummary);
         summaryTrendBeanItem.setScoreableEntity(score);
@@ -366,7 +369,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
     }
 
     public ReportCriteria buildReportCriteria() {
-        ReportCriteria reportCriteria = reportCriteriaService.getTrendChartReportCriteria(getGroupID(), getDurationBean().getDuration(), getLocale());
+        ReportCriteria reportCriteria = reportCriteriaService.getTrendChartReportCriteria(getGroupID(), getDurationBean().getDuration(), getLocale(), getGroupHierarchy());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
