@@ -329,7 +329,7 @@ public class EmailReportJob extends QuartzJobBean {
             reportCriteria.setTimeZone(person.getTimeZone());
             
             if (reportCriteria.getReport().getPrettyTemplate() == null)
-                formatType = FormatType.EXCEL;
+                formatType = FormatType.EXCEL;            
         }
         Report report = reportCreator.getReport(reportCriteriaList);
         
