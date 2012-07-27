@@ -1718,6 +1718,9 @@ public class SiloServiceTest {
     private void drivers(Integer groupID) {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        driverDAO.setLocationDAO(locationDAO);
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
          // year time frame from today back
