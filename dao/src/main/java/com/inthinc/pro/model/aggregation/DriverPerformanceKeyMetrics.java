@@ -30,6 +30,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private Integer loIdleViolationsMinutes;
     private Integer hiIdleViolationsMinutes;
     private String color;
+    static private Integer MAXIMUM_SCORE_LIMIT = 50;
     static private Integer GREEN_MIN_LIMIT = 45;
     static private Integer YELLOW_MIN_LIMIT = 30;
     static private String WHITE = "white";
@@ -96,7 +97,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private String getScoreColor(Integer scoreToTest){
         String color = WHITE;
         if(totalMiles!=null && totalMiles > 0){
-            if(scoreToTest == null || scoreToTest < 0)
+            if(scoreToTest == null || scoreToTest < 0 || scoreToTest > MAXIMUM_SCORE_LIMIT)
                 return color;
             else if(scoreToTest > GREEN_MIN_LIMIT)
                 color = GREEN;

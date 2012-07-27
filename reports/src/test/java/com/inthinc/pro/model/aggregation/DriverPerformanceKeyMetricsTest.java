@@ -77,6 +77,7 @@ public class DriverPerformanceKeyMetricsTest {
             }
         }
     }
+    
     @Test
     public final void getIdlingColor_allIntervalsPlusInterestingViolationCounts_validColorNotWhite(){
         final DriverPerformanceKeyMetrics data = new DriverPerformanceKeyMetrics();
@@ -96,6 +97,53 @@ public class DriverPerformanceKeyMetricsTest {
         }
     }
 
+    @Test
+    public final void getOverallScoreColor_inValidScores_allValidColors() {
+        final DriverPerformanceKeyMetrics data = new DriverPerformanceKeyMetrics();
+        for(Integer score: invalidScores){
+            data.setTotalMiles(1);//not null, greater than 0
+            data.setOverallScore(score);
+            assertEquals("white", data.getOverallScoreColor());
+        }
+        data.setTotalMiles(0);
+        assertEquals("white", data.getOverallScoreColor());
+    }
+    
+    @Test
+    public final void getSeatbeltScoreColor_inValidScores_allValidColors() {
+        final DriverPerformanceKeyMetrics data = new DriverPerformanceKeyMetrics();
+        for(Integer score: invalidScores){
+            data.setTotalMiles(1);//not null, greater than 0
+            data.setSeatbeltScore(score);
+            assertEquals("white", data.getSeatbeltScoreColor());
+        }
+        data.setTotalMiles(0);
+        assertEquals("white", data.getSeatbeltScoreColor());
+    }
+    
+    @Test
+    public final void getSpeedingScoreColor_inValidScores_allValidColors() {
+        final DriverPerformanceKeyMetrics data = new DriverPerformanceKeyMetrics();
+        for(Integer score: invalidScores){
+            data.setTotalMiles(1);//not null, greater than 0
+            data.setSpeedingScore(score);
+            assertEquals("white", data.getSpeedingScoreColor());
+        }
+        data.setTotalMiles(0);
+        assertEquals("white", data.getSpeedingScoreColor());
+    }
+    
+    @Test
+    public final void getStyleScoreColor_inValidScores_allValidColors() {
+        final DriverPerformanceKeyMetrics data = new DriverPerformanceKeyMetrics();
+        for(Integer score: invalidScores){
+            data.setTotalMiles(1);//not null, greater than 0
+            data.setStyleScore(score);
+            assertEquals("white", data.getStyleScoreColor());
+        }
+        data.setTotalMiles(0);
+        assertEquals("white", data.getStyleScoreColor());
+    }
     @Test
     public final void getOverallScoreColor_validInterestingScores_allValidColors() {
         final DriverPerformanceKeyMetrics data = new DriverPerformanceKeyMetrics();
