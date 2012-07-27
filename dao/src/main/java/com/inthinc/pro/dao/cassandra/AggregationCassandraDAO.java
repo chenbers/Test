@@ -19,10 +19,6 @@ import java.util.TreeMap;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 
-import com.inthinc.noteservice.cassandra.CassandraDB;
-import com.inthinc.noteservice.model.AggressiveDriving;
-import com.inthinc.noteservice.model.Note;
-import com.inthinc.noteservice.model.VDD;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;

@@ -17,9 +17,9 @@ import com.inthinc.pro.reports.ReportCriteria;
 
 public interface ReportCriteriaService
 {
-    ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration, Locale locale);
-    ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale);
-    ReportCriteria getMpgReportCriteria(Integer groupID,Duration duration, Locale locale);
+    ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh);
+    ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh);
+    ReportCriteria getMpgReportCriteria(Integer groupID,Duration duration, Locale locale, GroupHierarchy gh);
     ReportCriteria getDriverReportCriteria(Integer groupID, Duration duration, Locale locale, Boolean initDataSet);
     ReportCriteria getVehicleReportCriteria(Integer groupID,Duration duration, Locale locale, Boolean initDataSet);
     ReportCriteria getIdlingReportCriteria(Integer groupID, Interval interval, Locale locale, Boolean initDataSet);
@@ -31,9 +31,9 @@ public interface ReportCriteriaService
     ReportCriteria getEmergencyReportCriteria(Integer groupID, Locale locale);
     ReportCriteria getZoneAlertsReportCriteria(Integer groupID, Locale locale);
     ReportCriteria getCrashHistoryReportCriteria(Integer groupID, Locale locale);
-    ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale);
-    ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale);
-    ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet);
+    ReportCriteria getSpeedPercentageReportCriteria(Integer groupID,Duration duration, Locale locale, GroupHierarchy gh);
+    ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh);
+    ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet, GroupHierarchy gh);
     ReportCriteria getTeamStopsReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, DriverStopReport driverStopReport);
     ReportCriteria getTeamStopsReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale);
 

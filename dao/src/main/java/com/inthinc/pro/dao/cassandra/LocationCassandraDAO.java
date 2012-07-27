@@ -264,6 +264,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 	@Override
     public List<DriverStops> getStops(Integer driverID, String driverName, Interval interval) {
 //		return locationDAO.getStops(driverID, driverName, interval);
+/*		
         Date start = interval.getStart().toDateTime().toDate();
         Date end   = interval.getEnd().toDateTime().toDate();
 
@@ -333,7 +334,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 				(IdleEvent) event.
 			}
 		}
-		
+*/		
 		
 		return null;
 	}
