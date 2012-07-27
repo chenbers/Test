@@ -17,6 +17,8 @@ default-autowire="byName">
 		<property name="cassandraDB" ref="cassandraDB" />
 	</bean>
 
+	
+	<!--
 	<bean id="eventDAO" class="com.inthinc.pro.dao.cassandra.EventCassandraDAO" parent="genericCassandraDAO"></bean>
 	<bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO" parent="genericCassandraDAO"></bean>
 	<bean id="mpgDAO" class="com.inthinc.pro.dao.cassandra.MpgCassandraDAO"/>
@@ -24,7 +26,5 @@ default-autowire="byName">
   <bean id="driverReportDAO" class="com.inthinc.pro.dao.cassandra.report.DriverReportCassandraDAO" />
   <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.cassandra.report.VehicleReportCassandraDAO" />
   <bean id="groupReportDAO" class="com.inthinc.pro.dao.cassandra.report.GroupReportCassandraDAO" />
-	
-	<!--
 	-->
 </beans>
