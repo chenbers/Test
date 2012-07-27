@@ -74,7 +74,7 @@ public enum ReportType
     VEHICLE_USAGE("Vehicle usage","vehicleUsageReport.jrxml","vehicleUsageReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.vehicleUsageReport", null, false),
 
     DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", null,"driverPerformanceKeyMetrics.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
-    DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG","driverPerformanceKeyMetricsRYG.jrxml","driverPerformanceKeyMetricsRYG.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
+    DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG",null,"driverPerformanceKeyMetricsRYG.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceKeyMetrics", null, false),
     DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_INDIVIDUAL("Driver  Performance (Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG(Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
