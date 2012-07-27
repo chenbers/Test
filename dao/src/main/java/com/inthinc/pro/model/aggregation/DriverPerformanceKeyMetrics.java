@@ -81,7 +81,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
         double greenMax = 1.0/7;
         double yellowMax = 4.0/7;
         double idleViolationsPerDay = getIdleViolationsPerDay();
-        if(totalMiles > 0){
+        if(totalMiles!=null && totalMiles > 0){
             if(idleViolationsCount != null){
                 if(idleViolationsPerDay < greenMax)
                     color =  GREEN;
@@ -95,7 +95,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     }
     private String getScoreColor(Integer scoreToTest){
         String color = WHITE;
-        if(totalMiles > 0){
+        if(totalMiles!=null && totalMiles > 0){
             if(scoreToTest == null || scoreToTest < 0)
                 return color;
             else if(scoreToTest > GREEN_MIN_LIMIT)
@@ -121,7 +121,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     }
     public String getDriverColor(){
         String color = "white";
-        if(totalMiles > 0){
+        if(totalMiles!=null && totalMiles > 0){
             color = "green";
             List<String> otherColors = Arrays.asList(getOverallScoreColor(), getSpeedingScoreColor(), getStyleScoreColor(), getSeatbeltScoreColor());
             if(otherColors.contains(RED))
