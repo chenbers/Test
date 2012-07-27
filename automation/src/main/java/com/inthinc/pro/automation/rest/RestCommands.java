@@ -1,24 +1,21 @@
 package com.inthinc.pro.automation.rest;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
-import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.WebDateFormat;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.BaseEntity;
 import com.inthinc.pro.automation.models.Event;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.selenium.AutomationProperties;
+import com.inthinc.pro.automation.utils.AutoHTTPException;
+import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.ObjectConverter;
 
@@ -32,8 +29,8 @@ public class RestCommands {
     
     public RestCommands(String username, String password){
         http = new HTTPCommands(username, password);
-        AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
-        baseUrl = Addresses.getSilo(apb.getSilo()).getBaseAddress() + service;
+        AutoServers server = new AutoServers();
+        baseUrl = server.getBaseAddress() + service;
     }
     
     public <T extends BaseEntity> T postObject(Class<T> type, BaseEntity instance, Object id){
@@ -48,10 +45,9 @@ public class RestCommands {
             return ObjectConverter.convertXMLToObject(response, name, type);
         } catch (UnsupportedEncodingException e) {
             Log.error(e);
-        } catch (HttpException e) {
-            Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(http.getResults());
         }
         return null;
     }
@@ -68,11 +64,9 @@ public class RestCommands {
             return ObjectConverter.convertXMLToObject(response, name, type);
         } catch (UnsupportedEncodingException e) {
             Log.error(e);
-        } catch (HttpException e) {
-            Log.error(e.getMessage());
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
             Log.error(http.getResults());
-        } catch (IOException e) {
-            Log.error(e);
         }
         return null;
     }
@@ -82,12 +76,9 @@ public class RestCommands {
             DeleteMethod delete = new DeleteMethod(baseUrl + type.getSimpleName().toLowerCase() + "/" + id);
             http.httpRequest(delete);
             return http.isSuccessful();
-        } catch (UnsupportedEncodingException e) {
-            Log.error(e);
-        } catch (HttpException e) {
-            Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(http.getResults());
         }
         return false;
     }
@@ -106,10 +97,9 @@ public class RestCommands {
         GetMethod get = new GetMethod(baseUrl + name + "/" + id + "/events/all/" + start + "/" + stop + "/" + page);
         try {
             return ObjectConverter.convertXMLToList(http.httpRequest(get), "eventPage", Event.class);
-        } catch (HttpException e) {
-            Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(http.getResults());
         }
         return null;
     }
@@ -120,10 +110,9 @@ public class RestCommands {
         GetMethod get = new GetMethod(baseUrl + name + (id==null ? "" : "/" + id));
         try {
             return ObjectConverter.convertXMLToObject(http.httpRequest(get), name, type);
-        } catch (HttpException e) {
-            Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(http.getResults());
         }
         return null;
     }
@@ -134,16 +123,19 @@ public class RestCommands {
         try {
             String result = http.httpRequest(get);
             return ObjectConverter.convertXMLToList(result, "collection", type);
-        } catch (HttpException e) {
-            Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(http.getResults());
         }
         return null;
     }
 
     public HTTPCommands getHttp() {
         return http;
+    }
+
+    public <T extends BaseEntity> T createObject(Class<T> clazz, BaseEntity instance) {
+        return postObject(clazz, instance, null);
     }
     
 }

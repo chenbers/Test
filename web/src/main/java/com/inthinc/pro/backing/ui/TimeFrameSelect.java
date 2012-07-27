@@ -48,6 +48,11 @@ public class TimeFrameSelect {
         
         return selectItemList;
     }
+    public List<SelectItem> getAltTimeFramesPlusRange(){
+        List<SelectItem> selectItemList = getAltTimeFrames();
+        selectItemList.add(new SelectItem(TimeFrame.CUSTOM_RANGE, TimeFrameUtil.getTimeFrameStr(TimeFrame.CUSTOM_RANGE, getLocale())));
+        return selectItemList;
+    }
     
     public List<SelectItem> getTimeFrames() {
         

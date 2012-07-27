@@ -1,21 +1,5 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.Iterator;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.AccountCapability;
-import com.inthinc.pro.automation.enums.ErrorLevel;
-import com.inthinc.pro.automation.enums.LoginCapability;
-import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.objects.AutomationUsers;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.UserColumns;
-import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
-import com.inthinc.pro.selenium.pageObjects.PageLogin;
 
 //TEST BEING TAKEN OFFLINE FOR NOW
 //

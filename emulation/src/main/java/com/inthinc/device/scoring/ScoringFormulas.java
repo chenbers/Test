@@ -29,8 +29,8 @@ public class ScoringFormulas {
      */
 	public final static Double xSeverity( Double deltaX, Double speed){
 		Double severity = Math.pow(Math.abs(deltaX), 2.0) * Math.pow(speed+Math.abs(deltaX)/10.0, 2.0);
-		Log.info("deltaX = "+deltaX);
-		Log.info("speed = " + speed);
+		Log.debug("deltaX = "+deltaX);
+		Log.debug("speed = " + speed);
 		if (deltaX>0) {
 			Log.debug("Accell Severity: "+severity);
 		}else 

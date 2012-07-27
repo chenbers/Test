@@ -125,11 +125,9 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
         
         return false;
     }
-
     @Override
-    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
-        List<DriverPerformanceKeyMetrics> driverPerformanceList = new ArrayList<DriverPerformanceKeyMetrics>();
-        Interval interval = timeFrame.getInterval();
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName,TimeFrame timeFrame, Interval interval) {
+    	List<DriverPerformanceKeyMetrics> driverPerformanceList = new ArrayList<DriverPerformanceKeyMetrics>();
         List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd().minusDays(1), null);
         
         if (scoreList == null || scoreList.isEmpty())
@@ -141,6 +139,7 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             dp.setGroupName(divisionName);
             dp.setTeamName(teamName);
             dp.setTimeFrame(timeFrame);
+            dp.setInterval(interval);
             Score s = score.getScore();
             dp.setLoginCount(getDriverLoginCount(score.getDriver().getDriverID(), score.getDriver().getPerson().getTimeZone(), interval));
             dp.setTotalMiles(s.getOdometer6() == null ? 0 : s.getOdometer6().intValue());
@@ -155,6 +154,14 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             driverPerformanceList.add(dp);
         }
         return driverPerformanceList;
+    }
+    @Override
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame) {
+        return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, timeFrame, null);
+    }
+    @Override
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, Interval interval) {
+        return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, null, interval);
     }
 
         

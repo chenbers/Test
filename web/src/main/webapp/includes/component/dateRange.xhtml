@@ -27,17 +27,16 @@
 -->
 
 <ui:composition>
-
-<table border="0" cellspacing="0" cellpadding="4">
+<table border="0" cellspacing="0" cellpadding="4" id="dateRangeTable">
 	<tr>
-		<td>								
+		<td>
 			<h:outputText value="#{messages.dateRange_label} " />
 		</td>
-		<td>            									
+		<td>
 			<rich:calendar id="#{context}_startCalendar" inputSize="10" value="#{dateRange.startDate}" locale="#{dateRange.locale}"
 						datePattern="#{messages.dateFormat}" timeZone="#{dateRange.timeZone}" showFooter="false">  
 				<a4j:support event="onchanged" reRender="#{reRenderList}" 
-						ajaxSingle="true" limitToList="true" 
+						ajaxSingle="true" 
 						action="#{dateRange.updateInterval}"/>
 						
 			</rich:calendar>
@@ -47,12 +46,11 @@
 			<rich:calendar id="#{context}_endCalendar" inputSize="10" value="#{dateRange.endDate}"  locale="#{dateRange.locale}"
 						datePattern="#{messages.dateFormat}" timeZone="#{dateRange.timeZone}" showFooter="false">
 				<a4j:support event="onchanged" reRender="#{reRenderList}" 
-						ajaxSingle="true" limitToList="true" 
+						ajaxSingle="true" 
 						action="#{dateRange.updateInterval}"/>
 			</rich:calendar>
 		</td>
 	</tr>
 </table>
-
 </ui:composition>
 </html>

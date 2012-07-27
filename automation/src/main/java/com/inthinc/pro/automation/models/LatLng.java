@@ -40,18 +40,33 @@ public class LatLng implements Serializable, Comparable<LatLng> {
         this.head = head;
     }
 
+    public double getLatitude(){
+        return getLat();
+    }
     public double getLat() {
         return lat;
     }
 
+    public void setLatitude(double lat){
+        setLat(lat);
+    }
+    
     public void setLat(double lat) {
         this.lat = lat;
     }
 
+    public double getLongitude(){
+        return getLng();
+    }
+    
     public double getLng() {
         return lng;
     }
 
+    public void setLongitude(double lng){
+        setLng(lng);
+    }
+    
     public void setLng(double lng) {
         this.lng = lng;
     }

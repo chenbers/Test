@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.thoughtworks.selenium.Selenium;
@@ -83,11 +82,12 @@ public interface CoreMethodInterface extends Selenium {
     public CoreMethodInterface tabKey();
     public CoreMethodInterface enterKey();
 
-    public Addresses getSilo();
     public Browsers getBrowser();
     
     public List<WebElement> findElements(SeleniumEnumWrapper myEnum);
     public WebElement findElement(SeleniumEnumWrapper myEnum);
     public By getLocator(List<By> list);
+    
+    public CoreMethodInterface hoverOver(SeleniumEnumWrapper myEnum);
     
 }

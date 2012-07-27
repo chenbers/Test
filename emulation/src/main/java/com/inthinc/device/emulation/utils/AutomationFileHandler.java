@@ -25,7 +25,6 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import android.util.Log;
 
-import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 
 public class AutomationFileHandler {
@@ -158,12 +157,11 @@ public class AutomationFileHandler {
         while (offset < bytes.length && (numRead=fis.read(bytes, offset, bytes.length-offset)) >= 0){
             offset += numRead;
         }
-        
+        fis.close();
         if (offset < bytes.length){
             throw new IOException("Could not completely read file " + file.getName());
         }
         
-        fis.close();
         return bytes;
     }
 

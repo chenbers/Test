@@ -31,28 +31,17 @@ And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
 Then I validate the Driver Name link is SAVEDENTRY
 
-Scenario: TC1381: Notifications - Diagnostics - Table Properties
+Scenario: TC1381: Notifications - Diagnostics - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
 Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
 And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
-Then I validate the Sort By Date Time link is ascending
-And I click the Sort By Date Time link
-And I validate the Sort By Date Time link is descending
-And I click the Sort By Driver link
-And I validate the Sort By Driver link is ascending
-And I click the Sort By Driver link
-And I validate the Sort By Driver link is descending
-And I click the Sort By Group link
-And I validate the Sort By Group link is ascending
-And I click the Sort By Group link
-And I validate the Sort By Group link is descending
-And I click the Sort By Vehicle link
-And I validate the Sort By Vehicle link is ascending
-And I click the Sort By Vehicle link
-And I validate the Sort By Vehicle link is descending
+Then I validate the Sort By Date Time column sorts correctly
+And I validate the Sort By Driver column sorts correctly
+And I validate the Sort By Group column sorts correctly
+And I validate the Sort By Vehicle column sorts correctly
 
 Scenario: TC1382: Notifications - Diagnostics - Tools Button
 Given I am logged in

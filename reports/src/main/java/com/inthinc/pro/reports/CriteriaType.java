@@ -13,7 +13,8 @@ public enum CriteriaType
      */
     TIMEFRAME_STRICT(TimeFrame.class), 
     TIMEFRAME_ALT(TimeFrame.class),
-    TIMEFRAME_ALT_DAYS(TimeFrame.class);
+    TIMEFRAME_ALT_DAYS(TimeFrame.class), 
+    TIMEFRAME_ALT_PLUS_CUSTOM_RANGE(TimeFrame.class);
     
     private Class clazz;
 

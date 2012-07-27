@@ -88,8 +88,14 @@ public class ScoringNoteProcessor {
 		
 		for (Map.Entry<Long, Map<String, Integer>> note : sorter.getSeatBelt().entrySet()) {
 			Log.debug("Processing Seatbelt note == " +note.getKey());
-			Double topSpeed = note.getValue().get("topSpeed").doubleValue();
-			Double distance = note.getValue().get("distance").doubleValue();
+			Map<String, Integer> value = note.getValue();
+			Double topSpeed = value.get("topSpeed").doubleValue();
+			Double distance;
+			if (value.containsKey("distance")){
+				distance = note.getValue().get("distance").doubleValue();
+			} else {
+				distance = note.getValue().get("odometer").doubleValue();
+			}
 			
 			seatbeltscore += Math.pow(topSpeed, 2.0) * distance;
 		}

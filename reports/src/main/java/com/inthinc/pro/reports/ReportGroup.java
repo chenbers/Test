@@ -94,7 +94,6 @@ public enum ReportGroup
                EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART),
                ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT),
              
-             
      // IFTA
      MILEAGE_BY_VEHICLE("Mileage by vehicle", 20, EntityType.ENTITY_GROUP_LIST,   
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
@@ -182,6 +181,11 @@ public enum ReportGroup
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS),
+     DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG", 43, EntityType.ENTITY_GROUP_LIST,
+            new CriteriaType[]{CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE},
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
+            EnumSet.of(ReportAccountType.PERFORMANCE),
+            ReportType.DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG),
      DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)", 34, EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
@@ -212,9 +216,8 @@ public enum ReportGroup
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_EXCLUDED_VIOLATIONS)
-    ;
+     ;
 
-    
     private ReportType[] reports;
     private Integer code;
     private String label;
@@ -225,7 +228,7 @@ public enum ReportGroup
 
     //GroupTypes These are used to indicate which groups have access to the report as well as which type of groups that this report can be ran against
     private GroupType[] groupTypes; 
-   
+
     /**
      * 
      * @param label Report Title

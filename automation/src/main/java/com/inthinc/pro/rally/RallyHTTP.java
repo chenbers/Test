@@ -1,9 +1,7 @@
 package com.inthinc.pro.rally;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -17,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.utils.AutoHTTPException;
+import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.ObjectConverter;
 
@@ -111,10 +111,9 @@ public class RallyHTTP extends HTTPCommands {
             GetMethod getRequest = new GetMethod(request.getMethod());
             getRequest.setQueryString(query);
             createResult(httpRequest(getRequest));
-        } catch (UnsupportedEncodingException e) {
-            Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(getResults());
         } catch (JSONException e) {
             Log.error(e);
         }
@@ -144,7 +143,7 @@ public class RallyHTTP extends HTTPCommands {
             JSONObject postJSON = new JSONObject();
             postJSON.put(request.getName(), item);
             String content = postJSON.toString();
-            Log.debug(PrettyJSON.toString(postJSON));
+            Log.debug(AutomationStringUtil.toString(postJSON));
 
             PostMethod postRequest = new PostMethod(url);
             RequestEntity requestEntity = new StringRequestEntity(content,
@@ -158,8 +157,9 @@ public class RallyHTTP extends HTTPCommands {
             Log.error(e);
         } catch (UnsupportedEncodingException e) {
             Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(getResults());
         }
         response = null;
     }
@@ -190,10 +190,9 @@ public class RallyHTTP extends HTTPCommands {
             Log.error(url);
             Log.error(response);
             Log.error(e);
-        } catch (HttpException e) {
-            Log.error(e);
-        } catch (IOException e) {
-            Log.error(e);
+        } catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(getResults());
         }
     }
 

@@ -22,7 +22,7 @@ import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.AutomationDeviceEvents.InstallEvent;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.objects.TripTracker;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.model.State;
@@ -36,7 +36,7 @@ public class WaysmartAggregationTest {
 //    private static final int acctID = 398;
 //    private static final int groupID = 5260;
 //    private static final int unknownDriverID = 66462;
-//    private static final Addresses server = Addresses.QA;
+//    private static final AutoSilos server = AutoSilos.QA;
     /* AccountID    =   398
      * Account Name = WSAgg
      * GroupID      =  5259
@@ -50,13 +50,13 @@ public class WaysmartAggregationTest {
 //    private static final int acctID = 1;
 //    private static final int groupID = 2;
 //    private static final int unknownDriverID = 1;
-//    private final static Addresses server = Addresses.DEV;
+//    private final static AutoSilos server = AutoSilos.DEV;
     
 
     private static final int acctID = 184549378;
     private static final int groupID = 2;
     private static final int unknownDriverID = 184549378;
-    private final static Addresses server = Addresses.WEATHERFORD;
+    private final static AutoSilos server = AutoSilos.WEATHERFORD;
     
     private final static State usState = new State(47, "Utah", "UT");
     private GeoPoint installLocation;
@@ -80,7 +80,7 @@ public class WaysmartAggregationTest {
     public WaysmartAggregationTest(){
         tripsMap = new HashMap<DeviceState, LinkedList<DeviceNote>>();
         vehicleMap = new HashMap<DeviceState, Vehicle>();
-        if (server.equals(Addresses.QA) || server.equals(Addresses.DEV)){
+        if (server.equals(AutoSilos.QA) || server.equals(AutoSilos.DEV)){
         	onQA = true;
         	portalProxy = new AutomationSiloService(server);
         } else {
@@ -325,10 +325,10 @@ public class WaysmartAggregationTest {
         DeviceState state = driver.getdeviceState();
         
         state.setDriverID(unknownDriverID);
-        if (server.equals(Addresses.QA)){
+        if (server.equals(AutoSilos.QA)){
 	        state.setOdometerX100(45840);
 	        state.getTime().setDate(1329183843);
-        } else if (server.equals(Addresses.DEV)){
+        } else if (server.equals(AutoSilos.DEV)){
         	state.setOdometerX100(11168);
         	state.getTime().setDate(1329864792);
         } 

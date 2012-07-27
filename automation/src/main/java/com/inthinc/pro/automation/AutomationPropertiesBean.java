@@ -2,7 +2,20 @@ package com.inthinc.pro.automation;
 
 import java.util.List;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class AutomationPropertiesBean {
+    
+    private static final String[] configFiles = { "classpath:spring/applicationContext-automation.xml" };
+    private static final BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
+    private static final AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
+
+    public static AutomationPropertiesBean getPropertyBean() {
+        return apb;
+    }
+    
+    
     private Boolean addTestSet;
     private String browserName;
     private List<String> editableAccount;

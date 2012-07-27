@@ -147,7 +147,8 @@ public class GeoPoint {
     }
     
     public void decodeLng(Long encodedLng){
-    	lng = (encodedLng / note.floatValue()) * 360.0;
+    	double temp = (encodedLng / note.floatValue()) * 360.0;
+    	lng = temp > 180 ? temp -360 : temp;
     }
     
     public long encodeLatBC(){

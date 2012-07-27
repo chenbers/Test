@@ -19,7 +19,7 @@ import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.objects.AutomationBridgeFwdCmdParser;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.device.objects.WaysmartClasses.MultiForwardCmd;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
@@ -47,12 +47,12 @@ public class WaysmartDevice extends DeviceBase {
     protected final static ProductType productVersion = ProductType.WAYSMART;
 
 
-    public WaysmartDevice(String IMEI, String MCM, Addresses server,
+    public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
             Direction comMethod) {
         this(IMEI, MCM, server, comMethod, DeviceProps.getWaysmartDefaults());
     }
 
-    public WaysmartDevice(String IMEI, String MCM, Addresses server,
+    public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
             Direction comMethod, Map<DeviceProps, String> settings) {
         super(IMEI, productVersion, settings, server);
         state.setMcmID(MCM);
@@ -61,10 +61,10 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     public WaysmartDevice(String IMEI, String MCM, Direction comMethod) {
-        this(IMEI, MCM, Addresses.QA, comMethod);
+        this(IMEI, MCM, AutoSilos.QA, comMethod);
     }
 
-    public WaysmartDevice(DeviceState state, Addresses server) {
+    public WaysmartDevice(DeviceState state, AutoSilos server) {
     	super(state, server);
 	}
 
@@ -150,15 +150,15 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     @Override
-    public WaysmartDevice set_server(Addresses server) {
-        mcmProxy = new MCMProxyObject(server);
-        this.server = server;
+    public WaysmartDevice set_server(AutoSilos silo) {
+        mcmProxy = new MCMProxyObject(this.server);
+        server.setBySilo(silo);
         String url, port;
-        url = server.getMCMUrl();
+        url = server.getMcmUrl();
         port = server.getWaysPort().toString();
         state.setSetting(DeviceProps.SERVER_IP_W, url + ":" + port);
         state.setSetting(DeviceProps.MAP_SERVER_URL_W, url);
-        state.setSetting(DeviceProps.MAP_SERVER_PORT_W, server.getMCMPort()
+        state.setSetting(DeviceProps.MAP_SERVER_PORT_W, server.getMcmPort()
                 .toString());
         return this;
     }

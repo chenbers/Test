@@ -12,7 +12,10 @@
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
 	
 	<script language="javascript" type="text/javascript">
-
+	    jQuery().ready(function() {      
+			onStopTabSelectionComplete();
+			addressLookup.findAddresses();
+	    });
 		function onStopTabSelectionComplete(){								
 			initStopTimeFrameChangeListener();
 		}
@@ -28,43 +31,64 @@
 			});
 		}	
 
-        function getAddresses()
-        {              
-	    	geocoder = new GClientGeocoder();
-	    	
-	    	// start table address
-	    	jQuery('td[id$="address_column_start"]').each(function(n){
-
-         		var latStart = jQuery(this).find('*[id$="latStart"]');
-        		var lngStart = jQuery(this).find('*[id$="lngStart"]');
-        		var addressStart = jQuery(this).find('*[id$="addressStart"]');  
-				
-				reverseGeocodeTripAddress(new GLatLng(latStart[0].value,lngStart[0].value),addressStart[0]);	
-	    	});   	    	
-
-
-	    	// main table addresses
-	    	jQuery('td[id$="address_column"]').each(function(n){
-
-         		var lat = jQuery(this).find('*[id$="lat"]');
-        		var lng = jQuery(this).find('*[id$="lng"]');
-        		var address = jQuery(this).find('*[id$="address"]');  
-				
-				reverseGeocodeTripAddress(new GLatLng(lat[0].value,lng[0].value),address[0]);	
-	    	});                        
-        }       
-
-        function reverseGeocodeTripAddress(latlng, addressElement){
-         	geocoder.getLocations(latlng, 
-        			function(response){    			
-    			        if (!response || response.Status.code != 200) {
-  			         	  	addressElement.innerHTML = "#{messages.teamStopsNoAddressFound}";
-    			        } 
-    			        else {						
-			            	addressElement.innerHTML = response.Placemark[0].address;
-    			        }     			       
-    		});
-	    }   	 
+		var addressLookup = (function() {
+        	var addresses = {};
+        	var addressElements; //an array of the html elements that need the address after the point is reverse geocoded
+    		var collectAddressElements = function() {
+        		addressElements = [];
+        		
+    	    	jQuery('td[id$="address_column_start"]').each(function(){
+					var addressElement = {
+            			"element" : this,
+						"lat" : jQuery(this).find('*[id$="latStart"]')[0].value,
+   						"lng" : jQuery(this).find('*[id$="lngStart"]')[0].value,
+   						"address" : jQuery(this).find('*[id$="addressStart"]')
+					};
+   					addressElements.push(addressElement);
+    	    	})
+    	    	
+    	    	jQuery('td[id$="address_column"]').each(function(){
+					var addressElement = {
+	            			"element" : this,
+							"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
+	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
+	   						"address" : jQuery(this).find('*[id$="address"]')
+						};
+	   					addressElements.push(addressElement);
+    	    	})
+    		}
+        	return {
+        		findAddresses : function() {
+		    		if (geocoder == null) geocoder = new GClientGeocoder();
+		    		var delay = 250;
+		    		collectAddressElements();
+					var reverseGeocode = function() {
+						if (addressElements.length == 0) return;
+						var element = addressElements.shift();
+						if(addresses[element.lat + element.lng]) {
+    			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
+    			        	reverseGeocode();
+						} else {
+							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
+		         				if (!response) {
+		  			         	  	element.address[0].innerHTML = "#{messages.teamStopsNoAddressFound}";
+		         				} else if (response.Status.code == 200) {
+		    			        	element.address[0].innerHTML = response.Placemark[0].address;
+		    			        	addresses[element.lat + element.lng] = response.Placemark[0].address;
+		    			        } else if (response.Status.code == 620) {
+		    			        	addressElements.push(element);
+		    			        } else {
+		  			         	  	element.address[0].innerHTML = "#{messages.teamStopsNoAddressFound}";
+		    			        }
+		    			        reverseGeocode();
+							}) }, delay);
+						}
+					}
+					reverseGeocode();
+        		}
+        	};
+        }());
+		
 
     </script>
     
@@ -130,7 +154,7 @@
 					<ui:param  name="id" value="#{context}_reportEmailModal" />
 					<ui:param  name="reportBean" value="#{teamStopsBean}"/>
 					<ui:param name="context" value="#{context}" />
-					<ui:param name = "onemail" value="getAddresses();initStopTimeFrameChangeListener();"/>
+					<ui:param name = "onemail" value="addressLookup.findAddresses();initStopTimeFrameChangeListener();"/>
 				</ui:include>
 			</h:outputText>
 		</ui:fragment>
@@ -156,7 +180,7 @@
                		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true" style="text-decoration:none;border:0;"
                		 					value="#{teamStopsBean.selectedDriverID}">
                		 					<f:selectItem itemValue="#{drivers.driverID}"/>
-               		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="getAddresses();initStopTimeFrameChangeListener();"/>                	 					                 						
+               		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="addressLookup.findAddresses();initStopTimeFrameChangeListener();"/>                	 					                 						
                 					</h:selectOneRadio>
                 				</a4j:region>              		
               				</rich:column>
@@ -362,7 +386,7 @@
 	                					</rich:column>	  
 	                					<f:facet name="footer">  
 	                						<rich:datascroller 	align="center" 
-	                							oncomplete="getAddresses();initStopTimeFrameChangeListener();"							
+	                							oncomplete="addressLookup.findAddresses();initStopTimeFrameChangeListener();"							
             			 						id="stopsTripsTableScroller"/>
             							</f:facet>            		                		            		             		       		
 									</rich:dataTable>	
@@ -383,12 +407,6 @@
 		  
 	    </a4j:outputPanel>
 	     
-    	<script language="javascript" type="text/javascript">
-    		jQuery(function(){
-    			onStopTabSelectionComplete();
-    			getAddresses();
-			});    				
-    	</script>
 
     </rich:tab>
  </ui:composition>

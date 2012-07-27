@@ -150,7 +150,7 @@ public class TestCaseResult extends RallyObject {
             Log.info("JSONException: "+e);
             Log.info("The " + fieldFailed
                     + " is missing from the test case results.");
-            Log.info(PrettyJSON.toString(testCaseResults));
+            Log.info(AutomationStringUtil.toString(testCaseResults));
             Log.info(AutomationStringUtil.toString(e));
         } catch(Exception e){
             Log.debug("something bad happened with send_test_case_results()\n%s", e);
@@ -234,7 +234,7 @@ public class TestCaseResult extends RallyObject {
     }
 
     public String toString() {
-        return PrettyJSON.toString(testCaseResults);
+        return AutomationStringUtil.toString(testCaseResults);
     }
 
     public void updateTestCase(String testCase, String byID) {

@@ -84,6 +84,13 @@ public class DateRange implements Cloneable {
     public void setBadDates(String badDates) {
         this.badDates = badDates;
     }
+    public boolean isMoreThanOneYear(){
+        DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(getTimeZone());
+        DateTime start = new DateTime(startDate.getTime(), dateTimeZone);
+        DateTime end = new DateMidnight(endDate.getTime(), dateTimeZone).toDateTime().plusDays(1).minus(1);
+        
+        return end.minusYears(1).isAfter(start.getMillis());
+    }
 
     public void updateInterval()
     {

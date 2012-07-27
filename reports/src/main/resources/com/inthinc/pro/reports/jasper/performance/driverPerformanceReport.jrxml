@@ -8,8 +8,8 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
-	<style name="PageHeader" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="PageFooter" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="PageHeader" fontName="SansSerif" fontSize="12" isBold="true"/>
 	<subDataset name="vehiclePerformanceBreakdown">
 		<parameter name="USE_METRIC" class="java.lang.Boolean"/>
 		<queryString>

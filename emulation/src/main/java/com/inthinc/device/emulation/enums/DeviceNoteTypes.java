@@ -563,6 +563,7 @@ public enum DeviceNoteTypes  {
                     Log.debug(formatNoteType(line));
                 }
             }
+            br.close();
         } catch (IOException e) {
             Log.wtf("%s", e);
         }
@@ -674,6 +675,7 @@ public enum DeviceNoteTypes  {
                     }
                 }
             }
+            br.close();
         }catch (IOException e) {
             Log.i("%s", e);
         }
@@ -697,4 +699,29 @@ public enum DeviceNoteTypes  {
     public String toString(){
         return String.format("%s(%d)", name(), code);
     }
+
+    public boolean isEndOfTrip() {
+		return (   this == CLEAR_DRIVER 
+				|| this == LOW_BATTERY 
+				|| this == IGNITION_OFF 
+				|| this == RF_KILL 
+				|| this == HOS_CHANGE_STATE_EX 
+				|| this == HOS_CHANGE_STATE_NO_GPS_LOCK
+				|| this == LOW_POWER_MODE
+				|| this == LOW_POWER_TAMPER_EVENT
+				);
+	}
+    
+    public boolean  isTripStartNoteType() {
+		return (this == NEWDRIVER || this == NEWDRIVER_HOSRULE || this == IGNITION_ON);
+	}
+    
+    
+	public boolean isStrippedNote()	{
+		return (code > 245 && code < 255);
+	}
+	
+	public boolean isIdleNoteType()	{
+		return (this == IDLE_STATS || this == IDLING);
+	}
 }

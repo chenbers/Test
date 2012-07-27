@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="driverPerformanceKeyMetrics" pageWidth="942" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="942" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/driverPerformanceKeyMetrics" isIgnorePagination="true">
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="driverPerformanceKeyMetrics" pageWidth="942" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="942" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="i18n/driverPerformanceKeyMetrics" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
@@ -10,6 +12,29 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="red"      forecolor="#4D1B9D" backcolor="#6B9D1B"/>
+	<style name="yellow"   forecolor="#0549F5" backcolor="#F6B305"/>
+	<style name="green"    forecolor="#00FFFF" backcolor="#FF0000"/>
+	<style name="white"    forecolor="#000000" backcolor="#FFFFFF"/>
+	<style name="nonRYGNormal" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="OverAllScore" style="nonRYGNormal">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{overallScore}>4.5)]]></conditionExpression>
+			<style style="green"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{overallScore}<=4.5 && $F{overallScore}>3.0)]]></conditionExpression>
+			<style style="yellow"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{overallScore}<=3.0)]]></conditionExpression>
+			<style style="red"/>
+		</conditionalStyle>
+		<conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{overallScore}.equals("N/A"))]]></conditionExpression>
+            <style style="white"/>
+        </conditionalStyle>
+	</style>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="TIME_ZONE" class="java.util.TimeZone" isForPrompting="false"/>
 	<field name="groupName" class="java.lang.String"/>
@@ -147,7 +172,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{totalMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-77" mode="Opaque" x="540" y="0" width="50" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" style="OverAllScore" mode="Opaque" x="540" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.ScoreConverter.convertScore($F{overallScore},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>

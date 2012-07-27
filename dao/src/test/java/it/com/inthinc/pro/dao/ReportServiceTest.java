@@ -470,11 +470,11 @@ public class ReportServiceTest {
         for (SpeedPercentItem item : list) {
             long distance = item.getMiles().longValue();
             long speedingDistance = item.getMilesSpeeding().longValue();
-            // System.out.println("distance: " + distance + " speeding: " + speedingDistance);
+            //System.out.println("distance: " + distance + " speeding: " + speedingDistance);
             assertTrue("speeding distance should not exceed distance ", (speedingDistance <= distance));
             assertEquals(idx + ": Unexpected distance ", fleetExpectedDailyMileage, distance);
             assertEquals(idx + ": Unexpected speeding distance ", fleetExpectedDailySpeedingMileage, speedingDistance);
-
+            idx++;
         }
     }
 

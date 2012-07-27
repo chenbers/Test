@@ -4,7 +4,7 @@ import java.io.StringWriter;
 
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.hessian.tcp.AutomationHessianFactory;
-import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.RandomValues;
@@ -20,7 +20,7 @@ public class Unique {
 		this.portalProxy = portalProxy;
 	}
 	
-	public Unique(Addresses getYourOwn){
+	public Unique(AutoSilos getYourOwn){
 		this.portalProxy = new AutomationHessianFactory().getPortalProxy(getYourOwn);
 	}
 	
