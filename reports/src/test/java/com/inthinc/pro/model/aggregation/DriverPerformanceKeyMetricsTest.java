@@ -1,11 +1,6 @@
 package com.inthinc.pro.model.aggregation;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.List;
-//import mockit.Mocked;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -15,9 +10,6 @@ import org.junit.Test;
 import com.inthinc.pro.model.TimeFrame;
 
 public class DriverPerformanceKeyMetricsTest {
-    //@Mocked DriverPerformanceKeyMetrics mockedData;
-    //DriverPerformanceKeyMetrics testedData;
-    
     private final static DateTime start = new DateTime(2012, 7, 1, 12, 0,0,0);
     private final static Interval ONE_DAY = new Interval(start.getMillis(), start.plusDays(1).getMillis());
     private final static Interval TWO_DAY = new Interval(start.getMillis(), start.plusDays(2).getMillis());
