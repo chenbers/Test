@@ -115,6 +115,8 @@ public class TeamStopsTest {
         driverDAO.setVehicleDAO(vehicleDAO);
         LocationHessianDAO locationDAO = new LocationHessianDAO();
         locationDAO.setSiloService(siloService);
+        locationDAO.setVehicleDAO(vehicleDAO);
+        locationDAO.setDriverDAO(driverDAO);
         driverDAO.setLocationDAO(locationDAO);
         vehicleDAO.setLocationDAO(locationDAO);
         
