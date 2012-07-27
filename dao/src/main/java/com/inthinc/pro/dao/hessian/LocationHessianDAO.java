@@ -122,7 +122,7 @@ public class LocationHessianDAO   implements LocationDAO
         logger.debug("getTrips() vehicleID = " + vehicleID);
         try
         {
-            List<Trip> tripList = mapper.convertToModelObject(this.getSiloService().getTrips(vehicleID, DRIVER_TYPE, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Trip.class);
+            List<Trip> tripList = mapper.convertToModelObject(this.getSiloService().getTrips(vehicleID, VEHICLE_TYPE, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Trip.class);
             return tripList;
         }
         catch (EmptyResultSetException e)
