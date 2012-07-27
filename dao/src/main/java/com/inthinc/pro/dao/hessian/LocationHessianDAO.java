@@ -19,11 +19,12 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
-public class LocationHessianDAO implements LocationDAO
+public class LocationHessianDAO   implements LocationDAO
 {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(LocationHessianDAO.class);

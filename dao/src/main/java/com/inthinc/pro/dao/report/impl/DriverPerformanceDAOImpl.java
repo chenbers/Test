@@ -8,6 +8,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehiclePerformanceDAO;
 import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
@@ -21,11 +22,13 @@ import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.VehiclePerformance;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 
 
 public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
 
+    private GroupDAO groupDAO;
     private GroupReportDAO groupReportDAO;
     private EventDAO eventDAO;
     private VehiclePerformanceDAO vehiclePerformanceDAO;
@@ -99,6 +102,14 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
         this.groupReportDAO = groupReportDAO;
     }
 
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO) {
+        this.groupDAO = groupDAO;
+    }
+
     private boolean includeDriver(DriverVehicleScoreWrapper scoreWrapper, List<Integer> driverIDList, boolean individualDrivers) 
     {
         if (scoreWrapper.getScore() == null) {
@@ -128,7 +139,10 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
     @Override
     public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName,TimeFrame timeFrame, Interval interval) {
     	List<DriverPerformanceKeyMetrics> driverPerformanceList = new ArrayList<DriverPerformanceKeyMetrics>();
-        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd().minusDays(1), null);
+		
+		Group group = groupDAO.findByID(groupID);
+		GroupHierarchy gh = new GroupHierarchy(groupDAO.getGroupHierarchy(group.getAccountID(), groupID));
+        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval.getStart(), interval.getEnd().minusDays(1), gh);
         
         if (scoreList == null || scoreList.isEmpty())
             return driverPerformanceList;
