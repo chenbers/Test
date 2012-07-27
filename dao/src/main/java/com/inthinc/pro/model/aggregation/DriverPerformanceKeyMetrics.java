@@ -31,7 +31,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private Integer hiIdleViolationsMinutes;
     private String color;
     static private Integer MAXIMUM_SCORE_LIMIT = 50;
-    static private Integer GREEN_MIN_LIMIT = 45;
+    static private Integer GREEN_MIN_LIMIT = 40;
     static private Integer YELLOW_MIN_LIMIT = 30;
     static private String WHITE = "white";
     static private String RED = "red";
