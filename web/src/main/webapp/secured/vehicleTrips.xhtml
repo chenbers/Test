@@ -496,58 +496,66 @@
 								<div class="">
 								<div class="panel_nw">
 								<div class="panel_title"><span class="">#{messages.vehicletrip_events}</span> <span class="panel_links"></span></div>
-								</div>
-								<div class="panel_w">
-								<div class="panel_content"><!-- Start Event table --> <rich:panel id="selectedEvents">
-										<a4j:form id="selectedEventsForm">
-												<rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%"
-														onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,'#{item.noteID}');">
-
-														<!-- Data -->
-														<rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
-								                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 'IDLE'}" title="#{messages[item.eventType]}" />
-								                                <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
-								                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 'IDLE' and item.type ne 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
-														</rich:column>
-
-														<rich:column id="address_column" sortBy="#{item.addressStr}" style="cursor: pointer;">
-																<f:facet name="header">
-																		<h:outputText value="#{messages.vehicletrip_event_address}" />
-																</f:facet>
-																<ui:fragment rendered="#{vehicleTripsBean.addressFormat == 1}">
-																		<!--Address -->
-																		<h:outputText value="#{item.addressStr}" />
-																</ui:fragment>
-																<ui:fragment rendered="#{vehicleTripsBean.addressFormat == 2}">
-																		<!-- Link -->
-																		<a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a>
-																</ui:fragment>
-																<ui:fragment rendered="#{vehicleTripsBean.addressFormat == 3}">
-																		<!--LatLng -->
-																		<h:inputHidden id="eventLat" value="#{item.latitude}" />
-																		<h:inputHidden id="eventLng" value="#{item.longitude}" />
-																		<h:outputText id="eventAddress" />
-																		<h:inputHidden id="zoneName" value="#{item.addressStr}" />
-																</ui:fragment>
-														</rich:column>
-
-														<rich:column sortBy="#{item.time}" style="cursor: pointer;">
-																<f:facet name="header">
-																		<h:outputText value="#{messages.vehicletrip_event_datetime}" />
-																</f:facet>
-
-								                                <h:outputText value="#{item.time}">
-                                								    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
-                                								</h:outputText>
-														</rich:column>
-												</rich:dataTable>
-
-												<rich:datascroller align="center" for="selectedTripTable" id="eventScroller" styleClass="dataScrollerSmall" maxPages="5" reRender="script,selectedTripTable"
-														oncomplete="addressLookup.findAddresses();" renderIfSinglePage="false" />
-										</a4j:form>
-								</rich:panel> <!-- End Trip table --></div>
-								</div>
-								<div class="panel_sw">
+  								</div>
+                                <div class="panel_w">
+                                  <div class="panel_content">
+                                    <!-- Start Event table -->
+                                    <rich:panel id="selectedEvents">
+                                      <a4j:status onstop="onTableRender();">
+                                          <f:facet name="start">
+                                          </f:facet>
+                                      </a4j:status>
+                                      <a4j:form id="selectedEventsForm">
+                                        <rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="5"
+                                          width="100%" onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,'#{item.noteID}');">
+                  
+                                          <!-- Data -->
+                                          <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
+                                            <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 'IDLE'}" title="#{messages[item.eventType]}" />
+                                            <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
+                                            <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 'IDLE' and item.type ne 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
+                                          </rich:column>
+                  
+                                          <rich:column id="address_column" style="cursor: pointer;">
+                                            <f:facet name="header">
+                                              <h:outputText value="#{messages.vehicletrip_event_address}" />
+                                            </f:facet>
+                                            <ui:fragment rendered="#{vehicleTripsBean.addressFormat == 1}">
+                                              <!--Address -->
+                                              <h:outputText value="#{item.addressStr}" />
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{vehicleTripsBean.addressFormat == 2}">
+                                              <!-- Link -->
+                                              <a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a>
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{vehicleTripsBean.addressFormat == 3}">
+                                              <!--LatLng -->
+                                              <h:inputHidden id="eventLat" value="#{item.latitude}" />
+                                              <h:inputHidden id="eventLng" value="#{item.longitude}" />
+                                              <h:outputText id="eventAddress" />
+                                              <h:inputHidden id="zoneName" value="#{item.addressStr}" />
+                                            </ui:fragment>
+                                          </rich:column>
+                  
+                                          <rich:column sortBy="#{item.time}" style="cursor: pointer;">
+                                            <f:facet name="header" >
+                                              <h:outputText value="#{messages.vehicletrip_event_datetime}" />
+                                            </f:facet>
+                  
+                                            <h:outputText value="#{item.time}">
+                                              <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
+                                            </h:outputText>
+                                          </rich:column>
+                                        </rich:dataTable>
+                  
+                                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" styleClass="dataScrollerSmall" maxPages="5" reRender="script,selectedTripTable"
+                                          oncomplete="addressLookup.findAddresses();" renderIfSinglePage="false" />
+                                      </a4j:form>
+                                    </rich:panel>
+                                    <!-- End Trip table -->
+                                  </div>
+                                </div>
+                <div class="panel_sw">
 								<div class="panel_statusbar"></div>
 								</div>
 								</div>
