@@ -510,7 +510,7 @@
                                           width="100%" onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,'#{item.noteID}');">
                   
                                           <!-- Data -->
-                                          <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
+                                          <rich:column style="cursor: pointer;">
                                             <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 'IDLE'}" title="#{messages[item.eventType]}" />
                                             <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
                                             <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 'IDLE' and item.type ne 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
