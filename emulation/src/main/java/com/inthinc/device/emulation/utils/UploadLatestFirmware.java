@@ -13,7 +13,7 @@ import com.inthinc.pro.automation.enums.ProductType;
 public class UploadLatestFirmware {
 
     private final static Set<ProductType> tiwiProSet = EnumSet.of(ProductType.TIWIPRO_R74, ProductType.TIWIPRO_R747);
-    private final static Set<AutoSilos> serverSet = EnumSet.of(AutoSilos.QA, AutoSilos.DEV);
+    private final static Set<AutoSilos> serverSet = EnumSet.of(AutoSilos.QA, AutoSilos.DEV, AutoSilos.TEEN_QA);
     private final static String svnBaseURl = "https://svn.iwiglobal.com/iwi/release/tiwi/pro/wmp";
 
     public void uploadFirmware(){
