@@ -20,9 +20,9 @@
 		<url>http://testteen.iwiglobal.com:8091/hudson</url>
 	</ciManagement>
 	<scm>
-		<connection>scm:svn:https://svn.iwiglobal.com/pro/pro/trunk</connection>
-		<developerConnection>scm:svn:https://svn.iwiglobal.com/pro/pro/trunk</developerConnection>
-		<url>http://svn.iwiglobal.com/pro</url>
+		<connection>scm:git:git@github.com:inthinc/portal.git</connection>
+		<developerConnection>scm:git:git@github.com:inthinc/portal.git</developerConnection>
+		<url>https://github.com/inthinc/portal</url>
 	</scm>
 	<developers>
 		<developer>
@@ -243,8 +243,6 @@ WWUUnm]]>
 				<version>2.3.2</version>
 				<inherited>true</inherited>
 				<configuration>
-					<username>${svnUsername}</username>
-					<password>${svnPassword}</password>
 					<scmCommentPrefix>[Hudson]</scmCommentPrefix>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<releaseProfiles>qa</releaseProfiles>
