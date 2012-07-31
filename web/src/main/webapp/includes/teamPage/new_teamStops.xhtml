@@ -12,10 +12,7 @@
 	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
 	
 	<script language="javascript" type="text/javascript">
-	    jQuery().ready(function() {      
-			onStopTabSelectionComplete();
-			addressLookup.findAddresses();
-	    });
+
 		function onStopTabSelectionComplete(){								
 			initStopTimeFrameChangeListener();
 		}
@@ -406,7 +403,13 @@
 		</table>						
 		  
 	    </a4j:outputPanel>
-	     
+	  <script language="javascript" type="text/javascript">
+        jQuery(function(){
+			onStopTabSelectionComplete();
+			addressLookup.findAddresses();
+      });
+            
+      </script>
 
     </rich:tab>
  </ui:composition>
