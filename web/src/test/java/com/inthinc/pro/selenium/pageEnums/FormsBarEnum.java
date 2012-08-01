@@ -9,8 +9,6 @@ public enum FormsBarEnum implements SeleniumEnums {
     SUBMISSIONS("Submissions", ""),
     EDIT_COLUMNS("Edit Columns", ""),
     
-    SELECT_ALL(null, ""),
-    SELECT_ROW(null, ""),
     ;
 
     private String text, url;

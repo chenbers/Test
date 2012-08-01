@@ -1,6 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkContextSense;
 import com.inthinc.pro.selenium.pageEnums.FormsBarEnum;
 
@@ -16,16 +15,12 @@ public abstract class FormsBar extends NavigationBar {
 
     protected class FormsBarLinks extends NavigationBarLinks{
         
-        public TextLinkContextSense redFlags(){
+        public TextLinkContextSense addForm(){
             return new TextLinkContextSense(FormsBarEnum.ADD_FORM, page);
         }
     
-        public TextLinkContextSense safety() {
+        public TextLinkContextSense submissions() {
             return new TextLinkContextSense(FormsBarEnum.SUBMISSIONS, page);
-        }
-        
-        public TextLink editColumns(){
-            return new TextLink(FormsBarEnum.EDIT_COLUMNS, page);
         }
     }
 	

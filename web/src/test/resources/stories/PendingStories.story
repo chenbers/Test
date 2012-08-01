@@ -360,12 +360,51 @@ Scenario: TC1347: Notifications - Crash History - Refresh
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
+And I select "Top - Test Group WR" from the Team dropdown
+And I select "All" from the Time Frame dropdown
+And I type "TIWI00" into the Search textfield
+And I click the Search button
 And I click the Forward One pagescroller
+And I click the Sort Status link
+And I save the Counter text as RECORDS
+And I click the Add Crash Report link
+And I save the Date Time dropdown as DATETIME
+And I select the text containing "TIWI02" from the Vehicle dropdown
+And I select "Alma Mater" from the Driver dropdown
+And I click the Find Address button
+And I type "4225 Lake Park Blvd" into the Find Address textfield
+And I click the Locate button
+And I click the Top Save button
+And I click the Back link
+And I select "Top - Test Group WR" from the Team dropdown
+And I type "TIWI00" into the Search textfield
+And I select "All" from the Time Frame dropdown
+And I click the Search button
+Then I validate the Counter text is not RECORDS
+And I validate the "1" text of the pagescroller is not clickable
+And I validate the 1st Row of the Date Time text is DATETIME
+And I validate the 1st Row of the Driver link is "Alma Mater"
+And I validate the 1st Row of the Vehicle link is "TIWI02"
+And I validate the Date Time column sorts correctly //need to get sorting to work
 
-
-
-
-
+Scenario: TC1348: Notifications - Crash History - Refresh
+Given I am logged in
+When I click the Notifications link
+And I click the Crash History link
+And I select "Top - Test Group WR" from the Team dropdown
+And I select "All" from the Time Frame dropdown
+And I type "New" into the Search textfield
+And I click the Search button
+Then I validate the 1st Row of the Status text contains "New"
+And I type "Rollover" into the Search textfield
+And I click the Search button
+And I validate the 1st Row of the Status text contains "Rollover"
+And I type "Aggressive Driving" into the Search textfield
+And I click the Search button
+And I validate the 1st Row of the Status text contains "Aggressive Driving"
+And I type "Panic" into the Search textfield
+And I click the Search button
+And I validate the 1st Row of the Status text contains "Panic"
 
 
 

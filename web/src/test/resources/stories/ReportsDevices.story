@@ -20,7 +20,7 @@ Given I am logged in
 Then I validate I am on the Reports Devices page
 
 Scenario: TC1527: Reports - Devices - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Sort By Device ID link
@@ -34,13 +34,13 @@ And I click the Sort By Status link
 And I click the Sort By Status link
 
 Scenario: TC1528: Reports - Devices - Tools Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Tools button
-Then I validate the Email Report button is present
-And I validate the Export To PDF button is present
-And I validate the Export To Excel button is present
+Then I validate the Export Email button is present
+And I validate the Export PDF button is present
+And I validate the Export Excel button is present
 
 Scenario: TC1529: Reports - Devices - UI
 Given I am logged in
@@ -62,16 +62,16 @@ And I validate the Device Phone Number Search textfield is present
 And I validate the Status dropdown is present
 
 Scenario: TC1530: Reports - Devices - Edit Columns - Cancel Button (Changes)
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I click the 1st Row of the Edit Columns checkbox
-And I uncheck the 2nd Row of the Edit Columns checkbox
-And I uncheck the 3rd Row of the Edit Columns checkbox
-And I uncheck the 4th Row of the Edit Columns checkbox
-And I uncheck the 5th Row of the Edit Columns checkbox
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
+And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
 And I click the Cancel button
 And the Edit Columns popup closes
 Then I validate the Sort By Device ID link is present
@@ -81,7 +81,7 @@ And I validate the Sort By Device Phone link is present
 And I validate the Header Status text is present
 
 Scenario: TC1531: Reports - Devices - Edit Columns - Cancel Button (No Changes)
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
@@ -95,7 +95,7 @@ And I validate the Sort By Device Phone link is present
 And I validate the Header Status text is present
 
 Scenario: TC1532: Reports - Devices - Edit Columns - Check Box Selection via Mouse
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
@@ -122,7 +122,7 @@ And I check the checkbox of the fifth entry
 And I validate the checkbox of the fifth entry is checked
 
 Scenario: TC1534: Reports - Devices - Edit Columns - Current Session Retention
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
@@ -142,7 +142,7 @@ And I validate the Sort By Device Phone link is present
 And I validate the Header Status text is present
 
 Scenario: TC1536: Reports - Devices - Edit Columns - Save Button
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
@@ -160,7 +160,7 @@ And the Edit Columns popup closes
 And I validate the Sort By Device ID link is present
 
 Scenario: TC1537: Reports - Devices - Edit Columns - Subsequent Session Retention
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
@@ -189,7 +189,7 @@ And I click the Devices link
 And I validate the Sort By Device ID link is present
 
 Scenario: TC1539: Reports - Devices - Edit Columns - UI
-Given I am logged in as a "Admin" user
+Given I am logged in
 When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link

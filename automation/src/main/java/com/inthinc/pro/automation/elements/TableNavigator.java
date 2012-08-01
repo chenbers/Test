@@ -92,6 +92,7 @@ public class TableNavigator <T extends ElementBase>{
 
     public boolean isMethodStep() throws SecurityException, NoSuchMethodException {
         Map<String, List<Method>> methods = AutoMethodParser.getMethods(instance.getClass(), null);
+        methods.remove("row");
         String match = "";
         String shortened = stepAsString.replace(" ", "").toLowerCase();
         for (String methodName : methods.keySet()){

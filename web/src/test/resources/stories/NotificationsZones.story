@@ -94,12 +94,12 @@ When I click the Notifications link
 And I click the Zones link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the 1st Row of the Edit Columns checkbox
-And I uncheck the 2nd Row of the Edit Columns checkbox
-And I uncheck the 3rd Row of the Edit Columns checkbox
-And I uncheck the 4th Row of the Edit Columns checkbox
-And I uncheck the 5th Row of the Edit Columns checkbox
-And I uncheck the 6th Row of the Edit Columns checkbox
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
+And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
+And I uncheck the 6th Row of the Column checkbox
 And I click the Cancel button
 And the Edit Columns popup closes
 Then I validate the Sort By Date Time link is present
@@ -142,30 +142,30 @@ When I click the Notifications link
 And I click the Zones link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-Then I check the 1st Row of the Edit Columns checkbox
-And I validate the 1st Row of the Edit Columns checkbox is checked
-And I uncheck the 1st Row of the Edit Columns checkbox
-And I validate the 1st Row of the Edit Columns checkbox is not checked
-And I check the 2nd Row of the Edit Columns checkbox
-And I validate the 2nd Row of the Edit Columns checkbox is checked
-And I uncheck the 2nd Row of the Edit Columns checkbox
-And I validate the 2nd Row of the Edit Columns checkbox is not checked
-And I check the 3rd Row of the Edit Columns checkbox
-And I validate the 3rd Row of the Edit Columns checkbox is checked
-And I uncheck the 3rd Row of the Edit Columns checkbox
-And I validate the 3rd Row of the Edit Columns checkbox is not checked
-And I check the 4th Row of the Edit Columns checkbox
-And I validate the 4th Row of the Edit Columns checkbox is checked
-And I uncheck the 4th Row of the Edit Columns checkbox
-And I validate the 4th Row of the Edit Columns checkbox is not checked
-And I check the 5th Row of the Edit Columns checkbox
-And I validate the 5th Row of the Edit Columns checkbox is checked
-And I uncheck the 5th Row of the Edit Columns checkbox
-And I validate the 5th Row of the Edit Columns checkbox is not checked
-And I check the 6th Row of the Edit Columns checkbox
-And I validate the 6th Row of the Edit Columns checkbox is checked
-And I uncheck the 6th Row of the Edit Columns checkbox
-And I validate the 6th Row of the Edit Columns checkbox is not checked
+Then I check the 1st Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is checked
+And I uncheck the 1st Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 2nd Row of the Column checkbox
+And I validate the 2nd Row of the Column checkbox is checked
+And I uncheck the 2nd Row of the Column checkbox
+And I validate the 2nd Row of the Column checkbox is not checked
+And I check the 3rd Row of the Column checkbox
+And I validate the 3rd Row of the Column checkbox is checked
+And I uncheck the 3rd Row of the Column checkbox
+And I validate the 3rd Row of the Column checkbox is not checked
+And I check the 4th Row of the Column checkbox
+And I validate the 4th Row of the Column checkbox is checked
+And I uncheck the 4th Row of the Column checkbox
+And I validate the 4th Row of the Column checkbox is not checked
+And I check the 5th Row of the Column checkbox
+And I validate the 5th Row of the Column checkbox is checked
+And I uncheck the 5th Row of the Column checkbox
+And I validate the 5th Row of the Column checkbox is not checked
+And I check the 6th Row of the Column checkbox
+And I validate the 6th Row of the Column checkbox is checked
+And I uncheck the 6th Row of the Column checkbox
+And I validate the 6th Row of the Column checkbox is not checked
 
 Scenario: TC5727: Notifications - Zones - Edit Columns - Current Session Retention
 Given I am logged in
@@ -173,9 +173,9 @@ When I click the Notifications link
 And I click the Zones link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the 1st Row of the Edit Columns checkbox
-And I uncheck the 2nd Row of the Edit Columns checkbox
-And I uncheck the 3rd Row of the Edit Columns checkbox
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Reports link
@@ -189,9 +189,9 @@ And I validate the Header Category text is present
 And I validate the Header Detail text is present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I check the 1st Row of the Edit Columns checkbox
-And I check the 2nd Row of the Edit Columns checkbox
-And I check the 3rd Row of the Edit Columns checkbox
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Date Time link is present
@@ -207,14 +207,14 @@ When I click the Notifications link
 And I click the Zones link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the 1st Row of the Edit Columns checkbox
+And I uncheck the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 Then I validate the Sort By Date Time link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I validate the 1st Row of the Edit Columns checkbox is not checked
-And I check the 1st Row of the Edit Columns checkbox
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Date Time link is present
@@ -225,7 +225,7 @@ When I click the Notifications link
 And I click the Zones link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the 1st Row of the Edit Columns checkbox
+And I uncheck the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
@@ -235,7 +235,7 @@ And I click the Zones link
 Then I validate the Sort By Date Time link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I check the 1st Row of the Edit Columns checkbox
+And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
@@ -250,18 +250,18 @@ When I click the Notifications link
 And I click the Zones link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-Then I validate the 1st Row of the Edit Columns checkbox is present
-And I validate the 2nd Row of the Edit Columns checkbox is present
-And I validate the 3rd Row of the Edit Columns checkbox is present
-And I validate the 4th Row of the Edit Columns checkbox is present
-And I validate the 5th Row of the Edit Columns checkbox is present
-And I validate the 6th Row of the Edit Columns checkbox is present
-And I validate the 1st Row of the Edit Columns checkbox is checked
-And I validate the 2nd Row of the Edit Columns checkbox is checked
-And I validate the 3rd Row of the Edit Columns checkbox is checked
-And I validate the 4th Row of the Edit Columns checkbox is checked
-And I validate the 5th Row of the Edit Columns checkbox is checked
-And I validate the 6th Row of the Edit Columns checkbox is checked
+Then I validate the 1st Row of the Column checkbox is present
+And I validate the 2nd Row of the Column checkbox is present
+And I validate the 3rd Row of the Column checkbox is present
+And I validate the 4th Row of the Column checkbox is present
+And I validate the 5th Row of the Column checkbox is present
+And I validate the 6th Row of the Column checkbox is present
+And I validate the 1st Row of the Column checkbox is checked
+And I validate the 2nd Row of the Column checkbox is checked
+And I validate the 3rd Row of the Column checkbox is checked
+And I validate the 4th Row of the Column checkbox is checked
+And I validate the 5th Row of the Column checkbox is checked
+And I validate the 6th Row of the Column checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
 

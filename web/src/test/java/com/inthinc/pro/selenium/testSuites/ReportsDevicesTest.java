@@ -7,12 +7,15 @@ import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
+import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDevices;
+import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageReportsDevices.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class, PageReportsDevices.class, 
+		PageReportsDrivers.class, PageExecutiveOverallExpansion.class})
 @StoryPath(path="ReportsDevices.story")
 public class ReportsDevicesTest extends WebStories {
     
