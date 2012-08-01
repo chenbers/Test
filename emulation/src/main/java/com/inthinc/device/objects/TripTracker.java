@@ -9,8 +9,10 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Distance_Calc;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.GoogleTrips;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.sbs.Sbs;
 import com.inthinc.sbs.SpeedLimit;
 
@@ -61,6 +63,8 @@ public class TripTracker implements Iterable<GeoPoint> {
         this.state = state;
         currentPoint = 0;
         trip = new LinkedList<GeoPoint>();
+		sbs = new Sbs("500000000000005", 7);
+		sbs.setDownloadManager(new AutoServers(AutoSilos.MY));
     }
     
     @Override
@@ -126,8 +130,11 @@ public class TripTracker implements Iterable<GeoPoint> {
         int distTraveled = ((Double)(last.deltaX(next) * 100)).intValue();
         
         state.incrementTripDistanceX100(distTraveled);
-        
-        if (time){
+        if (useSbs){
+            state.setSpeed(lastSpeedLimit);
+            int delta = last.deltaT(value, next);
+            state.incrementTime(delta);
+        } else if (time){
             state.setSpeed(last.speed(value, next));
             state.incrementTime(value);
         } else {

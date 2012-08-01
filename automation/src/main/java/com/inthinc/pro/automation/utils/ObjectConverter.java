@@ -22,7 +22,9 @@ public class ObjectConverter {
         mapper.setSerializationInclusion(Include.NON_NULL);
     }
     
-    
+    public static ObjectMapper getObjectMapper(){
+    	return mapper;
+    }
     
     public static String convertToXML(JSONObject jsonObject){
         try {
@@ -39,7 +41,23 @@ public class ObjectConverter {
         Throwable error;
         try {
             JSONObject jsonType = new JSONObject();
-            jsonType.put(name, new JSONObject(mapper.writeValueAsString(entity)));
+            jsonType.put(name, convertToJSONObject(entity));
+            Log.debug(jsonType);
+            return jsonType;
+        } catch (NullPointerException e){
+            throw new IllegalArgumentException("Should not be passing null arguments");
+        } catch (JSONException e) {
+            error = e;
+        }
+     
+        Log.info(entity);
+        throw new IllegalArgumentException(error);
+    }
+    
+    public static JSONObject convertToJSONObject(Object entity) {
+    	Throwable error;
+        try {
+            JSONObject jsonType = new JSONObject(mapper.writeValueAsString(entity));
             Log.debug(jsonType);
             return jsonType;
         } catch (NullPointerException e){
@@ -53,6 +71,7 @@ public class ObjectConverter {
         } catch (IOException e) {
             error = e;
         }
+        
         Log.info(entity);
         throw new IllegalArgumentException(error);
     }
@@ -75,7 +94,7 @@ public class ObjectConverter {
         } catch (IOException e) {
             error = e;
         }
-        
+        Log.info(entity);
         throw new IllegalArgumentException(error);
     }
 

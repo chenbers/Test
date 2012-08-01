@@ -22,6 +22,8 @@ public class TripDriver extends Thread {
     private List<Integer> positions;
     private DeviceState state;
 	private boolean locationOn;
+	private boolean locationsOnly;
+	private int speed = 0;
     
 
     @SuppressWarnings("unchecked")
@@ -111,10 +113,11 @@ public class TripDriver extends Thread {
         LinkedList<DeviceNote> notes = new LinkedList<DeviceNote>();
         Iterator<GeoPoint> itr = tripTracker.iterator();
         AutomationCalendar start = tripTracker.getState().getTime();
-        notes.add(AutomationDeviceEvents.powerOn(state, tripTracker.currentLocation()).getNote());
-        notes.add(AutomationDeviceEvents.ignitionOn(state, tripTracker.currentLocation()).getNote());
-        
-        int speed = 60;
+        if (!locationsOnly){
+	        notes.add(AutomationDeviceEvents.powerOn(state, tripTracker.currentLocation()).getNote());
+	        notes.add(AutomationDeviceEvents.ignitionOn(state, tripTracker.currentLocation()).getNote());
+        }
+        speed = speed==0 ? 60 : speed;
         while (itr.hasNext()){
             int currentPoint = tripTracker.percentOfTrip().intValue();
             if (events2[currentPoint] != null){
@@ -139,22 +142,33 @@ public class TripDriver extends Thread {
             		}
             	}
             }
+            speed = state.getSpeed();
 
-            GeoPoint nextLoc = tripTracker.getNextLocation(speed, false); 
+            GeoPoint nextLoc = tripTracker.getNextLocation(speed, false);
             
             if (locationOn) {
             	notes.add(AutomationDeviceEvents.location(state, nextLoc).getNote());
             }
         }
-        
-        AutomationCalendar stop = tripTracker.getState().getTime();
-        state.setTripDuration(stop.getDelta(start));
-        state.setPointsPassedTheFilter(90);
-        state.setSpeed(0);
-        notes.add(AutomationDeviceEvents.ignitionOff(state, tripTracker.currentLocation()).getNote());
-        notes.add(AutomationDeviceEvents.powerOff(state, tripTracker.currentLocation()).getNote());
+        if (!locationsOnly){
+	        AutomationCalendar stop = tripTracker.getState().getTime();
+	        state.setTripDuration(stop.getDelta(start));
+	        state.setPointsPassedTheFilter(90);
+	        state.setSpeed(0);
+	        notes.add(AutomationDeviceEvents.ignitionOff(state, tripTracker.currentLocation()).getNote());
+	        notes.add(AutomationDeviceEvents.powerOff(state, tripTracker.currentLocation()).getNote());
+        }
         
         return notes;
+    }
+    
+    public void onlyNonLocationNotes(boolean locationNotes){
+    	locationsOnly = locationNotes;
+    }
+    
+    public void setSpeed(int speed){
+    	this.speed = speed;
+    	tripTracker.useSbs(false);
     }
 
 	private DeviceNote updateNote(DeviceNote note) {
