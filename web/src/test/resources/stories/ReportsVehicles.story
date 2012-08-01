@@ -27,7 +27,7 @@ Scenario: TC1614: Reports - Vehicles - Bookmark Entry
 Given I am logged in
 And I select "Vehicles" from the Master Search dropdown
 And I click the Master Search button
-And I save the 1st Row of the Vehicle Value link as SAVEDSPEED
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 When I bookmark the page
 And I click the Log Out link
 And I click the bookmark I just added
@@ -51,9 +51,9 @@ Scenario: TC1624: Reports - Vehicles - Group Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the 1st Row of the Group Value link as SavedEntry
+And I save the 1st Row of the Group Value link as SAVEDGROUP
 And I click the the 1st Row of the Group Value link
-Then I validate the Driver Team Value text is SavedEntry
+Then I validate the Driver Team Value text is SAVEDGROUP
 
 Scenario: TC1627: Reports - Vehicles - Overall Score Link
 Given I am logged in
@@ -129,9 +129,9 @@ Scenario: TC1642: Reports - Vehicles - Vehicle ID Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the 1st Row of the Vehicle Value link as SavedEntry
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 And I click the 1st Row of the Vehicle Value link
-Then I validate the Vehicle Name link is SavedEntry
+Then I validate the Vehicle Name link is SAVEDVEHICLE
 
 Scenario: TC1644: Reports - Vehicles - Edit Columns - Cancel Button (Changes)
 Given I am logged in
