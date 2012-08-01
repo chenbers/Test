@@ -55,7 +55,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         Integer autoLogoffSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.AUTOLOGOFF_SETTING.getSettingID()));
         Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.IDLING_TIMEOUT.getSettingID()));
         String idleBuzzerValue = vs.getBestOption(SettingType.BUZZER_IDLE.getSettingID());
-        boolean idleBuzzer = (idleBuzzerValue!=null && idleBuzzerValue.equalsIgnoreCase("1"));            
+        boolean idleBuzzer = (idleBuzzerValue!=null && idleBuzzerValue.equalsIgnoreCase("1"));
         Integer hardVertical = hardVerticalSlider.getSliderValueFromSettings(vs);
         Integer hardTurn = hardTurnSlider.getSliderValueFromSettings(vs);
         Integer hardAcceleration = hardAccelerationSlider.getSliderValueFromSettings(vs);
@@ -160,7 +160,11 @@ public class TiwiproSettingManager extends VehicleSettingManager{
                    tiwiproEditableVehicleSettings.getIdlingSeconds().toString(), 
                    vehicleSetting.getBestOption(SettingType.IDLING_TIMEOUT.getSettingID()), 
                    fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.idlingSeconds"));
-           newSettings.addSettingIfNeeded(SettingType.TIWI_SPEED_LIMIT, 
+	       newSettings.addSettingIfNeeded(SettingType.BUZZER_IDLE, 
+                   tiwiproEditableVehicleSettings.getIdleBuzzer().toString(), 
+                   vehicleSetting.getBestOption(SettingType.BUZZER_IDLE.getSettingID()), 
+                   fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.idleBuzzer"));
+	       newSettings.addSettingIfNeeded(SettingType.TIWI_SPEED_LIMIT, 
                                        tiwiproEditableVehicleSettings.getMaxSpeed().toString(), 
                                        vehicleSetting.getBestOption(SettingType.TIWI_SPEED_LIMIT.getSettingID()), 
                                        fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.maxSpeed"));
