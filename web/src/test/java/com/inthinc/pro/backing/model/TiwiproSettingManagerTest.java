@@ -133,4 +133,24 @@ public class TiwiproSettingManagerTest {
         Map<Integer, String> changes = tiwiproSettingManager.evaluateSettings(VEHICLE_ID, editableVehicleSettings, null);
         assertEquals(desiredIdling+"", changes.get(SettingType.IDLING_TIMEOUT.getSettingID()));
     }
+    @Test
+    public void evaluateChangedSettings_newIdlingBuzzerValue_newIdleBuzzerGetsAddedToChangedSettings(){
+        vehicleSettingSlider = new VehicleSetting();
+        vehicleSettingSlider.setDeviceID(DEVICE_ID);
+        vehicleSettingSlider.setVehicleID(VEHICLE_ID);
+        Map<Integer, String> settings = new HashMap<Integer,String>();
+        int actualIdling = 3210;
+        settings.put(SettingType.IDLING_TIMEOUT.getSettingID(), actualIdling+"");
+        settings.put(SettingType.BUZZER_IDLE.getSettingID(), 0+"");
+        vehicleSettingSlider.setActual(settings);
+        VehicleSettingManager tiwiproSettingManager = new TiwiproSettingManager(new ConfiguratorHessianDAO(),  
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
+                ProductType.TIWIPRO, vehicleSettingSlider);
+        
+        EditableVehicleSettings editableVehicleSettings = tiwiproSettingManager.createDefaultValues(VEHICLE_ID);
+        ((TiwiproEditableVehicleSettings)editableVehicleSettings).setIdleBuzzer(true);
+        Map<Integer, String> changes = tiwiproSettingManager.evaluateSettings(VEHICLE_ID, editableVehicleSettings, null);
+        assertEquals(1+"", changes.get(SettingType.BUZZER_IDLE.getSettingID()));
+    }
+    
 }
