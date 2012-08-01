@@ -27,7 +27,7 @@ public class CrashSummaryBean extends BaseBean {
 	}
 	private CrashSummary getCrashSummaryForGroup(Integer groupID) {
 		logger.info("getCrashSummaryForGroup:  " + groupID);
-		return scoreDAO.getGroupCrashSummaryData(groupID);
+		return scoreDAO.getGroupCrashSummaryData(groupID, getGroupHierarchy());
 		
 	}
 

@@ -79,7 +79,7 @@ public class DriverCoachingReportCriteriaTest extends BaseUnitTest {
         }};
         
         new NonStrictExpectations() {{
-            groupReportDAO.getDriverScores(anyInt, (Interval)any);
+            groupReportDAO.getDriverScores(anyInt, (Interval)any, null);
             returns(driverVehicleScoreWrappers);
         }};
         

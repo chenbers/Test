@@ -29,7 +29,7 @@ public class TeamCrashSummaryBean extends BaseBean {
 //            
 //        } else {
             crashData = groupReportDAO.getAggregateDriverScore(groupID, 
-                    TimeFrame.YEAR.getAggregationDuration());
+                    TimeFrame.YEAR.getAggregationDuration(), getGroupHierarchy());
 //                    teamCommonBean.getTimeFrame().getAggregationDuration());
 //        }       
         

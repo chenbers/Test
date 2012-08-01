@@ -56,7 +56,7 @@ public class IdlePercentageBean extends BaseBean {
 	}
 
 	public void createChart() {
-		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(getGroupID(), getDurationBean().getDuration());
+		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(getGroupID(), getDurationBean().getDuration(), getGroupHierarchy());
 
 		initChartData(idlePercentItemList);
 	}
@@ -197,7 +197,7 @@ public class IdlePercentageBean extends BaseBean {
 		if (groupID == null) {
 			setGroupID(getUser().getGroupID());
 		}
-        ReportCriteria reportCriteria = reportCriteriaService.getIdlePercentageReportCriteria(getGroupID(), durationBean.getDuration(), getLocale());
+        ReportCriteria reportCriteria = reportCriteriaService.getIdlePercentageReportCriteria(getGroupID(), durationBean.getDuration(), getLocale(), getGroupHierarchy());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setMeasurementType(getMeasurementType());

@@ -36,7 +36,7 @@ public class JasperReport implements Report
     public static JasperReport getInstance(ReportCriteria reportCriteria)
     {
         JasperReport report = new JasperReport();
-        report.setReportBuilder(new JasperReportBuilder());       
+        report.setReportBuilder(new JasperReportBuilder());
         report.setReportMailer(new ReportMailerImpl());
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         reportCriteriaList.add(reportCriteria);
@@ -54,7 +54,7 @@ public class JasperReport implements Report
     }
 
     @Override
-    public void exportReportToStream(FormatType formatType, OutputStream outputStream) 
+    public void exportReportToStream(FormatType formatType, OutputStream outputStream)
     {
         JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
         if(jp != null)
@@ -111,7 +111,7 @@ public class JasperReport implements Report
             List<ReportAttatchment> attachments = new ArrayList<ReportAttatchment>();
             attachments.add(reportAttatchment);
             String[] emails = email.split(",");
-            List<String> emailList = Arrays.asList(emails);           
+            List<String> emailList = Arrays.asList(emails);
             reportMailer.emailReport(emailList, attachments,subject,message, noReplyEmailAddress);
         }
         catch (JRException e)
@@ -123,9 +123,7 @@ public class JasperReport implements Report
 
     private void exportToPdfStream(OutputStream out,JasperPrint jasperPrint) throws JRException
     {
-        
          JasperExportManager.exportReportToPdfStream(jasperPrint, out);
-       
     }
 
     private static final Integer EXCEL_MAX_ROWS = Integer.valueOf(65535);
@@ -136,11 +134,11 @@ public class JasperReport implements Report
         jexcelexporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
         jexcelexporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.TRUE);
-        /**/jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE); 
-        /**/jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_GRAPHICS, Boolean.TRUE);
+        jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+        jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_GRAPHICS, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, Boolean.FALSE);
-        /**/jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
-        /**/jexcelexporter.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.TRUE);
+        jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
+        jexcelexporter.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BACKGROUND, Boolean.FALSE);
         

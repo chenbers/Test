@@ -131,10 +131,17 @@
                   </li>
                 </h:outputText>
                 <h:outputText rendered="#{criteria eq 'TIMEFRAME_ALT_PLUS_CUSTOM_RANGE'}">
-                    <li class="l">
+                  <li class="l">
                     <ui:include src="/includes/component/timeFrameAltPlusCustomRange.xhtml" >
                         <ui:param name="timeFrameSelect" value="#{params.timeFrameSelect}"/> 
-                        <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/> 
+                        <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/>
+                    </ui:include>
+                  </li>
+                  <li class="l">
+                    <ui:include src="/includes/component/dateRange.xhtml" >
+                        <ui:param name="reRenderList" value="#{context}_paramsPanelError, #{reRenderList}"/>
+                        <ui:param name="context" value="#{context}PlusCustomRange"/>
+                        <ui:param name="dateRange" value="#{params.dateRange}"/>  
                     </ui:include>
                   </li>
                 </h:outputText>
@@ -349,7 +356,7 @@
            </ul>
           </a4j:region>
          </a4j:outputPanel>
-         <a4j:outputPanel  id="#{context}_paramsPanelError">
+         <a4j:outputPanel  id="#{context}_paramsPanelError" ajaxRendered="true">
              <div class="spacer"></div>
              <h:outputText id="paramsError"  style="float:left;color:#c44d34" value="#{params.errorMsg}" rendered="#{params.errorMsg != null}"/>
              <div class="spacer"></div>

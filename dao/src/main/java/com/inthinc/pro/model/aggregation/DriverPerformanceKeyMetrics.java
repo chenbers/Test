@@ -1,6 +1,5 @@
 package com.inthinc.pro.model.aggregation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,8 +7,6 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.TimeFrame;
-
-
 
 public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformanceKeyMetrics> {
     
@@ -25,11 +22,16 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     private Integer speedingScore;
     private Integer styleScore;
     private Integer seatbeltScore;
+    private Integer timeFrameBasedOverallScore;
+    private Integer timeFrameBasedSpeedingScore;
+   	private Integer timeFrameBasedStyleScore;
+    private Integer timeFrameBasedSeatbeltScore;
     private Integer idleViolationsCount;
     private Integer loIdleViolationsMinutes;
     private Integer hiIdleViolationsMinutes;
     private String color;
-    static private Integer GREEN_MIN_LIMIT = 45;
+    static private Integer MAXIMUM_SCORE_LIMIT = 50;
+    static private Integer GREEN_MIN_LIMIT = 40;
     static private Integer YELLOW_MIN_LIMIT = 30;
     static private String WHITE = "white";
     static private String RED = "red";
@@ -80,7 +82,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
         double greenMax = 1.0/7;
         double yellowMax = 4.0/7;
         double idleViolationsPerDay = getIdleViolationsPerDay();
-        if(totalMiles > 0){
+        if(totalMiles!=null && totalMiles > 0){
             if(idleViolationsCount != null){
                 if(idleViolationsPerDay < greenMax)
                     color =  GREEN;
@@ -94,14 +96,14 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     }
     private String getScoreColor(Integer scoreToTest){
         String color = WHITE;
-        if(totalMiles > 0){
-            if(scoreToTest == null || scoreToTest < 0)
+        if(totalMiles!=null && totalMiles > 0){
+            if(scoreToTest == null || scoreToTest < 0 || scoreToTest > MAXIMUM_SCORE_LIMIT)
                 return color;
             else if(scoreToTest > GREEN_MIN_LIMIT)
                 color = GREEN;
             else if(scoreToTest > YELLOW_MIN_LIMIT)
                 color = YELLOW;
-            else if(scoreToTest < YELLOW_MIN_LIMIT)
+            else if(scoreToTest <= YELLOW_MIN_LIMIT)
                 color = RED;
         }
         return color;
@@ -120,7 +122,7 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     }
     public String getDriverColor(){
         String color = "white";
-        if(totalMiles > 0){
+        if(totalMiles!=null && totalMiles > 0){
             color = "green";
             List<String> otherColors = Arrays.asList(getOverallScoreColor(), getSpeedingScoreColor(), getStyleScoreColor(), getSeatbeltScoreColor());
             if(otherColors.contains(RED))
@@ -190,7 +192,37 @@ public class DriverPerformanceKeyMetrics implements Comparable<DriverPerformance
     public void setSeatbeltScore(Integer seatbeltScore) {
         this.seatbeltScore = seatbeltScore;
     }
-    public Integer getLoIdleViolationsMinutes() {
+    public Integer getTimeFrameBasedOverallScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedOverallScore = this.getOverallScore();
+		else
+			this.timeFrameBasedOverallScore = -1;
+		return timeFrameBasedOverallScore;
+	}
+	public Integer getTimeFrameBasedSpeedingScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedSpeedingScore = this.getSpeedingScore();
+		else
+			this.timeFrameBasedSpeedingScore = -1;
+		
+		return timeFrameBasedSpeedingScore;
+	}
+	public Integer getTimeFrameBasedStyleScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedStyleScore = this.getStyleScore();
+		else
+			this.timeFrameBasedStyleScore = -1;
+		
+		return timeFrameBasedStyleScore;
+	}
+	public Integer getTimeFrameBasedSeatbeltScore(){
+		if(totalMiles != null && totalMiles > 0)
+			this.timeFrameBasedSeatbeltScore = this.getSeatbeltScore();
+		else
+			this.timeFrameBasedSeatbeltScore = -1;		
+		return timeFrameBasedSeatbeltScore;
+	}
+	public Integer getLoIdleViolationsMinutes() {
         return loIdleViolationsMinutes;
     }
     public void setLoIdleViolationsMinutes(Integer loIdleViolationsMinutes) {

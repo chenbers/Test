@@ -243,7 +243,7 @@ public class DateUtil
 
     }
     public static Integer differenceInDays(TimeFrame timeFrame, Interval interval){
-        if(timeFrame != null)
+        if(timeFrame != null && timeFrame != TimeFrame.CUSTOM_RANGE)
             interval = timeFrame.getInterval();
         return differenceInDays(interval.getStart().toDate(), interval.getEnd().toDate());
     }

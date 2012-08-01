@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
+import com.inthinc.pro.dao.hessian.LocationHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
@@ -112,6 +113,12 @@ public class TeamStopsTest {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
         driverDAO.setVehicleDAO(vehicleDAO);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        locationDAO.setVehicleDAO(vehicleDAO);
+        locationDAO.setDriverDAO(driverDAO);
+        driverDAO.setLocationDAO(locationDAO);
+        vehicleDAO.setLocationDAO(locationDAO);
         
         // generate data
         GroupData team = itData.teamGroupData.get(ITData.INTERMEDIATE);

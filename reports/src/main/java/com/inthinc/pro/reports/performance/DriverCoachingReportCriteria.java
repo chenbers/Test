@@ -22,6 +22,7 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.model.GroupHierarchy;
 
 /**
  * 
@@ -64,7 +65,9 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
         private DateTimeZone dateTimeZone;
         
         private Map<Integer,Map<String, Integer>> driverTimeFrameScoreMap;
-        
+
+		private GroupHierarchy groupHierarchy;
+
         public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
            this.groupReportDAO = groupReportDAO;
            this.driverPerformanceDAO = driverPerformanceDAO;
@@ -92,6 +95,11 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             return this;
         }
         
+        public Builder setGroupHierarchy(GroupHierarchy groupHierarchy){
+            this.groupHierarchy = groupHierarchy;
+            return this;
+        }
+
         public List<ReportCriteria> build(){
             if(groupReportDAO == null){
                 throw new IllegalArgumentException("groupReportDAO must not be null");
@@ -188,7 +196,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
          * @param driverVehicleScoreWrappers
          */
         private void loadDriverScoresIntoMap(TimeFrame timeFrame){
-            List<DriverVehicleScoreWrapper> dayScoreList =  groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(this.dateTimeZone));
+            List<DriverVehicleScoreWrapper> dayScoreList =  groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(this.dateTimeZone), this.groupHierarchy);
             
             for(DriverVehicleScoreWrapper driverVehicleScoreWrapper:dayScoreList){
                 /* If the driverID is present, then we're going to only allow the driver to be added */

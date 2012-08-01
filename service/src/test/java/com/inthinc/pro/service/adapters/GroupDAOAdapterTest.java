@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
@@ -80,7 +81,7 @@ public class GroupDAOAdapterTest {
 		scoreList.add(new GroupScoreWrapper());
 		
 		new Expectations(){{
-			groupReportDAOMock.getSubGroupsAggregateDriverScores(GROUP_ID, Duration.SIX); returns(scoreList);
+			groupReportDAOMock.getSubGroupsAggregateDriverScores(GROUP_ID, Duration.SIX, (GroupHierarchy)any); returns(scoreList);
 		}};
 		assertEquals(adapterSUT.getChildGroupsDriverScores(GROUP_ID, Duration.SIX), scoreList);
 	}
@@ -91,7 +92,7 @@ public class GroupDAOAdapterTest {
 		trendList.add(new GroupTrendWrapper());
 		
 		new Expectations(){{
-			groupReportDAOMock.getSubGroupsAggregateDriverTrends(GROUP_ID, Duration.SIX); returns(trendList);
+			groupReportDAOMock.getSubGroupsAggregateDriverTrends(GROUP_ID, Duration.SIX, (GroupHierarchy)any); returns(trendList);
 		}};
 		assertEquals(adapterSUT.getChildGroupsDriverTrends(GROUP_ID, Duration.SIX), trendList);
 	}
@@ -102,7 +103,7 @@ public class GroupDAOAdapterTest {
 		scoreList.add(new DriverVehicleScoreWrapper());
 		
 		new Expectations(){{
-			groupReportDAOMock.getDriverScores(GROUP_ID, Duration.SIX); returns(scoreList);
+			groupReportDAOMock.getDriverScores(GROUP_ID, Duration.SIX, (GroupHierarchy)any); returns(scoreList);
 		}};
 		assertEquals(adapterSUT.getDriverScores(GROUP_ID, Duration.SIX), scoreList);
 	}	
@@ -113,7 +114,7 @@ public class GroupDAOAdapterTest {
 		scoreList.add(new DriverVehicleScoreWrapper());
 		
 		new Expectations(){{
-			groupReportDAOMock.getVehicleScores(GROUP_ID, Duration.SIX); returns(scoreList);
+			groupReportDAOMock.getVehicleScores(GROUP_ID, Duration.SIX, (GroupHierarchy)any); returns(scoreList);
 		}};
 		assertEquals(adapterSUT.getVehicleScores(GROUP_ID, Duration.SIX), scoreList);
 	}		

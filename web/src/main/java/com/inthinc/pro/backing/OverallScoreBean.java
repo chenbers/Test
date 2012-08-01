@@ -85,7 +85,7 @@ public class OverallScoreBean extends BaseBean {
             logger.debug("getting scores for groupID: " + groupID);
             // s = scoreDAO.getScores(this.navigation.getGroupID(),
             // startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
-            s = scoreDAO.getScoreBreakdown(groupID, durationBean.getDuration(), scoreType);
+            s = scoreDAO.getScoreBreakdown(groupID, durationBean.getDuration(), scoreType, getGroupHierarchy());
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
         }
@@ -122,7 +122,7 @@ public class OverallScoreBean extends BaseBean {
     }
 
     private void populateOverallScore() {
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, durationBean.getDuration(), ScoreType.SCORE_OVERALL);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, durationBean.getDuration(), ScoreType.SCORE_OVERALL, getGroupHierarchy());
         if (scoreableEntity == null || scoreableEntity.getScore() == null)
             setOverallScore(-1);
         else
@@ -230,7 +230,7 @@ public class OverallScoreBean extends BaseBean {
     }
 
     public ReportCriteria buildReportCriteria() {
-        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(groupID, durationBean.getDuration(), getLocale());
+        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(groupID, durationBean.getDuration(), getLocale(), getGroupHierarchy());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+default-autowire="byName">
+    <!-- Service Related Beans -->
+
+	<bean id="cassandraDB" class="com.inthinc.pro.dao.cassandra.CassandraDB">
+	  <constructor-arg value="${cassandra.clusterName}" />
+	  <constructor-arg value="${cassandra.keyspaceName}"/>
+	  <constructor-arg value="${cassandra.nodeAddress}"/>
+	  <constructor-arg value="${cassandra.maxActive}"/>
+	  <constructor-arg value="${cassandra.autoDiscoverHost}"/>
+	</bean>
+	
+	<bean id="genericCassandraDAO" class="com.inthinc.pro.dao.cassandra.GenericCassandraDAO" abstract="true">
+		<property name="cassandraDB" ref="cassandraDB" />
+	</bean>
+
+	
+	<!--
+	<bean id="eventDAO" class="com.inthinc.pro.dao.cassandra.EventCassandraDAO" parent="genericCassandraDAO"></bean>
+	<bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO" parent="genericCassandraDAO"></bean>
+	<bean id="mpgDAO" class="com.inthinc.pro.dao.cassandra.MpgCassandraDAO"/>
+	<bean id="scoreDAO" class="com.inthinc.pro.dao.cassandra.ScoreCassandraDAO" parent="genericCassandraDAO"></bean>
+  <bean id="driverReportDAO" class="com.inthinc.pro.dao.cassandra.report.DriverReportCassandraDAO" />
+  <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.cassandra.report.VehicleReportCassandraDAO" />
+  <bean id="groupReportDAO" class="com.inthinc.pro.dao.cassandra.report.GroupReportCassandraDAO" />
+	-->
+</beans>

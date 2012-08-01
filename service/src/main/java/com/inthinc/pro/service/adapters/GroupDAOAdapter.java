@@ -16,13 +16,13 @@ import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 import com.inthinc.pro.model.aggregation.Score;
-
 /**
  * Adapter for the Driver resources.
  *  
@@ -90,25 +90,25 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
 		return list;
 	}
     public Score getAggregateDriverScore(Integer groupID, Interval interval) {
-    	 return groupReportDAO.getAggregateDriverScore(groupID, interval);
+    	 return groupReportDAO.getAggregateDriverScore(groupID, interval, new GroupHierarchy(getAll()));
 	}
     public List<GroupScoreWrapper> getChildGroupsDriverScores(Integer groupID, Duration duration) {
-        return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, duration);
+        return groupReportDAO.getSubGroupsAggregateDriverScores(groupID, duration, new GroupHierarchy(getAll()));
     }	
 
     public List<GroupTrendWrapper> getChildGroupsDriverTrends(Integer groupID, Duration duration) {
-        return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, duration);
+        return groupReportDAO.getSubGroupsAggregateDriverTrends(groupID, duration, new GroupHierarchy(getAll()));
     }    
 
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Duration duration) {
-        return groupReportDAO.getDriverScores(groupID, duration);
+        return groupReportDAO.getDriverScores(groupID, duration, new GroupHierarchy(getAll()));
     }
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
-        return groupReportDAO.getDriverScores(groupID, interval);
+        return groupReportDAO.getDriverScores(groupID, interval, new GroupHierarchy(getAll()));
     }
     
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {
-        return groupReportDAO.getVehicleScores(groupID, duration);
+        return groupReportDAO.getVehicleScores(groupID, duration, new GroupHierarchy(getAll()));
     }
 
     public List<DriverName> getGroupDriverNames(Integer groupID) {

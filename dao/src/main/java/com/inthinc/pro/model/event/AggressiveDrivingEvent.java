@@ -154,5 +154,11 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     public EventAttr[] getEventAttrList() {
         return eventAttrList;
     }
+    
+    @Override
+    public String toString() {
+        return "Aggressive Driving Event [eventType: " + getEventType() + " deltaX: " + getDeltaX() + " deltaY=" + getDeltaY() + ", deltaZ=" + getDeltaZ() + "]" + super.toString();
+    }
+
 
 }

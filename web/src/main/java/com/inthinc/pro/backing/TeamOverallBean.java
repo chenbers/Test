@@ -282,15 +282,15 @@ public class TeamOverallBean extends BaseBean {
             switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
                 case 0:
                     local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart());
+                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(), getGroupHierarchy());
                     break;
                 case 1:
                     local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
                     break;
                 case 2:
                     local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                                teamCommonBean.getTimeFrame().getAggregationDuration());
+                                teamCommonBean.getTimeFrame().getAggregationDuration(), getGroupHierarchy());
                     break;
             }
             

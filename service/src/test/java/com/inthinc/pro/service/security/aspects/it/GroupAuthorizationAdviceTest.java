@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
@@ -172,6 +173,7 @@ public class GroupAuthorizationAdviceTest {
         fail(FAIL_MSG);
     }
     
+    @Ignore
     @Test
     public void testGrantsAccessToGetScores() {
 
