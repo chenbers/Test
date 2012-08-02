@@ -15,10 +15,6 @@ public enum ReportsDevicesEnum implements SeleniumEnums {
 	VEHICLE_SEARCH(null, "devices-form:devices:vehicleNamefsp"),
 	IMEI_SEARCH(null, "devices-form:devices:imeifsp"),
 	PHONE_SEARCH(null, "devices-form:devices:phonefsp"),
-	
-	STATUS_DHX(null, "//input[@class='dhx_combo_input']"),
-	STATUS_ARROW(null, "//div[@class='dhx_combo_box ']"),
-	
 		
 	DEVICE_ID_VALUE(null, "devices-form:devices:###:deviceName"),
 	VEHICLE_VALUE(null, "devices-form:devices:###:vehicleName"),

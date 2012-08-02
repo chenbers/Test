@@ -54,7 +54,7 @@ And I validate the Device ID Sort link is present
 And I validate the Assigned Vehicle Sort link is present
 And I validate the IMEI Sort link is present
 And I validate the Device Phone Sort link is present
-And I validate the Status Column Header text is present
+And I validate the Status Header text is present
 And I validate the Device ID Search textfield is present
 And I validate the Assigned Vehicle Search textfield is present
 And I validate the IMEI Search textfield is present
@@ -78,7 +78,7 @@ Then I validate the Sort By Device ID link is present
 And I validate the Sort By Assigned Vehicle link is present
 And I validate the Sort By IMEI link is present
 And I validate the Sort By Device Phone link is present
-And I validate the Header Status text is present
+And I validate the Status Header text is present
 
 Scenario: TC1531: Reports - Devices - Edit Columns - Cancel Button (No Changes)
 Given I am logged in
@@ -92,7 +92,7 @@ Then I validate the Sort By Device ID link is present
 And I validate the Sort By Assigned Vehicle link is present
 And I validate the Sort By IMEI link is present
 And I validate the Sort By Device Phone link is present
-And I validate the Header Status text is present
+And I validate the Status Header text is present
 
 Scenario: TC1532: Reports - Devices - Edit Columns - Check Box Selection via Mouse
 Given I am logged in
@@ -100,26 +100,26 @@ When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-Then I validate the checkbox of the first entry is not checked
-And I uncheck the checkbox of the second entry
-And I validate the checkbox of the second entry is not checked
-And I uncheck the checkbox of the third entry
-And I validate the checkbox of the third entry is not checked
-And I uncheck the checkbox of the fourth entry
-And I validate the checkbox of the fourth entry is not checked
-And I uncheck the checkbox of the fifth entry
-And I validate the checkbox of the fifth entry is not checked
-And I check the checkbox of the first entry
-And I validate the checkbox of the first entry is checked
-And I check the checkbox of the second entry
-And I validate the checkbox of the second entry is checked
-And I check the checkbox of the third entry
-And I validate the checkbox of the third entry is checked
-And I check the checkbox of the fourth entry
-And I validate the checkbox of the fourth entry is checked
-And I check the checkbox of the fifth entry
-And I validate the checkbox of the fifth entry is checked
+And I uncheck the 1st Row of the Column checkbox
+Then I validate the 1st Row of the Column checkbox is not checked
+And I uncheck the 2nd Row of the Column checkbox
+And I validate the 2nd Row of the Column checkbox is not checked
+And I uncheck the 3rd Row of the Column checkbox
+And I validate the 3rd Row of the Column checkbox is not checked
+And I uncheck the 4th Row of the Column checkbox
+And I validate the 4th Row of the Column checkbox is not checked
+And I uncheck the 5th Row of the Column checkbox
+And I validate the 5th Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is checked
+And I check the 2nd Row of the Column checkbox
+And I validate the 2nd Row of the Column checkbox is checked
+And I check the 3rd Row of the Column checkbox
+And I validate the 3rd Row of the Column checkbox is checked
+And I check the 4th Row of the Column checkbox
+And I validate the 4th Row of the Column checkbox is checked
+And I check the 5th Row of the Column checkbox
+And I validate the 5th Row of the Column checkbox is checked
 
 Scenario: TC1534: Reports - Devices - Edit Columns - Current Session Retention
 Given I am logged in
@@ -127,9 +127,9 @@ When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
-And I uncheck the checkbox of the second entry
-And I uncheck the checkbox of the third entry
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Notifications link
@@ -139,7 +139,17 @@ Then I validate the Sort By Device ID link is not present
 And I validate the Sort By Assigned Vehicle link is not present
 And I validate the Sort By IMEI link is not present
 And I validate the Sort By Device Phone link is present
-And I validate the Header Status text is present
+And I validate the Status Header text is present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+Then I validate the Sort By Device ID link is present
+And I validate the Sort By Assigned Vehicle link is present
+And I validate the Sort By IMEI link is present
 
 Scenario: TC1536: Reports - Devices - Edit Columns - Save Button
 Given I am logged in
@@ -147,14 +157,14 @@ When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
+And I uncheck the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 Then I validate the Sort By Device ID link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I validate the checkbox of the first entry is not checked
-And I check the checkbox of the first entry
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I validate the Sort By Device ID link is present
@@ -165,28 +175,24 @@ When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I uncheck the checkbox of the first entry
+And I uncheck the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-And I click the Reports link
+Given I am logged in
+When I click the Reports link
 And I click the Devices link
 Then I validate the Sort By Device ID link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I check the checkbox of the first entry
+And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I click the Logout link
-And I type a valid user name into the Username textfield
-And I type a valid password into the Password textfield
-And I click the Login button
-And I click the Reports link
+Given I am logged in
+When I click the Reports link
 And I click the Devices link
-And I validate the Sort By Device ID link is present
+Then I validate the Sort By Device ID link is present
 
 Scenario: TC1539: Reports - Devices - Edit Columns - UI
 Given I am logged in
@@ -194,15 +200,15 @@ When I click the Reports link
 And I click the Devices link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-Then I validate the first checkbox is present
-And I validate the second checkbox is present
-And I validate the third checkbox is present
-And I validate the fourth checkbox is present
-And I validate the fifth checkbox is present
-And I validate the first checkbox is checked
-And I validate the second checkbox is checked
-And I validate the third checkbox is checked
-And I validate the fourth checkbox is checked
-And I validate the fifth checkbox is checked
+Then I validate the 1st Row of the Column checkbox is present
+And I validate the 2nd Row of the Column checkbox is present
+And I validate the 3rd Row of the Column checkbox is present
+And I validate the 4th Row of the Column checkbox is present
+And I validate the 5th Row of the Column checkbox is present
+And I validate the 1st Row of the Column checkbox is checked
+And I validate the 2nd Row of the Column checkbox is checked
+And I validate the 3rd Row of the Column checkbox is checked
+And I validate the 4th Row of the Column checkbox is checked
+And I validate the 5th Row of the Column checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
