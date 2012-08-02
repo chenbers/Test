@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
 
 public class GeoPoint {
@@ -96,10 +97,19 @@ public class GeoPoint {
     	lng = temp.getLng();
     }
     
+    @JsonProperty("lat")
+    public String getLatS(){
+    	return ((Double)lat).toString();
+    }
+    
     public Double getLat(){
         return lat;
     }
     
+    @JsonProperty("lng")
+    public String getLngS(){
+    	return ((Double)lng).toString();
+    }
     public Double getLng(){
         return lng;
     }
@@ -120,9 +130,13 @@ public class GeoPoint {
     }
     
     public int speed(Integer deltaT, GeoPoint nextPoint){
+        return ((Double)speedD(deltaT, nextPoint)).intValue();
+    }
+    
+    public double speedD(Integer deltaT, GeoPoint nextPoint) {
     	Double delX = deltaX(nextPoint);
     	double delT = deltaT / (60.0 * 60.0);
-        return ((Double)(delX / delT)).intValue();
+        return (delX / delT); 
     }
     
     @Override
