@@ -4,16 +4,15 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum VehiclePerformanceEnum implements SeleniumEnums {
 
-    DEFAULT_URL(appUrl + "/vehicle/"), 
-
-    VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips"), 
-    BREADCRUMB_ITEM(null, "vehiclePerformanceBreadCrumb:breadcrumbitem:###:vehiclePerformance-dashboard"), 
+    DEFAULT_URL(appUrl + "/vehicle"), 
+    
     VEHICLE_NAME(null, "vehiclePerformanceBreadCrumb:vehiclePerformance"),
+    BREADCRUMB_ITEM(null, "vehiclePerformanceBreadCrumb:breadcrumbitem:###:vehiclePerformance-dashboard"), 
+
+    VIEW_ALL_TRIPS("View all trips", "vehiclePerformanceTrips"), 
     
     EXPANDED_VEHICLE_NAME_LINK(null, "//a[contains(@id,'vehicle***Title')]"), 
-    
     EXPANDED_BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:vehicle***-dashboard')]"),
-    
 
     EXCLUDE("exclude", "eventTableForm:notificationsTable:###:vehicle***Included"),
     INCLUDE("include", "eventTableForm:notificationsTable:###:vehicle***_excluded"),

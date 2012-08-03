@@ -42,7 +42,7 @@ public enum MyAccountEnum implements SeleniumEnums {
     MAP_TYPE_SELECTOR(null, "my_form:editAccount-mapType"),
     MAP_LAYERS_TEXT("Map Layers", "myAccountMayLayers"),
     MAP_LAYERS_SELECTOR("Layers","my_form:myAccountMapLayersSelect"),
-    MAP_LAYERS_ARROW(null, "//span[@id='my_form:j_id204']/span[1]/span/div"),
+    MAP_LAYERS_ARROW(null, "//div[@class='ui-icon ui-icon-triangle-1-s']"),
     MAP_LAYERS_CHECKBOX(null, "ddcl-my_form:myAccountMapLayersSelect-i###"),
     
     /* Contact Information */

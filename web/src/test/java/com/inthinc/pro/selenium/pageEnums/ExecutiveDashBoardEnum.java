@@ -31,9 +31,9 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
     OVERALL_TITLE("Overall Score", Xpath.start().span(Id.clazz("overall")).toString()),
     CRASH_TITLE("Crash Stats", Xpath.start().span(Id.clazz("crash")).toString()),
 
-    CRASHES_PER_TEXT("Crashes per million miles", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("1").toString()),
+    CRASHES_PER_TEXT("Crashes per million miles/kilometers", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("1").toString()),
     DAYS_SINCE_TEXT("Days since last crash", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("2").toString()),
-    MILES_SINCE_TEXT("Miles since last crash", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("3").toString()),
+    MILES_SINCE_TEXT("Miles/Kilometers since last crash", Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("1").td("3").toString()),
 
     CRASHES_PER_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("1").toString()),
     DAYS_SINCE_NUMBER(null, Xpath.start().table(Id.id("crashSummaryTable")).tbody().tr("2").td("2").toString()),
@@ -43,10 +43,10 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
 
     SPEEDING_TITLE("Speeding % (mi) ", Xpath.start().div(Id.id("speedPercentageOutputPanel_body")).div().div().span(Id.clazz("line")).toString()),
 
-    TOTAL_DRIVEN_TEXT("Total Distance Driven:", "//span[@id='totalDistance']/../td[1]"),
-    TOTAL_DRIVEN_NUMBER(null, "totalDistance"),
-    TOTAL_SPEEDING_TEXT("Total Distance Speeding:", "//span[@id='totalSpeeding']/../td[1]"),
-    TOTAL_SPEEDING_NUMBER(null, "totalSpeeding"),
+    TOTAL_DRIVEN_LABEL("Total Distance Driven:", "//span[@id='totalDistance']/../td[1]"),
+    TOTAL_DRIVEN_NUMBER(null, "//span[@id='totalDistance']"),
+    TOTAL_SPEEDING_LABEL("Total Distance Speeding:", "//span[@id='totalSpeeding']/../td[1]"),
+    TOTAL_SPEEDING_NUMBER(null, "//span[@id='totalSpeeding']"),
 
     TREND_TITLE("Trend", Xpath.start().div(Id.id("trendDurationPanel_body")).div().div().span(Id.clazz("line")).toString()),
     TREND_SUPER_TITLE(null, Xpath.start().tbody(Id.id("trendTable:summaryitems:tb")).td("2").toString()),

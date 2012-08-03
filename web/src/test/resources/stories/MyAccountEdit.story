@@ -41,9 +41,9 @@ And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
-And I click the Distance Driven Sort link
-And I click the Distance Driven Sort link
-And I click the 1st Row of the Driver Value link
+And I click the Driver Sort link
+And I click the Driver Sort link
+And I click the 3rd Row of the Driver Value link
 And I verify "Crashes per million kilometers" is on the page
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -74,9 +74,9 @@ And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
-And I click the Distance Driven Sort link
-And I click the Distance Driven Sort link
-And I click the 5th Row of the Vehicle Value link
+And I click the Vehicle Sort link
+And I click the Vehicle Sort link
+And I click the 2nd Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -91,7 +91,7 @@ And I validate the 1st Row of the Top Speed Units text contains "kph"
 And I validate the 1st Row of the Distance Units text contains "km"
 And I click the Return To Performance Page button
 And I click the Maximize Driving Style button
-And I click the twelve months Duration link
+And I click the six months Duration link
 And I validate the 1st Row of the Speed text contains "kph"
 And I click the Return To Performance Page button
 And I click the Maximize Seat Belt button
@@ -117,12 +117,14 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I validate the 1st Row of the Odometer Value text contains "km"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Top - Top - Top - Firmware Team" from the Team dropdown
+And I select "Top - Test Group WR" from the Team dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click on the Refresh button
-And I validate the 1st Row of the Entry Detail text contains "kph"
+And I validate the 1st Row of the Entry Detail text does not contain "mph"
+And I validate the 1st Row of the Entry Detail text does not contain "miles"
 And I click the Logo button
-And I verify "Crashes per million kilometers" is on the page 
-And I verify "Kilometers since last crash" is on the page
+And I validate the Label Crashes Per Mil text is "Crashes per million kilometers"
+And I validate the Label Distance Since Last Crash text is "Kilometers since last crash"
 And I validate the Number Speeding Total Distance Driven text contains "km"
 And I validate the Number Speeding Total Distance Speeding text contains "km"
 And I validate the Title Speeding text contains "km"
@@ -138,7 +140,10 @@ And I verify "Crashes per million miles" is on the page
 And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
-And I click the 1st Row of the Driver Value link
+And I click the year Duration link
+And I click the Driver Sort link
+And I click the Driver Sort link
+And I click the 3rd Row of the Driver Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -153,7 +158,7 @@ And I validate the 1st Row of the Top Speed Units text contains "mph"
 And I validate the Distance Units text contains "mi"
 And I click the Return To Performance Page button
 And I click the Maximize Driving Style button
-And I click the twelve months Duration link
+And I click the six months Duration link
 And I validate the 1st Row of the Speed text contains "mph"
 And I click the Return To Performance Page button
 And I click the Maximize Seat Belt button
@@ -169,9 +174,9 @@ And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
-And I click the Distance Driven Sort link
-And I click the Distance Driven Sort link
-And I click the 5th Row of the Vehicle Value link
+And I click the Vehicle Sort link
+And I click the Vehicle Sort link
+And I click the 2nd Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
 And I click the twelve months Duration link
@@ -187,7 +192,7 @@ And I validate the Top Speed Units text contains "mph"
 And I validate the Distance Units text contains "mi"
 And I click the Return To Performance Page button
 And I click the Maximize Driving Style button
-And I click the twelve months Duration link
+And I click the six months Duration link
 And I validate the Speed text contains "mph"
 And I click the Return To Performance Page button
 And I click the Maximize Seat Belt button
@@ -213,12 +218,12 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Test Group WR" from the Team dropdown
+And I select "Top - Test Group WR" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "mph"
 And I click the Logo button
-And I verify "Crashes per million miles" is on the page 
-And I verify "Miles since last crash" is on the page
+And I validate the Label Crashes Per Mil text is "Crashes per million kilometers"
+And I validate the Label Distance Since Last Crash text is "Kilometers since last crash"
 And I validate the Number Speeding Total Distance Driven text contains "mi"
 And I validate the Number Speeding Total Distance Speeding text contains "mi"
 And I validate the Title Speeding text contains "mi"
@@ -289,7 +294,7 @@ And I validate the 1st Row of the Top Speed Units text contains "kph"
 And I validate the 1st Row of the Distance Units text contains "km"
 And I click the Return To Performance Page button
 And I click the Maximize Driving Style button
-And I click the twelve months Duration link
+And I click the six months Duration link
 And I validate the 1st Row of the Speed text contains "kph"
 And I click the Return To Performance Page button
 And I click the Maximize Seat Belt button
@@ -316,12 +321,12 @@ And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I validate the 1st Row of the Odometer Value text contains "km"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Top - Top - Top - Firmware Team" from the Team dropdown
+And I select "Top - Test Group WR" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "kph"
 And I click the Logo button
-And I verify "Crashes per million kilometers" is on the page 
-And I verify "Kilometers since last crash" is on the page
+And I validate the Label Crashes Per Mil text is "Crashes per million kilometers"
+And I validate the Label Distance Since Last Crash text is "Kilometers since last crash"
 And I validate the Number Speeding Total Distance Driven text contains "km"
 And I validate the Number Speeding Total Distance Speeding text contains "km"
 And I validate the Title Speeding text contains "km"
@@ -352,7 +357,7 @@ And I validate the 1st Row of the Top Speed Units text contains "mph"
 And I validate the Distance Units text contains "mi"
 And I click the Return To Performance Page button
 And I click the Maximize Driving Style button
-And I click the twelve months Duration link
+And I click the six months Duration link
 And I validate the 1st Row of the Speed text contains "mph"
 And I click the Return To Performance Page button
 And I click the Maximize Seat Belt button
@@ -387,7 +392,7 @@ And I validate the Top Speed Units text contains "mph"
 And I validate the Distance Units text contains "mi"
 And I click the Return To Performance Page button
 And I click the Maximize Driving Style button
-And I click the twelve months Duration link
+And I click the six months Duration link
 And I validate the Speed text contains "mph"
 And I click the Return To Performance Page button
 And I click the Maximize Seat Belt button
@@ -414,12 +419,12 @@ And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
-And I select "Test Group WR" from the Team dropdown
+And I select "Top - Test Group WR" from the Team dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text contains "mph"
 And I click the Logo button
-And I verify "Crashes per million miles" is on the page 
-And I verify "Miles since last crash" is on the page
+And I validate the Label Crashes Per Mil text is "Crashes per million miles"
+And I validate the Label Distance Since Last Crash text is "Miles since last crash"
 And I validate the Number Speeding Total Distance Driven text contains "mi"
 And I validate the Number Speeding Total Distance Speeding text contains "mi"
 And I validate the Title Speeding text contains "mi"
