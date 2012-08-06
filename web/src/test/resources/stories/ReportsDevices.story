@@ -151,6 +151,24 @@ Then I validate the Sort By Device ID link is present
 And I validate the Sort By Assigned Vehicle link is present
 And I validate the Sort By IMEI link is present
 
+Scenario: TC1535: Reports - Devices - Edit Columns - Default Command Button
+Given I am logged in
+When I click the Reports link
+And I click the Devices link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+Then I validate the Sort By Device ID link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+And I validate the Sort By Device ID link is present
+
 Scenario: TC1536: Reports - Devices - Edit Columns - Save Button
 Given I am logged in
 When I click the Reports link

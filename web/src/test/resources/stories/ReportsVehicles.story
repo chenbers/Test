@@ -247,6 +247,24 @@ And I check 1st Row of the Column checkbox
 And I check 2nd Row of the Column checkbox
 And I click the Save button
 
+Scenario: TC6275: Reports - Vehicles - Edit Columns - Default Command Button
+Given I am logged in
+When I click the Reports link
+And I click the Vehicles link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+Then I validate the 1st Row of the Group Value link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+And I validate the 1st Row of the Group Value link is present
+
 Scenario: TC1650: Reports - Vehicles - Edit Columns - Save Button
 Given I am logged in
 When I click the Reports link

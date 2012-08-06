@@ -201,6 +201,24 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 
+Scenario: TC1391: Notifications - Diagnostics - Edit Columns - Default Command Button
+Given I am logged in
+When I click the Notifications link
+And I click the Diagnostics link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+Then I validate the Sort By Date Time link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+And I validate the Sort By Date Time link is present
+
 Scenario: TC1392: Notifications - Diagnostics - Edit Columns - Save Button
 Given I am logged in
 When I click the Notifications link

@@ -199,6 +199,24 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 
+Scenario: TC1425: Notifications - Emergency - Edit Columns - Default Command Button
+Given I am logged in
+When I click the Notifications link
+And I click the Emergency link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+Then I validate the Sort By Date Time link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+And I validate the Sort By Date Time link is present
+
 Scenario: TC1426: Notifications - Emergency - Edit Columns - Save Button
 Given I am logged in
 When I click the Notifications link
@@ -280,6 +298,21 @@ And the Exclude Event popup closes
 Then I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
 And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
 
+Scenario: TC1431: Notifications - Emergency - Exclude Link - Default Command Button
+Given I am logged in
+When I click the Notifications link
+And I click the Emergency link
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
+And I click the Refresh button
+And I save the Counter text as TABLECOUNT
+And I click the 1st Row of the Entry Status link
+And the Exclude Event popup opens
+And I press the Enter Key
+And the Exclude Event popup closes
+Then I validate the Counter text is TABLECOUNT
+And I validate the 1st Row of the Entry Status link is "include"
+
 Scenario: TC1432: Notifications - Emergency - Exclude Link - OK Button
 Given I am logged in
 When I click the Notifications link
@@ -295,7 +328,7 @@ And the Exclude Event popup closes
 Then I validate the Counter text is TABLECOUNT
 And I validate the 1st Row of the Entry Status link is "include"
 
-TC1433 	Notifications - Emergency - Exclude Link - UI
+Scenario: TC1433: Notifications - Emergency - Exclude Link - UI
 Given I am logged in
 When I click the Notifications link
 And I click the Emergency link

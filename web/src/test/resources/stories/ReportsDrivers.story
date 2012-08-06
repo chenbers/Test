@@ -263,6 +263,24 @@ And I validate the Sort By Driver link is present
 And I validate the Sort By Group link is present
 And I validate the Sort By Employee ID link is present
 
+Scenario: TC1576: Reports - Drivers - Edit Columns - Default Command Button
+Given I am logged in
+When I click the Reports link
+And I click the Drivers link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+Then I validate the Sort By Group link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+And I validate the Sort By Group link is present
+
 Scenario: TC1577: Reports - Drivers - Edit Columns - Save Button
 Given I am logged in
 When I click the Reports link
