@@ -1,17 +1,16 @@
 package com.inthinc.pro.selenium.steps;
 
-import org.jbehave.core.annotations.Alias;
-import org.jbehave.core.annotations.Aliases;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PopUps;
+import com.inthinc.pro.automation.jbehave.AutoCustomSteps;
 
 public class LoginSteps extends WebSteps {
 
