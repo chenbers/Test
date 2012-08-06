@@ -45,8 +45,8 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
         PageVehiclePerformanceSpeed.class, 
         PageVehiclePerformanceStyle.class, 
         PageVehiclePerformance.class})
-@StoryPath(path="ReportsDriver.story")
-public class ReportsDriverTest extends WebStories {
+@StoryPath(path="ReportsDrivers.story")
+public class ReportsDriversTest extends WebStories {
     
     @Test
     public void test(){}
