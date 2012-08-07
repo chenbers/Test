@@ -32,6 +32,13 @@ And I validate I am on the Login page
 Given I am logged in
 Then I validate I am on the Executive Dashboard page
 
+Scenario: TC1243: Log In - Default Command Button
+Given I am on the Login page
+When I type "SecondPrime" into the User Name field
+And I type "" into the Password field
+And I press the Enter Key
+Then I validate I am on the Executive Dashboard page
+
 Scenario: TC1245: Log In - Invalid Password Error
 Given I am on the Login page
 When I type "secondPrime" into the User Name textfield

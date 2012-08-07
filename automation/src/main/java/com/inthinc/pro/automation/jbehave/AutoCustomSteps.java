@@ -60,20 +60,6 @@ public class AutoCustomSteps {
     public static String getMainuser() {
         return mainUser;
     }
-
-    
-    @Given("I hit the Period key")
-    @When("I hit the Period key")
-    public static void keyPeriod() {
-        KeyCommands.typeKey(KeyEvent.VK_PERIOD);
-    }
-    
-    @Given("I hit the Spacebar")
-    @When("I hit the Spacebar")
-    public static void spaceBar() {
-        KeyCommands.typeKey(KeyEvent.VK_SPACE);
-    }
-    
     
     private final AutomationPropertiesBean apb;
 
@@ -122,10 +108,32 @@ public class AutoCustomSteps {
         AutoStepVariables.getVariables().put(variableName, writer.toString());
     }
     
-    @Given("I hit the Enter Key")
-    @When("I hit the Enter Key")
+    @Given("I press the Enter Key")
+    @When("I press the Enter Key")
+    @Then("I press the Enter Key")
     public void enterKey() {
         CoreMethodLib.getSeleniumThread().enterKey();
+    }
+    
+    @Given("I press the Period Key")
+    @When("I press the Period Key")
+    @Then("I press the Period Key")
+    public static void keyPeriod() {
+    	CoreMethodLib.getSeleniumThread().periodKey();
+    }
+    
+    @Given("I press the Spacebar Key")
+    @When("I press the Spacebar Key")
+    @Then("I press the Spacebar Key")
+    public static void spaceBar() {
+    	CoreMethodLib.getSeleniumThread().spacebarKey();
+    }
+    
+    @Given("I press the Tab Key")
+    @When("I press the Tab Key")
+    @Then("I press the Tab Key")
+    public void tabKey() {
+        CoreMethodLib.getSeleniumThread().tabKey();
     }
     
     public User getMyUser() {
@@ -173,13 +181,6 @@ public class AutoCustomSteps {
     @When("I bookmark the page")
     public void savePageLink() {
         savedPage.set(test.getCurrentLocation());
-    }
-
-
-    @Given("I hit the Tab Key")
-    @When("I hit the Tab Key")
-    public void tabKey() {
-        CoreMethodLib.getSeleniumThread().tabKey();
     }
     
     @Given("I type to the active field")

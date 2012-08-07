@@ -13,7 +13,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageTeamDriverStatistics.class, PageExecutiveOverallExpansion.class})
-@StoryPath(path="login.story")
+@StoryPath(path="Login.story")
 public class LoginTest extends WebStories {
     
     @Test

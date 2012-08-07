@@ -4,6 +4,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum DriverPerformanceEnum implements SeleniumEnums {
 
+    DEFAULT_URL(appUrl + "/driver"),
+    
     DRIVER_NAME(null, "breadcrumbForm:driverPerformancePerson"),
     BREADCRUMB_ITEM(null, "breadcrumbForm:breadcrumbitem:###:driverPerformance-dashboard"),
 
@@ -11,7 +13,7 @@ public enum DriverPerformanceEnum implements SeleniumEnums {
     
     EXPANDED_DRIVER_NAME_LINK(null, "driver***ChartForm:driver***DriverPerformance"),
     EXPANDED_BREADCRUMB(null, "driver***ChartForm:breadcrumbitem:###:driver***-dashboard"),
-    DEFAULT_URL(appUrl + "/driver"),
+
     
     ;
 

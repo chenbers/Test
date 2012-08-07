@@ -16,6 +16,7 @@ public enum ReportsBarEnum implements SeleniumEnums {
     SPEED_SCORE_DHX(null, "***-form:***:speedScoreFilter"),
     STYLE_SCORE_DHX(null, "***-form:***:styleScoreFilter"),
     SEATBELT_SCORE_DHX(null, "***-form:***:seatbeltScoreFilter"),
+    STATUS_SCORE_DHX(null, "***-form:***:statusFilter"),
 
     OVERALL_SCORE_SORT(null, "***-form:***:overallScoreheader:sortDiv"),
     SPEED_SCORE_SORT(null, "***-form:***:speedScoreheader:sortDiv"),

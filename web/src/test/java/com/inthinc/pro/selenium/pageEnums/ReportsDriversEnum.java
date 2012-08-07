@@ -33,7 +33,7 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     DISTANCE_DRIVEN_SORT("Distance Driven", "drivers-form:drivers:distanceheader:sortDiv"),
     OVERALL_SCORE_SORT("Overall", "drivers-form:drivers:overallScoreheader:sortDiv"),
     STYLE_SCORE_SORT("Style", "drivers-form:drivers:styleScoreheader:sortDiv"),
-    SPEED_SCORE_SORT("Speed", "drivers-form:drivers:speadScoreheader:sortDiv"),
+    SPEED_SCORE_SORT("Speed", "drivers-form:drivers:speedScoreheader:sortDiv"),
     SEATBELT_SCORE_SORT("Seat Belt", "drivers-form:drivers:seatbeltScoreheader:sortDiv"),
 
     ;

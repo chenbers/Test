@@ -21,7 +21,7 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
 
 
 
-        public Text counter() {
+        public Text records() {
             return new Text(NotificationsBarEnum.COUNTER, page);
         }
 

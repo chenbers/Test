@@ -224,6 +224,24 @@ And I validate the Sort By Vehicle link is present
 And I validate the Header Category text is present
 And I validate the Header Detail text is present
 
+Scenario: TC1460: Notifications - Red Flags - Edit Columns - Default Command Button
+Given I am logged in
+When I click the Notifications link
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+Then I validate the Header Level text is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
+And I validate the Header Level text is present
+
 Scenario: TC1461: Notifications - Red Flags - Edit Columns - Save Button
 Given I am logged in
 When I click the Notifications link
@@ -307,6 +325,21 @@ And I click the No button
 And the Exclude Event popup closes
 Then I validate the 1st Row of the Entry Date Time text is SAVEDDATETIME
 And I validate the 1st Row of the Entry Detail text is SAVEDDETAIL
+
+Scenario: TC1467: Notifications - Red Flags - Exclude Link  - Default Command Button
+Given I am logged in
+When I click the Notifications link
+And I click the Red Flags link
+And I select "Top" from the Team dropdown
+And I select "Past 30 Days" from the Time Frame dropdown
+And I click the Refresh button
+And I save the Counter text as TABLECOUNT
+And I click the 1st Row of the Entry Status link
+And the Exclude Event popup opens
+And I press the Enter key
+And the Exclude Event popup closes
+Then I validate the Counter text is TABLECOUNT
+And I validate the 1st Row of the Entry Status link is "include"
 
 Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
 Given I am logged in

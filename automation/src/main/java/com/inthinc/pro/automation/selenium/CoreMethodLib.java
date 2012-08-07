@@ -762,7 +762,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         }
         
         else {
-            KeyCommands.typeKey(KeyEvent.VK_TAB);
+            getActiveElement().sendKeys(Keys.TAB);
         }
         AutomationThread.pause(500l);
         
@@ -776,6 +776,19 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return this;
     }
     
+    @Override
+    public CoreMethodInterface spacebarKey() {
+        getActiveElement().sendKeys(Keys.SPACE);
+        waitForPageToLoad();
+        return this;
+    }
+    
+    @Override
+    public CoreMethodInterface periodKey() {
+        getActiveElement().sendKeys(Keys.DECIMAL);
+        waitForPageToLoad();
+        return this;
+    }   
     
     public static CoreMethodInterface getSeleniumThread() {
         CoreMethodInterface selenium = instance.get();

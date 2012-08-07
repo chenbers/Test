@@ -27,7 +27,7 @@ Scenario: TC1614: Reports - Vehicles - Bookmark Entry
 Given I am logged in
 And I select "Vehicles" from the Master Search dropdown
 And I click the Master Search button
-And I save the 1st Row of the Vehicle Value link as SAVEDSPEED
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 When I bookmark the page
 And I click the Log Out link
 And I click the bookmark I just added
@@ -51,31 +51,31 @@ Scenario: TC1624: Reports - Vehicles - Group Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the 1st Row of the Group Value link as SavedEntry
+And I save the 1st Row of the Group Value link as SAVEDGROUP
 And I click the the 1st Row of the Group Value link
-Then I validate the Driver Team Value text is SavedEntry
+Then I validate the Driver Team Value text is SAVEDGROUP
 
 Scenario: TC1627: Reports - Vehicles - Overall Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the 1st Row of the Vehicle Value textlink as SAVEDVEHICLE
-And I save the 1st Row of the Overall Value textlink as SAVEDOVERALL
-And I click the 1st Row of the Overall Value textlink
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
+And I save the 1st Row of the Overall Value link as SAVEDOVERALL
+And I click the 1st Row of the Overall Value link
 And I click the twelve months OverallDuration link
 Then I validate the Overall Score text is SAVEDOVERALL
-And I validate the Vehicle Name textlink is SAVEDVEHICLE
+And I validate the Vehicle Name link is SAVEDVEHICLE
 
 Scenario: TC1637: Reports - Vehicles - Speed Score Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the 1st Row of the Vehicle Value textlink as SAVEDVEHICLE
-And I save the 1st Row of the Speed Value textlink as SAVEDSPEED
-And I click the 1st Row of the Vehicle Value textlink as SAVEDVEHICLE
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
+And I save the 1st Row of the Speed Value link as SAVEDSPEED
+And I click the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 And I click the twelve months Overall Duration link
 Then I validate the Speed Score text is SAVEDSPEED
-And I validate the Vehicle Name textlink is SAVEDVEHICLE
+And I validate the Vehicle Name link is SAVEDVEHICLE
 
 Scenario: TC1639: Reports - Vehicles - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in
@@ -119,8 +119,8 @@ And I validate the Sort By Speed link is present
 And I validate the Sort By Style link is present
 And I validate the Group Value text table link is present
 And I validate the Vehicle Value text table link is present
-And I validate the Year Make Model textlink is present
-And I validate the Driver Sort textlink is present
+And I validate the Year Make Model link is present
+And I validate the Driver Sort link is present
 And I validate the Overall Filter dropdown is present
 And I validate the Speed Filter dropdown is present
 And I validate the Style Filter dropdown is present
@@ -129,9 +129,9 @@ Scenario: TC1642: Reports - Vehicles - Vehicle ID Link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-And I save the 1st Row of the Vehicle Value link as SavedEntry
+And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 And I click the 1st Row of the Vehicle Value link
-Then I validate the Vehicle Name link is SavedEntry
+Then I validate the Vehicle Name link is SAVEDVEHICLE
 
 Scenario: TC1644: Reports - Vehicles - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -232,9 +232,9 @@ And I uncheck 1st Row of the Column checkbox
 And I uncheck 2nd Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the 1st Row of the Group Value textlink is not present
-And I validate the 1st Row of the Vehicle Value textlink is not present
-And I validate the 1st Row of the Sort By Year Make Model textlink is present
+Then I validate the 1st Row of the Group Value link is not present
+And I validate the 1st Row of the Vehicle Value link is not present
+And I validate the 1st Row of the Sort By Year Make Model link is present
 And I validate the Sort By Driver link is present
 And I validate the Sort By Distance Driven link is present
 And I validate the Sort By Odometer link is present
@@ -247,6 +247,24 @@ And I check 1st Row of the Column checkbox
 And I check 2nd Row of the Column checkbox
 And I click the Save button
 
+Scenario: TC6275: Reports - Vehicles - Edit Columns - Default Command Button
+Given I am logged in
+When I click the Reports link
+And I click the Vehicles link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I uncheck the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+Then I validate the 1st Row of the Group Value link is not present
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I validate the 1st Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I press the Enter Key
+And the Edit Columns popup closes
+And I validate the 1st Row of the Group Value link is present
+
 Scenario: TC1650: Reports - Vehicles - Edit Columns - Save Button
 Given I am logged in
 When I click the Reports link
@@ -256,14 +274,14 @@ And the Edit Columns popup opens
 And I uncheck the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the 1st Row of the Group Value textlink is not present
+Then I validate the 1st Row of the Group Value link is not present
 And I click the Edit Columns link
 And the Edit Columns popup opens
 And I validate the 1st Row of the Column checkbox is not checked
 And I check the 1st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-And I validate the 1st Row of the Group Value textlink is present
+And I validate the 1st Row of the Group Value link is present
 
 Scenario: TC1651: Reports - Vehicles - Edit Columns - Subsequent Session Retention
 Given I am logged in
@@ -278,7 +296,7 @@ And I click the Logout link
 Given I am logged in
 When I click the Reports link
 And I click the Vehicles link
-Then I validate the 1st Row of the Group Value textlink is not present
+Then I validate the 1st Row of the Group Value link is not present
 When I click the Edit Columns link
 And the EditColumns popup opens
 And I check the 1st Row of the Column checkbox
@@ -288,7 +306,7 @@ And I click the Logout link
 Given I am logged in
 And I click the Reports link
 And I click the Vehicles link
-Then I validate the 1st Row of the Group Value textlink is present
+Then I validate the 1st Row of the Group Value link is present
 
 Scenario: TC1653: Reports - Vehicles - Edit Columns - UI
 Given I am logged in

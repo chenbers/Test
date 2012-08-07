@@ -175,19 +175,19 @@ public class PageExecutiveDashboard extends NavigationBar {
         }
         
         public Text labelSpeedingTotalDistanceDriven(){
-            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_DRIVEN_TEXT);
+            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_DRIVEN_LABEL);
         }
         
         public Text numberSpeedingTotalDistanceDriven(){
-            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_DRIVEN_NUMBER);
+            return new Text(ExecutiveDashBoardEnum.TOTAL_DRIVEN_NUMBER);
         }
         
         public Text labelSpeedingTotalDistanceSpeeding(){
-            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_SPEEDING_TEXT);
+            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_SPEEDING_LABEL);
         }
         
         public Text numberSpeedingTotalDistanceSpeeding(){
-            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_SPEEDING_NUMBER);
+            return new Text(ExecutiveDashBoardEnum.TOTAL_SPEEDING_NUMBER);
         }
         
         public Text labelIdlingTotalDuration(){
@@ -195,7 +195,7 @@ public class PageExecutiveDashboard extends NavigationBar {
         }
         
         public Text numberIdlingTotalDuration(){
-            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_DURATION_VALUE);
+            return new Text(ExecutiveDashBoardEnum.TOTAL_DURATION_VALUE);
         }
         
         public Text labelIdlingTotalTimeIdling(){
@@ -203,7 +203,7 @@ public class PageExecutiveDashboard extends NavigationBar {
         }
         
         public Text numberIdlingTotalTimeIdling(){
-            return new TextLabel(ExecutiveDashBoardEnum.TOTAL_TIME_IDLING_VALUE);
+            return new Text(ExecutiveDashBoardEnum.TOTAL_TIME_IDLING_VALUE);
         }
         
         public Text titleOverallScore(){

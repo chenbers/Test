@@ -14,6 +14,7 @@ import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsDevicesEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
+import com.inthinc.pro.selenium.pageObjects.ReportsBar.ReportsBarDropDowns;
 
 public class PageReportsDevices extends ReportsBar {
 	private String page = "devices";
@@ -42,10 +43,10 @@ public class PageReportsDevices extends ReportsBar {
 	public DeviceReportDropDowns _dropDown(){
 		return new DeviceReportDropDowns();
 	}
-	public class DeviceReportDropDowns extends ReportsBarDropDowns{
+	public class DeviceReportDropDowns extends ReportsBarDropDowns {
 		
-		public DropDown status() {
-			return new DHXDropDown(ReportsDevicesEnum.STATUS_DHX);
+		public DHXDropDown status() {
+			return new ReportsBarDropDowns().score(ReportsBarEnum.STATUS_SCORE_DHX, page);
 		}
 	}
 	public DeviceReportsLinks _link(){
@@ -62,19 +63,19 @@ public class PageReportsDevices extends ReportsBar {
 			return new TextTableLink(ReportsDriversEnum.VEHICLE_VALUE);
 		}
 		
-		public TextLink deviceIDSort(){
+		public TextLink sortByDeviceID(){
 			return new TextLink(ReportsDevicesEnum.DEVICE_ID_SORT);
 		}
 		
-		public TextLink assignedVehicleSort(){
+		public TextLink sortByAssignedVehicle(){
 			return new TextLink(ReportsDevicesEnum.VEHICLE_SORT);
 		}
 		
-		public TextLink imeiSort(){
+		public TextLink sortByIMEI(){
 			return new TextLink(ReportsDevicesEnum.IMEI_SORT);
 		}
 		
-		public TextLink devicePhoneSort(){
+		public TextLink sortByDevicePhone(){
 			return new TextLink(ReportsDevicesEnum.PHONE_SORT);
 		}
 
@@ -86,7 +87,7 @@ public class PageReportsDevices extends ReportsBar {
 	
 	public class DeviceReportsTexts extends ReportsBarTexts{
 		
-		public Text statusColumnHeader(){
+		public Text statusHeader(){
 			return new Text(ReportsDevicesEnum.STATUS_NONSORT);
 		}
 		

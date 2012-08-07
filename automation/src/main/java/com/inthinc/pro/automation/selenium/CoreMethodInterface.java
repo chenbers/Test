@@ -81,6 +81,8 @@ public interface CoreMethodInterface extends Selenium {
     public String getTextFromElementWithFocus();
     public CoreMethodInterface tabKey();
     public CoreMethodInterface enterKey();
+	public CoreMethodInterface spacebarKey();
+	public CoreMethodInterface periodKey();
 
     public Browsers getBrowser();
     
@@ -89,5 +91,7 @@ public interface CoreMethodInterface extends Selenium {
     public By getLocator(List<By> list);
     
     public CoreMethodInterface hoverOver(SeleniumEnumWrapper myEnum);
+
+
     
 }
