@@ -22,9 +22,9 @@ public enum HOSDriverLogsEnum implements SeleniumEnums {
     
     EDIT_COLUMNS(null, "hos-table-form:hosTable-hosTableEditColumns"),
     
-    SHIP_LOGS(null, "hos-table-form:hosTable-hosSendLogs"),
-    SHIP_LOGS_STATUS(null, "hos-table-form:hosTable-hosSendLogsStatus"),
-    SHIP_LOGS_MESSAGE(null, "hos-table-form:sendLogsError"),
+    SEND_LOGS(null, "hos-table-form:hosTable-hosSendLogs"),
+    SEND_LOGS_STATUS(null, "hos-table-form:hosTable-hosSendLogsStatus"),
+    SEND_LOGS_MESSAGE(null, "hos-table-form:sendLogsError"),
     
     
     COUNTER("Showing XXX to YYY of ZZZ records", "hos-table-form:header"),

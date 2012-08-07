@@ -42,7 +42,7 @@ public class PageHOSFuelStops extends HOSBar {
         }
 
         public CheckBoxTable entryCheckBox() {
-            return new CheckBoxTable(HOSFuelStopsEnum.VALUE_CHECK);
+            return new CheckBoxTable(HOSFuelStopsEnum.ENTRY_CHECKBOX);
         }
     }
 
@@ -100,8 +100,8 @@ public class PageHOSFuelStops extends HOSBar {
             return new TextLink(HOSFuelStopsEnum.SORT_VEHICLE_FUEL);
         }
 
-        public TextTableLink valueEdit() {
-            return new TextTableLink(HOSFuelStopsEnum.VALUE_EDIT);
+        public TextTableLink entryEdit() {
+            return new TextTableLink(HOSFuelStopsEnum.ENTRY_EDIT);
         }
 
     }
@@ -148,48 +148,48 @@ public class PageHOSFuelStops extends HOSBar {
             return new TextFieldLabel(HOSFuelStopsEnum.VEHICLE_TEXT_FIELD);
         }
 
-        public TextTable dateTime() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_DATE_TIME);
+        public TextTable entryDateTime() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_DATE_TIME);
         }
         
-        public TextTable valueDriver() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_DRIVER);
+        public TextTable entryDriver() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_DRIVER);
         }
 
         public Text title() {
             return new Text(HOSFuelStopsEnum.TITLE);
         }
 
-        public TextTable valueEdited() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_EDITED);
+        public TextTable entryEdited() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_EDITED);
         }
 
-        public TextTable valueLocation() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_LOCATION);
+        public TextTable entryLocation() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_LOCATION);
         }
 
-        public TextTable valueOdometerAfter() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_AFTER);
+        public TextTable entryOdometerAfter() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_AFTER);
         }
 
-        public TextTable valueOdometerBefore() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_BEFORE);
+        public TextTable entryOdometerBefore() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_BEFORE);
         }
 
-        public TextTable valueTrailer() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_TRAILER);
+        public TextTable entryTrailer() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_TRAILER);
         }
 
-        public TextTable valueTrailerFuel() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_TRAILER_FUEL);
+        public TextTable entryTrailerFuel() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_TRAILER_FUEL);
         }
 
-        public TextTable valueVehicle() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_VEHICLE);
+        public TextTable entryVehicle() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_VEHICLE);
         }
 
-        public TextTable valueVehicleFuel() {
-            return new TextTable(HOSFuelStopsEnum.VALUE_VEHICLE_FUEL);
+        public TextTable entryVehicleFuel() {
+            return new TextTable(HOSFuelStopsEnum.ENTRY_VEHICLE_FUEL);
         }
     }
 

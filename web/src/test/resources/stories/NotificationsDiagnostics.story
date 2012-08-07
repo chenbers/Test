@@ -283,6 +283,18 @@ And I validate the 6th Row of the Column checkbox is checked
 And I validate the Save button is present
 And I validate the Cancel button is present
 
+Scenario: TC1396: Notifications > Diagnostics > Exclude Link - Event Interaction
+Given I am logged in
+When I click the Notifications link
+And I click the Diagnostics link
+And I save the Records text as RECORDS
+And I click the 1st Row of the Entry Status link
+And the Exclude Event popup opens
+And I press the Enter key
+And the Exclude Event popup closes
+Then I validate the Records text is RECORDS
+And I validate the 1st Row of the Entry Status link is "include"
+
 Scenario: TC1399: Notifications - Diagnostics - Exclude Link - UI
 Given I am logged in
 When I click the Notifications link

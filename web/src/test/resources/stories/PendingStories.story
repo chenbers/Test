@@ -62,20 +62,34 @@ Given this step is pending
 Scenario: TC1379: Notifications - Diagnostics - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
 Given this step is pending
 
-Scenario: TC1394: Notifications - Diagnostics - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
-Scenario: TC1396: Notifications > Diagnostics > Exclude Link - Event Interaction
+Scenario: TC1389: Notifications - Diagnostics - Edit Columns - Check Box Selection via Spacebar
 Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I save the Records text as RECORDS
-And I click the 1st Row of the Entry Status link
-And the Exclude Event popup opens
-And I press the Enter key
-And the Exclude Event popup closes
-Then I validate the Records text is RECORDS
-And I validate the 1st Row of the Entry Status link is "include"
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I press the Tab Key
+And I press the Tab Key
+And I press the Tab Key
+And I press the Tab Key
+And I press the Spacebar Key
+Then I validate the 1st Row of the Column checkbox is not checked
+And I press the Spacebar Key
+Then I validate the 1st Row of the Column checkbox is checked
+And I press the Tab Key
+And I press the Spacebar Key
+And I validate the 2nd Row of the Column checkbox is not checked
+And I press the Spacebar Key
+And I validate the 2nd Row of the Column checkbox is checked
+
+Scenario: TC1394: Notifications - Diagnostics - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
+Given this step is pending
 
 Scenario: TC1397: Notifications - Diagnostics - Exclude Link - Idling Event NEED HELP TO IMPLEMENT
 Given this step is pending
@@ -128,9 +142,6 @@ Scenario: TC1466: Notifications - Red Flags - Exclude Link - Crash Event Interac
 Given this step is pending
 
 Scenario: TC1468: Notifications - Red Flags - Exclude Link - Driving Style Event Interaction NEED HELP TO IMPLEMENT
-Given this step is pending
-
-Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
 Given this step is pending
 
 Scenario: TC1470: Notifications - Red Flags - Exclude Link - Seat Belt Event Interaction NEED HELP TO IMPLEMENT
