@@ -67,6 +67,7 @@
 	<bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO" parent="genericDAO">
 		<property name="reportService" ref="reportServiceBean" />
 	</bean>
+    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO" parent="genericDAO"></bean>
 	<bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" parent="genericDAO"/>
 	<bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
 	<bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" parent="genericDAO"/>
