@@ -139,8 +139,7 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 		public Text mainOverallLabel(){
 			return new Text(DriverPerformanceSpeedEnum.OVERALL_SCORE_LABEL);
 		}
-		
-		
+				
 		public Text categoryOverallSpeedsScore(){
 			return new Text(DriverPerformanceSpeedEnum.BREAKDOWN_OVERALL_SCORE);
 		}
@@ -156,8 +155,7 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 		public Text categoryThreeSpeedsScore(){
 			return new Text(DriverPerformanceSpeedEnum.BREAKDOWN_41_54_SCORE);
 		}
-		
-		
+				
 		public Text categoryFourSpeedsScore(){
 			return new Text(DriverPerformanceSpeedEnum.BREAKDOWN_55_64_SCORE);
 		}
@@ -189,6 +187,7 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 		public TextTable avgSpeedPlusOrMinus(){
 			return new TextTable(DriverPerformanceSpeedEnum.AVERAGE_ENTRY_PLUSMINUS);
 		}
+		
 		public TextTable avgSpeedDifference(){
 			return new TextTable(DriverPerformanceSpeedEnum.AVERAGE_ENTRY_DIFF);
 		}

@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.SortHeader;
 import com.inthinc.pro.automation.elements.Text;
@@ -126,10 +127,6 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
                     NotificationsCrashHistoryAddEditEnum.ADDRESS_TEXT_FIELD);
         }
 
-        public TextField dateTime() {
-            return new TextField(NotificationsCrashHistoryAddEditEnum.DATE_TIME);
-        }
-
     }
 
     public class NotificationsCrashHistoryAddEditButtons extends NotificationsBarButtons {
@@ -161,6 +158,11 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         public Button findAddress() {
             return new Button(
                     NotificationsCrashHistoryAddEditEnum.SELECT_LOCATION_BY_FIND_ADDRESS);
+        }
+        
+        public TextButton locate() {
+        	return new TextButton(
+        			NotificationsCrashHistoryAddEditEnum.LOCATE);
         }
 
         public Button driver() {
@@ -203,6 +205,10 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
 
         public DropDown driver() {
             return new DropDown(NotificationsCrashHistoryAddEditEnum.DRIVER);
+        }
+        
+        public DropDown dateTime() {
+            return new CalendarObject(NotificationsCrashHistoryAddEditEnum.DATE_TIME);
         }
     }
 

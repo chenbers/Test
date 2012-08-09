@@ -118,5 +118,9 @@ public class ScoreableEntity extends BaseScore implements Comparable<ScoreableEn
         return score.compareTo(o.getScore());
     }
 
+    public String toString()
+    {
+    	return "ScoreableEntity id: "  + entityID +  " date: " + getDate() + " identifier: "  + identifier + " score: " + score;
+    }
 
 }

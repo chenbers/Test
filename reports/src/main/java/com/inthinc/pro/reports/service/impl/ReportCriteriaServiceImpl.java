@@ -151,11 +151,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
 
     @Override
-    public ReportCriteria getMpgReportCriteria(Integer groupID, Duration duration, Locale locale)
+    public ReportCriteria getMpgReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh)
     {
     	this.locale = locale;
         Group group = groupDAO.findByID(groupID);
-        List<MpgEntity> entities = mpgDAO.getEntities(group, duration);
+        List<MpgEntity> entities = mpgDAO.getEntities(group, duration, gh);
 
         List<CategorySeriesData> seriesData = new ArrayList<CategorySeriesData>();
 
@@ -179,30 +179,30 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     @Override
-    public ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale)
+    public ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh)
     {
     	this.locale = locale;
         NumberFormat format = NumberFormat.getInstance(locale);
         format.setMaximumFractionDigits(1);
         format.setMinimumFractionDigits(1);
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL, gh);
 
         // TODO: Needs to be optimized by not calling on every report.
         Group group = groupDAO.findByID(groupID);
 
         String overallScore = format.format((double) ((double) scoreableEntity.getScore() / (double) 10.0));
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE, group.getName(), locale);
-        reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration));
+        reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration, gh));
         reportCriteria.addParameter("OVERALL_SCORE", overallScore);
-        reportCriteria.addParameter("OVERALL_SCORE_DATA", getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration));
-        reportCriteria.addParameter("DRIVER_STYLE_DATA", getPieScoreData(ScoreType.SCORE_DRIVING_STYLE, groupID, duration));
-        reportCriteria.addParameter("SEATBELT_USE_DATA", getPieScoreData(ScoreType.SCORE_SEATBELT, groupID, duration));
-        reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING, groupID, duration));
+        reportCriteria.addParameter("OVERALL_SCORE_DATA", getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration, gh));
+        reportCriteria.addParameter("DRIVER_STYLE_DATA", getPieScoreData(ScoreType.SCORE_DRIVING_STYLE, groupID, duration, gh));
+        reportCriteria.addParameter("SEATBELT_USE_DATA", getPieScoreData(ScoreType.SCORE_SEATBELT, groupID, duration, gh));
+        reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING, groupID, duration, gh));
         reportCriteria.setDuration(duration);
         return reportCriteria;
     }
 
-    private List<PieScoreData> getPieScoreData(ScoreType scoreType, Integer groupID, Duration duration)
+    private List<PieScoreData> getPieScoreData(ScoreType scoreType, Integer groupID, Duration duration, GroupHierarchy gh)
     {
         // Fetch, qualifier is groupId (parent), date from, date to
         List<ScoreableEntity> s = null;
@@ -211,7 +211,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             logger.debug("getting scores for groupID: " + groupID);
             // s = scoreDAO.getScores(this.navigation.getGroupID(),
             // startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
-            s = scoreDAO.getScoreBreakdown(groupID, duration, scoreType);
+            s = scoreDAO.getScoreBreakdown(groupID, duration, scoreType, gh);
         }
         catch (Exception e)
         {
@@ -230,14 +230,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     @Override
-    public ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration, Locale locale)
+    public ReportCriteria getTrendChartReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh)
     {
     	this.locale = locale;
         List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
-        List<ScoreableEntity> s = getScores(groupID, duration);
+        List<ScoreableEntity> s = getScores(groupID, duration, gh);
     	Group group = groupDAO.findByID(groupID);
 //        ScoreableEntity summaryScore = scoreDAO.getTrendSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL);
-        ScoreableEntity summaryScore = scoreDAO.getSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL);
+        ScoreableEntity summaryScore = scoreDAO.getSummaryScore(groupID, duration, ScoreType.SCORE_OVERALL, gh);
         if (summaryScore != null)
         {
         	String summaryTitle = MessageUtil.formatMessageString("report.trend.summary", (getLocale() == null) ? Locale.getDefault() : getLocale(), group.getName());
@@ -245,7 +245,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         	s.add(0,summaryScore);
         }
         // Loop over returned set of group ids, controlled by scroller
-        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(groupID, duration);
+        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(groupID, duration, gh);
 
         List<String> monthList = null;
         if (s != null && s.size() > 0)
@@ -323,12 +323,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	}
 
 
-	private List<ScoreableEntity> getScores(Integer groupID, Duration duration)
+	private List<ScoreableEntity> getScores(Integer groupID, Duration duration, GroupHierarchy gh)
     {
         List<ScoreableEntity> s = null;
         try
         {
-            s = scoreDAO.getScores(groupID, duration, ScoreType.SCORE_OVERALL);
+            s = scoreDAO.getScores(groupID, duration, ScoreType.SCORE_OVERALL, gh);
         }
         catch (Exception e)
         {
@@ -446,12 +446,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }    
 
     @Override
-	public ReportCriteria getSpeedPercentageReportCriteria(Integer groupID, Duration duration, Locale locale) {
+	public ReportCriteria getSpeedPercentageReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh) {
         
         this.locale = locale;
         List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
         List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
-		List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(groupID, duration);
+		List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(groupID, duration, gh);
         List<String> monthList = ReportUtil.createDateLabelList(speedPercentItemList, duration,MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
        	int index = 0;
 
@@ -486,12 +486,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	}
 
     @Override
-	public ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale) {
+	public ReportCriteria getIdlePercentageReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh) {
         
     	this.locale = locale;
         List<CategorySeriesData> barChartList = new ArrayList<CategorySeriesData>();
         List<CategorySeriesData> lineChartList = new ArrayList<CategorySeriesData>();
-		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(groupID, duration);
+		List<IdlePercentItem> idlePercentItemList = scoreDAO.getIdlePercentItems(groupID, duration, gh);
         List<String> monthList = ReportUtil.createDateLabelList(idlePercentItemList, duration, MessageUtil.getMessageString("shortDateFormat", locale)/*"M/dd"*/, locale);
        	int index = 0;
 
@@ -537,7 +537,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	}
 
     @Override
-	public ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet) {
+	public ReportCriteria getTeamStatisticsReportCriteria(Integer groupID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, Boolean initDataSet, GroupHierarchy gh) {
         Group group = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TEAM_STATISTICS_REPORT, group.getName(), locale);
         reportCriteria.setTimeFrame(timeFrame);
@@ -548,9 +548,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             if (    timeFrame.equals(TimeFrame.WEEK) ||
             		timeFrame.equals(TimeFrame.MONTH) ||
             		timeFrame.equals(TimeFrame.YEAR) ) 
-                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getAggregationDuration());
+                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getAggregationDuration(), gh);
             else
-                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(timeZone));
+                driverStatistics = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(timeZone), gh);
             DriverVehicleScoreWrapper totals = DriverVehicleScoreWrapper.summarize(driverStatistics, group);
             if (totals != null) {
             	driverStatistics.add(totals);
@@ -1212,12 +1212,23 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             criteria.init(accountGroupHierarchy, groupIDList, interval, measurementType);
         return criteria;
     }
+    @Override
+    public ReportCriteria getDriverPerformanceKeyMetricsTimeFrameReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale, MeasurementType measurementType) {
+        DriverPerformanceKeyMetricsReportCriteria criteria = new DriverPerformanceKeyMetricsReportCriteria (ReportType.DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG, locale);
+        criteria.setDriverPerformanceDAO(driverPerformanceDAO);
+        if(timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
+            criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
+        else
+            criteria.init(accountGroupHierarchy, groupIDList, interval, measurementType);
+        return criteria;
+    }
     
     @Override
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval,Locale locale,DateTimeZone timeZone) {
         DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO,driverID, interval);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
+		builder.setGroupHierarchy(accountGroupHierarchy);
         return builder.buildSingle();
     }
     
@@ -1226,6 +1237,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
+		builder.setGroupHierarchy(accountGroupHierarchy);
         return builder.build();
     }
     
@@ -1308,13 +1320,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             }
             switch (reportGroup.getReports()[i]) {
                 case OVERALL_SCORE:
-                    reportCriteriaList.add(getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale()));
+                    reportCriteriaList.add(getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), groupHierarchy));
                     break;
                 case TREND:
-                    reportCriteriaList.add(getTrendChartReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale()));
+                    reportCriteriaList.add(getTrendChartReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), groupHierarchy));
                     break;
                 case MPG_GROUP:
-                    reportCriteriaList.add(getMpgReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale()));
+                    reportCriteriaList.add(getMpgReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), groupHierarchy));
                     break;
                 case DEVICES_REPORT:
                     reportCriteriaList.add(getDevicesReportCriteria(reportSchedule.getGroupID(), person.getLocale(), true));
@@ -1337,7 +1349,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     break;
                 case TEAM_STATISTICS_REPORT:
                     reportCriteriaList.add(getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
-                            DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale(), true));
+                            DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale(), true, groupHierarchy));
                     break;
                 case TEAM_STOPS_REPORT:
                     reportCriteriaList.add(getTeamStopsReportCriteriaByGroup(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame, 
@@ -1488,6 +1500,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     break;
                 case DRIVER_PERFORMANCE_KEY_METRICS:
                     reportCriteriaList.add(getDriverPerformanceKeyMetricsReportCriteria(groupHierarchy, 
+                            reportSchedule.getGroupIDList(), timeFrame, timeFrame.getInterval(), 
+                            person.getLocale(), person.getMeasurementType()));
+                    break;
+                case DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG:
+                    reportCriteriaList.add(getDriverPerformanceKeyMetricsTimeFrameReportCriteria(groupHierarchy, 
                             reportSchedule.getGroupIDList(), timeFrame, timeFrame.getInterval(), 
                             person.getLocale(), person.getMeasurementType()));
                     break;

@@ -66,87 +66,87 @@ public class PageReportsDrivers extends ReportsBar {
             return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
         }
         
-        public TextLink distanceDrivenSort() {
+        public TextLink sortByGroup() {
+            return new TextLink(ReportsDriversEnum.GROUP_SORT);
+        }
+        
+        public TextLink sortByEmployeeID() {
+            return new TextLink(ReportsDriversEnum.EMPLOYEE_ID_SORT);
+        }
+        
+        public TextLink sortByDriver() {
+            return new TextLink(ReportsDriversEnum.DRIVER_SORT);
+        }
+        
+        public TextLink sortByVehicle() {
+            return new TextLink(ReportsDriversEnum.VEHICLE_SORT);
+        }
+        
+        public TextLink sortByDistanceDriven() {
             return new TextLink(ReportsDriversEnum.DISTANCE_DRIVEN_SORT);
         }
 
-        public TextLink driverSort() {
-            return new TextLink(ReportsDriversEnum.DRIVER_SORT);
+        public TextLink sortByOverall() {
+            return new TextLink(ReportsDriversEnum.OVERALL_SCORE_SORT);
         }
-
-        public TextTableLink driverValue() {
-            return new TextTableLink(ReportsDriversEnum.DRIVER_VALUE);
+        
+        public TextLink sortBySpeed() {
+            return new TextLink(ReportsDriversEnum.SPEED_SCORE_SORT);
         }
-
-        public TextLink employeeIDSort() {
-            return new TextLink(ReportsDriversEnum.EMPLOYEE_ID_SORT);
+        
+        public TextLink sortByStyle() {
+            return new TextLink(ReportsDriversEnum.STYLE_SCORE_SORT);
         }
-
-        public TextLink groupSort() {
-            return new TextLink(ReportsDriversEnum.GROUP_SORT);
+        
+        public TextLink sortBySeatBelt() {
+            return new TextLink(ReportsDriversEnum.SEATBELT_SCORE_SORT);
         }
 
         public TextTableLink groupValue() {
             return new TextTableLink(ReportsDriversEnum.GROUP_VALUE);
         }
+        
+        public TextTableLink driverValue() {
+            return new TextTableLink(ReportsDriversEnum.DRIVER_VALUE);
+        }
 
-        public TextLink overallSort() {
-            return new TextLink(ReportsDriversEnum.OVERALL_SCORE_SORT);
+        public TextTableLink vehicleValue() {
+            return new TextTableLink(ReportsDriversEnum.VEHICLE_VALUE);
         }
 
         public TextLinkScoreTable overallValue() {
             return new TextLinkScoreTable(ReportsDriversEnum.OVERALL_SCORE_VALUE);
         }
 
-        public TextLink seatBeltSort() {
-            return new TextLink(ReportsDriversEnum.SEATBELT_SCORE_SORT);
-        }
-
-        public TextLinkScoreTable seatbeltValue() {
-            return new TextLinkScoreTable(ReportsDriversEnum.SEATBELT_SCORE_VALUE);
-        }
-
-        public TextLink speedSort() {
-            return new TextLink(ReportsDriversEnum.SPEED_SCORE_SORT);
-        }
-
         public TextLinkScoreTable speedValue() {
             return new TextLinkScoreTable(ReportsDriversEnum.SPEED_SCORE_VALUE);
-        }
-
-        public TextLink styleSort() {
-            return new TextLink(ReportsDriversEnum.STYLE_SCORE_SORT);
         }
 
         public TextLinkScoreTable styleValue() {
             return new TextLinkScoreTable(ReportsDriversEnum.STYLE_SCORE_VALUE);
         }
-
-        public TextLink vehicleSort() {
-            return new TextLink(ReportsDriversEnum.VEHICLE_SORT);
-        }
-
-        public TextTableLink vehicleValue() {
-            return new TextTableLink(ReportsDriversEnum.VEHICLE_VALUE);
+        
+        public TextLinkScoreTable seatBeltValue() {
+            return new TextLinkScoreTable(ReportsDriversEnum.SEATBELT_SCORE_VALUE);
         }
     }
 
     public class DriverReportTextFields extends ReportsBarTextFields {
 
-        public TextField driverSearch() {
-            return new TextField(ReportsDriversEnum.DRIVER_SEARCH);
+        public TextField driverFilter() {
+            return new TextField(ReportsDriversEnum.DRIVER_FILTER);
         }
 
-        public TextField employeeSearch() {
-            return new TextField(ReportsDriversEnum.EMPLOYEE_SEARCH);
+        public TextField employeeFilter() {
+            return new TextField(ReportsDriversEnum.EMPLOYEE_FILTER);
         }
 
-        public TextField groupSearch() {
-            return new TextField(ReportsDriversEnum.GROUP_SEARCH);
+        public TextField groupFilter() {
+            return new TextField(ReportsDriversEnum.GROUP_FILTER);
         }
 
-        public TextField vehicleSearch() {
-            return new TextField(ReportsDriversEnum.VEHICLE_SEARCH);
+        public TextField vehicleFilter() {
+            return new TextField(ReportsDriversEnum.VEHICLE_FILTER);
         }
     }
 

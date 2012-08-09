@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
+import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.MpgHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
@@ -43,6 +44,7 @@ import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
@@ -64,6 +66,7 @@ public class ReportServiceTest {
     private static SiloService siloService;
     private static ITData itData;
     
+    private static GroupHierarchy groupHierarchy = null;
     private static final String REPORT_BASE_DATA_XML = "ReportTest.xml";
     private static final int MAX_TOTAL_DAYS = 360;
 
@@ -234,6 +237,17 @@ public class ReportServiceTest {
     private Integer getTeamVehicleID(int teamType) {
         return itData.teamGroupData.get(teamType).vehicle.getVehicleID();
     }
+
+    private GroupHierarchy getGroupHierarchy() {
+    	if (groupHierarchy == null) {
+            GroupHessianDAO groupDAO = new GroupHessianDAO();
+            groupDAO.setSiloService(siloService);
+    		groupHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(itData.account.getAccountID()));
+    	}
+    		
+    	return groupHierarchy; 
+    }
+
     /*    	
     
     @Test
@@ -308,23 +322,23 @@ public class ReportServiceTest {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
 
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getFleetGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getFleetGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL, getGroupHierarchy());
         assertNotNull(scoreableEntity);
         assertEquals("getAverageScoreByType for top level fleet group", expectedFleetOverall, scoreableEntity.getScore());
 
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
-            scoreableEntity = scoreDAO.getAverageScoreByType(getTeamGroupID(teamType), Duration.DAYS, ScoreType.SCORE_OVERALL);
+            scoreableEntity = scoreDAO.getAverageScoreByType(getTeamGroupID(teamType), Duration.DAYS, ScoreType.SCORE_OVERALL, getGroupHierarchy());
             assertNotNull(scoreableEntity);
             assertNotNull(scoreableEntity.getScore());
             assertEquals("getAverageScoreByType for team groupID: " + scoreableEntity.getEntityID(), expectedTeamOverall[teamType], scoreableEntity.getScore());
         }
 
-        scoreableEntity = scoreDAO.getTrendSummaryScore(getFleetGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL);
+        scoreableEntity = scoreDAO.getTrendSummaryScore(getFleetGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL, getGroupHierarchy());
         assertNotNull(scoreableEntity);
         assertEquals("getAverageScoreByType for top level fleet group", expectedFleetOverall, scoreableEntity.getScore());
 
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
-            scoreableEntity = scoreDAO.getTrendSummaryScore(getTeamGroupID(teamType), Duration.DAYS, ScoreType.SCORE_OVERALL);
+            scoreableEntity = scoreDAO.getTrendSummaryScore(getTeamGroupID(teamType), Duration.DAYS, ScoreType.SCORE_OVERALL, getGroupHierarchy());
             assertNotNull(scoreableEntity);
             assertNotNull(scoreableEntity.getScore());
             assertEquals("getAverageScoreByType for team groupID: " + scoreableEntity.getEntityID(), expectedTeamOverall[teamType], scoreableEntity.getScore());
@@ -340,7 +354,7 @@ public class ReportServiceTest {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
 
-        List<ScoreableEntity> scoreableEntityList = scoreDAO.getScores(getDistrictGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL);
+        List<ScoreableEntity> scoreableEntityList = scoreDAO.getScores(getDistrictGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL, getGroupHierarchy());
 
         assertNotNull(scoreableEntityList);
         assertTrue("expected 3 subgroup scores", (scoreableEntityList.size() == 3));
@@ -374,7 +388,7 @@ public class ReportServiceTest {
                 0, // 3.1 to 4.0
                 33, // 4.1 to 5.0 -- ITData.GOOD (50)
         };
-        List<ScoreableEntity> scoreableEntityList = scoreDAO.getScoreBreakdown(getFleetGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL);
+        List<ScoreableEntity> scoreableEntityList = scoreDAO.getScoreBreakdown(getFleetGroupID(), Duration.DAYS, ScoreType.SCORE_OVERALL, getGroupHierarchy());
 
         assertNotNull(scoreableEntityList);
         assertTrue("expected 5 percentage scores", (scoreableEntityList.size() == 5));
@@ -395,7 +409,7 @@ public class ReportServiceTest {
 
         Duration duration = Duration.DAYS;
 
-        Map<Integer, List<ScoreableEntity>> scoreMap = scoreDAO.getTrendScores(getDistrictGroupID(), duration);
+        Map<Integer, List<ScoreableEntity>> scoreMap = scoreDAO.getTrendScores(getDistrictGroupID(), duration, getGroupHierarchy());
 
         assertNotNull(scoreMap);
 
@@ -441,7 +455,7 @@ public class ReportServiceTest {
 
         Duration duration = Duration.DAYS;
         Integer groupID = getFleetGroupID();
-        List<SpeedPercentItem> list = scoreDAO.getSpeedPercentItems(groupID, duration);
+        List<SpeedPercentItem> list = scoreDAO.getSpeedPercentItems(groupID, duration, getGroupHierarchy());
         assertNotNull("Unexpected NULL SpeedPercentList for groupID " + groupID, list);
         assertEquals("Unexpected SpeedPercentList size for groupID " + groupID, duration.getDvqCount(), Integer.valueOf(list.size()));
 
@@ -456,11 +470,11 @@ public class ReportServiceTest {
         for (SpeedPercentItem item : list) {
             long distance = item.getMiles().longValue();
             long speedingDistance = item.getMilesSpeeding().longValue();
-            // System.out.println("distance: " + distance + " speeding: " + speedingDistance);
+            //System.out.println("distance: " + distance + " speeding: " + speedingDistance);
             assertTrue("speeding distance should not exceed distance ", (speedingDistance <= distance));
             assertEquals(idx + ": Unexpected distance ", fleetExpectedDailyMileage, distance);
             assertEquals(idx + ": Unexpected speeding distance ", fleetExpectedDailySpeedingMileage, speedingDistance);
-
+            idx++;
         }
     }
 
@@ -471,7 +485,7 @@ public class ReportServiceTest {
 
         Duration duration = Duration.DAYS;
         Integer groupID = getFleetGroupID();
-        List<IdlePercentItem> list = scoreDAO.getIdlePercentItems(groupID, Duration.DAYS);
+        List<IdlePercentItem> list = scoreDAO.getIdlePercentItems(groupID, Duration.DAYS, getGroupHierarchy());
         assertNotNull("Unexpected NULL SpeedPercentList for groupID " + groupID, list);
         assertEquals("Unexpected SpeedPercentList size for groupID " + groupID, duration.getDvqCount(), Integer.valueOf(list.size()));
 
@@ -507,7 +521,7 @@ public class ReportServiceTest {
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
             Integer groupID = getTeamGroupID(teamType);
 
-            CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(groupID);
+            CrashSummary crashSummary = scoreDAO.getGroupCrashSummaryData(groupID, getGroupHierarchy());
             assertEquals(teamType + " DaysSinceLastCrash: ", expectedCrashSummary[teamType].getDaysSinceLastCrash(), crashSummary.getDaysSinceLastCrash());
             assertEquals("TotalCrashes: ", expectedCrashSummary[teamType].getTotalCrashes(), crashSummary.getTotalCrashes());
             assertEquals("CrashesInTimePeriod: ", expectedCrashSummary[teamType].getCrashesInTimePeriod(), crashSummary.getCrashesInTimePeriod());
@@ -563,7 +577,7 @@ public class ReportServiceTest {
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
             Integer groupID = getTeamGroupID(teamType);
 
-            List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(groupID, duration);
+            List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(groupID, duration, getGroupHierarchy());
             assertNotNull(scoreList);
 
             assertEquals("expected one score in list (1 driver per group)", 1, scoreList.size());
@@ -807,7 +821,7 @@ public class ReportServiceTest {
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
             Integer groupID = getTeamGroupID(teamType);
 
-            List<ScoreTypeBreakdown> list = scoreDAO.getScoreBreakdownByType(groupID, duration, ScoreType.SCORE_OVERALL);
+            List<ScoreTypeBreakdown> list = scoreDAO.getScoreBreakdownByType(groupID, duration, ScoreType.SCORE_OVERALL, getGroupHierarchy());
 
             assertNotNull("ScoreBreakdownByType list", list);
             assertEquals("ScoreBreakdownByType list size", Integer.valueOf(ScoreType.SCORE_OVERALL.getSubTypes().size()), Integer.valueOf(list.size()));
@@ -837,7 +851,7 @@ public class ReportServiceTest {
         Duration duration = Duration.DAYS;
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
             Group group = itData.teamGroupData.get(teamType).group;
-            List<MpgEntity> list = mpgDAO.getEntities(group, duration);
+            List<MpgEntity> list = mpgDAO.getEntities(group, duration, getGroupHierarchy());
             assertNotNull("getTeamMPG", list);
             assertEquals("getTeamMPG", Integer.valueOf(1), Integer.valueOf(list.size()));
 
@@ -857,7 +871,7 @@ public class ReportServiceTest {
         mpgDAO.setReportService(reportService);
 
         Duration duration = Duration.DAYS;
-        List<MpgEntity> list = mpgDAO.getEntities(itData.fleetGroup, duration);
+        List<MpgEntity> list = mpgDAO.getEntities(itData.fleetGroup, duration, getGroupHierarchy());
         assertNotNull("get MPG Entities", list);
         assertEquals("get fLEET MPG", Integer.valueOf(1), Integer.valueOf(list.size()));
 
@@ -877,7 +891,7 @@ public class ReportServiceTest {
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(ReportTestConst.timeZone);
 
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
-        	List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), TimeFrame.ONE_DAY_AGO.getInterval(dateTimeZone));
+        	List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), TimeFrame.ONE_DAY_AGO.getInterval(dateTimeZone), getGroupHierarchy());
 
         	assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
         	Score score = driverScoreList.get(0).getScore();

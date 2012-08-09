@@ -134,15 +134,15 @@ public class ScoreTest {
     }
 
     public void runScoring() {
-//        sendNotes();
+        sendNotes();
         
         AutomationCalendar start = new AutomationCalendar();
         AutomationCalendar agg = start.copy();
-//        agg.changeMinutesTo(0).changeMillisecondsTo(0).changeSecondsTo(0).addToHours(1);
-//        if (agg.compareTo(start) < 2) {
-//            agg.addToHours(1);
-//        }
-//        AutomationThread.pause(agg.addToMinutes(5).compareTo(start));
+        agg.changeMinutesTo(0).changeMillisecondsTo(0).changeSecondsTo(0).addToHours(1);
+        if (agg.compareTo(start) < 2) {
+            agg.addToHours(1);
+        }
+        AutomationThread.pause(agg.addToMinutes(5).compareTo(start));
         aggTime = agg.copy().changeMinutesTo(0).changeSecondsTo(0).changeMillisecondsTo(0);
         for (Map.Entry<String, Map<String, String>> entry : imeis.entrySet()) {
         	Map<UnitType, Map<String, Double>> ourScore = getSevenDayScores(entry.getKey());

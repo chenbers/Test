@@ -25,16 +25,10 @@ login.story:
 Scenario: TC1240: Log In - Access Blocked Error CAN'T IMPLEMENT YET
 Given this step is pending
 
-Scenario: TC1243: Log In - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
 Scenario: TC1249: Log In - Tabbing Order CAN'T IMPLEMENT YET
 Given this step is pending
 
 MyAccountChangePassword.story:
-
-Scenario: TC1293: My Account - Change Password - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYBOARD PRESS
-Given this step is pending
 
 Scenario: TC1297: My Account - Change Password - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYBOARD PRESS
 Given this step is pending
@@ -68,11 +62,31 @@ Given this step is pending
 Scenario: TC1379: Notifications - Diagnostics - Search NEEDS TO BE REWRITTEN IN RALLY, TEST NO LONGER APPLIES AS IS
 Given this step is pending
 
-Scenario: TC1389: Notifications - Diagnostics - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
-Scenario: TC1391: Notifications - Diagnostics - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
+Scenario: TC1389: Notifications - Diagnostics - Edit Columns - Check Box Selection via Spacebar
+Given I am logged in
+When I click the Notifications link
+And I click the Diagnostics link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I press the Tab Key
+And I press the Tab Key
+And I press the Tab Key
+And I press the Tab Key
+And I press the Spacebar Key
+Then I validate the 1st Row of the Column checkbox is not checked
+And I press the Spacebar Key
+Then I validate the 1st Row of the Column checkbox is checked
+And I press the Tab Key
+And I press the Spacebar Key
+And I validate the 2nd Row of the Column checkbox is not checked
+And I press the Spacebar Key
+And I validate the 2nd Row of the Column checkbox is checked
 
 Scenario: TC1394: Notifications - Diagnostics - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
@@ -121,22 +135,13 @@ Given this step is pending
 Scenario: TC1458: Notifications - Red Flags - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
-Scenario: TC1460: Notifications - Red Flags - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
 Scenario: TC1463: Notifications - Red Flags - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
 Scenario: TC1466: Notifications - Red Flags - Exclude Link - Crash Event Interaction HAS NOT BEEN IMPLEMENTED YET
 Given this step is pending
 
-Scenario: TC1467: Notifications - Red Flags - Exclude Link  - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
 Scenario: TC1468: Notifications - Red Flags - Exclude Link - Driving Style Event Interaction NEED HELP TO IMPLEMENT
-Given this step is pending
-
-Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
 Given this step is pending
 
 Scenario: TC1470: Notifications - Red Flags - Exclude Link - Seat Belt Event Interaction NEED HELP TO IMPLEMENT
@@ -173,8 +178,6 @@ Given this step is pending
 
 Scenario: TC1494: Notifications - Safety - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
-
-Scenario: TC1496: Notifications - Safety - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
 
 Scenario: TC1499: Notifications - Safety - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
 
@@ -213,9 +216,6 @@ Given this step is pending
 Scenario: TC5726: Notifications - Zones - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
-Scenario: TC5728: Notifications - Zones - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
 Scenario: TC5731: Notifications - Zones - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
@@ -240,9 +240,6 @@ Scenario: TC1520: Reports - Devices - Page Link CANNOT BE IMPLEMENTED YET DUE TO
 Given this step is pending
 
 Scenario: TC1533: Reports - Devices - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
-Scenario: TC1535: Reports - Devices - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
 Scenario: TC5731: Reports - Devices - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
@@ -274,9 +271,6 @@ Given this step is pending
 Scenario: TC1574: Reports - Drivers - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
-Scenario: TC1576: Reports - Drivers - Edit Columns - Default Command Button CANNOT IMPLEMENT YET DUE TO KEYPRESS
-Given this step is pending
-
 Scenario: TC1579: Reports - Drivers - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
@@ -306,22 +300,8 @@ Given this step is pending
 Scenario: TC1647: Reports - Vehicles - Edit Columns - Check Box Selection via Spacebar CANNOT IMPLEMENT YET DUE TO KEYPRESS
 Given this step is pending
 
-Scenario: Reports - Vehicles - Edit Columns - Default Command Button DOES NOT EXIST, NEEDS TO BE ADDED TO RALLY
-Given this step is pending
-
 Scenario: Reports - Vehicles - Edit Columns - Tabbing Order DOES NOT EXIST, NEEDS TO BE ADDED TO RALLY
 Given this step is pending
-
-
-
-
-
-
-
-
-
-
-
 
 NotificationsCrashHistory.story
 
@@ -361,28 +341,66 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I click the Forward One pagescroller
+And I select "Top - Test Group WR" from the Team dropdown
+And I select "All" from the Time Frame dropdown
+And I type "TIWI00" into the Search textfield
+And I click the Search button
+And I click the Forward One pagescroller
+And I click the Sort Status link
+And I save the Counter text as RECORDS
+And I click the Add Crash Report link
+And I save the Date Time dropdown as DATETIME
+And I select the text containing "TIWI02" from the Vehicle dropdown
+And I select "Alma Mater" from the Driver dropdown
+And I click the Find Address button
+And I type "4225 Lake Park Blvd" into the Find Address textfield
+And I click the Locate button
+And I click the Top Save button
+And I click the Back link
+And I select "Top - Test Group WR" from the Team dropdown
+And I type "TIWI00" into the Search textfield
+And I select "All" from the Time Frame dropdown
+And I click the Search button
+Then I validate the Counter text is not RECORDS
+And I validate the "1" text of the pagescroller is not clickable
+And I validate the 1st Row of the Date Time text is DATETIME
+And I validate the 1st Row of the Driver link is "Alma Mater"
+And I validate the 1st Row of the Vehicle link is "TIWI02"
+And I validate the Date Time column sorts correctly //need to get sorting to work
 
+Scenario: TC1348: Notifications - Crash History - Refresh
+Given I am logged in
+When I click the Notifications link
+And I click the Crash History link
+And I select "Top - Test Group WR" from the Team dropdown
+And I select "All" from the Time Frame dropdown
+And I type "New" into the Search textfield
+And I click the Search button
+Then I validate the 1st Row of the Status text contains "New"
+And I type "Rollover" into the Search textfield
+And I click the Search button
+And I validate the 1st Row of the Status text contains "Rollover"
+And I type "Aggressive Driving" into the Search textfield
+And I click the Search button
+And I validate the 1st Row of the Status text contains "Aggressive Driving"
+And I type "Panic" into the Search textfield
+And I click the Search button
+And I validate the 1st Row of the Status text contains "Panic"
 
+NotificationsEmergency.story
 
+Scenario: TC1407: Notifications > Emergency - E-mail This Report
 
+Scenario: TC1408: Notifications > Emergency - Export To Excel
 
+Scenario: TC1409: Notifications > Emergency - Export To PDF
 
+Scenario: TC1410: Notifications > Emergency - Hover Help
 
+Scenario: TC1411: Notifications > Emergency - Location Map Link
 
+Scenario: TC1412: Notifications > Emergency - Refresh
 
+Scenario: TC1413: Notifications > Emergency - Search
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Scenario: TC1423: Notifications > Emergency - Edit Columns - Check Box Selection via Spacebar

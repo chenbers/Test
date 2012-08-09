@@ -17,14 +17,16 @@ import com.inthinc.pro.dao.mock.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class ScoreHessianDAOTest
 {
+    GroupHessianDAO      groupHessianDAO;
     ScoreHessianDAO      scoreHessianDAO;
-
+    GroupHierarchy gh;
 
     @Before
     public void setUp() throws Exception
@@ -33,15 +35,18 @@ public class ScoreHessianDAOTest
         scoreHessianDAO.setSiloService(new SiloServiceCreator().getService());
         ReportServiceCreator reportServiceCreator = new ReportServiceCreator();
         scoreHessianDAO.setReportService(reportServiceCreator.getService());
-
+        groupHessianDAO = new GroupHessianDAO();
+        groupHessianDAO.setSiloService(new SiloServiceCreator().getService());
+        gh = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(MockData.TOP_ACCOUNT_ID));
     }
 
     @Test
     public void getOverallScore()
     {
+    	
         for (Duration d : EnumSet.allOf(Duration.class))
         {
-            ScoreableEntity score = scoreHessianDAO.getAverageScoreByType(MockData.TOP_GROUP_ID, d, ScoreType.SCORE_OVERALL);
+            ScoreableEntity score = scoreHessianDAO.getAverageScoreByType(MockData.TOP_GROUP_ID, d, ScoreType.SCORE_OVERALL, gh);
 
             assertNotNull(d.name() + " " + score.toString(), score);
             assertEquals(MockData.TOP_GROUP_ID, score.getEntityID());
@@ -62,7 +67,7 @@ public class ScoreHessianDAOTest
         {
             for (Duration d : EnumSet.allOf(Duration.class))
             {
-                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(testGroupID, d, scoreType);
+                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(testGroupID, d, scoreType, gh);
     
                 assertNotNull(d.name() + " " + scoreType.toString(), scoreList);
                 assertEquals(d.name() + " " + scoreType.toString(), totalChildGroups, scoreList.size());
@@ -74,7 +79,7 @@ public class ScoreHessianDAOTest
     public void getPercentScores()
     {
         Integer testGroupID = MockData.DIVISION_GROUP_ID;
-        List<ScoreableEntity> scoreList = scoreHessianDAO.getScoreBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_OVERALL);
+        List<ScoreableEntity> scoreList = scoreHessianDAO.getScoreBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_OVERALL, gh);
 
         assertNotNull(scoreList);
         assertEquals(5, scoreList.size());
@@ -101,7 +106,7 @@ public class ScoreHessianDAOTest
 
     private void checkBreakdown(Integer testGroupID, Duration duration, ScoreType scoreType, int expectedBreakdownSize)
     {
-        List<ScoreTypeBreakdown> scoreBreakdownList = scoreHessianDAO.getScoreBreakdownByType(testGroupID, duration, scoreType);
+        List<ScoreTypeBreakdown> scoreBreakdownList = scoreHessianDAO.getScoreBreakdownByType(testGroupID, duration, scoreType, gh);
         assertEquals(expectedBreakdownSize, scoreBreakdownList.size());
         List<ScoreType> subTypeList = scoreType.getSubTypes();
         assertEquals(subTypeList.size(), scoreBreakdownList.size());

@@ -11,11 +11,14 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GenericDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -31,6 +34,8 @@ import com.inthinc.pro.model.event.Event;
 @Component
 public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
  
+    @Autowired
+	private GroupDAO groupDAO;
     @Autowired
 	private DriverDAO driverDAO;
     @Autowired
@@ -82,7 +87,9 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
         return driverReportDAO.getScore(driverID, duration);
     }
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval) {
-        return groupReportDAO.getDriverScores(groupID, interval);
+		Group group = groupDAO.findByID(groupID);
+		GroupHierarchy gh = new GroupHierarchy(groupDAO.getGroupHierarchy(group.getAccountID(), getGroupID()));
+        return groupReportDAO.getDriverScores(groupID, interval, gh);
     }
 
     public List<Event> getSpeedingEvents(Integer driverID) {
@@ -116,6 +123,20 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 
     // Getters and setters -----------------------------------------------------
     
+	/**
+	 * @return the groupDAO
+	 */
+	public GroupDAO getGroupDAO() {
+		return groupDAO;
+	}
+
+	/**
+	 * @param driverDAO the driverDAO to set
+	 */
+	public void setGroupDAO(GroupDAO groupDAO) {
+		this.groupDAO = groupDAO;
+	}
+	
 	/**
 	 * @return the driverDAO
 	 */

@@ -15,16 +15,6 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 
 public class CassandraDB {
-    
-
-    public static StringSerializer ss = StringSerializer.get();
-    public static UUIDSerializer us = UUIDSerializer.get();
-    public static IntegerSerializer is = IntegerSerializer.get();
-    public static BigIntegerSerializer bis = BigIntegerSerializer.get();
-    public static LongSerializer ls = LongSerializer.get();
-    public static ByteBufferSerializer bbs = ByteBufferSerializer.get();
-    public static BytesArraySerializer bas = BytesArraySerializer.get();
-    public static CompositeSerializer cs = new CompositeSerializer();
 
     private static Cluster cluster;
     private static String clusterName = "";

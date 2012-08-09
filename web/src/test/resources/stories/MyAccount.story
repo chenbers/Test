@@ -6,7 +6,7 @@ Meta:
 
 Narrative: 
 
-Scenario: TC1266: My Account - Account Information
+Scenario: TC1266: My Account - Account Information (needs to be updated once new admin page is done)
 Given I am logged in
 And I click the Admin link
 And I type "secondPrime" into the Name textfield
@@ -86,8 +86,8 @@ And I validate the User Name text is present
 And I validate the Locale text is present
 And I validate the Measurement text is present
 And I validate the Fuel Efficiency text is present
-And I validate the Email1 link is present
-And I validate the Email2 link is present
+And I validate the Email1 text is present
+And I validate the Email2 text is present
 And I validate the Text Message1 text is present
 And I validate the Text Message2 text is present
 And I validate the Phone1 text is present

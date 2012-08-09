@@ -283,7 +283,7 @@
 	                            </f:facet>
 	                        </a4j:status>                         
 	                        <a4j:commandLink id="timeFrameToday"     
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                   
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                   
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'TODAY'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'TODAY' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -292,7 +292,7 @@
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>   
 	                        <a4j:commandLink id="timeFrameOneDay"  
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                             
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                             
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'ONE_DAY_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -301,7 +301,7 @@
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
 	                        <a4j:commandLink id="timeFrameTwoDay"    
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                            
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                            
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'TWO_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -310,7 +310,7 @@
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
 	                        <a4j:commandLink id="timeFrameThreeDay"    
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                            
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                            
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'THREE_DAYS_AGO'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'THREE_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -319,7 +319,7 @@
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
 	                        <a4j:commandLink id="timeFrameFourDay"     
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                           
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                           
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'FOUR_DAYS_AGO'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'FOUR_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -328,7 +328,7 @@
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>
 	                        <a4j:commandLink id="timeFrameFiveDay"       
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                         
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                         
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'FIVE_DAYS_AGO'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'FIVE_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -337,7 +337,7 @@
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>    
 	                        <a4j:commandLink id="timeFrameSixDay"     
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                           
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                           
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'SIX_DAYS_AGO'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'SIX_DAYS_AGO' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -346,7 +346,7 @@
 	                        </a4j:commandLink>
 	                         <rich:spacer width="40"/> 
 	                        <a4j:commandLink id="timeFrameWeek"       
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                         
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                         
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'WEEK'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'WEEK' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -355,7 +355,7 @@
 	                        </a4j:commandLink>
 	                        <rich:spacer width="5"/>                                                                                                                    
 	                        <a4j:commandLink id="timeFrameMonth"      
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                          
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                          
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'MONTH'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'MONTH' ? 'timeframe-selected' : 'timeframe-link'}"
@@ -364,7 +364,7 @@
 	                        </a4j:commandLink> 
 	                        <rich:spacer width="5"/>                                 
 	                        <a4j:commandLink id="timeFrameYear"      
-	                        	oncomplete="Team.timeFrameChange();getAddresses();"                                           
+	                        	oncomplete="Team.timeFrameChange();addressLookup.findAddresses();"                                           
 	                            immediate="true" 
 	                            disabled="#{teamCommonBean.timeFrame eq 'YEAR'}" 
 	                            styleClass="#{teamCommonBean.timeFrame eq 'YEAR' ? 'timeframe-selected' : 'timeframe-link'}"

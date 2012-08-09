@@ -137,7 +137,7 @@ public class PageHOSAddEditDriverLogs extends HOSBar {
             return duration().amPm();
         }
         
-        public CalendarObject date() {
+        public DropDown date() {
             return new CalendarObject(HOSDriverLogsEditEnum.DATE);
         }
     }
@@ -191,7 +191,7 @@ public class PageHOSAddEditDriverLogs extends HOSBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().topCancel().isPresent() && _text().labelDate().isPresent();
+        return _button().topCancel().isPresent() && _dropDown().status().isPresent();
     }
 
 }

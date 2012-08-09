@@ -17,6 +17,11 @@ public class Trip extends BaseEntity {
     private Integer driverID;
     private Date startTime;
     private Date endTime;
+    private Integer startLat;
+    private Integer startLng;
+    private Integer endLat;
+    private Integer endLng;
+
     private Integer mileage;
     @Column(name = "route", type = com.inthinc.pro.model.LatLng.class, updateable = false)
     private List<LatLng> route;
@@ -47,8 +52,41 @@ public class Trip extends BaseEntity {
         this.startAddressStr = startAddressStr;
         this.endAddressStr = endAddressStr;
     }
+    
+    
+	public Double getStartLat() {
+		return convertInt2Double(startLat);
+	}
 
-    public Date getEndTime() {
+	public void setStartLat(Integer startLat) {
+		this.startLat = startLat;
+	}
+
+	public Double getStartLng() {
+		return convertInt2Double(startLng);
+	}
+
+	public void setStartLng(Integer startLng) {
+		this.startLng = startLng;
+	}
+
+	public Double getEndLat() {
+		return convertInt2Double(endLat);
+	}
+
+	public void setEndLat(Integer endLat) {
+		this.endLat = endLat;
+	}
+
+	public Double getEndLng() {
+		return convertInt2Double(endLng);
+	}
+
+	public void setEndLng(Integer endLng) {
+		this.endLng = endLng;
+	}
+
+	public Date getEndTime() {
         return endTime;
     }
 
@@ -182,5 +220,11 @@ public class Trip extends BaseEntity {
 	{
         return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + ", locations Count=" + route.size() + "route=" + route + "]";
 	}
+	
+	private double convertInt2Double(int intVal)
+	{
+		return intVal/10000D;
+	}
+
 
 }

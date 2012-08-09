@@ -23,7 +23,7 @@ public class TeamTopBean extends BaseBean {
     private List<DriverScoreItem> bottomDrivers;
 
     public void init() {
-        List<DriverScore> driveScorerList = scoreDAO.getSortedDriverScoreList(navigationBean.getGroupID(), durationBean.getDuration());
+        List<DriverScore> driveScorerList = scoreDAO.getSortedDriverScoreList(navigationBean.getGroupID(), durationBean.getDuration(), getGroupHierarchy());
 
         if ((driveScorerList != null) && (driveScorerList.size() > 0)) {
 

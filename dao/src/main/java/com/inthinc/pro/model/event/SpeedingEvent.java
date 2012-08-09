@@ -139,5 +139,11 @@ public class SpeedingEvent extends Event
 	public boolean isValidEvent() {
 		return (getSpeedLimit() != null) && (getSpeedLimit() != 0) && (topSpeed != null) && (topSpeed != 0);
 	}
+    
+    @Override
+    public String toString() {
+        return "Speeding Event [speedLimit: " + getSpeedLimit() + " topSpeed=" + topSpeed + ", avgSpeed=" + avgSpeed + "]" + super.toString();
+    }
+
 
 }

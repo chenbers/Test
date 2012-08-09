@@ -9,6 +9,7 @@ import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
@@ -35,9 +36,9 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      *        4 -   12 months
      * @return
      */
-    ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration,  ScoreType st);
+    ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration,  ScoreType st, GroupHierarchy gh);
 
-    ScoreableEntity getSummaryScore(Integer groupID, Duration duration,  ScoreType st);
+    ScoreableEntity getSummaryScore(Integer groupID, Duration duration,  ScoreType st, GroupHierarchy gh);
     
     
     /**
@@ -52,11 +53,11 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param scoreType
      * @return
      */
-    List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType);
+    List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh);
     
-    ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType);
+    ScoreableEntity getTrendSummaryScore(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh);
     
-    Map<Integer,List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration);
+    Map<Integer,List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration, GroupHierarchy gh);
 
 
     
@@ -66,7 +67,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @return
      */
-    List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration);
+    List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration, GroupHierarchy gh);
 
     /**
      * Retrieve the list of 5 percentage scores for the specified group.  The list contains the following:
@@ -84,7 +85,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      *        4 -   12 months
      * @return
      */
-    List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType);
+    List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh);
 
     
     /**
@@ -134,7 +135,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      *        4 -   12 months
      * @return List of ScoreTypeBreakdown objects 
      */
-    List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType);
+    List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType, GroupHierarchy gh);
 
     
     /**
@@ -154,7 +155,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap);
 
     
-    CrashSummary getGroupCrashSummaryData(Integer groupID);
+    CrashSummary getGroupCrashSummaryData(Integer groupID, GroupHierarchy gh);
     CrashSummary getDriverCrashSummaryData(Integer driverID);
     CrashSummary getVehicleCrashSummaryData(Integer vehicleID);
 
@@ -164,14 +165,14 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param duration
      * @return
      */
-    List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration);
+    List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration, GroupHierarchy gh);
     
     /**
      * @param groupID
      * @param duration
      * @return
      */
-    List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration);
+    List<IdlePercentItem> getIdlePercentItems(Integer groupID, Duration duration, GroupHierarchy gh);
 
     
     /**

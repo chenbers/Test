@@ -61,11 +61,11 @@ public class PageReportsVehicles extends ReportsBar {
 	        return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
 	    }
 
-		public TextLink distanceDrivenSort() {
+		public TextLink sortByDistanceDriven() {
 			return new TextLink(ReportsVehiclesEnum.DISTANCE_DRIVEN_SORT);
 		}
 
-		public TextLink driverSort() {
+		public TextLink sortByDriver() {
 			return new TextLink(ReportsVehiclesEnum.DRIVER_SORT);
 		}
 
@@ -73,7 +73,7 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextLink(ReportsVehiclesEnum.DRIVER_VALUE);
 		}
 
-		public TextLink groupSort() {
+		public TextLink sortByGroup() {
 			return new TextLink(ReportsVehiclesEnum.GROUP_SORT);
 		}
 
@@ -81,11 +81,11 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextTableLink(ReportsVehiclesEnum.GROUP_VALUE);
 		}
 
-		public TextLink odometerSort() {
+		public TextLink sortByOdometer() {
 			return new TextLink(ReportsVehiclesEnum.ODOMETER_SORT);
 		}
 
-		public TextLink overallSort() {
+		public TextLink sortByOverall() {
 			return new TextLink(ReportsVehiclesEnum.OVERALL_SCORE_SORT);
 		}
 
@@ -93,7 +93,7 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextLinkScoreTable(ReportsVehiclesEnum.OVERALL_SCORE_VALUE);
 		}
 
-		public TextLink speedSort() {
+		public TextLink sortBySpeed() {
 			return new TextLink(ReportsVehiclesEnum.SPEED_SCORE_SORT);
 		}
 
@@ -101,7 +101,7 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextLinkScoreTable(ReportsVehiclesEnum.SPEED_SCORE_VALUE);
 		}
 
-		public TextLink styleSort() {
+		public TextLink sortByStyle() {
 			return new TextLink(ReportsVehiclesEnum.STYLE_SCORE_SORT);
 		}
 
@@ -109,7 +109,7 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextLinkScoreTable(ReportsVehiclesEnum.STYLE_SCORE_VALUE);
 		}
 
-		public TextLink vehicleIDSort() {
+		public TextLink sortByVehicleID() {
 			return new TextLink(ReportsVehiclesEnum.VEHICLE_SORT);
 		}
 
@@ -117,7 +117,7 @@ public class PageReportsVehicles extends ReportsBar {
 			return new TextTableLink(ReportsVehiclesEnum.VEHICLE_VALUE);
 		}
 
-		public TextLink yearMakeModelSort() {
+		public TextLink sortByYearMakeModel() {
 			return new TextLink(ReportsVehiclesEnum.YEAR_MAKE_MODEL);
 		}
 
@@ -125,20 +125,20 @@ public class PageReportsVehicles extends ReportsBar {
 
 	public class VehicleReportTextFields extends ReportsBarTextFields {
 
-		public TextField driverSearch() {
-			return new TextField(ReportsVehiclesEnum.DRIVER_SEARCH);
+		public TextField driverFilter() {
+			return new TextField(ReportsVehiclesEnum.DRIVER_FILTER);
 		}
 
-		public TextField groupSearch() {
-			return new TextField(ReportsVehiclesEnum.GROUP_SEARCH);
+		public TextField groupFilter() {
+			return new TextField(ReportsVehiclesEnum.GROUP_FILTER);
 		}
 
-		public TextField vehicleSearch() {
-			return new TextField(ReportsVehiclesEnum.VEHICLE_SEARCH);
+		public TextField vehicleFilter() {
+			return new TextField(ReportsVehiclesEnum.VEHICLE_FILTER);
 		}
 
-		public TextField yearMakeModelSearch() {
-			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_SEARCH);
+		public TextField yearMakeModelFilter() {
+			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_FILTER);
 		}
 	}
 

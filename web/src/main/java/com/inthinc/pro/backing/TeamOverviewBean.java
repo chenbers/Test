@@ -53,7 +53,7 @@ public class TeamOverviewBean extends BaseBean {
     }
 
     private Integer initOverallScore(ScoreType scoreType) {
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), durationBean.getDuration(), scoreType);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), durationBean.getDuration(), scoreType, getGroupHierarchy());
         if (scoreableEntity == null || scoreableEntity.getScore() == null)
             return -1;
         return scoreableEntity.getScore();
@@ -102,7 +102,7 @@ public class TeamOverviewBean extends BaseBean {
         List<ScoreTypeBreakdown> scoreDataList = null;
         try {
             logger.debug("TeamOverviewBean 3D BAR score groupID[" + getGroupID() + "] scoreType " + scoreType);
-            scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), durationBean.getDuration(), scoreType);
+            scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), durationBean.getDuration(), scoreType, getGroupHierarchy());
         }
         catch (Exception e) {
             scoreDataList = new ArrayList<ScoreTypeBreakdown>();

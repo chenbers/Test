@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -31,6 +32,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     private static final String BARCODE_KEY = "barcode";
     
     private VehicleDAO vehicleDAO;
+    private LocationDAO locationDAO;
     
 
     @Override
@@ -89,19 +91,13 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     @Override
     public LastLocation getLastLocation(Integer driverID)
     {
-        try
-        {
-            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(driverID, DRIVER_TYPE), LastLocation.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
+    	return locationDAO.getLastLocationForDriver(driverID);
     }
 
     @Override
     public Trip getLastTrip(Integer driverID)
     {
+/*    	
         try
         {
             return getMapper().convertToModelObject(this.getSiloService().getLastTrip(driverID, DRIVER_TYPE), Trip.class);
@@ -110,13 +106,15 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         {
             return null;
         }
+*/
+    	return locationDAO.getLastTripForDriver(driverID);
     }
 
     @Override
     public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate)
     {
         logger.debug("getTrips() driverID = " + driverID);
-        try
+/*        try
         {
             List<Trip> tripList = getMapper().convertToModelObject(this.getSiloService().getTrips(driverID, DRIVER_TYPE, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Trip.class);
             return tripList;
@@ -125,6 +123,9 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         {
             return Collections.emptyList();
         }
+*/
+    	return locationDAO.getTripsForDriver(driverID, startDate, endDate);
+        
     }
 
     @Override
@@ -175,49 +176,28 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
 
 	@Override
 	public List<DriverLocation> getDriverLocations(Integer groupID) {		
-        try {
-            return getMapper().convertToModelObject(this.getSiloService().getDVLByGroupIDDeep(groupID), DriverLocation.class);
-        } catch (EmptyResultSetException e) {
-            return Collections.emptyList();
-        }
+		return locationDAO.getDriverLocations(groupID);
 	}
 	
 	@Override
     public List<DriverStops> getStops(Integer driverID, String driverName, Interval interval) {
-        try {
-            Date start = interval.getStart().toDateTime().toDate();
-            Date end   = interval.getEnd().toDateTime().toDate();
-            List<DriverStops> driverStopsList = getMapper().convertToModelObject(this.getSiloService().getStops(
-                    driverID,
-                    DateUtil.convertDateToSeconds(start),
-                    DateUtil.convertDateToSeconds(end)), 
-                    DriverStops.class);
-            
-            
-            Map<Integer, String> vehicleMap = new HashMap<Integer, String>();
-            for (DriverStops driverStop : driverStopsList) {
-                driverStop.setDriverName(driverName);
-                String vehicleName = vehicleMap.get(driverStop.getVehicleID());
-                if (vehicleName == null) {
-                    Vehicle vehicle = vehicleDAO.findByID(driverStop.getVehicleID());
-                    vehicleName = vehicle == null ? "" : vehicle.getName();
-                    vehicleMap.put(driverStop.getVehicleID(), vehicleName);
-                }
-                driverStop.setVehicleName(vehicleName);
-            }
-            
-            
-            return driverStopsList;
-        } catch (EmptyResultSetException e) {
-            return Collections.emptyList();
-        }	    
-	    
+		return locationDAO.getStops(driverID, driverName, interval);
 	}
-    public VehicleDAO getVehicleDAO() {
+
+	public VehicleDAO getVehicleDAO() {
         return vehicleDAO;
     }
 
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
     }
+
+	public LocationDAO getLocationDAO() {
+		return locationDAO;
+	}
+
+	public void setLocationDAO(LocationDAO locationDAO) {
+		this.locationDAO = locationDAO;
+	}
+    
 }

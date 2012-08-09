@@ -6,7 +6,7 @@ public enum HOSDriverLogsEditEnum implements SeleniumEnums {
     
     DEFAULT_URL(appUrl + "/hosEdit/"),
     
-    TITLE(null, "//span[@class='admin'"),
+    TITLE("Add HOS Log", "//span[@class='admin']"),
     HEADER("HOS Log Information", "//div[@class='add_section_title']"),
     
     SAVE_TOP(save, "edit-form:editHosLogSave1"),

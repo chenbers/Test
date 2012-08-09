@@ -2,6 +2,9 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CalendarObject;
+import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextDateFieldLabel;
@@ -27,31 +30,35 @@ public class PageHOSDriverLogs extends HOSBar {
     
     public class HOSDriverLogsLinks extends HOSBarLinks {
         
-        public TextLinkTableHeader entryDateTime() {
+        public TextLinkTableHeader sortByDateTime() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_DATE_TIME);
         }
         
-        public TextLinkTableHeader entryDriver() {
+        public TextLinkTableHeader sortByDriver() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_DRIVER);
         }
         
-        public TextLinkTableHeader entryVehicle() {
+        public TextLinkTableHeader sortByVehicle() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_VEHICLE);
         }
         
-        public TextLinkTableHeader entryService() {
+        public TextLinkTableHeader sortByService() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_SERVICE);
         }
         
-        public TextLinkTableHeader entryTrailer() {
+        public TextLinkTableHeader sortByTrailer() {
+        	return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_TRAILER);
+        }
+        
+        public TextLinkTableHeader sortByLocation() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_LOCATION);
         }
         
-        public TextLinkTableHeader entryStatus() {
+        public TextLinkTableHeader sortByStatus() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_STATUS);
         }
         
-        public TextLinkTableHeader entryEdited() {
+        public TextLinkTableHeader sortByEdited() {
             return new TextLinkTableHeader(HOSDriverLogsEnum.ENTRY_EDITED);
         }
     }
@@ -87,7 +94,7 @@ public class PageHOSDriverLogs extends HOSBar {
         }
         
         public Text sendLogsMessage() {
-            return new Text(HOSDriverLogsEnum.SHIP_LOGS_MESSAGE);
+            return new Text(HOSDriverLogsEnum.SEND_LOGS_MESSAGE);
         }
         
         public Text dateError() {
@@ -137,19 +144,29 @@ public class PageHOSDriverLogs extends HOSBar {
             return new Button(HOSDriverLogsEnum.EDIT_COLUMNS);
         }
         
-        public Button shipLogs() {
-            return new Button(HOSDriverLogsEnum.SHIP_LOGS);
+        public Button sendLogs() {
+            return new Button(HOSDriverLogsEnum.SEND_LOGS);
         }
     }
 
     public class HOSDriverLogsDropDowns extends HOSBarDropDowns {
-        public CalendarObject startDate() {
+        public DropDown startDate() {
             return new CalendarObject(HOSDriverLogsEnum.START_FIELD);
         }
         
-        public CalendarObject stopDate() {
+        public DropDown stopDate() {
             return new CalendarObject(HOSDriverLogsEnum.STOP_FIELD);
         }
+    }
+    
+    public class HOSDriverLogsCheckBoxes {
+    	public CheckBox selectAll() {
+    		return new CheckBox(HOSDriverLogsEnum.CHECK_ALL);
+    	}
+    	
+    	public CheckBoxTable select() {
+    		return new CheckBoxTable(HOSDriverLogsEnum.ENTRY_CHECK_BOX);
+    	}
     }
 
     public class HOSDriverLogsPopUps extends MastheadPopUps {
@@ -167,6 +184,10 @@ public class PageHOSDriverLogs extends HOSBar {
         public Paging pageIndex() {
             return new Paging();
         }
+    }
+    
+    public HOSDriverLogsCheckBoxes _checkBox() {
+    	return new HOSDriverLogsCheckBoxes();
     }
 
     public HOSDriverLogsPager _page() {

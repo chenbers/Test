@@ -32,19 +32,19 @@ public enum HOSFuelStopsEnum implements SeleniumEnums {
     SORT_LOCATION(null, "fuelStops-table-form:fuelStopsTable:locationheader:sortDiv"),
     SORT_EDITED(null, "fuelStops-table-form:fuelStopsTable:editedheader:sortDiv"),
  
-    VALUE_EDIT(null, "fuelStops-table-form:fuelStopsTable:###:editItem"),
+    ENTRY_EDIT(null, "fuelStops-table-form:fuelStopsTable:###:editItem"),
     
     /* Text */
-    VALUE_DATE_TIME(null, "fuelStops-table-form:fuelStopsTable:###:datetime"),
-    VALUE_DRIVER(null, "fuelStops-table-form:fuelStopsTable:###:driver"),
-    VALUE_VEHICLE(null, "fuelStops-table-form:fuelStopsTable:###:vehicle"),
-    VALUE_VEHICLE_FUEL(null, "fuelStops-table-form:fuelStopsTable:###:truckGallons"),
-    VALUE_TRAILER_FUEL(null, "fuelStops-table-form:fuelStopsTable:###:trailerGallons"),
-    VALUE_BEFORE(null, "fuelStops-table-form:fuelStopsTable:###:odometerBefore"),
-    VALUE_AFTER(null, "fuelStops-table-form:fuelStopsTable:###:odometerAfter"),
-    VALUE_TRAILER(null, "fuelStops-table-form:fuelStopsTable:###:trailer"),
-    VALUE_LOCATION(null, "fuelStops-table-form:fuelStopsTable:###:location"),
-    VALUE_EDITED(null, "fuelStops-table-form:fuelStopsTable:###:edited"),
+    ENTRY_DATE_TIME(null, "fuelStops-table-form:fuelStopsTable:###:datetime"),
+    ENTRY_DRIVER(null, "fuelStops-table-form:fuelStopsTable:###:driver"),
+    ENTRY_VEHICLE(null, "fuelStops-table-form:fuelStopsTable:###:vehicle"),
+    ENTRY_VEHICLE_FUEL(null, "fuelStops-table-form:fuelStopsTable:###:truckGallons"),
+    ENTRY_TRAILER_FUEL(null, "fuelStops-table-form:fuelStopsTable:###:trailerGallons"),
+    ENTRY_BEFORE(null, "fuelStops-table-form:fuelStopsTable:###:odometerBefore"),
+    ENTRY_AFTER(null, "fuelStops-table-form:fuelStopsTable:###:odometerAfter"),
+    ENTRY_TRAILER(null, "fuelStops-table-form:fuelStopsTable:###:trailer"),
+    ENTRY_LOCATION(null, "fuelStops-table-form:fuelStopsTable:###:location"),
+    ENTRY_EDITED(null, "fuelStops-table-form:fuelStopsTable:###:edited"),
     
     TITLE("Fuel Stops", "//span[@id='fuelStops-table-region:status']/../span[@class='fuelStops']"),
     COUNTER("Showing XXX to YYY of ZZZ records", "fuelStops-table-form:header"),
@@ -54,7 +54,7 @@ public enum HOSFuelStopsEnum implements SeleniumEnums {
     
     /* CheckBoxes */
     CHECK_ALL(null, "fuelStops-table-form:fuelStopsTable:selectAll"),
-    VALUE_CHECK(null, "fuelStops-table-form:fuelStopsTable:###:select"),
+    ENTRY_CHECKBOX(null, "fuelStops-table-form:fuelStopsTable:###:select"),
     
     ;
     private String text, url;

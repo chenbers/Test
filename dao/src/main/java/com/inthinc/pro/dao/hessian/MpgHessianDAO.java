@@ -15,6 +15,7 @@ import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MpgEntity;
 
@@ -38,8 +39,10 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
     }
 
     @Override
-    public List<MpgEntity> getEntities(Group group, Duration duration)
+    public List<MpgEntity> getEntities(Group group, Duration duration, GroupHierarchy gh)
     {
+    	logger.debug("getEntities: " + group.getGroupID());
+
         try
         {
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
@@ -105,6 +108,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
     @Override
     public List<MpgEntity> getDriverEntities(Integer driverID, Duration duration, Integer count)
     {
+    	logger.debug("getDriverEntities: " + driverID);
         try
         {
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
@@ -135,6 +139,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
     @Override
     public List<MpgEntity> getVehicleEntities(Integer vehicleID, Duration duration, Integer count)
     {
+    	logger.debug("getVehicleEntities: " + vehicleID);
         try
         {
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();

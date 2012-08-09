@@ -10,10 +10,10 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     TITLE("Driver Report", "//span[@class='driver']"),
     TOOLS(null, "drivers-form:drivers_reportToolImageId"),
 
-    GROUP_SEARCH(null, "drivers-form:drivers:groupfsp"),
-    DRIVER_SEARCH(null, "drivers-form:drivers:fullNamefsp"),
-    VEHICLE_SEARCH(null, "drivers-form:drivers:vehiclenamefsp"),
-    EMPLOYEE_SEARCH(null, "drivers-form:drivers:empidfsp"),
+    GROUP_FILTER(null, "drivers-form:drivers:groupfsp"),
+    DRIVER_FILTER(null, "drivers-form:drivers:fullNamefsp"),
+    VEHICLE_FILTER(null, "drivers-form:drivers:vehiclenamefsp"),
+    EMPLOYEE_FILTER(null, "drivers-form:drivers:empidfsp"),
 
     GROUP_VALUE(null, "drivers-form:drivers:###:driversDashboard"),
     DRIVER_VALUE(null, "drivers-form:drivers:###:driversDriverPerformance"),
@@ -33,7 +33,7 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     DISTANCE_DRIVEN_SORT("Distance Driven", "drivers-form:drivers:distanceheader:sortDiv"),
     OVERALL_SCORE_SORT("Overall", "drivers-form:drivers:overallScoreheader:sortDiv"),
     STYLE_SCORE_SORT("Style", "drivers-form:drivers:styleScoreheader:sortDiv"),
-    SPEED_SCORE_SORT("Speed", "drivers-form:drivers:speadScoreheader:sortDiv"),
+    SPEED_SCORE_SORT("Speed", "drivers-form:drivers:speedScoreheader:sortDiv"),
     SEATBELT_SCORE_SORT("Seat Belt", "drivers-form:drivers:seatbeltScoreheader:sortDiv"),
 
     ;

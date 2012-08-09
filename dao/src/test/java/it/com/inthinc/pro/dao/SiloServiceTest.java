@@ -29,6 +29,7 @@ import org.junit.Test;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
+import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
@@ -37,6 +38,7 @@ import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.ForwardCommandDefHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
+import com.inthinc.pro.dao.hessian.LocationHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO;
@@ -366,6 +368,9 @@ public class SiloServiceTest {
     public void lastLocationDriver() {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        driverDAO.setLocationDAO(locationDAO);
         LastLocation loc = driverDAO.getLastLocation(TESTING_DRIVER_ID);
         assertNotNull(loc);
         assertEquals(TESTING_DRIVER_ID, loc.getDriverID());
@@ -460,6 +465,10 @@ public class SiloServiceTest {
     public void lastLocationVehicle() {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        vehicleDAO.setLocationDAO(locationDAO);
+        
         LastLocation vloc = vehicleDAO.getLastLocation(TESTING_VEHICLE_ID);
         assertNotNull(vloc);
         assertEquals(TESTING_VEHICLE_ID, vloc.getVehicleID());
@@ -473,6 +482,9 @@ public class SiloServiceTest {
     public void lastLocationDrivers() {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        driverDAO.setLocationDAO(locationDAO);
         List<DriverLocation> locList = driverDAO.getDriverLocations(TESTING_GROUP_ID);
         assertNotNull(locList);
         assertTrue(locList.size() > 0);
@@ -536,6 +548,11 @@ public class SiloServiceTest {
         driverDAO.setSiloService(siloService);
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        driverDAO.setLocationDAO(locationDAO);
+        vehicleDAO.setLocationDAO(locationDAO);
+        
         // year time frame from today back
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
@@ -1275,6 +1292,10 @@ public class SiloServiceTest {
     private void vehicles(Integer groupID) {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        vehicleDAO.setLocationDAO(locationDAO);
+        
         List<Vehicle> emptyVehicleList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
         assertEquals("vehicle list should be empty", Integer.valueOf(0), new Integer(emptyVehicleList.size()));
         // create
@@ -1697,6 +1718,9 @@ public class SiloServiceTest {
     private void drivers(Integer groupID) {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(siloService);
+        driverDAO.setLocationDAO(locationDAO);
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
          // year time frame from today back

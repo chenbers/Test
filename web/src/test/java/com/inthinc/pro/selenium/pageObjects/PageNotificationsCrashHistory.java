@@ -14,6 +14,8 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryEnum;
 
 public class PageNotificationsCrashHistory extends NotificationsBar {
     
+    private String pageScroller = "crashHistory-form:crashHistory-bottomScroller_table";
+	
     public PageNotificationsCrashHistory() {
         checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
         checkMe.add(NotificationsCrashHistoryEnum.TITLE);
@@ -191,6 +193,10 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     
     public NotificationsCrashHistoryTexts _text() {
         return new NotificationsCrashHistoryTexts();
+    }
+    
+    public Paging _page() {
+        return new Paging(pageScroller);
     }
 
     @Override

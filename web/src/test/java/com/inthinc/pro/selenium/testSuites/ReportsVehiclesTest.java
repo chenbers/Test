@@ -34,25 +34,18 @@ import com.inthinc.pro.selenium.steps.WebSteps;
 		WebSteps.class})
 @PageObjects(list={PageLogin.class, 
 		PageExecutiveDashboard.class,
-		PageAdminUsers.class, 
-		PageMyAccount.class, 
-		PageLiveFleet.class,
         PageExecutiveOverallExpansion.class, 
-        PageReportsDrivers.class, 
-        PageNotificationsSafety.class, 
+        PageReportsDrivers.class,
+        PageReportsVehicles.class,
         PageTeamDriverStatistics.class,
-        PageReportsDevices.class,
         PageDriverPerformance.class,
         PageDriverPerformanceSpeed.class, 
         PageDriverPerformanceSeatBelt.class, 
         PageDriverPerformanceStyle.class, 
-        PageDriverPerformanceTrips.class,
         PageVehiclePerformanceSeatBelt.class, 
         PageVehiclePerformanceSpeed.class, 
         PageVehiclePerformanceStyle.class, 
-        PageVehiclePerformanceTrips.class, 
-        PageVehiclePerformance.class,
-        PageReportsVehicles.class})
+        PageVehiclePerformance.class})
 @StoryPath(path="ReportsVehicles.story")
 public class ReportsVehiclesTest extends WebStories {
     

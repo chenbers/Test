@@ -151,8 +151,8 @@ public class WaysmartDevice extends DeviceBase {
 
     @Override
     public WaysmartDevice set_server(AutoSilos silo) {
-        mcmProxy = new MCMProxyObject(this.server);
         server.setBySilo(silo);
+        mcmProxy = new MCMProxyObject(this.server);
         String url, port;
         url = server.getMcmUrl();
         port = server.getWaysPort().toString();

@@ -11,14 +11,10 @@ public enum ReportsDevicesEnum implements SeleniumEnums {
 	PHONE_SORT("Device Phone #", "devices-form:devices:phoneheader:sortDiv"),
 	STATUS_NONSORT("Status", "devices-form:devices:statusheader:sortDiv"),
 	
-	DEVICE_ID_SEARCH(null, "devices-form:devices:deviceNamefsp"),
-	VEHICLE_SEARCH(null, "devices-form:devices:vehicleNamefsp"),
-	IMEI_SEARCH(null, "devices-form:devices:imeifsp"),
-	PHONE_SEARCH(null, "devices-form:devices:phonefsp"),
-	
-	STATUS_DHX(null, "devices-form:devices:statusheader:sortDiv"),
-	STATUS_ARROW(null, "//div[@class='dhx_combo_box ']"),
-	
+	DEVICE_ID_FILTER(null, "devices-form:devices:deviceNamefsp"),
+	VEHICLE_FILTER(null, "devices-form:devices:vehicleNamefsp"),
+	IMEI_FILTER(null, "devices-form:devices:imeifsp"),
+	PHONE_FILTER(null, "devices-form:devices:phonefsp"),
 		
 	DEVICE_ID_VALUE(null, "devices-form:devices:###:deviceName"),
 	VEHICLE_VALUE(null, "devices-form:devices:###:vehicleName"),

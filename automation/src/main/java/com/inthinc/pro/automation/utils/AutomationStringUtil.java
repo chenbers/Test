@@ -72,12 +72,17 @@ public class AutomationStringUtil {
 
     @SuppressWarnings("unchecked")
     public static <T> String toString(T item) {
+    	depth = 0;
         StringWriter aStringAString = new StringWriter();
         try {
             if (item instanceof JSONObject) {
+                aStringAString.write("{\n");
                 printJSONObject(aStringAString, (JSONObject) item);
+                aStringAString.write("}\n");
             } else if (item instanceof JSONArray) {
+                aStringAString.write("[\n");
                 printJSONArray(aStringAString, (JSONArray) item);
+                aStringAString.write("]\n");
             } else if (item instanceof Throwable){
                 Writer result = new StringWriter();
                 PrintWriter printWriter = new PrintWriter(result);
@@ -109,16 +114,18 @@ public class AutomationStringUtil {
         Iterator<?> itr = item.keys();
         while (itr.hasNext()) {
             String next = (String) itr.next();
-            aStringAString.write(StringUtils.repeat("\t", depth));
+            if (!(item.get(next) instanceof JSONObject)) {
+            	aStringAString.write(StringUtils.repeat("\t", depth));
+            }
             if (item.get(next) instanceof String || item.get(next) == null) {
                 printPair(aStringAString, next, item.getString(next));
             } else if (item.get(next) instanceof Integer){ 
                 printPair(aStringAString, next, item.getInt(next));
             } else if (item.get(next) instanceof JSONObject) {
                 aStringAString.write("{ \"" + next + "\":\n");
-                depth += 1;
+                depth ++;
                 printJSONObject(aStringAString, item.getJSONObject(next));
-                depth -= 1;
+                depth --;
                 aStringAString.write(StringUtils.repeat("\t", depth) + "}\n");
             } else if (item.get(next) instanceof JSONArray) {
                 aStringAString.write("\"" + next + "\": [\n");
@@ -151,7 +158,8 @@ public class AutomationStringUtil {
     }
 
     private static void printJSONArray(StringWriter stringMeUp, JSONArray array) throws JSONException {
-        depth += 1;
+        depth ++;
+        stringMeUp.write(StringUtils.repeat("\t", depth));
         for (int i = 0; i < array.length(); i++) {
 
             if (array.get(i) instanceof String){
@@ -167,7 +175,7 @@ public class AutomationStringUtil {
                 stringMeUp.write(StringUtils.repeat("\t", depth));
             }
         }
-        depth -= 1;
+        depth --;
     }
 
 }

@@ -15,7 +15,8 @@ public enum AutoSilos {
     TECK,
     BARRICK,
     LDS,
-    TEEN_PROD,
+    TEEN_PROD, 
+    TEEN_QA,
     
 
 }

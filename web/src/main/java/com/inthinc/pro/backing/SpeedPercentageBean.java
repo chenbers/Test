@@ -59,7 +59,7 @@ public class SpeedPercentageBean extends BaseBean {
     
     }
     public void createChart() {
-        List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(getGroupID(), getDurationBean().getDuration());
+        List<SpeedPercentItem> speedPercentItemList = scoreDAO.getSpeedPercentItems(getGroupID(), getDurationBean().getDuration(), getGroupHierarchy());
         initChartData(speedPercentItemList);
     }
 
@@ -198,7 +198,7 @@ public class SpeedPercentageBean extends BaseBean {
         if (groupID == null) {
             setGroupID(getUser().getGroupID());
         }
-        ReportCriteria reportCriteria = reportCriteriaService.getSpeedPercentageReportCriteria(getGroupID(), durationBean.getDuration(), getLocale());
+        ReportCriteria reportCriteria = reportCriteriaService.getSpeedPercentageReportCriteria(getGroupID(), durationBean.getDuration(), getLocale(), getGroupHierarchy());
         reportCriteria.setLocale(getLocale());
         reportCriteria.setReportDate(new Date(), getPerson().getTimeZone());
         reportCriteria.setMeasurementType(getMeasurementType());
