@@ -142,20 +142,20 @@ public class PageReportsDevices extends ReportsBar {
 	
 	public class DeviceReportsTextFields extends ReportsBarTextFields{
 		
-		public TextField deviceIDSearch(){
-			return new TextField(ReportsDevicesEnum.DEVICE_ID_SEARCH);
+		public TextField deviceIDFilter(){
+			return new TextField(ReportsDevicesEnum.DEVICE_ID_FILTER);
 		}
 		
-		public TextField assignedVehicleSearch(){
-			return new TextField(ReportsDevicesEnum.VEHICLE_SEARCH);
+		public TextField assignedVehicleFilter(){
+			return new TextField(ReportsDevicesEnum.VEHICLE_FILTER);
 		}
 		
-		public TextField imeiSearch(){
-			return new TextField(ReportsDevicesEnum.IMEI_SEARCH);
+		public TextField imeiFilter(){
+			return new TextField(ReportsDevicesEnum.IMEI_FILTER);
 		}
 		
-		public TextField devicePhoneNumberSearch(){
-			return new TextField(ReportsDevicesEnum.PHONE_SEARCH);
+		public TextField devicePhoneNumberFilter(){
+			return new TextField(ReportsDevicesEnum.PHONE_FILTER);
 		}		
 	}
 	

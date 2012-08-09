@@ -120,7 +120,7 @@ And I validate the Sort By Style link is present
 And I validate the Group Value text table link is present
 And I validate the Vehicle Value text table link is present
 And I validate the Year Make Model link is present
-And I validate the Driver Sort link is present
+And I validate the Sort By Driver link is present
 And I validate the Overall Filter dropdown is present
 And I validate the Speed Filter dropdown is present
 And I validate the Style Filter dropdown is present

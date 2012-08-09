@@ -28,60 +28,60 @@ public class PageTeamDriverStatistics extends TeamBar {
             return new TextLinkScoreTable(TeamDriverStatsEnum.DRIVER_SCORE_ENTRY);
         }
 
-        public TextLink driverSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_NAME_HEADER);
+        public TextLink sortByDriver() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_NAME_FILTER);
         }
 
-        public TextLink scoreSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_SCORE_HEADER);
+        public TextLink sortByScore() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_SCORE_FILTER);
         }
 
-        public TextLink vehicleSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_VEHICLE_HEADER);
+        public TextLink sortByVehicle() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_VEHICLE_FILTER);
         }
 
-        public TextLink tripsSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_TRIPS_HEADER);
+        public TextLink sortByTrips() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_TRIPS_FILTER);
         }
 
-        public TextLink stopsSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_STOPS_HEADER);
+        public TextLink sortByStops() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_STOPS_FILTER);
         }
 
-        public TextLink distanceDrivenSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_DISTANCE_HEADER);
+        public TextLink sortByDistanceDriven() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_DISTANCE_FILTER);
         }
 
-        public TextLink durationSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_DURATION_HEADER);
+        public TextLink sortByDuration() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_DURATION_FILTER);
         }
 
-        public TextLink idleTimeSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_IDLE_HEADER);
+        public TextLink sortByIdleTime() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_IDLE_FILTER);
         }
 
-        public TextLink lowIdleSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_LOW_HEADER);
+        public TextLink sortByLowIdle() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_LOW_FILTER);
         }
 
-        public TextLink highIdleSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_HIGH_HEADER);
+        public TextLink sortByHighIdle() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_HIGH_FILTER);
         }
 
-        public TextLink idlePercentSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_PERCENT_HEADER);
+        public TextLink sortByIdlePercent() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_PERCENT_FILTER);
         }
 
-        public TextLink fuelEfficiencySort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_FUEL_HEADER);
+        public TextLink sortByFuelEfficiency() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_FUEL_FILTER);
         }
 
-        public TextLink crashesSort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_CRASHES_HEADER);
+        public TextLink sortByCrashes() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_CRASHES_FILTER);
         }
 
-        public TextLink safetySort() {
-            return new TextLink(TeamDriverStatsEnum.DRIVER_SAFETY_HEADER);
+        public TextLink sortBySafety() {
+            return new TextLink(TeamDriverStatsEnum.DRIVER_SAFETY_FILTER);
         }
 
     }

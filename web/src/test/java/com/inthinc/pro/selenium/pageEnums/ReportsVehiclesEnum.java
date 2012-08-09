@@ -8,10 +8,10 @@ public enum ReportsVehiclesEnum implements SeleniumEnums {
 	
 	TITLE("Vehicle Report", "//span[@class='vehicle']"),
 	
-    GROUP_SEARCH(null,"vehicles-form:vehicles:groupfsp"),
-    DRIVER_SEARCH(null,"vehicles-form:vehicles:fullNamefsp"),
-    VEHICLE_SEARCH(null,"vehicles-form:vehicles:namefsp"),
-    YEAR_MAKE_MODEL_SEARCH(null,"vehicles-form:vehicles:makeModelYearfsp"),
+    GROUP_FILTER(null,"vehicles-form:vehicles:groupfsp"),
+    DRIVER_FILTER(null,"vehicles-form:vehicles:fullNamefsp"),
+    VEHICLE_FILTER(null,"vehicles-form:vehicles:namefsp"),
+    YEAR_MAKE_MODEL_FILTER(null,"vehicles-form:vehicles:makeModelYearfsp"),
     
 
     GROUP_VALUE(null,"vehicles-form:vehicles:###:group"),

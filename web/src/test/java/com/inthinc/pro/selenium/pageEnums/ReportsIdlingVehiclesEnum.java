@@ -6,8 +6,8 @@ public enum ReportsIdlingVehiclesEnum implements SeleniumEnums {
     
     DEFAULT_URL(appUrl + "/reports/idlingVehicleReport"),
     
-    GROUP_SEARCH(null, "idlingVehicle-form:idlingVehicle:groupfsp"),
-    DRIVER_SEARCH(null, "idlingVehicle-form:idlingVehicle:fullNamefsp"),
+    GROUP_FILTER(null, "idlingVehicle-form:idlingVehicle:groupfsp"),
+    DRIVER_FILTER(null, "idlingVehicle-form:idlingVehicle:fullNamefsp"),
     VEHICLE_SEARCH(null, "idlingVehicle-form:idlingVehicle:vehicleNamefsp"),
     
     GROUP_SORT(null, "idlingVehicle-form:idlingVehicle:groupheader:sortDiv"),

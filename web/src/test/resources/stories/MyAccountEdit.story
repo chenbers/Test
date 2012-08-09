@@ -41,8 +41,8 @@ And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
-And I click the Driver Sort link
-And I click the Driver Sort link
+And I click the Sort By Driver link
+And I click the Sort By Driver link
 And I click the 3rd Row of the Driver Value link
 And I verify "Crashes per million kilometers" is on the page
 And I click the Maximize Speed button
@@ -74,8 +74,8 @@ And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
-And I click the Vehicle Sort link
-And I click the Vehicle Sort link
+And I click the Sort By Vehicle link
+And I click the Sort By Vehicle link
 And I click the 2nd Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
@@ -141,8 +141,8 @@ And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
-And I click the Driver Sort link
-And I click the Driver Sort link
+And I click the Sort By Driver link
+And I click the Sort By Driver link
 And I click the 3rd Row of the Driver Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
@@ -174,8 +174,8 @@ And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
-And I click the Vehicle Sort link
-And I click the Vehicle Sort link
+And I click the Sort By Vehicle link
+And I click the Sort By Vehicle link
 And I click the 2nd Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
@@ -243,8 +243,8 @@ And I verify "Kilometers since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
-And I click the Driver Sort link
-And I click the Driver Sort link
+And I click the Sort By Driver link
+And I click the Sort By Driver link
 And I click the 3rd Row of the Driver Value link
 And I verify "Crashes per million kilometers" is on the page
 And I click the Maximize Speed button
@@ -277,8 +277,8 @@ And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "km"
 And I validate the 1st Row of the Distance Driven Value text contains "km"
 And I click the year Duration link
-And I click the Vehicle Sort link
-And I click the Vehicle Sort link
+And I click the Sort By Vehicle link
+And I click the Sort By Vehicle link
 And I click the 2nd Row of the Vehicle Value link
 And I verify "Crashes per million kilometers" is on the page 
 And I click the Maximize Speed button
@@ -345,8 +345,8 @@ And I verify "Miles since last crash" is on the page
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
-And I click the Driver Sort link
-And I click the Driver Sort link
+And I click the Sort By Driver link
+And I click the Sort By Driver link
 And I click the 3rd Row of the Driver Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
@@ -379,8 +379,8 @@ And I click the Vehicle Statistics link
 And I validate the Distance Driven Team Value text contains "mi"
 And I validate the 1st Row of the Distance Driven Value text contains "mi"
 And I click the year Duration link
-And I click the Vehicle Sort link
-And I click the Vehicle Sort link
+And I click the Sort By Vehicle link
+And I click the Sort By Vehicle link
 And I click the 2nd Row of the Vehicle Value link
 And I verify "Crashes per million miles" is on the page 
 And I click the Maximize Speed button
@@ -445,14 +445,14 @@ And I click the My Account link
 Then I validate the Measurement text is "Metric"
 And I click group "Test Group WR" Groups navtree
 And I click the year Duration link
-And I click the Distance Driven Sort link
-And I click the Distance Driven Sort link
+And I click the Sort By Distance Driven link
+And I click the Sort By Distance Driven link
 And I save the Fuel Efficiency Team Value text as DFE1
 And I click the Vehicle Statistics link
 And I validate I am on the Team Vehicle Statistics page
 And I click the year Duration link
-And I click the Distance Driven Sort link
-And I click the Distance Driven Sort link
+And I click the Sort By Distance Driven link
+And I click the Sort By Distance Driven link
 And I save the Fuel Efficiency Team Value text as DFE2
 And I click the My Account link
 And I click the Edit button
@@ -463,13 +463,13 @@ And I click the My Account link
 And I validate the Measurement text is "English"
 And I click group "Test Group WR" Groups navtree
 And I click the year Duration link
-And I click the Distance Driven Sort link
-And I click the Distance Driven Sort link
+And I click the Sort By Distance Driven link
+And I click the Sort By Distance Driven link
 And I validate the Fuel Efficiency Team Value text is not DFE1
 And I click the Vehicle Statistics link
 And I validate I am on the Team Vehicle Statistics page
-And I click the Distance Driven Sort link
-And I click the Distance Driven Sort link
+And I click the Sort By Distance Driven link
+And I click the Sort By Distance Driven link
 And I validate the Fuel Efficiency Team Value text is not DFE2
 
 Scenario: TC1276: My Account - Edit Account - Missing Required Field Error
