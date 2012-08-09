@@ -12,6 +12,7 @@ Scenario: TC1335: Notifications - Crash History - Add Crash Report Link
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
+And I click the Add Crash Report link
 Then I validate I am on the Notifications Crash History Add Edit page
 
 Scenario: TC1336: Notifications - Crash History - Bookmark Entry

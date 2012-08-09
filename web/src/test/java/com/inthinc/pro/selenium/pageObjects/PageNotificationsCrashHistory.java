@@ -1,15 +1,15 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.DHXDropDown;
-import com.inthinc.pro.automation.elements.SortHeader;
 import com.inthinc.pro.automation.elements.Text;
-import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryEnum;
 
 public class PageNotificationsCrashHistory extends NotificationsBar {
@@ -26,83 +26,88 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         
         @Override
         public TextLink editColumns() {
-            return new TextLink(NotificationsCrashHistoryEnum.EDIT_COLUMNS_LINK);    
+            return new TextLink(NotificationsBarEnum.EDIT_COLUMNS);    
         }
         
         public TextLink addCrashReport() {
-            return new TextLink(NotificationsCrashHistoryEnum.ADD_CRASH_REPORT_LINK);
+            return new TextLink(NotificationsCrashHistoryEnum.ADD_CRASH_REPORT);
         }
         
-        public TextTableLink groupName() {
-            return new TextTableLink(NotificationsCrashHistoryEnum.GROUP_TABLE);
+        public TextLink sortByDateTime(){
+            return new TextLink(NotificationsBarEnum.SORT_DATE_TIME);
         }
         
-        public TextTableLink driverName() {
-            return new TextTableLink(NotificationsCrashHistoryEnum.DRIVER_TABLE);
+        public TextLink sortByGroup(){
+            return new TextLink(NotificationsBarEnum.SORT_GROUP);
         }
         
-        public TextTableLink vehicleName() {
-            return new TextTableLink(NotificationsCrashHistoryEnum.VEHICLE_TABLE);
+        public TextLink sortByDriver(){
+            return new TextLink(NotificationsBarEnum.SORT_DRIVER);
         }
         
-        public TextTableLink details() {
-            return new TextTableLink(NotificationsCrashHistoryEnum.DETAIL_TABLE);
+        public TextLink sortByVehicle(){
+            return new TextLink(NotificationsBarEnum.SORT_VEHICLE);
+        }
+        
+        public TextLink sortByOccupants(){
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_OCCUPANTS);
+        }
+        
+        public TextLink sortByStatus(){
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_STATUS);
+        }
+        
+        public TextLink sortByWeather(){
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_WEATHER);
+        }
+        
+        public TextTableLink entryGroupName() {
+            return new TextTableLink(NotificationsBarEnum.GROUP_ENTRY);
+        }
+        
+        public TextTableLink entryDriverName() {
+            return new TextTableLink(NotificationsBarEnum.DRIVER_ENTRY);
+        }
+        
+        public TextTableLink entryVehicleName() {
+            return new TextTableLink(NotificationsBarEnum.VEHICLE_ENTRY);
+        }
+        
+        public TextTableLink entryDetails() {
+            return new TextTableLink(NotificationsCrashHistoryEnum.DETAILS_ENTRY);
         }
     }
     
     public class NotificationsCrashHistoryButtons extends NotificationsBarButtons {
         
         public Button refresh() {
-            return new Button(NotificationsCrashHistoryEnum.REFRESH_BUTTON);
+            return new Button(NotificationsBarEnum.REFRESH);
+        }
+        
+        public Button tools() {
+            return new Button(NotificationsBarEnum.TOOLS);
+        }
+        
+        public Button exportToPDF() {
+            return new Button(NotificationsBarEnum.EXPORT_TO_PDF);
+        }
+        
+        public Button emailThisReport() {
+            return new Button(NotificationsBarEnum.EMAIL_REPORT);
+        }
+        
+        public Button exportToExcel() {
+            return new Button(NotificationsBarEnum.EXPORT_TO_EXCEL);
         }
         
         public Button search() {
             return new Button(NotificationsCrashHistoryEnum.SEARCH_BUTTON);
         }
         
-        public Button tools() {
-            return new Button(NotificationsCrashHistoryEnum.TOOLS_BUTTON);
+        public ButtonTable entryLocation() {
+        	return new ButtonTable(NotificationsBarEnum.LOCATION_ENTRY);
         }
         
-        public Button exportToPDF() {
-            return new Button(NotificationsCrashHistoryEnum.EXPORT_PDF);
-        }
-        
-        public Button emailThisReport() {
-            return new Button(NotificationsCrashHistoryEnum.EXPORT_EMAIL);
-        }
-        
-        public Button exportToExcel() {
-            return new Button(NotificationsCrashHistoryEnum.EXPORT_EXCEL);
-        }
-        
-        public TextButton sortByDateTime(){
-            return new SortHeader(NotificationsCrashHistoryEnum.DATE_TIME_TABLE);
-        }
-        
-        public TextButton sortGroup(){
-            return new SortHeader(NotificationsCrashHistoryEnum.GROUP_TABLE);
-        }
-        
-        public TextButton sortDriver(){
-            return new SortHeader(NotificationsCrashHistoryEnum.DRIVER_TABLE);
-        }
-        
-        public TextButton sortVehicle(){
-            return new SortHeader(NotificationsCrashHistoryEnum.VEHICLE_TABLE);
-        }
-        
-        public TextButton sortOccupants(){
-            return new SortHeader(NotificationsCrashHistoryEnum.OCCUPANTS_TABLE);
-        }
-        
-        public TextButton sortStatus(){
-            return new SortHeader(NotificationsCrashHistoryEnum.STATUS_TABLE);
-        }
-        
-        public TextButton sortWeather(){
-            return new SortHeader(NotificationsCrashHistoryEnum.WEATHER_TABLE);
-        }
     }
     
     public class NotificationsCrashHistoryDropDown extends NotificationsBarDropDowns {
@@ -147,19 +152,19 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     public class NotificationsCrashHistoryTexts extends NotificationsBarTexts {
         
         public TextTable dateTime() {
-            return new TextTable(NotificationsCrashHistoryEnum.DATE_TIME_TABLE);
+            return new TextTable(NotificationsBarEnum.DATE_TIME_ENTRY);
         }
         
-        public TextTable occupants() {
-            return new TextTable(NotificationsCrashHistoryEnum.OCCUPANTS_TABLE);
+        public TextTable entryOccupants() {
+            return new TextTable(NotificationsCrashHistoryEnum.OCCUPANTS_ENTRY);
         }
         
-        public TextTable status() {
-            return new TextTable(NotificationsCrashHistoryEnum.STATUS_TABLE);
+        public TextTable entryStatus() {
+            return new TextTable(NotificationsCrashHistoryEnum.STATUS_ENTRY);
         }
         
-        public TextTable weather() {
-            return new TextTable(NotificationsCrashHistoryEnum.WEATHER_TABLE);
+        public TextTable entryWeather() {
+            return new TextTable(NotificationsCrashHistoryEnum.WEATHER_ENTRY);
         }
         
         public Text title(){
@@ -167,7 +172,7 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
         
         public Text counter(){
-            return new Text(NotificationsCrashHistoryEnum.COUNTER);
+            return new Text(NotificationsBarEnum.COUNTER);
         }
     }
     
