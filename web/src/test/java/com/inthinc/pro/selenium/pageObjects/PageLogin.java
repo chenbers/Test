@@ -121,6 +121,8 @@ public class PageLogin extends Masthead {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().logIn().isPresent() && _textField().userName().isPresent() && _textField().password().isPresent();
+        return _button().logIn().isPresent() && 
+        	   _textField().userName().isPresent() &&
+        	   _textField().password().isPresent();
     }
 }

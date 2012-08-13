@@ -61,15 +61,15 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
             return new TextLink(NotificationsCrashHistoryEnum.SORT_WEATHER);
         }
         
-        public TextTableLink entryGroupName() {
+        public TextTableLink entryGroup() {
             return new TextTableLink(NotificationsBarEnum.GROUP_ENTRY);
         }
         
-        public TextTableLink entryDriverName() {
+        public TextTableLink entryDriver() {
             return new TextTableLink(NotificationsBarEnum.DRIVER_ENTRY);
         }
         
-        public TextTableLink entryVehicleName() {
+        public TextTableLink entryVehicle() {
             return new TextTableLink(NotificationsBarEnum.VEHICLE_ENTRY);
         }
         
