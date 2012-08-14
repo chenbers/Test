@@ -66,11 +66,11 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
         
         public TextTableLink entryDriver() {
-            return new TextTableLink(NotificationsBarEnum.DRIVER_ENTRY);
+            return new TextTableLink(NotificationsCrashHistoryEnum.DRIVER_ENTRY);
         }
         
         public TextTableLink entryVehicle() {
-            return new TextTableLink(NotificationsBarEnum.VEHICLE_ENTRY);
+            return new TextTableLink(NotificationsCrashHistoryEnum.VEHICLE_ENTRY);
         }
         
         public TextTableLink entryDetails() {

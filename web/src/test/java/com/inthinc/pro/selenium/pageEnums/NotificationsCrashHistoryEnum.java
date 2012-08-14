@@ -9,7 +9,7 @@ public enum NotificationsCrashHistoryEnum implements SeleniumEnums {
     TITLE("Crash History", "//span[@class='crash']"),
     
     TEAM_DROP_DOWN("Team", "crashHistorySearch:crashHistory_groupID"),//these two can be merged to NotificationsBarEnum
-    TIME_FRAME_DROP_DOWN("Time Frame", "crashHistorySearch:crashHistory_timeframe"),// once the id fix has been done on the page
+    TIME_FRAME_DROP_DOWN("Time Frame", "crashHistorySearch:crashHistory_timeframe"),// once the id has been fixed on the page
     
     SEARCH_BOX("Search", "crashHistorySearch:searchText"),
     SEARCH_BUTTON(null, "crashHistorySearch:crashHistorySearch"),
@@ -19,10 +19,12 @@ public enum NotificationsCrashHistoryEnum implements SeleniumEnums {
     SORT_STATUS("Status", "***-form:***:statusheader:sortDiv"),
     SORT_WEATHER("Weather", "***-form:***:weatherheader:sortDiv"),
     
-    OCCUPANTS_ENTRY("# Occupants", "crashHistory-form:crashHistory:###:occupants"),
-    STATUS_ENTRY("Status", "crashHistory-form:crashHistory:###:status"),
-    WEATHER_ENTRY("Weather", "crashHistory-form:crashHistory:###:weather"),
-    DETAILS_ENTRY("detail", "crashHistory-form:crashHistory:###:details"),
+    DRIVER_ENTRY(null, "crashHistory-form:crashHistory:###:driverName"),   //these can be integrated into the Notifications Events bar if they are renamed
+    VEHICLE_ENTRY(null, "crashHistory-form:crashHistory:###:vehiclename"), //these can be integrated into the Notifications Events bar if they are renamed
+    OCCUPANTS_ENTRY(null, "crashHistory-form:crashHistory:###:occupants"),
+    STATUS_ENTRY(null, "crashHistory-form:crashHistory:###:status"),
+    WEATHER_ENTRY(null, "crashHistory-form:crashHistory:###:weather"),
+    DETAILS_ENTRY("details", "crashHistory-form:crashHistory:###:details"),
     
     ;
     
