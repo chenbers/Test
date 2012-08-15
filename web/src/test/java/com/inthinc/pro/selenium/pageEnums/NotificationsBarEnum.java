@@ -14,15 +14,12 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     EMERGENCY("Emergency", "link=Emergency", "***-emergency", "//li[@id='emergencytab']/a"),
     CRASH_HISTORY("Crash History", "link=Crash History", "***-crashHistory", "//li[@id='crashhistorytab']/a"),
     
-
     STATUS_FILTER(null, "***-form:***:forgivenFilter"),
     CATEGORY_FILTER(null, "***-form:***:catFilter"),
     VEHICLE_FILTER(null, "***-form:***:vehiclefsp"),
     DRIVER_FILTER(null, "***-form:***:driverfsp"),
     GROUP_FILTER(null, "***-form:***:groupfsp"),
     
-    
-
     LEVEL_FILTER_DHX(null, "***-form:***:levelFilter"),
     TIME_FRAME_DHX(null, "***_search:***_timeframe"),
     TEAM_SELECTION_DHX(null, "***_search:***_groupID"),
@@ -37,11 +34,8 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     EXPORT_TO_EXCEL(null, "***_search:***-exportExcelMEnuItem:anchor"),
     
     COUNTER(null, "***-form:header"),
-    
 
-    LOCATION(null, "***-form:***:###:mapColumn"),
-    
-    
+    LOCATION_ENTRY(null, "***-form:***:###:mapColumn"), 
     LEVEL_ENTRY(null, "***-form:***:###:level"),
     DETAILS_ENTRY(null, "***-form:***:###:alerts"),
     DATE_TIME_ENTRY(null, "***-form:***:###:date"),
@@ -50,8 +44,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     VEHICLE_ENTRY(null, "***-form:***:###:vehicle"),
     CATEGORY_ENTRY(null, "***-form:***:###:category"),
     DETAIL_ENTRY(null, "***-form:***:###:detail"),
-    STATUS_ENTRY("exclude", "***-form:***:###:exclude"),
-    
+    STATUS_ENTRY("exclude", "***-form:***:###:exclude"), 
 
     HEADER_LEVEL("Level", "***-form:***:levelheader"),
     HEADER_DETAILS("Alert Details", "***-form:***:alertsheader"),

@@ -13,6 +13,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldWithSpinner;
 import com.inthinc.pro.automation.elements.TextLabel;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextRadioButtonLabel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryAddEditEnum;
@@ -23,7 +24,21 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         // TODO Auto-generated constructor stub
     }
 
-    public class NotificationsCrashHistoryAddEditLinks extends NotificationsBarLinks {}
+    public class NotificationsCrashHistoryAddEditLinks extends NotificationsBarLinks {
+    	
+    	public TextLink clean() {
+    		return new TextLink(NotificationsCrashHistoryAddEditEnum.CLEAN_LINK);
+    	}
+    	
+    	public TextLink time() {
+    		return new TextLink(NotificationsCrashHistoryAddEditEnum.TIME_LINK);
+    	}
+    	
+    	public TextLink today() {
+    		return new TextLink(NotificationsCrashHistoryAddEditEnum.TODAY_LINK);
+    	}
+
+    }
 
     public class NotificationsCrashHistoryAddEditTexts extends NotificationsBarTexts {
         public Text title() {
@@ -113,18 +128,27 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
     public class NotificationsCrashHistoryAddEditTextFields extends NotificationsBarTextFields {
 
         public TextFieldWithSpinner occupantCount() {
-            return new TextFieldWithSpinner(
-                    NotificationsCrashHistoryAddEditEnum.OCCUPANT_COUNT);
+            return new TextFieldWithSpinner(NotificationsCrashHistoryAddEditEnum.OCCUPANT_COUNT);
         }
 
         public TextField description() {
-            return new TextField(
-                    NotificationsCrashHistoryAddEditEnum.DESCRIPTION_BOX);
+            return new TextField(NotificationsCrashHistoryAddEditEnum.DESCRIPTION_BOX);
         }
 
         public TextField findAddress() {
-            return new TextField(
-                    NotificationsCrashHistoryAddEditEnum.ADDRESS_TEXT_FIELD);
+            return new TextField(NotificationsCrashHistoryAddEditEnum.ADDRESS_TEXT_FIELD);
+        }
+        
+        public TextField hours() {
+            return new TextField(NotificationsCrashHistoryAddEditEnum.HOURS_FIELD);
+        }
+        
+        public TextField minutes() {
+            return new TextField(NotificationsCrashHistoryAddEditEnum.MINUTES_FIELD);
+        }
+        
+        public TextField timeOfDay() {
+            return new TextField(NotificationsCrashHistoryAddEditEnum.TIME_OF_DAY_FIELD);
         }
 
     }
@@ -188,6 +212,38 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
         public SortHeader sortByStartTime() {
             return new SortHeader(
                     NotificationsCrashHistoryAddEditEnum.START_TIME);
+        }
+        
+        public Button hoursUp() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.HOURS_BUTTON_UP);
+        }
+        
+        public Button hoursDown() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.HOURS_BUTTON_DOWN);
+        }
+        
+        public Button minutesUp() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.MINUTES_BUTTON_UP);
+        }
+        
+        public Button minutesDown() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.MINUTES_BUTTON_DOWN);
+        }
+        
+        public Button timeOfDayUp() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.TIME_OF_DAY_UP);
+        }
+        
+        public Button timeOfDayDown() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.TIME_OF_DAY_DOWN);
+        }
+        
+        public Button ok() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.TIME_OK_BUTTON);
+        }
+        
+        public Button cancel() {
+            return new Button(NotificationsCrashHistoryAddEditEnum.TIME_CANCEL_BUTTON);
         }
 
     }

@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 
-import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
@@ -19,7 +18,6 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 public class PageLogin extends Masthead {
 	public PageLogin(){
 		checkMe.add(LoginEnum.LOGIN_BUTTON);
-		checkMe.add(LoginEnum.LOGIN_HEADER);
 	}
 	
     public class LoginPopUps extends MastheadPopUps{
@@ -53,9 +51,6 @@ public class PageLogin extends Masthead {
     	return new LoginTexts();
     }
     public class LoginTexts extends MastheadTexts{
-    	public Text header(){
-    		return new Text(LoginEnum.LOGIN_HEADER);
-    	}
     	
     	public TextFieldLabel userName(){
     		return new TextFieldLabel(LoginEnum.USERNAME_FIELD);
@@ -121,6 +116,8 @@ public class PageLogin extends Masthead {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().logIn().isPresent() && _textField().userName().isPresent() && _textField().password().isPresent();
+        return _button().logIn().isPresent() && 
+        	   _textField().userName().isPresent() &&
+        	   _textField().password().isPresent();
     }
 }
