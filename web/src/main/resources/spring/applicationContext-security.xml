@@ -7,10 +7,7 @@
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
 
 
-	<!-- <security:http auto-config="false" session-fixation-protection="newSession" entry-point-ref="authenticationProcessingFilterEntryPoint"> -->
-	<security:http auto-config="false" session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint">
-		<!-- error if user logs in concurrently (only one login allowed at a time) -->
-		<security:concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
+	<security:http session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint">
 		<security:intercept-url pattern="/app/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
 		<security:intercept-url pattern="/app/hos/**" access="ROLE_HOSADMIN, ROLE_HOSACCESS" />
 		<security:intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_ADMIN, ROLE_CRASHREPORTACCESS" />
