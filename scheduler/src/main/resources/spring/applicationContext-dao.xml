@@ -44,11 +44,11 @@
 		</bean> -->
 
 <bean id="formsDAO" class="com.inthinc.pro.dao.service.FormsServiceDAO">
-	        <property name="protocol" value="${service.forms.protocol"/>
-	        <property name="host" value="${service.forms.host"/>
-	        <property name="port" value="${service.forms.port"/>
-	        <property name="path" value="${service.forms.path"/>
-	        <property name="username" value="${service.forms.username"/>
-	        <property name="password" value="${service.forms.password"/>
+	        <property name="protocol" value="${service.forms.protocol}"/>
+	        <property name="host" value="${service.forms.host}"/>
+	        <property name="port" value="${service.forms.port}"/>
+	        <property name="path" value="${service.forms.path}"/>
+	        <property name="username" value="${service.forms.username}"/>
+	        <property name="password" value="${service.forms.password}"/>
 	    </bean>
 </beans>
