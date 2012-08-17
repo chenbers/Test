@@ -1,6 +1,5 @@
 package com.inthinc.pro.scheduler.dispatch;
 
-
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,8 +21,8 @@ public class PhoneDispatcher {
         executorService = Executors.newFixedThreadPool(maxThreads);
     }
 
-    public void sendList(List<AlertMessageBuilder> userList){
-        
+    public void sendList(List<AlertMessageBuilder> userList) {
+
         executorService.submit(new PhoneListThread(userList));
     }
 
@@ -34,7 +33,7 @@ public class PhoneDispatcher {
     public void setMaxThreads(Integer maxThreads) {
         this.maxThreads = maxThreads;
     }
-    
+
     public CallServiceMessageSender getCallServiceMessageSender() {
         return callServiceMessageSender;
     }
@@ -43,21 +42,23 @@ public class PhoneDispatcher {
         this.callServiceMessageSender = callServiceMessageSender;
     }
 
-    public class PhoneListThread implements Runnable{
+    public class PhoneListThread implements Runnable {
         private List<AlertMessageBuilder> userList;
-        
-        public PhoneListThread(List<AlertMessageBuilder> userList){
-             this.userList = userList;
+
+        public PhoneListThread(List<AlertMessageBuilder> userList) {
+            this.userList = userList;
         }
+
         @Override
         public void run() {
-            
-            for(AlertMessageBuilder message:userList){
-                
-                String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
+
+            for (AlertMessageBuilder message : userList) {
+
+                String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(), message.getLocale(),
+                        (String[]) message.getParamterList().toArray(new String[message.getParamterList().size()]));
                 logger.debug("PHONE Message: " + message.getAddress() + " " + text);
 
-                getCallServiceMessageSender().sendMessage(message.getAddress(),text, message.getMessageID(), message.getAcknowledge());
+                getCallServiceMessageSender().sendMessage(message.getAddress(), text, message.getMessageID(), message.getAcknowledge());
             }
         }
     }

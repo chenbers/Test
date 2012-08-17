@@ -118,6 +118,11 @@
 		</profile>
 	</profiles>
 	<dependencies>
+      <dependency>
+        <groupId>mockit</groupId>
+        <artifactId>jmockit</artifactId>
+        <scope>test</scope>
+      </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
