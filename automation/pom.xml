@@ -94,17 +94,14 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>${JacksonVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>${JacksonVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>${JacksonVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jasypt</groupId>
@@ -136,7 +133,4 @@
 			<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
 		</pluginRepository>
 	</pluginRepositories>
-	<properties>
-		<JacksonVersion>2.0.2</JacksonVersion>
-	</properties>
 </project>
