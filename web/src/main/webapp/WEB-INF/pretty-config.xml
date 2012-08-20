@@ -498,6 +498,19 @@
 		<view-id>/secured/admin/editZone.faces</view-id>
 	</url-mapping>
 	
+    <url-mapping id="adminHazards">
+        <pattern>/app/admin/hazards</pattern>
+        <view-id>/secured/admin/editHazard.faces</view-id>
+    </url-mapping>
+    <url-mapping id="adminEditHazard">
+        <pattern>/app/admin/editHazard</pattern>
+        <view-id>/secured/admin/editHazard.faces</view-id>
+    </url-mapping>
+    <url-mapping id="adminRouteHazards">
+        <pattern>/app/admin/routeHazards</pattern>
+        <view-id>/secured/admin/routeHazards.faces</view-id>
+    </url-mapping>
+    
 	<url-mapping id="adminorganizationAccess">
 		<pattern>/app/admin/organization</pattern>
 		<view-id>/secured/admin/organization.faces</view-id>

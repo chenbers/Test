@@ -113,6 +113,22 @@
           </td>
         </tr>
         </security:authorize>
+
+        <!-- Road Hazard Awareness -->
+        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ZONESACCESS">
+        <tr>
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_zones.png"/>
+               <ui:param name="mappingId" value="adminHazards"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminHazards') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminHazards}"/>
+               <ui:param name="context" value="#{context}-vlt-hazards"/>
+            </ui:include>
+          </td>
+        </tr>
+        </security:authorize>
+
         <!-- Red Flags -->
        	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REDFLAGSACCESS">
         <tr>
