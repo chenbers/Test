@@ -368,7 +368,7 @@ And I validate the 1st Row of the Driver link is "Alma Mater"
 And I validate the 1st Row of the Vehicle link is "TIWI02"
 And I validate the Date Time column sorts correctly //need to get sorting to work
 
-Scenario: TC1348: Notifications - Crash History - Refresh
+Scenario: TC1348: Notifications - Crash History - Search
 Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
@@ -386,6 +386,11 @@ And I validate the 1st Row of the Status text contains "Aggressive Driving"
 And I type "Panic" into the Search textfield
 And I click the Search button
 And I validate the 1st Row of the Status text contains "Panic"
+And I validate the Date Time column sorts correctly //need to get sorting to work
+
+Scenario: TC1357: Notifications > Crash History - Edit Columns - Check Box Selection via Spacebar
+
+Scenario: TC1362: Reports - Crash History - Edit Columns - Tabbing Order CANNOT IMPLEMENT YET DUE TO KEYPRESS
 
 NotificationsEmergency.story
 

@@ -59,12 +59,12 @@ public class PageReportsIdlingVehicles extends ReportsBar {
 	    	return new TextField(ReportsIdlingVehiclesEnum.END_DATE);
 	    }
 	    
-	    public TextField driverSearch() {
-	    	return new TextField(ReportsIdlingVehiclesEnum.DRIVER_SEARCH);        
+	    public TextField driverFilter() {
+	    	return new TextField(ReportsIdlingVehiclesEnum.DRIVER_FILTER);        
 	    }
 	    
-	    public TextField teamSearch() {
-	    	return new TextField(ReportsIdlingVehiclesEnum.GROUP_SEARCH);        
+	    public TextField teamFilter() {
+	    	return new TextField(ReportsIdlingVehiclesEnum.GROUP_FILTER);        
 	    }    
 	    
 	}
@@ -98,31 +98,31 @@ public class PageReportsIdlingVehicles extends ReportsBar {
 	        return new TextLink(PopUpEnum.EDIT_COLUMNS, page);
 	    }
 	    
-	    public TextLink sortGroup() {
+	    public TextLink sortByGroup() {
 	        return new TextLink(ReportsIdlingVehiclesEnum.GROUP_SORT);
 	    }
 	    
-	    public TextLink sortDriver() {
+	    public TextLink sortByDriver() {
 	        return new TextLink(ReportsIdlingVehiclesEnum.DRIVER_SORT);
 	    }
 	    
-        public TextLink sortVehicle() {
+        public TextLink sortByVehicle() {
             return new TextLink(ReportsIdlingVehiclesEnum.VEHICLE_SORT);
         }	    
         
-        public TextLink sortIdleSupport() {
+        public TextLink sortByIdleSupport() {
             return new TextLink(ReportsIdlingVehiclesEnum.IDLE_SUPPORT_SORT);
         }
         
-        public TextLink sortDuration() {
+        public TextLink sortByDuration() {
             return new TextLink(ReportsIdlingVehiclesEnum.DURATION_SORT);
         }
         
-        public TextLink sortLowIdle() {
+        public TextLink sortByLowIdle() {
             return new TextLink(ReportsIdlingVehiclesEnum.LOW_IDLE_SORT);
         }
         
-        public TextLink sortHighIdle() {
+        public TextLink sortByHighIdle() {
             return new TextLink(ReportsIdlingVehiclesEnum.HIGH_IDLE_SORT);
         }
 	    

@@ -133,20 +133,20 @@ public class PageReportsDrivers extends ReportsBar {
 
     public class DriverReportTextFields extends ReportsBarTextFields {
 
-        public TextField driverSearch() {
-            return new TextField(ReportsDriversEnum.DRIVER_SEARCH);
+        public TextField driverFilter() {
+            return new TextField(ReportsDriversEnum.DRIVER_FILTER);
         }
 
-        public TextField employeeSearch() {
-            return new TextField(ReportsDriversEnum.EMPLOYEE_SEARCH);
+        public TextField employeeFilter() {
+            return new TextField(ReportsDriversEnum.EMPLOYEE_FILTER);
         }
 
-        public TextField groupSearch() {
-            return new TextField(ReportsDriversEnum.GROUP_SEARCH);
+        public TextField groupFilter() {
+            return new TextField(ReportsDriversEnum.GROUP_FILTER);
         }
 
-        public TextField vehicleSearch() {
-            return new TextField(ReportsDriversEnum.VEHICLE_SEARCH);
+        public TextField vehicleFilter() {
+            return new TextField(ReportsDriversEnum.VEHICLE_FILTER);
         }
     }
 

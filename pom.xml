@@ -510,6 +510,11 @@ WWUUnm]]>
 				<artifactId>spring-security-taglibs</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-cas-client</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>com.ocpsoft</groupId>
 				<artifactId>ocpsoft-pretty-faces</artifactId>

@@ -125,20 +125,20 @@ public class PageReportsVehicles extends ReportsBar {
 
 	public class VehicleReportTextFields extends ReportsBarTextFields {
 
-		public TextField driverSearch() {
-			return new TextField(ReportsVehiclesEnum.DRIVER_SEARCH);
+		public TextField driverFilter() {
+			return new TextField(ReportsVehiclesEnum.DRIVER_FILTER);
 		}
 
-		public TextField groupSearch() {
-			return new TextField(ReportsVehiclesEnum.GROUP_SEARCH);
+		public TextField groupFilter() {
+			return new TextField(ReportsVehiclesEnum.GROUP_FILTER);
 		}
 
-		public TextField vehicleSearch() {
-			return new TextField(ReportsVehiclesEnum.VEHICLE_SEARCH);
+		public TextField vehicleFilter() {
+			return new TextField(ReportsVehiclesEnum.VEHICLE_FILTER);
 		}
 
-		public TextField yearMakeModelSearch() {
-			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_SEARCH);
+		public TextField yearMakeModelFilter() {
+			return new TextField(ReportsVehiclesEnum.YEAR_MAKE_MODEL_FILTER);
 		}
 	}
 

@@ -40,7 +40,7 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
         }
 
         public ButtonTable eventLocation() {
-            return new ButtonTable(NotificationsBarEnum.LOCATION, page);
+            return new ButtonTable(NotificationsBarEnum.LOCATION_ENTRY, page);
         }
 	}
 	protected class EventsBarTextFields extends NotificationsBarTextFields{

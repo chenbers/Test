@@ -1,90 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+<beans 
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:security="http://www.springframework.org/schema/security" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
-    <http auto-config="false" session-fixation-protection="newSession" entry-point-ref="authenticationProcessingFilterEntryPoint">
-        <!--  error if user logs in concurrently (only one login allowed at a time)  -->
-        <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
-<!--        <intercept-url pattern="/app/admin/**" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN" />-->
-<!--        <intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN" />-->
-<!--       	<intercept-url pattern="/app/liveFleet" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN" />                -->
-<!--        <intercept-url pattern="/secured/admin/**" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN" />-->
-<!--        <intercept-url pattern="/secured/**" access="ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN, ROLE_NORMAL" />-->
-<!--        <intercept-url pattern="/app/**" access="ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSER,ROLE_INTHINC, ROLE_ADMIN, ROLE_NORMAL" />-->
-        <intercept-url pattern="/app/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
-        <intercept-url pattern="/app/hos/**" access="ROLE_HOSADMIN, ROLE_HOSACCESS" />
-        <intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_ADMIN, ROLE_CRASHREPORTACCESS" />
-       	<intercept-url pattern="/app/liveFleet" access="ROLE_ADMIN, ROLE_LIVEFLEETACCESS" />                
-       	<intercept-url pattern="/app/reports/waysmartReport/**" access="ROLE_ADMIN, ROLE_WAYSMARTACCESS" />                
-        <intercept-url pattern="/secured/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
-        <intercept-url pattern="/secured/**" access="ROLE_ADMIN, ROLE_NORMAL" />
-        <intercept-url pattern="/app/**" access="ROLE_ADMIN, ROLE_NORMAL" />
-        <logout logout-success-url="/login" logout-url="/logout" />
-    </http>
 
-    <!--  Overriding the default AuthenticationProcessingFilter so that we can redirect to the correct page based on the user's group level -->
-    <!--  i.e. fleet, region, team, and eventually driver levels  -->
-    <beans:bean id="proFilter" class="com.inthinc.pro.security.ProAuthenticationProcessingFilter">
-        <beans:property name="authenticationManager" ref="authenticationManager" />
-        <beans:property name="authenticationFailureUrl" value="/login" />
-        <beans:property name="defaultTargetUrl" value="/app/dashboard/" />
-        <beans:property name="filterProcessesUrl" value="/security_filter" />
-        <beans:property name="alwaysUseDefaultTargetUrl" value="false"/>
-        <custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
 
-        <!--  our additional properties  -->
-        <beans:property name="groupDAO" ref="groupDAO" />
-        <beans:property name="userDAO" ref="userDAO" />
-    </beans:bean>
-    <beans:bean id="authenticationProcessingFilterEntryPoint" class="com.inthinc.pro.security.ProAuthenticationProcessingFilterEntryPoint">
-        <beans:property name="loginFormUrl" value="/login" />
-        <beans:property name="forceHttps" value="false" />
-    </beans:bean>
-    <beans:bean id="authenticationManager" class="org.springframework.security.providers.ProviderManager">
-        <beans:property name="providers">
-            <beans:list>
-                <beans:ref local="daoAuthenticationProvider" />
-                <beans:ref local="anonymousAuthenticationProvider" />
-            </beans:list>
-        </beans:property>
-    </beans:bean>
-    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
-        <beans:property name="userDetailsService" ref="userDetailsService" />
-        <beans:property name="passwordEncoder">
-            <beans:ref bean="passwordEncoder" />
-        </beans:property>
-    </beans:bean>
+	<security:http session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint">
+		<security:intercept-url pattern="/app/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
+		<security:intercept-url pattern="/app/hos/**" access="ROLE_HOSADMIN, ROLE_HOSACCESS" />
+		<security:intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_ADMIN, ROLE_CRASHREPORTACCESS" />
+		<security:intercept-url pattern="/app/liveFleet" access="ROLE_ADMIN, ROLE_LIVEFLEETACCESS" />
+		<security:intercept-url pattern="/app/reports/waysmartReport/**" access="ROLE_ADMIN, ROLE_WAYSMARTACCESS" />
+		<security:intercept-url pattern="/secured/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
+		<security:intercept-url pattern="/secured/**" access="ROLE_ADMIN, ROLE_NORMAL" />
+		<security:intercept-url pattern="/app/**" access="ROLE_ADMIN, ROLE_NORMAL" />
+        <security:logout logout-url="/logout" logout-success-url="${cas.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwipro" />
+	</security:http>
 
-    <!--  not sure why this need to be here, since it seems redundant with the daoAuthenticationProvider above, but throws error without it -->
-    <authentication-provider user-service-ref="userDetailsService">
-        <password-encoder ref="passwordEncoder" />
-    </authentication-provider>
-    <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
-        <beans:property name="userDAO" ref="userDAO" />
-        <beans:property name="groupDAO" ref="groupDAO"/>
-        <beans:property name="zoneDAO" ref="zoneDAO"/>
-        <beans:property name="roleDAO" ref="roleDAO"/>
-        <beans:property name="accountDAO" ref="accountDAO"/>
-        <beans:property name="driverDAO" ref="driverDAO"/>
-    </beans:bean>
+	<!-- CAS Client Configuration -->
+	<bean id="serviceProperties" class="org.springframework.security.ui.cas.ServiceProperties">
+		<property name="service" value="${cas.client.url}/tiwipro/j_spring_cas_security_check" />
+		<property name="sendRenew" value="false" />
+	</bean>
 
-    <!--  Password encryption  -->
-    <beans:bean id="jasyptPasswordEncryptor" class="org.jasypt.util.password.StrongPasswordEncryptor" />
-    <beans:bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
-        <beans:property name="passwordEncryptor">
-            <beans:ref bean="jasyptPasswordEncryptor" />
-        </beans:property>
-    </beans:bean>
+	<security:authentication-manager alias="authenticationManager"/>
 
-    <!--  Anonymous - Not sure if we need this, but leave it for now.  -->
-    <beans:bean id="anonymousAuthenticationProvider" class="org.springframework.security.providers.anonymous.AnonymousAuthenticationProvider">
-        <beans:property name="key" value="anonymous" />
-    </beans:bean>
-    <beans:bean id="anonymousProcessingFilter" class="org.springframework.security.providers.anonymous.AnonymousProcessingFilter">
-        <beans:property name="key" value="anonymous" />
-        <beans:property name="userAttribute" value="anonymous,ROLE_ANONYMOUS" />
-        <custom-filter position="ANONYMOUS_FILTER" />
-    </beans:bean>
-    <beans:bean id="authErrorBean" class="com.inthinc.pro.security.AuthErrorBean" scope="request" init-method="init">
-    </beans:bean>
-</beans:beans>
+	<bean id="casProcessingFilter" class="org.springframework.security.ui.cas.CasProcessingFilter">
+		<security:custom-filter after="CAS_PROCESSING_FILTER" />
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationFailureUrl" value="/casfailed.jsp" />
+		<property name="defaultTargetUrl" value="/app/dashboard" />
+	</bean>
+
+	<bean id="casProcessingFilterEntryPoint" class="org.springframework.security.ui.cas.CasProcessingFilterEntryPoint">
+		<property name="loginUrl" value="${cas.server.url}/cas/login" />
+		<property name="serviceProperties" ref="serviceProperties" />
+	</bean>
+
+	<bean id="casAuthenticationProvider" class="org.springframework.security.providers.cas.CasAuthenticationProvider">
+		<security:custom-authentication-provider />
+		<property name="userDetailsService" ref="userDetailsService" />
+		<property name="serviceProperties" ref="serviceProperties" />
+		<property name="ticketValidator">
+			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+				<constructor-arg index="0" value="${cas.server.url}/cas" />
+			</bean>
+		</property>
+		<property name="key" value="web_auth_provider_only" />
+	</bean>
+    <bean id="casSingleSignOutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter">
+        <security:custom-filter before="CAS_PROCESSING_FILTER"/>
+    </bean>
+
+	<!-- Overriding the default AuthenticationProcessingFilter so that we can redirect to the correct page based on the user's group level -->
+	<!-- i.e. fleet, region, team, and eventually driver levels -->
+<!-- 	<bean id="proFilter" class="com.inthinc.pro.security.ProAuthenticationProcessingFilter"> -->
+<!-- 		<property name="authenticationManager" ref="authenticationManager" /> -->
+<!-- 		<property name="authenticationFailureUrl" value="/login" /> -->
+<!-- 		<property name="defaultTargetUrl" value="/app/dashboard/" /> -->
+<!-- 		<property name="filterProcessesUrl" value="/security_filter" /> -->
+<!-- 		<property name="alwaysUseDefaultTargetUrl" value="false" /> -->
+<!-- 		<security:custom-filter position="AUTHENTICATION_PROCESSING_FILTER" /> -->
+
+ 		<!-- our additional properties -->
+<!-- 		<property name="groupDAO" ref="groupDAO" /> -->
+<!-- 		<property name="userDAO" ref="userDAO" /> -->
+<!-- 	</bean> -->
+
+	<!-- <bean id="authenticationProcessingFilterEntryPoint" class="com.inthinc.pro.security.ProAuthenticationProcessingFilterEntryPoint"> -->
+	<!-- <property name="loginFormUrl" value="/login" /> -->
+	<!-- <property name="forceHttps" value="false" /> -->
+	<!-- </bean> -->
+<!-- 	<bean id="authenticationManager" class="org.springframework.security.providers.ProviderManager"> -->
+<!-- 		<property name="providers"> -->
+<!-- 			<list> -->
+<!-- 				<ref local="daoAuthenticationProvider" /> -->
+<!-- 				<ref local="anonymousAuthenticationProvider" /> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider"> -->
+<!-- 		<property name="userDetailsService" ref="userDetailsService" /> -->
+<!-- 		<property name="passwordEncoder"> -->
+<!-- 			<ref bean="passwordEncoder" /> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+	<!-- not sure why this need to be here, since it seems redundant with the daoAuthenticationProvider above, but throws error without it -->
+	<security:authentication-provider user-service-ref="userDetailsService">
+		<security:password-encoder ref="passwordEncoder" />
+	</security:authentication-provider>
+	<bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
+		<property name="userDAO" ref="userDAO" />
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="zoneDAO" ref="zoneDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="accountDAO" ref="accountDAO" />
+		<property name="driverDAO" ref="driverDAO" />
+	</bean>
+
+	<!-- Password encryption -->
+	<bean id="jasyptPasswordEncryptor" class="org.jasypt.util.password.StrongPasswordEncryptor" />
+	<bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
+		<property name="passwordEncryptor">
+			<ref bean="jasyptPasswordEncryptor" />
+		</property>
+	</bean>
+
+	<!-- Anonymous - Not sure if we need this, but leave it for now. -->
+	<bean id="anonymousAuthenticationProvider" class="org.springframework.security.providers.anonymous.AnonymousAuthenticationProvider">
+		<property name="key" value="anonymous" />
+	</bean>
+	<bean id="anonymousProcessingFilter" class="org.springframework.security.providers.anonymous.AnonymousProcessingFilter">
+		<property name="key" value="anonymous" />
+		<property name="userAttribute" value="anonymous,ROLE_ANONYMOUS" />
+		<security:custom-filter position="ANONYMOUS_FILTER" />
+	</bean>
+	<bean id="authErrorBean" class="com.inthinc.pro.security.AuthErrorBean" scope="request" init-method="init">
+	</bean>
+</beans>
