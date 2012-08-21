@@ -93,6 +93,7 @@
 		<hos.version>0.0.16</hos.version>
 		<selenium.version>2.24.1</selenium.version>
 		<jbehave.core.version>3.6.7</jbehave.core.version>
+        <jacksonVersion>2.0.2</jacksonVersion>
 	</properties>
 	<build>
 		<finalName>pro</finalName>
@@ -510,6 +511,11 @@ WWUUnm]]>
 				<artifactId>spring-security-taglibs</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-cas-client</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>com.ocpsoft</groupId>
 				<artifactId>ocpsoft-pretty-faces</artifactId>
@@ -588,6 +594,22 @@ WWUUnm]]>
 				<artifactId>hos</artifactId>
 				<version>${hos.version}</version>
 			</dependency>
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jacksonVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jacksonVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jacksonVersion}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

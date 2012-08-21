@@ -226,4 +226,10 @@ public class DHXDropDown extends DropDown implements Selectable {
 		return getSelenium().isVisible(makeDropDown);
 	}
 
+    public String getText(){
+    	assignIDs();
+    	String xpath = makeXpath("@class='dhx_selected_option'");
+    	return getSelenium().getText(xpath);
+    }
+
 }

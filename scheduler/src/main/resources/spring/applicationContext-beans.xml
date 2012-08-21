@@ -59,6 +59,7 @@
 				<entry key="alertMessageDAO" value-ref="alertMessageDAO" />
 				<entry key="mailDispatcher" value-ref="mailDispatcher" />
 				<entry key="phoneDispatcher" value-ref="phoneDispatcher" />
+				<entry key="formSubmissionsURL" value="${forms.submissions.path}"/>
 			</map>
 		</property>
 	</bean>

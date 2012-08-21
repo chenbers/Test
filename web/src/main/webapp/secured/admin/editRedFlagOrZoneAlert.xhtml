@@ -882,6 +882,45 @@
                                   </table>
                               </h:panelGroup>
                            </a4j:outputPanel>
+                        <a4j:outputPanel id="editRedFlag-dvir">
+                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'DVIR'}">
+
+                             <div class="add_section_title">
+                          
+							           <h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.eventSubCategory]}" />
+							</div>
+                    			<div class="spacer"></div>
+                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                              <tr>
+                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              </tr>
+                                 <tr class="tableOdd">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox id="preFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_FAIL']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRPreTripFailed}" />
+                                  </td>
+                                  </tr>
+                                <tr class="tableEven">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                     <h:selectBooleanCheckbox id="prePassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_PASS']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRPreTripPassed}" />
+                                  </td>
+                                  </tr>
+                                <tr class="tableOdd">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox id="postFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_FAIL']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRPostTripFailed}" />
+                                  </td>
+                                  </tr>
+                                <tr class="tableEven">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                     <h:selectBooleanCheckbox id="postPassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_PASS']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRPostTripPassed}" />
+                                  </td>
+                                  </tr>
+                              </table>
+                           </h:panelGroup>
+                        </a4j:outputPanel>
 
 <!--                        <a4j:outputPanel id="editRedFlag-offhours">-->
 <!--                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory eq 'OFFHOURS'}">-->

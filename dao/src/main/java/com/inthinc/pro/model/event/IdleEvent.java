@@ -82,6 +82,17 @@ public class IdleEvent extends Event
 		return EventType.IDLING;
 	}
     
+    public Integer getTotalIdling(){
+        int totalIdling = 0;
+
+        if (getHighIdle() != null) {
+            totalIdling += getHighIdle();
+        }
+        if (getLowIdle() != null) {
+            totalIdling += getLowIdle();
+        }
+        return totalIdling;
+    }
     @Override
     public String getDetails(String formatStr,MeasurementType measurementType,String... mphString)
     {

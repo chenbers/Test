@@ -50,15 +50,15 @@ Then I validate I am on the Reports Devices page
 And I validate the Edit Columns link is present
 And I validate the Tools button is present
 And I validate the Counter text is present
-And I validate the Device ID Sort link is present
-And I validate the Assigned Vehicle Sort link is present
-And I validate the IMEI Sort link is present
-And I validate the Device Phone Sort link is present
+And I validate the Sort By Device ID link is present
+And I validate the Sort By Assigned Vehicle link is present
+And I validate the Sort By IMEI link is present
+And I validate the Sort By Device Phone link is present
 And I validate the Status Header text is present
-And I validate the Device ID Search textfield is present
-And I validate the Assigned Vehicle Search textfield is present
-And I validate the IMEI Search textfield is present
-And I validate the Device Phone Number Search textfield is present
+And I validate the Device ID Filter textfield is present
+And I validate the Assigned Vehicle Filter textfield is present
+And I validate the IMEI Filter textfield is present
+And I validate the Device Phone Number Filter textfield is present
 And I validate the Status dropdown is present
 
 Scenario: TC1530: Reports - Devices - Edit Columns - Cancel Button (Changes)

@@ -61,6 +61,22 @@ public class AlertMessage
     {
         
     }
+    public AlertMessage(Integer messageID, AlertMessageDeliveryType alertMessageDeliveryType, AlertMessageType alertMessageType, RedFlagLevel level, String address, String message, Long noteID,
+            Integer personID, Integer alertID, Integer zoneID, Boolean acknowledge, AlertEscalationStatus status) {
+        super();
+        this.messageID = messageID;
+        this.alertMessageDeliveryType = alertMessageDeliveryType;
+        this.alertMessageType = alertMessageType;
+        this.level = level;
+        this.address = address;
+        this.message = message;
+        this.noteID = noteID;
+        this.personID = personID;
+        this.alertID = alertID;
+        this.zoneID = zoneID;
+        this.acknowledge = acknowledge;
+        this.status = status;
+    }
     public String getAddress()
     {
         return address;

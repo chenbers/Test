@@ -13,9 +13,22 @@ public class AlertMessageBuilder implements Comparable<AlertMessageBuilder>
     private Locale  locale;
     private String  address;
     private AlertMessageType alertMessageType;
-    private List<String> paramterList;
+    private List<String> parameterList;
     private Boolean acknowledge;
     
+    public AlertMessageBuilder(Integer alertID, Integer messageID, Locale locale, String address, AlertMessageType alertMessageType, Boolean acknowledge,List<String> parameterList) {
+        super();
+        this.alertID = alertID;
+        this.messageID = messageID;
+        this.locale = locale;
+        this.address = address;
+        this.alertMessageType = alertMessageType;
+        this.acknowledge = acknowledge;
+        this.parameterList = parameterList;
+    }
+    public AlertMessageBuilder() {
+        super();
+    }
     public void setAlertID(Integer alertID)
     {
         this.alertID = alertID;
@@ -40,13 +53,13 @@ public class AlertMessageBuilder implements Comparable<AlertMessageBuilder>
     {
         return alertMessageType;
     }
-    public void setParamterList(List<String> paramterList)
+    public void setParamterList(List<String> parameterList)
     {
-        this.paramterList = paramterList;
+        this.parameterList = parameterList;
     }
     public List<String> getParamterList()
     {
-        return paramterList;
+        return parameterList;
     }
     public void setAddress(String address)
     {

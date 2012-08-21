@@ -756,16 +756,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public CoreMethodInterface tabKey() {
-        WebElement first = getActiveElement();
-        if (browser == Browsers.INTERNET_EXPLORER){
-            first.sendKeys(Keys.TAB);
-        }
-        
-        else {
-            getActiveElement().sendKeys(Keys.TAB);
-        }
-        AutomationThread.pause(500l);
-        
+        getActiveElement().sendKeys(Keys.TAB);
+        waitForPageToLoad();
         return this;
     }
 

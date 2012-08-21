@@ -29,13 +29,10 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
         }
         
     }
-    public class DiagnosticsTextFields extends EventsBarTextFields{
-    }
-    public class DiagnosticsButtons extends EventsBarButtons{
-    }
-    public class DiagnosticsDropDowns extends EventsBarDropDowns{
-        
-    }
+    public class DiagnosticsTextFields extends EventsBarTextFields{}
+    public class DiagnosticsButtons extends EventsBarButtons{}
+    public class DiagnosticsDropDowns extends EventsBarDropDowns{}
+    
     public class DiagnosticsPopUps extends MastheadPopUps{
         
         public DiagnosticsPopUps() {
