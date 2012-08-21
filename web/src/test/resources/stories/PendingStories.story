@@ -355,7 +355,7 @@ And I select "Alma Mater" from the Driver dropdown
 And I click the Find Address button
 And I type "4225 Lake Park Blvd" into the Find Address textfield
 And I click the Locate button
-And I click the Top Save button
+And I click the Save Top button
 And I click the Back link
 And I select "Top - Test Group WR" from the Team dropdown
 And I type "TIWI00" into the Search textfield

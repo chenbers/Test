@@ -14,7 +14,7 @@ And I type "TIWI00" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Add button
 And I select row 1 from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 Then I validate the Error Master text is "2 error(s) occurred. Please verify all the data entered is correct."
 And I validate the Error Vehicle Fuel text is "Vehicle fuel is required."
 And I validate the Error Driver text is "Driver is required"
@@ -23,7 +23,7 @@ And I click the Add button
 And I select 1 day in the future from the Date dropdown
 And I type "5627" into the Vehicle Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I validate the Error Master text is "1 error(s) occurred. Please verify all the data entered is correct." 
 And I validate the Error Date text is "Date/Time in the future is not valid."
 
@@ -80,7 +80,7 @@ And I save the Minutes textfield as MINUTES
 And I save the Seconds textfield as SECONDS
 And I save the Am Pm dropdown as AMPM
 And I combine DATE with " " with HOURS with ":" with MINUTES with ":" with SECONDS with " " with AMPM and save them as DATETIME
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I click the 1st Row of the Entry Edit link
 And I validate the Trailer textfield is "5631"
@@ -119,7 +119,7 @@ And I type "111" into the Vehicle Fuel textfield
 And I type "111" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown 
 Then I validate the Entry Location text is present
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I save the 1st Row of the Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
@@ -170,7 +170,7 @@ And I type "222" into the Trailer textfield
 And I type "222" into the Vehicle Fuel textfield
 And I type "222" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I save the 1st Row of the Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
@@ -185,7 +185,7 @@ And I type "5630" into the Trailer textfield
 And I type "5630" into the Vehicle Fuel textfield
 And I type "5630" into the Trailer Fuel textfield
 And I select "tiwi 01" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 Then I validate the 1st Row of the Date Time text is not DATETIME
 And I validate the 1st Row of the Entry Driver text is not DRIVER
@@ -224,7 +224,7 @@ And I type "5633" into the Trailer textfield
 And I type "5633" into the Vehicle Fuel textfield
 And I type "5633" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I save the 1st Row of the Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
@@ -278,14 +278,14 @@ And I type "5629" into the Trailer textfield
 And I type "5629" into the Vehicle Fuel textfield
 And I type "5629" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I click the Add button
 And I type "1111" into the Trailer textfield
 And I type "1111" into the Vehicle Fuel textfield
 And I type "1111" into the Trailer Fuel textfield
 And I select "tiwi 01" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I save the 1st Row of the Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
@@ -400,28 +400,28 @@ And I type "123ABC" into the Trailer textfield
 And I type "abcdefg" into the Vehicle Fuel textfield
 And I type "abcdefg" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 Then I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
 And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
 And I validate Error Trailer Fuel text is "Must be a number greater than zero"
 And I type "&$#!" into the Vehicle Fuel textfield
 And I type "&$#!" into the Trailer Fuel textfield
-And I click the Top Save button
+And I click the Save Top button
 And I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
 And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
 And I validate Error Trailer Fuel text is "Must be a number greater than zero"
 And I type "-1" into the Vehicle Fuel textfield
 And I type "-1" into the Trailer Fuel textfield
-And I click the Top Save button
+And I click the Save Top button
 And I validate Error Master text is "3 error(s) occurred. Please verify all the data entered is correct."
 And I validate Error Both Vehicle And Trailer Fuel text is "Vehicle or Trailer fuel required."
 And I validate Error Vehicle Fuel text is "Must be a number greater than zero"
 And I validate Error Trailer Fuel text is "Must be a number greater than zero"
 And I type "55.55" into the Vehicle Fuel textfield
 And I type "55.55" into the Trailer Fuel textfield
-And I click the Top Save button
+And I click the Save Top button
 And I validate I am on the HOS Fuel Stops page
 And I validate the 1st Row of the Entry Vehicle Fuel text contains "55.5"
 And I validate the 1st Row of the Entry Vehicle Fuel text contains "Liters"
@@ -432,7 +432,7 @@ And I type "456ABC" into the Trailer textfield
 And I type "5" into the Vehicle Fuel textfield
 And I type "5" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I validate the 1st Row of the Entry Vehicle Fuel text is "5.00 Liters"
 And I validate the 1st Row of the Entry Trailer Fuel text is "5.00 Liters"
@@ -449,7 +449,7 @@ And I type "789ABC" into the Trailer textfield
 And I type "55.55" into the Vehicle Fuel textfield
 And I type "55.55" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I validate the 1st Row of the Entry Vehicle Fuel text is "55.55 Gallons"
 And I validate the 1st Row of the Entry Trailer Fuel text is "55.55 Gallons"
@@ -458,7 +458,7 @@ And I type "123DEF" into the Trailer textfield
 And I type "5" into the Vehicle Fuel textfield
 And I type "5" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I validate the 1st Row of the Entry Vehicle Fuel text is "5.00 Gallons"
 And I validate the 1st Row of the Entry Trailer Fuel text is "5.00 Gallons"
@@ -485,11 +485,11 @@ And I type "123ABC" into the Trailer textfield
 And I type "6" into the Vehicle Fuel textfield
 And I type "6" into the Trailer Fuel textfield
 And I select "tiwi 01" from the Driver dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I click the 1st Row of the Entry Edit link
 And I select 30 days in the past from the Date dropdown
-And I click the Top Save button
+And I click the Save Top button
 And I click the Refresh button
 And I select 31 days in the past from the Start Date dropdown
 And I click the Refresh button
