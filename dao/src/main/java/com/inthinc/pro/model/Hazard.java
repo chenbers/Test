@@ -1,29 +1,31 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
 
 public class Hazard {
-    int startTime;
-    int endTime;
+    Date startTime;
+    Date endTime;
     int radius;
     int type;
     String description = "";
     int driverID;
     int vehicleID;
     int deviceID;
-    float latitude;
-    float longitude;
+    double latitude;
+    double longitude;
     int stateID; 
     String location = "";
-    public int getStartTime() {
+
+    public Date getStartTime() {
         return startTime;
     }
-    public void setStartTime(int startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-    public int getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
-    public void setEndTime(int endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
     public int getRadius() {
@@ -62,16 +64,16 @@ public class Hazard {
     public void setDeviceID(int deviceID) {
         this.deviceID = deviceID;
     }
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
     public int getStateID() {
