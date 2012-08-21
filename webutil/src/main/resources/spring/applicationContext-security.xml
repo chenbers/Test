@@ -8,7 +8,7 @@
                         
     <security:http session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint">
         <security:intercept-url pattern="/secured/**" access="ROLE_ADMIN" />
-        <security:logout logout-url="/logout" logout-success-url="${cas.server.url}/cas/logout" />
+        <security:logout logout-url="/logout" logout-success-url="${cas.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwiproutil" />
     </security:http>
 
 	<!-- CAS Client Configuration -->

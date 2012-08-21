@@ -29,5 +29,4 @@ public class EmailAlertJob extends BaseAlertJob
         logger.debug("EmailAlertJob: END");
 
     }
-
 }

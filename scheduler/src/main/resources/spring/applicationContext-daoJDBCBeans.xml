@@ -25,6 +25,7 @@ default-autowire="byName">
     	<property name="eventDAO"      ref="eventDAO"></property>
     	<property name="zoneDAO"      ref="zoneDAO"></property>
     	<property name="addressLookup" ref="${reportAddressLookup}"></property>
+    	<property name="formSubmissionsURL" value="${forms.submissions.path}"></property>
   </bean>
   <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
     <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO"/>

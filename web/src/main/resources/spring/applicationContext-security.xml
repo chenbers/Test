@@ -16,7 +16,7 @@
 		<security:intercept-url pattern="/secured/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
 		<security:intercept-url pattern="/secured/**" access="ROLE_ADMIN, ROLE_NORMAL" />
 		<security:intercept-url pattern="/app/**" access="ROLE_ADMIN, ROLE_NORMAL" />
-        <security:logout logout-url="/logout" logout-success-url="${cas.server.url}/cas/logout" />
+        <security:logout logout-url="/logout" logout-success-url="${cas.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwipro" />
 	</security:http>
 
 	<!-- CAS Client Configuration -->

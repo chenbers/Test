@@ -69,7 +69,7 @@ import com.inthinc.pro.notegen.NoteGenerator;
 import com.inthinc.pro.notegen.TiwiProNoteSender;
 import com.inthinc.pro.notegen.WSNoteSender;
 
-@Ignore
+//@Ignore
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
@@ -511,7 +511,19 @@ ALERT_TYPE_IGNITION_ON
                 case ALERT_TYPE_PANIC:
                     eventTypes.add(EventType.PANIC); 
                     break;
-                default:
+                case ALERT_TYPE_DVIR_PRE_TRIP_FAIL:
+                    eventTypes.add(EventType.DVIR_PRE_TRIP_FAIL); 
+                    break;
+                case ALERT_TYPE_DVIR_PRE_TRIP_PASS:
+                    eventTypes.add(EventType.DVIR_PRE_TRIP_PASS); 
+                    break;
+                case ALERT_TYPE_DVIR_POST_TRIP_FAIL:
+                    eventTypes.add(EventType.DVIR_POST_TRIP_FAIL); 
+                    break;
+                case ALERT_TYPE_DVIR_POST_TRIP_PASS:
+                    eventTypes.add(EventType.DVIR_POST_TRIP_PASS); 
+                    break;
+                 default:
                     eventTypes.add(EventType.SPEEDING);
             }
         }
@@ -737,6 +749,20 @@ ALERT_TYPE_IGNITION_ON
     	else if (eventType.equals(EventType.SPEEDING) )
 			event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
 			        DEFAULT_LAT, DEFAULT_LNG, 100, 80, 70, 100, 100);
+    //  TODO Check this is the correct note type!
+        else if (eventType.equals(EventType.DVIR_PRE_TRIP_FAIL) )
+            event = new Event(0l, 0, NoteType.NEW_DRIVER, new Date(), 100, 1000, 
+                    DEFAULT_LAT, DEFAULT_LNG);
+        else if (eventType.equals(EventType.DVIR_PRE_TRIP_PASS) )
+            event = new Event(0l, 0, NoteType.NEW_DRIVER, new Date(), 100, 1000, 
+                    DEFAULT_LAT, DEFAULT_LNG);
+//  TODO Add note type when known
+//        else if (eventType.equals(EventType.DVIR_POST_TRIP_FAIL) )
+//            event = new Event(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
+//                    DEFAULT_LAT, DEFAULT_LNG);
+//        else if (eventType.equals(EventType.DVIR_POST_TRIP_PASS) )
+//            event = new Event(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
+//                    DEFAULT_LAT, DEFAULT_LNG);
     	else fail("Code does not support eventType: " + eventType);
     	event.setHeading(DEFAULT_HEADING);
     	event.setSats(DEFAULT_SATS);

@@ -24,7 +24,6 @@ public class BaseAlertJob extends QuartzJobBean
     private PhoneDispatcher phoneDispatcher;
     
     
-
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
 //      SimpleDateFormat formatter = new SimpleDateFormat("E, MMM d, h:mm a (z)");
@@ -65,28 +64,6 @@ public class BaseAlertJob extends QuartzJobBean
     protected String getSubject(AlertMessageBuilder message)
     {
         return LocalizedMessage.getString("SUBJECT_" + message.getAlertMessageType().name(),message.getLocale());
-        // TODO: I think we should do a lookup in a messages.properties
-/*        
-        switch (message.getAlertTypeID())
-        {
-            case AlertPref.ALERT_TYPE_SPEEDING:
-                return "Tiwi Alert: Speeding";
-            case AlertPref.ALERT_TYPE_AGGRESSIVE_DRIVING:
-                return "Tiwi Alert: Aggressive Driving";
-            case AlertPref.ALERT_TYPE_SEATBELT:
-                return "Tiwi Alert: Seatbelt";
-            case AlertPref.ALERT_TYPE_ENTER_ZONE:
-                return "Tiwi Alert: Zone Arrival";
-            case AlertPref.ALERT_TYPE_EXIT_ZONE:
-                return "Tiwi Alert: Zone Departure";
-            case AlertPref.ALERT_TYPE_LOW_BATTERY:
-                return "Tiwi Alert: Low Battery";
-            case AlertPref.ALERT_TYPE_TAMPERING:
-                return "Tiwi Alert: Tampering";
-            
-        }
-*/        
-//        return "tiwipro Alert";
     }
 
     public AlertMessageDAO getAlertMessageDAO()

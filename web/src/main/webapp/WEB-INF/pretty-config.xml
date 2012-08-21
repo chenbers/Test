@@ -40,6 +40,10 @@
 	</url-mapping>
 	
     <url-mapping id="init-dashboard">
+        <pattern>/app/dashboard</pattern>
+        <view-id>#{dashBoardBean.getViewPath}</view-id>    
+    </url-mapping>
+    <url-mapping id="init-dashboard">
         <pattern>/app/dashboard/</pattern>
         <view-id>#{dashBoardBean.getViewPath}</view-id>    
     </url-mapping>
