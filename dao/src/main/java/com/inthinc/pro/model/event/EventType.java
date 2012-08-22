@@ -58,10 +58,7 @@ public enum EventType implements BaseEnum {
     INVALID_DRIVER(42,  EnumSet.of(EventAccountFilter.WAYSMART)),
     INVALID_OCCUPANT(43,  EnumSet.of(EventAccountFilter.WAYSMART)),
     RF_SWITCH(44),
-    DVIR_PRE_TRIP_FAIL(45),
-    DVIR_PRE_TRIP_PASS(46),
-    DVIR_POST_TRIP_FAIL(47),
-    DVIR_POST_TRIP_PASS(48);
+    DVIR(45);
 
     
     private int code;
