@@ -500,7 +500,7 @@
 	
     <url-mapping id="adminHazards">
         <pattern>/app/admin/hazards</pattern>
-        <view-id>/secured/admin/editHazard.faces</view-id>
+        <view-id>/secured/admin/listHazards.faces</view-id>
     </url-mapping>
     <url-mapping id="adminEditHazard">
         <pattern>/app/admin/editHazard</pattern>
