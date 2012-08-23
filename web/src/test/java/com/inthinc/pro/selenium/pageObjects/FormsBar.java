@@ -7,13 +7,13 @@ public abstract class FormsBar extends NavigationBar {
 
     protected String page = "forms";
     
-    protected class FormsBarButtons extends NavigationBarButtons{}
-    protected class FormsBarTextFields extends NavigationBarTextFields{}
-    protected class FormsBarTexts extends NavigationBarTexts{}
-    protected class FormsBarDropDowns extends NavigationBarDropDowns{}
+    protected class FormsBarButtons{}
+    protected class FormsBarTextFields{}
+    protected class FormsBarTexts{}
+    protected class FormsBarDropDowns{}
     
 
-    protected class FormsBarLinks extends NavigationBarLinks{
+    protected class FormsBarLinks {
         
         public TextLinkContextSense addForm(){
             return new TextLinkContextSense(FormsBarEnum.ADD_FORM, page);
@@ -22,6 +22,7 @@ public abstract class FormsBar extends NavigationBar {
         public TextLinkContextSense submissions() {
             return new TextLinkContextSense(FormsBarEnum.SUBMISSIONS, page);
         }
+
     }
 	
 }

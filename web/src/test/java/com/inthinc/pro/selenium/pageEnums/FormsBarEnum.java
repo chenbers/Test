@@ -7,8 +7,7 @@ public enum FormsBarEnum implements SeleniumEnums {
     ACCOUNT_IMAGE(null, ""),
     ADD_FORM("Account", ""),
     SUBMISSIONS("Submissions", ""),
-    EDIT_COLUMNS("Edit Columns", ""),
-    
+
     ;
 
     private String text, url;
