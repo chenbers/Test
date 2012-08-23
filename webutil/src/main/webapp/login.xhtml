@@ -1,31 +1,7 @@
-<ui:composition template="/template/baseTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
-
-    <ui:param name="panelTitle" value="Main Menu" />
-    <ui:param name="groupSelected" value="MAIN" />
-    <ui:define name="content">
-    	<div id="mtest" style="display:block;margin: 10px auto 20px;width: 1220px;">
-        <rich:panel id="login_panel">
-            <f:facet name="header">
-                <h:outputText value="Login" />
-            </f:facet>
-            <form action="j_spring_security_check" method="post">
-                <h:panelGrid columns="2">
-                    <h:outputText value="Username:" />
-                    <h:inputText id="j_username" />
-                    <h:outputText value="Password:" />
-                    <h:inputSecret id="j_password" />
-                    <h:outputText value="" />
-                    <button type="submit" id="login_btn">Login</button>
-                </h:panelGrid>
-            </form>
-        </rich:panel>
-        </div>
-		<rich:jQuery selector="document" query="ready(
-			function()
-			{
-				jQuery('#j_username').focus();	
-			}		
-		)"/>
-    </ui:define>
-</ui:composition>
+<html>
+<head>
+	<meta http-equiv="Refresh" content="0;url=secured/dao.faces"/>
+</head>
+<body>
+</body>
+</html>
