@@ -1,47 +1,50 @@
  package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
-import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.FormsAddEnum;
 
 public class PageFormsAdd extends FormsTables {
 
     public PageFormsAdd() {
-    	checkMe.add(FormsAddEnum.TITLE);
-        checkMe.add(FormsAddEnum.SAVE_TOP);    
-        checkMe.add(FormsAddEnum.CANCEL_TOP);
-    	checkMe.add(FormsAddEnum.SAVE_BOTTOM);    
-        checkMe.add(FormsAddEnum.CANCEL_BOTTOM);
-        checkMe.add(FormsAddEnum.NAME_FIELD);
-        checkMe.add(FormsAddEnum.DESCRIPTION_FIELD);
-        checkMe.add(FormsAddEnum.ROUTE_TRIGGER_EXPRESSION_FIELD);
-        checkMe.add(FormsAddEnum.VEHICLE_TAGS_DROPDOWN);
-        checkMe.add(FormsAddEnum.FILTER_GROUPS_FIELD);
-        checkMe.add(FormsAddEnum.DATANAME_FIELD);
-        checkMe.add(FormsAddEnum.NAME_LABEL);
-        checkMe.add(FormsAddEnum.DESCRIPTION_LABEL);
-        checkMe.add(FormsAddEnum.TRIGGER_LABEL);        
-        checkMe.add(FormsAddEnum.ROUTE_LABEL);          
-        checkMe.add(FormsAddEnum.VERSION_LABEL);         
-        checkMe.add(FormsAddEnum.HOS_LABEL);   
-        checkMe.add(FormsAddEnum.VEHICLE_TAGS_LABEL);   
-        checkMe.add(FormsAddEnum.FILTER_GROUPS_LABEL);   
-        checkMe.add(FormsAddEnum.PROPERTIES_LABEL);   
-        checkMe.add(FormsAddEnum.VIEW_PROPERTIES_LABEL);   
-        checkMe.add(FormsAddEnum.CAPTION_FIELD);
-        checkMe.add(FormsAddEnum.TRIGGER_DROPDOWN);
-        checkMe.add(FormsAddEnum.HOS_DROPDOWN);
-        checkMe.add(FormsAddEnum.CHECKBOX);
-        checkMe.add(FormsAddEnum.PREVIEW_AREA);
+//    	  checkMe.add(FormsAddEnum.TITLE);
+//        checkMe.add(FormsAddEnum.SAVE_TOP);    
+//        checkMe.add(FormsAddEnum.CANCEL_TOP);
+//    	  checkMe.add(FormsAddEnum.SAVE_BOTTOM);    
+//        checkMe.add(FormsAddEnum.CANCEL_BOTTOM);
+//        checkMe.add(FormsAddEnum.NAME_FIELD);
+//        checkMe.add(FormsAddEnum.DESCRIPTION_FIELD);
+//        checkMe.add(FormsAddEnum.ROUTE_TRIGGER_EXPRESSION_FIELD);
+//        checkMe.add(FormsAddEnum.VEHICLE_TAGS_DROPDOWN);
+//        checkMe.add(FormsAddEnum.FILTER_GROUPS_FIELD);
+//        checkMe.add(FormsAddEnum.DATANAME_FIELD);
+//        checkMe.add(FormsAddEnum.NAME_LABEL);
+//        checkMe.add(FormsAddEnum.DESCRIPTION_LABEL);
+//        checkMe.add(FormsAddEnum.TRIGGER_LABEL);        
+//        checkMe.add(FormsAddEnum.ROUTE_LABEL);          
+//        checkMe.add(FormsAddEnum.VERSION_LABEL);         
+//        checkMe.add(FormsAddEnum.HOS_LABEL);   
+//        checkMe.add(FormsAddEnum.VEHICLE_TAGS_LABEL);   
+//        checkMe.add(FormsAddEnum.FILTER_GROUPS_LABEL);   
+//        checkMe.add(FormsAddEnum.PROPERTIES_LABEL);   
+//        checkMe.add(FormsAddEnum.VIEW_PROPERTIES_LABEL);   
+//        checkMe.add(FormsAddEnum.CAPTION_FIELD);
+//        checkMe.add(FormsAddEnum.TRIGGER_DROPDOWN);
+//        checkMe.add(FormsAddEnum.HOS_DROPDOWN);
+//        checkMe.add(FormsAddEnum.RANGE_NUMERIC_CHECKBOX);
+//        checkMe.add(FormsAddEnum.PREVIEW_AREA);
     }
 
-    public class FormsAddButtons extends NavigationBarButtons {
+    public class FormsAddButtons {
 
-        public TextButton deleteTop() {
+        public TextButton saveTop() {
             return new TextButton(FormsAddEnum.SAVE_TOP);
         }
         
@@ -49,12 +52,20 @@ public class PageFormsAdd extends FormsTables {
         	return new TextButton(FormsAddEnum.CANCEL_TOP);
         }
         
-        public TextButton delete() {
+        public TextButton saveBottom() {
             return new TextButton(FormsAddEnum.SAVE_BOTTOM);
         }
         
-        public TextButton cancel() {
+        public TextButton cancelBottom() {
         	return new TextButton(FormsAddEnum.CANCEL_BOTTOM);
+        }
+        
+        public TextButton delete() {
+        	return new TextButton(FormsAddEnum.DELETE_CONTROL);
+        }
+        
+        public TextButton advancedArrow() {
+        	return new TextButton(FormsAddEnum.ADVANCED_ARROW);
         }
 
     }
@@ -62,11 +73,64 @@ public class PageFormsAdd extends FormsTables {
     public class FormsAddCheckBoxes extends FormsTablesCheckBoxes {
     	
     	public CheckBox groups() {
-    		return new CheckBox(FormsAddEnum.CHECKBOX);
+    		return new CheckBox(FormsAddEnum.GROUPS_CHECKBOX);
     	}
+    	
+    	public CheckBox readOnly() {
+    		return new CheckBox(FormsAddEnum.READ_ONLY_CHECKBOX);
+    	}
+    	
+    	public CheckBox required() {
+    		return new CheckBox(FormsAddEnum.REQUIRED_CHECKBOX);
+    	}
+    	
+    	public CheckBox lengthEnable() {
+    		return new CheckBox(FormsAddEnum.LENGTH_CHECKBOX);
+    	}
+    	
+    	public CheckBox rangeNumeric() {
+    		return new CheckBox(FormsAddEnum.RANGE_NUMERIC_CHECKBOX);
+    	}
+    	
+    	public CheckBox minimumTextInclusive() {
+    		return new CheckBox(FormsAddEnum.MINIMUM_TEXT_INCLUSIVE_CHECKBOX);
+    	}
+    	
+    	public CheckBox maximumTextInclusive() {
+    		return new CheckBox(FormsAddEnum.MAXIMUM_TEXT_INCLUSIVE_CHECKBOX);
+    	}
+    	
+    	public CheckBox minimumNumericInclusive() {
+    		return new CheckBox(FormsAddEnum.MINIMUM_NUMERIC_INCLUSIVE_CHECKBOX);
+    	}
+    	
+    	public CheckBox maximumNumericInclusive() {
+    		return new CheckBox(FormsAddEnum.MAXIMUM_NUMERIC_INCLUSIVE_CHECKBOX);
+    	}
+    	
+    	public CheckBox rangeDate() {
+    		return new CheckBox(FormsAddEnum.RANGE_DATE_CHECKBOX);
+    	}
+    	
+    	public CheckBox minimumDateInclusive() {
+    		return new CheckBox(FormsAddEnum.MINIMUM_DATE_INCLUSIVE_CHECKBOX);
+    	}
+    	
+    	public CheckBox maximumDateInclusive() {
+    		return new CheckBox(FormsAddEnum.MAXIMUM_DATE_INCLUSIVE_CHECKBOX);
+    	}
+    	
+    	public CheckBox looped() {
+    		return new CheckBox(FormsAddEnum.LOOPED_CHECKBOX);
+    	}
+    	
+    	public CheckBox displayOnOneScreen() {
+    		return new CheckBox(FormsAddEnum.DISPLAY_ON_ONE_SCREEN_CHECKBOX);
+    	}
+    	
     }
 
-    public class FormsAddDropDowns extends NavigationBarDropDowns {
+    public class FormsAddDropDowns {
     	
     	public DropDown trigger() {
     		return new DropDown(FormsAddEnum.TRIGGER_DROPDOWN);
@@ -80,11 +144,65 @@ public class PageFormsAdd extends FormsTables {
     		return new DropDown(FormsAddEnum.VEHICLE_TAGS_DROPDOWN);
     	}
     	
+    	public DropDown kind() {
+    		return new DropDown(FormsAddEnum.KIND_DROPDOWN);
+    	}
+    	
+    	public DropDown dateMinimum() {
+    		return new CalendarObject(FormsAddEnum.MINIMUM_DATE_DROPDOWN);
+    	}
+    	
+    	public DropDown dateMaximum() {
+    		return new CalendarObject(FormsAddEnum.MAXIMUM_DATE_DROPDOWN);
+    	}
+    	
     }
     
-    public class FormsAddLinks extends NavigationBarLinks {}
+    public class FormsAddLinks {
+    	
+    	public TextLink text() {
+    		return new TextLink(FormsAddEnum.TEXT_LINK);
+    	}
+    	
+    	public TextLink numeric() {
+    		return new TextLink(FormsAddEnum.NUMERIC_LINK);
+    	}
+    	
+    	public TextLink date() {
+    		return new TextLink(FormsAddEnum.DATE_LINK);
+    	}
+    	
+    	public TextLink chooseOne() {
+    		return new TextLink(FormsAddEnum.CHOOSE_ONE_LINK);
+    	}
+    	
+    	public TextLink selectMultiple() {
+    		return new TextLink(FormsAddEnum.SELECT_MULTIPLE_LINK);
+    	}
+    	
+    	public TextLink group() {
+    		return new TextLink(FormsAddEnum.GROUP_LINK);
+    	}
+    	
+    	public TextLink addOption() {    	
+    		return new TextLink(FormsAddEnum.ADD_OPTION_LINK);
+    	}
+    	
+    	public TextLink bulkEdit() {    
+    		return new TextLink(FormsAddEnum.BULK_EDIT_LINK);
+		}
+    	
+    	public TextTableLink previewArea() {
+    		return new TextTableLink(FormsAddEnum.PREVIEW_AREA);
+    	}
+    	
+    	public TextLink controlFlowArrow() {
+    		return new TextLink(FormsAddEnum.CONTROL_FLOW_ARROW);
+    	}
+    	
+    }
 
-    public class FormsAddTextFields extends NavigationBarTextFields {
+    public class FormsAddTextFields {
 
     	public TextField name() {
     		return new TextField(FormsAddEnum.NAME_FIELD);
@@ -105,9 +223,61 @@ public class PageFormsAdd extends FormsTables {
     	public TextField dataName() {
     		return new TextField(FormsAddEnum.DATANAME_FIELD);
     	}
+    	
+    	public TextField captionText() {
+    		return new TextField(FormsAddEnum.CAPTION_FIELD);
+    	}
+    	
+    	public TextField defaultValue() {
+    		return new TextField(FormsAddEnum.DEFAULT_VALUE);
+    	}
+    	
+    	public TextField hint() {
+    		return new TextField(FormsAddEnum.HINT_FIELD);
+    	}
+    	
+    	public TextField minimumTextLength() {
+    		return new TextField(FormsAddEnum.MINIMUM_TEXT_FIELD);
+    	}
+    	
+    	public TextField maximumTextLength() {
+    		return new TextField(FormsAddEnum.MAXIMUM_TEXT_FIELD);
+    	}
+    	
+    	public TextField minimumNumericRange() {
+    		return new TextField(FormsAddEnum.MINIMUM_NUMERIC_FIELD);
+    	}
+    	
+    	public TextField maximumNumericRange() {
+    		return new TextField(FormsAddEnum.MAXIMUM_NUMERIC_FIELD);
+    	}
+    	
+    	public TextField invalidText() {
+    		return new TextField(FormsAddEnum.INVALID_TEXT_FIELD);
+    	}
+    	
+    	public TextField optionEnglish() {
+    		return new TextField(FormsAddEnum.OPTION_FIELD);
+    	}
+    	
+    	public TextField optionUnderlyingValue() {
+    		return new TextField(FormsAddEnum.OPTION_UNDERLYING_VALUE_FIELD);
+    	}
+    	public TextField relevance() {
+    		return new TextField(FormsAddEnum.RELEVANCE_FIELD);
+    	}
+    	
+    	public TextField constraint() {
+    		return new TextField(FormsAddEnum.CONSTRAINT_FIELD);
+    	}
+
+    	public TextField instanceDestination() {
+    		return new TextField(FormsAddEnum.INSTANCE_DESTINATION_FIELD);
+    	}
+
     }
     
-    public class FormsAddTexts extends NavigationBarTexts {
+    public class FormsAddTexts  {
     	
     	public Text nameLabel() {
     		return new Text(FormsAddEnum.NAME_LABEL);
@@ -149,6 +319,22 @@ public class PageFormsAdd extends FormsTables {
     		return new Text(FormsAddEnum.VIEW_PROPERTIES_LABEL);
     	}
     	
+    	public Text version() {
+    		return new Text(FormsAddEnum.VERSION_TEXT);
+    	}
+    	
+    	public Text nameError() {
+    		return new Text(FormsAddEnum.NAME_TEXT_ERROR);
+    	}
+    	
+    	public Text controlError() {
+    		return new Text(FormsAddEnum.CONTROL_TEXT_ERROR);
+    	}
+    	
+    	public Text dataNameError() {
+    		return new Text(FormsAddEnum.DATA_NAME_ERROR);
+    	}
+    	
     }
 
     public FormsAddButtons _button() {
@@ -180,16 +366,21 @@ public class PageFormsAdd extends FormsTables {
     }
 
 
-    public class FormsAddPopUps extends NavigationBarPopUps {}
+    public class FormsAddPopUps extends MastheadPopUps {
+    	public OptionsEditor optionsEditor() {
+    		return new OptionsEditor();
+    		}
+    	}
+
     
-    @Override
+
     public SeleniumEnums setUrl() {
         return FormsAddEnum.DEFAULT_URL;
     }
 
-    @Override
+
     protected boolean checkIsOnPage() {
-        return _textField().name().isPresent() && _textField().routeTriggerExpression().isPresent();
+        return _textField().name().isPresent() && _dropDown().trigger().isPresent();
     }
     
 }

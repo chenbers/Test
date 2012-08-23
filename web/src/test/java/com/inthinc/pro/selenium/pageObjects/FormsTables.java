@@ -21,15 +21,15 @@ public abstract class FormsTables extends FormsBar {
     public class FormsTablesTexts extends FormsBarTexts {}
 
 
-    public class FormsTablesPopUps extends NavigationBarPopUps {
+    public class FormsTablesPopUps {
 
-        public FormsTablesPopUps() {
-            super(page + "Table");
-        }
+//        public FormsTablesPopUps() {
+//            super(page + "Table");
+//        }
 
-        public EditColumns editColumns() {
-            return new EditColumns();
-        }
+//        public EditColumns editColumns() {
+//            return new EditColumns();
+//        }
     }
 
 }

@@ -144,19 +144,19 @@ public class PageHOSAddEditFuelStops extends HOSBar {
     
     public class AddEditFuelStopsButtons extends HOSBarButtons{
         
-        public TextButton topSave(){
+        public TextButton saveTop(){
             return new TextButton(FuelStopsEditEnum.SAVE_TOP);
         }
         
-        public TextButton bottomSave(){
+        public TextButton saveBottom(){
             return new TextButton(FuelStopsEditEnum.SAVE_BOTTOM);
         }
         
-        public TextButton topCancel(){
+        public TextButton cancelTop(){
             return new TextButton(FuelStopsEditEnum.CANCEL_TOP);
         }
         
-        public TextButton bottomCancel(){
+        public TextButton cancelBottom(){
             return new TextButton(FuelStopsEditEnum.CANCEL_BOTTOM);
         }
     }
@@ -215,7 +215,7 @@ public class PageHOSAddEditFuelStops extends HOSBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().bottomCancel().isPresent() && _textField().trailer().isPresent();
+        return _button().cancelBottom().isPresent() && _textField().trailer().isPresent();
     }
     
 
