@@ -46,6 +46,15 @@ public class PageFormsSubmissions extends FormsTables {
     	public Button refresh() {
     		return new Button(FormsSubmissionsEnum.REFRESH);
     	}
+    	
+    	public Button save() {
+    		return new Button(FormsSubmissionsEnum.SAVE_BUTTON);
+    	}
+    	
+    	public Button cancel() {
+    		return new Button(FormsSubmissionsEnum.CANCEL_BUTTON);
+    	}
+        
     }
 
     public class FormsSubmissionsDropDowns {
@@ -82,6 +91,18 @@ public class PageFormsSubmissions extends FormsTables {
     		return new DropDown(FormsSubmissionsEnum.APPROVED_DROPDOWN);
     	}
     	
+    	public DropDown dateEntry() {
+    		return new DropDown(FormsSubmissionsEnum.DATE_ENTRY);
+    	}
+    	
+    	public DropDown chooseoneEntry() {
+    		return new DropDown(FormsSubmissionsEnum.CHOOSEONE_ENTRY);
+    	}
+    	
+    	public DropDown choosemanyEntry() {
+    		return new DropDown(FormsSubmissionsEnum.CHOOSEMANY_ENTRY);
+    	}
+        
     }
     
     public class FormsSubmissionsLinks {
@@ -149,13 +170,25 @@ public class PageFormsSubmissions extends FormsTables {
     	public TextField vehicle() {
     		return new TextField(FormsSubmissionsEnum.VEHICLE_FIELD);
     	}
+    	//INLINE EDIT:
+    	public TextField textEntry() {
+    		return new TextField(FormsSubmissionsEnum.TEXT_ENTRY);
+    	}
+    	
+    	public TextField numericEntry() {
+    		return new TextField(FormsSubmissionsEnum.NUMERIC_ENTRY);
+    	}
+    	
+    	public TextField decimalEntry() {
+    		return new TextField(FormsSubmissionsEnum.DECIMAL_ENTRY);
+    	} 
     	
     }
     
     public class FormsSubmissionsTexts {
     	
     	public TextTable dateTimeEntry() {
-    		return new TextTable(FormsSubmissionsEnum.DATE_TEXT_ENTRY);
+    		return new TextTable(FormsSubmissionsEnum.DATE_TIME_TEXT_ENTRY);
     	}
     	
     	public Text noRecordsFoundError() {
@@ -176,6 +209,31 @@ public class PageFormsSubmissions extends FormsTables {
     	
     	public TextTable editedEntry() {
     		return new TextTable(FormsSubmissionsEnum.EDITED_TEXT_ENTRY);
+    	}
+    	
+    	//INLINE EDIT TEXTS:
+    	public TextTable text() {
+    		return new TextTable(FormsSubmissionsEnum.TEXT_ENTRY);
+    	}
+    	
+    	public TextTable numeric() {
+    		return new TextTable(FormsSubmissionsEnum.NUMERIC_ENTRY);
+    	}
+    	
+    	public TextTable decimal() {
+    		return new TextTable(FormsSubmissionsEnum.DECIMAL_ENTRY);
+    	}
+    	
+    	public TextTable date() {
+    		return new TextTable(FormsSubmissionsEnum.DATE_ENTRY);
+    	}
+    	
+    	public TextTable chooseone() {
+    		return new TextTable(FormsSubmissionsEnum.CHOOSEONE_ENTRY);
+    	}
+    	
+    	public TextTable choosemany() {
+    		return new TextTable(FormsSubmissionsEnum.CHOOSEMANY_ENTRY);
     	}
     }
     
