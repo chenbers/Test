@@ -28,7 +28,7 @@ public enum EventType implements BaseEnum {
     DEVICE_LOW_BATTERY(12),
     IDLING(13),
     CRASH(14),
-//    ROLLOVER(15),
+    // ROLLOVER(15),
     UNKNOWN(16),
     NO_DRIVER(17),
     PARKING_BRAKE(18, EnumSet.of(EventAccountFilter.WAYSMART)),
@@ -52,29 +52,27 @@ public enum EventType implements BaseEnum {
     TEXT_MESSAGE(36, EnumSet.of(EventAccountFilter.WAYSMART)),
     OFF_HOURS(37, EnumSet.of(EventAccountFilter.WAYSMART)),
     IGNITION_OFF(38),
-    TRAILER_DATA(39, EnumSet.of(EventAccountFilter.HOS) ),
+    TRAILER_DATA(39, EnumSet.of(EventAccountFilter.HOS)),
     NEW_DRIVER(40, EnumSet.of(EventAccountFilter.WAYSMART)),
     NEW_OCCUPANT(41, EnumSet.of(EventAccountFilter.WAYSMART)),
-    INVALID_DRIVER(42,  EnumSet.of(EventAccountFilter.WAYSMART)),
-    INVALID_OCCUPANT(43,  EnumSet.of(EventAccountFilter.WAYSMART)),
+    INVALID_DRIVER(42, EnumSet.of(EventAccountFilter.WAYSMART)),
+    INVALID_OCCUPANT(43, EnumSet.of(EventAccountFilter.WAYSMART)),
     RF_SWITCH(44),
-    DVIR_PRE_TRIP_FAIL(45),
-    DVIR_PRE_TRIP_PASS(46),
-    DVIR_POST_TRIP_FAIL(47),
-    DVIR_POST_TRIP_PASS(48);
+    DVIR(45);
 
-    
     private int code;
     private AggressiveDrivingEventType noteSubType;
     private Set<EventAccountFilter> eventAccountFilters;
-    
+
     private EventType(int code) {
         this.code = code;
     }
+
     private EventType(int code, AggressiveDrivingEventType noteSubType) {
         this.code = code;
         this.noteSubType = noteSubType;
     }
+
     private EventType(int code, Set<EventAccountFilter> eventAccountFilters) {
         this.code = code;
         this.eventAccountFilters = eventAccountFilters;
@@ -85,12 +83,11 @@ public enum EventType implements BaseEnum {
     static {
         for (EventType p : EnumSet.allOf(EventType.class)) {
             lookup.put(p.code, p);
-            if(p.noteSubType != null){
+            if (p.noteSubType != null) {
                 subTypeLookup.put(p.noteSubType.getCode(), p);
             }
         }
-        
-       
+
     }
 
     @Override
@@ -101,8 +98,8 @@ public enum EventType implements BaseEnum {
     public static EventType getEventType(Integer code) {
         return lookup.get(code);
     }
-    
-    public static EventType getEventTypeFromSubTypeCode(Integer code){
+
+    public static EventType getEventTypeFromSubTypeCode(Integer code) {
         return subTypeLookup.get(code);
     }
 
@@ -120,9 +117,9 @@ public enum EventType implements BaseEnum {
             subTypeList = new ArrayList<Integer>();
             subTypeList.add(noteSubType.getCode());
         }
-        
+
         return new EventCategoryFilter(this, getNoteTypeList(), subTypeList);
-        
+
     }
 
     public List<NoteType> getNoteTypeList() {
@@ -135,23 +132,23 @@ public enum EventType implements BaseEnum {
                         break;
                     }
                 }
-            }
-            else if (noteType.getEventType() == this) {
-                noteTypeList.add(noteType);
+            } else {
+                EventType eventType = noteType.getEventType();
+                if (noteType.getEventType() == this) {
+                    noteTypeList.add(noteType);
+                }
             }
         }
         if (noteTypeList.size() == 0)
             System.out.println("NO NOTES TYPES FOUND FOR EVENTTYPE " + this);
         return noteTypeList;
-        
+
     }
-    
-    
 
     public Boolean isWaysmartOnlyEvent() {
         return eventAccountFilters != null && eventAccountFilters.contains(EventAccountFilter.WAYSMART);
     }
-    
+
     public Boolean isHOSOnlyEvent() {
         return eventAccountFilters != null && eventAccountFilters.contains(EventAccountFilter.HOS);
     }

@@ -1,0 +1,66 @@
+package com.inthinc.pro.model.event;
+
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
+
+@SuppressWarnings("serial")
+@XmlRootElement
+public class DVIREvent extends Event {
+    
+    @EventAttrID(name="DVIR_INSPECTION_TYPE")
+    private Integer inspectionType;
+    @EventAttrID(name="DVIR_VEHICLE_SAFE_TO_OPERATE")
+    private Integer vehicleSafeToOperate;
+
+    private static EventAttr[] eventAttrList = {
+        EventAttr.DVIR_INSPECTION_TYPE,
+        EventAttr.DVIR_VEHICLE_SAFE_TO_OPERATE
+    };
+    public Integer getInspectionType() {
+        return inspectionType;
+    }
+
+    public void setInspectionType(Integer inspectionType) {
+        this.inspectionType = inspectionType;
+    }
+
+    public Integer getVehicleSafeToOperate() {
+        return vehicleSafeToOperate;
+    }
+
+    public void setVehicleSafeToOperate(Integer vehicleSafeToOperate) {
+        this.vehicleSafeToOperate = vehicleSafeToOperate;
+    }
+
+    public EventAttr[] getEventAttrList() {
+        return eventAttrList;
+    }
+
+    @Override
+    public boolean isValidEvent() {
+       if(inspectionType != null) {
+           return (vehicleSafeToOperate != null);
+       }
+       else return true;
+    }
+
+    public DVIREvent() {
+        super();
+    }
+
+    public DVIREvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,Integer inspectionType, Integer vehicleSafeToOperate) {
+        super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
+        this.inspectionType = inspectionType;
+        this.vehicleSafeToOperate = vehicleSafeToOperate;
+    }
+
+    @Override
+    public EventType getEventType() {
+        return EventType.DVIR;
+    }
+
+
+}

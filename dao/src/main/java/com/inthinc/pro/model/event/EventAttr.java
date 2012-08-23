@@ -304,6 +304,8 @@ public enum EventAttr {
 	
 	
 	MAPS_NOT_MOUNTED_PERCENTAGE(8290),
+	DVIR_INSPECTION_TYPE(8291),
+	DVIR_VEHICLE_SAFE_TO_OPERATE(8292),
     
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
