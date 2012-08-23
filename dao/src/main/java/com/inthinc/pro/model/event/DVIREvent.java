@@ -1,24 +1,24 @@
 package com.inthinc.pro.model.event;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.event.EventAttrID;
+import com.inthinc.pro.model.MeasurementType;
 
 @SuppressWarnings("serial")
 @XmlRootElement
 public class DVIREvent extends Event {
-    
-    @EventAttrID(name="DVIR_INSPECTION_TYPE")
+
+    @EventAttrID(name = "DVIR_INSPECTION_TYPE")
     private Integer inspectionType;
-    @EventAttrID(name="DVIR_VEHICLE_SAFE_TO_OPERATE")
+    @EventAttrID(name = "DVIR_VEHICLE_SAFE_TO_OPERATE")
     private Integer vehicleSafeToOperate;
 
-    private static EventAttr[] eventAttrList = {
-        EventAttr.DVIR_INSPECTION_TYPE,
-        EventAttr.DVIR_VEHICLE_SAFE_TO_OPERATE
-    };
+    private static EventAttr[] eventAttrList = { EventAttr.DVIR_INSPECTION_TYPE, EventAttr.DVIR_VEHICLE_SAFE_TO_OPERATE };
+
     public Integer getInspectionType() {
         return inspectionType;
     }
@@ -41,17 +41,17 @@ public class DVIREvent extends Event {
 
     @Override
     public boolean isValidEvent() {
-       if(inspectionType != null) {
-           return (vehicleSafeToOperate != null);
-       }
-       else return true;
+        if (inspectionType != null) {
+            return (vehicleSafeToOperate != null);
+        } else
+            return true;
     }
 
     public DVIREvent() {
         super();
     }
 
-    public DVIREvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,Integer inspectionType, Integer vehicleSafeToOperate) {
+    public DVIREvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude, Integer inspectionType, Integer vehicleSafeToOperate) {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
         this.inspectionType = inspectionType;
         this.vehicleSafeToOperate = vehicleSafeToOperate;
@@ -62,5 +62,9 @@ public class DVIREvent extends Event {
         return EventType.DVIR;
     }
 
+    public String getDetails(String formatStr, MeasurementType measurementType, String... mString) {
+        // Vehicle {0} a {1} inspection.
+        return MessageFormat.format(formatStr, vehicleSafeToOperate == 0 ? mString[1] : mString[0], inspectionType == 1 ? mString[2] : mString[3]);
+    }
 
 }
