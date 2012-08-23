@@ -19,7 +19,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
         PageTeamDriverStatistics.class, PageDriverPerformance.class,
         PageVehiclePerformance.class, PageFormsSubmissions.class })
-@StoryPath(path="CurrentStory.story")
+@StoryPath(path="FormsSubmissions.story")
 public class FormsSubmissionsTest extends WebStories  {
 
     @Test
