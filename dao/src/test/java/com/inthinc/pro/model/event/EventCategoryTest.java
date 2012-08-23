@@ -1,6 +1,7 @@
 package com.inthinc.pro.model.event;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,8 @@ public class EventCategoryTest {
             2,
             3,
             4,
-            4
+            4,
+            1
     };
     
     @Test
@@ -29,9 +31,27 @@ public class EventCategoryTest {
             assertEquals(cat + "", expectedNoteInCatCounts[i++].intValue(), noteTypeList.size());
         }
     }
-    
+    @Test 
+    public void speedingNoteTypes(){
+        
+        List<NoteType> noteTypes = EventType.SPEEDING.getNoteTypeList();
+        assertNotNull(noteTypes);
+        
+    }
+    @Test
+    public void speedingEventType(){
+        EventType eventType = NoteType.SPEEDING_EX3.getEventType();
+        assertEquals(EventType.SPEEDING, eventType);
+    }
+    @Test
+    public void dvirEventType(){
+        EventType eventType = NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK.getEventType();
+        assertEquals(EventType.DVIR, eventType);
+    }
+
     Integer[] expectedTypeInCatCounts = {
             4,  //  DRIVER
+            1,  //  DVIR
     		4,	//  EMERGENCY
     		3,	//  HOS
     		2,	//  NONE

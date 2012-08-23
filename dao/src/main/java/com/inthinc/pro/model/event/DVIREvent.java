@@ -2,9 +2,12 @@ package com.inthinc.pro.model.event;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.event.EventAttrID;
 
 @SuppressWarnings("serial")
+@XmlRootElement
 public class DVIREvent extends Event {
     
     @EventAttrID(name="DVIR_INSPECTION_TYPE")
@@ -52,6 +55,11 @@ public class DVIREvent extends Event {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
         this.inspectionType = inspectionType;
         this.vehicleSafeToOperate = vehicleSafeToOperate;
+    }
+
+    @Override
+    public EventType getEventType() {
+        return EventType.DVIR;
     }
 
 
