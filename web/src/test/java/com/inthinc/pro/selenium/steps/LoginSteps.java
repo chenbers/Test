@@ -3,14 +3,15 @@ package com.inthinc.pro.selenium.steps;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.tmatesoft.sqljet.core.internal.lang.SqlParser.type_name_return;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PopUps;
-import com.inthinc.pro.automation.jbehave.AutoCustomSteps;
 
 public class LoginSteps extends WebSteps {
 
@@ -274,6 +275,21 @@ public class LoginSteps extends WebSteps {
         Log.debug("incorrectCasePassword: " + incorrectCaseUserName);
         // TODO: jwimmer: watch the loggers and see if this works... I wouldn't be surprised if we do NOT get the original password correctly???
         loginPage._textField().password().type(incorrectCaseUserName);
+    }
+    
+    @When("I go to the forms admin page")
+    public void whenIGoToTheFormsAdminPage() {
+    	loginPage.open("http://dev.tiwipro.com:8080/forms/");
+    }
+    
+    @When("I go to the forms submissions page")
+    public void whenIGoToTheFormsSubmissionsPage() {
+    	loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");
+    }
+    
+    @When("I go to the forms add page")
+    public void whenIGoToTheFormsAddPage() {
+    	loginPage.open("http://dev.tiwipro.com:8080/forms/build");
     }
     
     //TODO: MWEISS - I am still working on how this will work

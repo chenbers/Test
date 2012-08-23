@@ -447,6 +447,7 @@ public enum DeviceNoteTypes  {
     DIAGNOSTIC(220), // send general diagnostic info to server
     MAN_DOWN_EX(221),
     STATS2(222),
+    CREATE_ROAD_HAZARD(226),    
 
     // new notifications without header information - not really a real notification.
     // used primarily for background communication

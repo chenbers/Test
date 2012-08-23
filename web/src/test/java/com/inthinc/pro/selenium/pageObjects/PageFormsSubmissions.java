@@ -1,8 +1,10 @@
  package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.CalendarObject;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
-import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -13,61 +15,78 @@ import com.inthinc.pro.selenium.pageEnums.FormsSubmissionsEnum;
 public class PageFormsSubmissions extends FormsTables {
 
     public PageFormsSubmissions() {
-        checkMe.add(FormsSubmissionsEnum.SAVE);    
-        checkMe.add(FormsSubmissionsEnum.APPROVE);
-        checkMe.add(FormsSubmissionsEnum.DATE_SORT);
-        checkMe.add(FormsSubmissionsEnum.GROUP_SORT);
-        checkMe.add(FormsSubmissionsEnum.DRIVER_SORT);
-        checkMe.add(FormsSubmissionsEnum.VEHICLE_SORT);
-        checkMe.add(FormsSubmissionsEnum.FORM_SORT);
-        checkMe.add(FormsSubmissionsEnum.EDITED_SORT);
-        checkMe.add(FormsSubmissionsEnum.STATUS_SORT);
-        checkMe.add(FormsSubmissionsEnum.DATE_START_FIELD);
-        checkMe.add(FormsSubmissionsEnum.DATE_END_FIELD);
-        checkMe.add(FormsSubmissionsEnum.GROUP_FIELD);
-        checkMe.add(FormsSubmissionsEnum.DRIVER_FIELD);
-        checkMe.add(FormsSubmissionsEnum.VEHICLE_FIELD);
-        checkMe.add(FormsSubmissionsEnum.FORM_FIELD);
-        checkMe.add(FormsSubmissionsEnum.STATUS_DROPDOWN);
-        checkMe.add(FormsSubmissionsEnum.EDITED_DROPDOWN);
-        checkMe.add(FormsSubmissionsEnum.DATE_ENTRY);
-        checkMe.add(FormsSubmissionsEnum.GROUP_ENTRY);
-        checkMe.add(FormsSubmissionsEnum.DRIVER_ENTRY);
-        checkMe.add(FormsSubmissionsEnum.VEHICLE_ENTRY);
-        checkMe.add(FormsSubmissionsEnum.FORM_ENTRY);
-        checkMe.add(FormsSubmissionsEnum.ENTRIES_TEXT);
-        checkMe.add(FormsSubmissionsEnum.PREVIOUS);
-        checkMe.add(FormsSubmissionsEnum.NEXT);
+//        checkMe.add(FormsSubmissionsEnum.DATE_SORT);
+//        checkMe.add(FormsSubmissionsEnum.GROUP_SORT);
+//        checkMe.add(FormsSubmissionsEnum.DRIVER_SORT);
+//        checkMe.add(FormsSubmissionsEnum.VEHICLE_SORT);
+//        checkMe.add(FormsSubmissionsEnum.FORM_SORT);
+//        checkMe.add(FormsSubmissionsEnum.EDITED_SORT);
+//        checkMe.add(FormsSubmissionsEnum.STATUS_SORT);
+//        checkMe.add(FormsSubmissionsEnum.DATE_START_FIELD);
+//        checkMe.add(FormsSubmissionsEnum.DATE_END_FIELD);
+//        checkMe.add(FormsSubmissionsEnum.GROUP_FIELD);
+//        checkMe.add(FormsSubmissionsEnum.DRIVER_FIELD);
+//        checkMe.add(FormsSubmissionsEnum.VEHICLE_FIELD);
+//        checkMe.add(FormsSubmissionsEnum.FORM_FIELD);
+//        checkMe.add(FormsSubmissionsEnum.STATUS_DROPDOWN);
+//        checkMe.add(FormsSubmissionsEnum.EDITED_DROPDOWN);
+//        checkMe.add(FormsSubmissionsEnum.DATE_ENTRY);
+//        checkMe.add(FormsSubmissionsEnum.GROUP_ENTRY);
+//        checkMe.add(FormsSubmissionsEnum.DRIVER_ENTRY);
+//        checkMe.add(FormsSubmissionsEnum.VEHICLE_ENTRY);
+//        checkMe.add(FormsSubmissionsEnum.FORM_ENTRY);
+//        checkMe.add(FormsSubmissionsEnum.ENTRIES_TEXT);
+//        checkMe.add(FormsSubmissionsEnum.PREVIOUS);
+//        checkMe.add(FormsSubmissionsEnum.NEXT);
         
     }
 
-    public class FormsSubmissionsButtons extends NavigationBarButtons {
+    public class FormsSubmissionsButtons {
 
-        public TextButton save() {
-            return new TextButton(FormsSubmissionsEnum.SAVE);
-        }
-        
-        public TextButton approve() {
-        	return new TextButton(FormsSubmissionsEnum.APPROVE);
-        }
-
+    	public Button refresh() {
+    		return new Button(FormsSubmissionsEnum.REFRESH);
+    	}
     }
 
-    public class FormsSubmissionsDropDowns extends NavigationBarDropDowns {
+    public class FormsSubmissionsDropDowns {
     	
-    	public DropDown status() {
-    		return new DropDown(FormsSubmissionsEnum.STATUS_DROPDOWN);
+    	public DropDown form() {
+    		return new DropDown(FormsSubmissionsEnum.FORM_DROPDOWN);
+    	}
+    	
+    	public DropDown date() {
+    		return new CalendarObject(FormsSubmissionsEnum.DATE_DROPDOWN);
+    	}
+    	
+    	public DropDown specificDate() {
+    		return new CalendarObject(FormsSubmissionsEnum.SPECIFIC_DATE_DROPDOWN);
+    	}
+    	
+    	public DropDown recordsPerPage() {
+    		return new DropDown(FormsSubmissionsEnum.RECORDS_DROPDOWN);
+    	}
+    	
+    	public DropDown dateStart() {
+    		return new CalendarObject(FormsSubmissionsEnum.DATE_START_DROPDOWN);
+    	}
+    	
+    	public DropDown dateEnd() {
+    		return new CalendarObject(FormsSubmissionsEnum.DATE_END_DROPDOWN);
     	}
     	
     	public DropDown edited() {
     		return new DropDown(FormsSubmissionsEnum.EDITED_DROPDOWN);
     	}
     	
+    	public DropDown approved() {
+    		return new DropDown(FormsSubmissionsEnum.APPROVED_DROPDOWN);
+    	}
+    	
     }
     
-    public class FormsSubmissionsLinks extends NavigationBarLinks {
+    public class FormsSubmissionsLinks {
     	
-    	public TextLink sortByDate() {
+    	public TextLink sortByDateTime() {
     		return new TextLink(FormsSubmissionsEnum.DATE_SORT);
     	}
     	
@@ -91,32 +110,20 @@ public class PageFormsSubmissions extends FormsTables {
     		return new TextLink(FormsSubmissionsEnum.EDITED_SORT);
     	}
     	
-    	public TextLink sortByStatus() {
-    		return new TextLink(FormsSubmissionsEnum.STATUS_SORT);
+    	public TextLink sortByApproved() {
+    		return new TextLink(FormsSubmissionsEnum.APPROVED_SORT);
     	}
     	
     	public TextTableLink groupEntry() {
-    		return new TextTableLink(FormsSubmissionsEnum.GROUP_ENTRY);
+    		return new TextTableLink(FormsSubmissionsEnum.GROUP_LINK_ENTRY);
     	}
     	
     	public TextTableLink driverEntry() {
-    		return new TextTableLink(FormsSubmissionsEnum.DRIVER_ENTRY);
+    		return new TextTableLink(FormsSubmissionsEnum.DRIVER_LINK_ENTRY);
     	}
     	
     	public TextTableLink vehicleEntry() {
-    		return new TextTableLink(FormsSubmissionsEnum.VEHICLE_ENTRY);
-    	}
-    	
-    	public TextTableLink formEntry() {
-    		return new TextTableLink(FormsSubmissionsEnum.FORM_ENTRY);
-    	}
-    	
-    	public TextTableLink editedEntry() {
-    		return new TextTableLink(FormsSubmissionsEnum.EDITED_ENTRY);
-    	}
-    	
-    	public TextTableLink statusEntry() {
-    		return new TextTableLink(FormsSubmissionsEnum.STATUS_ENTRY);
+    		return new TextTableLink(FormsSubmissionsEnum.VEHICLE_LINK_ENTRY);
     	}
     	
     	public TextLink previous() {
@@ -129,7 +136,7 @@ public class PageFormsSubmissions extends FormsTables {
     	
     }
 
-    public class FormsSubmissionsTextFields extends NavigationBarTextFields {
+    public class FormsSubmissionsTextFields {
 
     	public TextField group() {
     		return new TextField(FormsSubmissionsEnum.GROUP_FIELD);
@@ -143,24 +150,39 @@ public class PageFormsSubmissions extends FormsTables {
     		return new TextField(FormsSubmissionsEnum.VEHICLE_FIELD);
     	}
     	
-    	public TextField formSearch() {
-    		return new TextField(FormsSubmissionsEnum.FORM_FIELD);
-    	}
-    	
     }
     
-    public class FormsSubmissionsTexts extends NavigationBarTexts {
+    public class FormsSubmissionsTexts {
     	
-    	public TextTable dateTime() {
-    		return new TextTable(FormsSubmissionsEnum.DATE_ENTRY);
+    	public TextTable dateTimeEntry() {
+    		return new TextTable(FormsSubmissionsEnum.DATE_TEXT_ENTRY);
     	}
     	
-    	public TextTable entries() {
-    		return new TextTable(FormsSubmissionsEnum.ENTRIES_TEXT);
+    	public Text noRecordsFoundError() {
+    		return new Text(FormsSubmissionsEnum.NO_RECORDS_ERROR);
+    	}
+    	
+    	public Text entries() {
+    		return new Text(FormsSubmissionsEnum.ENTRIES_TEXT);
     	}
     	
     	public Text title() {
     		return new Text(FormsSubmissionsEnum.TITLE);
+    	}
+    	
+    	public TextTable formEntry() {
+    		return new TextTable(FormsSubmissionsEnum.FORM_TEXT_ENTRY);
+    	}
+    	
+    	public TextTable editedEntry() {
+    		return new TextTable(FormsSubmissionsEnum.EDITED_TEXT_ENTRY);
+    	}
+    }
+    
+    public class FormsSubmissionsCheckboxes {
+    	
+    	public CheckBoxTable approvedEntry() {
+    		return new CheckBoxTable(FormsSubmissionsEnum.APPROVED_CHECKBOX_ENTRY);
     	}
     }
 
@@ -188,21 +210,21 @@ public class PageFormsSubmissions extends FormsTables {
         return new FormsSubmissionsPopUps();
     }
     
-    public FormsTablesCheckBoxes _checkBox(){
-    	return new FormsTablesCheckBoxes();
+    public FormsSubmissionsCheckboxes _checkBoxTable(){
+    	return new FormsSubmissionsCheckboxes();
     }
 
 
-    public class FormsSubmissionsPopUps extends NavigationBarPopUps {}
+    public class FormsSubmissionsPopUps extends MastheadPopUps {}
     
-    @Override
+    
     public SeleniumEnums setUrl() {
         return FormsSubmissionsEnum.DEFAULT_URL;
     }
 
-    @Override
+    
     protected boolean checkIsOnPage() {
-        return _dropDown().edited().isPresent() && _dropDown().status().isPresent();
+        return _dropDown().form().isPresent() && _button().refresh().isPresent();
     }
     
 }
