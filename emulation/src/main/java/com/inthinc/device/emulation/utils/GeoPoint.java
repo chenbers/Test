@@ -118,15 +118,19 @@ public class GeoPoint {
         return Distance_Calc.calc_distance(this, stop);
     }
     
-    public int deltaT(Integer speedInMPH, GeoPoint nextLocation){
+    public Integer deltaT(Integer speedInMPH, GeoPoint nextLocation){
+        return deltaTD(speedInMPH, nextLocation).intValue();
+    }
+    
+    public Double deltaTD(Integer speedInMPH, GeoPoint nextLocation) {
     	if (speedInMPH==0){
-    		return 0;
+    		return 0.0;
     	}
         Double delX = deltaX(nextLocation);
         Double v = speedInMPH.doubleValue() / 3600.0 ; //Miles/Seconds
         Double delT = (delX / v);
         delT = (delT < 1 && delT > 0) ? 1.0 : delT; 
-        return delT.intValue();
+        return delT;
     }
     
     public int speed(Integer deltaT, GeoPoint nextPoint){
