@@ -549,6 +549,7 @@ Scenario: TCXXXX ODK Add a Name Text Field - Required and Length boxes checked
 Given I am logged in
 When I click the Forms link
 And I click the Create Form link
+And I type "TCXXXX" into the Name textfield
 And I click the Text link
 And I type "an XML tag" in the Data Name textfield
 And I type “Driver Name” the Caption Text textfield
@@ -556,26 +557,43 @@ And I type "Hint Text" in the Hint textfield
 And I type "Default Value Text" in the Default Value textfield
 And I check the Required checkbox
 And I check the Length Enable checkbox
-And I check the Minimum Length Inclusive checkbox
-And I check the Maximum Length Inclusive checkbox
-And I select today from the Minimum Length dropdown
-And I select 7 days in the past from the Maximum Length dropdown
+And I check the Minimum Text Inclusive checkbox
+And I check the Maximum Text Inclusive checkbox
+And I type "2" into the Minimum Length textfield
+And I type "5" into the Maximum Length textfield
 And I type "Value out of range" into the Invalid Text textfield
 And I click the Save Top button
-Then I validate the new form displays in the list on the Admin Form page
+And I type "TCXXXX" into the Search Working textfield
+Then I validate the 1st Row of the Name Working text is "TCXXXX"
+When I click the 1st Row of the Edit link
+Then I validate the Required checkbox is checked
+And I validate the Length Enable checkbox is checked
+And I validate the Minimum Text Inclusive checkbox is checked
+And I validate the Maximum Text Inclusive checkbox is checked
+And I validate the Minimum Length textfield is "2"
+And I validate the Maximum Length textfield is "5"
+And I validate the Invalid Text textfield is "Value out of range" 
 
 Scenario: TCXXXX ODK Add a Name Text Field - Required and Length boxes unchecked
 Given I am logged in
 When I click the Forms link
 And I click the Create Form link
+And I type "TCXXXX" into the Name textfield
 And I click the Text link
 And I type "an XML tag" in the Data Name textfield
 And I type “Driver Name” the Caption Text textfield
 And I type "Hint Text" in the Hint textfield
-And I type "Default Value Text" in the Default Value textfield
 And I click the Save Top button
-Then I validate the new form displays in the list on the Admin Form page
-
+And I type "TCXXXX" into the Search Working textfield
+Then I validate the 1st Row of the Name Working text is "TCXXXX"
+When I click the 1st Row of the Edit link
+Then I validate the Required checkbox is not checked
+And I validate the Length Enable checkbox is not checked
+And I validate the Minimum Text Inclusive checkbox is not checked
+And I validate the Maximum Text Inclusive checkbox is not checked
+And I validate the Minimum Length textfield is ""
+And I validate the Maximum Length textfield is "" 
+//START HERE
 Scenario: TCXXXX ODK Add a Numeric Field - Read Only box checked
 Given I am logged in
 When I click the Forms link

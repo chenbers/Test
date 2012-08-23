@@ -31,13 +31,23 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     DRIVER_FIELD(null, "column-filter-submission-driver"),
     VEHICLE_FIELD(null, "column-filter-submission-vehicle"),
     
-    DATE_TEXT_ENTRY(null, "//tr[###]/td[@class='submissionDate']"),
+    DATE_TIME_TEXT_ENTRY(null, "//tr[###]/td[@class='submissionDate']"),
     GROUP_LINK_ENTRY(null, "//tr[###]/td[@class='groupName']"),
     DRIVER_LINK_ENTRY(null, "//tr[###]/td[@class='driverName']"),
     VEHICLE_LINK_ENTRY(null, "//tr[###]/td[@class='vehicleName']"),
     FORM_TEXT_ENTRY(null, "//tr[###]/td[@class='formName']"),
     EDITED_TEXT_ENTRY(null, "//tr[###]/td[@class='edited']"),
     APPROVED_CHECKBOX_ENTRY(null, "//tr[###]/td[@class='status']"),
+    
+    //INLINE EDIT ELEMENTS
+    TEXT_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable text
+    NUMERIC_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable numeric
+    DECIMAL_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable decimal
+    DATE_ENTRY(null, "//tr[###]/td[@class='editable date']"),
+    CHOOSEONE_ENTRY(null, "//tr[###]/td[@class='editable select1']"),
+    CHOOSEMANY_ENTRY(null, "//tr[###]/td[@class='editable selectn']"),
+    SAVE_BUTTON(null, "//a[@id='saveRow']"),
+    CANCEL_BUTTON(null, "//a[@id='cancelRow']"),
     
     PREVIOUS("Previous", "//li[@class='prev']"),
     PAGE_NUMBER(null, "//li[###]/a[@href='#']"),

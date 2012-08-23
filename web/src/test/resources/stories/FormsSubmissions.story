@@ -24,7 +24,7 @@ And I validate the Edited dropdown is present
 And I validate the Approved dropdown is present
 And I validate the Entries text is present
 
-Scenario: TCXXXX Default Forms dropdown set to All Forms listed
+Scenario: TCXXXX Default Forms dropdown set to All Forms
 Given I am logged in
 When I click the Forms link
 And I click the Submissions link
@@ -120,24 +120,6 @@ Then I validate the 1st Row of the Approved Entry checkbox is checked
 And I uncheck the 1st Row of the Approved checkbox
 And I validate the 1st Row of the Approved checkbox is not checked
 
-Scenario: TCXXXX: Forms Submissions Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
-Given I am logged in
-When I click the Forms link
-And I click the Submissions link
-Then I validate the Sort By Date Time column sorts correctly
-And I click the Sort By Group link
-And I validate the Sort By Group column sorts correctly
-And I click the Sort By Driver link
-And I validate the Sort By Driver column sorts correctly
-And I click the Sort By Vehicle link
-And I validate the Sort By Vehicle column sorts correctly
-And I click the Sort By Form link
-And I validate the Sort By Form column sorts correctly
-And I click the Sort By Edited link
-And I validate the Sort By Edited column sorts correctly
-And I click the Sort By Approved link
-And I validate the Sort By Approved column sorts correctly
-
 Scenario: TCXXXX: Forms Submissions Page - Records per page test
 Given I am logged in
 When I click the Forms link
@@ -204,6 +186,95 @@ Then I validate the 1st Row of the Approved Entry checkbox is unchecked
 And I click the Refresh button
 And I validate the Edited Entry text is "yes"
 
+Scenario: TCXXXX: Forms Submissions Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+Then I validate the Sort By Date Time column sorts correctly
+And I click the Sort By Group link
+And I validate the Sort By Group column sorts correctly
+And I click the Sort By Driver link
+And I validate the Sort By Driver column sorts correctly
+And I click the Sort By Vehicle link
+And I validate the Sort By Vehicle column sorts correctly
+And I click the Sort By Form link
+And I validate the Sort By Form column sorts correctly
+And I click the Sort By Edited link
+And I validate the Sort By Edited column sorts correctly
+And I click the Sort By Approved link
+And I validate the Sort By Approved column sorts correctly
+
+//ADD INLINE TESTS HERE
+Scenario: TCXXXX: Forms Submissions Page - Inline Edit - All Forms (make sure you cannot do)
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+And I select "All Forms" from the Form dropdown
+And I click the Refresh button
+And I double click the 1st Row of the Form text
+Then I validate the Group textfield is present
+And I validate the Driver textfield is present
+And I validate the Vehicle textfield is present
+And I validate the Edited dropdown is present
+And I validate the Approved dropdown is present
+
+Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Cancel Changes
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+And I select "Inline Edit Test Form" from the Form dropdown
+And I click the Refresh button
+And I click the Sort By Edited link
+Then I validate the 1st Row of the Edited text is "no"
+When I save the 1st Row of the Text text as SAVEDTEXT
+And I save the 1st Row of the Numeric text as SAVEDNUMERIC
+And I save the 1st Row of the Decimal text as SAVEDDECIMAL
+And I save the 1st Row of the Date text as SAVEDDATE
+And I save the 1st Row of the Chooseone text as SAVEDCHOOSEONE
+And I save the 1st Row of the Choosemany text as SAVEDCHOOSEMANY
+And I double click the 1st Row of the Date Time text
+And I type "" into the 1st Row of the Text textfield
+And I type "" into the 1st Row of the Numeric textfield
+And I type "" into the 1st Row of the Decimal textfield
+And I select today from the 1st Row of the Inline Date dropdown
+And I select "No" from the 1st Row of the Chooseone dropdown
+And I select Option 1 from the Choosemany scrollbox
+And I click the 1st Row of the Cancel button
+Then I validate the 1st Row of the Text text is SAVEDTEXT
+And I validate the 1st Row of the Numeric text is SAVEDNUMERIC
+And I validate the 1st Row of the Decimal text is SAVEDDECIMAL
+And I validate the 1st Row of the Date text is SAVEDDATE
+And I validate the 1st Row of the Chooseone text is SAVEDCHOOSEONE
+And I validate the 1st Row of the Choosemany text is SAVEDCHOOSEMANY
+
+Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Approve Changes
+Given I am logged in
+When I click the Forms link
+And I click the Submissions link
+And I select "Inline Edit Test Form" from the Form dropdown
+And I click the Refresh button
+And I click the Sort By Edited link
+Then I validate the 1st Row of the Edited text is "no"
+When I save the 1st Row of the Text text as SAVEDTEXT
+And I save the 1st Row of the Numeric text as SAVEDNUMERIC
+And I save the 1st Row of the Decimal text as SAVEDDECIMAL
+And I save the 1st Row of the Date text as SAVEDDATE
+And I save the 1st Row of the Chooseone text as SAVEDCHOOSEONE
+And I save the 1st Row of the Choosemany text as SAVEDCHOOSEMANY
+And I double click the 1st Row of the Date Time text
+And I type "" into the 1st Row of the Text textfield
+And I type "" into the 1st Row of the Numeric textfield
+And I type "" into the 1st Row of the Decimal textfield
+And I select today from the 1st Row of the Inline Date dropdown
+And I select "No" from the 1st Row of the Chooseone dropdown
+And I select Option 1 from the Choosemany scrollbox
+And I click the 1st Row of the OK button
+Then I validate the 1st Row of the Text text is not SAVEDTEXT
+And I validate the 1st Row of the Numeric text is not SAVEDNUMERIC
+And I validate the 1st Row of the Decimal text is not SAVEDDECIMAL
+And I validate the 1st Row of the Date text is not SAVEDDATE
+And I validate the 1st Row of the Chooseone text is not SAVEDCHOOSEONE
+And I validate the 1st Row of the Choosemany text is not SAVEDCHOOSEMANY
 //These tests below need to be changed once in line edit has been fully implemented, however some of them may not be needed
 Scenario: TCXXXX: Forms Submissions Page - generate error messages for required fields
 
