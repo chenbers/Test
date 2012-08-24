@@ -6,41 +6,56 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsSubmissionsEnum implements SeleniumEnums {
     DEFAULT_URL(appUrl + "/forms/submissions"),
-    TITLE("List Submissions", ""),
+    TITLE("List Submissions", Xpath.start().span(Id.clazz("submissions")).toString()),
 
-    SAVE("Save", ""),
-    APPROVE("Approve", ""),
-
+    REFRESH("Refresh", "//button[@class='btn']"),
+    
     DATE_SORT("Date/Time", "column-submission-date"),
     GROUP_SORT("Group", "column-submission-group"),
     DRIVER_SORT("Driver", "column-submission-driver"),
     VEHICLE_SORT("Vehicle", "column-submission-vehicle"),
     FORM_SORT("Form", "column-submission-form"),
     EDITED_SORT("Edited", "column-submission-edited"),
-    STATUS_SORT("Status", "column-submission-status"),
+    APPROVED_SORT("Status", "column-submission-status"),
     
+    FORM_DROPDOWN("Form:", "submissions-form-select"),
+    DATE_DROPDOWN("Date:", "//input[@id='daterange']"),
+    SPECIFIC_DATE_DROPDOWN(null, "//div[@class='range-start hasDatepicker']"),
+    DATE_START_DROPDOWN(null, "//div[@class='range-start hasDatepicker']"),
+    DATE_END_DROPDOWN(null, "//div[@class='range-end hasDatepicker']"),
+    RECORDS_DROPDOWN(null, "//select[@name='submissions-table_length']"),
     EDITED_DROPDOWN(null, "column-filter-submission-edited"),
-    STATUS_DROPDOWN(null, "column-filter-submission-status"),
+    APPROVED_DROPDOWN(null, "column-filter-submission-status"),
 
-    DATE_START_FIELD(null, "tablerange_from_1"),
-    DATE_END_FIELD(null, "tablerange_to_1"),
     GROUP_FIELD(null, "column-filter-submission-group"),
     DRIVER_FIELD(null, "column-filter-submission-driver"),
     VEHICLE_FIELD(null, "column-filter-submission-vehicle"),
-    FORM_FIELD(null, "column-filter-submission-form"),
-    //all these need class names
-    DATE_ENTRY(null, "//tr[###]/td[@class='']"),
-    GROUP_ENTRY(null, ""),
-    DRIVER_ENTRY(null, ""),
-    VEHICLE_ENTRY(null, ""),
-    FORM_ENTRY(null, ""),
-    EDITED_ENTRY(null, ""),
-    STATUS_ENTRY(null, ""),
     
-    PREVIOUS("Previous", "submissions-table_previous"),
-    NEXT("Next", "submissions-table_next"),
+    DATE_TIME_TEXT_ENTRY(null, "//tr[###]/td[@class='submissionDate']"),
+    GROUP_LINK_ENTRY(null, "//tr[###]/td[@class='groupName']"),
+    DRIVER_LINK_ENTRY(null, "//tr[###]/td[@class='driverName']"),
+    VEHICLE_LINK_ENTRY(null, "//tr[###]/td[@class='vehicleName']"),
+    FORM_TEXT_ENTRY(null, "//tr[###]/td[@class='formName']"),
+    EDITED_TEXT_ENTRY(null, "//tr[###]/td[@class='edited']"),
+    APPROVED_CHECKBOX_ENTRY(null, "//tr[###]/td[@class='status']"),
     
-    ENTRIES_TEXT("Showing ### to ### of ### entries", "submissions-table_info"),
+    //INLINE EDIT ELEMENTS
+    TEXT_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable text
+    NUMERIC_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable numeric
+    DECIMAL_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable decimal
+    DATE_ENTRY(null, "//tr[###]/td[@class='editable date']"),
+    CHOOSEONE_ENTRY(null, "//tr[###]/td[@class='editable select1']"),
+    CHOOSEMANY_ENTRY(null, "//tr[###]/td[@class='editable selectn']"),
+    SAVE_BUTTON(null, "//a[@id='saveRow']"),
+    CANCEL_BUTTON(null, "//a[@id='cancelRow']"),
+    
+    PREVIOUS("Previous", "//li[@class='prev']"),
+    PAGE_NUMBER(null, "//li[###]/a[@href='#']"),
+    NEXT("Next", "//li[@class='next']"),
+    
+    NO_RECORDS_ERROR("No matching records found", "//td[@class='dataTables_empty']"),
+    
+    ENTRIES_TEXT("Showing #### to #### of #### entries", "//div[@id='submissions-table_info']"),
     ;
 
     private String text, url;

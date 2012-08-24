@@ -19,7 +19,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -47,6 +46,7 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.DOTStoppedEvent;
 import com.inthinc.pro.model.event.DOTStoppedState;
+import com.inthinc.pro.model.event.DVIREvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.FirmwareVersionEvent;
@@ -336,7 +336,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
     ALERT_TYPE_INSTALL
     NOTE_TYPE_INSTALL (35)
 ALERT_TYPE_IGNITION_ON
-    NOTE_TYPE_IGNITION_ON (19)
+    NOTE_TYPE_IGNITION_ON (19)    
 */    
     MiscAlertInfo miscAlertInfoList[] = {
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PANIC, new Event[] {
@@ -374,6 +374,15 @@ ALERT_TYPE_IGNITION_ON
                     new WitnessVersionEvent(0l, 0, NoteType.WITNESS_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_ZONES_CURRENT, new Event[] {
                     new ZonesVersionEvent(0l, 0, NoteType.ZONES_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.SERVER_OLDER)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, new Event[] {
+                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 2,0)}),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS, new Event[] { 
+                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 2, 1) }),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_FAIL, new Event[] { 
+                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 1, 0) }),
+            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS, new Event[] { 
+                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 1, 1) }),
+                    
     };
     
     @Test 
@@ -512,16 +521,10 @@ ALERT_TYPE_IGNITION_ON
                     eventTypes.add(EventType.PANIC); 
                     break;
                 case ALERT_TYPE_DVIR_PRE_TRIP_FAIL:
-                    eventTypes.add(EventType.DVIR_PRE_TRIP_FAIL); 
-                    break;
                 case ALERT_TYPE_DVIR_PRE_TRIP_PASS:
-                    eventTypes.add(EventType.DVIR_PRE_TRIP_PASS); 
-                    break;
                 case ALERT_TYPE_DVIR_POST_TRIP_FAIL:
-                    eventTypes.add(EventType.DVIR_POST_TRIP_FAIL); 
-                    break;
                 case ALERT_TYPE_DVIR_POST_TRIP_PASS:
-                    eventTypes.add(EventType.DVIR_POST_TRIP_PASS); 
+                   eventTypes.add(EventType.DVIR); 
                     break;
                  default:
                     eventTypes.add(EventType.SPEEDING);
@@ -750,19 +753,9 @@ ALERT_TYPE_IGNITION_ON
 			event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
 			        DEFAULT_LAT, DEFAULT_LNG, 100, 80, 70, 100, 100);
     //  TODO Check this is the correct note type!
-        else if (eventType.equals(EventType.DVIR_PRE_TRIP_FAIL) )
-            event = new Event(0l, 0, NoteType.NEW_DRIVER, new Date(), 100, 1000, 
+        else if (eventType.equals(EventType.DVIR) )
+            event = new Event(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, 
                     DEFAULT_LAT, DEFAULT_LNG);
-        else if (eventType.equals(EventType.DVIR_PRE_TRIP_PASS) )
-            event = new Event(0l, 0, NoteType.NEW_DRIVER, new Date(), 100, 1000, 
-                    DEFAULT_LAT, DEFAULT_LNG);
-//  TODO Add note type when known
-//        else if (eventType.equals(EventType.DVIR_POST_TRIP_FAIL) )
-//            event = new Event(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
-//                    DEFAULT_LAT, DEFAULT_LNG);
-//        else if (eventType.equals(EventType.DVIR_POST_TRIP_PASS) )
-//            event = new Event(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
-//                    DEFAULT_LAT, DEFAULT_LNG);
     	else fail("Code does not support eventType: " + eventType);
     	event.setHeading(DEFAULT_HEADING);
     	event.setSats(DEFAULT_SATS);
