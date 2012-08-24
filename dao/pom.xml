@@ -202,6 +202,11 @@
 			<artifactId>emulation</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.inthinc.pro.portal_forms</groupId>
+			<artifactId>forms_common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>
