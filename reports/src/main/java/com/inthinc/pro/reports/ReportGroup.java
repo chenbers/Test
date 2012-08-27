@@ -215,7 +215,15 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.DriverPerformance,
             EnumSet.of(ReportAccountType.PERFORMANCE),
-            ReportType.DRIVER_EXCLUDED_VIOLATIONS)
+            ReportType.DRIVER_EXCLUDED_VIOLATIONS),
+     /* Forms */
+     DVIR("DVIR", 43, EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
+             new CriteriaType[]{CriteriaType.TIMEFRAME},
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},ReportCategory.DVIR,
+             EnumSet.of(ReportAccountType.DVIR),
+             ReportType.DVIR),
+             
+            
      ;
 
     private ReportType[] reports;

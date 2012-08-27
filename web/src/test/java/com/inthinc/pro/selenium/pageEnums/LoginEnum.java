@@ -4,14 +4,14 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum LoginEnum implements SeleniumEnums {
 
-    LOGIN_URL(""),
+    LOGIN_URL("login"),
     LOGOUT_URL("logout"),
 
     /* Main Login Page Elements */
 
     USERNAME_FIELD("Username:", "//input[@id='username']"),
     PASSWORD_FIELD("Password:", "//input[@id='password']"),
-    LOGIN_BUTTON("LOGIN", "//input[@class='btn btn-large btn-inthinc']"),
+    LOGIN_BUTTON("LOGIN", "//button[@class='btn btn-large btn-block btn-inthinc']"),
     
     FORGOT_USERNAME_LINK("Forgot your user name or password?", ""),//not currently on new login page
 

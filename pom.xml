@@ -94,6 +94,7 @@
 		<selenium.version>2.24.1</selenium.version>
 		<jbehave.core.version>3.6.7</jbehave.core.version>
         <jacksonVersion>2.0.2</jacksonVersion>
+        <codehausjacksonVersion>1.9.9</codehausjacksonVersion>
 	</properties>
 	<build>
 		<finalName>pro</finalName>

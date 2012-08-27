@@ -80,7 +80,7 @@ public class LoginSteps extends WebSteps {
 
     @When("I am logged in as TeamOnly user")
     public void loggedInAsTeamOnlyUser() {
-        page._textField().userName().type("mweiss");
+        page._textField().username().type("mweiss");
         page._textField().password().type("password");
         page._button().logIn().click();
     }
@@ -92,13 +92,13 @@ public class LoginSteps extends WebSteps {
 //     TODO: FIGURE OUT AUTOMATED USERS, IN THE MEANTIME, USE THIS CODE:
       if(roleName.equals("TopUser"))
       {
-      page._textField().userName().type("danniauto");
+      page._textField().username().type("danniauto");
       page._textField().password().type("password");
       page._button().logIn().click();
       }
       if(roleName.equals("TeamOnly"))
       {
-      page._textField().userName().type("CaptainNemo");
+      page._textField().username().type("CaptainNemo");
       page._textField().password().type("Muttley");
       page._button().logIn().click();
       }
@@ -213,7 +213,7 @@ public class LoginSteps extends WebSteps {
 
     @When("the focus should be on the User Name Field")
     public void whenTheFocusShouldBeOnUserNameField() {
-        if (!page._textField().userName().hasFocus())
+        if (!page._textField().username().hasFocus())
             test.addError("The User Name field does NOT have focus");
     }
 
@@ -256,7 +256,7 @@ public class LoginSteps extends WebSteps {
     @Given("I move the focus to the <initialFocusedElement>")
     public void givenIMoveTheFocusToTheinitialFocusedElement(String initialFocusedElement) {
         // TODO: jwimmer: move focus based on initialFocusedElement String var?
-        loginPage._textField().userName().focus();
+        loginPage._textField().username().focus();
     }
 
     @Then("the focus should be on the <finalFocusedElement>")
@@ -268,7 +268,7 @@ public class LoginSteps extends WebSteps {
 
     @When("I change the username to an incorrect case")
     public void whenIChangeTheUsernameToAnIncorrectCase() {
-        String originalUserName = loginPage._textField().userName().getText();
+        String originalUserName = loginPage._textField().username().getText();
         Log.debug("originalUserName: " + originalUserName);
 
         String incorrectCaseUserName = flipCase(originalUserName);
