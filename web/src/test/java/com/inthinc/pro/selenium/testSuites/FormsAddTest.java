@@ -22,7 +22,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
         PageTeamDriverStatistics.class, PageDriverPerformance.class,
         PageVehiclePerformance.class, PageFormsSubmissions.class,
         PageFormsAdd.class, PageFormsAdmin.class })
-@StoryPath(path="FormsAdd.story")
+@StoryPath(path="CurrentStory.story")
 public class FormsAddTest extends WebStories  {
 
     @Test

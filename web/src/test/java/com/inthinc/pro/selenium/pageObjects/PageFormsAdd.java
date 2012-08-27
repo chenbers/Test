@@ -88,7 +88,7 @@ public class PageFormsAdd extends FormsTables {
     		return new CheckBox(FormsAddEnum.LENGTH_CHECKBOX);
     	}
     	
-    	public CheckBox rangeNumeric() {
+    	public CheckBox rangeEnableNumeric() {
     		return new CheckBox(FormsAddEnum.RANGE_NUMERIC_CHECKBOX);
     	}
     	
@@ -108,7 +108,7 @@ public class PageFormsAdd extends FormsTables {
     		return new CheckBox(FormsAddEnum.MAXIMUM_NUMERIC_INCLUSIVE_CHECKBOX);
     	}
     	
-    	public CheckBox rangeDate() {
+    	public CheckBox rangeEnableDate() {
     		return new CheckBox(FormsAddEnum.RANGE_DATE_CHECKBOX);
     	}
     	
@@ -228,7 +228,7 @@ public class PageFormsAdd extends FormsTables {
     		return new TextField(FormsAddEnum.CAPTION_FIELD);
     	}
     	
-    	public TextField defaultValue() {
+    	public TextField value() {
     		return new TextField(FormsAddEnum.DEFAULT_VALUE);
     	}
     	

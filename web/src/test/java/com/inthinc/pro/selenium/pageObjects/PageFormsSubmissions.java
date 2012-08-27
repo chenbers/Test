@@ -235,6 +235,23 @@ public class PageFormsSubmissions extends FormsTables {
     	public TextTable choosemany() {
     		return new TextTable(FormsSubmissionsEnum.CHOOSEMANY_ENTRY);
     	}
+    		
+    	public TextTable invalidTextError() {
+    		return new TextTable(FormsSubmissionsEnum.INVALID_TEXT_ERROR);
+    	}
+    	
+    	public TextTable invalidNumericError() {
+    		return new TextTable(FormsSubmissionsEnum.INVALID_NUMERIC_ERROR);
+    	}
+    	
+    	public TextTable invalidDecimalError() {
+    		return new TextTable(FormsSubmissionsEnum.INVALID_DECIMAL_ERROR);
+    	}
+    	
+    	public TextTable invalidDateError() {
+    		return new TextTable(FormsSubmissionsEnum.INVALID_DATE_ERROR);
+    	}
+    	
     }
     
     public class FormsSubmissionsCheckboxes {

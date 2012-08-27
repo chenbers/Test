@@ -267,8 +267,8 @@ And I type "" into the 1st Row of the Numeric textfield
 And I type "" into the 1st Row of the Decimal textfield
 And I select today from the 1st Row of the Inline Date dropdown
 And I select "No" from the 1st Row of the Chooseone dropdown
-And I select Option 1 from the Choosemany scrollbox
-And I click the 1st Row of the OK button
+And I select "Option 1" from the Choosemany scrollbox
+And I click the 1st Row of the Save button
 Then I validate the 1st Row of the Text text is not SAVEDTEXT
 And I validate the 1st Row of the Numeric text is not SAVEDNUMERIC
 And I validate the 1st Row of the Decimal text is not SAVEDDECIMAL

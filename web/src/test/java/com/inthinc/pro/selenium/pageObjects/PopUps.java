@@ -13,6 +13,7 @@ import com.inthinc.pro.automation.elements.TextCheckboxLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextFieldTable;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -21,12 +22,6 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
-import com.inthinc.pro.selenium.pageObjects.PopUps.OptionsEditor.PopUpsButtons;
-import com.inthinc.pro.selenium.pageObjects.PopUps.OptionsEditor.PopUpsDropDowns;
-import com.inthinc.pro.selenium.pageObjects.PopUps.OptionsEditor.PopUpsLinks;
-import com.inthinc.pro.selenium.pageObjects.PopUps.OptionsEditor.PopUpsPopUp;
-import com.inthinc.pro.selenium.pageObjects.PopUps.OptionsEditor.PopUpsTextFields;
-import com.inthinc.pro.selenium.pageObjects.PopUps.OptionsEditor.PopUpsTexts;
 
 public class PopUps extends MasterTest {
 
@@ -1016,12 +1011,12 @@ public class PopUps extends MasterTest {
         
         public class PopUpsTextFields {
         	
-        	public TextField optionEnglish() {
-        		return new TextField(PopUpEnum.OPTION_ENGLISH_FIELD);
+        	public TextFieldTable optionEnglish() {
+        		return new TextFieldTable(PopUpEnum.OPTION_ENGLISH_FIELD);
         	}
         	
-        	public TextField optionUnderlyingValue() {
-        		return new TextField(PopUpEnum.OPTION_UNDERLYING_VALUE_FIELD);
+        	public TextFieldTable optionUnderlyingValue() {
+        		return new TextFieldTable(PopUpEnum.OPTION_UNDERLYING_VALUE_FIELD);
         	}
         }
         
