@@ -278,7 +278,7 @@ And I check the 2nd Row of the Column checkbox
 And I check the 3rd Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
-Then I validate the Sort By Date Time link is  present
+And I validate the Sort By Date Time link is  present
 And I validate the Sort By Group link is  present
 And I validate the Sort By Driver link is  present
 And I validate the Sort By Vehicle link is present

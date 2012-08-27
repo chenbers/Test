@@ -147,7 +147,22 @@ public enum PopUpEnum implements SeleniumEnums {
     LOCATION_BUBBLE_DETAIL(null, "//div[@id='address-canvas']/div[1]/div/div[10]/div/div[1]/div/div/table/tbody/tr[2]/td[2]"),
     LOCATION_BUBBLE_CLOSE(null, "//div[@id='address-canvas']/div[1]/div/div[10]/div/div[1]/img[1]"),
     
+    /* Forms Options PopUp */
+	OPTIONS_EDITOR_LABEL("Options Editor", "//div[@class='modal optionsEditorDialog jqmID2']/h3"),
+	OPTIONS_LABEL("Options", "//div[9]/div[@class='modalContents']/h4"),
+	UNDERLYING_VALUE_LABEL("Underlying Value", "//ul[@class='optionsHeader clearfix']/li[1]"),
+	OPTION_ENGLISH_FIELD(null, "//li[@data-lang='eng']/input[###]"),
+	OPTION_UNDERLYING_VALUE_FIELD(null, "//li[@data-lang='value']/input[###]"),
+	APPLY_LINK("Apply", "//a[@href='#apply']"),
+	CANCEL_LINK("Cancel", "//a[@href='#cancel']"),
     
+	/* Forms Preset PopUp - Has been removed but may be added back in later */
+	PRESETS_LABEL("Presets", "//div[13]/div[1][@class='modalContents']/h4[1]"),
+	CHOOSE_A_PRESET_LABEL("Choose a Preset:", "//label[@class='presetsLabel']"),
+	PRESET_DROPDOWN("(none created yet)", "optionsPresetsSelect"),
+	LOAD_PRESET_LINK("Load Preset", "//a[@class='modalButton loadPreset']"),
+	DELETE_PRESET_LINK("Delete Preset", "//a[@class='modalButton deletePreset']"),
+	SAVE_PRESET_LINK("Save to Preset...", "//a[@class='modalButton savePreset"),
     ;
 
     private String text, url;

@@ -40,6 +40,10 @@ public class NoteTesterGeneration {
         testVehicleOne.increment_time(20);
         //AutomationDeviceEvents.seatbelt(tiwi);
         AutomationDeviceEvents.hardLeft(testVehicleOne, 105);
+        testVehicleOne.getState().setTopSpeed(70).setSpeedingDistanceX100(100).setSpeedingSpeedLimit(65);
+        AutomationDeviceEvents.speeding(testVehicleOne);
+        testVehicleOne.getState().setTopSpeed(100).setSpeedingDistanceX100(6000).setSpeedingSpeedLimit(65);
+        AutomationDeviceEvents.speeding(testVehicleOne);
 
         testVehicleOne.update_location(new GeoPoint(33.01, -117.113), 15);
         testVehicleOne.update_location(new GeoPoint(33.0097, -117.1153), 15);

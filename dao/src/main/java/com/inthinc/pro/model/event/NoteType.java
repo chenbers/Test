@@ -216,7 +216,7 @@ public enum NoteType implements BaseEnum {
     VALID_OCCUPANT(105, ValidOccupantEvent.class), //WAYSMART
     TRIAX_STATUS_EX(110), //WAYSMART
     CRASH_DATA_EXTENDED(112), //WAYSMART
-    HOS_CHANGE_STATE_NO_GPS_LOCK(113), //WAYSMART
+    HOS_CHANGE_STATE_NO_GPS_LOCK(113, DVIREvent.class), //WAYSMART
     NEWDRIVER_HOSRULE(116, ValidDriverEvent.class), //WAYSMART
 
 

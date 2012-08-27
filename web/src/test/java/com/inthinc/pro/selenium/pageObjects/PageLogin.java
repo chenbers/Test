@@ -52,7 +52,7 @@ public class PageLogin extends Masthead {
     }
     public class LoginTexts extends MastheadTexts{
     	
-    	public TextFieldLabel userName(){
+    	public TextFieldLabel username(){
     		return new TextFieldLabel(LoginEnum.USERNAME_FIELD);
     	}
     	public TextFieldLabel password(){
@@ -64,7 +64,7 @@ public class PageLogin extends Masthead {
     	return new LoginTextFields();
     }
     public class LoginTextFields extends MastheadTextFields{
-    	public TextField userName(){
+    	public TextField username(){
     		return new TextField(LoginEnum.USERNAME_FIELD);
     	}
     	public TextField password(){
@@ -83,9 +83,9 @@ public class PageLogin extends Masthead {
     
     @Override
     public PageLogin loginProcess(String username, String password) {
-        if(!this._textField().userName().isPresent())
+        if(!this._textField().username().isPresent())
             openLogout();
-        new LoginTextFields().userName().type(username);
+        new LoginTextFields().username().type(username);
         new LoginTextFields().password().type(password);
         new LoginButtons().logIn().click();
         if(isOnPage())
@@ -117,7 +117,7 @@ public class PageLogin extends Masthead {
     @Override
     protected boolean checkIsOnPage() {
         return _button().logIn().isPresent() && 
-        	   _textField().userName().isPresent() &&
+        	   _textField().username().isPresent() &&
         	   _textField().password().isPresent();
     }
 }

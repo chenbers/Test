@@ -6,12 +6,14 @@ import java.util.Map;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.ClickableObject;
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextCheckboxLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextFieldTable;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -948,5 +950,113 @@ public class PopUps extends MasterTest {
         public LocationButtons _button(){
             return new LocationButtons();
         }
+    }
+    
+    public class OptionsEditor {
+    	
+        public class PopUpsButtons {}
+        
+        public class PopUpsDropDowns {
+        	
+        	public DropDown preset() {
+        		return new DropDown(PopUpEnum.PRESET_DROPDOWN);
+        	}
+        }
+        
+        public class PopUpsLinks {
+        	
+        	public TextLink loadPreset() {
+        		return new TextLink(PopUpEnum.LOAD_PRESET_LINK);
+        	}
+        	
+        	public TextLink deletePreset() {
+        		return new TextLink(PopUpEnum.DELETE_PRESET_LINK);
+        	}
+        	
+        	public TextLink savePreset() {
+        		return new TextLink(PopUpEnum.SAVE_PRESET_LINK);
+        	}
+        	
+        	public TextLink apply() {
+        		return new TextLink(PopUpEnum.APPLY_LINK);
+        	}
+        	
+        	public TextLink cancel() {
+        		return new TextLink(PopUpEnum.CANCEL_LINK);
+        	}
+        }
+        
+        public class PopUpsTexts {
+        	
+        	public Text optionsEditorLabel() {
+        		return new Text(PopUpEnum.OPTIONS_EDITOR_LABEL);
+        	}
+        	
+        	public Text presetsLabel() {
+        		return new Text(PopUpEnum.PRESETS_LABEL);
+        	}
+        	
+        	public Text chooseAPresetLabel() {
+        		return new Text(PopUpEnum.CHOOSE_A_PRESET_LABEL);
+        	}
+        	
+        	public Text optionsLabel() {
+        		return new Text(PopUpEnum.OPTIONS_LABEL);
+        	}
+        	
+        	public Text underlyingValueLabel() {
+        		return new Text(PopUpEnum.UNDERLYING_VALUE_LABEL);
+        	}
+        }
+        
+        public class PopUpsTextFields {
+        	
+        	public TextFieldTable optionEnglish() {
+        		return new TextFieldTable(PopUpEnum.OPTION_ENGLISH_FIELD);
+        	}
+        	
+        	public TextFieldTable optionUnderlyingValue() {
+        		return new TextFieldTable(PopUpEnum.OPTION_UNDERLYING_VALUE_FIELD);
+        	}
+        }
+        
+        
+        public class PopUpsPopUp {
+
+//  unable to access this pop up to get the id's right now
+//        	public PopUp saveToPreset() {
+//        		return new PopUp(PopUpEnum.SAVE_TO_PRESET_POPUP);
+//        	}
+        	
+        //  unable to access this pop up to get the id's right now
+//        	public PopUp deletePreset() {
+//        		return new PopUp(PopUpEnum.DELETE_PRESET_POPUP);
+//        	}
+        }
+
+        public PopUpsButtons _button() {
+            return new PopUpsButtons();
+        }
+
+        public PopUpsDropDowns _dropDown() {
+            return new PopUpsDropDowns();
+        }
+
+        public PopUpsLinks _link() {
+            return new PopUpsLinks();
+        }
+
+        public PopUpsTexts _text() {
+            return new PopUpsTexts();
+        }
+
+        public PopUpsTextFields _textField() {
+            return new PopUpsTextFields();
+        }    	
+        
+        public PopUpsPopUp _popUp() {
+        	return new PopUpsPopUp();
+        }
+    	
     }
 }

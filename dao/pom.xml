@@ -186,21 +186,24 @@
         </dependency>
         <!-- Jackson -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${codehausjacksonVersion}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${codehausjacksonVersion}</version>
         </dependency>
 		<dependency>
 			<groupId>com.inthinc.pro.emulation</groupId>
 			<artifactId>emulation</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.inthinc.pro.portal_forms</groupId>
+			<artifactId>forms_common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<reporting>

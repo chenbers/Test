@@ -2,6 +2,7 @@ package com.inthinc.device.emulation;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
@@ -44,9 +45,11 @@ public class NewNoteTest {
 				HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
 				65, 0, 0, 47, 0);
 
+        note.addAttr(EventAttr.DRIVER_ID_STR, "71572");
         note.addAttr(EventAttr.RHA_TYPE, 1);
         note.addAttr(EventAttr.RHA_RADIUS_METERS, 10);
-        note.addAttr(EventAttr.RHA_ENDTIME, note.getTime().epochSeconds() + 86400); //One day later
+        Date currentTime = new Date();
+        note.addAttr(EventAttr.RHA_ENDTIME, currentTime.getTime()/1000 + 86400); //One day later
 		note.addAttr(EventAttr.RHA_DESCRIPTION, "Test Description");
 
 		List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
@@ -64,8 +67,8 @@ public class NewNoteTest {
 
 	
 	public static void main(String[] args){
-		String imei = "999456789012345";
-		String mcmID = "";
+		String imei = "30099FKEWS99999";
+		String mcmID = "MCMFAKEWS";
 		
 		NewNoteTest test = new NewNoteTest(AutoSilos.QA);
 		
