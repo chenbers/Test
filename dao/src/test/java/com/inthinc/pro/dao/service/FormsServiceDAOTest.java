@@ -26,6 +26,7 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.forms.common.model.SubmissionData;
@@ -42,6 +43,7 @@ public class FormsServiceDAOTest {
 
     }
 
+    @Ignore
     @Test
     public void formsServiceDAOTest() {
 
@@ -49,7 +51,7 @@ public class FormsServiceDAOTest {
 
         formsDAO.setProtocol("http");
         formsDAO.setHost("dev.tiwipro.com");
-        formsDAO.setPort(8080);
+        formsDAO.setPort(8473);
         formsDAO.setUsername("jhoward");
         formsDAO.setPassword("password");
         formsDAO.setPath("forms_service");
@@ -119,11 +121,13 @@ public class FormsServiceDAOTest {
         SubmissionData submissionData = new SubmissionData();
         submissionData.setApproved(false);
         submissionData.setDriverID(1);
+        submissionData.setDriverName("Jacquie Howard");
         submissionData.setFormID(100);
         submissionData.setFormTitle("Form Title");
         submissionData.setGroupID(4917);
         submissionData.setTimestamp(102030423L);
         submissionData.setVehicleID(200);
+        submissionData.setVehicleName("Jacquie's Car");
         List<SubmissionDataItem> dataList = new ArrayList<SubmissionDataItem>();
         for (int i=0; i<4; i++){
             SubmissionDataItem submissionDataItem = new SubmissionDataItem();
@@ -138,7 +142,7 @@ public class FormsServiceDAOTest {
         String json;
         try {
             json = mapper.writeValueAsString(submissionData);
-            String jsonString = "{\"driverID\":1,\"vehicleID\":200,\"groupID\":4917,\"formID\":100,\"timestamp\":102030423,\"approved\":false,"+
+            String jsonString = "{\"driverID\":1,\"driverName\":\"Jacquie Howard\",\"vehicleID\":200,\"vehicleName\":\"Jacquie's Car\",\"groupID\":4917,\"formID\":100,\"timestamp\":102030423,\"approved\":false,"+
             "\"formTitle\":\"Form Title\","+
                     "\"dataList\":[{\"tag\":\"0\",\"question\":\"question0\",\"answer\":\"answer0\"},"+
                                   "{\"tag\":\"1\",\"question\":\"question1\",\"answer\":\"answer1\"},"+
@@ -175,7 +179,7 @@ public class FormsServiceDAOTest {
             if (statusCode == HttpStatus.SC_OK) {
                 InputStream body = method.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
-                FormSubmission value = mapper.readValue(body, FormSubmission.class);
+                SubmissionData value = mapper.readValue(body, SubmissionData.class);
                 assertNotNull(value);
             }
         } catch (HttpException he) {
