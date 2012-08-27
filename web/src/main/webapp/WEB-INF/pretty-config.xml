@@ -8,6 +8,10 @@
 		<view-id>/login.faces</view-id>
 	</url-mapping>
     
+    <url-mapping id="resetPassword">
+        <pattern>/resetPassword</pattern>
+        <view-id>/resetPassword.faces</view-id>
+    </url-mapping>
     <url-mapping id="reset">
         <pattern>/reset/#{updateCredentialsBean.passKey}</pattern>
         <view-id>/updateCredentials.faces</view-id>
