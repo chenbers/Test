@@ -155,21 +155,21 @@ public class PageNotificationsCrashHistoryAddEdit extends NotificationsBar {
 
     public class NotificationsCrashHistoryAddEditButtons extends NotificationsBarButtons {
 
-        public TextButton topSave() {
+        public TextButton saveTop() {
             return new TextButton(NotificationsCrashHistoryAddEditEnum.TOP_SAVE);
         }
 
-        public TextButton topCancel() {
+        public TextButton cancelTop() {
             return new TextButton(
                     NotificationsCrashHistoryAddEditEnum.TOP_CANCEL);
         }
 
-        public TextButton bottomSave() {
+        public TextButton saveBottom() {
             return new TextButton(
                     NotificationsCrashHistoryAddEditEnum.BOTTOM_SAVE);
         }
 
-        public TextButton bottomCancel() {
+        public TextButton cancelBottom() {
             return new TextButton(
                     NotificationsCrashHistoryAddEditEnum.BOTTOM_CANCEL);
         }

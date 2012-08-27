@@ -49,7 +49,7 @@ And I type "TC4472 Service" into the Service textfield
 And I save the Driver dropdown as DRIVER
 And I select "hosDriver00" from the Vehicle dropdown
 And I type "Salt Lake City, UT" into the Location textfield
-And I click the Top Save button
+And I click the Save Top button
 Then I validate I am on the HOS Driver Logs page
 When I type "hos Driver 00" into the Driver textfield
 And I click the suggested row 1 from the Driver textfield

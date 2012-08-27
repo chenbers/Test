@@ -3,14 +3,15 @@ package com.inthinc.pro.selenium.steps;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.tmatesoft.sqljet.core.internal.lang.SqlParser.type_name_return;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PopUps;
-import com.inthinc.pro.automation.jbehave.AutoCustomSteps;
 
 public class LoginSteps extends WebSteps {
 
@@ -79,7 +80,7 @@ public class LoginSteps extends WebSteps {
 
     @When("I am logged in as TeamOnly user")
     public void loggedInAsTeamOnlyUser() {
-        page._textField().userName().type("mweiss");
+        page._textField().username().type("mweiss");
         page._textField().password().type("password");
         page._button().logIn().click();
     }
@@ -91,13 +92,13 @@ public class LoginSteps extends WebSteps {
 //     TODO: FIGURE OUT AUTOMATED USERS, IN THE MEANTIME, USE THIS CODE:
       if(roleName.equals("TopUser"))
       {
-      page._textField().userName().type("danniauto");
+      page._textField().username().type("danniauto");
       page._textField().password().type("password");
       page._button().logIn().click();
       }
       if(roleName.equals("TeamOnly"))
       {
-      page._textField().userName().type("CaptainNemo");
+      page._textField().username().type("CaptainNemo");
       page._textField().password().type("Muttley");
       page._button().logIn().click();
       }
@@ -212,7 +213,7 @@ public class LoginSteps extends WebSteps {
 
     @When("the focus should be on the User Name Field")
     public void whenTheFocusShouldBeOnUserNameField() {
-        if (!page._textField().userName().hasFocus())
+        if (!page._textField().username().hasFocus())
             test.addError("The User Name field does NOT have focus");
     }
 
@@ -255,7 +256,7 @@ public class LoginSteps extends WebSteps {
     @Given("I move the focus to the <initialFocusedElement>")
     public void givenIMoveTheFocusToTheinitialFocusedElement(String initialFocusedElement) {
         // TODO: jwimmer: move focus based on initialFocusedElement String var?
-        loginPage._textField().userName().focus();
+        loginPage._textField().username().focus();
     }
 
     @Then("the focus should be on the <finalFocusedElement>")
@@ -267,13 +268,28 @@ public class LoginSteps extends WebSteps {
 
     @When("I change the username to an incorrect case")
     public void whenIChangeTheUsernameToAnIncorrectCase() {
-        String originalUserName = loginPage._textField().userName().getText();
+        String originalUserName = loginPage._textField().username().getText();
         Log.debug("originalUserName: " + originalUserName);
 
         String incorrectCaseUserName = flipCase(originalUserName);
         Log.debug("incorrectCasePassword: " + incorrectCaseUserName);
         // TODO: jwimmer: watch the loggers and see if this works... I wouldn't be surprised if we do NOT get the original password correctly???
         loginPage._textField().password().type(incorrectCaseUserName);
+    }
+    
+    @When("I go to the forms admin page")
+    public void whenIGoToTheFormsAdminPage() {
+    	loginPage.open("http://dev.tiwipro.com:8080/forms/");
+    }
+    
+    @When("I go to the forms submissions page")
+    public void whenIGoToTheFormsSubmissionsPage() {
+    	loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");
+    }
+    
+    @When("I go to the forms add page")
+    public void whenIGoToTheFormsAddPage() {
+    	loginPage.open("http://dev.tiwipro.com:8080/forms/build");
     }
     
     //TODO: MWEISS - I am still working on how this will work

@@ -96,19 +96,19 @@ public class PageHOSAddEditDriverLogs extends HOSBar {
 
     public class HOSEditDriverLogsButtons extends HOSBarButtons {
         
-        public TextButton topSave() {
+        public TextButton saveTop() {
             return new TextButton(HOSDriverLogsEditEnum.SAVE_TOP);
         }
         
-        public TextButton topCancel() {
+        public TextButton cancelTop() {
             return new TextButton(HOSDriverLogsEditEnum.CANCEL_TOP);
         }
         
-        public TextButton bottomSave() {
+        public TextButton saveBottom() {
             return new TextButton(HOSDriverLogsEditEnum.SAVE_BOTTOM);
         }
         
-        public TextButton bottomCancel() {
+        public TextButton cancelBottom() {
             return new TextButton(HOSDriverLogsEditEnum.CANCEL_BOTTOM);
         }
         
@@ -191,7 +191,7 @@ public class PageHOSAddEditDriverLogs extends HOSBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().topCancel().isPresent() && _dropDown().status().isPresent();
+        return _button().cancelTop().isPresent() && _dropDown().status().isPresent();
     }
 
 }

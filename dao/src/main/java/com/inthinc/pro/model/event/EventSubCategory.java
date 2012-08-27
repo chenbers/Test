@@ -63,7 +63,7 @@ public enum EventSubCategory implements BaseEnum
     		EnumSet.of(EventType.NEW_DRIVER, EventType.NEW_OCCUPANT, EventType.INVALID_DRIVER, EventType.INVALID_OCCUPANT),
     		null),
     RF_SWITCH(13,EnumSet.of(EventType.RF_SWITCH),EnumSet.of(AlertMessageType.ALERT_TYPE_RF_SWITCH)),
-    DVIR(14, EnumSet.of(EventType.DVIR_PRE_TRIP_FAIL,EventType.DVIR_PRE_TRIP_PASS,EventType.DVIR_POST_TRIP_FAIL, EventType.DVIR_POST_TRIP_PASS), 
+    DVIR(14, EnumSet.of(EventType.DVIR), 
             EnumSet.of(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_FAIL,AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS,
                     AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS));
     

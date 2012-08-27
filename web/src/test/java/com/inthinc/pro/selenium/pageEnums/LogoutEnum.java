@@ -2,28 +2,25 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
-public enum LoginEnum implements SeleniumEnums {
+public enum LogoutEnum implements SeleniumEnums {
 
-    LOGIN_URL("login"),
-    LOGOUT_URL("logout"),
+    LOGOUT_URL("cas/logout"),
 
     /* Main Login Page Elements */
 
-    USERNAME_FIELD("Username:", "//input[@id='username']"),
-    PASSWORD_FIELD("Password:", "//input[@id='password']"),
-    LOGIN_BUTTON("LOGIN", "//button[@class='btn btn-large btn-block btn-inthinc']"),
+    RETURN_BUTTON("LOGIN", "//input[@class='btn btn-large btn-inthinc']"),
     
-    FORGOT_USERNAME_LINK("Forgot your user name or password?", ""),//not currently on new login page
-
+    SUCCESSFUL_TEXT("Logout successful", "//div[@class='well']/h3"),//not currently on new login page
+    EXIT_BROWSER_TEXT("For security reasons, exit your web browser.", "//div[@class='well']/p")
     ;
     
     private String text, url;
     private String[] IDs;
     
-    private LoginEnum(String url){
+    private LogoutEnum(String url){
     	this.url = url;
     }
-    private LoginEnum(String text, String ...IDs){
+    private LogoutEnum(String text, String ...IDs){
         this.text=text;
     	this.IDs = IDs;
     }

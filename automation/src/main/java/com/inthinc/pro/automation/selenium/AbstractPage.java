@@ -62,6 +62,7 @@ public abstract class AbstractPage extends MasterTest implements Page {
      * @return true if on page
      */
     public Boolean isOnPage() {
+    	getSelenium().waitForPageToLoad(); //added this pause because sometimes elements on the page weren't loaded before a test was running
         return checkIsOnPage(); 
     }
     

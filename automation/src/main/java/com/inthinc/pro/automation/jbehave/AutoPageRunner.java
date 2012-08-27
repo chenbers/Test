@@ -88,7 +88,7 @@ public class AutoPageRunner {
             location = location.substring(0, location.indexOf(";"));
         } 
         
-        Matcher mat = Pattern.compile("\\p{Digit}+").matcher(location); 
+        Matcher mat = Pattern.compile("(?<=/)\\p{Digit}+").matcher(location); 
         while (mat.find()){
             String start = location.substring(0, mat.start());
             String end = location.substring(mat.end());
