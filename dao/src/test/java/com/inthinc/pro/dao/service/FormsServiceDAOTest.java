@@ -32,7 +32,6 @@ import org.junit.Test;
 import com.inthinc.forms.common.model.SubmissionData;
 import com.inthinc.forms.common.model.SubmissionDataItem;
 import com.inthinc.pro.automation.models.Group;
-import com.inthinc.pro.model.form.FormSubmission;
 
 public class FormsServiceDAOTest {
 
@@ -55,7 +54,7 @@ public class FormsServiceDAOTest {
         formsDAO.setUsername("jhoward");
         formsDAO.setPassword("password");
         formsDAO.setPath("forms_service");
-        FormSubmission formSubmission = formsDAO.getForm(new Date().getTime(), 1);
+        SubmissionData formSubmission = formsDAO.getForm(new Date().getTime(), 1);
         assertNotNull(formSubmission);
     }
 
