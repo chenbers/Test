@@ -119,12 +119,13 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         getForm.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         HttpClient client = setupClient();
         addCredentials(client);
+        FormSubmission value = null;
         try {
             int statusCode = client.executeMethod(getForm);
             if (statusCode == HttpStatus.SC_OK) {
                 InputStream body = getForm.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
-                FormSubmission value = mapper.readValue(body, FormSubmission.class);
+                value = mapper.readValue(body, FormSubmission.class);
             }
         } catch (HttpException he) {
 
@@ -133,7 +134,7 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         } finally {
             getForm.releaseConnection();
         }
-        return null;
+        return value;
     }
 
     @Override
@@ -143,12 +144,13 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         getForm.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         HttpClient client = setupClient();
         addCredentials(client);
+        SubmissionData submissionData = null;
         try {
             int statusCode = client.executeMethod(getForm);
             if (statusCode == HttpStatus.SC_OK) {
                 InputStream body = getForm.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
-                SubmissionData value = mapper.readValue(body, SubmissionData.class);
+                submissionData = mapper.readValue(body, SubmissionData.class);
             }
         } catch (HttpException he) {
 
@@ -157,7 +159,7 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         } finally {
             getForm.releaseConnection();
         }
-        return null;
+        return submissionData;
     }
 
     private HttpClient setupClient() {
