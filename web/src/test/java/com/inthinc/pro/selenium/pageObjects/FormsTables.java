@@ -13,10 +13,6 @@ public abstract class FormsTables extends FormsBar {
     public class FormsTablesTextFields extends FormsBarTextFields {}
     
     public class FormsTablesCheckBoxes {}
-    
-    public FormsTablesCheckBoxes _checkBox() {
-        return new FormsTablesCheckBoxes();
-    }
 
     public class FormsTablesTexts extends FormsBarTexts {}
 

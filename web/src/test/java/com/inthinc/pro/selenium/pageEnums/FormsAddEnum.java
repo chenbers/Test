@@ -34,7 +34,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     VEHICLE_TAGS_ARROW(null, "//div[@class='text-arrow']"),
     FILTER_GROUPS_FIELD("Filter Groups:", "group-search"), 
     GROUPS_ARROW(null, "//ins[@class='jstree-icon']"),//needs more work so I can select specific arrows
-    GROUPS_CHECKBOX(null, "//ins[@class='jstree-checkbox']"),//needs more work so I can select specific checkboxes
+    GROUPS_CHECKBOX(null, "//li[@id='1']/a/ins[1]"),//needs more work so I can select specific checkboxes
     
     TEXT_LINK("Text", "//a[@class='toolButton inputText ui-draggable']"),
     NUMERIC_LINK("Numeric", "//a[@class='toolButton inputNumeric ui-draggable']"),
@@ -43,7 +43,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     SELECT_MULTIPLE_LINK("Select Multiple", "//a[@class='toolButton inputSelectMany ui-draggable']"),
  
     PREVIEW_AREA(null, "//div[@class='workspaceScrollArea']"),
-    CONTROL_FLOW_ARROW(null, "//div[@class='controlFlowArrow']"),
+    CONTROL_FLOW_ARROW(null, "//div[###]/div[2]/div[11]"),
     DELETE_CONTROL(null, "//a[@class='deleteControl']"),//may need unique id /html/body/div[3]/div[2]/div/div/div[5]/div/div[###]/div[1]/a
 //All these fields and checkboxes may need unique id's cause in many cases they are pointing
 //to two different objects, one which is grayed out
@@ -51,7 +51,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     CAPTION_FIELD(null, "//li[2]/div/ul/li/input"),
     HINT_FIELD(null, "//li[3]/div/ul/li/input"),
     DEFAULT_VALUE(null, "//input[@id='property_Default Value']"),
-    READ_ONLY_CHECKBOX(null, "property_Read Only"),
+    READ_ONLY_CHECKBOX(null, "//input[@id='property_Read Only']"),
     REQUIRED_CHECKBOX(null, "property_Required"),
     LENGTH_CHECKBOX(null, "property_range_enabled"),
     MINIMUM_TEXT_FIELD(null, "//input[@class='editorTextfield min']"),
@@ -64,16 +64,16 @@ public enum FormsAddEnum implements SeleniumEnums {
     MAXIMUM_NUMERIC_FIELD(null, "//input[@class='editorTextfield max']"),
     MAXIMUM_NUMERIC_INCLUSIVE_CHECKBOX(null, "property_range_max_inclusive"),
     RANGE_DATE_CHECKBOX(null, "property_range_enabled"),
-    MINIMUM_DATE_DROPDOWN(null, "//input[@class='dp1345839453708']"),//id keeps changing, needs to be static
+    MINIMUM_DATE_TEXTFIELD(null, "//div/input[@class='editorTextfield min hasDatepicker']"),
     MINIMUM_DATE_INCLUSIVE_CHECKBOX(null, "property_range_min_inclusive"), 
-    MAXIMUM_DATE_DROPDOWN(null, "//input[@class='dp1345839453709']"),//id keeps changing, needs to be static
+    MAXIMUM_DATE_TEXTFIELD(null, "//div/input[@class='editorTextfield max hasDatepicker']"),
     MAXIMUM_DATE_INCLUSIVE_CHECKBOX(null, "property_range_max_inclusive"), 
     INVALID_TEXT_FIELD(null, "//li[8]/div/ul/li/input"),
     KIND_DROPDOWN(null, "//select[@class='editorSelect']"),
     ADD_OPTION_LINK("Add Option", "//a[@class='addOption']"),
     BULK_EDIT_LINK("bulk edit", "//a[@class='optionsEditorLink']"),
-    OPTION_FIELD(null, "//div/div[1]/ul/li/input[@class='editorTextfield']"),
-    OPTION_UNDERLYING_VALUE_FIELD(null, "//div[2]/input[@class='editorTextfield underlyingValue']"),
+    OPTION_FIELD(null, "//li[###]/div/div[1]/ul/li/input"),
+    OPTION_UNDERLYING_VALUE_FIELD(null, "//li[###]/div/div[2]/input"),
     OPTION_REMOVE(null, "//a[@class='removeOption']"),//we are going to need to be able to reference which option # you want to remove
     
     ADVANCED_ARROW(null, "//div[@class='icon']"),

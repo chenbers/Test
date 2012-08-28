@@ -1,11 +1,12 @@
  package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.CalendarObject;
+
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldTable;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
@@ -70,7 +71,7 @@ public class PageFormsAdd extends FormsTables {
 
     }
     
-    public class FormsAddCheckBoxes extends FormsTablesCheckBoxes {
+    public class FormsAddCheckBoxes {
     	
     	public CheckBox groups() {
     		return new CheckBox(FormsAddEnum.GROUPS_CHECKBOX);
@@ -148,14 +149,6 @@ public class PageFormsAdd extends FormsTables {
     		return new DropDown(FormsAddEnum.KIND_DROPDOWN);
     	}
     	
-    	public DropDown dateMinimum() {
-    		return new CalendarObject(FormsAddEnum.MINIMUM_DATE_DROPDOWN);
-    	}
-    	
-    	public DropDown dateMaximum() {
-    		return new CalendarObject(FormsAddEnum.MAXIMUM_DATE_DROPDOWN);
-    	}
-    	
     }
     
     public class FormsAddLinks {
@@ -196,8 +189,8 @@ public class PageFormsAdd extends FormsTables {
     		return new TextTableLink(FormsAddEnum.PREVIEW_AREA);
     	}
     	
-    	public TextLink controlFlowArrow() {
-    		return new TextLink(FormsAddEnum.CONTROL_FLOW_ARROW);
+    	public TextTableLink controlFlowArrow() {
+    		return new TextTableLink(FormsAddEnum.CONTROL_FLOW_ARROW);
     	}
     	
     }
@@ -256,12 +249,12 @@ public class PageFormsAdd extends FormsTables {
     		return new TextField(FormsAddEnum.INVALID_TEXT_FIELD);
     	}
     	
-    	public TextField optionEnglish() {
-    		return new TextField(FormsAddEnum.OPTION_FIELD);
+    	public TextFieldTable optionEnglish() {
+    		return new TextFieldTable(FormsAddEnum.OPTION_FIELD);
     	}
     	
-    	public TextField optionUnderlyingValue() {
-    		return new TextField(FormsAddEnum.OPTION_UNDERLYING_VALUE_FIELD);
+    	public TextFieldTable optionUnderlyingValue() {
+    		return new TextFieldTable(FormsAddEnum.OPTION_UNDERLYING_VALUE_FIELD);
     	}
     	public TextField relevance() {
     		return new TextField(FormsAddEnum.RELEVANCE_FIELD);
@@ -273,6 +266,14 @@ public class PageFormsAdd extends FormsTables {
 
     	public TextField instanceDestination() {
     		return new TextField(FormsAddEnum.INSTANCE_DESTINATION_FIELD);
+    	}
+    	
+    	public TextField minimumDateRange() {
+    		return new TextField(FormsAddEnum.MINIMUM_DATE_TEXTFIELD);
+    	}
+    	
+    	public TextField maximumDateRange() {
+    		return new TextField(FormsAddEnum.MAXIMUM_DATE_TEXTFIELD);
     	}
 
     }
@@ -341,8 +342,8 @@ public class PageFormsAdd extends FormsTables {
         return new FormsAddButtons();
     }
     
-    public FormsTablesCheckBoxes _checkBox() {
-    	return new FormsTablesCheckBoxes();
+    public FormsAddCheckBoxes _checkBox() {
+    	return new FormsAddCheckBoxes();
     }
 
     public FormsAddDropDowns _dropDown() {
