@@ -3,7 +3,9 @@ package com.inthinc.pro.dao.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -21,7 +23,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.inthinc.forms.common.model.SubmissionData;
 import com.inthinc.forms.common.model.enums.TriggerType;
 import com.inthinc.pro.dao.FormsDAO;
-import com.inthinc.pro.model.form.FormSubmission;
 
 @SuppressWarnings("serial")
 public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> implements FormsDAO {
@@ -113,19 +114,19 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
     }
 
     @Override
-    public FormSubmission getForm(Long timestamp, Integer vehicleID) {
+    public SubmissionData getForm(Long timestamp, Integer vehicleID) {
 
         HttpMethod getForm = new GetMethod(formatRequest() + "submission" + "/" + timestamp + "/" + vehicleID);
         getForm.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         HttpClient client = setupClient();
         addCredentials(client);
-        FormSubmission value = null;
+        SubmissionData value = null;
         try {
             int statusCode = client.executeMethod(getForm);
             if (statusCode == HttpStatus.SC_OK) {
                 InputStream body = getForm.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
-                value = mapper.readValue(body, FormSubmission.class);
+                value = mapper.readValue(body, SubmissionData.class);
             }
         } catch (HttpException he) {
 
@@ -138,28 +139,29 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
     }
 
     @Override
-    public SubmissionData getSubmissions(TriggerType triggerType, Date startDate, Date endDate, Integer groupID) {
+    public List<SubmissionData> getSubmissions(TriggerType triggerType, Date startDate, Date endDate, Integer groupID) {
 
-        HttpMethod getForm = new GetMethod(formatRequest() + "submissions" + "/" + triggerType + "/" + formatDate(startDate) + "/" + formatDate(endDate) + "/" + groupID);
-        getForm.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
+        HttpMethod getForms = new GetMethod(formatRequest() + "submissions" + "/" + triggerType + "/" + formatDate(startDate) + "/" + formatDate(endDate) + "/" + groupID);
+        getForms.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         HttpClient client = setupClient();
         addCredentials(client);
-        SubmissionData submissionData = null;
+        List<SubmissionData> submissions = null;
         try {
-            int statusCode = client.executeMethod(getForm);
+            int statusCode = client.executeMethod(getForms);
             if (statusCode == HttpStatus.SC_OK) {
-                InputStream body = getForm.getResponseBodyAsStream();
+                InputStream body = getForms.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
-                submissionData = mapper.readValue(body, SubmissionData.class);
+                SubmissionData[] submissionData = mapper.readValue(body, SubmissionData[].class);
+                submissions = Arrays.asList(submissionData);
             }
         } catch (HttpException he) {
 
         } catch (IOException ioe) {
 
         } finally {
-            getForm.releaseConnection();
+            getForms.releaseConnection();
         }
-        return submissionData;
+        return submissions;
     }
 
     private HttpClient setupClient() {

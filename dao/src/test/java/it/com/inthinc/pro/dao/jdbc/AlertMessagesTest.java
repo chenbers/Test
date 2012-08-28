@@ -374,14 +374,14 @@ ALERT_TYPE_IGNITION_ON
                     new WitnessVersionEvent(0l, 0, NoteType.WITNESS_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.CURRENT)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_ZONES_CURRENT, new Event[] {
                     new ZonesVersionEvent(0l, 0, NoteType.ZONES_UP_TO_DATE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, VersionState.SERVER_OLDER)}),
-            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, new Event[] {
-                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 2,0)}),
-            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS, new Event[] { 
-                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 2, 1) }),
-            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_FAIL, new Event[] { 
-                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 1, 0) }),
-            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS, new Event[] { 
-                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 1, 1) }),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, new Event[] {
+//                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 2,0)}),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS, new Event[] { 
+//                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 2, 1) }),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_FAIL, new Event[] { 
+//                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 1, 0) }),
+//            new MiscAlertInfo(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS, new Event[] { 
+//                    new DVIREvent(0l, 0, NoteType.HOS_CHANGE_STATE_NO_GPS_LOCK, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, 1, 1) }),
                     
     };
     

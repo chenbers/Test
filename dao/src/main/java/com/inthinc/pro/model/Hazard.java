@@ -8,6 +8,9 @@ public class Hazard {
     int radius;
     int type;
     String description = "";
+    int hazardID;
+    int acctID;
+    int userID;
     int driverID;
     int vehicleID;
     int deviceID;
@@ -16,6 +19,24 @@ public class Hazard {
     int stateID; 
     String location = "";
 
+    public int getHazardID() {
+        return hazardID;
+    }
+    public void setHazardID(int hazardID) {
+        this.hazardID = hazardID;
+    }
+    public int getAcctID() {
+        return acctID;
+    }
+    public void setAcctID(int acctID) {
+        this.acctID = acctID;
+    }
+    public int getUserID() {
+        return userID;
+    }
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
     public Date getStartTime() {
         return startTime;
     }
