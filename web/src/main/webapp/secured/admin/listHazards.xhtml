@@ -1,0 +1,221 @@
+<ui:composition template="/layout/layout.xhtml"
+              xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:t="http://myfaces.apache.org/tomahawk">
+
+  <ui:param name="adminSelected" value="current" />
+  <ui:param name="title" value="#{messages.adminHeader_hazards}"/>
+  
+  <ui:define name="scripts">
+      <style>
+          .colSpan {
+              width: 100%;
+          }
+          .col1 {
+            width: 80%;
+          }
+          .col2 {
+              width: 20%;
+              vertical-align:top;
+          }
+          .download_nav {
+            padding: 5px 0 10px 5px;
+            height:35px;
+            border-right:1px solid #E1E1E1;
+            font: 10px Veranda,Arial,Heletica,sans-serif;
+        }
+          .download_nav_msg {
+            margin: 0;
+            padding: 0;
+            float: left;
+            height:40px;
+        }
+        .download_nav_msg p {
+            font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+            padding:10px 2px 10px 35px;
+            background: none;
+        }
+          
+          .download_nav a.download {
+                padding: 6px 10px 7px 20px;
+                background: transparent url(../../images/ico_admin.png) no-repeat center left;
+                text-decoration: underline;
+                color: #000;
+                margin: 0 0 0 8px;
+        }
+        
+          
+      </style>
+      <ui:include src="/includes/map/portalMap.xhtml"/>
+    <a4j:loadScript src="/js/mapGeocode.js" />
+    <a4j:loadScript src="/js/drawHazard.js" />
+    <script type="text/javascript">
+       var map;
+    </script>
+  </ui:define>
+  
+  
+  <ui:define name="content">
+    <a4j:region id="main">
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminHazards" />
+            <ui:param name="parentAction" value="go_adminHazards" />
+            <ui:param name="context" value="hazards"/>
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="hazards"><h:outputText value="#{messages.adminHeader_hazards}" /></span>
+                <span class="panel_links">
+                    
+                    <a4j:status id="refresh_ajax_status" for="main">
+                        <f:facet name="start">
+                            <h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+                        </f:facet>
+                    </a4j:status>
+                </span>
+              </div>
+            </div>
+
+            <div class="panel_w">
+              <div class="panel_content">
+
+                <a4j:form id="hazards-form">
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                  <a4j:outputPanel id="displayHazard">
+                    <h:panelGroup>
+
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l">
+                          <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                            <tr>
+                              <td>
+                                <h:graphicImage value="/images/ico_hazard.png" style="vertical-align:-30%" />
+                                <strong><h:outputText value="#{messages.hazards_hazard}" /></strong>
+                              </td>
+                              <td>
+                                <h:selectOneMenu value="#{hazardsBean.itemID}" id="hazard" style="width: 140px">
+                                  <f:selectItems value="#{hazardsBean.hazardIDs}" />
+                                  <a4j:support event="onchange" reRender="points,address,displayHazard,displayHazardOptions" oncomplete="showHazard(false)" />
+                                </h:selectOneMenu>
+                              </td>
+                            </tr>
+                          </table>
+                        </li>
+                        <ui:fragment rendered="#{hazardsBean.hazardsCount gt 0}">
+                          <li class="l"><h:commandButton id="hazardsEdit" action="#{hazardsBean.edit}" reRender="displayHazard,hazardName,hazardAddress,headerForm" oncomplete="showHazard(true)" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton></li>
+                          <li class="l"><button id="hazardsSubmit" type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
+                        </ui:fragment>
+                        <li class="r">
+                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazards_addHazard}" /></span></h:commandButton>
+                        </li>
+                      </ul>
+
+                    </h:panelGroup>
+                  </a4j:outputPanel>
+
+                  <div class="spacer"></div>
+
+                  <h:panelGrid rows="2" width="100%" columnClasses="colSpan">
+                  <h:panelGroup styleClass="map-border" layout="block">
+                  
+                    <div id="map-canvas" style="height:100%;height:600px;border:0"></div>
+                    <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
+                      <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
+                      <div id="circle-outline" style="display:none"></div>
+                    </div>
+                  </h:panelGroup>
+                  <a4j:outputPanel id="displayHazardOptions">
+                    <h:panelGroup>
+                        
+                        <rich:spacer height="5px"/><br/>
+                        <h:outputText value="#{messages.waysmartOnly}" escape="false"/>
+                    </h:panelGroup>
+                   </a4j:outputPanel>
+                   </h:panelGrid>
+                </a4j:form>
+
+                <script type="text/javascript">
+                  function clearOutline()
+                  {
+                    document.getElementById("hazards-form:points").value = "";
+                    map.clearOverlays();
+                  }
+
+                  function showHazard(editable)
+                  {
+                    map.clearOverlays();
+                    var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
+                    if (outline)
+                    {
+                      centerMapAtHazard(getLatLngBounds(outline));
+                      loadHazard(outline, editable);
+                      return true;
+                    }
+                    return false;
+                  }
+
+
+                  function cancelEdit()
+                  {
+                    stopDrawing();
+                    map.clearOverlays();
+                    var outline = document.getElementById("backupPoints").value;
+                    if (outline == "")
+                      outline = document.getElementById("firstPoints").value;
+                    document.getElementById("hazards-form:points").value = outline;
+                  }
+
+
+                  function bodyLoad()
+                  {
+                     portalmap.init();
+                     initLayers();
+                     map = portalmap.getMap();
+                     if (!showHazard(false)) 
+                         map.setCenter(new GLatLng(39.0, -104.0), 4);
+                     
+                  }
+                </script>
+
+              </div>
+            </div>
+
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+
+            <ui:include src="../../includes/confirmDelete.xhtml">
+              <ui:param name="deleteBean" value="#{hazardsBean}" />
+              <ui:param name="reRender" value="points,displayHazard" />
+              <ui:param name="ondelete" value="showHazard(false)" />
+              <ui:param name="explanation" value="#{messages.hazards_confirmDelete}" />
+                   <ui:param name="context" value="hazards" />
+            </ui:include>
+
+          </div>
+
+          <!-- END PANEL -->
+        </td>
+
+      </tr>
+    </table>
+    </a4j:region>
+  </ui:define>
+
+
+
+</ui:composition>

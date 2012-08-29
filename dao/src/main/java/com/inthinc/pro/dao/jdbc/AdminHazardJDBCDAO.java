@@ -23,7 +23,7 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.CustomMap;
 import com.inthinc.pro.model.Hazard;
-import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.User;
 import com.mysql.jdbc.Statement;
 
@@ -32,18 +32,18 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
     private static final Logger logger = Logger.getLogger(AdminHazardJDBCDAO.class);
 
     private static final String HAZARD_SELECT_BY_ID= 
-            "select acctID, driverID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified " +
+            "select acctID, driverID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified, hazardID " +
             "from hazard "+
             "where hazardID = :hazardID";
-    private static final String HAZARD_SELECT_BY_GROUP_AND_BOUNDS = 
-            "SELECT acctID, driverID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified " +
+    private static final String HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS = 
+            "SELECT acctID, driverID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified, hazardID " +
             "from hazard " +
             "where acctID = :acctID " +
             "  and latitude  between :lat1 and :lat2 " +
             "  and longitude between :lng1 and :lng2 ";
     private static final String HAZARD_INSERT = 
-            "INSERT into hazard ( acctID,  driverID,  vehicleID,  deviceID,  latitude,  longitude,  radius,  startTime,  endTime,  type,  description,  status,  location,  stateID,  created) " +
-            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            "INSERT into hazard ( acctID,  driverID,  vehicleID,  deviceID,  latitude,  longitude,  radius,  startTime,  endTime,  type,  description,  status,  location,  stateID,  created, modified) " +
+            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
     private static final String HAZARD_DELETE_BY_ID =
             "DELETE from hazard where hazardID = ?";
     
@@ -73,16 +73,17 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
 	    @Override
         public Hazard mapRow(ResultSet rs, int rowNum) throws SQLException {
             Hazard hazard = new Hazard();
+            hazard.setHazardID(rs.getInt("hazardID"));
             hazard.setAcctID(rs.getInt("acctID"));
             hazard.setDriverID(rs.getInt("driverID"));
             hazard.setVehicleID(rs.getInt("vehicleID"));
             hazard.setDeviceID(rs.getInt("deviceID"));
             hazard.setType(rs.getInt("type"));
-            hazard.setRadius(rs.getInt("radius"));
+            hazard.setRadiusMeters(rs.getInt("radius"));
             hazard.setStartTime(rs.getDate("startTime"));
             hazard.setEndTime(rs.getDate("endTime"));
             hazard.setDescription(rs.getString("description"));
-            hazard.setStatus(Status.valueOf(rs.getInt("status")));
+            hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
             hazard.setStateID(rs.getInt("stateID"));
             return hazard;
@@ -101,13 +102,17 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
 	    System.out.println("public List<Hazard> findHazardsByUserAcct(User "+user+", Double "+lat1+", Double "+lng1+", Double "+lat2+", Double "+lng2+")");
 	    List<Hazard> results;
 	    Map<String, Object> args = new HashMap<String, Object>();
-	    args.put("accID", user.getPerson().getAcctID());
+	    args.put("acctID", user.getPerson().getAcctID());
 	    args.put("lat1", lat1);
 	    args.put("lng1", lng1);
 	    args.put("lat2", lat2);
 	    args.put("lng2", lng2);
 	    System.out.println("simpleJdbcTemplate: "+getSimpleJdbcTemplate());
-	    results = getSimpleJdbcTemplate().query(HAZARD_SELECT_BY_GROUP_AND_BOUNDS, hazardRowMapper, args);
+	    for(String key: args.keySet()){
+	        System.out.println(key+" "+args.get(key));
+	    }
+	    System.out.println(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS);
+	    results = getSimpleJdbcTemplate().query(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS, hazardRowMapper, args);
 	    System.out.println("results"+results);
 	    return results;
 	}
@@ -144,15 +149,16 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
                 ps.setInt(4, hazard.getDeviceID());
                 ps.setDouble(5, hazard.getLatitude());
                 ps.setDouble(6, hazard.getLongitude());
-                ps.setInt(7, hazard.getRadius());
-                ps.setDate(8, (Date) hazard.getStartTime());//TODO: verify that this works as expected???
-                ps.setDate(9, (Date) hazard.getEndTime());
+                ps.setInt(7, hazard.getRadiusMeters());
+                ps.setDate(8, new Date(hazard.getStartTime().getTime()));//TODO: verify that this works as expected???
+                ps.setDate(9, new Date(hazard.getEndTime().getTime()));
                 ps.setInt(10, hazard.getType());
                 ps.setString(11, hazard.getDescription());
                 ps.setInt(12, hazard.getStatus().getCode());
                 ps.setString(13, hazard.getLocation());
                 ps.setInt(14, hazard.getStateID());
                 ps.setDate(15, new Date(System.currentTimeMillis()));//TODO: verify that this works as expected???
+                ps.setDate(16, new Date(System.currentTimeMillis()));//TODO: verify that this works as expected???
                 
                 return ps;
             }
