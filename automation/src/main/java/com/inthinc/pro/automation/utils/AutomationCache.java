@@ -24,11 +24,13 @@ public class AutomationCache {
 	}
 	
 	private void parseArray(List<String> array) {
-		for (String entry : array){
-			String[] split = entry.split(divider);
-			map.put(split[0], split[1]);
-		}
-	}
+        for (String entry : array) {
+            String[] split = entry.split(divider);
+            if (split.length == 2) {
+                map.put(split[0], split[1]);
+            }
+        }
+    }
 
 	public String getValue(String key){
 		if (map.isEmpty()){
