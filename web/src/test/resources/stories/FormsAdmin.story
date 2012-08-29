@@ -79,21 +79,101 @@ When I click the Forms link
 And I click the Create Form Bottom link
 Then I validate I am on the Forms Add page
 
-Scenario: TCXXXX: Forms Admin Page - Create Form link top (cancel)
+Scenario: TCXXXX: Forms Admin Page - Create Form link top (cancel - no changes)
 Given I am logged in
 When I click the Forms link
 And I click the Create Form Top link
 Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
 When I click the Cancel Top button
 Then I validate I am on the Forms Admin page
+When I click the Create Form Top link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
 
-Scenario: TCXXXX: Forms Admin Page - Create Form link bottom (cancel)
+Scenario: TCXXXX: Forms Admin Page - Create Form link top (cancel - changes)
+Given I am logged in
+When I click the Forms link
+And I click the Create Form Top link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
+And I type "TCXXXX" into the Name field
+And I type "TCXXXX" into the Description field
+And I select "Post Trip" from the Trigger dropdown
+And I type "Group 1" into the Filter Groups field
+When I click the Cancel Top button
+Then I validate I am on the Forms Admin page
+When I click the Create Form Top link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
+
+Scenario: TCXXXX: Forms Admin Page - Create Form link bottom (cancel - no changes)
 Given I am logged in
 When I click the Forms link
 And I click the Create Form Bottom link
 Then I validate I am on the Forms Add page
-When I click the Cancel Top button
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
+When I click the Cancel Bottom button
 Then I validate I am on the Forms Admin page
+When I click the Create Form Bottom link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
+
+Scenario: TCXXXX: Forms Admin Page - Create Form link bottom (cancel - changes)
+Given I am logged in
+When I click the Forms link
+And I click the Create Form Bottom link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
+And I type "TCXXXX" into the Name field
+And I type "TCXXXX" into the Description field
+And I select "Post Trip" from the Trigger dropdown
+And I type "Group 1" into the Filter Groups field
+When I click the Cancel Bottom button
+Then I validate I am on the Forms Admin page
+When I click the Create Form Bottom link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "Pre Trip"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the View Properties Label text is present
 
 Scenario: TCXXXX: Forms Admin Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
 Given I am logged in
