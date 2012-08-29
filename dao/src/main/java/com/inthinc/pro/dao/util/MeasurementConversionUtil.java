@@ -16,6 +16,10 @@ public class MeasurementConversionUtil
 {
 	private static final Double MILESTOKM = 1.609344;
 	private static final Double KMTOMILES = 0.62137;
+    public static final Double METERS_IN_KILOMETER = 1000.0;
+    public static final Double METERS_IN_MILE = MILESTOKM;
+    public static final Double METERS_IN_FOOT = 0.3048;
+    public static final Double METERS_IN_METER = 1.0;
 	private static final Double MPGTOKPL = 0.42514;
 	private static final Double MPGTOMPGUK = 1.2;
 	private static final Double LBTOKG = .45359237;
