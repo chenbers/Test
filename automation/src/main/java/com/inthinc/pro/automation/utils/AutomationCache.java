@@ -47,6 +47,10 @@ public class AutomationCache {
 		BufferedReader in = null;
 		try {
 	        file = new File(fileName);
+	        File folder = file.getParentFile();
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
 	        if (!file.exists()){
 	        	file.createNewFile();
 	        }
