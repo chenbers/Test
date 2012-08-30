@@ -278,6 +278,8 @@ public class HazardsBean extends BaseBean {
         DateTime startTime = new DateTime(item.getStartTime().getTime());
         DateTime endTime = startTime.plus(item.getType().getDefaultDuration());
         item.setEndTime(endTime.toDate());
+        
+        item.setRadiusMeters(item.getType().getRadius());
     }
     
     public String reset() {
