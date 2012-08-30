@@ -33,6 +33,7 @@
     
     <ui:include src="/includes/map/portalMap.xhtml"/>
     <a4j:loadScript src="/js/mapGeocode.js" />
+    <a4j:loadScript src="/js/drawZone.js" />
     <script type="text/javascript">
        var map;
     </script>
@@ -67,43 +68,23 @@
 
             <div class="panel_w">
               <div class="panel_content">
-                #{hazardsBean}  //TODO:remove this 
+              both: #{hazardsBean.editing and hazardsBean.showMessage}<br/>
+              editing: #{hazardsBean.editing}<br/>
+              showMessage: #{hazardsBean.showMessage}<br/>
+                #{hazardsBean}  //TODO:remove this <br/>
                 <a4j:form id="hazards-form">
+                <h:inputHidden id="points" value="" /> <!-- //TODO: is there a more elegant way so I can avoid using points/pointsTring -->
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
                     
                   <a4j:outputPanel id="editHazard">
-                    <h:panelGroup rendered="#{hazardsBean.editing and hazardsBean.showMessage}">
+                    <h:panelGroup rendered="#{hazardsBean.showMessage}">
                     <div class="msg">
                         <p id="info">
                             <h:outputText  id="editMessage1" value="#{hazardsBean.message}" rendered="#{hazardsBean.hasMessage}"/><br/>
                         </p>
                     </div>
-
-                      <ul id="grid_nav" style="margin: 0;">
-                        <li class="l">
-                          <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                            <tr>
-                              <td>
-                                <h:graphicImage value="/images/ico_hazard.png" style="vertical-align:-30%" />
-                                <strong><h:outputText value="#{messages.hazards_name}" /></strong>
-                                <span class="required">*</span>
-                              </td>
-                              <td>
-                                <h:inputText id="hazardName" value="#{hazardsBean.item.location}" class="text" size="30" maxlength="60" required="#{hazardsBean.editing}" requiredMessage="#{messages.required}" />
-                              </td>
-                              <td>
-                                <rich:message for="hazardName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              </td>
-                            </tr>
-                          </table>
-                        </li>
-                        <li class="r">
-                           <h:commandButton id="reset" action="#{hazardsBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.hazards_reset}" /></span></h:commandButton>
-                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}" onclick="stopDrawing()" reRender="edithazard,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazards_save}" /></span></a4j:commandButton>
-                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsCancel" action="#{hazardsBean.cancelEdit}"  onclick="cancelEdit()" reRender="points,editHazard,headerForm" oncomplete="showHazard(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
-                        </li>
-                      </ul>
-
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{hazardsBean.editing}">
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l">
                           <table>
@@ -133,6 +114,11 @@
                               <td><input id="lat" type="text" readonly="readonly" class="latLngText" size="8"/></td>
                             </tr>
                           </table>
+                        </li>
+                        <li class="r">
+                           <h:commandButton id="reset" action="#{hazardsBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.hazards_reset}" /></span></h:commandButton>
+                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}" onclick="stopDrawing()" reRender="edithazard,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazards_save}" /></span></a4j:commandButton>
+                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsCancel" action="#{hazardsBean.cancelEdit}"  onclick="cancelEdit()" reRender="points,editHazard,headerForm" oncomplete="showHazard(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
                         
@@ -218,14 +204,14 @@
                   function clearOutline()
                   {
                     document.getElementById("hazards-form:points").value = "";
-                    removeHazardOverlay();
+                    removeZoneOverlay();
 //                    map.clearOverlays();
                  }
 
                   function showHazard(editable)
                   {
                     // map.clearOverlays();
-                    removeHazardOverlay();
+                    removeZoneOverlay();
                     
                     var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
                     if (outline)
@@ -239,6 +225,7 @@
 
                   function storeOutline()
                   {
+                	  console.log("in storeOutline");
                     document.getElementById("hazards-form:points").value = toOutlineString(getPolygonOutline());
                   }
 
@@ -246,7 +233,7 @@
                   {
                     stopDrawing();
                     // map.clearOverlays();
-                    removeHazardOverlay();
+                    removeZoneOverlay();
                     
                     var outline = document.getElementById("backupPoints").value;
                     if (outline == "")
@@ -262,7 +249,7 @@
                     applyImage("polygon", type);
 
                     if (type != "hand") {
-                        removeHazardOverlay();
+                        removeZoneOverlay();
                         
                         //  map.clearOverlays();
                         // portalmap.restoreLayersState();
@@ -293,21 +280,21 @@
                         map = portalmap.getMap();
                             
     
-                      GEvent.addListener(drawHazard, "startHazard", function(type)
+                      GEvent.addListener(drawZone, "startHazard", function(type)
                       {
                         select(type);
                       });
-                      GEvent.addListener(drawHazard, "endHazard", function(type, points)
+                      GEvent.addListener(drawZone, "endHazard", function(type, points)
                       {
                         select("hand");
                         storeOutline();
                       });
-                      GEvent.addListener(drawHazard, "cancelHazard", function(type)
+                      GEvent.addListener(drawZone, "cancelHazard", function(type)
                       {
                         showHazard(true);
                         select("hand");
                       });
-                      GEvent.addListener(drawHazard, "updateHazard", function(points)
+                      GEvent.addListener(drawZone, "updateHazard", function(points)
                       {
                         storeOutline();
                       });
