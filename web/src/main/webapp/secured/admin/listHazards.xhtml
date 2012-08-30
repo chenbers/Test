@@ -54,7 +54,7 @@
       </style>
       <ui:include src="/includes/map/portalMap.xhtml"/>
     <a4j:loadScript src="/js/mapGeocode.js" />
-    <a4j:loadScript src="/js/drawHazard.js" />
+    <a4j:loadScript src="/js/drawZone.js" />
     <script type="text/javascript">
        var map;
     </script>
@@ -93,6 +93,7 @@
               <div class="panel_content">
 
                 <a4j:form id="hazards-form">
+                <h:inputHidden id="points" value="" /> <!-- //TODO: is there a more elegant way so I can avoid using points/pointsTring -->
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
                   <a4j:outputPanel id="displayHazard">
@@ -103,7 +104,7 @@
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                             <tr>
                               <td>
-                                <h:graphicImage value="/images/ico_hazard.png" style="vertical-align:-30%" />
+                                <h:graphicImage value="/images/ico_warning.png" style="vertical-align:-30%" />
                                 <strong><h:outputText value="#{messages.hazards_hazard}" /></strong>
                               </td>
                               <td>

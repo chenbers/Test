@@ -48,13 +48,4 @@ public enum MeasurementLengthType implements BaseEnum {
     public Integer getCode() {
         return this.code;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(getDeclaringClass().getSimpleName());
-    	sb.append(".");
-        sb.append(this.name());
-        return sb.toString();
-    }
- 
 }

@@ -8,7 +8,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
     private Date startTime;
     private Date endTime;
     private Integer radiusMeters;
-    private Integer type;
+    private MeasurementLengthType radiusUnits;
+    private HazardType type;
     private String description = "";
     private Integer driverID;
     private Integer userID;
@@ -34,6 +35,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
         return buffer.toString();
     }
     public Date getStartTime() {
+        if(startTime == null)
+            return new Date();
         return startTime;
     }
     public void setStartTime(Date startTime) {
@@ -46,9 +49,13 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.endTime = endTime;
     }
     public Integer getRadiusMeters() {
-        return radiusMeters;
+        if(radiusMeters!=null)
+            return radiusMeters;
+        if(getType()==null)
+            return radiusMeters;
+        return ((Double)getType().getRadius()).intValue();
     }
-    public Integer getType() {
+    public HazardType getType() {
         return type;
     }
     public String getDescription() {
@@ -118,8 +125,11 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setRadiusMeters(Integer radius) {
         this.radiusMeters = radius;
     }
-    public void setType(Integer type) {
+    public void setType(HazardType type) {
         this.type = type;
+    }
+    public void setType(Integer type){
+        this.type = HazardType.valueOf(type);
     }
     public void setDriverID(Integer driverID) {
         this.driverID = driverID;
@@ -138,5 +148,11 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public void setStateID(Integer stateID) {
         this.stateID = stateID;
+    }
+    public MeasurementLengthType getRadiusUnits() {
+        return radiusUnits;
+    }
+    public void setRadiusUnits(MeasurementLengthType radiusUnits) {
+        this.radiusUnits = radiusUnits;
     }
 }

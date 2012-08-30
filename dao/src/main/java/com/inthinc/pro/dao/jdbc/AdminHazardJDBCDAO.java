@@ -24,6 +24,7 @@ import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.CustomMap;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
+import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.User;
 import com.mysql.jdbc.Statement;
 
@@ -40,7 +41,8 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
             "from hazard " +
             "where acctID = :acctID " +
             "  and latitude  between :lat1 and :lat2 " +
-            "  and longitude between :lng1 and :lng2 ";
+            "  and longitude between :lng1 and :lng2 " +
+            "  and endTime > now() ";
     private static final String HAZARD_INSERT = 
             "INSERT into hazard ( acctID,  driverID, userID,  vehicleID,  deviceID,  latitude,  longitude,  radius,  startTime,  endTime,  type,  description,  status,  location,  stateID,  created, modified) " +
             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
@@ -78,7 +80,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
             hazard.setDriverID(rs.getInt("driverID"));
             hazard.setVehicleID(rs.getInt("vehicleID"));
             hazard.setDeviceID(rs.getInt("deviceID"));
-            hazard.setType(rs.getInt("type"));
+            hazard.setType(HazardType.valueOf(rs.getInt("type")));
             hazard.setRadiusMeters(rs.getInt("radius"));
             hazard.setStartTime(rs.getDate("startTime"));
             hazard.setEndTime(rs.getDate("endTime"));
@@ -86,6 +88,8 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
             hazard.setStateID(rs.getInt("stateID"));
+            hazard.setLatitude(rs.getDouble("latitude"));
+            hazard.setLongitude(rs.getDouble("longitude"));
             return hazard;
 	    }
 	};
@@ -144,20 +148,20 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(HAZARD_INSERT, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, hazard.getAcctID());
-                ps.setInt(2, hazard.getDriverID());
-                ps.setInt(3, hazard.getUserID());
-                ps.setInt(4, hazard.getVehicleID());
-                ps.setInt(5, hazard.getDeviceID());
+                ps.setObject(2, hazard.getDriverID());
+                ps.setObject(3, hazard.getUserID());
+                ps.setObject(4, hazard.getVehicleID());
+                ps.setObject(5, hazard.getDeviceID());
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
                 ps.setDate(9, new Date(hazard.getStartTime().getTime()));
                 ps.setDate(10, new Date(hazard.getEndTime().getTime()));
-                ps.setInt(11, hazard.getType());
+                ps.setInt(11, hazard.getType().getCode());
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus().getCode());
                 ps.setString(14, hazard.getLocation());
-                ps.setInt(15, hazard.getStateID());
+                ps.setObject(15, hazard.getStateID());
                 ps.setDate(16, new Date(System.currentTimeMillis()));
                 ps.setDate(17, new Date(System.currentTimeMillis()));
                 

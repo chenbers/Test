@@ -16,8 +16,7 @@ import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
+import com.inthinc.pro.model.MeasurementLengthType;
 import com.inthinc.pro.util.FormUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -55,11 +54,8 @@ public class HazardsBean extends BaseBean {
     public List<SelectItem> getHazardTypeSelectItems(){
         return SelectItemUtil.toList(HazardType.class, false);
     }
-    public List<SelectItem> getHazardStatusSelectItems(){
-        return SelectItemUtil.toList(HazardStatus.class, false);
-    }
     public List<SelectItem> getHazardRadiusTypeSelectItems(){
-        return SelectItemUtil.toList(HazardStatus.class, false);
+        return SelectItemUtil.toList(MeasurementLengthType.class, false);
     }
     public List<Hazard> getHazards() {
         if (hazards == null) {
@@ -116,6 +112,7 @@ public class HazardsBean extends BaseBean {
      * Called when the user clicks to save changes when adding or editing.
      */
     public String save() {
+        System.out.println("HazardsBean.save() ");
         // validate
         if (!validate())
             return null;
@@ -125,6 +122,7 @@ public class HazardsBean extends BaseBean {
         final FacesContext context = FacesContext.getCurrentInstance();
 
         if (add) {
+            System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item));
         } else {
@@ -226,7 +224,24 @@ public class HazardsBean extends BaseBean {
      */
     private boolean validate() {
         //TODO this is the place for validation
-        return (item != null);
+        final FacesContext context = FacesContext.getCurrentInstance();
+        if(item != null){
+            boolean startsBeforeItEnds = item.getStartTime().before(item.getEndTime());
+            if(!startsBeforeItEnds){
+                final String summary = MessageUtil.getMessageString("hazard_endBeforeStart");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage(null, message);
+                return false;
+            }
+            boolean validRadius = item.getRadiusMeters()!=null && item.getRadiusMeters() > 0;
+            if(!validRadius){
+                final String summary = MessageUtil.getMessageString("hazard_needValidRadius");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage(null, message);
+                return false;
+            }
+        }
+        return true;
     }
     
     public String reset() {

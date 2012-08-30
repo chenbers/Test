@@ -81,7 +81,7 @@ public enum HazardType implements OptionValue {
         return getCode();
     }
 
-    static public OptionValue valueOf(Integer value) {
+    static public HazardType valueOf(Integer value) {
         return lookup.get(value);
     }
 
@@ -89,13 +89,7 @@ public enum HazardType implements OptionValue {
     public Boolean getBooleanValue() {
         return null;
     }
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
-        sb.append(".");
-        sb.append(this.name());
-        return sb.toString();
-    }
+
     public enum Severity {
         URGENT(0, "Urgent"),
         NORMAL(1, "Normal");

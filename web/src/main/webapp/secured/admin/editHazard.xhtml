@@ -68,6 +68,7 @@
 
             <div class="panel_w">
               <div class="panel_content">
+              ID: #{hazardsBean.item.hazardID}<br/>
               both: #{hazardsBean.editing and hazardsBean.showMessage}<br/>
               editing: #{hazardsBean.editing}<br/>
               showMessage: #{hazardsBean.showMessage}<br/>
@@ -105,16 +106,6 @@
                           </table>
                         </li>
                         <li class="l"><button id="hazardsSearch" type="submit" class="left" onclick="showAddress(document.getElementById('hazards-form:hazardAddress').value); return false;"><span class="search"><h:outputText value="#{messages.hazards_locate}" /></span></button></li>
-                        <li class="l">
-                          <table border="0" cellspacing="0" cellpadding="4" style="margin: 3px 0 0;">
-                            <tr>
-                              <td><h:outputText value="#{messages.longitude}"/></td>
-                              <td><input id="lng" type="text" readonly="readonly" class="latLngText" size="8"/></td>
-                              <td><h:outputText value="#{messages.latitude}"/></td>
-                              <td><input id="lat" type="text" readonly="readonly" class="latLngText" size="8"/></td>
-                            </tr>
-                          </table>
-                        </li>
                         <li class="r">
                            <h:commandButton id="reset" action="#{hazardsBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.hazards_reset}" /></span></h:commandButton>
                            <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}" onclick="stopDrawing()" reRender="edithazard,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazards_save}" /></span></a4j:commandButton>
@@ -142,13 +133,13 @@
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_latitude}"/>:</td>
                                 <td>
-                                    <h:inputText value="#{hazardsBean.item.latitude}" id="editHazard-lat" style="width:190px"/>
+                                    <h:inputText value="#{hazardsBean.item.latitude}" id="editHazard-lat" readonly="readonly"  style="width:190px"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_longitude}"/>:</td>
                                 <td>
-                                    <h:inputText value="#{hazardsBean.item.longitude}" id="editHazard-lng" style="width:190px"/>
+                                    <h:inputText value="#{hazardsBean.item.longitude}" id="editHazard-lng" readonly="readonly"  style="width:190px"/>
                                 </td>
                             </tr>
                             <tr>
@@ -160,17 +151,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_status}"/>:</td>
-                                <td>
-                                    <h:selectOneMenu value="#{hazardsBean.item.status}" id="hazardStatus"  style="width:190px">
-                                        <f:selectItems value="#{hazardsBean.hazardStatusSelectItems}"/>
-                                    </h:selectOneMenu>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td><h:outputText value="#{messages.hazard_radius}"/>:</td>
                                 <td>
-                                    <h:selectOneMenu value="#{hazardsBean.item.radiusMeters}" id="hazardRadius"  style="width:190px">
+                                    <h:inputText value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters" style="width: 50px; float: left; margin-right: 10px;"/>
+                                    <h:selectOneMenu value="#{hazardsBean.item.radiusUnits}" id="hazardRadiusUnits"  style="width:100px;">
                                         <f:selectItems value="#{hazardsBean.hazardRadiusTypeSelectItems}"/>
                                     </h:selectOneMenu>
                                 </td>
@@ -189,7 +173,7 @@
                                     <rich:message id="msgTextValidMessage" for="msgText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                     <h:inputTextarea id="msgText" value="#{hazardsBean.item.description}" style="font-size:12px;width:190px;height:2;margin-left:0px" >
                                             <f:validator validatorId="com.inthinc.pro.validators.HazardDescValidator" />
-                                            <f:attribute name="errorMessage" value="#{messages.txtMsg_illegalCharacter}" /> 
+                                            <f:attribute name="errorMessage" value="#{messages.hazard_illegalCharacter}" /> 
                                     </h:inputTextarea>
                                 </td>
                             </tr>
@@ -267,8 +251,8 @@
 
                   function updateCoordinates(lng, lat)
                   {
-                    document.getElementById("lng").value = (Math.round(lng*10000.0)/10000.0).toString();
-                    document.getElementById("lat").value = (Math.round(lat*10000.0)/10000.0).toString();
+                    document.getElementById("hazards-form:editHazard-lng").value = (Math.round(lng*10000.0)/10000.0).toString();
+                    document.getElementById("hazards-form:editHazard-lat").value = (Math.round(lat*10000.0)/10000.0).toString();
                   }
 
                   function bodyLoad()

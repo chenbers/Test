@@ -411,7 +411,7 @@ public class AdminTest extends BaseJDBCTest {
             hazard.setStartTime(new Date());
             hazard.setStateID(45);//UTah
             hazard.setStatus(HazardStatus.ACTIVE);
-            hazard.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getCode());
+            hazard.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
             hazard.setUserID(1655);//jwimmer user
             hazard.setVehicleID(6956);//ATAT aka jwimmer truck
             
