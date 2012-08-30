@@ -604,6 +604,10 @@
   <validator-class>com.inthinc.pro.validators.TextMessageValidator</validator-class>
  </validator>
  <validator>
+  <validator-id>com.inthinc.pro.validators.HazardDescValidator</validator-id>
+  <validator-class>com.inthinc.pro.validators.HazardDescValidator</validator-class>
+ </validator>
+ <validator>
   <validator-id>com.inthinc.pro.validators.PasswordStrengthValidator</validator-id>
   <validator-class>com.inthinc.pro.validators.PasswordStrengthValidator</validator-class>
  </validator>

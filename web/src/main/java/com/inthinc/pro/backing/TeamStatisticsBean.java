@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -103,9 +106,8 @@ public class TeamStatisticsBean extends BaseBean {
                             teamCommonBean.getTimeFrame().getAggregationDuration(), getGroupHierarchy());
                     break;
                 case 3:
-                	driverStatistics = groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), 
-                			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
-                			teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd(), getGroupHierarchy());
+                    driverStatistics = groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), 
+                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
             }
 
             cleanData(driverStatistics);

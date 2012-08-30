@@ -40,10 +40,10 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     APPROVED_CHECKBOX_ENTRY(null, "//tr[###]/td[@class='status']"),
     
     //INLINE EDIT ELEMENTS
-    TEXT_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable text
-    NUMERIC_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable numeric
-    DECIMAL_ENTRY(null, "//tr[###]/td[@class='editable ']"),//need Colleen to add unique ID, I suggest editable decimal
-    DATE_ENTRY(null, "//tr[###]/td[@class='editable date']"),
+    TEXT_ENTRY(null, "//tr[###]/td[@class='editable string']"),//waiting for Colleen to push her changes
+    NUMERIC_ENTRY(null, "//tr[###]/td[@class='editable integer']"),//waiting for Colleen to push her changes
+    DECIMAL_ENTRY(null, "//tr[###]/td[@class='editable decimal']"),//waiting for Colleen to push her changes
+    DATE_ENTRY(null, "//tr[###]/td[@class='editable jrdate']"),
     CHOOSEONE_ENTRY(null, "//tr[###]/td[@class='editable select1']"),
     CHOOSEMANY_ENTRY(null, "//tr[###]/td[@class='editable selectn']"),
     SAVE_BUTTON(null, "//a[@id='saveRow']"),
