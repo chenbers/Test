@@ -402,10 +402,10 @@ public class AdminTest extends BaseJDBCTest {
             hazard.setDescription("IT created: "+locationName);
             hazard.setDeviceID(5780);//jwimmerTiwipro
             hazard.setDriverID(2262);//jwimmer
-            hazard.setEndTime(new DateTime().minus(Period.hours(4)).toDate());
+            hazard.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
             hazard.setLatitude(hazardLocations.get(locationName).getLat());
             hazard.setLongitude(hazardLocations.get(locationName).getLng());
-            hazard.setLocation("IT created locationString for "+locationName);
+            hazard.setLocation("IT created for "+locationName+" at "+new DateTime());
             System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
             hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
             hazard.setStartTime(new Date());

@@ -42,8 +42,8 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
             "  and latitude  between :lat1 and :lat2 " +
             "  and longitude between :lng1 and :lng2 ";
     private static final String HAZARD_INSERT = 
-            "INSERT into hazard ( acctID,  driverID,  vehicleID,  deviceID,  latitude,  longitude,  radius,  startTime,  endTime,  type,  description,  status,  location,  stateID,  created, modified) " +
-            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            "INSERT into hazard ( acctID,  driverID, userID,  vehicleID,  deviceID,  latitude,  longitude,  radius,  startTime,  endTime,  type,  description,  status,  location,  stateID,  created, modified) " +
+            "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
     private static final String HAZARD_DELETE_BY_ID =
             "DELETE from hazard where hazardID = ?";
     
@@ -145,20 +145,21 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport{
                 PreparedStatement ps = con.prepareStatement(HAZARD_INSERT, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, hazard.getAcctID());
                 ps.setInt(2, hazard.getDriverID());
-                ps.setInt(3, hazard.getVehicleID());
-                ps.setInt(4, hazard.getDeviceID());
-                ps.setDouble(5, hazard.getLatitude());
-                ps.setDouble(6, hazard.getLongitude());
-                ps.setInt(7, hazard.getRadiusMeters());
-                ps.setDate(8, new Date(hazard.getStartTime().getTime()));//TODO: verify that this works as expected???
-                ps.setDate(9, new Date(hazard.getEndTime().getTime()));
-                ps.setInt(10, hazard.getType());
-                ps.setString(11, hazard.getDescription());
-                ps.setInt(12, hazard.getStatus().getCode());
-                ps.setString(13, hazard.getLocation());
-                ps.setInt(14, hazard.getStateID());
-                ps.setDate(15, new Date(System.currentTimeMillis()));//TODO: verify that this works as expected???
-                ps.setDate(16, new Date(System.currentTimeMillis()));//TODO: verify that this works as expected???
+                ps.setInt(3, hazard.getUserID());
+                ps.setInt(4, hazard.getVehicleID());
+                ps.setInt(5, hazard.getDeviceID());
+                ps.setDouble(6, hazard.getLatitude());
+                ps.setDouble(7, hazard.getLongitude());
+                ps.setInt(8, hazard.getRadiusMeters());
+                ps.setDate(9, new Date(hazard.getStartTime().getTime()));
+                ps.setDate(10, new Date(hazard.getEndTime().getTime()));
+                ps.setInt(11, hazard.getType());
+                ps.setString(12, hazard.getDescription());
+                ps.setInt(13, hazard.getStatus().getCode());
+                ps.setString(14, hazard.getLocation());
+                ps.setInt(15, hazard.getStateID());
+                ps.setDate(16, new Date(System.currentTimeMillis()));
+                ps.setDate(17, new Date(System.currentTimeMillis()));
                 
                 return ps;
             }
