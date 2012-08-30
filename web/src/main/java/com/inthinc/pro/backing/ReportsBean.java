@@ -257,6 +257,12 @@ public abstract class ReportsBean extends BaseBean {
             case NON_COMM:
                 reportCriteriaList.add(getReportCriteriaService().getNonCommReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
                 break;
+            case DVIR_PRETRIP:
+                reportCriteriaList.add(getReportCriteriaService().getDVIRPreTripReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
+                break;
+            case DVIR_POSTTRIP:
+                reportCriteriaList.add(getReportCriteriaService().getDVIRPostTripReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
+                break;
             default:
                 break;
 

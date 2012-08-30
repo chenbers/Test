@@ -90,7 +90,8 @@ public enum ReportType
     DRIVER_EXCLUDED_VIOLATIONS("Driver Excluded Violations","driverExcludedViolationsReport.jrxml","driverExcludedViolationsReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.driverExcludedViolationsReport"),
     DRIVER_COACHING("Driver Coaching Report","driverCoachingReport.jrxml","driverCoachingReport.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverCoachingReport", null, false),
     //FORMS
-    DVIR("Driver Vehicle Inspection Reports","driverVehicleInspectionReport.jrxml","DVIR");
+    DVIR_PRETRIP("Driver Vehicle Inspection Reports - PreTrip","driverVehiclePreTripInspectionReport.jrxml","driverVehiclePreTripInspectionReport.jrxml","forms"),
+    DVIR_POSTTRIP("Driver Vehicle Inspection Reports - PostTrip","driverVehiclePostTripInspectionReport.jrxml","driverVehiclePostTripInspectionReport.jrxml","forms");
     
     private String prettyTemplate;
     private String rawTemplate;
