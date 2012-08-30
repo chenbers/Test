@@ -13,6 +13,7 @@ import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.forms.common.model.SubmissionData;
@@ -83,6 +84,7 @@ public class DVIRReportCriteriaTest {
         submissionData.setDataList(dataList );
         submissions.add(submissionData);
     }
+    @Ignore
     @Test
     public void buildTest() {
         GroupHierarchy accountGroupHierarchy = new GroupHierarchy();
