@@ -378,7 +378,7 @@ public class AdminTest extends BaseJDBCTest {
                 return new Person(){
                   @Override 
                   public Integer getAccountID(){
-                      return 2;
+                      return 1;
                   }
                 };
             }
@@ -420,13 +420,5 @@ public class AdminTest extends BaseJDBCTest {
             assertTrue(returnsHazardID);
             System.out.println("inserted "+locationName);
         }
-    }
-    @Test
-    public void anotherHazardsTest_condition_result(){
-        boolean someCondition = false;
-        AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
-        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-        
-        assertTrue(someCondition);
     }
 }

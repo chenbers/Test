@@ -166,7 +166,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.stateID = stateID;
     }
     public MeasurementLengthType getRadiusUnits() {
-        return radiusUnits;
+        return radiusUnits!=null?radiusUnits:MeasurementLengthType.METRIC_METERS;
     }
     public void setRadiusUnits(MeasurementLengthType radiusUnits) {
         this.radiusUnits = radiusUnits;
