@@ -299,7 +299,7 @@
 
   <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session"/>
   
-  <bean id="hazardsBean" class="com.inthinc.pro.backing.HazardsBean" scope="session">
+  <bean id="hazardsBean" class="com.inthinc.pro.backing.HazardsBean" scope="session" parent="baseBean">
       <property name="adminHazardJDBCDAO" ref="adminHazardJDBCDAO"></property>
   </bean>
   

@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.model.KeepAlive;
 
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
@@ -29,10 +30,25 @@ public class HazardsBean extends BaseBean {
     private static final long serialVersionUID = -6165871690791113017L;
     private List<Hazard> hazards;
     private AdminHazardJDBCDAO adminHazardJDBCDAO;
+    private DriverDAO driverDAO;
 
     private List<SelectItem> hazardIDs;
     private Hazard item;
     private boolean editing;
+    protected List<Hazard> tableData;
+    protected List<Hazard> filteredTableData;
+    static final List<String> AVAILABLE_COLUMNS;
+    static {
+        // available columns
+        AVAILABLE_COLUMNS = new ArrayList<String>();
+        AVAILABLE_COLUMNS.add("region");
+        AVAILABLE_COLUMNS.add("location");
+        AVAILABLE_COLUMNS.add("type");
+        AVAILABLE_COLUMNS.add("status");
+        AVAILABLE_COLUMNS.add("startDate");
+        AVAILABLE_COLUMNS.add("endDate");
+        AVAILABLE_COLUMNS.add("modifiedBy");
+    }
 
     public void loadHazards(){
         //TODO: what is the default behavior load the globe?
@@ -51,6 +67,8 @@ public class HazardsBean extends BaseBean {
             hazardIDs.add(new SelectItem(hazard.getHazardID(), hazard.getLocation().toString()));
         }
     }
+    
+
     public List<SelectItem> getHazardTypeSelectItems(){
         return SelectItemUtil.toList(HazardType.class, false);
     }
@@ -63,7 +81,17 @@ public class HazardsBean extends BaseBean {
         }
         return hazards;
     }
-    
+    public void initTableData(){
+        for(Hazard hazard: getHazards()){
+            //set driver display value
+            hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
+            
+        }
+    }
+    public List<Hazard> getTableData() {
+        initTableData();
+        return getHazards();
+    }
     public List<SelectItem> getHazardIDs() {
         if (hazardIDs == null) {
             loadHazards();
@@ -284,5 +312,11 @@ public class HazardsBean extends BaseBean {
     }
     public boolean isShowMessage() {
         return false;
+    }
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
     }
 }

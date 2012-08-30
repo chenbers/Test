@@ -21,6 +21,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
     private String location = "";
     private HazardStatus status;
     
+    private Driver view_driver;
+    
     public Hazard() {
         super();
     }
@@ -33,6 +35,12 @@ public class Hazard extends BaseEntity implements HasAccountId {
         buffer.append(", type="+this.type);
         buffer.append(", description="+this.description);
         return buffer.toString();
+    }
+    public Driver getDriver() {
+        return view_driver;
+    }
+    public void setDriver(Driver driver){
+        this.view_driver = driver;
     }
     public Date getStartTime() {
         if(startTime == null)
@@ -75,8 +83,14 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public Integer getDeviceID() {
         return deviceID;
     }
+    public Double getLat(){
+        return getLatitude();
+    }
     public Double getLatitude() {
         return latitude;
+    }
+    public Double getLng() {
+        return getLongitude();
     }
     public Double getLongitude() {
         return longitude;
