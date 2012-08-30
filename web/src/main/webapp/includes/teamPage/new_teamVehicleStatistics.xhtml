@@ -129,7 +129,7 @@
 						#{messages.team_dist_driven}
 					</f:facet>
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
-                    	<a4j:actionparam value="#{(total.score.endingOdometer - total.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
+                    	<a4j:actionparam value="#{total.score.endingOdometer/100}" converter="MilesToKilometersConverter"/>
                     	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                     </h:outputFormat>										
 				</rich:column>
@@ -243,13 +243,13 @@
 
 					#{item.score.idleHiEvents + item.score.trips}
 				</rich:column>
-				<rich:column rendered="#{tableColumns['dist_driven'].visible}" sortBy="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" id="newTeamStatsTab-milesDriven">
+				<rich:column rendered="#{tableColumns['dist_driven'].visible}" sortBy="#{item.score.odometer6/100}" id="newTeamStatsTab-milesDriven">
 					<f:facet name="header">
 						#{messages.team_dist_driven}
 					</f:facet>
 
                     <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
-                    	<a4j:actionparam value="#{(item.score.endingOdometer - item.score.startingOdometer)/100}" converter="MilesToKilometersConverter"/>
+                    	<a4j:actionparam value="#{item.score.odometer6/100}" converter="MilesToKilometersConverter"/>
                     	<a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                     </h:outputFormat>										
 				</rich:column>

@@ -3,6 +3,7 @@ package com.inthinc.pro.model.aggregation;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.util.NumberUtil;
@@ -13,6 +14,8 @@ import com.inthinc.pro.model.Vehicle;
 
 @XmlRootElement
 public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreWrapper> {
+	private static final Logger logger = Logger.getLogger(DriverVehicleScoreWrapper.class);
+
     private Driver driver;
     private Vehicle vehicle;
     @Column(name="driveQ")
@@ -130,9 +133,17 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
             if ( dvsc.getScore().getIdleLoEvents() != null ) {
                 totIdleLoEvt += dvsc.getScore().getIdleLoEvents().intValue();
             }            
+/*            
             if ( dvsc.getScore().getEndingOdometer() != null && dvsc.getScore().getStartingOdometer() != null ) {
                 totMilesDriven += ( dvsc.getScore().getEndingOdometer().intValue() - dvsc.getScore().getStartingOdometer().intValue() );
             }
+*/
+            if ( dvsc.getScore().getOdometer6() != null ) {
+                totMilesDriven += dvsc.getScore().getOdometer6().intValue();
+            }            
+logger.debug("dvsc.getScore().getOdometer6(): " + dvsc.getScore().getOdometer6());
+logger.debug("totMilesDriven : " + totMilesDriven);
+            
             if ( dvsc.getScore().getDriveTime() != null ) {
                 totDriveTime += dvsc.getScore().getDriveTime().intValue();
             }            
