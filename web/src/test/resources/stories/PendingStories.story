@@ -409,3 +409,23 @@ Scenario: TC1412: Notifications > Emergency - Refresh
 Scenario: TC1413: Notifications > Emergency - Search
 
 Scenario: TC1423: Notifications > Emergency - Edit Columns - Check Box Selection via Spacebar
+
+FormsAdmin.story
+
+//Future test, not currently implemented on this page
+Scenario: TCXXXX: Edit columns
+Given I am on the Admin page Forms tab
+When I click on the Edit Columns link
+And a popup opens to display the selections of columns
+And I select the checkboxes for the columns I want to display
+And click on Save button
+Then the columns I selected display on the Forms page
+
+//This delete button does not currently exist
+Scenario: TCXXXX: Delete a selected Form
+Given I am logged in
+When I click the Forms link
+And I save the 1st Row of the Name link as SAVEDFORM
+And I click the 1st Row of the Select checkbox
+And click the Delete button
+Then I validate the 1st Row of the Name link is not SAVEDFORM
