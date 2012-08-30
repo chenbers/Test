@@ -144,6 +144,7 @@
                                 <td>
                                     <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType"  style="width:190px">
                                         <f:selectItems value="#{hazardsBean.hazardTypeSelectItems}"/>
+                                        <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters"  />
                                     </h:selectOneMenu>
                                 </td>
                             </tr>

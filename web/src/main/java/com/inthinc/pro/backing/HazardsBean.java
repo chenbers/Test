@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.joda.time.DateTime;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
@@ -272,6 +273,11 @@ public class HazardsBean extends BaseBean {
             }
         }
         return true;
+    }
+    public void onTypeChange() {
+        DateTime startTime = new DateTime(item.getStartTime().getTime());
+        DateTime endTime = startTime.plus(item.getType().getDefaultDuration());
+        item.setEndTime(endTime.toDate());
     }
     
     public String reset() {
