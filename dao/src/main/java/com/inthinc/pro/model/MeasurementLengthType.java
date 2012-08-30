@@ -27,10 +27,10 @@ public enum MeasurementLengthType implements BaseEnum {
     }
 
     public Number convertFromMeters(Number meters){
-        return meters==null?null:MathUtil.round(meters.doubleValue()*metersPer, 1);
+        return meters==null?null:MathUtil.round(meters.doubleValue()/metersPer, 1);
     }
     public Number convertToMeters(Number lengthIn){
-        return lengthIn==null?null:MathUtil.round(lengthIn.doubleValue()/metersPer, 1);
+        return lengthIn==null?null:(lengthIn.doubleValue()*metersPer);
     }
     private static final Map<Integer, MeasurementLengthType> lookup = new DefaultedMap<Integer,MeasurementLengthType>(new HashMap<Integer, MeasurementLengthType>(),
             MeasurementLengthType.ENGLISH_MILES);

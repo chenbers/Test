@@ -49,10 +49,12 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.endTime = endTime;
     }
     public Integer getRadiusMeters() {
-        if(radiusMeters!=null)
+        if(radiusMeters!=null){
+            return (int) Math.ceil(this.getRadiusUnits().convertToMeters(radiusMeters).doubleValue());
+        } else if(getType()==null){
             return radiusMeters;
-        if(getType()==null)
-            return radiusMeters;
+        }
+
         return ((Double)getType().getRadius()).intValue();
     }
     public HazardType getType() {
@@ -120,10 +122,10 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public void setRadiusMeters(Double radius) {
         //we are storing meters as an int in the DB, always round UP to err on the side of caution
-        this.radiusMeters = (int) Math.ceil(radius);
+        this.radiusMeters = (int)Math.ceil(radius);
     }
     public void setRadiusMeters(Integer radius) {
-        this.radiusMeters = radius;
+        setRadiusMeters(radius.doubleValue());
     }
     public void setType(HazardType type) {
         this.type = type;
