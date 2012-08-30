@@ -59,8 +59,25 @@
     <a4j:loadScript src="/js/mapGeocode.js" />
     <a4j:loadScript src="/js/drawZone.js" />
     <a4j:loadScript src="/js/markerclusterer_packed.js"/>
+    <a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
     <script type="text/javascript">
+    //<![CDATA[
+    //Pulled out of markerclusterer.js
+      var sizes = [53, 56, 66, 78, 90];
+      var styles = [];
+
+      var i = 0;
+      for (i = 1; i <= 5; ++i) {
+        styles.push({
+          'url': "#{request.contextPath}/images/markerClusterer/m" + i + ".png",
+          'height': sizes[i - 1],
+          'width': sizes[i - 1]
+        });
+      }
+    //]]>
        var map;
+       var markerClusterer;
+       var markers = [];
     </script>
   </ui:define>
   
@@ -258,6 +275,7 @@
                   {
                      portalmap.init();
                      initLayers();
+                     bounds = new GLatLngBounds();
                      map = portalmap.getMap();
                      if (!showHazard(false)) 
                          map.setCenter(new GLatLng(39.0, -104.0), 4);
@@ -324,8 +342,67 @@
                       map.setZoom(map.getBoundsZoomLevel(bounds));
                       map.setCenter(bounds.getCenter());
                   }
-                </script>
+                  
+                  /* CreateMarker(GLatLng, divID, GIcon or null)
+                   *  
+                   * Creates a marker using specified GIcon or
+                   * default icon if null is passed for iconImage.
+                   * divID is the id of a DIV you want displayed in the info window. 
+                   */
+                  function createMarker(point, divID, iconImage) 
+                  {
+                      var markerIcon;
+                      var marker;
 
+                      //Use passed in image.
+                      if(iconImage != null)
+                      {
+                          markerIcon = new GIcon(baseIcon);
+                          markerIcon.image = iconImage;
+                          markerOptions = { icon:markerIcon };
+                          marker = new GMarker(point, markerOptions);
+                      }
+                      //Use default GoogleMap marker image.
+                      else
+                      {
+                          markerIcon = new GIcon();
+                          marker = new GMarker(point);
+                      }
+                 
+                      GEvent.addListener(marker, "click", function() {
+                              var node = document.getElementById(divID).cloneNode(true);
+                              node.style.display = 'block';
+                              marker.openInfoWindow(node);
+                              });
+
+                      return marker;
+                  }
+                </script>
+            <rich:panel id="mapPopups" rendered="#{liveFleetBean.selectedVehicleID ne null}">
+        
+            <ui:param name="driverLocation" value="#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID]}"/>
+            <ui:include src="/includes/hazardBubble.xhtml">
+                <ui:param name="driver" value="#{driverLocation.driver}" />
+                <ui:param name="vehicle" value="#{driverLocation.vehicle}" />
+                <ui:param name="device" value="#{driverLocation.device}" />
+                <ui:param name="bean" value="#{liveFleetBean}" />
+                <ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
+                <ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
+                <ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
+                <ui:param name="messageDriver" value="#{messages.livefleet_driver}" />
+                <ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
+                <ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
+                <ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
+                <ui:param name="vehicleTime" value="#{driverLocation.time}" />
+                <ui:param name="messageAddress" value="#{messages.livefleet_address}" />
+                <ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
+                <ui:param name="addressLookupAddressFormat" value="#{liveFleetBean.addressFormat}"/>
+                <ui:param name="distance" value="#{driverLocation.dist}" />
+                <ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
+                <ui:param name="messageDevicePhone" value="#{messages.livefleet_devicePhone}" /> 
+                <ui:param name="context" value="liveFleet" />
+            </ui:include>
+            </rich:panel>
               </div>
             </div>
 
@@ -342,7 +419,17 @@
             </ui:include>
 
           </div>
+                <a4j:region id="jsFormRegion">
+                    <a4j:form id="jsForm">
 
+                        <a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+                            <a4j:actionparam name="hazardID" assignTo="#{hazardsBean.item.hazardID}"/>
+                            <a4j:actionparam name="subId" />
+                        </a4j:jsFunction>
+                
+                    
+                    </a4j:form>
+                </a4j:region>
           <!-- END PANEL -->
         </td>
 
