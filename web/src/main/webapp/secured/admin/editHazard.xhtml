@@ -36,6 +36,7 @@
     <a4j:loadScript src="/js/drawZone.js" />
     <script type="text/javascript">
        var map;
+       var marker;
     </script>
   </ui:define>
   
@@ -164,7 +165,7 @@
                                 <td><rich:calendar id="endCalendar" inputSize="22" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px"/></td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_moreInfo}"/>:</td>
+                                <td><h:outputText value="#{messages.hazard_description}"/>:</td>
                                 <td>
                                     <rich:message id="msgTextValidMessage" for="msgText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                     <h:inputTextarea id="msgText" value="#{hazardsBean.item.description}" style="font-size:12px;width:190px;height:2;margin-left:0px" >
@@ -250,8 +251,7 @@
                         portalmap.init();
                         initLayers();
                         map = portalmap.getMap();
-                            
-    
+
                       GEvent.addListener(drawZone, "startHazard", function(type){
                         select(type);
                       });
@@ -267,8 +267,15 @@
                         storeOutline();
                       });
                       GEvent.addListener(map, "mousemove", function(latLng) {
-                        updateCoordinates(latLng.lng(), latLng.lat());
-                        });
+                        //updateCoordinates(latLng.lng(), latLng.lat());
+                      });
+                      GEvent.addListener(map, "click", function(overlay, latLng) {
+                          if(marker)
+                              map.removeOverlay(marker);
+                          updateCoordinates(latLng.lng(), latLng.lat());
+                          marker = new GMarker(latLng);
+                          map.addOverlay(marker);
+                      });
 
                       if (!showHazard(false)){
                         map.setCenter(new GLatLng(39.0, -104.0), 4);

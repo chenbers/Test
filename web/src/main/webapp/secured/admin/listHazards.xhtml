@@ -160,9 +160,9 @@
                   
                   
                   
-                  
+        <h:panelGroup layout="block" style="width: 790px; overflow: auto;">
         <rich:dataTable id="hazards-table" value="#{hazardsBean.tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
-            rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%">
+            rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" >
 
             <!-- Data -->
             <rich:column id="mapColumn">
@@ -199,6 +199,13 @@
                     <h:outputText value="#{messages.hazard_location}" />
                 </f:facet>
                <h:outputText value="#{item.location}"/>
+            </rich:column>
+            
+            <rich:column id="description" sortBy="#{item.description}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_description}" />
+                </f:facet>
+               <h:outputText value="#{item.description}"/>
             </rich:column>
             
             <rich:column id="driverName" sortBy="#{item.driverName}" >
@@ -255,7 +262,7 @@
                 <h:commandLink id="hazardsEdit" action="#{hazardsBean.edit}"><h:outputText value="#{messages.hazard_edit}" /></h:commandLink>
             </rich:column>
         </rich:dataTable>
-                  
+        </h:panelGroup>
                   
                   
                   
@@ -297,13 +304,13 @@
 
                   function bodyLoad(){
                      portalmap.init();
-                     addMarkers();
                      initLayers();
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
                      if (!showHazard(false)){
                          map.setCenter(new GLatLng(39.0, -104.0), 4);
                      }
+                     addMarkers();
                   }
                   function getAddress(index){
                       
@@ -332,6 +339,7 @@
                     }
                   function addMarkers(){
                       var progress = 0;
+                      console.log("map: "+map);
                       var progressBar = new ProgressbarControl(map);
                       
                       if (markerClusterer != null) {
@@ -439,8 +447,6 @@
                             <a4j:actionparam name="hazardID" assignTo="#{hazardsBean.item.hazardID}"/>
                             <a4j:actionparam name="subId" />
                         </a4j:jsFunction>
-                
-                    
                     </a4j:form>
                 </a4j:region>
           <!-- END PANEL -->
