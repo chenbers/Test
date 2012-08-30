@@ -68,11 +68,7 @@
 
             <div class="panel_w">
               <div class="panel_content">
-              ID: #{hazardsBean.item.hazardID}<br/>
-              both: #{hazardsBean.editing and hazardsBean.showMessage}<br/>
-              editing: #{hazardsBean.editing}<br/>
-              showMessage: #{hazardsBean.showMessage}<br/>
-                #{hazardsBean}  //TODO:remove this <br/>
+     
                 <a4j:form id="hazards-form">
                 <h:inputHidden id="points" value="" /> <!-- //TODO: is there a more elegant way so I can avoid using points/pointsTring -->
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -185,21 +181,18 @@
 
 
                 <script type="text/javascript">
-                  function clearOutline()
-                  {
+                  function clearOutline(){
                     document.getElementById("hazards-form:points").value = "";
                     removeZoneOverlay();
 //                    map.clearOverlays();
-                 }
+                  }
 
-                  function showHazard(editable)
-                  {
+                  function showHazard(editable){
                     // map.clearOverlays();
                     removeZoneOverlay();
                     
                     var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
-                    if (outline)
-                    {
+                    if (outline){
                       centerMapAtHazard(getLatLngBounds(outline));
                       loadHazard(outline, editable);
                       return true;
@@ -207,26 +200,24 @@
                     return false;
                   }
 
-                  function storeOutline()
-                  {
-                	  console.log("in storeOutline");
+                  function storeOutline(){
+                    console.log("in storeOutline");
                     document.getElementById("hazards-form:points").value = toOutlineString(getPolygonOutline());
                   }
 
-                  function cancelEdit()
-                  {
+                  function cancelEdit(){
                     stopDrawing();
                     // map.clearOverlays();
                     removeZoneOverlay();
                     
                     var outline = document.getElementById("backupPoints").value;
-                    if (outline == "")
+                    if (outline == ""){
                       outline = document.getElementById("firstPoints").value;
+                    }
                     document.getElementById("hazards-form:points").value = outline;
                   }
 
-                  function select(type)
-                  {
+                  function select(type){
                     applyImage("hand", type);
                     applyImage("rectangle", type);
                     applyImage("circle", type);
@@ -240,54 +231,48 @@
                     }
                   }
 
-                  function applyImage(type, selectedType)
-                  {
+                  function applyImage(type, selectedType){
                     var image = document.getElementById("hazards-form:" + type + "_b");
-                    if (type == selectedType)
+                    if (type == selectedType){
                       image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + "_on.png";
-                    else
+                    } else{
                       image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + ".png";
+                    }
                   }
 
-                  function updateCoordinates(lng, lat)
-                  {
+                  function updateCoordinates(lng, lat){
                     document.getElementById("hazards-form:editHazard-lng").value = (Math.round(lng*10000.0)/10000.0).toString();
                     document.getElementById("hazards-form:editHazard-lat").value = (Math.round(lat*10000.0)/10000.0).toString();
                   }
 
-                  function bodyLoad()
-                  {
-                    if (GBrowserIsCompatible())
-                    {
+                  function bodyLoad(){
+                    if (GBrowserIsCompatible()){
                         portalmap.init();
                         initLayers();
                         map = portalmap.getMap();
                             
     
-                      GEvent.addListener(drawZone, "startHazard", function(type)
-                      {
+                      GEvent.addListener(drawZone, "startHazard", function(type){
                         select(type);
                       });
-                      GEvent.addListener(drawZone, "endHazard", function(type, points)
-                      {
+                      GEvent.addListener(drawZone, "endHazard", function(type, points){
                         select("hand");
                         storeOutline();
                       });
-                      GEvent.addListener(drawZone, "cancelHazard", function(type)
-                      {
+                      GEvent.addListener(drawZone, "cancelHazard", function(type){
                         showHazard(true);
                         select("hand");
                       });
-                      GEvent.addListener(drawZone, "updateHazard", function(points)
-                      {
+                      GEvent.addListener(drawZone, "updateHazard", function(points){
                         storeOutline();
                       });
                       GEvent.addListener(map, "mousemove", function(latLng) {
                         updateCoordinates(latLng.lng(), latLng.lat());
                         });
 
-                      if (!showHazard(false))
+                      if (!showHazard(false)){
                         map.setCenter(new GLatLng(39.0, -104.0), 4);
+                      }
                     }
                   }
                 </script>

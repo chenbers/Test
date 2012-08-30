@@ -15,7 +15,6 @@
   <ui:param name="title" value="#{messages.adminHeader_hazards}"/>
   
   <ui:define name="scripts">
-  
       <style>
           .colSpan {
               width: 100%;
@@ -52,8 +51,6 @@
                 color: #000;
                 margin: 0 0 0 8px;
         }
-        
-          
       </style>
       <ui:include src="/includes/map/portalMap.xhtml"/>
     <a4j:loadScript src="/js/mapGeocode.js" />
@@ -224,8 +221,7 @@
                     <f:param value="#{item.hazardID}"/>
                     #{messages.hazards_edit}
                 </pretty:link>
-            </rich:column>                     
-                                  
+            </rich:column>
         </rich:dataTable>
                   
                   
@@ -240,18 +236,15 @@
                 </a4j:form>
 
                 <script type="text/javascript">
-                  function clearOutline()
-                  {
+                  function clearOutline(){
                     document.getElementById("hazards-form:points").value = "";
                     map.clearOverlays();
                   }
 
-                  function showHazard(editable)
-                  {
+                  function showHazard(editable){
                     map.clearOverlays();
                     var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
-                    if (outline)
-                    {
+                    if (outline){
                       centerMapAtHazard(getLatLngBounds(outline));
                       loadHazard(outline, editable);
                       return true;
@@ -259,27 +252,25 @@
                     return false;
                   }
 
-
-                  function cancelEdit()
-                  {
+                  function cancelEdit(){
                     stopDrawing();
                     map.clearOverlays();
                     var outline = document.getElementById("backupPoints").value;
-                    if (outline == "")
+                    if (outline == ""){
                       outline = document.getElementById("firstPoints").value;
+                    }
                     document.getElementById("hazards-form:points").value = outline;
                   }
 
 
-                  function bodyLoad()
-                  {
+                  function bodyLoad(){
                      portalmap.init();
                      initLayers();
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
-                     if (!showHazard(false)) 
+                     if (!showHazard(false)){
                          map.setCenter(new GLatLng(39.0, -104.0), 4);
-                     
+                     }
                   }
                   function getAddress(index){
                       
@@ -291,26 +282,22 @@
                                               
                           if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
                               reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
-                          }
-                          else {
+                          } else {
                               lkFrZn(lat.value,lng.value,index);
                           }
                       }
                    }
                   function reverseGeocodeTripAddress(latlng,addressElement,index){
-                      
                       new GClientGeocoder().getLocations(latlng, 
                               function(response){
                                   if (!response || response.Status.code != 200) {
                                       lkFrZn(latlng.lat(),latlng.lng(),index);
-                                  } 
-                                  else {
+                                  } else {
                                       addressElement.innerHTML = response.Placemark[0].address;
                                   }
                               });
                     }
-                  function addMarkers()
-                  {
+                  function addMarkers(){
                       var progress = 0;
                       var progressBar = new ProgressbarControl(map);
                       
@@ -318,9 +305,7 @@
                             markerClusterer.clearMarkers();
                           }
                       progressBar.start(#{fn:length(hazardsBean.hazards)});
-
                       markers = [];
-
                       bounds.extend(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
                       
                       <ui:repeat value="#{hazardsBean.hazards}" var="hazard">
@@ -336,7 +321,6 @@
                       </ui:repeat>
                       
                       markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
-                      
                       progressBar.remove();
 
                       map.setZoom(map.getBoundsZoomLevel(bounds));
@@ -349,22 +333,18 @@
                    * default icon if null is passed for iconImage.
                    * divID is the id of a DIV you want displayed in the info window. 
                    */
-                  function createMarker(point, divID, iconImage) 
-                  {
+                  function createMarker(point, divID, iconImage) {
                       var markerIcon;
                       var marker;
 
                       //Use passed in image.
-                      if(iconImage != null)
-                      {
+                      if(iconImage != null){
                           markerIcon = new GIcon(baseIcon);
                           markerIcon.image = iconImage;
                           markerOptions = { icon:markerIcon };
                           marker = new GMarker(point, markerOptions);
-                      }
-                      //Use default GoogleMap marker image.
-                      else
-                      {
+                      } else {
+                          //Use default GoogleMap marker image.
                           markerIcon = new GIcon();
                           marker = new GMarker(point);
                       }
