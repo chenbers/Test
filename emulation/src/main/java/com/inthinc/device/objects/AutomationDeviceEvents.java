@@ -231,18 +231,24 @@ public class AutomationDeviceEvents {
 	private static void hosChangeState(DeviceState state, DeviceNote note){
     	int tripFlag = state.getTripFlags() & 0xF0;
 
-		if ((tripFlag & TripFlags.CLEAR_DRIVER.getIndex()) == TripFlags.CLEAR_DRIVER.getIndex()){
-			note.addAttr(EventAttr.CLEAR_DRIVER_FLAG, TripFlags.CLEAR_DRIVER);
+    	if ((tripFlag & TripFlags.PRE_TRIP_INSPECTION_REPORT.getIndex()) == TripFlags.PRE_TRIP_INSPECTION_REPORT.getIndex()){
+    		note.addAttr(EventAttr.INSPECTION_TYPE, TripFlags.PRE_TRIP_INSPECTION_REPORT);
 		}
-		if ((tripFlag & TripFlags.INSPECTION_DONE.getIndex()) == TripFlags.INSPECTION_DONE.getIndex()){
-			note.addAttr(EventAttr.TRIP_REPORT_FLAG, TripFlags.INSPECTION_DONE);	
-		}
-		if ((tripFlag & TripFlags.INSPECTION_REPORT.getIndex()) == TripFlags.INSPECTION_REPORT.getIndex()){
-			note.addAttr(EventAttr.TRIP_INSPECTION_FLAG, TripFlags.INSPECTION_REPORT);	
-		}
-		if ((tripFlag & TripFlags.KIOSK_MODE.getIndex()) == TripFlags.KIOSK_MODE.getIndex()){
-			note.addAttr(EventAttr.TRIP_KIOSK_MODE, TripFlags.KIOSK_MODE);
-		}
+    	if ((tripFlag & TripFlags.POST_TRIP_INSPECTION_REPORT.getIndex()) == TripFlags.POST_TRIP_INSPECTION_REPORT.getIndex()){
+    		note.addAttr(EventAttr.INSPECTION_TYPE, TripFlags.POST_TRIP_INSPECTION_REPORT);
+    	}
+
+//		if ((tripFlag & TripFlags.CLEAR_DRIVER.getIndex()) == TripFlags.CLEAR_DRIVER.getIndex()){
+//			note.addAttr(EventAttr.CLEAR_DRIVER_FLAG, TripFlags.CLEAR_DRIVER);
+//		}
+//		if ((tripFlag & TripFlags.INSPECTION_DONE.getIndex()) == TripFlags.INSPECTION_DONE.getIndex()){
+//			note.addAttr(EventAttr.TRIP_REPORT_FLAG, TripFlags.INSPECTION_DONE);	
+//		}
+//		if ((tripFlag & TripFlags.INSPECTION_REPORT.getIndex()) == TripFlags.INSPECTION_REPORT.getIndex()){
+//			note.addAttr(EventAttr.TRIP_INSPECTION_FLAG, TripFlags.INSPECTION_REPORT);	
+//		}
+//		if ((tripFlag & TripFlags.KIOSK_MODE.getIndex()) == TripFlags.KIOSK_MODE.getIndex()){
+//			note.addAttr(EventAttr.TRIP_KIOSK_MODE, TripFlags.KIOSK_MODE);
 	}
 	
 	public class LogoutEvent extends AutomationDeviceEvents {

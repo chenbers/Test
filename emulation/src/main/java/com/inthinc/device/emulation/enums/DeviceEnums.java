@@ -13,6 +13,8 @@ public class DeviceEnums {
 		CLEAR_DRIVER(0x20),
 		INSPECTION_DONE(0x40),
 		INSPECTION_REPORT(0x80),
+		PRE_TRIP_INSPECTION_REPORT(0x01),
+		POST_TRIP_INSPECTION_REPORT(0x02)
 		;
 		
 		private int index;
