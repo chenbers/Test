@@ -123,7 +123,7 @@
                             <tr>
                               <td>
                                 <h:graphicImage value="/images/ico_warning.png" style="vertical-align:-30%" />
-                                <strong><h:outputText value="#{messages.hazards_hazard}" /></strong>
+                                <strong><h:outputText value="#{messages.hazard_hazard}" /></strong>
                               </td>
                               <td>
                                 <h:selectOneMenu value="#{hazardsBean.itemID}" id="hazard" style="width: 140px">
@@ -139,7 +139,7 @@
                           <li class="l"><button id="hazardsSubmit" type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
                         </ui:fragment>
                         <li class="r">
-                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazards_addHazard}" /></span></h:commandButton>
+                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
                         </li>
                       </ul>
 
@@ -189,21 +189,21 @@
             
             <rich:column id="date" sortBy="#{item.stateID}" >
                 <f:facet name="header">
-                    <h:outputText value="#{messages.hazards_region}" />
+                    <h:outputText value="#{messages.hazard_region}" />
                 </f:facet>
                 <h:outputText value="#{item.stateID}" />
             </rich:column>
             
-            <rich:column id="group" sortBy="#{item.location}" >
+            <rich:column id="location" sortBy="#{item.location}" >
                 <f:facet name="header">
-                    <h:outputText value="#{messages.hazards_location}" />
+                    <h:outputText value="#{messages.hazard_location}" />
                 </f:facet>
                <h:outputText value="#{item.location}"/>
             </rich:column>
             
             <rich:column id="driverName" sortBy="#{item.driverName}" >
                 <f:facet name="header">
-                    <h:outputText value="#{messages.hazards_driver}" />
+                    <h:outputText value="#{messages.hazard_driver}" />
                 </f:facet>
                 <ui:include src="/includes/driverLink.xhtml">
                     <ui:param name="context" value="hazards" />
@@ -213,14 +213,46 @@
                 </ui:include>
             </rich:column>
            
-            <rich:column id="details" rendered="#{tableColumns['details'].visible}" >
+           <rich:column id="user" sortBy="#{item.user}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_user}" />
+                </f:facet>
+               <h:outputText value="#{item.user.person.fullName}"/>
+            </rich:column>
+            
+           <rich:column id="type" sortBy="#{item.type}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_type}" />
+                </f:facet>
+               <h:outputText value="#{item.type}"/>
+            </rich:column>
+            
+            <rich:column id="status" sortBy="#{item.status}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_status}" />
+                </f:facet>
+               <h:outputText value="#{item.status}"/>
+            </rich:column>
+            
+            <rich:column id="startTime" sortBy="#{item.startTime}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_startTime}" />
+                </f:facet>
+               <h:outputText value="#{item.startTime}"/>
+            </rich:column>
+            
+            <rich:column id="endTime" sortBy="#{item.endTime}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_endTime}" />
+                </f:facet>
+               <h:outputText value="#{item.endTime}"/>
+            </rich:column>
+            
+            <rich:column id="details" >
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-                <pretty:link id="hazards-editLink" mappingId="adminEditHazard" title="#{messages.hazards_edit}">
-                    <f:param value="#{item.hazardID}"/>
-                    #{messages.hazards_edit}
-                </pretty:link>
+                <h:commandLink id="hazardsEdit" action="#{hazardsBean.edit}"><h:outputText value="#{messages.hazard_edit}" /></h:commandLink>
             </rich:column>
         </rich:dataTable>
                   
@@ -265,6 +297,7 @@
 
                   function bodyLoad(){
                      portalmap.init();
+                     addMarkers();
                      initLayers();
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
@@ -394,7 +427,7 @@
               <ui:param name="deleteBean" value="#{hazardsBean}" />
               <ui:param name="reRender" value="points,displayHazard" />
               <ui:param name="ondelete" value="showHazard(false)" />
-              <ui:param name="explanation" value="#{messages.hazards_confirmDelete}" />
+              <ui:param name="explanation" value="#{messages.hazard_confirmDelete}" />
                    <ui:param name="context" value="hazards" />
             </ui:include>
 

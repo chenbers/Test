@@ -13,6 +13,7 @@ import javax.faces.model.SelectItem;
 import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
@@ -31,6 +32,7 @@ public class HazardsBean extends BaseBean {
     private List<Hazard> hazards;
     private AdminHazardJDBCDAO adminHazardJDBCDAO;
     private DriverDAO driverDAO;
+    private UserDAO userDAO;
 
     private List<SelectItem> hazardIDs;
     private Hazard item;
@@ -85,7 +87,7 @@ public class HazardsBean extends BaseBean {
         for(Hazard hazard: getHazards()){
             //set driver display value
             hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
-            
+            hazard.setUser(userDAO.findByID(hazard.getUserID()));
         }
     }
     public List<Hazard> getTableData() {
@@ -318,5 +320,11 @@ public class HazardsBean extends BaseBean {
     }
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }
