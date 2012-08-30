@@ -5,7 +5,7 @@ I need an interface to create a form and to forward to devices for drivers to co
 
 Scenario: TCXXXX Forms Add Page - UI Test - Main page
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 Then I validate the Save Top button is present
 And I validate the Save Bottom button is present
@@ -31,7 +31,7 @@ And I validate the Select Multiple link is present
 
 Scenario: TCXXXX Forms Add Page - Save Top Button
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" in the Name textfield
 And I click the Text link
@@ -45,7 +45,7 @@ Then I validate the 1st Row of the Entry Name Published text is not present
 
 Scenario: TCXXXX Forms Add Page - Save Bottom Button
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" in the Name textfield
 And I click the Text link
@@ -59,7 +59,7 @@ Then I validate the 1st Row of the Entry Name Published text is not present
 
 Scenario: TCXXXX Forms Add Page - Cancel Top Button
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" in the Name textfield
 And I click the Text link
@@ -70,7 +70,7 @@ Then I validate the 1st Row of the Entry Name Working text is not present
 
 Scenario: TCXXXX Forms Add Page - Cancel Bottom Button
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" in the Name textfield
 And I click the Text link
@@ -81,7 +81,7 @@ Then I validate the 1st Row of the Entry Name Working text is not present
 
 Scenario: TCXXXX Forms Add Page - UI Test - Text link
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 Then I validate the Delete button is present
@@ -101,7 +101,7 @@ And I validate the Advanced Arrow button is present
 
 Scenario: TCXXXX Forms Add Page - UI Test - Numeric link
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Numeric link
 Then I validate the Delete button is present
@@ -122,7 +122,7 @@ And I validate the Advanced Arrow button is present
 
 Scenario: TCXXXX Forms Add Page - UI Test - Date link
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Date link
 Then I validate the Delete button is present
@@ -142,7 +142,7 @@ And I validate the Advanced Arrow button is present
 
 Scenario: TCXXXX Forms Add Page - UI Test - Choose One link
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Choose One link
 Then I validate the Delete button is present
@@ -158,7 +158,7 @@ And I validate the Advanced Arrow button is present
 
 Scenario: TCXXXX Forms Add Page - UI Test - Select Multiple link
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Select Multiple link
 Then I validate the Delete button is present
@@ -174,7 +174,7 @@ And I validate the Advanced Arrow button is present
 
 Scenario: TCXXXX Forms Add Page - Blank Data Name Error Text Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I type "" into the Data Name field
@@ -182,7 +182,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TCXXXX Forms Add Page - Blank Data Name Error Numeric Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Numeric link
 And I type "" into the Data Name field
@@ -190,7 +190,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TCXXXX Forms Add Page - Blank Data Name Error Date Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Date link
 And I type "" into the Data Name field
@@ -198,7 +198,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TCXXXX Forms Add Page - Blank Data Name Error Choose One Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Choose One link
 And I type "" into the Data Name field
@@ -206,7 +206,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TCXXXX Forms Add Page - Blank Data Name Error Select Multiple Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Select Multiple link
 And I type "" into the Data Name field
@@ -214,7 +214,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Text Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I type "test" into the Data Name field
@@ -226,7 +226,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Numeric Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Numeric link
 And I type "test" into the Data Name field
@@ -238,7 +238,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Date Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Date link
 And I type "test" into the Data Name field
@@ -250,7 +250,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Choose One Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Choose One link
 And I type "test" into the Data Name field
@@ -262,7 +262,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Select Multiple Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Select Multiple link
 And I type "test" into the Data Name field
@@ -274,7 +274,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error All Fields
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I type "test" into the Data Name field
@@ -298,7 +298,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TCXXXX Forms Add Page - Space Data Name Error Text Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I type "te st" into the Data Name field
@@ -306,7 +306,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Space Data Name Error Numeric Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Numeric link
 And I type "te st" into the Data Name field
@@ -314,7 +314,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Space Data Name Error Date Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Date link
 And I type "te st" into the Data Name field
@@ -322,7 +322,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Space Data Name Error Choose One Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Choose One link
 And I type "te st" into the Data Name field
@@ -330,7 +330,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Space Data Name Error Select Multiple Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Select Multiple link
 And I type "te st" into the Data Name field
@@ -338,7 +338,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Space Data Name Error All Fields
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I type "te st" into the Data Name field
@@ -362,7 +362,7 @@ And I validate the Data Name Error text contains "Only letters and numbers are a
 
 Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Text Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I type "!" into the Data Name field
@@ -370,7 +370,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Numeric Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Numeric link
 And I type "!" into the Data Name field
@@ -378,7 +378,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Date Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Date link
 And I type "!" into the Data Name field
@@ -386,7 +386,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Choose One Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Choose One link
 And I type "!" into the Data Name field
@@ -394,7 +394,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Select Multiple Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Select Multiple link
 And I type "!" into the Data Name field
@@ -402,7 +402,7 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Symbols Data Name Error All Fields
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I type "!" into the Data Name field
@@ -426,7 +426,7 @@ And I validate the Data Name Error text contains "Only letters and numbers are a
 
 Scenario: TCXXXX Forms Add Page - Name required error
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Text link
 And I click the Save Top button
@@ -435,7 +435,7 @@ And I validate the Control Error text is ""
 
 Scenario: TCXXXX Forms Add Page - Control required error
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Save Top button
@@ -444,7 +444,7 @@ And I validate the Name Error text is ""
 
 Scenario: TCXXXX Forms Add Page - Name and Control Errors
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Save Top button
 Then I validate the Name Error text contains "Name is a required field"
@@ -452,7 +452,7 @@ And I validate the Control Error text contains "Form needs at least one control"
 
 Scenario: TCXXXX Forms Add Page - Control Errors Add then remove
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Save Top button
@@ -468,9 +468,9 @@ And I click the Save Top button
 And I validate the Name Error text contains "Name is a required field"
 And I validate the Control Error text contains "Form needs at least one control"
 
-Scenario: TCXXXX ODK Add a Name Text Field - Read Only box checked
+Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Read Only box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Text link
@@ -485,9 +485,9 @@ Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
 When I click the 1st Row of the Entry Edit link
 Then I validate the Read Only checkbox is checked
 
-Scenario: TCXXXX ODK Add a Name Text Field - Required box checked
+Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Required box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Text link
@@ -502,9 +502,9 @@ Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
 When I click the 1st Row of the Entry Edit link
 Then I validate the Required checkbox is checked
 
-Scenario: TCXXXX ODK Add a Name Text Field - Length boxes checked
+Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Length boxes checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Text link
@@ -529,9 +529,9 @@ And I validate the Minimum Text Length textfield is "1"
 And I validate the Maximum Text Length textfield is "4"
 And I validate the Invalid Text textfield is "Value out of range" 
 
-Scenario: TCXXXX ODK Add a Name Text Field - Required and Length boxes checked
+Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Required and Length boxes checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Text link
@@ -558,9 +558,9 @@ And I validate the Minimum Text Length textfield is "2"
 And I validate the Maximum Text Length textfield is "5"
 And I validate the Invalid Text textfield is "Value out of range" 
 
-Scenario: TCXXXX ODK Add a Name Text Field - Required and Length boxes unchecked
+Scenario: TCXXXX Forms Add Page - Add a Name Text Field - Required and Length boxes unchecked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Text link
@@ -578,9 +578,9 @@ And I validate the Maximum Text Inclusive checkbox is not checked
 And I validate the Minimum Text Length textfield is ""
 And I validate the Maximum Text Length textfield is "" 
 
-Scenario: TCXXXX ODK Add a Text Field - Not inclusive
+Scenario: TCXXXX Forms Add Page - Add a Text Field - Not inclusive
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Numeric link
@@ -603,9 +603,9 @@ And I validate the Minimum Text Length textfield is "1"
 And I validate the Maximum Text Length textfield is "999"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX ODK Add a Numeric Field - Read Only box checked
+Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Read Only box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Numeric link
@@ -620,9 +620,9 @@ Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
 When I click the 1st Row of the Entry Edit link
 Then I validate the Read Only checkbox is checked
 
-Scenario: TCXXXX ODK Add a Numeric Field - Required box checked
+Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Required box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Numeric link
@@ -637,9 +637,9 @@ Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
 When I click the 1st Row of the Entry Edit link
 Then I validate the Required checkbox is checked
 
-Scenario: TCXXXX ODK Add a Numeric Field - Range boxes checked
+Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Range boxes checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Numeric link
@@ -664,9 +664,9 @@ And I validate the Minimum Numeric Range textfield is "1"
 And I validate the Maximum Numeric Range textfield is "999"
 And I validate the Invalid Text textfield is "Value out of range" 
 
-Scenario: TCXXXX ODK Add a Numeric Field - Required and Range boxes checked
+Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Required and Range boxes checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Numeric link
@@ -693,9 +693,9 @@ And I validate the Minimum Numeric Range textfield is "1"
 And I validate the Maximum Numeric Range textfield is "999"
 And I validate the Invalid Text textfield is "Value out of range" 
 
-Scenario: TCXXXX ODK Add a Numeric Field - Required and Range boxes unchecked
+Scenario: TCXXXX Forms Add Page - Add a Numeric Field - Required and Range boxes unchecked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Numeric link
@@ -710,9 +710,9 @@ When I click the 1st Row of the Entry Edit link
 Then I validate the Required checkbox is not checked
 And I validate the Range Enable Numeric checkbox is not checked
 
-Scenario: TCXXXX ODK Add a Numeric Field with Range minimum - Not inclusive
+Scenario: TCXXXX Forms Add Page - Add a Numeric Field with Range minimum - Not inclusive
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Numeric link
@@ -733,9 +733,9 @@ And I validate the Minimum Numeric Range textfield is "1"
 And I validate the Maximum Numeric Range textfield is "999"
 And I validate the Invalid Text textfield is "Value out of range" 
 
-Scenario: TCXXXX ODK Add a Date Field - Read Only box checked
+Scenario: TCXXXX Forms Add Page - Add a Date Field - Read Only box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Date link
@@ -750,9 +750,9 @@ Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
 When I click the 1st Row of the Entry Edit link
 Then I validate the Read Only checkbox is checked
 
-Scenario: TCXXXX ODK Add a Date Field - Required box checked
+Scenario: TCXXXX Forms Add Page - Add a Date Field - Required box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Date link
@@ -767,9 +767,9 @@ Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
 When I click the 1st Row of the Entry Edit link
 Then I validate the Required checkbox is checked
 
-Scenario: TCXXXX ODK Add a Date Field - Range boxes checked
+Scenario: TCXXXX Forms Add Page - Add a Date Field - Range boxes checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Date link
@@ -794,9 +794,9 @@ And I validate the Minimum Date Range textfield is "2012-02-01"
 And I validate the Maximum Date Range textfield is "2012-03-01"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX ODK Add a Date Field - Required and Range boxes checked
+Scenario: TCXXXX Forms Add Page - Add a Date Field - Required and Range boxes checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Date link
@@ -823,9 +823,9 @@ And I validate the Minimum Date Range textfield is "2012-02-01"
 And I validate the Maximum Date Range textfield is "2012-03-01"
 And I validate the Invalid Text textfield is "Value out of range"
 
-Scenario: TCXXXX ODK Add a Date Field - Required and Range boxes unchecked
+Scenario: TCXXXX Forms Add Page - Add a Date Field - Required and Range boxes unchecked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Date link
@@ -840,9 +840,9 @@ When I click the 1st Row of the Entry Edit link
 Then I validate the Required checkbox is not checked
 And I validate the Range Enable Date checkbox is not checked
 
-Scenario: TCXXXX ODK Add a Choose One Field - Read Only box checked
+Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Read Only box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Choose One link
@@ -862,9 +862,9 @@ Then I validate the Read Only checkbox is checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Choose One Field - Required box checked
+Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Required box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Choose One link
@@ -884,9 +884,9 @@ Then I validate the Required checkbox is checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Choose One Field - Read Only and Required box checked
+Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Read Only and Required box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Choose One link
@@ -908,9 +908,9 @@ And  I validate the Read Only checkbox is checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Choose One Field - Read Only and Required box is not checked
+Scenario: TCXXXX Forms Add Page - Add a Choose One Field - Read Only and Required box is not checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Choose One link
@@ -930,7 +930,7 @@ And  I validate the Read Only checkbox is not checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Choose One Field - 30 option list
+Scenario: TCXXXX Forms Add Page - Add a Choose One Field - 30 option list
 Given I am logged in
 When I go to the forms admin page
 And I click the Create Form Top link
@@ -1095,9 +1095,9 @@ And I validate the 29th Row of the Option Underlying Value textfield is "optiont
 And I validate the 30th Row of the Option English textfield is "Option 30"
 And I validate the 30th Row of the Option Underlying Value textfield is "optionthirty"
 
-Scenario: TCXXXX ODK Add a Select Multiple Field - Read Only box checked
+Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Read Only box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Select Multiple link
@@ -1117,9 +1117,9 @@ Then I validate the Read Only checkbox is checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Select Multiple Field - Required box checked
+Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Required box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Select Multiple link
@@ -1139,9 +1139,9 @@ Then I validate the Required checkbox is checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Select Multiple Field - Read Only and Required box checked
+Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Read Only and Required box checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Select Multiple link
@@ -1163,9 +1163,9 @@ And  I validate the Read Only checkbox is checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Select Multiple Field - Read Only and Required box is not checked
+Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - Read Only and Required box is not checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Select Multiple link
@@ -1185,9 +1185,9 @@ And  I validate the Read Only checkbox is not checked
 And I validate the Option English textfield is "Option 1"
 And I validate the Option Underlying Value textfield is "optionone"
 
-Scenario: TCXXXX ODK Add a Select Multiple Field - 30 option list
+Scenario: TCXXXX Forms Add Page - Add a Select Multiple Field - 30 option list
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" into the Name textfield
 And I click the Select Multiple link
@@ -1352,7 +1352,7 @@ And I validate the 30th Row of the Option Underlying Value textfield is "optiont
 
 Scenario: TCXXXX Forms Add Page - Add a Form - Pre Trip
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I type "Form TCXXXX" in the Name textfield
 And I type "Form TCXXXXpre Description" in the Description textfield
@@ -1430,7 +1430,7 @@ And I validate the Invalid Text textfield is "Must be less than 10 characters"
 
 Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Group Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "test" into the Data Name field
@@ -1442,7 +1442,7 @@ And I validate the Data Name Error text is "This property must be unique; there 
 
 Scenario: TCXXXX Forms Add Page - UI Test - Group link
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 Then I validate the Delete button is present
@@ -1454,7 +1454,7 @@ And I validate the Advanced Arrow button is present
 
 Scenario: TCXXXX Forms Add Page - Blank Data Name Error Group Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "" into the Data Name field
@@ -1462,7 +1462,7 @@ Then I validate the Data Name Error text is "This property is required."
 
 Scenario: TCXXXX Forms Add Page - Space Data Name Error Group Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "te st" into the Data Name field
@@ -1470,15 +1470,15 @@ Then I validate the Data Name Error text is "Only letters and numbers are allowe
 
 Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Group Field
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "!" into the Data Name field
 Then I validate the Data Name Error text is "Only letters and numbers are allowed."
 
-Scenario: TCXXXX ODK Add a Group Field - Looped unchecked, Display On One Screen unchecked
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Looped unchecked, Display On One Screen unchecked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "anXMLtag" into the Data Name textfield
@@ -1486,9 +1486,9 @@ And I type “Choose One” into the Label textfield
 And I click the Save button
 And I validate the new form displays in the list on the Admin Form page
 
-Scenario: TCXXXX ODK Add a Group Field - Looped checked
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Looped checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "anXMLtag" into the Data Name textfield
@@ -1498,9 +1498,9 @@ And I click the Save button
 Then I validate the new form displays in the list on the Admin Form page
 And I validate the information I entered is on the form
 
-Scenario: TCXXXX ODK Add a Group Field - Display On One Screen checked
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Display On One Screen checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "anXMLtag" into the Data Name textfield
@@ -1510,9 +1510,9 @@ And I click the Save button
 Then I validate the new form displays in the list on the Admin Form page
 And I validate the information I entered is on the form
 
-Scenario: TCXXXX ODK Add a Group Field - Looped checked, Display On One Screen checked
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Looped checked, Display On One Screen checked
 Given I am logged in
-When I click the Forms link
+When I go to the forms admin page
 And I click the Create Form Top link
 And I click the Group link
 And I type "anXMLtag" into the Data Name textfield
