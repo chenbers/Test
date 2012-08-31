@@ -65,13 +65,46 @@ public class NewNoteTest {
 		}
 	}
 
+    public void testDVIRNote(String mcmID, String imei) {
+        SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
+                new AutomationCalendar(), new GeoPoint(), false, false,
+                HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+                65, 0, 0, 47, 0);
+
+        note.addAttr(EventAttr.DRIVER_HOS_STATE, 1); 
+        note.addAttr(EventAttr.CLEAR_DRIVER_FLAG, 0);         
+        note.addAttr(EventAttr.DRIVER_ID_STR, "71572");
+//        note.addAttr(EventAttr.DRIVER_ID_STR, "BMILLER");
+        note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, "test location");
+        note.addAttr(EventAttr.INSPECTION_TYPE, 1);
+        note.addAttr(EventAttr.VEHICLE_SAFE_TO_OPERATE, 0);
+        
+        
+
+        List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        try {
+            proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 	
 	public static void main(String[] args){
 		String imei = "30099FKEWS99999";
 		String mcmID = "MCMFAKEWS";
 		
 		NewNoteTest test = new NewNoteTest(AutoSilos.QA);
+//		test.testHazardNote(mcmID, imei);
+		test.testDVIRNote(mcmID, imei);
 		
-		test.testHazardNote(mcmID, imei);
+//		NewNoteTest test2 = new NewNoteTest(AutoSilos.QA);		  
+//        imei = "30023FKEWS00001";
+//        mcmID = "FKE00001";
+//		test2.testDVIRNote(mcmID, imei);
 	}
 }
