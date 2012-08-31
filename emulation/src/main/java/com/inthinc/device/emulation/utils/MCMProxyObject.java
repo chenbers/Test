@@ -36,8 +36,6 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 
-import android.util.Log;
-
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.interfaces.MCMService;
@@ -55,6 +53,7 @@ import com.inthinc.device.noteservice.NoteService;
 import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.HTTPCommands;
@@ -100,15 +99,15 @@ public class MCMProxyObject implements MCMService{
     
 
     private void printReply(Object reply){
-    	Log.d("printReply %s", reply);
+    	Log.debug("printReply %s", reply);
     }
     
     private void printNote(DeviceNote note){
-    	Log.d("printNote %s", note);
+    	Log.debug("printNote %s", note);
     }
     
     private void printOther(Object other){
-    	Log.d("printOther %s", other);
+    	Log.debug("printOther %s", other);
     }
     
     public static void processDrivers(Map<Integer, Map<String, String>> driversMap){
@@ -125,7 +124,7 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> tiwiNote(String mcmID, List<? extends DeviceNote> noteList){
         if (regularNote ){
             List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
-            Log.d("\nnote(mcmID=%s, noteList=%s)", mcmID, noteList);
+            Log.debug("\nnote(mcmID=%s, noteList=%s)", mcmID, noteList);
             for (DeviceNote note : noteList){
                 byte[] array = note.Package();
                 temp.add(array);
@@ -161,7 +160,7 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> dumpSet(String mcmID, Integer version,
             Map<Integer, String> settings) {
         printOther(settings);
-        Log.d("IMEI:%s, Version:%d", mcmID, version);
+        Log.debug("IMEI:%s, Version:%d", mcmID, version);
         List<Map<String, Object>> reply = proxy.dumpSet(mcmID, version, settings);
         printReply(reply);
         return reply;
@@ -283,7 +282,7 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> notebc(String mcmID, Direction comType,
             List<? extends DeviceNote> noteList, String imei){
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
-        Log.d("\nnotebc(mcmID=%s, connectType=%s, noteList=%s)", mcmID, comType, noteList);
+        Log.debug("\nnotebc(mcmID=%s, connectType=%s, noteList=%s)", mcmID, comType, noteList);
         
         for (DeviceNote note : noteList){
             if (note.getType() == DeviceNoteTypes.INSTALL || comType.equals(Direction.sat)){
@@ -331,9 +330,9 @@ public class MCMProxyObject implements MCMService{
 	            DeviceStatistics.addCall();
 	    		
 			} catch (UnknownHostException e) {
-				Log.wtf("%s", e);
+				Log.error("%s", e);
 			} catch (IOException e) {
-				Log.wtf("%s", e);
+				Log.error("%s", e);
 			}
     	}
     }
@@ -388,9 +387,9 @@ public class MCMProxyObject implements MCMService{
                 Transport.send(msg);
                 DeviceStatistics.addCall();
             } catch (AddressException e) {
-                Log.wtf("%s", e);
+                Log.error("%s", e);
             } catch (MessagingException e) {
-                Log.wtf("%s", e);
+                Log.error("%s", e);
             } 
         }
     }
@@ -469,7 +468,7 @@ public class MCMProxyObject implements MCMService{
     public Object sendNotes(DeviceState state, DeviceNote note) {
         LinkedList<DeviceNote> list = new LinkedList<DeviceNote>();
         list.add(note);
-        Log.d("sentNotes %s", note);
+        Log.debug("sentNotes %s", note);
         try {
 			return sendNotes(state, list);
 		} catch (ClientProtocolException e) {
@@ -559,13 +558,13 @@ public class MCMProxyObject implements MCMService{
 	            sendingQueue.remove(noteClass);
 	        } catch (SocketException e){
 	        	i--;
-	        	Log.wtf("IMEI: %s\n%s: %s\nCalls made: %s, Calls per Minute: %d",
+	        	Log.error("IMEI: %s\n%s: %s\nCalls made: %s, Calls per Minute: %d",
 	        			state.getImei(),
 	        			e.getClass().getSimpleName(), e.getMessage(), 
 	        			DeviceStatistics.getHessianCalls(), DeviceStatistics.getCallsPerMinute());
 	        	continue;
 	        } catch (Exception e) {
-	        	Log.wtf("Error from Note with IMEI: " + state.getImei() + "  "
+	        	Log.error("Error from Note with IMEI: " + state.getImei() + "  "
 	                            + AutomationStringUtil.toString(e) + "\n"
 	                            + sendingQueue + "\nCurrent Note Count is "
 	                            + DeviceStatistics.getHessianCalls()

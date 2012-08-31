@@ -17,6 +17,7 @@ import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.utils.DeviceState;
+import com.inthinc.device.emulation.utils.EmulationSbs;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.emulation.utils.NoteManager;
@@ -41,7 +42,7 @@ public abstract class DeviceBase {
     protected final NoteManager notes;
     protected final AutoServers server = new AutoServers();
     protected Object reply;
-    protected final static Sbs sbs = new Sbs("555555555555555", 7);
+    protected Sbs sbs;
     
 
     protected final ArrayList<GeoPoint> speed_loc;
@@ -63,7 +64,7 @@ public abstract class DeviceBase {
     public DeviceBase(DeviceState state, AutoSilos silo) {
     	this.state = state;
     	set_server(silo);
-    	sbs.setDownloadManager(server);
+    	setSbs();
         tripTracker = new TripTracker(state);
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<GeoPoint>();
@@ -72,6 +73,11 @@ public abstract class DeviceBase {
         initiate_device();
         zones = new ZoneManager();
 	}
+    
+    protected DeviceBase setSbs() {
+    	sbs = new EmulationSbs(mcmProxy, state.getMcmID(), state.getSbsBaseRevision());
+    	return this;
+    }
 
 	private DeviceBase ackFwdCmds(List<Map<String, Object>> reply) {
 

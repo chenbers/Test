@@ -2,8 +2,6 @@ package com.inthinc.device.objects;
 
 import java.util.HashSet;
 
-import android.util.Log;
-
 import com.inthinc.device.devices.DeviceBase;
 import com.inthinc.device.emulation.enums.DeviceEnums.LogoutMethod;
 import com.inthinc.device.emulation.enums.DeviceEnums.TripFlags;
@@ -13,6 +11,7 @@ import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 
 public class AutomationDeviceEvents {
 	

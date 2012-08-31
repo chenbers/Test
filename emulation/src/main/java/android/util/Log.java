@@ -1,25 +1,31 @@
 package android.util;
 
-public class Log extends com.inthinc.pro.automation.logging.Log {
+import com.inthinc.pro.automation.logging.Log.Level;
+
+public class Log {
     
     private static void log(Level level, String toPrint, Object ...string ){
-        print(toPrint, 3, level, string);
+    	com.inthinc.pro.automation.logging.Log.print(toPrint, 3, level, string);
     }
-	
-	public static void d(String TAG, Object ...string) {
+
+	public static int d(String TAG, String string) {
 		log(Level.DEBUG, TAG, string);
+		return 1;
 	}
-	
-	public static void i(String TAG, Object ...string) {
+
+	public static int i(String TAG, String string) {
 		log(Level.INFO, TAG, string);
+		return 1;
 	}
-	
-	public static void e(String TAG, Object ...string) {
+
+	public static int e(String TAG, String string) {
 		log(Level.ERROR, TAG, string);
+		return 1;
 	}
-	
-	public static void wtf(String TAG, Object ...string) {
+
+	public static int wtf(String TAG, String string) {
 		log(Level.TRACE, TAG, string);
+		return 1;
 	}
 
 }

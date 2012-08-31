@@ -63,8 +63,8 @@ public class TripTracker implements Iterable<GeoPoint> {
         this.state = state;
         currentPoint = 0;
         trip = new LinkedList<GeoPoint>();
-		sbs = new Sbs("500000000000005", 7);
-		sbs.setDownloadManager(new AutoServers(AutoSilos.MY));
+//		sbs = new Sbs("500000000000005", 7);
+//		sbs.setDownloadManager(new AutoServers(AutoSilos.MY));
     }
     
     @Override
@@ -117,14 +117,14 @@ public class TripTracker implements Iterable<GeoPoint> {
         }
         
         Integer heading = Distance_Calc.get_heading(last, next);
-        if (sbs != null && useSbs){
-        	SpeedLimit limit = sbs.getSpeedLimit(next, heading*10);
-        	if (limit.closestGID == 0){
-        		state.getCourse();
-        	}
-        	lastSpeedLimit = limit.speedLimit/100;
-        	state.setSpeedLimit(lastSpeedLimit);
-        }
+//        if (sbs != null && useSbs){
+//        	SpeedLimit limit = sbs.getSpeedLimit(next, heading*10);
+//        	if (limit.closestGID == 0){
+//        		state.getCourse();
+//        	}
+//        	lastSpeedLimit = limit.speedLimit/100;
+//        	state.setSpeedLimit(lastSpeedLimit);
+//        }
         state.setHeading(Heading.getHeading(heading));
         
         int distTraveled = ((Double)(last.deltaX(next) * 100)).intValue();

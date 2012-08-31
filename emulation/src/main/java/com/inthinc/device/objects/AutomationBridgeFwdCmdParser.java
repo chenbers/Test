@@ -3,8 +3,6 @@ package com.inthinc.device.objects;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.enums.DeviceForwardCommands;
 import com.inthinc.device.emulation.utils.AutomationByteArrayInputStream;
 import com.inthinc.device.objects.WaysmartClasses.EventHeader;
@@ -12,6 +10,7 @@ import com.inthinc.device.objects.WaysmartClasses.ForwardCommandEvent;
 import com.inthinc.device.objects.WaysmartClasses.ForwardCommandEventEx;
 import com.inthinc.device.objects.WaysmartClasses.HttpHeader;
 import com.inthinc.device.objects.WaysmartClasses.MultiForwardCmd;
+import com.inthinc.pro.automation.logging.Log;
 
 public class AutomationBridgeFwdCmdParser {
     

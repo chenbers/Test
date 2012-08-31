@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
@@ -20,6 +18,7 @@ import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.objects.DeviceAttributes;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public abstract class DeviceNote implements Comparable<DeviceNote> {
@@ -182,7 +181,7 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
             }
             
         } catch (IOException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         }
     }
     
@@ -193,7 +192,7 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
             dos.writeDouble(toAdd);
             dos.flush();
         } catch (IOException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         }
     }
     
@@ -203,7 +202,7 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
         try {
             return dis.readDouble();
         } catch (IOException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         }
         return 0.0;
     }

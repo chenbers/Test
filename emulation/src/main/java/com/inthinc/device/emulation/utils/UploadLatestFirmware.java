@@ -3,12 +3,11 @@ package com.inthinc.device.emulation.utils;
 import java.util.EnumSet;
 import java.util.Set;
 
-import android.util.Log;
-
 import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 
 public class UploadLatestFirmware {
 
@@ -33,7 +32,7 @@ public class UploadLatestFirmware {
                         Log.info("Already uploaded " + fileName);
                         continue;
                     }
-                    Log.wtf("%s", e);
+                    Log.error("%s", e);
                 }
             }
         }

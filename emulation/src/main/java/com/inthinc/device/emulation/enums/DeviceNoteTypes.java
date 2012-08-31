@@ -9,9 +9,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.utils.AutomationFileHandler;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutomationNumberManager;
 
 
@@ -447,7 +446,6 @@ public enum DeviceNoteTypes  {
     DIAGNOSTIC(220), // send general diagnostic info to server
     MAN_DOWN_EX(221),
     STATS2(222),
-    CREATE_ROAD_HAZARD(226),    
 
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
@@ -566,7 +564,7 @@ public enum DeviceNoteTypes  {
             }
             br.close();
         } catch (IOException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         }
     }
     
@@ -678,7 +676,7 @@ public enum DeviceNoteTypes  {
             }
             br.close();
         }catch (IOException e) {
-            Log.i("%s", e);
+            Log.info("%s", e);
         }
     }
     

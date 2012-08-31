@@ -9,13 +9,12 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import android.util.Log;
-
 import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.enums.Locales;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 
 public class DownloadTesting {
     
@@ -68,7 +67,7 @@ public class DownloadTesting {
                     }
                 } catch (HessianException e){
                     if (e.getErrorCode() == 304){
-                        Log.i("Version: %d, for product: %s cannot be retrieved via Hessian", version, type);
+                        Log.info("Version: %d, for product: %s cannot be retrieved via Hessian", version, type);
                     } else {
                         results = false;
                         errors.add(String.format("Got error for version: %d, productType = %s\n%s", version, type, e));

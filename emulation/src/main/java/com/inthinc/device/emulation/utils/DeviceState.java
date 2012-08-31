@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
-
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
@@ -21,6 +19,7 @@ import com.inthinc.device.emulation.enums.MapSection;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class DeviceState {
@@ -884,7 +883,7 @@ public class DeviceState {
             dos.writeInt(low);
             dos.flush();
         } catch (IOException e) {
-        	Log.wtf("%s", e);
+        	Log.error("%s", e);
         }
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bos.toByteArray());
@@ -893,7 +892,7 @@ public class DeviceState {
 		try {
 			rfid = dis.readLong();
 		} catch (IOException e) {
-			Log.wtf("%s", e);
+			Log.error("%s", e);
 		}
 		return this;
 	}

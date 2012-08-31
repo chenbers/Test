@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import com.inthinc.device.scoring.ScoringFormulas;
-
-import me.prettyprint.hector.api.beans.AbstractComposite.Component;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.Composite;
 import me.prettyprint.hector.api.beans.CounterRow;
@@ -19,16 +15,13 @@ import me.prettyprint.hector.api.beans.HCounterColumn;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.Rows;
 import me.prettyprint.hector.api.factory.HFactory;
-import me.prettyprint.hector.api.mutation.MutationResult;
-import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.MultigetSliceCounterQuery;
 import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
-import me.prettyprint.hector.api.query.SliceQuery;
 
-import android.util.Log;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import com.inthinc.device.scoring.ScoringFormulas;
+import com.inthinc.pro.automation.logging.Log;
+
 
 
 public class CassandraScoring

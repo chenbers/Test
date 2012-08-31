@@ -2,13 +2,12 @@ package com.inthinc.device.emulation;
 
 import org.junit.Test;
 
-import android.util.Log;
-
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.logging.Log;
 
 public class DE7570 {
     

@@ -160,6 +160,8 @@ public class WaysmartDevice extends DeviceBase {
         state.setSetting(DeviceProps.MAP_SERVER_URL_W, url);
         state.setSetting(DeviceProps.MAP_SERVER_PORT_W, server.getMcmPort()
                 .toString());
+
+    	setSbs();
         return this;
     }
 

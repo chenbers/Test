@@ -4,9 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.notes.DeviceNote;
+import com.inthinc.pro.automation.logging.Log;
 
 public final class WaysmartClasses {
 
@@ -23,7 +22,7 @@ public final class WaysmartClasses {
             this.m_ID = DeviceNote.byteToInt(bais, 4);
             this.m_version = (byte) bais.read();
             this.m_nCount = DeviceNote.byteToInt(bais, 4);
-            Log.i("Got %d forward commands", m_nCount);
+            Log.info("Got %d forward commands", m_nCount);
             events = new ArrayList<ForwardCommandEventInterface>();
         }
 

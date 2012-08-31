@@ -14,7 +14,7 @@ import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
 
-import android.util.Log;
+import com.inthinc.pro.automation.logging.Log;
 
 public class CassandraDB {
     

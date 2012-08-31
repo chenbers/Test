@@ -9,10 +9,9 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.logging.Log;
 
 
 public enum EventAttr implements IndexEnum{
@@ -316,9 +315,6 @@ public enum EventAttr implements IndexEnum{
 	MAPS_MOUNTED_RW_PERCENTAGE(8289),
 	
 	MAPS_NOT_MOUNTED_PERCENTAGE(8290),
-    INSPECTION_TYPE(8291),
-    VEHICLE_SAFE_TO_OPERATE(8292),
-    RHA_TYPE(8293),
     
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
@@ -398,7 +394,7 @@ public enum EventAttr implements IndexEnum{
     OBD_SPD_DIST(16448),
     GPS_SPD_DIST(16449),
     GPS_GAP_DIST(16450),
-    RHA_RADIUS_METERS(16451),    
+    
 
 	
 ////////////////////////////////////////////////////////////////////////////////////
@@ -424,7 +420,7 @@ public enum EventAttr implements IndexEnum{
     VEHICLE_ID_STR(24592, 20, true),        // string 20 max, variable length,              \0 terminated
     IMEI(24593, 15, true),                  // string 15 max, variable length,              \0 terminated
     MCM_ID_STR(24594, 9, true),             // string  9 max, variable length,              \0 terminated
-    RHA_DESCRIPTION(24595, 32, true),     
+    
     SKIP_INT(32000),
     
 
@@ -528,7 +524,7 @@ public enum EventAttr implements IndexEnum{
     TIME_DIFF(32855),
     ERROR_DETAILS(32856),
     NOTIFICATION_ENUM(32857),
-    RHA_ENDTIME(32858),
+
 		    
 ////////////////////////////////////////////////////////////////////////////////////
 //	double value Attributes 40960 [0xA000] to 49151 [0xBFFF]
@@ -717,7 +713,7 @@ public enum EventAttr implements IndexEnum{
             }
             br.close();
         } catch (IOException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         }
     }
     
@@ -816,7 +812,7 @@ public enum EventAttr implements IndexEnum{
             }
             br.close();
         }catch (IOException e) {
-            Log.i("%s", e);
+            Log.info("%s", e);
         }
     }
     
