@@ -113,8 +113,11 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         // Load the data and see if the code gets the correct totals
         assertEquals(lTotals.get(0).getScore().getTrips(),5);   
         assertEquals(lTotals.get(0).getScore().getCrashEvents(),12);
-        assertEquals(lTotals.get(0).getScore().getEndingOdometer(),336);
-        assertEquals(lTotals.get(0).getScore().getDriveTime(),154);
+
+//		removed bmiller 08/21/2012
+//        assertEquals(lTotals.get(0).getScore().getEndingOdometer(),336);
+  
+  assertEquals(lTotals.get(0).getScore().getDriveTime(),154);
         assertEquals(lTotals.get(0).getScore().getIdleHi(),107);
         assertEquals(lTotals.get(0).getScore().getIdleLo(),64);
         assertEquals(lTotals.get(0).getScore().getSafetyTotal().intValue(),137);
