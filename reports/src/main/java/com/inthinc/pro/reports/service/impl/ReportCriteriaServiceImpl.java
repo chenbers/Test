@@ -22,6 +22,7 @@ import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventAggregationDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.FormsDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.MpgDAO;
@@ -60,6 +61,8 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.asset.WarrantyListReportCriteria;
 import com.inthinc.pro.reports.communication.NonCommReportCriteria;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
+import com.inthinc.pro.reports.forms.DVIRPostTripReportCriteria;
+import com.inthinc.pro.reports.forms.DVIRPreTripReportCriteria;
 import com.inthinc.pro.reports.hos.DotHoursRemainingReportCriteria;
 import com.inthinc.pro.reports.hos.DrivingTimeViolationsDetailReportCriteria;
 import com.inthinc.pro.reports.hos.DrivingTimeViolationsSummaryReportCriteria;
@@ -98,6 +101,7 @@ import com.inthinc.pro.reports.util.ReportUtil;
 
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
 {
+
     private GroupDAO groupDAO;
     private ScoreDAO scoreDAO;
     private MpgDAO mpgDAO;
@@ -118,6 +122,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private DriveTimeDAO driveTimeDAO;
     private DriverPerformanceDAO driverPerformanceDAO;
     private UserDAO userDAO;
+    private FormsDAO formsDAO;
+    
+    public FormsDAO getFormsDAO() {
+        return formsDAO;
+    }
+
+    public void setFormsDAO(FormsDAO formsDAO) {
+        this.formsDAO = formsDAO;
+    }
+
     private Locale locale;
     private ReportAddressLookupBean reportAddressLookupBean;
 
@@ -1261,7 +1275,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         builder.setDateTimeZone(timeZone);
         return builder.build();
     }
-   
+   /* Forms - DVIR */
+    @Override
+    public ReportCriteria getDVIRPreTripReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone) {
+        return new DVIRPreTripReportCriteria(locale).build(accountGroupHierarchy,formsDAO,groupID,timeFrame);
+    }
+    @Override
+    public ReportCriteria getDVIRPostTripReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone) {
+        return new DVIRPostTripReportCriteria(locale).build(accountGroupHierarchy,formsDAO,groupID,timeFrame);
+    }
 
     
     public DriveTimeDAO getDriveTimeDAO() {
@@ -1522,6 +1544,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     break;
                 case NON_COMM:
                     reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy,reportSchedule.getGroupID(),timeFrame,person.getLocale(),DateTimeZone.forTimeZone(person.getTimeZone())));
+                    break;
+                case DVIR_PRETRIP:
+                    reportCriteriaList.add(getDVIRPreTripReportCriteria(groupHierarchy,reportSchedule.getGroupID(),timeFrame,person.getLocale(),DateTimeZone.forTimeZone(person.getTimeZone())));
+                    break;
+                case DVIR_POSTTRIP:
+                    reportCriteriaList.add(getDVIRPostTripReportCriteria(groupHierarchy,reportSchedule.getGroupID(),timeFrame,person.getLocale(),DateTimeZone.forTimeZone(person.getTimeZone())));
                     break;
                 default:
                     break;

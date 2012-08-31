@@ -21,6 +21,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jasperreports-maven-plugin</artifactId>
+				<version>1.0-beta-2</version>
 				<configuration>
 					<outputDirectory>${project.build.directory}/classes/com/inthinc/pro/reports/jasper</outputDirectory>
 					<sourceDirectory>${basedir}/src/main/resources/com/inthinc/pro/reports/jasper</sourceDirectory>
@@ -168,6 +169,7 @@
 			<!-- JMockit MUST appear before JUnit -->
 			<groupId>mockit</groupId>
 			<artifactId>jmockit</artifactId>
+<!-- 			<version>0.999.10</version> -->
 			<scope>test</scope>
 		</dependency>
 		<dependency>

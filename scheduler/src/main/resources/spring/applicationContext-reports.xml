@@ -28,6 +28,7 @@
     <property name="groupReportDAO" ref="groupReportDAO" />
     <property name="reportDAO" ref="reportDAO" />
     <property name="eventAggregationDAO" ref="eventAggregationDAO" />
+    <property name="formsDAO" ref="formsDAO"/>
   </bean>
 
   <!-- Forgot username/password Beans -->

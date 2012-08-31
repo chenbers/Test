@@ -298,7 +298,11 @@
   <bean id="reportScheduleBean" class="com.inthinc.pro.backing.ReportScheduleBean" scope="session" init-method="initBean"/>
 
   <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session"/>
-
+  
+  <bean id="hazardsBean" class="com.inthinc.pro.backing.HazardsBean" scope="session" parent="baseBean">
+      <property name="adminHazardJDBCDAO" ref="adminHazardJDBCDAO"></property>
+  </bean>
+  
   <bean id="redFlagOrZoneAlertsBean" class="com.inthinc.pro.backing.RedFlagOrZoneAlertsBean" scope="session" init-method="initBean"/>
   
   <bean id="messagesBean" class="com.inthinc.pro.backing.MessagesBean" scope="session">

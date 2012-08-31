@@ -18,7 +18,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class TextMessageValidator implements Validator {
 
     private static final String ERROR_MESSSAGE_KEY = "errorMessage";
-    private static final Integer MAX_MESSAGE_LENGTH = 200;
+    protected static final Integer MAX_MESSAGE_LENGTH = 200;
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
