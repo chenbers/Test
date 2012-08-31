@@ -75,7 +75,7 @@
             <li class="r text">
 				<span title="#{messages.button_editColumns}">
 				<a4j:commandLink id="#{context}-hosTableEditColumns"  
-					title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+					title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('#{context}_editColumns')" 
 					reRender="editColumnsForm:#{context}-editColumnsGrid">
 	     					<h:graphicImage value="/images/ico_edit_columns.png"/>
 				</a4j:commandLink>

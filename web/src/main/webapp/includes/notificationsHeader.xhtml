@@ -55,7 +55,7 @@
 				</a4j:commandButton>
 			  </li>  
 			  <li class="l text">
-				<a4j:commandLink id="#{context}_editColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+				<a4j:commandLink id="#{context}_editColumns" styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('#{context}_editColumns')" 
 					reRender="editColumnsForm:editColumnGrid">
 					#{messages.button_editColumns}
 				</a4j:commandLink>

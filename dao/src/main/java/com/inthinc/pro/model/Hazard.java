@@ -22,6 +22,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     private HazardStatus status;
     
     private Driver view_driver;
+    private User view_user;
     
     public Hazard() {
         super();
@@ -41,6 +42,12 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public void setDriver(Driver driver){
         this.view_driver = driver;
+    }
+    public User getUser() {
+        return view_user;
+    }
+    public void setUser(User user){
+        this.view_user = user;
     }
     public Date getStartTime() {
         if(startTime == null)
