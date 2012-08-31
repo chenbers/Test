@@ -59,7 +59,7 @@
             styleClass="left"
             action="#{bean.cancelEditAction}" 
             ajaxSingle="true" 
-            oncomplete="Richfaces.hideModalPanel('editColumns');"
+            oncomplete="Richfaces.hideModalPanel('#{context}_editColumns');"
             reRender="editColumnsForm:#{context}-editColumnsGrid" tabindex="3">
             <span class="cancel">
              <h:outputText value="#{messages.button_cancel}" />
@@ -69,7 +69,7 @@
           <a4j:commandButton id="#{context}-editColumnsPopupSave"
           	type="submit"
             action="#{bean.saveColumnsAction}"                 
-            oncomplete="Richfaces.hideModalPanel('editColumns')" 
+            oncomplete="Richfaces.hideModalPanel('#{context}_editColumns')" 
             reRender="#{reRender}" styleClass="left" tabindex="2">
             <span class="save">
               <h:outputText value="#{messages.button_save}" />

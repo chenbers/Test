@@ -34,7 +34,7 @@
 						reRender="editColumnsForm:editColumnGrid"
      					action="#"
      					styleClass="ls_tab_edit_columns"
-     					onclick="Richfaces.showModalPanel('editColumns');">            									
+     					onclick="Richfaces.showModalPanel('#{context}_editColumns');">            									
      						<h:outputText value="#{messages.button_editColumns}" />
 					</a4j:commandLink>            									
      			</li>
@@ -70,7 +70,7 @@
 	     					id="#{context}EditColumns" 
 							reRender="editColumnsForm:editColumnGrid"
 	     					action="#"
-	     					onclick="Richfaces.showModalPanel('editColumns');"> 
+	     					onclick="Richfaces.showModalPanel('#{context}_editColumns');"> 
 	     					<h:graphicImage value="/images/ico_edit_columns.png"/>
 						</a4j:commandLink>    
 					</span>	
@@ -338,12 +338,12 @@
 			</div>
 			</h:form>
 			</a4j:outputPanel>
-    <!-- End Driver Statistics Table -->
-		 <!-- <ui:include src="/includes/columnSelectionPopup.xhtml">
+    <!-- End Vehicle Statistics Table -->
+		 <ui:include src="/includes/columnSelectionPopup.xhtml">
 			<ui:param name="bean" value="#{teamStatisticsTableColumns}"/>	
-			<ui:param name="reRender" value="#{context}Form:driver,#{context}Form:driverTotals" />
+			<ui:param name="reRender" value="#{context}Form:vehicle,#{context}Form:vehicleTotals" />
 			<ui:param name="context" value="#{context}" />
-		</ui:include>   -->
+		</ui:include>
     </rich:tab>
 
 </ui:composition>
