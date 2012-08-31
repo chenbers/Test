@@ -2,11 +2,13 @@ package com.inthinc.pro.dao.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,7 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -190,6 +193,7 @@ public class FormsServiceDAOTest {
             method.releaseConnection();
         }
     }
+    @SuppressWarnings("unchecked")
     @Test
     public void testSubmissionsEndPoints(){
         HttpClientParams params = new HttpClientParams();
@@ -198,16 +202,18 @@ public class FormsServiceDAOTest {
         Credentials defaultcreds = new UsernamePasswordCredentials("jhoward", "password");
         httpClient.getState().setCredentials(new AuthScope("dev.tiwipro.com", 8080, AuthScope.ANY_REALM), defaultcreds);
 
-        HttpMethod method = new GetMethod("http://dev.tiwipro.com:8080/forms_service/submissions/1/2012-08-21/2012-08-22/4971");
+        HttpMethod method = new GetMethod("http://dev.tiwipro.com:8080/forms_service/submissions/1/2011-08-21/2012-08-31/11546");
         method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
+        List<SubmissionData> submissions = new ArrayList<SubmissionData>();
 
         try {
             int statusCode = httpClient.executeMethod(method);
             if (statusCode == HttpStatus.SC_OK) {
-                InputStream body = method.getResponseBodyAsStream();
+                TypeReference<Collection<SubmissionData>> ref = new TypeReference<Collection<SubmissionData>>(){};
+                InputStream jsonBody = method.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
-                SubmissionData[] submissionData = mapper.readValue(body, SubmissionData[].class);
-                assertNotNull(submissionData);
+                submissions.addAll((List<SubmissionData>) mapper.readValue(jsonBody, ref));
+                assertTrue(submissions.size()>0);
             }
         } catch (HttpException he) {
             fail();

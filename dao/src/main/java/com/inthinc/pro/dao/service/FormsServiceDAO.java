@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.HttpStatus;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import com.inthinc.forms.common.model.SubmissionData;
 import com.inthinc.forms.common.model.SubmissionDataItem;
@@ -140,6 +142,7 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         return value;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<SubmissionData> getSubmissions(TriggerType triggerType, Date startDate, Date endDate, Integer groupID) {
 
@@ -151,10 +154,10 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         try {
             int statusCode = client.executeMethod(getForms);
             if (statusCode == HttpStatus.SC_OK) {
+                TypeReference<Collection<SubmissionData>> ref = new TypeReference<Collection<SubmissionData>>(){};
                 InputStream body = getForms.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
-                SubmissionData[] submissionData = mapper.readValue(body, SubmissionData[].class);
-                submissions = Arrays.asList(submissionData);
+                submissions.addAll((List<SubmissionData>) mapper.readValue(body, ref));
             }
         } catch (HttpException he) {
 
