@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CalendarObject;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.DropDownDateRangePicker;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -64,23 +65,11 @@ public class PageFormsSubmissions extends FormsTables {
     	}
     	
     	public DropDown date() {
-    		return new CalendarObject(FormsSubmissionsEnum.DATE_DROPDOWN);
-    	}
-    	
-    	public DropDown specificDate() {
-    		return new CalendarObject(FormsSubmissionsEnum.SPECIFIC_DATE_DROPDOWN);
+    		return new DropDownDateRangePicker(FormsSubmissionsEnum.DATE_DROPDOWN);
     	}
     	
     	public DropDown recordsPerPage() {
     		return new DropDown(FormsSubmissionsEnum.RECORDS_DROPDOWN);
-    	}
-    	
-    	public DropDown dateStart() {
-    		return new CalendarObject(FormsSubmissionsEnum.DATE_START_DROPDOWN);
-    	}
-    	
-    	public DropDown dateEnd() {
-    		return new CalendarObject(FormsSubmissionsEnum.DATE_END_DROPDOWN);
     	}
     	
     	public DropDown edited() {
@@ -158,7 +147,7 @@ public class PageFormsSubmissions extends FormsTables {
     }
 
     public class FormsSubmissionsTextFields {
-
+    	
     	public TextField group() {
     		return new TextField(FormsSubmissionsEnum.GROUP_FIELD);
     	}

@@ -8,6 +8,8 @@ import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
+import com.inthinc.pro.selenium.pageObjects.PageFormsAdd;
+import com.inthinc.pro.selenium.pageObjects.PageFormsAdmin;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDriverStatistics;
@@ -18,8 +20,9 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @PageObjects(list={PageLogin.class, 
 		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
         PageTeamDriverStatistics.class, PageDriverPerformance.class,
-        PageVehiclePerformance.class, PageFormsSubmissions.class })
-@StoryPath(path="FormsSubmissions.story")
+        PageVehiclePerformance.class, PageFormsSubmissions.class,
+        PageFormsAdd.class, PageFormsAdmin.class })
+@StoryPath(path="CurrentStory.story")
 public class FormsSubmissionsTest extends WebStories  {
 
     @Test

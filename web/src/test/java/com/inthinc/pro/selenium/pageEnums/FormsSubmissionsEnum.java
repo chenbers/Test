@@ -19,10 +19,7 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     APPROVED_SORT("Status", "column-submission-status"),
     
     FORM_DROPDOWN("Form:", "submissions-form-select"),
-    DATE_DROPDOWN("Date:", "//input[@id='daterange']"),
-    SPECIFIC_DATE_DROPDOWN(null, "//div[@class='range-start hasDatepicker']"),
-    DATE_START_DROPDOWN(null, "//div[@class='range-start hasDatepicker']"),
-    DATE_END_DROPDOWN(null, "//div[@class='range-end hasDatepicker']"),
+    DATE_DROPDOWN("Date:", "id=daterange"),
     RECORDS_DROPDOWN(null, "//select[@name='submissions-table_length']"),
     EDITED_DROPDOWN(null, "column-filter-submission-edited"),
     APPROVED_DROPDOWN(null, "column-filter-submission-status"),

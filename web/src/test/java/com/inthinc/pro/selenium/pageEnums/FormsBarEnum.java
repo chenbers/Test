@@ -2,11 +2,12 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
+
 public enum FormsBarEnum implements SeleniumEnums {
 
     ACCOUNT_IMAGE(null, ""),
-    ADD_FORM("Account", ""),
-    SUBMISSIONS("Submissions", ""),
+    ADMIN_FORM("Forms", "//a[contains(@id,'navigation:layout-subnavigationFormsForms']"),
+    SUBMISSIONS("Submissions", "//a[contains(@id,'navigation:subnavigationFormsFormsSubmissions']"),
 
     ;
 
