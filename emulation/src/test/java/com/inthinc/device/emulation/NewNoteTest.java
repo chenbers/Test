@@ -3,7 +3,9 @@ package com.inthinc.device.emulation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -11,17 +13,12 @@ import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
-import com.inthinc.device.emulation.notes.DeviceNote;
-import com.inthinc.device.emulation.notes.SatelliteEvent;
 import com.inthinc.device.emulation.notes.SatelliteEvent_t;
-import com.inthinc.device.emulation.notes.TiwiNote;
-import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
-import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.enums.AutoSilos;
-import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.models.LatLng;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class NewNoteTest {
@@ -37,11 +34,17 @@ public class NewNoteTest {
 		proxy = new MCMProxyObject(server);
 	}
 
+	public void testHazardNote(String mcmID, String imei){
+	    testHazardNote(mcmID, imei, 40.71015,-111.993438);
+	}
 	
+	public void testHazardNote(String mcmID, String imei, LatLng latLng){
+	    testHazardNote(mcmID, imei, latLng.getLat(), latLng.getLng());
+	}
 
-	public void testHazardNote(String mcmID, String imei) {
+	public void testHazardNote(String mcmID, String imei, Double lat, Double lng) {
 		SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.CREATE_ROAD_HAZARD,
-				new AutomationCalendar(), new GeoPoint(), false, false,
+				new AutomationCalendar(), new GeoPoint(lat,lng), false, false,
 				HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
 				65, 0, 0, 47, 0);
 
@@ -55,7 +58,8 @@ public class NewNoteTest {
 		List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
 		notes.add(note);
 		try {
-			proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+			String[] response = proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,13 +69,31 @@ public class NewNoteTest {
 		}
 	}
 
-	
-	public static void main(String[] args){
-		String imei = "30099FKEWS99999";
-		String mcmID = "MCMFAKEWS";
-		
-		NewNoteTest test = new NewNoteTest(AutoSilos.QA);
-		
-		test.testHazardNote(mcmID, imei);
+	public static void main(String[] args) throws InterruptedException{
+        String imeiOnDev = "30023FKEWS00001";
+        String mcmIDOnDev = "FKE00001";
+
+        String imeiOnQA = "30099FKEWS99999";
+        String mcmIDOnQA = "MCMFAKEWS";
+
+        Map<String, LatLng> hazardLocations = new HashMap<String, LatLng>();
+        hazardLocations.put("inthinc", new LatLng(40.7106, -111.9945));
+        hazardLocations.put("bangerter_21st", new LatLng(40.7257, -111.9863));
+        hazardLocations.put("spagetti", new LatLng(40.721, -111.9046));
+        hazardLocations.put("summitPark", new LatLng(40.7525, -111.613));
+
+        NewNoteTest test = new NewNoteTest(AutoSilos.DEV);
+        String imei = imeiOnDev;
+        String mcmID = mcmIDOnDev;
+        
+        test.testHazardNote(mcmID, imei);
+        Thread.sleep(2*1000);
+        test.testHazardNote(mcmID, imei, hazardLocations.get("bangerter_21st"));
+        Thread.sleep(2*1000);
+        test.testHazardNote(mcmID, imei, hazardLocations.get("spagetti"));
+        Thread.sleep(2*1000);
+        test.testHazardNote(mcmID, imei, hazardLocations.get("summitPark"));
+        Thread.sleep(2*1000);
+        
 	}
 }

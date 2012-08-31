@@ -42,6 +42,7 @@ public class ReportCriteria
     public static final String REPORT_START_DATE = "REPORT_START_DATE";
     public static final String REPORT_END_DATE = "REPORT_END_DATE";
     public static final String FUEL_EFFICIENCY_TYPE = "FUEL_EFFICIENCY_TYPE";
+    public static final String GROUP = "GROUP";
     
     public static final String GROUP_SEPARATOR="->";
     public static final String SLASH_GROUP_SEPERATOR = "/";
@@ -251,6 +252,9 @@ public class ReportCriteria
     public void setTimeZone(TimeZone timeZone) {
         paramMap.put("TIME_ZONE", timeZone);
         this.timeZone = timeZone;
+    }
+    public void setGroupID(Integer groupID) {
+        paramMap.put("GROUP", ""+groupID);
     }
 
 

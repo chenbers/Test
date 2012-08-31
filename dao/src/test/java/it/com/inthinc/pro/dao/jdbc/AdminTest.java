@@ -9,12 +9,19 @@ import it.config.IntegrationConfig;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.models.LatLng;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
@@ -25,12 +32,18 @@ import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.AdminDeviceJDBCDAO;
+import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.dao.jdbc.AdminPersonJDBCDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
+import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.Hazard;
+import com.inthinc.pro.model.HazardStatus;
+import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.PersonIdentifiers;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
@@ -131,7 +144,6 @@ public class AdminTest extends BaseJDBCTest {
             assertTrue("Unable to find match for person " + hessianPerson.getPersonID(), found);
         }
     }
-
 
     @Test
     @Ignore
@@ -288,6 +300,125 @@ public class AdminTest extends BaseJDBCTest {
                 }
             }
             assertTrue("Unable to find match for device " + hessianDevice.getDeviceID(), found);
+        }
+    }
+    
+    //TODO: refactor AdminHazardJDBCDAO tests into own class
+    static Map<String, LatLng> hazardLocations = new HashMap<String, LatLng>();
+    static{
+        hazardLocations.put("inthinc", new LatLng(40.7106, -111.9945));
+        hazardLocations.put("bangerter_21st", new LatLng(40.7257, -111.9863));
+        hazardLocations.put("spagetti", new LatLng(40.721, -111.9046));
+        hazardLocations.put("summitPark", new LatLng(40.7525, -111.613));
+    }
+    public void findHazardsByUserAcct_validBoundingBoxAcrossNeg180_validResults(){
+        AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        User fakeUser = new User(){
+            @Override
+            public String toString(){
+                return "User [fakeUser]";
+            }
+            @Override
+            public Person getPerson(){
+                return new Person(){
+                  @Override 
+                  public Integer getAccountID(){
+                      return 2;
+                  }
+                };
+            }
+        };
+        BoundingBox latBiggerThanLng_world = new BoundingBox(180, -90, 179, 90);
+        List<Hazard> theHazards = hazardJDBCDAO.findHazardsByUserAcct(fakeUser, latBiggerThanLng_world);
+        for(Hazard hazard: theHazards){
+            System.out.println("hazard: "+hazard);
+        }
+      //initial test just that there is SOME data returned
+        assertTrue(theHazards.size() > 0);
+    }
+    @Test
+    public void findHazardsByUserAcct_validBoundingBoxes_validResults(){
+        AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        User fakeUser = new User(){
+            @Override
+            public String toString(){
+                return "User [fakeUser]";
+            }
+            @Override
+            public Person getPerson(){
+                return new Person(){
+                  @Override 
+                  public Integer getAcctID(){
+                      return 1;
+                  }
+                };
+            }
+        };
+        BoundingBox world = new BoundingBox(-90, -180, 90, 180);
+        List<Hazard> theHazards = hazardJDBCDAO.findHazardsByUserAcct(fakeUser, world);
+        for(Hazard hazard: theHazards){
+            System.out.println("hazard: "+hazard);
+        }
+        //initial test just that there is SOME data returned
+        assertTrue(theHazards.size() > 0);
+    }
+    @Test
+    public void findHazardsByUserAcct_invalidBoundingBoxes_noResults(){
+        AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        User fakeUser = new User(){
+            @Override
+            public String toString(){
+                return "User [fakeUser]";
+            }
+            @Override
+            public Person getPerson(){
+                return new Person(){
+                  @Override 
+                  public Integer getAccountID(){
+                      return 1;
+                  }
+                };
+            }
+        };
+        BoundingBox invalidBecause_lat1BiggerThanLat2 = new BoundingBox(-90, -180, 90, -180);
+        List<Hazard> theHazards = hazardJDBCDAO.findHazardsByUserAcct(fakeUser, invalidBecause_lat1BiggerThanLat2);
+        for(Hazard hazard: theHazards){
+            System.out.println("hazard: "+hazard);
+        }
+        assertTrue(theHazards.size() == 0);
+    }
+    @Test
+    public void createHazard_validAllHazardLocations_eachShouldInsert(){
+        boolean returnsHazardID = false;
+        for(String locationName: hazardLocations.keySet()){
+            AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+            hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+            Hazard hazard = new Hazard();
+            hazard.setAcctID(1);
+            hazard.setCreated(new Date());
+            hazard.setDescription("IT created: "+locationName);
+            hazard.setDeviceID(5780);//jwimmerTiwipro
+            hazard.setDriverID(2262);//jwimmer
+            hazard.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
+            hazard.setLatitude(hazardLocations.get(locationName).getLat());
+            hazard.setLongitude(hazardLocations.get(locationName).getLng());
+            hazard.setLocation("IT created for "+locationName+" at "+new DateTime());
+            System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+            hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+            hazard.setStartTime(new Date());
+            hazard.setStateID(45);//UTah
+            hazard.setStatus(HazardStatus.ACTIVE);
+            hazard.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
+            hazard.setUserID(1655);//jwimmer user
+            hazard.setVehicleID(6956);//ATAT aka jwimmer truck
+            
+            Integer hazardID = hazardJDBCDAO.create(hazard);
+            returnsHazardID = (hazardID != null);
+            assertTrue(returnsHazardID);
+            System.out.println("inserted "+locationName);
         }
     }
 }

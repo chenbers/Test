@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.apache.http.HttpStatus;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.inthinc.forms.common.model.SubmissionData;
+import com.inthinc.forms.common.model.SubmissionDataItem;
 import com.inthinc.forms.common.model.enums.TriggerType;
 import com.inthinc.pro.dao.FormsDAO;
 
@@ -145,7 +147,7 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         getForms.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         HttpClient client = setupClient();
         addCredentials(client);
-        List<SubmissionData> submissions = null;
+        List<SubmissionData> submissions = new ArrayList<SubmissionData>();
         try {
             int statusCode = client.executeMethod(getForms);
             if (statusCode == HttpStatus.SC_OK) {

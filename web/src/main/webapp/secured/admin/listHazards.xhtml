@@ -1,0 +1,485 @@
+<ui:composition template="/layout/layout.xhtml"
+              xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:t="http://myfaces.apache.org/tomahawk"
+              xmlns:pretty="http://ocpsoft.com/prettyfaces"
+              xmlns:fn="http://java.sun.com/jsp/jstl/functions" >
+
+  <ui:param name="adminSelected" value="current" />
+  <ui:param name="title" value="#{messages.adminHeader_hazards}"/>
+  
+  <ui:define name="scripts">
+      <style>
+          .colSpan {
+              width: 100%;
+          }
+          .col1 {
+            width: 80%;
+          }
+          .col2 {
+              width: 20%;
+              vertical-align:top;
+          }
+          .download_nav {
+            padding: 5px 0 10px 5px;
+            height:35px;
+            border-right:1px solid #E1E1E1;
+            font: 10px Veranda,Arial,Heletica,sans-serif;
+        }
+          .download_nav_msg {
+            margin: 0;
+            padding: 0;
+            float: left;
+            height:40px;
+        }
+        .download_nav_msg p {
+            font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+            padding:10px 2px 10px 35px;
+            background: none;
+        }
+          
+          .download_nav a.download {
+                padding: 6px 10px 7px 20px;
+                background: transparent url(../../images/ico_admin.png) no-repeat center left;
+                text-decoration: underline;
+                color: #000;
+                margin: 0 0 0 8px;
+        }
+      </style>
+      <ui:include src="/includes/map/portalMap.xhtml"/>
+    <a4j:loadScript src="/js/mapGeocode.js" />
+    <a4j:loadScript src="/js/drawZone.js" />
+    <a4j:loadScript src="/js/markerclusterer_packed.js"/>
+    <a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
+    <script type="text/javascript">
+    //<![CDATA[
+    //Pulled out of markerclusterer.js
+      var sizes = [53, 56, 66, 78, 90];
+      var styles = [];
+
+      var i = 0;
+      for (i = 1; i <= 5; ++i) {
+        styles.push({
+          'url': "#{request.contextPath}/images/markerClusterer/m" + i + ".png",
+          'height': sizes[i - 1],
+          'width': sizes[i - 1]
+        });
+      }
+    //]]>
+       var map;
+       var markerClusterer;
+       var markers = [];
+    </script>
+  </ui:define>
+  
+  
+  <ui:define name="content">
+    <a4j:region id="main">
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/navigation/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminHazards" />
+            <ui:param name="parentAction" value="go_adminHazards" />
+            <ui:param name="context" value="hazards"/>
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="hazards"><h:outputText value="#{messages.adminHeader_hazards}" /></span>
+                <span class="panel_links">
+                    
+                    <a4j:status id="refresh_ajax_status" for="main">
+                        <f:facet name="start">
+                            <h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+                        </f:facet>
+                    </a4j:status>
+                </span>
+              </div>
+            </div>
+
+            <div class="panel_w">
+              <div class="panel_content">
+
+                <a4j:form id="hazards-form">
+                <h:inputHidden id="points" value="" /> <!-- //TODO: is there a more elegant way so I can avoid using points/pointsTring -->
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                  <a4j:outputPanel id="displayHazard">
+                    <h:panelGroup>
+
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l">
+                          <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                            <tr>
+                              <td>
+                                <h:graphicImage value="/images/ico_warning.png" style="vertical-align:-30%" />
+                                <strong><h:outputText value="#{messages.hazard_hazard}" /></strong>
+                              </td>
+                              <td>
+                                <h:selectOneMenu value="#{hazardsBean.itemID}" id="hazard" style="width: 140px">
+                                  <f:selectItems value="#{hazardsBean.hazardIDs}" />
+                                  <a4j:support event="onchange" reRender="points,address,displayHazard,displayHazardOptions" oncomplete="showHazard(false)" />
+                                </h:selectOneMenu>
+                              </td>
+                            </tr>
+                          </table>
+                        </li>
+                        <ui:fragment rendered="#{hazardsBean.hazardsCount gt 0}">
+                          <li class="l"><h:commandButton id="hazardsEdit" action="#{hazardsBean.edit}" reRender="displayHazard,hazardName,hazardAddress,headerForm" oncomplete="showHazard(true)" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton></li>
+                          <li class="l"><button id="hazardsSubmit" type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
+                        </ui:fragment>
+                        <li class="r">
+                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
+                        </li>
+                      </ul>
+
+                    </h:panelGroup>
+                  </a4j:outputPanel>
+
+                  <div class="spacer"></div>
+
+                  <h:panelGrid rows="2" width="100%" columnClasses="colSpan">
+                  <h:panelGroup styleClass="map-border" layout="block">
+                  
+                    <div id="map-canvas" style="height:100%;height:330px;border:0"></div>
+                    <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
+                      <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
+                      <div id="circle-outline" style="display:none"></div>
+                    </div>
+                  </h:panelGroup>
+                  
+                  
+                  
+        <h:panelGroup layout="block" style="width: 790px; overflow: auto;">
+        <rich:dataTable id="hazards-table" value="#{hazardsBean.tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
+            rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" >
+
+            <!-- Data -->
+            <rich:column id="mapColumn">
+                <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
+                    <rich:componentControl for="hazardLocationModal" event="onclick" disableDefault="true" operation="show">
+                        <f:param name="lat" value="#{item.latitude}" />
+                        <f:param name="lng" value="#{item.longitude}" />
+                    </rich:componentControl>
+                </h:graphicImage>
+               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
+                    <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+                    <h:outputText id="addressLocation" value="#{hazardsBean.item.location}" converter="#{latLngAddressConverter}" />
+                </rich:toolTip>
+               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{hazardsBean.addressFormat == 2}">
+                <h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+                <a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
+               </rich:toolTip>
+               <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{hazardsBean.addressFormat == 3}">
+                <h:inputHidden id="hazardLat" value="#{item.latitude}"/>
+                <h:inputHidden id="hazardLng" value="#{item.longitude}"/>
+                <h:outputText id="hazardAddress" />
+               </rich:toolTip>
+            </rich:column>
+            
+            <rich:column id="date" sortBy="#{item.stateID}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_region}" />
+                </f:facet>
+                <h:outputText value="#{item.stateID}" />
+            </rich:column>
+            
+            <rich:column id="location" sortBy="#{item.location}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_location}" />
+                </f:facet>
+               <h:outputText value="#{item.location}"/>
+            </rich:column>
+            
+            <rich:column id="description" sortBy="#{item.description}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_description}" />
+                </f:facet>
+               <h:outputText value="#{item.description}"/>
+            </rich:column>
+            
+            <rich:column id="driverName" sortBy="#{item.driverName}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_driver}" />
+                </f:facet>
+                <ui:include src="/includes/driverLink.xhtml">
+                    <ui:param name="context" value="hazards" />
+                    <ui:param name="driverID" value="#{item.driver.driverID}" />
+                    <ui:param name="unknownDriverID" value="#{hazardsBean.unknownDriverID}" />
+                    <ui:param name="driverName" value="#{item.driver.person.fullName}" />
+                </ui:include>
+            </rich:column>
+           
+           <rich:column id="user" sortBy="#{item.user}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_user}" />
+                </f:facet>
+               <h:outputText value="#{item.user.person.fullName}"/>
+            </rich:column>
+            
+           <rich:column id="type" sortBy="#{item.type}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_type}" />
+                </f:facet>
+               <h:outputText value="#{item.type}"/>
+            </rich:column>
+            
+            <rich:column id="status" sortBy="#{item.status}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_status}" />
+                </f:facet>
+               <h:outputText value="#{item.status}"/>
+            </rich:column>
+            
+            <rich:column id="startTime" sortBy="#{item.startTime}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_startTime}" />
+                </f:facet>
+               <h:outputText value="#{item.startTime}"/>
+            </rich:column>
+            
+            <rich:column id="endTime" sortBy="#{item.endTime}" >
+                <f:facet name="header">
+                    <h:outputText value="#{messages.hazard_endTime}" />
+                </f:facet>
+               <h:outputText value="#{item.endTime}"/>
+            </rich:column>
+            
+            <rich:column id="details" >
+                <f:facet name="header">
+                    <h:outputText value="" />
+                </f:facet>
+                <h:commandLink id="hazardsEdit" action="#{hazardsBean.edit}"><h:outputText value="#{messages.hazard_edit}" /></h:commandLink>
+            </rich:column>
+        </rich:dataTable>
+        </h:panelGroup>
+                  
+                  
+                  
+                  <a4j:outputPanel id="displayHazardOptions">
+                    <h:panelGroup>
+                        <rich:spacer height="5px"/><br/>
+                    </h:panelGroup>
+                   </a4j:outputPanel>
+                   </h:panelGrid>
+                </a4j:form>
+
+                <script type="text/javascript">
+                  function clearOutline(){
+                    document.getElementById("hazards-form:points").value = "";
+                    map.clearOverlays();
+                  }
+
+                  function showHazard(editable){
+                    map.clearOverlays();
+                    var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
+                    if (outline){
+                      centerMapAtHazard(getLatLngBounds(outline));
+                      loadHazard(outline, editable);
+                      return true;
+                    }
+                    return false;
+                  }
+
+                  function cancelEdit(){
+                    stopDrawing();
+                    map.clearOverlays();
+                    var outline = document.getElementById("backupPoints").value;
+                    if (outline == ""){
+                      outline = document.getElementById("firstPoints").value;
+                    }
+                    document.getElementById("hazards-form:points").value = outline;
+                  }
+
+
+                  function bodyLoad(){
+                     portalmap.init();
+                     initLayers();
+                     bounds = new GLatLngBounds();
+                     map = portalmap.getMap();
+                     if (!showHazard(false)){
+                         map.setCenter(new GLatLng(39.0, -104.0), 4);
+                     }
+                     addMarkers();
+                  }
+                  function getAddress(index){
+                      
+                      var address = document.getElementById("hazards-form:hazards-table:"+index+":hazardAddress");
+                      var lat = document.getElementById("hazards-form:hazards-table:"+index+":hazardLat");
+                      var lng = document.getElementById("hazards-form:hazards-table:"+index+":hazardLng");
+                      
+                      if (address.innerHTML.length==0){
+                                              
+                          if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
+                              reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
+                          } else {
+                              lkFrZn(lat.value,lng.value,index);
+                          }
+                      }
+                   }
+                  function reverseGeocodeTripAddress(latlng,addressElement,index){
+                      new GClientGeocoder().getLocations(latlng, 
+                              function(response){
+                                  if (!response || response.Status.code != 200) {
+                                      lkFrZn(latlng.lat(),latlng.lng(),index);
+                                  } else {
+                                      addressElement.innerHTML = response.Placemark[0].address;
+                                  }
+                              });
+                    }
+                  function addMarkers(){
+                      var progress = 0;
+                      console.log("map: "+map);
+                      var progressBar = new ProgressbarControl(map);
+                      
+                      if (markerClusterer != null) {
+                            markerClusterer.clearMarkers();
+                          }
+                      progressBar.start(#{fn:length(hazardsBean.hazards)});
+                      markers = [];
+                      bounds.extend(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
+                      
+                      <ui:repeat value="#{hazardsBean.hazards}" var="hazard">
+                  
+                          marker = createMarker(  new GLatLng(#{hazard.lat}, #{hazard.lng}), 
+                                                  #{hazard.hazardID}, null,
+                                                  "/images/ico_warning.png",
+                                                  fillBubbleMarker,0);
+                          markers.push(marker);
+                          progressBar.updateLoader(progress++);
+                          bounds.extend(marker.getPoint());
+                          
+                      </ui:repeat>
+                      
+                      markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
+                      progressBar.remove();
+
+                      map.setZoom(map.getBoundsZoomLevel(bounds));
+                      map.setCenter(bounds.getCenter());
+                  }
+                  
+                  /* CreateMarker(GLatLng, divID, GIcon or null)
+                   *  
+                   * Creates a marker using specified GIcon or
+                   * default icon if null is passed for iconImage.
+                   * divID is the id of a DIV you want displayed in the info window. 
+                   */
+                  function createMarker(point, divID, iconImage) {
+                      var markerIcon;
+                      var marker;
+
+                      //Use passed in image.
+                      if(iconImage != null){
+                          markerIcon = new GIcon(baseIcon);
+                          markerIcon.image = iconImage;
+                          markerOptions = { icon:markerIcon };
+                          marker = new GMarker(point, markerOptions);
+                      } else {
+                          //Use default GoogleMap marker image.
+                          markerIcon = new GIcon();
+                          marker = new GMarker(point);
+                      }
+                 
+                      GEvent.addListener(marker, "click", function() {
+                              var node = document.getElementById(divID).cloneNode(true);
+                              node.style.display = 'block';
+                              marker.openInfoWindow(node);
+                              });
+
+                      return marker;
+                  }
+                </script>
+            <rich:panel id="mapPopups" rendered="#{liveFleetBean.selectedVehicleID ne null}">
+        
+            <ui:param name="driverLocation" value="#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID]}"/>
+            <ui:include src="/includes/hazardBubble.xhtml">
+                <ui:param name="driver" value="#{driverLocation.driver}" />
+                <ui:param name="vehicle" value="#{driverLocation.vehicle}" />
+                <ui:param name="device" value="#{driverLocation.device}" />
+                <ui:param name="bean" value="#{liveFleetBean}" />
+                <ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
+                <ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
+                <ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
+                <ui:param name="messageDriver" value="#{messages.livefleet_driver}" />
+                <ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
+                <ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
+                <ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
+                <ui:param name="vehicleTime" value="#{driverLocation.time}" />
+                <ui:param name="messageAddress" value="#{messages.livefleet_address}" />
+                <ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
+                <ui:param name="addressLookupAddressFormat" value="#{liveFleetBean.addressFormat}"/>
+                <ui:param name="distance" value="#{driverLocation.dist}" />
+                <ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
+                <ui:param name="messageDevicePhone" value="#{messages.livefleet_devicePhone}" /> 
+                <ui:param name="context" value="liveFleet" />
+            </ui:include>
+            </rich:panel>
+              </div>
+            </div>
+
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+
+            <ui:include src="../../includes/confirmDelete.xhtml">
+              <ui:param name="deleteBean" value="#{hazardsBean}" />
+              <ui:param name="reRender" value="points,displayHazard" />
+              <ui:param name="ondelete" value="showHazard(false)" />
+              <ui:param name="explanation" value="#{messages.hazard_confirmDelete}" />
+                   <ui:param name="context" value="hazards" />
+            </ui:include>
+
+          </div>
+                <a4j:region id="jsFormRegion">
+                    <a4j:form id="jsForm">
+
+                        <a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+                            <a4j:actionparam name="hazardID" assignTo="#{hazardsBean.item.hazardID}"/>
+                            <a4j:actionparam name="subId" />
+                        </a4j:jsFunction>
+                    </a4j:form>
+                </a4j:region>
+          <!-- END PANEL -->
+        </td>
+
+      </tr>
+    </table>
+    </a4j:region>
+  </ui:define>
+
+    <!-- START LOCATION MODAL -->
+    <rich:modalPanel id="hazardLocationModal" width="540" height="450" headerClass="popupHeader" 
+        onshow="initializeHazardMap(hazardBean.item.lat, hazardBean.item.lng);">
+        <f:facet name="header">
+            <h:outputText id="mapModalHeader" value="#{messages.hazard_location}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
+                onclick="Richfaces.hideModalPanel('hazardLocationModal')" />
+        </f:facet>
+
+        <div class="eventmap-border">
+            <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+        </div>
+
+        <div class="popupactions">
+            <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" 
+                onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
+                <span class="edit"> <h:outputText value="#{messages.button_close}" /> 
+                </span>
+            </a4j:commandButton>
+        </div>
+    </rich:modalPanel>
+    <!-- END LOCATION MODAL -->
+
+</ui:composition>
