@@ -146,7 +146,7 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
     @Override
     public List<SubmissionData> getSubmissions(TriggerType triggerType, Date startDate, Date endDate, Integer groupID) {
 
-        HttpMethod getForms = new GetMethod(formatRequest() + "submissions" + "/" + triggerType + "/" + formatDate(startDate) + "/" + formatDate(endDate) + "/" + groupID);
+        HttpMethod getForms = new GetMethod(formatRequest() + "submissions" + "/" + triggerType.getCode() + "/" + formatDate(startDate) + "/" + formatDate(endDate) + "/" + groupID);
         getForms.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
         HttpClient client = setupClient();
         addCredentials(client);
