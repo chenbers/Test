@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -28,12 +27,14 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.forms.common.model.SubmissionData;
 import com.inthinc.forms.common.model.SubmissionDataItem;
+import com.inthinc.forms.common.model.enums.TriggerType;
 import com.inthinc.pro.automation.models.Group;
 
 public class FormsServiceDAOTest {
@@ -47,7 +48,7 @@ public class FormsServiceDAOTest {
 
     @Ignore
     @Test
-    public void formsServiceDAOTest() {
+    public void formsServiceDAOGetFormTest() {
 
         FormsServiceDAO formsDAO = new FormsServiceDAO();
 
@@ -209,7 +210,7 @@ public class FormsServiceDAOTest {
         try {
             int statusCode = httpClient.executeMethod(method);
             if (statusCode == HttpStatus.SC_OK) {
-                TypeReference<Collection<SubmissionData>> ref = new TypeReference<Collection<SubmissionData>>(){};
+                TypeReference<List<SubmissionData>> ref = new TypeReference<List<SubmissionData>>(){};
                 InputStream jsonBody = method.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
                 submissions.addAll((List<SubmissionData>) mapper.readValue(jsonBody, ref));
@@ -223,5 +224,21 @@ public class FormsServiceDAOTest {
         } finally {
             method.releaseConnection();
         }
+    }
+    
+    @Test
+    public void formsServiceDAOTest(){
+        FormsServiceDAO formsDAO = new FormsServiceDAO();
+        formsDAO.setProtocol("http");
+        formsDAO.setHost("dev.tiwipro.com");
+        formsDAO.setPort(8080);
+        formsDAO.setUsername("jhoward");
+        formsDAO.setPassword("password");
+        formsDAO.setPath("forms_service");
+        DateTime dateTime = new DateTime();
+        dateTime = dateTime.minusYears(1);
+        List<SubmissionData> formSubmissions = formsDAO.getSubmissions(TriggerType.PRE_TRIP, dateTime.toDate(), new Date(), 11546);
+        assertTrue(formSubmissions.size()>0);
+       
     }
 }
