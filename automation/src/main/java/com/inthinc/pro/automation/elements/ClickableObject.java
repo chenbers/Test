@@ -30,5 +30,13 @@ public class ClickableObject extends ElementBase implements Clickable {
     public Boolean assertClickable(Boolean clickable) {
         return assertEquals(clickable, isClickable());
     }
+
+
+	@Override
+	public Clickable doubleClick() {
+        getSelenium().doubleClick(myEnum);
+        getSelenium().waitForPageToLoad();
+        return this;
+	}
     
 }
