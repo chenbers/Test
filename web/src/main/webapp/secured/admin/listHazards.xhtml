@@ -128,10 +128,6 @@
                             </tr>
                           </table>
                         </li>
-                        <ui:fragment rendered="#{hazardsBean.hazardsCount gt 0}">
-                          <li class="l"><h:commandButton id="hazardsEdit" action="#{hazardsBean.edit}" reRender="displayHazard,hazardName,hazardAddress,headerForm" oncomplete="showHazard(true)" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton></li>
-                          <li class="l"><button id="hazardsSubmit" type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
-                        </ui:fragment>
                         <li class="r">
                           <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
                         </li>
