@@ -125,12 +125,6 @@
                                 <h:graphicImage value="/images/ico_warning.png" style="vertical-align:-30%" />
                                 <strong><h:outputText value="#{messages.hazard_hazard}" /></strong>
                               </td>
-                              <td>
-                                <h:selectOneMenu value="#{hazardsBean.itemID}" id="hazard" style="width: 140px">
-                                  <f:selectItems value="#{hazardsBean.hazardIDs}" />
-                                  <a4j:support event="onchange" reRender="points,address,displayHazard,displayHazardOptions" oncomplete="showHazard(false)" />
-                                </h:selectOneMenu>
-                              </td>
                             </tr>
                           </table>
                         </li>
