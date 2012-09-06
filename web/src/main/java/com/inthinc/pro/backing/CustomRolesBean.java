@@ -223,7 +223,9 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         VEHICLESCREATE(3,19),  
         VEHICLESDRIVER(3,20),  
         VEHICLESWIRELINE(3,21),  
-        VEHICLESSPEED(3,22);  
+        VEHICLESSPEED(3,22),
+        HAZARDACCESS(null, 23),
+        ;  
 
         
         private Integer id;
