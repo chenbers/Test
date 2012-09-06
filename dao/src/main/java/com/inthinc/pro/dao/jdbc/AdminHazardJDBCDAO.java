@@ -28,7 +28,8 @@ import com.mysql.jdbc.Statement;
 public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
 
     private static final Logger logger = Logger.getLogger(AdminHazardJDBCDAO.class);
-    private static final String HAZARD_COLUMNS_STRING = " acctID, driverID, userID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified ";
+    private static final String HAZARD_COLUMNS_STRING = " acctID, driverID, userID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime" +
+    		", type, description, status, location, stateID, created, modified ";
     private static final String HAZARD_SELECT_BY_ID = //
     "SELECT hazardID, " + HAZARD_COLUMNS_STRING + //
             "FROM hazard " + //
@@ -43,30 +44,46 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
     private static final String HAZARD_INSERT = //
     "INSERT INTO hazard ( " + HAZARD_COLUMNS_STRING + " ) " + //
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "; //
-    private static final String HAZARD_UPDATE = "UPDATE hazard set"; //
+    private static final String HAZARD_UPDATE_PRE = "UPDATE hazard set"; //
+    private static final String HAZARD_UPDATE_POST = " WHERE hazardID = :hazardID";
+    private static String HAZARD_UPDATE;
     private static final String HAZARD_DELETE_BY_ID = //
-    "DELETE FROM hazard WHERE hazardID = ?"; //
+    "DELETE FROM hazard WHERE hazardID = ?"; // 
 
-    private static final Map<String, String> columnMap = new LinkedHashMap<String, String>();
+    /**
+     * Ordered map of columns where <String columnNameInDB, String messageKeyForDisplayOnSite?>
+     */
+    private static final LinkedHashMap<String, String> columnMap = new LinkedHashMap<String, String>();
 
     static {
         columnMap.put("hazardID", "hazardID");
         columnMap.put("acctID", "acctID");
         columnMap.put("driverID", "driverID");// TODO: should be name
-
+        columnMap.put("userID","userID");
         columnMap.put("vehicleID", "vehicleID");// TODO: should be name
         columnMap.put("deviceID", "deviceID");// TODO: should be name?
-        columnMap.put("type", "");// TODO: should be name
-        columnMap.put("radius", "");
-        columnMap.put("state", "");
-        columnMap.put("startTime", "");
-        columnMap.put("endTime", "");
-        columnMap.put("description", "");
-        columnMap.put("status", "");// TODO: should be name
-        columnMap.put("location", "");
+        columnMap.put("latitude", "latitude");
+        columnMap.put("longitude", "longitude");
+        columnMap.put("radius", "radius");
+        columnMap.put("startTime", "startTime");
+        columnMap.put("endTime", "endTime");
+        columnMap.put("type", "type");// TODO: should be name
+        columnMap.put("description", "description");
+        columnMap.put("status", "status");// TODO: should be name
+        columnMap.put("location", "location");
         columnMap.put("stateID", "stateID");
         columnMap.put("created", "created");
         columnMap.put("modified", "modified");
+        
+        HAZARD_UPDATE = HAZARD_UPDATE_PRE;
+        for(String key: columnMap.keySet()){
+            HAZARD_UPDATE += " "+key+",";
+        }
+        //remove trailing comma if necessary
+        if(HAZARD_UPDATE.endsWith(",")){ 
+            HAZARD_UPDATE += HAZARD_UPDATE.substring(0, HAZARD_UPDATE.length()-2);
+        }
+        HAZARD_UPDATE += HAZARD_UPDATE_POST;
     };
 
     private static ParameterizedRowMapper<Hazard> hazardRowMapper = new ParameterizedRowMapper<Hazard>() {
