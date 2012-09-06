@@ -64,7 +64,7 @@
 	       <div class="datagrid_panel" style="width: 900px;">
 	       
 	       <!-- Summary -->
-			     <h:panelGroup style="float:right;padding:0 5px;" id="#{context}_reportToolImageId">     				
+			     <h:panelGroup style="float:right;padding:0 5px;">     				
 					<span title="#{messages.button_editColumns}">
 						<a4j:commandLink 
 	     					id="#{context}EditColumns" 
@@ -75,7 +75,7 @@
 						</a4j:commandLink>    
 					</span>	
 					<span style="cursor:pointer;">
-						<h:graphicImage value="/images/ico_tools.png"/>
+						<h:graphicImage  id="#{context}_reportToolImageId" value="/images/ico_tools.png"/>
 					</span>
 				</h:panelGroup>
 				

@@ -311,8 +311,67 @@ public class AdminTest extends BaseJDBCTest {
         hazardLocations.put("spagetti", new LatLng(40.721, -111.9046));
         hazardLocations.put("summitPark", new LatLng(40.7525, -111.613));
     }
+    @Test
+    public void createHazard_validAllHazardLocations_eachShouldInsert(){
+        boolean returnsHazardID = false;
+        for(String locationName: hazardLocations.keySet()){
+            AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+            hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+            Hazard hazard = new Hazard();
+            hazard.setAcctID(1);
+            hazard.setCreated(new Date());
+            hazard.setDescription("IT created: "+locationName);
+            hazard.setDeviceID(5780);//jwimmerTiwipro
+            hazard.setDriverID(2262);//jwimmer
+            hazard.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
+            hazard.setLatitude(hazardLocations.get(locationName).getLat());
+            hazard.setLongitude(hazardLocations.get(locationName).getLng());
+            hazard.setLocation("IT created for "+locationName+" at "+new DateTime());
+            System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+            hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+            hazard.setStartTime(new Date());
+            hazard.setStateID(45);//UTah
+            hazard.setStatus(HazardStatus.ACTIVE);
+            hazard.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
+            hazard.setUserID(1655);//jwimmer user
+            hazard.setVehicleID(6956);//ATAT aka jwimmer truck
+            
+            Integer hazardID = hazardJDBCDAO.create(hazard);
+            returnsHazardID = (hazardID != null);
+            assertTrue(returnsHazardID);
+            System.out.println("inserted "+locationName);
+        }
+    }
+
     public void findHazardsByUserAcct_validBoundingBoxAcrossNeg180_validResults(){
+        //create a hazard to ensure test will have results
         AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+        boolean returnsHazardID = false;
+        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        Hazard hazardToInsert = new Hazard();
+        hazardToInsert.setAcctID(2);
+        hazardToInsert.setCreated(new Date());
+        hazardToInsert.setDescription("IT created: mid-ocean");
+        hazardToInsert.setDeviceID(5780);//jwimmerTiwipro
+        hazardToInsert.setDriverID(2262);//jwimmer
+        hazardToInsert.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
+        hazardToInsert.setLatitude(0.0);
+        hazardToInsert.setLongitude(0.0);
+        hazardToInsert.setLocation("IT created for 0,0 at "+new DateTime());
+        System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+        hazardToInsert.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+        hazardToInsert.setStartTime(new Date());
+        hazardToInsert.setStateID(45);//UTah
+        hazardToInsert.setStatus(HazardStatus.ACTIVE);
+        hazardToInsert.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
+        hazardToInsert.setUserID(1655);//jwimmer user
+        hazardToInsert.setVehicleID(6956);//ATAT aka jwimmer truck
+        
+        Integer hazardID = hazardJDBCDAO.create(hazardToInsert);
+        returnsHazardID = (hazardID != null);
+        assertTrue(returnsHazardID);
+        
+        
         hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         User fakeUser = new User(){
             @Override
@@ -323,7 +382,7 @@ public class AdminTest extends BaseJDBCTest {
             public Person getPerson(){
                 return new Person(){
                   @Override 
-                  public Integer getAccountID(){
+                  public Integer getAcctID(){
                       return 2;
                   }
                 };
@@ -339,7 +398,33 @@ public class AdminTest extends BaseJDBCTest {
     }
     @Test
     public void findHazardsByUserAcct_validBoundingBoxes_validResults(){
+        //create a hazard to ensure test will have results
         AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
+        boolean returnsHazardID = false;
+        hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        Hazard hazardToInsert = new Hazard();
+        hazardToInsert.setAcctID(1);
+        hazardToInsert.setCreated(new Date());
+        hazardToInsert.setDescription("IT created: mid-ocean");
+        hazardToInsert.setDeviceID(5780);//jwimmerTiwipro
+        hazardToInsert.setDriverID(2262);//jwimmer
+        hazardToInsert.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
+        hazardToInsert.setLatitude(0.0);
+        hazardToInsert.setLongitude(0.0);
+        hazardToInsert.setLocation("IT created for 0,0 at "+new DateTime());
+        System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+        hazardToInsert.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+        hazardToInsert.setStartTime(new Date());
+        hazardToInsert.setStateID(45);//UTah
+        hazardToInsert.setStatus(HazardStatus.ACTIVE);
+        hazardToInsert.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
+        hazardToInsert.setUserID(1655);//jwimmer user
+        hazardToInsert.setVehicleID(6956);//ATAT aka jwimmer truck
+        
+        Integer hazardID = hazardJDBCDAO.create(hazardToInsert);
+        returnsHazardID = (hazardID != null);
+        assertTrue(returnsHazardID);
+        
         hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
         User fakeUser = new User(){
             @Override
@@ -389,36 +474,5 @@ public class AdminTest extends BaseJDBCTest {
             System.out.println("hazard: "+hazard);
         }
         assertTrue(theHazards.size() == 0);
-    }
-    @Test
-    public void createHazard_validAllHazardLocations_eachShouldInsert(){
-        boolean returnsHazardID = false;
-        for(String locationName: hazardLocations.keySet()){
-            AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
-            hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-            Hazard hazard = new Hazard();
-            hazard.setAcctID(1);
-            hazard.setCreated(new Date());
-            hazard.setDescription("IT created: "+locationName);
-            hazard.setDeviceID(5780);//jwimmerTiwipro
-            hazard.setDriverID(2262);//jwimmer
-            hazard.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
-            hazard.setLatitude(hazardLocations.get(locationName).getLat());
-            hazard.setLongitude(hazardLocations.get(locationName).getLng());
-            hazard.setLocation("IT created for "+locationName+" at "+new DateTime());
-            System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
-            hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
-            hazard.setStartTime(new Date());
-            hazard.setStateID(45);//UTah
-            hazard.setStatus(HazardStatus.ACTIVE);
-            hazard.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
-            hazard.setUserID(1655);//jwimmer user
-            hazard.setVehicleID(6956);//ATAT aka jwimmer truck
-            
-            Integer hazardID = hazardJDBCDAO.create(hazard);
-            returnsHazardID = (hazardID != null);
-            assertTrue(returnsHazardID);
-            System.out.println("inserted "+locationName);
-        }
     }
 }

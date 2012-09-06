@@ -4,10 +4,8 @@
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:a4j="http://richfaces.org/a4j"
     xmlns:rich="http://richfaces.org/rich">
-
 <!--
   A pop-up modal form that allows choosing the visible columns to appear.
-  
 
   Required Parameters:
   ==============
@@ -28,23 +26,22 @@
 			border:0;
 		}
 	</style>
-    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
+    <rich:modalPanel id="#{context}_editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
     	autosized="true" resizeable="false" zindex="2000" 
-    	onshow="document.getElementById('editColumnsForm:#{context}-editColumnsGrid:0:col').focus();">
+    	onshow="document.getElementById('#{context}_editColumnsForm:#{context}-editColumnsGrid:0:col').focus();">
 										 
       <f:facet name="header">
         <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>
       <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('editColumnsForm:#{context}-editColumnsPopupCancel').onclick()" />
+        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="document.getElementById('#{context}_editColumnsForm:#{context}-editColumnsPopupCancel').onclick()" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
         <h:outputText value="#{messages.editColumns_explanation}"/>
       </h:panelGroup>
 
-
-      <a4j:form id="editColumnsForm">
+      <a4j:form id="#{context}_editColumnsForm">
 
         <rich:dataGrid id="#{context}-editColumnsGrid" columns="3" value="#{bean.availableColumns}" var="col" 
         	width="100%" style="border:0" columnClasses="colNoBorder">
@@ -60,7 +57,7 @@
             action="#{bean.cancelEditAction}" 
             ajaxSingle="true" 
             oncomplete="Richfaces.hideModalPanel('#{context}_editColumns');"
-            reRender="editColumnsForm:#{context}-editColumnsGrid" tabindex="3">
+            reRender="{context}_editColumnsForm:#{context}-editColumnsGrid" tabindex="3">
             <span class="cancel">
              <h:outputText value="#{messages.button_cancel}" />
             </span>
