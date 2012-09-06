@@ -342,7 +342,7 @@ public class AdminTest extends BaseJDBCTest {
             System.out.println("inserted "+locationName);
         }
     }
-    @Test
+
     public void findHazardsByUserAcct_validBoundingBoxAcrossNeg180_validResults(){
         //create a hazard to ensure test will have results
         AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
