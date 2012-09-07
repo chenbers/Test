@@ -28,28 +28,10 @@ import com.mysql.jdbc.Statement;
 public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
 
     private static final Logger logger = Logger.getLogger(AdminHazardJDBCDAO.class);
-    private static final String HAZARD_COLUMNS_STRING = " acctID, driverID, userID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime" +
-    		", type, description, status, location, stateID, created, modified ";
-    private static final String HAZARD_SELECT_BY_ID = //
-    "SELECT hazardID, " + HAZARD_COLUMNS_STRING + //
-            "FROM hazard " + //
-            "WHERE hazardID = :hazardID"; //
-    private static final String HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS = //
-    "SELECT hazardID, " + HAZARD_COLUMNS_STRING + //
-            "FROM hazard " + //
-            "WHERE acctID = :acctID " + //
-            "  AND latitude  BETWEEN :lat1 AND :lat2 " + //
-            "  AND longitude BETWEEN :lng1 AND :lng2 " + //
-            "  AND endTime > now() "; //
-    private static final String HAZARD_INSERT = //
-    "INSERT INTO hazard ( " + HAZARD_COLUMNS_STRING + " ) " + //
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "; //
+    private static String HAZARD_COLUMNS_STRING="";// = " acctID, driverID, userID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified ";
     private static final String HAZARD_UPDATE_PRE = "UPDATE hazard set"; //
     private static final String HAZARD_UPDATE_POST = " WHERE hazardID = :hazardID";
     private static String HAZARD_UPDATE;
-    private static final String HAZARD_DELETE_BY_ID = //
-    "DELETE FROM hazard WHERE hazardID = ?"; // 
-
     /**
      * Ordered map of columns where <String columnNameInDB, String messageKeyForDisplayOnSite?>
      */
@@ -77,14 +59,37 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         
         HAZARD_UPDATE = HAZARD_UPDATE_PRE;
         for(String key: columnMap.keySet()){
-            HAZARD_UPDATE += " "+key+",";
+            HAZARD_UPDATE += " "+key+" = ? , ";
+            HAZARD_COLUMNS_STRING+=" "+key+" ,";
         }
         //remove trailing comma if necessary
         if(HAZARD_UPDATE.endsWith(",")){ 
-            HAZARD_UPDATE += HAZARD_UPDATE.substring(0, HAZARD_UPDATE.length()-2);
+            HAZARD_UPDATE = HAZARD_UPDATE.substring(0, HAZARD_UPDATE.length()-2);
+        }
+        //remove trailing comma if necessary
+        if(HAZARD_COLUMNS_STRING.endsWith(",")){ 
+            HAZARD_COLUMNS_STRING = HAZARD_COLUMNS_STRING.substring(0, HAZARD_COLUMNS_STRING.length()-2);
         }
         HAZARD_UPDATE += HAZARD_UPDATE_POST;
     };
+    private static final String HAZARD_SELECT_BY_ID = //
+    "SELECT hazardID, " + HAZARD_COLUMNS_STRING + " "+//
+            "FROM hazard " + //
+            "WHERE hazardID = :hazardID"; //
+    private static final String HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS = //
+    "SELECT hazardID, " + HAZARD_COLUMNS_STRING + " "+//
+            "FROM hazard " + //
+            "WHERE acctID = :acctID " + //
+            "  AND latitude  BETWEEN :lat1 AND :lat2 " + //
+            "  AND longitude BETWEEN :lng1 AND :lng2 " + //
+            "  AND endTime > now() "; //
+    private static final String HAZARD_INSERT = //
+    "INSERT INTO hazard ( " + HAZARD_COLUMNS_STRING + " ) " + //
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "; //
+    private static final String HAZARD_DELETE_BY_ID = //
+    "DELETE FROM hazard WHERE hazardID = ?"; // 
+
+    
 
     private static ParameterizedRowMapper<Hazard> hazardRowMapper = new ParameterizedRowMapper<Hazard>() {
         @Override
