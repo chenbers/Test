@@ -71,7 +71,6 @@
               <div class="panel_content">
      
                 <a4j:form id="hazards-form">
-                <h:inputHidden id="points" value="" /> <!-- //TODO: is there a more elegant way so I can avoid using points/pointsTring -->
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
                     
                   <a4j:outputPanel id="editHazard">
@@ -84,14 +83,6 @@
                     </h:panelGroup>
                     <h:panelGroup rendered="#{hazardsBean.editing}">
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="l">
-                          <table>
-                            <tr>
-                              <td><a href="#" onclick="stopDrawing(); return false;"><h:graphicImage id="hand_b" value="/images/btn_hand_on.png" width="26" height="26" style="border:none" /></a></td>
-                              <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startCircle(); return false;"><h:graphicImage id="circle_b" value="/images/btn_circle.png" width="26" height="26" style="border:none" /></a></td>
-                            </tr>
-                          </table>
-                        </li>
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                             <tr>

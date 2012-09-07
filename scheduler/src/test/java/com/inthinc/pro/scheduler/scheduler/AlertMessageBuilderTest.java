@@ -37,7 +37,7 @@ public class AlertMessageBuilderTest {
         assertNotNull(alertMessageBuilder);
         String text = LocalizedMessage.getStringWithValues(alertMessageBuilder.getAlertMessageType().toString(),alertMessageBuilder.getLocale(),
                 (String[])alertMessageBuilder.getParamterList().toArray(new String[alertMessageBuilder.getParamterList().size()]));
-         assertEquals("12343546456 driver (vehicle) a pre-trip inspection failed near Address. See http://dev.tiwipro.com:8080/forms/submissions for details.",text);
+         assertEquals("12343546456 driver (vehicle) A pre-trip inspection failed near Address, and the vehicle is not safe to drive. See http://dev.tiwipro.com:8080/forms/submissions for details.",text);
          int i = 0;
     }
     @Test
@@ -47,12 +47,13 @@ public class AlertMessageBuilderTest {
         parameterList.add("driver");
         parameterList.add("vehicle");
         parameterList.add("Address");
+        parameterList.add("http://dev.tiwipro.com:8080/forms/submissions");
 
         AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder(alertID, messageID, Locale.getDefault(), address, AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS, acknowledge, parameterList);
         assertNotNull(alertMessageBuilder);
         String text = LocalizedMessage.getStringWithValues(alertMessageBuilder.getAlertMessageType().toString(),alertMessageBuilder.getLocale(),
                 (String[])alertMessageBuilder.getParamterList().toArray(new String[alertMessageBuilder.getParamterList().size()]));
-       assertEquals("12343546456 driver (vehicle) a  pre-trip inspection passed near Address.",text);
+       assertEquals("12343546456 driver (vehicle) A pre-trip inspection passed near Address. See http://dev.tiwipro.com:8080/forms/submissions for details.",text);
     }
 
     private FormSubmission createFormSubmission() {
