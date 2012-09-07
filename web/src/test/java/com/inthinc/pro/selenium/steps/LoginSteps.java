@@ -280,12 +280,14 @@ public class LoginSteps extends WebSteps {
     //And I click the Forms link
     @When("I go to the forms admin page")
     public void whenIGoToTheFormsAdminPage() {
-    	loginPage.open("http://dev.tiwipro.com:8080/forms/");
+    	loginPage.open("https://schlumberger.inthinc.com:8443/forms/");  // for slb
+    	//loginPage.open("http://dev.tiwipro.com:8080/forms/");  //for dev
     }
     
     @When("I go to the forms submissions page")
-    public void whenIGoToTheFormsSubmissionsPage() {
-    	loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");
+    public void whenIGoToTheFormsSubmissionsPage() {    	
+    	loginPage.open("https://schlumberger.inthinc.com:8443/forms/submissions");  // for slb
+    	//loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");  //for dev
     }
     
     //TODO: MWEISS - I am still working on how this will work

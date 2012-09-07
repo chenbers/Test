@@ -6,8 +6,8 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum FormsBarEnum implements SeleniumEnums {
 
     ACCOUNT_IMAGE(null, ""),
-    ADMIN_FORM("Forms", "//a[contains(@id,'navigation:layout-subnavigationFormsForms']"),
-    SUBMISSIONS("Submissions", "//a[contains(@id,'navigation:subnavigationFormsFormsSubmissions']"),
+    ADMIN_FORM("Forms", "//a[contains(@id,'navigation:layout-subnavigationFormsForms')]"),
+    SUBMISSIONS("Submissions", "//a[contains(@id,'navigation:subnavigationFormsFormsSubmissions')]"),
 
     ;
 
