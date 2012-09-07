@@ -212,7 +212,7 @@ public class ProUserServiceImpl implements UserDetailsService
 			"redFlagsAccess",
 			"reportsAccess",
 			"organizationAccess",
-			"speedByStreetAccess"
+			"speedByStreetAccess",
 			"hazardAccess"
 			};
 		List<String> adminPoints = new ArrayList<String>();
