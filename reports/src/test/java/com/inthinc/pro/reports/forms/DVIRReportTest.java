@@ -6,9 +6,9 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.inthinc.forms.common.model.SubmissionData;
-import com.inthinc.forms.common.model.SubmissionDataItem;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.form.SubmissionData;
+import com.inthinc.pro.model.form.SubmissionDataItem;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -62,7 +62,6 @@ public class DVIRReportTest extends BaseUnitTest{
     }
 
     @Test
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void testPreTripCriteriaTest(){
         
         
@@ -84,7 +83,6 @@ public class DVIRReportTest extends BaseUnitTest{
         dump("preTrip", 4, criteriaList, FormatType.EXCEL);
    }
     @Test
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void testPostTripCriteriaTest(){
         
         
