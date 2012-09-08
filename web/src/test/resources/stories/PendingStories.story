@@ -409,3 +409,122 @@ Scenario: TC1412: Notifications > Emergency - Refresh
 Scenario: TC1413: Notifications > Emergency - Search
 
 Scenario: TC1423: Notifications > Emergency - Edit Columns - Check Box Selection via Spacebar
+
+FormsAdmin.story
+
+//Future test, not currently implemented on this page
+Scenario: TCXXXX: Edit columns
+Given I am on the Admin page Forms tab
+When I click on the Edit Columns link
+And a popup opens to display the selections of columns
+And I select the checkboxes for the columns I want to display
+And click on Save button
+Then the columns I selected display on the Forms page
+
+//This delete button does not currently exist
+Scenario: TCXXXX: Delete a selected Form
+Given I am logged in
+When I click the Forms link
+And I save the 1st Row of the Name link as SAVEDFORM
+And I click the 1st Row of the Select checkbox
+And click the Delete button
+Then I validate the 1st Row of the Name link is not SAVEDFORM
+
+FormsAdd.story
+
+//FUTURE TESTS FOR GROUP FUNCTION
+
+Scenario: TCXXXX Forms Add Page - Duplicate Data Name Error Group Field
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "test" into the Data Name field
+And I click the Group link
+And I type "test" into the Data Name field
+Then I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
+And I click the 1st Row of the Control Flow Arrow link
+And I validate the Data Name Error text is "This property must be unique; there is another control that conflicts with it."
+
+Scenario: TCXXXX Forms Add Page - UI Test - Group link
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+Then I validate the Delete button is present
+And I validate the Data Name textfield is present
+And I validate the Label textfield is present
+And I validate the Looped checkbox is present
+And I validate the Display On One Screen checkbox is present
+And I validate the Advanced Arrow button is present
+
+Scenario: TCXXXX Forms Add Page - Blank Data Name Error Group Field
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "" into the Data Name field
+Then I validate the Data Name Error text is "This property is required."
+
+Scenario: TCXXXX Forms Add Page - Space Data Name Error Group Field
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "te st" into the Data Name field
+Then I validate the Data Name Error text is "Only letters and numbers are allowed."
+
+Scenario: TCXXXX Forms Add Page - Symbols Data Name Error Group Field
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "!" into the Data Name field
+Then I validate the Data Name Error text is "Only letters and numbers are allowed."
+
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Looped unchecked, Display On One Screen unchecked
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "anXMLtag" into the Data Name textfield
+And I type "Choose One" into the Label textfield
+And I click the Save button
+And I validate the new form displays in the list on the Admin Form page
+
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Looped checked
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "anXMLtag" into the Data Name textfield
+And I type "Choose One" into the Label textfield
+And I check the Looped checkbox
+And I click the Save button
+Then I validate the new form displays in the list on the Admin Form page
+And I validate the information I entered is on the form
+
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Display On One Screen checked
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "anXMLtag" into the Data Name textfield
+And I type "Choose One" into the Label textfield
+And I check the Display On One Screen checkbox
+And I click the Save button
+Then I validate the new form displays in the list on the Admin Form page
+And I validate the information I entered is on the form
+
+Scenario: TCXXXX Forms Add Page - Add a Group Field - Looped checked, Display On One Screen checked
+Given I am logged in
+When I go to the forms admin page
+And I click the Create Form Top link
+And I click the Group link
+And I type "anXMLtag" into the Data Name textfield
+And I type "Choose One" into the Label textfield
+And I check the Looped checkbox
+And I check the Display On One Screen checkbox
+And I click the Save button
+Then I validate the new form displays in the list on the Admin Form page
+And I validate the information I entered is on the form

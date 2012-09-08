@@ -3,12 +3,10 @@ package com.inthinc.pro.selenium.steps;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.tmatesoft.sqljet.core.internal.lang.SqlParser.type_name_return;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PopUps;
@@ -18,6 +16,7 @@ public class LoginSteps extends WebSteps {
     PageLogin loginPage = new PageLogin();
     AutomationUser login;
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
+    PageFormsSubmissions submissions = new PageFormsSubmissions();
 
     private static final PageLogin page = new PageLogin();
     private static final PopUps popup = new PopUps();
@@ -78,9 +77,9 @@ public class LoginSteps extends WebSteps {
     // login.loginProcess(user);
     // }
 
-    @When("I am logged in as TeamOnly user")
+    @Given("I am logged in as TEST_39880 user")
     public void loggedInAsTeamOnlyUser() {
-        page._textField().username().type("mweiss");
+        page._textField().username().type("TEST_39880");
         page._textField().password().type("password");
         page._button().logIn().click();
     }
@@ -89,10 +88,9 @@ public class LoginSteps extends WebSteps {
      @When("I am logged in as a \"$roleName\" user")
      public void loginAsAUserofRole(String roleName) {
 //     LoginCapability hasThisCapability = null;
-//     TODO: FIGURE OUT AUTOMATED USERS, IN THE MEANTIME, USE THIS CODE:
-      if(roleName.equals("TopUser"))
+      if(roleName.equals("TestUser"))
       {
-      page._textField().username().type("danniauto");
+      page._textField().username().type("TEST_39880");
       page._textField().password().type("password");
       page._button().logIn().click();
       }
@@ -277,19 +275,19 @@ public class LoginSteps extends WebSteps {
         loginPage._textField().password().type(incorrectCaseUserName);
     }
     
+    //TODO: This can be deleted once forms is integrated into the main site
+    //will need to go through all the story files and change this line to
+    //And I click the Forms link
     @When("I go to the forms admin page")
     public void whenIGoToTheFormsAdminPage() {
-    	loginPage.open("http://dev.tiwipro.com:8080/forms/");
+    	loginPage.open("https://schlumberger.inthinc.com:8443/forms/");  // for slb
+    	//loginPage.open("http://dev.tiwipro.com:8080/forms/");  //for dev
     }
     
     @When("I go to the forms submissions page")
-    public void whenIGoToTheFormsSubmissionsPage() {
-    	loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");
-    }
-    
-    @When("I go to the forms add page")
-    public void whenIGoToTheFormsAddPage() {
-    	loginPage.open("http://dev.tiwipro.com:8080/forms/build");
+    public void whenIGoToTheFormsSubmissionsPage() {    	
+    	loginPage.open("https://schlumberger.inthinc.com:8443/forms/submissions");  // for slb
+    	//loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");  //for dev
     }
     
     //TODO: MWEISS - I am still working on how this will work

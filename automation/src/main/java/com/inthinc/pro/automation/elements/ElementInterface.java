@@ -49,6 +49,7 @@ public interface ElementInterface {
     
     public interface Clickable extends ElementInterface {
         public Clickable click();
+        public Clickable doubleClick();
         public Boolean isClickable();
         @Validate(englishName="clickable")
         public Boolean validateClickable(Boolean clickable);

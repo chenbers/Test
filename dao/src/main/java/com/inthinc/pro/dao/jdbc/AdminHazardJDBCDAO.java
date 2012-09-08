@@ -73,24 +73,28 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         @Override
         public Hazard mapRow(ResultSet rs, int rowNum) throws SQLException {
             Hazard hazard = new Hazard();
-            hazard.setHazardID(rs.getInt("hazardID"));
-            hazard.setAcctID(rs.getInt("acctID"));
-            hazard.setDriverID(rs.getInt("driverID"));
-            hazard.setVehicleID(rs.getInt("vehicleID"));
-            hazard.setDeviceID(rs.getInt("deviceID"));
-            hazard.setType(HazardType.valueOf(rs.getInt("type")));
+            hazard.setHazardID(longToInteger((Long)rs.getObject("hazardID")));
+            hazard.setAcctID(longToInteger((Long)rs.getObject("acctID")));
+            hazard.setDriverID(longToInteger((Long)rs.getObject("driverID")));
+            hazard.setVehicleID(longToInteger((Long)rs.getObject("vehicleID")));
+            hazard.setDeviceID(longToInteger((Long)rs.getObject("deviceID")));
+            hazard.setType(HazardType.valueOf((Integer)rs.getObject("type")));
             hazard.setRadiusMeters(rs.getInt("radius"));
             hazard.setStartTime(rs.getDate("startTime"));
             hazard.setEndTime(rs.getDate("endTime"));
             hazard.setDescription(rs.getString("description"));
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
-            hazard.setStateID(rs.getInt("stateID"));
+            hazard.setStateID(longToInteger((Long)rs.getObject("stateID")));
             hazard.setLatitude(rs.getDouble("latitude"));
             hazard.setLongitude(rs.getDouble("longitude"));
             return hazard;
         }
     };
+    private static Integer longToInteger(Long theLong){
+        Integer theInteger = theLong != null ? theLong.intValue() : null;
+        return theInteger;
+    }
 
     /**
      * @param user

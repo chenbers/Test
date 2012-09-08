@@ -138,7 +138,7 @@ public class AutomationCalendar implements Comparable<Calendar>, Serializable {
     }
 
     public AutomationCalendar(String potentialDate) {
-        if (potentialDate.endsWith("Z")){
+    	if (potentialDate.endsWith("Z")){
             potentialDate = potentialDate.substring(0, potentialDate.indexOf(".")) + "-0000";
         }
         for (WebDateFormat format : EnumSet.allOf(WebDateFormat.class)){
