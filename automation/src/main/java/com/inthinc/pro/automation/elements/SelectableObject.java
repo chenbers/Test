@@ -93,7 +93,7 @@ public class SelectableObject extends TextObject implements Selectable {
     private String getSelectXpath() {
         List<String> ids = myEnum.getLocators();
         for (String locator : ids) {
-            if (!locator.contains("=") && locator.startsWith("//")) {
+            if (locator.contains("=") && locator.startsWith("//")) {  //TODO: Mweiss - I removed the ! symbol because it was causing issues with using the dropdowns on the Forms Admin page, but I need to do further testing on other pages.
                 return locator;
             }
         }

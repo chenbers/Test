@@ -2,7 +2,7 @@ package com.inthinc.pro.reports.forms;
 
 import java.util.Locale;
 
-import com.inthinc.forms.common.model.enums.TriggerType;
+import com.inthinc.pro.model.form.TriggerType;
 import com.inthinc.pro.reports.ReportType;
 
 public class DVIRPostTripReportCriteria extends DVIRReportCriteria {

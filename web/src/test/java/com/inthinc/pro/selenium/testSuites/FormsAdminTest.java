@@ -20,10 +20,10 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @PageObjects(list={PageLogin.class, 
 		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
         PageTeamDriverStatistics.class, PageDriverPerformance.class,
-        PageVehiclePerformance.class, PageFormsSubmissions.class,
-        PageFormsAdd.class, PageFormsAdmin.class })
-@StoryPath(path="FormsSubmissions.story")
-public class FormsSubmissionsTest extends WebStories  {
+        PageVehiclePerformance.class, PageFormsSubmissions.class, 
+        PageFormsAdmin.class, PageFormsAdd.class })
+@StoryPath(path="FormsAdmin.story")
+public class FormsAdminTest extends WebStories  {
 
     @Test
     public void test(){}

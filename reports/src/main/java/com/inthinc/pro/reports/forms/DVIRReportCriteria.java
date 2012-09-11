@@ -6,11 +6,11 @@ import java.util.Locale;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
-import com.inthinc.forms.common.model.SubmissionData;
-import com.inthinc.forms.common.model.enums.TriggerType;
 import com.inthinc.pro.dao.FormsDAO;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.form.SubmissionData;
+import com.inthinc.pro.model.form.TriggerType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 

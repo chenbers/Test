@@ -116,7 +116,6 @@
 
                   <a4j:outputPanel id="displayHazard">
                     <h:panelGroup>
-
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
@@ -125,24 +124,13 @@
                                 <h:graphicImage value="/images/ico_warning.png" style="vertical-align:-30%" />
                                 <strong><h:outputText value="#{messages.hazard_hazard}" /></strong>
                               </td>
-                              <td>
-                                <h:selectOneMenu value="#{hazardsBean.itemID}" id="hazard" style="width: 140px">
-                                  <f:selectItems value="#{hazardsBean.hazardIDs}" />
-                                  <a4j:support event="onchange" reRender="points,address,displayHazard,displayHazardOptions" oncomplete="showHazard(false)" />
-                                </h:selectOneMenu>
-                              </td>
                             </tr>
                           </table>
                         </li>
-                        <ui:fragment rendered="#{hazardsBean.hazardsCount gt 0}">
-                          <li class="l"><h:commandButton id="hazardsEdit" action="#{hazardsBean.edit}" reRender="displayHazard,hazardName,hazardAddress,headerForm" oncomplete="showHazard(true)" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton></li>
-                          <li class="l"><button id="hazardsSubmit" type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
-                        </ui:fragment>
                         <li class="r">
                           <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
                         </li>
                       </ul>
-
                     </h:panelGroup>
                   </a4j:outputPanel>
 
@@ -308,8 +296,9 @@
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
                      if (!showHazard(false)){
-                         map.setCenter(new GLatLng(39.0, -104.0), 4);
+                         map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
                      }
+                     bounds = map.getBounds();
                      addMarkers();
                   }
                   function getAddress(index){
