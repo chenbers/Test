@@ -66,7 +66,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public Integer getRadiusMeters() {
         if(radiusMeters!=null){
-            return radiusMeters; //(int) Math.ceil(this.getRadiusUnits().convertToMeters(radiusMeters).doubleValue());
+            return radiusMeters;
         } else if(getType()==null){
             return radiusMeters;
         }

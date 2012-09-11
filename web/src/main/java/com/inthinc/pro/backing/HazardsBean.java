@@ -224,7 +224,6 @@ public class HazardsBean extends BaseBean {
     }
 
     public Hazard getItem() {
-        //TODO: not clear if there is any legit reason to JUST give the first???
         if(item == null){
             if(getHazards().isEmpty()){
                 item = new Hazard();
