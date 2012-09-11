@@ -116,7 +116,6 @@
 
                   <a4j:outputPanel id="displayHazard">
                     <h:panelGroup>
-
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
@@ -132,7 +131,6 @@
                           <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
                         </li>
                       </ul>
-
                     </h:panelGroup>
                   </a4j:outputPanel>
 
@@ -298,8 +296,9 @@
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
                      if (!showHazard(false)){
-                         map.setCenter(new GLatLng(39.0, -104.0), 4);
+                         map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
                      }
+                     bounds = map.getBounds();
                      addMarkers();
                   }
                   function getAddress(index){

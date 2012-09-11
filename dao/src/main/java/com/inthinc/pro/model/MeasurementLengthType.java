@@ -15,8 +15,8 @@ public enum MeasurementLengthType implements BaseEnum {
 	
     ENGLISH_FEET(1, MeasurementConversionUtil.METERS_IN_FOOT),
     ENGLISH_MILES(2, MeasurementConversionUtil.METERS_IN_MILE),
-    METRIC_METERS(3, MeasurementConversionUtil.METERS_IN_METER),
-    METRIC_KILOMETERS(4, MeasurementConversionUtil.METERS_IN_KILOMETER);
+    METRIC_FEET(3, MeasurementConversionUtil.METERS_IN_METER),
+    METRIC_MILES(4, MeasurementConversionUtil.METERS_IN_KILOMETER);
     
     private int code;
     private double metersPer;
@@ -31,6 +31,16 @@ public enum MeasurementLengthType implements BaseEnum {
     }
     public Number convertToMeters(Number lengthIn){
         return lengthIn==null?null:(lengthIn.doubleValue()*metersPer);
+    }
+    public Number convertToUnit(Number lengthIn, MeasurementLengthType unitToOutput){
+        Number result;
+        if(unitToOutput==this){
+            result = lengthIn;
+        } else {
+            Double meters = lengthIn.doubleValue() * metersPer;
+            result = meters/unitToOutput.metersPer;
+        }
+        return result;
     }
     private static final Map<Integer, MeasurementLengthType> lookup = new DefaultedMap<Integer,MeasurementLengthType>(new HashMap<Integer, MeasurementLengthType>(),
             MeasurementLengthType.ENGLISH_MILES);
