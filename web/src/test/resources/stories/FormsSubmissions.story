@@ -61,6 +61,13 @@ And I click the Refresh button
 Then I validate the 1st Row of the Date Time Entry text contains "2012-08-31"
 And I validate the 2nd Row of the Date Time Entry text contains "2012-08-31"
 And I validate the 3rd Row of the Date Time Entry text contains "2012-08-31"
+And I validate the 4th Row of the Date Time Entry text contains "2012-08-31"
+And I validate the 5th Row of the Date Time Entry text contains "2012-08-31"
+And I validate the 6th Row of the Date Time Entry text contains "2012-08-31"
+And I validate the 7th Row of the Date Time Entry text contains "2012-08-31"
+And I validate the 8th Row of the Date Time Entry text contains "2012-08-31"
+And I validate the 9th Row of the Date Time Entry text contains "2012-08-31"
+And I validate the 10th Row of the Date Time Entry text contains "2012-08-31"
 
 Scenario: TCXXXX Forms Submissions Page - Click on Group Name link
 Given I am logged in
@@ -86,7 +93,6 @@ Then I validate I am on the Vehicle Performance page
 Scenario: TCXXXX Forms Submissions Page - Approve a Form checkbox
 Given I am logged in
 When I go to the forms submissions page
-And I click the Refresh button
 And I check the 1st Row of the Approved Entry checkbox
 Then I validate the 1st Row of the Approved Entry checkbox is checked
 And I uncheck the 1st Row of the Approved Entry checkbox
@@ -95,7 +101,6 @@ And I validate the 1st Row of the Approved Entry checkbox is not checked
 Scenario: TCXXXX: Forms Submissions Page - Records per page test
 Given I am logged in
 When I go to the forms submissions page
-And I click the Refresh button
 Then I validate the 11th Row of the Date Time Entry text is not present
 And I validate the Entries text contains "Showing 1 to 10"
 And I select "25" from the Records Per Page dropdown
@@ -157,15 +162,18 @@ When I go to the forms submissions page
 And I click the Refresh button
 And I check the 1st Row of the Approved Entry checkbox
 And I select "yes" from the Approved dropdown
-And I click the Refresh button
+Then I validate the 1st Row of the Edited Entry text is "no"
+When I click the Refresh button
 Then I validate the 1st Row of the Approved Entry checkbox is checked
-And I uncheck the 1st Row of the Approved Entry checkbox
-And I validate the 1st Row of the Approved Entry checkbox is unchecked
+And I validate the 1st Row of the Edited Entry text is "no"
+When I uncheck the 1st Row of the Approved Entry checkbox
+Then I validate the 1st Row of the Approved Entry checkbox is not checked
+And I validate the 1st Row of the Edited Entry text is "no"
+When I click the Refresh button
+Then I validate the 1st Row of the Approved Entry checkbox is not present
+When I select "no" from the Approved dropdown
 And I click the Refresh button
-And I validate the 1st Row of the Approved Entry checkbox is not present
-And I select "no" from the Approved dropdown
-And I click the Refresh button
-And I validate the 1st Row of the Approved Entry checkbox is unchecked
+Then I validate the 1st Row of the Approved Entry checkbox is not checked
 And I validate the 1st Row of the Edited Entry text is "no"
 
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - All Forms (make sure you cannot do)
@@ -180,7 +188,7 @@ And I validate the 1st Row of the Date Entry dropdown is not present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Cancel Changes
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form: PRE_TRIP (1)" from the Form dropdown
+And I select "Form TCXXXX28 (5)" from the Form dropdown
 And I click the Refresh button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "no"
@@ -208,7 +216,7 @@ And I validate the 1st Row of the Choosemany Entry text is SAVEDCHOOSEMANY
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Save Changes
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form: PRE_TRIP (1)" from the Form dropdown
+And I select "Form TCXXXX28 (5)" from the Form dropdown
 And I click the Refresh button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "no"
@@ -236,7 +244,7 @@ And I validate the 1st Row of the Choosemany Entry text is not SAVEDCHOOSEMANY
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - blank fields
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form: PRE_TRIP (1)" from the Form dropdown
+And I select "Form TCXXXX28 (5)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "" into the 1st Row of the Text Entry textfield
@@ -252,7 +260,7 @@ And I validate the Invalid Date Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - text out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form: PRE_TRIP (1)" from the Form dropdown
+And I select "Form TCXXXX28 (5)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "x" into the 1st Row of the Text Entry textfield
@@ -265,7 +273,7 @@ And I validate the Invalid Text Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - numeric out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form: PRE_TRIP (1)" from the Form dropdown
+And I select "Form TCXXXX28 (5)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "1" into the 1st Row of the Numeric Entry textfield
@@ -278,7 +286,7 @@ And I validate the Invalid Numeric Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - decimal out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form: PRE_TRIP (1)" from the Form dropdown
+And I select "Form TCXXXX28 (5)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "-0.9" into the 1st Row of the Decimal Entry textfield
@@ -291,7 +299,7 @@ And I validate the Invalid Decimal Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - date out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form: PRE_TRIP (1)" from the Form dropdown
+And I select "Form TCXXXX28 (5)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I select 32 days in the future from the 1st Row of the Date Entry dropdown

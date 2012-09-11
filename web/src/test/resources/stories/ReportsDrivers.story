@@ -340,7 +340,7 @@ And I validate the 7th Row of the Column checkbox is present
 And I validate the 8th Row of the Column checkbox is present
 And I validate the 9th Row of the Column checkbox is present
 And I validate the 1st Row of the Column checkbox is checked
-And I validate the 2nd Row of the Column checkbox is unchecked
+And I validate the 2nd Row of the Column checkbox is not checked
 And I validate the 3rd Row of the Column checkbox is checked
 And I validate the 4th Row of the Column checkbox is checked
 And I validate the 5th Row of the Column checkbox is checked
