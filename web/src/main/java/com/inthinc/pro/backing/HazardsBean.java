@@ -54,8 +54,8 @@ public class HazardsBean extends BaseBean {
     }
 
     public void loadHazards(){
-        //TODO: what is the default behavior load the globe?
-        loadHazards(-90.0, -180.0, 90.0, 180.0);
+        //load the world
+        loadHazards(-90.0, -180.0, 90.0, 180.0); 
     }
     public void loadHazards(Double lat1, Double lng1, Double lat2, Double lng2) {
         System.out.println("public void loadHazards(Double "+lat1+", Double "+lng1+", Double "+lat2+", Double "+lng2+")");
@@ -70,7 +70,6 @@ public class HazardsBean extends BaseBean {
             hazardIDs.add(new SelectItem(hazard.getHazardID(), hazard.getLocation().toString()));
         }
     }
-    
 
     public List<SelectItem> getHazardTypeSelectItems(){
         return SelectItemUtil.toList(HazardType.class, false);
@@ -226,8 +225,13 @@ public class HazardsBean extends BaseBean {
 
     public Hazard getItem() {
         //TODO: not clear if there is any legit reason to JUST give the first???
-        if ((item == null) && (getHazards().size() > 0))
+        if(item == null){
+            if(getHazards().isEmpty()){
+                item = new Hazard();
+                hazards.add(item);
+            }
             item = hazards.get(0);
+        }
         return item;
     }
 
@@ -275,13 +279,22 @@ public class HazardsBean extends BaseBean {
         return true;
     }
     public void onTypeChange() {
+        System.out.println("onTypeChange();");
         DateTime startTime = new DateTime(item.getStartTime().getTime());
         DateTime endTime = startTime.plus(item.getType().getDefaultDuration());
         item.setEndTime(endTime.toDate());
         
         item.setRadiusMeters(item.getType().getRadius());
+        Integer radiusInUnits = (Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue();
+        item.setRadiusInUnits(radiusInUnits);
     }
-    
+    public void onRadiusChange() {
+        item.setRadiusMeters((Double) item.getRadiusUnits().convertToMeters(item.getRadiusInUnits()));
+    }
+    public void onUnitChange() {
+        System.out.println("onUnitChange()");
+        item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
+    }
     public String reset() {
 
         if (isAdd()) {

@@ -89,6 +89,11 @@ public enum HazardType implements OptionValue {
     public Boolean getBooleanValue() {
         return null;
     }
+    
+//    @Override
+//    public String toString() {
+//        return this.getClass().getSimpleName()+"."+super.toString();
+//    }
 
     public enum Severity {
         URGENT(0, "Urgent"),

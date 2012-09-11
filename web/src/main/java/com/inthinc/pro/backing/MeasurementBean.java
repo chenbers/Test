@@ -40,11 +40,11 @@ public class MeasurementBean extends BaseBean {
     public List<SelectItem> getLengthTypeItems(){
         ArrayList<SelectItem> lengthTypes = new ArrayList<SelectItem>();
         if(MeasurementType.ENGLISH == getPerson().getMeasurementType()){
-            lengthTypes.add(new SelectItem(MeasurementLengthType.ENGLISH_FEET.getCode(), MessageUtil.getMessageString(MeasurementLengthType.ENGLISH_FEET.toString(), getLocale())));
-            lengthTypes.add(new SelectItem(MeasurementLengthType.ENGLISH_MILES.getCode(), MessageUtil.getMessageString(MeasurementLengthType.ENGLISH_MILES.toString(), getLocale())));
+            lengthTypes.add(new SelectItem(MeasurementLengthType.ENGLISH_FEET, MessageUtil.getMessageString(MeasurementLengthType.ENGLISH_FEET.toString(), getLocale())));
+            lengthTypes.add(new SelectItem(MeasurementLengthType.ENGLISH_MILES, MessageUtil.getMessageString(MeasurementLengthType.ENGLISH_MILES.toString(), getLocale())));
         } else {
-            lengthTypes.add(new SelectItem(MeasurementLengthType.METRIC_METERS.getCode(), MessageUtil.getMessageString(MeasurementLengthType.METRIC_METERS.toString(), getLocale())));
-            lengthTypes.add(new SelectItem(MeasurementLengthType.METRIC_KILOMETERS.getCode(), MessageUtil.getMessageString(MeasurementLengthType.METRIC_KILOMETERS.toString(), getLocale())));
+            lengthTypes.add(new SelectItem(MeasurementLengthType.METRIC_FEET, MessageUtil.getMessageString(MeasurementLengthType.METRIC_FEET.toString(), getLocale())));
+            lengthTypes.add(new SelectItem(MeasurementLengthType.METRIC_MILES, MessageUtil.getMessageString(MeasurementLengthType.METRIC_MILES.toString(), getLocale())));
         }
         return lengthTypes;
     }
