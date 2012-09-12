@@ -33,57 +33,85 @@ Scenario: TCXXXX Forms Add Page - Save Top Button
 Given I am logged in
 When I go to the forms admin page
 And I click the Create Form Top link
-And I type "Form TCXXXX" in the Name textfield
+And I type "Form TCXXXXAdd1" in the Name textfield
 And I click the Text link
 And I click the Save Top button
 Then I validate I am on the Forms Admin page
-When I type "Form TCXXXX" into the Search Working textfield
-Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
+When I type "Form TCXXXXAdd1" into the Search Working textfield
+Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXXAdd1"
 When I click the Published link
-And I type "Form TCXXXX" into the Search Published textfield
+And I type "Form TCXXXXAdd1" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
+When I click the Working link
+And I type "Form TCXXXXAdd1" into the Search Working textfield
+And I click the 1st Row of the Entry Publish link
+Then I validate the 1st Row of the Entry Publish link is not present
+When I click the Published link
+And I type "Form TCXXXXAdd1" into the Search Published textfield
+Then I validate the 1st Row of the Entry Name Published text is "Form TCXXXXAdd1"
 
 Scenario: TCXXXX Forms Add Page - Save Bottom Button
 Given I am logged in
 When I go to the forms admin page
 And I click the Create Form Top link
-And I type "Form TCXXXX" in the Name textfield
+And I type "Form TCXXXXAdd2" in the Name textfield
 And I click the Text link
 And I click the Save Bottom button
 Then I validate I am on the Forms Admin page
-When I type "Form TCXXXX" into the Search Working textfield
-Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXX"
+When I type "Form TCXXXXAdd2" into the Search Working textfield
+Then I validate the 1st Row of the Entry Name Working text is "Form TCXXXXAdd2"
 When I click the Published link
-And I type "Form TCXXXX" into the Search Published textfield
+And I type "Form TCXXXXAdd2" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
+When I click the Working link
+And I type "Form TCXXXXAdd2" into the Search Working textfield
+And I click the 1st Row of the Entry Publish link
+Then I validate the 1st Row of the Entry Publish link is not present
+When I click the Published link
+And I type "Form TCXXXXAdd2" into the Search Published textfield
+Then I validate the 1st Row of the Entry Name Published text is "Form TCXXXXAdd2"
 
 Scenario: TCXXXX Forms Add Page - Cancel Top Button
 Given I am logged in
 When I go to the forms admin page
 And I click the Create Form Top link
-And I type "Form TCXXXX" in the Name textfield
+And I type "Form TCXXXXAdd3" in the Name textfield
 And I click the Text link
 And I click the Cancel Top button
 Then I validate I am on the Forms Admin page
-When I type "Form TCXXXX" into the Search Working textfield
+When I type "Form TCXXXXAdd3" into the Search Working textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
 When I click the Published link
-And I type "Form TCXXXX" into the Search Published textfield
+And I type "Form TCXXXXAdd3" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
+When I click the Working link
+And I type "Form TCXXXXAdd3" into the Search Working textfield
+And I click the 1st Row of the Entry Publish link
+Then I validate the 1st Row of the Entry Publish link is not present
+When I click the Published link
+And I type "Form TCXXXXAdd3" into the Search Published textfield
+Then I validate the 1st Row of the Entry Name Published text is "Form TCXXXXAdd3"
 
 Scenario: TCXXXX Forms Add Page - Cancel Bottom Button
 Given I am logged in
 When I go to the forms admin page
 And I click the Create Form Top link
-And I type "Form TCXXXX" in the Name textfield
+And I type "Form TCXXXXAdd4" in the Name textfield
 And I click the Text link
 And I click the Cancel Bottom button
 Then I validate I am on the Forms Admin page
-When I type "Form TCXXXX" into the Search Working textfield
+When I type "Form TCXXXXAdd4" into the Search Working textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
 When I click the Published link
-And I type "Form TCXXXX" into the Search Published textfield
+And I type "Form TCXXXXAdd4" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
+When I click the Working link
+And I type "Form TCXXXXAdd4" into the Search Working textfield
+And I click the 1st Row of the Entry Publish link
+Then I validate the 1st Row of the Entry Publish link is not present
+When I click the Published link
+And I type "Form TCXXXXAdd4" into the Search Published textfield
+Then I validate the 1st Row of the Entry Name Published text is "Form TCXXXXAdd4"
 
 Scenario: TCXXXX Forms Add Page - UI Test - Text link
 Given I am logged in
@@ -443,7 +471,7 @@ Scenario: TCXXXX Forms Add Page - Control required error
 Given I am logged in
 When I go to the forms admin page
 And I click the Create Form Top link
-And I type "Form TCXXXX" into the Name textfield
+And I type "Form TCXXXXAdd5" into the Name textfield
 And I click the Save Top button
 Then I validate the Control Error text contains "Form needs at least one control"
 And I validate the Name Error text is ""
@@ -460,7 +488,7 @@ Scenario: TCXXXX Forms Add Page - Control Errors Add then remove
 Given I am logged in
 When I go to the forms admin page
 And I click the Create Form Top link
-And I type "Form TCXXXX" into the Name textfield
+And I type "Form TCXXXXAdd6" into the Name textfield
 And I click the Save Top button
 Then I validate the Control Error text contains "Form needs at least one control"
 And I validate the Name Error text is ""

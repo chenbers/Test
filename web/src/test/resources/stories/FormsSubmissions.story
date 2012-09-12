@@ -188,7 +188,7 @@ And I validate the 1st Row of the Date Entry dropdown is not present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Cancel Changes
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form TCXXXX28 (5)" from the Form dropdown
+And I select "Forms Publish Test (1)" from the Form dropdown
 And I click the Refresh button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "no"
@@ -203,7 +203,7 @@ And I type "" into the 1st Row of the Text Entry textfield
 And I type "" into the 1st Row of the Numeric Entry textfield
 And I type "" into the 1st Row of the Decimal Entry textfield
 And I select 2 days in the past from the 1st Row of the Date Entry dropdown
-And I select "No" from the 1st Row of the Chooseone Entry dropdown
+And I select row 1 from the Chooseone Entry dropdown
 And I check the 1st Row of the Choosemany Entry checkbox
 And I click the 1st Row of the Cancel button
 Then I validate the 1st Row of the Text Entry text is SAVEDTEXT
@@ -216,7 +216,7 @@ And I validate the 1st Row of the Choosemany Entry text is SAVEDCHOOSEMANY
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Save Changes
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form TCXXXX28 (5)" from the Form dropdown
+And I select "Forms Publish Test (1)" from the Form dropdown
 And I click the Refresh button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "no"
@@ -227,10 +227,8 @@ And I type "New Text" into the 1st Row of the Text Entry textfield
 And I type "2" into the 1st Row of the Numeric Entry textfield
 And I type "99.99" into the 1st Row of the Decimal Entry textfield
 And I select 50 days in the past from the 1st Row of the Date Entry dropdown
-And I select "No" from the 1st Row of the Chooseone Entry dropdown
-And I uncheck the 1st Row of the Choosemany Entry checkbox
+And I select row 1 from the Chooseone Entry dropdown
 And I uncheck the 2nd Row of the Choosemany Entry checkbox
-And I uncheck the 3rd Row of the Choosemany Entry checkbox
 And I click the 1st Row of the Save button
 And I click the Sort By Edited link
 Then I validate the 1st Row of the Edited Entry text is "Yes"
@@ -238,13 +236,13 @@ And I validate the 1st Row of the Text Entry text is "New Text"
 And I validate the 1st Row of the Numeric Entry text is "2"
 And I validate the 1st Row of the Decimal Entry text is "99.99"
 And I validate the 1st Row of the Date Entry text is not SAVEDDATE
-And I validate the 1st Row of the Chooseone Entry text is "No"
+And I validate the 1st Row of the Chooseone Entry text is "option1"
 And I validate the 1st Row of the Choosemany Entry text is not SAVEDCHOOSEMANY
 
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - blank fields
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form TCXXXX28 (5)" from the Form dropdown
+And I select "Forms Publish Test (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "" into the 1st Row of the Text Entry textfield
@@ -260,7 +258,7 @@ And I validate the Invalid Date Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - text out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form TCXXXX28 (5)" from the Form dropdown
+And I select "Forms Publish Test (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "x" into the 1st Row of the Text Entry textfield
@@ -273,7 +271,7 @@ And I validate the Invalid Text Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - numeric out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form TCXXXX28 (5)" from the Form dropdown
+And I select "Forms Publish Test (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "1" into the 1st Row of the Numeric Entry textfield
@@ -286,7 +284,7 @@ And I validate the Invalid Numeric Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - decimal out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form TCXXXX28 (5)" from the Form dropdown
+And I select "Forms Publish Test (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I type "-0.9" into the 1st Row of the Decimal Entry textfield
@@ -299,7 +297,7 @@ And I validate the Invalid Decimal Error text is present
 Scenario: TCXXXX: Forms Submissions Page - Inline Edit - Generate error messages - date out of range
 Given I am logged in
 When I go to the forms submissions page
-And I select "Form TCXXXX28 (5)" from the Form dropdown
+And I select "Forms Publish Test (1)" from the Form dropdown
 And I click the Refresh button
 And I double click the 1st Row of the Date Time Entry text
 And I select 32 days in the future from the 1st Row of the Date Entry dropdown
