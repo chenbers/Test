@@ -45,10 +45,6 @@ public class PageFormsAdd extends FormsTables {
     }
 
     public class FormsAddButtons {
-
-        public TextButton saveAsNewTop() {
-            return new TextButton(FormsAddEnum.SAVE_AS_NEW_TOP);
-        }
     	
         public TextButton saveTop() {
             return new TextButton(FormsAddEnum.SAVE_TOP);
@@ -56,10 +52,6 @@ public class PageFormsAdd extends FormsTables {
         
         public TextButton cancelTop() {
         	return new TextButton(FormsAddEnum.CANCEL_TOP);
-        }
-        
-        public TextButton saveAsNewBottom() {
-            return new TextButton(FormsAddEnum.SAVE_AS_NEW_BOTTOM);
         }
         
         public TextButton saveBottom() {
