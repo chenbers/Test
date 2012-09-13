@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
     private static final LinkedHashMap<String, String> columnMap = new LinkedHashMap<String, String>();
 
     static {
-        columnMap.put("hazardID", "hazardID");
+        //columnMap.put("hazardID", "hazardID");
         columnMap.put("acctID", "acctID");
         columnMap.put("driverID", "driverID");// TODO: should be name
         columnMap.put("userID","userID");
@@ -98,6 +99,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
             hazard.setHazardID(longToInteger((Long)rs.getObject("hazardID")));
             hazard.setAcctID(longToInteger((Long)rs.getObject("acctID")));
             hazard.setDriverID(longToInteger((Long)rs.getObject("driverID")));
+            hazard.setUserID(longToInteger((Long)rs.getObject("userID")));
             hazard.setVehicleID(longToInteger((Long)rs.getObject("vehicleID")));
             hazard.setDeviceID(longToInteger((Long)rs.getObject("deviceID")));
             hazard.setType(HazardType.valueOf((Integer)rs.getObject("type")));
@@ -173,10 +175,10 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(HAZARD_INSERT, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, hazard.getAcctID());
-                ps.setObject(2, hazard.getDriverID());
-                ps.setObject(3, hazard.getUserID());
-                ps.setObject(4, hazard.getVehicleID());
-                ps.setObject(5, hazard.getDeviceID());
+                ps.setObject(2, hazard.getDriverID(), Types.INTEGER);
+                ps.setObject(3, hazard.getUserID(), Types.INTEGER);
+                ps.setObject(4, hazard.getVehicleID(), Types.INTEGER);
+                ps.setObject(5, hazard.getDeviceID(), Types.INTEGER);
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
@@ -186,13 +188,14 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus().getCode());
                 ps.setString(14, hazard.getLocation());
-                ps.setObject(15, hazard.getStateID());
+                ps.setObject(15, hazard.getStateID(), Types.INTEGER);
                 ps.setDate(16, new Date(System.currentTimeMillis()));
                 ps.setDate(17, new Date(System.currentTimeMillis()));
-
+                System.out.println(ps.toString());
                 return ps;
             }
         };
+        
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
     }

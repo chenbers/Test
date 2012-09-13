@@ -15,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
+import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -215,7 +216,7 @@ public class GoogleAddressLookup extends AddressLookup {
                     name = reader.getLocalName();
                     if (name.equalsIgnoreCase("Placemark")) {
                         placemark.setDistanceFromTarget(placemark.getDistanceFromTarget(this.latLng, measurementType));
-                        placemark.setHeadingToTarget(placemark.headingBetween(this.latLng, placemark.getLatLng()));
+                        placemark.setHeadingToTarget(GeoUtil.headingBetween(this.latLng, placemark.getLatLng()));
                         results.add(placemark);
                     }
                 }
@@ -324,45 +325,7 @@ public class GoogleAddressLookup extends AddressLookup {
                     + ", heading=" + headingToTarget + "]";
         }
         public float getDistanceFromTarget(LatLng target, MeasurementType measurementType){
-            return distBetween(this.getLatLng(), target, measurementType);
-        }
-        public String headingBetween(LatLng orig, LatLng dest) {
-          //TODO: jwimmer: could be static if there was a better place for it to live? (i.e. not in an inner class)
-            String results = " * ";
-            double deltaLong = Math.abs(orig.getLng()-dest.getLng());
-            double y = Math.sin(deltaLong) * Math.cos(dest.getLat());
-            double x = Math.cos(orig.getLat())*Math.sin(dest.getLat()) -
-                    Math.sin(orig.getLat())*Math.cos(orig.getLat())*Math.cos(deltaLong);
-            double bearing = Math.toDegrees(Math.atan2(y, x));
-            double north = 360; //or full circle in degrees
-            String[] directionals = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
-            double bearingDegreesDelta = 360; //starting at zero and the farthest bearing couldn't be more than 360 degrees away
-            for(int i = 0; i < directionals.length; i++){
-                double degrees = (north/directionals.length)*i;   
-                double tempDelta = Math.abs(bearing - degrees);
-                if(tempDelta < bearingDegreesDelta) {
-                    bearingDegreesDelta = tempDelta;
-                    results = directionals[i]; 
-                } else {
-                    break;
-                }
-            }
-            return results;
-        }
-        public float distBetween(LatLng orig, LatLng dest, MeasurementType units) {
-            //TODO: jwimmer: could be static if there was a better place for it to live? (i.e. not in an inner class)
-            double earthRadiusMiles = 3958.75;
-            double earthRadiusKilo = 6371;
-            double earthRadius = (MeasurementType.ENGLISH.equals(units))?earthRadiusMiles:earthRadiusKilo;
-            
-            double dLat = Math.toRadians(dest.getLat()-orig.getLat());
-            double dLng = Math.toRadians(dest.getLng()-orig.getLng());
-            double halfChordSquared = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                       Math.cos(Math.toRadians(orig.getLat())) * Math.cos(Math.toRadians(dest.getLat())) *
-                       Math.sin(dLng/2) * Math.sin(dLng/2);
-            double radianDistance = 2 * Math.atan2(Math.sqrt(halfChordSquared), Math.sqrt(1-halfChordSquared));
-            double dist = earthRadius * radianDistance;
-            return new Float(dist).floatValue();
+            return GeoUtil.distBetween(this.getLatLng(), target, measurementType);
         }
 
         public String getId() {

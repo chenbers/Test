@@ -24,6 +24,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     
     private Driver view_driver;
     private User view_user;
+    private State view_state;
     
     public Hazard() {
         super();
@@ -49,6 +50,12 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public void setUser(User user){
         this.view_user = user;
+    }
+    public State getState() {
+        return view_state;
+    }
+    public void setState(State state){
+        this.view_state = state;
     }
     public Date getStartTime() {
         if(startTime == null)
