@@ -6,27 +6,31 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsAddEnum implements SeleniumEnums {
     DEFAULT_URL(appUrl + "/forms/build"),
-    TITLE("Add Form", Xpath.start().span(Id.clazz("build")).toString()),
+    TITLE("Add Form", "//span[@class='admin']"),
 
     NAME_LABEL("Name:", "//label[@for='renameFormField']"),
     DESCRIPTION_LABEL("Description:", "//label[@for='description']"),
     TRIGGER_LABEL("Trigger:", "//label[@for='select-trigger']"),
     ROUTE_LABEL("Route Trigger Expression:", "//label[@for='routeTrigger']"),
     VERSION_LABEL("Version:", "//label[@for='version']"),
+    STATUS_LABEL("Status:", "//label[@for='select-status']"),
     HOS_LABEL("HOS:", "//label[@for='hos-filter']"),
     VEHICLE_TAGS_LABEL("Vehicle Tags:", "//label[@for='tags']"),
     FILTER_GROUPS_LABEL("Filter Groups:", "//label[@for='group-search']"),
     PROPERTIES_LABEL("Properties", "//div[@class='propertiesPane']/h3"),
     VIEW_PROPERTIES_LABEL("First add a control, then select it to view its properties here.", "//li[@class='emptyData']"),
     
+    SAVE_AS_NEW_TOP("Save As New", "//a[@id='saveAs-top']"),
     SAVE_TOP("Save", "//a[@id='saveForm-top']"),
     CANCEL_TOP("Cancel", "//a[@id='cancelForm-top']"),
+    SAVE_AS_NEW_BOTTOM("Save As New", "saveAs-bottom"),
     SAVE_BOTTOM("Save", "//a[@id='saveForm-bottom']"), 
     CANCEL_BOTTOM("Cancel", "//a[@id='cancelForm-bottom']"),
 
     NAME_FIELD(null, "renameFormField"),
     DESCRIPTION_FIELD(null, "description"),
     TRIGGER_DROPDOWN(null, "select-trigger"),
+    STATUS_DROPDOWN(null, "select-status"),
     ROUTE_TRIGGER_EXPRESSION_FIELD(null, "routeTrigger"),
     VERSION_TEXT(null, "//input[@id='version']"),
     HOS_DROPDOWN(null, "//select[@id='select-hos-status']"),
@@ -44,9 +48,8 @@ public enum FormsAddEnum implements SeleniumEnums {
  
     PREVIEW_AREA(null, "//div[@class='workspaceScrollArea']"),
     CONTROL_FLOW_ARROW(null, "//div[###]/div[2]/div[11]"),
-    DELETE_CONTROL(null, "//a[@class='deleteControl']"),//may need unique id /html/body/div[3]/div[2]/div/div/div[5]/div/div[###]/div[1]/a
-//All these fields and checkboxes may need unique id's cause in many cases they are pointing
-//to two different objects, one which is grayed out
+    DELETE_CONTROL(null, "//a[@class='deleteControl']"),
+    
     DATANAME_FIELD("untitled###", "property_Data Name"),
     CAPTION_FIELD(null, "//li[2]/div/ul/li/input"),
     HINT_FIELD(null, "//li[3]/div/ul/li/input"),
@@ -83,6 +86,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     
     NAME_TEXT_ERROR("Name is a required field", "//label[@id='displayNameError']"),
     CONTROL_TEXT_ERROR("Form needs at least one control", "//label[@id='payloadError']"),
+    GROUP_TEXT_ERROR("Must select at least one group", "//label[@id='groupIDsError']"),
     DATA_NAME_ERROR("This property is required", "//ul[@class='errorList']"),
     
     //GROUPS ITEMS THAT ARE NOT BEING IMPLEMENTED YET:

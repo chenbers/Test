@@ -2,6 +2,7 @@
 
 
 import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -45,12 +46,20 @@ public class PageFormsAdd extends FormsTables {
 
     public class FormsAddButtons {
 
+        public TextButton saveAsNewTop() {
+            return new TextButton(FormsAddEnum.SAVE_AS_NEW_TOP);
+        }
+    	
         public TextButton saveTop() {
             return new TextButton(FormsAddEnum.SAVE_TOP);
         }
         
         public TextButton cancelTop() {
         	return new TextButton(FormsAddEnum.CANCEL_TOP);
+        }
+        
+        public TextButton saveAsNewBottom() {
+            return new TextButton(FormsAddEnum.SAVE_AS_NEW_BOTTOM);
         }
         
         public TextButton saveBottom() {
@@ -73,8 +82,8 @@ public class PageFormsAdd extends FormsTables {
     
     public class FormsAddCheckBoxes {
     	
-    	public CheckBox groups() {
-    		return new CheckBox(FormsAddEnum.GROUPS_CHECKBOX);
+    	public CheckBoxTable groups() {
+    		return new CheckBoxTable(FormsAddEnum.GROUPS_CHECKBOX);
     	}
     	
     	public CheckBox readOnly() {
@@ -137,6 +146,10 @@ public class PageFormsAdd extends FormsTables {
     		return new DropDown(FormsAddEnum.TRIGGER_DROPDOWN);
     	}
     	
+    	public DropDown status() {
+    		return new DropDown(FormsAddEnum.STATUS_DROPDOWN);
+    	}
+    	
     	public DropDown HOS() {
     		return new DropDown(FormsAddEnum.HOS_DROPDOWN);
     	}
@@ -152,6 +165,10 @@ public class PageFormsAdd extends FormsTables {
     }
     
     public class FormsAddLinks {
+    	
+    	public TextTableLink groupsArrow() {
+    		return new TextTableLink(FormsAddEnum.GROUPS_ARROW);
+    	}
     	
     	public TextLink text() {
     		return new TextLink(FormsAddEnum.TEXT_LINK);
@@ -256,6 +273,7 @@ public class PageFormsAdd extends FormsTables {
     	public TextFieldTable optionUnderlyingValue() {
     		return new TextFieldTable(FormsAddEnum.OPTION_UNDERLYING_VALUE_FIELD);
     	}
+    	
     	public TextField relevance() {
     		return new TextField(FormsAddEnum.RELEVANCE_FIELD);
     	}
@@ -280,6 +298,10 @@ public class PageFormsAdd extends FormsTables {
     
     public class FormsAddTexts  {
     	
+    	public Text title() {
+    		return new Text(FormsAddEnum.TITLE);
+    	}
+    	
     	public Text nameLabel() {
     		return new Text(FormsAddEnum.NAME_LABEL);
     	}
@@ -298,6 +320,10 @@ public class PageFormsAdd extends FormsTables {
     	
     	public Text versionLabel() {
     		return new Text(FormsAddEnum.VERSION_LABEL);
+    	}
+    	
+    	public Text statusLabel() {
+    		return new Text(FormsAddEnum.STATUS_LABEL);
     	}
     	
     	public Text HOSLabel() {
@@ -330,6 +356,10 @@ public class PageFormsAdd extends FormsTables {
     	
     	public Text controlError() {
     		return new Text(FormsAddEnum.CONTROL_TEXT_ERROR);
+    	}
+    	
+    	public Text groupError() {
+    		return new Text(FormsAddEnum.GROUP_TEXT_ERROR);
     	}
     	
     	public Text dataNameError() {

@@ -6,10 +6,10 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsAdminEnum implements SeleniumEnums {
     DEFAULT_URL(appUrl + "/forms"),
-    TITLE("Forms", Xpath.start().span(Id.clazz("forms")).toString()),
+    TITLE("Forms", "//span[@class='admin']"),
 
     SEARCH_HEADER("Search:", "//div[@id='working-forms-table_filter']"),
-    FORMS_HEADER("Forms", "//span[@class='admin']"),
+    FORMS_HEADER("Forms", "//label[@for='formSelection']"),
     
     CREATE_FORM_TOP_LINK("Create Form", "//a[@id='addForm-top']"),
     CREATE_FORM_BOTTOM_LINK("Create Form", "//a[@id='addForm-bottom']"),
@@ -32,6 +32,7 @@ public enum FormsAdminEnum implements SeleniumEnums {
     VERSION_PUBLISHED_LINK("Version", "//th[@id='column-published-version']"),
     DESCRIPTION_WORKING_LINK("Description", "//th[@id='column-working-description']"),
     DESCRIPTION_PUBLISHED_LINK("Description", "//th[@id='column-published-description']"),
+    STATUS_WORKING_LINK("Status", "//th[@id='column-status']"),
     TRIGGER_WORKING_LINK("Trigger", "//th[@id='column-working-trigger']"),
     TRIGGER_PUBLISHED_LINK("Trigger", "//th[@id='column-published-trigger']"),
     PUBLISH_LINK("Publish", "//th[@id='column-working-publish']"),
@@ -50,10 +51,11 @@ public enum FormsAdminEnum implements SeleniumEnums {
     VERSION_PUBLISHED_ENTRY("Version", "//table[@id='published-forms-table']/tbody/tr[###]/td[3]"),
     DESCRIPTION_WORKING_ENTRY("Description", "//table[@id='working-forms-table']/tbody/tr[###]/td[4]"),
     DESCRIPTION_PUBLISHED_ENTRY("Description", "//table[@id='published-forms-table']/tbody/tr[###]/td[4]"),
-    TRIGGER_WORKING_ENTRY("Trigger", "//table[@id='working-forms-table']/tbody/tr[###]/td[5]"),
-    TRIGGER_PUBLISHED_ENTRY("Trigger", "//table[@id='published-forms-table']/tbody/tr[###]/td[5]"),
-    PUBLISH_ENTRY_LINK("Publish", "//table[@id='working-forms-table']/tbody/tr[###]/td[6]"),
-    EDIT_ENTRY_LINK("Edit", "//table[@id='working-forms-table']/tbody/tr[###]/td[7]"),
+    STATUS_WORKING_ENTRY("Status", "//table[@id='working-forms-table']/tbody/tr[###]/td[5]"),
+    TRIGGER_WORKING_ENTRY("Trigger", "//table[@id='working-forms-table']/tbody/tr[###]/td[6]"),
+    TRIGGER_PUBLISHED_ENTRY("Trigger", "//table[@id='published-forms-table']/tbody/tr[###]/td[6]"),
+    PUBLISH_ENTRY_LINK("Publish", "//table[@id='working-forms-table']/tbody/tr[###]/td[7]"),
+    EDIT_ENTRY_LINK("Edit", "//table[@id='working-forms-table']/tbody/tr[###]/td[8]"),
     
     NO_RECORDS_FOUND_WORKING_ERROR("No matching records found", "//table[@id='working-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
     NO_RECORDS_FOUND_PUBLISHED_ERROR("No matching records found", "//table[@id='published-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
