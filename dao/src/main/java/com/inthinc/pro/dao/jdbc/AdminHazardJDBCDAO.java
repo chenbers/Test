@@ -96,12 +96,12 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         @Override
         public Hazard mapRow(ResultSet rs, int rowNum) throws SQLException {
             Hazard hazard = new Hazard();
-            hazard.setHazardID(longToInteger((Long)rs.getObject("hazardID")));
-            hazard.setAcctID(longToInteger((Long)rs.getObject("acctID")));
-            hazard.setDriverID(longToInteger((Long)rs.getObject("driverID")));
-            hazard.setUserID(longToInteger((Long)rs.getObject("userID")));
-            hazard.setVehicleID(longToInteger((Long)rs.getObject("vehicleID")));
-            hazard.setDeviceID(longToInteger((Long)rs.getObject("deviceID")));
+            hazard.setHazardID(ObjectToInteger(rs.getObject("hazardID")));
+            hazard.setAcctID(ObjectToInteger(rs.getObject("acctID")));
+            hazard.setDriverID(ObjectToInteger(rs.getObject("driverID")));
+            hazard.setUserID(ObjectToInteger(rs.getObject("userID")));
+            hazard.setVehicleID(ObjectToInteger(rs.getObject("vehicleID")));
+            hazard.setDeviceID(ObjectToInteger(rs.getObject("deviceID")));
             hazard.setType(HazardType.valueOf((Integer)rs.getObject("type")));
             hazard.setRadiusMeters(rs.getInt("radius"));
             hazard.setStartTime(rs.getDate("startTime"));
@@ -109,14 +109,21 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
             hazard.setDescription(rs.getString("description"));
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
-            hazard.setStateID(longToInteger((Long)rs.getObject("stateID")));
+            hazard.setStateID(ObjectToInteger(rs.getObject("stateID")));
             hazard.setLatitude(rs.getDouble("latitude"));
             hazard.setLongitude(rs.getDouble("longitude"));
             return hazard;
         }
     };
-    private static Integer longToInteger(Long theLong){
-        Integer theInteger = theLong != null ? theLong.intValue() : null;
+    private static Integer ObjectToInteger(Object theObj){
+        Integer theInteger;
+        if(theObj == null){
+            theInteger = null;
+        } else if(theObj instanceof Long) {
+            theInteger = ((Long)theObj).intValue();
+        } else {
+            theInteger = null;
+        }
         return theInteger;
     }
 
