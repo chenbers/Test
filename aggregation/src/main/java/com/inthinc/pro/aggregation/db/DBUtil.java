@@ -17,8 +17,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.TimeZone;
 
 import javax.sql.DataSource;
@@ -50,7 +48,6 @@ public class DBUtil {
 	public static void setDataSource(String jdbcURL, String jdbcUser, String jdbcPassword) {
 
 		tiwiproDS = DataConnection.createDataSource(jdbcURL, jdbcUser, jdbcPassword);
-;
 	}
 
 	public static void setDataSource(AggregationProperties props) {
@@ -77,6 +74,26 @@ public class DBUtil {
 	    }
 	}
 
+    public static void aggStateMileageByVehicle() throws SQLException 
+    {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = tiwiproDS.getConnection();
+            statement = conn.prepareCall("{util_aggStateMileage()}");
+            statement.execute();
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw e;
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(conn, statement, resultSet);
+        } // end finally
+    }
 
 	private static final String FETCH_DEVICEDAYS2AGG = "SELECT deviceID,  DATE_FORMAT(day, '%Y-%m-%d %H:%i:%s') FROM deviceDay2Agg ORDER BY deviceID, day ASC";
     public static List<DeviceDay> getDeviceDay2Agg()  throws SQLException
