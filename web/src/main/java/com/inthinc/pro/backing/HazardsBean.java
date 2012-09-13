@@ -179,27 +179,30 @@ public class HazardsBean extends BaseBean {
         } catch (NoAddressFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (NullPointerException npe){
+            System.out.println("null pointer when trying to find location "+npe);
         }
+        item.setLocation(location);
+        item.setModified(new Date());
         if (add) {
             System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item));
-            item.setLocation(location);
+            
         } else {
             adminHazardJDBCDAO.update(item);
         }
 
-        // add a message
-        final String summary = MessageUtil.formatMessageString(add ? "hazard_added" : "hazard_updated", item.getLocation());
-        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
-        context.addMessage(null, message);
-        item.setModified(new Date());
-
         if (add) {
             Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
             hazards.put(newItem.getHazardID(), newItem);
-            item = null;
+            //item = null;
         }
+        
+     // add a message
+        final String summary = MessageUtil.formatMessageString(add ? "hazard_added" : "hazard_updated", item.getLocation());
+        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+        context.addMessage(null, message);
 
         editing = false;
 
