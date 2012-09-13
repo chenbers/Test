@@ -138,6 +138,7 @@
                                 <td><h:outputText value="#{messages.hazard_type}"/>:</td>
                                 <td>
                                     <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType"  style="width:190px">
+                                        <f:selectItem itemValue="#{null}" itemLabel="" />
                                         <f:selectItems value="#{hazardsBean.hazardTypeSelectItems}"/>
                                         <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits, endCalendar" />
                                     </h:selectOneMenu>
@@ -158,11 +159,15 @@
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_startTime}"/>:</td>
-                                <td><rich:calendar id="startCalendar" inputSize="22" value="#{hazardsBean.item.startTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px"/></td>
+                                <td><rich:calendar id="startCalendar" inputSize="22" value="#{hazardsBean.item.startTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px" /></td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_endTime}"/>:</td>
-                                <td><rich:calendar id="endCalendar" inputSize="22" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px"/></td>
+                                <td>
+                                    <rich:calendar id="endCalendar" inputSize="22" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
+                                        <a4j:support event="onchanged" action="#{hazardsBean.onExpTimeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits" />
+                                    </rich:calendar>
+                                </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_description}"/>:</td>
