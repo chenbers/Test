@@ -20,11 +20,13 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
+import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementLengthType;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.FormUtil;
@@ -107,9 +109,12 @@ public class HazardsBean extends BaseBean {
         return new ArrayList<Hazard>(getHazards().values());
     }
     public List<Vehicle> getSendToVehiclesList(){
-        Long distance = MeasurementLengthType.ENGLISH_MILES.convertToMeters(200).longValue(); //TODO: pull from bounding box???
-        LatLng location = new LatLng(item.getLat(), item.getLng());
-        List<Vehicle> results = adminVehicleJDBCDAO.findVehiclesByAccountWithinDistance(getAccountID(), distance, location);
+        Long distance = MeasurementLengthType.ENGLISH_MILES.convertToMeters(200).longValue();
+        List<Vehicle> results = new ArrayList<Vehicle>();
+        if(item !=null && item.getLat() != null && item.getLng() != null){
+            LatLng location = new LatLng(item.getLat(), item.getLng());
+            results = adminVehicleJDBCDAO.findVehiclesByAccountWithinDistance(getAccountID(), distance, location);
+        }
         return results;
     }
     
@@ -167,11 +172,19 @@ public class HazardsBean extends BaseBean {
         final boolean add = isAdd();
 
         final FacesContext context = FacesContext.getCurrentInstance();
-
+        GoogleAddressLookup gal = new GoogleAddressLookup();
+        String location = new String();
+        try {
+            location = gal.getAddress(new LatLng(item.getLat(), item.getLng()));
+        } catch (NoAddressFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if (add) {
             System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item));
+            item.setLocation(location);
         } else {
             adminHazardJDBCDAO.update(item);
         }
