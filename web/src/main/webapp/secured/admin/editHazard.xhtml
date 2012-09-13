@@ -121,23 +121,26 @@
                         <h:panelGroup layout="block" style="width:270px">
                         <table width="270" border="0" cellspacing="2" cellpadding="4" align="left">
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_latitude}"/>:</td>
+                                <td><h:outputText value="#{messages.hazard_latitude}"/>: <span class="required">*</span></td>
                                 <td>
+                                    <rich:message for="editHazard-lat-hide" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                     <h:inputText value="#{hazardsBean.item.latitude}" id="editHazard-lat" readonly="true" class="latLngText" style="width:190px"/>
-                                    <h:inputHidden value="#{hazardsBean.item.latitude}" id="editHazard-lat-hide" readonly="false"/>
+                                    <h:inputHidden value="#{hazardsBean.item.latitude}" id="editHazard-lat-hide" required="true" requiredMessage="#{messages.required}" readonly="false"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_longitude}"/>:</td>
+                                <td><h:outputText value="#{messages.hazard_longitude}"/>: <span class="required">*</span></td>
                                 <td>
+                                    <rich:message for="editHazard-lng-hide" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                     <h:inputText value="#{hazardsBean.item.longitude}" id="editHazard-lng" readonly="true" class="latLngText" style="width:190px"/>
-                                    <h:inputHidden value="#{hazardsBean.item.longitude}" id="editHazard-lng-hide" readonly="false"/>
+                                    <h:inputHidden value="#{hazardsBean.item.longitude}" id="editHazard-lng-hide" required="true" requiredMessage="#{messages.required}" readonly="false"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_type}"/>:</td>
+                                <td><h:outputText value="#{messages.hazard_type}"/>: <span class="required">*</span></td>
                                 <td>
-                                    <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType"  style="width:190px">
+                                    <rich:message for="hazardType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType" required="true" requiredMessage="#{messages.required}" style="width:190px">
                                         <f:selectItem itemValue="#{null}" itemLabel="" />
                                         <f:selectItems value="#{hazardsBean.hazardTypeSelectItems}"/>
                                         <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits, endCalendar" />
@@ -145,9 +148,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_radius}"/>:</td>
+                                <td><h:outputText value="#{messages.hazard_radius}"/>: <span class="required">*</span></td>
                                 <td>
-                                    <h:inputHidden value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters" />
+                                    <rich:message for="hazardRadiusMeters" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <h:inputHidden required="true" requiredMessage="#{messages.required}" value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters" />
                                     <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;">
                                         <a4j:support event="onchange" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" />
                                     </h:inputText>
@@ -158,13 +162,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_startTime}"/>:</td>
-                                <td><rich:calendar id="startCalendar" inputSize="22" value="#{hazardsBean.item.startTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px" /></td>
+                                <td><h:outputText value="#{messages.hazard_startTime}"/>: <span class="required">*</span></td>
+                                <td>
+                                    <rich:message for="startCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <rich:calendar id="startCalendar" required="true" requiredMessage="#{messages.required}" inputSize="22" value="#{hazardsBean.item.startTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px" />
+                                </td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="#{messages.hazard_endTime}"/>:</td>
+                                <td><h:outputText value="#{messages.hazard_endTime}"/>: <span class="required">*</span></td>
                                 <td>
-                                    <rich:calendar id="endCalendar" inputSize="22" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
+                                    <rich:message for="endCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <rich:calendar id="endCalendar" required="true" requiredMessage="#{messages.required}" inputSize="22" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
                                         <a4j:support event="onchanged" action="#{hazardsBean.onExpTimeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits" />
                                     </rich:calendar>
                                 </td>
