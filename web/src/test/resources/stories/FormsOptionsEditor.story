@@ -5,7 +5,7 @@ the Choose One and Choose Multiple fields.
 Scenario: TCXXXX Add Form - Choose One - Options Editor popup - UI
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Choose One link
 And I click the Bulk Edit link
 And the Options Editor popup opens
@@ -19,26 +19,26 @@ And I validate the Cancel link is present
 Scenario: TCXXXX Add Form - Choose One - Options Editor popup - Values - Cancel (no changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Choose One link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I click the Cancel link
 And the Options Editor popup closes
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 
 Scenario: TCXXXX Add Form - Choose One - Options Editor popup - Values - Cancel (changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Choose One link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I type "English1" into the 1st Row of the Option English textfield
@@ -46,31 +46,31 @@ And I type "underlyingvalue1" into the 1st Row of the Option Underlying Value te
 And I click the Cancel link
 And the Options Editor popup closes
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 
 Scenario: TCXXXX Add Form - Choose One - Options Editor popup - Values - Apply (no changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Choose One link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I click the Apply link
 And the Options Editor popup closes
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 
 Scenario: TCXXXX Add Form - Choose One - Options Editor popup - Values - Apply (changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Choose One link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I type "English1" into the 1st Row of the Option English textfield
@@ -83,7 +83,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "underlyi
 Scenario: TCXXXX Add Form - Choose One - Options Editor popup - Type text then open pop up
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Choose One link
 And I click the Add Option link
 And I type "English1" into the 1st Row of the Option English textfield
@@ -96,7 +96,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "underlyi
 Scenario: TCXXXX Add Form - Select Multiple - Options Editor popup - UI
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Select Multiple link
 And I click the Bulk Edit link
 And the Options Editor popup opens
@@ -110,26 +110,26 @@ And I validate the Cancel link is present
 Scenario: TCXXXX Add Form - Select Multiple - Options Editor popup - Values - Cancel (no changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Select Multiple link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I click the Cancel link
 And the Options Editor popup closes
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 
 Scenario: TCXXXX Add Form - Select Multiple - Options Editor popup - Values - Cancel (changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Select Multiple link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I type "English1" into the 1st Row of the Option English textfield
@@ -137,31 +137,31 @@ And I type "underlyingvalue1" into the 1st Row of the Option Underlying Value te
 And I click the Cancel link
 And the Options Editor popup closes
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 
 Scenario: TCXXXX Add Form - Select Multiple - Options Editor popup - Values - Apply (no changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Select Multiple link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I click the Apply link
 And the Options Editor popup closes
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 
 Scenario: TCXXXX Add Form - Select Multiple - Options Editor popup - Values - Apply (changes)
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Select Multiple link
 And I click the Add Option link
 Then I validate the 1st Row of the Option English textfield is "" 
-And I validate the 1st Row of the Option Underlying Value textfield is ""
+And I validate the 1st Row of the Option Underlying Value textfield is "0"
 When I click the Bulk Edit link
 And the Options Editor popup opens
 And I type "English1" into the 1st Row of the Option English textfield
@@ -174,7 +174,7 @@ And I validate the 1st Row of the Option Underlying Value textfield is "underlyi
 Scenario: TCXXXX Add Form - Select Multiple - Options Editor popup - Type text then open pop up
 Given I am logged in
 When I go to the forms admin page
-And I click the Create Form Top link
+And I click the Add Form Top link
 And I click the Select Multiple link
 And I click the Add Option link
 And I type "English1" into the 1st Row of the Option English textfield

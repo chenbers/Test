@@ -528,3 +528,23 @@ And I check the Display On One Screen checkbox
 And I click the Save button
 Then I validate the new form displays in the list on the Admin Form page
 And I validate the information I entered is on the form
+
+FormsSubmissions.story
+
+Scenario: TCXXXX: Forms Submissions Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
+Given I am logged in
+When I go to the forms submissions page
+And I click the Refresh button
+Then I validate the Sort By Date Time column sorts correctly
+And I click the Sort By Group link
+And I validate the Sort By Group column sorts correctly
+And I click the Sort By Driver link
+And I validate the Sort By Driver column sorts correctly
+And I click the Sort By Vehicle link
+And I validate the Sort By Vehicle column sorts correctly
+And I click the Sort By Form link
+And I validate the Sort By Form column sorts correctly
+And I click the Sort By Edited link
+And I validate the Sort By Edited column sorts correctly
+And I click the Sort By Approved link
+And I validate the Sort By Approved column sorts correctly

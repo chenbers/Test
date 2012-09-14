@@ -6,7 +6,10 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsSubmissionsEnum implements SeleniumEnums {
     DEFAULT_URL(appUrl + "/forms/submissions"),
-    TITLE("List Submissions", Xpath.start().span(Id.clazz("submissions")).toString()),
+    TITLE("List Submissions", "//span[@class='admin']"),
+
+    DATE_HEADER("Search:", "//label[@for='dateSelection']"),
+    FORM_HEADER("Forms", "//label[@for='formSelection']"),
 
     REFRESH("Refresh", "//button[@class='btn']"),
     
@@ -34,22 +37,22 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     DRIVER_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[4]"),
     VEHICLE_LINK_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[5]"),
     FORM_TEXT_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[6]"),
-    EDITED_TEXT_ENTRY(null, "//table[@id='submissions-table']/tbody/tr[###]/td[7]"),
-    APPROVED_CHECKBOX_ENTRY(null, "//input[@type='checkbox']"),
+    EDITED_TEXT_ENTRY(null, "//tr[###]/td[contains(@class,'edited')]"),
+    APPROVED_CHECKBOX_ENTRY(null, "//tr[###]/td[contains(@class,'status')]/input[@type='checkbox']"),
 
     //INLINE EDIT ELEMENTS
     TEXT_ENTRY(null, "//tr[###]/td[@class='editable string']"),
-    TEXT_TEXTFIELD_ENTRY(null, "//td[8]/form/input[@name='value']"),
+    TEXT_TEXTFIELD_ENTRY(null, "//td[@class='editable string']/form/input[@name='value']"),
     NUMERIC_ENTRY(null, "//tr[###]/td[@class='editable integer']"),
-    NUMERIC_TEXTFIELD_ENTRY(null, "//td[9]/form/input[@name='value']"),
+    NUMERIC_TEXTFIELD_ENTRY(null, "//td[@class='editable integer']/form/input[@name='value']"),
     DECIMAL_ENTRY(null, "//tr[###]/td[@class='editable decimal']"),
-    DECIMAL_TEXTFIELD_ENTRY(null, "//td[10]/form/input[@name='value']"),
+    DECIMAL_TEXTFIELD_ENTRY(null, "//td[@class='editable decimal']/form/input[@name='value']"),
     DATE_ENTRY(null, "//tr[###]/td[@class='editable jrdate']"),
-    DATE_DROPDOWN_ENTRY(null, "//td[11]/form/input[@name='value']"),
-    CHOOSEONE_ENTRY(null, "//tr[###]/td[12]"),
-    CHOOSEONE_DROPDOWN_ENTRY(null, "//select[@name='value']"),
+    DATE_DROPDOWN_ENTRY(null, "//td[@class='editable jrdate']/form/input[@name='value']"),
+    CHOOSEONE_ENTRY(null, "//tr[###]/td[@class='editable select1']"),
+    CHOOSEONE_DROPDOWN_ENTRY(null, "//td[@class='editable select1']/form/select[@name='value']"),
     CHOOSEMANY_ENTRY(null, "//tr[###]/td[@class='editable selectn']"),
-    CHOOSEMANY_CHECKBOX_ENTRY(null, "//form/div/input[###]"),
+    CHOOSEMANY_CHECKBOX_ENTRY(null, "//td[@class='editable selectn']/form/div/input[###]"),
     SAVE_BUTTON(null, "//a[@id='saveRow']"),
     CANCEL_BUTTON(null, "//a[@id='cancelRow']"),
     

@@ -2,12 +2,15 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.model.KeepAlive;
@@ -16,10 +19,16 @@ import org.joda.time.DateTime;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
+import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
+import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementLengthType;
+import com.inthinc.pro.model.NoAddressFoundException;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.FormUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -30,14 +39,17 @@ public class HazardsBean extends BaseBean {
      * 
      */
     private static final long serialVersionUID = -6165871690791113017L;
-    private List<Hazard> hazards;
+    //private List<Hazard> hazards;
+    private HashMap<Integer, Hazard> hazards;
     private AdminHazardJDBCDAO adminHazardJDBCDAO;
+    private AdminVehicleJDBCDAO adminVehicleJDBCDAO;
     private DriverDAO driverDAO;
     private UserDAO userDAO;
 
-    private List<SelectItem> hazardIDs;
     private Hazard item;
     private boolean editing;
+    private boolean defaultRadius = true;
+    private boolean defaultExpTime = true;
     protected List<Hazard> tableData;
     protected List<Hazard> filteredTableData;
     static final List<String> AVAILABLE_COLUMNS;
@@ -59,16 +71,18 @@ public class HazardsBean extends BaseBean {
     }
     public void loadHazards(Double lat1, Double lng1, Double lat2, Double lng2) {
         System.out.println("public void loadHazards(Double "+lat1+", Double "+lng1+", Double "+lat2+", Double "+lng2+")");
-        hazards = adminHazardJDBCDAO.findHazardsByUserAcct(this.getUser(), lat1, lng1, lat2, lng2);
+        List<Hazard> justHazards = adminHazardJDBCDAO.findHazardsByUserAcct(this.getUser(), lat1, lng1, lat2, lng2);
+        if(hazards == null){
+            hazards = new HashMap<Integer, Hazard>();
+        }
+        hazards.clear();
+        for(Hazard hazard: justHazards){
+            hazards.put(hazard.getHazardID(), hazard);
+        }
         System.out.println("adminHazardJDBCDAO: "+adminHazardJDBCDAO);
         System.out.println("hazards: "+hazards);
         if (hazards.isEmpty())
-            hazards = new ArrayList<Hazard>();
-
-        hazardIDs = new ArrayList<SelectItem>();
-        for (final Hazard hazard : getHazards()) {
-            hazardIDs.add(new SelectItem(hazard.getHazardID(), hazard.getLocation().toString()));
-        }
+            hazards = new HashMap<Integer,Hazard>();
     }
 
     public List<SelectItem> getHazardTypeSelectItems(){
@@ -77,29 +91,33 @@ public class HazardsBean extends BaseBean {
     public List<SelectItem> getHazardRadiusTypeSelectItems(){
         return SelectItemUtil.toList(MeasurementLengthType.class, false);
     }
-    public List<Hazard> getHazards() {
+    public Map<Integer, Hazard> getHazards() {
         if (hazards == null) {
             loadHazards();
         }
         return hazards;
     }
     public void initTableData(){
-        for(Hazard hazard: getHazards()){
+        for(Integer key: getHazards().keySet()){
             //set driver display value
+            Hazard hazard = getHazards().get(key);
             hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
             hazard.setUser(userDAO.findByID(hazard.getUserID()));
+            hazard.setState(States.getStateById(hazard.getStateID()));
         }
     }
     public List<Hazard> getTableData() {
         initTableData();
-        return getHazards();
+        return new ArrayList<Hazard>(getHazards().values());
     }
-    public List<SelectItem> getHazardIDs() {
-        if (hazardIDs == null) {
-            loadHazards();
+    public List<Vehicle> getSendToVehiclesList(){
+        Long distance = MeasurementLengthType.ENGLISH_MILES.convertToMeters(200).longValue();
+        List<Vehicle> results = new ArrayList<Vehicle>();
+        if(item !=null && item.getLat() != null && item.getLng() != null){
+            LatLng location = new LatLng(item.getLat(), item.getLng());
+            results = adminVehicleJDBCDAO.findVehiclesByAccountWithinDistance(getAccountID(), distance, location);
         }
-
-        return hazardIDs;
+        return results;
     }
     
     /**
@@ -110,6 +128,8 @@ public class HazardsBean extends BaseBean {
         item.setCreated(new Date());
         item.setStatus(HazardStatus.ACTIVE);
         editing = true;
+        defaultRadius = true;
+        defaultExpTime = true;
         return "adminEditHazard";
     }
 
@@ -118,7 +138,17 @@ public class HazardsBean extends BaseBean {
      */
     public String edit() {
         editing = true;
+        defaultRadius = (item.getRadiusMeters() == item.getType().getRadius());
+        DateTime startTime = new DateTime(item.getStartTime().getTime());
+        DateTime defaultEndTime = startTime.plus(item.getType().getDefaultDuration());
+        defaultExpTime = (item.getEndTime().equals(defaultEndTime));
         return "adminEditHazard";
+    }
+    
+    public void editListener(ActionEvent event){
+        System.out.println("editListener event: "+event);
+        Integer hazardIDToEdit = (Integer)event.getComponent().getAttributes().get("hazardID");
+        item = hazards.get(hazardIDToEdit);
     }
 
     /**
@@ -126,6 +156,8 @@ public class HazardsBean extends BaseBean {
      */
     public String cancelEdit() {
         editing = false;
+        defaultRadius = true;
+        defaultExpTime = true;
         if (isAdd())
             item = null;
         //TODO: use the following if there were/are complex objects inside the Hazard object ELSE remove
@@ -150,28 +182,37 @@ public class HazardsBean extends BaseBean {
         final boolean add = isAdd();
 
         final FacesContext context = FacesContext.getCurrentInstance();
-
+        GoogleAddressLookup gal = new GoogleAddressLookup();
+        String location = new String();
+        try {
+            location = gal.getAddress(new LatLng(item.getLat(), item.getLng()));
+        } catch (NoAddressFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NullPointerException npe){
+            System.out.println("null pointer when trying to find location "+npe);
+        }
+        item.setLocation(location);
+        item.setModified(new Date());
         if (add) {
             System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item));
+
+            Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
+            hazards.put(newItem.getHazardID(), newItem);
         } else {
             adminHazardJDBCDAO.update(item);
         }
-
-        // add a message
+        
+     // add a message
         final String summary = MessageUtil.formatMessageString(add ? "hazard_added" : "hazard_updated", item.getLocation());
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         context.addMessage(null, message);
-        item.setModified(new Date());
-
-        if (add) {
-            Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
-            hazards.add(newItem);
-            item = null;
-        }
 
         editing = false;
+        defaultRadius = true;
+        defaultExpTime = true;
 
         return "adminHazards";
     }
@@ -205,8 +246,6 @@ public class HazardsBean extends BaseBean {
         return getHazards().size();
     }
 
-
-
     public Integer getItemID() {
         if (getItem() != null)
             return item.getHazardID();
@@ -214,20 +253,14 @@ public class HazardsBean extends BaseBean {
     }
 
     public void setItemID(Integer itemID) {
-        item = null;
-        if (itemID != null)
-            for (final Hazard hazard : getHazards())
-                if (hazard.getHazardID() != null && hazard.getHazardID().equals(itemID)) {
-                    item = hazard;
-                    break;
-                }
+        item = hazards.get(itemID);
     }
 
     public Hazard getItem() {
         if(item == null){
             if(getHazards().isEmpty()){
                 item = new Hazard();
-                hazards.add(item);
+                hazards.put(null,item);
             }
             item = hazards.get(0);
         }
@@ -257,7 +290,6 @@ public class HazardsBean extends BaseBean {
      * @return Whether the edit item passed validation.
      */
     private boolean validate() {
-        //TODO this is the place for validation
         final FacesContext context = FacesContext.getCurrentInstance();
         if(item != null){
             boolean startsBeforeItEnds = item.getStartTime().before(item.getEndTime());
@@ -274,28 +306,48 @@ public class HazardsBean extends BaseBean {
                 context.addMessage(null, message);
                 return false;
             }
+            
         }
         return true;
     }
     public void onTypeChange() {
         System.out.println("onTypeChange();");
         DateTime startTime = new DateTime(item.getStartTime().getTime());
-        DateTime endTime = startTime.plus(item.getType().getDefaultDuration());
-        item.setEndTime(endTime.toDate());
-        
-        item.setRadiusMeters(item.getType().getRadius());
-        Integer radiusInUnits = (Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue();
-        item.setRadiusInUnits(radiusInUnits);
+        Date newEndTime =        (item.getType()==null)?null: startTime.plus(item.getType().getDefaultDuration()).toDate();
+        Double newRadiusMeters = (item.getType()==null)?null: item.getType().getRadius();
+        Integer radiusInUnits =  (item.getType()==null)?null: (Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue();
+
+        if(defaultExpTime){
+            item.setEndTime(newEndTime);
+        }
+        if(defaultRadius){
+           item.setRadiusMeters(newRadiusMeters);
+            item.setRadiusInUnits(radiusInUnits);
+        }
+    }
+    
+    public void onExpTimeChangeListener(ActionEvent event){
+        System.out.println("onExpTimeChangeListener event: "+event);
+        defaultExpTime = false;
+    }
+    public void onExpTimeChange() {
+        System.out.println("onExpTimeChange");
+        defaultExpTime = false;
     }
     public void onRadiusChange() {
+        System.out.println("onRadiusChange() ");
+        defaultRadius = false;
         item.setRadiusMeters((Double) item.getRadiusUnits().convertToMeters(item.getRadiusInUnits()));
     }
     public void onUnitChange() {
         System.out.println("onUnitChange()");
-        item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
+        if(item.getRadiusMeters() !=null){
+            item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
+        }
     }
     public String reset() {
-
+        defaultRadius = true;
+        defaultExpTime = true;
         if (isAdd()) {
             item = new Hazard();
             item.setCreated(new Date());
@@ -303,11 +355,10 @@ public class HazardsBean extends BaseBean {
         } else {
             hazards.remove(item);
             item = adminHazardJDBCDAO.findByID(item.getHazardID());
-            hazards.add(item);
+            hazards.put(item.getHazardID(), item);
         }
-
+        
         return "adminEditHazard";
-
     }
     public AdminHazardJDBCDAO getAdminHazardJDBCDAO() {
         return adminHazardJDBCDAO;
@@ -315,11 +366,8 @@ public class HazardsBean extends BaseBean {
     public void setAdminHazardJDBCDAO(AdminHazardJDBCDAO adminHazardJDBCDAO) {
         this.adminHazardJDBCDAO = adminHazardJDBCDAO;
     }
-    public void setHazards(List<Hazard> hazards) {
+    public void setHazards(HashMap<Integer, Hazard> hazards) {
         this.hazards = hazards;
-    }
-    public void setHazardIDs(List<SelectItem> hazardIDs) {
-        this.hazardIDs = hazardIDs;
     }
     public void setItem(Hazard item) {
         this.item = item;
@@ -346,5 +394,11 @@ public class HazardsBean extends BaseBean {
     }
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+    public AdminVehicleJDBCDAO getAdminVehicleJDBCDAO() {
+        return adminVehicleJDBCDAO;
+    }
+    public void setAdminVehicleJDBCDAO(AdminVehicleJDBCDAO adminVehicleJDBCDAO) {
+        this.adminVehicleJDBCDAO = adminVehicleJDBCDAO;
     }
 }
