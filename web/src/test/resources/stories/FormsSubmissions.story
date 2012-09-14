@@ -326,21 +326,3 @@ Then I validate the Invalid Date Error text is present
 And I select 180 days in the past from the 1st Row of the Date Entry dropdown
 And I click the 1st Row of the Save button
 And I validate the Invalid Date Error text is present
-
-Scenario: TCXXXX: Forms Submissions Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
-Given I am logged in
-When I go to the forms submissions page
-And I click the Refresh button
-Then I validate the Sort By Date Time column sorts correctly
-And I click the Sort By Group link
-And I validate the Sort By Group column sorts correctly
-And I click the Sort By Driver link
-And I validate the Sort By Driver column sorts correctly
-And I click the Sort By Vehicle link
-And I validate the Sort By Vehicle column sorts correctly
-And I click the Sort By Form link
-And I validate the Sort By Form column sorts correctly
-And I click the Sort By Edited link
-And I validate the Sort By Edited column sorts correctly
-And I click the Sort By Approved link
-And I validate the Sort By Approved column sorts correctly

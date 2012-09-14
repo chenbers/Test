@@ -32,6 +32,11 @@ public class LoginSteps extends WebSteps {
     // page._textField().password().type(MasterTest.switchCase(autouser.getPassword()));
     // }
 
+    @Given("I clean the database for this account")
+    public void cleanup() {
+    	//TODO: Add code to clear out the forms database before running all tests
+    }
+    
     @When("I enter non valid email text into the email address field")
     public void whenIEnterNonValidEmailTextIntoTheEmailAddressField() {
         page._popUp().forgotPassword()._textField().email().type("z"); // doesn't conform to rule * x to y characters ??
