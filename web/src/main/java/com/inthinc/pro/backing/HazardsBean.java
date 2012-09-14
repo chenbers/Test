@@ -48,6 +48,8 @@ public class HazardsBean extends BaseBean {
 
     private Hazard item;
     private boolean editing;
+    private boolean defaultRadius = true;
+    private boolean defaultExpTime = true;
     protected List<Hazard> tableData;
     protected List<Hazard> filteredTableData;
     static final List<String> AVAILABLE_COLUMNS;
@@ -126,6 +128,8 @@ public class HazardsBean extends BaseBean {
         item.setCreated(new Date());
         item.setStatus(HazardStatus.ACTIVE);
         editing = true;
+        defaultRadius = true;
+        defaultExpTime = true;
         return "adminEditHazard";
     }
 
@@ -134,6 +138,10 @@ public class HazardsBean extends BaseBean {
      */
     public String edit() {
         editing = true;
+        defaultRadius = (item.getRadiusMeters() == item.getType().getRadius());
+        DateTime startTime = new DateTime(item.getStartTime().getTime());
+        DateTime defaultEndTime = startTime.plus(item.getType().getDefaultDuration());
+        defaultExpTime = (item.getEndTime().equals(defaultEndTime));
         return "adminEditHazard";
     }
     
@@ -148,6 +156,8 @@ public class HazardsBean extends BaseBean {
      */
     public String cancelEdit() {
         editing = false;
+        defaultRadius = true;
+        defaultExpTime = true;
         if (isAdd())
             item = null;
         //TODO: use the following if there were/are complex objects inside the Hazard object ELSE remove
@@ -188,15 +198,11 @@ public class HazardsBean extends BaseBean {
             System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item));
-            
-        } else {
-            adminHazardJDBCDAO.update(item);
-        }
 
-        if (add) {
             Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
             hazards.put(newItem.getHazardID(), newItem);
-            //item = null;
+        } else {
+            adminHazardJDBCDAO.update(item);
         }
         
      // add a message
@@ -205,6 +211,8 @@ public class HazardsBean extends BaseBean {
         context.addMessage(null, message);
 
         editing = false;
+        defaultRadius = true;
+        defaultExpTime = true;
 
         return "adminHazards";
     }
@@ -282,7 +290,6 @@ public class HazardsBean extends BaseBean {
      * @return Whether the edit item passed validation.
      */
     private boolean validate() {
-        //TODO this is the place for validation
         final FacesContext context = FacesContext.getCurrentInstance();
         if(item != null){
             boolean startsBeforeItEnds = item.getStartTime().before(item.getEndTime());
@@ -299,28 +306,48 @@ public class HazardsBean extends BaseBean {
                 context.addMessage(null, message);
                 return false;
             }
+            
         }
         return true;
     }
     public void onTypeChange() {
         System.out.println("onTypeChange();");
         DateTime startTime = new DateTime(item.getStartTime().getTime());
-        DateTime endTime = startTime.plus(item.getType().getDefaultDuration());
-        item.setEndTime(endTime.toDate());
-        
-        item.setRadiusMeters(item.getType().getRadius());
-        Integer radiusInUnits = (Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue();
-        item.setRadiusInUnits(radiusInUnits);
+        Date newEndTime =        (item.getType()==null)?null: startTime.plus(item.getType().getDefaultDuration()).toDate();
+        Double newRadiusMeters = (item.getType()==null)?null: item.getType().getRadius();
+        Integer radiusInUnits =  (item.getType()==null)?null: (Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue();
+
+        if(defaultExpTime){
+            item.setEndTime(newEndTime);
+        }
+        if(defaultRadius){
+           item.setRadiusMeters(newRadiusMeters);
+            item.setRadiusInUnits(radiusInUnits);
+        }
+    }
+    
+    public void onExpTimeChangeListener(ActionEvent event){
+        System.out.println("onExpTimeChangeListener event: "+event);
+        defaultExpTime = false;
+    }
+    public void onExpTimeChange() {
+        System.out.println("onExpTimeChange");
+        defaultExpTime = false;
     }
     public void onRadiusChange() {
+        System.out.println("onRadiusChange() ");
+        defaultRadius = false;
         item.setRadiusMeters((Double) item.getRadiusUnits().convertToMeters(item.getRadiusInUnits()));
     }
     public void onUnitChange() {
         System.out.println("onUnitChange()");
-        item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
+        if(item.getRadiusMeters() !=null){
+            item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
+        }
     }
     public String reset() {
-
+        defaultRadius = true;
+        defaultExpTime = true;
         if (isAdd()) {
             item = new Hazard();
             item.setCreated(new Date());
@@ -330,9 +357,8 @@ public class HazardsBean extends BaseBean {
             item = adminHazardJDBCDAO.findByID(item.getHazardID());
             hazards.put(item.getHazardID(), item);
         }
-
+        
         return "adminEditHazard";
-
     }
     public AdminHazardJDBCDAO getAdminHazardJDBCDAO() {
         return adminHazardJDBCDAO;
