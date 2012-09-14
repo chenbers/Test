@@ -1,7 +1,5 @@
 package com.inthinc.device.emulation.utils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import com.inthinc.device.emulation.interfaces.SbsHessianInterface;
@@ -11,7 +9,6 @@ import com.inthinc.sbs.SpeedLimit;
 import com.inthinc.sbs.downloadmanager.SbsDownloadManager;
 import com.inthinc.sbs.regions.SbsMap;
 import com.inthinc.sbs.simpledatatypes.SbsPoint;
-import com.inthinc.sbs.simpledatatypes.VisitedMap;
 import com.inthinc.sbs.strategies.CoverageStrategy;
 import com.inthinc.sbs.strategies.FivePointWindowStrategy;
 import com.inthinc.sbs.strategies.ProximityAndHeadingStrategy;
@@ -22,11 +19,11 @@ public class EmulationSbs extends Sbs {
 	public EmulationSbs(String prefix, int requiredBaseline,
 			int entryCountThresh, SbsDownloadManager downloadManager,
 			CoverageStrategy coverageStrat, SpeedlimitStrategy speedlimStrat,
-			Map<Integer, VisitedMap> visitedMaps, ExecutorService threadManager)
+			ExecutorService threadManager)
 			throws IllegalArgumentException {
 		
 		super(prefix, requiredBaseline, entryCountThresh, downloadManager,
-				coverageStrat, speedlimStrat, visitedMaps, threadManager);
+				coverageStrat, speedlimStrat, threadManager);
 	}
 	
 	public EmulationSbs(SbsHessianInterface server, String mcmID) {
@@ -36,7 +33,7 @@ public class EmulationSbs extends Sbs {
 	public EmulationSbs(SbsHessianInterface server, String mcmID, int baseLine){
 		this("target/sbs", baseLine, 100, new EmulationSBSDownloadManager(server, mcmID),
 				new FivePointWindowStrategy(), new ProximityAndHeadingStrategy(12000, 45), 
-    			new HashMap<Integer, VisitedMap>(), new EmulationSameThreadExecutor());
+    			new EmulationSameThreadExecutor());
 	}
 
 	@Override
