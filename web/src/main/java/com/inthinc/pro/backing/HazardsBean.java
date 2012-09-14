@@ -290,7 +290,6 @@ public class HazardsBean extends BaseBean {
      * @return Whether the edit item passed validation.
      */
     private boolean validate() {
-        //TODO this is the place for validation
         final FacesContext context = FacesContext.getCurrentInstance();
         if(item != null){
             boolean startsBeforeItEnds = item.getStartTime().before(item.getEndTime());
@@ -307,6 +306,7 @@ public class HazardsBean extends BaseBean {
                 context.addMessage(null, message);
                 return false;
             }
+            
         }
         return true;
     }
@@ -335,6 +335,7 @@ public class HazardsBean extends BaseBean {
         defaultExpTime = false;
     }
     public void onRadiusChange() {
+        System.out.println("onRadiusChange() ");
         defaultRadius = false;
         item.setRadiusMeters((Double) item.getRadiusUnits().convertToMeters(item.getRadiusInUnits()));
     }
@@ -356,9 +357,8 @@ public class HazardsBean extends BaseBean {
             item = adminHazardJDBCDAO.findByID(item.getHazardID());
             hazards.put(item.getHazardID(), item);
         }
-
+        
         return "adminEditHazard";
-
     }
     public AdminHazardJDBCDAO getAdminHazardJDBCDAO() {
         return adminHazardJDBCDAO;
