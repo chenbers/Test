@@ -8,6 +8,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     private Date startTime;
     private Date endTime;
     private Integer radiusMeters;
+    private Integer radiusInUnits;
     private MeasurementLengthType radiusUnits;
     private HazardType type;
     private String description = "";
@@ -23,6 +24,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     
     private Driver view_driver;
     private User view_user;
+    private State view_state;
     
     public Hazard() {
         super();
@@ -49,6 +51,12 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setUser(User user){
         this.view_user = user;
     }
+    public State getState() {
+        return view_state;
+    }
+    public void setState(State state){
+        this.view_state = state;
+    }
     public Date getStartTime() {
         if(startTime == null)
             return new Date();
@@ -65,7 +73,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public Integer getRadiusMeters() {
         if(radiusMeters!=null){
-            return (int) Math.ceil(this.getRadiusUnits().convertToMeters(radiusMeters).doubleValue());
+            return radiusMeters;
         } else if(getType()==null){
             return radiusMeters;
         }
@@ -143,15 +151,20 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public void setRadiusMeters(Double radius) {
         //we are storing meters as an int in the DB, always round UP to err on the side of caution
-        this.radiusMeters = (int)Math.ceil(radius);
+        Integer radiusInt = (radius != null)?(int)Math.ceil(radius):null;
+        this.radiusMeters = radiusInt;
     }
     public void setRadiusMeters(Integer radius) {
-        setRadiusMeters(radius.doubleValue());
+        Double radiusDouble = (radius != null)?radius.doubleValue():null;
+        setRadiusMeters(radiusDouble);
     }
     public void setType(HazardType type) {
         this.type = type;
     }
     public void setType(Integer type){
+        this.type = HazardType.valueOf(type);
+    }
+    public void setType(String type){
         this.type = HazardType.valueOf(type);
     }
     public void setDriverID(Integer driverID) {
@@ -173,9 +186,18 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.stateID = stateID;
     }
     public MeasurementLengthType getRadiusUnits() {
-        return radiusUnits!=null?radiusUnits:MeasurementLengthType.METRIC_METERS;
+        return radiusUnits!=null?radiusUnits:MeasurementLengthType.ENGLISH_MILES;
     }
     public void setRadiusUnits(MeasurementLengthType radiusUnits) {
         this.radiusUnits = radiusUnits;
+    }
+    public void setRadiusUnits(Integer code){
+        this.radiusUnits = MeasurementLengthType.valueOf(code);
+    }
+    public Integer getRadiusInUnits() {
+        return radiusInUnits;
+    }
+    public void setRadiusInUnits(Integer radiusInUnits) {
+        this.radiusInUnits = radiusInUnits;
     }
 }

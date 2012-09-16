@@ -13,7 +13,7 @@ public class NoteTesterGeneration {
 	
 	public static void main(String args[]) {
 		
-        TiwiProDevice testVehicleOne = new TiwiProDevice("999999000109741", AutoSilos.QA);
+        TiwiProDevice testVehicleOne = new TiwiProDevice("011596000041321", AutoSilos.DEV);
         TiwiProDevice tiwi01 = new TiwiProDevice("011596000038897", AutoSilos.QA);
         TiwiProDevice tiwi02 = new TiwiProDevice("011596000038897", AutoSilos.QA);
         TiwiProDevice tiwi03 = new TiwiProDevice("011596000038897", AutoSilos.QA);

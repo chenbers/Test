@@ -301,6 +301,7 @@
   
   <bean id="hazardsBean" class="com.inthinc.pro.backing.HazardsBean" scope="session" parent="baseBean">
       <property name="adminHazardJDBCDAO" ref="adminHazardJDBCDAO"></property>
+      <property name="adminVehicleJDBCDAO" ref="adminVehicleJDBCDAO"></property>
   </bean>
   
   <bean id="redFlagOrZoneAlertsBean" class="com.inthinc.pro.backing.RedFlagOrZoneAlertsBean" scope="session" init-method="initBean"/>

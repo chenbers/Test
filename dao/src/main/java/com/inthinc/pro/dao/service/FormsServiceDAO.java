@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +22,9 @@ import org.apache.http.HttpStatus;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-import com.inthinc.forms.common.model.SubmissionData;
-import com.inthinc.forms.common.model.SubmissionDataItem;
-import com.inthinc.forms.common.model.enums.TriggerType;
 import com.inthinc.pro.dao.FormsDAO;
+import com.inthinc.pro.model.form.SubmissionData;
+import com.inthinc.pro.model.form.TriggerType;
 
 @SuppressWarnings("serial")
 public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> implements FormsDAO {

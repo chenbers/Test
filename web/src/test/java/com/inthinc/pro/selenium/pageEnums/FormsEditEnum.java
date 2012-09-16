@@ -4,9 +4,9 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
-public enum FormsAddEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms/build"),
-    TITLE("Add Form", "//span[@class='admin']"),
+public enum FormsEditEnum implements SeleniumEnums {
+    DEFAULT_URL(appUrl + "/forms/buildedit"),
+    TITLE("Edit Form", "//span[@class='admin']"),
 
     NAME_LABEL("Name:", "//label[@for='renameFormField']"),
     DESCRIPTION_LABEL("Description:", "//label[@for='description']"),
@@ -20,8 +20,10 @@ public enum FormsAddEnum implements SeleniumEnums {
     PROPERTIES_LABEL("Properties", "//div[@class='propertiesPane']/h3"),
     VIEW_PROPERTIES_LABEL("First add a control, then select it to view its properties here.", "//li[@class='emptyData']"),
     
+    SAVE_AS_NEW_TOP("Save As New", "//a[@id='saveAs-top']"),
     SAVE_TOP("Save", "//a[@id='saveForm-top']"),
     CANCEL_TOP("Cancel", "//a[@id='cancelForm-top']"),
+    SAVE_AS_NEW_BOTTOM("Save As New", "saveAs-bottom"),
     SAVE_BOTTOM("Save", "//a[@id='saveForm-bottom']"), 
     CANCEL_BOTTOM("Cancel", "//a[@id='cancelForm-bottom']"),
 
@@ -47,7 +49,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     PREVIEW_AREA(null, "//div[@class='workspaceScrollArea']"),
     CONTROL_FLOW_ARROW(null, "//div[###]/div[2]/div[11]"),
     DELETE_CONTROL(null, "//a[@class='deleteControl']"),
-    
+
     DATANAME_FIELD("untitled###", "property_Data Name"),
     CAPTION_FIELD(null, "//li[2]/div/ul/li/input"),
     HINT_FIELD(null, "//li[3]/div/ul/li/input"),
@@ -97,10 +99,10 @@ public enum FormsAddEnum implements SeleniumEnums {
     private String text, url;
     private String[] IDs;
     
-    private FormsAddEnum(String url){
+    private FormsEditEnum(String url){
     	this.url = url;
     }
-    private FormsAddEnum(String text, String ...IDs){
+    private FormsEditEnum(String text, String ...IDs){
         this.text=text;
     	this.IDs = IDs;
     }

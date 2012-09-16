@@ -140,8 +140,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public CoreMethodLib doubleClick(SeleniumEnumWrapper myEnum) {
-        // TODO Auto-generated method stub
-        return null;
+        String element = getClickable(getLocator(myEnum));
+        doubleClick(element);
+        AutomationThread.pause(2, "double click(" + myEnum + ")");
+        loadPause();
+        return this;
     }
 
     @Override

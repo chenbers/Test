@@ -32,10 +32,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.forms.common.model.SubmissionData;
-import com.inthinc.forms.common.model.SubmissionDataItem;
-import com.inthinc.forms.common.model.enums.TriggerType;
 import com.inthinc.pro.automation.models.Group;
+import com.inthinc.pro.model.form.SubmissionData;
+import com.inthinc.pro.model.form.SubmissionDataItem;
+import com.inthinc.pro.model.form.TriggerType;
 
 public class FormsServiceDAOTest {
 
@@ -238,7 +238,7 @@ public class FormsServiceDAOTest {
         DateTime dateTime = new DateTime();
         dateTime = dateTime.minusYears(1);
         List<SubmissionData> formSubmissions = formsDAO.getSubmissions(TriggerType.PRE_TRIP, dateTime.toDate(), new Date(), 11546);
-        assertTrue(formSubmissions.size()>0);
+        assertTrue(formSubmissions != null);
        
     }
 }

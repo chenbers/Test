@@ -116,7 +116,6 @@
 
                   <a4j:outputPanel id="displayHazard">
                     <h:panelGroup>
-
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
@@ -132,7 +131,6 @@
                           <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
                         </li>
                       </ul>
-
                     </h:panelGroup>
                   </a4j:outputPanel>
 
@@ -181,7 +179,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_region}" />
                 </f:facet>
-                <h:outputText value="#{item.stateID}" />
+                <h:outputText value="#{item.state.name}" />
             </rich:column>
             
             <rich:column id="location" sortBy="#{item.location}" >
@@ -221,35 +219,44 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_type}" />
                 </f:facet>
-               <h:outputText value="#{item.type}"/>
+               <h:outputText value="#{messages[item.type]}"/>
             </rich:column>
             
             <rich:column id="status" sortBy="#{item.status}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_status}" />
                 </f:facet>
-               <h:outputText value="#{item.status}"/>
+               <h:outputText value="#{messages[item.status]}"/>
             </rich:column>
             
             <rich:column id="startTime" sortBy="#{item.startTime}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_startTime}" />
                 </f:facet>
-               <h:outputText value="#{item.startTime}"/>
+                <h:outputText value="#{item.startTime}">
+                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
+                </h:outputText>
             </rich:column>
             
             <rich:column id="endTime" sortBy="#{item.endTime}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_endTime}" />
                 </f:facet>
-               <h:outputText value="#{item.endTime}"/>
+                <h:outputText value="#{item.endTime}">
+                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
+                </h:outputText>
             </rich:column>
             
             <rich:column id="details" >
                 <f:facet name="header">
                     <h:outputText value="" />
                 </f:facet>
-                <h:commandLink id="hazardsEdit" action="#{hazardsBean.edit}"><h:outputText value="#{messages.hazard_edit}" /></h:commandLink>
+                <h:commandLink id="hazardsEdit"
+                    action="#{hazardsBean.edit}"
+                    actionListener="#{hazardsBean.editListener}">
+                    <h:outputText value="#{messages.hazard_edit}" />
+                    <f:attribute name="hazardID" value="#{item.hazardID}"/>
+                </h:commandLink>
             </rich:column>
         </rich:dataTable>
         </h:panelGroup>
@@ -298,8 +305,13 @@
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
                      if (!showHazard(false)){
-                         map.setCenter(new GLatLng(39.0, -104.0), 4);
+                         console.log("#{hazardsBean.groupHierarchy.topGroup.mapLat}");
+                         console.log("#{hazardsBean.groupHierarchy.topGroup.mapLng}");
+                         console.log("#{hazardsBean.groupHierarchy.topGroup}");
+                         console.log("#{hazardsBean.groupHierarchy}");
+                         //map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
                      }
+                     bounds = map.getBounds();
                      addMarkers();
                   }
                   function getAddress(index){
@@ -335,12 +347,13 @@
                       if (markerClusterer != null) {
                             markerClusterer.clearMarkers();
                           }
-                      progressBar.start(#{fn:length(hazardsBean.hazards)});
+                      progressBar.start(#{fn:length(hazardsBean.tableData)});
                       markers = [];
-                      bounds.extend(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
+                      bounds.extend(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}));
                       
-                      <ui:repeat value="#{hazardsBean.hazards}" var="hazard">
-                  
+                      <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
+                          console.log("hazard.lat: #{hazard.lat}");
+                          console.log("hazard.lng: #{hazard.lng}");
                           marker = createMarker(  new GLatLng(#{hazard.lat}, #{hazard.lng}), 
                                                   #{hazard.hazardID}, null,
                                                   "/images/ico_warning.png",

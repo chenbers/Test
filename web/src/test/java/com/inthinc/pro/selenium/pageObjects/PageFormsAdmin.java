@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.FormsAddEnum;
 import com.inthinc.pro.selenium.pageEnums.FormsAdminEnum;
 
 public class PageFormsAdmin extends FormsBar {
@@ -51,11 +52,11 @@ public class PageFormsAdmin extends FormsBar {
     
     public class FormsAdminLinks {
     	
-    	public TextLink createFormTop() {
+    	public TextLink addFormTop() {
     		return new TextLink(FormsAdminEnum.CREATE_FORM_TOP_LINK);
     	}
     	
-    	public TextLink createFormBottom() {
+    	public TextLink addFormBottom() {
     		return new TextLink(FormsAdminEnum.CREATE_FORM_BOTTOM_LINK);
     	}
     	
@@ -101,6 +102,10 @@ public class PageFormsAdmin extends FormsBar {
 
         public TextLink sortByDescriptionWorking() {
         	return new TextLink(FormsAdminEnum.DESCRIPTION_WORKING_LINK);
+        }
+        
+        public TextLink sortByStatusWorking() {
+        	return new TextLink(FormsAdminEnum.STATUS_WORKING_LINK);
         }
 
         public TextLink sortByDescriptionPublished() {
@@ -171,6 +176,10 @@ public class PageFormsAdmin extends FormsBar {
     
     public class FormsAdminTexts {
     	
+    	public Text title() {
+    		return new Text(FormsAddEnum.TITLE);
+    	}
+    	
     	public TextTable entryNameWorking() {
     		return new TextTable(FormsAdminEnum.NAME_WORKING_ENTRY);
     	}
@@ -201,6 +210,10 @@ public class PageFormsAdmin extends FormsBar {
     	
     	public TextTable entryDescriptionPublished() {
     		return new TextTable(FormsAdminEnum.DESCRIPTION_PUBLISHED_ENTRY);
+    	}
+    	
+    	public TextTable entryStatusWorking() {
+    		return new TextTable(FormsAdminEnum.STATUS_WORKING_ENTRY);
     	}
 
     	public TextTable entryTriggerWorking() {

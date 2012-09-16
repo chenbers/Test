@@ -21,7 +21,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.models.LatLng;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
@@ -41,6 +40,7 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.User;
@@ -304,17 +304,17 @@ public class AdminTest extends BaseJDBCTest {
     }
     
     //TODO: refactor AdminHazardJDBCDAO tests into own class
-    static Map<String, LatLng> hazardLocations = new HashMap<String, LatLng>();
+    static Map<String, LatLng> locations = new HashMap<String, LatLng>();
     static{
-        hazardLocations.put("inthinc", new LatLng(40.7106, -111.9945));
-        hazardLocations.put("bangerter_21st", new LatLng(40.7257, -111.9863));
-        hazardLocations.put("spagetti", new LatLng(40.721, -111.9046));
-        hazardLocations.put("summitPark", new LatLng(40.7525, -111.613));
+        locations.put("inthinc", new LatLng(40.7106, -111.9945));
+        locations.put("bangerter_21st", new LatLng(40.7257, -111.9863));
+        locations.put("spagetti", new LatLng(40.721, -111.9046));
+        locations.put("summitPark", new LatLng(40.7525, -111.613));
     }
     @Test
     public void createHazard_validAllHazardLocations_eachShouldInsert(){
         boolean returnsHazardID = false;
-        for(String locationName: hazardLocations.keySet()){
+        for(String locationName: locations.keySet()){
             AdminHazardJDBCDAO hazardJDBCDAO = new AdminHazardJDBCDAO();
             hazardJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
             Hazard hazard = new Hazard();
@@ -324,9 +324,9 @@ public class AdminTest extends BaseJDBCTest {
             hazard.setDeviceID(5780);//jwimmerTiwipro
             hazard.setDriverID(2262);//jwimmer
             hazard.setEndTime(new DateTime().plus(Period.hours(50)).toDate());
-            hazard.setLatitude(hazardLocations.get(locationName).getLat());
-            hazard.setLongitude(hazardLocations.get(locationName).getLng());
-            hazard.setLocation("IT created for "+locationName+" at "+new DateTime());
+            hazard.setLatitude(locations.get(locationName).getLat());
+            hazard.setLongitude(locations.get(locationName).getLng());
+            hazard.setLocation("IT created for "+locationName+" at "+new DateTime().toString("yyyyMMddkkmmss"));
             System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
             hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
             hazard.setStartTime(new Date());
@@ -474,5 +474,20 @@ public class AdminTest extends BaseJDBCTest {
             System.out.println("hazard: "+hazard);
         }
         assertTrue(theHazards.size() == 0);
+    }
+    @Test
+    public void findVehiclesByAccountWithinDistance_validAccountAndDist_anyVehiclesInRange(){
+        
+        
+        AdminVehicleJDBCDAO vehicleJDBCDAO = new AdminVehicleJDBCDAO();
+        vehicleJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        List<Vehicle> vehicles = vehicleJDBCDAO.findVehiclesByAccountWithinDistance(new Integer(1), new Long(200), locations.get("inthinc"));
+//        for(Vehicle vehicle: vehicles){
+//            System.out.println("vehicle: "+vehicle);
+//        }
+        //assertTrue(vehicles.size() > 0);
+        if(vehicles.size() == 0)
+            System.out.println("WARNING:");
+        System.out.println("findVehiclesByAccountWithinDistance found "+vehicles.size()+" vehicles.");
     }
 }

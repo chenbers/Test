@@ -37,6 +37,8 @@
     <script type="text/javascript">
        var map;
        var marker;
+       var hazardlat = "#{hazardsBean.item.latitude}";
+       var hazardlng = "#{hazardsBean.item.longitude}";
     </script>
   </ui:define>
   
@@ -96,7 +98,7 @@
                         <li class="l"><button id="hazardsSearch" type="submit" class="left" onclick="showAddress(document.getElementById('hazards-form:hazardAddress').value); return false;"><span class="search"><h:outputText value="#{messages.hazard_locate}" /></span></button></li>
                         <li class="r">
                            <h:commandButton id="reset" action="#{hazardsBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.hazard_reset}" /></span></h:commandButton>
-                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}" onclick="stopDrawing()" reRender="edithazard,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazard_save}" /></span></a4j:commandButton>
+                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}"  reRender="edithazard,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazard_save}" /></span></a4j:commandButton>
                            <h:outputText value="&#160;" /><a4j:commandButton id="hazardsCancel" action="#{hazardsBean.cancelEdit}"  onclick="cancelEdit()" reRender="points,editHazard,headerForm" oncomplete="showHazard(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
@@ -121,40 +123,58 @@
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_latitude}"/>:</td>
                                 <td>
-                                    <h:inputText value="#{hazardsBean.item.latitude}" id="editHazard-lat" readonly="readonly"  style="width:190px"/>
+                                    <rich:message for="editHazard-lat-hide" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <h:inputText value="#{hazardsBean.item.latitude}" id="editHazard-lat" readonly="true" class="latLngText" style="width:190px"/>
+                                    <h:inputHidden value="#{hazardsBean.item.latitude}" id="editHazard-lat-hide" required="true" requiredMessage="#{messages.required}" readonly="false"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_longitude}"/>:</td>
                                 <td>
-                                    <h:inputText value="#{hazardsBean.item.longitude}" id="editHazard-lng" readonly="readonly"  style="width:190px"/>
+                                    <rich:message for="editHazard-lng-hide" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <h:inputText value="#{hazardsBean.item.longitude}" id="editHazard-lng" readonly="true" class="latLngText" style="width:190px"/>
+                                    <h:inputHidden value="#{hazardsBean.item.longitude}" id="editHazard-lng-hide" required="true" requiredMessage="#{messages.required}" readonly="false"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_type}"/>:</td>
                                 <td>
-                                    <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType"  style="width:190px">
+                                    <rich:message for="hazardType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType" required="true" requiredMessage="#{messages.required}" style="width:190px">
+                                        <f:selectItem itemValue="#{null}" itemLabel="" />
                                         <f:selectItems value="#{hazardsBean.hazardTypeSelectItems}"/>
-                                        <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, endCalendar"  />
+                                        <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits, endCalendar" />
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_radius}"/>:</td>
                                 <td>
-                                    <h:inputText value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters" style="width: 50px; float: left; margin-right: 10px;"/>
+                                    <h:inputHidden value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters" />
+                                    <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;">
+                                        <a4j:support event="onchange" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" />
+                                    </h:inputText>
                                     <h:selectOneMenu value="#{hazardsBean.item.radiusUnits}" id="hazardRadiusUnits"  style="width:100px;">
-                                        <f:selectItems value="#{hazardsBean.hazardRadiusTypeSelectItems}"/>
+                                        <f:selectItems value="#{measurementBean.lengthTypeItems}"/>
+                                        <a4j:support event="onchange" action="#{hazardsBean.onUnitChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits" />
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_startTime}"/>:</td>
-                                <td><rich:calendar id="startCalendar" inputSize="22" value="#{hazardsBean.item.startTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px"/></td>
+                                <td>
+                                    <rich:message for="startCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <rich:calendar id="startCalendar" required="true" requiredMessage="#{messages.required}" inputSize="20" value="#{hazardsBean.item.startTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px" />
+                                </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_endTime}"/>:</td>
-                                <td><rich:calendar id="endCalendar" inputSize="22" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px"/></td>
+                                <td>
+                                    <rich:message for="endCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                    <rich:calendar id="endCalendar" required="true" requiredMessage="#{messages.required}" inputSize="20" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
+                                        <a4j:support event="onchanged" action="#{hazardsBean.onExpTimeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits" />
+                                    </rich:calendar>
+                                </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_description}"/>:</td>
@@ -175,19 +195,28 @@
 
                 <script type="text/javascript">
                   function clearOutline(){
-                    document.getElementById("hazards-form:points").value = "";
                     removeZoneOverlay();
 //                    map.clearOverlays();
                   }
 
-                  function showHazard(editable){
+                  function showHazard(){
                     // map.clearOverlays();
                     removeZoneOverlay();
-                    
-                    var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
-                    if (outline){
-                      centerMapAtHazard(getLatLngBounds(outline));
-                      loadHazard(outline, editable);
+                    console.log("showHazard item: #{hazardsBean.item}");
+                    console.log("showHazard lat: #{hazardsBean.item.latitude}");
+                    console.log("showHazard lng: #{hazardsBean.item.longitude}");
+                    var hazardPoint;
+                    if(hazardlat &amp;&amp; hazardlng){
+                         console.log("hazard: "+hazard);
+                         //hazardPoint = new GLatLng(#{hazardsBean.item.latitude}, #{hazardsBean.item.longitude});
+                    } else {
+                    	console.log("no hazardPoint... presumably we are EDITING");
+                    }
+                    if (hazardPoint){
+//                      centerMapAtHazard(getLatLngBounds(hazardPoint));
+                        map.setCenter(hazardPoint);
+                        marker = new GMarker(hazardPoint);
+                        map.addOverlay(marker);
                       return true;
                     }
                     return false;
@@ -195,19 +224,13 @@
 
                   function storeOutline(){
                     console.log("in storeOutline");
-                    document.getElementById("hazards-form:points").value = toOutlineString(getPolygonOutline());
                   }
 
                   function cancelEdit(){
-                    stopDrawing();
+                	  console.log("in cancelEdit");
+                    //stopDrawing();
                     // map.clearOverlays();
-                    removeZoneOverlay();
-                    
-                    var outline = document.getElementById("backupPoints").value;
-                    if (outline == ""){
-                      outline = document.getElementById("firstPoints").value;
-                    }
-                    document.getElementById("hazards-form:points").value = outline;
+                    //removeZoneOverlay();
                   }
 
                   function select(type){
@@ -236,6 +259,9 @@
                   function updateCoordinates(lng, lat){
                     document.getElementById("hazards-form:editHazard-lng").value = (Math.round(lng*10000.0)/10000.0).toString();
                     document.getElementById("hazards-form:editHazard-lat").value = (Math.round(lat*10000.0)/10000.0).toString();
+                    
+                    document.getElementById("hazards-form:editHazard-lng-hide").value = (Math.round(lng*10000.0)/10000.0).toString();
+                    document.getElementById("hazards-form:editHazard-lat-hide").value = (Math.round(lat*10000.0)/10000.0).toString();
                   }
 
                   function bodyLoad(){
@@ -270,12 +296,59 @@
                       });
 
                       if (!showHazard(false)){
-                        map.setCenter(new GLatLng(39.0, -104.0), 4);
+                        map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
                       }
                     }
                   }
                 </script>
 
+                    <rich:modalPanel id="summary" headerClass="popupHeader"
+                    controlsClass="popupControls" width="500" height="140"
+                    autosized="true" resizeable="false" zindex="2001">
+                    <f:facet name="header" >
+                        <h:outputText value="#{messages.hazard_saveSummary}" />
+                    </f:facet>
+                    <f:facet name="controls">
+                        <h:graphicImage value="/images/modal_close.png"
+                            style="cursor:pointer"
+                            onclick="Richfaces.hideModalPanel('summary')" />
+                    </f:facet>
+
+                    <div class="popupsubtitle"><h:outputText
+                        value="#{messages.hazard_saveSummaryDetail}" /></div>
+                        
+                    <h:form id="confirmCloseSummary">
+                        <rich:dataTable id="editHazard-sendList"
+                            value="#{hazardsBean.sendToVehiclesList}" var="item"
+                            styleClass="datagrid filterabledatagrid"
+                            rowClasses="tableOdd,tableEven" cellspacing="1" rows="5"
+                            width="100%">
+
+                            <rich:column width="100%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{messages.hazard_vehicleName}" />
+                                </f:facet>
+                                <h:outputText id="entity" value="#{item}" />
+                            </rich:column>
+                        </rich:dataTable>
+
+                        <rich:datascroller for="editHazard-sendList"
+                            id="editHazard-sendListBottomScroller"
+                            page="#{messagesBean.pageNumber}">
+                        </rich:datascroller>
+
+                        <div class="popupactions">
+                        <button id="editHazard-confirmDeleteCancel" type="submit"
+                            class="left"
+                            onclick="Richfaces.hideModalPanel('summary'); return false;">
+                        <span class="ok"> <h:outputText
+                            value="#{messages.button_ok}" /> </span></button>
+                        </div>
+
+                    </h:form>
+                </rich:modalPanel>
+                
+                
               </div>
             </div>
 
@@ -285,7 +358,7 @@
 
             <ui:include src="../../includes/confirmDelete.xhtml">
               <ui:param name="deleteBean" value="#{hazardsBean}" />
-              <ui:param name="reRender" value="points" />
+              <ui:param name="reRender" value="" />
               <ui:param name="ondelete" value="showHazard(false)" />
               <ui:param name="explanation" value="#{messages.hazard_confirmDelete}" />
                 <ui:param name="context" value="hazards" />
