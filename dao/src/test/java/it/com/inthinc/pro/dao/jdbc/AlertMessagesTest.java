@@ -40,7 +40,10 @@ import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
@@ -101,6 +104,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
     private static Integer DEFAULT_SATS = 5; 
     private static Double DEFAULT_LAT = 40.704246d; 
     private static Double DEFAULT_LNG = -111.948613d; 
+
+    
+    private static Integer managerOnlyRedFlagID = null;
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -160,6 +166,11 @@ public class AlertMessagesTest extends BaseJDBCTest{
     public static void tearDownAfterClass() throws Exception {
     	for (RedFlagAlert alert : originalAlerts) {
     	    redFlagAlertHessianDAO.update(alert);
+    	}
+    	
+    	if (managerOnlyRedFlagID != null) {
+    	    redFlagAlertHessianDAO.deleteByID(managerOnlyRedFlagID);
+    	    managerOnlyRedFlagID = null;
     	}
     }
 
@@ -228,6 +239,74 @@ public class AlertMessagesTest extends BaseJDBCTest{
 	        	anyAlertsFound = true;
     	}
         assertTrue("No Alerts were generated for No Driver", anyAlertsFound);
+    }
+
+    @Test
+    //@Ignore
+    public void alertNoDriverNotifyManager() {
+        
+        boolean anyAlertsFound = false;
+
+        // inactivate the current no driver alert
+        RedFlagAlert currentNoDriverAlert = null;
+        for (RedFlagAlert redFlagAlert : redFlagAlerts) {
+            if (redFlagAlert.getTypes().contains(AlertMessageType.ALERT_TYPE_NO_DRIVER)) {
+                currentNoDriverAlert = redFlagAlert;
+                currentNoDriverAlert.setStatus(Status.INACTIVE);
+                redFlagAlertHessianDAO.update(currentNoDriverAlert);
+            }
+        }
+        assertNotNull("current No driver alert should not be null", currentNoDriverAlert);
+        
+        // make sure a manager is set for the group
+        Group goodGroup = itData.teamGroupData.get(ITData.GOOD).group;
+        goodGroup.setManagerID(itData.teamGroupData.get(ITData.GOOD).user.getPersonID());
+        groupDAO.update(goodGroup);
+        
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(itData.teamGroupData.get(ITData.GOOD).group.getGroupID());
+        List<AlertMessageType> typelist = new ArrayList<AlertMessageType>();
+        typelist.add(AlertMessageType.ALERT_TYPE_NO_DRIVER);
+        RedFlagAlert redFlagAlert = new RedFlagAlert();
+        redFlagAlert.setTypes(typelist);
+        redFlagAlert.setAccountID(itData.account.getAccountID());
+        redFlagAlert.setUserID(itData.fleetUser.getUserID());
+        redFlagAlert.setName("No Driver Alert Manager");
+        redFlagAlert.setNotifyPersonIDs(new ArrayList<Integer>());
+        redFlagAlert.setStartTOD(0);
+        redFlagAlert.setStopTOD(1439);
+        redFlagAlert.setDayOfWeek(anyDay());
+        redFlagAlert.setGroupIDs(groupIDList);
+        redFlagAlert.setSeverityLevel(RedFlagLevel.INFO);
+        redFlagAlert.setNotifyManagers(Boolean.TRUE);
+        redFlagAlert.setEscalationTimeBetweenRetries(5);
+        redFlagAlert.setMaxEscalationTries(5);
+        redFlagAlert.setStatus(Status.ACTIVE);
+        managerOnlyRedFlagID = redFlagAlertHessianDAO.create(itData.account.getAccountID(), redFlagAlert);
+        
+        List<EventType> eventTypes = getEventTypes(redFlagAlert);
+        Device device = itData.noDriverDevice;
+            
+            // set the alert
+        genEvent(createEvent(eventTypes.get(0)), device);
+        if (pollForMessages("Red Flag Alert Groups Set"))
+            anyAlertsFound = true;
+
+        assertTrue("Alerts should be generated for No Driver -- send to Manager only", anyAlertsFound);
+
+        currentNoDriverAlert.setStatus(Status.ACTIVE);
+        redFlagAlertHessianDAO.update(currentNoDriverAlert);
+        
+        redFlagAlertHessianDAO.deleteByID(managerOnlyRedFlagID);
+        managerOnlyRedFlagID = null;
+
+    }
+    
+    protected List<Boolean> anyDay() {
+        List<Boolean> dayOfWeek = new ArrayList<Boolean>();
+        for (int i = 0; i < 7; i++)
+            dayOfWeek.add(true);
+        return dayOfWeek;
     }
     
     @Test
