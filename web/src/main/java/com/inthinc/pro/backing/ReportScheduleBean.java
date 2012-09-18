@@ -293,6 +293,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         getItem().setDriverID(null);
         getItem().setVehicleID(null);
         getItem().setIftaOnly(false);
+        getItem().setIncludeInactiveDrivers(false);
+        getItem().setIncludeZeroMilesDrivers(false);
         getItem().setGroupName(null);
         getItem().setDriverName(null);
         getItem().setVehicleName(null);

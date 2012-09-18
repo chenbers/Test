@@ -48,7 +48,10 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
         teamStopsCriteriaList.add(driverStopReport);
         setMainDataset(teamStopsCriteriaList);
     }
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone)
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone){
+        init(accountGroupHierarchy, groupIDList, timeFrame, timeZone, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, boolean inactiveDrivers, boolean zeroMilesDrivers)
     {
         setTimeFrame(timeFrame);
         List<DriverStopReport> teamStopsCriteriaList = new ArrayList<DriverStopReport>();
@@ -58,12 +61,13 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
             String driverName = driver.getPerson().getFullName();
             String teamName = getFullGroupName(accountGroupHierarchy, driver.getGroupID());
             List<DriverStops> driverStops = getDriverStopsInInterval(driver.getDriverID(), timeFrame, timeZone, driverName);
-            if (driverStops == null || driverStops.size() == 0)
+            if (driverStops == null || driverStops.size() == 0){
                 continue;
-            DriverStopReport driverStopReport = new DriverStopReport(teamName, driver.getDriverID(), driverName, timeFrame, driverStops);
-            fillInDriverStopAddresses(getLocale(), driverStopReport);
-            teamStopsCriteriaList.add(driverStopReport);
-            
+            } else {
+                DriverStopReport driverStopReport = new DriverStopReport(teamName, driver.getDriverID(), driverName, timeFrame, driverStops);
+                fillInDriverStopAddresses(getLocale(), driverStopReport);
+                teamStopsCriteriaList.add(driverStopReport);
+            }
         }
         setMainDataset(teamStopsCriteriaList);
     }
