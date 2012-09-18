@@ -200,6 +200,21 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
 			else
 			    return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, timeFrame);
 		}
+        @Override
+        public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame, boolean includeInactiveDrivers,
+                boolean includeZeroMilesDrivers) {
+            return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, timeFrame);
+        }
+        @Override
+        public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, Interval interval, boolean includeInactiveDrivers,
+                boolean includeZeroMilesDrivers) {
+            return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, interval);
+        }
+        @Override
+        public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame, Interval interval,
+                boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+            return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, timeFrame, interval);
+        }
     }
 
 }

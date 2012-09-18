@@ -46,7 +46,7 @@ public class DriverPerformanceKeyMetricsReportCriteria extends GroupListReportCr
         for (Group group : reportGroupList) {
             if (group.getGroupID() != null && group.getType() == GroupType.TEAM) {
                 String divisionName = accountGroupHierarchy.getFullGroupName(group.getParentID(), "->");
-                List<DriverPerformanceKeyMetrics> groupList = driverPerformanceDAO.getDriverPerformanceKeyMetricsListForGroup(group.getGroupID(), divisionName, group.getName(), interval);
+                List<DriverPerformanceKeyMetrics> groupList = driverPerformanceDAO.getDriverPerformanceKeyMetricsListForGroup(group.getGroupID(), divisionName, group.getName(), interval, getIncludeInactiveDrivers(), getIncludeZeroMilesDrivers());
                 Collections.sort(groupList);
                 dataList.addAll(groupList);
             }

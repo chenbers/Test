@@ -33,7 +33,9 @@ public class ReportParams implements Cloneable {
     private ReportParamType paramType;
     private Boolean isIfta;
     private Boolean isExpired;
-
+    private boolean includeInactiveDrivers;
+    private boolean includeZeroMilesDrivers;
+    
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
 
@@ -286,4 +288,19 @@ public class ReportParams implements Cloneable {
         this.timeFrameSelect = timeFrameSelect;
     }
 
+    public boolean isIncludeInactiveDrivers() {
+        return includeInactiveDrivers;
+    }
+
+    public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
+        this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+
+    public boolean isIncludeZeroMilesDrivers() {
+        return includeZeroMilesDrivers;
+    }
+
+    public void setIncludeZeroMilesDrivers(boolean includeZeroMilesDrivers) {
+        this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+    }
 }

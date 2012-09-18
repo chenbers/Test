@@ -8,6 +8,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.Status;
 
 public class GroupListReportCriteria extends ReportCriteria {
     
@@ -21,13 +22,23 @@ public class GroupListReportCriteria extends ReportCriteria {
         return groupHierarchy.getFullGroupName(groupID, GROUP_SEPARATOR);
 
     }
-    protected List<Driver> getReportDriverList(List<Group> reportGroupList) {
+    protected List<Driver> getReportDriverList(List<Group> reportGroupList){
+        return getReportDriverList(reportGroupList, INACTIVE_DRIVERS_DEFAULT);
+    }
+    protected List<Driver> getReportDriverList(List<Group> reportGroupList, boolean includeInactiveDrivers) {
         List<Driver> driverList = new ArrayList<Driver>();
         for (Group group : reportGroupList) {
             if (group.getGroupID() != null) {
                 List<Driver> groupDriverList = driverDAO.getDrivers(group.getGroupID());
-                if (groupDriverList != null && !groupDriverList.isEmpty())
-                    driverList.addAll(groupDriverList);
+                if (groupDriverList != null && !groupDriverList.isEmpty()){
+                    //driverList.addAll(groupDriverList);
+                    for(Driver driver: groupDriverList){
+                        System.out.println("includeInactiveDrivers: "+includeInactiveDrivers);
+                        if(Status.ACTIVE.equals(driver.getStatus()) || (includeInactiveDrivers)){
+                            driverList.add(driver);
+                        }
+                    }
+                }
             }
         }
         return driverList;

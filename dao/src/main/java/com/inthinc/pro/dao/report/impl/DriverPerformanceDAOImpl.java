@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
@@ -32,6 +33,9 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
     private GroupReportDAO groupReportDAO;
     private EventDAO eventDAO;
     private VehiclePerformanceDAO vehiclePerformanceDAO;
+    
+    protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
+    protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
     
     private static List<NoteType> loginNoteType = new ArrayList<NoteType>();
     static {
@@ -53,8 +57,10 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
     public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval interval) {
         return getFilteredDriverPerformanceListForGroup(groupID, groupName, null, interval);
     }
-
     private List<DriverPerformance> getFilteredDriverPerformanceListForGroup(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
+        return getFilteredDriverPerformanceListForGroup(groupID, groupName, driverIDList, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    private List<DriverPerformance> getFilteredDriverPerformanceListForGroup(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
 	
         List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval, null);
         
@@ -88,7 +94,15 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             List<VehiclePerformance> vehiclePerformanceBreakdown = vehiclePerformanceDAO.getVehiclePerformance(score.getDriver().getDriverID(), interval);
             if (vehiclePerformanceBreakdown != null && vehiclePerformanceBreakdown.size() > 0) 
                 dp.setVehiclePerformanceBreakdown(vehiclePerformanceBreakdown);
-            driverPerformanceList.add(dp);
+            
+            boolean includeThisInactiveDriver = (includeInactiveDrivers && dp.getTotalMiles() !=0 );
+            boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && score.getDriver().getStatus().equals(Status.ACTIVE));
+            if((score.getDriver().getStatus().equals(Status.ACTIVE) && dp.getTotalMiles()!=0) 
+                    || (includeInactiveDrivers && includeZeroMilesDrivers) 
+                    || includeThisInactiveDriver 
+                    || includeThisZeroMilesDriver ){
+                driverPerformanceList.add(dp);
+            }
         }
         
         return driverPerformanceList;
@@ -137,7 +151,11 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
         return false;
     }
     @Override
-    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName,TimeFrame timeFrame, Interval interval) {
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame, Interval interval) {
+        return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, interval,INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT );
+    }
+    @Override
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName,TimeFrame timeFrame, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
     	List<DriverPerformanceKeyMetrics> driverPerformanceList = new ArrayList<DriverPerformanceKeyMetrics>();
 		
 		Group group = groupDAO.findByID(groupID);
@@ -165,7 +183,14 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             dp.setIdleViolationsCount(s.getIdleLoEvents() == null ? 0 : s.getIdleLoEvents().intValue());
             dp.setLoIdleViolationsMinutes(s.getIdleLo() == null ? 0 : s.getIdleLo().intValue());
             dp.setHiIdleViolationsMinutes(s.getIdleHi() == null ? 0 : s.getIdleHi().intValue());
-            driverPerformanceList.add(dp);
+            boolean includeThisInactiveDriver = (includeInactiveDrivers && dp.getTotalMiles() !=0 );
+            boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && score.getDriver().getStatus().equals(Status.ACTIVE));
+            if((score.getDriver().getStatus().equals(Status.ACTIVE) && dp.getTotalMiles()!=0) 
+                    || (includeInactiveDrivers && includeZeroMilesDrivers) 
+                    || includeThisInactiveDriver 
+                    || includeThisZeroMilesDriver ){
+                driverPerformanceList.add(dp);
+            }
         }
         return driverPerformanceList;
     }
@@ -177,7 +202,14 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
     public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, Interval interval) {
         return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, null, interval);
     }
-
+    @Override
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, TimeFrame timeFrame, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, timeFrame, null, includeInactiveDrivers, includeZeroMilesDrivers);
+    }
+    @Override
+    public List<DriverPerformanceKeyMetrics> getDriverPerformanceKeyMetricsListForGroup(Integer groupID, String divisionName, String teamName, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers){
+        return getDriverPerformanceKeyMetricsListForGroup(groupID, divisionName, teamName, null, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+    }
         
     private Integer getDriverLoginCount(Integer driverID, TimeZone timeZone, Interval interval) {
         

@@ -53,6 +53,8 @@ public class ReportSchedule implements Cloneable {
     private List<Integer> driverIDList;
     private ReportParamType paramType;
     private Boolean iftaOnly;
+    private Boolean includeInactiveDrivers;
+    private Boolean includeZeroMilesDrivers;
 
     public ReportSchedule() {
 
@@ -357,5 +359,21 @@ public class ReportSchedule implements Cloneable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Boolean getIncludeInactiveDrivers() {
+        return includeInactiveDrivers;
+    }
+
+    public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
+        this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+
+    public Boolean getIncludeZeroMilesDrivers() {
+        return includeZeroMilesDrivers;
+    }
+
+    public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
+        this.includeZeroMilesDrivers = includeZeroMilesDrivers;
     }
 }

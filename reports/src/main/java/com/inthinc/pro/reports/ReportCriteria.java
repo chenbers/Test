@@ -32,6 +32,8 @@ public class ReportCriteria
     private MeasurementType measurementType;
     private FuelEfficiencyType fuelEfficiencyType;
     private TimeZone timeZone;
+    private Boolean includeInactiveDrivers;
+    private Boolean includeZeroMilesDrivers;
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -48,6 +50,9 @@ public class ReportCriteria
     public static final String SLASH_GROUP_SEPERATOR = "/";
     public static final String DATE_FORMAT = "MM/dd/yyyy";
     public static final String REPORT_IFTA_ONLY = "iftaVehiclesOnly";
+    
+    public static final boolean INACTIVE_DRIVERS_DEFAULT = false;
+    public static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
 
     private int subsetIndex = 1;
     
@@ -256,6 +261,17 @@ public class ReportCriteria
     public void setGroupID(Integer groupID) {
         paramMap.put("GROUP", ""+groupID);
     }
-
+    public Boolean getIncludeInactiveDrivers() {
+        return (includeInactiveDrivers!=null)?includeInactiveDrivers:INACTIVE_DRIVERS_DEFAULT;
+    }
+    public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
+        this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+    public Boolean getIncludeZeroMilesDrivers() {
+        return (includeZeroMilesDrivers!=null)?includeZeroMilesDrivers:ZERO_MILES_DRIVERS_DEFAULT;
+    }
+    public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
+        this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+    }
 
 }
