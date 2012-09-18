@@ -145,6 +145,28 @@
                     </ui:include>
                   </li>
                 </h:outputText>
+                <h:outputText rendered="#{criteria eq 'INACTIVE_AND_ZERO_MILES'}">
+                  <li class="l" style="padding-top: 1px">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <h:outputText value="#{messages.reports_includeInactiveDrivers}"/>
+                            </td>
+                            <td>
+                                <h:selectBooleanCheckbox id="inactiveDrivers" value="#{params.includeInactiveDrivers}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="#{messages.reports_includeZeroMilesDrivers}"/>
+                            </td>
+                            <td>
+                                <h:selectBooleanCheckbox id="zeroMilesDrivers" value="#{params.includeZeroMilesDrivers}" />
+                            </td>
+                        </tr>
+                    </table>
+                  </li>
+                </h:outputText>
                 </ui:repeat>
                 <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
                 <li  class="l select">
@@ -352,7 +374,6 @@
                     </table>
                 </li>
                 </h:outputText>
-                    
            </ul>
           </a4j:region>
          </a4j:outputPanel>

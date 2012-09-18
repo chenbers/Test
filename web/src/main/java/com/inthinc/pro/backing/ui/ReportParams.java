@@ -22,7 +22,7 @@ import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
 public class ReportParams implements Cloneable {
-    
+
     private DateRange dateRange;
     private TimeFrameSelect timeFrameSelect;
     private Integer groupID;
@@ -33,21 +33,20 @@ public class ReportParams implements Cloneable {
     private ReportParamType paramType;
     private Boolean isIfta;
     private Boolean isExpired;
-    
+    private boolean includeInactiveDrivers;
+    private boolean includeZeroMilesDrivers;
     
     List<Driver> driverList;
     GroupHierarchy groupHierarchy;
-    
+
     private static final Logger logger = Logger.getLogger(ReportParams.class);
-    
-    
-    public ReportParams(Locale locale)
-    {
+
+    public ReportParams(Locale locale) {
         dateRange = new DateRange(locale);
         timeFrameSelect = new TimeFrameSelect(locale);
         this.locale = locale;
     }
-    
+
     public Locale getLocale() {
         return locale;
     }
@@ -59,32 +58,35 @@ public class ReportParams implements Cloneable {
     public Integer getGroupID() {
         return groupID;
     }
+
     public void setGroupID(Integer groupID) {
         this.groupID = groupID;
     }
+
     public Integer getDriverID() {
         return driverID;
     }
+
     public void setDriverID(Integer driverID) {
         this.driverID = driverID;
     }
+
     public List<Integer> getGroupIDList() {
         if (groupIDSelectList == null)
             return null;
-        
+
         List<Integer> groupIDList = new ArrayList<Integer>();
         for (String groupIDStr : groupIDSelectList) {
             try {
                 groupIDList.add(Integer.valueOf(groupIDStr));
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 logger.error(ex);
-                
+
             }
         }
         return groupIDList;
     }
-    
+
     public Boolean getIsIfta() {
         return isIfta;
     }
@@ -94,71 +96,65 @@ public class ReportParams implements Cloneable {
     }
 
     public Boolean getValid() {
-        
+
         return getErrorMsg() == null;
     }
 
     public String getErrorMsg() {
         String badDates = "";
         if (reportGroup == null)
-            return MessageUtil.getMessageString("reportParams_noReportSelected",getLocale());
-        
+            return MessageUtil.getMessageString("reportParams_noReportSelected", getLocale());
+
         for (CriteriaType criteriaType : reportGroup.getCriterias()) {
             if (criteriaType == CriteriaType.TIMEFRAME || criteriaType == CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE) {
-                if (!(getDateRange() != null && getDateRange().getBadDates() == null)){
-                    badDates = getDateRange().getBadDates()+" ";
+                if (!(getDateRange() != null && getDateRange().getBadDates() == null)) {
+                    badDates = getDateRange().getBadDates() + " ";
                 }
-                if(criteriaType == CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE){
-                    if(getDateRange() != null && getDateRange().isMoreThanOneYear())
-                        badDates += MessageUtil.getMessageString("dateRange_moreThanOneYear",getLocale());
+                if (criteriaType == CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE) {
+                    if (getDateRange() != null && getDateRange().isMoreThanOneYear())
+                        badDates += MessageUtil.getMessageString("dateRange_moreThanOneYear", getLocale());
                 }
             }
         }
-        if (reportGroup.getEntityType() == EntityType.ENTITY_DRIVER && getDriverID() == null) 
-            return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale())+" "+badDates;
-        
-        if ( ( reportGroup.getEntityType() == EntityType.ENTITY_GROUP 
-               || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_AND_EXPIRED 
-              )
-              && getGroupID() == null) 
-            return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
-        
-        if ( (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST 
-              || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_AND_IFTA
-              ) 
-              && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0)
-           ) 
-            return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
-        
+        if (reportGroup.getEntityType() == EntityType.ENTITY_DRIVER && getDriverID() == null)
+            return MessageUtil.getMessageString("reportParams_noDriverSelected", getLocale()) + " " + badDates;
+
+        if ((reportGroup.getEntityType() == EntityType.ENTITY_GROUP || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_AND_EXPIRED) && getGroupID() == null)
+            return MessageUtil.getMessageString("reportParams_noGroupSelected", getLocale()) + " " + badDates;
+
+        if ((reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST || reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_AND_IFTA)
+                && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0))
+            return MessageUtil.getMessageString("reportParams_noGroupSelected", getLocale()) + " " + badDates;
+
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
             if (getParamType() == null || getParamType() == ReportParamType.NONE)
-                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale())+" "+badDates;
+                return MessageUtil.getMessageString("reportParams_noReportOnSelected", getLocale()) + " " + badDates;
             else if (getParamType() == ReportParamType.DRIVER && getDriverID() == null)
-                return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale())+" "+badDates;
+                return MessageUtil.getMessageString("reportParams_noDriverSelected", getLocale()) + " " + badDates;
             else if (getParamType() == ReportParamType.GROUPS && (getGroupIDSelectList() == null || getGroupIDSelectList().size() == 0))
-                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
+                return MessageUtil.getMessageString("reportParams_noGroupSelected", getLocale()) + " " + badDates;
         }
         if (reportGroup.getEntityType() == EntityType.ENTITY_GROUP_OR_DRIVER) {
             if (getParamType() == null || getParamType() == ReportParamType.NONE)
-                return MessageUtil.getMessageString("reportParams_noReportOnSelected",getLocale())+" "+badDates;
+                return MessageUtil.getMessageString("reportParams_noReportOnSelected", getLocale()) + " " + badDates;
             else if (getParamType() == ReportParamType.DRIVER && getDriverID() == null)
-                return MessageUtil.getMessageString("reportParams_noDriverSelected",getLocale())+" "+badDates;
+                return MessageUtil.getMessageString("reportParams_noDriverSelected", getLocale()) + " " + badDates;
             else if (getParamType() == ReportParamType.GROUPS && getGroupID() == null)
-                return MessageUtil.getMessageString("reportParams_noGroupSelected",getLocale())+" "+badDates;
+                return MessageUtil.getMessageString("reportParams_noGroupSelected", getLocale()) + " " + badDates;
         }
-        if(badDates != null && !badDates.isEmpty())
+        if (badDates != null && !badDates.isEmpty())
             return badDates;
         return null;
     }
-    
+
     public DateRange getDateRange() {
         return dateRange;
     }
+
     public void setDateRange(DateRange dateRange) {
         this.dateRange = dateRange;
     }
 
-    
     public ReportGroup getReportGroup() {
         return reportGroup;
     }
@@ -170,25 +166,24 @@ public class ReportParams implements Cloneable {
     public List<CriteriaType> getSelectedCriteria() {
         if (reportGroup == null)
             return new ArrayList<CriteriaType>();
-        
+
         return Arrays.asList(reportGroup.getCriterias());
     }
-    
+
     public EntityType getSelectedEntityType() {
         if (reportGroup == null)
             return null;
         return reportGroup.getEntityType();
-        
+
     }
-    
+
     protected final static String BLANK_SELECTION = " ";
 
     protected static void sort(List<SelectItem> selectItemList) {
         Collections.sort(selectItemList, new Comparator<SelectItem>() {
             @Override
             public int compare(SelectItem o1, SelectItem o2) {
-                return o1.getLabel().toLowerCase().compareTo(
-                        o2.getLabel().toLowerCase());
+                return o1.getLabel().toLowerCase().compareTo(o2.getLabel().toLowerCase());
             }
         });
     }
@@ -198,11 +193,9 @@ public class ReportParams implements Cloneable {
         if (getGroupHierarchy() == null)
             return groups;
         for (final Group group : getGroupHierarchy().getGroupList()) {
-            String fullName = getGroupHierarchy().getFullGroupName(
-                    group.getGroupID());
+            String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
             if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
-                fullName = fullName.substring(0, fullName.length()
-                        - GroupHierarchy.GROUP_SEPERATOR.length());
+                fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
             }
 
             groups.add(new SelectItem(group.getGroupID(), fullName));
@@ -212,6 +205,7 @@ public class ReportParams implements Cloneable {
 
         return groups;
     }
+
     public List<SelectItem> getDrivers() {
         List<SelectItem> drivers = new ArrayList<SelectItem>();
         if (getDriverList() == null)
@@ -223,11 +217,10 @@ public class ReportParams implements Cloneable {
         sort(drivers);
         return drivers;
     }
-    
+
     public List<SelectItem> getReportParamTypes() {
         return SelectItemUtil.toList(ReportParamType.class, true, ReportParamType.NONE);
     }
-
 
     public List<Driver> getDriverList() {
         return driverList;
@@ -269,12 +262,9 @@ public class ReportParams implements Cloneable {
             this.setDriverID(null);
     }
 
-    
-
-    public ReportParams clone() 
-    {
+    public ReportParams clone() {
         try {
-            return (ReportParams)super.clone();
+            return (ReportParams) super.clone();
         } catch (CloneNotSupportedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -298,5 +288,19 @@ public class ReportParams implements Cloneable {
         this.timeFrameSelect = timeFrameSelect;
     }
 
+    public boolean isIncludeInactiveDrivers() {
+        return includeInactiveDrivers;
+    }
 
+    public void setIncludeInactiveDrivers(boolean includeInactiveDrivers) {
+        this.includeInactiveDrivers = includeInactiveDrivers;
+    }
+
+    public boolean isIncludeZeroMilesDrivers() {
+        return includeZeroMilesDrivers;
+    }
+
+    public void setIncludeZeroMilesDrivers(boolean includeZeroMilesDrivers) {
+        this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+    }
 }
