@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
@@ -21,14 +18,11 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.validators.EmailValidator;
 
 @KeepAlive
 public class UnsubscribeBean {
 
     private static final Logger logger = Logger.getLogger(UnsubscribeBean.class);
-
-    private static final String WRONG_EMAIL_ADDRESS_KEY = "unsubscribe_wrongEmailErrorMessage";
 
     private String emailAddress;
     private Integer reportScheduleID;
@@ -44,7 +38,6 @@ public class UnsubscribeBean {
 
     private Person person;
 
-    private String enteredEmailAddress;
     private String decryptedEmailAddress;
     private ReportSchedule reportSchedule;
 
@@ -98,7 +91,7 @@ public class UnsubscribeBean {
         return "pretty:unsubscribeSuccessful";
     }
 
-    public void allDone() {
+    public void unsubscribeSuccessful() {
 
         if (reportScheduleID == null) {
             throw new InvalidParameterException("ReportScheduleID is null.");
@@ -127,19 +120,6 @@ public class UnsubscribeBean {
         textEncryptor.setPassword(encryptPassword);
         textEncryptor.setStringOutputType("hexadecimal");
         decryptedEmailAddress = textEncryptor.decrypt(emailAddress);
-    }
-
-    public void validateEmail(FacesContext context, UIComponent component, Object value) {
-
-        String valueStr = (String) value;
-        if (valueStr != null && valueStr.length() > 0) {
-            new EmailValidator().validate(context, component, value);
-            
-            if (!valueStr.equals(decryptedEmailAddress)) {
-                String errorMessage = MessageUtil.getMessageString(WRONG_EMAIL_ADDRESS_KEY);
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
-            }
-        }
     }
 
     public void setEmailAddress(String emailAddress) {
@@ -173,10 +153,6 @@ public class UnsubscribeBean {
     public void setEncryptPassword(String encryptPassword) {
         this.encryptPassword = encryptPassword;
     }
-
-//    public void setMessageName(String messageName) {
-//        this.messageName = messageName;
-//    }
 
     public String getMessageName() {
         if (reportSchedule != null)
@@ -225,11 +201,4 @@ public class UnsubscribeBean {
         this.decryptedEmailAddress = decryptedEmailAddress;
     }
 
-    public String getEnteredEmailAddress() {
-        return enteredEmailAddress;
-    }
-
-    public void setEnteredEmailAddress(String enteredEmailAddress) {
-        this.enteredEmailAddress = enteredEmailAddress;
-    }
 }

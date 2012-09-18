@@ -30,7 +30,7 @@
     <url-mapping id="unsubscribeSuccessful">
     	<pattern>/unsubscribe/report/success/#{unsubscribeBean.emailAddress}/#{unsubscribeBean.reportScheduleID}</pattern>
     	<view-id>/unsubscribe.faces</view-id>
-    	<action onPostback="false">#{unsubscribeBean.allDone}</action>
+    	<action onPostback="false">#{unsubscribeBean.unsubscribeSuccessful}</action>
     </url-mapping>
     <url-mapping id="unsubscribeToReportSimple">
     	<pattern>/unsubscribe/report/</pattern>
