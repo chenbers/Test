@@ -214,7 +214,7 @@ public class FormsServiceDAOTest {
                 InputStream jsonBody = method.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
                 submissions.addAll((List<SubmissionData>) mapper.readValue(jsonBody, ref));
-                assertTrue(submissions.size()>0);
+                assertTrue(submissions != null);
             }
         } catch (HttpException he) {
             fail();
