@@ -91,9 +91,9 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria{
             for(DriverVehicleScoreWrapper dvsw : resultsList){
 				String driverName = dvsw.getDriver().getPerson().getLast() + ", " + dvsw.getDriver().getPerson().getFirst();
 
-				int seatbelt = (dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().intValue() : 0;
+				float seatbelt = ((dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().intValue() : 0)/10.0F;
 				String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
-                SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName, dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), dvsw.getScore().getOdometer6().intValue(), (float)seatbelt, groupName);
+                SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName, dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), dvsw.getScore().getOdometer6().intValue(), seatbelt, groupName);
                 seatbeltClicksWrappers.add(seatbeltClicksWrapper);
             }
             Collections.sort(seatbeltClicksWrappers);
