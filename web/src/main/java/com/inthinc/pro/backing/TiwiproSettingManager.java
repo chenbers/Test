@@ -96,10 +96,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
        Map<Integer,String> settingValues = hardVerticalSlider.getSettingValuesFromSliderValue(sliderValue);
        if (settingValues.isEmpty()) return null;
        
-       String value = settingValues.get(SettingType.HARD_VERT_SETTING.getSettingID());
-       value +=" ";
-       value +=settingValues.get(SettingType.SEVERE_PEAK_2_PEAK.getSettingID());
-       return value;
+       return settingValues.get(SettingType.HARD_VERT_SETTING.getSettingID());
    }
     public String getSpeedSettingsString(Integer[] speedSettings){
         
