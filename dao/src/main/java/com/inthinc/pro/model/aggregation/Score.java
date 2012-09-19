@@ -50,6 +50,7 @@ public class Score {
     private Number seatbelt;
     private Number seatbeltCoaching;
     private Number seatbeltEvents;
+    private Number seatbeltClicks;
     private Number speedCoaching;
     private Number speedCoaching1;
     private Number speedCoaching2;
@@ -123,6 +124,7 @@ public class Score {
 	    odometer6 = 0;
 	    rpmEvents = 0;
 	    seatbeltEvents = 0;
+        seatbeltClicks = 0;
 	    speedEvents = 0;
 	    speedEvents1 = 0;
 	    speedEvents2 = 0;
@@ -498,6 +500,14 @@ public class Score {
 
     public void setSeatbeltEvents(Number seatbeltEvents) {
         this.seatbeltEvents = seatbeltEvents;
+    }
+
+    public Number getSeatbeltClicks() {
+        return seatbeltClicks;
+    }
+
+    public void setSeatbeltClicks(Number seatbeltClicks) {
+        this.seatbeltClicks = seatbeltClicks;
     }
 
     public Number getSpeedCoaching() {

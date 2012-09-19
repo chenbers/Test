@@ -74,6 +74,9 @@ public abstract class ReportsBean extends BaseBean {
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         
         switch (reportGroup.getReports()[0]) {
+            case SEATBELT_CLICKS_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getSeatbeltClicksReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
+                break;
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), 

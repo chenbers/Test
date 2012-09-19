@@ -38,6 +38,7 @@ public enum ReportType
     IDLE_PERCENTAGE("Idling Percentage Report", "IdlePercentageReport.jrxml"),
     TEAM_STATISTICS_REPORT("Team Statistics Report","TeamStatisticsReport.jrxml","TeamStatisticsReportRaw.jrxml"),
     TEAM_STOPS_REPORT("Team Stops Report","TeamStopsReport.jrxml","TeamStopsReportRaw.jrxml"),
+    SEATBELT_CLICKS_REPORT("Seatbelt Clicks Report","seatbeltClickReport.jrxml","seatbeltClickReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.seatbeltClicksReport"),
     
     // DOT/IFTA
     MILEAGE_BY_VEHICLE("Mileage By Vehicle","mileageByVehicle.jrxml","mileageByVehicleRaw.jrxml", "ifta", "com.inthinc.pro.reports.jasper.ifta.i18n.stateMileage"),
