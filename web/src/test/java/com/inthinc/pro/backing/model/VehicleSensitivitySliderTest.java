@@ -3,6 +3,8 @@ package com.inthinc.pro.backing.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +35,7 @@ public class VehicleSensitivitySliderTest {
         assertTrue(hardBumpSensitivitySlider.getSettingIDsForThisSlider().size() == 1);
         assertTrue(hardBumpSensitivitySlider.getSettingIDsForThisSlider().contains(160));
         assertTrue(hardBumpSensitivitySlider.getSettingValuesFromSliderValue(1).containsKey(160));
-        assertTrue(hardBumpSensitivitySlider.getSettingValuesFromSliderValue(1).containsValue("3000 80 2 300"));
+        assertTrue(hardBumpSensitivitySlider.getSettingValuesFromSliderValue(1).containsValue("3000 900 1 300"));
 
         vehicleSensitivitySlider = new VehicleSensitivitySlider(sensitivitySlidersMockDataCreator.getSensitivitySliders(), SliderType.HARD_ACCEL_SLIDER, ProductType.WAYSMART, 0, 1000000);
         assertEquals(new Integer(8), (Integer) vehicleSensitivitySlider.getDefaultValueIndex());
