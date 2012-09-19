@@ -186,6 +186,13 @@
 					</f:facet>
 					#{total.score.crashEvents}
 				</rich:column>
+				<rich:column rendered="#{tableColumns['seatbelt_clicks'].visible}" sortBy="#{total.score.seatbeltClicks}" id="newTeamStatsTab-totalSeatbeltClicks">
+					<f:facet name="header">
+						#{messages.team_seatbelt_clicks}
+					</f:facet>
+		
+					#{total.score.seatbeltClicks}
+				</rich:column>
 				<rich:column  rendered="#{tableColumns['safety'].visible}" id="newTeamStatsTab-totalsSafety">
 					<f:facet name="header">
 						#{messages.team_safety}
@@ -318,6 +325,13 @@
 					</f:facet>
 		
 					#{item.score.crashEvents}
+				</rich:column>
+				<rich:column rendered="#{tableColumns['seatbelt_clicks'].visible}" sortBy="#{item.score.seatbeltClicks}" id="newTeamStatsTab-seatbeltClicks">
+					<f:facet name="header">
+						#{messages.team_seatbelt_clicks}
+					</f:facet>
+		
+					#{item.score.seatbeltClicks}
 				</rich:column>
 				<rich:column rendered="#{tableColumns['safety'].visible}" sortBy="#{item.score.safetyTotal}" id="newTeamStatsTab-safety">
 					<f:facet name="header">

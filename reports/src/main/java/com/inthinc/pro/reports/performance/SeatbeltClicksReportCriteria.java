@@ -1,6 +1,5 @@
 package com.inthinc.pro.reports.performance;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +13,6 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.util.MessageUtil;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 
 public class SeatbeltClicksReportCriteria extends ReportCriteria{
@@ -90,17 +88,12 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria{
 			 
             
             List<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper> seatbeltClicksWrappers = new ArrayList<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper>();
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(MessageUtil.formatMessageString("dateTimeFormat", locale), locale);
             for(DriverVehicleScoreWrapper dvsw : resultsList){
 				String driverName = dvsw.getDriver().getPerson().getLast() + ", " + dvsw.getDriver().getPerson().getFirst();
 
-				int trips = dvsw.getScore().getTrips().intValue();
-				int clicks = dvsw.getScore().getSeatbeltClicks().intValue();
-				int miles = dvsw.getScore().getOdometer6().intValue();
-//				float seatbelt = (dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().floatValue() : 0;
-				float seatbelt = 0;
+				int seatbelt = (dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().intValue() : 0;
 				String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
-                SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName, dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), dvsw.getScore().getOdometer6().intValue(), seatbelt, groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID()));
+                SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName, dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), dvsw.getScore().getOdometer6().intValue(), (float)seatbelt, groupName);
                 seatbeltClicksWrappers.add(seatbeltClicksWrapper);
             }
             Collections.sort(seatbeltClicksWrappers);
