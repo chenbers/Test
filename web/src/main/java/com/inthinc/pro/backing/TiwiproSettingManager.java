@@ -91,13 +91,6 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 
         return speedSettings;
     }
-    private String getCompleteHardVerticalValue(Integer sliderValue){
-       
-       Map<Integer,String> settingValues = hardVerticalSlider.getSettingValuesFromSliderValue(sliderValue);
-       if (settingValues.isEmpty()) return null;
-       
-       return settingValues.get(SettingType.HARD_VERT_SETTING.getSettingID());
-   }
     public String getSpeedSettingsString(Integer[] speedSettings){
         
         StringBuilder speedSet = new StringBuilder();
@@ -134,7 +127,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 	                                  vehicleSetting.getBestOption(SettingType.AUTOLOGOFF_SETTING.getSettingID()), 
 	    		   					  fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.autologoffSeconds"));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_VERT_SETTING,
-	                                  getCompleteHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()),
+	                                  getHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()).get(SettingType.HARD_VERT_SETTING.getSettingID()),
                                       vehicleSetting.getBestOption(SettingType.HARD_VERT_SETTING.getSettingID()), 
 	    		   					  fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.hardVertical"));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_TURN_SETTING, 
