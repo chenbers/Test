@@ -397,16 +397,16 @@ And I validate the Name field is SAVEDFORM
 Scenario: TCXXXX: Search - Working tab
 Given I am logged in
 When I go to the forms admin page
-And I type "TCXXXX10" into the Search Working textfield
-Then I validate the 1st Row of the Entry Name Working text contains "TCXXXX10"
-And I validate the 2nd Row of the Entry Name Working text contains "TCXXXX10"
-And I validate the 3rd Row of the Entry Name Working text contains "TCXXXX10"
-And I type "FORM_13470555" into the Search Working textfield
-And I validate the 1st Row of the Entry Base Form ID Working text contains "FORM_13470555"
-And I validate the 2nd Row of the Entry Base Form ID Working text contains "FORM_13470555"
-And I type "test" into the Search Working textfield
-And I validate the 1st Row of the Entry Description Working text contains "test"
-And I validate the 2nd Row of the Entry Description Working text contains "test"
+And I type "TCXXXX1" into the Search Working textfield
+Then I validate the 1st Row of the Entry Name Working text contains "TCXXXX1"
+And I validate the 2nd Row of the Entry Name Working text contains "TCXXXX1"
+And I validate the 3rd Row of the Entry Name Working text contains "TCXXXX1"
+And I type "FORM_1347" into the Search Working textfield
+And I validate the 1st Row of the Entry Base Form ID Working text contains "FORM_1347"
+And I validate the 2nd Row of the Entry Base Form ID Working text contains "FORM_1347"
+And I type "Required" into the Search Working textfield
+And I validate the 1st Row of the Entry Description Working text contains "Required"
+And I validate the 2nd Row of the Entry Description Working text contains "Required"
 And I type "Pre Trip" into the Search Working textfield
 And I validate the 1st Row of the Entry Trigger Working text contains "Pre Trip"
 And I validate the 2nd Row of the Entry Trigger Working text contains "Pre Trip"
@@ -418,15 +418,15 @@ Scenario: TCXXXX: Search - Published tab
 Given I am logged in
 When I go to the forms admin page
 And I click the Published link
-And I type "TCXXXX10" into the Search Published textfield
-Then I validate the 1st Row of the Entry Name Published text contains "TCXXXX10"
-And I validate the 2nd Row of the Entry Name Published text contains "TCXXXX10"
-And I type "FORM_134705" into the Search Published textfield
-And I validate the 1st Row of the Entry Base Form ID Published text contains "FORM_134705"
-And I validate the 2nd Row of the Entry Base Form ID Published text contains "FORM_134705"
-And I type "test" into the Search Published textfield
-And I validate the 1st Row of the Entry Description Published text contains "test"
-And I validate the 2nd Row of the Entry Description Published text contains "test"
+And I type "TCXXXX1" into the Search Published textfield
+Then I validate the 1st Row of the Entry Name Published text contains "TCXXXX1"
+And I validate the 2nd Row of the Entry Name Published text contains "TCXXXX1"
+And I type "FORM_1347" into the Search Published textfield
+And I validate the 1st Row of the Entry Base Form ID Published text contains "FORM_1347"
+And I validate the 2nd Row of the Entry Base Form ID Published text contains "FORM_1347"
+And I type "Required" into the Search Published textfield
+And I validate the 1st Row of the Entry Description Published text contains "Required"
+And I validate the 2nd Row of the Entry Description Published text contains "Required"
 And I type "Pre Trip" into the Search Published textfield
 And I validate the 1st Row of the Entry Trigger Published text contains "Pre Trip"
 And I validate the 2nd Row of the Entry Trigger Published text contains "Pre Trip"
@@ -459,20 +459,3 @@ And I click the Published link
 And I type "randomstringthatwillnotcomeup" into the Search Published textfield
 And I validate the No Records Published Error text is "No matching records found"
 And I validate the Entries Published text contains "Showing 0 to 0 of 0 entries"
-
-Scenario: TCXXXX: Forms Admin Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
-Given I am logged in
-When I go to the forms admin page
-And I validate the Sort By Name Working column sorts correctly
-And I validate the Sort By Base Form ID Working column sorts correctly
-And I validate the Sort By Version Working column sorts correctly
-And I validate the Sort By Description Working column sorts correctly
-And I validate the Sort By Status Working column sorts correctly
-And I validate the Sort By Trigger Working column sorts correctly
-And I validate the Sort By Publish Working column sorts correctly
-And I validate the Sort By Edit Working column sorts correctly
-And I validate the Sort By Name Published column sorts correctly
-And I validate the Sort By Base Form ID Published column sorts correctly
-And I validate the Sort By Version column Published sorts correctly
-And I validate the Sort By Description Published column sorts correctly
-And I validate the Sort By Trigger Published column sorts correctly

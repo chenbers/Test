@@ -87,7 +87,7 @@ And I click the Text link
 And I click the Cancel Top button
 Then I validate I am on the Forms Admin page
 When I type "Form TCXXXXAdd3" into the Search Working textfield
-Then I validate the 1st Row of the Entry Base Form Id Published text is not present
+Then I validate the 1st Row of the Entry Base Form Id Working text is not present
 When I click the Published link
 And I type "Form TCXXXXAdd3" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
@@ -109,7 +109,7 @@ And I click the Text link
 And I click the Cancel Bottom button
 Then I validate I am on the Forms Admin page
 When I type "Form TCXXXXAdd4" into the Search Working textfield
-Then I validate the 1st Row of the Entry Base Form Id Published text is not present
+Then I validate the 1st Row of the Entry Base Form Id Working text is not present
 When I click the Published link
 And I type "Form TCXXXXAdd4" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present

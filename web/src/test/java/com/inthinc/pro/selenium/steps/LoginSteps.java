@@ -32,7 +32,7 @@ public class LoginSteps extends WebSteps {
     // page._textField().password().type(MasterTest.switchCase(autouser.getPassword()));
     // }
 
-    @Given("I clean the database for this account")
+    @Given("I clean the database")
     public void cleanup() {
     	//TODO: Add code to clear out the forms database before running all tests
     }

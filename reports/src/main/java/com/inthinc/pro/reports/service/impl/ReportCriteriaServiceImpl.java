@@ -1150,8 +1150,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     @Override
     public ReportCriteria getDriverPerformanceKeyMetricsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale,
             MeasurementType measurementType) {
+        return getDriverPerformanceKeyMetricsReportCriteria(accountGroupHierarchy, groupIDList, timeFrame, interval, locale, measurementType, ReportCriteria.INACTIVE_DRIVERS_DEFAULT,
+                ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+
+    @Override
+    public ReportCriteria getDriverPerformanceKeyMetricsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale,
+            MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverPerformanceKeyMetricsReportCriteria criteria = new DriverPerformanceKeyMetricsReportCriteria(ReportType.DRIVER_PERFORMANCE_KEY_METRICS, locale);
         criteria.setDriverPerformanceDAO(driverPerformanceDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
         if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
             criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
         else
@@ -1199,20 +1208,20 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return builder.build();
     }
 
-    @Override
-    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
-        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupIDs, timeFrame);
-        builder.setLocale(locale);
-        builder.setDateTimeZone(timeZone);
-        return builder.build();
-    }
-
     /* Communication */
     @Override
     public ReportCriteria getNonCommReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
         NonCommReportCriteria.Builder builder = new NonCommReportCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupIDs, timeFrame);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
+    @Override
+    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
+        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
+        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupIDs, timeFrame);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -1282,6 +1291,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                 continue;
             }
             switch (reportGroup.getReports()[i]) {
+                case SEATBELT_CLICKS_REPORT:
+                    reportCriteriaList
+                            .add(getSeatbeltClicksReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID())));
+                    break;
                 case OVERALL_SCORE:
                     reportCriteriaList.add(getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), groupHierarchy));
                     break;
@@ -1460,5 +1473,4 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         }
         return reportCriteriaList;
     }
-
 }
