@@ -1,5 +1,4 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+<beans xmlns="http://www.springframework.org/schema/beans"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -121,6 +120,11 @@
 			value="com.inthinc.pro.scheduler.quartz.AggregationJob" />
 	</bean>
 
+	<bean name="stateMileageAggregationJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+		parent="baseAlertJob">
+		<property name="jobClass"
+			value="com.inthinc.pro.scheduler.quartz.StateMileageAggregationJob" />
+	</bean>
 
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="emailReportJob" />
@@ -155,6 +159,11 @@
 		<property name="cronExpression" value="${cron.aggregation}" />
 	</bean>
 
+	<bean id="stateMileageAggregationCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="stateMileageAggregationJob" />
+		<property name="cronExpression" value="${cron.stateMileageAggregation}" />
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
 		lazy-init="false">
 		<property name="triggers">
@@ -165,6 +174,7 @@
 				<ref bean="emailReportCronTrigger" />
 				<ref bean="zonePublishCronTrigger" />
 				<ref bean="aggregationCronTrigger" />
+				<ref bean="stateMileageAggregationCronTrigger" />
 			</list>
 		</property>
 	</bean>
