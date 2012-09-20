@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TriggerType {
+    NO_TRIGGER(0),
     PRE_TRIP(1),
     POST_TRIP(2),
     ROAD_HAZARD(3);

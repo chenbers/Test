@@ -18,6 +18,7 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.http.HttpStatus;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -71,8 +72,7 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
 
     @Override
     public void switchSilo(Integer siloID) {
-        // TODO Auto-generated method stub
-
+        throw new NotImplementedException();
     }
 
     public String getHost() {
@@ -93,26 +93,22 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
 
     @Override
     public Integer findByID(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Integer create(Integer id, Integer entity) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Integer update(Integer entity) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Integer deleteByID(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
