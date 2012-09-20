@@ -42,7 +42,7 @@ public class PageAdminAddEditUser extends AdminBar {
             return new CheckBox(AdminAddEditUserEnum.TEXT_FIELDS, "isDriver");
         }
 
-        public CheckBox userInformation() {
+        public CheckBox loginInformation() {
             return new CheckBox(AdminAddEditUserEnum.TEXT_FIELDS, "isUser");
         }
 
@@ -127,6 +127,20 @@ public class PageAdminAddEditUser extends AdminBar {
         public TextField userFields(UserColumns textField) { 
             return new TextField(AdminAddEditUserEnum.TEXT_FIELDS, "user_", textField);
         }
+        
+        public TextField firstName() {
+        	return new TextField(AdminAddEditUserEnum.FIRST_NAME_FIELD);
+        }
+        
+        public TextField lastName() {
+        	return new TextField(AdminAddEditUserEnum.LAST_NAME_FIELD);
+        }
+        
+        public TextField emailOne() {
+        	return new TextField(AdminAddEditUserEnum.EMAIL_ONE_FIELD);
+        }
+        
+        
     }
 
     public AddEditUserButtons _button() {

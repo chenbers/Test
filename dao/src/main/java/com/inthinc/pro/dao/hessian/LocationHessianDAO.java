@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
@@ -34,6 +35,29 @@ public class LocationHessianDAO   implements LocationDAO
     private Mapper mapper;
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
+    
+    
+    public static void main(String[] args){
+        SiloServiceCreator ssc = new SiloServiceCreator("tp-web10.tiwipro.com", 8099);
+        LocationHessianDAO locationDAO = new LocationHessianDAO();
+        locationDAO.setSiloService(ssc.getService());
+
+        Date startDate = new Date((1344384000L-14400)*1000L);
+        Date endDate = new Date((1344470400L-14400)*1000L);
+        List<Trip> tripList = locationDAO.getTripsForVehicle(11290, startDate, endDate);
+        for (Trip trip : tripList)
+        {
+            System.out.println("Vehicle Trip: " + trip);
+        }
+        
+        tripList = locationDAO.getTripsForDriver(20187, startDate, endDate);
+        for (Trip trip : tripList)
+        {
+            System.out.println("Driver Trip: " + trip);
+        }
+        
+        
+    }
     
     public LocationHessianDAO()
     {

@@ -6,6 +6,10 @@ import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.automation.utils.MasterTest;
+import com.inthinc.pro.automation.utils.RandomValues;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
@@ -15,11 +19,13 @@ public class LoginSteps extends WebSteps {
 
     PageLogin loginPage = new PageLogin();
     AutomationUser login;
+    PageAdminAddEditUser addedit = new PageAdminAddEditUser();
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
     PageFormsSubmissions submissions = new PageFormsSubmissions();
 
     private static final PageLogin page = new PageLogin();
     private static final PopUps popup = new PopUps();
+    private RandomValues random;
 
     // @When("I type an user name in the wrong case")
     // public void whenITypeAnUserNameInTheWrongCase() {
@@ -35,6 +41,27 @@ public class LoginSteps extends WebSteps {
     @Given("I clean the database")
     public void cleanup() {
     	//TODO: Add code to clear out the forms database before running all tests
+    }
+    
+    @When("I create one thousand accounts")
+    public void whenICreateOneThousandAccounts() {
+    	int i = 0;
+    	while (i < 1001) {
+    	random = new RandomValues();
+		String emp_firstname = random.getCharString(20);
+		String emp_lastname = random.getCharString(20);
+		String emp_email = random.getEmail();
+		
+    	addedit._link().adminAddUser().click();
+    	addedit._textField().firstName().type(emp_firstname);
+    	addedit._textField().lastName().type(emp_lastname);
+    	addedit._dropDown().driverTeam().select("Top - Stress Team One");
+    	addedit._dropDown().timeZone().select("US/Mountain (GMT-7:00)");
+    	addedit._checkBox().loginInformation().uncheck();
+    	addedit._textField().emailOne().type(emp_email);
+    	addedit._button().saveTop().click();
+    	i++;
+    	}
     }
     
     @When("I enter non valid email text into the email address field")

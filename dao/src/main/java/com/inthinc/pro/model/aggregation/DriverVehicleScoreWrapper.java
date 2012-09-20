@@ -92,6 +92,7 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
         double totMilesHeavy = 0;
         int totCrash = 0;
         int totSeatBeltEvt = 0;
+        int totSeatBeltClicks = 0;
         int totSpeedEvt = 0;
         int totAggAccelEvt = 0;
         int totAggBrakeEvt = 0;
@@ -141,8 +142,6 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
             if ( dvsc.getScore().getOdometer6() != null ) {
                 totMilesDriven += dvsc.getScore().getOdometer6().intValue();
             }            
-logger.debug("dvsc.getScore().getOdometer6(): " + dvsc.getScore().getOdometer6());
-logger.debug("totMilesDriven : " + totMilesDriven);
             
             if ( dvsc.getScore().getDriveTime() != null ) {
                 totDriveTime += dvsc.getScore().getDriveTime().intValue();
@@ -176,6 +175,9 @@ logger.debug("totMilesDriven : " + totMilesDriven);
             }
             if ( dvsc.getScore().getSeatbeltEvents() != null ) {
                 totSeatBeltEvt += dvsc.getScore().getSeatbeltEvents().intValue();
+            }
+            if ( dvsc.getScore().getSeatbeltClicks() != null ) {
+                totSeatBeltClicks += dvsc.getScore().getSeatbeltClicks().intValue();
             }
             if ( dvsc.getScore().getSpeedEvents() != null ) {
                 totSpeedEvt += dvsc.getScore().getSpeedEvents().intValue();
@@ -233,6 +235,7 @@ logger.debug("totMilesDriven : " + totMilesDriven);
         
         tmp.setCrashEvents(totCrash);       
         tmp.setSeatbeltEvents(totSeatBeltEvt);        
+        tmp.setSeatbeltClicks(totSeatBeltClicks);        
         tmp.setSpeedEvents(totSpeedEvt);
         tmp.setAggressiveAccelEvents(totAggAccelEvt);
         tmp.setAggressiveBrakeEvents(totAggBrakeEvt);

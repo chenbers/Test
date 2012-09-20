@@ -39,7 +39,7 @@ public class StepsAdminAddEditUser extends WebSteps {
         }else if(accessPointName.equalsIgnoreCase("employee")){
             test.assertEquals(true, editUser._textField().personFields(UserColumns.EMPLOYEE_ID).isEditable());
         }else if(accessPointName.equalsIgnoreCase("login")){
-            editUser._checkBox().userInformation().check();                
+            editUser._checkBox().loginInformation().check();                
             test.assertEquals(true, editUser._textField().userFields(UserColumns.USER_NAME).isEditable());
         }else if(accessPointName.equalsIgnoreCase("notification")){
             test.assertEquals(true, editUser._textField().personFields(UserColumns.EMAIL_1).isEditable());

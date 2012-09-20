@@ -20,6 +20,8 @@ public enum ReportGroup {
     TEAM_STATISTICS_REPORT("Team Statistics Report", 6, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.TEAM }, ReportType.TEAM_STATISTICS_REPORT),
     TEAM_STOPS_REPORT("Team Stops Report", 106, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_DAYS}, new GroupType[] { GroupType.TEAM },
             ReportCategory.DriverPerformance, null, ReportType.TEAM_STOPS_REPORT),
+    SEATBELT_CLICKS_REPORT("Seatbelt Clicks Report", 107, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+            GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.SEATBELT_CLICKS_REPORT),
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report", 7, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
     HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report", 8, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION,
