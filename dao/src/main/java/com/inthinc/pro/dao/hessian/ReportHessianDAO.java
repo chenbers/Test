@@ -9,6 +9,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DriverReportItem;
@@ -18,35 +19,32 @@ import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
 public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implements ReportDAO {
-	
+    private DriverPerformanceMapper driverPerformanceMapper;
 //   private static final Logger logger = Logger.getLogger(ReportHessianDAO.class);
+    @Override
+    public Integer getDriverReportCount(Integer groupID, List<TableFilterField> filters) {
     
-	@Override
-	public Integer getDriverReportCount(Integer groupID, List<TableFilterField> filters) {
-	
-		List<TableFilterField> reportFilters = removeBlankFilters(filters); 
-		
+        List<TableFilterField> reportFilters = removeBlankFilters(filters); 
 
 		try {
+            setMapper(driverPerformanceMapper);
 			Map<String, Object> map = getSiloService().getDriverReportCount(groupID, getMapper().convertList(reportFilters)); 
 			return getCount(map);
 		}
-        catch (EmptyResultSetException e)
-        {
+        catch (EmptyResultSetException e){
             return 0;
         }
         
 	}
 
-	
 	public List<DriverReportItem> getDriverReportPage(Integer groupID, PageParams pageParams) {
 		pageParams.setFilterList(removeBlankFilters(pageParams.getFilterList()));
 		try {
+            setMapper(driverPerformanceMapper);
 			List<DriverReportItem> list = getMapper().convertToModelObject(getSiloService().getDriverReportPage(groupID, getMapper().convertToMap(pageParams)), DriverReportItem.class);
 			return list;
 		}
-		catch (EmptyResultSetException e)
-		{
+		catch (EmptyResultSetException e){
 			return Collections.emptyList();
 		}
 
@@ -223,5 +221,13 @@ public class ReportHessianDAO  extends GenericHessianDAO<Object, Integer> implem
         }
         
 	}
+
+    public DriverPerformanceMapper getDriverPerformanceMapper() {
+        return driverPerformanceMapper;
+    }
+
+    public void setDriverPerformanceMapper(DriverPerformanceMapper driverPerformanceMapper) {
+        this.driverPerformanceMapper = driverPerformanceMapper;
+    }
 
 }

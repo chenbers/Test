@@ -57,7 +57,11 @@ default-autowire="byName">
   <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean"/>
 
 	
-  <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"/>
-  
+  <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO">
+    <property name="driverPerformanceMapper" ref="driverPerformanceMapper"/>
+  </bean>
+  <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper">
+    <property name="driverDAO" ref="driverDAO"/>
+  </bean>
    
 </beans>

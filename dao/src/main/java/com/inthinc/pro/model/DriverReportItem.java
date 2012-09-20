@@ -23,6 +23,7 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
     private Integer speedScore;
     private Integer styleScore;
     private Integer seatbeltScore;
+    private Status status;
     
     public Integer getSeatbeltScore() {
 		return seatbeltScore;
@@ -115,5 +116,11 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
     	if (driverName != null && o.driverName != null)
             return getDriverName().toLowerCase().compareTo(o.getDriverName().toLowerCase());
     	return 0;
+    }
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
