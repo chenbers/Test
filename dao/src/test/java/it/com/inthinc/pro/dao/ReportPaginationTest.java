@@ -24,8 +24,10 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
+import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.ReportHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
+import com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Account;
@@ -182,6 +184,11 @@ public class ReportPaginationTest {
     public void drivers() {
     	ReportHessianDAO reportDAO = new ReportHessianDAO();
     	reportDAO.setSiloService(siloService);
+        DriverPerformanceMapper driverPerformanceMapper = new DriverPerformanceMapper();
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        driverPerformanceMapper.setDriverDAO(driverDAO);
+        reportDAO.setDriverPerformanceMapper(driverPerformanceMapper);
     	
     	// no filters
     	for (int teamIdx = ITData.GOOD; teamIdx <= ITData.BAD; teamIdx++) {
