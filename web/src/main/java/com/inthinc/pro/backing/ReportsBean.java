@@ -74,6 +74,9 @@ public abstract class ReportsBean extends BaseBean {
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         
         switch (reportGroup.getReports()[0]) {
+            case SEATBELT_CLICKS_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getSeatbeltClicksReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
+                break;
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), 
@@ -233,7 +236,8 @@ public abstract class ReportsBean extends BaseBean {
                         params.getLocale(), true));
                 break;
             case DRIVER_PERFORMANCE_KEY_METRICS:
-                reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType()));
+                System.out.println("in DRIVER_PERFORMANCE_KEY_METRICS");
+                reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG:
                 reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsTimeFrameReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType()));

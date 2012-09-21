@@ -29,7 +29,6 @@ import org.junit.Test;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
-import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
@@ -139,6 +138,7 @@ public class SiloServiceTest {
     private static final Integer PERSON_COUNT = 3;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     private static final String SPEEDRACER = "speedracer";
+    private static Integer SPEEDRACER_ID = 1;
     @SuppressWarnings("unused")
     private static final String SPEEDRACER_RFID = "speedRacerRFID";
     private static Integer TESTING_DRIVER_ID; 
@@ -338,6 +338,23 @@ public class SiloServiceTest {
     public void vehicleSettings(){
         ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
         configuratorDAO.setSiloService(siloService);
+        VehicleSetting vs = configuratorDAO.getVehicleSettings(TESTING_VEHICLE_ID);
+        assertEquals(ProductType.TIWIPRO,vs.getProductType());
+        assertEquals(TESTING_VEHICLE_ID,vs.getVehicleID());
+        assertTrue(vs.getActual()!= null);
+        assertTrue(vs.getDesired()!=null);
+        assertEquals(TESTING_DEVICE_ID,vs.getDeviceID());
+    }
+    @Ignore
+    @Test
+    public void setVehicleSettings(){
+        ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
+        configuratorDAO.setSiloService(siloService);
+        VehicleSetting invs = new VehicleSetting();
+        invs.setProductType(ProductType.TIWIPRO);
+        Map<Integer, String> desired = new HashMap<Integer,String>();
+        desired.put(160, "3000 80 2 300");
+        configuratorDAO.setVehicleSettings(TESTING_VEHICLE_ID, desired, SPEEDRACER_ID, "testing set vehicle settings");
         VehicleSetting vs = configuratorDAO.getVehicleSettings(TESTING_VEHICLE_ID);
         assertEquals(ProductType.TIWIPRO,vs.getProductType());
         assertEquals(TESTING_VEHICLE_ID,vs.getVehicleID());

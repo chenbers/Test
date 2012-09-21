@@ -13,6 +13,11 @@ public enum AdminAddEditUserEnum implements SeleniumEnums {
 
     TEXT_FIELDS(null, "edit-form:editPerson-***"),
     MIDDLE_FIELD(null, "edit-form:middle"),
+    
+    FIRST_NAME_FIELD("First Name:", "edit-form:editPerson-first"),
+    LAST_NAME_FIELD("Last Name:", "edit-form:editPerson-last"),
+    EMAIL_ONE_FIELD("Email 1:", "edit-form:editPerson-priEmail"),
+    
 
     CANCEL("Cancel", "edit-form:editPersonCancel***"),
     SAVE(save, "edit-form:editPersonSave***"),

@@ -412,6 +412,23 @@ Scenario: TC1423: Notifications > Emergency - Edit Columns - Check Box Selection
 
 FormsAdmin.story
 
+Scenario: TCXXXX: Forms Admin Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
+Given I am logged in
+When I go to the forms admin page
+And I validate the Sort By Name Working column sorts correctly
+And I validate the Sort By Base Form ID Working column sorts correctly
+And I validate the Sort By Version Working column sorts correctly
+And I validate the Sort By Description Working column sorts correctly
+And I validate the Sort By Status Working column sorts correctly
+And I validate the Sort By Trigger Working column sorts correctly
+And I validate the Sort By Publish Working column sorts correctly
+And I validate the Sort By Edit Working column sorts correctly
+And I validate the Sort By Name Published column sorts correctly
+And I validate the Sort By Base Form ID Published column sorts correctly
+And I validate the Sort By Version column Published sorts correctly
+And I validate the Sort By Description Published column sorts correctly
+And I validate the Sort By Trigger Published column sorts correctly
+
 //Future test, not currently implemented on this page
 Scenario: TCXXXX: Edit columns
 Given I am on the Admin page Forms tab

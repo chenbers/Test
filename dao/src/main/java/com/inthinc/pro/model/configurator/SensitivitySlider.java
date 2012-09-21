@@ -56,14 +56,13 @@ public class SensitivitySlider {
     }
     private boolean settingsMatch(int sliderValue,Set<Entry<Integer,String>> settingEntries){
         //Where there are several settings for a slider value all must match
-        boolean match = true;
         for (Entry<Integer,String> settingEntry : settingEntries){
             
             SensitivitySliderValues sensitvitySliderValues = settingsForThisSlider.get(settingEntry.getKey());
             
-            match = subValuesMatch(settingEntry.getValue(),sensitvitySliderValues.getValues().get(sliderValue));
+            if(!subValuesMatch(settingEntry.getValue(),sensitvitySliderValues.getValues().get(sliderValue)))
             
-            if(!match) return false;
+                return false;
         }
         return true;
         

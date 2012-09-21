@@ -23,10 +23,15 @@
     
     <url-mapping id="unsubscribeToReport">
     	<pattern>/unsubscribe/report/#{unsubscribeBean.emailAddress}/#{unsubscribeBean.reportScheduleID}</pattern>
-    	<view-id>/unsubscribe.faces</view-id>
-    	<action onPostback="false">#{unsubscribeBean.unsubscribeToReportSchedule}</action>
+    	<view-id>/preunsubscribe.faces</view-id>
+    	<action onPostback="false">#{unsubscribeBean.prepareToUnsubscribeToReportSchedule}</action>
     </url-mapping>
     
+    <url-mapping id="unsubscribeSuccessful">
+    	<pattern>/unsubscribe/report/success/#{unsubscribeBean.emailAddress}/#{unsubscribeBean.reportScheduleID}</pattern>
+    	<view-id>/unsubscribe.faces</view-id>
+    	<action onPostback="false">#{unsubscribeBean.unsubscribeSuccessful}</action>
+    </url-mapping>
     <url-mapping id="unsubscribeToReportSimple">
     	<pattern>/unsubscribe/report/</pattern>
     	<view-id>/unsubscribe.faces</view-id>

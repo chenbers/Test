@@ -1,0 +1,64 @@
+<ui:composition template="/layout/errorLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+    <ui:define name="scripts">
+        
+		<a4j:loadScript src="/js/jquery-1.4.2.min.js"/>
+        <script type="text/javascript">
+		function reloadAjaxPanels() {}
+        
+        $(function() {   
+        	$(".left").focus();
+        });
+	</script>
+	</ui:define>
+	<ui:param name="title" value="#{messages.unsubscribe_title}" />
+
+	<ui:define name="content">
+		<div style="margin: 50px auto; width: 400px;">
+			<div class="panel_nw">
+				<div class="panel_title">
+					<h:outputFormat value="#{messages.unsubscribe_unsubscribeFrom}">
+						<f:param value="#{unsubscribeBean.messageType}" />
+						<f:param value="#{unsubscribeBean.messageName}" />
+					</h:outputFormat>
+				</div>
+			</div>
+			<div class="panel_w">
+				<div class="panel_content">
+					<h:form id="unsubscribe_form" >
+					   <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                              <tbody>
+                                <tr>
+                                  	<td width="100"><h:outputText value="#{messages.unsubscribe_email}" /></td>
+                                  	<td>
+	                            	<h:outputText id="unsubscribe-email" value="#{unsubscribeBean.decryptedEmailAddress}"  />
+									</td>
+                                </tr>
+							</tbody>
+						</table>
+ 						<div class="popupactions" style="margin-bottom: 25px;">
+								<h:commandButton id="confirmUnsubscribe" type="submit" 
+									action="#{unsubscribeBean.unsubscribeAction}" styleClass="left"
+									value="#{messages.unsubscribe_confirm}" style="margin-right: 150px;">
+									<h:outputText value="#{messages.unsubscribe_confirm}" styleClass="ok" />
+								</h:commandButton> 
+						</div>
+					</h:form>
+				</div>
+			</div>
+			<div class="panel_sw">
+				<div class="panel_statusbar"></div>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>
