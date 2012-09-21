@@ -15,14 +15,18 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.SearchCoordinationBean;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.pagination.Range;
+import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.table.BasePaginationTable;
 import com.inthinc.pro.table.model.provider.ReportPaginationTableDataProvider;
+import com.inthinc.pro.util.SelectItemUtil;
 
 public abstract class BasePagingReportBean<T> extends BaseBean 
 {
@@ -62,6 +66,9 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 		initScoreRanges();
 		return scoreRanges;
 	}
+    public List<SelectItem> getStatuses(){
+        return SelectItemUtil.toList(Status.class, false);
+    }
 
 	private void initScoreRanges() {
 		if (scoreRanges == null) {
@@ -80,7 +87,11 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 			}
 		}
 	}
-
+	public TableFilterField getStatusFilter(){
+	    System.out.println("getStatusFilter()");
+	    //return new TableFilterField("status","active");
+	    return null;
+	}
 	public Range getOverallScoreFilter() {
 		String filterKey = scoreFilterMap.get("overall");
 		return scoreRangeMap.get(filterKey);
