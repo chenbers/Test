@@ -52,7 +52,8 @@ public abstract class BasePagingReportBean<T> extends BaseBean
     
 	protected Map<String, String> scoreFilterMap;
     
-	
+    private Status statusFilter;
+    private Integer statusFilterID;
 	private static List<SelectItem> scoreRanges;
 	private static Map<String, Range> scoreRangeMap;
 	private static final Range[] ranges = new Range[] {
@@ -67,7 +68,13 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 		return scoreRanges;
 	}
     public List<SelectItem> getStatuses(){
-        return SelectItemUtil.toList(Status.class, false);
+        List<SelectItem> result = SelectItemUtil.toList(Status.class, true, Status.DELETED);
+//        for(SelectItem item: result){
+//            Integer statusID = (item.getValue()!=null)?((Status)item.getValue()).getCode():null;
+//            item.setValue(statusID);
+//        }
+        
+        return result;
     }
 
 	private void initScoreRanges() {
@@ -87,10 +94,19 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 			}
 		}
 	}
-	public TableFilterField getStatusFilter(){
+	public Status getStatusFilter(){
 	    System.out.println("getStatusFilter()");
-	    //return new TableFilterField("status","active");
-	    return null;
+	    return statusFilter;
+	}
+	public void setStatusFilter(Status statusFilter){
+	    System.out.println("setStatusFilter("+statusFilter+")");
+	    this.statusFilter = statusFilter;
+	}
+	public Integer getStatusFilterID(){
+        return (statusFilter!=null)?statusFilter.getCode():null;
+	}
+	public void setStatusFilterID(Integer statusFilterID){
+	    this.statusFilter = Status.valueOf(statusFilterID);
 	}
 	public Range getOverallScoreFilter() {
 		String filterKey = scoreFilterMap.get("overall");
