@@ -82,7 +82,7 @@ public class DBUtil {
         try
         {
             conn = tiwiproDS.getConnection();
-            statement = conn.prepareCall("{util_aggStateMileage()}");
+            statement = conn.prepareCall("{call util_aggStateMileage()}");
             statement.execute();
         }   // end try
         catch (SQLException e)
