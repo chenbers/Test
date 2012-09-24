@@ -1132,8 +1132,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     @Override
-    public ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, Boolean ryg) {
+    public ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, Boolean ryg){
+        return getDriverPerformanceReportCriteria(accountGroupHierarchy, groupID, interval, locale, ryg, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, Boolean ryg, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_TEAM, locale);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
         criteria.setDriverPerformanceDAO(driverPerformanceDAO);
         criteria.init(accountGroupHierarchy, groupID, interval, ryg);
         return criteria;
@@ -1168,8 +1174,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     @Override
     public ReportCriteria getDriverPerformanceKeyMetricsTimeFrameReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale,
             MeasurementType measurementType) {
+        return getDriverPerformanceKeyMetricsTimeFrameReportCriteria(accountGroupHierarchy, groupIDList, timeFrame, interval, locale, measurementType, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public ReportCriteria getDriverPerformanceKeyMetricsTimeFrameReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, Interval interval, Locale locale,
+            MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverPerformanceKeyMetricsReportCriteria criteria = new DriverPerformanceKeyMetricsReportCriteria(ReportType.DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG, locale);
         criteria.setDriverPerformanceDAO(driverPerformanceDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
         if (timeFrame != null && !timeFrame.equals(TimeFrame.CUSTOM_RANGE))
             criteria.init(accountGroupHierarchy, groupIDList, timeFrame, measurementType);
         else
@@ -1179,7 +1192,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone) {
-        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval);
+        return getDriverCoachingReportCriteriaByDriver(accountGroupHierarchy, driverID, interval, locale, timeZone, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public ReportCriteria getDriverCoachingReportCriteriaByDriver(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         builder.setGroupHierarchy(accountGroupHierarchy);

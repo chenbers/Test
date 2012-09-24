@@ -17,7 +17,17 @@ public class MockDriverPerformanceDAO implements DriverPerformanceDAO {
 
         return getDriverPerformanceListForGroup(groupID, groupName, queryInterval);
     }
+    @Override
+    public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval, boolean includeInactiveDrivers,
+            boolean includeZeroMilesDrivers) {
+        // TODO Auto-generated method stub
+        return getDriverPerformanceListForGroup(groupID, groupName, interval);
+    }
 
+    public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+     // TODO Auto-generated method stub
+        return getDriverPerformanceListForGroup(groupID, groupName, queryInterval);
+    }
     @Override
     public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval) {
         List<DriverPerformance> list = new ArrayList<DriverPerformance>();

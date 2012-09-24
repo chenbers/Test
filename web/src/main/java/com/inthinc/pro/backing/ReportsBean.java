@@ -72,7 +72,7 @@ public abstract class ReportsBean extends BaseBean {
         
         ReportGroup reportGroup = reportGroupMap.get(getSelected());
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-        
+        boolean ryg = false;
         switch (reportGroup.getReports()[0]) {
             case SEATBELT_CLICKS_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getSeatbeltClicksReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
@@ -228,19 +228,20 @@ public abstract class ReportsBean extends BaseBean {
                         getAccountName(), params.getLocale(), params.getIsExpired()));
                 break;
             case DRIVER_PERFORMANCE_TEAM:
+                ryg = false;
                 reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
-                        params.getLocale(), false));
+                        params.getLocale(), ryg, params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case DRIVER_PERFORMANCE_RYG_TEAM:
+                ryg = true;
                 reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
-                        params.getLocale(), true));
+                        params.getLocale(), ryg, params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case DRIVER_PERFORMANCE_KEY_METRICS:
-                System.out.println("in DRIVER_PERFORMANCE_KEY_METRICS");
                 reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG:
-                reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsTimeFrameReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType()));
+                reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceKeyMetricsTimeFrameReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case TEAM_STOPS_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getTeamStopsReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupIDList(), params.getTimeFrameSelect().getTimeFrame(), 
@@ -249,7 +250,6 @@ public abstract class ReportsBean extends BaseBean {
             case DRIVER_COACHING:
                 if (params.getParamType().equals(ReportParamType.DRIVER)){
                     reportCriteriaList.add(getReportCriteriaService().getDriverCoachingReportCriteriaByDriver(getAccountGroupHierarchy(),params.getDriverID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
-                   
                 }
                 if (params.getParamType().equals(ReportParamType.GROUPS)){
                     reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
@@ -272,7 +272,13 @@ public abstract class ReportsBean extends BaseBean {
 
         }
         for (ReportCriteria reportCriteria : reportCriteriaList) { 
+            System.out.println("1-1: "+getUser());
+            System.out.println("1-2: "+getUser().getPerson());
+            System.out.println("1-3: "+getUser().getPerson().getTimeZone());
             reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+            System.out.println("1-1: "+getUser());
+            System.out.println("2-2: "+getUser().getPerson());
+            System.out.println("2-3: "+getUser().getPerson().getLocale());
             reportCriteria.setLocale(getUser().getPerson().getLocale());
             reportCriteria.setUseMetric((getUser().getPerson().getMeasurementType() != null && getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
             reportCriteria.setMeasurementType(getUser().getPerson().getMeasurementType());
