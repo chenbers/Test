@@ -5,7 +5,7 @@ import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
 import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
-import me.prettyprint.cassandra.serializers.BigIntegerSerializer; 
+import me.prettyprint.cassandra.serializers.BigIntegerSerializer;
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
@@ -23,7 +23,6 @@ public class CassandraDB {
     private static boolean autoDiscoverHosts = false;
     private static int maxActive = 50;
 
-    
     public CassandraDB(String clusterName, String keyspaceName, String nodeAddress, int maxActive, boolean autoDiscoverHosts) {
         CassandraDB.clusterName = clusterName;
         CassandraDB.keyspaceName = keyspaceName;
@@ -41,11 +40,11 @@ public class CassandraDB {
         cassandraHostConfigurator.setUseSocketKeepalive(true);
 
         cluster = HFactory.getOrCreateCluster(clusterName, cassandraHostConfigurator);
-//        Log.i("Cluster " + clusterName + " maxActive: " + maxActive + " created. Addresses: " + nodeAddress);
+        // Log.i("Cluster " + clusterName + " maxActive: " + maxActive + " created. Addresses: " + nodeAddress);
     }
 
     public void shutdown() {
-//        Log.i("cluster.getConnectionManager().shutdown() called");
+        // Log.i("cluster.getConnectionManager().shutdown() called");
         cluster.getConnectionManager().shutdown();
     }
 
