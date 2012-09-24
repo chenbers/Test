@@ -37,6 +37,7 @@ public interface ReportCriteriaService
     ReportCriteria getTeamStopsReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale, DriverStopReport driverStopReport);
     ReportCriteria getTeamStopsReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, Locale locale);
     ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale,DateTimeZone timeZone);
+    ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
 
     // DOT IFTA
     ReportCriteria getMileageByVehicleReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly);
