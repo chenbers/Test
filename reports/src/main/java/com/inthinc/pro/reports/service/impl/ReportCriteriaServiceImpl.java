@@ -1214,11 +1214,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         builder.setDateTimeZone(timeZone);
         return builder.build();
     }
-
     @Override
     public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
+        return getSeatbeltClicksReportCriteria(accountGroupHierarchy, groupID, timeFrame, locale, timeZone, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+        
+    }
+    @Override
+    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupIDs, timeFrame);
+        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupIDs, timeFrame, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
