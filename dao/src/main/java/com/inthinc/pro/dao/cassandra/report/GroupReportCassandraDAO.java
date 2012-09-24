@@ -257,7 +257,7 @@ public class GroupReportCassandraDAO extends ReportCassandraDAO implements Group
         // Then change the timezone to UTC. Then adjust the millis to the Midnight value.
         DateTime intervalToUse = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
 
-        return getVehicleScores(groupID, intervalToUse, intervalToUse.plusDays(daysBetween), gh);
+        return getVehicleScores(groupID, intervalToUse, intervalToUse.plusDays(daysBetween-1), gh);
     }
 
     @Override
