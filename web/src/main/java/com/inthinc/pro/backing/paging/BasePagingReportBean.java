@@ -15,14 +15,18 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.SearchCoordinationBean;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.pagination.Range;
+import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.table.BasePaginationTable;
 import com.inthinc.pro.table.model.provider.ReportPaginationTableDataProvider;
+import com.inthinc.pro.util.SelectItemUtil;
 
 public abstract class BasePagingReportBean<T> extends BaseBean 
 {
@@ -48,7 +52,8 @@ public abstract class BasePagingReportBean<T> extends BaseBean
     
 	protected Map<String, String> scoreFilterMap;
     
-	
+    private Status statusFilter;
+    private Integer statusFilterID;
 	private static List<SelectItem> scoreRanges;
 	private static Map<String, Range> scoreRangeMap;
 	private static final Range[] ranges = new Range[] {
@@ -62,6 +67,15 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 		initScoreRanges();
 		return scoreRanges;
 	}
+    public List<SelectItem> getStatuses(){
+        List<SelectItem> result = SelectItemUtil.toList(Status.class, true, Status.DELETED);
+//        for(SelectItem item: result){
+//            Integer statusID = (item.getValue()!=null)?((Status)item.getValue()).getCode():null;
+//            item.setValue(statusID);
+//        }
+        
+        return result;
+    }
 
 	private void initScoreRanges() {
 		if (scoreRanges == null) {
@@ -80,7 +94,20 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 			}
 		}
 	}
-
+	public Status getStatusFilter(){
+	    System.out.println("getStatusFilter()");
+	    return statusFilter;
+	}
+	public void setStatusFilter(Status statusFilter){
+	    System.out.println("setStatusFilter("+statusFilter+")");
+	    this.statusFilter = statusFilter;
+	}
+	public Integer getStatusFilterID(){
+        return (statusFilter!=null)?statusFilter.getCode():null;
+	}
+	public void setStatusFilterID(Integer statusFilterID){
+	    this.statusFilter = Status.valueOf(statusFilterID);
+	}
 	public Range getOverallScoreFilter() {
 		String filterKey = scoreFilterMap.get("overall");
 		return scoreRangeMap.get(filterKey);
