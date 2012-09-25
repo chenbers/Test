@@ -63,4 +63,13 @@ public interface SbsHessianInterface extends HessianService {
     Map<String, Object> getSbsEdit(String mcmID, Map<String, Object> map) throws HessianException;
     
     List<Map<String, Object>> checkSbsEdit(String mcmID, List<Map<String, Object>> map) throws HessianException;
+
+
+    List<Map<String, Object>> checkSbsEditNG(String mcmid, List<Map<String, Object>> maps);
+
+
+    Map<String, Object> getSbsEditNG(String mcmid, Map<String, Object> map);
+
+
+    List<Map<String, Object>> checkSbsSubscribedNG(String mcmid, Map<String, Object> map); 
 }

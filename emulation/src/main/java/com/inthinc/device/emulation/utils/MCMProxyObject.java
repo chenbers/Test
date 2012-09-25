@@ -618,4 +618,32 @@ public class MCMProxyObject implements MCMService{
 		}
 	return null;
 	}
+
+    @Override
+    public List<Map<String, Object>> checkSbsEditNG(String mcmid, List<Map<String, Object>> maps) {
+        printOther(maps);
+        List<Map<String, Object>> reply = proxy.checkSbsEditNG(mcmid, maps);
+        printReply(reply);
+        DeviceStatistics.addCall();
+        return reply;
+    }
+
+    @Override
+    public Map<String, Object> getSbsEditNG(String mcmid, Map<String, Object> map) {
+        printOther(map);
+        Map<String, Object> reply = proxy.getSbsEditNG(mcmid, map);
+        printReply(reply);
+        DeviceStatistics.addCall();
+        return reply;
+    }
+    
+    @Override
+    public List<Map<String, Object>> checkSbsSubscribedNG(String mcmID,
+            Map<String, Object> map) {
+        printOther(map);
+        List<Map<String, Object>> reply = proxy.checkSbsSubscribedNG(mcmID, map);
+        printReply(reply);
+        DeviceStatistics.addCall();
+        return reply;
+    }
 }

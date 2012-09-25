@@ -5,6 +5,9 @@ import com.inthinc.pro.automation.logging.Log.Level;
 public class Log {
     
     private static void log(Level level, String toPrint, Object ...string ){
+        if (!toPrint.contains("%s")){
+            toPrint += " %s";
+        }
     	com.inthinc.pro.automation.logging.Log.print(toPrint, 3, level, string);
     }
 

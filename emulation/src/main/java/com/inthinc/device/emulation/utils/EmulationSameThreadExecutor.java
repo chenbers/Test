@@ -7,8 +7,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import com.inthinc.sbs.regions.SbsMap;
 
 public class EmulationSameThreadExecutor implements ExecutorService {
 
@@ -41,15 +44,17 @@ public class EmulationSameThreadExecutor implements ExecutorService {
 			throws InterruptedException {
 		return false;
 	}
+	
 
 	@Override
 	public <T> Future<T> submit(Callable<T> task) {
+	    FutureTask<T> temp = new FutureTask<T>(task);
 		try {
-			task.call();
+			temp.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return temp;
 	}
 
 	@Override
