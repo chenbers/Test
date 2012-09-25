@@ -80,6 +80,25 @@
                                          rowClasses="tableOdd,tableEven"  
  										 cellspacing="1" rows="#{pagingDriverReportBean.table.pageData.rowsPerPage}" width="100%">
  										<rich:column/>
+                                        <rich:column id="status" rendered="#{tableColumns['status'].visible}" sortBy="#{item.status}"
+                                                custFilterBy="#{item.status}" filterValue="#{pagingDriverReportBean.statusFilterID}">
+                                            <f:facet name="header">
+                                                <h:panelGroup>
+                                                    <h:outputText value="#{messages.reports_status}" />
+                                                    <h:panelGroup style="float:right;">
+	                                                    <rich:spacer style="display:block" height="2"/>
+	                                                    <h:selectOneMenu id="statusFilter" value="#{pagingDriverReportBean.statusFilter}" label="#{messages[msgId]}" style="width:80px;size:auto;margin-top:3px;" converter="SimpleBeanConverter" >
+	                                                        <f:selectItems value="#{pagingDriverReportBean.statuses}" />
+	                                                        <a4j:support event="onchange" reRender="#{context},#{context}-form:header,#{context}-form:#{context}-bottomScroller" />
+	                                                    </h:selectOneMenu>
+	                                                    <ui:include src="/includes/dhtmlSelectBox.xhtml">   
+	                                                        <ui:param name="selectBoxID" value="#{context}-form:#{context}:statusFilter" />
+	                                                    </ui:include>
+	                                                </h:panelGroup>
+                                                </h:panelGroup>
+                                            </f:facet>
+                                            <h:outputText value="#{messages[item.status]}" />
+                                        </rich:column>
                                         <rich:column id="group" rendered="#{tableColumns['group'].visible}" 
                                         				sortBy="#{item.groupName}" filterBy="#{item.groupName}" > 
                                             <f:facet name="header">

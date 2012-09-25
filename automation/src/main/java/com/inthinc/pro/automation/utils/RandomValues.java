@@ -275,7 +275,7 @@ public class RandomValues extends Random{
 	}
 
 	public String getEmail(Integer length, String domain) {
-		String address = getCharString(length) + "@" + domain;
+		String address = getCharString(length)  + domain;
 		Log.debug(address);
 		return address;
 	}

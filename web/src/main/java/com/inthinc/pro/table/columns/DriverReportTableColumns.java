@@ -29,6 +29,7 @@ public class DriverReportTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS.add("speedScore");
         AVAILABLE_COLUMNS.add("styleScore");
         AVAILABLE_COLUMNS.add("seatBeltScore");
+        AVAILABLE_COLUMNS.add("status");
     }
     
 	
