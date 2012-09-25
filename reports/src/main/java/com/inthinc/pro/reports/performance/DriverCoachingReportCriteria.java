@@ -72,12 +72,17 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
 
 		private GroupHierarchy groupHierarchy;
 
-        public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
+		public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
+		    this(groupReportDAO, driverPerformanceDAO, groupID, interval, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+		}
+        public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
            this.groupReportDAO = groupReportDAO;
            this.driverPerformanceDAO = driverPerformanceDAO;
            this.interval = interval;
            this.groupID = groupID;
            this.driverTimeFrameScoreMap = new HashMap<Integer, Map<String,Integer>>();
+           this.includeInactiveDrivers = includeInactiveDrivers;
+           this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
         
         public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO, DriverDAO driverDAO,Integer driverID,Interval interval) {
