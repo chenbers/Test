@@ -249,14 +249,14 @@ public abstract class ReportsBean extends BaseBean {
                 break;    
             case DRIVER_COACHING:
                 if (params.getParamType().equals(ReportParamType.DRIVER)){
-                    reportCriteriaList.add(getReportCriteriaService().getDriverCoachingReportCriteriaByDriver(getAccountGroupHierarchy(),params.getDriverID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
+                    reportCriteriaList.add(getReportCriteriaService().getDriverCoachingReportCriteriaByDriver(getAccountGroupHierarchy(),params.getDriverID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 }
                 if (params.getParamType().equals(ReportParamType.GROUPS)){
-                    reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
+                    reportCriteriaList.addAll(getReportCriteriaService().getDriverCoachingReportCriteriaByGroup(getAccountGroupHierarchy(),params.getGroupID(),  params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 }
                 break;
             case DRIVER_EXCLUDED_VIOLATIONS:
-                reportCriteriaList.add(getReportCriteriaService().getDriverExcludedViolationCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone()));
+                reportCriteriaList.add(getReportCriteriaService().getDriverExcludedViolationCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getDateRange().getInterval(), getLocale(),getDateTimeZone(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case NON_COMM:
                 reportCriteriaList.add(getReportCriteriaService().getNonCommReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
@@ -272,19 +272,12 @@ public abstract class ReportsBean extends BaseBean {
 
         }
         for (ReportCriteria reportCriteria : reportCriteriaList) { 
-            System.out.println("1-1: "+getUser());
-            System.out.println("1-2: "+getUser().getPerson());
-            System.out.println("1-3: "+getUser().getPerson().getTimeZone());
-            reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-            System.out.println("1-1: "+getUser());
-            System.out.println("2-2: "+getUser().getPerson());
-            System.out.println("2-3: "+getUser().getPerson().getLocale());
             reportCriteria.setLocale(getUser().getPerson().getLocale());
+            reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
             reportCriteria.setUseMetric((getUser().getPerson().getMeasurementType() != null && getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
             reportCriteria.setMeasurementType(getUser().getPerson().getMeasurementType());
             reportCriteria.setFuelEfficiencyType(getUser().getPerson().getFuelEfficiencyType());
             reportCriteria.setTimeZone(getUser().getPerson().getTimeZone());
-
         }
         
         setReportCriteriaList(reportCriteriaList);

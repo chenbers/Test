@@ -27,6 +27,15 @@ public interface EventAggregationDAO {
     public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIds,Interval interval);
     
     /**
+     * @param groupIds A list of drivers groupIDs
+     * @param interval The date range to filter on for the events.
+     * @param includeInactiveDrivers 
+     * @param includeZeroMilesDrivers
+     * @return
+     */
+    public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIds,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers);
+    
+    /**
      * Returns the last event that was sent in for devices currently assigned to vehicles for the groups.
      * 
      * @param groupIds

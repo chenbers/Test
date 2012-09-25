@@ -1202,21 +1202,30 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         builder.setGroupHierarchy(accountGroupHierarchy);
         return builder.buildSingle();
     }
-
     @Override
-    public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
-        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval);
+    public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone,
+            boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        DriverCoachingReportCriteria.Builder builder = new DriverCoachingReportCriteria.Builder(groupReportDAO, driverPerformanceDAO, groupID, interval, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setDateTimeZone(timeZone);
         builder.setLocale(locale);
         builder.setGroupHierarchy(accountGroupHierarchy);
         return builder.build();
     }
+    @Override
+    public List<ReportCriteria> getDriverCoachingReportCriteriaByGroup(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
+        return getDriverCoachingReportCriteriaByGroup(accountGroupHierarchy, groupID, interval, locale, timeZone, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
 
     @Override
     public ReportCriteria getDriverExcludedViolationCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone) {
+        return getDriverExcludedViolationCriteria(accountGroupHierarchy, groupID, interval, locale, timeZone, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getDriverExcludedViolationCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         // Load the group id list for the parent group and it's children
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        DriverExcludedViolationsCriteria.Builder builder = new DriverExcludedViolationsCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval);
+        DriverExcludedViolationsCriteria.Builder builder = new DriverExcludedViolationsCriteria.Builder(accountGroupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();

@@ -103,7 +103,7 @@ public enum ReportGroup {
             new GroupType[] { GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL),
     DRIVER_COACHING("Driver Coaching", 41, EntityType.ENTITY_GROUP_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_COACHING),
-    DRIVER_EXCLUDED_VIOLATIONS("Driver Coaching", 42, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+    DRIVER_EXCLUDED_VIOLATIONS("Driver Coaching", 42, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.DRIVER_EXCLUDED_VIOLATIONS),
     /* Forms */
     DVIR_PRE_TRIP("DVIR Pre-Trip", 43, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
