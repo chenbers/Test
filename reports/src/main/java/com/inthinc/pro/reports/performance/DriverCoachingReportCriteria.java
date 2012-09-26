@@ -169,7 +169,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             if(reportCriterias != null && reportCriterias.size() > 0){
                 return reportCriterias.get(0);
             }else{
-                return null;
+                return new DriverCoachingReportCriteria(locale);
             }
         }
         
