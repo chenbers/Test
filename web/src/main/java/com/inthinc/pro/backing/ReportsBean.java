@@ -80,33 +80,33 @@ public abstract class ReportsBean extends BaseBean {
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), 
-                        params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
+                        params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC, params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers() ));
                 else
                     reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(),  
                             params.getGroupIDList(), 
-                            params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
+                            params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC, params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case HOS_VIOLATIONS_SUMMARY_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case HOS_VIOLATIONS_DETAIL_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
                        params.getDriverID(), params.getDateRange().getInterval(), 
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 else
                     reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
                             params.getGroupIDList(), params.getDateRange().getInterval(), 
-                            params.getLocale()));
+                            params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case HOS_DRIVER_DOT_LOG_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getHosDriverDOTLogReportCriteria(params.getDriverID(), params.getDateRange().getInterval(), 
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case DOT_HOURS_REMAINING:
                 reportCriteriaList.add(getReportCriteriaService().getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case HOS_ZERO_MILES:
                 reportCriteriaList.add(getReportCriteriaService().getHosZeroMilesReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
@@ -114,67 +114,67 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             case HOS_EDITS:
                 reportCriteriaList.add(getReportCriteriaService().getHosEditsReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case DRIVING_TIME_VIOLATIONS_DETAIL_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
                        params.getDriverID(), params.getDateRange().getInterval(), 
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 else
                     reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
                             params.getGroupIDList(), params.getDateRange().getInterval(), 
-                            params.getLocale()));
+                            params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
 
             
             case NON_DOT_VIOLATIONS_SUMMARY_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case NON_DOT_VIOLATIONS_DETAIL_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
                        params.getDriverID(), params.getDateRange().getInterval(), 
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 else
                     reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
                             params.getGroupIDList(), params.getDateRange().getInterval(), 
-                            params.getLocale()));
+                            params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             
             case TEN_HOUR_DAY_VIOLATIONS:
                 reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case PAYROLL_SUMMARY:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case PAYROLL_COMPENSATED_HOURS:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollCompensatedHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case PAYROLL_DETAIL:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             case PAYROLL_SIGNOFF:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 else
                     reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                            params.getLocale()));
+                            params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
             
             case DRIVER_HOURS:
                 reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
                 
             case VEHICLE_USAGE:

@@ -551,9 +551,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         reportCriteria.init(accountGroupHierarchy, groupIDList, timeFrame, timeZone);
         return reportCriteria;
     }
-
     @Override
-    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric) {
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric){
+        return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, driverID, interval, locale, defaultUseMetric, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, Boolean defaultUseMetric, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -562,14 +565,19 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
+        hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        hosDailyDriverLogReportCriteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
-
     }
 
     @Override
     public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric) {
+        return getHosDailyDriverLogReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, defaultUseMetric, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public List<ReportCriteria> getHosDailyDriverLogReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, Boolean defaultUseMetric, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(locale, defaultUseMetric);
         hosDailyDriverLogReportCriteria.setDriverDAO(driverDAO);
         hosDailyDriverLogReportCriteria.setGroupDAO(groupDAO);
@@ -578,6 +586,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
         hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         hosDailyDriverLogReportCriteria.setVehicleDAO(vehicleDAO);
+        hosDailyDriverLogReportCriteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        hosDailyDriverLogReportCriteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -586,10 +596,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getHosViolationsSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+
+    @Override
+    public ReportCriteria getHosViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -597,11 +614,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
+        return getHosViolationsDetailReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
 
         HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, driverID, interval);
         return criteria;
@@ -609,11 +632,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getHosViolationsDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public ReportCriteria getHosViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers ) {
 
         HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -621,22 +650,33 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getHosDriverDOTLogReportCriteria(Integer driverID, Interval interval, Locale locale) {
+        return getHosDriverDOTLogReportCriteria(driverID, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public ReportCriteria getHosDriverDOTLogReportCriteria(Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         HosDriverDOTLogReportCriteria criteria = new HosDriverDOTLogReportCriteria(locale);
 
         criteria.setDriverDAO(driverDAO);
         criteria.setHosDAO(hosDAO);
-
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        
         criteria.init(driverID, interval);
         return criteria;
     }
-
     @Override
     public ReportCriteria getDotHoursRemainingReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Locale locale) {
+        return getDotHoursRemainingReportCriteria(accountGroupHierarchy, groupIDList, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    @Override
+    public ReportCriteria getDotHoursRemainingReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DotHoursRemainingReportCriteria criteria = new DotHoursRemainingReportCriteria(locale);
 
         criteria.setGroupDAO(groupDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList);
         return criteria;
@@ -654,10 +694,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getHosEditsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getHosEditsReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getHosEditsReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         HosEditsReportCriteria criteria = new HosEditsReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -665,11 +712,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getPayrollDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT );
+    }
+    
+    @Override
+    public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         PayrollDetailReportCriteria criteria = new PayrollDetailReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -677,25 +731,38 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, driverID, interval);
         return criteria;
 
     }
 
-    @Override
     public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, groupIDList, interval, locale,  ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         PayrollSignoffReportCriteria criteria = new PayrollSignoffReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
-
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
 
@@ -703,11 +770,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getPayrollSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         PayrollSummaryReportCriteria criteria = new PayrollSummaryReportCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -715,11 +789,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getPayrollCompensatedHoursReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getPayrollCompensatedHoursReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         PayrollReportCompensatedHoursCriteria criteria = new PayrollReportCompensatedHoursCriteria(locale);
         criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -738,9 +819,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
      */
     @Override
     public ReportCriteria getTenHoursDayViolationsCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
+        return getTenHoursDayViolationsCriteria(accountGroupHierarchy, groupID, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getTenHoursDayViolationsCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         TenHoursViolationReportCriteria criteria = new TenHoursViolationReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setDriveTimeDAO(driveTimeDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupID, interval);
         return criteria;
@@ -753,10 +841,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
      */
     @Override
     public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
+        return getDriverHoursReportCriteria(accountGroupHierarchy, groupID, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setDriveTimeDAO(driveTimeDAO);
-
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        
         criteria.init(accountGroupHierarchy, groupID, interval);
         return criteria;
     }
@@ -1058,10 +1153,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getDrivingTimeViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
+        return getDrivingTimeViolationsDetailReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT );
+    }
+    
+    @Override
+    public ReportCriteria getDrivingTimeViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DrivingTimeViolationsDetailReportCriteria criteria = new DrivingTimeViolationsDetailReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, driverID, interval);
         return criteria;
@@ -1069,21 +1171,35 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getDrivingTimeViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getDrivingTimeViolationsDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getDrivingTimeViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DrivingTimeViolationsDetailReportCriteria criteria = new DrivingTimeViolationsDetailReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
-
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
 
     @Override
     public ReportCriteria getDrivingTimeViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getDrivingTimeViolationsSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getDrivingTimeViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DrivingTimeViolationsSummaryReportCriteria criteria = new DrivingTimeViolationsSummaryReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -1091,21 +1207,35 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getNonDOTViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
+        return getNonDOTViolationsDetailReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getNonDOTViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         NonDOTViolationsDetailReportCriteria criteria = new NonDOTViolationsDetailReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
-
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
+        
         criteria.init(accountGroupHierarchy, driverID, interval);
         return criteria;
     }
 
     @Override
     public ReportCriteria getNonDOTViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getNonDOTViolationsSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getNonDOTViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         NonDOTViolationsDetailReportCriteria criteria = new NonDOTViolationsDetailReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
@@ -1113,10 +1243,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getNonDOTViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        return getNonDOTViolationsSummaryReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    }
+    
+    @Override
+    public ReportCriteria getNonDOTViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         NonDOTViolationsSummaryReportCriteria criteria = new NonDOTViolationsSummaryReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
         criteria.setGroupDAO(groupDAO);
         criteria.setHosDAO(hosDAO);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
 
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;

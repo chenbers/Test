@@ -53,6 +53,8 @@ import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -62,8 +64,9 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.jasper.ReportUtils;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
+import com.inthinc.pro.reports.util.ReportUtil;
 
-public class HosDailyDriverLogReportCriteria {
+public class HosDailyDriverLogReportCriteria extends HosReportCriteria {
 
     private static final Logger logger = Logger.getLogger(HosDailyDriverLogReportCriteria.class);
     
@@ -122,18 +125,20 @@ public class HosDailyDriverLogReportCriteria {
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
 
-        
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
         
         for (Driver driver : reportDriverList) {
+            if(includeDriver(driverDAO, driver.getDriverID(), expandedInterval)){
                 if (account == null) {
                     account = fetchAccount(driver.getPerson().getAcctID());
                 }
+                
                 initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
                 Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
                 Integer driverID = driver.getDriverID();
                 initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
                 groupCriteriaList.addAll(criteriaList);
+            }
         }
         
         criteriaList = groupCriteriaList;
@@ -143,11 +148,15 @@ public class HosDailyDriverLogReportCriteria {
     public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
     {
         Driver driver = driverDAO.findByID(driverID);
+        
         Account account = fetchAccount(driver.getPerson().getAcctID());
         initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
         Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1);
-        initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
+        
+        if(includeDriver(driverDAO, driverID, expandedInterval)){
+            initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
+        }
     }
     
     private void initMainOfficeInfo(GroupHierarchy accountGroupHierarchy, Account account, Integer groupID) {
@@ -200,8 +209,9 @@ public class HosDailyDriverLogReportCriteria {
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList) {
         List<Driver> driverList = new ArrayList<Driver>();
-        for (Group group : reportGroupList)
+        for (Group group : reportGroupList){
             driverList.addAll(driverDAO.getDrivers(group.getGroupID()));
+        }
         return driverList;
     }
 
@@ -225,10 +235,8 @@ public class HosDailyDriverLogReportCriteria {
         }
     }
 
-    public List<ReportCriteria> getCriteriaList()
-    {
-    
-        return criteriaList;
+    public List<ReportCriteria> getCriteriaList(){
+        return (criteriaList != null)? criteriaList:new ArrayList<ReportCriteria>();
     }
 
     private void setReportDate(Date date, ReportCriteria reportCriteria){

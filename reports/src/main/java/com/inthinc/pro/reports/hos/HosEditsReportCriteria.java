@@ -61,11 +61,13 @@ public class HosEditsReportCriteria extends GroupListReportCriteria implements T
         
         if (driverList != null) {
             for (Driver driver : driverList) {
-                if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
-                    continue;
-                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 0, 1);
-                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false));
+                if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                    if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
+                        continue;
+                    DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                    Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 0, 1);
+                    driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false));
+                }
             }
         }
         initDataSet(accountGroupHierarchy, interval, driverHOSRecordMap);

@@ -6,8 +6,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.joda.time.Interval;
+
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.BaseScore;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.model.DateLabels;
 
 public class ReportUtil

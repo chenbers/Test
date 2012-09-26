@@ -38,24 +38,22 @@ public class DrivingTimeViolationsSummaryReportCriteria extends ViolationsSummar
         super(ReportType.DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT, locale);
     }
     
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
-            if (driver.getDot() == null)
-                continue;
-            
-            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
-            
+            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                if (driver.getDot() == null)
+                    continue;
+                
+                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
+            }
         }
-        
 
         initDataSet(interval, accountGroupHierarchy, reportGroupList, driverHOSRecordMap);
-        
     }
     
     void initDataSet(Interval interval, GroupHierarchy groupHierarchy,  List<Group> reportGroupList,   Map<Driver, List<HOSRecord>> driverHOSRecordMap)
