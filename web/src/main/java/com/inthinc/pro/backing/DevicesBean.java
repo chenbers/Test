@@ -363,75 +363,75 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         boolean valid = true;
         final String required = "required";
         // Name.  
-        if ((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
-        {
-            valid = false;
-            final String summary = MessageUtil.getMessageString(required);
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            getFacesContext().addMessage("edit-form:editDevice-name", message);
-        }
-        
+//        if ((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
+//        {
+//            valid = false;
+//            final String summary = MessageUtil.getMessageString(required);
+//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//            getFacesContext().addMessage("edit-form:editDevice-name", message);
+//        }
+//        
         // If a waysmart, the only attribute that can be changed is name, currently, so, 
         //  return the results of that check.
         if ( deviceView.isWaySmart() ) {
             return valid;
         }
         
-        Device byImei = null;
-        if (deviceView.getImei() != null)
-            byImei = deviceDAO.findByIMEI(deviceView.getImei());
-        // IMEI
-        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
-        {
-            if ((deviceView.getImei() == null || deviceView.getImei().equals("")))
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString(required);
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:editDevice-imei", message);
-            }
-            else if (!deviceView.getImei().matches(imeiRegex)) // format
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:editDevice-imei", message);
-            }
-            else if ((byImei != null) && !byImei.getDeviceID().equals(getItem().getDeviceID())) // unique
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString("editDevice_uniqueImei");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:editDevice-imei", message);
-            }
-        }
-        // SIM
-        if ((deviceView.getSim() == null || deviceView.getSim().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("sim")))
-        {
-            valid = false;
-            final String summary = MessageUtil.getMessageString(required);
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            getFacesContext().addMessage("edit-form:editDevice-sim", message);
-        }
-        // PHONE        
-        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
-        {
-            if (deviceView.getPhone() == null || deviceView.getPhone().equals(""))
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString(required);
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:editDevice-phone", message);
-            }
-            else if(deviceView.getPhone() != null &&             		
-                    ((deviceView.getPhone().length() > 22) || (MiscUtil.unformatPhone(deviceView.getPhone()).length() > 15)) )                
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:editDevice-phone", message);
-            }
-        }
+//        Device byImei = null;
+//        if (deviceView.getImei() != null)
+//            byImei = deviceDAO.findByIMEI(deviceView.getImei());
+//        // IMEI
+//        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
+//        {
+//            if ((deviceView.getImei() == null || deviceView.getImei().equals("")))
+//            {
+//                valid = false;
+//                final String summary = MessageUtil.getMessageString(required);
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                getFacesContext().addMessage("edit-form:editDevice-imei", message);
+//            }
+//            else if (!deviceView.getImei().matches(imeiRegex)) // format
+//            {
+//                valid = false;
+//                final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                getFacesContext().addMessage("edit-form:editDevice-imei", message);
+//            }
+//            else if ((byImei != null) && !byImei.getDeviceID().equals(getItem().getDeviceID())) // unique
+//            {
+//                valid = false;
+//                final String summary = MessageUtil.getMessageString("editDevice_uniqueImei");
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                getFacesContext().addMessage("edit-form:editDevice-imei", message);
+//            }
+//        }
+//        // SIM
+//        if ((deviceView.getSim() == null || deviceView.getSim().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("sim")))
+//        {
+//            valid = false;
+//            final String summary = MessageUtil.getMessageString(required);
+//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//            getFacesContext().addMessage("edit-form:editDevice-sim", message);
+//        }
+//        // PHONE        
+//        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
+//        {
+//            if (deviceView.getPhone() == null || deviceView.getPhone().equals(""))
+//            {
+//                valid = false;
+//                final String summary = MessageUtil.getMessageString(required);
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                getFacesContext().addMessage("edit-form:editDevice-phone", message);
+//            }
+//            else if(deviceView.getPhone() != null &&             		
+//                    ((deviceView.getPhone().length() > 22) || (MiscUtil.unformatPhone(deviceView.getPhone()).length() > 15)) )                
+//            {
+//                valid = false;
+//                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                getFacesContext().addMessage("edit-form:editDevice-phone", message);
+//            }
+//        }
         return valid;
     }
 
