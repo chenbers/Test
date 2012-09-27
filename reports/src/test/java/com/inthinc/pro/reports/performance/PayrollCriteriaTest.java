@@ -22,13 +22,16 @@ import org.joda.time.Interval;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
+import com.inthinc.pro.reports.impl.ReportCriteriaServiceImplTest;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.Result;
 
@@ -530,7 +533,14 @@ public class PayrollCriteriaTest extends BaseUnitTest {
         summCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
         checkData(prefix+"_summ", summCriteria, summCriteria.getMainDataset(), expectedMin, summCriteria.getTableRows(), expectedSummTabularData);
 
-        PayrollSignoffReportCriteria  signoffCriteria = new PayrollSignoffReportCriteria (Locale.US);
+        PayrollSignoffReportCriteria  signoffCriteria = new PayrollSignoffReportCriteria (Locale.US){
+            @Override
+            public boolean includeDriver(DriverDAO driverDAO, Integer driverID, Interval interval) {
+                //TODO: look at these tests to incorporate testing of includeDriver!!!
+                return true;
+              }
+        };
+        
         signoffCriteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
         checkData(prefix+"_signoff", signoffCriteria, signoffCriteria.getMainDataset(), expectedMin, signoffCriteria.getTableRows(), expectedTabularData);
 

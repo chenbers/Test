@@ -65,24 +65,38 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
         private DateTimeZone dateTimeZone;
         
         private Map<Integer,Map<String, Integer>> driverTimeFrameScoreMap;
+        
+        private Boolean includeInactiveDrivers;
+
+        private Boolean includeZeroMilesDrivers;
 
 		private GroupHierarchy groupHierarchy;
 
-        public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
+		public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
+		    this(groupReportDAO, driverPerformanceDAO, groupID, interval, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+		}
+        public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
            this.groupReportDAO = groupReportDAO;
            this.driverPerformanceDAO = driverPerformanceDAO;
            this.interval = interval;
            this.groupID = groupID;
            this.driverTimeFrameScoreMap = new HashMap<Integer, Map<String,Integer>>();
+           this.includeInactiveDrivers = includeInactiveDrivers;
+           this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
         
         public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO, DriverDAO driverDAO,Integer driverID,Interval interval) {
+            this(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+        }
+        public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO, DriverDAO driverDAO,Integer driverID,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
             this.groupReportDAO = groupReportDAO;
             this.driverPerformanceDAO = driverPerformanceDAO;
             this.interval = interval;
             this.driverID = driverID;
             this.driverDAO = driverDAO;
             this.driverTimeFrameScoreMap = new HashMap<Integer, Map<String,Integer>>();
+            this.includeInactiveDrivers = includeInactiveDrivers;
+            this.includeZeroMilesDrivers = includeZeroMilesDrivers;
          }
         
         public Builder setDateTimeZone(DateTimeZone dateTimeZone){
@@ -136,7 +150,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
              * Iterate over the driver performances and place the individual driver stats into a spererate collection which the report will be able 
              * to iterate over.
              */
-            List<DriverPerformance> driverPerformances =  driverPerformanceDAO.getDriverPerformanceListForGroup(groupID, null, interval);
+            List<DriverPerformance> driverPerformances =  driverPerformanceDAO.getDriverPerformanceListForGroup(groupID, null, interval, includeInactiveDrivers, includeZeroMilesDrivers);
             for(DriverPerformance driverPerformance:driverPerformances){
                 if(driverID != null && driverPerformance.getDriverID().equals(driverID)){
                     DriverCoachingReportCriteria driverCoachingReportCriteria = convert(driverPerformance);
@@ -155,7 +169,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             if(reportCriterias != null && reportCriterias.size() > 0){
                 return reportCriterias.get(0);
             }else{
-                return null;
+                return new DriverCoachingReportCriteria(locale);
             }
         }
         
@@ -245,6 +259,22 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
 
         public void setDriverID(Integer driverID) {
             this.driverID = driverID;
+        }
+
+        public Boolean getIncludeInactiveDrivers() {
+            return includeInactiveDrivers;
+        }
+
+        public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
+            this.includeInactiveDrivers = includeInactiveDrivers;
+        }
+
+        public Boolean getIncludeZeroMilesDrivers() {
+            return includeZeroMilesDrivers;
+        }
+
+        public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
+            this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
     }
     

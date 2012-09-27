@@ -52,13 +52,22 @@ public class DriverExcludedViolationsCriteria extends ReportCriteria{
         
         private DateTimeZone dateTimeZone;
         
+        private Boolean includeInactiveDrivers;
+
+        private Boolean includeZeroMilesDrivers;
+        
         public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,GroupDAO groupDAO,DriverDAO driverDAO,List<Integer> groupIDs,Interval interval) {
+            this( groupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval,  ReportCriteria.INACTIVE_DRIVERS_DEFAULT,  ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+        }
+        public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,GroupDAO groupDAO,DriverDAO driverDAO,List<Integer> groupIDs,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
            this.interval = interval;
            this.groupIDs = groupIDs;
            this.driverDAO = driverDAO;
            this.groupHierarchy = groupHierarchy;
            this.eventAggregationDAO = eventAggregationDAO;
            this.groupDAO = groupDAO;
+           this.includeInactiveDrivers = includeInactiveDrivers;
+           this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
         
         public Builder setDateTimeZone(DateTimeZone dateTimeZone){
@@ -96,7 +105,7 @@ public class DriverExcludedViolationsCriteria extends ReportCriteria{
                 this.locale = Locale.US;
             }
             
-            List<DriverForgivenEventTotal> driverForgivenEventTotals = eventAggregationDAO.findDriverForgivenEventTotalsByGroups(groupIDs, interval);
+            List<DriverForgivenEventTotal> driverForgivenEventTotals = eventAggregationDAO.findDriverForgivenEventTotalsByGroups(groupIDs, interval, includeInactiveDrivers, includeZeroMilesDrivers);
             logger.debug(String.format("Building DriverExcludedViolationsCriteria with groupIDs: %s", groupIDs));
             DriverExcludedViolationsCriteria driverExcludedViolationsCriteria = new DriverExcludedViolationsCriteria(locale);
             
@@ -114,6 +123,22 @@ public class DriverExcludedViolationsCriteria extends ReportCriteria{
             driverExcludedViolationsCriteria.setMainDataset(driverForgivenEventTotalWrappers);
             
             return driverExcludedViolationsCriteria;
+        }
+
+        public Boolean getIncludeInactiveDrivers() {
+            return includeInactiveDrivers;
+        }
+
+        public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
+            this.includeInactiveDrivers = includeInactiveDrivers;
+        }
+
+        public Boolean getIncludeZeroMilesDrivers() {
+            return includeZeroMilesDrivers;
+        }
+
+        public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
+            this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
     }
     
@@ -143,7 +168,6 @@ public class DriverExcludedViolationsCriteria extends ReportCriteria{
         public void setDriverForgivenEventTotal(DriverForgivenEventTotal driverForgivenEventTotal) {
             this.driverForgivenEventTotal = driverForgivenEventTotal;
         }
-        
         
         @Override
         public int compareTo(DriverForgivenEventTotalWrapper arg0) {

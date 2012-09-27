@@ -49,15 +49,25 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
     }    
 
     @Override
+    public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        return getFilteredDriverPerformanceListForGroup(groupID, groupName, driverIDList, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+    }
+    
+    @Override
     public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
         return getFilteredDriverPerformanceListForGroup(groupID, groupName, driverIDList, interval);
     }
 
     @Override
+    public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        return getFilteredDriverPerformanceListForGroup(groupID, groupName, null, interval, includeInactiveDrivers, includeZeroMilesDrivers);
+    }
+    
+    @Override
     public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval interval) {
         return getFilteredDriverPerformanceListForGroup(groupID, groupName, null, interval);
     }
-    private List<DriverPerformance> getFilteredDriverPerformanceListForGroup(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
+    public List<DriverPerformance> getFilteredDriverPerformanceListForGroup(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
         return getFilteredDriverPerformanceListForGroup(groupID, groupName, driverIDList, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
     }
     private List<DriverPerformance> getFilteredDriverPerformanceListForGroup(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {

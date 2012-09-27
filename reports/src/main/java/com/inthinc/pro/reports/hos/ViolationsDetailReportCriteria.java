@@ -45,45 +45,40 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
     protected DateTimeFormatter dateTimeFormatter;
 
     
-    public ViolationsDetailReportCriteria(ReportType reportType, Locale locale) 
-    {
+    public ViolationsDetailReportCriteria(ReportType reportType, Locale locale) {
         super(reportType, locale);
         displayDateTimeFormatter = DateTimeFormat.forPattern(DISPLAY_DATE_FORMAT).withLocale(locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
     }
 
-    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval){
         List<Driver> driverList = new ArrayList<Driver>();
 
         driverList.add(getDriverDAO().findByID(driverID));
         initDrivers(accountGroupHierarchy, driverList, interval);
     }
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 
-
         initDrivers(accountGroupHierarchy, reportDriverList, interval);
     }
-    
-    
-    private void initDrivers(GroupHierarchy accountGroupHierarchy, List<Driver> driverList, Interval interval)
-    {
+
+    private void initDrivers(GroupHierarchy accountGroupHierarchy, List<Driver> driverList, Interval interval){
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         
         if (driverList != null) {
             for (Driver driver : driverList) {
-                if (driver.getDot() == null)
-                    continue;
-                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
-                Collections.sort(hosRecordList);
+                if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                    if (driver.getDot() == null)
+                        continue;
+                    DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                    Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+                    List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
+                    Collections.sort(hosRecordList);
 
-
-                driverHOSRecordMap.put(driver, getFilteredList(hosRecordList, getHOSStatusFilterList()));
+                    driverHOSRecordMap.put(driver, getFilteredList(hosRecordList, getHOSStatusFilterList()));
+                }
             }
         }
         

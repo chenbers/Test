@@ -49,6 +49,10 @@ public class UnsubscribeBean {
         setupReportSchedule();
         setupDecryptedEmailAddress();
     }
+    public String cancelAction(){
+        return "pretty:unsubscribeLogin";
+
+    }
 
     public String unsubscribeAction() {
 

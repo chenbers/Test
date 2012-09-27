@@ -82,6 +82,18 @@ public class GroupHierarchy implements Serializable
         return idList;
     }
 
+    public List<Integer> getChildrenIDList(Integer parentGroupID)
+    {
+        List<Integer> subGroupList = new ArrayList<Integer>();
+        for (Group subgroup : groupMap.values()) {
+            if (parentGroupID.equals(subgroup.getParentID())) {
+               subGroupList.add(subgroup.getGroupID());
+            }
+        }
+        
+        return subGroupList;
+    }
+
     public Group getTopGroup() {
     	Group initialGroup = groupMap.values().iterator().next();
     	return getTopGroup(initialGroup);
@@ -210,6 +222,16 @@ public class GroupHierarchy implements Serializable
         return false;
     }
     
+    public boolean isDescendent(Integer topGroupID, Integer groupID)
+    {
+        boolean retVal = false;
+        Group topGroup = getGroup(topGroupID);
+        Group group = getGroup(groupID);
+        if (topGroup!= null && group != null)
+            retVal = getFullGroupName(groupID).startsWith(getFullGroupName(topGroupID));
+            
+        return retVal;
+    }
     
     /**
      * 

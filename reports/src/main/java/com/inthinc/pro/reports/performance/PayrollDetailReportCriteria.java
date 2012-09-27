@@ -39,11 +39,13 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
         
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
-            if (driver.getDot() == null)
-                continue;
-            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
-            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
+            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                if (driver.getDot() == null)
+                    continue;
+                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 1, 1);
+                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
+            }
         }
         
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);

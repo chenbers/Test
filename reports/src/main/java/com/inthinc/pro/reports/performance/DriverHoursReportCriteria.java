@@ -114,7 +114,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 
 		Map<Driver, List<DriverHoursRecord>> driverHoursRecordMap = new HashMap<Driver, List<DriverHoursRecord>>();
 		for (Driver driver : driverList) {
-		    if (driver != null) {
+		    if (driver != null && includeDriver(driverDAO, driver.getDriverID(), interval)) {
                 List<DriverHoursRecord> driverHoursList = getDriverHoursList(driver, interval, driveTimeRecordList);
 	            driverHoursRecordMap.put(driver, driverHoursList);
 		    }

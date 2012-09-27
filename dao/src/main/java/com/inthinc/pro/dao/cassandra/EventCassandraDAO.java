@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 
 /////Used for Main test only///////////////
@@ -288,10 +289,34 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     @Override
     public Event findByID(Long id)
     {
-    	
-    	List<Long> keys = new ArrayList<Long>();
-    	keys.add(id);
-    	List<Event> eventList = fetchNotes(keys, true);
+    	Composite startRange = new Composite();
+    	startRange.add(0, 0);
+    	startRange.add(1, 0);
+    	startRange.add(2, 0);
+    	startRange.add(3, 0);
+    	Composite endRange = new Composite();
+    	endRange.add(0, Integer.MAX_VALUE);
+    	endRange.add(1, Integer.MAX_VALUE);
+    	endRange.add(2, Integer.MAX_VALUE);
+    	endRange.add(3, Integer.MAX_VALUE);
+
+        SliceQuery<Long, Composite, String> sliceQuery = HFactory.createSliceQuery(getKeyspace(), longSerializer, compositeSerializer, stringSerializer);
+        sliceQuery.setRange(startRange, endRange, false, 1);
+        sliceQuery.setColumnFamily(noteIdIndex_CF);
+        
+        sliceQuery.setKey(id);
+        //rangeSlicesQuery.setReturnKeysOnly();
+        
+        QueryResult<ColumnSlice<Composite, String>> result = sliceQuery.execute();
+        ColumnSlice<Composite, String> columnSlice = result.get();            
+        
+        List<Composite> keyList = new ArrayList<Composite>();
+    	List<HColumn<Composite, String>> columnList = columnSlice.getColumns();
+        for (HColumn<Composite, String> column : columnList)
+        {
+        	keyList.add(column.getName());
+        }
+    	List<Event> eventList = fetchNotes(keyList, true);
     	if (eventList.size() > 0)
     		return eventList.get(0);
     	
@@ -382,7 +407,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 
     private List<Event> fetchMostRecentForGroup(Integer groupID, Integer[] eventTypes, Integer eventCount, boolean includeForgiven)
     {
-        List<Long> keyList = new ArrayList<Long>();
+        List<Composite> keyList = new ArrayList<Composite>();
     	for(Integer eventType : eventTypes)
     	{
     		Composite startRange = new Composite();
@@ -408,7 +433,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     
     private List<Event> fetchEventsForAsset(String index_cf, Integer ID, Date startDate, Date endDate, Integer[] eventTypes, Integer includeForgiven)
     {
-        List<Long> keyList = new ArrayList<Long>();
+        List<Composite> keyList = new ArrayList<Composite>();
     	for(Integer eventType : eventTypes)
     	{
     		
@@ -428,9 +453,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     	return fetchNotes(keyList, (includeForgiven == 1));
     }
 
-    private List<Long> fetchRowKeysFromIndex(String INDEX_CF, Integer rowKey, Composite startRange, Composite endRange, Integer count)
+    private List<Composite> fetchRowKeysFromIndex(String INDEX_CF, Integer rowKey, Composite startRange, Composite endRange, Integer count)
     {
-        SliceQuery<Composite, Composite, Long> sliceQuery = HFactory.createSliceQuery(getKeyspace(), compositeSerializer, compositeSerializer, longSerializer);
+        SliceQuery<Composite, Composite, Composite> sliceQuery = HFactory.createSliceQuery(getKeyspace(), compositeSerializer, compositeSerializer, compositeSerializer);
 
         sliceQuery.setRange(startRange, endRange, false, count);
         
@@ -441,40 +466,42 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         sliceQuery.setKey(rowKeyComp);
         //rangeSlicesQuery.setReturnKeysOnly();
         
-        QueryResult<ColumnSlice<Composite, Long>> result = sliceQuery.execute();
-        ColumnSlice<Composite, Long> columnSlice = result.get();            
+        QueryResult<ColumnSlice<Composite, Composite>> result = sliceQuery.execute();
+        ColumnSlice<Composite, Composite> columnSlice = result.get();            
         
-        List<Long> keyList = new ArrayList<Long>();
-    	List<HColumn<Composite, Long>> columnList = columnSlice.getColumns();
-        for (HColumn<Composite, Long> column : columnList)
+        List<Composite> keyList = new ArrayList<Composite>();
+    	List<HColumn<Composite, Composite>> columnList = columnSlice.getColumns();
+        for (HColumn<Composite, Composite> column : columnList)
         {
         	keyList.add(column.getValue());
         }
     	return keyList;
      }
 
-    private List<Event> fetchNotes(List<Long> keys, boolean includeForgiven)
+    private List<Event> fetchNotes(List<Composite> keys, boolean includeForgiven)
     {
     	List <Event> eventList = new ArrayList<Event>();
-    	MultigetSliceQuery<Long, String, byte[]> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), longSerializer, stringSerializer, bytesArraySerializer);
+    	MultigetSliceQuery<Composite, String, byte[]> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), compositeSerializer, stringSerializer, bytesArraySerializer);
         
         sliceQuery.setColumnFamily(note_CF);            
         sliceQuery.setRange(ATTRIBS_COL + "!", "~", false, 1000);  //get all the columns
         sliceQuery.setKeys(keys);
         
-        QueryResult<Rows<Long, String, byte[]>> result = sliceQuery.execute();
+        QueryResult<Rows<Composite, String, byte[]>> result = sliceQuery.execute();
         
-        Rows<Long, String, byte[]> rows = result.get();     
-        for (Row<Long, String, byte[]> row : rows)
+        Rows<Composite, String, byte[]> rows = result.get();     
+        for (Row<Composite, String, byte[]> row : rows)
         {
         	ColumnSlice<String, byte[]> columnSlice = row.getColumnSlice();
         	List<HColumn<String, byte[]>> columnList = columnSlice.getColumns();
+        	
+        	int vehicleId = bigIntegerSerializer.fromByteBuffer((ByteBuffer) row.getKey().get(0)).intValue();
 
     		byte[] raw = null;
     		String method = "";
     		boolean forgiven = false;
     		int driverId = 0;
-    		int vehicleId = 0; 
+    		long id = 0L;
     		for (HColumn<String, byte[]> column : columnList)
         	{
         		if (column.getName().equalsIgnoreCase(RAW_COL))
@@ -483,8 +510,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         			method = new String(column.getValue());
         		else if (column.getName().equalsIgnoreCase(DRIVERID_COL))
         			driverId = bigIntegerSerializer.fromBytes(column.getValue()).intValue();
-        		else if (column.getName().equalsIgnoreCase(VEHICLEID_COL))
-        			vehicleId = bigIntegerSerializer.fromBytes(column.getValue()).intValue();
+        		else if (column.getName().equalsIgnoreCase(ID_COL))
+        			id = longSerializer.fromBytes(column.getValue()).longValue();
             	else if (column.getName().equalsIgnoreCase(FORGIVEN_COL))
             		forgiven = true;
         	}
@@ -495,9 +522,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 		    fieldMap.put("vehicleID", new Integer(vehicleId));
             
             Event event = getMapper().convertToModelObject(fieldMap, Event.class);
-            event.setNoteID(row.getKey());
-            logger.debug("fieldMap: " + fieldMap);
-            logger.debug("Event: " + event);
+            event.setNoteID(id);
             
             if (event.isValidEvent() && (includeForgiven || (!includeForgiven && forgiven == false)))
             	eventList.add(event);

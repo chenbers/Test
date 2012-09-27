@@ -67,8 +67,10 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
         for (Driver driver : driverList) {
             if (driver.getDot() == null || driver.getDot().equals(RuleSetType.NON_DOT))
                 continue;
-            Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDot())); 
-            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval, true));
+            Interval interval = DateTimeUtil.getDaysBackInterval(currentDate, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()), RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()));
+            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), interval, true));
+            }
         }
         
         initDataSet(accountGroupHierarchy, driverHOSRecordMap, currentDate);

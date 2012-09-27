@@ -151,7 +151,18 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
 //                Integer hardBrakeCount, Integer hardTurnCount, Integer hardVerticalCount
                 return getDriverPerformanceListForGroup(groupID, groupName, queryInterval);
         }
+        
+        @Override
+        public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverIDList, Interval queryInterval, boolean includeInactiveDrivers,
+                boolean includeZeroMilesDrivers) {
+            // TODO Auto-generated method stub
+            return getDriverPerformanceListForGroup(groupID, groupName, queryInterval);
+        }
 
+        public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval,  boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+         // TODO Auto-generated method stub
+            return getDriverPerformanceListForGroup(groupID, groupName, queryInterval);
+        }
         @Override
         public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval) {
             List<DriverPerformance> list = new ArrayList<DriverPerformance>();

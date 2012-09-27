@@ -12,13 +12,20 @@ import org.joda.time.Interval;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventAggregationDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.DriverForgivenEventTotal;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.LastReportedEvent;
 import com.inthinc.pro.model.event.NoteType;
 
 public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements EventAggregationDAO {
+    protected static final boolean INACTIVE_DRIVERS_DEFAULT = false;
+    protected static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
+    private DriverDAO driverDAO;
     
     /* Query to return the total number of forgiven events for a single driver by event type */
     private static final String SELECT_FORGIVEN_EVENT_TOTALS = "SELECT cnv.driverID AS 'driverId', cnv.driverName AS 'driverName', cnv.type AS 'type',cnv.aggType as 'aggType',g.groupID as 'groupID', g.name AS 'groupName', count(noteID) AS 'eventCount', " + 
@@ -28,12 +35,15 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                     "WHERE cnv.driverGroupID IN (:groupList) AND cnv.time BETWEEN :startDate AND :endDate GROUP BY cnv.driverID,cnv.type,cnv.aggType";
    
     
+    public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, Interval interval) {
+        return findDriverForgivenEventTotalsByGroups(groupIDs, interval, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
+    }
     /*
      * (non-Javadoc)
      * @see com.inthinc.pro.dao.EventAggregationDAO#findDriverForgivenEventTotalsByGroups(java.util.List, org.joda.time.Interval)
      */
     @Override
-    public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, Interval interval) {
+    public List<DriverForgivenEventTotal> findDriverForgivenEventTotalsByGroups(List<Integer> groupIDs, final Interval interval, final boolean includeInactiveDrivers, final boolean includeZeroMilesDrivers) {
         String forgivenEventTotals = SELECT_FORGIVEN_EVENT_TOTALS;
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupList", groupIDs);
@@ -69,15 +79,36 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                         driverForgivenEventTotal.setEventCount(driverForgivenEventTotal.getEventCount() + rs.getInt("eventCount"));
                         driverForgivenEventTotal.setEventCountForgiven(driverForgivenEventTotal.getEventCountForgiven() + rs.getInt("eventCountForgiven"));
                     }else{
-                        driverForgivenEventTotal = new DriverForgivenEventTotal();
-                        driverForgivenEventTotal.setDriverID(rs.getInt("driverID"));
-                        driverForgivenEventTotal.setDriverName(rs.getString("driverName"));
-                        driverForgivenEventTotal.setGroupID(rs.getInt("groupID"));
-                        driverForgivenEventTotal.setGroupName(rs.getString("groupName"));
-                        driverForgivenEventTotal.setEventCount(rs.getInt("eventCount"));
-                        driverForgivenEventTotal.setEventCountForgiven(rs.getInt("eventCountForgiven"));
-                        driverForgivenEventTotal.setEventType(eventType);
-                        driverForgivenEventTotalMap.put(mapId, driverForgivenEventTotal);
+                        Driver driver = driverDAO.findByID(rs.getInt("driverID"));
+                        
+                        List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
+                        Integer totalMiles = 0;
+                        for(Trip trip: trips){
+                            totalMiles += trip.getMileage();
+                        }
+                        
+                        boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles !=0 );
+                        boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver.getStatus().equals(Status.ACTIVE));
+                        if((driver.getStatus().equals(Status.ACTIVE) && totalMiles!=0) 
+                                || (includeInactiveDrivers && includeZeroMilesDrivers) 
+                                || includeThisInactiveDriver 
+                                || includeThisZeroMilesDriver ){
+                            System.out.println("INCLUDING: fullName: "+driver.getPerson().getFullName());
+                            System.out.println("status: "+driver.getStatus());
+                            System.out.println("totalMiles: "+totalMiles);
+                            driverForgivenEventTotal = new DriverForgivenEventTotal();
+                            driverForgivenEventTotal.setDriverID(rs.getInt("driverID"));
+                            driverForgivenEventTotal.setDriverName(rs.getString("driverName"));
+                            driverForgivenEventTotal.setGroupID(rs.getInt("groupID"));
+                            driverForgivenEventTotal.setGroupName(rs.getString("groupName"));
+                            driverForgivenEventTotal.setEventCount(rs.getInt("eventCount"));
+                            driverForgivenEventTotal.setEventCountForgiven(rs.getInt("eventCountForgiven"));
+                            driverForgivenEventTotal.setEventType(eventType);
+                            driverForgivenEventTotalMap.put(mapId, driverForgivenEventTotal);   
+                        }else{
+                            System.out.println(rs.getString("driverName")+" this record was returned via SQL, but filtered out in java");
+                            return null;
+                        }
                     }
                     double percentForgiven = 0.0D;
                     double totalEvents = driverForgivenEventTotal.getEventCount();
@@ -183,5 +214,10 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
         
         return lastReportedEvents;
     }
-
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
 }
