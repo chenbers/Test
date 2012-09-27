@@ -27,6 +27,7 @@ import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
@@ -46,9 +47,11 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
     private final String GROUP_FULL_NAME = "Group Full Name";
     private final Locale LOCALE = Locale.US;
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
+    private List<Trip> tripList = new ArrayList<Trip>();
     
     // JMockit mocks
     @NonStrict @Cascading private Driver driverMock;
+    @NonStrict @Cascading private Trip tripMock;
     @Mocked private DriverDAO driverDAOMock; 
     @Mocked private GroupHierarchy groupHierarchyMock;
     @Mocked private DriveTimeDAO driveTimeDAOMock; 
@@ -67,6 +70,8 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 		// General initializations
         reportCriteriaSUT.setDriverDAO(driverDAOMock);
         reportCriteriaSUT.setDriveTimeDAO(driveTimeDAOMock);
+        
+        tripList.add(tripMock);
 
         // JMockit Documentation:
         // http://jmockit.googlecode.com/svn/trunk/www/tutorial/BehaviorBasedTesting.html
@@ -97,6 +102,11 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 
               driverMock.getDriverID(); returns(DRIVER_ID); 
               driverMock.getGroupID(); returns(GROUP_ID); 
+              
+              driverDAOMock.findByID(DRIVER_ID); returns(driverMock); 
+              driverDAOMock.getTrips(DRIVER_ID, INTERVAL); returns(tripList);
+              tripMock.getMileage();returns(1000);
+
               groupHierarchyMock.getShortGroupName(GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR); returns(GROUP_FULL_NAME);
            }
 

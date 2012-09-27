@@ -133,10 +133,12 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         List<DriveTimeRecord> driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(groupID, queryInterval);
 
         for (Driver driver : driverList) {
-            List<TenHoursViolationRecord> violationList = getTenHourViolationsList(driver, interval, driveTimeRecordList);
+            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                List<TenHoursViolationRecord> violationList = getTenHourViolationsList(driver, interval, driveTimeRecordList);
 
-            if (!violationList.isEmpty()) {
-                violationRecordMap.put(driver, violationList);
+                if (!violationList.isEmpty()) {
+                    violationRecordMap.put(driver, violationList);
+                }
             }
         }
 

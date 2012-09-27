@@ -22,6 +22,7 @@ public class IdlingReportTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS.add("highPercent");
         AVAILABLE_COLUMNS.add("totalHrs");
         AVAILABLE_COLUMNS.add("totalPercent");
+        AVAILABLE_COLUMNS.add("status");
     }
 
 	@Override

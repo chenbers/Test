@@ -52,13 +52,14 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
-            if (driver.getDot() == null)
-                continue;
-            
-            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-            driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
-            
+            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                if (driver.getDot() == null)
+                    continue;
+                
+                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+                driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
+            }
         }
         
         List<HOSGroupMileage> groupMileageList = new ArrayList<HOSGroupMileage>();
@@ -74,7 +75,6 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
                 if (!groupExists(groupNoDriverMileageList, mileage.getGroupID()))
                     groupNoDriverMileageList.add(mileage);
         }
-        
 
         initDataSet(interval, accountGroupHierarchy, reportGroupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
         

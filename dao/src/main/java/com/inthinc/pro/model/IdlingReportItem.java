@@ -20,6 +20,7 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
     private Integer hasRPM;
     private String vehicleName;
     private Integer vehicleID;
+    private Status status;
 
 	public Integer getHasRPM() {
 		return hasRPM;
@@ -119,6 +120,12 @@ public class IdlingReportItem extends BaseEntity implements Comparable<IdlingRep
 	public void setVehicleID(Integer vehicleID) {
 		this.vehicleID = vehicleID;
 	}
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
     
 
 }

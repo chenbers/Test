@@ -37,10 +37,12 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : reportDriverList) {
-            DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-            Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 0, 1);
-            List<HOSRecord> driverHOSRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true);
-            driverHOSRecordMap.put(driver, driverHOSRecordList);
+            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, 0, 1);
+                List<HOSRecord> driverHOSRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true);
+                driverHOSRecordMap.put(driver, driverHOSRecordList);
+            }
         }
         
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
@@ -67,14 +69,13 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
         Date currentTime = new Date();
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
-        
-            List<PayrollData> driverDataList = getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue());
-            Collections.sort(driverDataList);
-            dataList.addAll(driverDataList);
+            Driver driver = entry.getKey();
+            if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
+                List<PayrollData> driverDataList = getDriverPayrollData(interval, accountGroupHierarchy, currentTime, entry.getKey(), entry.getValue());
+                Collections.sort(driverDataList);
+                dataList.addAll(driverDataList);
+            }
         }
         setMainDataset(dataList);
-
     }
-
-    
 }
