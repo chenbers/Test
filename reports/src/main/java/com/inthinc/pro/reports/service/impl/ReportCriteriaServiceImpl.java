@@ -1384,8 +1384,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
     @Override
     public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
-        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupIDs, timeFrame, includeInactiveDrivers, includeZeroMilesDrivers);
+        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
