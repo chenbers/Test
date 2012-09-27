@@ -104,7 +104,10 @@ public class ReportCriteria
         //TODO: this method also exists in HosReportCriteria  refactor to only maintain one version
         boolean includeThisInactiveDriver = (getIncludeInactiveDrivers() && totalMiles != 0);
         boolean includeThisZeroMilesDriver = (getIncludeZeroMilesDrivers() && driver.getStatus().equals(Status.ACTIVE));
-        return ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (getIncludeInactiveDrivers() && getIncludeZeroMilesDrivers()) || includeThisInactiveDriver || includeThisZeroMilesDriver);
+        return ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0)       // by default we include drivers that are active and have miles 
+                || (getIncludeInactiveDrivers() && getIncludeZeroMilesDrivers())    // if user has selected to include both then we need not filter
+                || includeThisInactiveDriver                                        // test for this individual driver based on status
+                || includeThisZeroMilesDriver);                                     // test for this individual driver based on miles
     }
 
     /**
