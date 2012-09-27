@@ -97,7 +97,28 @@ public class NewNoteTest {
         }
     }
 	
-	public static void main(String[] args) throws InterruptedException{
+    public void testSeatbeltClicks(String mcmID, String imei) {
+        SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.IGNITION_OFF,
+                new AutomationCalendar(), new GeoPoint(), false, false,
+                HOSFlags.ON_DUTY_NOT_DRIVING, false, false, false, Heading.NORTH, 15, 60,
+                65, 0, 0, 47, 0);
+
+        note.addAttr(EventAttr.SEATBELT_CLICKS, 1); 
+
+        List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        try {
+            proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException{
         String imeiOnDev = "30023FKEWS00001";
         String mcmIDOnDev = "FKE00001";
 
@@ -114,7 +135,7 @@ public class NewNoteTest {
         String imei = imeiOnDev;
         String mcmID = mcmIDOnDev;
         
-        test.testHazardNote(mcmID, imei);
+/*        test.testHazardNote(mcmID, imei);
         Thread.sleep(2*1000);
         test.testHazardNote(mcmID, imei, hazardLocations.get("bangerter_21st"));
         Thread.sleep(2*1000);
@@ -122,7 +143,9 @@ public class NewNoteTest {
         Thread.sleep(2*1000);
         test.testHazardNote(mcmID, imei, hazardLocations.get("summitPark"));
         Thread.sleep(2*1000);
+*/        
         
 //		test.testDVIRNote(mcmID, imei);
+      test.testSeatbeltClicks(mcmID, imei);
 	}
 }

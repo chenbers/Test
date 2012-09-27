@@ -99,6 +99,8 @@ public enum EventAttr implements IndexEnum{
 	SOURCE(71),
 	SBS_DLD_ERR(72),
 
+    SEATBELT_CLICKS(79),
+
 	// Attribute Id (128->191 have two byte values)
     DISTANCE(129),
     
