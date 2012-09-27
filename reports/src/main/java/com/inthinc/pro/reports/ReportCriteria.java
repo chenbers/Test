@@ -121,12 +121,16 @@ public class ReportCriteria
     public boolean includeDriver(DriverDAO driverDAO, Integer driverID, Interval interval) {
       //TODO: this method also exists in HosReportCriteria  refactor to only maintain one version
         Driver driver = driverDAO.findByID(driverID);
-        List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
-        Integer totalMiles = 0;
-        for (Trip trip : trips) {
-            totalMiles += trip.getMileage();
+        if(driver != null){
+            List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
+            Integer totalMiles = 0;
+            for (Trip trip : trips) {
+                totalMiles += trip.getMileage();
+            }
+            return includeDriver(driver, totalMiles);
+        }else{
+            return false;
         }
-        return includeDriver(driver, totalMiles);
     }
 
     public void setMainDataset(List mainDataset)

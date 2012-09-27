@@ -114,12 +114,22 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
 
         @Override
         public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate) {
-            return null;
+            //return a mock trip with minimal data
+            List<Trip> trips = new ArrayList<Trip>();
+            Trip trip = new Trip();
+            trip.setMileage(1);
+            trips.add(trip);
+            return trips;
         }
 
         @Override
         public List<Trip> getTrips(Integer driverID, Interval interval) {
-            return null;
+            //return a mock trip with minimal data
+            List<Trip> trips = new ArrayList<Trip>();
+            Trip trip = new Trip();
+            trip.setMileage(1);
+            trips.add(trip);
+            return trips;
         }
 
         @Override
@@ -134,7 +144,9 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
 
         @Override
         public Driver findByID(Integer id) {
-            return null;
+            Driver driver = new Driver();
+            driver.setStatus(Status.ACTIVE);
+            return driver;
         }
 
         @Override
