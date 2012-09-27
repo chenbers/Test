@@ -46,9 +46,14 @@
 							</tbody>
 						</table>
  						<div class="popupactions" style="margin-bottom: 25px;">
+								<h:commandButton id="cancelUnsubscribe" type="cancel" 
+									action="#{unsubscribeBean.cancelAction}" styleClass="left"
+									value="#{messages.button_cancel}">
+									<h:outputText value="#{messages.button_cancel}" styleClass="cancel" />
+								</h:commandButton> 
 								<h:commandButton id="confirmUnsubscribe" type="submit" 
 									action="#{unsubscribeBean.unsubscribeAction}" styleClass="left"
-									value="#{messages.unsubscribe_confirm}" style="margin-right: 150px;">
+									value="#{messages.unsubscribe_confirm}">
 									<h:outputText value="#{messages.unsubscribe_confirm}" styleClass="ok" />
 								</h:commandButton> 
 						</div>
