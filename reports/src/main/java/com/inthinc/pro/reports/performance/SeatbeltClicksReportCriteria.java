@@ -9,7 +9,9 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -17,140 +19,142 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 
-public class SeatbeltClicksReportCriteria extends ReportCriteria{
-    
+public class SeatbeltClicksReportCriteria extends ReportCriteria {
+
     private static Logger logger = Logger.getLogger(SeatbeltClicksReportCriteria.class);
-    
-    private SeatbeltClicksReportCriteria(Locale locale){
+
+    private SeatbeltClicksReportCriteria(Locale locale) {
         super(ReportType.SEATBELT_CLICKS_REPORT, null, locale);
         logger.debug(String.format("Creating SeatbeltClicksReportCriteria with locale %s", locale.toString()));
     }
-    
-    public static class Builder{
-        
+
+    public static class Builder {
+
         private Locale locale;
-        
+
         private DateTimeZone dateTimeZone;
-        
-        private List<Integer> groupIDs;
-        
+
+        private Integer groupID;
+
         private TimeFrame timeFrame;
-        
+
         private GroupReportDAO groupReportDAO;
-        
+
         private GroupHierarchy groupHierarchy;
-        
+
         private Boolean includeInactiveDrivers;
 
         private Boolean includeZeroMilesDrivers;
-        
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, List<Integer> groupIDs,TimeFrame timeFrame){
-            this(groupHierarchy, groupReportDAO, groupIDs, timeFrame, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame) {
+            this(groupHierarchy, groupReportDAO, groupID, timeFrame, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
         }
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, List<Integer> groupIDs,TimeFrame timeFrame, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
-            this.groupIDs = groupIDs;
+            this.groupID = groupID;
             this.timeFrame = timeFrame;
             this.groupHierarchy = groupHierarchy;
-			this.groupReportDAO = groupReportDAO;
-			this.includeInactiveDrivers = includeInactiveDrivers;
-	        this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+            this.groupReportDAO = groupReportDAO;
+            this.includeInactiveDrivers = includeInactiveDrivers;
+            this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
-        
+
         public void setDateTimeZone(DateTimeZone dateTimeZone) {
             this.dateTimeZone = dateTimeZone;
         }
-        
+
         public DateTimeZone getDateTimeZone() {
             return dateTimeZone;
         }
-        
+
         public void setLocale(Locale locale) {
             this.locale = locale;
         }
-        
+
         public Locale getLocale() {
             return locale;
         }
-        
-        public List<Integer> getGroupIDs() {
-            return groupIDs;
+
+        public Integer getGroupID() {
+            return groupID;
         }
-        
+
         public GroupReportDAO getGroupReportDAO() {
             return groupReportDAO;
         }
-        
+
         public GroupHierarchy getGroupHierarchy() {
             return groupHierarchy;
         }
-        
+
         public TimeFrame getInterval() {
             return timeFrame;
         }
-        
-        public SeatbeltClicksReportCriteria build(){
-            logger.debug(String.format("Building SeatbeltClicksCriteria with locale %s",locale));
-			List<DriverVehicleScoreWrapper> resultsList = new ArrayList<DriverVehicleScoreWrapper>();
-			 
-			for (Integer groupID : this.groupIDs)
-				resultsList.addAll(groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy));
-			 
-            
+
+        public SeatbeltClicksReportCriteria build() {
+            logger.debug(String.format("Building SeatbeltClicksCriteria with locale %s", locale));
+            List<DriverVehicleScoreWrapper> resultsList = new ArrayList<DriverVehicleScoreWrapper>();
+
+            resultsList = groupReportDAO.getDriverScores(groupID, timeFrame.getInterval(), groupHierarchy);
+
             List<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper> seatbeltClicksWrappers = new ArrayList<SeatbeltClicksReportCriteria.SeatbeltClicksWrapper>();
-            for(DriverVehicleScoreWrapper dvsw : resultsList){
+            for (DriverVehicleScoreWrapper dvsw : resultsList) {
                 Score s = dvsw.getScore();
-                Integer totalMiles =s.getOdometer6() == null ? 0 : s.getOdometer6().intValue();
-                boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles !=0 );
+                Integer totalMiles = s.getOdometer6() == null ? 0 : s.getOdometer6().intValue();
+                boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
                 boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && dvsw.getDriver().getStatus().equals(Status.ACTIVE));
-                if((dvsw.getDriver().getStatus().equals(Status.ACTIVE) && totalMiles!=0) 
-                        || (includeInactiveDrivers && includeZeroMilesDrivers) 
-                        || includeThisInactiveDriver 
-                        || includeThisZeroMilesDriver ){
+                if ((dvsw.getDriver().getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver
+                        || includeThisZeroMilesDriver) {
                     String driverName = dvsw.getDriver().getPerson().getLast() + ", " + dvsw.getDriver().getPerson().getFirst();
 
-                    float seatbelt = ((dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().intValue() : 0)/10.0F;
+                    float seatbelt = ((dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().intValue() : 0) / 10.0F;
                     String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
-                    
-                    SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName, dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), dvsw.getScore().getOdometer6().intValue(), seatbelt, groupName);
+
+                    SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName,
+                            dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), dvsw.getScore().getOdometer6().intValue(), seatbelt, groupName);
                     seatbeltClicksWrappers.add(seatbeltClicksWrapper);
                 }
             }
             Collections.sort(seatbeltClicksWrappers);
-            
+
             SeatbeltClicksReportCriteria criteria = new SeatbeltClicksReportCriteria(this.locale);
             criteria.setMainDataset(seatbeltClicksWrappers);
             criteria.addDateParameter(REPORT_START_DATE, timeFrame.getInterval().getStart().toDate(), this.dateTimeZone.toTimeZone());
-            
+
             /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
             criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
             return criteria;
-            
+
         }
+
         public Boolean getIncludeInactiveDrivers() {
             return includeInactiveDrivers;
         }
+
         public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
             this.includeInactiveDrivers = includeInactiveDrivers;
         }
+
         public Boolean getIncludeZeroMilesDrivers() {
             return includeZeroMilesDrivers;
         }
+
         public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
             this.includeZeroMilesDrivers = includeZeroMilesDrivers;
         }
     }
-    
-    public static class SeatbeltClicksWrapper  implements Comparable<SeatbeltClicksWrapper>{
-        
+
+    public static class SeatbeltClicksWrapper implements Comparable<SeatbeltClicksWrapper> {
+
         private String groupPath;
-		private String driverName;
-		private Integer trips;
-		private Integer seatbeltClicks;
-		private Integer drivingMiles;
-		private float seatbeltScore;
-        
+        private String driverName;
+        private Integer trips;
+        private Integer seatbeltClicks;
+        private Integer drivingMiles;
+        private float seatbeltScore;
+
         public SeatbeltClicksWrapper(String driverName, Integer trips, Integer seatbeltClicks, Integer drivingMiles, Float seatbeltScore, String groupPath) {
             this.driverName = driverName;
             this.trips = trips;
@@ -171,23 +175,23 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria{
         public Integer getTrips() {
             return trips;
         }
-        
+
         public void setTrips(Integer trips) {
             this.trips = trips;
         }
-        
+
         public Integer getDrivingMiles() {
             return drivingMiles;
         }
-        
+
         public void setDrivingMiles(Integer drivingMiles) {
             this.drivingMiles = drivingMiles;
         }
-        
+
         public Integer getSeatbeltClicks() {
             return seatbeltClicks;
         }
-        
+
         public void setSeatbeltClicks(Integer seatbeltClicks) {
             this.seatbeltClicks = seatbeltClicks;
         }
@@ -195,7 +199,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria{
         public Float getSeatbeltScore() {
             return seatbeltScore;
         }
-        
+
         public void setSeatbeltScore(Float seatbeltScore) {
             this.seatbeltScore = seatbeltScore;
         }
