@@ -18,7 +18,7 @@ public class TestEmulationSBS {
         MCMProxyObject proxy = new MCMProxyObject(server);
 		EmulationSbs sbs = new EmulationSbs(proxy, "javadeviceindavidsaccount");
 		
-		GeoPoint point = new GeoPoint();
+		GeoPoint point = new GeoPoint(40.725944,-112.001292);
 		SpeedLimit limit = sbs.getSpeedLimit(point, Heading.WEST);
 		Log.info(limit.speedLimit + "");
 	}

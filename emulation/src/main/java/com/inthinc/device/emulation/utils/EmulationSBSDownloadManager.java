@@ -20,6 +20,7 @@ import com.inthinc.sbs.downloadmanager.SbsDownloadAction;
 import com.inthinc.sbs.downloadmanager.SbsDownloadManager;
 import com.inthinc.sbs.simpledatatypes.VisitedMap;
 import com.inthinc.sbs.utils.AbstractSbsMapLoader;
+import com.inthinc.sbs.utils.MapLoader;
 import com.inthinc.sbs.utils.SbsUtils;
 
 public class EmulationSBSDownloadManager implements SbsDownloadManager {
@@ -30,7 +31,7 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
 
     public static final String NAME_KEY = "f";
     public static final String VERSION_KEY = "v";
-    public final static String prefix = "/target/sbsMaps";
+    public final static String prefix = "target/sbsMaps";
     private final static Set<Integer> unrealMaps = new HashSet<Integer>();
 
     private final StringBuilder sb = new StringBuilder(256);
@@ -40,6 +41,7 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         this.proxy = proxy;
         this.mcmid = mcmid;
         this.visitedMaps = new HashMap<Integer, VisitedMap>();
+        MapLoader.manager.set(this);
     }
 
     @Override
@@ -218,9 +220,17 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("b", base);
         args.put("f", fileAsInt);
-        Map<String, Object> reply = proxy.getSbsBase(mcmid, args);
-        sbsUpdater.saveBasemap(fileAsInt, reply);
-        return reply;
+        try {
+            Map<String, Object> reply = proxy.getSbsBase(mcmid, args);
+            sbsUpdater.saveBasemap(fileAsInt, reply);
+            return reply;
+        } catch (HessianException e) {
+            if (e.getErrorCode() == 304) {
+                unrealMaps.add(fileAsInt);
+            }
+            Log.debug("%s", "actionGetSbsBase:  Null result returned");
+            return new HashMap<String, Object>();
+        }
     }
 
     public void checkSbsEditNG(int baseVersion, int fileAsInt, int currentVersion) {
@@ -234,6 +244,9 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         args.put("cv", currentVersion);
         maps.add(args);
         List<Map<String, Object>> list = proxy.checkSbsEditNG(mcmid, maps);
+        if (list.isEmpty()){
+            
+        }
         for (Map<String, Object> element : list) {
             Integer fileAsIntL = (Integer) element.get("f");
             Integer baseVersionL = (Integer) element.get("b");

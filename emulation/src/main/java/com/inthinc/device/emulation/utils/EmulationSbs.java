@@ -37,20 +37,14 @@ public class EmulationSbs extends Sbs {
 	}
 
 	public SpeedLimit getSpeedLimit(GeoPoint location, Heading heading) {
-		SbsPoint point = new SbsPoint(location.getLat(), location.getLng());
-		SpeedLimit limit = getSpeedLimit(point.lat, point.lng, heading.getDegree()*10);
-		int count = 0;
-        while (limit.speedLimit == -1 && count++ < 4){
-		    limit = getSpeedLimit(point.lat, point.lng, heading.getDegree()*10);
-		}
-		return limit;
+		return getSpeedLimit(location, heading.getDegree()*10);
 	}
 	
 	public SpeedLimit getSpeedLimit(GeoPoint location, int headingX10) {
 		SbsPoint point = new SbsPoint(location.getLat(), location.getLng());
 		SpeedLimit limit = getSpeedLimit(point.lat, point.lng, headingX10);
 		int count = 0;
-        while (limit.speedLimit == -1 && count < 4){
+        while (limit.speedLimit == -1 && count++ < 4){
             limit = getSpeedLimit(point.lat, point.lng, headingX10);
         }
         return limit;
