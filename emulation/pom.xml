@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
 		<artifactId>root</artifactId>
-		<version>2.0.20-SNAPSHOT</version>
+		<version>2.0.21-SNAPSHOT</version>
 	</parent>
 	<groupId>com.inthinc.pro.emulation</groupId>
 	<artifactId>emulation</artifactId>
@@ -20,6 +20,7 @@
 		<connection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</connection>
 		<developerConnection>scm:svn:https://svn.iwiglobal.com/pro/emulation/trunk</developerConnection>
 		<url>http://svn.iwiglobal.com/pro</url>
+    <tag>HEAD</tag>
   </scm>
 
 	<properties>
