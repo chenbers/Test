@@ -145,7 +145,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.ws850</groupId>
-			<artifactId>sbsLib</artifactId>
+			<artifactId>SbsLib</artifactId>
 			<version>0.0</version>
 		</dependency>
 	</dependencies>
