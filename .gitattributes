@@ -1,0 +1,22 @@
+#These are the files we want git to modify if needed to ensure a LF ending.
+*.xhtml text
+*.html text
+*.css text
+*.java text
+*.js text
+*.jsp text
+*.xml text
+*.txt text
+*.sh text
+*.README text
+*.properties text
+*.conf text
+*.story text
+*.sql	text
+
+#These files should be left alone
+*.png	-text
+*.jar	-text
+*.jpg	-text
+*.gif	-text
+*.wav	-text

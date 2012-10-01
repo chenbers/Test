@@ -1,0 +1,9 @@
+.classpath
+.project
+.settings
+.DS_Store
+.springBeans
+target
+[jJ]unk*
+*.jar
+*_.java
