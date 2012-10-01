@@ -12,6 +12,7 @@ import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -38,6 +39,8 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
         private TimeFrame timeFrame;
 
+        private MeasurementType measurementType;
+        
         private GroupReportDAO groupReportDAO;
 
         private GroupHierarchy groupHierarchy;
@@ -46,11 +49,11 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
         private Boolean includeZeroMilesDrivers;
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame) {
-            this(groupHierarchy, groupReportDAO, groupID, timeFrame, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType) {
+            this(groupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
         }
 
-        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
             this.dateTimeZone = DateTimeZone.UTC;
             this.locale = Locale.US;
             this.groupID = groupID;
@@ -59,6 +62,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
             this.groupReportDAO = groupReportDAO;
             this.includeInactiveDrivers = includeInactiveDrivers;
             this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+            this.measurementType = measurementType;
         }
 
         public void setDateTimeZone(DateTimeZone dateTimeZone) {
@@ -110,10 +114,11 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
                     String driverName = dvsw.getDriver().getPerson().getLast() + ", " + dvsw.getDriver().getPerson().getFirst();
 
                     float seatbelt = ((dvsw.getScore().getSeatbelt() != null) ? dvsw.getScore().getSeatbelt().intValue() : 0) / 10.0F;
+                    int driveMiles = dvsw.getScore().getOdometer6().intValue();
                     String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
 
                     SeatbeltClicksReportCriteria.SeatbeltClicksWrapper seatbeltClicksWrapper = new SeatbeltClicksReportCriteria.SeatbeltClicksWrapper(driverName,
-                            dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), dvsw.getScore().getOdometer6().intValue(), seatbelt, groupName);
+                            dvsw.getScore().getTrips().intValue(), dvsw.getScore().getSeatbeltClicks().intValue(), driveMiles, seatbelt, groupName);
                     seatbeltClicksWrappers.add(seatbeltClicksWrapper);
                 }
             }
@@ -125,6 +130,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
 
             /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
             criteria.addDateParameter(REPORT_END_DATE, timeFrame.getInterval().getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
+            criteria.setUseMetric(measurementType == MeasurementType.METRIC);
             return criteria;
 
         }

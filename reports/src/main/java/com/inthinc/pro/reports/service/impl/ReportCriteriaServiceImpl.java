@@ -1378,13 +1378,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return builder.build();
     }
     @Override
-    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
-        return getSeatbeltClicksReportCriteria(accountGroupHierarchy, groupID, timeFrame, locale, timeZone, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        return getSeatbeltClicksReportCriteria(accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
         
     }
     @Override
-    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
-        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, includeInactiveDrivers, includeZeroMilesDrivers);
+    public ReportCriteria getSeatbeltClicksReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        SeatbeltClicksReportCriteria.Builder builder = new SeatbeltClicksReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
         builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
@@ -1455,8 +1455,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
             }
             switch (reportGroup.getReports()[i]) {
                 case SEATBELT_CLICKS_REPORT:
-                    reportCriteriaList
-                            .add(getSeatbeltClicksReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID())));
+                    reportCriteriaList.add(getSeatbeltClicksReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()), person.getMeasurementType()));
                     break;
                 case OVERALL_SCORE:
                     reportCriteriaList.add(getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), groupHierarchy));

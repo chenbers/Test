@@ -6,6 +6,7 @@
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image"/>
 	<parameter name="REPORT_START_DATE" class="java.lang.String"/>
 	<parameter name="REPORT_END_DATE" class="java.lang.String"/>
+	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="groupPath" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
 	<field name="trips" class="java.lang.Integer"/>
@@ -150,7 +151,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="274" y="0" width="75" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{drivingMiles}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{drivingMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="349" y="0" width="140" height="20"/>
