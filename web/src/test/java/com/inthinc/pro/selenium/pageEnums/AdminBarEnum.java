@@ -8,17 +8,17 @@ public enum AdminBarEnum implements SeleniumEnums {
 
     /* Admin Navigation Bar stuff */
     USERS_IMAGE(null, "//tr[1]/td/dl/dd/table/tbody/tr/td[1]"),
-    USERS("Users", "link=Users", "//tr[1]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-people"),
+    USERS("Users", "link=Users", "//a[@id='side-nav-form:***-vlt-people']"),
 
     ADD_USER("Add User", "link=Add User", "side-nav-form:people-vlst-people"),
 
     VEHICLES_IMAGE(null, "//tr[2]/td/dl/dd/table/tbody/tr/td[1]"),
-    VEHICLES("Vehicles", "link=Vehicles", "//tr[2]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-vehicles"),
+    VEHICLES("Vehicles", "link=Vehicles", "//a[@id='side-nav-form:***-vlt-vehicles']"),
 
     ADD_VEHICLE("Add Vehicle", "link=Add Vehicle", "side-nav-form:vehicles-vlst-vehicles"),
 
     DEVICES_IMAGE(null, "//tr[4]/td/dl/dd/table/tbody/tr/td[1]"),
-    DEVICES("Devices", "link=Devices", "//tr[4]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-devices"),
+    DEVICES("Devices", "link=Devices", "//a[@id='side-nav-form:***-vlt-devices']"),
 
     ZONES_IMAGE(null, "//tr[5]/td/dl/dd/table/tbody/tr/td[1]"),
     ZONES("Zones", "link=Zones", "//tr[5]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-zones"),

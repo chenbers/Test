@@ -496,19 +496,19 @@ public class PageAdminOrganization extends AdminBar{
             return new TextButton(AdminOrganizationEnum.DELETE);
         }
         
-        public TextButton topSave(){
+        public TextButton saveTop(){
             return new TextButton(AdminOrganizationEnum.TOP_SAVE);
         }
         
-        public TextButton topCancel(){
+        public TextButton cancelTop(){
             return new TextButton(AdminOrganizationEnum.TOP_CANCEL);
         }
         
-        public TextButton bottomSave(){
+        public TextButton saveBottom(){
             return new TextButton(AdminOrganizationEnum.BOTTOM_SAVE);
         }
         
-        public TextButton bottomCancel(){
+        public TextButton cancelBottom(){
             return new TextButton(AdminOrganizationEnum.BOTTOM_CANCEL);
         }
         

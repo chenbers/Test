@@ -14,6 +14,7 @@ import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminVehicleEdit;
+import com.inthinc.pro.selenium.pageObjects.PopUps.Email;
 
 
 public class PageAdminAddEditVehicle extends AdminBar {
@@ -29,6 +30,10 @@ public class PageAdminAddEditVehicle extends AdminBar {
     }
     
 	public class AdminVehicleEditPopUps extends AdminBarPopUps{
+		
+        public AssignDriverToVehicle assign() {
+            return new AssignDriverToVehicle();
+        }
 	    
 	}
 

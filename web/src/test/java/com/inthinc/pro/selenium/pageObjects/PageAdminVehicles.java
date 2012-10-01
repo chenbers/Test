@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
@@ -39,9 +40,12 @@ public class PageAdminVehicles extends AdminTables {
 
     public class AdminVehiclesButtons extends AdminTablesButtons {
 
-
         public TextButton delete() {
             return new TextButton(AdminBarEnum.DELETE, page);
+        }
+        
+        public TextButton searchVehicle() {
+        	return new TextButton(AdminVehiclesEnum.SEARCH_VEHICLE_BUTTON);
         }
     }
 
@@ -73,9 +77,22 @@ public class PageAdminVehicles extends AdminTables {
         public TextTableLink editVehicleLink() {
             return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, VehicleColumns.EDIT);
         }
+        
+        public TextLink sortByDevice() {
+        	return new TextLink(AdminVehiclesEnum.DEVICE_LINK);
+        }
+        
+        public TextLink entryEdit() {
+        	return new TextLink(AdminVehiclesEnum.EDIT_LINK);
+        }
     }
 
     public class AdminVehiclesTextFields extends AdminTablesTextFields {
+    	
+    	public TextField searchVehicle() {
+    		return new TextField(AdminVehiclesEnum.SEARCH_VEHICLE_FIELD);
+    	}
+    
     }
 
     public class AdminVehiclesTexts extends AdminTablesTexts {

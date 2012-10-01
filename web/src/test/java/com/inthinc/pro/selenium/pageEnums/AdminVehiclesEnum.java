@@ -15,6 +15,11 @@ public enum AdminVehiclesEnum implements SeleniumEnums {
     ZONE_TYPE_DHX(null, "admin-table-form:vehiclesTable:editVehicle-vehicleTypeChoice"),
     
     STATUS_DHX(null, "admin-table-form:vehiclesTable:editVehicle-statusChoice"),
+    
+    DEVICE_LINK("Driver", "//div[@id='admin-table-form:vehiclesTable:deviceheader:sortDiv']"),
+    EDIT_LINK("edit", "admin-table-form:vehiclesTable:0:edit"),
+    SEARCH_VEHICLE_FIELD("Search", "admin-table-form:vehiclesTable-filterTable"),
+    SEARCH_VEHICLE_BUTTON("Search", "admin-table-form:vehiclesTable-adminTableSearch")
     ;
 
     private String text, url;

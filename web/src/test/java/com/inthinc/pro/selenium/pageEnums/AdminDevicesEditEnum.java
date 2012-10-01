@@ -36,12 +36,13 @@ public enum AdminDevicesEditEnum implements SeleniumEnums {
     TOP_CANCEL(cancel, "edit-form:editDeviceCancel1"),
     BOTTOM_CANCEL(cancel, "edit-form:editDeviceCancel2"),
     
-    SHOW_HIDE_VEHICLES_LINK("Show vehicles for assignment", "//span[@id='edit-form:chosenVehicleShow']/../td[3]"),
+    SHOW_HIDE_VEHICLES_LINK("Show vehicles for assignment", "//a[@id='edit-form:j_id318']"),
+    ASSIGNED_LINK("Assigned", "//div[@id='edit-form:editDevice-chooseVehicleTable:vehicleAssignedheader:sortDiv']"),
     
     VEHICLE_TABLE_STATUS_FILTER(null, "edit-form:editDevice-chooseVehicleTable:editVehicle-statusChoice"),
     VEHICLE_TABLE_PRODUCT_FILTER(null, "edit-form:editDevice-chooseVehicleTable:chooseVehicle-productChoice"),
     
-    VEHICLE_TABLE_SELECT(null, "edit-form:editDevice-chooseVehicleTable:###:assignVehicle"),
+    VEHICLE_TABLE_SELECT(null, "edit-form:editDevice-chooseVehicleTable:0:assignVehicle"),
     VEHICLE_TABLE_VEHICLE_ID("Vehicle ID", "edit-form:editDevice-chooseVehicleTable:###:name"),
     VEHICLE_TABLE_DRIVER("Driver", "edit-form:editDevice-chooseVehicleTable:###:fullName"),
     VEHICLE_TABLE_TEAM("Team", "edit-form:editDevice-chooseVehicleTable:###:group"),

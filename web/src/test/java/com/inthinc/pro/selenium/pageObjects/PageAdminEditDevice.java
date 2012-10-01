@@ -30,6 +30,10 @@ public class PageAdminEditDevice extends AdminBar {
         public TextLink showHideVehiclesForAssignment() {
             return new TextLink(AdminDevicesEditEnum.SHOW_HIDE_VEHICLES_LINK);
         }
+        
+        public TextLink assigned() {
+        	return new TextLink(AdminDevicesEditEnum.ASSIGNED_LINK);
+        }
     }
 
     public class AdminEditDeviceTexts extends AdminBarTexts {
@@ -207,19 +211,19 @@ public class PageAdminEditDevice extends AdminBar {
 
     public class AdminEditDeviceButtons extends AdminBarButtons {
         
-        public TextButton topSave(){
+        public TextButton saveTop(){
             return new TextButton(AdminDevicesEditEnum.TOP_SAVE);
         }
         
-        public TextButton bottomSave(){
+        public TextButton saveBottom(){
             return new TextButton(AdminDevicesEditEnum.BOTTOM_SAVE);
         }
         
-        public TextButton topCancel(){
+        public TextButton cancelTop(){
             return new TextButton(AdminDevicesEditEnum.TOP_CANCEL);
         }
         
-        public TextButton bottomCancel(){
+        public TextButton cancelBottom(){
             return new TextButton(AdminDevicesEditEnum.BOTTOM_CANCEL);
         }
 
@@ -330,6 +334,6 @@ public class PageAdminEditDevice extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().showHideVehiclesForAssignment().isPresent() && _button().bottomCancel().isPresent();
+        return _link().showHideVehiclesForAssignment().isPresent() && _button().cancelBottom().isPresent();
     }
 }
