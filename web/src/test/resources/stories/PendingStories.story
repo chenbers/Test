@@ -36,6 +36,20 @@ Given this step is pending
 Scenario: TC1299: My Account - Change Password - Validation THIS TEST IS VERY SIMILAR TO TC1288, DO WE NEED BOTH?
 Given this step is pending
 
+LogInForgotPassword.story:
+
+//This test is no longer valid because there is no longer a cancel button on the forgot password page
+Scenario: TC1184: Log In - Forgot User Name or Password - Cancel Button
+Given I am on the Login page
+When I click the Forgot Username Or Password link
+And I type "Invalid Email Address" into the Email textfield
+And I click the Cancel button
+And the Forgot Password popup closes
+And I validate I am on the Login page
+And I click the Forgot Username Or Password link
+And the Forgot Password popup opens
+Then I validate the Email textfield is ""
+
 NotificationsDiagnostics.story:
 
 Scenario: TC1369: Notifications - Diagnostics - Bookmark Entry to Different Account CANNOT BE IMPLEMENTED YET
