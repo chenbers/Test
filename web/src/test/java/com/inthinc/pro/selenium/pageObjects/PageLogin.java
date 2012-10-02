@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 
+import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
@@ -21,16 +22,16 @@ public class PageLogin extends Masthead {
 	}
 	
     public class LoginPopUps extends MastheadPopUps{
-    	public ForgotPassword forgotPassword(){
-    		return new ForgotPassword();
-    	}
-    	
-    	public LoginError loginError(){
-    		return new LoginError();
-    	}
-    	public MessageSent messageSent(){
-    	    return new MessageSent();
-    	}
+//    	public ForgotPassword forgotPassword(){
+//    		return new ForgotPassword();
+//    	}
+//    	
+//    	public LoginError loginError(){
+//    		return new LoginError();
+//    	}
+//    	public MessageSent messageSent(){
+//    	    return new MessageSent();
+//    	}
     }
     
     public LoginPopUps _popUp(){
@@ -55,8 +56,13 @@ public class PageLogin extends Masthead {
     	public TextFieldLabel username(){
     		return new TextFieldLabel(LoginEnum.USERNAME_FIELD);
     	}
+    	
     	public TextFieldLabel password(){
     		return new TextFieldLabel(LoginEnum.PASSWORD_FIELD);
+    	}
+    	
+    	public Text error() {
+    		return new Text(LoginEnum.ERROR_TEXT);
     	}
     }
     
@@ -76,8 +82,12 @@ public class PageLogin extends Masthead {
     	return new LoginLinks();
     }
     public class LoginLinks extends MastheadLinks{
-    	public TextLink forgotUsernamePassword(){
+    	public TextLink forgotUsernameOrPassword(){
     		return new TextLink(LoginEnum.FORGOT_USERNAME_LINK);
+    	}
+    	
+    	public TextLink logo() {
+    		return new TextLink(LoginEnum.LOGO_TEXT);
     	}
     }
     

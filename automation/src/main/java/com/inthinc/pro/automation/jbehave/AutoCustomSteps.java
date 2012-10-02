@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.jbehave;
 
-import java.awt.event.KeyEvent;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,6 @@ import com.inthinc.pro.automation.models.Person;
 import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.rest.RestCommands;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.utils.KeyCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutoCustomSteps {
@@ -167,6 +165,8 @@ public class AutoCustomSteps {
     @When("I click the bookmark I just added")
     public void openSavedPage() {
         test.open(savedPage.get());
+        System.out.println("Clicked page: " + savedPage.get());
+        
     }
     
 
@@ -181,6 +181,7 @@ public class AutoCustomSteps {
     @When("I bookmark the page")
     public void savePageLink() {
         savedPage.set(test.getCurrentLocation());
+        System.out.println("Saved page: " + test.getCurrentLocation());
     }
     
     @Given("I type to the active field")
