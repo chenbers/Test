@@ -14,7 +14,7 @@ public class TripFaker {
 	
 	public static void main(String args[]) {
 		
-        TiwiProDevice tiwi = new TiwiProDevice("011596000038897", AutoSilos.DEV);
+        TiwiProDevice tiwi = new TiwiProDevice("999999000582800", AutoSilos.QA);
 		
 		//WaysmartDevice tiwi = new WaysmartDevice("300235555777777", "MCM013795", AutoSilos.PROD, Direction.gprs);
         DeviceState state = tiwi.getState();
@@ -31,6 +31,7 @@ public class TripFaker {
         //AutomationDeviceEvents.seatbelt(tiwi);
         tiwi.update_location(new GeoPoint(33.0104, -117.111), 15);
         tiwi.update_location(new GeoPoint(33.0104, -117.113), 15);
+        AutomationDeviceEvents.panic(tiwi);
         
         state.setSeatbeltViolationDistanceX100(500);
         
