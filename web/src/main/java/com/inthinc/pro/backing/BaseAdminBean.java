@@ -675,7 +675,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             if (selected == 0)
                 item = createAddItem();
             else if (selected == 1)
-                item = selection;
+                item = completeEditItem(selection);
             else
             {
                 batchEdit = true;
@@ -751,7 +751,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
           t.setSelected(selectAll);
       }
 }
-
+    protected T completeEditItem(T selectedItem){
+        return selectedItem;
+    }
     /**
      * @return A new item for the user to populate on an "add" page.
      */
@@ -1032,6 +1034,4 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
         return false;
     }
-    
-
 }

@@ -9,7 +9,7 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
 
 
     public PageNotificationsEmergency() {
-        page = "safety";
+        page = "emergency";
         checkMe.add(NotificationsEmergencyEnum.MAIN_TITLE);
     }
 
@@ -18,12 +18,6 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
     }
 
     public class NotificationsEmergencyTexts extends EventsBarTexts {
-
-
-
-        public Text records() {
-            return new Text(NotificationsBarEnum.COUNTER, page);
-        }
 
         public Text title() {
             return new Text(NotificationsEmergencyEnum.MAIN_TITLE);

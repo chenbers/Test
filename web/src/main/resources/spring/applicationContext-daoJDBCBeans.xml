@@ -41,6 +41,10 @@ default-autowire="byName">
     <bean id="adminHazardJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
+
+    <bean id="adminReportScheduleDAO" class="com.inthinc.pro.dao.jdbc.AdminReportScheduleJDBCDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 	<bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO"/>
 	
 </beans>

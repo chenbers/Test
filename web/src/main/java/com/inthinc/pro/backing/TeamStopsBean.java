@@ -26,7 +26,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class TeamStopsBean extends BaseBean {
     
     private static final EnumSet<TimeFrame> validTimeFrames = 
-        EnumSet.range(TimeFrame.TODAY,TimeFrame.SIX_DAYS_AGO);    
+        EnumSet.range(TimeFrame.TODAY,TimeFrame.SIX_DAYS_AGO);
 
     private static final long serialVersionUID = 1L;
     
@@ -36,12 +36,12 @@ public class TeamStopsBean extends BaseBean {
         
     private List<String> colors;
     private List<String> textColors;
-    private List<String> labels;    
+    private List<String> labels;
     
     private List<Driver> drivers;
     private DriverStopReport driverStopReport;
 
-    private Integer selectedDriverID;  
+    private Integer selectedDriverID;
     private String errorMessage;
         
     private ReportRenderer reportRenderer;
@@ -63,7 +63,7 @@ public class TeamStopsBean extends BaseBean {
         this.teamCommonBean = teamCommonBean;
     }
     
-    public List<Driver> getDrivers() {  
+    public List<Driver> getDrivers() {
         if ( drivers == null || drivers.size() == 0 ) {
             initDrivers();
         }
@@ -87,7 +87,7 @@ public class TeamStopsBean extends BaseBean {
         this.colors = colors;
     }
     
-    public JSONArray getColorsJSON(){        
+    public JSONArray getColorsJSON(){
         return new JSONArray(colors);
     }
     
@@ -99,7 +99,7 @@ public class TeamStopsBean extends BaseBean {
         this.textColors = textColors;
     }
     
-    public JSONArray getTextColorsJSON(){        
+    public JSONArray getTextColorsJSON(){
         return new JSONArray(textColors);
     }
     
@@ -113,7 +113,7 @@ public class TeamStopsBean extends BaseBean {
 
     public String getErrorMessage() {
         if ( !isValidTimeFrame() ) {
-            addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale())); 
+            addInfoMessage(MessageUtil.getMessageString("team_timeframe_msg", getLocale()));
         } 
         return errorMessage;
     }
@@ -122,21 +122,21 @@ public class TeamStopsBean extends BaseBean {
         this.errorMessage = errorMessage;
     }
 
-    public boolean isValidTimeFrame(){        
-        return validTimeFrames.contains(teamCommonBean.getTimeFrame());        
+    public boolean isValidTimeFrame(){
+        return validTimeFrames.contains(teamCommonBean.getTimeFrame());
     }
 
-    public void init(){   
+    public void init(){
         
         // Labels to the right of the driver name
         labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(
                 MessageUtil.getMessageString("teamLabels"))));
-        labels.remove(0);        
+        labels.remove(0);
     }
     
-    private void initDrivers(){       
+    private void initDrivers(){
         drivers = new ArrayList<Driver>();
-        drivers = driverDAO.getDrivers(teamCommonBean.getGroupID());        
+        drivers = driverDAO.getDrivers(teamCommonBean.getGroupID());
         Collections.sort(drivers);
     }
 
@@ -188,7 +188,7 @@ public class TeamStopsBean extends BaseBean {
             return null;
         
         ReportCriteria reportCriteria = getReportCriteriaService().getTeamStopsReportCriteria(
-                getAccountGroupHierarchy(), selectedDriverID, teamCommonBean.getTimeFrame(), 
+                getAccountGroupHierarchy(), selectedDriverID, teamCommonBean.getTimeFrame(),
                 getDateTimeZone(), getLocale(), driverStopReport);
         
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
