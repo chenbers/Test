@@ -103,26 +103,27 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
 
     @Override
     public Trip getTrip(CrashReport crashReport) {
-        DateTime crashTime = new DateTime(crashReport.getDate());        
-        
-		List<Trip> tripList = tripList = vehicleDAO.getTrips(crashReport.getVehicleID(), crashTime.minusDays(1).toDate(), crashTime.plusDays(1).toDate());
-        
-        if(tripList != null && tripList.size() > 0) {
-            for (Trip trip : tripList) {
-                DateTime startTime = new DateTime(trip.getStartTime());
-                DateTime endTime = new DateTime(trip.getEndTime());
-                if(crashTime.isAfter(startTime.minusSeconds(1).getMillis()) && crashTime.isBefore(endTime.plusSeconds(1).getMillis())) {
-                    //It seems that if the crash time occurred between a trips start and end time, that would indicate we have the trip that the crash is associated with.
-                    //If for some reason it turns out that a driver can some how have trips that overlap, then we need to loop through the trips LatLngs and determine the correct trip that crash was a
-                    //part of. The method below (locateTripInList) only looks for exact latlng matches. Trip event data contains LatLngs that are not as precise as the Crash LatLng.
-//                    for (LatLng latlng : trip.getRoute()) {
-//                        
-//                    }
-                    return trip;
+        if (crashReport != null && crashReport.getVehicleID() != null)
+        {    
+            DateTime crashTime = new DateTime(crashReport.getDate());        
+    		List<Trip> tripList = vehicleDAO.getTrips(crashReport.getVehicleID(), crashTime.minusDays(1).toDate(), crashTime.plusDays(1).toDate());
+            
+            if(tripList != null && tripList.size() > 0) {
+                for (Trip trip : tripList) {
+                    DateTime startTime = new DateTime(trip.getStartTime());
+                    DateTime endTime = new DateTime(trip.getEndTime());
+                    if(crashTime.isAfter(startTime.minusSeconds(1).getMillis()) && crashTime.isBefore(endTime.plusSeconds(1).getMillis())) {
+                        //It seems that if the crash time occurred between a trips start and end time, that would indicate we have the trip that the crash is associated with.
+                        //If for some reason it turns out that a driver can some how have trips that overlap, then we need to loop through the trips LatLngs and determine the correct trip that crash was a
+                        //part of. The method below (locateTripInList) only looks for exact latlng matches. Trip event data contains LatLngs that are not as precise as the Crash LatLng.
+    //                    for (LatLng latlng : trip.getRoute()) {
+    //                        
+    //                    }
+                        return trip;
+                    }
                 }
             }
         }
-        
         return null;
     }
 
