@@ -9,8 +9,8 @@
   xmlns:security="http://www.springframework.org/security/tags">
 
   <ui:param name="bean" value="#{pagingAdminPersonsBean}"/>
-  <ui:param name="editorBean" value="#{personBean}"/> 		
-  <ui:param name="context" value="personTable"/>		
+  <ui:param name="editorBean" value="#{personBean}"/>
+  <ui:param name="context" value="personTable"/>
 
   <ui:define name="columns">
     <rich:column id="name" rendered="#{personBean.tableColumns['fullName'].visible}" sortBy="#{fullName}" filterBy="#{fullName}" sortOrder="ASCENDING">
