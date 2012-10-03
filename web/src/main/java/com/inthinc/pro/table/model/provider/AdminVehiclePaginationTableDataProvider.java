@@ -20,8 +20,8 @@ public class AdminVehiclePaginationTableDataProvider extends AdminPaginationTabl
         List<Vehicle> vehicleList = adminVehicleJDBCDAO.getVehicles(vehiclesBean.getGroupIDList(), pageParams);
         // TODO: CJ NOT SURE ABOUT VEHICLE SETTINGS STUFF
         // it might be good to not do the group deep lookup, but instead just get the settings for list items (added method for this)
-        // vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getGroupID(), vehicleList);
-        vehiclesBean.setVehicleSettingManagers(vehiclesBean.getVehicleSettingsFactory().retrieveVehicleSettings(vehicleList));
+//        vehiclesBean.setVehicleSettingManagers(vehicleSettingsFactory.retrieveVehicleSettings(getGroupID(), vehicleList));
+        vehiclesBean.setVehicleSettingManagers(vehiclesBean.getVehicleSettingsFactory().retrieveVehicleSettings(vehiclesBean.getVehicleSettingManagers(), vehicleList));
         List<VehicleView> items = new ArrayList<VehicleView>();
         for (final Vehicle vehicle : vehicleList) {
             VehicleView vehicleView = vehiclesBean.createVehicleView(vehicle);

@@ -3,8 +3,6 @@ package com.inthinc.pro.model.pagination;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inthinc.pro.model.event.NoteType;
-
 public class FilterableEnumFactory implements TableFilterFactory {
 
     FilterableEnum filterableEnum;
@@ -20,7 +18,7 @@ public class FilterableEnumFactory implements TableFilterFactory {
     @Override
     public List<TableFilterField> getFilters(String propertyName) {
         List<TableFilterField>  tableFilterList = new ArrayList<TableFilterField>();
-        tableFilterList.add(new TableFilterField(propertyName, filterableEnum.getFilter(), FilterOp.IN));
+        tableFilterList.add(new TableFilterField(propertyName, filterableEnum.getFilter(), filterableEnum.includeNull() ? FilterOp.IN_OR_NULL : FilterOp.IN));
         return tableFilterList;
     }
 

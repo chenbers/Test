@@ -6,32 +6,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.util.GeoUtil;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.FuelEfficiencyType;
-import com.inthinc.pro.model.Gender;
-import com.inthinc.pro.model.GoogleMapType;
-import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.model.app.SupportedTimeZones;
-import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.pagination.FilterOp;
-import com.inthinc.pro.model.pagination.FilterableEnum;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
@@ -129,23 +116,42 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " + 
             "WHERE v.groupID in (:group_list) and v.status != 3"; 
     
-    private static final String PAGED_VEHICLE_SELECT = //
-            "SELECT v.vehicleID, d.deviceID, v.groupID, vdd.deviceID, " + PAGED_VEHICLE_COLUMNS_STRING + " "+
+    private static final String PAGED_VEHICLE_SELECT = 
+            "SELECT v.vehicleID, v.absOdometer, d.deviceID, v.groupID, vdd.deviceID, " + PAGED_VEHICLE_COLUMNS_STRING + " "+
             PAGED_VEHICLE_SUFFIX;
 
     private static final String PAGED_VEHICLE_COUNT = 
             "SELECT COUNT(*)  "+
             PAGED_VEHICLE_SUFFIX;
-    
+
+    private static final String MILES_DRIVEN =
+            "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
+
+
     public Integer getCount(List<Integer> groupIDs, List<TableFilterField> filters) {
         String vehicleCount = PAGED_VEHICLE_COUNT;
         Map<String, Object> params = new HashMap<String, Object>();
-        vehicleCount = addFiltersToQuery(filters, vehicleCount, params);
         params.put("group_list", groupIDs);
-        return getSimpleJdbcTemplate().queryForInt(vehicleCount, params);
-
+        vehicleCount = addFiltersToQuery(filters, vehicleCount, params);
+        System.out.println(vehicleCount);
+        for (String param : params.keySet())
+            System.out.println(param + " " + params.get(param).toString());
+        
+        Integer cnt = getSimpleJdbcTemplate().queryForInt(vehicleCount, params);
+        System.out.println("cnt  " + cnt);
+        
+        return cnt;
     }
     
+    public Integer getMilesDriven(Integer vehicleID) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("vehicleID", vehicleID);
+        
+        Integer miles = getSimpleJdbcTemplate().queryForInt(MILES_DRIVEN, params);
+        System.out.println("miles  " + miles);
+        
+        return miles == null ? 0 : miles;
+    }
     
     private String addFiltersToQuery(final List<TableFilterField> filters,
             String queryStr, Map<String, Object> params) {
@@ -154,8 +160,15 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             for(TableFilterField filter : filters) {
                 if(filter.getField() != null && pagedColumnMap.containsKey(filter.getField()) && filter.getFilter() != null ) {
                     String paramName = "filter_"+filter.getField();
-                    if (filter.getFilter() != null && filter.getFilterOp() == FilterOp.IN) {
+                    if (filter.getFilter().toString().isEmpty())
+                        continue;
+                    if (filter.getFilterOp() == FilterOp.IN) {
                         countFilter.append(" AND " + pagedColumnMap.get(filter.getField()) + " in (:" + paramName + ")");
+                        params.put(paramName, filter.getFilter());
+                        
+                    }
+                    else if (filter.getFilterOp() == FilterOp.IN_OR_NULL) {
+                        countFilter.append(" AND (" + pagedColumnMap.get(filter.getField()) + " in (:" + paramName + ") OR " + pagedColumnMap.get(filter.getField()) + " IS NULL)");
                         params.put(paramName, filter.getFilter());
                         
                     }
@@ -220,30 +233,38 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         return results;
     }
 
-    private static ParameterizedRowMapper<Vehicle> pagedVehicleRowMapper = new ParameterizedRowMapper<Vehicle>() {
+    private ParameterizedRowMapper<Vehicle> pagedVehicleRowMapper = new ParameterizedRowMapper<Vehicle>() {
         @Override
         public Vehicle mapRow(ResultSet rs, int rowNum) throws SQLException {
             Vehicle vehicle = new Vehicle();
+            vehicle.setVehicleID(rs.getInt("v.vehicleID"));
             vehicle.setColor(rs.getString("v.color"));
             vehicle.setCreated(null); //TODO: not stored in DB?
-            vehicle.setDeviceID(rs.getInt("vdd.deviceID"));
-            vehicle.setDriverID(rs.getInt("vdd.driverID"));
+            vehicle.setDeviceID(rs.getObject("vdd.deviceID") == null ? null : rs.getInt("vdd.deviceID"));
+            vehicle.setDriverID(rs.getObject("vdd.driverID") == null ? null : rs.getInt("vdd.driverID"));
             vehicle.setFullName(rs.getString("v.name"));
-            vehicle.setGroupID(rs.getInt("v.groupID"));
+            vehicle.setGroupID(rs.getObject("v.groupID") == null ? null : rs.getInt("v.groupID"));
             vehicle.setIfta(rs.getObject("v.ifta") == null ? null : rs.getBoolean("v.ifta"));
             vehicle.setLicense(rs.getString("v.license"));
             vehicle.setMake(rs.getString("v.make"));
             vehicle.setModel(rs.getString("v.model"));
 //            vehicle.setModified(rs.getDate("v.modified"));
             vehicle.setName(rs.getString("v.name"));
-            vehicle.setOdometer(rs.getObject("v.odometer") == null ? null : rs.getInt("v.odometer"));  // review with jw
+            Integer absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getInt("v.absOdometer")/100);
+            Integer odometer = rs.getObject("v.odometer") == null ? null : rs.getInt("v.odometer");
+            if (absOdometer != null) {
+                vehicle.setOdometer(absOdometer); 
+            }
+            else if (odometer != null) {
+                Integer milesDriven = getMilesDriven(vehicle.getVehicleID()); 
+                vehicle.setOdometer((odometer + milesDriven)/100);
+            }
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
-            vehicle.setVehicleID(rs.getInt("v.vehicleID"));
             vehicle.setVIN(rs.getString("v.vin"));
             vehicle.setVtype(VehicleType.valueOf(rs.getInt("v.vtype")));
-            vehicle.setWeight(rs.getInt("v.weight"));
-            vehicle.setYear(rs.getInt("v.year"));
+            vehicle.setWeight(rs.getObject("v.weight") == null ? null : rs.getInt("v.weight"));
+            vehicle.setYear(rs.getObject("v.year") == null ? null : rs.getInt("v.year"));
             return vehicle;
         }
     };

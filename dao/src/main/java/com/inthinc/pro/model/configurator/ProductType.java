@@ -1,5 +1,6 @@
 package com.inthinc.pro.model.configurator;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,14 +81,18 @@ public enum ProductType implements BaseEnum, FilterableEnum {
     }
 
     @Override
-    public String getFilter() {
-        StringBuffer versions = new StringBuffer();
-        for (int v : getVersions()) {
-            if (versions.length() > 0)
-                versions.append(",");
-            versions.append(v);
-            
+    public Object getFilter() {
+        if (this == ProductType.UNKNOWN) {
+            Integer v[] = new Integer[1];
+            v[0] = 0;
+            return Arrays.asList(v);
         }
-        return versions.toString();
+        
+        return Arrays.asList(versions);
+    }
+
+    @Override
+    public Boolean includeNull() {
+        return (this == ProductType.UNKNOWN);
     }
 }

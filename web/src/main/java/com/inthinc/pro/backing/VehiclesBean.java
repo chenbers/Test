@@ -224,13 +224,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
        return null;
     }
     
-    // pagination (can remove if we don't use pagination data provider)
     public void setVehicleSettingManagers(Map<Integer, VehicleSettingManager> vehicleSettingManagers) {
         this.vehicleSettingManagers = vehicleSettingManagers;
     }
     // pagination - end 
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
+        if (vehicleSettingManagers == null) {
+            vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), null);
+        }
         return vehicleSettingManagers;
     }
     public Set<Integer> getKeySet(){

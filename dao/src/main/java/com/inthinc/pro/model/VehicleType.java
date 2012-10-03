@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.pagination.FilterableEnum;
 
 @XmlRootElement
@@ -58,7 +59,13 @@ public enum VehicleType implements BaseEnum, FilterableEnum
     }
 
     @Override
-    public String getFilter() {
+    public Object getFilter() {
         return ""+code;
     }
+    
+    @Override
+    public Boolean includeNull() {
+        return false;
+    }
+
 }

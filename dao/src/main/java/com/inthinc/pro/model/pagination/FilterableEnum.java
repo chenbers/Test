@@ -2,6 +2,8 @@ package com.inthinc.pro.model.pagination;
 
 public interface FilterableEnum {
     
-    String getFilter(); 
+    Object getFilter(); 
+    
+    Boolean includeNull();
 
 }

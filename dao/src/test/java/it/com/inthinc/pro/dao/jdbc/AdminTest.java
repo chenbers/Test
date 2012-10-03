@@ -229,11 +229,13 @@ public class AdminTest extends BaseJDBCTest {
     @Test
     public void compareVehicleTest() {
         
-//        Integer groupID = itData.fleetGroup.getGroupID();
-//        Integer acctID = itData.account.getAccountID();
+        Integer groupID = itData.fleetGroup.getGroupID();
+        Integer acctID = itData.account.getAccountID();
         // need to point to devon
-        Integer groupID = 528;
-        Integer acctID = 70;
+//        Integer groupID = 528;
+//        Integer acctID = 70;
+//        Integer groupID = 1;
+//        Integer acctID = 1;
 
         GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
         groupHessianDAO.setSiloService(siloService);
@@ -263,6 +265,7 @@ public class AdminTest extends BaseJDBCTest {
             for (Vehicle jdbcVehicle : jdbcVehicleList) {
                 if (jdbcVehicle.getVehicleID().equals(hessianVehicle.getVehicleID())) {
                     found = true;
+                    System.out.println(hessianVehicle.getVehicleID() + " " + hessianVehicle.getOdometer() + " " + jdbcVehicle.getOdometer());
                     Util.compareObjects(hessianVehicle, jdbcVehicle, vehicleIgnoreFields);
                     break;
                 }

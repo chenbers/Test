@@ -52,8 +52,14 @@ public enum DeviceStatus implements BaseEnum, FilterableEnum
     }
 
     @Override
-    public String getFilter() {
+    public Object getFilter() {
         return ""+code;
     }
+    
+    @Override
+    public Boolean includeNull() {
+        return false;
+    }
+
 }
 
