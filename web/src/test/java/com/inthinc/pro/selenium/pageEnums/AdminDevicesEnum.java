@@ -13,6 +13,8 @@ public enum AdminDevicesEnum implements SeleniumEnums {
     PRODUCT_DHX(null, "admin-table-form:devicesTable:editDevice-productChoice"),
     STATUS_DHX(null, "admin-table-form:devicesTable:editDevice-statusChoice"),
     
+    VEHICLEID_LINK("Vehicle ID", "//div[@id='admin-table-form:devicesTable:vehicleheader:sortDiv']"),
+    EDIT_LINK("edit", "//a[@id='admin-table-form:devicesTable:0:edit']")
     ;
 
     private String text, url;

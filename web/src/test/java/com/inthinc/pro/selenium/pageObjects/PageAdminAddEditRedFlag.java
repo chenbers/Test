@@ -310,19 +310,19 @@ public class PageAdminAddEditRedFlag extends AdminBar {
 
     public class AdminAddEditRedFlagButtons extends AdminBarButtons {
         
-        public TextButton topSave(){
+        public TextButton saveTop(){
             return new TextButton(AdminAddEditRedFlagEnum.SAVE_TOP);
         }
         
-        public TextButton topCancel(){
+        public TextButton cancelTop(){
             return new TextButton(AdminAddEditRedFlagEnum.CANCEL_TOP);
         }
         
-        public TextButton bottomSave(){
+        public TextButton saveBottom(){
             return new TextButton(AdminAddEditRedFlagEnum.SAVE_BOTTOM);
         }
         
-        public TextButton bottomCancel(){
+        public TextButton cancelBottom(){
             return new TextButton(AdminAddEditRedFlagEnum.CANCEL_BOTTOM);
         }
         
@@ -567,6 +567,6 @@ public class PageAdminAddEditRedFlag extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().topSave().isPresent() && _dropDown().redFlagType().isPresent();
+        return _button().saveTop().isPresent() && _dropDown().redFlagType().isPresent();
     }
 }

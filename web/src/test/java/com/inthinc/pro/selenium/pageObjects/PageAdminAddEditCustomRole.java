@@ -68,19 +68,19 @@ public class PageAdminAddEditCustomRole extends AdminBar {
 
     public class AddEditCustomRoleButtons extends AdminBarButtons {
         
-        public TextButton topSave() {
+        public TextButton saveTop() {
             return new TextButton(AdminAddEditCustomRoleEnum.TOP_SAVE);
         }
         
-        public TextButton bottomSave() {
+        public TextButton saveBottom() {
             return new TextButton(AdminAddEditCustomRoleEnum.BOTTOM_SAVE);
         }
         
-        public TextButton topCancel() {
+        public TextButton cancelTop() {
             return new TextButton(AdminAddEditCustomRoleEnum.TOP_CANCEL);
         }
         
-        public TextButton bottomCancel() {
+        public TextButton cancelBottom() {
             return new TextButton(AdminAddEditCustomRoleEnum.BOTTOM_CANCEL);
         }
     }
@@ -139,7 +139,8 @@ public class PageAdminAddEditCustomRole extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _button().topSave().isPresent() && _button().bottomCancel().isPresent();
+        return _button().saveTop().isPresent() && _button().cancelBottom().isPresent();
     }
 
 }
+
