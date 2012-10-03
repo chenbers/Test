@@ -20,6 +20,7 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.PersonBean.PersonView;
 import com.inthinc.pro.backing.fwdcmd.WaysmartForwardCommand;
 import com.inthinc.pro.backing.fwdcmd.WirelineDoorAlarmCommand;
 import com.inthinc.pro.backing.fwdcmd.WirelineKillMotorCommand;
@@ -37,6 +38,7 @@ import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
@@ -198,7 +200,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected List<VehicleView> loadItems()
     {
-        
+/*  cj - removed since pagination does this now        
         // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
         
@@ -217,9 +219,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         return items;
-        
+*/        
       // pagination
-//        return null;
+       return null;
     }
     
     // pagination (can remove if we don't use pagination data provider)
@@ -913,4 +915,67 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
     }
     
+    // overriding because the pagination doesn't use the filtered list 
+
+    @Override
+    public List<VehiclesBean.VehicleView> getFilteredItems() {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+        return filteredItems;
+    }
+
+    @Override
+    protected void applyFilter(int page)
+    {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+    }
+    /*
+
+    @Override
+    public void setSelectAll(boolean selectAll)
+    {
+        this.selectAll = selectAll;
+    }
+    
+    @Override
+    public boolean isSelectAll() {
+        return this.selectAll;
+    }
+
+    @Override
+    public void doSelectAll() {
+        selectedMap = new HashMap<Integer, Boolean>();
+        if (selectAll == true) {
+            for (PersonIdentifiers personIdentifiers : personIdentifiersList) {
+                selectedMap.put(personIdentifiers.getPersonID(),  Boolean.TRUE);
+            }
+        }
+    }
+    @Override
+    public void setItems(List<VehicleView> items )
+    {
+        super.setItems(items);
+    }
+    
+    public void initPersonIdentifierList(List<PersonIdentifiers> personIdentifiersList )
+    {
+        this.personIdentifiersList = personIdentifiersList;
+        this.selectAll = Boolean.FALSE;
+        selectedMap = new HashMap<Integer, Boolean>();
+    }
+
+    public void updateItemSelect(Integer id, Boolean selected) {
+        selectedMap.put(id,  selected);
+        
+    }
+
+    public Map<Integer, Boolean> getSelectedMap() {
+        return selectedMap;
+    }
+
+    public void setSelectedMap(Map<Integer, Boolean> selectedMap) {
+        this.selectedMap = selectedMap;
+    }
+*/
 }

@@ -37,6 +37,14 @@ public class PageAdminDevices extends AdminTables {
         public TextLink sortByColumn(DeviceColumns column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
         }
+        
+        public TextLink vehicleID() {
+        	return new TextLink(AdminDevicesEnum.VEHICLEID_LINK);
+        }
+        
+        public TextTableLink entryEdit() {
+        	return new TextTableLink(AdminDevicesEnum.EDIT_LINK);
+        }
 
     }
     public class AdminDevicesTexts extends AdminTablesTexts{

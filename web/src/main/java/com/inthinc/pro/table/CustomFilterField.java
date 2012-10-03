@@ -20,5 +20,6 @@ public class CustomFilterField extends ExtendedFilterField {
 	public void setFilterObject(Object filterObject) {
 		this.filterObject = filterObject;
 	}
+	
 
 }

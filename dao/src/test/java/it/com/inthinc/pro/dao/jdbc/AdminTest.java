@@ -145,6 +145,7 @@ public class AdminTest extends BaseJDBCTest {
         }
     }
 
+
     @Test
     @Ignore
     public void comparePersonDevonTest() {
@@ -226,12 +227,17 @@ public class AdminTest extends BaseJDBCTest {
 
 
     @Test
-    @Ignore
     public void compareVehicleTest() {
-        Integer groupID = 1;
+        
+//        Integer groupID = itData.fleetGroup.getGroupID();
+//        Integer acctID = itData.account.getAccountID();
+        // need to point to devon
+        Integer groupID = 528;
+        Integer acctID = 70;
+
         GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
         groupHessianDAO.setSiloService(siloService);
-        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(groupID));
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(acctID));
         List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(groupID);
         
         VehicleHessianDAO vehicleHessianDAO = new VehicleHessianDAO();
@@ -250,9 +256,7 @@ public class AdminTest extends BaseJDBCTest {
         pageParams.setEndRow(cnt-1);
         List<Vehicle> jdbcVehicleList = adminVehicleJDBCDAO.getVehicles(groupIDList, pageParams);
         assertEquals("hessian vs jdbc Vehicle cnt", hessianVehicleList.size(), jdbcVehicleList.size());
-        String vehicleIgnoreFields[] = {
-        // Vehicle ok to ignore, unused fields
-        //        "addressID", "dept", "height", "weight", "modified", "driver", "user", "driverID", "userID", 
+        String vehicleIgnoreFields[] = { "modified"
         };
         for (Vehicle hessianVehicle : hessianVehicleList) {
             boolean found = false;

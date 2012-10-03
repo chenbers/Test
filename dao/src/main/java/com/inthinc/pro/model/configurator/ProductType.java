@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
+import com.inthinc.pro.model.pagination.FilterableEnum;
 
-public enum ProductType implements BaseEnum {
+public enum ProductType implements BaseEnum, FilterableEnum {
     UNKNOWN(0, 0, "Unknown"),
 //    TEEN(1, 1, "Teen"),
     WAYSMART(2, 2, "waySmart", 2), //xx10
@@ -76,5 +77,17 @@ public enum ProductType implements BaseEnum {
     
     public Integer[] getVersions(){
         return versions;
+    }
+
+    @Override
+    public String getFilter() {
+        StringBuffer versions = new StringBuffer();
+        for (int v : getVersions()) {
+            if (versions.length() > 0)
+                versions.append(",");
+            versions.append(v);
+            
+        }
+        return versions.toString();
     }
 }
