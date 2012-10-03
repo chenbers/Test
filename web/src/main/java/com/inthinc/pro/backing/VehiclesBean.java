@@ -20,6 +20,7 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.PersonBean.PersonView;
 import com.inthinc.pro.backing.fwdcmd.WaysmartForwardCommand;
 import com.inthinc.pro.backing.fwdcmd.WirelineDoorAlarmCommand;
 import com.inthinc.pro.backing.fwdcmd.WirelineKillMotorCommand;
@@ -37,6 +38,7 @@ import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
@@ -198,7 +200,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected List<VehicleView> loadItems()
     {
-        
+/*  cj - removed since pagination does this now        
+>>>>>>> hotfixcj
         // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
         
@@ -223,12 +226,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     
     // pagination (can remove if we don't use pagination data provider)
+*/        
+      // pagination
+       return null;
+    }
+    
     public void setVehicleSettingManagers(Map<Integer, VehicleSettingManager> vehicleSettingManagers) {
         this.vehicleSettingManagers = vehicleSettingManagers;
     }
     // pagination - end 
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
+        if (vehicleSettingManagers == null) {
+            vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), null);
+        }
         return vehicleSettingManagers;
     }
     public Set<Integer> getKeySet(){
@@ -913,4 +924,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
     }
     
+    // overriding because the pagination doesn't use the filtered list 
+
+    @Override
+    public List<VehiclesBean.VehicleView> getFilteredItems() {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+        return filteredItems;
+    }
+
+    @Override
+    protected void applyFilter(int page)
+    {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+    }
 }
