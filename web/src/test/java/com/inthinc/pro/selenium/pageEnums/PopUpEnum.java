@@ -57,7 +57,7 @@ public enum PopUpEnum implements SeleniumEnums {
     /* My Account Change Password */
     MY_CHANGE_TITLE("Change Password", "changePasswordPanelHeader", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
     MY_CHANGE_TITLE_REQUIRED("Change PasswordRequired", "changePasswordPanelHeader", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
-    MY_CHANGE_X(null, "//div[@id='changePasswordPanelCDiv']/div[@id='changePasswordPanelContentDiv']/div/img[contains(@src,'modal_close')]"),
+    MY_CHANGE_X(null, "//a[contains(@id,'updateCredentialsSubmit')]"),
     MY_CHANGE_CANCEL(cancel, "changePasswordForm:changePasswordCancel", "//button[@name='changePasswordForm:changePasswordCancel']", "//div/button[@class='left'][@type='button']"),
     MY_CHANGE_CHANGE("Change", "changePasswordForm:changePasswordSubmit", "//button[@name='changePasswordForm:changePasswordSubmit']", "//div/button[@class='left'][@type='submit']"),
 
