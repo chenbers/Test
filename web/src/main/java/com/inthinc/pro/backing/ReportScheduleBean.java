@@ -27,6 +27,7 @@ import org.joda.time.MutableDateTime;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.ui.TimeFrameSelect;
+import com.inthinc.pro.dao.AdminReportScheduleDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
@@ -90,7 +91,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
     
+    private AdminReportScheduleDAO adminReportScheduleDAO;
     
+    public AdminReportScheduleDAO getAdminReportScheduleDAO() {
+        return adminReportScheduleDAO;
+    }
+
+    public void setAdminReportScheduleDAO(AdminReportScheduleDAO adminReportScheduleDAO) {
+        this.adminReportScheduleDAO = adminReportScheduleDAO;
+    }
+
+
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
@@ -358,6 +369,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     }
 
     @Override
+    protected ReportScheduleView completeEditItem(ReportScheduleView selectedItem) {
+        ReportSchedule reportSchedule = reportScheduleDAO.findByID(selectedItem.getReportScheduleID());
+        selectedItem = this.completeReportScheduleView(reportSchedule, selectedItem);
+        return selectedItem;
+    }
+
+    @Override
     protected void doDelete(List<ReportScheduleView> deleteItems) {
         for (final ReportScheduleView reportSchedule : deleteItems) {
             reportScheduleDAO.deleteByID(reportSchedule.getReportScheduleID());
@@ -480,6 +498,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     @Override
     public ReportScheduleView getItem() {
         ReportScheduleView reportScheduleView = super.getItem();
+        //Don't have the whole thing so go get it
         if ((reportScheduleView.getDayOfWeek() == null) || (reportScheduleView.getDayOfWeek().size() != 7)) {
             final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>();
             for (int i = 0; i < 7; i++)
@@ -632,12 +651,21 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         List<ReportScheduleView> returnList = new ArrayList<ReportScheduleView>();
         List<ReportSchedule> reportScheduleList = null;
         if (getProUser().isAdmin()) 
-        	reportScheduleList = reportScheduleDAO.getReportSchedulesByUserIDDeep(getProUser().getUser().getUserID());
+//        	reportScheduleList = reportScheduleDAO.getReportSchedulesByUserIDDeep(getProUser().getUser().getUserID());
+            reportScheduleList = getReportScheduleHierarchy();
         else reportScheduleList = reportScheduleDAO.getReportSchedulesByUserID(getProUser().getUser().getUserID());
         for (ReportSchedule reportSchedule : reportScheduleList) {
             returnList.add(createReportScheduleView(reportSchedule));
         }
         return returnList;
+    }
+    private List<ReportSchedule> getReportScheduleHierarchy(){
+//        List<ReportSchedule> reportSchedules = reportScheduleDAO.getReportSchedulesByAccountID(getProUser().getUser().getPerson().getAcctID());
+        List<Integer> groups= getGroupIDList();
+        groups.remove(getProUser().getUser().getGroupID());
+        List<ReportSchedule> reportSchedules = adminReportScheduleDAO.getReportSchedulesForUsersDeep(getProUser().getUser().getUserID(),groups,getProUser().getUser().getPerson().getAcctID());
+                
+        return reportSchedules;
     }
 
     @Override
@@ -654,9 +682,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public TableType getTableType() {
         return TableType.REPORT_SCHEDULES;
     }
-
-    private ReportScheduleView createReportScheduleView(ReportSchedule reportSchedule) {
-        final ReportScheduleView reportScheduleView = new ReportScheduleView();
+    private ReportScheduleView completeReportScheduleView(ReportSchedule reportSchedule, ReportScheduleView reportScheduleView){
         BeanUtils.copyProperties(reportSchedule, reportScheduleView);
         reportScheduleView.setSelected(false);
         
@@ -684,6 +710,38 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             reportSchedule.setDayOfWeek(createDayOfWeekList());
         }
         return reportScheduleView;
+   
+    }
+    private ReportScheduleView createReportScheduleView(ReportSchedule reportSchedule) {
+        final ReportScheduleView reportScheduleView = new ReportScheduleView();
+        return completeReportScheduleView(reportSchedule,reportScheduleView);
+//        BeanUtils.copyProperties(reportSchedule, reportScheduleView);
+//        reportScheduleView.setSelected(false);
+//        
+//        if (reportSchedule.getDriverID() != null) {
+//            Driver driver = driverDAO.findByID(reportScheduleView.getDriverID());
+//            reportScheduleView.setDriverName(driver.getPerson().getFullName());
+//        }
+//        if (reportSchedule.getVehicleID() != null) {
+//            Vehicle vehicle = vehicleDAO.findByID(reportScheduleView.getVehicleID());
+//            reportScheduleView.setVehicleName(vehicle.getFullName());
+//        }
+//        if (reportSchedule.getGroupID() != null) {
+//            Group group = groupDAO.findByID(reportScheduleView.getGroupID());
+//            if (group != null) {
+//                reportScheduleView.setGroupName(group.getName());
+//            }
+//        }
+//        reportScheduleView.setListDisplay(getListDisplay(reportScheduleView));
+//        if (reportSchedule.getStartDate() != null && reportSchedule.getOccurrence().equals(Occurrence.MONTHLY)) {
+//            Calendar calendar = Calendar.getInstance(getUtcTimeZone());
+//            calendar.setTime(reportSchedule.getStartDate());
+//            reportScheduleView.setDayOfMonth(calendar.get(Calendar.DATE));
+//        }
+//        if (reportSchedule.getDayOfWeek() == null || reportSchedule.getDayOfWeek().size() < 6) {
+//            reportSchedule.setDayOfWeek(createDayOfWeekList());
+//        }
+//        return reportScheduleView;
     }
 
     private List<Boolean> createDayOfWeekList() {
@@ -830,7 +888,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     
     public static class ReportScheduleView extends ReportSchedule implements EditItem {
-        private static final long serialVersionUID = 8954277815270194338L;
+//        private static final long serialVersionUID = 8954277815270194338L;
         
         @Column(updateable = false)
         private boolean selected;
