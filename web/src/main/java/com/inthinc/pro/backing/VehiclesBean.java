@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,7 +19,6 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.PersonBean.PersonView;
 import com.inthinc.pro.backing.fwdcmd.WaysmartForwardCommand;
 import com.inthinc.pro.backing.fwdcmd.WirelineDoorAlarmCommand;
 import com.inthinc.pro.backing.fwdcmd.WirelineKillMotorCommand;
@@ -38,7 +36,6 @@ import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.PersonIdentifiers;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
@@ -186,6 +183,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         this.deviceDAO = deviceDAO;
     }
 
+/*
+ * removed - no longer used due to pagination    
     public List<VehicleView> getPlainVehicles(){
         
         List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
@@ -197,6 +196,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         return items;
     }
+*/    
     @Override
     protected List<VehicleView> loadItems()
     {
@@ -227,7 +227,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public void setVehicleSettingManagers(Map<Integer, VehicleSettingManager> vehicleSettingManagers) {
         this.vehicleSettingManagers = vehicleSettingManagers;
     }
-    // pagination - end 
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
         if (vehicleSettingManagers == null) {
@@ -235,6 +234,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         return vehicleSettingManagers;
     }
+    // pagination - end (changes)
+    
     public Set<Integer> getKeySet(){
         
         return vehicleSettingManagers.keySet();
@@ -630,6 +631,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 assignDriver(vehicle);
                 drivers = null;
             }
+            
+            // added for pagination
+            vehicleSettingsFactory.upatedVehicleSettingManager(getVehicleSettingManagers(), vehicle);
+            vehicle.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+            // end - added for pagination
                         
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
@@ -820,8 +826,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public Group getGroup()
         {
-            if (group == null)
-                group = bean.groupDAO.findByID(getGroupID());
+            if (group == null) {
+                group = bean.getGroupHierarchy().getGroup(getGroupID());
+                if (group == null)
+                    group = bean.groupDAO.findByID(getGroupID());
+            }
             return group;
         }
 
@@ -932,52 +941,4 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         filteredItems.clear();
         filteredItems.addAll(items);
     }
-    /*
-
-    @Override
-    public void setSelectAll(boolean selectAll)
-    {
-        this.selectAll = selectAll;
-    }
-    
-    @Override
-    public boolean isSelectAll() {
-        return this.selectAll;
-    }
-
-    @Override
-    public void doSelectAll() {
-        selectedMap = new HashMap<Integer, Boolean>();
-        if (selectAll == true) {
-            for (PersonIdentifiers personIdentifiers : personIdentifiersList) {
-                selectedMap.put(personIdentifiers.getPersonID(),  Boolean.TRUE);
-            }
-        }
-    }
-    @Override
-    public void setItems(List<VehicleView> items )
-    {
-        super.setItems(items);
-    }
-    
-    public void initPersonIdentifierList(List<PersonIdentifiers> personIdentifiersList )
-    {
-        this.personIdentifiersList = personIdentifiersList;
-        this.selectAll = Boolean.FALSE;
-        selectedMap = new HashMap<Integer, Boolean>();
-    }
-
-    public void updateItemSelect(Integer id, Boolean selected) {
-        selectedMap.put(id,  selected);
-        
-    }
-
-    public Map<Integer, Boolean> getSelectedMap() {
-        return selectedMap;
-    }
-
-    public void setSelectedMap(Map<Integer, Boolean> selectedMap) {
-        this.selectedMap = selectedMap;
-    }
-*/
 }
