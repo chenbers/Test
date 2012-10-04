@@ -2,11 +2,15 @@ package com.inthinc.pro.model.pagination;
 
 import java.io.Serializable;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 public class TableFilterField implements Serializable{
 
 	private String field;
 	private Object filter;	
-	private FilterOp filterOp;
+
+    @Column( updateable = false)
+    private FilterOp filterOp;
 	
     public TableFilterField(String field, Object filter) {
 		this(field, filter, FilterOp.LIKE);
