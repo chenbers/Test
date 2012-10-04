@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -184,6 +183,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         this.deviceDAO = deviceDAO;
     }
 
+/*
+ * removed - no longer used due to pagination    
     public List<VehicleView> getPlainVehicles(){
         
         List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
@@ -195,10 +196,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         return items;
     }
+*/    
     @Override
     protected List<VehicleView> loadItems()
     {
-        
+/*        
         // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
         
@@ -217,20 +219,25 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         return items;
-        
-      // pagination
-//        return null;
+*/        
+      // pagination  (comment out above stuff when switch to pagination)
+        return null;
     }
     
-    // pagination (can remove if we don't use pagination data provider)
+    
     public void setVehicleSettingManagers(Map<Integer, VehicleSettingManager> vehicleSettingManagers) {
         this.vehicleSettingManagers = vehicleSettingManagers;
     }
-    // pagination - end 
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
+// pagination        
+        if (vehicleSettingManagers == null) {
+            vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), null);
+        }
         return vehicleSettingManagers;
     }
+    // pagination - end (changes)
+    
     public Set<Integer> getKeySet(){
         
         return vehicleSettingManagers.keySet();
@@ -626,6 +633,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 assignDriver(vehicle);
                 drivers = null;
             }
+            
+            // added for pagination
+            vehicleSettingsFactory.upatedVehicleSettingManager(getVehicleSettingManagers(), vehicle);
+            vehicle.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+            // end - added for pagination
                         
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
@@ -816,8 +828,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public Group getGroup()
         {
-            if (group == null)
-                group = bean.groupDAO.findByID(getGroupID());
+            if (group == null) {
+                group = bean.getGroupHierarchy().getGroup(getGroupID());
+                if (group == null)
+                    group = bean.groupDAO.findByID(getGroupID());
+            }
             return group;
         }
 
@@ -912,5 +927,22 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         	
         }
     }
-    
+
+/*
+ *  pagination   
+    // overriding because the pagination doesn't use the filtered list */ 
+
+    @Override
+    public List<VehiclesBean.VehicleView> getFilteredItems() {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+        return filteredItems;
+    }
+
+    @Override
+    protected void applyFilter(int page)
+    {
+        filteredItems.clear();
+        filteredItems.addAll(items);
+    }
 }
