@@ -41,13 +41,17 @@ public class AdminReportScheduleJDBCDAO extends SimpleJdbcDaoSupport implements 
         return null;
     }
 
-    private static final String REPORTPREFS_DEEP = "select r.acctID,r.reportPrefID,r.paramType,r.reportID,r.userID,r.name,r.occurrence,r.lastDate,r.status, p.first, p.last from reportPref r,user u, person p where p.personID =u.personID and r.userID=u.userID and r.acctID=:acctID and (u.userID = :userID or u.groupID in(:groupIDs))";
+    private static final String REPORTPREFS_DEEP = "select r.acctID,r.reportPrefID,r.paramType,r.reportID,r.userID,r.name,r.occurrence,r.startDate,r.lastDate,r.status, p.first, p.last from reportPref r,user u, person p where p.personID =u.personID and r.userID=u.userID and r.acctID=:acctID and (u.userID = :userID or u.groupID in(:groupIDs))";
     private static ParameterizedRowMapper<ReportSchedule> reportScheduleRowMapper = new ParameterizedRowMapper<ReportSchedule>() {
         @Override
         public ReportSchedule mapRow(ResultSet rs, int rowNum) throws SQLException {
             ReportSchedule reportSchedule = new ReportSchedule();
             reportSchedule.setAccountID(ObjectToInteger(rs.getObject("acctID")));
+            reportSchedule.setStartDate(rs.getDate("startDate"));
             reportSchedule.setLastDate(rs.getDate("lastDate"));
+            if(reportSchedule.getLastDate().before(reportSchedule.getStartDate())){
+                reportSchedule.setLastDate(null);
+            }
             reportSchedule.setName(rs.getString("name"));
             reportSchedule.setOccurrence(Occurrence.valueOf(rs.getInt("occurrence")));
             reportSchedule.setParamType(ReportParamType.valueOf(rs.getInt("paramType")));
