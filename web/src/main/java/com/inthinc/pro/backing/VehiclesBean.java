@@ -200,8 +200,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected List<VehicleView> loadItems()
     {
-/*  cj - removed since pagination does this now        
->>>>>>> hotfixcj
         // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
         
@@ -221,25 +219,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         return items;
         
-      // pagination
+      // pagination  (comment out above stuff when switch to pagination)
 //        return null;
     }
     
-    // pagination (can remove if we don't use pagination data provider)
-*/        
-      // pagination
-       return null;
-    }
     
     public void setVehicleSettingManagers(Map<Integer, VehicleSettingManager> vehicleSettingManagers) {
         this.vehicleSettingManagers = vehicleSettingManagers;
     }
-    // pagination - end 
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
-        if (vehicleSettingManagers == null) {
-            vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), null);
-        }
+// pagination        
+//        if (vehicleSettingManagers == null) {
+//            vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), null);
+//        }
         return vehicleSettingManagers;
     }
     public Set<Integer> getKeySet(){
@@ -923,7 +916,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         	
         }
     }
-    
+
+/*
+ *  pagination   
     // overriding because the pagination doesn't use the filtered list 
 
     @Override
@@ -939,4 +934,5 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         filteredItems.clear();
         filteredItems.addAll(items);
     }
+*/    
 }
