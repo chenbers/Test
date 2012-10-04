@@ -67,7 +67,7 @@
     			        	reverseGeocode();
 						} else {
 							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
-                                if(element.lat == '' || element.lng == ''){
+                                if(element.lat == '' || element.lng == '') {
                                     element.address[0].innerHTML = "#{messages.teamStopsNoAddressFound}";
                                     addresses[element.lat + element.lng] = "#{messages.teamStopsNoAddressFound}";
                                 } else if (!response) {
