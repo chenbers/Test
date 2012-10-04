@@ -8,7 +8,6 @@ public class TableFilterField implements Serializable{
 
 	private String field;
 	private Object filter;	
-
     @Column( updateable = false)
     private FilterOp filterOp;
 	

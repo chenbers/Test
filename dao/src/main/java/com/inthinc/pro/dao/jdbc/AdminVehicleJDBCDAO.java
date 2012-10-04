@@ -137,13 +137,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("group_list", groupIDs);
         vehicleCount = addFiltersToQuery(filters, vehicleCount, params);
-        System.out.println(vehicleCount);
-        for (String param : params.keySet())
-            System.out.println(param + " " + params.get(param).toString());
-        
         Integer cnt = getSimpleJdbcTemplate().queryForInt(vehicleCount, params);
-        System.out.println("cnt  " + cnt);
-        
         return cnt;
     }
     
@@ -152,7 +146,6 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         params.put("vehicleID", vehicleID);
         
         Integer miles = getSimpleJdbcTemplate().queryForInt(MILES_DRIVEN, params);
-        System.out.println("miles  " + miles);
         
         return miles == null ? 0 : miles;
     }
@@ -181,7 +174,6 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                         params.put(paramName, "%"+filter.getFilter()+"%");
                     }
                     
-                    System.out.println(paramName + " " + params.get(paramName));
                 }
             }
             queryStr = queryStr + countFilter.toString();
@@ -207,8 +199,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         if(pageParams.getStartRow() != null && pageParams.getEndRow() != null)
             vehicleSelect.append(" LIMIT " + pageParams.getStartRow() + ", " + ((pageParams.getEndRow() - pageParams.getStartRow())+1) );
         
-        System.out.println(vehicleSelect.toString());
-        
+                
         List<Vehicle> vehicleList = getSimpleJdbcTemplate().query(vehicleSelect.toString(), pagedVehicleRowMapper, params);
         
 
