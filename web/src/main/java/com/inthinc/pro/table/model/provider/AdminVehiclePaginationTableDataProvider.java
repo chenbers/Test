@@ -9,7 +9,6 @@ import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.pagination.PageParams;
 
-
 public class AdminVehiclePaginationTableDataProvider extends AdminPaginationTableDataProvider<VehiclesBean.VehicleView> {
     private static final long serialVersionUID = 7174258339086174126L;
     private VehiclesBean vehiclesBean;
