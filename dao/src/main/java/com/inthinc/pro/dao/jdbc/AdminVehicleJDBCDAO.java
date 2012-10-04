@@ -66,6 +66,11 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         for(String key: columnMap.keySet()){
             VEHICLE_COLUMNS_STRING += " "+key+" ,";
         }
+        //remove trailing comma if necessary
+        if(VEHICLE_COLUMNS_STRING.endsWith(",")){ 
+            VEHICLE_COLUMNS_STRING = VEHICLE_COLUMNS_STRING.substring(0, VEHICLE_COLUMNS_STRING.length()-2);
+        }
+        System.out.println("VEHICLE_COLUMNS_STRING: "+VEHICLE_COLUMNS_STRING);
         
         // these match the columns displayed in admin/vehicles
         pagedColumnMap.put("name", "v.name");
@@ -97,7 +102,6 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             PAGED_VEHICLE_COLUMNS_STRING = PAGED_VEHICLE_COLUMNS_STRING.substring(0, PAGED_VEHICLE_COLUMNS_STRING.length()-2);
         }
         
-        System.out.println("VEHICLE_COLUMNS_STRING: "+VEHICLE_COLUMNS_STRING);
     };
     private static final String VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT = //
             "SELECT " + VEHICLE_COLUMNS_STRING + " "+//
