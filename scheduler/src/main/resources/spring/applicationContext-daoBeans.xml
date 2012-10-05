@@ -19,6 +19,9 @@
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
+    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO">
+        <property name="siloService" ref="siloServiceBean" />
+    </bean>
     <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO" parent="genericDAO"></bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
