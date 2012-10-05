@@ -215,8 +215,6 @@
                                   marker = new GMarker(point);
                                   map.addOverlay(marker);
                                   marker.openInfoWindowHtml(address);
-                                  console.log("lng: "+point.lng());
-                                  console.log("lat: "+point.lat());
                                   updateCoordinates(point.lng(), point.lat());
                                   GEvent.addListener(marker, "click", function() {
                                       marker.openInfoWindowHtml(address);
@@ -229,9 +227,6 @@
                   function showHazard(){
                     // map.clearOverlays();
                     removeZoneOverlay();
-                    console.log("showHazard item: #{hazardsBean.item}");
-                    console.log("showHazard lat: #{hazardsBean.item.latitude}");
-                    console.log("showHazard lng: #{hazardsBean.item.longitude}");
                     var hazardPoint;
                     if(hazardlat &amp;&amp; hazardlng){
                          console.log("hazard: "+hazard);
@@ -247,17 +242,11 @@
                       return true;
                     }
                     return false;
-                  }
-
-                  function storeOutline(){
-                    console.log("in storeOutline");
-                  }
+                  
 
                   function cancelEdit(){
-                	  console.log("in cancelEdit");
-                    //stopDrawing();
-                    // map.clearOverlays();
-                    //removeZoneOverlay();
+                    console.log("in cancelEdit");
+                    map.clearOverlays();
                   }
 
                   function select(type){
@@ -297,19 +286,9 @@
                         initLayers();
                         map = portalmap.getMap();
 
-                      GEvent.addListener(drawZone, "startHazard", function(type){
-                        select(type);
-                      });
-                      GEvent.addListener(drawZone, "endHazard", function(type, points){
-                        select("hand");
-                        storeOutline();
-                      });
                       GEvent.addListener(drawZone, "cancelHazard", function(type){
                         showHazard(true);
                         select("hand");
-                      });
-                      GEvent.addListener(drawZone, "updateHazard", function(points){
-                        storeOutline();
                       });
                       GEvent.addListener(map, "mousemove", function(latLng) {
                         //updateCoordinates(latLng.lng(), latLng.lat());
