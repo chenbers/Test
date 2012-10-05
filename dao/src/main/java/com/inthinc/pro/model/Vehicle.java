@@ -37,6 +37,10 @@ public class Vehicle extends BaseEntity
     
     private Boolean           ifta;
     
+    @Column(updateable = false)
+    private Device            device;
+
+    
     public Vehicle()
     {
         super();
@@ -263,4 +267,12 @@ public class Vehicle extends BaseEntity
                 ", ifta="+ifta+
                "]";
     }
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
+    }
+
 }

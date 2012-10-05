@@ -120,7 +120,7 @@
       </f:facet>
       <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
-    <rich:column id="odometer" rendered="#{vehiclesBean.tableColumns['odometer'].visible}" sortBy="#{odometer}">
+    <rich:column id="odometer" rendered="#{vehiclesBean.tableColumns['odometer'].visible}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_odometer}" /></f:facet>
       <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.odometer ne null}">
          <a4j:actionparam value="#{item.odometer}" converter="MilesToKilometersConverterInput"/>
