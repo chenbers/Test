@@ -208,12 +208,16 @@
                           function(point) {
                               if (!point) {
                                   alert("The address: [" + address + "] was not found.");
-                                  map.setCenter(new GLatLng(39.0, -104.0), 4);
                               } else {
-                                  map.setCenter(point, 13);
+                                  map.setCenter(point, map.getZoom());
+                                  if(marker)
+                                      map.removeOverlay(marker);
                                   marker = new GMarker(point);
                                   map.addOverlay(marker);
                                   marker.openInfoWindowHtml(address);
+                                  console.log("lng: "+point.lng());
+                                  console.log("lat: "+point.lat());
+                                  updateCoordinates(point.lng(), point.lat());
                                   GEvent.addListener(marker, "click", function() {
                                       marker.openInfoWindowHtml(address);
                                   });
@@ -311,11 +315,14 @@
                         //updateCoordinates(latLng.lng(), latLng.lat());
                       });
                       GEvent.addListener(map, "click", function(overlay, latLng) {
-                          if(marker)
-                              map.removeOverlay(marker);
-                          updateCoordinates(latLng.lng(), latLng.lat());
-                          marker = new GMarker(latLng);
-                          map.addOverlay(marker);
+                    	  if(latLng){
+	                          if(marker) {
+	                              map.removeOverlay(marker);
+	                          }
+	                          updateCoordinates(latLng.lng(), latLng.lat());
+	                          marker = new GMarker(latLng);
+	                          map.addOverlay(marker);
+                          }
                       });
 
                       if (!showHazard(false)){
