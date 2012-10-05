@@ -62,7 +62,7 @@ public class PageHOSAddEditFuelStops extends HOSBar {
         }
         
         public Text labelDate(){
-            return new TextFieldLabel(FuelStopsEditEnum.DATE_BOX);
+            return new Text(FuelStopsEditEnum.DATE_LABEL);
         }
         
         public Text errorDate(){

@@ -60,43 +60,43 @@ public class PageHOSFuelStops extends HOSBar {
 
     public class FuelStopsLinks extends HOSBarLinks {
 
-        public TextLink sortDateTime() {
+        public TextLink sortByDateTime() {
             return new TextLink(HOSFuelStopsEnum.SORT_DATE_TIME);
         }
         
-        public TextLink sortDriver() {
+        public TextLink sortByDriver() {
             return new TextLink(HOSFuelStopsEnum.SORT_DRIVER);
         }
 
-        public TextLink sortEdited() {
+        public TextLink sortByEdited() {
             return new TextLink(HOSFuelStopsEnum.SORT_EDITED);
         }
 
-        public TextLink sortLocation() {
+        public TextLink sortByLocation() {
             return new TextLink(HOSFuelStopsEnum.SORT_LOCATION);
         }
 
-        public TextLink sortOdometerAfter() {
+        public TextLink sortByOdometerAfter() {
             return new TextLink(HOSFuelStopsEnum.SORT_AFTER);
         }
 
-        public TextLink sortOdometerBefore() {
+        public TextLink sortByOdometerBefore() {
             return new TextLink(HOSFuelStopsEnum.SORT_BEFORE);
         }
 
-        public TextLink sortTrailer() {
+        public TextLink sortByTrailer() {
             return new TextLink(HOSFuelStopsEnum.SORT_TRAILER);
         }
 
-        public TextLink sortTrailerFuel() {
+        public TextLink sortByTrailerFuel() {
             return new TextLink(HOSFuelStopsEnum.SORT_TRAILER_FUEL);
         }
 
-        public TextLink sortVehicle() {
+        public TextLink sortByVehicle() {
             return new TextLink(HOSFuelStopsEnum.SORT_VEHICLE);
         }
 
-        public TextLink sortVehicleFuel() {
+        public TextLink sortByVehicleFuel() {
             return new TextLink(HOSFuelStopsEnum.SORT_VEHICLE_FUEL);
         }
 

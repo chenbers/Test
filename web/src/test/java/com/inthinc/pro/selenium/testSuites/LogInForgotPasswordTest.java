@@ -7,10 +7,11 @@ import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
+import com.inthinc.pro.selenium.pageObjects.PageResetPassword;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class})
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageResetPassword.class})
 @StoryPath(path="LogInForgotPassword.story")
 public class LogInForgotPasswordTest extends WebStories {
 

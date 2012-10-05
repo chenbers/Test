@@ -196,36 +196,36 @@ public class LoginSteps extends WebSteps {
     	}
     }   
 
-    @When("I enter non valid email text into the email address field")
-    public void whenIEnterNonValidEmailTextIntoTheEmailAddressField() {
-        page._popUp().forgotPassword()._textField().email().type("z"); // doesn't conform to rule * x to y characters ??
-        page._popUp().forgotPassword()._button().send().click();
-        page._popUp().forgotPassword()._textField().email().type("test@@test.com"); /*
-                                                                                     * doesn't conform to rule * Only one commercial at (@) is allowed to separate the user name
-                                                                                     * from the domain name User Name
-                                                                                     */
-        page._popUp().forgotPassword()._button().send().click();
-        page._popUp().forgotPassword()._textField().email().type("test@test@test.com"); /*
-                                                                                         * doesn't conform to rule * Only one commercial at (@) is allowed to separate the user name
-                                                                                         * from the domain name User Name
-                                                                                         */
-        page._popUp().forgotPassword()._button().send().click();
-        page._popUp().forgotPassword()._textField().email().type("!@#...com"); /*
-                                                                                * doesn't conform to rule * A - Z, a - z, 0 - 9, underscore (_), hyphen (-), and period (.)
-                                                                                * characters are allowed (Note: A period at the beginning, a period at the end, and 2 consecutive
-                                                                                * periods are allowed.)
-                                                                                */
-        page._popUp().forgotPassword()._button().send().click();
-        page._popUp().forgotPassword()._textField().email().type("test test@email.com"); /*
-                                                                                          * doesn't conform to rule * All other characters, inclusive of a blank space and a quoted
-                                                                                          * string (i.e. between double quotes), are NOT allowed Domain Name
-                                                                                          */
-        page._popUp().forgotPassword()._button().send().click();
-        page._popUp().forgotPassword()._textField().email().type("\"test\"@email.com"); /*
-                                                                                         * doesn't conform to rule * All other characters, inclusive of a blank space and a quoted
-                                                                                         * string (i.e. between double quotes), are NOT allowed Domain Name
-                                                                                         */
-    }
+//    @When("I enter non valid email text into the email address field")
+//    public void whenIEnterNonValidEmailTextIntoTheEmailAddressField() {
+//        page._popUp().forgotPassword()._textField().email().type("z"); // doesn't conform to rule * x to y characters ??
+//        page._popUp().forgotPassword()._button().send().click();
+//        page._popUp().forgotPassword()._textField().email().type("test@@test.com"); /*
+//                                                                                     * doesn't conform to rule * Only one commercial at (@) is allowed to separate the user name
+//                                                                                     * from the domain name User Name
+//                                                                                     */
+//        page._popUp().forgotPassword()._button().send().click();
+//        page._popUp().forgotPassword()._textField().email().type("test@test@test.com"); /*
+//                                                                                         * doesn't conform to rule * Only one commercial at (@) is allowed to separate the user name
+//                                                                                         * from the domain name User Name
+//                                                                                         */
+//        page._popUp().forgotPassword()._button().send().click();
+//        page._popUp().forgotPassword()._textField().email().type("!@#...com"); /*
+//                                                                                * doesn't conform to rule * A - Z, a - z, 0 - 9, underscore (_), hyphen (-), and period (.)
+//                                                                                * characters are allowed (Note: A period at the beginning, a period at the end, and 2 consecutive
+//                                                                                * periods are allowed.)
+//                                                                                */
+//        page._popUp().forgotPassword()._button().send().click();
+//        page._popUp().forgotPassword()._textField().email().type("test test@email.com"); /*
+//                                                                                          * doesn't conform to rule * All other characters, inclusive of a blank space and a quoted
+//                                                                                          * string (i.e. between double quotes), are NOT allowed Domain Name
+//                                                                                          */
+//        page._popUp().forgotPassword()._button().send().click();
+//        page._popUp().forgotPassword()._textField().email().type("\"test\"@email.com"); /*
+//                                                                                         * doesn't conform to rule * All other characters, inclusive of a blank space and a quoted
+//                                                                                         * string (i.e. between double quotes), are NOT allowed Domain Name
+//                                                                                         */
+//    }
 
     //
     // @Given("I am logged in as a user in a role that does have the $accessPointName accesspoint")
@@ -393,7 +393,7 @@ public class LoginSteps extends WebSteps {
 
     @Then("the focus should be on the Forgot User Name or Password Link")
     public void thenTheFocusShouldBeOnTheForgotUserNameOrPasswordLink() {
-        if (!loginPage._link().forgotUsernamePassword().hasFocus())
+        if (!loginPage._link().forgotUsernameOrPassword().hasFocus())
             test.addError("The forgot username or password link does NOT have focus");
     }
 

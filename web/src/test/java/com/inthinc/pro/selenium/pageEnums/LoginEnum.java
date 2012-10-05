@@ -13,8 +13,10 @@ public enum LoginEnum implements SeleniumEnums {
     PASSWORD_FIELD("Password:", "//input[@id='password']"),
     LOGIN_BUTTON("LOGIN", "//button[@class='btn btn-large btn-block btn-inthinc']"),
     
-    FORGOT_USERNAME_LINK("Forgot your user name or password?", ""),//not currently on new login page
-
+    FORGOT_USERNAME_LINK("Forgot your user name or password?", "//span[5]/a"),
+    LOGO_TEXT("©2012 inthinc", "//span[2]/a"),
+    
+    ERROR_TEXT(null, "//span[@id='credentials.errors']")
     ;
     
     private String text, url;

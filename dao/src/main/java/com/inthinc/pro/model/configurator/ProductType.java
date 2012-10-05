@@ -1,12 +1,14 @@
 package com.inthinc.pro.model.configurator;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
+import com.inthinc.pro.model.pagination.FilterableEnum;
 
-public enum ProductType implements BaseEnum {
+public enum ProductType implements BaseEnum, FilterableEnum {
     UNKNOWN(0, 0, "Unknown"),
 //    TEEN(1, 1, "Teen"),
     WAYSMART(2, 2, "waySmart", 2), //xx10
@@ -76,5 +78,21 @@ public enum ProductType implements BaseEnum {
     
     public Integer[] getVersions(){
         return versions;
+    }
+
+    @Override
+    public Object getFilter() {
+        if (this == ProductType.UNKNOWN) {
+            Integer v[] = new Integer[1];
+            v[0] = 0;
+            return Arrays.asList(v);
+        }
+        
+        return Arrays.asList(versions);
+    }
+
+    @Override
+    public Boolean includeNull() {
+        return (this == ProductType.UNKNOWN);
     }
 }

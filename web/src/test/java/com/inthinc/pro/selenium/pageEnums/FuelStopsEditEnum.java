@@ -6,13 +6,15 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
 
     DEFAULT_URL(appUrl + "/fuelStopEdit"),
     
+    
+    DATE_LABEL("Date:", "//div/div[2]/div/table/tbody/tr/td/table/tbody/tr[2]/td[1]"),
     SAVE_TOP(save, "edit-form:editfuelStopSave1"),
     SAVE_BOTTOM(save, "edit-form:editfuelStopSave2"),
     CANCEL_TOP(cancel, "edit-form:editfuelStopCancel1"),
     CANCEL_BOTTOM(cancel, "edit-form:editfuelStopCancel2"),
     TITLE("ADD/EDIT Fuel Stop", "//span[@class='admin']"),
     HEADER("Fuel Stop Information", "//div[@class='add_section_title']"),
-    DATE_BOX("Date:", "edit-form:editHosLog_dateTimeInputDate"),
+    DATE_BOX("Date:", "edit-form:editfuelStop_dateTime"),
     DATE_ERROR(null, "//input[@id='edit-form:editfuelStop_dateTimeInputDate']/../../span[1]/span"),
     
     TRAILER_FIELD("Trailer:", "edit-form:editfuelStop_trailer"),

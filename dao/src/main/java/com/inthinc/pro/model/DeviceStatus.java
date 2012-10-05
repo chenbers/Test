@@ -6,8 +6,10 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.model.pagination.FilterableEnum;
+
 @XmlRootElement
-public enum DeviceStatus implements BaseEnum
+public enum DeviceStatus implements BaseEnum, FilterableEnum
 {
     NEW(0, "NEW"), ACTIVE(1, "ACTIVE"), INACTIVE(2, "INACTIVE"), DELETED(3, "DELETED");
 
@@ -48,4 +50,14 @@ public enum DeviceStatus implements BaseEnum
     public String toString(){
     	return this.getClass().getSimpleName()+"."+name();
     }
+    @Override
+    public Object getFilter() {
+        return ""+code;
+    }
+    
+    @Override
+    public Boolean includeNull() {
+        return false;
+    }
 }
+

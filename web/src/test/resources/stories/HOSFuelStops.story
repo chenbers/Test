@@ -18,7 +18,7 @@ And I click the Save Top button
 Then I validate the Error Master text is "2 error(s) occurred. Please verify all the data entered is correct."
 And I validate the Error Vehicle Fuel text is "Vehicle fuel is required."
 And I validate the Error Driver text is "Driver is required"
-And I click the Top Cancel button
+And I click the Cancel Top button
 And I click the Add button
 And I select 1 day in the future from the Date dropdown
 And I type "5627" into the Vehicle Fuel textfield
@@ -34,16 +34,15 @@ And I click the HOS Fuel Stops link
 And I type "TIWI00" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Add button
-And I validate the Entry Vehicle text is present
+Then I validate the Value Vehicle text is present
 And I validate the Time Message text is present
 And I type "5628" into the Trailer textfield
 And I type "5628" into the Vehicle Fuel textfield
 And I type "5628" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I validate the Entry Location text is present
-And I click the Top Cancel button
+And I click the Cancel Top button
 And I click the Add button
-Then I validate the Trailer textfield is ""
+And I validate the Trailer textfield is ""
 And I validate the Vehicle Fuel textfield is ""
 And I validate the Trailer Fuel textfield is ""
 And I validate the Driver dropdown is ""
@@ -52,7 +51,7 @@ And I click the HOS link
 And I click the HOS Fuel Stops link
 And I type "TIWI00" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
-And I validate the 1st Row of the Date Time text is not present
+And I validate the 1st Row of the Entry Date Time text is not present
 
 Scenario: TC5631: HOS - Fuel Stops - Add Fuel Stop
 Given I am logged in
@@ -67,13 +66,12 @@ And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
 And I click the Add button
-Then I validate the Entry Vehicle text is present
+Then I validate the Value Vehicle text is present
 And I validate the Time Message text is present
 And I type "5631" into the Trailer textfield
 And I type "5,631.00" into the Vehicle Fuel textfield
 And I type "5,631.00" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
-And I validate the Entry Location text is present
 And I save the Date dropdown as DATE
 And I save the Hours textfield as HOURS
 And I save the Minutes textfield as MINUTES
@@ -92,7 +90,7 @@ And I click the HOS link
 And I click the HOS Fuel Stops link
 And I type "TIWI00" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
-And I validate the 1st Row of the Date Time text contains DATETIME
+And I validate the 1st Row of the Entry Date Time text contains DATETIME
 And I check the Check All checkbox
 And I click the Delete button
 And the Delete popup opens
@@ -112,16 +110,15 @@ And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
 And I click the Add button
-And I validate the Entry Vehicle text is present
+Then I validate the Value Vehicle text is present
 And I validate the Time Message text is present
 And I type "111" into the Trailer textfield
 And I type "111" into the Vehicle Fuel textfield
 And I type "111" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown 
-Then I validate the Entry Location text is present
 And I click the Save Top button
 And I click the Refresh button
-And I save the 1st Row of the Date Time text as DATETIME
+And I save the 1st Row of the Entry Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
 And I save the 1st Row of the Entry Vehicle text as VEHICLE
 And I save the 1st Row of the Entry Vehicle Fuel text as VEHICLEFUEL
@@ -137,8 +134,8 @@ And I type "5632" into the Trailer textfield
 And I type "5632" into the Vehicle Fuel textfield
 And I type "5632" into the Trailer Fuel textfield
 And I select "tiwi 01" from the Driver dropdown
-And I click the Top Cancel button
-And I validate the 1st Row of the Date Time text is DATETIME
+And I click the Cancel Top button
+And I validate the 1st Row of the Entry Date Time text is DATETIME
 And I validate the 1st Row of the Entry Driver text is DRIVER
 And I validate the 1st Row of the Entry Vehicle text is VEHICLE
 And I validate the 1st Row of the Entry Vehicle Fuel text is VEHICLEFUEL
@@ -172,7 +169,7 @@ And I type "222" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
 And I click the Save Top button
 And I click the Refresh button
-And I save the 1st Row of the Date Time text as DATETIME
+And I save the 1st Row of the Entry Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
 And I save the 1st Row of the Entry Vehicle Fuel text as VEHICLEFUEL
 And I save the 1st Row of the Entry Trailer Fuel text as TRAILERFUEL
@@ -187,7 +184,7 @@ And I type "5630" into the Trailer Fuel textfield
 And I select "tiwi 01" from the Driver dropdown
 And I click the Save Top button
 And I click the Refresh button
-Then I validate the 1st Row of the Date Time text is not DATETIME
+Then I validate the 1st Row of the Entry Date Time text is not DATETIME
 And I validate the 1st Row of the Entry Driver text is not DRIVER
 And I validate the 1st Row of the Entry Vehicle Fuel text is not VEHICLEFUEL
 And I validate the 1st Row of the Entry Trailer Fuel text is not TRAILERFUEL
@@ -195,7 +192,7 @@ And I validate the 1st Row of the Entry Trailer text is not TRAILER
 And I click the Reports link
 And I click the HOS link
 And I click the HOS Fuel Stops link
-And I validate the 1st Row of the Date Time text is not DATETIME
+And I validate the 1st Row of the Entry Date Time text is not DATETIME
 And I validate the 1st Row of the Entry Driver text is not DRIVER
 And I validate the 1st Row of the Entry Vehicle Fuel text is not VEHICLEFUEL
 And I validate the 1st Row of the Entry Trailer Fuel text is not TRAILERFUEL
@@ -226,7 +223,7 @@ And I type "5633" into the Trailer Fuel textfield
 And I select "tiwi 00" from the Driver dropdown
 And I click the Save Top button
 And I click the Refresh button
-And I save the 1st Row of the Date Time text as DATETIME
+And I save the 1st Row of the Entry Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
 And I save the 1st Row of the Entry Vehicle text as VEHICLE
 And I save the 1st Row of the Entry Vehicle Fuel text as VEHICLEFUEL
@@ -245,7 +242,7 @@ And I click the HOS Fuel Stops link
 And I type "TIWI00" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
-Then I validate the 1st Row of the Date Time text is DATETIME
+Then I validate the 1st Row of the Entry Date Time text is DATETIME
 And I validate the 1st Row of the Entry Driver text is DRIVER
 And I validate the 1st Row of the Entry Vehicle text is VEHICLE
 And I validate the 1st Row of the Entry Vehicle Fuel text is VEHICLEFUEL
@@ -287,7 +284,7 @@ And I type "1111" into the Trailer Fuel textfield
 And I select "tiwi 01" from the Driver dropdown
 And I click the Save Top button
 And I click the Refresh button
-And I save the 1st Row of the Date Time text as DATETIME
+And I save the 1st Row of the Entry Date Time text as DATETIME
 And I save the 1st Row of the Entry Driver text as DRIVER
 And I save the 1st Row of the Entry Vehicle text as VEHICLE
 And I save the 1st Row of the Entry Vehicle Fuel text as VEHICLEFUEL
@@ -304,7 +301,7 @@ And I click the HOS Fuel Stops link
 And I type "TIWI00" into the Vehicle textfield
 And I click the suggested row 1 from the Vehicle textfield
 And I click the Refresh button
-Then I validate the 1st Row of the Date Time text is not DATETIME
+Then I validate the 1st Row of the Entry Date Time text is not DATETIME
 And I validate the 1st Row of the Entry Driver text is not DRIVER
 And I validate the 1st Row of the Entry Vehicle text is VEHICLE
 And I validate the 1st Row of the Entry Vehicle Fuel text does not contain VEHICLEFUEL
@@ -382,7 +379,7 @@ And I click the Refresh button
 And I validate the Get Suggestion textfield is CURRENTVEHICLE2
 And I click the Add button
 And I validate I am on the Add Fuel page
-And I click the Top Cancel button
+And I click the Cancel Top button
 And I validate I am on the Fuel Stops page
 
 Scenario: TC5703: HOS - Fuel Stops - Fuel fields
@@ -500,3 +497,5 @@ And I click the Delete button
 And the Delete popup opens
 And I click the Delete button
 And the Delete popup closes
+
+//add Entry Location text test

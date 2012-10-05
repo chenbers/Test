@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.jbehave;
 
-import java.awt.event.KeyEvent;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,12 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.interactions.Actions;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.logging.Log;
@@ -21,7 +25,6 @@ import com.inthinc.pro.automation.models.Person;
 import com.inthinc.pro.automation.models.User;
 import com.inthinc.pro.automation.rest.RestCommands;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.utils.KeyCommands;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class AutoCustomSteps {
@@ -111,7 +114,12 @@ public class AutoCustomSteps {
     @Given("I press the Enter Key")
     @When("I press the Enter Key")
     @Then("I press the Enter Key")
-    public void enterKey() {
+    public void keyEnter() {
+    	
+    	//WebDriver driver = new FirefoxDriver();
+    	//driver.findElement(By.xpath("//button[@class='btn btn-large btn-block btn-inthinc']")).sendKeys(Keys.RETURN);
+    	//CoreMethodLib.getSeleniumThread().keyDownNative(java.awt.event.KeyEvent.VK_ENTER + "");
+    	//CoreMethodLib.getSeleniumThread().keyUpNative(java.awt.event.KeyEvent.VK_ENTER + "");
         CoreMethodLib.getSeleniumThread().enterKey();
     }
     
@@ -167,6 +175,8 @@ public class AutoCustomSteps {
     @When("I click the bookmark I just added")
     public void openSavedPage() {
         test.open(savedPage.get());
+        System.out.println("Clicked page: " + savedPage.get());
+        
     }
     
 
@@ -181,6 +191,7 @@ public class AutoCustomSteps {
     @When("I bookmark the page")
     public void savePageLink() {
         savedPage.set(test.getCurrentLocation());
+        System.out.println("Saved page: " + test.getCurrentLocation());
     }
     
     @Given("I type to the active field")
