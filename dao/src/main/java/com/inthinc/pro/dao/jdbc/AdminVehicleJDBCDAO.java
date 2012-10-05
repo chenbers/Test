@@ -12,12 +12,15 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import com.inthinc.pro.dao.util.GeoUtil;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.pagination.FilterOp;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -25,7 +28,7 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 
 public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
     private static String VEHICLE_COLUMNS_STRING = "";// " vehicleID, groupID, status, groupPath, modified, vtype, hos, dot, ifta, zonetype, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, warrantyStart, warranteStop, aggDate, newAggDate ";
-    private static String PAGED_VEHICLE_COLUMNS_STRING = "";// " vehicleID, groupID, status, groupPath, modified, vtype, hos, dot, ifta, zonetype, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, warrantyStart, warranteStop, aggDate, newAggDate ";
+    private static String PAGED_VEHICLE_COLUMNS_STRING = "";
     /**
      * Ordered map of columns where <String columnNameInDB, String messageKeyForDisplayOnSite?>
      */
@@ -89,19 +92,16 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         pagedColumnMap.put("status", "v.status");
         pagedColumnMap.put("deviceID", "d.name");
         pagedColumnMap.put("odometer", "v.odometer");
-//        pagedColumnMap.put("ephone", "dv.ephone");    //?
+//        pagedColumnMap.put("ephone", "dv.ephone");    // comes from configurator so can't sort
         pagedColumnMap.put("DOT", "v.dot");    //?
         pagedColumnMap.put("IFTA", "v.ifta");
         pagedColumnMap.put("productType", "d.productVer");
 
-        for(String col: pagedColumnMap.values()){
-            PAGED_VEHICLE_COLUMNS_STRING += " "+col+" ,";
-        }
-        //remove trailing comma if necessary
-        if(PAGED_VEHICLE_COLUMNS_STRING.endsWith(",")){ 
-            PAGED_VEHICLE_COLUMNS_STRING = PAGED_VEHICLE_COLUMNS_STRING.substring(0, PAGED_VEHICLE_COLUMNS_STRING.length()-2);
-        }
-        
+        PAGED_VEHICLE_COLUMNS_STRING = 
+                "v.vehicleID, v.groupID, v.status, v.name, v.make, v.model, v.year, v.color, v.vtype, v.vin, v.weight, v.license, v.stateID, v.odometer, v.ifta, v.absOdometer, "+
+                "d.deviceID, d.acctID, d.status, d.name, d.imei, d.sim, d.serialNum, d.phone, d.activated, d.baseID, d.productVer, d.firmVer, d.witnessVer, d.emuMd5, d.mcmid, d.altImei," +
+                "vdd.deviceID, vdd.driverID, CONCAT(p.first, ' ', p.last), g.name";
+                
     };
     private static final String VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT = //
             "SELECT " + VEHICLE_COLUMNS_STRING + " "+//
@@ -121,12 +121,10 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             "WHERE v.groupID in (:group_list) and v.status != 3"; 
     
     private static final String PAGED_VEHICLE_SELECT = 
-            "SELECT v.vehicleID, v.absOdometer, d.deviceID, v.groupID, vdd.deviceID, " + PAGED_VEHICLE_COLUMNS_STRING + " "+
-            PAGED_VEHICLE_SUFFIX;
+            "SELECT " + PAGED_VEHICLE_COLUMNS_STRING + " "+ PAGED_VEHICLE_SUFFIX;
 
     private static final String PAGED_VEHICLE_COUNT = 
-            "SELECT COUNT(*)  "+
-            PAGED_VEHICLE_SUFFIX;
+            "SELECT COUNT(*)  "+ PAGED_VEHICLE_SUFFIX;
 
     private static final String MILES_DRIVEN =
             "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
@@ -234,7 +232,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             Vehicle vehicle = new Vehicle();
             vehicle.setVehicleID(rs.getInt("v.vehicleID"));
             vehicle.setColor(rs.getString("v.color"));
-            vehicle.setCreated(null); //TODO: not stored in DB?
+            vehicle.setCreated(null); 
             vehicle.setDeviceID(rs.getObject("vdd.deviceID") == null ? null : rs.getInt("vdd.deviceID"));
             vehicle.setDriverID(rs.getObject("vdd.driverID") == null ? null : rs.getInt("vdd.driverID"));
             vehicle.setFullName(rs.getString("v.name"));
@@ -260,6 +258,31 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             vehicle.setVtype(VehicleType.valueOf(rs.getInt("v.vtype")));
             vehicle.setWeight(rs.getObject("v.weight") == null ? null : rs.getInt("v.weight"));
             vehicle.setYear(rs.getObject("v.year") == null ? null : rs.getInt("v.year"));
+
+            if (vehicle.getDeviceID() != null) {
+                Device device = new Device();
+                device.setAccountID(rs.getInt("d.acctID"));
+                device.setDeviceID(rs.getInt("d.deviceID"));
+                device.setVehicleID(vehicle.getVehicleID());
+                device.setStatus(rs.getObject("d.status") == null ? null : DeviceStatus.valueOf(rs.getInt("d.status")));
+                device.setName(rs.getString("d.name"));
+                device.setImei(rs.getString("d.imei"));
+                device.setSim(rs.getString("d.sim"));
+                device.setSerialNum(rs.getString("d.serialNum"));
+                device.setPhone(rs.getString("d.phone"));
+                device.setActivated(rs.getObject("d.activated") == null ? null : rs.getDate("d.activated"));
+                device.setBaseID(rs.getObject("d.baseID") == null ? null : rs.getInt("d.baseID"));
+                device.setProductVer(rs.getObject("d.productVer") == null ? null : rs.getInt("d.productVer"));
+                device.setFirmwareVersion(rs.getObject("d.firmVer") == null ? null : rs.getInt("d.firmVer"));
+                device.setWitnessVersion(rs.getObject("d.witnessVer") == null ? null : rs.getInt("d.witnessVer"));
+                device.setEmuMd5(rs.getString("d.emuMd5"));
+                device.setMcmid(rs.getString("d.mcmid"));
+                device.setAltimei(rs.getString("d.altImei"));
+                device.setProductVersion(device.getProductVer() == null ? null : ProductType.getProductTypeFromVersion(device.getProductVer()));
+                vehicle.setDevice(device);
+                
+            }
+            
             return vehicle;
         }
     };

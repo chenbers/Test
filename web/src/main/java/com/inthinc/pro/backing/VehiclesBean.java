@@ -27,13 +27,11 @@ import com.inthinc.pro.backing.model.VehicleSettingsFactory;
 import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
 import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
 import com.inthinc.pro.backing.ui.VehicleTypeSelectItems;
-import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.model.AutoLogoff;
-import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.State;
@@ -108,7 +106,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private VehicleDAO                            vehicleDAO;
     private DriverDAO                             driverDAO;
-    private DeviceDAO                             deviceDAO;
 
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
@@ -178,50 +175,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         this.driverDAO = driverDAO;
     }
 
-    public void setDeviceDAO(DeviceDAO deviceDAO)
-    {
-        this.deviceDAO = deviceDAO;
-    }
-
-/*
- * removed - no longer used due to pagination    
-    public List<VehicleView> getPlainVehicles(){
-        
-        List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
-        final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
-        for (final Vehicle vehicle : plainVehicles)
-        {
-            VehicleView view = createVehicleView(vehicle);
-            items.add(view);   
-        }
-        return items;
-    }
-*/    
     @Override
     protected List<VehicleView> loadItems()
     {
-/*        
-        // Get all the vehicles
-        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
-        
-       // Get all the settings 
-        
-        vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), plainVehicles);
-        
-        // Wrap Vehicles and Devices
-        final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
-        for (final Vehicle vehicle : plainVehicles)
-        {
-            VehicleView vehicleView = createVehicleView(vehicle);
-            vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
-
-            items.add(vehicleView);   
-        }
-
-        return items;
-*/        
-      // pagination  (comment out above stuff when switch to pagination)
-        return null;
+        //  cj - removed code and returned null since pagination does this now         
+       return null;
     }
     
     
@@ -236,7 +194,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         return vehicleSettingManagers;
     }
-    // pagination - end (changes)
     
     public Set<Integer> getKeySet(){
         
@@ -751,8 +708,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         @Column(updateable = false)
         private Driver            driver;
         @Column(updateable = false)
-        private Device            device;
-        @Column(updateable = false)
         private EditableVehicleSettings editableVehicleSettings;
         @Column(updateable = false)
         private boolean           selected;
@@ -863,18 +818,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if (driver == null)
                 driver = bean.driverDAO.findByID(getDriverID());
             return driver;
-        }
-
-        public Device getDevice()
-        {
-            if (device == null)
-                device = bean.deviceDAO.findByID(getDeviceID());
-            return device;
-        }
-        
-        public void setDevice(Device device)
-        {
-            this.device = device;
         }
 
         public boolean isSelected()
