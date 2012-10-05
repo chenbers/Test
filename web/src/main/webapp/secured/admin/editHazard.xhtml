@@ -48,7 +48,7 @@
       <tr>
         <td valign="top" width="130">
           <ui:include src="/includes/navigation/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="go_adminHazards" />
+            <ui:param name="selectedAction" value="go_adminAddHazard" />
             <ui:param name="parentAction" value="go_adminHazards" />
             <ui:param name="context" value="hazards"/>
           </ui:include>
@@ -171,7 +171,7 @@
                                 <td><h:outputText value="#{messages.hazard_endTime}"/>:</td>
                                 <td>
                                     <rich:message for="endCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                    <rich:calendar id="endCalendar" required="true" requiredMessage="#{messages.required}" inputSize="20" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
+                                    <rich:calendar id="endCalendar" inputSize="20" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
                                         <a4j:support event="onchanged" action="#{hazardsBean.onExpTimeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits" />
                                     </rich:calendar>
                                 </td>
@@ -242,7 +242,7 @@
                       return true;
                     }
                     return false;
-                  
+                  }
 
                   function cancelEdit(){
                     console.log("in cancelEdit");

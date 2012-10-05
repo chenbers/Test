@@ -321,7 +321,7 @@ public class HazardsBean extends BaseBean {
             item.setEndTime(newEndTime);
         }
         if(defaultRadius){
-           item.setRadiusMeters(newRadiusMeters);
+            item.setRadiusMeters(newRadiusMeters);
             item.setRadiusInUnits(radiusInUnits);
         }
     }
