@@ -90,12 +90,12 @@
                             <tr>
                               <td><h:outputText value="#{messages.hazard_address}" /></td>
                               <td>
-                                <h:inputText id="hazardAddress" value="" class="text" size="30" maxlength="126" onkeypress="if (event &amp;&amp; event.keyCode == 13) { showAddress(this.value); return false; } return true;" />
+                                <h:inputText id="hazardAddress" value="" class="text" size="30" maxlength="126" onkeypress="if (event &amp;&amp; event.keyCode == 13) { showAddressWithHazard(this.value); return false; } return true;" />
                               </td>
                             </tr>
                           </table>
                         </li>
-                        <li class="l"><button id="hazardsSearch" type="submit" class="left" onclick="showAddress(document.getElementById('hazards-form:hazardAddress').value); return false;"><span class="search"><h:outputText value="#{messages.hazard_locate}" /></span></button></li>
+                        <li class="l"><button id="hazardsSearch" type="submit" class="left" onclick="showAddressWithHazard(document.getElementById('hazards-form:hazardAddress').value); return false;"><span class="search"><h:outputText value="#{messages.hazard_locate}" /></span></button></li>
                         <li class="r">
                            <h:commandButton id="reset" action="#{hazardsBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.hazard_reset}" /></span></h:commandButton>
                            <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}"  reRender="edithazard,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazard_save}" /></span></a4j:commandButton>
@@ -198,6 +198,29 @@
                     removeZoneOverlay();
 //                    map.clearOverlays();
                   }
+                  function showAddressWithHazard(address){
+                      if (address.length == 0){
+                          map.setCenter(new GLatLng(39.0, -104.0), 4);
+                          return;
+                      }
+
+                      geocoder.getLatLng(address,
+                          function(point) {
+                              if (!point) {
+                                  alert("The address: [" + address + "] was not found.");
+                                  map.setCenter(new GLatLng(39.0, -104.0), 4);
+                              } else {
+                                  map.setCenter(point, 13);
+                                  marker = new GMarker(point);
+                                  map.addOverlay(marker);
+                                  marker.openInfoWindowHtml(address);
+                                  GEvent.addListener(marker, "click", function() {
+                                      marker.openInfoWindowHtml(address);
+                                  });
+                             }
+                          }
+                    );
+                  }
 
                   function showHazard(){
                     // map.clearOverlays();
@@ -210,7 +233,7 @@
                          console.log("hazard: "+hazard);
                          //hazardPoint = new GLatLng(#{hazardsBean.item.latitude}, #{hazardsBean.item.longitude});
                     } else {
-                    	console.log("no hazardPoint... presumably we are EDITING");
+                    	console.log("no hazardPoint... presumably we are EDITING or ADDING");
                     }
                     if (hazardPoint){
 //                      centerMapAtHazard(getLatLngBounds(hazardPoint));
