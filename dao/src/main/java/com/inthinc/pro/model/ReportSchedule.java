@@ -204,6 +204,9 @@ public class ReportSchedule implements Cloneable {
         sb.append("reportScheduleID=");
         sb.append(this.reportScheduleID);
         sb.append(", ");
+        sb.append("name=");
+        sb.append(this.name);
+        sb.append(", ");
         sb.append("reportGroupID=");
         sb.append(this.reportID);
         sb.append(", ");
