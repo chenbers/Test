@@ -429,8 +429,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public TreeMap<Integer, String> getGroupNames()
     {
         final TreeMap<Integer, String> groupNames = new TreeMap<Integer, String>();
-        for (final Group group : getGroupHierarchy().getGroupList())
+        
+        for (final Group group : getGroupHierarchy().getGroupList()) {
             groupNames.put(group.getGroupID(), group.getName());
+        }
         return groupNames;
     }
 
@@ -784,9 +786,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         public Group getGroup()
         {
             if (group == null) {
-                group = bean.getGroupHierarchy().getGroup(getGroupID());
-                if (group == null)
+                Group treegroup = bean.getGroupHierarchy().getGroup(getGroupID());
+                if (treegroup == null)
                     group = bean.groupDAO.findByID(getGroupID());
+                else {
+                    group = new Group(treegroup.getGroupID(), treegroup.getAccountID(), treegroup.getName(), treegroup.getParentID());
+                }
             }
             return group;
         }
