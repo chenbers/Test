@@ -683,8 +683,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                 BeanUtil.deepCopy(selection, item, getBatchEditIgnoreField());
 
                 // null out properties that are not common
-                for (T t : getSelectedItems())
+                for (T t : getSelectedItems()){
+                    t = completeEditItem(t);                
                     BeanUtil.compareAndInit(item, t);
+                }
             } 
             
             if(logger.isTraceEnabled())

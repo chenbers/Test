@@ -362,7 +362,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     @Override
     protected ReportScheduleView completeEditItem(ReportScheduleView selectedItem) {
         ReportSchedule reportSchedule = reportScheduleDAO.findByID(selectedItem.getReportScheduleID());
-        selectedItem = this.completeReportScheduleView(reportSchedule, selectedItem);
+        selectedItem = completeReportScheduleView(reportSchedule, selectedItem);
+        selectedItem.setSelected(true);
         return selectedItem;
     }
 
@@ -481,7 +482,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     @Override
     public ReportScheduleView getItem() {
         ReportScheduleView reportScheduleView = super.getItem();
-        // Don't have the whole thing so go get it
         if ((reportScheduleView.getDayOfWeek() == null) || (reportScheduleView.getDayOfWeek().size() != 7)) {
             final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>();
             for (int i = 0; i < 7; i++)
@@ -878,6 +878,12 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public static class ReportScheduleView extends ReportSchedule implements EditItem {
         // private static final long serialVersionUID = 8954277815270194338L;
+
+        @Override
+        public String toString() {
+            return super.toString()+"ReportScheduleView [selected=" + selected + ", groupName=" + groupName + ", driverName=" + driverName + ", vehicleName=" + vehicleName + ", report=" + report + ", dayOfMonth="
+                    + dayOfMonth + ", groupIDSelectList=" + groupIDSelectList + ", driverIDSelectList=" + driverIDSelectList + ", listDisplay=" + Arrays.toString(listDisplay) + "]";
+        }
 
         @Column(updateable = false)
         private boolean selected;
