@@ -243,14 +243,15 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             vehicle.setModel(rs.getString("v.model"));
 //            vehicle.setModified(rs.getDate("v.modified"));
             vehicle.setName(rs.getString("v.name"));
-            Integer absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getInt("v.absOdometer")/100);
-            Integer odometer = rs.getObject("v.odometer") == null ? null : rs.getInt("v.odometer");
+            
+            Long absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getLong("v.absOdometer"));
+            Long odometer = rs.getObject("v.odometer") == null ? null : rs.getLong("v.odometer");
             if (absOdometer != null) {
-                vehicle.setOdometer(absOdometer); 
+                vehicle.setOdometer(Long.valueOf(absOdometer/100l).intValue()); 
             }
             else if (odometer != null) {
                 Integer milesDriven = getMilesDriven(vehicle.getVehicleID()); 
-                vehicle.setOdometer((odometer + milesDriven)/100);
+                vehicle.setOdometer(Long.valueOf((odometer + milesDriven)/100).intValue());
             }
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
@@ -273,12 +274,12 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                 device.setActivated(rs.getObject("d.activated") == null ? null : rs.getDate("d.activated"));
                 device.setBaseID(rs.getObject("d.baseID") == null ? null : rs.getInt("d.baseID"));
                 device.setProductVer(rs.getObject("d.productVer") == null ? null : rs.getInt("d.productVer"));
-                device.setFirmwareVersion(rs.getObject("d.firmVer") == null ? null : rs.getInt("d.firmVer"));
-                device.setWitnessVersion(rs.getObject("d.witnessVer") == null ? null : rs.getInt("d.witnessVer"));
+                device.setFirmwareVersion(rs.getObject("d.firmVer") == null ? null : Long.valueOf(rs.getLong("d.firmVer")).intValue());
+                device.setWitnessVersion(rs.getObject("d.witnessVer") == null ? null : Long.valueOf(rs.getLong("d.witnessVer")).intValue());
                 device.setEmuMd5(rs.getString("d.emuMd5"));
                 device.setMcmid(rs.getString("d.mcmid"));
                 device.setAltimei(rs.getString("d.altImei"));
-                device.setProductVersion(device.getProductVer() == null ? null : ProductType.getProductTypeFromVersion(device.getProductVer()));
+                device.setProductVersion(device.getProductVer() == null ? ProductType.UNKNOWN : ProductType.getProductTypeFromVersion(device.getProductVer()));
                 vehicle.setDevice(device);
                 
             }
