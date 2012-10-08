@@ -137,6 +137,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
     private static final long ONE_MINUTE = 60000L;
+    private static final String NO_SCORE = "N/A";
 
     public ReportCriteriaServiceImpl() {}
 
@@ -188,15 +189,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     @Override
     public ReportCriteria getOverallScoreReportCriteria(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh) {
         this.locale = locale;
-        NumberFormat format = NumberFormat.getInstance(locale);
-        format.setMaximumFractionDigits(1);
-        format.setMinimumFractionDigits(1);
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL, gh);
 
         // TODO: Needs to be optimized by not calling on every report.
         Group group = groupDAO.findByID(groupID);
-
-        String overallScore = format.format((double) ((double) scoreableEntity.getScore() / (double) 10.0));
+        String overallScore = getOverallScore(groupID, duration, locale, gh);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE, group.getName(), locale);
         reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration, gh));
         reportCriteria.addParameter("OVERALL_SCORE", overallScore);
@@ -208,6 +204,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return reportCriteria;
     }
 
+    private String getOverallScore(Integer groupID, Duration duration, Locale locale, GroupHierarchy gh){
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL, gh);
+        NumberFormat format = NumberFormat.getInstance(locale);
+        format.setMaximumFractionDigits(1);
+        format.setMinimumFractionDigits(1);
+
+        return((scoreableEntity == null)|| (scoreableEntity.getScore()==null)||(scoreableEntity.getScore() < 0))?NO_SCORE:format.format((double) ((double) scoreableEntity.getScore() /10.0D));
+
+    }
     private List<PieScoreData> getPieScoreData(ScoreType scoreType, Integer groupID, Duration duration, GroupHierarchy gh) {
         // Fetch, qualifier is groupId (parent), date from, date to
         List<ScoreableEntity> s = null;
