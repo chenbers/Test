@@ -16,7 +16,7 @@
 		<security:intercept-url pattern="/secured/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
 		<security:intercept-url pattern="/secured/**" access="ROLE_ADMIN, ROLE_NORMAL" />
 		<security:intercept-url pattern="/app/**" access="ROLE_ADMIN, ROLE_NORMAL" />
-        <security:logout logout-url="/logout" logout-success-url="${cas.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwipro" />
+        <security:logout logout-url="/logout" logout-success-url="${cas.external.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwipro" />
 	</security:http>
 
 	<!-- CAS Client Configuration -->
@@ -30,12 +30,12 @@
 	<bean id="casProcessingFilter" class="org.springframework.security.ui.cas.CasProcessingFilter">
 		<security:custom-filter after="CAS_PROCESSING_FILTER" />
 		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="authenticationFailureUrl" value="/casfailed.jsp" />
+		<property name="authenticationFailureUrl" value="/authenticationFailure" />
 		<property name="defaultTargetUrl" value="/app/dashboard" />
 	</bean>
 
 	<bean id="casProcessingFilterEntryPoint" class="org.springframework.security.ui.cas.CasProcessingFilterEntryPoint">
-		<property name="loginUrl" value="${cas.server.url}/cas/login" />
+		<property name="loginUrl" value="${cas.external.server.url}/cas/login" />
 		<property name="serviceProperties" ref="serviceProperties" />
 	</bean>
 
@@ -45,7 +45,7 @@
 		<property name="serviceProperties" ref="serviceProperties" />
 		<property name="ticketValidator">
 			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
-				<constructor-arg index="0" value="${cas.server.url}/cas" />
+				<constructor-arg index="0" value="${cas.internal.server.url}/cas" />
 			</bean>
 		</property>
 		<property name="key" value="web_auth_provider_only" />

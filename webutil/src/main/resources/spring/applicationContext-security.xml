@@ -8,7 +8,7 @@
                         
     <security:http session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint">
         <security:intercept-url pattern="/secured/**" access="ROLE_ADMIN" />
-        <security:logout logout-url="/logout" logout-success-url="${cas.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwiproutil" />
+        <security:logout logout-url="/logout" logout-success-url="${cas.external.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwiproutil" />
     </security:http>
 
 	<!-- CAS Client Configuration -->
@@ -22,12 +22,12 @@
 	<bean id="casProcessingFilter" class="org.springframework.security.ui.cas.CasProcessingFilter">
 		<security:custom-filter after="CAS_PROCESSING_FILTER" />
 		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="authenticationFailureUrl" value="/casfailed.jsp" />
+		<property name="authenticationFailureUrl" value="/authenticationFailure" />
 		<property name="defaultTargetUrl" value="/secured/dao.faces" />
 	</bean>
 
 	<bean id="casProcessingFilterEntryPoint" class="org.springframework.security.ui.cas.CasProcessingFilterEntryPoint">
-		<property name="loginUrl" value="${cas.server.url}/cas/login" />
+		<property name="loginUrl" value="${cas.external.server.url}/cas/login" />
 		<property name="serviceProperties" ref="serviceProperties" />
 	</bean>
 
@@ -37,7 +37,7 @@
 		<property name="serviceProperties" ref="serviceProperties" />
 		<property name="ticketValidator">
 			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
-				<constructor-arg index="0" value="${cas.server.url}/cas" />
+				<constructor-arg index="0" value="${cas.internal.server.url}/cas" />
 			</bean>
 		</property>
 		<property name="key" value="an_id_for_this_auth_provider_only" />
