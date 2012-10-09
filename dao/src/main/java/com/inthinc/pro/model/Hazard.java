@@ -1,26 +1,36 @@
 package com.inthinc.pro.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
+import com.inthinc.pro.notegen.PackageNote;
+
 public class Hazard extends BaseEntity implements HasAccountId {
-    private Integer hazardID;
+    private Integer hazardID;                       // unique id from the portal
     private Integer acctID;
+    //private final int reported;                     // unix time when it was reported   //TODO: deterimine if they still want to store REPORTED separate from START
     private Date startTime;
     private Date endTime;
-    private Integer radiusMeters;
+    //private final int shelflife;                  // active for this many seconds since reported     //probably not necessary because of endTime
+    private Integer radiusMeters;                   // distance in meters
     private Integer radiusInUnits;
     private MeasurementLengthType radiusUnits;
-    private HazardType type;
-    private String description = "";
+    private HazardType type;                        // type of road hazard
+    private String description = "";                // details of the hazard (max 60 chars)
     private Integer driverID;
     private Integer userID;
     private Integer vehicleID;
     private Integer deviceID;
-    private Double latitude;
-    private Double longitude;
+    private Double latitude;                        // latitude   (degrees * 1e6) ...   int on device
+    private Double longitude;                       // longitude  (degrees * 1e6) ...   int on device
     private Integer stateID; 
     private String location = "";
     private HazardStatus status;
+    //private final boolean urgent;                   // true if urgent                   //TODO: determine if I need to worry about Urgent?  I thought PRD stated ALL are urgent???
+    //private final String group;                     // group name (max 40 chars)        //TODO: determine if group is necessary???
+
     
     private Driver view_driver;
     private User view_user;
@@ -28,6 +38,41 @@ public class Hazard extends BaseEntity implements HasAccountId {
     
     public Hazard() {
         super();
+    }
+    /**
+     * 
+     * Device expecting the following order of parameters when sent over hessian:
+     * packet size - short (2 byte)
+     * rh id - integer (4 byte)
+     * type - byte
+     * location - compressed lat/long (6 byte)
+     * radius - unsigned integer (4 byte)  [meters]
+     * start time - time_t (4 byte)
+     * end time - time_t (4 byte)
+     * details - string (60 char)
+     * 
+     * @return
+     */
+    public ByteArrayOutputStream toByteArrayOutputStream(){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream stream = new DataOutputStream(baos);
+        try {
+            stream.writeInt(this.hazardID);
+            stream.write((byte)this.type.getCode());
+            stream.flush();
+            PackageNote.longToByte(baos, PackageNote.encodeLat(this.getLatitude()), 3);
+            PackageNote.longToByte(baos, PackageNote.encodeLng(this.getLongitude()), 3);
+            stream.writeInt(this.getRadiusMeters());
+            int startTime = (int) (this.getStartTime().getTime()/1000);
+            stream.writeInt(startTime);
+            int endTime = (int) (this.getEndTime().getTime()/1000);
+            stream.writeInt(endTime);
+            stream.writeChars(this.getDescription());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return baos;
     }
     @Override
     public String toString() {
