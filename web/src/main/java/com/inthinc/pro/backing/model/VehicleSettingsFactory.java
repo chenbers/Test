@@ -27,7 +27,9 @@ public class VehicleSettingsFactory {
     
     public void updateVehicleSettingManager(Map<Integer, VehicleSettingManager> vehicleSettingManagers, Vehicle vehicle) {
         VehicleSetting vehicleSetting = getVehicleSetting(vehicle.getVehicleID());
-        vehicleSettingManagers.put(vehicleSetting.getVehicleID(),getSettingManagerForExistingSetting(vehicleSetting.getProductType(),vehicleSetting));
+        if (vehicleSetting != null) {
+            vehicleSettingManagers.put(vehicleSetting.getVehicleID(),getSettingManagerForExistingSetting(vehicleSetting.getProductType(),vehicleSetting));
+        }
         setToSettingManagerIfSettingsDontExist(vehicleSettingManagers, vehicle);
     }
     
