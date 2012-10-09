@@ -18,6 +18,7 @@ import java.util.TimeZone;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanInitializationException;
 
@@ -456,5 +457,18 @@ public class BeanUtil
         
     }
 
+    public static Boolean propertyExists(Object source, String propertyName) {
+        Class clazz = source.getClass();
+        try{
+            PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(clazz, propertyName);
+            Object [] nullArgs = {};
+            Object property = propertyDescriptor.getReadMethod().invoke(source, nullArgs);
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+        
+    }
 
 }
