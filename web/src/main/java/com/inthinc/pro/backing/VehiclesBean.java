@@ -378,7 +378,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         batchEditProductChoice = null;
         ProductType productChoice = null;
         for (VehicleIdentifiers vehicleIdentifiers : vehicleIdentifiersList) {
-            if (selectedMap.get(vehicleIdentifiers.getVehicleID()).equals(Boolean.TRUE)) {
+            Boolean selected = selectedMap.get(vehicleIdentifiers.getVehicleID());
+            if (selected != null && selected.equals(Boolean.TRUE)) {
                 if (productChoice == null) {
                     productChoice = vehicleIdentifiers.getProductType();
                     if (productChoice == null)
@@ -659,7 +660,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                   vehicleDAO.update(updateVehicleTemplate);
               }
 
-              if (batchEditProductChoice != null || sourceVehicle.getEditableVehicleSettings() == null) {
+              if (batchEditProductChoice != null && sourceVehicle.getEditableVehicleSettings() != null) {
                   VehicleView vehicle = new VehicleView();
                   vehicle.setVehicleID(vehicleID);
                   vehicle.setEditableVehicleSettings(getVehicleSettingManagers().get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
@@ -927,9 +928,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             return null;
         }
         public String getVehicleTypeString(){
+            if (getVtype() == null)
+                return "";
         	return MessageUtil.getMessageString(getVtype().toString(),bean.getLocale());
         }
         public String getStatusName(){
+            if (getStatus() == null)
+                return "";
         	return MessageUtil.getMessageString(getStatus().toString());
         }
 
