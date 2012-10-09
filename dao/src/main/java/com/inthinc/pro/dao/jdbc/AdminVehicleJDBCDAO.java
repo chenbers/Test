@@ -28,51 +28,20 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
 public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
-    private static String VEHICLE_COLUMNS_STRING = "";// " vehicleID, groupID, status, groupPath, modified, vtype, hos, dot, ifta, zonetype, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, warrantyStart, warranteStop, aggDate, newAggDate ";
+    private static String PLUS_LAST_LOC_COLUMNS_STRING = "";// " vehicleID, groupID, status, groupPath, modified, vtype, hos, dot, ifta, zonetype, odometer, absOdometer, weight, year, name, make, model, color, vin, license, stateID, warrantyStart, warranteStop, aggDate, newAggDate ";
     private static String PAGED_VEHICLE_COLUMNS_STRING = "";
     /**
-     * Ordered map of columns where <String columnNameInDB, String messageKeyForDisplayOnSite?>
+     * Ordered map of columns where <String messageKeyForDisplayOnSite, String columnNameInDB>
      */
-    private static final LinkedHashMap<String, String> columnMap = new LinkedHashMap<String, String>();
+    private static final LinkedHashMap<String, String> plusLastLocColumnMap = new LinkedHashMap<String, String>();
     private static final Map<String, String> pagedColumnMap = new HashMap<String, String>();
 
     static {
-        columnMap.put("vehicle.vehicleID", "vehicleID");
-        columnMap.put("vehicle.groupID", "groupID");
-        columnMap.put("vehicle.status", "status");
-        columnMap.put("vehicle.groupPath ", "groupPath");
-        columnMap.put("vehicle.modified", "modified");
-        columnMap.put("vehicle.vtype", "vtype");
-        columnMap.put("vehicle.hos", "hos");    //?
-        columnMap.put("vehicle.dot", "dot");    //?
-        columnMap.put("vehicle.ifta", "ifta");
-        columnMap.put("vehicle.zonetype", "zonetype");  //?
-        columnMap.put("vehicle.odometer", "odometer");
-        columnMap.put("vehicle.absOdometer", "absOdometer");
-        columnMap.put("vehicle.weight", "weight");
-        columnMap.put("vehicle.year", "year");
-        columnMap.put("vehicle.name", "name");
-        columnMap.put("vehicle.make", "make");
-        columnMap.put("vehicle.model", "model");
-        columnMap.put("vehicle.color", "color");
-        columnMap.put("vehicle.vin", "vin");
-        columnMap.put("vehicle.license", "license");
-        columnMap.put("vehicle.stateID", "state");
-        columnMap.put("vehicle.warrantyStart", "warrantyStart");
-        columnMap.put("vehicle.warrantyStop", "warranteStop");
-        columnMap.put("vehicle.aggDate", "aggDate");
-        columnMap.put("vehicle.newAggDate", "newAggDate");
-        
-        columnMap.put("vddlog.deviceID","deviceID");
-        columnMap.put("vddlog.driverID","driverID");
-        columnMap.put("lastLocVehicle.latitude","latitude");
-        columnMap.put("lastLocVehicle.longitude","longitude");
-        for(String key: columnMap.keySet()){
-            VEHICLE_COLUMNS_STRING += " "+key+" ,";
-        }
-        //remove trailing comma if necessary
-        if(VEHICLE_COLUMNS_STRING.endsWith(",")){ 
-            VEHICLE_COLUMNS_STRING = VEHICLE_COLUMNS_STRING.substring(0, VEHICLE_COLUMNS_STRING.length()-2);
+        plusLastLocColumnMap.put("modified", "v.modified");
+        plusLastLocColumnMap.put("latitude", "lastLocVehicle.latitude");
+        plusLastLocColumnMap.put("longitude", "lastLocVehicle.longitude");
+        for(String columnName: plusLastLocColumnMap.values()){
+            PLUS_LAST_LOC_COLUMNS_STRING += " , "+columnName+" ";
         }
         
         // these match the columns displayed in admin/vehicles
@@ -104,12 +73,15 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                 
     };
     private static final String VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT = //
-            "SELECT " + VEHICLE_COLUMNS_STRING + " "+//
-                    "FROM vehicle " + //
-                    "LEFT OUTER JOIN lastLocVehicle ON (vehicle.vehicleID = lastLocVehicle.vehicleID) " + //
-                    "LEFT OUTER JOIN groups ON (vehicle.groupID = groups.groupID) " + //
-                    "LEFT OUTER JOIN vddlog ON (vehicle.vehicleID = vddlog.vehicleID) " + //
-                    "WHERE groups.acctID = :acctID "; //
+            "SELECT " + PAGED_VEHICLE_COLUMNS_STRING + " " + PLUS_LAST_LOC_COLUMNS_STRING + " "+//
+            "FROM vehicle v " + //
+            "LEFT JOIN groups g USING (groupID) " +  //
+            "LEFT OUTER JOIN vddlog vdd ON (v.vehicleID = vdd.vehicleID and vdd.stop is null) " +  //
+            "LEFT OUTER JOIN device d ON (d.deviceID = vdd.deviceID and vdd.stop is null) " +  //
+            "LEFT OUTER JOIN driver dr ON (dr.driverID = vdd.driverID and vdd.stop is null) " + // 
+            "LEFT OUTER JOIN person p ON (dr.personID = p.personID) " + //
+            "LEFT OUTER JOIN lastLocVehicle ON (v.vehicleID = lastLocVehicle.vehicleID) " + //
+            "WHERE g.acctID = :acctID "; //
 
     private static final String PAGED_VEHICLE_SUFFIX = 
             "FROM vehicle v " + 
@@ -231,9 +203,9 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         args.put("acctID", accountID);
         vehiclesPlusLastLoc = getSimpleJdbcTemplate().query(VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT, vehiclePlusLastLocRowMapper, args);
         
-        for(VehiclePlusLastLoc vehicle: vehiclesPlusLastLoc){
-            if(GeoUtil.distBetween(location, vehicle.getLastLoc(), MeasurementType.ENGLISH) <= distanceInMiles){
-                results.add(vehicle);
+        for(VehiclePlusLastLoc vehiclePlusLastLoc: vehiclesPlusLastLoc){
+            if(GeoUtil.distBetween(location, vehiclePlusLastLoc.getLastLoc(), MeasurementType.ENGLISH) <= distanceInMiles){
+                results.add(vehiclePlusLastLoc.getVehicle());
             }
         }
         
@@ -302,73 +274,25 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         }
     };
 
-
-//    //TODO: used to be "static" make sure this is not a problem
-    private static ParameterizedRowMapper<Vehicle> vehicleRowMapper = new ParameterizedRowMapper<Vehicle>() {
-        @Override
-        public Vehicle mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Vehicle vehicle = new Vehicle();
-            //hazard.setHazardID(rs.getInt("hazardID"));
-            vehicle.setColor(rs.getString("vehicle.color"));
-            vehicle.setCreated(null); //TODO: not stored in DB?
-            vehicle.setDeviceID(rs.getInt("vddlog.deviceID"));
-            vehicle.setDriverID(rs.getInt("vddlog.driverID"));
-            vehicle.setFullName(rs.getString("vehicle.name"));
-            vehicle.setGroupID(rs.getInt("vehicle.groupID"));
-            vehicle.setIfta(rs.getObject("vehicle.ifta") == null ? null : rs.getBoolean("vehicle.ifta"));  // review with jw
-            vehicle.setLicense(rs.getString("vehicle.license"));
-            vehicle.setMake(rs.getString("vehicle.make"));
-            vehicle.setModel(rs.getString("vehicle.model"));
-            vehicle.setModified(rs.getDate("vehicle.modified"));
-            vehicle.setName(rs.getString("vehicle.name"));
-            vehicle.setOdometer(rs.getObject("vehicle.odometer") == null ? null : rs.getInt("vehicle.odometer"));  // review with jw
-            vehicle.setState(States.getStateById(rs.getInt("vehicle.stateID")));
-            vehicle.setStatus(Status.valueOf(rs.getInt("vehicle.status")));
-            vehicle.setVehicleID(rs.getInt("vehicle.vehicleID"));
-            vehicle.setVIN(rs.getString("vehicle.vin"));
-            vehicle.setVtype(VehicleType.valueOf(rs.getInt("vehicle.vtype")));
-            vehicle.setWeight(rs.getInt("vehicle.weight"));
-            vehicle.setYear(rs.getInt("vehicle.year"));
-            return vehicle;
-        }
-    };
     private ParameterizedRowMapper<VehiclePlusLastLoc> vehiclePlusLastLocRowMapper = new ParameterizedRowMapper<VehiclePlusLastLoc>(){
 
         @Override
         public VehiclePlusLastLoc mapRow(ResultSet rs, int rowNum) throws SQLException {
-            // TODO: try to do it like THIS (DRY)
-            //VehiclePlusLastLoc vehicle = (VehiclePlusLastLoc) vehicleRowMapper.mapRow(rs, rowNum);
+            //TODO: jwimmer: review with cJennings:
+            // reusing your pagedVehicleRowMapper (looked like you had all the quirks that I was starting to hit worked out already)
+            // not sure why pagedVehicleRowMapper doesn't  setModified ???
             
-            VehiclePlusLastLoc vehicle = new VehiclePlusLastLoc();
-            //hazard.setHazardID(rs.getInt("hazardID"));
-            vehicle.setColor(rs.getString("vehicle.color"));
-            vehicle.setCreated(null); //TODO: not stored in DB?
-            vehicle.setDeviceID(rs.getInt("vddlog.deviceID"));
-            vehicle.setDriverID(rs.getInt("vddlog.driverID"));
-            vehicle.setFullName(rs.getString("vehicle.name"));
-            vehicle.setGroupID(rs.getInt("vehicle.groupID"));
-            vehicle.setIfta(rs.getBoolean("vehicle.ifta"));
-            vehicle.setLicense(rs.getString("vehicle.license"));
-            vehicle.setMake(rs.getString("vehicle.make"));
-            vehicle.setModel(rs.getString("vehicle.model"));
-            vehicle.setModified(rs.getDate("vehicle.modified"));
-            vehicle.setName(rs.getString("vehicle.name"));
-            vehicle.setOdometer(rs.getInt("vehicle.odometer"));
-            vehicle.setState(States.getStateById(rs.getInt("vehicle.stateID")));
-            vehicle.setStatus(Status.valueOf(rs.getInt("vehicle.status")));
-            vehicle.setVehicleID(rs.getInt("vehicle.vehicleID"));
-            vehicle.setVIN(rs.getString("vehicle.vin"));
-            vehicle.setVtype(VehicleType.valueOf(rs.getInt("vehicle.vtype")));
-            vehicle.setWeight(rs.getInt("vehicle.weight"));
-            vehicle.setYear(rs.getInt("vehicle.year"));
-            vehicle.setLastLoc(new LatLng(rs.getDouble("lastLocVehicle.latitude"), rs.getDouble("lastLocVehicle.longitude")));
-            return vehicle;
+            Vehicle vehicle = pagedVehicleRowMapper.mapRow(rs, rowNum);
+            vehicle.setModified(rs.getDate("v.modified"));
+            VehiclePlusLastLoc vehiclePlusLastLoc = new VehiclePlusLastLoc();
+            vehiclePlusLastLoc.setVehicle(vehicle);
+            vehiclePlusLastLoc.setLastLoc(new LatLng(rs.getDouble("lastLocVehicle.latitude"), rs.getDouble("lastLocVehicle.longitude")));
+            return vehiclePlusLastLoc;
         }
-        
     };
     
-    
-    private class VehiclePlusLastLoc extends Vehicle {
+    private class VehiclePlusLastLoc{
+        private Vehicle vehicle;
         private LatLng lastLoc;
 
         public LatLng getLastLoc() {
@@ -377,6 +301,14 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
 
         public void setLastLoc(LatLng lastLoc) {
             this.lastLoc = lastLoc;
+        }
+
+        public Vehicle getVehicle() {
+            return vehicle;
+        }
+
+        public void setVehicle(Vehicle vehicle) {
+            this.vehicle = vehicle;
         }
         
     }
