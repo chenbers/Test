@@ -649,6 +649,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
         return updateField;
     }
+    public void setUpdateField(Map<String, Boolean> updateField) {
+        this.updateField = updateField;
+    }
 
     /**
      * @return An item that the user can edit. Either returns a new item to be added, a single item to be edited, or an item that represents multiple items being batch edited.

@@ -190,7 +190,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
-// pagination        
         if (vehicleSettingManagers == null) {
             vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), null);
         }
@@ -331,48 +330,29 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         VehicleView vehicleView = createVehicleView(vehicle);
         return vehicleView;
     }
+    
 
     @Override
     public String batchEdit()
     {
-//        List<VehicleView> inViewItems = columnFiltering.getInViewItems(filteredItems);
-//        setBatchEditProductChoice(inViewItems);
         setBatchEditProductChoice();
         final String redirect = super.batchEdit();
+        
+        for (String key : this.getUpdateField().keySet()) {
+            System.out.println(key);
+        }
+            
        
         if(isBatchEdit()){
             getItem().setVehicleID(-1);
-//            if(batchEditProductChoice != null){
-                createSettingManagerForCreateItem();
-                getItem().setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
-//            }
+            createSettingManagerForCreateItem();
+            getItem().setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
+            setUpdateField(null);
+            getUpdateField();
+
         }
         return redirect;
     }
-//    private void setBatchEditProductChoice(List<VehicleView> inViewItems){
-//        batchEditProductChoice = null;
-//        ProductType productChoice = null;
-//        //set first value
-//        int firstSelected = getFirstSelectedItem(inViewItems);
-//        if (firstSelected == -1) return;
-//        VehicleView firstSelectedVehicle = inViewItems.get(firstSelected);
-//        if(firstSelectedVehicle.getEditableVehicleSettings()!= null){
-//            productChoice = firstSelectedVehicle.getEditableVehicleSettings().getProductType();
-//        }
-//        if (productChoice == null) return;
-//        for(VehicleView vehicleView : inViewItems){
-//            
-//            if (vehicleView.isSelected()){
-//                
-//                if ((vehicleView.editableVehicleSettings == null) || 
-//                        (vehicleView.editableVehicleSettings.getProductType() == null) ||
-//                        !(vehicleView.editableVehicleSettings.getProductType().equals(productChoice))){
-//                    return;
-//                }
-//            }
-//        }
-//        batchEditProductChoice = productChoice;
-//    }
     private void setBatchEditProductChoice()
     {
         batchEditProductChoice = null;
@@ -393,15 +373,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
         }
         batchEditProductChoice = productChoice;
-    }
-    private int getFirstSelectedItem(List<VehicleView> inViewItems){
-        int firstSelected = 0;
-        for(VehicleView vehicleView : inViewItems){
-            
-            if (vehicleView.isSelected()) return firstSelected;
-            firstSelected++;
-        }
-        return -1;
     }
     private void createSettingManagerForCreateItem(){
                         
@@ -660,7 +631,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                   vehicleDAO.update(updateVehicleTemplate);
               }
 
-              if (batchEditProductChoice != null && sourceVehicle.getEditableVehicleSettings() != null) {
+              if (batchEditProductChoice != null && !batchEditProductChoice.equals(ProductType.UNKNOWN) && sourceVehicle.getEditableVehicleSettings() != null) {
                   VehicleView vehicle = new VehicleView();
                   vehicle.setVehicleID(vehicleID);
                   vehicle.setEditableVehicleSettings(getVehicleSettingManagers().get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
