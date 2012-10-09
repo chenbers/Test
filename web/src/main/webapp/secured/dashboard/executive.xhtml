@@ -13,9 +13,6 @@
           <a4j:loadScript src="/js/FusionCharts.js"/>  
           <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
           <script> 
-				jQuery(function(){
-					initLiveFleetMap();
-				});
 				function bodyUnload()
 				{
 					GUnload();
@@ -94,23 +91,6 @@
       	 					<ui:param name="context" value="executive" />
     					</ui:include>
 						<div class="spacer"></div>
-						<!-- START FLEET MAP PANEL -->
-						<!-- leave reRenderList alone -->	
-		               <pretty:urlbuffer var="mapDetailedDashboardLink" mappingId="detailedDashboard">
-		                    <f:param value="#{navigationBean.groupID}"/>
-		                    <f:param value="MAP"/>
-		                </pretty:urlbuffer> 
-						<ui:include src="/includes/liveFleetMap.xhtml">
-							<ui:param name="mapheight" value="height:360px"/>
-							<ui:param name="mapwidth" value="width:445px"/>
-							<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
-							<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
-							<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
-		                    <ui:param name="detailLink" value="#{requestScope.mapDetailedDashboardLink}"/>
-     	 					<ui:param name="context" value="executive" />
-     	 					<ui:param name="title" value="#{messages.liveFleetTitle}"/>
-     	 					<ui:param name="legend" value="#{messages.liveFleetLegend}"/>     	 					
-						</ui:include>
 						<!-- END PANEL -->
     				</td>
       			</tr>
