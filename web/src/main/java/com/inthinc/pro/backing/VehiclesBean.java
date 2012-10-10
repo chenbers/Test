@@ -39,9 +39,11 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleDOTType;
+import com.inthinc.pro.model.VehicleIdentifiers;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -188,7 +190,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
-// pagination        
         if (vehicleSettingManagers == null) {
             vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID(), null);
         }
@@ -329,55 +330,49 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         VehicleView vehicleView = createVehicleView(vehicle);
         return vehicleView;
     }
+    
 
     @Override
     public String batchEdit()
     {
-        List<VehicleView> inViewItems = columnFiltering.getInViewItems(filteredItems);
-        setBatchEditProductChoice(inViewItems);
+        setBatchEditProductChoice();
         final String redirect = super.batchEdit();
+        
+        for (String key : this.getUpdateField().keySet()) {
+            System.out.println(key);
+        }
+            
        
         if(isBatchEdit()){
             getItem().setVehicleID(-1);
-            if(batchEditProductChoice != null){
-                createSettingManagerForCreateItem();
-                getItem().setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
-            }
+            createSettingManagerForCreateItem();
+            getItem().setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
+            setUpdateField(null);
+            getUpdateField();
+
         }
         return redirect;
     }
-    private void setBatchEditProductChoice(List<VehicleView> inViewItems){
+    private void setBatchEditProductChoice()
+    {
         batchEditProductChoice = null;
         ProductType productChoice = null;
-        //set first value
-        int firstSelected = getFirstSelectedItem(inViewItems);
-        if (firstSelected == -1) return;
-        VehicleView firstSelectedVehicle = inViewItems.get(firstSelected);
-        if(firstSelectedVehicle.getEditableVehicleSettings()!= null){
-            productChoice = firstSelectedVehicle.getEditableVehicleSettings().getProductType();
-        }
-        if (productChoice == null) return;
-        for(VehicleView vehicleView : inViewItems){
-            
-            if (vehicleView.isSelected()){
-                
-                if ((vehicleView.editableVehicleSettings == null) || 
-                        (vehicleView.editableVehicleSettings.getProductType() == null) ||
-                        !(vehicleView.editableVehicleSettings.getProductType().equals(productChoice))){
-                    return;
+        for (VehicleIdentifiers vehicleIdentifiers : vehicleIdentifiersList) {
+            Boolean selected = selectedMap.get(vehicleIdentifiers.getVehicleID());
+            if (selected != null && selected.equals(Boolean.TRUE)) {
+                if (productChoice == null) {
+                    productChoice = vehicleIdentifiers.getProductType();
+                    if (productChoice == null)
+                        return;
+                }
+                else {
+                    if (vehicleIdentifiers.getProductType() == null || !vehicleIdentifiers.getProductType().equals(productChoice)) {
+                        return;
+                    }
                 }
             }
         }
         batchEditProductChoice = productChoice;
-    }
-    private int getFirstSelectedItem(List<VehicleView> inViewItems){
-        int firstSelected = 0;
-        for(VehicleView vehicleView : inViewItems){
-            
-            if (vehicleView.isSelected()) return firstSelected;
-            firstSelected++;
-        }
-        return -1;
     }
     private void createSettingManagerForCreateItem(){
                         
@@ -429,8 +424,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public TreeMap<Integer, String> getGroupNames()
     {
         final TreeMap<Integer, String> groupNames = new TreeMap<Integer, String>();
-        for (final Group group : getGroupHierarchy().getGroupList())
+        
+        for (final Group group : getGroupHierarchy().getGroupList()) {
             groupNames.put(group.getGroupID(), group.getName());
+        }
         return groupNames;
     }
 
@@ -568,6 +565,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected void doSave(List<VehicleView> saveItems, boolean create)
     {
+        
+        if (isBatchEdit()) {
+            batchSave(saveItems);
+            return;
+        }
+
         final FacesContext context = FacesContext.getCurrentInstance();
 
         for (final VehicleView vehicle : saveItems)
@@ -592,7 +595,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
             
             // added for pagination
-            vehicleSettingsFactory.upatedVehicleSettingManager(getVehicleSettingManagers(), vehicle);
+            vehicleSettingsFactory.updateVehicleSettingManager(getVehicleSettingManagers(), vehicle);
             vehicle.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
             // end - added for pagination
                         
@@ -602,6 +605,48 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             context.addMessage(null, message);
         }
     }
+    
+    private void batchSave(List<VehicleView> saveItems) {
+
+      Vehicle updateVehicleTemplate = null;
+      VehicleView sourceVehicle = saveItems.get(0);
+      if (sourceVehicle == null)
+          return;
+      for (Map.Entry<String, Boolean> entry: getUpdateField().entrySet()) {
+          if (entry.getValue().equals(Boolean.TRUE))  {
+              if (updateVehicleTemplate == null) {
+                  updateVehicleTemplate = new Vehicle();
+              }
+              if (BeanUtil.propertyExists(sourceVehicle, entry.getKey())) {
+                  BeanUtil.copyProperty(sourceVehicle, updateVehicleTemplate, entry.getKey());
+              }
+          }
+      }
+      
+      for (Map.Entry<Integer, Boolean> entry : selectedMap.entrySet()) {
+          if (entry.getValue().equals(Boolean.TRUE)) {
+              Integer vehicleID = entry.getKey();
+              if (updateVehicleTemplate != null) {
+                  updateVehicleTemplate.setVehicleID(vehicleID);
+                  vehicleDAO.update(updateVehicleTemplate);
+              }
+
+              if (batchEditProductChoice != null && !batchEditProductChoice.equals(ProductType.UNKNOWN) && sourceVehicle.getEditableVehicleSettings() != null) {
+                  VehicleView vehicle = new VehicleView();
+                  vehicle.setVehicleID(vehicleID);
+                  vehicle.setEditableVehicleSettings(getVehicleSettingManagers().get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+                  dealWithSpecialSettings(sourceVehicle);
+                  vehicleSettingManagers.get(vehicle.getVehicleID()).updateVehicleSettings(vehicle.getVehicleID(),sourceVehicle.getEditableVehicleSettings(),
+                                                              this.getUserID(), "portal update", getUpdateField());
+                  vehicleSettingsFactory.updateVehicleSettingManager(getVehicleSettingManagers(), vehicle);
+              }
+          
+          }
+      }
+      
+  }
+
+    
     private void dealWithSpecialSettings(VehicleView vehicle){
         
        	vehicle.getEditableVehicleSettings().dealWithSpecialSettings(vehicle, item, getUpdateField(), isBatchEdit());
@@ -784,9 +829,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         public Group getGroup()
         {
             if (group == null) {
-                group = bean.getGroupHierarchy().getGroup(getGroupID());
-                if (group == null)
+                Group treegroup = bean.getGroupHierarchy().getGroup(getGroupID());
+                if (treegroup == null)
                     group = bean.groupDAO.findByID(getGroupID());
+                else {
+                    group = new Group(treegroup.getGroupID(), treegroup.getAccountID(), treegroup.getName(), treegroup.getParentID());
+                }
             }
             return group;
         }
@@ -820,14 +868,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             return driver;
         }
 
-        public boolean isSelected()
-        {
-            return selected;
+
+        public boolean isSelected() {
+            return bean.getSelectedMap().containsKey(getVehicleID()) ? bean.getSelectedMap().get(getVehicleID()) : false; 
         }
 
-        public void setSelected(boolean selected)
-        {
-            this.selected = selected;
+        public void setSelected(boolean selected) {
+            if (getVehicleID() != null)
+                bean.getSelectedMap().put(getVehicleID(), selected);
+            
         }
 
         public WaysmartForwardCommand getWirelineDoorAlarm() {
@@ -850,9 +899,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             return null;
         }
         public String getVehicleTypeString(){
+            if (getVtype() == null)
+                return "";
         	return MessageUtil.getMessageString(getVtype().toString(),bean.getLocale());
         }
         public String getStatusName(){
+            if (getStatus() == null)
+                return "";
         	return MessageUtil.getMessageString(getStatus().toString());
         }
 
@@ -888,4 +941,58 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         filteredItems.clear();
         filteredItems.addAll(items);
     }
+
+
+
+    @Override
+    public void setSelectAll(boolean selectAll)
+    {
+        this.selectAll = selectAll;
+    }
+    
+    @Override
+    public boolean isSelectAll() {
+        return this.selectAll;
+    }
+
+    private List<VehicleIdentifiers> vehicleIdentifiersList;
+    private Map<Integer, Boolean> selectedMap = new HashMap<Integer, Boolean>();
+
+    @Override
+    public void doSelectAll() {
+        selectedMap = new HashMap<Integer, Boolean>();
+        if (selectAll == true) {
+            for (VehicleIdentifiers vehicleIdentifiers : vehicleIdentifiersList) {
+                selectedMap.put(vehicleIdentifiers.getVehicleID(),  Boolean.TRUE);
+            }
+        }
+    }
+
+    @Override
+    public void setItems(List<VehicleView> items )
+    {
+        super.setItems(items);
+    }
+    
+    public void initVehicleIdentifierList(List<VehicleIdentifiers> vehicleIdentifiersList )
+    {
+        this.vehicleIdentifiersList = vehicleIdentifiersList;
+        this.selectAll = Boolean.FALSE;
+        selectedMap = new HashMap<Integer, Boolean>();
+    }
+
+    public void updateItemSelect(Integer id, Boolean selected) {
+        selectedMap.put(id,  selected);
+        
+    }
+
+    public Map<Integer, Boolean> getSelectedMap() {
+        return selectedMap;
+    }
+
+    public void setSelectedMap(Map<Integer, Boolean> selectedMap) {
+        this.selectedMap = selectedMap;
+    }
+
+
 }

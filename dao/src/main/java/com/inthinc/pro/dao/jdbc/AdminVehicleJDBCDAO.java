@@ -18,6 +18,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleIdentifiers;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -129,6 +130,8 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
     private static final String MILES_DRIVEN =
             "SELECT MAX(vs.endingOdometer) milesDriven FROM vehicleScoreByDay vs where vs.vehicleID = :vehicleID";
 
+    private static final String FILTERED_VEHICLES_IDS_SELECT = 
+            "SELECT v.vehicleID, d.productVer "+ PAGED_VEHICLE_SUFFIX;
 
     public Integer getCount(List<Integer> groupIDs, List<TableFilterField> filters) {
         String vehicleCount = PAGED_VEHICLE_COUNT;
@@ -139,6 +142,24 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         return cnt;
     }
     
+    public List<VehicleIdentifiers> getFilteredVehicleIDs(List<Integer> groupIDs, List<TableFilterField> filters) {
+        String vehicleIdentifiers = FILTERED_VEHICLES_IDS_SELECT;
+        Map<String, Object> params = new HashMap<String, Object>();
+        vehicleIdentifiers = addFiltersToQuery(filters, vehicleIdentifiers, params);
+        params.put("group_list", groupIDs);
+        return getSimpleJdbcTemplate().query(vehicleIdentifiers, new ParameterizedRowMapper<VehicleIdentifiers>() {
+            @Override
+            public VehicleIdentifiers mapRow(ResultSet rs, int rowNum) throws SQLException {
+                VehicleIdentifiers vehicleIdentifiers = new VehicleIdentifiers();
+                vehicleIdentifiers.setVehicleID(rs.getInt("v.vehicleID"));
+                Integer productVer = rs.getObject("d.productVer") == null ? null : rs.getInt("d.productVer");
+                vehicleIdentifiers.setProductType(productVer == null ? ProductType.UNKNOWN : ProductType.getProductTypeFromVersion(productVer));
+                
+                return vehicleIdentifiers;
+            }           
+        } , params);
+    }
+
     public Integer getMilesDriven(Integer vehicleID) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("vehicleID", vehicleID);
@@ -243,14 +264,15 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             vehicle.setModel(rs.getString("v.model"));
 //            vehicle.setModified(rs.getDate("v.modified"));
             vehicle.setName(rs.getString("v.name"));
-            Integer absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getInt("v.absOdometer")/100);
-            Integer odometer = rs.getObject("v.odometer") == null ? null : rs.getInt("v.odometer");
+            
+            Long absOdometer = rs.getObject("v.absOdometer") == null ? null : (rs.getLong("v.absOdometer"));
+            Long odometer = rs.getObject("v.odometer") == null ? null : rs.getLong("v.odometer");
             if (absOdometer != null) {
-                vehicle.setOdometer(absOdometer); 
+                vehicle.setOdometer(Long.valueOf(absOdometer/100l).intValue()); 
             }
             else if (odometer != null) {
                 Integer milesDriven = getMilesDriven(vehicle.getVehicleID()); 
-                vehicle.setOdometer((odometer + milesDriven)/100);
+                vehicle.setOdometer(Long.valueOf((odometer + milesDriven)/100).intValue());
             }
             vehicle.setState(States.getStateById(rs.getInt("v.stateID")));
             vehicle.setStatus(Status.valueOf(rs.getInt("v.status")));
@@ -273,12 +295,12 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
                 device.setActivated(rs.getObject("d.activated") == null ? null : rs.getDate("d.activated"));
                 device.setBaseID(rs.getObject("d.baseID") == null ? null : rs.getInt("d.baseID"));
                 device.setProductVer(rs.getObject("d.productVer") == null ? null : rs.getInt("d.productVer"));
-                device.setFirmwareVersion(rs.getObject("d.firmVer") == null ? null : rs.getInt("d.firmVer"));
-                device.setWitnessVersion(rs.getObject("d.witnessVer") == null ? null : rs.getInt("d.witnessVer"));
+                device.setFirmwareVersion(rs.getObject("d.firmVer") == null ? null : Long.valueOf(rs.getLong("d.firmVer")).intValue());
+                device.setWitnessVersion(rs.getObject("d.witnessVer") == null ? null : Long.valueOf(rs.getLong("d.witnessVer")).intValue());
                 device.setEmuMd5(rs.getString("d.emuMd5"));
                 device.setMcmid(rs.getString("d.mcmid"));
                 device.setAltimei(rs.getString("d.altImei"));
-                device.setProductVersion(device.getProductVer() == null ? null : ProductType.getProductTypeFromVersion(device.getProductVer()));
+                device.setProductVersion(device.getProductVer() == null ? ProductType.UNKNOWN : ProductType.getProductTypeFromVersion(device.getProductVer()));
                 vehicle.setDevice(device);
                 
             }
@@ -365,4 +387,6 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         }
         
     }
+
+
 }
