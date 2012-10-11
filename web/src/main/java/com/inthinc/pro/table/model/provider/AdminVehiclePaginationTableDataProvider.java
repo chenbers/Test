@@ -7,6 +7,7 @@ import com.inthinc.pro.backing.VehiclesBean;
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleIdentifiers;
 import com.inthinc.pro.model.pagination.PageParams;
 
 public class AdminVehiclePaginationTableDataProvider extends AdminPaginationTableDataProvider<VehiclesBean.VehicleView> {
@@ -16,12 +17,9 @@ public class AdminVehiclePaginationTableDataProvider extends AdminPaginationTabl
 
     @Override
     public List<VehiclesBean.VehicleView> getItemsByRange(int firstRow, int endRow) {
-        PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
+        PageParams pageParams = new PageParams(firstRow, endRow, getSort(), removeBlankFilters(getFilters()));
         List<Vehicle> vehicleList = adminVehicleJDBCDAO.getVehicles(vehiclesBean.getGroupIDList(), pageParams);
-        // TODO: CJ NOT SURE ABOUT VEHICLE SETTINGS STUFF
-        // it might be good to not do the group deep lookup, but instead just get the settings for list items (added method for this)
-        // vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getGroupID(), vehicleList);
-        vehiclesBean.setVehicleSettingManagers(vehiclesBean.getVehicleSettingsFactory().retrieveVehicleSettings(vehicleList));
+        vehiclesBean.setVehicleSettingManagers(vehiclesBean.getVehicleSettingsFactory().retrieveVehicleSettings(vehiclesBean.getVehicleSettingManagers(), vehicleList));
         List<VehicleView> items = new ArrayList<VehicleView>();
         for (final Vehicle vehicle : vehicleList) {
             VehicleView vehicleView = vehiclesBean.createVehicleView(vehicle);
@@ -34,7 +32,11 @@ public class AdminVehiclePaginationTableDataProvider extends AdminPaginationTabl
 
     @Override
     public int getRowCount() {
-        return adminVehicleJDBCDAO.getCount(vehiclesBean.getGroupIDList(), getFilters());
+//        return adminVehicleJDBCDAO.getCount(vehiclesBean.getGroupIDList(), getFilters());
+        
+        List<VehicleIdentifiers> vehicleIdentifiersList = adminVehicleJDBCDAO.getFilteredVehicleIDs(vehiclesBean.getGroupIDList(), removeBlankFilters(getFilters()));
+        vehiclesBean.initVehicleIdentifierList(vehicleIdentifiersList);
+        return vehicleIdentifiersList.size();
     }
 
     public VehiclesBean getVehiclesBean() {

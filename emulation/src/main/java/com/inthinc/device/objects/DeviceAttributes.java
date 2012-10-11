@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class DeviceAttributes implements Iterable<EventAttr>{

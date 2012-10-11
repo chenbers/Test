@@ -2,12 +2,11 @@ package com.inthinc.device.hessian.tcp;
 
 import java.net.MalformedURLException;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.interfaces.HessianService;
 import com.inthinc.device.emulation.interfaces.MCMService;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutoServers;
 
 public class AutomationHessianFactory {
@@ -81,14 +80,14 @@ public class AutomationHessianFactory {
     }
     
     public HessianService createProxy(Class<?> proxy, String url, int port){
-        Log.d("createProxy for %s, %s", proxy.getClass().getSimpleName(), server);
+        Log.debug("createProxy for %s, %s", proxy.getClass().getSimpleName(), server);
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
             return (HessianService) factory.create(proxy, url, port); 
         } catch (NumberFormatException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         } catch (MalformedURLException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         }
         return null;
     }

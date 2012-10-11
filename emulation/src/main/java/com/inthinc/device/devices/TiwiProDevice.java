@@ -407,6 +407,8 @@ public class TiwiProDevice extends DeviceBase {
         state.setSetting(DeviceProps.SERVER_PORT_T, server.getMcmPort()
                 .toString());
         state.setSetting(DeviceProps.SERVER_URL_T, server.getMcmUrl());
+
+    	setSbs();
         return this;
     }
 

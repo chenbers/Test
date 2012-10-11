@@ -649,6 +649,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
         return updateField;
     }
+    public void setUpdateField(Map<String, Boolean> updateField) {
+        this.updateField = updateField;
+    }
 
     /**
      * @return An item that the user can edit. Either returns a new item to be added, a single item to be edited, or an item that represents multiple items being batch edited.
@@ -675,7 +678,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             if (selected == 0)
                 item = createAddItem();
             else if (selected == 1)
-                item = selection;
+                item = completeEditItem(selection);
             else
             {
                 batchEdit = true;
@@ -683,8 +686,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                 BeanUtil.deepCopy(selection, item, getBatchEditIgnoreField());
 
                 // null out properties that are not common
-                for (T t : getSelectedItems())
+                for (T t : getSelectedItems()){
+                    t = completeEditItem(t);                
                     BeanUtil.compareAndInit(item, t);
+                }
             } 
             
             if(logger.isTraceEnabled())
@@ -751,7 +756,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
           t.setSelected(selectAll);
       }
 }
-
+    protected T completeEditItem(T selectedItem){
+        return selectedItem;
+    }
     /**
      * @return A new item for the user to populate on an "add" page.
      */
@@ -1032,6 +1039,4 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
         return false;
     }
-    
-
 }

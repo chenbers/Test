@@ -1,0 +1,63 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+  <ui:param name="ajaxPanels" value="tablePanel"/>
+  <ui:param name="title" value="#{messages.adminHeader_vehicles}"/>
+  <ui:param name="context" value="vehicles"/>
+  <ui:define name="content">
+   
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+      <td valign="top" width="130">
+        <ui:include src="/includes/navigation/adminSideNav.xhtml">
+          <ui:param name="selectedAction" value="go_adminVehicles" />
+          <ui:param name="parentAction" value="go_adminVehicles" />
+             <ui:param name="context" value="vehicles"/>
+        </ui:include>
+      </td>
+      <td valign="top">
+        <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="admin"><h:outputText value="#{messages.adminHeader_vehicles}" /></span>
+                <span class="panel_links">
+                  <a4j:region id="refreshRegion">
+                     <a4j:form id="refresh">
+                        <a4j:status 
+                           id="tableRefreshStatus" for="refreshRegion">
+                                 <f:facet name="start">
+                                    <h:outputText>
+                                       <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+                                    </h:outputText>
+                                 </f:facet>
+                        </a4j:status>
+                     </a4j:form>
+                   </a4j:region>
+                </span>
+              </div>
+            </div>
+<<<<<<< HEAD
+            <ui:include src="/includes/admin/vehiclesTable.xhtml" />
+=======
+            <ui:include src="/includes/admin/vehiclesPagedTable.xhtml" />
+>>>>>>> develop
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+          </div>
+          <!-- END PANEL -->            
+        </td>
+      </tr>
+    </table>
+   
+  </ui:define>
+
+</ui:composition>

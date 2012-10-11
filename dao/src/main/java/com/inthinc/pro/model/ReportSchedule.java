@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @SimpleName(simpleName = "ReportPref")
@@ -203,6 +203,9 @@ public class ReportSchedule implements Cloneable {
         sb.append("[");
         sb.append("reportScheduleID=");
         sb.append(this.reportScheduleID);
+        sb.append(", ");
+        sb.append("name=");
+        sb.append(this.name);
         sb.append(", ");
         sb.append("reportGroupID=");
         sb.append(this.reportID);

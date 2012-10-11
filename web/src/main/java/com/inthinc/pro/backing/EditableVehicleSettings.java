@@ -40,7 +40,7 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
     	return vehicleID;
     }
     public ProductType getProductType(){
-        
+        if (productType == null) return ProductType.UNKNOWN;
         return productType;
     }
 

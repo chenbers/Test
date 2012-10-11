@@ -8,13 +8,12 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import android.util.Log;
-
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.HessianProtocolException;
+import com.inthinc.pro.automation.logging.Log;
 
 public class HessianTCPProxy implements InvocationHandler {
 
@@ -155,21 +154,21 @@ public class HessianTCPProxy implements InvocationHandler {
 			return null;
 
 		} catch (HessianProtocolException e) {
-			Log.e("%s", e);
+			Log.error("%s", e);
 			throw new HessianRuntimeException(e);
 		} finally {
 			try {
 				if (is != null)
 					is.close();
 			} catch (Throwable e) {
-				Log.e("%s", e);
+				Log.error("%s", e);
 			}
 
 			try {
 				if (socket != null)
 					socket.close();
 			} catch (Throwable e) {
-				Log.e("%s", e);
+				Log.error("%s", e);
 			}
 		}
 	}

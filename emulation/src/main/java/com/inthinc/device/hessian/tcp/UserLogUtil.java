@@ -3,9 +3,8 @@ package com.inthinc.device.hessian.tcp;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.notes.DeviceNote;
+import com.inthinc.pro.automation.logging.Log;
 
 public class UserLogUtil {
 

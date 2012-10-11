@@ -24,14 +24,19 @@ public class VehicleSettingsFactory {
         return configuratorDAO.getVehicleSettings(vehicleID);
     }
 
-    // TODO: CJ ADDED THIS DURING PAGINATION REFACTOR - REVIEW IT WITH JACQUIE
-    public Map<Integer, VehicleSettingManager> retrieveVehicleSettings(List<Vehicle> vehicles){
-        
-        Map<Integer, VehicleSettingManager>   vehicleSettingManagers = new HashMap<Integer, VehicleSettingManager>();
-        for (Vehicle vehicle : vehicles) {
-            Integer vehicleID = vehicle.getVehicleID();
-            VehicleSetting vehicleSetting = getVehicleSetting(vehicleID);
-            vehicleSettingManagers.put(vehicleID,getSettingManagerForExistingSetting(vehicleSetting.getProductType(),vehicleSetting));
+    
+    public void updateVehicleSettingManager(Map<Integer, VehicleSettingManager> vehicleSettingManagers, Vehicle vehicle) {
+        VehicleSetting vehicleSetting = getVehicleSetting(vehicle.getVehicleID());
+        if (vehicleSetting != null) {
+            vehicleSettingManagers.put(vehicleSetting.getVehicleID(),getSettingManagerForExistingSetting(vehicleSetting.getProductType(),vehicleSetting));
+        }
+        setToSettingManagerIfSettingsDontExist(vehicleSettingManagers, vehicle);
+    }
+    
+
+    public Map<Integer, VehicleSettingManager> retrieveVehicleSettings(Map<Integer, VehicleSettingManager> vehicleSettingManagers, List<Vehicle> vehicles){
+        for (Vehicle vehicle :vehicles){
+            
             setToSettingManagerIfSettingsDontExist(vehicleSettingManagers, vehicle);
         }
         return vehicleSettingManagers;
@@ -46,9 +51,10 @@ public class VehicleSettingsFactory {
 
             vehicleSettingManagers.put(vehicleSetting.getVehicleID(),getSettingManagerForExistingSetting(vehicleSetting.getProductType(),vehicleSetting));
         }
-        for (Vehicle vehicle :vehicles){
-        	
-        	setToSettingManagerIfSettingsDontExist(vehicleSettingManagers, vehicle);
+        if (vehicles != null) {
+            for (Vehicle vehicle :vehicles){
+                setToSettingManagerIfSettingsDontExist(vehicleSettingManagers, vehicle);
+            }
         }
         return vehicleSettingManagers;
     }

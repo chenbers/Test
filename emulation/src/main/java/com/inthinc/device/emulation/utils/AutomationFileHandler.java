@@ -23,8 +23,7 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-import android.util.Log;
-
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.SHA1Checksum;
 
 public class AutomationFileHandler {
@@ -187,7 +186,7 @@ public class AutomationFileHandler {
             }
             return lastEntry.getName();
         } catch (SVNException e) {
-            Log.e("%s", e);
+            Log.error("%s", e);
             return null;
         }
     }

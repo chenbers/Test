@@ -7,7 +7,7 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsZonesEnum;
 public class PageNotificationsZones extends NotificationsEventsBar {
 
     public PageNotificationsZones() {
-        page = "zone";
+        page = "zoneEvents";
         super.checkMe.add(NotificationsZonesEnum.TITLE);
         super.checkMe.add(NotificationsZonesEnum.NOTE);
     }

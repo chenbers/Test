@@ -4,7 +4,7 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
-import android.util.Log;
+import com.inthinc.pro.automation.logging.Log;
 
 
 public class ScoringNoteProcessor {
@@ -107,7 +107,7 @@ public class ScoringNoteProcessor {
 	public void testSeatBelt(Double topSpeed, Double distance, Double mileage) {
 		Double penalty = (Math.pow(topSpeed, 2.0)*distance);
 		Double score = ScoringFormulas.p2s(.3, .2, penalty, mileage);
-		Log.i("%2.2f", score);
+		Log.info("%2.2f", score);
 	}
 	
 	public Double speedingScore() {

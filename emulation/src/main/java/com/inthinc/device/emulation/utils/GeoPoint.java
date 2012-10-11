@@ -4,10 +4,9 @@ import java.math.BigInteger;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.logging.Log;
 
 public class GeoPoint {
 	
@@ -46,8 +45,8 @@ public class GeoPoint {
 	    }
 	    
 	    public static Integer get_heading( GeoPoint start, GeoPoint stop  ){
-	    	Log.d("get_heading start: %s", start);
-	        Log.d("stop: %s", stop);
+	    	Log.debug("get_heading start: %s", start);
+	        Log.debug("stop: %s", stop);
 
 	        double lat1 = start.getLat() * deg2rad;
 	        double lat2 = stop.getLat() * deg2rad;
@@ -118,14 +117,14 @@ public class GeoPoint {
         return Distance_Calc.calc_distance(this, stop);
     }
     
-    public Integer deltaT(Integer speedInMPH, GeoPoint nextLocation){
+    public int deltaT(Integer speedInMPH, GeoPoint nextLocation){
         return deltaTD(speedInMPH, nextLocation).intValue();
     }
     
-    public Double deltaTD(Integer speedInMPH, GeoPoint nextLocation) {
-    	if (speedInMPH==0){
-    		return 0.0;
-    	}
+    public Double deltaTD(Integer speedInMPH, GeoPoint nextLocation){
+        if (speedInMPH==0){
+            return 0.0;
+        }
         Double delX = deltaX(nextLocation);
         Double v = speedInMPH.doubleValue() / 3600.0 ; //Miles/Seconds
         Double delT = (delX / v);

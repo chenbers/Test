@@ -143,5 +143,10 @@
 			<groupId>com.inthinc.pro.automation</groupId>
 			<artifactId>automation</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.inthinc.ws850</groupId>
+			<artifactId>SbsLib</artifactId>
+			<version>0.0</version>
+		</dependency>
 	</dependencies>
 </project>

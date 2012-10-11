@@ -125,6 +125,9 @@ public enum Attrib {
 	STRUCTVERSION(8280, AttribParserType.BYTE),
 	SENDER(8281, AttribParserType.BYTE),
 	CONNECTTYPE(8282, AttribParserType.BYTE),
+	INSPECTIONTYPE(8291, AttribParserType.BYTE),
+	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
+	
 	
 	// SHORT 
 	ACCELERATION(16384, AttribParserType.SHORT),

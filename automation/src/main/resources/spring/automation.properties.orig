@@ -1,0 +1,68 @@
+# --> automation properties
+
+# switch automation.testsilo to either dev or slb if you would like to test on those instances
+# please switch back to qa after you are done or it will cause building problems in hudson
+automation.testsilo=qa
+automation.browser=ff5
+automation.application=tiwipro
+automation.operatingSystem=macosx
+automation.addTestSet=false
+
+<<<<<<< HEAD
+
+#users.editableAccount=mweiss,mweiss
+#users.mainAutomation=mweiss,mweiss
+#users.password=password
+=======
+# --> used for slb testing
+#users.editableAccount=mweiss,mweiss
+#users.mainAutomation=mweiss,mweiss
+#users.password=password
+
+# --> used for standard automation testing
+>>>>>>> develop
+users.editableAccount=editable,secondEditable
+users.mainAutomation=prime,secondPrime
+users.password=2ut2CFmnH$f!
+
+<<<<<<< HEAD
+=======
+# --> used for stress testing
+#users.editableAccount=stresstestuser,stresstestuser
+#users.mainAutomation=stresstestuser,stresstestuser
+#users.password=password
+
+>>>>>>> develop
+servers.protocol=https
+servers.url=.inthinc.com
+servers.portalport=8099
+servers.mcmport=8090
+servers.waysport=8050
+servers.satport=7780
+servers.app=app
+
+
+servers.tiwipro.qa.url=qa.tiwipro.com
+servers.tiwipro.qa.webport=8423
+servers.tiwipro.qa.portalport=8199
+servers.tiwipro.qa.mcmport=8190
+servers.tiwipro.qa.satport=7880
+servers.tiwipro.qa.waysport=8988
+
+servers.tiwipro.dev.protocol=http
+servers.tiwipro.dev.url=dev.tiwipro.com
+servers.tiwipro.dev.webport=8081
+servers.tiwipro.dev.mcmport=8090
+servers.tiwipro.dev.satport=7780
+servers.tiwipro.dev.waysport=8888
+
+servers.tiwipro.slb.url=schlumberger.inthinc.com
+servers.tiwipro.slb.webport=443
+servers.tiwipro.slb.mcmport=8090
+servers.tiwipro.slb.satport=7780
+servers.tiwipro.slb.waysport=8888
+
+servers.tiwipro.teen_qa.url=qaserv.iwiglobal.com
+servers.tiwipro.teen_qa.webport=8099
+servers.tiwipro.teen_qa.portalport=9085
+servers.tiwipro.teen_qa.mcmport=9090

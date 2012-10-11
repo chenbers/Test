@@ -5,10 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.pro.automation.enums.ProductType;
+import com.inthinc.pro.automation.logging.Log;
 
 public class ScoringNoteSorter {
 

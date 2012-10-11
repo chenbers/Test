@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="groupPath" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
 	<field name="trips" class="java.lang.Integer"/>
@@ -96,7 +97,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="320" y="1" width="100" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{drivingMiles}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{drivingMiles},$P{USE_METRIC},$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="420" y="1" width="100" height="20"/>

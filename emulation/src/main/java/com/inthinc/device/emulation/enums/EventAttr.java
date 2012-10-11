@@ -9,10 +9,9 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.logging.Log;
 
 
 public enum EventAttr implements IndexEnum{
@@ -366,7 +365,7 @@ public enum EventAttr implements IndexEnum{
     TOTAL_TEMP_COMP_SLOPE_UPDATES(16418),
     TRAILER_GALLONS(16419),
     
-//    TRANSMITTED_MESSAGE_COUNT(16420),
+//	    TRANSMITTED_MESSAGE_COUNT(16420),
     VEHICLE_GALLONS(16420),
     WATCHDOG_COUNT(16421),
     WEI_COUNT(16422),
@@ -404,7 +403,7 @@ public enum EventAttr implements IndexEnum{
 
 	
 ////////////////////////////////////////////////////////////////////////////////////
-//	string Attributes 24576 [0x6000] to 32767 [0x7FFF],
+//		string Attributes 24576 [0x6000] to 32767 [0x7FFF],
 ////////////////////////////////////////////////////////////////////////////////////
 	
     DATA(24576),                            // string length comes from ATTR_DATA_LENGTH
@@ -431,7 +430,7 @@ public enum EventAttr implements IndexEnum{
     
 
 ////////////////////////////////////////////////////////////////////////////////////
-//	Attribute ids 32768  [0x8000] to  40959 [0x9FFF] have four byte values,
+//		Attribute ids 32768  [0x8000] to  40959 [0x9FFF] have four byte values,
 ////////////////////////////////////////////////////////////////////////////////////
     
     AVERAGE_LOCK_TIME(32768),
@@ -458,7 +457,7 @@ public enum EventAttr implements IndexEnum{
     DOWNLOAD_WEEKLY_TOTAL_ZONES(32787),
     EMU_NAME_VERIFIED(32789),
     
-//    ERROR(32790),
+//	    ERROR(32790),
     ERROR_CODE_CONF(32790),
     FILE_SIZES(32791),
     FLAGS(32792),
@@ -533,7 +532,7 @@ public enum EventAttr implements IndexEnum{
     RHA_ENDTIME(32858),
 		    
 ////////////////////////////////////////////////////////////////////////////////////
-//	double value Attributes 40960 [0xA000] to 49151 [0xBFFF]
+//		double value Attributes 40960 [0xA000] to 49151 [0xBFFF]
 ////////////////////////////////////////////////////////////////////////////////////
     
     MAX_LATITUDE(40960),
@@ -543,7 +542,7 @@ public enum EventAttr implements IndexEnum{
 
 	
 ////////////////////////////////////////////////////////////////////////////////////
-//	these attributes are binary data values 0xC000 [49152] to 0XDFFF	[57343] (specially parsed data from old style notifications)
+//		these attributes are binary data values 0xC000 [49152] to 0XDFFF	[57343] (specially parsed data from old style notifications)
 ////////////////////////////////////////////////////////////////////////////////////
     
     PACKED_DELTAV(49152, 4),                        //binary   4 bytes
@@ -719,7 +718,7 @@ public enum EventAttr implements IndexEnum{
             }
             br.close();
         } catch (IOException e) {
-            Log.wtf("%s", e);
+            Log.error("%s", e);
         }
     }
     
@@ -818,7 +817,7 @@ public enum EventAttr implements IndexEnum{
             }
             br.close();
         }catch (IOException e) {
-            Log.i("%s", e);
+            Log.info("%s", e);
         }
     }
     

@@ -3,7 +3,7 @@ package com.inthinc.device.scoring;
 import java.util.Iterator;
 import java.util.Map;
 
-import android.util.Log;
+import com.inthinc.pro.automation.logging.Log;
 
 
 /**
@@ -131,7 +131,7 @@ public class ScoringFormulas {
 				Log.debug("ap2s raw score = " + score);
 			}
 		}catch(ArithmeticException e) {
-			Log.wtf("%s",e);
+			Log.error("%s",e);
 			score=5.0;
 		}
 		if (score<0.0)score=0.0;

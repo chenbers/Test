@@ -10,11 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
-import com.google.common.collect.Lists;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutoHTTPException;
-import com.inthinc.pro.automation.utils.AutomationCache;
 import com.inthinc.pro.automation.utils.HTTPCommands;
 
 public class GoogleTrips {
@@ -23,44 +20,33 @@ public class GoogleTrips {
     private static final String directionsAPI = "http://maps.googleapis.com/maps/api/directions/";
     private static final String geocodeAPI = "http://maps.googleapis.com/maps/api/geocode/";
     private static enum Mode{json, xml};
-    private static final AutomationCache cache = new AutomationCache();
     
     public GoogleTrips(){
         http = new HTTPCommands();
-        cache.setFileName("GoogleTripsCache.json");
     }
     
     public LinkedList<GeoPoint> getTrip(String start, String stop){
-    	String key = String.format("%s to %s", start, stop);
-    	String requestResults = cache.getValue(key);
-    	
-    	if (requestResults.isEmpty()){
-			String query = http.constructQuery("sensor", "false", "origin", start, "destination", stop);
-	        GetMethod getRequest = new GetMethod(directionsAPI + Mode.json);
-	        getRequest.setQueryString(query);
-	        requestResults = sendRequest(getRequest).toString();
-	        cache.cache(key, requestResults);
-    	}
-    	
+        String query = http.constructQuery("sensor", "false", "origin", start, "destination", stop);
+        GetMethod getRequest = new GetMethod(directionsAPI + Mode.json);
+        getRequest.setQueryString(query);
         try {
-        	JSONObject results = new JSONObject(requestResults);
-            return processReply(results);
+            return processReply(sendRequest(getRequest));
         } catch (JSONException e) {
-        	Log.wtf("%s", e);
+        	Log.error("%s", e);
         }
         return null;
     }
     
     private JSONObject sendRequest(GetMethod getMethod){
     	try {
-    		Log.d("sendRequest... %s", getMethod.getURI().toString());
+    		Log.debug("sendRequest... %s", getMethod.getURI().toString());
             String response = http.httpRequest(getMethod);
             return new JSONObject(response);
             
         } catch (HttpException e) {
-        	Log.wtf("%s", e);
+        	Log.error("%s", e);
         } catch (JSONException e) {
-        	Log.wtf("%s", e);
+        	Log.error("%s", e);
         } catch (AutoHTTPException e) {
 			Log.error(e);
 		}
@@ -68,19 +54,14 @@ public class GoogleTrips {
     }
     
     public GeoPoint getLocation(String location){
-    	String geoCoded = cache.getValue(location);
-    	if (geoCoded.isEmpty()) {
-	    	GetMethod getRequest = new GetMethod(geocodeAPI + Mode.json);
-	    	getRequest.setQueryString(http.constructQuery("address", location, "sensor", "false"));
-	    	geoCoded = sendRequest(getRequest).toString();
-	    	cache.cache(location, geoCoded);
-    	}
+    	GetMethod getRequest = new GetMethod(geocodeAPI + Mode.json);
+    	getRequest.setQueryString(http.constructQuery("address", location, "sensor", "false"));
+    	JSONObject response = sendRequest(getRequest);
     	try {
-    		JSONObject response = new JSONObject(geoCoded);
 			JSONObject latLng = response.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
 			return new GeoPoint(latLng.getDouble("lat"), latLng.getDouble("lng"));
 		} catch (JSONException e) {
-        	Log.wtf("%s", e);
+        	Log.error("%s", e);
 		}
     	return new GeoPoint(-1.0, -1.0);
     }
@@ -101,7 +82,6 @@ public class GoogleTrips {
         }
         return points;
     }
-    
     
 
     /**

@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
-
 import com.inthinc.device.CassandraProperties;
 import com.inthinc.device.CassandraPropertiesBean;
 import com.inthinc.device.devices.TiwiProDevice;
@@ -14,6 +12,7 @@ import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.objects.TripDriver;
 import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 import com.inthinc.pro.automation.resources.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.AutomationThread;
@@ -47,7 +46,7 @@ public class VariableTripCreator {
         AutomationCalendar secondTrip = new AutomationCalendar();
         secondTrip.addToDay(1);
         
-        Log.d("portal %s", portal);
+        Log.debug("portal %s", portal);
         int threads = Thread.activeCount();
 
         long start = System.currentTimeMillis();

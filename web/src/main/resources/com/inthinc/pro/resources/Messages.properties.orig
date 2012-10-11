@@ -1,0 +1,2877 @@
+#Message Not Needing Translation
+phoneFormat=({0}) {1}-{2}
+dateFormat=MMM d, yyyy
+dateTimeFormat=MMM d, yyyy h:mm a (z)
+#stopsDateTimeFormat=MM/dd/yyyy h:mm a (z)
+stopsDateTimeFormat=M/d h:mm a (z)
+timeFormat=h:mm a (z)
+longTimeFormat=h:mm:ss a (z)
+simpleDateFormat=MM/dd/yyyy
+shortDateFormat=M/d
+justDay=dd
+monthDay=MMM dd
+longDateTimeFormat=MMM d, yyyy h:mm:ss a (z)
+dateFormatNoTimezone=MMM dd yyyy hh:mm a
+time_period_am=AM
+time_period_pm=PM
+
+# messages properties
+# proposed format for keys: 
+# <page name>_<key in lowerCamelCase>
+
+title=inthinc
+
+
+header_help=Help
+header_myAccount=My Account
+header_logout=Log Out
+header_css_conditional=<\!--[if \#{0}]>\#{1}<\![endif]--> 
+
+unknown_driver=Unknown Driver
+unassigned=Unassigned
+
+navigation_home=Home
+navigation_reports=Reports
+navigation_notifications=Notifications
+navigation_liveFleet=Live Fleet
+navigation_admin=Admin
+navigation_hos=HOS
+navigation_recents=Recent:
+navigation_searchDrivers=Drivers
+navigation_searchVehicles=Vehicles
+navigation_searchWaysmart=waySmart
+navigation_searchDevices=Devices
+navigation_searchToolTip=Search
+navigation_myAccount=My Account
+navigation_myMessages=My Messages
+subNavigation_vehicles=Vehicles
+subNavigation_drivers=Drivers
+subNavigation_idling=Idling Drivers
+subNavigation_idlingVehicle=Idling Vehicles
+subNavigation_performance=Performance
+
+
+gridNavigation_search=Search
+
+footer_copyright=&#169;2011 inthinc
+footer_privacyPolicy=Privacy Policy
+footer_terms=Terms of Service
+footer_legal_notice=Legal Notice
+footer_support=Support
+footer_contact=Contact 
+footer_version=Version: {0}
+
+error_title=Error
+error_application_title=Application Error
+error_unavailable_title=Page Unavailable
+error_access_denied_title=Access Denied
+error_baseMsg=An error has occurred.  Please try again.  If you continue to have problems, contact customer service at\: 
+error_unavailableMsg=The requested page is currently unavailable. Please try again.  If you continue to have problems, contact customer service at\: 
+error_access_denied_msg=Insufficient privilege to access requested resource.  If you continue to have problems, contact customer service at\: 
+
+error_detailsTitle=Details:
+error_invalid=Invalid
+error_emailInvalid=Incorrect format (jdoe@tiwipro.com)
+error_validationMsg={0} error(s) occurred. Please verify all the data entered is correct.
+error_go_back=Go back
+error_return_to_homepage=return to home page
+error_or=or
+error_number_format=Must be a whole number greater than zero
+error_float_format=Must be a number greater than zero
+
+error_waysmartSerialNumberInvalid=Must match "MCM" followed by 6 digits
+error_iridiumIMEIInvalid=Must begin with 30000300, 30003401, 30012400, 30012401, or 30023401 followed by 7 digits
+exception_accessDenied=The requested resource is unavailable.
+
+login_title=Log In
+login_username=User Name
+login_password=Password
+login_button=Log In
+login_forgotLink=Forgot your user name or password?
+login_open_session=Open Session
+login_currently_logged_in=You are currently logged in as {0}. If this is not you, please invalidate this session by logging out of the application.
+login_logout=Log Out
+login_return_home=return to home page
+login_otherwise=Otherwise 
+
+unsubscribe_title=Unsubscribe
+unsubscribe_unsubscribeFrom=Unsubscribe From {0} ({1}).
+unsubscribe_email=Email Address:
+unsubscribe_confirm=Confirm
+unsubscribe_message_header=Unsubscribe Successful
+#0 = Message Type
+#1 = Name of message
+unsubscribe_message_body=You have just successfully unsubscribed from {0} ({1}).
+unsubscribe_report=Scheduled Report
+unsubscribe_redflag_alert=Red Flag Alert
+unsubscribe_login=Login to the tiwiPro Portal
+
+flyout_maximize=Maximize
+flyout_restore=Restore
+maximize=Maximize
+restore=Restore
+tool_menu=Tool Menu
+help=Help 
+
+label_two_parameters={0} {1}
+
+#Retrieve Credentials
+credentials_header=Forgot User Name or Password?
+credentials_enter_email=Enter the e-mail address from your tiwiPro account. Information pertaining to your user name and password will be sent to this e-mail account.
+credentials_email_address=E-mail Address
+credentials_retrieve_btn=Send
+credentials_invalid_email=Incorrect e-mail address
+credentials_successful_header=Message Sent Successfully
+credentials_sent_success=A message containing information about your user name and password has been sent to the e-mail address provided.
+credentials_mail_subject=Update Your Password
+credentials_mail_text=To obtain your user name or change your password, click the following link\:  {0}
+credentials_success_header=Didn't get the message?
+credentials_success_list_item1=Be patient, it may take a few minutes for the message to arrive in your Inbox.
+credentials_success_list_item2=Check your Junk folder.
+credentials_success_list_item3=If problems still exist, perform the process again.
+updatecred_header=Change Password
+updatecred_username=User Name:
+updatecred_instructions=Your user name is indicated below. To change your password, enter a new password in the fields below.
+updatecred_newPassword=New Password:
+updatecred_confirmPassword=Confirm New Password:
+updatecred_passwordFormat=Must be 6 to 12 characters
+updatecred_passwordsDontMatch=Does not match password
+updatecred_successHeader=Success
+updatecred_successComment=Your password has been changed.
+passwordStrength_message=Password strength depends upon password length, using mixed case characters, numbers and special characters (!@#$%^&*?,~)
+passwordStrength_label=Password Strength:
+passwordStrength_minimumStrengthNotSet=Minimum Password Strength Not Set
+passwordStrength_minimumStrengthNotMet=Minimum Password Strength Not Met
+passwordStrength_noRestrictions=No Restrictions
+passwordStrength_weak=Weak
+passwordStrength_fair=Fair
+passwordStrength_strong=Strong
+passwordStrength_strongest=Very Strong
+passwordStrength_beginTyping=Begin Typing
+passwordExpire_never=Never
+passwordReminder_changeRequired=Welcome {0}. Your account has been set to require you to change your password.
+passwordReminder_expiring=Welcome {0}. Your password is going to expire in {1} days. Please update your password before it expires.
+passwordReminder_changeWarn=Welcome {0}.  You may want to change your password to something easy for you to remember.
+
+login_error_title=Log In Error
+login_error_BadCredentialsException=Incorrect user name or password.<br/><br/>Please try again.
+login_error_CredentialsExpiredException=Your access has been blocked because of an expired password.<br/><br/>If you have questions regarding this action, contact your organization's tiwiPro system administrator.
+login_error_AccountExpiredException=Your access has been blocked.<br/><br/>If you have questions regarding this action, contact your organization's tiwiPro system administrator.
+login_error_LockedException=The account being accessed is locked.<br/><br/>If you have questions regarding this action, contact your organization's tiwiPro system administrator.
+login_error_Generic=An unknown error was encountered.<br/><br/>Please contact your organization's tiwiPro system administrator.
+
+#My Account
+myAccount_accountInformation=Account Information
+myAccount_name=Name:
+myAccount_region=Group:
+myAccount_team=Team:
+myAccount_loginInformation=Login Information
+myAccount_userName=User Name:
+myAccount_notifications=Red Flag Preferences
+myAccount_information=Information:
+myAccount_warning=Warning:
+myAccount_critical=Critical:
+myAccount_alertText=None
+myAccount_alertText0=None
+myAccount_alertText1=E-mail 1
+myAccount_alertText2=E-mail 2
+myAccount_alertText3=Phone 1
+myAccount_alertText4=Phone 2
+myAccount_alertText5=Phone - Cell
+myAccount_alertText6=Text Message 1
+myAccount_alertText7=Text Message 2
+myAccount_alertTextSeparator=\: 
+myAccount_contactInformation=Contact Information
+myAccount_email=E-mail Addresses
+myAccount_phone=Phone Numbers
+myAccount_textMessages=Text Messages
+myAccount_priPhone=Phone 1:
+myAccount_secPhone=Phone 2:
+myAccount_priEmail=E-mail 1:
+myAccount_secEmail=E-mail 2:
+myAccount_priText=Text Message 1:
+myAccount_secText=Text Message 2:
+myAccount_phoneFormat=Must consist of up to 15 numeric characters
+myAccount_textMessageFormat=Incorrect format (8015551212@tmomail.com)
+myAccount_change_password=Change Password
+myAccount_current_password=Current Password
+myAccount_new_password=New Password
+myAccount_confirm_new_password=Confirm New Password
+myAccount_passwordFormat=Must be 6 to 12 characters
+myAccount_incorrect_password=Current Password is incorrect
+myAccount_passwords_dont_match=New and Confirm New Password do not match
+myAccount_changedPassword=Password successfully changed
+myAccount_locale=Locale
+myAccount_measurement=Measurement
+myAccount_fuel_efficiency=Fuel Efficiency Ratio
+myAccount_edit=Edit
+myAccount_mapPref=Map Preferences
+myAccount_mapPrefType=Map Type:
+myAccount_mapPrefLayers=Map Layers:
+
+# Generic Buttons
+button_ok=OK
+button_cancel=Cancel
+button_save=Save
+button_edit=Edit
+button_add=Add
+button_delete=Delete
+button_batchEdit=Batch Edit
+button_search=Search
+button_filter=Filter
+button_next=Next
+button_email=E-mail
+button_editColumns=Edit Columns
+button_yes=Yes
+button_no=No
+button_create_unit=Create Unit
+button_create=Create
+button_close=Close
+button_change=Change
+button_new=New
+button_confirm=Confirm
+button_forgive=Forgive
+duration_days=30 days 
+duration_three=3 months
+duration_six=6 months
+duration_twelve=12 months
+
+# Generic Messages
+recordCounts=Showing {0} to {1} of {2} records
+new=New
+active=Active
+inactive=Inactive
+required=Required
+requiredKey=* Required field
+refresh=Refresh
+atLeastOne=Please pick at least one alert type
+
+
+status=
+status0=New
+status1=Active
+status2=Inactive
+status3=Deleted
+DeviceStatus.NEW=New
+DeviceStatus.ACTIVE=Active
+DeviceStatus.INACTIVE=Inactive
+DeviceStatus.DELETED=Deleted
+
+# Context Menu
+contextMenu_tools_menu=Tools Menu
+contextMenu_export_to_pdf=Export To PDF
+contextMenu_email_this_report=E-mail This Report
+contextMenu_export_to_Excel=Export To Excel
+
+# Trend Report
+trendReport_header_divisionTeam=Division/Team
+trendReport_header_score=Score
+trendReport_header=Trend
+trendReport_summary={0} Average
+
+#Reports
+reports_none_assigned=None Assigned
+
+#Severity Graphic
+severityGraphic_low=Low
+severityGraphic_extreme=Extreme
+severityGraphic_medium=Medium
+
+#Event Bubble Widget
+eventBubble_speedLimit=Speed Limit
+eventBubble_averageSpeed=Average Speed
+eventBubble_topSpeed=Top Speed
+eventBubble_distance=Distance
+eventBubble_speed=Speed
+eventBubble_severity=Severity
+eventBubble_lowIdleDuration=Low Idle Duration
+eventBubble_highIdleDuration=High Idle Duration
+
+crashReport=Crash Report
+crashReport_add=Add Crash Report
+crashReport_edit=Edit Crash Report
+crashReport_date=Date/Time
+crashReport_status=Crash Report Status
+crashReport_crashSummary=Crash Summary
+crashReport_crashDetails=Crash Details
+crashReport_weather=Weather
+crashReport_description=Description
+crashReport_location=Location
+crashReport_latlng=Latitude/Longitude
+crashReport_vehicle=Vehicle
+crashReport_driver=Driver
+crashReport_vehicleInvolved=Vehicle Involved
+crashReport_occupantCount=Occupant Count
+crashReport_crashLocation=Crash Location
+crashReport_crashRoute=Crash Route
+crashReport_crashEvents=Crash Events
+crashReport_crashTrace=Crash Trace
+crashReport_crashTraceInstructions=To calculate event data select the time period (click and drag) of the incident on the chart below. Single click anywhere on the chart to select the entire time period.
+crashReport_mustHaveJava=You must have Java installed to view the Crash Trace Applet.
+crashReport_existingTrip=Select location by:
+crashReport_descriptionExplanation=Please describe the crash event, occupants and/or witnesses and their contact information, personal injuries, and property damage.
+crashReport_tripSelection=Select a point on the trip to set the crash location. Selecting a point on the trip will cause the crash time to be updated as well.
+crashReport_readOnlyMessage=There is crash data that exists for this crash so the Date and Crash Location will be read only.
+crashReport_dateTime=Date/Time
+crashReport_rpm=RPM
+crashReport_seatBelt=Seat Belt
+crashReport_available=Available
+crashReport_state=On
+crashReport_speed=Speed
+crashReport_gps=GPS
+crashReport_obd=OBD
+crashReport_gpsSpeed=GPS Speed
+crashReport_obdSpeed=OBD Speed
+crashReport_backToCrashHistory=Back to Crash History List
+crashReport_startTime=Start Time
+crashReport_endTime=End Time
+crashReport_time=Time
+crashReport_trips=Trips
+crashReport_searchType=Find trips by the above selected\: 
+crashReport_driverVehicleSearch=Driver/Vehicle Search
+crashReport_crashPoint=Point of Crash
+
+editOccupant_name=Name
+editOccupant_injury=Injury
+editOccupant_seatbelt=Seat Belt
+
+
+# Admin Sidebar Navigation
+adminSideNav_go_adminCustomRoles=Custom Roles
+adminSideNav_go_adminAddCustomRole=Add Custom Role
+adminSideNav_go_adminPeople=Users
+adminSideNav_go_adminAddPerson=Add User
+adminSideNav_go_adminVehicles=Vehicles
+adminSideNav_go_adminAddVehicle=Add Vehicle
+adminSideNav_go_adminTrailers=Trailers
+adminSideNav_go_adminAddTrailer=Add Trailer
+adminSideNav_go_adminDevices=Devices
+adminSideNav_go_adminAddDevice=Add Device
+adminSideNav_go_adminZones=Zones
+adminSideNav_go_adminZoneAlerts=Zone Alerts
+adminSideNav_go_adminAddZoneAlert=Add Alert
+adminSideNav_go_adminRedFlags=Red Flags
+adminSideNav_go_adminAddRedFlag=Add Red Flag
+adminSideNav_go_adminOrganization=Organization
+adminSideNav_go_adminReportSchedules=Reports
+adminSideNav_go_adminAddReportSchedule=Add Report
+adminSideNav_go_adminSBSCR=Speed By Street
+adminSideNav_go_adminAddSBSCR=Add Speed Limit Change Request
+adminSideNav_go_adminUnknownDriver=Unknown Driver
+adminSideNav_go_adminAccount=Account
+adminSideNav_go_adminHazards=Road Hazards
+
+# Admin Page Headers
+adminHeader_customRoles=Admin - Custom Roles
+adminHeader_addCustomRole=Admin - Add Custom Role
+adminHeader_editCustomRole=Admin - Edit Custom Role
+adminHeader_editCustomRoles=Admin - Edit Multiple Roles
+adminHeader_customRoleDetails=Admin - {0} Details
+adminHeader_people=Admin - Users
+adminHeader_addPerson=Admin - Add User
+adminHeader_editPerson=Admin - Edit User
+adminHeader_editPeople=Admin - Edit Multiple Users
+adminHeader_personDetails=Admin - {0} Details
+adminHeader_vehicles=Admin - Vehicles
+adminHeader_addVehicle=Admin - Add Vehicle
+adminHeader_editVehicle=Admin - Edit Vehicle
+adminHeader_editVehicles=Admin - Edit Multiple Vehicles
+adminHeader_vehicleDetails=Admin - {0} Details
+adminHeader_devices=Admin - Devices
+adminHeader_addDevice=Admin - Add Device
+adminHeader_editDevice=Admin - Edit Device
+adminHeader_editDevices=Admin - Edit Multiple Devices
+adminHeader_deviceDetails=Admin - {0} Details
+adminHeader_zones=Admin - Zones
+adminHeader_zoneAlerts=Admin - Zone Alerts
+adminHeader_addZoneAlert=Admin - Add Zone Alert
+adminHeader_editZoneAlert=Admin - Edit Zone Alert
+adminHeader_editZoneAlerts=Admin - Edit Multiple Zone Alerts
+adminHeader_zoneAlertDetails=Admin - {0} Details
+adminHeader_redFlags=Admin - Red Flags
+adminHeader_addRedFlag=Admin - Add Red Flag
+adminHeader_editRedFlag=Admin - Edit Red Flag
+adminHeader_editRedFlags=Admin - Edit Multiple Red Flags
+adminHeader_redFlagDetails=Admin - {0} Details
+adminHeader_organization=Admin - Organization
+adminHeader_reportScheduling=Admin - Reports
+adminHeader_addReportSchedule=Admin - Add Report
+adminHeader_editReportSchedule=Admin - Edit Report
+adminHeader_editReportSchedules=Admin - Edit Multiple Reports
+adminHeader_reportScheduleDetails=Admin - {0} Report Details
+adminHeader_reportSchedule=Admin - Report Schedule
+adminHeader_addSpeedLimitChangeRequest=Admin - Speed By Street
+adminHeader_unknownDriver=Admin - Unknown Driver
+adminHeader_unknownDriverDetails=Admin - Unknown Driver Details
+adminHeader_editUnknownDriver=Admin - Edit Unknown Driver
+adminHeader_account=Admin - Account 
+adminHeader_accountDetails=Admin - Account Details
+adminHeader_editAccount=Admin - Edit Account
+adminHeader_hazards=Admin - Hazards
+
+# Admin Tables
+adminTable_edit=edit
+adminTable_delete=delete
+adminTable_noneSelected=No items were selected.
+editColumns_title=Edit Columns
+editColumns_explanation=The selected columns will be displayed.
+confirmDelete_title=Delete
+confirmDelete_explanation=Delete the following items? This action is irreversible.
+
+# Custom Roles
+editCustomRole_header=Custom Role
+editCustomRole_name=Name
+
+# Person Table
+personHeader_empid=Employee ID
+personHeader_fullName=Name
+personHeader_user_status=User Status
+personHeader_user_username=User Name
+personHeader_user_groupID=User Group
+personHeader_user_role=Roles
+personHeader_priPhone=Phone 1
+personHeader_secPhone=Phone 2
+personHeader_priEmail=E-mail 1
+personHeader_secEmail=E-mail 2
+personHeader_priText=Text Message 1
+personHeader_secText=Text Message 2
+personHeader_info=Information Alerts
+personHeader_warn=Warning Alerts
+personHeader_crit=Critical Alerts
+personHeader_timeZone=Time Zone
+personHeader_costPerHour=Cost Per Hour
+personHeader_reportsTo=Reports To
+personHeader_title=Title
+personHeader_department=Department
+personHeader_dob=DOB
+personHeader_gender=Gender
+personHeader_height=Height
+personHeader_weight=Weight
+personHeader_address_addr1=Address 1
+personHeader_address_addr2=Address 2
+personHeader_address_city=City
+personHeader_address_state=State
+personHeader_address_zip=Zip Code
+personHeader_driver_status=Driver Status
+personHeader_driver_groupID=Driver Team
+personHeader_driver_license=Driver License #
+personHeader_driver_licenseClass=License Class
+personHeader_driver_state=License State
+personHeader_driver_expiration=License Expiration
+personHeader_driver_certifications=Certifications
+personHeader_driver_dot=DOT
+personHeader_driver_RFID=RFID #
+personHeader_driver_provider=Provider
+personHeader_driver_providerUsername=User Name
+personHeader_driver_providerCellPhone=Cell Phone
+personHeader_locale=Locale
+personHeader_measurementType=Measurement Type
+personHeader_fuelEfficiencyType=Fuel Efficiency Ratio
+personHeader_barcode=Bar Code
+personHeader_rfid1=RFID 1
+personHeader_rfid2=RFID 2
+# Edit Person
+editPerson_personalInformation=User Information
+editPerson_contactInformation=Contact Information
+editPerson_notifications=Notifications
+editPerson_employeeInformation=Employee Information
+editPerson_userInformation=Login Information
+editPerson_driverInformation=Driver Information
+editPerson_empid=Employee ID:
+editPerson_first=First Name:
+editPerson_middle=Middle Name:
+editPerson_last=Last Name:
+editPerson_suffix=Suffix:
+editPerson_dob=DOB:
+editPerson_gender=Gender:
+editPerson_height=Height:
+editPerson_weight=Weight: (lbs)
+editPerson_address_addr1=Address 1:
+editPerson_address_addr2=Address 2:
+editPerson_address_city=City:
+editPerson_address_state=State:
+editPerson_address_zip=Zip Code:
+editPerson_priPhone=Phone 1:
+editPerson_secPhone=Phone 2:
+editPerson_priEmail=E-mail 1:
+editPerson_secEmail=E-mail 2:
+editPerson_priText=Text Message 1:
+editPerson_secText=Text Message 2:
+editPerson_information=Information:
+editPerson_warning=Warning:
+editPerson_critical=Critical:
+editPerson_user_username=User Name:
+editPerson_user_locale=Locale:
+editPerson_user_measurementType=Measurement:
+editPerson_user_fuelEfficiencyType=Fuel Efficiency Ratio:
+editPerson_user_password=Password:
+editPerson_confirmPassword=Password Again:
+editPerson_user_group=Group:
+editPerson_user_role=Roles:
+editPerson_user_status=Status:
+editPerson_reportsTo=Reports To:
+editPerson_title=Title:
+editPerson_department=Department:
+editPerson_timeZone=Time Zone:
+editPerson_costPerHour=Cost Per Hour:
+editPerson_driver_status=Status:
+editPerson_driver_team=Team:
+editPerson_driver_license=Driver License #:
+editPerson_driver_licenseClass=Class:
+editPerson_driver_state=State:
+editPerson_driver_expiration=Expiration:
+editPerson_driver_certifications=Certifications:
+editPerson_driver_dot=DOT:
+editPerson_driver_RFID=RFID #:
+editPerson_reportsToNobody=Nobody
+editPerson_suffixJr=Jr.
+editPerson_suffixSr=Sr.
+editPerson_suffixIII=III
+editPerson_empidTaken=Employee ID is already in use
+editPerson_dateFormat=Incorrect format (Mar 7, 2000)
+editPerson_dobTooLate=Person too young
+editPerson_zipFormat=Incorrect format, use (##### or #####-####)
+editPerson_phoneFormat=Must consist of 10 to 15 numeric characters
+editPerson_emailFormat=Incorrect format (jdoe@tiwipro.com)
+editPerson_textMessageFormat=Incorrect format (8015551212@tmomail.com)
+editPerson_uniqueEmail=E-mail Address is already in use
+editPerson_uniqueUsername=User Name is already in use
+editPerson_passwordFormat=Must be 6 to 12 characters
+editPerson_passwordsMismatched=Does not match password
+editPerson_expirationTooSoon=Please choose a date after today
+editPerson_RFIDFormat=Must be 16 numbers and letters between A and F, starting with E0
+editPerson_uniqueRFID=RFID is already in use
+editPerson_userOrDriver=Please select Login Information, Driver Information or both
+editPerson_partialUpdate=Some fields may not have been updated for users you don't have full rights to edit.
+editPerson_notificationPref=Notification level preferred contact methods must contain contact information.
+
+editPerson_driver_providerType=Provider Type
+editPerson_driver_providerUsername=Username
+editPerson_driver_providerPassword=Password
+editPerson_driver_providerCellPhone=Cell Phone
+editPerson_driver_providerCellStatus=Status
+editPerson_cellProviderSection=Phone Control Provider Information
+
+# Person Details
+person_backToPeople=< Back to Users
+person_confirmDelete=Delete this user? This action is irreversible.
+person_added=User {0} {1} added.
+person_updated=User {0} {1} updated.
+person_deleted=User {0} {1} deleted.
+
+
+# Vehicles Table
+vehiclesHeader_name=Vehicle ID
+vehiclesHeader_driverID=Driver
+vehiclesHeader_groupID=Team
+vehiclesHeader_costPerHour=Cost Per Hour
+vehiclesHeader_year=Year
+vehiclesHeader_make=Make
+vehiclesHeader_model=Model
+vehiclesHeader_color=Color
+vehiclesHeader_vtype=Zone Type
+vehiclesHeader_VIN=VIN
+vehiclesHeader_weight=Weight
+vehiclesHeader_license=License #
+vehiclesHeader_state=State
+vehiclesHeader_status=Status
+vehiclesHeader_deviceID=Device
+vehiclesHeader_odometer=Odometer
+vehiclesHeader_ephone=E-Call Phone
+vehiclesHeader_productType=Product
+vehiclesHeader_DOT=DOT
+true=Yes
+false=No
+vehiclesHeader_IFTA=IFTA
+vehiclesHeader_zoneType=Zone Type
+vehiclesHeader_HOStimezone=Time Zone
+vehiclesHeader_warrantyStart=Warranty Start
+vehiclesHeader_warrantyStop=Warranty Stop
+
+# Edit Vehicle
+editVehicle_vehicleInformation=Vehicle Information
+editVehicle_vehicleProfile=Vehicle Profile
+editVehicle_vehicleAssignment=Vehicle Assignment
+editVehicle_year=Year:
+editVehicle_make=Make:
+editVehicle_model=Model:
+editVehicle_color=Color:
+editVehicle_type=Zone Type:
+editVehicle_VIN=VIN:
+MeasurementType.ENGLISH_editVehicle_weight=Weight: (lbs)
+MeasurementType.METRIC_editVehicle_weight=Weight: (Kg)
+editVehicle_license=License #:
+editVehicle_state=State:
+editVehicle_name=Vehicle ID:
+editVehicle_status=Status:
+editVehicle_groupID=Team:
+editVehicle_costPerHour=Cost Per Hour:
+editVehicle_driverID=Assigned Driver:
+editVehicle_assign=assign
+editVehicle_VINlength=Does not appear to be a valid VIN (17 alphanumeric characters)
+editVehicle_uniqueVIN=VIN is already in use
+editVehicle_weightFormat=Must be a whole number greater than zero
+editVehicle_noDevice=Assign a device to this vehicle in order to edit speed and sensitivity settings.
+editVehicle_speedSensitivityTab=Note: Select the Speed & Sensitivity tab to define device settings.
+editVehicle_odometerFormat=Must be a whole number greater than zero
+MeasurementType.ENGLISH_editVehicle_odometer=Odometer: (mi)
+MeasurementType.METRIC_editVehicle_odometer=Odometer: (Km)
+editVehicle_odometer=Odometer
+editVehicle_DOT=DOT:
+editVehicle_IFTA=IFTA:
+editVehicle_ProductType=Product:
+
+
+# Vehicle Details
+vehicle_backToVehicles=< Back to Vehicles
+vehicle_noDevice=Assign a device to this vehicle in order to view speed and sensitivity settings.
+vehicle_assignDevice=You must assign a device to this vehicle before assigning a driver.
+vehicle_confirmDelete=Delete this vehicle? This action is irreversible.
+vehicle_added=Vehicle {0} added.
+vehicle_updated=Vehicle {0} updated.
+vehicle_deleted=Vehicle {0} deleted.
+vehicle_name_rules=The vehicle name must use the following characters only: a-z, A-Z, 0-9 and/or embedded blank.
+
+# Group Details 
+group_fleet=Fleet
+group_region=Region
+group_team=Team
+group_name=Name
+group_description=Description
+group_manager=Manager
+group_supervisor=Supervisor
+group_contact=Contact
+group_number_of_vehicles=# Vehicles
+group_number_of_drivers=# Drivers
+group_other_data_to_see=Other possible data that you may like to see...
+group_summary_title=Summary - {0}
+group_geofence=Geofence
+group_add_title=Add Group
+group_edit_title =Edit group {0}
+group_drivers=Drivers
+group_vehicles=Vehicle
+group_default_view=Default Map View
+group_group_type=Group Type
+group_vehicle = Vehicle {0}
+group_driver = Driver {0} {1}
+group_locate = Locate
+group_find_address = Find Address:
+group_parent_group = Parent Group
+group_save_confirmation = was added successfully.
+group_update_confirmation = was updated successfully.
+group_delete_confirmation = Delete this group? This action is irreversible.
+group_delete_error_subordinate = Cannot delete a group that contains a subordinate group, driver, or vehicle.
+group_delete_error_top = Cannot delete the top level group.
+group_edit_error_team = A group's type cannot be changed if the group contains a subordinate group.
+group_edit_error_division = A group's type cannot be changed if the group contains a driver or a vehicle.
+groupEdit_selfParentError= A group cannot be a parent group to itself.
+groupEdit_childToParentError= A group's parent group cannot be one of its subordinate groups.
+groupEdit_addressRequired=The address is required when the DOT Address Type is set.
+group_summary_address=Address
+group_address_addr1=Address 1:
+group_address_addr2=Address 2:
+group_address_city=City:
+group_address_state=State:
+group_address_zip=Zip Code:
+group_address_type=DOT Address Type:
+
+
+organization_legend=Organization Legend
+organization_vehicleAssignments=Vehicle Assignments
+organization_deviceAssignments=Device Assignments
+organization_driverAssignments=Driver Assignments
+organization_assignedVehicle=Assigned Vehicle
+organization_assignedDriver=Assigned Driver
+organization_assignedDevice=Assigned Device
+
+# Report Scheduling
+reportSchedulesHeader_name=Name
+reportSchedulesHeader_startDate=Start Date
+reportSchedulesHeader_endDate=End Date
+reportSchedulesHeader_schedule=Schedule
+reportSchedulesHeader_lastEmail=Last Sent
+reportSchedulesHeader_occurrence=Occurrence
+reportSchedulesHeader_report=Report
+reportSchedulesHeader_timeOfDay=Time Of Day
+reportSchedulesHeader_status=Status
+reportSchedulesHeader_owner=Owner
+
+reportSchedule_deleted=Report {0} deleted.
+reportSchedule_added=Report {0} added.
+reportSchedule_updated=Report {0} updated.
+reportSchedule_reportConfiguration=Report Settings
+reportSchedule_reportScheduling=Report Schedule
+reportSchedule_reportNameStatusTime=Name, Status, And Time
+reportSchedule_reportOccurrence=Report Occurrence
+reportSchedule_email=E-mail
+reportSchedule_notifyByEmail=Distribute e-mail the selected e-mail addresses below.
+reportSchedule_notifyGroupManager=Distribute e-mail to each group manager, including subgroups
+reportSchedule_notifyGroupManagerInstructions=This feature is only available for the following reports {0}
+reportSchedule_report=Report:
+reportSchedule_duration=Duration:
+reportSchedule_daysReported=Days Reported:
+reportSchedule_name=Name:
+reportSchedule_group=Group:
+reportSchedule_vehicle=Vehicle:
+reportSchedule_driver=Driver:
+reportSchedule_startDate=Start Date:
+reportSchedule_endDate=End Date:
+reportSchedule_daysOfWeek=Day of Week:
+reportSchedule_dayOfMonth=Day of Month:
+reportSchedule_timeOfDay=Time of Day:
+reportSchedule_occurrence=Occurrence:
+reportSchedule_status=Status:
+reportSchedule_day=Day
+reportSchedule_groups=Group(s):
+reportSchedule_reportOn=Report On:
+reportSchedule_backToSchedules=< Back to Reports
+editReportSchedule_reportsByEmailInstructions=Type the e-mail addresses you would like to email this report to separated by commas.
+editReportSchedule_noDays=Please select at least one day.
+reportSchedule_confirmDelete=Delete this report? This action is irreversible.
+reportSchedule_owner=Owner:
+reportSchedule_drivers=Driver(s):
+reportSchedule_allDrivers=-- All Drivers --
+
+# Choose Driver
+chooseDriver_title=Assign Driver to Vehicle
+chooseDriver_choose=assign
+chooseDriver_assigned=Assigned
+chooseDriver_unassigned=Unassigned
+
+
+# Devices Table
+devicesHeader_name=Device ID
+devicesHeader_vehicleID=Vehicle ID
+devicesHeader_imei=IMEI
+devicesHeader_sim=SIM Card
+devicesHeader_serialNum=Serial Number
+devicesHeader_phone=Device Phone
+devicesHeader_ephone=E-Call Phone
+devicesHeader_activated=Activated
+devicesHeader_status=Status
+devicesHeader_waysmartSerialNumber=waySmart Serial Number
+devicesHeader_iridiumIMEI=Sat IMEI
+devicesHeader_productVer=Product
+devicesHeader_mcmid=MCM ID
+devicesHeader_altimei=Alternate IMEI
+
+# Edit Device
+editDevice_deviceInformation=Device Information
+editDevice_deviceProfile=Device Profile
+editDevice_deviceAssignment=Device Assignment
+editDevice_showVehiclesForAssignment=Show vehicles for assignment
+editDevice_hideVehiclesForAssignment=Hide vehicles for assignment
+editDevice_name=Device ID:
+editDevice_imei=IMEI:
+editDevice_sim=SIM Card:
+editDevice_serialNum=Serial Number:
+editDevice_phone=Device Phone:
+editDevice_ephone=E-Call Phone:
+editDevice_activated=Activated:
+editDevice_status=Status:
+editDevice_vehicleID=Assigned Vehicle:
+editDevice_unassign=Unassign
+editDevice_assign=assign
+editDevice_speedNotification=Speed/Notification Settings
+editDevice_sensitivityTitle=Sensitivity Settings
+editDevice_speedHeader=Limit
+editDevice_speedSettingHeader=Notify driver when exceeding posted limit by
+editDevice_speedMax=Or anytime driver's speed exceeds 
+editDevice_sensitivityHeader=Attribute
+editDevice_sensitivitySettingHeader=Setting
+editDevice_speedAdjustAll=Adjust all:
+editDevice_hardBrake=Hard Brake
+editDevice_hardAcceleration=Hard Accelerate
+editDevice_hardTurn=Unsafe Turn
+editDevice_hardVertical=Hard Bump
+editDevice_idling=Idling Threshold
+editDevice_idleBuzzer=Idle Mentoring
+editDevice_currentSensitivity=current value\: 
+editDevice_sensitivity=
+editDevice_sensitivity1=least
+editDevice_sensitivity2=less
+editDevice_sensitivity3=average
+editDevice_sensitivity4=more
+editDevice_sensitivity5=most
+editDevice_imeiFormat=Must be 15 numeric characters
+editDevice_uniqueImei=IMEI is already in use
+editDevice_simFormat=Must be 19 or 20 numeric characters
+editDevice_phoneFormat=Must consist of 15 numeric characters
+editDevice_speedSensitivityTab=Note: Select the Speed & Sensitivity tab to define device settings.
+editDevice_speedSensitivityInfo=Note: Settings will affect in-cab mentoring and driver performance scoring.
+editDevice_average=average
+editDevice_more=more
+editDevice_less=less
+editDevice_custom=Custom
+editDevice_dot=DOT:
+editDevice_ifta=IFTA:
+editDevice_warrantyStart=Warranty Start:
+editDevice_warrantyStop=Warranty Stop:
+editDevice_zoneType=Zone Type:
+editDevice_waySmartSerialNumber=waySmart Serial Number:
+editDevice_iridiumImei=Sat IMEI:
+editDevice_productVer=Product:
+editDevice_mcmid=MCM ID:
+editDevice_altimei=Alternate IMEI:
+editDevice_witnessVersion=Witness Version:
+editDevice_firmwareVersion=Firmware Version Date:
+# Device Details
+device_details=Details
+device_speedSensitivity=Speed & Sensitivity
+device_backToDevices=< Back to Devices
+device_confirmDelete=Delete this device? This action is irreversible.
+device_added=Device {0} added.
+device_updated=Device {0} updated.
+device_deleted=Device {0} deleted.
+
+# Choose Vehicle
+chooseVehicle_title=Assign Device to Vehicle
+chooseVehicle_vehicleStatus=Vehicle Status
+chooseVehicle_choose=assign
+chooseVehicle_assigned=Assigned
+chooseVehicle_unassigned=Unassigned
+
+
+# Zones Table
+zones_addZone=Add Zone
+zones_addZoneAlert=Add Alert
+zones_zone=Zone:
+zones_name=Zone:
+zones_address=Find Address:
+zones_locate=Locate
+zones_save=Save Zone
+zones_confirmDelete=Delete this zone? This action is irreversible.
+zone_added=Zone {0} added.
+zone_updated=Zone {0} updated.
+zone_deleted=Zone {0} deleted.
+zone_missingType=Please click on a type of zone, then draw it.
+zone_missing=Please draw the zone.
+zone_missingPoints=Please make a shape.
+zone_buffer1=GPS system limitations require that zones be created with a buffer zone to allow for potential satellite drift.
+zone_buffer2=(Recommended buffer zone: 10 meters/32 feet).
+zones_download=Download:
+zones_publish=Publish
+zones_msg_title=Zones
+zones_publishMsg=Zones successfully published.
+zones_downloadError=Zones download failed. Please publish the zones and then download them.
+
+# Hazards
+hazard_hazard=Hazard
+hazard_reset=Reset
+hazard_save=Save
+hazard_address=Find Address:
+hazard_locate=Locate
+hazard_illegalCharacter=Hazard descriptions must be less than 32 characters long, and can ONLY contain\: letters, numbers, spaces and periods.
+hazard_type=Type
+hazard_status=Status
+hazard_radius=Radius
+hazard_startTime=Start Time
+hazard_endTime=Exp. Time
+hazard_description=Description
+hazard_latitude=Latitude
+hazard_longitude=Longitude
+hazard_addHazard=Add Hazard
+hazard_endBeforeStart=ERROR: Start date/time must be before Expiration date/time.
+hazard_needValidRadius=ERROR: Please enter a valid radius value.
+hazard_location=Location
+hazard_edit=edit
+hazard_region=Region
+hazard_driver=Driver
+hazard_user=User
+
+HAZARD.stateID=Region
+
+
+
+
+# Generic Alerts
+editAlerts_name=Name:
+editAlerts_description=Description:
+editAlerts_dayOfWeek=Which Days:
+editAlerts_timeframe=Timeframe:
+editAlerts_timeframeAnytime=Anytime
+editAlerts_timeframeBetween=Between
+editAlerts_betweenAnd=and
+editAlerts_assignTo=Assign To
+editAlerts_assignType=Assign:
+editAlerts_groups=Groups
+editAlerts_vehicleTypes=Vehicle Types
+editAlerts_vehicles=Vehicles
+editAlerts_drivers=Drivers
+editAlerts_lightVehicles=Light Vehicles
+editAlerts_mediumVehicles=Medium Vehicles
+editAlerts_heavyVehicles=Heavy Vehicles
+editAlerts_notificationsByName=Notifications By Name
+editAlerts_notificationsByNameInstructions=Type the names of the employees you would like to notify. Names will appear as you type. Select names from the list.
+editAlerts_notificationsByEmail=Notifications By E-mail
+editAlerts_notificationsByEmailInstructions=Type the e-mail addresses you would like to notify, one name per field. They can be e-mail or text message addresses.
+editAlerts_notificationsByPhoneInstructions=Type the names of the employees you would like to call. Names will appear as you type. Select names from list. Add one name per field in the order in which you would like them to be called. Finally add a person who will be emailed in the case of none of the calls being acknowledged.
+editAlerts_notificationsByManager=Notifications By Manager
+editAlerts_notificationsByManager_notifyDriver=Notify the Manager
+editAlerts_picker_unknownPhone=ERROR\: Unknown Phone Number.
+editAlerts_picker_unknownEmail=ERROR\: Unknown Email Address.
+editAlerts_validate_unknownPhone=Phone Numbers must be associated with known users.
+editAlerts_validate_unknownEmail=Email Address must be associated with known users.
+editAlerts_noDays=Please select at least one day.
+editAlerts_unassigned=Please assign at least one item.
+editAlerts_noNotification=Please choose someone to notify.
+editAlerts_emailFormat=Incorrect format for "{0}" (use something like jdoe@tiwipro.com).
+editAlerts_owner=Alert Owner:
+editAlerts_ownerInstructions=Select the name of the user who is the owner of this alert. The owner will be able to modify or delete the alert.
+editAlerts_status=Status:
+editAlerts_noBatchRemoveEscEmail=Batch removal of Escalation Email is not allowed.
+editAlerts_maxSpeed=By Maximum Speed
+editAlerts_perLimit=By Speed Limit  
+editAlerts_maxSpeedDesc=Any speeding event where speed exceeds\: 
+editAlerts_speedingTypeSelect=Select the type of Speeding Alert:
+
+# Zone Alerts Table
+zoneAlertsHeader_name=Alert
+zoneAlertsHeader_description=Description
+zoneAlertsHeader_zone=Zone
+zoneAlertsHeader_status=Status
+zoneAlertsHeader_owner=Owner
+
+#Edit Zone Alert
+editZoneAlert_nameDescriptionZone=Name, Description & Zone
+editZoneAlert_defineAlerts=Define Alerts
+editZoneAlert_alertType=Alert Type
+editZoneAlert_zone=Zone:
+editZoneAlert_arrival=Report on Arrival
+editZoneAlert_departure=Report on Departure
+editZoneAlert_driverIDViolation=Driver ID Violation
+editZoneAlert_ignitionOn=Ignition On Event
+editZoneAlert_ignitionOff=Ignition Off Event
+editZoneAlert_position=Position Updates
+editZoneAlert_seatbeltViolation=Seat Belt Violation
+editZoneAlert_speedLimit=Speed Limit
+editZoneAlert_speedViolation=Speed Violation
+editZoneAlert_masterBuzzer=Master Buzzer
+editZoneAlert_cautionArea=Caution Area
+editZoneAlert_disableRF=Disable RF
+editZoneAlert_monitorIdle=Monitor Idle
+editZoneAlert_noAlerts=Please choose at least one alert.
+
+
+# Zone Alert Details
+zoneAlert_backToZoneAlerts=< Back to Zone Alerts
+zoneAlert_confirmDelete=Delete this zone alert? This action is irreversible.
+zoneAlert_added=Zone alert {0} added.
+zoneAlert_updated=Zone alert {0} updated.
+zoneAlert_deleted=Zone alert {0} deleted.
+
+
+# Red Flags Table
+redFlagsHeader_name=Red Flag
+redFlagsHeader_description=Description
+redFlagsHeader_type=Type
+redFlagsHeader_status=Status
+redFlagsHeader_owner=Owner
+redFlagsHeader_zone=Zone
+
+#Edit Red Flag
+editRedFlag_nameDescriptionType=Name, Description & Type
+editRedFlag_defineRedFlag=Define Red Flag
+editRedFlag_redFlagType=Red Flag Type
+editRedFlag_assignDrivers=Assign Drivers
+editRedFlag_assignVehicles=Assign Vehicles
+editRedFlag_notificationsByName=Notifications By Name
+editRedFlag_notificationsByEmail=Notifications By E-mail
+editRedFlag_notificationsByPhone=Phone Call Escalation
+editRedFlag_notificationsByPhoneInstructions=
+editRedFlag_escalationEmailInstructions=Escalation Email will be sent when all the phone numbers have been called with no answer.
+editRedFlag_phoneNumbersLabel=Phone Numbers:
+editRedFlag_callDelayLabel=Call Delay:
+editRedFlag_limitByLabel=Limit By:
+editRedFlag_escalationEmailLabel=Escalation Email:
+editRedFlag_emailAddressesLabel=Email Addresses:
+editRedFlag_name=Name:
+editRedFlag_description=Description:
+editRedFlag_assignType=Red Flag Type:
+editRedFlag_batchEdit=Batch Edit
+editRedFlag_speedHeader=Limit
+editRedFlag_speedSettingHeader=When exceeding posted limit by
+editRedFlag_setting=Setting
+editRedFlag_sensitivity=Sensitivity
+editRedFlag_severity=Severity
+editRedFlag_notifications=Notifications
+editRedFlag_notification=Notification:
+editRedFlag_notype=<choose type>
+editRedFlag_ALERT_TYPE_SEATBELT=Not wearing seat belt
+editRedFlag_ALERT_TYPE_CRASH=Vehicle crash.
+editRedFlag_ALERT_TYPE_TAMPERING=Device Tampering.
+editRedFlag_ALERT_TYPE_LOW_BATTERY=Vehicle Low Battery.
+editRedFlag_ALERT_TYPE_NO_DRIVER=Vehicle with no assigned driver
+editRedFlag_ALERT_TYPE_OFFHOUR=Any Driving WITHIN the specified timeframe.
+
+editRedFlag_ALERT_TYPE_FATIGUE=Fatigue
+editRedFlag_ALERT_TYPE_INSTALLATION=Installation
+editRedFlag_ALERT_TYPE_ZONES=Zones
+editRedFlag_ALERT_TYPE_HOS=HOS
+editRedFlag_ALERT_TYPE_VEHICLE=Vehicle
+editRedFlag_ALERT_TYPE_WIRELINE_ALARM=Wireline alarm occurred
+editRedFlag_ALERT_TYPE_COMPLIANCE=Compliance
+editRedFlag_ALERT_TYPE_EMERGENCY=Emergency
+editRedFlag_ALERT_TYPE_TEXT_MESSAGE=Text Message
+
+editRedFlag_rollOver=Vehicle roll over.
+editRedFlag_type=Type:
+editRedFlag_message=Custom Red Flags will not affect in-cab mentoring and driver performance scores.
+editRedFlag_severity1=low
+editRedFlag_severity2=medium-low
+editRedFlag_severity3=medium
+editRedFlag_severity4=medium-extreme
+editRedFlag_severity5=extreme
+editRedFlag_typeSpeedingMessage=Please select at least one speeding level.
+editRedFlag_typeDrivingStyleMessage=Please select at least one driving style setting.
+editRedFlag_typeOffHourMessage=Please select specific Timeframe for the curfew period.
+editRedFlag_typeTypeMessage=Please select a Red Flag Type.
+editRedFlag_typeMaxSpeedingMessage=Please enter a maximum speed value.
+
+MeasurementType.ENGLISH_editRedFlag_mph=mph
+MeasurementType.METRIC_editRedFlag_mph=kph
+
+# Red Flag Details
+# these may be able to be removed
+redFlag_info=Information
+redFlag_warning=Warning
+redFlag_critical=Critical
+# these may be able to be removed
+
+
+redFlag_backToRedFlags=< Back to Red Flags
+redFlag_confirmDelete=Delete this red flag? This action is irreversible.
+redFlag_added=Red Flag {0} added.
+redFlag_updated=Red Flag {0} updated.
+redFlag_deleted=Red Flag {0} deleted.
+
+
+#Unknown Driver 
+editUnknownDriver_information=Information
+editUnknownDriver_first=First:
+editUnknownDriver_last=Last:
+editUnknownDriver_timeZone=Time Zone:
+
+#Account 
+editAccount_information=Information
+editAccount_unknown_driver=Unknown Driver
+editAccount_web_map_service=Web Map Service
+editAccount_url=URL:
+editAccount_query=Query:
+editAccount_layers=Layers:
+editAccount_query_parameters=Query Parameters:
+editAccount_miscellaneous=Miscellaneous
+editAccount_phone_alerts_active=Phone Alerts Active:
+editAccount_no_reply_email=No Reply E-mail:
+editAccount_support_phone1=Support Phone 1:
+editAccount_support_phone2=Support Phone 2:
+editAccount_yes=Yes
+editAccount_no=No
+editAccount_bad_url=String must be a valid web site address.
+editAccount_bad_email=Invalid e-mail address.
+editAccount_bad_phone_alerts=Phone alerts status must be selected.
+editAccount_bad_phone_characters=Invalid phone characters supplied.
+editAccount_bad_number_of_layers=An even number of layers parameters is required.
+editAccount_support=Support Contact Information
+editAccount_support_contact0=Contact 1:
+editAccount_support_contact1=Contact 2:
+editAccount_support_contact2=Contact 3:
+editAccount_support_contact3=Contact 4:
+editAccount_support_contact4=Contact 5:
+editAccount_example=Example
+editAccount_sampleEmail=<b>Sample E-mail: </b><a href='mailto:support@sample.com'>support@sample.com</a>
+editAccount_samplePhone=<b>Sample Phone: </b>1-800-555-5555
+editAccount_hos=HOS:
+editAccount_address=Address:
+editAccount_address_addr1=Address 1:
+editAccount_address_addr2=Address 2:
+editAccount_address_city=City:
+editAccount_address_state=State:
+editAccount_address_zip=Zip Code:
+editAccount_phoneControl=Phone Control Provider
+
+miles500=500mi
+miles1000=1,000mi
+miles5000=5,000mi
+miles10000=10,000mi
+
+# Team page
+team_overallScore=Overall Score
+team_durationLabel=(last 30 days)
+team_overview=Team Overview
+team_what_happened=What Happened...
+team_driver_statistics=Driver Statistics
+team_vehicle_statistics=Vehicle Statistics
+team_team=Team
+team_today=Today
+team_yesterday=Yesterday
+team_7_days=7 Days
+team_365_days=365 Days
+team_driver=Driver
+team_score=Score
+team_vehicle=Vehicle
+team_trips=Trips
+team_stops=Stops
+team_dist_driven=Distance Driven
+team_drive_time=Duration
+team_idle_time=Idle Time
+team_low_idle=Low Idle
+team_high_idle=High Idle
+team_idle_percentage=Idle %
+team_mpg=Fuel Eff.
+team_crashes=Crashes
+team_flags=Flags
+team_safety=Safety
+team_overall=Overall
+team_driving_style=Driving Style
+team_speed=Speed
+team_overall_team_score=Overall Team Score
+team_driver_team=Driver/Team
+team_overall_title=Breakdown of Drivers by Overall Score
+team_round_trip=Round Trip
+team_zone_arrival=Zone
+team_stop_location=Stop Location
+team_arrive=Arrive
+team_depart=Depart
+team_time_at_stop=Time At Stop
+team_total_time_at_stop=Total Time At Stop(s)
+team_total=Total
+team_wait=Wait
+team_timeframe_and_driver_msg=Please choose a valid time frame and driver for the Team Stops tab
+team_timeframe_msg=Please choose a valid time frame for the Team Stops tab
+team_driver_msg=Please choose a driver for the Team Stops tab
+team_seatbelt_clicks=Seatbelt Clicks
+
+# Chart widgets
+mpg_title=Fuel Efficiency
+mpg_name_column=Division/Team
+mpg_light_column=Light
+mpg_medium_column=Medium
+mpg_heavy_column=Heavy
+mpg_vehicle_type=Vehicle Type
+
+# Driver Overview Side Navigation
+teamOverviewSideNav_overall=Overall Score
+teamOverviewSideNav_driving=Driving Style
+teamOverviewSideNav_speed=Speed
+teamOverviewSideNav_seatbelt=Seat Belt
+teamOverviewSideNav_coaching=CoachingEvents
+
+# Top and Bottom Drivers Tables
+teamTop_top=Top 5 Drivers
+teamTop_bottom=Bottom 5 Drivers
+teamTop_position=#
+teamTop_driver=Driver
+teamTop_group=Group
+teamTop_score=Score
+teamTop_showAll=show all
+teamTop_showSome=Show Top and Bottom 5 Only
+teamTop_vehicle=Vehicle
+teamTop_miles=Miles Driven
+teamTop_noVehicle=None Assigned
+
+
+# team Recent Safety/Warnings
+team_safetyEvents=Safety Events
+team_safetyEventsEvent=Event
+team_safetyEventsDriver=Driver
+team_safetyEventsWhen=Date/Time
+team_safetyEventsDetails=details
+team_safetyEventsShowAll=show all
+team_diagnostics=Diagnostics
+team_diagnosticsEvent=Event
+team_diagnosticsVehicle=Vehicle
+team_diagnosticsDriver=Driver
+team_diagnosticsWhen=Date/Time
+team_diagnosticsDetails=details
+team_diagnosticsShowAll=show all
+team_emergency=Emergency
+team_emergencyEvent=Event
+team_emergencyVehicle=Vehicle
+team_emergencyDriver=Driver
+team_emergencyWhen=Date/Time
+team_emergencyDetails=details
+team_emergencyShowAll=show all
+
+
+#Notification Menu Tabs
+notes_tab_redflag=Red Flags
+notes_tab_safety=Safety
+notes_tab_diagnostics=Diagnostics
+notes_tab_emergency=Emergency
+notes_tab_crashhistory=Crash History
+notes_tab_zone=Zones
+notes_tab_hos=HOS Exceptions
+notes_tab_driverlogins=Driver Logins
+
+#Generic Notification table messages
+notes_location=Location
+notes_group=Group
+notes_driver=Driver
+notes_vehicle=Vehicle
+notes_date=Date/Time
+notes_category=Category
+notes_detail=Detail
+notes_status=Status
+notes_clear=exclude
+notes_reinstate=include
+#notes_recordCountHeader=Showing {0} to {1} of {2} records for the past 7 days
+#notes_recordCountHeader=Showing {0} to {1} of {2} records for the last 24 hours
+notes_recordCountHeader=Showing {0} to {1} of {2} records
+
+#Notification - Red Flags
+notes_redflags_title=Red Flags
+notes_redflags_description=Custom red flags setup by your organization
+notes_redflags_level=Level
+notes_redflags_alerts=Alert Details
+notes_redflags_group=Group
+notes_redflags_driver=Driver
+notes_redflags_vehicle=Vehicle
+notes_redflags_date=Date/Time
+notes_redflags_category=Category
+notes_redflags_detail=Detail
+notes_redflags_status=Status
+notes_redflags_clear=exclude
+notes_redflags_reinstate=include
+#notes_redflags_recordCountHeader=Showing {0} to {1} of {2} records for the past 7 days
+notes_redflags_recordCountHeader=Showing {0} to {1} of {2} records
+notes_redflags_clearTitle=Forgive Red Flag
+notes_redflags_clearInst=Forgive the following Red Flag? This action can be reversed. 
+notes_redflags_search=Search
+
+#Notification - Driver Logins
+notes_driverLogins_title=Driver Logins
+notes_driverLogins_description=All driver login notifications.
+
+#Notification - Safety Page
+notes_safety_title=Safety
+notes_safety_description=All safety notifications from device including speeding, driving style, seat belt, etc.
+notes_safety_group=Group
+notes_safety_driver=Driver
+notes_safety_vehicle=Vehicle
+notes_safety_date=Date/Time
+notes_safety_category=Category
+notes_safety_detail=Detail
+notes_safety_clear=exclude
+notes_safety_reinstate=include
+#notes_safety_recordCountHeader=Showing {0} to {1} of {2} records for the past 7 days
+notes_safety_recordCountHeader=Showing {0} to {1} of {2} records
+notes_safety_clearTitle=Forgive Safety Event
+notes_safety_clearInst=Forgive the following safety event? This action can be reversed. 
+notes_safety_search=Search
+
+#Notification - Diagnostics
+notes_diagnostics_title=Diagnostics
+notes_diagnostics_description=All diagnostic related notifications from device including idling, low battery, tampering, etc.
+notes_diagnostics_group=Group
+notes_diagnostics_date=Date/Time
+notes_diagnostics_category=Category
+notes_diagnostics_detail=Detail
+notes_diagnostics_clear=exclude
+notes_diagnostics_reinstate=include
+#notes_diagnostics_recordCountHeader=Showing {0} to {1} of {2} records for the past 7 days
+notes_diagnostics_recordCountHeader=Showing {0} to {1} of {2} records
+notes_diagnostics_clearTitle=Forgive Diagnostic Event
+notes_diagnostics_clearInst=Forgive the following diagnostic event? This action can be reversed. 
+notes_diagnostics_search=Search
+
+#Notification - Diagnostics
+notes_emergency_title=Emergency
+notes_emergency_description=
+notes_emergency_group=Group
+notes_emergency_date=Date/Time
+notes_emergency_category=Category
+notes_emergency_detail=Detail
+notes_emergency_clear=exclude
+notes_emergency_reinstate=include
+#notes_emergency_recordCountHeader=Showing {0} to {1} of {2} records for the past 7 days
+notes_emergency_recordCountHeader=Showing {0} to {1} of {2} records
+notes_emergency_clearTitle=Forgive Emergency Event
+notes_emergency_clearInst=Forgive the following emergency event? This action can be reversed. 
+notes_emergency_search=Search
+
+#Notification - Crash History
+notes_crashhistory_date=Date/Time
+notes_crashhistory_group=Group
+notes_crashhistory_driver=Driver
+notes_crashhistory_vehicle=Vehicle
+notes_crashhistory_nbr_occupants=# Occupants
+notes_crashhistory_status=Status
+notes_crashhistory_title=Crash History
+notes_crashhistory_description=
+notes_crashhistory_search=Search
+notes_crashhistory_recordCountHeader=Showing {0} to {1} of {2} records
+notes_crashhistory_clearTitle=Forgive Crash 
+notes_crashhistory_clearInst=Forgive the following crash? This action can be reversed. 
+notes_crashhistory_addnew=Add Crash Report
+notes_crashhistory_details=details
+notes_crashhistory_edit=edit
+notes_crashhistory_weather=Weather
+notes_crashhistory_view_detail=View a Detailed Crash Report
+notes_crashhistory_edit_crash=Edit this Crash
+notes_crashhistory_change_status=Change the status of this Crash
+notes_crashhistory_lowercase_status=status
+notes_crashhistory_crash_status=Crash Status
+notes_crashhistory_popup_instructions=Select from below the Status to be applied to this Crash.
+notes_crashhistory_current_status=Current status:
+notes_crashhistory_crash_date=Crash date:
+notes_crashhistory_new=NEW
+notes_crashhistory_confirmed=CONFIRMED
+notes_crashhistory_forgiven=FORGIVEN
+notes_crashhistory_exclude=EXCLUDE
+
+#Notification - Zones
+notes_zone_title=Zones
+notes_zone_description=All zone enter and departure notifications from devices.
+notes_zone_group=Group
+notes_zone_date=Date/Time
+notes_zone_category=Category
+notes_zone_detail=Detail
+notes_zone_clear=exclude
+notes_zone_reinstate=include
+notes_zone_recordCountHeader=Showing {0} to {1} of {2} records
+notes_zone_clearTitle=Forgive Zone Event
+notes_zone_clearInst=Forgive the following Zone event? This action can be reversed. 
+notes_zone_search=Search
+
+#Notification - HOS
+notes_hos_title=HOS Exceptions
+notes_hos_description=Hours of Service notifications from HOS enabled devices.
+notes_hos_group=Group
+notes_hos_date=Date/Time
+notes_hos_category=Category
+notes_hos_detail=Detail
+notes_hos_clear=exclude
+notes_hos_reinstate=include
+notes_hos_recordCountHeader=Showing {0} to {1} of {2} records
+notes_hos_clearTitle=Forgive HOS Event
+notes_hos_clearInst=Forgive the following HOS event? This action can be reversed. 
+notes_hos_search=Search
+
+#Notification - General
+notes_general_unknown=Unknown
+notes_general_driver=Driver
+
+# TODO: these should possibly be moved to a more generic spot
+redflags_catVIOLATION=Safety: {0}
+redflags_catWARNING=Diagnostics: {0}
+redflags_catDRIVER=Driver: {0}
+redflags_catEMERGENCY=Emergency: {0}
+redflags_catNONE={0}
+redflags_catNO_DRIVER=Warning: {0}
+redflags_catZONE=Zone: {0}
+redflags_catHOS=HOS: {0}
+redflags_catTEXT=Text: Text message received.
+redflags_clear=exclude
+redflags_reinstate=include
+
+#possibly remove this set
+redflags_detailsTAMPERING=Tampering alert, tiwiPro was unplugged.
+redflags_detailsSEATBELT=Driver had seat belt off while driving for a distance of {0} {1}. 
+redflags_detailsSPEEDING=Driver was speeding, {0} {3} in a {1} {3} zone for a distance of {2} {4}. 
+redflags_detailsHARD_ACCEL=Hard Acceleration at {0} {1} 
+redflags_detailsHARD_BRAKE=Hard Brake at {0} {1}
+redflags_detailsHARD_LEFT_TURN=Unsafe Left Turn at {0} {1}
+redflags_detailsHARD_RIGHT_TURN=Unsafe Right Turn at {0} {1}
+redflags_detailsHARD_TURN=Unsafe Turn at {0} {1}
+redflags_detailsHARD_VERT=Hard Bump at {0} {1}
+redflags_detailsLOW_BATTERY=Low battery in vehicle 
+redflags_detailsIDLING=Low Idle: {0} seconds, High Idle: {1} seconds
+redflags_detailsROLLOVER=A roll over occurred.
+redflags_detailsCRASH=A crash occurred.
+redflags_detailsUNKNOWN=Unknown alert.
+redflags_detailsZONES_ARRIVAL=Driver arrived in zone {0}
+redflags_detailsZONES_DEPARTURE=Driver departed zone {0}
+redflags_detailsNO_DRIVER=No Driver Warning.
+#END = possibly remove this set
+
+redflags_detailsEventType.TAMPERING=Tampering alert, tiwiPro was unplugged.
+redflags_detailsEventType.SEATBELT=Driver had seat belt off while driving for a distance of {0} {1}. 
+redflags_detailsEventType.SPEEDING=Driver was speeding, {0} {3} in a {1} {3} zone for a distance of {2} {4}.  
+redflags_detailsEventType.HARD_ACCEL=Hard Acceleration at {0} {1} 
+redflags_detailsEventType.HARD_BRAKE=Hard Brake at {0} {1}
+redflags_detailsEventType.HARD_LEFT_TURN=Unsafe Left Turn at {0} {1}
+redflags_detailsEventType.HARD_RIGHT_TURN=Unsafe Right Turn at {0} {1}
+redflags_detailsEventType.HARD_TURN=Unsafe Turn at {0} {1}
+redflags_detailsEventType.HARD_VERT=Hard Bump at {0} {1}
+redflags_detailsEventType.LOW_BATTERY=Low battery in vehicle 
+redflags_detailsEventType.IDLING=Low Idle: {0} seconds, High Idle: {1} seconds
+redflags_detailsEventType.ROLLOVER=A roll over occurred.
+redflags_detailsEventType.CRASH=A crash occurred.
+redflags_detailsEventType.UNKNOWN=Unknown alert.
+redflags_detailsEventType.ZONES_ARRIVAL=Driver arrived in zone {0}
+redflags_detailsEventType.ZONES_DEPARTURE=Driver departed zone {0}
+redflags_detailsEventType.NO_DRIVER=No Driver Warning.
+redflags_detailsEventType.PARKING_BRAKE=The parking brake was engaged while {0}.
+redflags_detailsEventType.IGNITION_ON=Vehicle ignition on.
+redflags_detailsEventType.IGNITION_OFF=Vehicle ignition off.
+redflags_detailsEventType.MICRO_SLEEP=Driver in microsleep.
+redflags_detailsEventType.POTENTIAL_TAMPERING=Potential tampering alert, unit battery is low.
+redflags_detailsEventType.WIRELINE_ALARM=Wireline alarm.
+redflags_detailsEventType.INSTALL=New Installation.
+redflags_detailsEventType.FIRMWARE_CURRENT=The device firmware was updated.  Status: {0}
+redflags_detailsEventType.LOCATION_DEBUG=Manual location command. 
+redflags_detailsEventType.QSI_UPDATED=QSI was updated.  Status: {0}
+redflags_detailsEventType.WITNESS_UPDATED=The crash detector firmware was updated. Status: {0}
+redflags_detailsEventType.ZONES_CURRENT=The device successfully downloaded the latest zones.  Status\: {0}  
+redflags_detailsEventType.NO_INTERNAL_THUMB_DRIVE=The device cannot mount the internal storage.
+redflags_detailsEventType.WITNESS_HEARTBEAT_VIOLATION=The device can't get a heartbeat message from the crash detector.
+redflags_detailsEventType.PANIC=The Panic button was pressed.
+redflags_detailsEventType.MAN_DOWN=Lone worker alarm.
+redflags_detailsEventType.MAN_DOWN_CANCELED=Lone worker alarm - worker OK or alarm canceled.
+redflags_detailsEventType.DOT_STOPPED=Driver has been stopped by a DOT officer. Reason: {0}
+redflags_detailsEventType.HOS_NO_HOURS=Driver has no driving hours remaining. Reason: {0}
+redflags_detailsEventType.TEXT_MESSAGE=Text message.
+redflags_detailsEventType.TRAILER_DATA=Trailer: {0} Service: {1} Hazmat Flag: {2}
+redflags_detailsEventType.NEW_DRIVER=New Driver ID: {0}
+redflags_detailsEventType.NEW_OCCUPANT=New Occupant ID: {0}
+redflags_detailsEventType.INVALID_DRIVER=Invalid Driver ID Entered: {0}
+redflags_detailsEventType.INVALID_OCCUPANT=Invalid Occupant ID Entered: {0}
+redflags_detailsEventType.RF_SWITCH=RF switch turned off.
+redflags_detailsEventType.DVIR=Vehicle {0} a {1} inspection.
+
+redFlags_search=Search
+redFlags_showAll=show all
+
+dvir_pass=passed
+dvir_fail=failed
+dvir_pre=pre-trip
+dvir_post=post-trip
+
+# Day, time pickers
+dayPicker_all=All
+dayPicker_sunday=Sunday
+dayPicker_monday=Monday
+dayPicker_tuesday=Tuesday
+dayPicker_wednesday=Wednesday
+dayPicker_thursday=Thursday
+dayPicker_thursday_2=Thursday
+dayPicker_friday=Friday
+dayPicker_saturday=Saturday
+
+timePicker_am=am
+timePicker_pm=pm
+
+
+#Generic Score Types
+SCORE_OVERALL=Overall
+SCORE_SPEEDING=Speed
+SCORE_SEATBELT=Seat Belt
+SCORE_DRIVING_STYLE=Driving Style
+SCORE_COACHING_EVENTS=Coaching Events
+SCORE_OVERALL_TIME=Overall Time
+
+MeasurementType.ENGLISH_SCORE_SPEEDING_21_30=1-30 mph
+MeasurementType.ENGLISH_SCORE_SPEEDING_31_40=31-40 mph
+MeasurementType.ENGLISH_SCORE_SPEEDING_41_54=41-54 mph
+MeasurementType.ENGLISH_SCORE_SPEEDING_55_64=55-64 mph
+MeasurementType.ENGLISH_SCORE_SPEEDING_65_80=65-80 mph
+
+MeasurementType.METRIC_SCORE_SPEEDING_21_30=1-48 kph
+MeasurementType.METRIC_SCORE_SPEEDING_31_40=49-64 kph
+MeasurementType.METRIC_SCORE_SPEEDING_41_54=65-88 kph
+MeasurementType.METRIC_SCORE_SPEEDING_55_64=89-103 kph
+MeasurementType.METRIC_SCORE_SPEEDING_65_80=104+ kph
+
+SCORE_SEATBELT_30_DAYS=30 days
+SCORE_SEATBELT_3_MONTHS=3 months
+SCORE_SEATBELT_6_MONTHS=6 months
+SCORE_SEATBELT_12_MONTHS=12 months
+SCORE_DRIVING_STYLE_HARD_BRAKE=Hard Brake
+SCORE_DRIVING_STYLE_HARD_ACCEL=Hard Acceleration
+SCORE_DRIVING_STYLE_HARD_LTURN=Unsafe Left Turn
+SCORE_DRIVING_STYLE_HARD_RTURN=Unsafe Right Turn
+SCORE_DRIVING_STYLE_HARD_TURN=Unsafe Turn
+SCORE_DRIVING_STYLE_HARD_BUMP=Hard Bump
+HARD_BRAKE=Hard Brake
+HARD_ACCEL=Hard Acceleration
+HARD_TURN=Unsafe Turn
+HARD_VERT=Hard Bump
+reports_group=Group\:
+reports_employeeID=EmployeeID
+reports_employee=Employee
+reports_vehicle=Vehicle
+reports_distanceDriven=Distance Driven
+reports_distanceDrivenInUnits={0} {1}
+reports_time={0}
+MeasurementType.English_reports_milesdriven=Miles Driven
+MeasurementType.METRIC_reports_milesdriven=Kilometers Driven
+reports_overall=Overall
+reports_speed=Speed
+reports_style=Style
+reports_seatbelt=Seat Belt
+reports_driver=Driver\:
+reports_vehicleID=Vehicle ID
+reports_drivetime=Duration
+reports_lowidlehrs=Low Idle Hrs.
+reports_percent=%
+reports_highidlehrs=High Idle Hrs.
+reports_totalidlehrs=Total Idle Hrs.
+reports_trips=trips
+reports_makemodelyear=Year/Make/Model
+reports_redflagscountheader=There are {0} red flags.
+reports_view=view
+reports_idlingreporttitle=Idling Drivers Report
+reports_idlingvehiclereporttitle=Idling Vehicles Report
+reports_driverreporttitle=Driver Report
+reports_driverreport_note=(Note: Scores are based on the past 12 months)
+reports_vehiclereporttitle=Vehicle Report
+reports_vehiclereport_note=(Note: Scores are based on the past 12 months)
+reports_email_report=E-mail Report
+reports_email_sent=E-mail was sent successfully
+reports_vehiclereport_odometer=Odometer
+reports_idle_support=Idle Support
+
+livefleetmap_legend=Fleet Legend
+subNavigation_assets=Assets
+reports_assetreporttitle=Asset Report
+reports_deviceid=Device ID
+reports_assignedvehicle=Assigned Vehicle
+reports_imei=IMEI
+reports_phonenumber=Phone Number
+reports_status=Status
+reports_devicereporttitle=Device Report
+subNavigation_devices=Devices
+subNavigation_waysmart=waySmart
+reports_emergphonenbr=Emergency Phone Number
+navigation_searchIdlings=Idling
+reports_driverID=Driver ID
+reports_empID=Employee ID
+reports_email=E-mail Report
+
+deviceReports_device_name=Device ID
+deviceReports_vehicle_name=Assigned Vehicle
+deviceReports_device_imei=IMEI
+deviceReports_device_phone=Device Phone \#
+deviceReports_device_status=Status
+deviceReports_device_ephone=E-Call Phone \# 
+
+driverReports_group=Group
+driverReports_driver_person_empid=Employee ID
+driverReports_driver_person_fullName=Driver
+driverReports_vehicle_name=Vehicle
+driverReports_distanceDriven=Distance Driven
+driverReports_overallScore=Overall
+driverReports_speedScore=Speed
+driverReports_styleScore=Style
+driverReports_seatBeltScore=Seat Belt
+driverReports_status=Status
+driverReports_exclude=exclude
+driverReports_include=include
+
+vehicleReports_group=Group
+vehicleReports_vehicle_name=Vehicle ID
+vehicleReports_makeModelYear=Year/Make/Model
+vehicleReports_driver_person_fullName=Driver
+vehicleReports_distanceDriven=Distance Driven
+vehicleReports_overallScore=Overall
+vehicleReports_speedScore=Speed
+vehicleReports_styleScore=Style
+vehicleReports_exclude=exclude
+vehicleReports_include=include
+vehicleReports_odometer=Odometer
+
+idlingReports_group=Group
+idlingReports_driver_person_fullName=Driver
+idlingReports_vehicle_name=Vehicle
+idlingReports_duration=Duration
+idlingReports_lowHrs=Low Idle Hrs.
+idlingReports_lowPercent=Low %
+idlingReports_highHrs=High Idle Hrs.
+idlingReports_highPercent=High %
+idlingReports_totalHrs=Total Idle Hrs.
+idlingReports_totalPercent=Total %
+idlingReports_dateRange=Date Range
+idlingReports_hasRPM=Idle Support
+idlingReports_status=Status
+
+emailReport_title=E-mail This Report
+emailReport_explanation=E-mail this report to the following e-mail addresses.
+emailReport_address_label = E-mail Address(es): (e-mail addresses separated by a comma)
+
+
+# US Measurements
+measurement_speed=mph
+measurement_distances=miles
+measurement_distance=mile
+kmh_label=kmh
+mph_label=mph
+mi_label=mi
+km_label=km
+
+
+no_trips_found=No trips found.
+no_last_trip_found=Last trip not found.
+no_route_data_for_trip=No route data available
+reports_devicephonenbr=Device Phone \#
+reports_ecallphonenbr=E-Call Phone \#
+#Speed By Street
+sbs_caption_select=Type an address, or click on the map to identify street segments to update.
+sbs_caption_queued=Your request has been sent successfully and you will receive a confirming e-mail shortly.
+sbs_caption_error=One or more requests were not submitted because new speed limits were not set.
+sbs_caption_noEmail=Your request has been sent successfully but an e-mail could not be sent to the provided address.
+sbs_address=Address
+sbs_mph=MPH
+sbs_kph=KPH
+sbs_newmph=New MPH
+sbs_newkph=New KPH
+sbs_new=New
+sbs_current=Current
+sbs_speed_limit=Speed Limit
+sbs_new_speed_limit=New Speed Limit
+sbs_error=Speed Limit Change Request Error
+sbs_header=Submit Speed Limit Change Request
+sbs_comment=Comment
+sbs_emailIntro=A confirmation e-mail will be sent to the address below.
+sbs_submitRequest=Submit Request
+sbs_submit=Submit
+sbs_emailText=<html><body><p> Thank you for taking the time to submit speed limit feedback of {0} for {1}.  Your assistance as part of our tiwi community is appreciated.</p> <p>We will review your request and use our best efforts to get back to you within two business days as to any possible updates.</p><p>Thanks again,</p><p>The Inthinc Speed-By-Street Data Team</p><p><a href\="my.inthinc.com">my.inthinc.com</a></p></body></html>
+sbs_email_from=inthinc Support <speedbystreet@tiwi.com>
+sbs_email_subject=speed limit feedback received
+sbs_badLatLng=Could not interpret latitude and longitude.
+sbs_noNearbyRoad=No road was found near the supplied latitude and longitude - please try again.
+sbs_findAddress=Find Address
+sbs_clearAll=Clear All
+MeasurementType.ENGLISH_sbs_mph=MPH
+MeasurementType.METRIC_sbs_mph=KPH
+MeasurementType.ENGLISH_sbs_newmph=New MPH
+MeasurementType.METRIC_sbs_newmph=New KPH
+
+#ENUMERATION key/values
+#GroupType.java
+GroupType.FLEET=Fleet
+GroupType.DIVISION=Division
+GroupType.TEAM=Team
+
+#AlertMessageDeliveryType.java
+AlertMessageDeliveryType.PHONE=Phone
+AlertMessageDeliveryType.TEXT_MESSAGE=Text Message
+AlertMessageDeliveryType.EMAIL=Email
+
+#AlertMessageType.java
+AlertMessageType.ALERT_TYPE_SPEEDING=Speeding
+redFlag_AlertMessageType.ALERT_TYPE_SPEEDING=Speed
+AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING=Aggressive Driving
+redFlag_AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING=Driving Style
+AlertMessageType.ALERT_TYPE_SEATBELT= Not wearing seat belt
+AlertMessageType.ALERT_TYPE_ENTER_ZONE=Enter Zone
+AlertMessageType.ALERT_TYPE_EXIT_ZONE=Exit Zone
+AlertMessageType.ALERT_TYPE_LOW_BATTERY=Vehicle Battery is low
+AlertMessageType.ALERT_TYPE_UNKNOWN=Unknown
+AlertMessageType.ALERT_TYPE_TAMPERING=Tampering
+AlertMessageType.ALERT_TYPE_CRASH=Crash
+AlertMessageType.ALERT_TYPE_HARD_BRAKE=Hard Brake
+AlertMessageType.ALERT_TYPE_HARD_ACCEL=Hard Acceleration
+AlertMessageType.ALERT_TYPE_HARD_TURN=Unsafe Turn
+AlertMessageType.ALERT_TYPE_HARD_BUMP=Hard Bump
+AlertMessageType.ALERT_TYPE_NO_DRIVER=No driver logged in
+AlertMessageType.ALERT_TYPE_OFF_HOURS=Off Hours Driving
+AlertMessageType.ALERT_TYPE_COMPLIANCE=Compliance
+AlertMessageType.ALERT_TYPE_PARKING_BRAKE=Didn't set parking brake
+AlertMessageType.ALERT_TYPE_WAYSMART_HARD_ACCEL=waySmart hard acceleration
+AlertMessageType.ALERT_TYPE_WAYSMART_HARD_VERTICAL=waySmart hard vertical
+AlertMessageType.ALERT_TYPE_FULL_EVENT=Full event
+AlertMessageType.ALERT_TYPE_ROLLOVER=Rollover
+AlertMessageType.ALERT_TYPE_EMERGENCY=Emergency
+AlertMessageType.ALERT_TYPE_PANIC=Panic button
+AlertMessageType.ALERT_TYPE_AUTOMATIC_MAN_DOWN=Lone worker alarm   
+AlertMessageType.ALERT_TYPE_AUTOMATIC_MAN_DOWN_OK=Lone worker alarm canceled  
+AlertMessageType.ALERT_TYPE_MAN_DOWN=Lone worker alarm     
+AlertMessageType.ALERT_TYPE_MAN_DOWN_OK=Lone worker alarm canceled
+AlertMessageType.ALERT_TYPE_MAN_DOWN_CANCELLED=Lone worker alarm canceled 
+AlertMessageType.ALERT_TYPE_WAYSMART_ZONE_ARRIVAL=Vehicle arrived in the Zone
+AlertMessageType.ALERT_TYPE_WAYSMART_ZONE_DEPARTURE=Vehicle departed the zone  
+AlertMessageType.ALERT_TYPE_IGNITION_ON=Vehicle ignition on
+AlertMessageType.ALERT_TYPE_IGNITION_OFF=Vehicle ignition off
+AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED=Driver has been stopped by a DOT officer
+AlertMessageType.ALERT_TYPE_HOS_NO_HOURS_REMAINING=Driver has no driving hours remaining
+AlertMessageType.ALERT_TYPE_TEXT_MESSAGE=Text Message
+AlertMessageType.ALERT_TYPE_WIRELINE_ALARM=Wireline alarm
+AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP=Driver in microsleep
+AlertMessageType.ALERT_TYPE_INSTALL=New installation
+AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT=The device firmware is current
+AlertMessageType.ALERT_TYPE_LOCATION_DEBUG=Manual location command
+AlertMessageType.ALERT_TYPE_QSI_UPDATED=QSI firmware has been updated
+AlertMessageType.ALERT_TYPE_WITNESS_UPDATED=The crash detector firmware has been updated
+AlertMessageType.ALERT_TYPE_ZONES_CURRENT=The device successfully downloaded the latest zones
+AlertMessageType.ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE=The device cannot mount the internal storage
+AlertMessageType.ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION=the device cannot get a heartbeat message from the crash detector 
+AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED=Text message received
+AlertMessageType.ALERT_TYPE_FATIGUE=Fatigue
+AlertMessageType.ALERT_TYPE_INSTALLATION=Installation
+AlertMessageType.ALERT_TYPE_ZONES=Zones
+AlertMessageType.ALERT_TYPE_HOS=HOS
+AlertMessageType.ALERT_TYPE_VEHICLE=Vehicle
+AlertMessageType.ALERT_TYPE_OFFHOUR=Off Hour Driving
+AlertMessageType.ALERT_TYPE_IDLING=Idling Threshold
+AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_FAIL=Pre-trip inspection failure
+AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS=Pre-trip inspection pass
+AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL=Post-trip inspection failure
+AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS=Post-trip inspection pass
+
+AlertNoteSpeeding=Note: Red Flags for specific speed limits only work in properly configured units.
+AlertNoteCompliance=Note: Red Flags for Seatbelt and No Driver only work in properly configured units.  Red Flags for Seatbelt may require optional hardware.  Red Flags for Park Brake require optional hardware and only work in properly equipped units.
+AlertNoteEmergency=Note: Red Flags for Panic and Lone Worker only work in properly equipped units.
+AlertNoteHOS=Note: Red Flags for Hours of Service only work in properly equipped units.
+AlertNoteFatigue=Note: Red Flags for Fatigue only work in properly equipped units.
+AlertNoteInstallation=Note: Red Flags for all events require the waySmart hardware.
+
+#Duration.java
+Duration.DAYS=30 days
+Duration.THREE=3 months
+Duration.SIX=6 months
+Duration.TWELVE=12 months
+
+EventType.TAMPERING=Tampering
+EventType.SEATBELT=Seat Belt
+EventType.SPEEDING=Speeding
+EventType.HARD_ACCEL=Hard Acceleration
+EventType.HARD_BRAKE=Hard Brake
+EventType.HARD_TURN=Unsafe Turn
+EventType.HARD_VERT=Hard Dip/Bump
+EventType.ZONES_ARRIVAL=Zone Arrival
+EventType.ZONES_DEPARTURE=Zone Departure
+EventType.LOW_BATTERY=Low Battery
+EventType.DEVICE_LOW_BATTERY=tiwi Low Battery
+EventType.IDLING=Idling
+EventType.CRASH=Crash
+EventType.ROLLOVER=Roll Over
+EventType.UNKNOWN=Unknown
+EventType.NO_DRIVER=No Driver
+EventType.PARKING_BRAKE=Parking Brake
+EventType.IGNITION_ON=Ignition On
+EventType.IGNITION_OFF=Ignition Off
+EventType.MICRO_SLEEP=Micro-Sleep
+EventType.POTENTIAL_TAMPERING=Potential Tampering
+EventType.WIRELINE_ALARM=Wireline Alarm
+EventType.INSTALL=Install
+EventType.FIRMWARE_CURRENT=Firmware Current
+EventType.LOCATION_DEBUG=Location Debug
+EventType.QSI_UPDATED=QSI Current
+EventType.WITNESS_UPDATED=Witness Current
+EventType.ZONES_CURRENT=Zones Current
+EventType.NO_INTERNAL_THUMB_DRIVE=No Internal Thumb Drive
+EventType.WITNESS_HEARTBEAT_VIOLATION=Witness Heartbeat Violation
+EventType.PANIC=Panic
+EventType.MAN_DOWN=Man Down
+EventType.MAN_DOWN_OK=Man Down OK
+EventType.MAN_DOWN_CANCELED=Man Down Canceled
+EventType.DOT_STOPPED=DOT Stopped
+EventType.HOS_NO_HOURS=HOS No Hours
+EventType.TEXT_MESSAGE=Text message
+EventType.TRAILER_DATA=Trailer Data
+EventType.NEW_DRIVER=New Driver
+EventType.NEW_OCCUPANT=New Occupant
+EventType.INVALID_DRIVER=Invalid Driver ID
+EventType.INVALID_OCCUPANT=Invalid Occupant ID
+EventType.RF_SWITCH=RF Off
+EventType.DVIR=Driver Vehicle Inspection Report
+
+
+#Gender
+Gender.NOT_SPECIFIED=
+Gender.MALE=Male
+Gender.FEMALE=Female
+
+#Vehicle Type
+VehicleType.LIGHT=Light
+VehicleType.MEDIUM=Medium
+VehicleType.HEAVY=Heavy
+
+#Reports
+report_driver=Drivers
+report_vehicle=Vehicles
+report_idling=Idling
+report_devices=Devices
+report_performance=Performance
+report_waysmart=waySmart
+
+#Report Group
+ReportGroup.DIVISION_REPORT=Fleet/Division Report
+ReportGroup.DRIVERS_REPORT=Driver Report
+ReportGroup.VEHICLES_REPORT=Vehicle Report
+ReportGroup.MILEAGE_BY_VEHICLE=Mileage By Vehicle
+ReportGroup.IDLING_REPORT=Idling Report
+ReportGroup.DEVICES_REPORT=Device Report
+ReportGroup.TEAM_STATISTICS_REPORT=Team Statistics Report
+ReportGroup.TEAM_STOPS_REPORT=Team Stops Report
+ReportGroup.HOS_DAILY_DRIVER_LOG_REPORT=HOS Record of Duty Status Report
+ReportGroup.HOS_VIOLATIONS_SUMMARY_REPORT=HOS Violations Summary Report
+ReportGroup.HOS_VIOLATIONS_DETAIL_REPORT=HOS Violations Detail Report
+ReportGroup.HOS_DRIVER_DOT_LOG_REPORT=HOS Driver DOT Log Report
+ReportGroup.DOT_HOURS_REMAINING=DOT Time Remaining
+ReportGroup.HOS_ZERO_MILES=HOS Zero Miles
+ReportGroup.TEN_HOUR_DAY_VIOLATIONS=Ten Hour Day Violations
+ReportGroup.STATE_MILEAGE_BY_MONTH=State Mileage By Month
+ReportGroup.STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS=State Mileage By Vehicle - Road Status
+ReportGroup.STATE_MILEAGE_BY_VEHICLE=State Mileage By Vehicle
+ReportGroup.STATE_MILEAGE_FUEL_BY_VEHICLE=State Mileage Fuel By Vehicle
+ReportGroup.DRIVER_HOURS=Driver Hours
+ReportGroup.HOS_EDITS=HOS Edits
+ReportGroup.PAYROLL_SUMMARY=Payroll Summary Report
+ReportGroup.PAYROLL_COMPENSATED_HOURS=Payroll Compensated Hours Report
+ReportGroup.PAYROLL_DETAIL=Payroll Report Driver Report
+ReportGroup.PAYROLL_SIGNOFF=Payroll Report Driver Sign off
+ReportGroup.VEHICLE_USAGE=Vehicle Usage
+ReportGroup.STATE_MILEAGE_COMPARE_BY_GROUP=Group Comparison By State/Province
+ReportGroup.WARRANTY_LIST=Warranty List
+ReportGroup.DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT=Driving Time Violations Summary Report
+ReportGroup.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT=Driving Time Violations Detail Report
+ReportGroup.NON_DOT_VIOLATIONS_SUMMARY_REPORT=Non-DOT Violations Summary Report
+ReportGroup.NON_DOT_VIOLATIONS_DETAIL_REPORT=Non-DOT Violations Detail Report
+ReportGroup.DRIVER_PERFORMANCE_KEY_METRICS=Driver Performance Key Metrics
+ReportGroup.DRIVER_PERFORMANCE_KEY_METRICS_TF=Driver Performance Key Metrics Time Frame
+ReportGroup.DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG=Driver Performance Key Metrics Time Frame RYG
+ReportGroup.DRIVER_PERFORMANCE_TEAM=Driver Performance per Group
+ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL=Driver Performance per Driver
+ReportGroup.DRIVER_PERFORMANCE_RYG_TEAM=Driver Performance RYG per Group
+ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL=Driver Performance RYG per Driver
+ReportGroup.DRIVER_COACHING=Driver Coaching Report
+ReportGroup.DRIVER_EXCLUDED_VIOLATIONS=Excluded Violations
+ReportGroup.STATE_MILEAGE_BY_VEHICLE_NON_IFTA=State Mileage By Vehicle
+ReportGroup.NON_COMM=Vehicles Not Communicating Report
+ReportGroup.DVIR_PRE_TRIP=Driver Vehicle Inspection Reports - Pre-Trip
+ReportGroup.DVIR_POST_TRIP=Driver Vehicle Inspection Reports - Post-Trip
+ReportGroup.SEATBELT_CLICKS_REPORT=Seatbelt Clicks Report
+
+# Occurrence
+Occurrence.DAILY=Daily
+Occurrence.DAILY_CUSTOM=Daily - Customizable
+Occurrence.WEEKLY=Weekly
+Occurrence.MONTHLY=Monthly
+
+#Status
+Status.ACTIVE=Active
+Status.INACTIVE=Inactive
+
+#Hazard Status
+HazardStatus.ACTIVE=Active
+HazardStatus.EXPIRED=Expired
+
+#Hazard Types
+OTHER=Other
+WEATHER_SLIPPERY=Weather - Slippery (Wet/Snow/Ice)
+WEATHER_FLOODING=Weather - Flooding
+WEATHER_VISIBILITY=Weather - Low Visibility (Fog/Smoke)
+WEATHER_WINDGUSTS=Weather - Wind Gusts
+ROADACTIVITY_TRAFFIC=Road Activity - Traffic
+ROADACTIVITY_DEBRIS=Road Activity - Debris
+ROADRESTRICTIONS_WEIGHT=Road Restrictions - Weight Restrictions (Bridge)
+ROADRESTRICTIONS_HEIGHT=Road Restrictions - Height Restrictions (Overpass Clearance)
+ROADRESTRICTIONS_WIDTH=Road Restrictions - Width Restrictions (Narrow Lane)
+ROADRESTRICTIONS_BAN_CLOSURE=Road Restrictions - Road Ban/Closure
+ROADRESTRICTIONS_SHARPTURN=Road Restrictions - Sharp Turn
+ROADRESTRICTIONS_STEEPGRADE=Road Restrictions - Steep Grade
+ROADRESTRICTIONS_MICRO=Micro Hazards - Oil Well Head
+
+# adding this section  more closely matches PRD 1.4, but does NOT coincide with firmware's doc???
+WEATHER_OTHER=Weather - Other
+WEATHER_SNOWICE=Weather - Snow/Ice
+ROADACTIVITY_CONSTRUCTION=Road Activity - Construction
+ROADACTIVITY_ACCIDENT=Road Activity - Accident
+ROADACTIVITY_DISABLEDVEHICLE=Road Activity - Disabled Vehicle
+ROADACTIVITY_OTHER=Road Activity - Other
+ROADRESTRICTIONS_CLOSURE=Road Restrictions - Closure
+ROADRESTRICTIONS_OTHER=Road Restrictions - Other
+
+
+
+
+#Delay
+Delay.MINUTES05=5 Minutes
+Delay.MINUTES10=10 Minutes
+Delay.MINUTES15=15 Minutes
+Delay.MINUTES30=30 Minutes
+
+#LimitType
+LimitType.COUNT=Count
+LimitType.TIME=Minutes
+
+#SensitivityType
+SensitivityType.HARD_ACCEL_SETTING=Hard Accelerate
+SensitivityType.HARD_BRAKE_SETTING=Hard Brake
+SensitivityType.HARD_TURN_SETTING=Hard Turn
+SensitivityType.HARD_VERT_SETTING=Hard Bump
+
+RedFlagLevel.NONE=None
+RedFlagLevel.CRITICAL=Critical
+RedFlagLevel.WARNING=Warning
+RedFlagLevel.INFO=Information
+
+CrashReportStatus.NEW=New
+CrashReportStatus.CONFIRMED=Confirmed
+CrashReportStatus.EXCLUDE=Excluded
+CrashReportStatus.POTENTIAL=Potential
+CrashReportStatus.ROLLOVER=Rollover
+CrashReportStatus.STOP=Stop
+CrashReportStatus.PANIC=Panic
+CrashReportStatus.AGGRESSIVE_DRIVING=Aggressive Driving
+
+
+DamageType.VEHICLE_TOWED=Vehicle Towed
+DamageType.ROLLOVER=Rollover
+DamageType.UNDER_CAR=Under Car
+DamageType.TOTALED=Totaled
+DamageType.UNKNOWN=Unknown
+
+EntityType.ENTITY_GROUP=Group
+EntityType.ENTITY_DRIVER=Driver
+EntityType.ENTITY_VEHICLE=Vehicle
+
+#EntityType
+entity_group=Group
+entity_driver=Driver
+entity_vehicle=Vehicle
+
+recordCountHeader=Showing {0} to {1} of {2} records
+
+# Driver Performance
+driverPerformanceTab=Driver
+driverPerformanceName=Driver Performance:
+driver_overallscore=Overall Score
+driver_speed=Speed
+driver_driving_style=Driving Style
+driver_seatbelt=Seat Belt
+driver_trips=Trips
+driver_lasttrip=Last Trip
+driver_mpg=Fuel Efficiency
+driver_coaching=Coaching Events
+driver_view_all=View all trips
+driver_speed_overall=Speed: Overall
+driver_breakdown_speed=Breakdown by Speed Limit
+driver_details=Details
+driver_location=Location
+driver_datetime=Date/Time
+driver_posted_speed=Posted Speed
+driver_avg_speed=Avg Speed
+driver_top_speed=Top Speed
+driver_distance=Distance
+driver_breakdown_style=Breakdown by Driving Style
+driver_event=Event
+driver_severity=Severity
+driver_clear_event=Forgive the following Event? This action can be reversed.
+driver_event_location=Event Location
+driver_chart_cumulative=Cumulative Score
+#driver_chart_daily=Mileage
+driver_chart_score=Score
+#driver_chart_miles=Miles
+driver_mpg_light=Light
+driver_mpg_medium=Medium
+driver_mpg_heavy=Heavy
+GPS_get_location=Get Current Location
+GPS_get_location_sent=Current location request has been sent. Last Trip will be updated soon.
+
+
+
+
+# Vehicle Performance
+vehiclePerformanceTab=Vehicle
+vehiclePerformanceName=Vehicle Performance:
+vehicle_overallscore=Overall Score
+vehicle_speed=Speed
+vehicle_driving_style=Driving Style
+vehicle_seatbelt=Seat Belt
+vehicle_trips=Trips
+vehicle_lasttrip=Last Trip
+vehicle_mpg=Fuel Efficiency
+vehicle_coaching=Coaching Events
+vehicle_view_all=view all trips
+vehicle_speed_overall=Speed: Overall
+vehicle_breakdown_speed=Breakdown by Speed Limit
+vehicle_details=Details
+vehicle_location=Location
+vehicle_datetime=Date/Time
+vehicle_posted_speed=Posted Speed
+vehicle_avg_speed=Avg Speed
+vehicle_top_speed=Top Speed
+vehicle_distance=Distance
+vehicle_breakdown_style=Breakdown by Driving Style
+vehicle_event=Event
+vehicle_severity=Severity
+vehicle_clear_event=Forgive the following Event? This action is reversible.
+vehicle_event_location=Event Location
+vehicle_chart_cumulative=Cumulative Score
+#vehicle_chart_daily=Mileage
+vehicle_chart_score=Score
+#vehicle_chart_miles=Miles
+vehicle_mpg_light=Light
+vehicle_mpg_medium=Medium
+vehicle_mpg_heavy=Heavy
+
+#Live Fleet
+livefleet=Live Fleet
+livefleet_priPhone=Phone 1
+livefleet_secPhone=Phone 2
+livefleet_vehicleid=Vehicle ID
+livefleet_vehicle_part1=Vehicle
+livefleet_vehicle_part2=
+livefleet_vehicle=Vehicle
+livefleet_driver_part1=Driver
+livefleet_driver_part2=
+livefleet_driver=Driver
+livefleet_address=Location
+livefleet_updated=Updated
+livefleet_vehicleType=Type
+livefleet_distance=Distance to address:
+livefleet_devicePhone=Device
+livefleet_dispatch=Dispatch
+livefleet_find_address=Find Address
+livefleet_locate=Locate
+livefleet_display=Display
+livefleet_nearest_vehicles=nearest vehicles
+livefleet_default_view=This is the default view for your division
+livefleet_change=change
+livefleet_legend_header=Fleet Legend
+
+#Vehicle Bubble
+vehicleBubble_distance={0} {1}
+
+#Map Bubbles
+NoteType.TRIP_START=Start of Trip
+NoteType.TRIP_END=End of Trip
+NoteType.TRIP_INPROGRESS=Trip In Progress
+TRIP_START=Start of Trip
+TRIP_END=End of Trip
+TRIP_INPROGRESS=Trip In Progress
+
+trip_end_before_start=ERROR: Start date after end date, using previous valid dates.
+trip_start_more_than_thirty=ERROR: Start date > 30 days ago, using previous valid dates.
+trip_valid_date_range=Trip data available for past 30 days.
+
+drivertrip_title=Driver Trips
+drivertrip_date_range=Date Range
+drivertrip_trips=Trips
+drivertrip_start_date=Start Date
+drivertrip_end_date=End Date
+drivertrip_total_drive_time=Total Trip Duration
+drivertrip_total_miles_driven=Total {0} Driven:
+drivertrip_total_idle_time=Total Idle Time
+drivertrip_total_trips=Total Trips
+drivertrip_driver_timezone=Driver Time Zone
+drivertrip_events=Events
+drivertrip_settings=Settings
+drivertrip_last_ten_trips=Show last 10 trips on map
+drivertrip_show_idle_marker=Show engine idle markers on map
+drivertrip_show_warnings=Show safety violation markers on map
+drivertrip_show_tampering=Show device tampering markers on map
+drivertrip_legend=Legend
+drivertrip_legend_start=Start
+drivertrip_legend_engine_idle=Engine Idle
+drivertrip_legend_violation=Safety Violation
+drivertrip_legend_end=End
+drivertrip_legend_inprogress=In Progress
+drivertrip_trips_by=Trips by
+drivertrip_vehicle=Vehicle
+drivertrip_map=Map
+drivertrip_no_trips_found=No Trips Found
+drivertrip_stats=Stats
+drivertrip_to=to
+drivertrip_time=Time
+drivertrip_date=Date
+drivertrip_distance=Distance
+drivertrip_start_address=Start Address
+drivertrip_end_address=End Address
+drivertrip_duration=Duration
+drivertrip_event_address=Address
+drivertrip_event_datetime=Date/Time
+drivertrip_updateDateRange=Update Date Range
+drivertrip_tampering=Tampering
+drivertrip_quality=GPS
+drivertrip_qualityBAD=Bad Quality
+drivertrip_qualityGOOD=Good Quality
+drivertrip_qualityUNKNOWN=Unknown Quality
+
+# Vehicle Trips
+vehicletrip_title=Vehicle Trips
+vehicletrip_date_range=Date Range
+vehicletrip_trips=Trips
+vehicletrip_start_date=Start Date
+vehicletrip_end_date=End Date
+vehicletrip_total_drive_time=Total Trip Duration
+vehicletrip_total_miles_driven=Total Miles Driven
+vehicletrip_total_idle_time=Total Idle Time
+vehicletrip_total_trips=Total Trips
+vehicletrip_driver_timezone=Vehicle Time Zone
+vehicletrip_events=Events
+vehicletrip_settings=Settings
+vehicletrip_last_ten_trips=Show last 10 trips on map
+vehicletrip_show_idle_marker=Show engine idle markers on map
+vehicletrip_show_warnings=Show safety violation markers on map
+vehicletrip_show_tampering=Show device tampering markers on map
+vehicletrip_legend=Legend
+vehicletrip_legend_start=Start
+vehicletrip_legend_engine_idle=Engine Idle
+vehicletrip_legend_violation=Safety Violation
+vehicletrip_legend_end=End
+vehicletrip_legend_inprogress=In Progress
+vehicletrip_trips_by=Trips by
+vehicletrip_driver=Driver
+vehicletrip_map=Map
+vehicletrip_no_trips_found=No Trips Found
+vehicletrip_stats=Stats
+vehicletrip_to=to
+vehicletrip_time=Time
+vehicletrip_date=Date
+vehicletrip_distance=Distance
+vehicletrip_start_address=Start Address
+vehicletrip_end_address=End Address
+vehicletrip_duration=Duration
+vehicletrip_event_address=Address
+vehicletrip_event_datetime=Date/Time
+vehciletrip_updateDateRange=Update Date Range
+vehicletrip_tampering=Tampering
+vehicletrip_quality=GPS
+vehicletrip_qualityBAD=Bad Quality
+vehicletrip_qualityGOOD=Good Quality
+vehicletrip_qualityUNKNOWN=Unknown Quality
+
+#fleet detail page (aka fleet flyout)
+fleetdetail_overview=Overview
+fleetdetail_trend=Trend
+fleetdetail_overall_score=Overall Score
+fleetdetail_mpg=Fuel Efficiency
+fleetdetail_driving_style=Driving Style
+fleetdetail_seatbelt=Seat Belt
+fleetdetail_speed=Speed
+#Overall Score
+overallscore=Overall Score
+overallscore_box_subtitle=OVERALL SCORE
+
+#Overview Header
+overview=Overview
+
+#Dashboard Detail Page
+detail_overview=Overview
+detail_trend=Trend
+detail_overall_score=Overall Score
+detail_fleet_map=Fleet Map
+detail_mpg=Fuel Efficiency
+detail_driving_style=Driving Style
+detail_seatbelt=Seat Belt
+detail_speed=Speed
+
+#Crash Summary Widget
+crash_summary_title=Crash Stats
+crash_summary_overDistanceTitle=Crashes per million {0}
+crash_summary_lastXmonths=(Last {0} months)
+crash_summary_overDistanceColumn=Crash/Mil
+crash_summary_overDistance=Crashes per million {0}
+crash_summary_daysSinceLastCrash=Days since last crash
+crash_summary_totalDistanceDrivenSinceLastCrash={0} since last crash
+crash_summary_totalCrashes=Total Crashes:
+crash_summary_history_title=Crash History Summary
+crash_summary_no_crashes=No crashes have been detected in the past {0} months.
+crash_summary_potential_crashes=Potential Crashes
+
+#Speeding Percentage
+speeding_percentage_MeasurementType.ENGLISH=Speeding % (mi)
+speeding_percentage_MeasurementType.METRIC=Speeding % (km)
+speeding_percentage_distance_title=Total Distance Driven:
+speeding_percentage_speeding_title=Total Distance Speeding:
+speeding_percentage_distance_bar_label=Driving Distance
+speeding_percentage_speeding_bar_label=Speeding Distance
+speeding_percentage_speeding_line_label=% Distance Speeding
+
+#Idling Percentage
+idling_percentage_title=Idling Percentage
+idling_percentage_driving_title=Total Duration:
+idling_percentage_idling_title=Total Time Idling:
+idling_percentage_driving_bar_label=Duration
+idling_percentage_idling_bar_label=Idle Time
+idling_percentage_idling_line_label=% Idle
+idling_percentage_time_label=hrs
+
+#Measurement Text
+
+MeasurementType.ENGLISH=English
+MeasurementType.METRIC=Metric
+
+MeasurementType.ENGLISH_mph=mph
+MeasurementType.ENGLISH_MPH=MPH
+MeasurementType.ENGLISH_miles=miles
+MeasurementType.ENGLISH_Miles=Miles
+MeasurementType.ENGLISH_mi=mi
+MeasurementType.ENGLISH_lbs=lbs
+
+#MeasurementType.ENGLISH_mpg=mpg
+#MeasurementType.ENGLISH_MPG=MPG
+#MeasurementType.ENGLISH_Miles_Per_Gallon=Miles Per Gallon
+ENGLISH_MILES=Miles
+ENGLISH_FEET=Feet
+METRIC_MILES=Kilometers
+METRIC_FEET=Meters
+
+
+FuelEfficiencyType.MPG_US_mpg=mpg
+FuelEfficiencyType.MPG_US_MPG=MPG
+FuelEfficiencyType.MPG_US_Miles_Per_Gallon=Miles Per Gallon(US)
+
+FuelEfficiencyType.MPG_UK_mpg=mpg
+FuelEfficiencyType.MPG_UK_MPG=MPG
+FuelEfficiencyType.MPG_UK_Miles_Per_Gallon=Miles Per Gallon(UK)
+
+MeasurementType.METRIC_mph=kph
+MeasurementType.METRIC_MPH=KPH
+MeasurementType.METRIC_miles=kilometers
+MeasurementType.METRIC_Miles=Kilometers
+MeasurementType.METRIC_mi=km
+MeasurementType.METRIC_lbs=kg
+
+#MeasurementType.METRIC_mpg=kmpl
+#MeasurementType.METRIC_MPG=KMPL
+#MeasurementType.METRIC_Miles_Per_Gallon=Kilometers Per Liter
+
+FuelEfficiencyType.KMPL_mpg=kmpl
+FuelEfficiencyType.KMPL_MPG=KMPL
+FuelEfficiencyType.KMPL_Miles_Per_Gallon=Kilometers Per Liter
+
+FuelEfficiencyType.LP100KM_mpg=l/100km
+FuelEfficiencyType.LP100KM_MPG=L/100KM
+FuelEfficiencyType.LP100KM_Miles_Per_Gallon=Liters Per 100 Kilometers
+
+FuelEfficiencyType.MPG_US=Miles Per Gallon (US)
+FuelEfficiencyType.MPG_UK=Miles Per Gallon (UK)
+FuelEfficiencyType.KMPL=Kilometers Per Liter
+FuelEfficiencyType.LP100KM=Liters Per 100 Kilometers
+
+#Customer Support
+customer_support_assistance=For assistance, please contact Customer Support at:
+customer_support_toll_free=Toll Free:
+customer_support_number=1-888-888-8494
+customer_support_number1=
+customer_support_email=E-mail:
+customer_support_email_address=support@inthinc.com
+customer_support_email_address1=
+
+hrs=hrs
+hr=hr
+minago=min ago
+minutesago=minutes ago
+secondsago=seconds ago
+noAddressFound=No address found at location {0},{1}
+yes=Yes
+no=No
+
+editDevice_autoLogoff=Auto Log Off:
+AutoLogoff.ENABLE=Enable
+AutoLogoff.DISABLE=Disable
+NotApplicable=N/A
+idling_percentage_stats_msg=*Statistics reflect {0} out of {1} vehicles that are reporting idling statistics.
+
+idlingReport_enabled=Report shows {0} out of {1} drivers that are reporting idling statistics.
+idlingVehicleReport_enabled=Report shows {0} out of {1} vehicles that are reporting idling statistics.
+noStartDate=Start date is required.
+noEndDate=End date is required.
+endDateBeforeStartDate=Start date must be before end date.
+
+divisionTeam=Division/Team
+
+editPerson_rfidInformation=RFID Information
+editPerson_driver_rfid_barcode=Bar Code
+editPerson_driver_rfid1=ID 1
+editPerson_driver_rfid2=ID 2
+editPerson_uniqueBarcode=Bar Code {0} is already assigned to {1}.
+editPerson_barcodeNotAvailable=Invalid bar code.
+
+chartPBarLoading=Loading chart. Please wait
+chartXMLLoading=Retrieving data.  Please wait
+chartParsingData=Reading Data. Please Wait
+chartChartNoData=No data to display.
+chartRenderingChart=Rendering Chart. Please Wait
+chartLoadDataError=Error in loading data.
+chartInvalidXML=Invalid XML data.
+
+
+daysBack=Days Back
+
+# Custom Roles Access Points
+
+usersAccess=Users: View
+userEditInfo=Users: Add/Edit Users
+driverEditInfo=Users: Add/Edit Drivers
+rfidEditInfo=Users: Edit RFID
+vehiclesAccess=Vehicles: View
+vehiclesCreate=Vehicles: Add/Edit
+vehiclesDriver=Vehicles: Assign Driver
+vehiclesWireline=Vehicles: Edit Wireline
+vehiclesSpeed=Vehicles: Edit Speed and Sensitivity
+
+devicesAccess=Devices
+zonesAccess=Zones
+zoneAlertsAccess=Zone Alerts
+redFlagsAccess=Red Flags
+reportsAccess=Reports
+organizationAccess=Organization
+speedByStreetAccess=Speed By Street
+crashReportAccess=Crash Report
+liveFleetAccess=Live Fleet
+forgiveAccess=Forgive Events
+hosAccess=HOS (Hours of Service)
+waySmartAccess=waySmart
+
+customRoleHeader_roleName=Role Name
+customRoles_backToCustomRoles=Back to Custom Roles
+editCustomRole_accessPoints=Access Points
+customRole_confirmDelete=Delete this role? This action is irreversible.
+customRole_added=Role {0} added.
+customRole_updated=Role {0} updated.
+customRole_deleted=Role {0} deleted.
+excluded=excluded
+included=included
+
+smsTextRegex=[0-9]{10}@(([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([a-zA-Z0-9-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(?)$
+
+teamPage_driverHeader=Driver Name
+teamPage_hideShow=Show
+
+liveTeamTitle=Live Team
+liveTeamLegend=Team Legend
+liveFleetTitle=Live Fleet
+liveFleetLegend=Fleet Legend
+
+teamOverallNA=N/A
+teamOverallzerotoone=0.0 - 1.0
+teamOverallonetotwo=1.1 - 2.0
+teamOveralltwotothree=2.1 - 3.0
+teamOverallthreetofour=3.1 - 4.0
+teamOverallfourtofive=4.1 - 5.0
+
+ScoreCategory.CAT_1=0.0 - 1.0
+ScoreCategory.CAT_2=1.1 - 2.0
+ScoreCategory.CAT_3=2.1 - 3.0
+ScoreCategory.CAT_4=3.1 - 4.0
+ScoreCategory.CAT_5=4.1 - 5.0
+
+timeFrame=Time Frame
+timeFrame_TODAY=Today
+timeFrame_ONE_DAY_AGO=Yesterday
+timeFrame_SUN_SAT_WEEK=Sun to Sat
+timeFrame_WEEK=Past Week
+timeFrame_LAST_MONTH=Last Month
+timeFrame_LAST_THIRTY_DAYS=Past 30 Days
+timeFrame_MONTH=Current Month
+timeFrame_THREE_MONTHS=Past 3 Months
+timeFrame_SIX_MONTHS=Past 6 Months
+timeFrame_YEAR=Past Year
+timeFrame_ANY=All
+timeFrame_PAST_SEVEN_DAYS=Past 7 Days
+timeFrame_CUSTOM_RANGE=Custom Date Range
+
+teamTotal=Total
+teamSpeedTotals=Statistics reflect event count for {0} of {1} drivers with speed violations.
+teamStyleScoreLabel=Style Score
+teamOverallScore=Overall Score
+teamOverallScoreRange=Overall Score Range
+teamSpeedScoreLabel=Speed Score
+teamSpeedLimit=Limit
+teamSpeedPieLabel=Speeding Count by Speed Limit
+teamSpeedBarLabelTop=Speeding Distance by Speed Limit
+teamSpeedBarSpeedingDistance=Speeding Distance
+teamSpeedBarDrivingDistance=Driving Distance
+teamSpeedBarPercentDistance=% Distance Speeding
+teamSpeedWorstOffenders=Worst offender(s)
+
+teamLabels="A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+
+teamPage_eventTime=Time
+teamPage_eventType=Event
+teamPage_eventAddress=Address
+teamTripsPage_illegalTimeFrameError=Please choose a valid time frame for the Team Trips page.
+
+#HOS DOT types
+INTERNAL=None
+US=US 8 Day
+US_7DAY=US 7 Day
+US_OIL=US Oil 8 Day
+US_OIL_7DAY=US Oil 7 Day
+CANADA=Canada
+CANADA_60_DEGREES=Canada 60 Degrees
+US_HOME_OFFICE=US Home Office
+CANADA_HOME_OFFICE=Canada Home Office
+TEXAS=Texas
+CANADA_ALBERTA=Canada Alberta
+CANADA_2007_CYCLE_1=Canada 2007 Cycle 1
+CANADA_2007_CYCLE_2=Canada 2007 Cycle 2
+CANADA_2007_60_DEGREES_CYCLE_1=Canada 2007 60 Degrees Cycle 1
+CANADA_2007_60_DEGREES_CYCLE_2=Canada 2007 60 Degrees Cycle 2
+CANADA_2007_OIL=Canada 2007 Oil Field Permit
+CANADA_2007_60_DEGREES_OIL=Canada 2007 60 Degrees Oil Field Permit
+
+
+#HOS account types
+NONE=Disabled 
+HOS_SUPPORT=Enabled 
+EUROPEAN_HOS_SUPPORT=European Driving Hours Enabled
+
+
+#HOS status types
+OFF_DUTY=Off Duty
+SLEEPER=Sleeper Berth 
+DRIVING=Driving
+ON_DUTY=On Duty, Not Driving
+OFF_DUTY_AT_WELL=Off-Duty At Well 
+FUEL_STOP=Fuel Stop
+DOT_STOPPED=DOT Stopped
+ON_DUTY_OCCUPANT=On Duty, Not Driving Occupant 
+OFF_DUTY_OCCUPANT=Off Duty Occupant
+HOS_SAFETY_CHECK=Safety Check
+HOS_SECURE_LOAD=Secure Load
+HOS_SECURE_LOAD_CHECK=Secure Load Check
+HOS_PRETRIP_INSPECTION=Pre Trip Inspection
+HOS_PRETRIP_INSPECTION_NOT_NEEDED=Pre Trip Inspection Not Needed
+HOS_POSTTRIP_INSPECTION=Post Trip Inspection
+HOS_POSTTRIP_INSPECTION_NOT_NEEDED=Post Trip Inspection Not Needed
+HOS_ADVERSE_DRIVING_CONDITIONS=Adverse Driving Conditions
+HOS_NEAREST_PLACE_OF_REST=Nearest Place of Rest
+HOS_EMERGENCY=Emergency
+HOS_DERERRAL=Deferral
+DRIVING_NONDOT=Driving Non-DOT   
+STOP_DRIVING_NONDOT=Stop Driving Non-DOT    
+HOS_MIDTRIP_INSPECTION=Mid Trip Inspection
+TRAVELTIME_OCCUPANT=Occupant Travel Time
+HOS_PERSONALTIME=Personal Time
+
+#HOS logs table colums
+hosLogs_datetime=Date/Time
+hosLogs_driver=Driver
+hosLogs_vehicle=Vehicle
+hosLogs_trailer=Trailer
+hosLogs_service=Service
+hosLogs_location=Location
+hosLogs_edited=Edited
+hosLogs_status=Status
+hosLogs_recordCountHeader=Showing {0} to {1} of {2} records
+hosLogs_webLogin=Web Login
+hosLogs_addLog=Add HOS Log
+hosLogs_editLog=Edit HOS Log
+hosLogs_editLogs=Edit Multiple HOS Logs
+hosLogs_information=HOS Log Information
+hosLogs_dateRange=Date Range
+
+
+hosLog_date=Date:
+hosLog_time=Time:
+hosLog_status=Status:
+hosLog_trailer=Trailer:
+hosLog_service=Service:
+hosLog_driver=Driver:
+hosLog_driver_required=Driver is required
+hosLog_vehicle=Vehicle:
+hosLog_location=Location:
+hosLog_location_format=City, State/Province
+hosLog_location_required=Location is required
+hosLog_dot=DOT:
+hosLog_added=Log {0} added.
+hosLog_updated=Log {0} updated.
+hosLog_deleted=Log {0} deleted.
+hosLog_edit=edit
+hosLog_future_date_not_allowed=Date/Time in the future is not valid.
+
+hosSendLogsToDevice=Send HOS Logs to Device
+hosSendLogsToDevice.success=Send Logs Success: HOS Logs have been sent to the device.
+hosSendLogsToDevice.noDriver=Send Logs Error: No driver is selected.
+hosSendLogsToDevice.noVehicle=Send Logs Error: The selected driver is not logged on to a vehicle.
+hosSendLogsToDevice.noDevice=Send Logs Error: The selected driver's vehicle is not associated with a device.
+hosSendLogsToDevice.logShippingError=Send Logs Error: An error has occurred in packaging/shipping the logs to the device.
+
+fuelStops_datetime=Date/Time
+fuelStops_driver=Driver
+fuelStops_vehicle=Vehicle
+fuelStops_trailer=Trailer
+fuelStops_service=Service
+fuelStops_location=Location
+fuelStops_edited=Edited
+fuelStops_recordCountHeader=Showing {0} to {1} of {2} records
+fuelStops_dateRange=Date Range
+fuelStops_truckGallons= Vehicle Fuel
+fuelStops_trailerGallons= Trailer Fuel
+fuelStops_information=Fuel Stop Information
+fuelStops_noVehiclesFound=No vehicles found
+
+fuelStop_vehicle=Vehicle:
+fuelStop_date=Date:
+fuelStop_time=Time:
+fuelStop_status=Status:
+fuelStop_trailer=Trailer:
+fuelStop_service=Service:
+fuelStop_driver=Driver:
+fuelStop_driver_required=Driver is required
+fuelStop_location=Location:
+fuelStop_location_format=City, State/Province
+fuelStop_location_required=Location is required
+fuelStop_dot=DOT:
+fuelStop_added=Fuel stop {0} added.
+fuelStop_updated=Fuel stop {0} updated.
+fuelStop_deleted=Fuel stop {0} deleted.
+fuelStop_edit=edit
+fuelStop_truckGallons=Vehicle Fuel:
+fuelStop_trailerGallons=Trailer Fuel:
+fuelStop_earliest=Fuel stops more than 25 days old will not be included in the IFTA aggregation
+fuelStop_future_date_not_allowed=Date/Time in the future is not valid.
+fuelStop_truckAndTrailerFuelInvalid=Vehicle or Trailer fuel required.
+fuelStop_truckGallons_required=Vehicle fuel is required.
+MeasurementType.ENGLISH_editFuelStop_truckGallons= Gallons
+MeasurementType.METRIC_editFuelStop_truckGallons= Liters
+MeasurementType.ENGLISH_editFuelStop_trailerGallons= Gallons
+MeasurementType.METRIC_editFuelStop_trailerGallons= Liters
+MeasurementType.ENGLISH_editFuelStop_odometer= Miles
+MeasurementType.METRIC_editFuelStop_odometer= Kilometers
+
+updateFuelStop=Edit Fuel Stop
+createFuelStop=Add Fuel Stop
+subNavigation_hosLogs=Driver Logs
+subNavigation_hosReports=Reports
+subNavigation_fuelStops=Fuel Stops
+
+hos_reportsTitle=HOS Reports
+waysmart_reportsTitle=waySmart Reports
+waysmart_reportsTitle_description=Reports show data collected by waySmart devices
+hos_logsTitle=HOS Driver Logs
+fuelStops=Fuel Stops
+performance_reportsTitle=Performance Reports
+performance_reportsTitle_description=Reports show data on driver performance
+
+reports_report=Report:
+reports_groups=Group(s):
+reports_groupsOrDriver=Report On:
+reports_groupOrDriver=Report On:
+reports_ifta_only=IFTA Vehicles only:
+reports_expired_only=Expired only:
+reports_includeInactiveDrivers=Include Inactive Drivers:
+reports_includeZeroMilesDrivers=Include Zero Miles Drivers: 
+reports_viewTable=View
+reports_renderHTML=View HTML
+reports_exportPDF=Export PDF
+reports_exportExcel=Export Excel
+
+reports_viewTableLink=Table
+reports_renderHTMLLink=HTML
+reports_exportPDFLink=PDF
+reports_exportExcelLink=Excel
+reports_emailLink=E-mail
+
+DRIVER=Driver
+GROUPS=Groups
+
+dateRange_noStartDate=Start date is required.
+dateRange_noEndDate=End date is required.
+dateRange_endDateBeforeStartDate=Start date must be the same or before end date.
+dateRange_label=Date Range:
+dateRange_moreThanOneYear:Date Range must be less than one year.
+
+timeFrame_label=Time Frame:
+
+
+reportParams_noReportSelected=Report selection is required.
+reportParams_noGroupSelected=Group selection is required.
+reportParams_noDriverSelected=Driver selection is required.
+reportParams_noReportOnSelected=Driver or Groups selection is required.
+
+IdlingSetting_disabled=Disabled
+IdlingSetting_seconds=seconds
+IdlingSetting_minutes=minutes
+
+AutologoffSetting_disabled=Disabled
+AutologoffSetting_minutes=minutes
+AutologoffSetting_hour=hour
+AutologoffSetting_hours=hours
+AutologoffSetting_max= 18 hours, 12 minutes, 15 seconds
+
+WS820_maxSpeedSlider=Maximum Speed
+WS820_speedBuffer=Speed Buffer
+WS820_severeSpeeding=Severe Speeding
+
+txtMsgHeader_base=Text Messages
+txtMsg_filterTitle=Filter Messages
+txtMsg_inbox=Inbox
+txtMsg_compose=Compose
+txtMsg_composeTitle=Compose Message
+txtMsg_sent=Sent
+txtMsg_sentTitle=Sent Items
+txtMsg_remove=Remove
+txtMsg_applyFilter=Refresh
+txtMsg_sendMsg=Send
+txtMsg_sendMsgSummary=Summary of Message Send
+txtMsg_sendMsgSummaryDetail=The following are the results of your message send.
+txtMsg_sendMsgDriverNoDevice=Currently there is not a device associated with driver:  %s.
+txtMsg_sendMsgVehicleNoDevice=Currently there is not a device associated with vehicle: %s.
+txtMsg_sendMsgSuccess=Message sent to driver %s (Vehicle: %s)  (Device: %s)
+txtMsg_sendMsgNotCapable=Device: (%s) associated with driver  %s (Vehicle: %s), is not capable of receiving Text Messages
+txtMsg_messages=messages
+txtMsg_illegalCharacter=Text Messages can ONLY contain\: letters, numbers, spaces and periods.
+txtMsg_replyLink=Reply to Selected
+txtMsg_startDate=Start
+txtMsg_endDate=End
+txtMsg_addressedTo=To
+txtMsg_from=From
+txtMsg_msg=Message
+txtMsg_noDevice=Error: no device
+txtMsg_noMsgSent=No messages were sent.
+txtMsg_wsDMR_0=
+txtMsg_wsDMR_1=DRIVING - EN ROUTE
+txtMsg_wsDMR_2=ARRIVED LOCATION
+txtMsg_wsDMR_3=RIG UP COMPLETED
+txtMsg_wsDMR_4=PRESSURE TEST OK
+txtMsg_wsDMR_5=READY TO PUMP
+txtMsg_wsDMR_6=JOB IN PROGRESS
+txtMsg_wsDMR_7=JOB COMPLETED OK
+txtMsg_wsDMR_8=RIG DOWN COMPLETED
+txtMsg_wsDMR_9=LEAVING LOCATION
+txtMsg_wsDMR_10=FINISHED FOR DAY
+txtMsg_wsDMR_11=VEHICLE PROBLEM
+txtMsg_wsDMR_12=EQUIPMENT PROBLEMS
+txtMsg_wsDMR_13=FLUID PROBLEMS
+txtMsg_wsDMR_14=HSE PROBLEM
+txtMsg_wsDMR_15=WAITING 3RD PARTY
+txtMsg_wsDMR_16=WAITING SLB SUPPLY
+txtMsg_wsDMR_17=JOB CANCELLED
+txtMsg_wsDMR_18=JOB EXTENDED - 3HRS
+txtMsg_wsDMR_19=JOB EXTENDED - 6HRS
+txtMsg_wsDMR_20=JOB EXTENDED - 12HRS
+unknown_vehicle=Unknown Vehicle
+unknown_group=Unknown Group
+VEHICLES=Vehicles
+
+VehicleSelectProduct=Product for batch
+
+
+#zone options stuff
+zones_reset=Reset
+zones_clone=Clone
+zoneOption=Option
+zoneOptionValue=Setting
+zone_cloned=Zone {0} has been cloned.  Clone is named {1}. 
+waysmartOnly=* Available on waySmart units only
+VEHICLE_TYPE=Vehicle Type
+SPEED_LIMIT=Speed Limit
+CAUTION_AREA=Caution Area
+REPORT_ON_ARRIVAL_DEPARTURE=Report on Arrival/Departure
+MONITOR_IDLE=Monitor Idle
+SEATBELT_VIOLATION=Seat Belt Violation
+SPEEDING_VIOLATION=Speeding Violation
+DRIVER_ID_VIOLATION=Driver ID Violation
+MASTER_BUZZER=Master Buzzer
+HARD_TURN_EVENT=Hard Turn Event
+HARD_BRAKE_EVENT=Hard Brake Event
+HARD_VERTICAL_EVENT=Hard Dip/Bump Event
+LOAD_ZONES_ON_MAP=Load Zones on Map
+zoneOptionSpeedLimitDesc=Speed Limit 0 = Use Device Default
+
+OFF=OFF
+ON=ON
+DEVICE=Use Device Setting
+ALL=All
+LIGHT=Light Duty
+MEDIUM=Medium Duty
+HEAVY=Heavy Duty
+
+latitude=Latitude:
+longitude=Longitude:
+
+
+
+EventSubCategory.DRIVING_STYLE=Driving Style
+EventSubCategory.SPEED=Speeding
+EventSubCategory.COMPLIANCE=Compliance
+EventSubCategory.FATIGUE=Fatigue
+EventSubCategory.VEHICLE=Vehicle
+EventSubCategory.WIRELINE=Wireline
+EventSubCategory.INSTALLATION=Installation
+EventSubCategory.EMERGENCY=Emergency
+EventSubCategory.ZONES=Zones
+EventSubCategory.HOS=Hours of Service
+EventSubCategory.TEXTMESSAGE=Text Message
+EventSubCategory.OFFHOURS=Off Hours Driving
+EventSubCategory.DRIVER=Driver
+EventSubCategory.DVIR=Driver Vehicle Inspection Report
+
+alertTypeSeatbelt=Not wearing seatbelt
+alertTypeNoDriver=No driver logged in
+alertTypeParkingBrake=Didn't set parking brake
+alertTypePanic=Panic button
+alertTypeAutomaticManDown=Lone worker alarm
+alertTypeAutomaticManDownOK=Lone worker alarm - worker OK or alarm canceled
+alertTypeCrash=Crash
+alertTypeRollover=Rollover
+alertTypeIgnitionOn=Vehicle ignition ON
+alertTypeTampering=Tampering
+alertTypeLowBattery=Vehicle battery is low
+alertTypeDotStopped=Driver has been stopped by a DOT officer
+alertTypeNoHours=Driver has no driving hours remaining
+alertTypeInstall=New Installation
+alertTypeFirmwareCurrent=The device firmware is updated
+alertTypeLocationDebug=Manual location command
+alertTypeQsiUpdated=QSI firmware has been updated
+alertTypeWitnessUpdated=The crash detector firmware has been updated
+alertTypeZonesCurrent=The device successfully downloaded the latest zones
+alertTypeNoThumbDrive=The device cannot mount the internal storage
+alertTypeWitnessHeartbeatViolation=The device can't get a heartbeat message from the crash detector
+alertTypeTextMessage=Text message received
+alertTypeWireline=Wireline alarm
+alertTypeMicroSleep=Driver in microsleep
+alertTypeOffHours=Driving during off hours
+alertTypeRFSwitch=Rf switch off
+alertTypeIdlingThreshold=Idling Threshold
+alertTypeIdlingLimit=Idling Limit (minutes)
+alertTypeLowIdleLimit=5
+alertTypeHighIdleLimit=60
+alertTypeDVIRPreTripFailed=Vehicle failed a pre-trip inspection
+alertTypeDVIRPreTripPassed=Vehicle passed a pre-trip inspection
+alertTypeDVIRPostTripFailed=Vehicle failed a post-trip inspection
+alertTypeDVIRPostTripPassed=Vehicle passed a post-trip inspection
+
+redFlagAlertSpeedingNote=Note: Red flags for specific speed limits only work in properly configured units.
+redFlagAlertComplianceNote=Note: Red flags for Seatbelt and No Driver only work in properly configured units.  Red flags for Seatbelt may require optional hardware. Red flags for Park Brake require optional hardware and only work in properly equipped units.
+redFlagAlertEmergencyNote=Note: Red flags for Panic and Lone Worker only work in properly equipped units.
+redFlagAlertHoursOfServiceNote=Note: Red flags for Hours of Service only work in properly equipped units.
+redFlagAlertInstallationNote=Note: Red Flags for all events except New Installation require the waySmart hardware.
+redFlagAlertFatigueNote=Note: Red flags for Fatigue only work in properly equipped units.
+
+DOTStoppedState.UNKNOWN=Unknown
+DOTStoppedState.NO_HOURS=No Hours
+DOTStoppedState.UNSAFE_VEHICLE=Unsafe Vehicle
+DOTStoppedState.CARGO=Cargo
+DOTStoppedState.LICENSE=License
+DOTStoppedState.DOT_INSPECTION=DOT Inspection
+
+HOSNoHoursState.NONE=None
+HOSNoHoursState.DRIVING=Driving
+HOSNoHoursState.ON_DUTY=On Duty
+HOSNoHoursState.ON_DUTY_7_DAY=On Duty 7 Day
+HOSNoHoursState.ON_DUTY_8_DAY=On Duty 8 Day
+HOSNoHoursState.ON_DUTY_NO_BREAK=On Duty No Break
+
+VersionState.UNKNOWN=Unknown
+VersionState.CURRENT=Current
+VersionState.UPDATED=Updated
+VersionState.SERVER_OLDER=Server Running Older Version
+VersionState.NOT_UPDATED=Not Updated
+
+
+ParkingBrakeState.PARKED=Parked
+ParkingBrakeState.DRIVING=Driving
+
+
+AlertSentStatus.NONE=No Alert
+AlertSentStatus.SENT=Sent
+AlertSentStatus.PENDING=Pending
+AlertSentStatus.CANCELED=Canceled
+
+redFlagDetailsPopupTitle=Alert Details
+redFlagDetailsPopupInst=The red flag was generated by one or more alert preferences.  Select one to see details about it and the alert messages it generated.
+redFlagDetailsPopupNameSectTitle=Alert Information
+redFlagDetailsPopupName=Name:
+redFlagDetailsPopupDescription=Description:
+redFlagDetailsPopupType=Type:
+redFlagDetailsPopupEscalationSectTitle=Notification Information
+redFlagDetailsPopupPersonList=Person List:
+redFlagDetailsPopupEmailList=E-mail List:
+redFlagDetailsPopupPhoneList=Phone Escalation List:
+redFlagDetailsPopupEscalationEmail=Escalation E-mail:
+redFlagDetailsPopupCancelPending=Cancel Pending
+
+
+PhoneEscalationStatus.NOT_ATTEMPTED=Not Attempted
+PhoneEscalationStatus.IN_PROGRESS=In Progress {0} of {1} attempts
+PhoneEscalationStatus.FAILED=All attempts failed
+PhoneEscalationStatus.SUCCESS=Success
+PhoneEscalationStatus.CANCELED=Canceled
+
+ZonesPublishInfo=Last published: {0} -- Zones are published nightly if changed.
+
+redFlag_drivingStyle=Driving Style
+redFlag_seatBelt=Seatbelt
+redFlag_speed=Speeding
+
+
+
+wireline=Wireline
+wirelineModuleEnable=Enable Wireline Module
+wirelineInformation=Wireline Settings
+wirelineKillMotor=Kill Motor
+wirelineKillMotorPasscode=Kill Motor Passcode
+wirelineDoorAlarm=Door Alarm
+wirelineDoorAlarmPasscode=Door Alarm Passcode
+wirelineAutoArmTime=Auto arm time (min)
+WirelineStatus.ENABLE=Enabled
+WirelineStatus.DISABLE=Disabled
+wirelineInvalidPasscode=Invalid Passcode -- 4 digits (1st non-zero) required
+wirelineInvalidAutoArmMin=Invalid Auto Arm minutes -- valid range: 0 to 255
+
+forwardCommandTimeSent=Time Sent
+forwardCommandTimeReceived=Time Received
+forwardCommandSend=Send
+forwardCommandNoneSent=Command Not Sent
+forwardCommandNoneReceived=Command Not Received
+forwardCommandReceivedError=Error: {0}
+ForwardCommandType.WIRELINE_ENABLE_KILL_MOTOR=Enable Kill Motor
+ForwardCommandType.WIRELINE_DISABLE_KILL_MOTOR=Disable Kill Motor
+ForwardCommandType.WIRELINE_ENABLE_DOOR_ALARM=Enable Door Alarm
+ForwardCommandType.WIRELINE_DISABLE_DOOR_ALARM=Disable Door Alarm
+
+#Safe driving provider types
+UNDEFINED_PROVIDER=None
+CELL_CONTROL=Cellcontrol
+ZOOM_SAFER=ZoomSafer
+
+CellStatusType.ENABLED=Enabled
+CellStatusType.DISABLED=Disabled
+
+TrailerDataEvent.NO_TRAILER=No Trailer
+noDriversFound=No drivers found
+
+VehicleDOTType.NON_DOT=Non-DOT 
+VehicleDOTType.DOT=DOT
+VehicleDOTType.PROMPT_FOR_DOT_TRIP=Prompt for DOT Trip
+ 
+UNKNOWN=Unknown
+
+teamStopsNoAddressFound=No address found.
+
+DOTOfficeType.NONE= 
+DOTOfficeType.MAIN=Main Office 
+DOTOfficeType.TERMINAL=Home Terminal
+
+DOTOfficeType.NONE_marker={0} 
+DOTOfficeType.MAIN_marker=(M) {0} 
+DOTOfficeType.TERMINAL_marker=(T) {0}
+
+DOTOfficeTypeMAIN_legend=(M) Main Office 
+DOTOfficeTypeTERMINAL_legend=(T) Home Terminal
+
+
+
+MeasurementType.ENGLISH_speedSetting0 = 0 mph to 25 mph
+MeasurementType.METRIC_speedSetting0 = 0 kph to 40 kph
+MeasurementType.ENGLISH_speedSetting5 = 26 mph to 50 mph
+MeasurementType.METRIC_speedSetting5 = 41 kph to 80 kph
+MeasurementType.ENGLISH_speedSetting10 = 51 mph to 75 mph
+MeasurementType.METRIC_speedSetting10 = 81 kph to 120 kph
+MeasurementType.ENGLISH_speedSettingShort0 = 0 to 25 
+MeasurementType.METRIC_speedSettingShort0 = 0 to 40 
+MeasurementType.ENGLISH_speedSettingShort5 = 26 to 50 
+MeasurementType.METRIC_speedSettingShort5 = 41 to 80
+MeasurementType.ENGLISH_speedSettingShort10 = 51 to 75
+MeasurementType.METRIC_speedSettingShort10 = 81 to 120
+
+
+ReportCategory.IFTA=IFTA
+ReportCategory.Performance=Performance
+ReportCategory.Asset=Asset
+ReportCategory.HOS=HOS
+ReportCategory.DriverPerformance=Driver Performance
+ReportCategory.Mileage=Mileage
+ReportCategory.Communication=Communication
+ReportCategory.DVIR=Driver Vehicle Inspection Reports
+
+GoogleMapType.G_NORMAL_MAP=Map (Street)
+GoogleMapType.G_SATELLITE_MAP=Sat (Satellite)
+GoogleMapType.G_HYBRID_MAP=Hyb (Hybrid)
+GoogleMapType.NONE=None
+
+
+mapLayers=Layers
+<<<<<<< HEAD
+=======
+noEmailAddress=NO EMAIL ADDRESS
+>>>>>>> develop

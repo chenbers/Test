@@ -5,8 +5,11 @@ import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.pagination.FilterableEnum;
+
 @XmlRootElement
-public enum VehicleType implements BaseEnum
+public enum VehicleType implements BaseEnum, FilterableEnum
 {
     LIGHT(0, "Light"), MEDIUM(1, "Medium"), HEAVY(2, "Heavy");
 
@@ -54,4 +57,15 @@ public enum VehicleType implements BaseEnum
 //        sb.append(this.name());
 //        return sb.toString();
     }
+
+    @Override
+    public Object getFilter() {
+        return ""+code;
+    }
+    
+    @Override
+    public Boolean includeNull() {
+        return false;
+    }
+
 }

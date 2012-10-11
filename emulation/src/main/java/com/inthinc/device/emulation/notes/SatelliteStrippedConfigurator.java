@@ -12,11 +12,10 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.DeviceProps;
 import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class SatelliteStrippedConfigurator extends DeviceNote {
@@ -96,12 +95,12 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 				{
 					DeviceProps key = DeviceProps.valueOf(((Long)(decodeUnsignedInteger(settingsStream) + 1000)).intValue());
 					String value = getString(settingsStream);
-					Log.d("Setting # %d, %s = %s", ++num, key, value);
+					Log.debug("Setting # %d, %s = %s", ++num, key, value);
 					settingsMap.put(key, value);
 				}
 			} catch (IOException exception)
 			{
-				Log.e("IOException reading compressed settings: %s", exception);
+				Log.error("IOException reading compressed settings: %s", exception);
 			}
 			return settingsMap;
 		}
@@ -180,7 +179,7 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 				}
 			} catch (IOException e)
 			{
-				Log.e("compressSettings IO error: %s", e);
+				Log.error("compressSettings IO error: %s", e);
 			}
 			return packetList;
 		}
@@ -223,7 +222,7 @@ public class SatelliteStrippedConfigurator extends DeviceNote {
 			 }
 			 catch(IOException ioe)
 			 {
-				 Log.e("Error while closing the stream : %s", ioe);
+				 Log.error("Error while closing the stream : %s", ioe);
 			 }
 			  
 			 //get the compressed byte array from output stream

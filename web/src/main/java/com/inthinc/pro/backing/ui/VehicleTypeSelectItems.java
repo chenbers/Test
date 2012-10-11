@@ -19,7 +19,7 @@ public class VehicleTypeSelectItems {
         vehicleTypesSelectItems.add(blankItem);
 
         for (VehicleType e : EnumSet.allOf(VehicleType.class)) {
-            vehicleTypesSelectItems.add(new SelectItem(e.name(), MessageUtil.getMessageString(e.toString())));
+            vehicleTypesSelectItems.add(new SelectItem(e.getName(), MessageUtil.getMessageString(e.toString())));
         }
         return vehicleTypesSelectItems;
     }
