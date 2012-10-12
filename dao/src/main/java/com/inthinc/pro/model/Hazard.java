@@ -53,7 +53,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
      * 
      * @return
      */
-    public ByteArrayOutputStream toByteArrayOutputStream(){
+    public byte[] toByteArray(){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream stream = new DataOutputStream(baos);
         try {
@@ -72,8 +72,9 @@ public class Hazard extends BaseEntity implements HasAccountId {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return baos;
+        return baos.toByteArray();
     }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();

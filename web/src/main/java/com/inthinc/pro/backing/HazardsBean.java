@@ -55,7 +55,7 @@ public class HazardsBean extends BaseBean {
     private AdminVehicleJDBCDAO adminVehicleJDBCDAO;
     private DriverDAO driverDAO;
     private UserDAO userDAO;
-    private FwdCmdSpoolWS fwdCmdSpoolWS;
+    private static FwdCmdSpoolWS fwdCmdSpoolWS;
 
     private Hazard item;
     private boolean editing;
@@ -186,11 +186,12 @@ public class HazardsBean extends BaseBean {
     }
     public List<Device> findDevicesInRadius(){
         List<Device> results = new ArrayList<Device>();
+        
         //TODO: jwimmer: implement
         Device fakeDevice = new Device();
         //fakeDevice.setImei("30023FKE1DE7570"); // fake device in QA account on my.inthinc.com
-        fakeDevice.setImei("FAKETESTER"); // fake device in QA account on my.inthinc.com
-        fakeDevice.setMcmid(fakeDevice.getImei());
+        fakeDevice.setMcmid("300034012406030"); // VIN's device in QA account on qa.tiwipro.com
+        fakeDevice.setImei("300034012406030");
         fakeDevice.isGPRSOnly();
         fakeDevice.isWaySmart();
         fakeDevice.setProductVersion(ProductType.WAYSMART);
@@ -200,7 +201,7 @@ public class HazardsBean extends BaseBean {
     }
     
     /**
-     * 
+     * Sends the given Hazard to Devices in range, in this account.
      * Device expecting the following order of parameters:
      * packet size - short (2 byte)
      * rh id - integer (4 byte)
@@ -210,12 +211,14 @@ public class HazardsBean extends BaseBean {
      * start time - time_t (4 byte)
      * end time - time_t (4 byte)
      * details - string (60 char)
-     * @param hazard
+     * @param hazard the Hazard Object to send
      */
     public void sendHazard(Hazard hazard){
         try {
             for(Device device: findDevicesInRadius()){
-                queueForwardCommand(device, device.getImei(), hazard.toByteArrayOutputStream().toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
+                queueForwardCommand(device, device.getImei(), hazard.toByteArray(), 3333);
+                System.out.println("device: "+device);
+                System.out.println("device.name: "+device.getName());
             }
             setSendHazardMsg("hazardSendToDevice.success");
         } catch (Exception e) {
@@ -223,12 +226,16 @@ public class HazardsBean extends BaseBean {
             return;
         }
     }
-    private void queueForwardCommand(Device device, String address, byte[] data, int command) {
+    public static void sendHazardToDevice(Hazard hazard, Device device) {
+        queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
+    }
+    private static void queueForwardCommand(Device device, String address, byte[] data, int command) {
         logger.debug("queueForwardCommand Begin");
         ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
-        if (fwdCmdSpoolWS.add(device, fcs) == -1)
+        int addToQueue = fwdCmdSpoolWS.add(device, fcs);
+        System.out.println("addToQueue: "+addToQueue);
+        if (addToQueue == -1)
             throw new ProDAOException("Iridium Forward command spool failed.");
-                
     }
     
     /**
