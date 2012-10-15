@@ -74,7 +74,6 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         if(VEHICLE_COLUMNS_STRING.endsWith(",")){ 
             VEHICLE_COLUMNS_STRING = VEHICLE_COLUMNS_STRING.substring(0, VEHICLE_COLUMNS_STRING.length()-2);
         }
-        System.out.println("VEHICLE_COLUMNS_STRING: "+VEHICLE_COLUMNS_STRING);
         
         // these match the columns displayed in admin/vehicles
         pagedColumnMap.put("name", "v.name");
@@ -230,11 +229,6 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
 
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("acctID", accountID);
-        System.out.println("simpleJdbcTemplate: " + getSimpleJdbcTemplate());
-        for (String key : args.keySet()) {
-            System.out.println(key + " " + args.get(key));
-        }
-        System.out.println(VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT);
         vehiclesPlusLastLoc = getSimpleJdbcTemplate().query(VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT, vehiclePlusLastLocRowMapper, args);
         
         for(VehiclePlusLastLoc vehicle: vehiclesPlusLastLoc){
@@ -243,7 +237,6 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
             }
         }
         
-        System.out.println("results" + results);
         return results;
     }
 
