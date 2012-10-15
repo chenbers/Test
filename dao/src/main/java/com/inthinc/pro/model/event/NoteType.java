@@ -438,6 +438,9 @@ public enum NoteType implements BaseEnum {
     MAN_DOWN_EX(221),
     STATS2(222),
     
+    //Put in for customer G&K to help detect tampering to tiwis.
+    POWER_INTERRUPTED(229, EventType.POWER_INTERRUPTED),
+    
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
     STRIPPED_LOWER_LIMIT(243),
