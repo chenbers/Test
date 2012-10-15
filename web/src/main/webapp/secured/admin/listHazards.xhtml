@@ -128,7 +128,7 @@
                           </table>
                         </li>
                         <li class="r">
-                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
+                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
                         </li>
                       </ul>
                     </h:panelGroup>
@@ -272,10 +272,6 @@
                 </a4j:form>
 
                 <script type="text/javascript">
-                  function clearOutline(){
-                    document.getElementById("hazards-form:points").value = "";
-                    map.clearOverlays();
-                  }
 
                   function showHazard(editable){
                     map.clearOverlays();

@@ -1,0 +1,169 @@
+<ui:composition template="adminPagedTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="bean" value="#{pagingAdminPersonsBean}"/>
+  <ui:param name="editorBean" value="#{personBean}"/>
+  <ui:param name="context" value="personTable"/>
+
+  <ui:define name="columns">
+    <rich:column id="name" rendered="#{personBean.tableColumns['fullName'].visible}" sortBy="#{fullName}" filterBy="#{fullName}" sortOrder="ASCENDING">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
+      <a4j:htmlCommandLink id="personTableName" action="#{personBean.display}">
+        <f:param name="displayID" value="#{item.id}" />
+        <h:outputText value="#{item.fullName}" />
+      </a4j:htmlCommandLink>
+    </rich:column>
+    <rich:column id="status" rendered="#{personBean.tableColumns['user_status'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_status}" /></f:facet>
+      <c:set var="status" value="status#{item.user.status.code}" /><h:outputText value="#{messages[status]}" />
+    </rich:column>
+    <rich:column id="username" rendered="#{personBean.tableColumns['user_username'].visible}" sortBy="#{user_username}" filterBy="#{user_username}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_username}" /></f:facet>
+      <h:outputText value="#{item.user.username}" />
+    </rich:column>
+    <rich:column id="groupName" rendered="#{personBean.tableColumns['user_groupID'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_groupID}" /></f:facet>
+      <h:outputText value="#{item.group.name}" />
+    </rich:column>
+    <rich:column id="role" rendered="#{personBean.tableColumns['user_role'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_role}" /></f:facet>
+      <h:outputText value="#{item.rolesString}" />
+    </rich:column>
+    <rich:column id="priPhone" rendered="#{personBean.tableColumns['priPhone'].visible}" sortBy="#{priPhone}" filterBy="#{priPhone}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_priPhone}" /></f:facet>
+      <h:outputText value="#{item.priPhone}" />
+    </rich:column>
+    <rich:column id="secPhone" rendered="#{personBean.tableColumns['secPhone'].visible}" sortBy="#{secPhone}" filterBy="#{secPhone}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_secPhone}" /></f:facet>
+      <h:outputText value="#{item.secPhone}" />
+    </rich:column>
+    <rich:column id="priEmail" rendered="#{personBean.tableColumns['priEmail'].visible}" sortBy="#{priEmail}" filterBy="#{priEmail}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_priEmail}" /></f:facet>
+      <a href="mailto:#{item.priEmail}"><h:outputText value="#{item.priEmail}" /></a>
+    </rich:column>
+    <rich:column id="secEmail" rendered="#{personBean.tableColumns['secEmail'].visible}" sortBy="#{secEmail}" filterBy="#{secEmail}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_secEmail}" /></f:facet>
+      <a href="mailto:#{item.secEmail}"><h:outputText value="#{item.secEmail}" /></a>
+    </rich:column>
+    <rich:column id="priText" rendered="#{personBean.tableColumns['priText'].visible}" sortBy="#{priText}" filterBy="#{priText}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_priText}" /></f:facet>
+      <h:outputText value="#{item.priText}" />
+    </rich:column>
+    <rich:column id="secText" rendered="#{personBean.tableColumns['secText'].visible}" sortBy="#{secText}"  filterBy="#{secText}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_secText}" /></f:facet>
+      <h:outputText value="#{item.secText}" />
+    </rich:column>
+     <c:set var="alertText" value="myAccount_alertText#{item.info}" />
+    <rich:column id="info" rendered="#{personBean.tableColumns['info'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_info}" /></f:facet>
+       <h:outputText value="#{messages[alertText]}" />
+    </rich:column>
+    <c:set var="alertText" value="myAccount_alertText#{item.warn}" />
+    <rich:column id="warn" rendered="#{personBean.tableColumns['warn'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_warn}" /></f:facet>
+      <h:outputText value="#{messages[alertText]}" />
+    </rich:column>
+     <c:set var="alertText" value="myAccount_alertText#{item.crit}" />
+    <rich:column id="crit" rendered="#{personBean.tableColumns['crit'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_crit}" /></f:facet>
+       <h:outputText value="#{messages[alertText]}" />
+    </rich:column>
+    <rich:column id="timeZone" rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{timeZone}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
+      <h:outputText value="#{item.timeZone.ID}" />
+    </rich:column>
+    <rich:column id="empId" rendered="#{personBean.tableColumns['empid'].visible}" sortBy="#{empid}"  filterBy="#{empid}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
+      <h:outputText value="#{item.empid}" />
+    </rich:column>
+    <rich:column id="reportsTo" rendered="#{personBean.tableColumns['reportsTo'].visible}" sortBy="#{reportsTo}"  filterBy="#{reportsTo}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_reportsTo}" /></f:facet>
+      <h:outputText value="#{item.reportsTo}" />
+    </rich:column>
+    <rich:column id="title" rendered="#{personBean.tableColumns['title'].visible}" sortBy="#{title}" filterBy="#{title}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_title}" /></f:facet>
+      <h:outputText value="#{item.title}" />
+    </rich:column>
+    <rich:column id="dob" rendered="#{personBean.tableColumns['dob'].visible}" sortBy="#{dob}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_dob}" /></f:facet>
+      <h:outputText value="#{item.dob}">
+        <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" />
+      </h:outputText>
+    </rich:column>
+    <rich:column id="gender" rendered="#{personBean.tableColumns['gender'].visible}" sortBy="#{gender}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_gender}" /></f:facet>
+      <h:outputText value="#{messages[item.gender]}" />
+    </rich:column>
+    <rich:column id="barcode" rendered="#{personBean.tableColumns['barcode'].visible}" sortBy="#{barcode}"  filterBy="#{barcode}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_barcode}" /></f:facet>
+      <h:outputText value="#{item.driver.barcode}" />
+    </rich:column>
+    <rich:column id="rfid1" rendered="#{personBean.tableColumns['rfid1'].visible}" sortBy="#{rfid1}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_rfid1}" /></f:facet>
+      <h:outputText value="#{item.driver.rfid1}" >
+      <f:converter converterId="HexConverter" />
+      </h:outputText>
+    </rich:column>
+    <rich:column id="rfid2" rendered="#{personBean.tableColumns['rfid2'].visible}" sortBy="#{rfid2}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_rfid2}" /></f:facet>
+      <h:outputText value="#{item.driver.rfid2}" >
+      <f:converter converterId="HexConverter" />
+      </h:outputText>
+    </rich:column>
+    
+    <rich:column id="displayName" rendered="#{personBean.tableColumns['locale'].visible}" sortBy="#{locale}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_locale}" /></f:facet>
+      <h:outputText value="#{item.locale.displayName}" />
+    </rich:column>
+    <rich:column id="measurementType" rendered="#{personBean.tableColumns['measurementType'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_measurementType}" /></f:facet>
+      <h:outputText value="#{messages[item.measurementType]}" />
+    </rich:column>
+    <rich:column id="fuelEfficiencyType" rendered="#{personBean.tableColumns['fuelEfficiencyType'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_fuelEfficiencyType}" /></f:facet>
+      <h:outputText value="#{messages[item.fuelEfficiencyType]}" />
+    </rich:column>
+    <rich:column id="description" rendered="#{personBean.tableColumns['driver_status'].visible}" >
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
+      <c:set var="status" value="status#{item.driver.status.code}" /><h:outputText value="#{messages[status]}" />
+    </rich:column>
+    <rich:column id="license" rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{driver_license}" filterBy="#{driver_license}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_license}" /></f:facet>
+      <h:outputText value="#{item.driver.license}" />
+    </rich:column>
+    <rich:column id="licenseClass" rendered="#{personBean.tableColumns['driver_licenseClass'].visible}" sortBy="#{driver_licenseClass}" filterBy="#{driver_licenseClass}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_licenseClass}" /></f:facet>
+      <h:outputText value="#{item.driver.licenseClass}" />
+    </rich:column>
+    <rich:column id="state" rendered="#{personBean.tableColumns['driver_state'].visible}" sortBy="#{driver_state}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_state}" /></f:facet>
+      <h:outputText value="#{item.driver.state.name}" />
+    </rich:column>
+    <rich:column id="expiration" rendered="#{personBean.tableColumns['driver_expiration'].visible}" sortBy="#{driver_expiration}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_expiration}" /></f:facet>
+      <h:outputText value="#{item.driver.expiration}">
+        <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" />
+      </h:outputText>
+    </rich:column>
+    <rich:column id="certification" rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{driver_certifications}" filterBy="#{driver_certifications}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_certifications}" /></f:facet>
+      <h:outputText value="#{item.driver.certifications}" />
+    </rich:column>
+    <rich:column id="dot" rendered="#{personBean.accountIsHOS and personBean.tableColumns['driver_dot'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_dot}" /></f:facet>
+      <h:outputText value="#{messages[item.driver.dot]}" />
+    </rich:column>
+    <rich:column id="teamName" rendered="#{personBean.tableColumns['driver_groupID'].visible}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_groupID}" /></f:facet>
+      <h:outputText value="#{item.team.name}" />
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

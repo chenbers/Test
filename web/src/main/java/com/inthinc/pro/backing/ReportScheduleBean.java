@@ -424,6 +424,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             if (create) {
                 reportSchedule.setReportScheduleID(reportScheduleDAO.create(getAccountID(), reportSchedule));
             } else {
+                reportSchedule.driverIDSelectList = null;
                 reportScheduleDAO.update(reportSchedule);
             }
             if (reportSchedule.getDriverID() != null) {
@@ -458,7 +459,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                     if (driver.getDriverID().equals(driverID)) {
                         if (buffer.length() > 0)
                             buffer.append("~");
-                        buffer.append(driver.getPerson().getFullName());
+                        buffer.append(driver.getPerson().getFullName()+" - "+getPriEmailAddress(driver));
                         break;
                     }
                 }
@@ -478,7 +479,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return buffer.toString().split("~");
 
     }
-
+    private String getPriEmailAddress(Driver driver){
+        return driver.getPerson().getPriEmail()==null?MessageUtil.getMessageString("noEmailAddress"):driver.getPerson().getPriEmail();
+    }
     @Override
     public ReportScheduleView getItem() {
         ReportScheduleView reportScheduleView = super.getItem();
@@ -834,7 +837,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         for (Driver driver : driverList) {
             if (groupList.contains(driver.getGroupID())) {
-                teamDrivers.put(driver.getPerson().getFullName(), driver.getDriverID());
+                teamDrivers.put(driver.getPerson().getFullName()+" - "+getPriEmailAddress(driver), driver.getDriverID());
             }
         }
         return teamDrivers;
@@ -897,7 +900,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private ReportGroup report;
         @Column(updateable = true)
         private Integer dayOfMonth;
+        @Column(updateable = true)
         private List<String> groupIDSelectList;
+        @Column(updateable = true)
         private List<String> driverIDSelectList;
         @Column(updateable = false)
         private String[] listDisplay;
