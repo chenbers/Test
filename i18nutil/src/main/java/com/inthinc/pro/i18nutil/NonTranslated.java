@@ -715,6 +715,15 @@ public class NonTranslated {
         nonTranslatedList.add("title");
         nonTranslated_es.put("/webutil/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
 
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("EventType.DOT_STOPPED");
+        nonTranslatedList.add("EventType.HOS_NO_HOURS");
+        nonTranslatedList.add("EventType.MAN_DOWN");
+        nonTranslatedList.add("EventType.MAN_DOWN_CANCELED");
+        nonTranslatedList.add("EventType.TRAILER_DATA");
+        nonTranslatedList.add("column.3");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverExcludedViolationsReport", nonTranslatedList);
+
 
         
         nonTranslatedList = new ArrayList<String>();
@@ -902,6 +911,7 @@ public class NonTranslated {
         nonTranslatedList.add("timeFormat");
         nonTranslatedList.add("report.teamstops.total");
         nonTranslatedList.add("report.teamstops.zone");
+        nonTranslatedList.add("report.dvir.question");
 
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/ReportMessages", nonTranslatedList);
 
@@ -1032,9 +1042,20 @@ public class NonTranslated {
         nonTranslatedList.add("column.5");
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverPerformanceKeyMetrics", nonTranslatedList);
 
-        
+
         nonTranslatedList = new ArrayList<String>();
-    
+        nonTranslatedList.add("EventType.DOT_STOPPED");
+        nonTranslatedList.add("EventType.HOS_NO_HOURS");
+        nonTranslatedList.add("EventType.MAN_DOWN");
+        nonTranslatedList.add("EventType.MAN_DOWN_CANCELED");
+        nonTranslatedList.add("EventType.TRAILER_DATA");
+        nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverExcludedViolationsReport", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("report.date");
+        nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverCoachingReport", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
         
         nonTranslatedList.add("phoneFormat");
         nonTranslatedList.add("dateFormat");
@@ -1260,6 +1281,14 @@ public class NonTranslated {
         nonTranslatedList.add("ReportCategory.HOS");
         nonTranslatedList.add("ReportCategory.IFTA");
         nonTranslatedList.add("ReportCategory.Performance");
+        nonTranslatedList.add("ReportCategory.Communication");
+        nonTranslatedList.add("hazard_description");
+        nonTranslatedList.add("hazard_type");
+        nonTranslatedList.add("ENGLISH_MILES");
+        nonTranslatedList.add("GoogleMapType.G_SATELLITE_MAP");
+        nonTranslatedList.add("hazard_longitude");
+        nonTranslatedList.add("hazard_latitude");
+
         
         
         nonTranslated_fr.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
