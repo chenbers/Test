@@ -101,9 +101,12 @@ public class HazardsBean extends BaseBean {
         for(Integer key: getHazards().keySet()){
             //set driver display value
             Hazard hazard = getHazards().get(key);
-            hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
-            hazard.setUser(userDAO.findByID(hazard.getUserID()));
-            hazard.setState(States.getStateById(hazard.getStateID()));
+            if(hazard.getDriver() == null)
+                hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
+            if(hazard.getUser() == null)
+                hazard.setUser(userDAO.findByID(hazard.getUserID()));
+            if(hazard.getState() == null)
+                hazard.setState(States.getStateById(hazard.getStateID()));
         }
     }
     public List<Hazard> getTableData() {
@@ -321,7 +324,7 @@ public class HazardsBean extends BaseBean {
             item.setEndTime(newEndTime);
         }
         if(defaultRadius){
-           item.setRadiusMeters(newRadiusMeters);
+            item.setRadiusMeters(newRadiusMeters);
             item.setRadiusInUnits(radiusInUnits);
         }
     }

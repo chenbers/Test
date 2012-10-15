@@ -115,7 +115,6 @@
         </security:authorize>
 
         <!-- Road Hazard Awareness -->
-        <!-- 
         <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_HAZARDSACCESS">
         <tr>
           <td valign="top">
@@ -128,8 +127,21 @@
             </ui:include>
           </td>
         </tr>
+        <ui:fragment rendered="#{parentAction == 'go_adminHazards'}">
+          <tr>
+            <td valign="top" class="sub_wrapper">
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_add_warning.png"/>
+                  <ui:param name="actionBean" value="#{hazardsBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddHazard') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddHazard}"/>
+                  <ui:param name="context" value="#{context}-vlst-AddHazard"/>
+               </ui:include>
+            </td>
+          </tr>
+        </ui:fragment>
         </security:authorize>
-         -->
         <!-- Red Flags -->
        	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REDFLAGSACCESS">
         <tr>

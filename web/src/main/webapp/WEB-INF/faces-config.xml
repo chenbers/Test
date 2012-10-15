@@ -327,6 +327,25 @@
  </navigation-rule>
  <navigation-rule>
   <navigation-case>
+   <from-outcome>go_adminHazards</from-outcome>
+   <to-view-id>/secured/admin/listHazards.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_adminAddHazard</from-outcome>
+   <to-view-id>/secured/admin/editHazard.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_adminEditHazard</from-outcome>
+   <to-view-id>/secured/admin/editHazard.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
    <from-outcome>go_adminReportSchedules</from-outcome>
    <to-view-id>/secured/admin/reportSchedules.xhtml</to-view-id>
    <redirect/>
@@ -625,6 +644,7 @@
    <supported-locale>es</supported-locale>
    <supported-locale>ja</supported-locale>
    <supported-locale>fr</supported-locale>
+   <supported-locale>fr_CA</supported-locale>
    <supported-locale>de</supported-locale>
   </locale-config>
   <resource-bundle>
