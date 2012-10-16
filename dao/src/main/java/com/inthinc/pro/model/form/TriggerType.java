@@ -8,8 +8,8 @@ public enum TriggerType {
     NO_TRIGGER(0),
     PRE_TRIP(1),
     POST_TRIP(2),
-    ROAD_HAZARD(3);
-//    ROUTE(4),
+    ROAD_HAZARD(3),
+    STOP(4);
 //    DRIVER_SELECT();
     
     private Integer code;
