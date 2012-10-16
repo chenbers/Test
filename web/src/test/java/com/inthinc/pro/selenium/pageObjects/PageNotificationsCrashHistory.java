@@ -26,7 +26,7 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         
         @Override
         public TextLink editColumns() {
-            return new TextLink(NotificationsBarEnum.EDIT_COLUMNS);    
+            return new TextLink(NotificationsCrashHistoryEnum.EDIT_COLUMNS);    
         }
         
         public TextLink addCrashReport() {
@@ -34,19 +34,19 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
         
         public TextLink sortByDateTime(){
-            return new TextLink(NotificationsBarEnum.SORT_DATE_TIME);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_DATE_TIME);
         }
         
         public TextLink sortByGroup(){
-            return new TextLink(NotificationsBarEnum.SORT_GROUP);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_GROUP);
         }
         
         public TextLink sortByDriver(){
-            return new TextLink(NotificationsBarEnum.SORT_DRIVER);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_DRIVER);
         }
         
         public TextLink sortByVehicle(){
-            return new TextLink(NotificationsBarEnum.SORT_VEHICLE);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_VEHICLE);
         }
         
         public TextLink sortByOccupants(){
@@ -62,7 +62,7 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
         
         public TextTableLink entryGroup() {
-            return new TextTableLink(NotificationsBarEnum.GROUP_ENTRY);
+            return new TextTableLink(NotificationsCrashHistoryEnum.GROUP_ENTRY);
         }
         
         public TextTableLink entryDriver() {
@@ -81,7 +81,7 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
     public class NotificationsCrashHistoryButtons extends NotificationsBarButtons {
         
         public Button refresh() {
-            return new Button(NotificationsBarEnum.REFRESH);
+            return new Button(NotificationsCrashHistoryEnum.REFRESH);
         }
         
         public Button tools() {
