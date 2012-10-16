@@ -170,7 +170,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
      */
     WSZONES_ARRIVAL(78),
 
-    SEATBELT_CLICKS(79),
+    WHAT_THE_HECK(79),
 
     TEXT_MSG_CANNED(80, EventAttr.EVENT_CODE),
     QUEUE_FULL(81),
