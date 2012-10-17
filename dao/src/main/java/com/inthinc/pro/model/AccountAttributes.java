@@ -33,6 +33,7 @@ public class AccountAttributes extends BaseEntity {
     private String  passwordStrength;
     private String  loginExpire;
     private String  passwordChange;
+    private String  rhaEnabled;
     private String  phoneControlProvider1;
     private String  phoneControlProvider2;
     private String  phoneControlProvider3;
@@ -170,6 +171,14 @@ public class AccountAttributes extends BaseEntity {
     public String getPasswordChange() {
         return passwordChange;
     }
+    public String getRhaEnabled() {
+        if (rhaEnabled == null) return "false";
+        return rhaEnabled;
+    }
+    public void setRhaEnabled(String rhaEnabled) {
+        this.rhaEnabled = rhaEnabled;
+    }
+
     public String getPhoneControlProvider1() {
         return phoneControlProvider1;
     }

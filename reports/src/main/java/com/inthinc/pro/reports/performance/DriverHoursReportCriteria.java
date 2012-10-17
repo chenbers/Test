@@ -25,6 +25,7 @@ import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.HosReportCriteria;
 import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -103,6 +104,8 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	}
 
 	public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval) {
+	    this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+	    this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
         addParameter(DriverHoursReportCriteria.END_DATE_PARAM,  dateTimeFormatter.print(interval.getEnd()));
         

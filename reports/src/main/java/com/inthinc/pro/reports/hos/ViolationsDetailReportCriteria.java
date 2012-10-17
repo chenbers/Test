@@ -52,12 +52,16 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
     }
 
     public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval){
+        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         List<Driver> driverList = new ArrayList<Driver>();
 
         driverList.add(getDriverDAO().findByID(driverID));
         initDrivers(accountGroupHierarchy, driverList, interval);
     }
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
+        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 
