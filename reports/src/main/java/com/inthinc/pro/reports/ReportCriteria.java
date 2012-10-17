@@ -38,8 +38,8 @@ public class ReportCriteria
     private MeasurementType measurementType;
     private FuelEfficiencyType fuelEfficiencyType;
     private TimeZone timeZone;
-    private Boolean includeInactiveDrivers;
-    private Boolean includeZeroMilesDrivers;
+    private Boolean includeInactiveDrivers = INACTIVE_DRIVERS_DEFAULT;
+    private Boolean includeZeroMilesDrivers = ZERO_MILES_DRIVERS_DEFAULT;
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
