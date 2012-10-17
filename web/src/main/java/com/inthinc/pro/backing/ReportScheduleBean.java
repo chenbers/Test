@@ -650,7 +650,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private List<ReportSchedule> getReportScheduleHierarchy() {
         // List<ReportSchedule> reportSchedules = reportScheduleDAO.getReportSchedulesByAccountID(getProUser().getUser().getPerson().getAcctID());
         List<Integer> groups = getGroupIDList();
-        groups.remove(getProUser().getUser().getGroupID());
         List<ReportSchedule> reportSchedules = adminReportScheduleDAO.getReportSchedulesForUsersDeep(getProUser().getUser().getUserID(), groups, getProUser().getUser().getPerson().getAcctID());
 
         return reportSchedules;
