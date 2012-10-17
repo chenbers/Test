@@ -225,6 +225,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         VEHICLESWIRELINE(3,21),  
         VEHICLESSPEED(3,22),
         HAZARDACCESS(null, 23),
+        FORMACCESS(null, 24),
         ;  
 
         
@@ -347,6 +348,8 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
                     continue;
                 if (msgKey != null && msgKey.toLowerCase().contains("hazards") && !bean.getAccountIsRHAEnabled())
                     continue;
+                if (msgKey != null && msgKey.toLowerCase().contains("forms") && !bean.getAccountIsFormsEnabled())
+                    continue;
 			        
 				accessPointSelection.put(ap.getAccessPtID(), new AccessPointView(ap));
 			}
@@ -440,7 +443,7 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 		
 	}
 
-	public Map<Integer,SiteAccessPoint> getAccessPointMap(){
+    public Map<Integer,SiteAccessPoint> getAccessPointMap(){
 		
 		return SiteAccessPoints.getAccessPointMap();
 	}

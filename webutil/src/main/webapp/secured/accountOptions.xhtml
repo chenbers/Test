@@ -56,9 +56,18 @@
                         </td>                              	                           	
 					</tr>
 					<tr>
-                    	<td style="vertical-align: middle;"><h:outputText value="RHA Enabled: " /></td>
+                    	<td style="vertical-align: middle;"><h:outputText value="RHA: " /></td>
                         <td>
 							<h:selectOneMenu id="editAccount-rha" value="#{accountOptionsBean.account.props.rhaEnabled}">
+								<f:selectItem itemLabel="Disabled" itemValue="false"/>
+								<f:selectItem itemLabel="Enabled" itemValue="true"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td style="vertical-align: middle;"><h:outputText value="Forms: " /></td>
+                        <td>
+							<h:selectOneMenu id="editAccount-forms" value="#{accountOptionsBean.account.props.formsEnabled}">
 								<f:selectItem itemLabel="Disabled" itemValue="false"/>
 								<f:selectItem itemLabel="Enabled" itemValue="true"/>
 							</h:selectOneMenu>

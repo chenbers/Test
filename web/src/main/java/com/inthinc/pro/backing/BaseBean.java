@@ -292,4 +292,8 @@ public class BaseBean implements Serializable {
         else
             return displayName + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')';
     }
+    public boolean getAccountIsFormsEnabled() {
+        String formsEnabled = getProUser().getAccountAttributes().getFormsEnabled();
+        return (formsEnabled == null) ? false : Boolean.valueOf(formsEnabled); 
+    }
 }
