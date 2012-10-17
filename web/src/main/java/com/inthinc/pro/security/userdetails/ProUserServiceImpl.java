@@ -70,7 +70,8 @@ public class ProUserServiceImpl implements UserDetailsService
             boolean passwordDaysRemaining = PersonBean.getPasswordDaysRemaining(account, user) > 0;
 
             boolean isAdmin = userIsAdmin(user);
-            ProUser proUser = new ProUser(user, loginDaysRemaining, passwordDaysRemaining, getGrantedAuthorities(user, isAdmin, account.getHos() == AccountHOSType.HOS_SUPPORT, account.hasRHAEnabled()));
+            ProUser proUser = new ProUser(user, loginDaysRemaining, passwordDaysRemaining, getGrantedAuthorities(user, isAdmin, account.getHos() == AccountHOSType.HOS_SUPPORT, 
+                                                                                                                                account.hasRHAEnabled(), account.hasFormsEnabled()));
             proUser.setAdmin(isAdmin);
             
             Group topGroup = groupDAO.findByID(user.getGroupID());
@@ -192,7 +193,7 @@ public class ProUserServiceImpl implements UserDetailsService
 		this.driverDAO = driverDAO;
 	}
 
-    private GrantedAuthority[] getGrantedAuthorities(User user, boolean isAdmin, boolean isAccountHOS, boolean isAccountRHAEnabled){
+    private GrantedAuthority[] getGrantedAuthorities(User user, boolean isAdmin, boolean isAccountHOS, boolean isAccountRHAEnabled, boolean isAccountFormsEnabled){
 		
 		//TODO make an enum for all role related things
 		
@@ -213,7 +214,8 @@ public class ProUserServiceImpl implements UserDetailsService
 			"reportsAccess",
 			"organizationAccess",
 			"speedByStreetAccess",
-			"hazardsAccess"
+			"hazardsAccess",
+			"formsAccess"
 			};
 		List<String> adminPoints = new ArrayList<String>();
 		adminPoints.addAll(Arrays.asList(adminAccessPointsArray));
@@ -229,6 +231,8 @@ public class ProUserServiceImpl implements UserDetailsService
 	            grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_HOSADMIN"));
 			if(isAccountRHAEnabled)
                 grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_RHAADMIN"));
+            if(isAccountFormsEnabled)
+                grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_FORMSADMIN"));
 			
 		}
 		else if (!user.getAccessPoints().isEmpty()){

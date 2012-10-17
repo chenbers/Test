@@ -205,5 +205,18 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
         return Boolean.valueOf(rhaEnabled);
         
     }
-   
+
+    public Boolean hasFormsEnabled() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+        
+        String formsEnabled = options.getFormsEnabled();
+        if (formsEnabled == null)
+            return false;
+        
+        return Boolean.valueOf(formsEnabled);
+        
+    }
+
 }

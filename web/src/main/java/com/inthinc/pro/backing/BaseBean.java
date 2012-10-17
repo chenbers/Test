@@ -274,4 +274,9 @@ public class BaseBean implements Serializable {
         String rhaEnabled = getProUser().getAccountAttributes().getRhaEnabled();
         return (rhaEnabled == null) ? false : Boolean.valueOf(rhaEnabled); 
     }
+    public boolean getAccountIsFormsEnabled() {
+        String formsEnabled = getProUser().getAccountAttributes().getFormsEnabled();
+        return (formsEnabled == null) ? false : Boolean.valueOf(formsEnabled); 
+    }
+
 }
