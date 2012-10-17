@@ -115,8 +115,7 @@
         </security:authorize>
 
         <!-- Road Hazard Awareness -->
-        <!-- 
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_HAZARDSACCESS">
+        <security:authorize ifAnyGranted="ROLE_RHAADMIN, ROLE_HAZARDSACCESS">
         <tr>
           <td valign="top">
             <ui:include src="verticalLeftTab.xhtml">
@@ -129,7 +128,6 @@
           </td>
         </tr>
         </security:authorize>
-         -->
         <!-- Red Flags -->
        	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REDFLAGSACCESS">
         <tr>

@@ -507,6 +507,10 @@
 		<view-id>/secured/admin/editZone.faces</view-id>
 	</url-mapping>
 	
+    <url-mapping id="adminhazardsAccess">
+        <pattern>/app/admin/hazards</pattern>
+        <view-id>/secured/admin/listHazards.faces</view-id>
+    </url-mapping>
     <url-mapping id="adminHazards">
         <pattern>/app/admin/hazards</pattern>
         <view-id>/secured/admin/listHazards.faces</view-id>

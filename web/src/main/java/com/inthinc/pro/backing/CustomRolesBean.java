@@ -345,6 +345,8 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 			        continue;
                 if (msgKey != null && msgKey.toLowerCase().contains("waysmart") && !bean.getAccountIsWaysmart())
                     continue;
+                if (msgKey != null && msgKey.toLowerCase().contains("hazards") && !bean.getAccountIsRHAEnabled())
+                    continue;
 			        
 				accessPointSelection.put(ap.getAccessPtID(), new AccessPointView(ap));
 			}

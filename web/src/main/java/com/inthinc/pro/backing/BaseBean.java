@@ -270,4 +270,8 @@ public class BaseBean implements Serializable {
         String waySmart = getProUser().getAccountAttributes().getWaySmart();
         return (waySmart == null) ? false : Boolean.valueOf(waySmart); 
     }
+    public boolean getAccountIsRHAEnabled() {
+        String rhaEnabled = getProUser().getAccountAttributes().getRhaEnabled();
+        return (rhaEnabled == null) ? false : Boolean.valueOf(rhaEnabled); 
+    }
 }
