@@ -32,11 +32,11 @@ public class HosZeroMilesReportCriteria extends GroupListReportCriteria implemen
     private HOSDAO hosDAO;
     
 
-    public HosZeroMilesReportCriteria(Locale locale) 
-    {
+    public HosZeroMilesReportCriteria(Locale locale) {
         super(ReportType.HOS_ZERO_MILES, locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
-
+        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
     }
     
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer>groupIDList, Interval interval)

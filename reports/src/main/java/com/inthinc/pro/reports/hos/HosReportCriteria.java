@@ -1,68 +1,74 @@
 package com.inthinc.pro.reports.hos;
 
-import java.util.List;
+import java.util.Locale;
 
-import org.joda.time.Interval;
+import org.apache.log4j.Logger;
 
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
 
-public abstract class HosReportCriteria {
-    private Boolean includeInactiveDrivers;
-    private Boolean includeZeroMilesDrivers;
+public abstract class HosReportCriteria extends ReportCriteria {
 
-    /**
-     * Determines whether this driver should be included in a report based on params. Used when driver and totalMiles are already KNOWN.
-     * 
-     * @param driver
-     *            the Driver object in question
-     * @param totalMiles
-     *            the total number of miles for the timeframe of the report
-     * @return true if the driver should be included
-     */
-    public boolean includeDriver(Driver driver, Integer totalMiles) {
-        boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
-        boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driver.getStatus().equals(Status.ACTIVE));
-        return ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0) || (includeInactiveDrivers && includeZeroMilesDrivers) || includeThisInactiveDriver || includeThisZeroMilesDriver);
+    public static boolean HOS_INACTIVE_DRIVERS_DEFAULT = true;
+    public static boolean HOS_ZERO_MILES_DRIVERS_DEFAULT = true;
+
+    private static final Logger logger = Logger.getLogger(HosReportCriteria.class);
+
+    public HosReportCriteria() {
+
+    }
+
+    public HosReportCriteria(ReportCriteria reportCriteria) {
+        super(reportCriteria);
+    }
+
+    public HosReportCriteria(ReportType report, String entityName, Locale locale) {
+        super(report, entityName, locale);
     }
 
     /**
-     * Determines whether this driver should be included in a report based on params including:
+     * Overrides {@link #getIncludeInactiveDrivers()}
      * 
-     * @param driverDAO
-     *            necessary to find Driver
-     * @param driverID
-     *            Integer id of the Driver in question
-     * @param interval
-     *            the time interval being queried
-     * @return true if the driver should be included
+     * @see com.inthinc.pro.reports.ReportCriteria#getIncludeInactiveDrivers()
+     * 
+     *      FYI, HOS reports do not currently have options to IGNORE inactive drivers or drivers with zero miles
      */
-    public boolean includeDriver(DriverDAO driverDAO, Integer driverID, Interval interval) {
-        Driver driver = driverDAO.findByID(driverID);
-        List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
-        Integer totalMiles = 0;
-        for (Trip trip : trips) {
-            totalMiles += trip.getMileage();
-        }
-        return includeDriver(driver, totalMiles);
-    }
-
+    @Override
     public Boolean getIncludeInactiveDrivers() {
-        return includeInactiveDrivers;
+        return HOS_INACTIVE_DRIVERS_DEFAULT;
     }
 
+    /**
+     * Overrides {{@link #setIncludeInactiveDrivers(Boolean)} keeping in mind that HOS reports do not currently have options to IGNORE inactive drivers or drivers with zero miles.
+     * 
+     * @see com.inthinc.pro.reports.ReportCriteria#setIncludeInactiveDrivers(java.lang.Boolean)
+     */
+    @Override
+    @Deprecated
     public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
-        this.includeInactiveDrivers = includeInactiveDrivers;
+        logger.warn("public void setIncludeInactiveDrivers(Boolean " + includeInactiveDrivers + ") should not be called!");
     }
 
+    /**
+     * Overrides {@link #getIncludeZeroMilesDrivers()}
+     * 
+     * @see com.inthinc.pro.reports.ReportCriteria#getIncludeZeroMilesDrivers()
+     * 
+     *      FYI, HOS reports do not currently have options to IGNORE inactive drivers or drivers with zero miles
+     */
+    @Override
     public Boolean getIncludeZeroMilesDrivers() {
-        return includeZeroMilesDrivers;
+        return HOS_ZERO_MILES_DRIVERS_DEFAULT;
     }
 
+    /**
+     * Overrides {{@link #setIncludeZeroMilesDrivers(Boolean)} keeping in mind that HOS reports do not currently have options to IGNORE inactive drivers or drivers with zero miles.
+     * 
+     * @see com.inthinc.pro.reports.ReportCriteria#setIncludeZeroMilesDrivers(java.lang.Boolean)
+     */
+    @Override
+    @Deprecated
     public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
-        this.includeZeroMilesDrivers = includeZeroMilesDrivers;
+        logger.warn("public void setIncludeZeroMilesDrivers(Boolean " + includeZeroMilesDrivers + ") should not be called!");
     }
-
 }

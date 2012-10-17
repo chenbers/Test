@@ -30,7 +30,7 @@ import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
-public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Tabular {
+public class HosDriverDOTLogReportCriteria  extends HosReportCriteria implements Tabular {
 
 
     private HOSDAO hosDAO;

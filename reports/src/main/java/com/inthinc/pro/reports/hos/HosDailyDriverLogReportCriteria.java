@@ -128,17 +128,15 @@ public class HosDailyDriverLogReportCriteria extends HosReportCriteria {
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
         
         for (Driver driver : reportDriverList) {
-            if(includeDriver(driverDAO, driver.getDriverID(), expandedInterval)){
-                if (account == null) {
-                    account = fetchAccount(driver.getPerson().getAcctID());
-                }
-                
-                initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
-                Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
-                Integer driverID = driver.getDriverID();
-                initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
-                groupCriteriaList.addAll(criteriaList);
+            if (account == null) {
+                account = fetchAccount(driver.getPerson().getAcctID());
             }
+            
+            initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
+            Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
+            Integer driverID = driver.getDriverID();
+            initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
+            groupCriteriaList.addAll(criteriaList);
         }
         
         criteriaList = groupCriteriaList;
@@ -154,9 +152,7 @@ public class HosDailyDriverLogReportCriteria extends HosReportCriteria {
         Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1);
         
-        if(includeDriver(driverDAO, driverID, expandedInterval)){
-            initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
-        }
+        initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
     }
     
     private void initMainOfficeInfo(GroupHierarchy accountGroupHierarchy, Account account, Integer groupID) {

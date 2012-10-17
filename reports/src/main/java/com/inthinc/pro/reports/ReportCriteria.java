@@ -97,19 +97,18 @@ public class ReportCriteria
      * @param driver
      *            the Driver object in question
      * @param totalMiles
-     *            the total number of miles for the timeframe of the report
+     *            the total number of miles for the timeframe of the report OR a non-zero int indicating to include this driver
      * @return true if the driver should be included
      */
-    public boolean includeDriver(Driver driver, Integer totalMiles) {
+    public boolean includeDriver(Status driverStatus, Integer totalMiles) {
         //TODO: this method also exists in HosReportCriteria  refactor to only maintain one version
         boolean includeThisInactiveDriver = (getIncludeInactiveDrivers() && totalMiles != 0);
-        boolean includeThisZeroMilesDriver = (getIncludeZeroMilesDrivers() && driver.getStatus().equals(Status.ACTIVE));
-        return ((driver.getStatus().equals(Status.ACTIVE) && totalMiles != 0)       // by default we include drivers that are active and have miles 
+        boolean includeThisZeroMilesDriver = (getIncludeZeroMilesDrivers() && driverStatus.equals(Status.ACTIVE));
+        return ((driverStatus.equals(Status.ACTIVE) && totalMiles != 0)       // by default we include drivers that are active and have miles 
                 || (getIncludeInactiveDrivers() && getIncludeZeroMilesDrivers())    // if user has selected to include both then we need not filter
                 || includeThisInactiveDriver                                        // test for this individual driver based on status
                 || includeThisZeroMilesDriver);                                     // test for this individual driver based on miles
     }
-
     /**
      * Determines whether this driver should be included in a report based on params including:
      * 
@@ -122,18 +121,26 @@ public class ReportCriteria
      * @return true if the driver should be included
      */
     public boolean includeDriver(DriverDAO driverDAO, Integer driverID, Interval interval) {
-      //TODO: this method also exists in HosReportCriteria  refactor to only maintain one version
-        Driver driver = driverDAO.findByID(driverID);
-        if(driver != null){
-            List<Trip> trips = driverDAO.getTrips(driver.getDriverID(), interval);
-            Integer totalMiles = 0;
+        Integer totalMiles = 0;
+        Status driverStatus = Status.INACTIVE;
+        if(includeZeroMilesDrivers){
+            totalMiles = 1;
+        } else{
+            //actually need to determine drivers miles
+            List<Trip> trips = driverDAO.getTrips(driverID, interval);
+            
             for (Trip trip : trips) {
                 totalMiles += trip.getMileage();
             }
-            return includeDriver(driver, totalMiles);
-        }else{
-            return false;
         }
+        if(includeInactiveDrivers) {
+            driverStatus = Status.ACTIVE;
+        } else {
+            //actually need to determine driver's status
+            Driver driver = driverDAO.findByID(driverID);
+            driverStatus = driver.getStatus();
+        }
+        return includeDriver(driverStatus, totalMiles);
     }
 
     public void setMainDataset(List mainDataset)

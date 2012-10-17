@@ -39,6 +39,8 @@ public class DrivingTimeViolationsSummaryReportCriteria extends ViolationsSummar
     }
     
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
+        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
