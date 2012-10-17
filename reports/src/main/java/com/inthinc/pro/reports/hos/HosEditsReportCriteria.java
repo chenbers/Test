@@ -51,8 +51,9 @@ public class HosEditsReportCriteria extends GroupListReportCriteria implements T
         addedTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS").withLocale(locale);
     }
     
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
+        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
                     
         List<Driver> driverList = getReportDriverList(reportGroupList);

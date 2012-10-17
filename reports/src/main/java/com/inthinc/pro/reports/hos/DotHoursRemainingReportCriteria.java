@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -54,6 +54,8 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
     public DotHoursRemainingReportCriteria(Locale locale) {
         super(ReportType.DOT_HOURS_REMAINING, locale);
         dayFormatter = DateTimeFormat.forPattern("MM/dd/yy").withLocale(locale);
+        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
     }
     
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList) {
