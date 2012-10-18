@@ -127,6 +127,8 @@ public enum Attrib {
 	CONNECTTYPE(8282, AttribParserType.BYTE),
 	INSPECTIONTYPE(8291, AttribParserType.BYTE),
 	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
+    RHA_TYPE(8293, AttribParserType.BYTE),
+	
 	
 	
 	// SHORT 
@@ -192,6 +194,7 @@ public enum Attrib {
 	MILES55TO64(16445, AttribParserType.SHORT),
 	MILESOVER64(16446, AttribParserType.SHORT),
 	
+    RHA_RADIUS_METERS(16451, AttribParserType.SHORT),
 	
 	// INT 
 	SKIPINT(32000, AttribParserType.INTEGER_SKIP),
@@ -263,6 +266,7 @@ public enum Attrib {
 	SPEEDINGGRACEPERIOD(32829, AttribParserType.INTEGER),
 	COMPANYID(32830, AttribParserType.INTEGER),
 	EVENTCODEINT(32831, AttribParserType.INTEGER),
+    RHA_ENDTIME(32858, AttribParserType.INTEGER),
 
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
@@ -302,6 +306,8 @@ public enum Attrib {
 	VEHICLENAME(24592, AttribParserType.STRING_VAR_LENGTH30),
 	IMEI(24593, AttribParserType.STRING_VAR_LENGTH26),
 	MCMID(24594, AttribParserType.STRING_VAR_LENGTH26),
+    RHA_DESCRIPTION(24595, AttribParserType.STRING_VAR_LENGTH), 
+	
 	
 	// BINARY 
 	DELTAVS(49152, AttribParserType.DELTAVS_AS_STRING),

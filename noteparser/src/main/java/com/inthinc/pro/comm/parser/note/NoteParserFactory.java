@@ -19,6 +19,7 @@ public class NoteParserFactory {
 	
 	public final static String NOTEBC_METHOD = "notebc";
 	public final static String NOTEWS_METHOD = "notews";
+    public final static String NOTE_WAYSMART850_METHOD = "notes";
 	public final static String NOTE_METHOD = "note";
 	
     public static NoteParser getParserForNoteVersion(int version)
@@ -50,6 +51,9 @@ public class NoteParserFactory {
 			parser = NOTEWS2_PARSER;
 		if (method.equalsIgnoreCase(NOTE_METHOD)) 
 			parser = TIWIPRO_PARSER;
+        if (method.equalsIgnoreCase(NOTE_WAYSMART850_METHOD))
+            return NOTEBC_PARSER;
+
 		
 		if (parser == null)
 			logger.error("No parser for method: " + method);
