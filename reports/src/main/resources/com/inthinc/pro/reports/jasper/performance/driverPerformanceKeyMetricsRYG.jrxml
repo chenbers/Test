@@ -20,7 +20,7 @@
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("yellow"))]]></conditionExpression>
-            <style name="yellow" backcolor="#F6B305"/>
+            <style name="yellow" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("red"))]]></conditionExpression>
@@ -38,7 +38,7 @@
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("yellow"))]]></conditionExpression>
-            <style name="yellow" backcolor="#F6B305"/>
+            <style name="yellow" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("red"))]]></conditionExpression>
@@ -56,7 +56,7 @@
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("yellow"))]]></conditionExpression>
-            <style name="yellow" backcolor="#F6B305"/>
+            <style name="yellow" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("red"))]]></conditionExpression>
@@ -74,7 +74,7 @@
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("yellow"))]]></conditionExpression>
-            <style name="yellow" backcolor="#F6B305"/>
+            <style name="yellow" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("red"))]]></conditionExpression>
@@ -92,7 +92,7 @@
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("yellow"))]]></conditionExpression>
-            <style name="yellow" backcolor="#F6B305"/>
+            <style name="yellow" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("red"))]]></conditionExpression>
@@ -110,7 +110,7 @@
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{driverColor}.equals("yellow"))]]></conditionExpression>
-            <style name="yellow" backcolor="#F6B305"/>
+            <style name="yellow" backcolor="#FF0000"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{driverColor}.equals("red"))]]></conditionExpression>
