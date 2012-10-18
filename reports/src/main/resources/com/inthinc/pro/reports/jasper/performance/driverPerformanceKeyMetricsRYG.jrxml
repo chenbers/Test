@@ -16,7 +16,7 @@
     <style name="OverAllScore" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("green"))]]></conditionExpression>
-            <style name="green" backcolor="#6B9D1B"/>
+            <style name="green" backcolor="#00FF00"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{overallScoreColor}.equals("yellow"))]]></conditionExpression>
@@ -34,7 +34,7 @@
     <style name="SpeedingScore" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("green"))]]></conditionExpression>
-            <style name="green" backcolor="#6B9D1B"/>
+            <style name="green" backcolor="#00FF00"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{speedingScoreColor}.equals("yellow"))]]></conditionExpression>
@@ -52,7 +52,7 @@
     <style name="StyleScore" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("green"))]]></conditionExpression>
-            <style name="green" backcolor="#6B9D1B"/>
+            <style name="green" backcolor="#00FF00"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{styleScoreColor}.equals("yellow"))]]></conditionExpression>
@@ -70,7 +70,7 @@
     <style name="SeatbeltScore" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("green"))]]></conditionExpression>
-            <style name="green" backcolor="#6B9D1B"/>
+            <style name="green" backcolor="#00FF00"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{seatbeltScoreColor}.equals("yellow"))]]></conditionExpression>
@@ -88,7 +88,7 @@
     <style name="IdlingViolations" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("green"))]]></conditionExpression>
-            <style name="green" backcolor="#6B9D1B"/>
+            <style name="green" backcolor="#00FF00"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{idlingColor}.equals("yellow"))]]></conditionExpression>
@@ -106,7 +106,7 @@
     <style name="NamePosStyle" style="RYGNormal">
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{driverColor}.equals("green"))]]></conditionExpression>
-            <style name="green" backcolor="#6B9D1B"/>
+            <style name="green" backcolor="#00FF00"/>
         </conditionalStyle>
         <conditionalStyle>
             <conditionExpression><![CDATA[new Boolean($F{driverColor}.equals("yellow"))]]></conditionExpression>
