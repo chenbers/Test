@@ -36,6 +36,13 @@ public class TestTranslations {
         checkLang(lang);
     }
 
+    @Test
+    public void frCATest() throws IOException {
+        
+        String lang = "fr_CA";
+        checkLang(lang);
+    }
+
     private void checkLang(String lang) throws IOException {
         List<File> propFileList = new ArrayList<File>();
         File baseDir = new File("..");
