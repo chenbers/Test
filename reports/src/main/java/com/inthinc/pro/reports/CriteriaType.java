@@ -16,7 +16,8 @@ public enum CriteriaType
     TIMEFRAME_ALT_DAYS(TimeFrame.class), 
     TIMEFRAME_ALT_PLUS_CUSTOM_RANGE(TimeFrame.class),
     
-    INACTIVE_AND_ZERO_MILES(null);
+    INACTIVE_DRIVERS(null),
+    ZERO_MILES_DRIVERS(null);
     
     private Class clazz;
 
