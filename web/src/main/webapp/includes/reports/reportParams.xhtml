@@ -145,7 +145,7 @@
                     </ui:include>
                   </li>
                 </h:outputText>
-                <h:outputText rendered="#{criteria eq 'INACTIVE_AND_ZERO_MILES'}">
+                <h:outputText rendered="#{criteria eq 'INACTIVE_DRIVERS'}">
                   <li class="l" style="padding-top: 1px">
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tr>
@@ -156,6 +156,11 @@
                                 <h:selectBooleanCheckbox id="inactiveDrivers" value="#{params.includeInactiveDrivers}" />
                             </td>
                         </tr>
+                    </table>
+                  </li>
+                </h:outputText>
+                <h:outputText rendered="#{criteria eq 'ZERO_MILES_DRIVERS'}">
+                    <table border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td>
                                 <h:outputText value="#{messages.reports_includeZeroMilesDrivers}"/>
