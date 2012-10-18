@@ -7,7 +7,6 @@ public class NoteParserFactory {
 
 	private static NoteParser TIWIPRO_PARSER = new TiwiParser();
 	private static NoteParser NOTEWS2_PARSER = new NotewsParser2();
-	private static NoteParser NOTEWS3_PARSER = new NotewsParser3();
 	private static NoteParser NOTEBC_PARSER = new NotebcParser();
 
 	private static Logger logger = LoggerFactory.getLogger(NoteParserFactory.class.getName());
@@ -33,8 +32,6 @@ public class NoteParserFactory {
     			return NOTEWS2_PARSER;
     			
     		case NOTE_WAYSMART_V3:
-    			return NOTEWS3_PARSER;
-
     		case NOTEBC:
     			return NOTEBC_PARSER;
     	}

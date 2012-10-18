@@ -19,12 +19,12 @@ public class NotewsParser2 implements NoteParser{
 	{
 		HashMap<String, Object> attribMap = new HashMap<String, Object>();
 		
-		int noteTypeCode = ReadUtil.read(data, 1, 1);
+		int noteTypeCode = ReadUtil.read(data, 0, 1);
 		NoteType noteType = NoteType.get(noteTypeCode);
 
 		if (noteType != null)
 		{
-			int offset = noteType.isStrippedNote() ? 2 : 20;
+			int offset = noteType.isStrippedNote() ? 1 : 19;
 			parseHeader(data, noteType, attribMap);
 			
 			Attrib[] attribs = noteType.getAttribs();
@@ -51,26 +51,26 @@ public class NotewsParser2 implements NoteParser{
 		if (noteType != null)
 		{
 //			AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETYPE.getAttribParserType()); 
-//			attribParser.parseAttrib(data, 1, Attrib.NOTETYPE, attribMap);
+//			attribParser.parseAttrib(data, 0, Attrib.NOTETYPE, attribMap);
 			attribMap.put(Attrib.NOTETYPE.getFieldName(), noteType.getCode());
 		
 			if (!noteType.isStrippedNote())
 			{
 				AttribParser attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTETIME.getAttribParserType()); 
-				attribParser.parseAttrib(data, 3, Attrib.NOTETIME.getFieldName(), attribMap);
+				attribParser.parseAttrib(data, 2, Attrib.NOTETIME.getFieldName(), attribMap);
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTELATLONG.getAttribParserType()); 
 
-				attribParser.parseAttrib(data, 8, Attrib.NOTELATLONG.getFieldName(), attribMap);
+				attribParser.parseAttrib(data, 7, Attrib.NOTELATLONG.getFieldName(), attribMap);
 		
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTESPEED.getAttribParserType()); 
-				attribParser.parseAttrib(data, 14, Attrib.NOTESPEED.getFieldName(), attribMap);
+				attribParser.parseAttrib(data, 13, Attrib.NOTESPEED.getFieldName(), attribMap);
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTEODOMETER.getAttribParserType()); 
-				attribParser.parseAttrib(data, 15, Attrib.NOTEODOMETER.getFieldName(), attribMap);
+				attribParser.parseAttrib(data, 14, Attrib.NOTEODOMETER.getFieldName(), attribMap);
 				
 				attribParser = AttribParserFactory.getParserForParserType(Attrib.NOTEDURATION.getAttribParserType()); 
-				attribParser.parseAttrib(data, 18, Attrib.NOTEDURATION.getFieldName(), attribMap);
+				attribParser.parseAttrib(data, 17, Attrib.NOTEDURATION.getFieldName(), attribMap);
 			}
 
 		}
