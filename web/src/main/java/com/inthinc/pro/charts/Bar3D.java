@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.XMLUtil;
+
 
 public class Bar3D implements BaseChart
 {
@@ -58,7 +60,7 @@ public class Bar3D implements BaseChart
     public String getChartDataSet(String title, String color, Object[] values)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(MessageFormat.format(BAR3D_CHART_DATASET_START, new Object[] { title, color}));
+        buffer.append(MessageFormat.format(BAR3D_CHART_DATASET_START, new Object[] { XMLUtil.escapeXMLChars(title), color}));
         for (Object value : values)
         {
             buffer.append(getChartItem(new Object[] { value}));
@@ -86,7 +88,7 @@ public class Bar3D implements BaseChart
         StringBuffer buffer = new StringBuffer(BAR3D_CHART_CATEGORIES_START);
         for (String categoryLabel : categoryLabelList)
         {
-            buffer.append(MessageFormat.format(BAR3D_CHART_CATEGORY, new Object[] { categoryLabel}));
+            buffer.append(MessageFormat.format(BAR3D_CHART_CATEGORY, new Object[] { XMLUtil.escapeXMLChars(categoryLabel)}));
         }
         buffer.append(BAR3D_CHART_CATEGORIES_END);
         return buffer.toString();
