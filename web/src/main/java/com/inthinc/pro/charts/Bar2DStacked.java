@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.XMLUtil;
+
 public class Bar2DStacked implements BaseChart
 {
     
@@ -50,14 +52,16 @@ public class Bar2DStacked implements BaseChart
     @Override
     public String getChartItem(Object[] params)
     {
-        String item = MessageFormat.format(BAR2DSTACKED_CHART_DATASET_ITEM, params);
-        return item;
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
+        return MessageFormat.format(BAR2DSTACKED_CHART_DATASET_ITEM, params);
     }
 
     public String getChartDataSet(String title, String color, Object[] values)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(MessageFormat.format(BAR2DSTACKED_CHART_DATASET_START, new Object[] { title, color}));
+        buffer.append(MessageFormat.format(BAR2DSTACKED_CHART_DATASET_START, new Object[] { XMLUtil.escapeXMLChars(title), color}));
         for (Object value : values)
         {
             buffer.append(getChartItem(new Object[] { value}));
@@ -83,7 +87,7 @@ public class Bar2DStacked implements BaseChart
         StringBuffer buffer = new StringBuffer(BAR2DSTACKED_CHART_CATEGORIES_START);
         for (String categoryLabel : categoryLabelList)
         {
-            buffer.append(MessageFormat.format(BAR2DSTACKED_CHART_CATEGORY, new Object[] { categoryLabel}));
+            buffer.append(MessageFormat.format(BAR2DSTACKED_CHART_CATEGORY, new Object[] { XMLUtil.escapeXMLChars(categoryLabel)}));
         }
         buffer.append(BAR2DSTACKED_CHART_CATEGORIES_END);
         return buffer.toString();

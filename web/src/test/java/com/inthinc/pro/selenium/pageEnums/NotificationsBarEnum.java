@@ -22,7 +22,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     
     LEVEL_FILTER_DHX(null, "***-form:***:levelFilter"),
     TIME_FRAME_DHX(null, "***_search:***_timeframe"),
-    TEAM_SELECTION_DHX(null, "***_search:***_groupID"),
+    TEAM_SELECTION_DHX(null, "***_search:***_groupID", "***Search:***_groupID"),
     
     REFRESH(null, "***_search:***_refresh"),
     

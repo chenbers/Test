@@ -26,6 +26,7 @@ import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.HosReportCriteria;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -123,6 +124,8 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
      *            Interval chosen by the user
      */
     public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval) {
+        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         addParameter(TenHoursViolationReportCriteria.START_DATE_PARAM, dateTimeFormatter.print(interval.getStart()));
         addParameter(TenHoursViolationReportCriteria.END_DATE_PARAM, dateTimeFormatter.print(interval.getEnd()));
         Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>>();

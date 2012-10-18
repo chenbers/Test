@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.XMLUtil;
+
 public class FusionMultiLineChart implements BaseChart
 {
     private static final Logger logger = Logger.getLogger(FusionMultiLineChart.class);
@@ -63,8 +65,10 @@ public class FusionMultiLineChart implements BaseChart
     @Override
     public String getChartItem(Object[] params)
     {
-        String item = MessageFormat.format(LINE_CHART_ITEM_FORMAT, params);
-        return item;
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
+        return MessageFormat.format(LINE_CHART_ITEM_FORMAT, params);
     }
 
     @Override
@@ -75,7 +79,7 @@ public class FusionMultiLineChart implements BaseChart
 
     public String getCategoryLabel(String label)
     {
-        return MessageFormat.format(LINE_CHART_CAT_LABEL, new Object[] {label});
+        return MessageFormat.format(LINE_CHART_CAT_LABEL, new Object[] {XMLUtil.escapeXMLChars(label)});
     }
     public String getCategoriesStart()
     {
@@ -89,11 +93,11 @@ public class FusionMultiLineChart implements BaseChart
     public String getChartDataSet(String title, String color, String borderColor, Object[] values, List<String> catLabels)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(MessageFormat.format(LINE_CHART_DATASET_START, new Object[] { title, color, borderColor}));
+        buffer.append(MessageFormat.format(LINE_CHART_DATASET_START, new Object[] { XMLUtil.escapeXMLChars(title), color, borderColor}));
         for (int i = 0; i < values.length; i++)
         {
             String label = title + " " + catLabels.get(i) + ", " + values[i] + " mpg";  
-            buffer.append(getChartItem(new Object[] { values[i], label}));
+            buffer.append(getChartItem(new Object[] { values[i], XMLUtil.escapeXMLChars(label)}));
         }
         buffer.append(LINE_CHART_DATASET_END);
         return buffer.toString();

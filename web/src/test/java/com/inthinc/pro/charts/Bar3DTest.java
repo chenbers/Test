@@ -36,5 +36,19 @@ public class Bar3DTest
 
     }
 
+    @Test
+    public void chartEscapeXML()
+    {
+        Bar3D bar3D = new Bar3D();
+        
+        String result = bar3D.getChartItem(new Object[] {Integer.valueOf(44)});
+        
+        assertEquals("<set value='44'/>", result);
+        
+        result = bar3D.getChartDataSet("'escape'", "red", new Object[] {Integer.valueOf(33), Integer.valueOf(44)});
+        String expectedResult = "<dataset seriesName='&apos;escape&apos;' color='red' showValues='0'><set value='33'/><set value='44'/></dataset>";
+        assertEquals(expectedResult, result);
+
+    }
 
 }

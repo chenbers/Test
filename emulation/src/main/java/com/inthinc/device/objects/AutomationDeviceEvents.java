@@ -279,6 +279,19 @@ public class AutomationDeviceEvents {
 		}
 	}
 	
+	public class PowerInterruptionEvent extends AutomationDeviceEvents{
+		private PowerInterruptionEvent(DeviceState state, GeoPoint location){
+        	super(DeviceNoteTypes.POWER_INTERRUPTED, state, location);
+        	
+        	endOfTripAttrs(state, note);
+        	
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				
+			}
+		}
+    }
 	
 	public class NoDriverEvent extends AutomationDeviceEvents {
     	private NoDriverEvent(DeviceState state, GeoPoint location){
@@ -403,6 +416,19 @@ public class AutomationDeviceEvents {
             state.setSeatbeltViolationDistanceX100(0);
         }
 
+    }
+    
+	public class SeatBeltClickEvent extends AutomationDeviceEvents{
+		private SeatBeltClickEvent(DeviceState state, GeoPoint location){
+        	super(DeviceNoteTypes.IGNITION_OFF, state, location);
+        	endOfTripAttrs(state, note);
+        	note.addAttr(EventAttr.SEATBELT_CLICKS, 1);
+			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				
+			} else {
+				
+			}
+		}
     }
     
     
@@ -595,12 +621,28 @@ public class AutomationDeviceEvents {
 		return classes.new LogoutEvent(state, location);
 	}
     
+    public static void powerInterruption(DeviceBase device){
+		device.addEvent(powerInterruption(device.getState(), device.getCurrentLocation()));
+	}
+    
+    public static PowerInterruptionEvent powerInterruption(DeviceState state, GeoPoint location){
+		return classes.new PowerInterruptionEvent(state, location);
+	}
+    
     public static void lowBattery(DeviceBase device){
 		device.addEvent(lowBattery(device.getState(), device.getCurrentLocation()));
 	}
     
     public static LowBatteryEvent lowBattery(DeviceState state, GeoPoint location){
 		return classes.new LowBatteryEvent(state, location);
+	}
+    
+    public static void seatbeltClick(DeviceBase device){
+		device.addEvent(seatbeltClick(device.getState(), device.getCurrentLocation()));
+	}
+    
+    public static SeatBeltClickEvent seatbeltClick(DeviceState state, GeoPoint location){
+		return classes.new SeatBeltClickEvent(state, location);
 	}
     
     public static void noDriver(DeviceBase device){
@@ -809,5 +851,4 @@ public class AutomationDeviceEvents {
 		}
 		
 	}
-
 }

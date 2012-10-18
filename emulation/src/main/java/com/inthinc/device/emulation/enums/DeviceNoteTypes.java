@@ -11,10 +11,11 @@ import java.util.regex.Pattern;
 
 import com.inthinc.device.emulation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.models.BaseEnum;
 import com.inthinc.pro.automation.utils.AutomationNumberManager;
 
 
-public enum DeviceNoteTypes  {
+public enum DeviceNoteTypes implements BaseEnum  {
     
 	/**
 	 * Generated when a "crash" is detected <br/>
@@ -448,6 +449,9 @@ public enum DeviceNoteTypes  {
     STATS2(222),
     CREATE_ROAD_HAZARD(226), 
 
+    //Put in for customer G&K to help detect tampering to tiwis.
+    POWER_INTERRUPTED(229),
+    
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
     STRIPPED_LOWER_LIMIT(243),

@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -17,7 +17,6 @@ import org.joda.time.LocalDate;
 
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.hos.violations.DailyViolations;
@@ -251,6 +250,4 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         columnHeaders.add(new ColumnHeader(MessageUtil.getBundleString(resourceBundle, "column.14to16.tabularHeader"), 3));
         return columnHeaders;
     }
-
-
 }

@@ -6,7 +6,9 @@ default-autowire="byName">
     <!-- Service Related Beans -->
   <bean id="siloService" factory-bean="siloServiceCreator" factory-method="getService" />
   <bean id="reportService" factory-bean="reportServiceCreator" factory-method="getService" />
-
+  <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO">
+    <property name="siloService" ref="siloService" />
+  </bean>
   <!-- DAO -->
   <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO"></bean>
   <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>

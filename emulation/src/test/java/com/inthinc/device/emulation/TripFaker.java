@@ -7,6 +7,7 @@ import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
+import com.inthinc.device.objects.AutomationDeviceEvents.PowerInterruptionEvent;
 import com.inthinc.pro.automation.enums.AutoSilos;
 
 public class TripFaker {
@@ -15,6 +16,7 @@ public class TripFaker {
 	public static void main(String args[]) {
 		
         TiwiProDevice tiwi = new TiwiProDevice("999999000582800", AutoSilos.QA);
+        NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
 		
 		//WaysmartDevice tiwi = new WaysmartDevice("300235555777777", "MCM013795", AutoSilos.PROD, Direction.gprs);
         DeviceState state = tiwi.getState();
@@ -53,7 +55,7 @@ public class TripFaker {
         tiwi.update_location(new GeoPoint(33.0188, -117.118), 15);
         tiwi.update_location(new GeoPoint(33.0192, -117.1199), 15);
         
-        AutomationDeviceEvents.rfKill(tiwi);
+        //AutomationDeviceEvents.rfKill(tiwi);
         
         tiwi.update_location(new GeoPoint(33.021, -117.119), 15);
         tiwi.update_location(new GeoPoint(33.022, -117.114), 15);
@@ -62,6 +64,10 @@ public class TripFaker {
         tiwi.increment_time(20);
         //AutomationDeviceEvents.seatbelt(tiwi);
         //tiwi.tampering(4);
+        
+        //AutomationDeviceEvents.powerInterruption(tiwi);
+        //noteTest.testSeatbeltClicks("", "999999000582800");
+        AutomationDeviceEvents.seatbeltClick(tiwi);
         
         tiwi.update_location(new GeoPoint(33.02, -117.109), 15);
         tiwi.update_location(new GeoPoint(33.02, -117.108), 15);
@@ -79,6 +85,7 @@ public class TripFaker {
         //tiwi.leave_zone(2);
 
         tiwi.increment_time(20);
+        
         //AutomationDeviceEvents.seatbelt(tiwi);
         tiwi.update_location(new GeoPoint(33.0106, -117.11), 15);
         tiwi.last_location(new GeoPoint(33.0104, -117.111), 15);
