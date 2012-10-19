@@ -75,6 +75,7 @@
       			  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(7, 30));
       			};
       			
+      			var layersLabel = "Layers";
       			return {
       				addOverlay: function(wmsURL, displayName, wmsLayer, isSelectedDefault, minZ, maxZ, opacity, isUsePng, id) {
       					var selected = isSelectedDefault ? isSelectedDefault : false;
@@ -106,7 +107,9 @@
       					overlayID.push(id);
    					
       				},
-      				addControlToMap: function() {
+      				addControlToMap: function(label) {
+      					if (label)
+      						layersLabel = label;
       					overlayControl = new OverlayControl();
       					map.addControl(overlayControl);
       					jQuery("#overlay-select").dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
@@ -127,7 +130,7 @@
 
       							},
       		      				textFormatFunction: function(options) {
-    								return "<b>Layers</b>";
+    								return "<b>"+ label + "</b>";
       		      				}
 
       					});
@@ -207,8 +210,8 @@
       				wmsOverlays.addOverlay(url, displayName, layerName, selected, minZoom, maxZoom, opacityVal, usePng, id);
 
       			},
-      			addOverlaysControl: function() {
-      				wmsOverlays.addControlToMap();
+      			addOverlaysControl: function(label) {
+      				wmsOverlays.addControlToMap(label);
       			},
   				lookupAddress: function(address) {
   					geocoder = new GClientGeocoder();

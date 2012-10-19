@@ -52,7 +52,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
     // JMockit mocks
     @NonStrict @Cascading private Driver driverMock;
     @NonStrict @Cascading private Trip tripMock;
-    @Mocked private DriverDAO driverDAOMock; 
+    @NonStrict @Mocked private DriverDAO driverDAOMock; 
     @Mocked private GroupHierarchy groupHierarchyMock;
     @Mocked private DriveTimeDAO driveTimeDAOMock; 
     
@@ -85,7 +85,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
             
         	// Non-strict expectations define behavior only and are defined as a NonStrictExpectations() class. 
         	// In that case, execution and order must be verified in the Verifications() block.
-        	// In this example we have one @NonStrict Mock object: driverMock
+        	// In this example we have TWO @NonStrict Mock objects: driverMock, and driverDAOMock
         	
         	 
         	  // Local mock, only used in the Expectations block

@@ -4,6 +4,8 @@ import java.text.MessageFormat;
 import java.util.List;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.XMLUtil;
+
 /*
  *  FusionCharts utility class for: MSCombiDY2D.swf
  *  See XML output example at bottom.
@@ -61,14 +63,18 @@ public class FusionMultiAreaChart implements BaseChart
     @Override
     public String getChartItem(Object[] params)
     {
-        String item = MessageFormat.format(CHART_ITEM_FORMAT, params);
-        return item;
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
+        return MessageFormat.format(CHART_ITEM_FORMAT, params);
     }
     
     public String getChartItemDashed(Object[] params)
     {
-        String item = MessageFormat.format(CHART_ITEM_FORMAT_DASHED, params);
-        return item;
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
+        return MessageFormat.format(CHART_ITEM_FORMAT_DASHED, params);
     }
 
     @Override
@@ -93,7 +99,7 @@ public class FusionMultiAreaChart implements BaseChart
     public String getChartAreaDataSet(String title, String color, Object[] values, List<String> valueTexts, List<String> catLabels)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(MessageFormat.format(CHART_DATASET_AREA_START, new Object[] { title, color}));
+        buffer.append(MessageFormat.format(CHART_DATASET_AREA_START, new Object[] { XMLUtil.escapeXMLChars(title), color}));
         for (int i = 0; i < values.length; i++)
         {
             String label = catLabels.get(i) + " " + title + ": " + valueTexts.get(i);

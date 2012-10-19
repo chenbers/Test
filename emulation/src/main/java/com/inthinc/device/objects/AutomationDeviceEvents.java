@@ -769,8 +769,6 @@ public class AutomationDeviceEvents {
     	note.addAttr(EventAttr.OBD_PCT, state.getOBDPercent() * 10);
     	note.addAttr(EventAttr.GPS_PCT, state.getGPSPercent() * 10);
     	
-    	
-    	
     	if (state.getProductVersion().equals(ProductType.WAYSMART)){
     	    if (state.getSeatbeltDistanceX100()!=0){
     	        note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());

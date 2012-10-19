@@ -28,6 +28,7 @@
 				</configuration>
 				<executions>
 					<execution>
+                        <id>compile-reports</id>
 						<phase>compile</phase>
 						<goals>
 							<goal>compile-reports</goal>
@@ -87,7 +88,9 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<execute>
+                                            <runOnIncremental>false</runOnIncremental>
+                                        </execute>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

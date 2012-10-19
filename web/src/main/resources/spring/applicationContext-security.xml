@@ -9,6 +9,8 @@
 
 	<security:http session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint">
 		<security:intercept-url pattern="/app/admin/**" access="ROLE_ADMIN, ROLE_ADMIN_SUBSET" />
+		<security:intercept-url pattern="/app/admin/hazards" access="ROLE_RHAADMIN, ROLE_HAZARDSACCESS" />		
+		<security:intercept-url pattern="/app/admin/editHazard" access="ROLE_RHAADMIN, ROLE_HAZARDSACCESS" />		
 		<security:intercept-url pattern="/app/hos/**" access="ROLE_HOSADMIN, ROLE_HOSACCESS" />
 		<security:intercept-url pattern="/app/notifications/addCrashReport" access="ROLE_ADMIN, ROLE_CRASHREPORTACCESS" />
 		<security:intercept-url pattern="/app/liveFleet" access="ROLE_ADMIN, ROLE_LIVEFLEETACCESS" />
