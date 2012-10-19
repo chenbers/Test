@@ -1,9 +1,11 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -269,5 +271,22 @@ public class BaseBean implements Serializable {
     public boolean getAccountIsWaysmart() {
         String waySmart = getProUser().getAccountAttributes().getWaySmart();
         return (waySmart == null) ? false : Boolean.valueOf(waySmart); 
+    }
+
+    private static final int MILLIS_PER_MINUTE = 1000 * 60;
+    private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+    public String getTimeZoneDisplayName(TimeZone timeZone) {
+        if (timeZone == null)
+           return "";
+        final NumberFormat format = NumberFormat.getIntegerInstance();
+        boolean isEnglish = getLocale().getLanguage().equals("en");
+        final int offsetHours = timeZone.getRawOffset() / MILLIS_PER_HOUR;
+        final int offsetMinutes = Math.abs((timeZone.getRawOffset() % MILLIS_PER_HOUR) / MILLIS_PER_MINUTE);
+        String displayName =  isEnglish ? timeZone.getID() : timeZone.getDisplayName(true, TimeZone.LONG, getLocale()); 
+        if (offsetHours < 0)
+            return displayName + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')';
+        else
+            return displayName + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')';
+        
     }
 }
