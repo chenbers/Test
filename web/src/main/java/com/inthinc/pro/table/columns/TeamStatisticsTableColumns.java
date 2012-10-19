@@ -26,7 +26,7 @@ public class TeamStatisticsTableColumns extends BaseTableColumns {
     	COLUMNS.add("idle_percentage");
     	COLUMNS.add("mpg");
     	COLUMNS.add("crashes");
-//    	COLUMNS.add("seatbelt_clicks");
+    	COLUMNS.add("seatbelt_clicks");
     	COLUMNS.add("safety");
     }
     
