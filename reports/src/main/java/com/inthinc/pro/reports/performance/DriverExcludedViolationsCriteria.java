@@ -57,7 +57,7 @@ public class DriverExcludedViolationsCriteria extends ReportCriteria{
         private Boolean includeZeroMilesDrivers;
         
         public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,GroupDAO groupDAO,DriverDAO driverDAO,List<Integer> groupIDs,Interval interval) {
-            this( groupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval,  ReportCriteria.INACTIVE_DRIVERS_DEFAULT,  ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+            this( groupHierarchy, eventAggregationDAO, groupDAO, driverDAO, groupIDs, interval,  ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS,  ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         }
         public Builder(GroupHierarchy groupHierarchy,EventAggregationDAO eventAggregationDAO,GroupDAO groupDAO,DriverDAO driverDAO,List<Integer> groupIDs,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
            this.interval = interval;

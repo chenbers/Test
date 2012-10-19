@@ -32,6 +32,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.DotHoursRemaining;
@@ -54,12 +55,11 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
     public DotHoursRemainingReportCriteria(Locale locale) {
         super(ReportType.DOT_HOURS_REMAINING, locale);
         dayFormatter = DateTimeFormat.forPattern("MM/dd/yy").withLocale(locale);
-        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
     }
     
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList) {
-        
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
 

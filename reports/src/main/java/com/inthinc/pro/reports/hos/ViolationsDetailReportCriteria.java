@@ -29,6 +29,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
@@ -49,19 +50,17 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
         super(reportType, locale);
         displayDateTimeFormatter = DateTimeFormat.forPattern(DISPLAY_DATE_FORMAT).withLocale(locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
 
     public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval){
-        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         List<Driver> driverList = new ArrayList<Driver>();
 
         driverList.add(getDriverDAO().findByID(driverID));
         initDrivers(accountGroupHierarchy, driverList, interval);
     }
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
-        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 

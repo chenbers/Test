@@ -20,30 +20,30 @@ public enum ReportGroup {
     TEAM_STATISTICS_REPORT("Team Statistics Report", 6, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.TEAM }, ReportType.TEAM_STATISTICS_REPORT),
     TEAM_STOPS_REPORT("Team Stops Report", 106, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_DAYS }, new GroupType[] { GroupType.TEAM },
             ReportCategory.DriverPerformance, null, ReportType.TEAM_STOPS_REPORT),
-    SEATBELT_CLICKS_REPORT("Seatbelt Clicks Report", 107, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    SEATBELT_CLICKS_REPORT("Seatbelt Clicks Report", 107, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME_STRICT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.SEATBELT_CLICKS_REPORT),
-    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report", 7, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION,
-      GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
-    HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report", 8, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION,
+    HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report", 7, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
+            GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
+    HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report", 8, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_VIOLATIONS_SUMMARY_REPORT),
-    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report", 9, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION,
+    HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report", 9, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_VIOLATIONS_DETAIL_REPORT),
-    HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report", 10, EntityType.ENTITY_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report", 10, EntityType.ENTITY_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_DRIVER_DOT_LOG_REPORT),
-    DOT_HOURS_REMAINING("DOT Time Remaining Report", 11, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {CriteriaType.INACTIVE_AND_ZERO_MILES}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+    DOT_HOURS_REMAINING("DOT Time Remaining Report", 11, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] {CriteriaType.INACTIVE_DRIVERS}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.DOT_HOURS_REMAINING),
     HOS_ZERO_MILES("HOS Zero Miles Report", 12, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_ZERO_MILES),
-    HOS_EDITS("HOS Edits", 13, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+    HOS_EDITS("HOS Edits", 13, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.HOS_EDITS),
-    NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report", 30, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] { GroupType.DIVISION,
+    NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report", 30, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION,
             GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.NON_DOT_VIOLATIONS_SUMMARY_REPORT),
-    NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report", 31, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_AND_ZERO_MILES }, new GroupType[] {
+    NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report", 31, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] {
             GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.NON_DOT_VIOLATIONS_DETAIL_REPORT),
-    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report", 32, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS  }, new GroupType[] {
+    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report", 32, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] {
             GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART),
             ReportType.DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT),
-    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report", 33, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS  }, new GroupType[] {
+    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report", 33, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] {
             GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART),
             ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT),
 
@@ -75,17 +75,17 @@ public enum ReportGroup {
             GroupType.TEAM }, ReportCategory.Communication, EnumSet.of(ReportAccountType.PERFORMANCE), ReportType.NON_COMM),
 
     // Performance
-    PAYROLL_SUMMARY("Payroll Report Summary", 14, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+    PAYROLL_SUMMARY("Payroll Report Summary", 14, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_SUMMARY),
-    PAYROLL_COMPENSATED_HOURS("Payroll Compensated Hours", 39, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    PAYROLL_COMPENSATED_HOURS("Payroll Compensated Hours", 39, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_COMPENSATED_HOURS),
-    PAYROLL_DETAIL("Payroll Report Driver Detail", 15, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    PAYROLL_DETAIL("Payroll Report Driver Detail", 15, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_DETAIL),
-    PAYROLL_SIGNOFF("Payroll Report Driver Signoff", 16, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    PAYROLL_SIGNOFF("Payroll Report Driver Signoff", 16, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS), ReportType.PAYROLL_SIGNOFF),
-    TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
+    TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET,
             GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART), ReportType.TEN_HOUR_DAY_VIOLATIONS),
-    DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+    DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
             ReportCategory.Performance, EnumSet.of(ReportAccountType.WAYSMART), ReportType.DRIVER_HOURS),
     DRIVER_PERFORMANCE_KEY_METRICS("Driver Performance Key Metrics", 38, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS },
             new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE),
@@ -111,7 +111,7 @@ public enum ReportGroup {
     DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG", 45, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS },
             new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG),
-
+//TODO: add unit test that ensures there are NO duplicate ID's in this enum
     ;
 
     private ReportType[] reports;
