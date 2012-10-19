@@ -11,11 +11,14 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryEnum;
+import com.inthinc.pro.selenium.pageObjects.NotificationsEventsBar.EventsBarDropDowns;
 
-public class PageNotificationsCrashHistory extends NotificationsBar {
+public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     
     private String pageScroller = "crashHistory-form:crashHistory-bottomScroller_table";
 	
+    protected SeleniumEnums[] enums = { NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, NotificationsCrashHistoryEnum.TEAM_DROP_DOWN };
+    
     public PageNotificationsCrashHistory() {
         checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
         checkMe.add(NotificationsCrashHistoryEnum.TITLE);
@@ -85,19 +88,19 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
         
         public Button tools() {
-            return new Button(NotificationsBarEnum.TOOLS);
+            return new Button(NotificationsCrashHistoryEnum.TOOLS);
         }
         
         public Button exportToPDF() {
-            return new Button(NotificationsBarEnum.EXPORT_TO_PDF);
+            return new Button(NotificationsCrashHistoryEnum.EXPORT_TO_PDF);
         }
         
         public Button emailThisReport() {
-            return new Button(NotificationsBarEnum.EMAIL_REPORT);
+            return new Button(NotificationsCrashHistoryEnum.EMAIL_REPORT);
         }
         
         public Button exportToExcel() {
-            return new Button(NotificationsBarEnum.EXPORT_TO_EXCEL);
+            return new Button(NotificationsCrashHistoryEnum.EXPORT_TO_EXCEL);
         }
         
         public Button search() {
@@ -110,11 +113,10 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         
     }
     
-    public class NotificationsCrashHistoryDropDown extends NotificationsBarDropDowns {
-    	SeleniumEnums[] enums = {NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, NotificationsCrashHistoryEnum.TEAM_DROP_DOWN};
+    public class NotificationsCrashHistoryDropDown extends EventsBarDropDowns {
         
         public DHXDropDown team() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, enums);
+            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, enums );
         }
         
         public DHXDropDown timeFrame() {

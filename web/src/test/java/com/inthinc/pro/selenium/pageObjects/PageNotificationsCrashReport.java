@@ -18,42 +18,43 @@ public class PageNotificationsCrashReport extends NotificationsBar {
     		return new TextLink(NotificationsCrashReportEnum.BACK);
     	}
     	
-        public TextLink labelVehicle() {
-            return new TextLink(
-                    NotificationsCrashReportEnum.VEHICLE);
+        public TextLink vehicle() {
+            return new TextLink(NotificationsCrashReportEnum.VEHICLE);
         }
 
-        public TextLink labelDriver() {
-            return new TextLink(
-                    NotificationsCrashReportEnum.DRIVER);
+        public TextLink driver() {
+            return new TextLink(NotificationsCrashReportEnum.DRIVER);
         }
     }
 
     public class NotificationsCrashHistoryAddEditTexts extends NotificationsBarTexts {
 
         public Text headerCrashDetails() {
-            return new Text(
-                    NotificationsCrashReportEnum.CRASH_DETAILS_HEADER);
+            return new Text(NotificationsCrashReportEnum.CRASH_DETAILS_HEADER);
         }
 
         public Text headerCrashRoute() {
-            return new Text(
-                    NotificationsCrashReportEnum.CRASH_ROUTE_HEADER);
+            return new Text(NotificationsCrashReportEnum.CRASH_ROUTE_HEADER);
         }
 
         public Text headerCrashEvents() {
-            return new Text(
-                    NotificationsCrashReportEnum.CRASH_EVENTS_HEADER);
+            return new Text(NotificationsCrashReportEnum.CRASH_EVENTS_HEADER);
         }
 
         public Text labelCrashReportStatus() {
-            return new Text(
-                    NotificationsCrashReportEnum.CRASH_REPORT_STATUS);
+            return new Text(NotificationsCrashReportEnum.CRASH_REPORT_STATUS);
         }
 
         public Text labelDateTime() {
-            return new Text(
-                    NotificationsCrashReportEnum.DATE_TIME);
+            return new Text(NotificationsCrashReportEnum.DATE_TIME);
+        }
+        
+        public Text labelVehicle() {
+            return new Text(NotificationsCrashReportEnum.VEHICLE);
+        }
+
+        public Text labelDriver() {
+            return new Text(NotificationsCrashReportEnum.DRIVER);
         }
 
         public Text labelWeather() {
@@ -61,15 +62,32 @@ public class PageNotificationsCrashReport extends NotificationsBar {
         }
 
         public Text labelOccupantCount() {
-            return new Text(
-                    NotificationsCrashReportEnum.OCCUPANT_COUNT);
+            return new Text(NotificationsCrashReportEnum.OCCUPANT_COUNT);
         }
 
         public Text messageDescription() {
-            return new Text(
-                    NotificationsCrashReportEnum.DESCRIPTION_MESSAGE);
+            return new Text(NotificationsCrashReportEnum.DESCRIPTION_MESSAGE);
+        }
+        
+        public Text crashReportStatus() {
+        	return new Text(NotificationsCrashReportEnum.CRASH_REPORT_STATUS);
+        }
+        
+        public Text dateTime() {
+        	return new Text(NotificationsCrashReportEnum.DATE_TIME);
+        }
+        
+        public Text weather() {
+        	return new Text(NotificationsCrashReportEnum.WEATHER);
         }
 
+        public Text occupantCount() {
+        	return new Text(NotificationsCrashReportEnum.OCCUPANT_COUNT);
+        }
+
+        public Text description() {
+        	return new Text(NotificationsCrashReportEnum.DESCRIPTION_MESSAGE);
+        }
     }
 
     public class NotificationsCrashHistoryAddEditTextFields extends NotificationsBarTextFields {}
@@ -128,7 +146,7 @@ public class PageNotificationsCrashReport extends NotificationsBar {
     @Override
     protected boolean checkIsOnPage() {
         return _link().back().isPresent() &&
-               _link().labelDriver().isPresent();
+               _text().occupantCount().isPresent();
     }
 
 }
