@@ -15,6 +15,7 @@ import com.inthinc.hos.violations.DailyViolations;
 import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.Violation;
@@ -28,9 +29,10 @@ import com.inthinc.pro.reports.util.MessageUtil;
 public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCriteria implements Tabular {
 
     
-    public HosViolationsDetailReportCriteria(Locale locale) 
-    {
+    public HosViolationsDetailReportCriteria(Locale locale) {
         super(ReportType.HOS_VIOLATIONS_DETAIL_REPORT, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
 
     

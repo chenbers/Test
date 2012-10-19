@@ -17,6 +17,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.util.DateTimeUtil;
@@ -24,19 +25,18 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 public class PayrollDetailReportCriteria extends PayrollReportCriteria {
 
     
-    public PayrollDetailReportCriteria(Locale locale) 
-    {
+    public PayrollDetailReportCriteria(Locale locale) {
         super(ReportType.PAYROLL_DETAIL, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
 
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
-
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
         Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
 
         List<Group> reportGroupList = this.getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = this.getReportDriverList(reportGroupList);
-        
+
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         for (Driver driver : driverList) {
             if(includeDriver(getDriverDAO(), driver.getDriverID(), interval)){
@@ -47,10 +47,8 @@ public class PayrollDetailReportCriteria extends PayrollReportCriteria {
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
             }
         }
-        
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
     }
-    
     
     void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {

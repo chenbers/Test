@@ -26,7 +26,6 @@ import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.HosReportCriteria;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -88,6 +87,8 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     public TenHoursViolationReportCriteria(Locale locale) {
         super(ReportType.TEN_HOUR_DAY_VIOLATIONS, "", locale);
         dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
 
     void initDataSet(GroupHierarchy groupHierarchy, Interval interval, Map<Driver, List<TenHoursViolationRecord>> recordMap) {
@@ -124,13 +125,11 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
      *            Interval chosen by the user
      */
     public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval) {
-        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         addParameter(TenHoursViolationReportCriteria.START_DATE_PARAM, dateTimeFormatter.print(interval.getStart()));
         addParameter(TenHoursViolationReportCriteria.END_DATE_PARAM, dateTimeFormatter.print(interval.getEnd()));
         Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>>();
         Interval queryInterval = new Interval(interval.getStart().minusDays(1), new DateMidnight(interval.getEnd()).toDateTime().plusDays(2));
-//System.out.println("interval: " + queryInterval);     
+//System.out.println("interval: " + queryInterval);
 
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
         List<DriveTimeRecord> driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(groupID, queryInterval);
@@ -148,7 +147,7 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         initDataSet(groupHierarchy, interval, violationRecordMap);
     }
 
-    private static final long TEN_HOURS_IN_SECONDS = 36000l;    
+    private static final long TEN_HOURS_IN_SECONDS = 36000l;
 
     private List<TenHoursViolationRecord> getTenHourViolationsList(Driver driver, Interval interval, List<DriveTimeRecord> driveTimeList) {
         List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.getDefault());

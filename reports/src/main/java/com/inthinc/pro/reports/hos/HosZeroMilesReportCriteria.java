@@ -16,6 +16,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.GroupListReportCriteria;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.HosZeroMiles;
@@ -35,13 +36,11 @@ public class HosZeroMilesReportCriteria extends GroupListReportCriteria implemen
     public HosZeroMilesReportCriteria(Locale locale) {
         super(ReportType.HOS_ZERO_MILES, locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
-        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_INCLUDE_INACTIVE_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer>groupIDList, Interval interval)
-    {
-
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer>groupIDList, Interval interval){
         List<Group> reportGroupList = this.getReportGroupList(groupIDList, accountGroupHierarchy);
         List<HOSVehicleMileage>  groupNoDriverMileageList = new ArrayList<HOSVehicleMileage>(); 
             
