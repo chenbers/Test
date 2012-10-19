@@ -421,8 +421,8 @@ public class AutomationDeviceEvents {
 	public class SeatBeltClickEvent extends AutomationDeviceEvents{
 		private SeatBeltClickEvent(DeviceState state, GeoPoint location){
         	super(DeviceNoteTypes.IGNITION_OFF, state, location);
-        	endOfTripAttrs(state, note);
         	note.addAttr(EventAttr.SEATBELT_CLICKS, 1);
+        	endOfTripAttrs(state, note);
 			if (state.getProductVersion().equals(ProductType.WAYSMART)){
 				
 			} else {

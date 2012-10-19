@@ -65,8 +65,10 @@ public class TripFaker {
         //AutomationDeviceEvents.seatbelt(tiwi);
         //tiwi.tampering(4);
         
-        //AutomationDeviceEvents.powerInterruption(tiwi);
-        //noteTest.testSeatbeltClicks("", "999999000582800");
+        AutomationDeviceEvents.powerInterruption(tiwi);
+        
+        //noteTest.testSeatbeltClicks("", "999999000582802");
+        
         AutomationDeviceEvents.seatbeltClick(tiwi);
         
         tiwi.update_location(new GeoPoint(33.02, -117.109), 15);
@@ -101,7 +103,7 @@ public class TripFaker {
     	tiwi.getState().setSeatBeltTopSpeed(75).setSeatbeltDistanceX100(58);
     	
         tiwi.turn_key_off(30);
-        AutomationDeviceEvents.lowBattery(tiwi);
+        //AutomationDeviceEvents.lowBattery(tiwi);
         tiwi.power_off_device(900);
     }
 }

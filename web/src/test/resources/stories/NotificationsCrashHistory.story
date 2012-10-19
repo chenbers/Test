@@ -60,9 +60,9 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I select "Top - Test Group WR" from the Team dropdown
-And I type "TIWI00" into the Search textfield
-And I click the Search button
-And I click the 1st Row of the Details link
+And I select "All" from the Time Frame dropdown
+And I click the Refresh button
+And I click the 1st Row of the Entry Details link
 Then I validate I am on the Notifications Crash Report page
 
 Scenario: TC1341: Notifications - Crash History - Driver Link
@@ -70,10 +70,11 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I select "Top - Test Group WR" from the Team dropdown
+And I select "All" from the Time Frame dropdown
 And I type "TIWI00" into the Search textfield
 And I click the Search button
-And I save the 1st Row of the Driver Name link as SAVEDNAME
-And I click the 1st Row of the Driver Name link
+And I save the 1st Row of the Entry Driver link as SAVEDNAME
+And I click the 1st Row of the Entry Driver link
 Then I validate I am on the Driver Performance page
 And I validate the Driver Name link is SAVEDNAME
 
@@ -117,7 +118,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Crash History link
 And I click the Tools button
-Then I validate the Email Report button is present
+Then I validate the Email This Report button is present
 And I validate the Export To PDF button is present
 And I validate the Export To Excel button is present
 
