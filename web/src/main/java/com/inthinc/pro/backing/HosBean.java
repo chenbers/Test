@@ -347,7 +347,7 @@ logger.info("in loadItems()");
     }
     
 
-    public static class HosLogView extends HOSRecord implements EditItem
+    public class HosLogView extends HOSRecord implements EditItem
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
@@ -356,7 +356,6 @@ logger.info("in loadItems()");
 
         private String driverName;
         
-
         public HosLogView()
         {
             super();
@@ -421,8 +420,7 @@ logger.info("in loadItems()");
         }
         
         public String getTimezoneName() {
-//            return getTimeZone().getDisplayName(false, TimeZone.SHORT);
-            return getTimeZone().getID();
+            return HosBean.this.getTimeZoneDisplayName(getTimeZone());
         }
     }
     

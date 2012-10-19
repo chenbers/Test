@@ -4,11 +4,8 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -17,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -57,7 +55,6 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.model.security.Role;
@@ -80,9 +77,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, Integer> WEIGHTS;
     private static final int MIN_WEIGHT = 75;
     private static final int MAX_WEIGHT = 300;
-    private static final Map<String, TimeZone> TIMEZONES;
-    private static final int MILLIS_PER_MINUTE = 1000 * 60;
-    private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+    private static Map<String, TimeZone> TIMEZONES;
     private static final Map<String, State> STATES;
     private static final String REQUIRED_KEY = "required";
     static {
@@ -136,28 +131,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         WEIGHTS = new TreeMap<String, Integer>();
         for (int i = MIN_WEIGHT; i < MAX_WEIGHT; i++)
             WEIGHTS.put(String.valueOf(i), i);
-        // time zones
-        final List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
-        Collections.sort(timeZones, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                final TimeZone t1 = TimeZone.getTimeZone(o1);
-                final TimeZone t2 = TimeZone.getTimeZone(o2);
-                return t1.getRawOffset() - t2.getRawOffset();
-            }
-        });
-        TIMEZONES = new LinkedHashMap<String, TimeZone>();
-        final NumberFormat format = NumberFormat.getIntegerInstance();
-        format.setMinimumIntegerDigits(2);
-        for (final String id : timeZones) {
-            final TimeZone timeZone = TimeZone.getTimeZone(id);
-            final int offsetHours = timeZone.getRawOffset() / MILLIS_PER_HOUR;
-            final int offsetMinutes = Math.abs((timeZone.getRawOffset() % MILLIS_PER_HOUR) / MILLIS_PER_MINUTE);
-            if (offsetHours < 0)
-                TIMEZONES.put(timeZone.getID() + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
-            else
-                TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
-        }
         // states
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
@@ -185,6 +158,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     
     private List<PersonIdentifiers> personIdentifiersList;
 	private Map<Integer, Boolean> selectedMap = new HashMap<Integer, Boolean>();
+	
+	
+    public void initBean()
+    {
+        super.initBean();
+        TIMEZONES = initTimeZones();
+    }
 
     public CacheBean getCacheBean() {
 		return cacheBean;
@@ -1618,6 +1598,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
 
 
+        public String getTimeZoneDisplay() {
+            return bean.getTimeZoneDisplayName(getTimeZone());
+        }
    }
 		
 	public Roles getAccountRoles(){
