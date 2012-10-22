@@ -19,6 +19,7 @@
 		// callback to add data to chart
 		function fillOverallScoreChart(overallScoreData){
   			overallScoreChart = new FusionCharts("#{request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "OverallChartId", "320", "300", "0", "1");
+  			overallScoreChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 			overallScoreChart.setDataXML(overallScoreData);
 			overallScoreChart.setTransparent(true);
 			overallScoreChart.render("chartdivOverallScore");
