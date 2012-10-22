@@ -24,7 +24,8 @@
 			"' thousandSeparator='"+ "#{trendBean.thousandSeparator}"+"' chartLeftMargin='10' chartRightMargin='10' chartTopMargin='10' chartBottomMargin='10' canvasPadding='0' setAdaptiveYMin='0' numDivLines='9' adjustDiv='0'><categories><category label='   '/> </categories><dataset seriesName=''/></chart>";
 	//]]>
   			trendChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");
-			trendChart.setDataXML(chartXML);
+			trendChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
+  			trendChart.setDataXML(chartXML);
 			trendChart.setTransparent(true);
 			trendChart.render("chartdivTrend");
 		}
@@ -34,6 +35,7 @@
 			if(trendData){
 				
 	 			trendChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSLine.swf#{errorMessageListTrend}", "TrendChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+				trendChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 				trendChart.setDataXML(trendData);
 				trendChart.setTransparent(true);
 				trendChart.render("chartdivTrend");

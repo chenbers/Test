@@ -16,7 +16,8 @@
 			function renderSpeedBarChart(speedElement, speedDiv, width, height)
 			{
 				var speedDef = document.getElementById(speedElement);
-				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListOS}", "ChartId", width, height, "0", "1");														
+				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListOS}", "ChartId", width, height, "0", "1");
+				speedChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 				speedChart.setDataXML(speedDef.value);	
 				speedChart.setTransparent(true);								   	   
 				speedChart.render(speedDiv);
@@ -29,6 +30,7 @@
 			{
 				var speedDef = document.getElementById(speedElement);
 				var speedChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", width, height, "0", "1");														
+				speedChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 				speedChart.setDataXML(speedDef.value);	
 				speedChart.setTransparent(true);								   	   
 				speedChart.render(speedDiv);

@@ -16,7 +16,8 @@
 			function renderPieChart(pieElement, pieDiv, width, height)
 			{
 				var pieDef = document.getElementById(pieElement);
-				var pieChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", width, height , "0", "1");														
+				var pieChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", width, height , "0", "1");
+				pieChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 				pieChart.setDataXML(pieDef.value);	
 				pieChart.setTransparent(true);								   	   
 				pieChart.render(pieDiv);
