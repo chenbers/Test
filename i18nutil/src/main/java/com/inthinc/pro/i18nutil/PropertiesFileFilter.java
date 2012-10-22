@@ -14,7 +14,7 @@ public class PropertiesFileFilter  implements FilenameFilter {
         if (dir.getAbsolutePath().contains("target"))
             return false;
         if (lang == null) {
-            if (name.toLowerCase().endsWith(".properties") && !name.contains("_"))
+            if (name.toLowerCase().endsWith(".properties") && (!name.contains("_") || name.contains("_en")))
                 return true;
             return false;
         }

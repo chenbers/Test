@@ -89,6 +89,13 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
                 name.contains("integrationtest") ||
                 name.contains("cassandra") ||
                 name.contains("metadata") ||
+                name.contains("odk") ||
+                name.contains("jdbc") ||
+                name.contains("test-database") ||
+                name.contains("forms.properties") ||
+                name.contains("inthinc-theme.properties") ||
+                name.contains("cas.properties") ||
+                name.contains("database.properties") ||
                 name.contains("dbutil.properties"))
             return toTranslate;
         

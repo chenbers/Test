@@ -1702,6 +1702,8 @@ public class NonTranslated {
             nonTranslatedList.add("crash_summary_totalDistanceDrivenSinceLastCrash");
             nonTranslatedList.add("customer_support_email_address");
             nonTranslatedList.add("customer_support_number");
+            nonTranslatedList.add("deviceReports_device_imei");
+            nonTranslatedList.add("devicesHeader_imei");
             nonTranslatedList.add("driverReports_exclude");
             nonTranslatedList.add("driverReports_include");
             nonTranslatedList.add("driver_chart_score");

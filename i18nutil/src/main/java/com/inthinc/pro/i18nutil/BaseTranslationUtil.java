@@ -49,7 +49,16 @@ public class BaseTranslationUtil {
 
         String path = propFile.getAbsolutePath();
         
-        String langPath = path.substring(0, path.length()-PROPERTY_EXT_LEN) + "_" + lang + ".properties";
+        String langPath = "";
+        if (path.contains("_en")) {
+            int idx = path.indexOf("_en");
+            
+            langPath = path.substring(0, idx) + "_" + lang + ".properties";
+            
+        }
+        else {
+            langPath = path.substring(0, path.length()-PROPERTY_EXT_LEN) + "_" + lang + ".properties";
+        }
         
         return new File(langPath);
     }
