@@ -276,7 +276,6 @@ public class BaseBean implements Serializable {
         String rhaEnabled = getProUser().getAccountAttributes().getRhaEnabled();
         return (rhaEnabled == null) ? false : Boolean.valueOf(rhaEnabled); 
     }
-<<<<<<< HEAD
     
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
@@ -293,14 +292,8 @@ public class BaseBean implements Serializable {
         else
             return displayName + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')';
     }
-=======
->>>>>>> hotfix-2.0.21
     public boolean getAccountIsFormsEnabled() {
         String formsEnabled = getProUser().getAccountAttributes().getFormsEnabled();
         return (formsEnabled == null) ? false : Boolean.valueOf(formsEnabled); 
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> hotfix-2.0.21
 }
