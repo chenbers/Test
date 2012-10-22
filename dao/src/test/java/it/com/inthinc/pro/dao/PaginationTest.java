@@ -40,7 +40,7 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 
-@Ignore
+//@Ignore
 public class PaginationTest {
 	
     private static final Logger logger = Logger.getLogger(PaginationTest.class);
