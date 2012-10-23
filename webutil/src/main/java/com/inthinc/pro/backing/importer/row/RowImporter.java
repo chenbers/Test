@@ -15,7 +15,6 @@ import com.inthinc.pro.model.security.Role;
 public abstract class RowImporter {
     
     private Map<String, Account> accountMap;
-    private Map<Integer, List<Group>> groupMap = new HashMap<Integer, List<Group>>();
     private Map<Integer, Role> roleMap = new HashMap<Integer, Role>();
     private AccountDAO accountDAO;
     private GroupDAO groupDAO;
@@ -79,34 +78,14 @@ public abstract class RowImporter {
     }
     
     private List<Group> getGroupList(Integer accountID) {
-        List<Group> groupList = groupMap.get(accountID);
-        if (groupList == null) {
-            groupList = groupDAO.getGroupsByAcctID(accountID);
-            groupMap.put(accountID, groupList);
-        }
-        return groupList;
+        return groupDAO.getGroupsByAcctID(accountID);
     }
-    private void clearGroupList(Integer accountID) {
-        groupMap.put(accountID, null);
-    }
-    
-    public Integer getTopGroupID(Integer accountID)
-    {
-        List<Group> groups = getGroupList(accountID);
-        for (Group group : groups)
-            if (group.getParentID().equals(0))
-                return group.getGroupID();
-        
-        return -1;
-    }
-    
     public Integer findOrCreateGroupByPath(String groupPath, Integer accountID)
     {
         List<Group> groups = getGroupList(accountID);
         String[] groupNameHierarchy = groupPath.split("/");
         
         Integer groupID =  createGroupByHierarchy(accountID, groups, groupNameHierarchy);
-        clearGroupList(accountID);
         return groupID;
     }
 
@@ -118,7 +97,7 @@ public abstract class RowImporter {
             String groupName = groupNameHierarchy[i];
             groupID = -1;
             for (Group group : groups) {
-                if (group.getName().equalsIgnoreCase(groupName) && group.getParentID().equals(parentID)) {
+                if (group.getName().trim().equalsIgnoreCase(groupName.trim()) && group.getParentID().equals(parentID)) {
                     parentID = group.getGroupID();
                     groupID = group.getGroupID();
                     break;
