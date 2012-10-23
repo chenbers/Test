@@ -1,6 +1,7 @@
 package com.inthinc.pro.aggregation;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -59,6 +60,7 @@ public class TripWS {
 	public void updateTripsWS() throws SQLException
 	{
 		List<DeviceDay> ddList = DBUtil.getDeviceDay2Agg();
+	    
 		GregorianCalendar endDayCalendar = new GregorianCalendar();
 		
 		for (DeviceDay dd : ddList)

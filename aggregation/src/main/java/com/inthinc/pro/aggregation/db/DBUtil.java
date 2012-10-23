@@ -385,7 +385,9 @@ public class DBUtil {
     }
     
     
-	private static final String SELECT_TRIP_ENDTIME_BEFORE_DAY = "SELECT type, DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s') FROM __NOTETABLE__ WHERE deviceID = ? AND time < ? AND type IN (7,19,20,22,66,96,113,116) ORDER BY time DESC LIMIT 1";
+//	private static final String SELECT_TRIP_ENDTIME_BEFORE_DAY = "SELECT type, DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s') FROM __NOTETABLE__ WHERE deviceID = ? AND time < ? AND type IN (7,19,20,22,66,96,113,116) ORDER BY time DESC LIMIT 1";
+    private static final String SELECT_TRIP_ENDTIME_BEFORE_DAY = "SELECT type, DATE_FORMAT(time, '%Y-%m-%d %H:%i:%s') FROM __NOTETABLE__ WHERE deviceID = ? AND time < ? AND type IN (7,19,116) ORDER BY time DESC LIMIT 1";    
+    
     public static Date fetchTripEndTimeStampBeforeDay(Long deviceId, Date startTime)  throws SQLException
     {
         Connection conn = null;
@@ -416,7 +418,7 @@ public class DBUtil {
             	if (Note.isStartNote(type))
             	{
 	            	tripTime = DateUtil.getDateFromString(strDate);
-	                tripTime.setTime(tripTime.getTime()-1000); //Add a second
+	                tripTime.setTime(tripTime.getTime()-1000); //Subtract a second
             	}
             }
         }   // end try
@@ -432,7 +434,9 @@ public class DBUtil {
         return tripTime;
     }
 
-	private static final String SELECT_TRIP_STARTTIME_AFTER_DAY = "SELECT type, DATE_FORMAT(min(time), '%Y-%m-%d %H:%i:%s') FROM __NOTETABLE__ WHERE deviceID = ? AND time > ? AND type IN (7,19,20,22,66,96,113,116) ORDER BY time LIMIT 1";
+//	private static final String SELECT_TRIP_STARTTIME_AFTER_DAY = "SELECT type, DATE_FORMAT(min(time), '%Y-%m-%d %H:%i:%s') FROM __NOTETABLE__ WHERE deviceID = ? AND time > ? AND type IN (7,19,20,22,66,96,113,116) ORDER BY time LIMIT 1";
+//    private static final String SELECT_TRIP_STARTTIME_AFTER_DAY = "SELECT type, DATE_FORMAT(min(time), '%Y-%m-%d %H:%i:%s') FROM __NOTETABLE__ WHERE deviceID = ? AND time > ? AND (type IN (7,19,20,22,66,116) OR (type IN (96,113) AND (getAttrValue(8202, attrs)=0 OR getAttrValue(8202, attrs)=3)))  ORDER BY time LIMIT 1";
+    private static final String SELECT_TRIP_STARTTIME_AFTER_DAY = "SELECT type, DATE_FORMAT(min(time), '%Y-%m-%d %H:%i:%s') FROM __NOTETABLE__ WHERE deviceID = ? AND time > ? AND type IN (7,19,20,22,66,116)  ORDER BY time LIMIT 1";
     public static Date fetchTripStartTimeStampAfterDay(Long deviceId, Date endDayTS)  throws SQLException
     {
     	Connection conn = null;
