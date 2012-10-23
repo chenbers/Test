@@ -17,6 +17,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.performance.model.PayrollData;
@@ -26,17 +27,16 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
 
-    
-    public PayrollSummaryReportCriteria(Locale locale) 
-    {
+    public PayrollSummaryReportCriteria(Locale locale) {
         super(ReportType.PAYROLL_SUMMARY, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
 
 
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
         Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
-        
+
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
 
@@ -50,7 +50,6 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
             }
         }
-
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
     }
     

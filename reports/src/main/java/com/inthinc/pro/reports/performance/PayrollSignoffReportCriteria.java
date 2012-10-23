@@ -17,22 +17,21 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
 
-    
-    public PayrollSignoffReportCriteria(Locale locale) 
-    {
+    public PayrollSignoffReportCriteria(Locale locale) {
         super(ReportType.PAYROLL_SIGNOFF, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
         Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
 
-        
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
@@ -44,13 +43,10 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
                 driverHOSRecordMap.put(driver, driverHOSRecordList);
             }
         }
-        
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
-
     }
 
-    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval) {
         Account account = accountDAO.findByID(accountGroupHierarchy.getTopGroup().getAccountID());
         Driver driver = getDriverDAO().findByID(driverID);
         DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
@@ -59,9 +55,8 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         driverHOSRecordMap.put(driver, driverHOSRecordList);
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
-
     }
-    
+
     void initDataSet(Interval interval, Account account, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         super.initDataSet(interval, account);

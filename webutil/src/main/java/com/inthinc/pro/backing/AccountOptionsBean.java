@@ -103,6 +103,7 @@ public class AccountOptionsBean extends BaseBean {
             setSaveActionMsg("Success: HOS is " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") +
                                 " , Waysmart is " + (account.hasWaySmartSupport() ? "Enabled" : "Disabled") + 
                                 " , RHA is " + (account.hasRHAEnabled() ? "Enabled" : "Disabled") + 
+                                " , Forms is " + (account.hasFormsEnabled() ? "Enabled" : "Disabled") + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +

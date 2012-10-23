@@ -73,7 +73,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
 		private GroupHierarchy groupHierarchy;
 
 		public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval) {
-		    this(groupReportDAO, driverPerformanceDAO, groupID, interval, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+		    this(groupReportDAO, driverPerformanceDAO, groupID, interval, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
 		}
         public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO,Integer groupID,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
            this.groupReportDAO = groupReportDAO;
@@ -86,7 +86,7 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
         }
         
         public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO, DriverDAO driverDAO,Integer driverID,Interval interval) {
-            this(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+            this(groupReportDAO, driverPerformanceDAO, driverDAO, driverID, interval, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         }
         public Builder(GroupReportDAO groupReportDAO,DriverPerformanceDAO driverPerformanceDAO, DriverDAO driverDAO,Integer driverID,Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
             this.groupReportDAO = groupReportDAO;

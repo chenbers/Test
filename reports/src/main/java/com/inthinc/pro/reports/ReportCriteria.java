@@ -38,8 +38,8 @@ public class ReportCriteria
     private MeasurementType measurementType;
     private FuelEfficiencyType fuelEfficiencyType;
     private TimeZone timeZone;
-    private Boolean includeInactiveDrivers = INACTIVE_DRIVERS_DEFAULT;
-    private Boolean includeZeroMilesDrivers = ZERO_MILES_DRIVERS_DEFAULT;
+    private Boolean includeInactiveDrivers = DEFAULT_EXCLUDE_INACTIVE_DRIVERS;
+    private Boolean includeZeroMilesDrivers = DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -56,10 +56,11 @@ public class ReportCriteria
     public static final String SLASH_GROUP_SEPERATOR = "/";
     public static final String DATE_FORMAT = "MM/dd/yyyy";
     public static final String REPORT_IFTA_ONLY = "iftaVehiclesOnly";
-    
-    public static final boolean INACTIVE_DRIVERS_DEFAULT = false;
-    public static final boolean ZERO_MILES_DRIVERS_DEFAULT = false;
 
+    public static final boolean DEFAULT_EXCLUDE_INACTIVE_DRIVERS = false;
+    public static final boolean DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS = false;
+    public static final boolean DEFAULT_INCLUDE_INACTIVE_DRIVERS = true;
+    public static final boolean DEFAULT_INCLUDE_ZERO_MILES_DRIVERS = true;
     private int subsetIndex = 1;
     
     
@@ -320,13 +321,13 @@ public class ReportCriteria
         paramMap.put("GROUP", ""+groupID);
     }
     public Boolean getIncludeInactiveDrivers() {
-        return (includeInactiveDrivers!=null)?includeInactiveDrivers:INACTIVE_DRIVERS_DEFAULT;
+        return (includeInactiveDrivers!=null)?includeInactiveDrivers:DEFAULT_EXCLUDE_INACTIVE_DRIVERS;
     }
     public void setIncludeInactiveDrivers(Boolean includeInactiveDrivers) {
         this.includeInactiveDrivers = includeInactiveDrivers;
     }
     public Boolean getIncludeZeroMilesDrivers() {
-        return (includeZeroMilesDrivers!=null)?includeZeroMilesDrivers:ZERO_MILES_DRIVERS_DEFAULT;
+        return (includeZeroMilesDrivers!=null)?includeZeroMilesDrivers:DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS;
     }
     public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
         this.includeZeroMilesDrivers = includeZeroMilesDrivers;

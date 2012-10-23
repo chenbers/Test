@@ -175,9 +175,10 @@ public class TeamSpeedBean extends BaseBean {
         sb.append(" baseFontSize=\'12\' ");
         sb.append(" caption=\'");
         sb.append(XMLUtil.escapeXMLChars(MessageUtil.getMessageString("teamSpeedBarLabelTop")));                
-        sb.append(" (");
-        sb.append(MessageUtil.getMessageString(this.getMeasurementType()+"_mph"));       
-        sb.append(")\'>");
+//        sb.append(" (");
+//        sb.append(MessageUtil.getMessageString(this.getMeasurementType()+"_mph"));       
+//        sb.append(")\'>");
+        sb.append("\'>");
         
         // Categories
         sb.append("<categories>");

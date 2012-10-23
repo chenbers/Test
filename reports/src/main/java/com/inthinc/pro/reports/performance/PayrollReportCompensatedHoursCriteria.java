@@ -19,6 +19,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.performance.model.PayrollData;
@@ -30,6 +31,8 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
 
     public PayrollReportCompensatedHoursCriteria(Locale locale) {
         super(ReportType.PAYROLL_COMPENSATED_HOURS, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
 
     protected List<PayrollData> getCompensatedRecords(List<PayrollData> records) {
@@ -70,7 +73,6 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
             }
         }
-
         initDataSet(interval, account, accountGroupHierarchy, driverHOSRecordMap);
     }
 

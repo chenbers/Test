@@ -32,13 +32,13 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.EventType;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.ZoneEvent;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 
+//@Ignore
 public class PaginationTest {
 	
     private static final Logger logger = Logger.getLogger(PaginationTest.class);

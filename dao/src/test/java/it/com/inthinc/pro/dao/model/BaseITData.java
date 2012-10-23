@@ -28,6 +28,7 @@ import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmpIDException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
+import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
@@ -218,7 +219,13 @@ public abstract class BaseITData {
             }
             catch (DuplicateEntryException ex)
             {
-                throw ex;
+                if (cnt == 9)
+                    throw ex;
+            }
+            catch (HessianException ex)
+            {
+                if (cnt == 9)
+                    throw ex;
             }
         }
         

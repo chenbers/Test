@@ -545,7 +545,8 @@ public class FuelStopsBean extends BaseBean {
             
         }        
         public String getTimezoneName() {
-            return getTimeZone().getID();
+            return FuelStopsBean.this.getTimeZoneDisplayName(getTimeZone());
+
         }
         public Boolean getEditable(){
             LocalDate localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID(getTimeZone().getID())));

@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
@@ -53,8 +53,6 @@ import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -64,9 +62,8 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.jasper.ReportUtils;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
-import com.inthinc.pro.reports.util.ReportUtil;
 
-public class HosDailyDriverLogReportCriteria extends HosReportCriteria {
+public class HosDailyDriverLogReportCriteria extends ReportCriteria {
 
     private static final Logger logger = Logger.getLogger(HosDailyDriverLogReportCriteria.class);
     
@@ -98,12 +95,13 @@ public class HosDailyDriverLogReportCriteria extends HosReportCriteria {
     private ResourceBundle resourceBundle;
     private DDLUtil ddlUtil;
     
-    public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
-    {
+    public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         setResourceBundle(ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale));
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
         ddlUtil = new DDLUtil(); 
     }
 
@@ -117,8 +115,7 @@ public class HosDailyDriverLogReportCriteria extends HosReportCriteria {
         this.resourceBundle = resourceBundle;
     }
 
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> reportDriverList = getReportDriverList(reportGroupList);
 
@@ -143,8 +140,7 @@ public class HosDailyDriverLogReportCriteria extends HosReportCriteria {
     }
 
 
-    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval) {
         Driver driver = driverDAO.findByID(driverID);
         
         Account account = fetchAccount(driver.getPerson().getAcctID());

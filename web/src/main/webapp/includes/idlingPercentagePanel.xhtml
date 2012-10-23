@@ -23,6 +23,7 @@
 									"'> <categories> <category label='   '/></categories><dataset><dataset seriesName='#{messages.idling_percentage_idling_bar_label}' color='6b9d1b' showValues='0'> <set value='0'/></dataset><dataset seriesName='#{messages.idling_percentage_driving_bar_label}' color='cccccc' showValues='0'><set value='0'/></dataset></dataset><lineset seriesName='#{messages.idling_percentage_idling_line_label}' color='006600' showValues='0' ></lineset></chart>"
 	//]]>
 			idlingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListIP}", "IdlingChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+			idlingChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 			idlingChart.setDataXML(idlingChartXML);
 			idlingChart.setTransparent(true);
 			idlingChart.render("idlePercentChartdiv");
@@ -36,6 +37,7 @@
 				document.getElementById("totalIdling").innerHTML =idlingData.totalIdling; 
 				document.getElementById("idlingPercentageStatsMessage").innerHTML=idlingData.statsMessage;;
 				idlingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListIP}", "IdlingChartId", "#{xywidth}", "#{xyheight}", "0", "1");
+				idlingChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 				idlingChart.setDataXML(idlingData.chartDef);
 				idlingChart.setTransparent(true);
 				idlingChart.render("idlePercentChartdiv");

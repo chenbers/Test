@@ -145,9 +145,9 @@
                     </ui:include>
                   </li>
                 </h:outputText>
-                <h:outputText rendered="#{criteria eq 'INACTIVE_AND_ZERO_MILES'}">
+                <h:outputText rendered="#{criteria eq 'INACTIVE_DRIVERS'}">
                   <li class="l" style="padding-top: 1px">
-                    <table border="0" cellspacing="0" cellpadding="0">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                         <tr>
                             <td>
                                 <h:outputText value="#{messages.reports_includeInactiveDrivers}"/>
@@ -156,6 +156,12 @@
                                 <h:selectBooleanCheckbox id="inactiveDrivers" value="#{params.includeInactiveDrivers}" />
                             </td>
                         </tr>
+                    </table>
+                  </li>
+                </h:outputText>
+                <h:outputText rendered="#{criteria eq 'ZERO_MILES_DRIVERS'}">
+                  <li class="l" style="padding-top: 1px">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                         <tr>
                             <td>
                                 <h:outputText value="#{messages.reports_includeZeroMilesDrivers}"/>
@@ -170,7 +176,7 @@
                 </ui:repeat>
                 <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
                 <li  class="l select">
-                    <table border="0" cellspacing="0" cellpadding="4">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                     <tr>
                         <td>
                             <h:outputText value="#{messages.reports_group}"/>
@@ -195,7 +201,7 @@
                 
                 <h:outputText id="driverInput" rendered="#{params.selectedEntityType eq 'ENTITY_DRIVER'}">
                 <li  class="l">
-                    <table border="0" cellspacing="0" cellpadding="4">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                     <tr>
                         <td>
                             <h:outputText value="#{messages.reports_driver}"/>
@@ -219,7 +225,7 @@
                 </h:outputText>
                 <h:outputText id="groupListInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST'}">
                 <li  class="l">
-                    <table border="0" cellspacing="0" cellpadding="4">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                     <tr>
                         <td>
                             <h:outputText value="#{messages.reports_groups}"/>
@@ -241,7 +247,7 @@
                 </h:outputText>
                 <h:outputText id="groupListOrDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_OR_DRIVER'}">
                 <li  class="l">
-                    <table border="0" cellspacing="0" cellpadding="4">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                     <tr>
                         <td>
                             <h:outputText value="#{messages.reports_groupsOrDriver}"/>
@@ -281,7 +287,7 @@
                 
                 <h:outputText id="groupOrDriverInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_OR_DRIVER'}">
                 <li  class="l">
-                    <table border="0" cellspacing="0" cellpadding="4">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                     <tr>
                         <td>
                             <h:outputText value="#{messages.reports_groupOrDriver}"/>  
@@ -314,7 +320,7 @@
                 
                 <h:outputText id="groupListAndIftaInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
                 <li  class="l">
-                    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+                    <table border="0" cellspacing="0" cellpadding="4" width="100%" style="height:100%">
                     <tr>
                         <td>
                             <h:outputText value="#{messages.reports_groups}"/>
@@ -347,7 +353,7 @@
                 </h:outputText>
                 <h:outputText id="groupAndExpiredInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP_AND_EXPIRED'}">
                 <li  class="l">
-                    <table border="0" cellspacing="0" cellpadding="4">
+                    <table border="0" cellspacing="0" cellpadding="4" style="height:100%">
                     <tr>
                         <td>
                             <h:outputText value="#{messages.reports_groups}"/>

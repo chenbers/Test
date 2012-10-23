@@ -221,7 +221,28 @@
 									</td>
 								</tr>
 							</h:outputText>
-							
+							<ui:repeat value="#{reportScheduleBean.item.report.criterias}" var="criteria">
+                            <h:outputText id="inactiveDriversInput" rendered="#{criteria eq 'INACTIVE_DRIVERS'}">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{messages.reports_includeInactiveDrivers}"/>
+                                    </td>
+                                    <td>
+                                        <h:outputText id="includeInactiveDrivers" value="#{messages[reportScheduleBean.item.includeInactiveDrivers]}" />
+                                    </td>
+                                </tr>
+                            </h:outputText>
+                            <h:outputText id="zeroMilesDriversInput" rendered="#{criteria eq 'ZERO_MILES_DRIVERS'}">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{messages.reports_includeZeroMilesDrivers}"/>
+                                    </td>
+                                    <td>
+                                        <h:outputText id="includeZeroMilesDrivers" value="#{messages[reportScheduleBean.item.includeZeroMilesDrivers]}" />
+                                    </td>
+                                </tr>
+                            </h:outputText>
+                            </ui:repeat>
 							<ui:fragment rendered="#{reportScheduleBean.admin}">
 							<tr>
 								<td width="100" valign="top" align="left">

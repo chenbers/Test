@@ -11,7 +11,8 @@
 	function renderBar(barElement, barDiv, width, height)
 	{
 		var barDef = document.getElementById(barElement);
-		var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");										
+		var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf#{errorMessageListTeamOverview}", "ChartId", width, height, "0", "0");
+		barChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 		barChart.setDataXML(barDef.value);	
 		barChart.setTransparent(true);								   	   
 		barChart.render(barDiv);
