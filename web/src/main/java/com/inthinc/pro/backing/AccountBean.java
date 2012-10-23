@@ -1,10 +1,6 @@
 package com.inthinc.pro.backing;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -27,7 +23,6 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -40,36 +35,11 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
      */
     private AddressDAO addressDAO;
     private static final long serialVersionUID = 1L;
-    private static final Map<String, TimeZone> TIMEZONES;
+    private static Map<String, TimeZone> TIMEZONES;
     private static final Map<String, State> STATES;
-    private static final int MILLIS_PER_MINUTE = 1000 * 60;
-    private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;    
     private static final String REQUIRED_KEY = "required";
     
     static {
-        // time zones
-        final List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
-        // sort by offset from GMT
-        Collections.sort(timeZones, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                final TimeZone t1 = TimeZone.getTimeZone(o1);
-                final TimeZone t2 = TimeZone.getTimeZone(o2);
-                return t1.getRawOffset() - t2.getRawOffset();
-            }
-        });
-        TIMEZONES = new LinkedHashMap<String, TimeZone>();
-        final NumberFormat format = NumberFormat.getIntegerInstance();
-        format.setMinimumIntegerDigits(2);
-        for (final String id : timeZones) {
-            final TimeZone timeZone = TimeZone.getTimeZone(id);
-            final int offsetHours = timeZone.getRawOffset() / MILLIS_PER_HOUR;
-            final int offsetMinutes = Math.abs((timeZone.getRawOffset() % MILLIS_PER_HOUR) / MILLIS_PER_MINUTE);
-            if (offsetHours < 0)
-                TIMEZONES.put(timeZone.getID() + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
-            else
-                TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
-        }
         // states
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
@@ -78,6 +48,13 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
           
     private PersonDAO personDAO;
+    
+    public void initBean()
+    {
+        super.initBean();
+        TIMEZONES = initTimeZones();
+    }
+
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
@@ -183,7 +160,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     }
 
     private AccountView createAccountView(Account a,Person udp) {
-        final AccountView accountView = new AccountView();
+        final AccountView accountView = new AccountView(this);
 
         // Set the normal values
         BeanUtils.copyProperties(a, accountView);
@@ -275,13 +252,15 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         private static final long serialVersionUID = 1L;
 
         private Person person;
+        private AccountBean bean;
 
         @Column(updateable = false)        
         private boolean selected;
         
-        public AccountView() {
+        public AccountView(AccountBean bean) {
             super();
             this.person = new Person();
+            this.bean = bean;
         }
         
         @Override
@@ -312,6 +291,9 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             this.person = person;
         }
 
+        public String getTimeZoneDisplay() {
+            return bean.getTimeZoneDisplayName(person.getTimeZone());
+        }
     }
 
 

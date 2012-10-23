@@ -30,7 +30,7 @@ import com.inthinc.pro.reports.tabular.Tabular;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.reports.util.MessageUtil;
 
-public class HosDriverDOTLogReportCriteria  extends HosReportCriteria implements Tabular {
+public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Tabular {
 
 
     private HOSDAO hosDAO;
@@ -46,16 +46,16 @@ public class HosDriverDOTLogReportCriteria  extends HosReportCriteria implements
         displayDateTimeFormatter = DateTimeFormat.forPattern(DISPLAY_DATE_FORMAT).withLocale(locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         addedTimeFormatter = DateTimeFormat.forPattern("M/d/yy h:mm a").withLocale(locale);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
     }
     
-    public void init(Integer driverID, Interval interval)
-    {
+    public void init(Integer driverID, Interval interval){
         List<Driver> driverList = new ArrayList<Driver>();
 
         driverList.add(driverDAO.findByID(driverID));
 
         init(driverList, interval);
-        
     }
     public DriverDAO getDriverDAO() {
         return driverDAO;
@@ -65,8 +65,7 @@ public class HosDriverDOTLogReportCriteria  extends HosReportCriteria implements
         this.driverDAO = driverDAO;
     }
 
-    public void init(List<Driver> driverList, Interval interval)
-    {
+    public void init(List<Driver> driverList, Interval interval) {
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
         
         if (driverList != null) {
@@ -82,7 +81,6 @@ public class HosDriverDOTLogReportCriteria  extends HosReportCriteria implements
         }
         
         initDataSet(interval, driverHOSRecordMap);
-
     }
     
     void initDataSet(Interval interval, Map<Driver, List<HOSRecord>> driverHOSRecordMap)

@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -25,6 +25,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.GroupListReportCriteria;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.HosEdit;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
@@ -49,11 +50,12 @@ public class HosEditsReportCriteria extends GroupListReportCriteria implements T
         displayDateTimeFormatter = DateTimeFormat.forPattern(DISPLAY_DATE_FORMAT).withLocale(locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         addedTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS").withLocale(locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_INCLUDE_INACTIVE_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
-        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
+        
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
                     
         List<Driver> driverList = getReportDriverList(reportGroupList);

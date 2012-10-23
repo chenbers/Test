@@ -632,6 +632,7 @@
                             
 							<script type="text/javascript">
 								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf#{errorMessageListDP}", "ChartId", "450", "300", "0", "0");
+								chart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 								var targetElement5 = document.getElementById("hiddenField5");
 				     			chart.setDataXML(targetElement5.value);
 					    		chart.setTransparent(true);

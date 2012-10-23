@@ -12,19 +12,17 @@ import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.violations.NonDOTShiftViolations;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
 public class NonDOTViolationsDetailReportCriteria extends ViolationsDetailReportCriteria {
 
-    
-    
-    public NonDOTViolationsDetailReportCriteria(Locale locale) 
-    {
+    public NonDOTViolationsDetailReportCriteria(Locale locale) {
         super(ReportType.NON_DOT_VIOLATIONS_DETAIL_REPORT, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
-
-    
 
     @Override
     protected void addDriverViolations(Interval interval, GroupHierarchy accountGroupHierarchy, List<ViolationsDetailRaw> violationDetailList, 

@@ -21,6 +21,7 @@
 //var mpgChartXML = "<chart/>";
 //]]>
 	  		mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+			mpgChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 			mpgChart.setDataXML(mpgChartXML);
 			mpgChart.setTransparent(true);
 			mpgChart.render("mpgChartDiv");
@@ -31,6 +32,7 @@
 			if(mpgData){
 				
 		  		mpgChart = new FusionCharts("#{request.contextPath}/fusioncharts/ScrollColumn2D.swf#{errorMessageListMPG}", "MPGChartId", "#{xywidth}", "#{xyheight}", "0", "0");
+				mpgChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 				mpgChart.setDataXML(mpgData);
 				mpgChart.setTransparent(true);
 				mpgChart.render("mpgChartDiv");

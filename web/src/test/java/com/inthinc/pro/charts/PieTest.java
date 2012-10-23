@@ -30,4 +30,13 @@ public class PieTest
         assertEquals("<set value='44' label='' color='123456'/>", result);
     }
 
+    @Test
+    public void chartItemEscapeXML()
+    {
+        Pie pie = new Pie();
+        
+        String result = pie.getChartItem(new Object[] {Integer.valueOf(44), "'escape'", "123456"});
+        
+        assertEquals("<set value='44' label='&apos;escape&apos;' color='123456'/>", result);
+    }
 }

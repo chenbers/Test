@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -24,6 +24,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.DrivingTimeViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
@@ -31,16 +32,13 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class DrivingTimeViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria {
 
-    
-    
-    public DrivingTimeViolationsSummaryReportCriteria(Locale locale) 
-    {
+    public DrivingTimeViolationsSummaryReportCriteria(Locale locale) {
         super(ReportType.DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval){
-        this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-        this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();
@@ -54,7 +52,6 @@ public class DrivingTimeViolationsSummaryReportCriteria extends ViolationsSummar
                 driverHOSRecordMap.put(driver, hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, true));
             }
         }
-
         initDataSet(interval, accountGroupHierarchy, reportGroupList, driverHOSRecordMap);
     }
     

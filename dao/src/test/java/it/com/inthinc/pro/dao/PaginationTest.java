@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.EventDAO;
@@ -39,6 +40,7 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 
+@Ignore
 public class PaginationTest {
 	
     private static final Logger logger = Logger.getLogger(PaginationTest.class);

@@ -37,6 +37,7 @@
 							var targetElement2 = document.getElementById("hiddenField4");
 							
 							var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Column3D.swf#{errorMessageListFE}", "ChartId", "440", "350", "0", "0");
+							chart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 							chart.setDataXML(targetElement2.value);	
 							   
 							chart.render("chartdiv3");

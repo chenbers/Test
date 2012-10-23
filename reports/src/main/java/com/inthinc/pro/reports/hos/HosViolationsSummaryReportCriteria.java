@@ -27,6 +27,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
@@ -39,14 +40,12 @@ import com.inthinc.pro.reports.util.MessageUtil;
 
 public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportCriteria implements Tabular {
 
-    
-    
-    public HosViolationsSummaryReportCriteria(Locale locale) 
-    {
+    public HosViolationsSummaryReportCriteria(Locale locale) {
         super(ReportType.HOS_VIOLATIONS_SUMMARY_REPORT, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
-    {
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {
         List<Group> reportGroupList = getReportGroupList(groupIDList, accountGroupHierarchy);
         List<Driver> driverList = getReportDriverList(reportGroupList);
         Map<Driver, List<HOSRecord>> driverHOSRecordMap = new HashMap<Driver, List<HOSRecord>> ();

@@ -49,7 +49,7 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
         setMainDataset(teamStopsCriteriaList);
     }
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone){
-        init(accountGroupHierarchy, groupIDList, timeFrame, timeZone, INACTIVE_DRIVERS_DEFAULT, ZERO_MILES_DRIVERS_DEFAULT);
+        init(accountGroupHierarchy, groupIDList, timeFrame, timeZone, DEFAULT_EXCLUDE_INACTIVE_DRIVERS, DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, TimeFrame timeFrame, DateTimeZone timeZone, boolean inactiveDrivers, boolean zeroMilesDrivers)
     {

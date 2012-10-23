@@ -9,6 +9,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 
+import com.inthinc.pro.reports.util.MessageUtil;
+
 public class StackedbarChartCustomizer extends JRAbstractChartCustomizer {
 
 	@Override
@@ -21,6 +23,7 @@ public class StackedbarChartCustomizer extends JRAbstractChartCustomizer {
       CategoryPlot plot = jFreeChart.getCategoryPlot();
       
       plot.getRangeAxis().setStandardTickUnits(NumberAxis.createStandardTickUnits(locale));
+      plot.setNoDataMessage(MessageUtil.getMessageString("noAvailableData",locale));
 
 	}
 

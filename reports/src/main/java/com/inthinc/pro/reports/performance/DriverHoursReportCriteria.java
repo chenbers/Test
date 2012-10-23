@@ -25,7 +25,6 @@ import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.hos.HosReportCriteria;
 import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.util.DateTimeUtil;
 
@@ -44,11 +43,11 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	 * Constructor to initiate the report type and locale.
 	 * @param locale
 	 */
-	public DriverHoursReportCriteria(Locale locale) {
-		super(ReportType.DRIVER_HOURS, "", locale);
-		dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
+    public DriverHoursReportCriteria(Locale locale) {
+        super(ReportType.DRIVER_HOURS, "", locale);
+        dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
         dayFormatter = DateTimeFormat.forPattern(DriverHoursReportCriteria.DAY_FORMAT).withLocale(locale);
-	}
+    }
 
 	class DriverHoursComparator implements Comparator<DriverHours> {
 
@@ -103,16 +102,14 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 		setMainDataset(driverHoursList);
 	}
 
-	public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval) {
-	    this.setIncludeInactiveDrivers(HosReportCriteria.HOS_INACTIVE_DRIVERS_DEFAULT);
-	    this.setIncludeZeroMilesDrivers(HosReportCriteria.HOS_ZERO_MILES_DRIVERS_DEFAULT);
+    public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval) {
         addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
         addParameter(DriverHoursReportCriteria.END_DATE_PARAM,  dateTimeFormatter.print(interval.getEnd()));
-        
+
         Interval queryInterval = new Interval(interval.getStart().minusDays(1), new DateMidnight(interval.getEnd()).toDateTime().plusDays(2));
-//System.out.println("interval: " + queryInterval);     
+//System.out.println("interval: " + queryInterval);
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
-        
+
         List<DriveTimeRecord> driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(groupID, queryInterval);
 
 		Map<Driver, List<DriverHoursRecord>> driverHoursRecordMap = new HashMap<Driver, List<DriverHoursRecord>>();
@@ -122,7 +119,6 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	            driverHoursRecordMap.put(driver, driverHoursList);
 		    }
 		}
-
 		initDataSet(groupHierarchy, driverHoursRecordMap);
 	}
 	
@@ -137,7 +133,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
             for (DriveTimeRecord driveTimeRecord : driveTimeList) {
                 if (!driveTimeRecord.getDriverID().equals(driver.getDriverID()))
                     continue;
-                
+
 //System.out.println(driver.getDriverID() + " Day: " + day + " " + day.getMillis());
 //System.out.println(driveTimeRecord.getDateTime() + " " + driveTimeRecord.getDateTime().getMillis());
                 if (day.isEqual(driveTimeRecord.getDateTime())) {
@@ -150,7 +146,6 @@ public class DriverHoursReportCriteria extends ReportCriteria {
         }
         return driverHoursRecordList;
     }
-
 
 	public void setDriverDAO(DriverDAO driverDAO) {
 		this.driverDAO = driverDAO;

@@ -4,6 +4,8 @@ import java.text.MessageFormat;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.XMLUtil;
+
 public class Line implements BaseChart
 {
     private static final Logger logger = Logger.getLogger(Line.class);
@@ -59,8 +61,10 @@ public class Line implements BaseChart
     @Override
     public String getChartItem(Object[] params)
     {
-        String item = MessageFormat.format(LINE_CHART_ITEM_FORMAT, params);
-        return item;
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
+        return MessageFormat.format(LINE_CHART_ITEM_FORMAT, params);
     }
 
     @Override

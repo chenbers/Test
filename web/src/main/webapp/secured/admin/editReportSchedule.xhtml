@@ -380,7 +380,7 @@
 									</tr>
 							</h:outputText>
                             <ui:repeat value="#{reportScheduleBean.item.report.criterias}" var="criteria">
-                                <h:outputText id="inactiveZeroMilesDriversInput" rendered="#{criteria eq 'INACTIVE_AND_ZERO_MILES'}">
+                                <h:outputText id="inactiveDriversInput" rendered="#{criteria eq 'INACTIVE_DRIVERS'}">
                                     <tr>
                                         <td valign="top">
                                             <h:outputText value="#{messages.reports_includeInactiveDrivers}"/>
@@ -389,6 +389,8 @@
                                             <h:selectBooleanCheckbox id="inactiveDrivers" value="#{reportScheduleBean.item.includeInactiveDrivers}" />
                                         </td>
                                     </tr>
+                                </h:outputText>
+                                <h:outputText id="ZeroMilesDriversInput" rendered="#{criteria eq 'ZERO_MILES_DRIVERS'}">
                                     <tr>
                                         <td valign="top">
                                             <h:outputText value="#{messages.reports_includeZeroMilesDrivers}"/>

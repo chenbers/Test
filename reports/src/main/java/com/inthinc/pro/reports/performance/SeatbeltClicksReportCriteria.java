@@ -50,7 +50,7 @@ public class SeatbeltClicksReportCriteria extends ReportCriteria {
         private Boolean includeZeroMilesDrivers;
 
         public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType) {
-            this(groupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, ReportCriteria.INACTIVE_DRIVERS_DEFAULT, ReportCriteria.ZERO_MILES_DRIVERS_DEFAULT);
+            this(groupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         }
 
         public Builder(GroupHierarchy groupHierarchy, GroupReportDAO groupReportDAO, Integer groupID, TimeFrame timeFrame, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {

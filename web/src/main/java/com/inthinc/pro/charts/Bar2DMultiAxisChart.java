@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.XMLUtil;
 
 public class Bar2DMultiAxisChart extends DateCategoryChart {
 
@@ -69,11 +70,11 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
         StringBuilder buffer = new StringBuilder();
         if (isLine)
         {
-        	buffer.append(MessageFormat.format(LINE_SERIES_START, new Object[] { title, color}));
+        	buffer.append(MessageFormat.format(LINE_SERIES_START, new Object[] { XMLUtil.escapeXMLChars(title), color}));
         }
         else
         {
-        	buffer.append(MessageFormat.format(SERIES_START, new Object[] { title, color}));
+        	buffer.append(MessageFormat.format(SERIES_START, new Object[] { XMLUtil.escapeXMLChars(title), color}));
         }
         for (Object value : values)
         {
@@ -95,11 +96,11 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
         StringBuilder buffer = new StringBuilder();
         if (isLine)
         {
-        	buffer.append(MessageFormat.format(LINE_SERIES_START, new Object[] { title, color}));
+        	buffer.append(MessageFormat.format(LINE_SERIES_START, new Object[] { XMLUtil.escapeXMLChars(title), color}));
         }
         else
         {
-        	buffer.append(MessageFormat.format(SERIES_START, new Object[] { title, color}));
+        	buffer.append(MessageFormat.format(SERIES_START, new Object[] { XMLUtil.escapeXMLChars(title), color}));
         }
         int i = 0;
         for (Object value : values)
@@ -120,10 +121,16 @@ public class Bar2DMultiAxisChart extends DateCategoryChart {
     
 	@Override
 	public String getChartItem(Object[] params) {
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
 		return MessageFormat.format(SERIES_VALUE, params);
 	}
 
 	public String getChartItemWithTooltip(Object[] params) {
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
 		return MessageFormat.format(SERIES_VALUE_WITH_TOOLTIP, params);
 	}
 

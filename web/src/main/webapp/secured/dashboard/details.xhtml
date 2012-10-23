@@ -138,6 +138,7 @@
                         		function initOverallScoreChart(){
                         			// get data via a4j:jsfunction - json format with xml inside
                           			overallScoreChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListOS}", "ChartId", "450", "450", "0", "1");
+                          			overallScoreChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
                         			getOverallScoreChartData();
                         		}
                         		// callback to add data to chart
@@ -230,6 +231,7 @@
                             											<script type="text/javascript">
                             												var targetElement2 = document.getElementById("hiddenField2");
                             												var pie2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListDetails}", "ChartId", "220", "180", "0", "0");										
+                            												pie2.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
                             												pie2.setDataXML(targetElement2.value);	
                             												pie2.setTransparent(true);								   	   
                             												pie2.render("style_pie");
@@ -244,6 +246,7 @@
                             											<script type="text/javascript">
                             												var targetElement3 = document.getElementById("hiddenField3");
                             												var pie3 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListDetails}", "ChartId", "220", "180", "0", "0");										
+                            												pie3.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
                             												pie3.setDataXML(targetElement3.value);
                             												pie3.setTransparent(true);									   	   
                             												pie3.render("seatBelt_pie");
@@ -258,6 +261,7 @@
                             											<script type="text/javascript">
                             												var targetElement4 = document.getElementById("hiddenField4");
                             												var pie4 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf#{errorMessageListDetails}", "ChartId", "220", "180", "0", "0");										
+                            												pie4.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
                             												pie4.setDataXML(targetElement4.value);
                             												pie4.setTransparent(true);									   	   
                             												pie4.render("speed_pie");

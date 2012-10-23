@@ -23,7 +23,7 @@ public class GroupListReportCriteria extends ReportCriteria {
 
     }
     protected List<Driver> getReportDriverList(List<Group> reportGroupList){
-        return getReportDriverList(reportGroupList, INACTIVE_DRIVERS_DEFAULT);
+        return getReportDriverList(reportGroupList, getIncludeInactiveDrivers());
     }
     protected List<Driver> getReportDriverList(List<Group> reportGroupList, boolean includeInactiveDrivers) {
         List<Driver> driverList = new ArrayList<Driver>();

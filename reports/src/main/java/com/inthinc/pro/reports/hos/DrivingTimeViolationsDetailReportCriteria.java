@@ -14,6 +14,7 @@ import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
 
@@ -21,8 +22,9 @@ public class DrivingTimeViolationsDetailReportCriteria extends ViolationsDetailR
 
     public DrivingTimeViolationsDetailReportCriteria(Locale locale) {
         super(ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
-    
 
     @Override
     protected void addDriverViolations(Interval interval, GroupHierarchy accountGroupHierarchy, List<ViolationsDetailRaw> violationDetailList, Driver driver, DateTimeZone driverTimeZone,
@@ -51,5 +53,5 @@ public class DrivingTimeViolationsDetailReportCriteria extends ViolationsDetailR
         statusFilterList.add(HOSStatus.STOP_DRIVING_NONDOT);
         return statusFilterList;
     }
-
+    
 }

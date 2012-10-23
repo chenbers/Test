@@ -4,6 +4,8 @@ import java.text.MessageFormat;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.XMLUtil;
+
 public class Pie implements BaseChart
 {
     
@@ -38,8 +40,10 @@ public class Pie implements BaseChart
     @Override
     public String getChartItem(Object[] params)
     {
-        String item = MessageFormat.format(PIE_CHART_ITEM_FORMAT, params);
-        return item;
+        for (int i = 0; i < params.length; i++) {
+            params[i] = XMLUtil.escapeXMLChars(params[i]);
+        }
+        return MessageFormat.format(PIE_CHART_ITEM_FORMAT, params);
     }
 
     @Override
