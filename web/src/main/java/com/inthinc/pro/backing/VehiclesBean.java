@@ -794,6 +794,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 //            return editableVehicleSettings.getProductType().getDescription().getProductName();
             return editableVehicleSettings.getProductDisplayName();
         }
+        public String getProductTypeDir() {
+            if(editableVehicleSettings == null || editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN.getDescription();
+            return editableVehicleSettings.getProductType().getDescription();
+        }
         public ProductType getProductType() {
             if(editableVehicleSettings == null) return ProductType.UNKNOWN;
             return editableVehicleSettings.getProductType();

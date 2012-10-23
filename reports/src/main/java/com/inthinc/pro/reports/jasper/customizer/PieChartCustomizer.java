@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import net.sf.jasperreports.engine.JRAbstractChartCustomizer;
 import net.sf.jasperreports.engine.JRChart;
@@ -12,6 +13,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.Rotation;
+
+import com.inthinc.pro.reports.util.MessageUtil;
 
 public class PieChartCustomizer extends JRAbstractChartCustomizer
 {
@@ -33,7 +36,11 @@ public class PieChartCustomizer extends JRAbstractChartCustomizer
         PiePlot plot = (PiePlot)jFreeChart.getPlot();
         plot.setIgnoreNullValues(true);
         plot.setIgnoreZeroValues(true);
-        plot.setNoDataMessage("No Data Available");
+        Locale locale = (Locale)getParameterValue("REPORT_LOCALE");
+        if(locale == null) {
+            locale = Locale.getDefault();
+        }
+        plot.setNoDataMessage(MessageUtil.getMessageString("noAvailableData",locale));
         
         //Looks better with a white border.
         Color color = Color.WHITE;

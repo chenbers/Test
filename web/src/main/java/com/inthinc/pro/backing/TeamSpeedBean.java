@@ -19,6 +19,7 @@ import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.XMLUtil;
 
 public class TeamSpeedBean extends BaseBean {
     
@@ -133,7 +134,7 @@ public class TeamSpeedBean extends BaseBean {
         
         // Control parameters
         sb.append(pie.getControlParameters());
-        sb.append(" caption = \'" + MessageUtil.getMessageString("teamSpeedPieLabel") + "\'>");
+        sb.append(" caption = \'" + XMLUtil.escapeXMLChars(MessageUtil.getMessageString("teamSpeedPieLabel")) + "\'>");
                
 //        ColorSelectorStandard cs = new ColorSelectorStandard();
         if (scoreDataList.size() > 0) {
@@ -145,7 +146,7 @@ public class TeamSpeedBean extends BaseBean {
                 
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
-                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'"+MessageUtil.getMessageString("teamSpeedWorstOffenders")+": &lt;BR&gt;" + 
+                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'"+XMLUtil.escapeXMLChars(MessageUtil.getMessageString("teamSpeedWorstOffenders"))+": &lt;BR&gt;" + 
                         worstOffenders.get(i)+ "\'" +   
                       " color=\'" + (colors.get(String.valueOf(i))) + "\'/>");                        
 //                        " color=\'" + (reds[i]) + "\'/>");
@@ -173,24 +174,25 @@ public class TeamSpeedBean extends BaseBean {
         sb.append(" baseFont=\'Verdana\' ");
         sb.append(" baseFontSize=\'12\' ");
         sb.append(" caption=\'");
-        sb.append(MessageUtil.getMessageString("teamSpeedBarLabelTop"));                
-        sb.append(" (");
-        sb.append(MessageUtil.getMessageString(this.getMeasurementType()+"_mph"));       
-        sb.append(")\'>");
+        sb.append(XMLUtil.escapeXMLChars(MessageUtil.getMessageString("teamSpeedBarLabelTop")));                
+//        sb.append(" (");
+//        sb.append(MessageUtil.getMessageString(this.getMeasurementType()+"_mph"));       
+//        sb.append(")\'>");
+        sb.append("\'>");
         
         // Categories
         sb.append("<categories>");
-        sb.append("<category label=\"");sb.append(graphicLabels.get("zeroToThirty"));sb.append("\"/>");        
-        sb.append("<category label=\"");sb.append(graphicLabels.get("thirtyOneToFourty"));sb.append("\"/>");  
-        sb.append("<category label=\"");sb.append(graphicLabels.get("fourtyOneToFiftyFour"));sb.append("\"/>");  
-        sb.append("<category label=\"");sb.append(graphicLabels.get("fiftyFiveToSixtyFour"));sb.append("\"/>");  
-        sb.append("<category label=\"");sb.append(graphicLabels.get("sixtyFiveAndUp"));sb.append("\"/>");                   
+        sb.append("<category label=\"");sb.append(XMLUtil.escapeXMLChars(graphicLabels.get("zeroToThirty")));sb.append("\"/>");        
+        sb.append("<category label=\"");sb.append(XMLUtil.escapeXMLChars(graphicLabels.get("thirtyOneToFourty")));sb.append("\"/>");  
+        sb.append("<category label=\"");sb.append(XMLUtil.escapeXMLChars(graphicLabels.get("fourtyOneToFiftyFour")));sb.append("\"/>");  
+        sb.append("<category label=\"");sb.append(XMLUtil.escapeXMLChars(graphicLabels.get("fiftyFiveToSixtyFour")));sb.append("\"/>");  
+        sb.append("<category label=\"");sb.append(XMLUtil.escapeXMLChars(graphicLabels.get("sixtyFiveAndUp")));sb.append("\"/>");                   
         sb.append("</categories>");
 
         // Miles speeding
         sb.append("<dataset>");
         sb.append("<dataset seriesName=\'");
-        sb.append(MessageUtil.getMessageString("teamSpeedBarSpeedingDistance"));
+        sb.append(XMLUtil.escapeXMLChars(MessageUtil.getMessageString("teamSpeedBarSpeedingDistance")));
         sb.append("\' color=\"1E88C8\" showValues=\"0\">");
         for (int i = 0; i < milesSpeeding.size(); i++)
         {            
@@ -201,7 +203,7 @@ public class TeamSpeedBean extends BaseBean {
 
         // Miles driven
         sb.append("<dataset seriesName=\'");
-        sb.append(MessageUtil.getMessageString("teamSpeedBarDrivingDistance"));
+        sb.append(XMLUtil.escapeXMLChars(MessageUtil.getMessageString("teamSpeedBarDrivingDistance")));
         sb.append("\' color=\"CCCCCC\" showValues=\"0\">");
         for (int i = 0; i < milesDriven.size(); i++)
         {
@@ -213,7 +215,7 @@ public class TeamSpeedBean extends BaseBean {
         
         // Percent speeding
         sb.append("<lineSet seriesName=\'");
-        sb.append(MessageUtil.getMessageString("teamSpeedBarPercentDistance"));
+        sb.append(XMLUtil.escapeXMLChars(MessageUtil.getMessageString("teamSpeedBarPercentDistance")));
         sb.append("\' color=\"000066\" showValues=\"0\" lineThickness=\"4\">");
         
         for (int i= 0; i < milesSpeeding.size(); i++ ) 
@@ -225,7 +227,7 @@ public class TeamSpeedBean extends BaseBean {
         
         // Close string
         sb.append("</chart>");
-System.out.println("bar char: " + sb.toString());        
+//System.out.println("bar char: " + sb.toString());        
         return sb.toString();
     }    
 

@@ -149,6 +149,7 @@ var firstLoad = new Boolean(true);
 	<ui:param name="errorMessageListDStyle" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
 						 		<script type="text/javascript">
 									var overallChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombiDY2D.swf#{errorMessageListDStyle}", "overallChartId", "650", "230", "0", "1");
+									overallChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 								</script>
 						</td>
 						<td valign="top" align="right">

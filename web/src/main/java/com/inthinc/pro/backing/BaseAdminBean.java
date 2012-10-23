@@ -1,12 +1,17 @@
 package com.inthinc.pro.backing;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -29,6 +34,7 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.security.jsftaglib.SecurityJsfUtils;
 import com.inthinc.pro.table.columns.ColumnsChangedListener;
@@ -1039,4 +1045,25 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
         return false;
     }
+
+    public Map<String, TimeZone> initTimeZones() {  
+        final List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
+        Collections.sort(timeZones, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                final TimeZone t1 = TimeZone.getTimeZone(o1);
+                final TimeZone t2 = TimeZone.getTimeZone(o2);
+                return t1.getRawOffset() - t2.getRawOffset();
+            }
+        });
+        Map<String, TimeZone> timeZonesList= new LinkedHashMap<String, TimeZone>();
+        final NumberFormat format = NumberFormat.getIntegerInstance();
+        format.setMinimumIntegerDigits(2);
+        for (final String id : timeZones) {
+            final TimeZone timeZone = TimeZone.getTimeZone(id);
+            timeZonesList.put(getTimeZoneDisplayName(timeZone), timeZone);
+        }
+        return timeZonesList;
+    }
+    
 }

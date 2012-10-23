@@ -77,7 +77,7 @@
     </rich:column>
     <rich:column id="timeZone" rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{timeZone}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
-      <h:outputText value="#{item.timeZone.ID}" />
+      <h:outputText value="#{item.timeZoneDisplay}" />
     </rich:column>
     <rich:column id="empId" rendered="#{personBean.tableColumns['empid'].visible}" sortBy="#{empid}"  filterBy="#{empid}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
