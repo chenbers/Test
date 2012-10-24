@@ -1498,7 +1498,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     reportCriteriaList.add(getPayrollDetailReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
                     break;
                 case PAYROLL_SIGNOFF:
-                    reportCriteriaList.add(getPayrollSignoffReportCriteria(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale()));
+                    if(reportSchedule.getParamType() == ReportParamType.DRIVER){
+                        reportCriteriaList.add(getPayrollSignoffReportCriteria(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale()));
+                    } else {
+                        reportCriteriaList.add(getPayrollSignoffReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    }
                     break;
                 case PAYROLL_SUMMARY:
                     reportCriteriaList.add(getPayrollSummaryReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
