@@ -276,7 +276,10 @@ public class BaseBean implements Serializable {
         String rhaEnabled = getProUser().getAccountAttributes().getRhaEnabled();
         return (rhaEnabled == null) ? false : Boolean.valueOf(rhaEnabled); 
     }
-    
+    public boolean getAccountIsFormsEnabled() {
+        String formsEnabled = getProUser().getAccountAttributes().getFormsEnabled();
+        return (formsEnabled == null) ? false : Boolean.valueOf(formsEnabled); 
+    }
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
     public String getTimeZoneDisplayName(TimeZone timeZone) {
@@ -291,9 +294,5 @@ public class BaseBean implements Serializable {
             return displayName + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')';
         else
             return displayName + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')';
-    }
-    public boolean getAccountIsFormsEnabled() {
-        String formsEnabled = getProUser().getAccountAttributes().getFormsEnabled();
-        return (formsEnabled == null) ? false : Boolean.valueOf(formsEnabled); 
     }
 }

@@ -20,6 +20,7 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
     public Integer create(Integer acctID, Group group)
     {
     	createAddressIfNeeded(acctID, group);
+    	group.setName(group.getName() == null ? "" : group.getName().trim());
         return super.create(acctID, group);
     }
     private void createAddressIfNeeded(Integer acctID, Group group){
@@ -38,6 +39,7 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
 	public Integer update(Group group) {
     	
     	updateOrCreateAddressAsNeeded(group, group.getAddress());
+        group.setName(group.getName() == null ? "" : group.getName().trim());
     	return super.update(group);
 	}
     private void updateOrCreateAddressAsNeeded(Group group, Address address){
