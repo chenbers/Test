@@ -10,7 +10,7 @@
         <!--  error if user logs in concurrently (only one login allowed at a time)  -->
         <security:concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
         <security:intercept-url pattern="/secured/**" access="ROLE_ADMIN" />
-        <security:logout logout-success-url="/login.faces" />
+        <security:logout logout-url="/logout" logout-success-url="/login.faces" />
     </security:http>
     
 
