@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -102,7 +103,7 @@ public class ReportCriteria
      * @return true if the driver should be included
      */
     public boolean includeDriver(Status driverStatus, Integer totalMiles) {
-        //TODO: this method also exists in HosReportCriteria  refactor to only maintain one version
+        //TODO: this method also exists in DriverPerformanceDAO  refactor to only maintain one version
         boolean includeThisInactiveDriver = (getIncludeInactiveDrivers() && totalMiles != 0);
         boolean includeThisZeroMilesDriver = (getIncludeZeroMilesDrivers() && driverStatus.equals(Status.ACTIVE));
         return ((driverStatus.equals(Status.ACTIVE) && totalMiles != 0)       // by default we include drivers that are active and have miles 

@@ -1231,11 +1231,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public List<ReportCriteria> getDriverPerformanceIndividualReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, List<Integer> driverIDList, Interval interval, Locale locale,
-            Boolean ryg) {
+            Boolean ryg, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
         DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_INDIVIDUAL, locale);
+        criteria.setIncludeInactiveDrivers(includeInactiveDrivers);
+        criteria.setIncludeZeroMilesDrivers(includeZeroMilesDrivers);
         criteria.setDriverPerformanceDAO(driverPerformanceDAO);
         criteria.init(accountGroupHierarchy, groupID, driverIDList, interval, ryg);
         return criteria.getCriteriaList();
+    }
+    @Override
+    public List<ReportCriteria> getDriverPerformanceIndividualReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, List<Integer> driverIDList, Interval interval, Locale locale,
+            Boolean ryg) {
+        return getDriverPerformanceIndividualReportCriteria(accountGroupHierarchy, groupID, driverIDList, interval, locale, ryg, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
     }
 
     @Override
