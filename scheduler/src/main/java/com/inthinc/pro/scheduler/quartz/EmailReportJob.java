@@ -88,8 +88,11 @@ public class EmailReportJob extends QuartzJobBean {
     private List<ReportSchedule> getReportSchedules(){
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         
-        List<Account> accounts = accountDAO.getAllAcctIDs();
+        List<Account> accounts = new ArrayList<Account>();//accountDAO.getAllAcctIDs();
         logger.debug("Account Count: " + accounts.size());
+        
+        accounts.clear();
+        accounts.add(accountDAO.findByID(1));
         
         initTextEncryptor();
 
@@ -162,7 +165,7 @@ public class EmailReportJob extends QuartzJobBean {
                         }
                         catch (Throwable t) {
                             // log the exception, but keep processing the rest of the the reports
-                            logger.error(String.format("Error occurred while attempting to email from report schedule %d",reportSchedule.getReportID()),t);
+                            logger.error(String.format("Error occurred while attempting to email from report schedule %d , %s",reportSchedule.getReportID(), reportSchedule.getName()),t);
                         }
                     }
                 }
@@ -242,11 +245,10 @@ public class EmailReportJob extends QuartzJobBean {
                     case DRIVER_PERFORMANCE_INDIVIDUAL:
                     case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
                         Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
-                        
                         List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
                                 getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                                 reportSchedule.getGroupID(), driverIDList,
-                                timeFrame.getInterval(), person.getLocale(), ryg);
+                                timeFrame.getInterval(), person.getLocale(), ryg, reportSchedule.getIncludeInactiveDrivers(), reportSchedule.getIncludeZeroMilesDrivers());
                         
                         for (Integer driverID : driverIDList) {
                             Driver driver = findDriver(driverList, driverID);
@@ -256,15 +258,10 @@ public class EmailReportJob extends QuartzJobBean {
                                 logger.info("Sending to  driver with Primary E-Mail address: " + driver.getPerson().getPriEmail());
                                 List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
                                 for (ReportCriteria rc : rcList) {
-                                    logger.info("crit: "+rc);
-                                    logger.info("crit.mainDataset: "+rc.getMainDataset().size());
-                                    logger.info("crit.mainDataset.size: "+rc.getMainDataset().size());
                                     if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
                                         continue;
                                     DriverPerformance dp = (DriverPerformance)rc.getMainDataset().get(0);
-                                    logger.info("dp: "+dp);
                                     if (dp.getDriverID().equals(driverID)) {
-                                        logger.info("adding "+rc);
                                         driverReportCriteriaList.add(rc);
                                         break;
                                     }
@@ -290,9 +287,9 @@ public class EmailReportJob extends QuartzJobBean {
                 }
             }
 
-            logger.info("// send all the e-mails only if we make it though without errors");
+            // send all the e-mails only if we make it though without errors
             for (IndividualReportEmail individualReportEmail : individualReportEmailList ) {
-                logger.info("sending to owner: "+individualReportEmail.owner.getPriEmail()+" , and driver "+individualReportEmail.driverPerson.getPriEmail());
+                logger.info("sending to driver "+individualReportEmail.driverPerson.getPriEmail());
                 emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner);
               }
 
@@ -325,7 +322,6 @@ public class EmailReportJob extends QuartzJobBean {
     }
 
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
-        logger.info("private void emailReport(ReportSchedule "+reportSchedule+", Person "+person+", List<ReportCriteria> "+reportCriteriaList+", Person "+owner+")");
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         for (ReportCriteria reportCriteria : reportCriteriaList) {
@@ -359,7 +355,6 @@ public class EmailReportJob extends QuartzJobBean {
                     (acct.getProps().getNoReplyEmail().trim().length() > 0) ) {
                 noReplyEmailAddress = acct.getProps().getNoReplyEmail();
             }
-            logger.info("exportReportToEmail("+groupManager.getPriEmail()+", "+formatType+", "+message+", "+subject+", "+noReplyEmailAddress+")");
             report.exportReportToEmail(groupManager.getPriEmail(), formatType, message, subject, noReplyEmailAddress);
         }else{
             for (String address : reportSchedule.getEmailTo()) {

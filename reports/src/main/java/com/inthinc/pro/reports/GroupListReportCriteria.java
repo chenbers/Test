@@ -33,7 +33,6 @@ public class GroupListReportCriteria extends ReportCriteria {
                 if (groupDriverList != null && !groupDriverList.isEmpty()){
                     //driverList.addAll(groupDriverList);
                     for(Driver driver: groupDriverList){
-                        System.out.println("includeInactiveDrivers: "+includeInactiveDrivers);
                         if(Status.ACTIVE.equals(driver.getStatus()) || (includeInactiveDrivers)){
                             driverList.add(driver);
                         }
