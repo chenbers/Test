@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -20,8 +21,8 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     protected SeleniumEnums[] enums = { NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, NotificationsCrashHistoryEnum.TEAM_DROP_DOWN };
     
     public PageNotificationsCrashHistory() {
-        checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
-        checkMe.add(NotificationsCrashHistoryEnum.TITLE);
+//        checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
+//        checkMe.add(NotificationsCrashHistoryEnum.TITLE);
         page = "crashHistory";
     }
     
@@ -81,10 +82,10 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
         }
     }
     
-    public class NotificationsCrashHistoryButtons extends NotificationsBarButtons {
+    public class NotificationsCrashHistoryButtons extends EventsBarButtons {
         
-        public Button refresh() {
-            return new Button(NotificationsCrashHistoryEnum.REFRESH);
+        public TextButton refresh() {
+            return new TextButton(NotificationsCrashHistoryEnum.REFRESH);
         }
         
         public Button tools() {
@@ -116,11 +117,11 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     public class NotificationsCrashHistoryDropDown extends EventsBarDropDowns {
         
         public DHXDropDown team() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, enums );
+            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, page);
         }
         
         public DHXDropDown timeFrame() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, enums );
+            return new DHXDropDown(NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, page);
         }
     }
     
