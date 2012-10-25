@@ -290,8 +290,9 @@ public class EmailReportJob extends QuartzJobBean {
                 }
             }
 
-            // send all the e-mails only if we make it though without errors
+            logger.info("// send all the e-mails only if we make it though without errors");
             for (IndividualReportEmail individualReportEmail : individualReportEmailList ) {
+                logger.info("sending to owner: "+individualReportEmail.owner.getPriEmail()+" , and driver "+individualReportEmail.driverPerson.getPriEmail());
                 emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner);
               }
 
@@ -324,6 +325,7 @@ public class EmailReportJob extends QuartzJobBean {
     }
 
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
+        logger.info("private void emailReport(ReportSchedule "+reportSchedule+", Person "+person+", List<ReportCriteria> "+reportCriteriaList+", Person "+owner+")");
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         for (ReportCriteria reportCriteria : reportCriteriaList) {
@@ -335,7 +337,7 @@ public class EmailReportJob extends QuartzJobBean {
             reportCriteria.setTimeZone(person.getTimeZone());
             
             if (reportCriteria.getReport().getPrettyTemplate() == null)
-                formatType = FormatType.EXCEL;            
+                formatType = FormatType.EXCEL;
         }
         Report report = reportCreator.getReport(reportCriteriaList);
         
@@ -357,7 +359,7 @@ public class EmailReportJob extends QuartzJobBean {
                     (acct.getProps().getNoReplyEmail().trim().length() > 0) ) {
                 noReplyEmailAddress = acct.getProps().getNoReplyEmail();
             }
-            
+            logger.info("exportReportToEmail("+groupManager.getPriEmail()+", "+formatType+", "+message+", "+subject+", "+noReplyEmailAddress+")");
             report.exportReportToEmail(groupManager.getPriEmail(), formatType, message, subject, noReplyEmailAddress);
         }else{
             for (String address : reportSchedule.getEmailTo()) {
@@ -378,7 +380,7 @@ public class EmailReportJob extends QuartzJobBean {
                 }
                 
                 
-                
+                logger.info("report.exportReportToEmail("+address+", "+formatType+", "+message+", "+subject+", "+noReplyEmailAddress+");");
                 report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
             }
         }
