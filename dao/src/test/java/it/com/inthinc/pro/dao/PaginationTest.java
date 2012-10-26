@@ -404,7 +404,7 @@ public class PaginationTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void redFlags() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -461,7 +461,7 @@ public class PaginationTest {
 	}
 
     @Test
-    //@Ignore
+    @Ignore
     public void redFlagSorts() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -550,7 +550,7 @@ public class PaginationTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void redFlagFilters() {
 
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
@@ -612,7 +612,7 @@ public class PaginationTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void redFlagZones() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
