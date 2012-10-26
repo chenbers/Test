@@ -62,7 +62,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
             stream.flush();
             PackageNote.longToByte(baos, PackageNote.encodeLat(this.getLatitude()), 3);
             PackageNote.longToByte(baos, PackageNote.encodeLng(this.getLongitude()), 3);
-            stream.writeInt(this.getRadiusMeters());
+            stream.writeShort(this.getRadiusMeters());
             int startTime = (int) (this.getStartTime().getTime()/1000);
             stream.writeInt(startTime);
             int endTime = (int) (this.getEndTime().getTime()/1000);
