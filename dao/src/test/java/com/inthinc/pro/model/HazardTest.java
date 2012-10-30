@@ -13,13 +13,6 @@ public class HazardTest {
     
     @Test
     public void ensureThatPacketSizeWasCalculatedCorrectly(){
-        byte[] testArray = hexStringToByteArray(testDataForVin);
-        ByteBuffer wrapped = ByteBuffer.wrap(testArray);
-        short packetSize = wrapped.getShort();
-        System.out.println("packetSize: "+packetSize);
-        System.out.println("testArray.length: "+testArray.length);
-//        assertTrue(packetSize == testArray.length);
-        
         Hazard testHazard = new Hazard();
         testHazard.setHazardID(12);
         testHazard.setAccountID(1);
@@ -32,11 +25,11 @@ public class HazardTest {
         testHazard.setStartTime(new Date());
         testHazard.setEndTime(new Date());
         byte [] testArray2 = testHazard.toByteArray();
-        wrapped = ByteBuffer.wrap(testArray2);
+        ByteBuffer wrapped = ByteBuffer.wrap(testArray2);
         short packetSize2 = wrapped.getShort();
         System.out.println("packetSize2: "+packetSize2);
         System.out.println("testArray2.length: "+testArray2.length);
-        assertTrue(packetSize == testArray2.length);
+        assertTrue(packetSize2 == testArray2.length);
     }
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
