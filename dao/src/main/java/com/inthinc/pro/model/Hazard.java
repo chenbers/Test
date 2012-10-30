@@ -57,7 +57,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
      * 
      * packet size - short (2 byte)
      * rh id - integer (4 byte)
-     * type - byte
+     * type - 1 byte
      * location - compressed lat/long (6 byte)
      * radius - unsigned short (2 byte)  [meters]
      * start time - time_t (4 byte)
@@ -70,9 +70,9 @@ public class Hazard extends BaseEntity implements HasAccountId {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream stream = new DataOutputStream(baos);
         try {
-            short baseSize = 22;//NOTE: if fields are added/removed/resized this will need to be updated!
+            short baseSize = 23;//NOTE: if fields are added/removed/resized this will need to be updated!
             short descSize = (short) (this.getDescription().length()*2);
-            stream.writeShort(baseSize+descSize);
+            stream.writeShort(baseSize+descSize); 
             stream.writeInt(this.hazardID);
             stream.write((byte)this.type.getCode()); 
             stream.flush();
