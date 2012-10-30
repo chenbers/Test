@@ -119,6 +119,9 @@
 	<bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl">
 		<property name="dao" ref="personDAOAdapter" />
 	</bean>
+    <bean id="hazardService" class="com.inthinc.pro.service.impl.RoadHazardServiceImpl">
+        <property name="dao" ref="hazardDAOAdapter" />
+    </bean>
 	<bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl">
 		<property name="dao" ref="userDAOAdapter" />
 	</bean>

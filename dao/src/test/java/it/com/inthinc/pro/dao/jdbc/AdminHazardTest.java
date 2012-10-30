@@ -99,7 +99,7 @@ public class AdminHazardTest extends BaseJDBCTest {
             hazard.setUserID(1655);//jwimmer user
             hazard.setVehicleID(6956);//ATAT aka jwimmer truck
             
-            Integer hazardID = hazardJDBCDAO.create(hazard);
+            Integer hazardID = hazardJDBCDAO.create(hazard.getAccountID(), hazard);
             returnsHazardID = (hazardID != null);
             assertTrue(returnsHazardID);
             System.out.println("inserted "+locationName);
@@ -130,7 +130,7 @@ public class AdminHazardTest extends BaseJDBCTest {
         hazardToInsert.setUserID(1655);//jwimmer user
         hazardToInsert.setVehicleID(6956);//ATAT aka jwimmer truck
         
-        Integer hazardID = hazardJDBCDAO.create(hazardToInsert);
+        Integer hazardID = hazardJDBCDAO.create(hazardToInsert.getAccountID(), hazardToInsert);
         returnsHazardID = (hazardID != null);
         assertTrue(returnsHazardID);
         
@@ -184,7 +184,7 @@ public class AdminHazardTest extends BaseJDBCTest {
         hazardToInsert.setUserID(1655);//jwimmer user
         hazardToInsert.setVehicleID(6956);//ATAT aka jwimmer truck
         
-        Integer hazardID = hazardJDBCDAO.create(hazardToInsert);
+        Integer hazardID = hazardJDBCDAO.create(hazardToInsert.getAccountID(), hazardToInsert);
         returnsHazardID = (hazardID != null);
         assertTrue(returnsHazardID);
         

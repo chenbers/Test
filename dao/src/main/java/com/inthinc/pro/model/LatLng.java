@@ -19,7 +19,10 @@ public class LatLng implements Serializable, Comparable<LatLng> {
     private static final long serialVersionUID = 1L;
     private double lat;
     private double lng;
-
+    public static final double MIN_LAT = -90.0;
+    public static final double MAX_LAT = 90.0;
+    public static final double MIN_LNG = -180.0;
+    public static final double MAX_LNG = 180.0;
     // This object started out for just lat/lng. We used it in the Trips object as an array of LatLngs to contain the breadcrumb of the trip.
     // Now i'm adding heading, speed, and time which turns it into something more than LatLng. For cleanness, this object should be refactored and renamed to something else. Not
     // now though.

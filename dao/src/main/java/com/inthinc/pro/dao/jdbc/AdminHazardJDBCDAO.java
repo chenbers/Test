@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -19,15 +20,16 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.inthinc.pro.dao.RoadHazardDAO;
 import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.User;
 import com.mysql.jdbc.Statement;
 
-public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
-
+public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHazardDAO{
     private static final Logger logger = Logger.getLogger(AdminHazardJDBCDAO.class);
     private static String HAZARD_COLUMNS_STRING="";// = " acctID, driverID, userID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified ";
     private static final String HAZARD_UPDATE_PRE = "UPDATE hazard set"; //
@@ -90,8 +92,6 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
     private static final String HAZARD_DELETE_BY_ID = //
     "DELETE FROM hazard WHERE hazardID = ?"; // 
 
-    
-
     private static ParameterizedRowMapper<Hazard> hazardRowMapper = new ParameterizedRowMapper<Hazard>() {
         @Override
         public Hazard mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -126,20 +126,13 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         }
         return theInteger;
     }
-
-    /**
-     * @param user
-     * @param lat1
-     * @param lng1
-     * @param lat2
-     * @param lng2
-     * @return
-     */
-    public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
-        System.out.println("public List<Hazard> findHazardsByUserAcct(User " + user + ", Double " + lat1 + ", Double " + lng1 + ", Double " + lat2 + ", Double " + lng2 + ")");
+    public List<Hazard> findAllInAccount(Integer acctID) {
+        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); //TODO: jwimmer: verify that this is the correct order of lat/lngs
+    }
+    public List<Hazard> findHazardsByUserAcct(Integer acctID, Double lat1, Double lng1, Double lat2, Double lng2){
         List<Hazard> results;
         Map<String, Object> args = new HashMap<String, Object>();
-        args.put("acctID", user.getPerson().getAcctID());
+        args.put("acctID", acctID);
         args.put("lat1", lat1);
         args.put("lng1", lng1);
         args.put("lat2", lat2);
@@ -153,27 +146,37 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         System.out.println("results" + results);
         return results;
     }
+    @Override
+    public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
+        System.out.println("public List<Hazard> findHazardsByUserAcct(User " + user + ", Double " + lat1 + ", Double " + lng1 + ", Double " + lat2 + ", Double " + lng2 + ")");
+        return findHazardsByUserAcct(user.getPerson().getAcctID(), lat1, lng1, lat2, lng2);
+    }
 
+    @Override
     public List<Hazard> findHazardsByUserAcct(User user, BoundingBox box) {
         return findHazardsByUserAcct(user, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
 
-    public void update(Hazard hazard) {
+    @Override
+    public Integer update(Hazard hazard) {
         // TODO: implement
+        throw new NotImplementedException("AdminHazardJDBCDAO update(Hazard) not yet implemented");
     }
 
+    @Override
     public Integer deleteByID(Integer hazardID) {
         return getJdbcTemplate().update(HAZARD_DELETE_BY_ID, new Object[] { hazardID });
     }
 
+    @Override
     public Hazard findByID(Integer hazardID) {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("hazardID", hazardID);
         return getSimpleJdbcTemplate().queryForObject(HAZARD_SELECT_BY_ID, hazardRowMapper, args);
     }
 
-    // @Override
-    public Integer create(final Hazard hazard) {
+    @Override
+    public Integer create(Integer id, final Hazard hazard) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -205,5 +208,12 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
+    }
+    @Override
+    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer miles) {
+        // TODO Auto-generated method stub
+        List<Hazard> allInAccount = findAllInAccount(accountID);
+        //TODO: jwimmer: filter by distance
+        return allInAccount;
     }
 }

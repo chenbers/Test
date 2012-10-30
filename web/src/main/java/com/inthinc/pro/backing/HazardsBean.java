@@ -189,11 +189,11 @@ public class HazardsBean extends BaseBean {
         
         //TODO: jwimmer: implement
         Device fakeDevice = new Device();
-        //fakeDevice.setImei("30023FKE1DE7570"); // fake device in QA account on my.inthinc.com
+        fakeDevice.setImei("30023FKE1DE7570"); // fake device in QA account on my.inthinc.com
         fakeDevice.setMcmid("300034012406030"); // VIN's device in QA account on qa.tiwipro.com
-        fakeDevice.setImei("300034012406030");
-        fakeDevice.isGPRSOnly();
-        fakeDevice.isWaySmart();
+        //fakeDevice.setImei("300034012406030");
+        System.out.println(""+fakeDevice.isGPRSOnly());
+        System.out.println(""+fakeDevice.isWaySmart());
         fakeDevice.setProductVersion(ProductType.WAYSMART);
         results.add(fakeDevice);
         //TODO: REMOVE FAKE IMPLEMENTATION
@@ -216,7 +216,7 @@ public class HazardsBean extends BaseBean {
     public void sendHazard(Hazard hazard){
         try {
             for(Device device: findDevicesInRadius()){
-                queueForwardCommand(device, device.getImei(), hazard.toByteArray(), 3333);
+                queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
                 System.out.println("device: "+device);
                 System.out.println("device.name: "+device.getName());
             }
@@ -265,7 +265,7 @@ public class HazardsBean extends BaseBean {
         if (add) {
             System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
-            item.setHazardID(adminHazardJDBCDAO.create(item));
+            item.setHazardID(adminHazardJDBCDAO.create(item.getAccountID(),item));
 
             Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
             hazards.put(newItem.getHazardID(), newItem);

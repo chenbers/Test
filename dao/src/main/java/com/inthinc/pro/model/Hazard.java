@@ -5,8 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-import com.inthinc.pro.notegen.PackageNote;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.notegen.PackageNote;
+@XmlRootElement
 public class Hazard extends BaseEntity implements HasAccountId {
     private Integer hazardID;                       // unique id from the portal
     private Integer acctID;
@@ -39,14 +41,25 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public Hazard() {
         super();
     }
+//    public Hazard(byte[] rawData){
+//        ByteBuffer wrapped = ByteBuffer.wrap(rawData);
+//        short packetSize = wrapped.getShort();
+//        Integer hazardID = wrapped.getInt();
+//        int type = (int)wrapped.get();
+//        //LatLng location =  wrapped.get// not seeing a build in way to pull 6 bytes back out and into 2 longs???
+//        
+//        
+//    }
+
     /**
      * 
      * Device expecting the following order of parameters when sent over hessian:
+     * 
      * packet size - short (2 byte)
      * rh id - integer (4 byte)
      * type - byte
      * location - compressed lat/long (6 byte)
-     * radius - unsigned integer (4 byte)  [meters]
+     * radius - unsigned short (2 byte)  [meters]
      * start time - time_t (4 byte)
      * end time - time_t (4 byte)
      * details - string (60 char)
@@ -57,8 +70,11 @@ public class Hazard extends BaseEntity implements HasAccountId {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream stream = new DataOutputStream(baos);
         try {
+            short baseSize = 22;//NOTE: if fields are added/removed/resized this will need to be updated!
+            short descSize = (short) (this.getDescription().length()*2);
+            stream.writeShort(baseSize+descSize);
             stream.writeInt(this.hazardID);
-            stream.write((byte)this.type.getCode());
+            stream.write((byte)this.type.getCode()); 
             stream.flush();
             PackageNote.longToByte(baos, PackageNote.encodeLat(this.getLatitude()), 3);
             PackageNote.longToByte(baos, PackageNote.encodeLng(this.getLongitude()), 3);

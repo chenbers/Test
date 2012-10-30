@@ -63,6 +63,7 @@
 	<bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO" parent="genericDAO"></bean>
 	<bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" parent="genericDAO"></bean>
 	<bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
+	<bean id="hazardDAO" class="com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO" parent="genericJDBCDAO"></bean>
 	<bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
 	<bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO" parent="genericDAO">
 		<property name="reportService" ref="reportServiceBean" />
