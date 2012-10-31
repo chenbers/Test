@@ -80,11 +80,11 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     @JsonProperty(value = "startTime")
     public long getStartTimeInt() {
-        return getStartTime().getTime();
+        return getStartTime().getTime()/1000;
     }
     @JsonProperty(value = "endTime")
     public long getEndTimeInt() {
-        return getEndTime().getTime();
+        return getEndTime().getTime()/1000;
     }
     @JsonProperty(value = "radiusMeters")
     public Integer getRadiusMeters() {
