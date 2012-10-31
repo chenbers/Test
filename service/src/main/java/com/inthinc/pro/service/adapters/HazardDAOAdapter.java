@@ -19,16 +19,16 @@ import com.inthinc.pro.model.User;
 public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
 
     @Autowired
-    private RoadHazardDAO hazardDAO;
+    private RoadHazardDAO roadHazardDAO;
 
     @Override
     public List<Hazard> getAll() {
-        return hazardDAO.findAllInAccount(getAccountID());
+        return roadHazardDAO.findAllInAccount(getAccountID());
     }
 
     @Override
     protected GenericDAO<Hazard, Integer> getDAO() {
-        return hazardDAO;
+        return roadHazardDAO;
     }
 
     @Override
@@ -38,28 +38,28 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
 
     // Specialized methods ----------------------------------------------------
     public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
-    	return hazardDAO.findHazardsByUserAcct(user, lat1, lng1, lat2, lng2);
+    	return roadHazardDAO.findHazardsByUserAcct(user, lat1, lng1, lat2, lng2);
     }	
     
     public List<Hazard> findHazardsByUserAcct(User user, BoundingBox box){
-        return hazardDAO.findHazardsByUserAcct(user, box);
+        return roadHazardDAO.findHazardsByUserAcct(user, box);
     }
 
     public List<Hazard> findAllInAccount(Integer accountID){
-        return hazardDAO.findAllInAccount(accountID);
+        return roadHazardDAO.findAllInAccount(accountID);
     }
     
     public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInMiles){
-        return hazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInMiles);
+        return roadHazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInMiles);
     }
     // Getters and setters -----------------------------------------------------
 
     public RoadHazardDAO getHazardDAO() {
-        return hazardDAO;
+        return roadHazardDAO;
     }
 
     public void setHazardDAO(RoadHazardDAO hazardDAO) {
-        this.hazardDAO = hazardDAO;
+        this.roadHazardDAO = hazardDAO;
     }
 
 }
