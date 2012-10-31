@@ -20,17 +20,17 @@ import com.inthinc.pro.model.User;
 public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
 
     @Autowired
-    private RoadHazardDAO adminRoadHazardJDBCDAO;
+    private RoadHazardDAO hazardDAO;
 
     @Override
     public List<Hazard> getAll() {
         // TODO Auto-generated method stub
-        return adminRoadHazardJDBCDAO.findAllInAccount(getAccountID());
+        return hazardDAO.findAllInAccount(getAccountID());
     }
 
     @Override
     protected GenericDAO<Hazard, Integer> getDAO() {
-        return adminRoadHazardJDBCDAO;
+        return hazardDAO;
     }
 
     @Override
@@ -40,28 +40,28 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
 
 	// Specialized methods ----------------------------------------------------
     public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
-    	return adminRoadHazardJDBCDAO.findHazardsByUserAcct(user, lat1, lng1, lat2, lng2);
+    	return hazardDAO.findHazardsByUserAcct(user, lat1, lng1, lat2, lng2);
     }	
     
     public List<Hazard> findHazardsByUserAcct(User user, BoundingBox box){
-        return adminRoadHazardJDBCDAO.findHazardsByUserAcct(user, box);
+        return hazardDAO.findHazardsByUserAcct(user, box);
     }
 
     public List<Hazard> findAllInAccount(Integer accountID){
-        return adminRoadHazardJDBCDAO.findAllInAccount(accountID);
+        return hazardDAO.findAllInAccount(accountID);
     }
     
     public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInMiles){
-        return adminRoadHazardJDBCDAO.findAllInAccountWithinDistance(accountID, location, distanceInMiles);
+        return hazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInMiles);
     }
 	// Getters and setters -----------------------------------------------------
 
     public RoadHazardDAO getAdminRoadHazardJDBCDAO() {
-        return adminRoadHazardJDBCDAO;
+        return hazardDAO;
     }
 
     public void setAdminRoadHazardJDBCDAO(RoadHazardDAO adminRoadHazardJDBCDAO) {
-        this.adminRoadHazardJDBCDAO = adminRoadHazardJDBCDAO;
+        this.hazardDAO = adminRoadHazardJDBCDAO;
     }
 
 }

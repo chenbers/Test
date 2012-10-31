@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.inthinc.pro.notegen.PackageNote;
 @XmlRootElement
 public class Hazard extends BaseEntity implements HasAccountId {
-    private Integer hazardID;                       // unique id from the portal
+    private Integer rhid;                       // unique id from the portal
     private Integer acctID;
     //private final int reported;                     // unix time when it was reported   //TODO: deterimine if they still want to store REPORTED separate from START
     private Date startTime;
@@ -73,7 +73,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
             short baseSize = 23;//NOTE: if fields are added/removed/resized this will need to be updated!
             short descSize = (short) (this.getDescription().length()*2);
             stream.writeShort(baseSize+descSize); 
-            stream.writeInt(this.hazardID);
+            stream.writeInt(this.rhid);
             stream.write((byte)this.type.getCode()); 
             stream.flush();
             PackageNote.longToByte(baos, PackageNote.encodeLat(this.getLatitude()), 3);
@@ -94,7 +94,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("hazardID="+this.hazardID);
+        buffer.append("hazardID="+this.rhid);
         buffer.append(", location="+this.location);
         buffer.append(", status="+this.status);
         buffer.append(", type="+this.type);
@@ -194,10 +194,10 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.status = status;
     }
     public Integer getHazardID() {
-        return hazardID;
+        return rhid;
     }
     public void setHazardID(Integer hazardID) {
-        this.hazardID = hazardID;
+        this.rhid = hazardID;
     }
     public Integer getAcctID() {
         return acctID;
