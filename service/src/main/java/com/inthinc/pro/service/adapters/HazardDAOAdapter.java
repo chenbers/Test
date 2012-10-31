@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.RoadHazardDAO;
-import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.LatLng;
@@ -24,7 +23,6 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
 
     @Override
     public List<Hazard> getAll() {
-        // TODO Auto-generated method stub
         return hazardDAO.findAllInAccount(getAccountID());
     }
 
@@ -38,7 +36,7 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
         return resource.getHazardID();
     }
 
-	// Specialized methods ----------------------------------------------------
+    // Specialized methods ----------------------------------------------------
     public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
     	return hazardDAO.findHazardsByUserAcct(user, lat1, lng1, lat2, lng2);
     }	
@@ -54,14 +52,14 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
     public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInMiles){
         return hazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInMiles);
     }
-	// Getters and setters -----------------------------------------------------
+    // Getters and setters -----------------------------------------------------
 
-    public RoadHazardDAO getAdminRoadHazardJDBCDAO() {
+    public RoadHazardDAO getHazardDAO() {
         return hazardDAO;
     }
 
-    public void setAdminRoadHazardJDBCDAO(RoadHazardDAO adminRoadHazardJDBCDAO) {
-        this.hazardDAO = adminRoadHazardJDBCDAO;
+    public void setHazardDAO(RoadHazardDAO hazardDAO) {
+        this.hazardDAO = hazardDAO;
     }
 
 }
