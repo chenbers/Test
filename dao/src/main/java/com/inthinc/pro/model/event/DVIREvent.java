@@ -63,6 +63,7 @@ public class DVIREvent extends Event {
     }
 
     public String getDetails(String formatStr, MeasurementType measurementType, String... mString) {
+        if ((vehicleSafeToOperate == null)||(inspectionType == null)) return "";
         // Vehicle {0} a {1} inspection.
         return MessageFormat.format(formatStr, vehicleSafeToOperate == 0 ? mString[1] : mString[0], inspectionType == 1 ? mString[2] : mString[3]);
     }

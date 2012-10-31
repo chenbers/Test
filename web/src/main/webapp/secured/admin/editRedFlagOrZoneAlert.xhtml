@@ -892,28 +892,40 @@
                     			<div class="spacer"></div>
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                                <th  colspan="2"><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                               </tr>
                                  <tr class="tableOdd">
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox id="preFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_FAIL']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeDVIRPreTripFailed}" />
                                   </td>
-                                  </tr>
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox id="withoutInspectionSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRDrivingWithoutInspection}" />
+                                  </td>
+                                 </tr>
                                 <tr class="tableEven">
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                      <h:selectBooleanCheckbox id="prePassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_PRE_TRIP_PASS']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeDVIRPreTripPassed}" />
                                   </td>
-                                  </tr>
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                     <h:selectBooleanCheckbox id="unsafeSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRDrivenInspectedUnsafe}" />
+                                  </td>
+                                 </tr>
                                 <tr class="tableOdd">
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox id="postFailedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_FAIL']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeDVIRPostTripFailed}" />
                                   </td>
-                                  </tr>
-                                <tr class="tableEven">
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox id="noInspectionSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRNoPostTripInspection}" />
+                                  </td>
+                                   </tr>
+                                <tr class="tableEven">
+                                  <td colspan="2" style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                      <h:selectBooleanCheckbox id="postPassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_PASS']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeDVIRPostTripPassed}" />
                                   </td>

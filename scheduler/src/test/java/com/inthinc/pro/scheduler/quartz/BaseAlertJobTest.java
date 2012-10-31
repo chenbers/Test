@@ -45,6 +45,15 @@ public class BaseAlertJobTest {
        message.setAlertMessageType(AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS);
        subject = baseAlertJob.getSubject(message);
        assertEquals("message missing","tiwiPro Alert: Post-trip inspection passed",subject);
-    }
+       message.setAlertMessageType(AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION);
+       subject = baseAlertJob.getSubject(message);
+       assertEquals("message missing","tiwiPro Alert: Driving without Inspection",subject);
 
+       message.setAlertMessageType(AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE);
+       subject = baseAlertJob.getSubject(message);
+       assertEquals("message missing","tiwiPro Alert: Driving while unsafe",subject);
+       message.setAlertMessageType(AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION);
+       subject = baseAlertJob.getSubject(message);
+       assertEquals("message missing","tiwiPro Alert: No post-trip inspection",subject);
+    }
 }
