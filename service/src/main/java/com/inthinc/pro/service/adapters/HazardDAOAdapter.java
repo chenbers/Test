@@ -54,11 +54,11 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
     }
     // Getters and setters -----------------------------------------------------
 
-    public RoadHazardDAO getHazardDAO() {
+    public RoadHazardDAO getRoadHazardDAO() {
         return roadHazardDAO;
     }
 
-    public void setHazardDAO(RoadHazardDAO hazardDAO) {
+    public void setRoadHazardDAO(RoadHazardDAO hazardDAO) {
         this.roadHazardDAO = hazardDAO;
     }
 
