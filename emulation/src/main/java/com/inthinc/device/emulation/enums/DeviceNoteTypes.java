@@ -446,7 +446,10 @@ public enum DeviceNoteTypes implements BaseEnum  {
     
     DIAGNOSTIC(220), // send general diagnostic info to server
     MAN_DOWN_EX(221),
-    STATS2(222),
+    DVIR_DRIVEN_UNSAFE(223),
+    DVIR_DRIVEN_NOPREINSPEC(224),
+    DVIR_DRIVEN_NOPOSTINSPEC(225),
+//    STATS2(225),
     CREATE_ROAD_HAZARD(226), 
 
     //Put in for customer G&K to help detect tampering to tiwis.
