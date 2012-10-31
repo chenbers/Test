@@ -163,21 +163,16 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         return findHazardsByUserAcct(user, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
     @Override
-    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters) {
-        // TODO Auto-generated method stub
+    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer kilometers) {
         List<Hazard> allInAccount = findAllInAccount(accountID);
         List<Hazard> results = new ArrayList<Hazard>();
-        //TODO: jwimmer: filter by distance
         for(Hazard hazard: allInAccount) {
             LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
             float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
             System.out.println("dist: "+dist);
-            if(dist < meters) {
-                System.out.println("adding hazard: "+hazard);
+            if(dist < kilometers) {
                 results.add(hazard);
-            } else {
-                System.out.println("NOTADDING hazard"+hazard);
-            }
+            } 
         }
         return results;
     }
