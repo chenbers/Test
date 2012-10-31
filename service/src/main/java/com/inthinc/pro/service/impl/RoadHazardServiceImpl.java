@@ -28,11 +28,11 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
     public Response getRH(String mcmID, Double latitude, Double longitude) {
         logger.error("public Response getRH(String "+mcmID+", Double "+latitude+", Double "+longitude+")");
         HazardDAOAdapter hdaoa = getDao();
-        Integer TwoHundredMilesInMeters = 321869;
+        Integer TwoHundredMilesInKm = 322;
         List<Hazard> responseList;
         Response response;
         try {
-            responseList = hdaoa.findByDeviceLocationRadius(mcmID, new LatLng(latitude, longitude), TwoHundredMilesInMeters);
+            responseList = hdaoa.findByDeviceLocationRadius(mcmID, new LatLng(latitude, longitude), TwoHundredMilesInKm);
             response = Response.ok(new GenericEntity<List<Hazard>>(responseList) {}).build();
         } catch (EmptyResultDataAccessException e){
             response = Response.noContent().build();

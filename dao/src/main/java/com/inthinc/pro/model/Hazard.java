@@ -12,10 +12,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreType;
+import org.codehaus.jackson.annotate.JsonMethod;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import com.inthinc.pro.notegen.PackageNote;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "")
+@JsonAutoDetect(JsonMethod.NONE)
 public class Hazard extends BaseEntity implements HasAccountId {
     private Integer hazardID;                       // unique id from the portal
     private Integer acctID;
@@ -63,6 +69,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
 //        
 //    }
     @XmlElement(name = "type")
+    @JsonProperty(value = "type")
     public int getTypeID(){
         return type.getCode();
     }
@@ -134,6 +141,14 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setState(State state){
         this.view_state = state;
     }
+    @JsonProperty(value = "startTime")
+    public long getStartTimeInt() {
+        return getStartTime().getTime();
+    }
+    @JsonProperty(value = "endTime")
+    public long getEndTimeInt() {
+        return getEndTime().getTime();
+    }
     public Date getStartTime() {
         if(startTime == null)
             return new Date();
@@ -148,6 +163,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+    @JsonProperty(value = "radius")
     public Integer getRadiusMeters() {
         if(radiusMeters!=null){
             return radiusMeters;
@@ -160,6 +176,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public HazardType getType() {
         return type;
     }
+    @JsonProperty(value = "details")
     public String getDescription() {
         return description;
     }
@@ -175,12 +192,14 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public Integer getDeviceID() {
         return deviceID;
     }
+    @JsonProperty(value = "lat")
     public Double getLat(){
         return getLatitude();
     }
     public Double getLatitude() {
         return latitude;
     }
+    @JsonProperty(value = "long")
     public Double getLng() {
         return getLongitude();
     }
@@ -209,6 +228,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.status = status;
     }
     @XmlElement(name = "rhid")
+    @JsonProperty(value = "rhid")
     public Integer getHazardID() {
         return hazardID;
     }
