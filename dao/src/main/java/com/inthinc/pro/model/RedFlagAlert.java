@@ -511,7 +511,4 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     public void setNotifyManagers(Boolean notifyManagers) {
         this.notifyManagers = notifyManagers;
     }
-
-    
-
 }
