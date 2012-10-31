@@ -16,6 +16,8 @@
 
   <context:component-scan base-package="com.inthinc.pro.service.security.aspects"/>
   <context:component-scan base-package="com.inthinc.pro.service.test.mock"/>
-  <context:component-scan base-package="com.inthinc.pro.service.adapters"/>
+  <context:component-scan base-package="com.inthinc.pro.service.adapters">
+      <context:exclude-filter type="aspectj" expression="com.inthinc.pro.service.adapters.HazardDAOAdapter" />
+  </context:component-scan>
   <aop:aspectj-autoproxy/>
 </beans:beans>
