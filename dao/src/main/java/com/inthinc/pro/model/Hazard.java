@@ -68,10 +68,45 @@ public class Hazard extends BaseEntity implements HasAccountId {
 //        
 //        
 //    }
-    @XmlElement(name = "type")
-    @JsonProperty(value = "type")
+    @XmlElement(name = "typeID")
+    @JsonProperty(value = "typeID")
     public int getTypeID(){
         return type.getCode();
+    }
+    @XmlElement(name = "hazardID")
+    @JsonProperty(value = "hazardID")
+    public Integer getHazardID() {
+        return hazardID;
+    }
+    @JsonProperty(value = "startTime")
+    public long getStartTimeInt() {
+        return getStartTime().getTime();
+    }
+    @JsonProperty(value = "endTime")
+    public long getEndTimeInt() {
+        return getEndTime().getTime();
+    }
+    @JsonProperty(value = "radiusMeters")
+    public Integer getRadiusMeters() {
+        if(radiusMeters!=null){
+            return radiusMeters;
+        } else if(getType()==null){
+            return radiusMeters;
+        }
+
+        return ((Double)getType().getRadius()).intValue();
+    }
+    @JsonProperty(value = "description")
+    public String getDescription() {
+        return description;
+    }
+    @JsonProperty(value = "lat")
+    public Double getLat(){
+        return getLatitude();
+    }
+    @JsonProperty(value = "lng")
+    public Double getLng() {
+        return getLongitude();
     }
     /**
      * 
@@ -141,14 +176,6 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setState(State state){
         this.view_state = state;
     }
-    @JsonProperty(value = "startTime")
-    public long getStartTimeInt() {
-        return getStartTime().getTime();
-    }
-    @JsonProperty(value = "endTime")
-    public long getEndTimeInt() {
-        return getEndTime().getTime();
-    }
     public Date getStartTime() {
         if(startTime == null)
             return new Date();
@@ -163,22 +190,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-    @JsonProperty(value = "radius")
-    public Integer getRadiusMeters() {
-        if(radiusMeters!=null){
-            return radiusMeters;
-        } else if(getType()==null){
-            return radiusMeters;
-        }
-
-        return ((Double)getType().getRadius()).intValue();
-    }
     public HazardType getType() {
         return type;
-    }
-    @JsonProperty(value = "details")
-    public String getDescription() {
-        return description;
     }
     public void setDescription(String description) {
         this.description = description;
@@ -192,16 +205,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public Integer getDeviceID() {
         return deviceID;
     }
-    @JsonProperty(value = "lat")
-    public Double getLat(){
-        return getLatitude();
-    }
     public Double getLatitude() {
         return latitude;
-    }
-    @JsonProperty(value = "long")
-    public Double getLng() {
-        return getLongitude();
     }
     public Double getLongitude() {
         return longitude;
@@ -226,11 +231,6 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public void setStatus(HazardStatus status) {
         this.status = status;
-    }
-    @XmlElement(name = "rhid")
-    @JsonProperty(value = "rhid")
-    public Integer getHazardID() {
-        return hazardID;
     }
     public void setHazardID(Integer hazardID) {
         this.hazardID = hazardID;
