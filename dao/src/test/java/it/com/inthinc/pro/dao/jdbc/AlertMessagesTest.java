@@ -603,6 +603,9 @@ ALERT_TYPE_IGNITION_ON
                 case ALERT_TYPE_DVIR_PRE_TRIP_PASS:
                 case ALERT_TYPE_DVIR_POST_TRIP_FAIL:
                 case ALERT_TYPE_DVIR_POST_TRIP_PASS:
+                case ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION:
+                case ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE:
+                case ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION:
                    eventTypes.add(EventType.DVIR); 
                     break;
                  default:

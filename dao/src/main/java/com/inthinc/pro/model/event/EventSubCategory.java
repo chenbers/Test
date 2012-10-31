@@ -65,7 +65,9 @@ public enum EventSubCategory implements BaseEnum
     RF_SWITCH(13,EnumSet.of(EventType.RF_SWITCH),EnumSet.of(AlertMessageType.ALERT_TYPE_RF_SWITCH)),
     DVIR(14, EnumSet.of(EventType.DVIR), 
             EnumSet.of(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_FAIL,AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS,
-                    AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS));
+                    AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS,
+                    AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE,AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION,
+                    AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION));
     
     private int code;
     private Set<EventType> eventTypeSet;

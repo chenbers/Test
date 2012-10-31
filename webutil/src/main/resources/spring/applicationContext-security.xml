@@ -6,49 +6,16 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
                         
-    <security:http session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint">
+    <security:http auto-config="false" session-fixation-protection="newSession" access-denied-page="/accessDenied.faces" entry-point-ref="authenticationProcessingFilterEntryPoint">
+        <!--  error if user logs in concurrently (only one login allowed at a time)  -->
+        <security:concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
         <security:intercept-url pattern="/secured/**" access="ROLE_ADMIN" />
-        <security:logout logout-url="/logout" logout-success-url="${cas.external.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwiproutil" />
+        <security:logout logout-url="/logout" logout-success-url="/login.faces" />
     </security:http>
-
-	<!-- CAS Client Configuration -->
-	<bean id="serviceProperties" class="org.springframework.security.ui.cas.ServiceProperties">
-		<property name="service" value="${cas.client.url}/tiwiproutil/j_spring_cas_security_check" />
-		<property name="sendRenew" value="false" />
-	</bean>
-
-	<security:authentication-manager alias="authenticationManager"/>
-
-	<bean id="casProcessingFilter" class="org.springframework.security.ui.cas.CasProcessingFilter">
-		<security:custom-filter after="CAS_PROCESSING_FILTER" />
-		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="authenticationFailureUrl" value="/authenticationFailure" />
-		<property name="defaultTargetUrl" value="/secured/dao.faces" />
-	</bean>
-
-	<bean id="casProcessingFilterEntryPoint" class="org.springframework.security.ui.cas.CasProcessingFilterEntryPoint">
-		<property name="loginUrl" value="${cas.external.server.url}/cas/login" />
-		<property name="serviceProperties" ref="serviceProperties" />
-	</bean>
-
-	<bean id="casAuthenticationProvider" class="org.springframework.security.providers.cas.CasAuthenticationProvider">
-		<security:custom-authentication-provider />
-		<property name="userDetailsService" ref="userDetailsService" />
-		<property name="serviceProperties" ref="serviceProperties" />
-		<property name="ticketValidator">
-			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
-				<constructor-arg index="0" value="${cas.internal.server.url}/cas" />
-			</bean>
-		</property>
-		<property name="key" value="an_id_for_this_auth_provider_only" />
-	</bean>
-    <bean id="casSingleSignOutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter">
-        <security:custom-filter before="CAS_PROCESSING_FILTER"/>
-    </bean>
+    
 
 
     <!--  i.e. fleet, region, team, and eventually driver levels  -->
-    <!-- 
     <bean id="proFilter" class="com.inthinc.pro.security.ProAuthenticationProcessingFilter">
         <property name="authenticationManager" ref="authenticationManager" />
         <property name="authenticationFailureUrl" value="/login.faces" />
@@ -75,13 +42,12 @@
             <ref bean="passwordEncoder" />
         </property>
     </bean>
-    -->
 
 
     <!--  not sure why this need to be here, since it seems redundant with the daoAuthenticationProvider above, but throws error without it -->
-<!--     <security:authentication-provider user-service-ref="userDetailsService"> -->
-<!--         <security:password-encoder ref="passwordEncoder" /> -->
-<!--     </security:authentication-provider> -->
+    <security:authentication-provider user-service-ref="userDetailsService">
+        <security:password-encoder ref="passwordEncoder" />
+    </security:authentication-provider>
     <bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
         <property name="userDAO" ref="userDAO" />
         <property name="roleDAO" ref="roleDAO" />
@@ -108,3 +74,46 @@
     <bean id="authErrorBean" class="com.inthinc.pro.security.AuthErrorBean" scope="request" init-method="init">
     </bean>
 </beans>
+
+
+<!-- CAS CONFIGURATION -->
+
+<!--     <security:http session-fixation-protection="newSession" entry-point-ref="casProcessingFilterEntryPoint"> -->
+<!--         <security:intercept-url pattern="/secured/**" access="ROLE_ADMIN" /> -->
+<!--         <security:logout logout-url="/logout" logout-success-url="${cas.external.server.url}/cas/logout?service=${cas.client.url.escaped}%2Ftiwiproutil" /> -->
+<!--     </security:http> -->
+
+	<!-- CAS Client Configuration -->
+<!-- 	<bean id="serviceProperties" class="org.springframework.security.ui.cas.ServiceProperties"> -->
+<!-- 		<property name="service" value="${cas.client.url}/tiwiproutil/j_spring_cas_security_check" /> -->
+<!-- 		<property name="sendRenew" value="false" /> -->
+<!-- 	</bean> -->
+
+<!-- 	<security:authentication-manager alias="authenticationManager"/> -->
+
+<!-- 	<bean id="casProcessingFilter" class="org.springframework.security.ui.cas.CasProcessingFilter"> -->
+<!-- 		<security:custom-filter after="CAS_PROCESSING_FILTER" /> -->
+<!-- 		<property name="authenticationManager" ref="authenticationManager" /> -->
+<!-- 		<property name="authenticationFailureUrl" value="/authenticationFailure" /> -->
+<!-- 		<property name="defaultTargetUrl" value="/secured/dao.faces" /> -->
+<!-- 	</bean> -->
+
+<!-- 	<bean id="casProcessingFilterEntryPoint" class="org.springframework.security.ui.cas.CasProcessingFilterEntryPoint"> -->
+<!-- 		<property name="loginUrl" value="${cas.external.server.url}/cas/login" /> -->
+<!-- 		<property name="serviceProperties" ref="serviceProperties" /> -->
+<!-- 	</bean> -->
+
+<!-- 	<bean id="casAuthenticationProvider" class="org.springframework.security.providers.cas.CasAuthenticationProvider"> -->
+<!-- 		<security:custom-authentication-provider /> -->
+<!-- 		<property name="userDetailsService" ref="userDetailsService" /> -->
+<!-- 		<property name="serviceProperties" ref="serviceProperties" /> -->
+<!-- 		<property name="ticketValidator"> -->
+<!-- 			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator"> -->
+<!-- 				<constructor-arg index="0" value="${cas.internal.server.url}/cas" /> -->
+<!-- 			</bean> -->
+<!-- 		</property> -->
+<!-- 		<property name="key" value="an_id_for_this_auth_provider_only" /> -->
+<!-- 	</bean> -->
+<!--     <bean id="casSingleSignOutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter"> -->
+<!--         <security:custom-filter before="CAS_PROCESSING_FILTER"/> -->
+<!--     </bean> -->

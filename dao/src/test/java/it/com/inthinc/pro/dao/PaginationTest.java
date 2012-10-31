@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.EventDAO;
@@ -38,7 +39,6 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 
-//@Ignore
 public class PaginationTest {
 	
     private static final Logger logger = Logger.getLogger(PaginationTest.class);
@@ -405,7 +405,7 @@ public class PaginationTest {
     }
 
     @Test
-    //@Ignore
+//    @Ignore
     public void redFlags() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -462,7 +462,7 @@ public class PaginationTest {
 	}
 
     @Test
-    //@Ignore
+//    @Ignore
     public void redFlagSorts() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -551,7 +551,7 @@ public class PaginationTest {
     }
 
     @Test
-    //@Ignore
+//    @Ignore
     public void redFlagFilters() {
 
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
@@ -613,7 +613,7 @@ public class PaginationTest {
     }
 
     @Test
-    //@Ignore
+//    @Ignore
     public void redFlagZones() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);

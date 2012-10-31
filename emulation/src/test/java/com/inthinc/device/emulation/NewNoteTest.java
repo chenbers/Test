@@ -161,7 +161,7 @@ public class NewNoteTest {
         String mcmID = mcmIDOnQA;
         
         
-/*        test.testHazardNote(mcmID, imei);
+/*      test.testHazardNote(mcmID, imei);
         Thread.sleep(2*1000);
         test.testHazardNote(mcmID, imei, hazardLocations.get("bangerter_21st"));
         Thread.sleep(2*1000);
@@ -185,5 +185,5 @@ public class NewNoteTest {
         test.testNote(mcmID, imei, DeviceNoteTypes.DVIR_DRIVEN_NOPOSTINSPEC);
 */        
 //      test.testSeatbeltClicks(mcmID, imei);
-	}
+    }
 }

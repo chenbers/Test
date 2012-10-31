@@ -162,7 +162,7 @@ public class EmailReportJob extends QuartzJobBean {
                         }
                         catch (Throwable t) {
                             // log the exception, but keep processing the rest of the the reports
-                            logger.error(String.format("Error occurred while attempting to email from report schedule %d",reportSchedule.getReportID()),t);
+                            logger.error(String.format("Error occurred while attempting to email from report schedule %d , %s",reportSchedule.getReportID(), reportSchedule.getName()),t);
                         }
                     }
                 }
@@ -242,17 +242,17 @@ public class EmailReportJob extends QuartzJobBean {
                     case DRIVER_PERFORMANCE_INDIVIDUAL:
                     case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
                         Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
-                        
                         List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
                                 getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                                 reportSchedule.getGroupID(), driverIDList,
-                                timeFrame.getInterval(), person.getLocale(), ryg);
+                                timeFrame.getInterval(), person.getLocale(), ryg, reportSchedule.getIncludeInactiveDrivers(), reportSchedule.getIncludeZeroMilesDrivers());
                         
                         for (Integer driverID : driverIDList) {
                             Driver driver = findDriver(driverList, driverID);
                             if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
                                 logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
                             else {
+                                logger.info("Sending to  driver with Primary E-Mail address: " + driver.getPerson().getPriEmail());
                                 List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
                                 for (ReportCriteria rc : rcList) {
                                     if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
@@ -286,6 +286,7 @@ public class EmailReportJob extends QuartzJobBean {
 
             // send all the e-mails only if we make it though without errors
             for (IndividualReportEmail individualReportEmail : individualReportEmailList ) {
+                logger.info("sending to driver "+individualReportEmail.driverPerson.getPriEmail());
                 emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner);
               }
 
@@ -329,7 +330,7 @@ public class EmailReportJob extends QuartzJobBean {
             reportCriteria.setTimeZone(person.getTimeZone());
             
             if (reportCriteria.getReport().getPrettyTemplate() == null)
-                formatType = FormatType.EXCEL;            
+                formatType = FormatType.EXCEL;
         }
         Report report = reportCreator.getReport(reportCriteriaList);
         
@@ -351,7 +352,6 @@ public class EmailReportJob extends QuartzJobBean {
                     (acct.getProps().getNoReplyEmail().trim().length() > 0) ) {
                 noReplyEmailAddress = acct.getProps().getNoReplyEmail();
             }
-            
             report.exportReportToEmail(groupManager.getPriEmail(), formatType, message, subject, noReplyEmailAddress);
         }else{
             for (String address : reportSchedule.getEmailTo()) {
@@ -372,7 +372,7 @@ public class EmailReportJob extends QuartzJobBean {
                 }
                 
                 
-                
+                logger.info("report.exportReportToEmail("+address+", "+formatType+", "+message+", "+subject+", "+noReplyEmailAddress+");");
                 report.exportReportToEmail(address, formatType, message, subject, noReplyEmailAddress);
             }
         }

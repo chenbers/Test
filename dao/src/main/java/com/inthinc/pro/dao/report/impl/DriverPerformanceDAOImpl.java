@@ -7,6 +7,7 @@ import java.util.TimeZone;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehiclePerformanceDAO;
@@ -16,6 +17,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverPerformanceKeyMetrics;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -79,7 +81,7 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             return driverPerformanceList;
         
         for (DriverVehicleScoreWrapper score : scoreList) {
-            if (!includeDriver(score, driverIDList, (driverIDList != null)))
+            if (!includeDriver(score, driverIDList, (driverIDList != null), includeZeroMilesDrivers))
                 continue;
             DriverPerformance dp = new DriverPerformance();
             dp.setDriverID(score.getDriver().getDriverID());
@@ -101,22 +103,77 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             dp.setTotalIdleTime(s.getIdleTotal() == null ?0:s.getIdleTotal());
             dp.setIdleLo(s.getIdleLo() == null ?0:s.getIdleLo());
             
-            List<VehiclePerformance> vehiclePerformanceBreakdown = vehiclePerformanceDAO.getVehiclePerformance(score.getDriver().getDriverID(), interval);
-            if (vehiclePerformanceBreakdown != null && vehiclePerformanceBreakdown.size() > 0) 
-                dp.setVehiclePerformanceBreakdown(vehiclePerformanceBreakdown);
-            
-            boolean includeThisInactiveDriver = (includeInactiveDrivers && dp.getTotalMiles() !=0 );
-            boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && score.getDriver().getStatus().equals(Status.ACTIVE));
-            if((score.getDriver().getStatus().equals(Status.ACTIVE) && dp.getTotalMiles()!=0) 
-                    || (includeInactiveDrivers && includeZeroMilesDrivers) 
-                    || includeThisInactiveDriver 
-                    || includeThisZeroMilesDriver ){
+            if(includeDriver(score.getDriver().getStatus(), dp.getTotalMiles(), includeInactiveDrivers, includeZeroMilesDrivers)) {
+                List<VehiclePerformance> vehiclePerformanceBreakdown = vehiclePerformanceDAO.getVehiclePerformance(score.getDriver().getDriverID(), interval);
+                if (vehiclePerformanceBreakdown != null && vehiclePerformanceBreakdown.size() > 0) { 
+                    dp.setVehiclePerformanceBreakdown(vehiclePerformanceBreakdown);
+                }
                 driverPerformanceList.add(dp);
             }
         }
         
         return driverPerformanceList;
     }
+    /**
+     * Determines whether this driver should be included in a report based on params. Used when driver and totalMiles are already KNOWN.
+     * 
+     * @param driver
+     *            the Driver object in question
+     * @param totalMiles
+     *            the total number of miles for the timeframe of the report OR a non-zero int indicating to include this driver
+     * @param includeInactiveDrivers
+     *            user selected option indicating whether or not to include drivers that are inactive
+     * @param includeZeroMilesDrivers
+     *            user selected option indicating whether or not to include drivers with zero miles
+     * @return true if the driver should be included
+     */
+    public static boolean includeDriver(Status driverStatus, Integer totalMiles, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        //TODO: this method also exists in HosReportCriteria  refactor to only maintain one version
+        boolean includeThisInactiveDriver = (includeInactiveDrivers && totalMiles != 0);
+        boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && driverStatus.equals(Status.ACTIVE));
+        return ((driverStatus.equals(Status.ACTIVE) && totalMiles != 0)       // by default we include drivers that are active and have miles 
+                || (includeInactiveDrivers && includeZeroMilesDrivers)        // if user has selected to include both then we need not filter
+                || includeThisInactiveDriver                                  // test for this individual driver based on status
+                || includeThisZeroMilesDriver);                               // test for this individual driver based on miles
+    }
+    /**
+     * Determines whether this driver should be included in a report based on params including:
+     * 
+     * @param driverDAO
+     *            necessary to find Driver
+     * @param driverID
+     *            Integer id of the Driver in question
+     * @param interval
+     *            the time interval being queried
+     * @param includeInactiveDrivers
+     *            user selected option indicating whether or not to include drivers that are inactive
+     * @param includeZeroMilesDrivers
+     *            user selected option indicating whether or not to include drivers with zero miles
+     * @return true if the driver should be included
+     */
+    public static boolean includeDriver(DriverDAO driverDAO, Integer driverID, Interval interval, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        Integer totalMiles = 0;
+        Status driverStatus = Status.INACTIVE;
+        if(includeZeroMilesDrivers){
+            totalMiles = 1;
+        } else{
+            //actually need to determine drivers miles
+            List<Trip> trips = driverDAO.getTrips(driverID, interval);
+            
+            for (Trip trip : trips) {
+                totalMiles += trip.getMileage();
+            }
+        }
+        if(includeInactiveDrivers) {
+            driverStatus = Status.ACTIVE;
+        } else {
+            //actually need to determine driver's status
+            Driver driver = driverDAO.findByID(driverID);
+            driverStatus = driver.getStatus();
+        }
+        return includeDriver(driverStatus, totalMiles, includeInactiveDrivers, includeZeroMilesDrivers);
+    }
+    
 
     public GroupReportDAO getGroupReportDAO() {
         return groupReportDAO;
@@ -134,30 +191,31 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
         this.groupDAO = groupDAO;
     }
 
-    private boolean includeDriver(DriverVehicleScoreWrapper scoreWrapper, List<Integer> driverIDList, boolean individualDrivers) 
-    {
+    private boolean includeDriver(DriverVehicleScoreWrapper scoreWrapper, List<Integer> driverIDList, boolean individualDrivers, boolean includeZeroMilesDrivers ) {
         if (scoreWrapper.getScore() == null) {
             return false;
         }
         Driver driver = scoreWrapper.getDriver();
-        if (driver == null)
+        if (driver == null) {
             return false;
+        }
 
-        // do not include drivers with no score or no miles driven when getting for individual drivers
+        // do not include drivers with no score or no miles driven when getting for individual drivers... UNLESS user has selected option to include Zero Miles Drivers
         if (individualDrivers) {
             Score s = scoreWrapper.getScore();
             Integer totalMiles = s.getOdometer6() == null ? 0 : s.getOdometer6().intValue();
-            if (totalMiles.intValue() == 0)
+            if (totalMiles.intValue() == 0 && !includeZeroMilesDrivers){
                 return false;
-            for (Integer driverID : driverIDList) 
-                if (driver.getDriverID().equals(driverID))
+            }
+            for (Integer driverID : driverIDList) {
+                if (driver.getDriverID().equals(driverID)){
                     return true;
-        }
-        else {
+                }
+            }
+        } else {
             return true;
         }
-        
-        
+
         return false;
     }
     @Override
@@ -193,12 +251,8 @@ public class DriverPerformanceDAOImpl implements DriverPerformanceDAO {
             dp.setIdleViolationsCount(s.getIdleLoEvents() == null ? 0 : s.getIdleLoEvents().intValue());
             dp.setLoIdleViolationsMinutes(s.getIdleLo() == null ? 0 : s.getIdleLo().intValue());
             dp.setHiIdleViolationsMinutes(s.getIdleHi() == null ? 0 : s.getIdleHi().intValue());
-            boolean includeThisInactiveDriver = (includeInactiveDrivers && dp.getTotalMiles() !=0 );
-            boolean includeThisZeroMilesDriver = (includeZeroMilesDrivers && score.getDriver().getStatus().equals(Status.ACTIVE));
-            if((score.getDriver().getStatus().equals(Status.ACTIVE) && dp.getTotalMiles()!=0) 
-                    || (includeInactiveDrivers && includeZeroMilesDrivers) 
-                    || includeThisInactiveDriver 
-                    || includeThisZeroMilesDriver ){
+
+            if(includeDriver(score.getDriver().getStatus(), dp.getTotalMiles(), includeInactiveDrivers, includeZeroMilesDrivers)){
                 driverPerformanceList.add(dp);
             }
         }

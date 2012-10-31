@@ -580,6 +580,11 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                     // return;
                     // }
                     break;
+                case ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION:
+                case ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE:
+                case ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION:
+                    addAddress(event);
+                    break;
                 default:
                     addAddress(event);
             }
