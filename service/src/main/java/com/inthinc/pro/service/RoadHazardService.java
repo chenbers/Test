@@ -10,12 +10,12 @@ import javax.ws.rs.core.Response;
 import com.inthinc.pro.model.Hazard;
 
 @Path("/")
-@Produces({"application/xml","application/json", "application/fastinfoset"})
+@Produces({"application/xml","application/json"})
 public interface RoadHazardService extends GenericService<Hazard> {
 
     @GET
     @Path("/roadhazard/getRH/{mcmID}/{lat}/{lng}")
-    @Produces(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.APPLICATION_JSON)
     public Response getRH(
             @PathParam("mcmID")String mcmID,
             @PathParam("lat")Double latitude,

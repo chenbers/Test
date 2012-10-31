@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,12 +23,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.inthinc.pro.dao.RoadHazardDAO;
+import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.User;
 import com.mysql.jdbc.Statement;
 
@@ -163,8 +166,20 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters) {
         // TODO Auto-generated method stub
         List<Hazard> allInAccount = findAllInAccount(accountID);
+        List<Hazard> results = new ArrayList<Hazard>();
         //TODO: jwimmer: filter by distance
-        return allInAccount;
+        for(Hazard hazard: allInAccount) {
+            LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
+            float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
+            System.out.println("dist: "+dist);
+            if(dist < meters) {
+                System.out.println("adding hazard: "+hazard);
+                results.add(hazard);
+            } else {
+                System.out.println("NOTADDING hazard"+hazard);
+            }
+        }
+        return results;
     }
     private Integer findAccountID(String mcmID) throws EmptyResultDataAccessException {
         Map<String, Object> args = new HashMap<String, Object>();

@@ -17,7 +17,6 @@ import com.inthinc.pro.notegen.PackageNote;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "")
 public class Hazard extends BaseEntity implements HasAccountId {
-    @XmlElement(name = "rhid")
     private Integer hazardID;                       // unique id from the portal
     private Integer acctID;
     //private final int reported;                     // unix time when it was reported   //TODO: deterimine if they still want to store REPORTED separate from START
@@ -209,6 +208,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setStatus(HazardStatus status) {
         this.status = status;
     }
+    @XmlElement(name = "rhid")
     public Integer getHazardID() {
         return hazardID;
     }
