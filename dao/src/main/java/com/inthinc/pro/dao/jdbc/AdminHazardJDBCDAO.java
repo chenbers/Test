@@ -22,6 +22,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import com.inthinc.pro.dao.RoadHazardDAO;
 import com.inthinc.pro.model.BoundingBox;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
@@ -75,6 +76,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         }
         HAZARD_UPDATE += HAZARD_UPDATE_POST;
     };
+    private static final String ACCOUNT_ID_FROM_MCMID = "SELECT acctID FROM device WHERE mcmid = :mcmID ";
     private static final String HAZARD_SELECT_BY_ID = //
     "SELECT hazardID, " + HAZARD_COLUMNS_STRING + " "+//
             "FROM hazard " + //
@@ -156,6 +158,24 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     public List<Hazard> findHazardsByUserAcct(User user, BoundingBox box) {
         return findHazardsByUserAcct(user, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
+    @Override
+    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters) {
+        // TODO Auto-generated method stub
+        List<Hazard> allInAccount = findAllInAccount(accountID);
+        //TODO: jwimmer: filter by distance
+        return allInAccount;
+    }
+    private Integer findAccountID(String mcmID) {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("mcmID",mcmID);
+        return getSimpleJdbcTemplate().queryForInt(ACCOUNT_ID_FROM_MCMID, args);
+    }
+    @Override
+    public List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer meters) {
+        List<Hazard> results;
+        //TODO: firmware WANTS to only send down NEW road hazards ?
+        return findAllInAccountWithinDistance(findAccountID(mcmID), location, meters);
+    }
 
     @Override
     public Integer update(Hazard hazard) {
@@ -208,12 +228,5 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         
         jdbcTemplate.update(psc, keyHolder);
         return keyHolder.getKey().intValue();
-    }
-    @Override
-    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer miles) {
-        // TODO Auto-generated method stub
-        List<Hazard> allInAccount = findAllInAccount(accountID);
-        //TODO: jwimmer: filter by distance
-        return allInAccount;
     }
 }
