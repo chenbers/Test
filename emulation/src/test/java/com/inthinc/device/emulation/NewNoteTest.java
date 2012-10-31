@@ -69,7 +69,7 @@ public class NewNoteTest {
 		}
 	}
 
-    public void testDVIRNote(String mcmID, String imei) {
+    public void testDVIRNote(String mcmID, String imei, int inspectionType, int vehicleSafeToOp) {
         SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
                 new AutomationCalendar(), new GeoPoint(), false, false,
                 HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
@@ -79,8 +79,8 @@ public class NewNoteTest {
         note.addAttr(EventAttr.CLEAR_DRIVER_FLAG, 0);         
         note.addAttr(EventAttr.DRIVER_ID_STR, "71572");
         note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, "test location");
-        note.addAttr(EventAttr.INSPECTION_TYPE, 1);
-        note.addAttr(EventAttr.VEHICLE_SAFE_TO_OPERATE, 0);
+        note.addAttr(EventAttr.INSPECTION_TYPE, inspectionType);
+        note.addAttr(EventAttr.VEHICLE_SAFE_TO_OPERATE, vehicleSafeToOp);
         
         
 
@@ -96,7 +96,26 @@ public class NewNoteTest {
             e.printStackTrace();
         }
     }
-	
+
+    public void testNote(String mcmID, String imei, DeviceNoteTypes type) {
+        SatelliteEvent_t note = new SatelliteEvent_t(type,
+                new AutomationCalendar(), new GeoPoint(), false, false,
+                HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+                65, 0, 0, 47, 0);
+
+        List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        try {
+            proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
     public void testSeatbeltClicks(String mcmID, String imei) {
         SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.IGNITION_OFF,
                 new AutomationCalendar(), new GeoPoint(), false, false,
@@ -125,15 +144,22 @@ public class NewNoteTest {
         String imeiOnQA = "30099FKEWS99999";
         String mcmIDOnQA = "MCMFAKEWS";
 
+/*
         Map<String, LatLng> hazardLocations = new HashMap<String, LatLng>();
         hazardLocations.put("inthinc", new LatLng(40.7106, -111.9945));
         hazardLocations.put("bangerter_21st", new LatLng(40.7257, -111.9863));
         hazardLocations.put("spagetti", new LatLng(40.721, -111.9046));
         hazardLocations.put("summitPark", new LatLng(40.7525, -111.613));
-
-        NewNoteTest test = new NewNoteTest(AutoSilos.DEV);
+*/
+/*        NewNoteTest test = new NewNoteTest(AutoSilos.DEV);
         String imei = imeiOnDev;
         String mcmID = mcmIDOnDev;
+*/        
+        
+        NewNoteTest test = new NewNoteTest(AutoSilos.QA);
+        String imei = imeiOnQA;
+        String mcmID = mcmIDOnQA;
+        
         
 /*        test.testHazardNote(mcmID, imei);
         Thread.sleep(2*1000);
@@ -145,7 +171,19 @@ public class NewNoteTest {
         Thread.sleep(2*1000);
 */        
         
-//		test.testDVIRNote(mcmID, imei);
-      test.testSeatbeltClicks(mcmID, imei);
+		test.testDVIRNote(mcmID, imei, 1, 0);
+        Thread.sleep(2*1000);
+        test.testDVIRNote(mcmID, imei, 1, 1);
+        Thread.sleep(2*1000);
+        test.testDVIRNote(mcmID, imei, 2, 0);
+        Thread.sleep(2*1000);
+  
+/*        test.testNote(mcmID, imei, DeviceNoteTypes.DVIR_DRIVEN_UNSAFE);
+        Thread.sleep(2*1000);
+        test.testNote(mcmID, imei, DeviceNoteTypes.DVIR_DRIVEN_NOPREINSPEC);
+        Thread.sleep(2*1000);
+        test.testNote(mcmID, imei, DeviceNoteTypes.DVIR_DRIVEN_NOPOSTINSPEC);
+*/        
+//      test.testSeatbeltClicks(mcmID, imei);
 	}
 }
