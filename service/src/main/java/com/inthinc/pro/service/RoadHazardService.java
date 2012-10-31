@@ -14,10 +14,10 @@ import com.inthinc.pro.model.Hazard;
 public interface RoadHazardService extends GenericService<Hazard> {
 
     @GET
-    @Path("/roadhazard/getRH/{deviceID}/{lat}/{lng}")
+    @Path("/roadhazard/getRH/{mcmID}/{lat}/{lng}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRH(
-            @PathParam("deviceID")Integer deviceID,
+            @PathParam("mcmID")String mcmID,
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude);
 }

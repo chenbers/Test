@@ -7,12 +7,15 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import com.inthinc.pro.notegen.PackageNote;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "")
 public class Hazard extends BaseEntity implements HasAccountId {
     @XmlElement(name = "rhid")
     private Integer hazardID;                       // unique id from the portal
@@ -36,12 +39,13 @@ public class Hazard extends BaseEntity implements HasAccountId {
     private Double latitude;                        // latitude   (degrees * 1e6) ...   int on device
     @XmlElement(name = "long")
     private Double longitude;                       // longitude  (degrees * 1e6) ...   int on device
+    @XmlAttribute
     private Integer stateID; 
     private String location = "";
     private HazardStatus status;
     //private final boolean urgent;                   // true if urgent                   //TODO: determine if I need to worry about Urgent?  I thought PRD stated ALL are urgent???
     //private final String group;                     // group name (max 40 chars)        //TODO: determine if group is necessary???
-
+    public String testDeleteMes = "tests";
     
     private Driver view_driver;
     private User view_user;

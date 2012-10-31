@@ -2,6 +2,7 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,8 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
 
     @Override
     public List<Hazard> getAll() {
-        return roadHazardDAO.findAllInAccount(getAccountID());
+        throw new NotImplementedException();
+        //return roadHazardDAO.findAllInAccount(getAccountID());
     }
 
     @Override
@@ -49,8 +51,11 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
         return roadHazardDAO.findAllInAccount(accountID);
     }
     
-    public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInMiles){
-        return roadHazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInMiles);
+    public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInMeters){
+        return roadHazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInMeters);
+    }
+    public List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer distanceInMeters) {
+        return roadHazardDAO.findByDeviceLocationRadius(mcmID, location, distanceInMeters);
     }
     // Getters and setters -----------------------------------------------------
 

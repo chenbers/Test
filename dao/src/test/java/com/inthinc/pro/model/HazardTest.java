@@ -31,6 +31,13 @@ public class HazardTest {
         System.out.println("testArray2.length: "+testArray2.length);
         assertTrue(packetSize2 == testArray2.length);
     }
+    
+    public void dateTest(){
+        long m_timeStart = 1351636020;
+        long m_timeEnd= 1383172020;
+        System.out.println("m_timeStart: "+new Date(m_timeStart));
+        System.out.println("m_timeEnd: "+new Date(m_timeEnd));
+    }
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];

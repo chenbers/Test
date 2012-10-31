@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -165,13 +166,13 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         //TODO: jwimmer: filter by distance
         return allInAccount;
     }
-    private Integer findAccountID(String mcmID) {
+    private Integer findAccountID(String mcmID) throws EmptyResultDataAccessException {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("mcmID",mcmID);
         return getSimpleJdbcTemplate().queryForInt(ACCOUNT_ID_FROM_MCMID, args);
     }
     @Override
-    public List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer meters) {
+    public List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer meters) throws EmptyResultDataAccessException {
         List<Hazard> results;
         //TODO: firmware WANTS to only send down NEW road hazards ?
         return findAllInAccountWithinDistance(findAccountID(mcmID), location, meters);
