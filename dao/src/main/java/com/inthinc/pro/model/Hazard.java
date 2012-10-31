@@ -5,27 +5,36 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.notegen.PackageNote;
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class Hazard extends BaseEntity implements HasAccountId {
-    private Integer rhid;                       // unique id from the portal
+    @XmlElement(name = "rhid")
+    private Integer hazardID;                       // unique id from the portal
     private Integer acctID;
     //private final int reported;                     // unix time when it was reported   //TODO: deterimine if they still want to store REPORTED separate from START
     private Date startTime;
     private Date endTime;
     //private final int shelflife;                  // active for this many seconds since reported     //probably not necessary because of endTime
+    @XmlElement(name = "radius")
     private Integer radiusMeters;                   // distance in meters
     private Integer radiusInUnits;
     private MeasurementLengthType radiusUnits;
     private HazardType type;                        // type of road hazard
+    @XmlElement(name = "details")
     private String description = "";                // details of the hazard (max 60 chars)
     private Integer driverID;
     private Integer userID;
     private Integer vehicleID;
     private Integer deviceID;
+    @XmlElement(name = "lat")
     private Double latitude;                        // latitude   (degrees * 1e6) ...   int on device
+    @XmlElement(name = "long")
     private Double longitude;                       // longitude  (degrees * 1e6) ...   int on device
     private Integer stateID; 
     private String location = "";
@@ -50,7 +59,10 @@ public class Hazard extends BaseEntity implements HasAccountId {
 //        
 //        
 //    }
-
+    @XmlElement(name = "type")
+    public int getTypeID(){
+        return type.getCode();
+    }
     /**
      * 
      * Device expecting the following order of parameters when sent over hessian:
@@ -73,7 +85,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
             short baseSize = 23;//NOTE: if fields are added/removed/resized this will need to be updated!
             short descSize = (short) (this.getDescription().length()*2);
             stream.writeShort(baseSize+descSize); 
-            stream.writeInt(this.rhid);
+            stream.writeInt(this.hazardID);
             stream.write((byte)this.type.getCode()); 
             stream.flush();
             PackageNote.longToByte(baos, PackageNote.encodeLat(this.getLatitude()), 3);
@@ -94,7 +106,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("hazardID="+this.rhid);
+        buffer.append("hazardID="+this.hazardID);
         buffer.append(", location="+this.location);
         buffer.append(", status="+this.status);
         buffer.append(", type="+this.type);
@@ -194,10 +206,10 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.status = status;
     }
     public Integer getHazardID() {
-        return rhid;
+        return hazardID;
     }
     public void setHazardID(Integer hazardID) {
-        this.rhid = hazardID;
+        this.hazardID = hazardID;
     }
     public Integer getAcctID() {
         return acctID;
