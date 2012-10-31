@@ -23,7 +23,7 @@ public abstract class PackageNote {
     public abstract byte[] packageNote(Event event, Integer noteTypeID);
     
     
-    public void longToByte(ByteArrayOutputStream baos, Long toAdd, int numOfBytes){
+    public static void longToByte(ByteArrayOutputStream baos, Long toAdd, int numOfBytes){
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
         byte[] array = null;
@@ -40,7 +40,7 @@ public abstract class PackageNote {
         }
     }
     
-    public void longToByte(ByteArrayOutputStream baos, Integer toAdd, int numOfBytes){
+    public static void longToByte(ByteArrayOutputStream baos, Integer toAdd, int numOfBytes){
         longToByte(baos, toAdd.longValue(), numOfBytes);
     }
     
@@ -49,12 +49,12 @@ public abstract class PackageNote {
         return value;
     }
 
-    public int encodeLat(double lat){
+    public static int encodeLat(double lat){
         return (int)( ((90.0 - lat ) / 180.0) * 0x00FFFFFF );
     }
     
     
-    public int encodeLng(double lng){
+    public static int encodeLng(double lng){
         return (int)( (lng / 360.0) * 0x00FFFFFF );
     }
     

@@ -33,6 +33,7 @@ public interface MCMService extends HessianService, SbsHessianInterface
     
     List<Map<Integer, String>> reqSet(String imei) throws HessianException;
     
+    List<Map<String, Object>> getRH(String mcmID, int lat, int lng, int radius) throws HessianException;
     
     /**
      * request: "audioUpdate", IMEI, HessianMap:<br />

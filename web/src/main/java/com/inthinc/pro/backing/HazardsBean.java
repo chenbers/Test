@@ -14,13 +14,20 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.map.GoogleAddressLookup;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.ForwardCommandID;
+import com.inthinc.pro.model.ForwardCommandSpool;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
@@ -29,12 +36,15 @@ import com.inthinc.pro.model.MeasurementLengthType;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.FormUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
 @KeepAlive
 public class HazardsBean extends BaseBean {
+    private static Logger logger = Logger.getLogger(HazardsBean.class);
+
     /**
      * 
      */
@@ -45,6 +55,7 @@ public class HazardsBean extends BaseBean {
     private AdminVehicleJDBCDAO adminVehicleJDBCDAO;
     private DriverDAO driverDAO;
     private UserDAO userDAO;
+    private static FwdCmdSpoolWS fwdCmdSpoolWS;
 
     private Hazard item;
     private boolean editing;
@@ -52,6 +63,7 @@ public class HazardsBean extends BaseBean {
     private boolean defaultExpTime = true;
     protected List<Hazard> tableData;
     protected List<Hazard> filteredTableData;
+    private String sendHazardMsg;
     static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
@@ -66,7 +78,7 @@ public class HazardsBean extends BaseBean {
     }
 
     public void loadHazards(){
-        //load the world
+        //load the world?
         loadHazards(-90.0, -180.0, 90.0, 180.0); 
     }
     public void loadHazards(Double lat1, Double lng1, Double lat2, Double lng2) {
@@ -172,7 +184,60 @@ public class HazardsBean extends BaseBean {
 
         return "adminHazards";
     }
-
+    public List<Device> findDevicesInRadius(){
+        List<Device> results = new ArrayList<Device>();
+        
+        //TODO: jwimmer: implement
+        Device fakeDevice = new Device();
+        fakeDevice.setImei("30023FKE1DE7570"); // fake device in QA account on my.inthinc.com
+        fakeDevice.setMcmid("300034012406030"); // VIN's device in QA account on qa.tiwipro.com
+        //fakeDevice.setImei("300034012406030");
+        System.out.println(""+fakeDevice.isGPRSOnly());
+        System.out.println(""+fakeDevice.isWaySmart());
+        fakeDevice.setProductVersion(ProductType.WAYSMART);
+        results.add(fakeDevice);
+        //TODO: REMOVE FAKE IMPLEMENTATION
+        return results;
+    }
+    
+    /**
+     * Sends the given Hazard to Devices in range, in this account.
+     * Device expecting the following order of parameters:
+     * packet size - short (2 byte)
+     * rh id - integer (4 byte)
+     * type - byte
+     * location - compressed lat/long (6 byte)
+     * radius - unsigned integer (4 byte)  [meters]
+     * start time - time_t (4 byte)
+     * end time - time_t (4 byte)
+     * details - string (60 char)
+     * @param hazard the Hazard Object to send
+     */
+    public void sendHazard(Hazard hazard){
+        try {
+            for(Device device: findDevicesInRadius()){
+                queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
+                System.out.println("device: "+device);
+                System.out.println("device.name: "+device.getName());
+            }
+            setSendHazardMsg("hazardSendToDevice.success");
+        } catch (Exception e) {
+            setSendHazardMsg("haazardSendToDevice.error");
+            return;
+        }
+    }
+    public static void sendHazardToDevice(Hazard hazard, Device device) {
+        queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
+    }
+    private static void queueForwardCommand(Device device, String address, byte[] data, int command) {
+        logger.debug("queueForwardCommand Begin");
+        ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
+        int addToQueue = fwdCmdSpoolWS.add(device, fcs);
+        System.out.println("addToQueue: "+addToQueue);
+        if (addToQueue == -1)
+            throw new ProDAOException("Iridium Forward command spool failed.");
+    }
+    
     /**
      * Called when the user clicks to save changes when adding or editing.
      */
@@ -200,13 +265,14 @@ public class HazardsBean extends BaseBean {
         if (add) {
             System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
-            item.setHazardID(adminHazardJDBCDAO.create(item));
+            item.setHazardID(adminHazardJDBCDAO.create(item.getAccountID(),item));
 
             Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
             hazards.put(newItem.getHazardID(), newItem);
         } else {
             adminHazardJDBCDAO.update(item);
         }
+        sendHazard(item);
         
      // add a message
         final String summary = MessageUtil.formatMessageString(add ? "hazard_added" : "hazard_updated", item.getLocation());
@@ -403,5 +469,17 @@ public class HazardsBean extends BaseBean {
     }
     public void setAdminVehicleJDBCDAO(AdminVehicleJDBCDAO adminVehicleJDBCDAO) {
         this.adminVehicleJDBCDAO = adminVehicleJDBCDAO;
+    }
+    public String getSendHazardMsg() {
+        return sendHazardMsg;
+    }
+    public void setSendHazardMsg(String sendHazardMsg) {
+        this.sendHazardMsg = sendHazardMsg;
+    }
+    public FwdCmdSpoolWS getFwdCmdSpoolWS() {
+        return fwdCmdSpoolWS;
+    }
+    public void setFwdCmdSpoolWS(FwdCmdSpoolWS fwdCmdSpoolWS) {
+        this.fwdCmdSpoolWS = fwdCmdSpoolWS;
     }
 }

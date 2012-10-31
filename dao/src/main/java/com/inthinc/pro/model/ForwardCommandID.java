@@ -135,6 +135,9 @@ public interface ForwardCommandID
     public static Integer SET_SERVER_CONTEXT = 708; // context string follows the forward command
 
     public static Integer DOT_PROMPT_BY_TRIP = 948; // context string follows the forward command
+    
+    public static Integer REQUEST_ROAD_HAZARDS = 1008;
+    public static Integer NEW_ROAD_HAZARD = 1009;
 
     // added for the teen product
     public static Integer SYSTEM_RESET = 2000;

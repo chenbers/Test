@@ -174,7 +174,14 @@ public class MCMProxyObject implements MCMService{
         return reply;
 //    	return null;
     }
-
+    
+    @Override
+    public List<Map<String, Object>> getRH(String mcmID, int lat, int lng, int radius) {
+        List<Map<String,Object>> reply = proxy.getRH(mcmID, lat, lng, radius);
+        printReply(reply);
+        return reply;
+    }
+    
     @Override
     public Map<String, Object> audioUpdate(String mcmID, Map<String, Object> map) {
         printOther(map);
