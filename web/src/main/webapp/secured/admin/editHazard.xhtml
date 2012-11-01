@@ -39,6 +39,7 @@
        var marker;
        var hazardlat = "#{hazardsBean.item.latitude}";
        var hazardlng = "#{hazardsBean.item.longitude}";
+       var hazardRadius = "#{hazardsBean.item.radiusMeters}";
     </script>
   </ui:define>
   
@@ -150,9 +151,9 @@
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_radius}"/>:</td>
                                 <td>
-                                    <h:inputHidden value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters" />
-                                    <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;">
-                                        <a4j:support event="onchange" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" />
+                                    <h:inputHidden value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters"  />
+                                    <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;" onchange="redrawRadius();">
+                                        <a4j:support event="onblur" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" />
                                     </h:inputText>
                                     <h:selectOneMenu value="#{hazardsBean.item.radiusUnits}" id="hazardRadiusUnits"  style="width:100px;">
                                         <f:selectItems value="#{measurementBean.lengthTypeItems}"/>
@@ -194,6 +195,7 @@
 
 
                 <script type="text/javascript">
+              //<![CDATA[
                   function clearOutline(){
                     removeZoneOverlay();
 //                    map.clearOverlays();
@@ -223,22 +225,51 @@
                           }
                     );
                   }
+                  var poly;
+                  function drawCircle(center, radius, nodes, liColor, liWidth, liOpa, fillColor, fillOpa) {
+                      console.log("calculating km/degree");
+                      var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
+                      var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
 
+                      var points = [];
+                      var step = parseInt(360/nodes)||10;
+                      var bounds = map.getBounds();
+                      for(var i=0; i<=360; i+=step) {
+                          var pint = new GLatLng(center.lat() + (radius/latConv * Math.cos(i * Math.PI/180))
+                              , center.lng() + (radius/lngConv * Math.sin(i * Math.PI/180)));
+                          points.push(pint);
+                          bounds.extend(pint); //this is for fit function
+                      }
+                      fillColor = fillColor||liColor||"#0055ff";
+                      liWidth = liWidth||2;
+                      poly = new GPolygon(points,liColor,liWidth,liOpa,fillColor,fillOpa);
+                      map.addOverlay(poly);
+                  }
+                  function redrawRadius() {
+                	  console.log("redrawRadius "+hazardRadius);
+                	  map.clearOverlays();
+                	  showHazard();
+                	  return true;
+                  }
+                  var hazardPoint;
                   function showHazard(){
                     // map.clearOverlays();
                     removeZoneOverlay();
-                    var hazardPoint;
-                    if(hazardlat &amp;&amp; hazardlng){
-                         console.log("hazard: "+hazard);
-                         //hazardPoint = new GLatLng(#{hazardsBean.item.latitude}, #{hazardsBean.item.longitude});
+                    
+                    if(hazardlat && hazardlng && hazardlat != "" && hazardlng !=""){
+                         hazardPoint = new GLatLng(hazardlat, hazardlng);
                     } else {
-                    	console.log("no hazardPoint... presumably we are EDITING or ADDING");
+                    	console.log("no hazardPoint... presumably we are ADDING");
                     }
                     if (hazardPoint){
 //                      centerMapAtHazard(getLatLngBounds(hazardPoint));
                         map.setCenter(hazardPoint);
                         marker = new GMarker(hazardPoint);
                         map.addOverlay(marker);
+                        console.log("radius in meters "+hazardRadius);
+                        console.log("points: "+10);
+                        hazardRadius = document.getElementById("hazards-form:hazardRadiusMeters").value / 1000;
+                        drawCircle(hazardPoint, hazardRadius, 10, '#445566', 2, .5, '#112233', .25);
                       return true;
                     }
                     return false;
@@ -309,6 +340,7 @@
                       }
                     }
                   }
+                //]]>
                 </script>
 
                     <rich:modalPanel id="summary" headerClass="popupHeader"
