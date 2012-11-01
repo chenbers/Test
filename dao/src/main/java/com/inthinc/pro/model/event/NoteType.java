@@ -437,6 +437,7 @@ public enum NoteType implements BaseEnum {
     DIAGNOSTIC(220), // send general diagnostic info to server
     MAN_DOWN_EX(221),
     STATS2(222),
+    SAT_EVENT_CREATE_ROAD_HAZARD(226),
     
     //DVIR
     DVIR_DRIVEN_UNSAFE(223, EventType.DVIR_DRIVEN_UNSAFE),
