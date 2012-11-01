@@ -272,7 +272,28 @@
                 </a4j:form>
 
                 <script type="text/javascript">
+              //<![CDATA[
+                var poly;
+                function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
+                    console.log("draw circle with radius = "+radius);
+                    var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
+                    var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
 
+                    var points = [];
+                    var step = parseInt(360/nodes)||10;
+                    var bounds = map.getBounds();
+                    for(var i=0; i<=360; i+=step) {
+                        var pint = new GLatLng(center.lat() + (radius/latConv * Math.cos(i * Math.PI/180))
+                            , center.lng() + (radius/lngConv * Math.sin(i * Math.PI/180)));
+                        points.push(pint);
+                        //bounds.extend(pint); //this is for fit function
+                    }
+                    fillColor = fillColor||lineColor||"#0055ff";
+                    lineWidth = lineWidth||2;
+                    poly = new GPolygon(points,lineColor,lineWidth,lineOpacity,fillColor,fillOpacity);
+                    map.addOverlay(poly);
+                }
+              //]]>
                   function showHazard(editable){
                     map.clearOverlays();
                     var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
@@ -348,19 +369,18 @@
                       bounds.extend(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}));
                       
                       <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
-                          console.log("hazard.lat: #{hazard.lat}");
-                          console.log("hazard.lng: #{hazard.lng}");
                           marker = createMarker(  new GLatLng(#{hazard.lat}, #{hazard.lng}), 
                                                   #{hazard.hazardID}, null,
                                                   "/images/ico_warning.png",
                                                   fillBubbleMarker,0);
                           markers.push(marker);
+                          drawCircle(new GLatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, 10, '#445566', 2, .5, '#112233', .25);
                           progressBar.updateLoader(progress++);
                           bounds.extend(marker.getPoint());
                           
                       </ui:repeat>
                       
-                      markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
+                      //markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
                       progressBar.remove();
 
                       map.setZoom(map.getBoundsZoomLevel(bounds));

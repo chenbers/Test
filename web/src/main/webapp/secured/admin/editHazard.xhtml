@@ -226,7 +226,7 @@
                     );
                   }
                   var poly;
-                  function drawCircle(center, radius, nodes, liColor, liWidth, liOpa, fillColor, fillOpa) {
+                  function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
                       console.log("calculating km/degree");
                       var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
                       var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
@@ -240,9 +240,9 @@
                           points.push(pint);
                           bounds.extend(pint); //this is for fit function
                       }
-                      fillColor = fillColor||liColor||"#0055ff";
-                      liWidth = liWidth||2;
-                      poly = new GPolygon(points,liColor,liWidth,liOpa,fillColor,fillOpa);
+                      fillColor = fillColor||lineColor||"#0055ff";
+                      lineWidth = lineWidth||2;
+                      poly = new GPolygon(points,lineColor,lineWidth,lineOpacity,fillColor,fillOpacity);
                       map.addOverlay(poly);
                   }
                   function redrawRadius() {
@@ -267,9 +267,8 @@
                         marker = new GMarker(hazardPoint);
                         map.addOverlay(marker);
                         console.log("radius in meters "+hazardRadius);
-                        console.log("points: "+10);
                         hazardRadius = document.getElementById("hazards-form:hazardRadiusMeters").value / 1000;
-                        drawCircle(hazardPoint, hazardRadius, 10, '#445566', 2, .5, '#112233', .25);
+                        drawCircle(hazardPoint, hazardRadius, 20, '#445566', 2, .5, '#112233', .25);
                       return true;
                     }
                     return false;
