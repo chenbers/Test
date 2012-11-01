@@ -231,12 +231,16 @@ public class HanSoloTrip extends Thread{
     
     public static void main(String[] args){
 //        generateTrip("Vancouver Canada", "Abbotsford Canada", new TiwiProDevice("0000"));
+                
+        
         HanSoloTrip trip = new HanSoloTrip();
         AutomationCalendar initialTime = new AutomationCalendar();
         AutoSilos address;
-        String imei = "FAKEIMEIDEVICE"; address=AutoSilos.DEV;
-        imei = "DEVICEDOESNTEXIST";
-//        imei = "500000000007272"; address=AutoSilos.DEV;// initialTime.setDate(time)
+        String imei = "FAKEIMEIDEVICE"; 
+        address=AutoSilos.QA;
+//        String imei = "DEVICEDOESNTEXIST";
+
+        //        imei = "500000000007272"; address=AutoSilos.DEV;// initialTime.setDate(time)
 //        imei = "011596000100366";     address=AutoSilos.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=AutoSilos.QA;   initialTime.setDate(1335460214);  // vehicleID=37706       deviceID=34506
 //        address=AutoSilos.QA;           initialTime.setDate(1334940345);  // vehicleID=7293        deviceID=3753
@@ -263,15 +267,15 @@ public class HanSoloTrip extends Thread{
         
         
 //        011596000074009
-//        String satIMEI;
-//        String mcmID;
-//        String vehicleID;
-//        int accountID;
+        String satIMEI;
+        String mcmID;
+        String vehicleID;
+        int accountID;
         
 //        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=AutoSilos.QA; initialTime = 1316471529; vehicleID=7284; accountID=3;//deviceID=3763
-//        satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=AutoSilos.QA; initialTime = 1316471529; vehicleID="dddd"; accountID=3;//deviceID=3763
-//        
-//        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
+        satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=AutoSilos.QA; initialTime = new AutomationCalendar(); vehicleID="dddd"; accountID=3;//deviceID=3763
+        
+        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
         
         Log.info(trip);
     }

@@ -184,19 +184,12 @@ public class HazardsBean extends BaseBean {
 
         return "adminHazards";
     }
-    public List<Device> findDevicesInRadius(){
+    public List<Device> findDevicesInRadius() {
         List<Device> results = new ArrayList<Device>();
-        
-        //TODO: jwimmer: implement
-        Device fakeDevice = new Device();
-        fakeDevice.setImei("30023FKE1DE7570"); // fake device in QA account on my.inthinc.com
-        fakeDevice.setMcmid("300034012406030"); // VIN's device in QA account on qa.tiwipro.com
-        //fakeDevice.setImei("300034012406030");
-        System.out.println(""+fakeDevice.isGPRSOnly());
-        System.out.println(""+fakeDevice.isWaySmart());
-        fakeDevice.setProductVersion(ProductType.WAYSMART);
-        results.add(fakeDevice);
-        //TODO: REMOVE FAKE IMPLEMENTATION
+        List<Vehicle> vehicles = adminVehicleJDBCDAO.findVehiclesByAccountWithinDistance(getAccountID(), 200l, new LatLng(this.item.getLat(), this.item.getLng()));
+        for(Vehicle vehicle: vehicles) {
+            results.add(vehicle.getDevice());
+        }
         return results;
     }
     
