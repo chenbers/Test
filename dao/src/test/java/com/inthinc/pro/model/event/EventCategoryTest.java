@@ -51,7 +51,7 @@ public class EventCategoryTest {
 
     Integer[] expectedTypeInCatCounts = {
             4,  //  DRIVER
-            1,  //  DVIR
+            4,  //  DVIR
     		4,	//  EMERGENCY
     		3,	//  HOS
     		2,	//  NONE
