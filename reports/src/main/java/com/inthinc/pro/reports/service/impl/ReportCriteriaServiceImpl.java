@@ -971,7 +971,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         criteria.setStateMileageDAO(stateMileageDAO);
         criteria.setMeasurementType(measurementType);
         List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-        criteria.init(accountGroupHierarchy, groupIDs, interval, false, false);
+        criteria.init(accountGroupHierarchy, groupIDs, interval, false);
         return criteria;
     }
 
