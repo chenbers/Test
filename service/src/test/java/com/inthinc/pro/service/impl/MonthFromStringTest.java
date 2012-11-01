@@ -26,7 +26,7 @@ public class MonthFromStringTest {
 			DateTime end = interval.getEnd();
 //			int endMonth = end.dayOfMonth().get();
             int endMonth = end.getMonthOfYear();
-			assertEquals((now.getMonthOfYear()+1)%12,endMonth);
+			assertEquals((now.getMonthOfYear())%12+1,endMonth);
 			assertEquals(1,end.dayOfMonth().get());
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -49,7 +49,7 @@ public class MonthFromStringTest {
 			DateTime end = interval.getEnd();
 //			int endMonth = end.dayOfMonth().get();
             int endMonth = end.getMonthOfYear();
-			assertEquals((now.getMonthOfYear()+1)%12,endMonth);
+			assertEquals((now.getMonthOfYear())%12+1,endMonth);
 			assertEquals(1,end.dayOfMonth().get());
 			assertEquals(now.getYear()-1, end.getYear());
 		} catch (ParseException e) {
