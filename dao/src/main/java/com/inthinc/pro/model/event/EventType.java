@@ -59,7 +59,11 @@ public enum EventType implements BaseEnum {
     INVALID_OCCUPANT(43, EnumSet.of(EventAccountFilter.WAYSMART)),
     RF_SWITCH(44),
     DVIR(45),
-    POWER_INTERRUPTED(46);
+    POWER_INTERRUPTED(46),
+    DVIR_DRIVEN_UNSAFE(47),
+    DVIR_DRIVEN_NOPREINSPEC(48),
+    DVIR_DRIVEN_NOPOSTINSPEC(49);
+
 
     private int code;
     private AggressiveDrivingEventType noteSubType;

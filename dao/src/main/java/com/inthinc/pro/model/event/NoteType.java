@@ -438,6 +438,11 @@ public enum NoteType implements BaseEnum {
     MAN_DOWN_EX(221),
     STATS2(222),
     
+    //DVIR
+    DVIR_DRIVEN_UNSAFE(223, EventType.DVIR_DRIVEN_UNSAFE),
+    DVIR_DRIVEN_NOPREINSPEC(224, EventType.DVIR_DRIVEN_NOPREINSPEC),
+    DVIR_DRIVEN_NOPOSTINSPEC(225, EventType.DVIR_DRIVEN_NOPOSTINSPEC),
+    
     //Put in for customer G&K to help detect tampering to tiwis.
     POWER_INTERRUPTED(229, EventType.POWER_INTERRUPTED),
     
