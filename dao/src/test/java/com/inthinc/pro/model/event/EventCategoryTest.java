@@ -20,7 +20,7 @@ public class EventCategoryTest {
             3,
             4,
             4,
-            1
+            4
     };
     
     @Test
