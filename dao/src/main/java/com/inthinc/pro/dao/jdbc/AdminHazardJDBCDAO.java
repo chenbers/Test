@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -246,15 +247,15 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
-                ps.setDate(9, new Date(hazard.getStartTime().getTime()));
-                ps.setDate(10, new Date(hazard.getEndTime().getTime()));
+                ps.setTimestamp(9, new Timestamp(hazard.getStartTime().getTime()));
+                ps.setTimestamp(10, new Timestamp(hazard.getEndTime().getTime()));
                 ps.setInt(11, hazard.getType().getCode());
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus().getCode());
                 ps.setString(14, hazard.getLocation());
                 ps.setObject(15, hazard.getStateID(), Types.INTEGER);
-                ps.setDate(16, new Date(System.currentTimeMillis()));
-                ps.setDate(17, new Date(System.currentTimeMillis()));
+                ps.setTimestamp(16, new Timestamp(System.currentTimeMillis()));
+                ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
                 System.out.println(ps.toString());
                 return ps;
             }
