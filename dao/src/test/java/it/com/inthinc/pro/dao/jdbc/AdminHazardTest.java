@@ -1,10 +1,11 @@
-package it.com.inthinc.pro.dao.jdbc;
+    package it.com.inthinc.pro.dao.jdbc;
 
 import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,6 @@ import com.inthinc.pro.model.app.SupportedTimeZones;
 
 public class AdminHazardTest extends BaseJDBCTest {
     private static SiloService siloService;
-    //private static final String XML_DATA_FILE = "ReportTest.xml";
     private static ITData itData;
 
     @BeforeClass
@@ -66,7 +66,6 @@ public class AdminHazardTest extends BaseJDBCTest {
         supportedTimeZones.init();
     }
 
-    //TODO: refactor AdminHazardJDBCDAO tests into own class
     static Map<String, LatLng> locations = new HashMap<String, LatLng>();
     static{
         locations.put("inthinc", new LatLng(40.7106, -111.9945));
