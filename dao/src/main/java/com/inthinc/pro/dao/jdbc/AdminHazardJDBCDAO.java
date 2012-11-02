@@ -6,11 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
@@ -110,8 +113,21 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             hazard.setDeviceID(ObjectToInteger(rs.getObject("deviceID")));
             hazard.setType(HazardType.valueOf((Integer)rs.getObject("type")));
             hazard.setRadiusMeters(rs.getInt("radius"));
-            hazard.setStartTime(rs.getDate("startTime"));
-            hazard.setEndTime(rs.getDate("endTime"));
+            String strStartDate = rs.getString("startTime");
+            String strEndDate = rs.getString("endTime");
+            
+            SimpleDateFormat dateFormat = getDateFormat(TimeZone.getTimeZone("UTC"));
+            java.util.Date startDate = null;
+            java.util.Date endDate = null;
+            try{
+                 startDate = dateFormat.parse(strStartDate);
+                 endDate = dateFormat.parse(strEndDate);
+            } catch (Exception e){
+                logger.error(e);
+            }
+            
+            hazard.setStartTime(startDate);
+            hazard.setEndTime(endDate);
             hazard.setDescription(rs.getString("description"));
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
@@ -120,6 +136,11 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             hazard.setLongitude(rs.getDouble("longitude"));
             return hazard;
         }
+    };
+    public static SimpleDateFormat getDateFormat(TimeZone timeZone){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(timeZone);
+        return dateFormat;
     };
     private static Integer ObjectToInteger(Object theObj){
         Integer theInteger;

@@ -26,6 +26,7 @@ import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandSpool;
 import com.inthinc.pro.model.Hazard;
@@ -209,12 +210,15 @@ public class HazardsBean extends BaseBean {
     public void sendHazard(Hazard hazard){
         try {
             for(Device device: findDevicesInRadius()){
-                queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
-                System.out.println("device: "+device);
-                System.out.println("device.name: "+device.getName());
+                if(device.getStatus() == DeviceStatus.ACTIVE && device.isWaySmart()){
+                    System.out.println("about to send to device: "+device);
+                    queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
+                    System.out.println("sent to device device.name: "+device.getName());
+                }
             }
             setSendHazardMsg("hazardSendToDevice.success");
         } catch (Exception e) {
+            System.out.println("e: "+e);
             setSendHazardMsg("haazardSendToDevice.error");
             return;
         }
