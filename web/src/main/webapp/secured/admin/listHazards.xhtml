@@ -275,7 +275,7 @@
               //<![CDATA[
                 var poly;
                 function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
-                    console.log("draw circle with radius = "+radius);
+                    //console.log("draw circle with radius = "+radius);
                     var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
                     var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
 
@@ -322,11 +322,7 @@
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
                      if (!showHazard(false)){
-                         console.log("#{hazardsBean.groupHierarchy.topGroup.mapLat}");
-                         console.log("#{hazardsBean.groupHierarchy.topGroup.mapLng}");
-                         console.log("#{hazardsBean.groupHierarchy.topGroup}");
-                         console.log("#{hazardsBean.groupHierarchy}");
-                         //map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
+                         map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
                      }
                      bounds = map.getBounds();
                      addMarkers();
@@ -358,7 +354,7 @@
                     }
                   function addMarkers(){
                       var progress = 0;
-                      console.log("map: "+map);
+                      //console.log("map: "+map);
                       var progressBar = new ProgressbarControl(map);
                       
                       if (markerClusterer != null) {
