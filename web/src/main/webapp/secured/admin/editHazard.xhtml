@@ -227,7 +227,7 @@
                   }
                   var poly;
                   function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
-                      console.log("drawCircle with radius "+radius);
+                      //console.log("drawCircle with radius "+radius);
                       var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
                       var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
 
@@ -247,21 +247,21 @@
                   }
                   var hazardPoint;
                   function showHazard(){
-                	console.log("showHazard()");
+                	//console.log("showHazard()");
                     map.clearOverlays();
                     removeZoneOverlay();
                     
                     if(hazardlat && hazardlng && hazardlat != "" && hazardlng !=""){
                          hazardPoint = new GLatLng(hazardlat, hazardlng);
                     } else {
-                    	console.log("no hazardPoint... presumably we are ADDING");
+                    	console.log("no hazardPoint... presumably ADDING");
                     }
                     if (hazardPoint){
 //                      centerMapAtHazard(getLatLngBounds(hazardPoint));
                         map.setCenter(hazardPoint);
                         marker = new GMarker(hazardPoint);
                         map.addOverlay(marker);
-                        console.log("radius in meters "+hazardRadius);
+                        //console.log("radius in meters "+hazardRadius);
                         hazardRadius = document.getElementById("hazards-form:hazardRadiusMeters").value / 1000;
                         drawCircle(hazardPoint, hazardRadius, 20, '#445566', 2, .5, '#112233', .25);
                       return true;
