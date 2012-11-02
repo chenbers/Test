@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.reports.ifta;
 
 import java.util.ArrayList;
@@ -79,7 +76,6 @@ public abstract class DOTReportCriteria extends GroupListReportCriteria {
         this.groupDAO = groupDAO;
     }
 
-    
     /**
      * Initiate the data set and the parameters for the report.
      * 
@@ -91,6 +87,20 @@ public abstract class DOTReportCriteria extends GroupListReportCriteria {
      *            the flag to consider only IFTA
      */
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        init(accountGroupHierarchy,groupIDList,interval,dotOnly,true);
+    }
+    
+    /**
+     * Initiate the data set and the parameters for the report.
+     * 
+     * @param groupId
+     *            the groupId chosen by the user
+     * @param interval
+     *            the date period
+     * @param iftaOnly
+     *            the flag to consider only IFTA
+     */
+    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly,boolean filterGroupList) {
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
         addParameter(ReportCriteria.REPORT_IFTA_ONLY, (dotOnly?1:0));
@@ -99,7 +109,13 @@ public abstract class DOTReportCriteria extends GroupListReportCriteria {
 
         List<StateMileage> dataList = new ArrayList<StateMileage>();
 
-        for (Integer groupID : groupIDList) {
+        List<Integer> filteredGroupIDList = groupIDList;
+        if(filterGroupList){
+            filteredGroupIDList = filterOutChildrenGroups(groupIDList, accountGroupHierarchy);
+        }
+        // List<Group> groupList = getReportGroupList(groupIDList, accountGroupHierarchy);
+
+        for (Integer groupID : filteredGroupIDList) {
             List<StateMileage> list = getDataByGroup(groupID, interval, dotOnly);
             if (list != null) {
                 dataList.addAll(list);
@@ -107,6 +123,31 @@ public abstract class DOTReportCriteria extends GroupListReportCriteria {
         }
 
         initDataSet(dataList);
+    }
+
+    /*
+     * Since the back end already return data for all children of a group, remove subgroups from selection if any parent group is already selected.
+     */
+    private List<Integer> filterOutChildrenGroups(List<Integer> groupIDList, GroupHierarchy groupHierarchy) {
+
+        List<Integer> result = new ArrayList<Integer>();
+        Set<Integer> childrenIds = new HashSet<Integer>();
+
+        for (Integer groupId : groupIDList) {
+            List<Integer> subGroupIdList = groupHierarchy.getSubGroupIDList(groupId);
+            subGroupIdList.remove(groupId);
+            childrenIds.addAll(subGroupIdList);
+        }
+
+        for (Integer groupId : groupIDList) {
+            Group group = groupHierarchy.getGroup(groupId);
+
+            if (group != null && !childrenIds.contains(groupId)) {
+                result.add(group.getGroupID());
+            }
+        }
+
+        return result;
     }
 
     abstract void initDataSet(List<StateMileage> list);
