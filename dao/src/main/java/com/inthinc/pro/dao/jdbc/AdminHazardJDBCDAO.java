@@ -190,8 +190,10 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
 
     @Override
     public Integer update(Hazard hazard) {
-        // TODO: implement
-        throw new NotImplementedException("AdminHazardJDBCDAO update(Hazard) not yet implemented");
+        deleteByID(hazard.getHazardID());
+        return create(hazard.getAccountID(), hazard);
+        //return getJdbcTemplate().update(HAZARD_UPDATE, new Object[] { hazard });  //TODO: jwimmer: this SHOULD work?
+        //throw new NotImplementedException("AdminHazardJDBCDAO update(Hazard) not yet implemented");
     }
 
     @Override
