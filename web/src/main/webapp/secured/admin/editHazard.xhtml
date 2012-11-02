@@ -144,7 +144,7 @@
                                     <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType" required="true" requiredMessage="#{messages.required}" style="width:190px">
                                         <f:selectItem itemValue="#{null}" itemLabel="" />
                                         <f:selectItems value="#{hazardsBean.hazardTypeSelectItems}"/>
-                                        <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits, endCalendar" />
+                                        <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits, endCalendar" oncomplete="showHazard();" />
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
@@ -152,8 +152,8 @@
                                 <td><h:outputText value="#{messages.hazard_radius}"/>:</td>
                                 <td>
                                     <h:inputHidden value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters"  />
-                                    <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;" onchange="redrawRadius();">
-                                        <a4j:support event="onblur" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" />
+                                    <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;" >
+                                        <a4j:support event="onblur" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" oncomplete="showHazard();" />
                                     </h:inputText>
                                     <h:selectOneMenu value="#{hazardsBean.item.radiusUnits}" id="hazardRadiusUnits"  style="width:100px;">
                                         <f:selectItems value="#{measurementBean.lengthTypeItems}"/>
@@ -227,7 +227,7 @@
                   }
                   var poly;
                   function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
-                      console.log("calculating km/degree");
+                      console.log("drawCircle with radius "+radius);
                       var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
                       var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
 
@@ -245,15 +245,10 @@
                       poly = new GPolygon(points,lineColor,lineWidth,lineOpacity,fillColor,fillOpacity);
                       map.addOverlay(poly);
                   }
-                  function redrawRadius() {
-                	  console.log("redrawRadius "+hazardRadius);
-                	  map.clearOverlays();
-                	  showHazard();
-                	  return true;
-                  }
                   var hazardPoint;
                   function showHazard(){
-                    // map.clearOverlays();
+                	console.log("showHazard()");
+                    map.clearOverlays();
                     removeZoneOverlay();
                     
                     if(hazardlat && hazardlng && hazardlat != "" && hazardlng !=""){
@@ -308,6 +303,12 @@
                     
                     document.getElementById("hazards-form:editHazard-lng-hide").value = (Math.round(lng*10000.0)/10000.0).toString();
                     document.getElementById("hazards-form:editHazard-lat-hide").value = (Math.round(lat*10000.0)/10000.0).toString();
+                    
+                    hazardlat = lat;
+                    hazardlng = lng;
+                    hazardPoint = new GLatLng(hazardlat, hazardlng);
+                    
+                    showHazard();
                   }
 
                   function bodyLoad(){
