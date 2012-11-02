@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.reports.ifta;
 
 import java.util.ArrayList;
