@@ -202,10 +202,14 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("acctID", accountID);
         vehiclesPlusLastLoc = getSimpleJdbcTemplate().query(VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT, vehiclePlusLastLocRowMapper, args);
+        logger.debug("VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT: "+VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT);
         
         for(VehiclePlusLastLoc vehiclePlusLastLoc: vehiclesPlusLastLoc){
             if(GeoUtil.distBetween(location, vehiclePlusLastLoc.getLastLoc(), MeasurementType.ENGLISH) <= distanceInMiles){
+                //logger.debug("adding: "+vehiclePlusLastLoc.getVehicle());
                 results.add(vehiclePlusLastLoc.getVehicle());
+            } else {
+                //logger.debug("NOT ADDING: "+vehiclePlusLastLoc.getVehicle());
             }
         }
         
