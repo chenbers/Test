@@ -165,18 +165,18 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         args.put("lng1", lng1);
         args.put("lat2", lat2);
         args.put("lng2", lng2);
-        System.out.println("simpleJdbcTemplate: " + getSimpleJdbcTemplate());
+        logger.debug("simpleJdbcTemplate: " + getSimpleJdbcTemplate());
         for (String key : args.keySet()) {
-            System.out.println(key + " " + args.get(key));
+            logger.debug(key + " " + args.get(key));
         }
-        System.out.println(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS);
+        logger.debug(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS);
         results = getSimpleJdbcTemplate().query(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS, hazardRowMapper, args);
-        System.out.println("results" + results);
+        logger.debug("results" + results);
         return results;
     }
     @Override
     public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
-        System.out.println("public List<Hazard> findHazardsByUserAcct(User " + user + ", Double " + lat1 + ", Double " + lng1 + ", Double " + lat2 + ", Double " + lng2 + ")");
+        logger.debug("public List<Hazard> findHazardsByUserAcct(User " + user + ", Double " + lat1 + ", Double " + lng1 + ", Double " + lat2 + ", Double " + lng2 + ")");
         return findHazardsByUserAcct(user.getPerson().getAcctID(), lat1, lng1, lat2, lng2);
     }
 
@@ -191,7 +191,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         for(Hazard hazard: allInAccount) {
             LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
             float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
-            System.out.println("dist: "+dist);
+            logger.debug("dist: "+dist);
             if(dist < kilometers) {
                 results.add(hazard);
             } 
@@ -256,7 +256,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
                 ps.setObject(15, hazard.getStateID(), Types.INTEGER);
                 ps.setTimestamp(16, new Timestamp(System.currentTimeMillis()));
                 ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
-                System.out.println(ps.toString());
+                logger.debug(ps.toString());
                 return ps;
             }
         };
