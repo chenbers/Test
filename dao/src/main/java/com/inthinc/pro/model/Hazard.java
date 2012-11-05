@@ -293,7 +293,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.radiusUnits = MeasurementLengthType.valueOf(code);
     }
     public Integer getRadiusInUnits() {
-        return radiusInUnits;
+        return radiusInUnits!=null?radiusInUnits:(Integer) getRadiusUnits().convertFromMeters(getRadiusMeters()).intValue();
     }
     public void setRadiusInUnits(Integer radiusInUnits) {
         this.radiusInUnits = radiusInUnits;
