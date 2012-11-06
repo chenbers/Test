@@ -8,6 +8,20 @@ import java.util.Map;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.pagination.FilterableEnum;
 
+/**
+ * Enumerated values to represent the seperate products that interact with the portal.<br />
+ * <br />
+ * This representation of each product type uses a bit mask to seperate the types, <br />
+ * while ignoring the different version numbers for each type.  This is accomplished<br />
+ * by taking the lowest asserted bit in the binary representation of the version number.<br />
+ * This means that each product has a reserved lowest order asserted bit.<br />
+ * <br />
+ * <code>TiwiPro</code> uses the least significant bit, <code>0xXXX1</code>, and has versions 1, 3, 5, 7, etc.<br />
+ * <br />
+ * <code>Waysmart</code> uses the second bit, <code>0xXX10</code>, and has versions 2, 6, 10, 14, etc.<br />
+ * <br />
+ * <code>WS850</code> uses the third big, <code>0xX100</code>, and has versions 4, 12, 20, 28, etc.
+ */
 public enum ProductType implements BaseEnum, FilterableEnum {
     UNKNOWN(0, 0, "Unknown"),
 //    TEEN(1, 1, "Teen"),

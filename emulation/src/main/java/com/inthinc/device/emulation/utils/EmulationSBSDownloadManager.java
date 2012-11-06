@@ -16,7 +16,6 @@ import com.inthinc.device.emulation.interfaces.SbsHessianInterface;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.sbs.SbsUpdater;
-import com.inthinc.sbs.downloadmanager.SbsDownloadAction;
 import com.inthinc.sbs.downloadmanager.SbsDownloadManager;
 import com.inthinc.sbs.simpledatatypes.VisitedMap;
 import com.inthinc.sbs.utils.AbstractSbsMapLoader;
@@ -85,26 +84,8 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         this.sbsUpdater = sbsUpdater;
     }
 
-    @Override
-    public boolean queueAction(SbsDownloadAction action) {
-        switch (action.name) {
-            case checkSbsEditNG:
-                checkSbsEditNG(action.b, action.fileAsInt, action.cv);
-                break;
-            case checkSbsSubscribedNG:
-                checkSbsSubscribedNG(action.b, action.fileAsInt);
-                break;
-            case getSbsBase:
-                getSbsBase(action.fileAsInt, action.b);
-                break;
-            case getSbsEditNG:
-                getSbsEditNG(action.fileAsInt, action.b, action.cv, action.nv);
-                break;
-        }
-        return true;
-    }
 
-    private List<Map<String, Object>> checkSbsSubscribedNG(int b, int fileAsInt) {
+    public List<Map<String, Object>> checkSbsSubscribedNG(int b, int fileAsInt) {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("b", b);
         args.put("lai", SbsUtils.createLatitudeIndex(fileAsInt));
@@ -255,7 +236,7 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         }
     }
 
-    private Map<String, Object> getSbsEditNG(Integer fileAsInt, Integer baseVersion, int currentVersion, Integer newVersion) {
+    public Map<String, Object> getSbsEditNG(Integer fileAsInt, Integer baseVersion, int currentVersion, Integer newVersion) {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("b", baseVersion);
         args.put("f", fileAsInt);
@@ -275,4 +256,22 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         }
     }
 
+    @Override
+    public boolean queueGetSbsBase(int fileAsInt, int baseline) {
+        getSbsBase(fileAsInt, baseline);
+        return true;
+    }
+
+    @Override
+    public boolean queueCheckSbsEditNG(int fileAsInt, int baseline, int currentVersion) {
+        checkSbsEditNG(baseline, fileAsInt, currentVersion);
+        return true;
+    }
+
+    @Override
+    public boolean queueGetSbsEditNG(int fileAsInt, int baseline, int currentVersion, int newVersion) {
+        getSbsEditNG(fileAsInt, baseline, currentVersion, newVersion);
+        return true;
+    }
+    
 }
