@@ -29,7 +29,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.models.Group;
@@ -46,22 +45,36 @@ public class FormsServiceDAOTest {
 
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void formsServiceDAOGetFormTest() {
 
         FormsServiceDAO formsDAO = new FormsServiceDAO();
-
+//http://qa.tiwipro.com:8483/forms_service
         formsDAO.setProtocol("http");
         formsDAO.setHost("dev.tiwipro.com");
-        formsDAO.setPort(8473);
+        formsDAO.setPort(8080);
         formsDAO.setUsername("jhoward");
         formsDAO.setPassword("password");
         formsDAO.setPath("forms_service");
         SubmissionData formSubmission = formsDAO.getForm(new Date().getTime(), 1);
         assertNotNull(formSubmission);
     }
+ 
+    @Test
+    public void formsServiceDAOGetFormQATest() {
 
+        FormsServiceDAO formsDAO = new FormsServiceDAO();
+//http://qa.tiwipro.com:8483/forms_service
+        formsDAO.setProtocol("https");
+        formsDAO.setHost("qa.tiwipro.com");
+        formsDAO.setPort(8483);
+        formsDAO.setUsername("jhoward");
+        formsDAO.setPassword("password");
+        formsDAO.setPath("forms_service");
+        SubmissionData formSubmission = formsDAO.getForm(new Date().getTime(), 1);
+        assertNotNull(formSubmission);
+    }
     @SuppressWarnings("unused")
     @Test
     public void testHttp() {
