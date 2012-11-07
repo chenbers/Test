@@ -27,7 +27,7 @@ public abstract class RowImporter {
             accountMap = new HashMap<String, Account>();
             List<Account> accountList = accountDAO.getAllAcctIDs();
             for (Account account : accountList)
-                accountMap.put(account.getAcctName(), account);
+                accountMap.put(account.getAcctName().trim(), account);
         }
         return accountMap;
     }
