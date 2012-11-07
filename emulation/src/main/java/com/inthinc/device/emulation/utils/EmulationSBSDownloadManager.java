@@ -259,28 +259,21 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         }
     }
 
-    
+    @Override
     public boolean queueGetSbsBase(int fileAsInt, int baseline) {
         getSbsBase(fileAsInt, baseline);
         return true;
     }
 
-    
+    @Override
     public boolean queueCheckSbsEditNG(int fileAsInt, int baseline, int currentVersion) {
         checkSbsEditNG(baseline, fileAsInt, currentVersion);
         return true;
     }
 
-    
+    @Override
     public boolean queueGetSbsEditNG(int fileAsInt, int baseline, int currentVersion, int newVersion) {
         getSbsEditNG(fileAsInt, baseline, currentVersion, newVersion);
         return true;
     }
-
-    @Override
-    public boolean queueAction(SbsDownloadAction arg0) {
-        throw new NotImplementedException();
-        //TODO: David Tanner: fix/implement/remove/...
-    }
-    
 }
