@@ -1,16 +1,21 @@
 package com.inthinc.pro.service.impl;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang.enums.EnumUtils;
 import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.inthinc.pro.model.Hazard;
+import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.service.RoadHazardService;
 import com.inthinc.pro.service.adapters.HazardDAOAdapter;
@@ -37,6 +42,22 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
         } catch (EmptyResultDataAccessException e){
             response = Response.noContent().build();
         }
+        return response;
+    }
+
+    @Override
+    public Response types(String locale) {
+        logger.error("public Response types(String "+locale+")");
+//        for(Object type : EnumUtils.getEnumList(HazardType.class)){
+//            ((HazardType)type).getCode();
+//        }
+        //EnumSet.allOf(HazardType.class);
+        List<HazardType> responseList = Arrays.asList(HazardType.values());
+        for(HazardType type: responseList)
+            System.out.println("[[[ "+type+"  ]]]");
+        //List<HazardType> responseList =EnumUtils.getEnumList(HazardType.class);
+        Response response = Response.ok(new GenericEntity<List<HazardType>>(responseList){}).build();
+        // TODO Auto-generated method stub
         return response;
     }
     
