@@ -160,7 +160,7 @@ public class FormsServiceDAOTest {
         String json;
         try {
             json = mapper.writeValueAsString(submissionData);
-            String jsonString = "{\"driverID\":1,\"driverName\":\"Jacquie Howard\",\"vehicleID\":200,\"vehicleName\":\"Jacquie's Car\",\"groupID\":4917,\"formID\":100,\"timestamp\":102030423,\"approved\":false,"+
+            String jsonString = "{\"driverID\":1,\"driverName\":\"Jacquie Howard\",\"driverTimeZoneID\":null,\"vehicleID\":200,\"vehicleName\":\"Jacquie's Car\",\"groupID\":4917,\"groupName\":null,\"groupPath\":null,\"formID\":100,\"timestamp\":102030423,\"approved\":false,"+
             "\"formTitle\":\"Form Title\","+
                     "\"dataList\":[{\"tag\":\"0\",\"question\":\"question0\",\"answer\":\"answer0\"},"+
                                   "{\"tag\":\"1\",\"question\":\"question1\",\"answer\":\"answer1\"},"+
