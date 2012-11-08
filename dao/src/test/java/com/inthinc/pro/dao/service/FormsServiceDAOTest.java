@@ -29,6 +29,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.models.Group;
@@ -45,7 +46,7 @@ public class FormsServiceDAOTest {
 
     }
 
-//    @Ignore
+    @Ignore
     @Test
     public void formsServiceDAOGetFormTest() {
 
@@ -61,6 +62,7 @@ public class FormsServiceDAOTest {
         assertNotNull(formSubmission);
     }
  
+    @Ignore
     @Test
     public void formsServiceDAOGetFormQATest() {
 
@@ -195,6 +197,9 @@ public class FormsServiceDAOTest {
             if (statusCode == HttpStatus.SC_OK) {
                 InputStream body = method.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
+//                byte[] bytes = new byte[2000];
+//                int count = body.read(bytes);
+//                String buffer = new String(bytes);
                 SubmissionData value = mapper.readValue(body, SubmissionData.class);
                 assertNotNull(value);
             }
