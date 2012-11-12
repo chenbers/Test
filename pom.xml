@@ -77,7 +77,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skipUT>false</skipUT>
 		<skipIT>false</skipIT>
-		<skipAT>true</skipAT>
+		<skipAT>false</skipAT>
 		<AT.threadCount>2</AT.threadCount>
 		<AT.isThreadCountPerCore>true</AT.isThreadCountPerCore>
 		<AT.parallelOn>classes</AT.parallelOn>
@@ -92,7 +92,7 @@
 		<log4j.version>1.2.12</log4j.version>
 		<jmockit.version>0.999.4</jmockit.version>
 		<hos.version>0.0.16</hos.version>
-		<selenium.version>2.24.1</selenium.version>
+		<selenium.version>2.26.0</selenium.version>
 		<jbehave.core.version>3.6.7</jbehave.core.version>
         <jacksonVersion>2.0.2</jacksonVersion>
         <codehausjacksonVersion>1.9.9</codehausjacksonVersion>
