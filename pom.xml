@@ -77,7 +77,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skipUT>false</skipUT>
 		<skipIT>false</skipIT>
-		<skipAT>false</skipAT>
+		<skipAT>true</skipAT>
 		<AT.threadCount>2</AT.threadCount>
 		<AT.isThreadCountPerCore>true</AT.isThreadCountPerCore>
 		<AT.parallelOn>classes</AT.parallelOn>
