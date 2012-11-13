@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.WeakHashMap;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -12,6 +15,8 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.enums.EnumUtils;
 import org.apache.log4j.Logger;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.inthinc.pro.model.Hazard;
@@ -45,19 +50,40 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
         return response;
     }
 
+    private final WeakHashMap<Locale, ResourceBundle> cache = new WeakHashMap<Locale, ResourceBundle>();
+    private MessageSource                 messageSource;
     @Override
     public Response types(String locale) {
         logger.error("public Response types(String "+locale+")");
-//        for(Object type : EnumUtils.getEnumList(HazardType.class)){
-//            ((HazardType)type).getCode();
+        Locale theLocale = new Locale("EN");
+//        ResourceBundle resources = cache.get(locale);
+//        if(resources == null){
+//            resources = ResourceBundle.getBundle("com.inthinc.pro.resources.Messages", theLocale);
+//            cache.put(theLocale, resources);
 //        }
-        //EnumSet.allOf(HazardType.class);
         List<HazardType> responseList = Arrays.asList(HazardType.values());
-        for(HazardType type: responseList)
-            System.out.println("[[[ "+type+"  ]]]");
-        //List<HazardType> responseList =EnumUtils.getEnumList(HazardType.class);
+        try {
+            for(HazardType type: responseList){
+                int endOfGroupIndex = type.toString().indexOf("_");
+                endOfGroupIndex = (endOfGroupIndex != -1)?endOfGroupIndex:type.toString().length();
+                String groupKey = type.toString().substring(0, endOfGroupIndex);
+                System.out.println("getting resource for : "+groupKey+".group and "+type.toString()+".name ");
+                
+                System.out.println("from messageSource: "+messageSource.getMessage(groupKey+".group", null, theLocale));
+                System.out.println("from messageSource: "+messageSource.getMessage(type.toString()+".name", null, theLocale));
+                type.setGroup(messageSource.getMessage(groupKey+".group", null, theLocale));
+                type.setName(messageSource.getMessage(type.toString()+".name", null, theLocale));
+//                System.out.println("from resources localized group: "+resources.getString(type.getClass().getSimpleName()+".group"));
+//                System.out.println("from resources localized name: "+resources.getString(type.getClass().getSimpleName()+".name"));
+            }
+            
+        } catch(MissingResourceException mre) {
+            logger.error(mre);
+        } catch(NoSuchMessageException nsme){
+            logger.error(nsme);
+        }
+        
         Response response = Response.ok(new GenericEntity<List<HazardType>>(responseList){}).build();
-        // TODO Auto-generated method stub
         return response;
     }
     
@@ -110,6 +136,14 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
 //     // TODO not yet implemented, since not needed for initial web service needs
 //        throw new NotImplementedException();
 //    }
+
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
     
     /***  Getters/Setters  ***/
 //    public RoadHazardDAO getAdminHazardJDBCDAO() {
