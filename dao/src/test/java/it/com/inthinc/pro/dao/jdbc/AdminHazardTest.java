@@ -29,6 +29,7 @@ import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementLengthType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -242,7 +243,8 @@ public class AdminHazardTest extends BaseJDBCTest {
         
         AdminVehicleJDBCDAO vehicleJDBCDAO = new AdminVehicleJDBCDAO();
         vehicleJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-        List<Vehicle> vehicles = vehicleJDBCDAO.findVehiclesByAccountWithinDistance(new Integer(1), new Long(200), locations.get("inthinc"));
+        Long twoHundredMilesInKM = MeasurementLengthType.ENGLISH_MILES.convertToMeters(200).longValue();
+        List<Vehicle> vehicles = vehicleJDBCDAO.findVehiclesByAccountWithinDistance(new Integer(1), twoHundredMilesInKM, locations.get("inthinc"));
         for(Vehicle vehicle: vehicles){
             System.out.println("vehicle.device: "+vehicle.getDevice());
             System.out.println("vehicle: "+vehicle);

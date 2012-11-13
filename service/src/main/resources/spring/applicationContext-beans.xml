@@ -9,12 +9,9 @@
     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName">
 	<!-- Message Bundles -->
-	<!--
-		<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="com.inthinc.pro.resources.Messages"
-		/> </bean>
-	-->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="Messages" />
+    </bean>
 
 	<context:component-scan base-package="com.inthinc.pro.service.phonecontrol" />
 	<context:component-scan base-package="com.inthinc.pro.util" />

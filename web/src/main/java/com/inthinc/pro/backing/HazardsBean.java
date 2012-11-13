@@ -183,7 +183,8 @@ public class HazardsBean extends BaseBean {
     }
     public List<Device> findDevicesInRadius() {
         List<Device> results = new ArrayList<Device>();
-        List<Vehicle> vehicles = adminVehicleJDBCDAO.findVehiclesByAccountWithinDistance(getAccountID(), 200l, new LatLng(this.item.getLat(), this.item.getLng()));
+        Long twoHundredMilesInKM = MeasurementLengthType.ENGLISH_MILES.convertToMeters(200).longValue();
+        List<Vehicle> vehicles = adminVehicleJDBCDAO.findVehiclesByAccountWithinDistance(getAccountID(), twoHundredMilesInKM, new LatLng(this.item.getLat(), this.item.getLng()));
         for(Vehicle vehicle: vehicles) {
             results.add(vehicle.getDevice());
         }
@@ -214,8 +215,8 @@ public class HazardsBean extends BaseBean {
             }
             setSendHazardMsg("hazardSendToDevice.success");
         } catch (Exception e) {
-            logger.error("e: "+e);
-            setSendHazardMsg("haazardSendToDevice.error");
+            logger.error("sendHazard("+hazard+") throwing exception: "+e);
+            setSendHazardMsg("hazardSendToDevice.error");
             return;
         }
     }

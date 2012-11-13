@@ -1,7 +1,5 @@
 package com.inthinc.pro.service;
 
-import java.util.Locale;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,7 +17,7 @@ public interface RoadHazardService extends GenericService<Hazard> {
      * @param mcmID the mcmID of the device (used to determine the account)
      * @param latitude
      * @param longitude
-     * @return all roadhazards data within 200 mile radius of location for this device's account.
+     * @return all roadhazards data within 200 mile radius of the location for this device's account.
      */
     @GET
     @Path("/roadhazard/getRH/{mcmID}/{lat}/{lng}")
@@ -42,5 +40,5 @@ public interface RoadHazardService extends GenericService<Hazard> {
      */
     @GET
     @Path("/roadhazard/getTypes/{locale}")
-    public Response types(String locale);
+    public Response types(@PathParam("locale")String locale);
 }

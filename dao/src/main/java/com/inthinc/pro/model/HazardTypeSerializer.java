@@ -22,8 +22,7 @@ public class HazardTypeSerializer extends JsonSerializer<HazardType> {
         generator.writeStringField("group", value.getGroup());
         generator.writeStringField("details", value.getDetails());
         generator.writeNumberField("shelfLifeSeconds",value.getShelfLifeSeconds());
-        
+
         generator.writeEndObject();
-        
     }
 }
