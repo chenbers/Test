@@ -195,7 +195,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
 
         return vehicleList;
     }
-    public List<Vehicle> findVehiclesByAccountWithinDistance(Integer accountID, Long distanceInMiles, LatLng location){
+    public List<Vehicle> findVehiclesByAccountWithinDistance(Integer accountID, Long distanceInKM, LatLng location){
         List<Vehicle> results = new ArrayList<Vehicle>();
         List<VehiclePlusLastLoc> vehiclesPlusLastLoc = new ArrayList<VehiclePlusLastLoc>();
 
@@ -205,7 +205,7 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         logger.debug("VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT: "+VEHICLE_PLUS_LASTLOC_SELECT_BY_ACCOUNT);
         
         for(VehiclePlusLastLoc vehiclePlusLastLoc: vehiclesPlusLastLoc){
-            if(GeoUtil.distBetween(location, vehiclePlusLastLoc.getLastLoc(), MeasurementType.ENGLISH) <= distanceInMiles){
+            if(GeoUtil.distBetween(location, vehiclePlusLastLoc.getLastLoc(), MeasurementType.METRIC) <= distanceInKM) {
                 //logger.debug("adding: "+vehiclePlusLastLoc.getVehicle());
                 results.add(vehiclePlusLastLoc.getVehicle());
             } else {
