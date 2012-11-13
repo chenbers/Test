@@ -2,11 +2,15 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsZonesEnum;
 
 public class PageNotificationsZones extends NotificationsEventsBar {
 
     public PageNotificationsZones() {
+    	
+        enums = new SeleniumEnums[] { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
+    	
         page = "zoneEvents";
         super.checkMe.add(NotificationsZonesEnum.TITLE);
         super.checkMe.add(NotificationsZonesEnum.NOTE);
