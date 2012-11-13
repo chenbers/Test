@@ -67,20 +67,16 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
                 int endOfGroupIndex = type.toString().indexOf("_");
                 endOfGroupIndex = (endOfGroupIndex != -1)?endOfGroupIndex:type.toString().length();
                 String groupKey = type.toString().substring(0, endOfGroupIndex);
-                System.out.println("getting resource for : "+groupKey+".group and "+type.toString()+".name ");
-                
-                System.out.println("from messageSource: "+messageSource.getMessage(groupKey+".group", null, theLocale));
-                System.out.println("from messageSource: "+messageSource.getMessage(type.toString()+".name", null, theLocale));
+                try{
                 type.setGroup(messageSource.getMessage(groupKey+".group", null, theLocale));
                 type.setName(messageSource.getMessage(type.toString()+".name", null, theLocale));
-//                System.out.println("from resources localized group: "+resources.getString(type.getClass().getSimpleName()+".group"));
-//                System.out.println("from resources localized name: "+resources.getString(type.getClass().getSimpleName()+".name"));
+                } catch(NoSuchMessageException nsme){
+                    logger.error(nsme);
+                }
             }
             
         } catch(MissingResourceException mre) {
             logger.error(mre);
-        } catch(NoSuchMessageException nsme){
-            logger.error(nsme);
         }
         
         Response response = Response.ok(new GenericEntity<List<HazardType>>(responseList){}).build();
