@@ -71,14 +71,6 @@ public enum HazardType implements OptionValue {
             lookup.put(p.code, p);
         }
     }
-    
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
-        sb.append(".");
-        sb.append(this.name());
-        return sb.toString();
-    }
 
     public int getCode() {
         return code;

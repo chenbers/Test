@@ -55,7 +55,7 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
     @Override
     public Response types(String locale) {
         logger.error("public Response types(String "+locale+")");
-        Locale theLocale = new Locale("EN");
+        Locale theLocale = new Locale(locale);
 //        ResourceBundle resources = cache.get(locale);
 //        if(resources == null){
 //            resources = ResourceBundle.getBundle("com.inthinc.pro.resources.Messages", theLocale);
@@ -68,8 +68,8 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
                 endOfGroupIndex = (endOfGroupIndex != -1)?endOfGroupIndex:type.toString().length();
                 String groupKey = type.toString().substring(0, endOfGroupIndex);
                 try{
-                    type.setGroup(messageSource.getMessage(groupKey+".group", null, theLocale));
-                    type.setName(messageSource.getMessage(type.toString()+".name", null, theLocale));
+                    type.setGroup(messageSource.getMessage(type.getClass().getSimpleName()+"."+groupKey+".group", null, theLocale));
+                    type.setName(messageSource.getMessage(type.getClass().getSimpleName()+"."+type.name()+".name", null, theLocale));
                 } catch(NoSuchMessageException nsme){
                     logger.error(nsme);
                 }
