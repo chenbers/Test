@@ -8,8 +8,8 @@ public enum NotificationsCrashHistoryEnum implements SeleniumEnums {
     
     TITLE("Crash History", "//span[@class='crash']"),
     
-    TEAM_DROP_DOWN("Team", "***Search:***_groupID", "***Search:***_groupID_new_value"),//these two can be merged to NotificationsBarEnum
-    TIME_FRAME_DROP_DOWN("Time Frame", "***Search:***_timeframe"),// once the id has been fixed on the page
+    TEAM_DROP_DOWN("Team", "crashHistorySearch:crashHistory_groupID"), //"crashHistorySearch:crashHistory_groupID"),//these two can be merged to NotificationsBarEnum
+    TIME_FRAME_DROP_DOWN("Time Frame", "crashHistorySearch:crashHistory_timeframe"),// once the id has been fixed on the page
     
     REFRESH("Refresh", "//button[@id='crashHistorySearch:crashHistoryRefresh']"),
     

@@ -8,6 +8,16 @@ Meta:
 
 Narrative:
 
+Scenario: TC1351: Notifications - Crash History - UI 
+Given I am logged in
+When I click the Notifications link
+And I click the Crash History link
+And I select "Top - Test Group WR" from the Team dropdown
+And I select "All" from the Time Frame dropdown
+Then I validate the Team dropdown is present
+And I validate the Time Frame dropdown is present
+
+
 Scenario: TC1335: Notifications - Crash History - Add Crash Report Link
 Given I am logged in
 When I click the Notifications link
