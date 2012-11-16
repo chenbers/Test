@@ -50,27 +50,11 @@ public class HazardTest {
     public void periodTest_howManySecondsInAYear(){
         DateTime startTime = new DateTime();
         Date newEndTime = startTime.plus(Period.years(1)).toDate();
-        System.out.println("startTime: "+startTime);
-        System.out.println("endTime: "+newEndTime);
-        System.out.println(newEndTime.getTime() - startTime.getMillis());
-
         assertEquals((newEndTime.getTime() - startTime.getMillis())/1000 , secondsInOneYear);
         newEndTime = startTime.plus(Period.years(2)).toDate();
         assertEquals((newEndTime.getTime() - startTime.getMillis())/1000, secondsInTwoYears);
     }
     
-    @Test
-    public void periodTest_howManySecondsInALeapYear(){
-        DateTime firstDayOfLeapYear = new DateTime(2012, 1, 1, 0, 0, 0, 0);
-        Date newEndTime = firstDayOfLeapYear.plus(Period.years(1)).toDate();
-        System.out.println("startTime: "+firstDayOfLeapYear);
-        System.out.println("endTime: "+newEndTime);
-        System.out.println(newEndTime.getTime() - firstDayOfLeapYear.getMillis());
-
-        assertEquals((newEndTime.getTime() - firstDayOfLeapYear.getMillis())/1000 , secondsInOneYear);
-        newEndTime = firstDayOfLeapYear.plus(Period.years(2)).toDate();
-        assertEquals((newEndTime.getTime() - firstDayOfLeapYear.getMillis()) , secondsInTwoYears);
-    }
     
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
