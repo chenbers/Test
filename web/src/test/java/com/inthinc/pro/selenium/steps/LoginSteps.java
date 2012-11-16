@@ -458,27 +458,35 @@ public class LoginSteps extends WebSteps {
     	loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");  //for dev
     }
     
-    //TODO: MWEISS - I am still working on how this will work
-    @Then("the Sort By Date Time column sorts correctly")
-    public void thenIValidateTheSortByDateTimeColumnSortsCorrectly() {
+    //TODO: MWEISS - This now works, I just need to make it universal so I can be fed a column from any page
+    @Then("the \"$tableColumn\" column sorts correctly")
+    public void thenIValidateTheSortByDateTimeColumnSortsCorrectly(String tableColumn) {
+
+    	if(tableColumn.equals("Notifications Diagnostics Sort By Date Time")){
+    	
+        int i = 0;
         
-        notifdiag._link().sortByDateTime().click();
+        while (i < 2) {
+            String entry1 = notifdiag._text().entryDateTime().row(1).getText();
+            String entry2 = notifdiag._text().entryDateTime().row(15).getText();
+            notifdiag._link().sortByDateTime().click();
+            System.out.print("Entry 1: " + entry1 + "\nEntry 2: " + entry2 + "\n");
         
-        String text1 = notifdiag._text().entryDateTime().row(1).getText();
-        String text2 = notifdiag._text().entryDateTime().row(15).getText();
-        
-        int result = text1.compareTo(text2);
+        int result = entry1.compareTo(entry2);
         
         if (result == 0) {
             System.out.println("The names are equal.");
        }
        else if (result > 0) {
             System.out.println(
-                "name2 comes before name1 alphabetically.");
+                "Entry 2 comes before Entry 1 alphabetically.");
        }
        else if (result < 0) {
             System.out.println(
-               "name1 comes before name2 alphabetically.");
+               "Entry 1 comes before Entry 2 alphabetically.");
        }
+       i++;  
+      }
+     }
     }
 }
