@@ -1,10 +1,12 @@
 package com.inthinc.pro.model;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.nio.ByteBuffer;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.junit.Test;
 
 
@@ -38,6 +40,38 @@ public class HazardTest {
         System.out.println("m_timeStart: "+new Date(m_timeStart));
         System.out.println("m_timeEnd: "+new Date(m_timeEnd));
     }
+    private int daysInAYear = 365;
+    private int hoursInADay = 24;
+    private int minutesInAnHour = 60;
+    private int secondsInAMinute = 60;
+    private int secondsInOneYear = 1  * daysInAYear * hoursInADay * minutesInAnHour * secondsInAMinute;
+    private int secondsInTwoYears = 2 * daysInAYear * hoursInADay * minutesInAnHour * secondsInAMinute;
+    @Test
+    public void periodTest_howManySecondsInAYear(){
+        DateTime startTime = new DateTime();
+        Date newEndTime = startTime.plus(Period.years(1)).toDate();
+        System.out.println("startTime: "+startTime);
+        System.out.println("endTime: "+newEndTime);
+        System.out.println(newEndTime.getTime() - startTime.getMillis());
+
+        assertEquals((newEndTime.getTime() - startTime.getMillis())/1000 , secondsInOneYear);
+        newEndTime = startTime.plus(Period.years(2)).toDate();
+        assertEquals((newEndTime.getTime() - startTime.getMillis())/1000, secondsInTwoYears);
+    }
+    
+    @Test
+    public void periodTest_howManySecondsInALeapYear(){
+        DateTime firstDayOfLeapYear = new DateTime(2012, 1, 1, 0, 0, 0, 0);
+        Date newEndTime = firstDayOfLeapYear.plus(Period.years(1)).toDate();
+        System.out.println("startTime: "+firstDayOfLeapYear);
+        System.out.println("endTime: "+newEndTime);
+        System.out.println(newEndTime.getTime() - firstDayOfLeapYear.getMillis());
+
+        assertEquals((newEndTime.getTime() - firstDayOfLeapYear.getMillis())/1000 , secondsInOneYear);
+        newEndTime = firstDayOfLeapYear.plus(Period.years(2)).toDate();
+        assertEquals((newEndTime.getTime() - firstDayOfLeapYear.getMillis()) , secondsInTwoYears);
+    }
+    
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
@@ -47,4 +81,6 @@ public class HazardTest {
         }
         return data;
     }
+    
+  
 }
