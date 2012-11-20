@@ -158,6 +158,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     
     private List<PersonIdentifiers> personIdentifiersList;
 	private Map<Integer, Boolean> selectedMap = new HashMap<Integer, Boolean>();
+	private Integer passwordDaysRemaining;
 	
 	
     public void initBean()
@@ -303,7 +304,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return (loginExpire!=0)? loginExpire - daysSinceLastLogin:NOT_SET_TO_EXPIRE;
     }
     public Integer getPasswordDaysRemaining() {
-        return getPasswordDaysRemaining(getAccount(),userDAO.findByID(this.getUser().getUserID()));
+    	if(passwordDaysRemaining==null){
+    		passwordDaysRemaining = getPasswordDaysRemaining(getAccount(),userDAO.findByID(this.getUser().getUserID()));
+    	}
+        return passwordDaysRemaining;
     }
     public static Integer getPasswordDaysRemaining(Account account, User user) {
         Integer passwordExpire;
