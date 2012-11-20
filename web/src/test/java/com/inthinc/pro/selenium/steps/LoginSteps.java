@@ -1,9 +1,15 @@
 package com.inthinc.pro.selenium.steps;
 
+import java.util.regex.Pattern;
+
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
+import com.inthinc.pro.automation.jbehave.AutoAnnotationBuilder;
+import com.inthinc.pro.automation.jbehave.AutoPageRunner;
+import com.inthinc.pro.automation.jbehave.AutoStepVariables;
+import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.RandomValues;
@@ -459,34 +465,71 @@ public class LoginSteps extends WebSteps {
     }
     
     //TODO: MWEISS - This now works, I just need to make it universal so I can be fed a column from any page
-    @Then("the \"$tableColumn\" column sorts correctly")
-    public void thenIValidateTheSortByDateTimeColumnSortsCorrectly(String tableColumn) {
+    @Then("the \"$columnLink\" column sorts correctly")
+    public void thenIValidateTheSortByDateTimeColumnSortsCorrectly(String columnLink) {
 
-    	if(tableColumn.equals("Notifications Diagnostics Sort By Date Time")){
-    	
-        int i = 0;
-        
-        while (i < 2) {
-            String entry1 = notifdiag._text().entryDateTime().row(1).getText();
-            String entry2 = notifdiag._text().entryDateTime().row(15).getText();
-            notifdiag._link().sortByDateTime().click();
-            System.out.print("Entry 1: " + entry1 + "\nEntry 2: " + entry2 + "\n");
-        
-        int result = entry1.compareTo(entry2);
-        
-        if (result == 0) {
-            System.out.println("The names are equal.");
-       }
-       else if (result > 0) {
-            System.out.println(
-                "Entry 2 comes before Entry 1 alphabetically.");
-       }
-       else if (result < 0) {
-            System.out.println(
-               "Entry 1 comes before Entry 2 alphabetically.");
-       }
-       i++;  
-      }
-     }
+    	if(columnLink.equals("Sort By Date Time")){
+    		descending();
+    		notifdiag._link().sortByDateTime().click();
+    		ascending();
+    	}
     }
+    
+    public void ascending() {
+    	int y = 1;
+    	int g = 1;
+    	int h = 2;
+    	
+		while (y < 15){
+    		
+			String entry1 = notifdiag._text().entryDateTime().row(g).getText();  //get the first entry in the table
+			String entry2 = notifdiag._text().entryDateTime().row(h).getText();  //get the last entry in the table
+//			System.out.print("Entry 1: " + entry1 + "\nEntry 2: " + entry2 + "\n");
+    
+			int result = entry1.compareTo(entry2);  //compare the two entries
+    
+			if (result == 0) {
+				System.out.println("The names are equal.");
+			}
+			else if (result > 0) {
+				System.out.println("Entry 2 comes before Entry 1 alphabetically.  This is incorrect.  FAILED");
+				System.exit(0);//I need a more graceful error method
+			}
+			else if (result < 0) {
+				System.out.println("Entry 1 comes before Entry 2 alphabetically.");
+			}
+			g++; h++; y++;
+		}
+    	
+    }
+    
+    public void descending() {
+    	
+    	int z = 1;
+    	int i = 1;
+    	int j = 2;
+    	
+		while (z < 15){
+    		
+			String entry3 = notifdiag._text().entryDateTime().row(i).getText();  //get the first entry in the table
+			String entry4 = notifdiag._text().entryDateTime().row(j).getText();  //get the last entry in the table
+//			System.out.print("Entry 1: " + entry1 + "\nEntry 2: " + entry2 + "\n");
+    
+			int result = entry3.compareTo(entry4);  //compare the two entries
+    
+			if (result == 0) {
+				System.out.println("The names are equal.");
+			}
+			else if (result > 0) {
+				System.out.println("Entry 2 comes before Entry 1 alphabetically.");
+			}
+			else if (result < 0) {
+				System.out.println("Entry 1 comes before Entry 2 alphabetically.  This is incorrect.  FAILED");
+				System.exit(0);//I need a more graceful error method
+			}
+			i++; j++; z++;
+		}
+    	
+    }
+
 }
