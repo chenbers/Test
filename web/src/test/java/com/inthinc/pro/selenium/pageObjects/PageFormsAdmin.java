@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -37,12 +38,17 @@ public class PageFormsAdmin extends FormsBar {
         
     }
 
-    public class FormsAdminButtons {}
+    public class FormsAdminButtons {
+    	
+    	public TextButton newForm() {
+    		return new TextButton(FormsAdminEnum.NEW_FORM_LINK);
+    	}
+    }
 
     public class FormsAdminDropDowns {
     	
-    	public DropDown recordsPerPageWorking() {
-    		return new DropDown(FormsAdminEnum.RECORDS_WORKING_DROPDOWN);
+    	public DropDown recordsPerPageManage() {
+    		return new DropDown(FormsAdminEnum.RECORDS_MANAGE_DROPDOWN);
     	}
     	
     	public DropDown recordsPerPagePublished() {
@@ -52,68 +58,60 @@ public class PageFormsAdmin extends FormsBar {
     
     public class FormsAdminLinks {
     	
-    	public TextLink addFormTop() {
-    		return new TextLink(FormsAdminEnum.CREATE_FORM_TOP_LINK);
-    	}
-    	
-    	public TextLink addFormBottom() {
-    		return new TextLink(FormsAdminEnum.CREATE_FORM_BOTTOM_LINK);
-    	}
-    	
     	public TextLink working() {
-    		return new TextLink(FormsAdminEnum.WORKING_TAB);
+    		return new TextLink(FormsAdminEnum.MANAGE_TAB);
     	}
     	
     	public TextLink published() {
     		return new TextLink(FormsAdminEnum.PUBLISHED_TAB);
     	}
     	
-        public TextLink sortBySelectWorking() {
-        	return new TextLink(FormsAdminEnum.SELECT_WORKING_LINK);
-        }
+//        public TextLink sortBySelectManage() {
+//        	return new TextLink(FormsAdminEnum.SELECT_MANAGE_LINK);
+//        }
+//        
+//        public TextLink sortBySelectPublished() {
+//        	return new TextLink(FormsAdminEnum.SELECT_PUBLISHED_LINK);
+//        }
         
-        public TextLink sortBySelectPublished() {
-        	return new TextLink(FormsAdminEnum.SELECT_PUBLISHED_LINK);
-        }
-        
-        public TextLink sortByNameWorking() {
-        	return new TextLink(FormsAdminEnum.NAME_WORKING_LINK);
+        public TextLink sortByNameManage() {
+        	return new TextLink(FormsAdminEnum.NAME_MANAGE_LINK);
         }
 
         public TextLink sortByNamePublished() {
         	return new TextLink(FormsAdminEnum.NAME_PUBLISHED_LINK);
         }
         
-        public TextLink sortByBaseFormIdWorking() {
-        	return new TextLink(FormsAdminEnum.BASE_FORM_ID_WORKING_LINK);
+        public TextLink sortByBaseFormIdManage() {
+        	return new TextLink(FormsAdminEnum.BASE_FORM_ID_MANAGE_LINK);
         }
         
         public TextLink sortByBaseFormIdPublished() {
         	return new TextLink(FormsAdminEnum.BASE_FORM_ID_PUBLISHED_LINK);
         }
 
-        public TextLink sortByVersionWorking() {
-        	return new TextLink(FormsAdminEnum.VERSION_WORKING_LINK);
+        public TextLink sortByVersionManage() {
+        	return new TextLink(FormsAdminEnum.VERSION_MANAGE_LINK);
         }
         
         public TextLink sortByVersionPublished() {
         	return new TextLink(FormsAdminEnum.VERSION_PUBLISHED_LINK);
         }        
 
-        public TextLink sortByDescriptionWorking() {
-        	return new TextLink(FormsAdminEnum.DESCRIPTION_WORKING_LINK);
+        public TextLink sortByDescriptionManage() {
+        	return new TextLink(FormsAdminEnum.DESCRIPTION_MANAGE_LINK);
         }
         
-        public TextLink sortByStatusWorking() {
-        	return new TextLink(FormsAdminEnum.STATUS_WORKING_LINK);
+        public TextLink sortByStatusManage() {
+        	return new TextLink(FormsAdminEnum.STATUS_MANAGE_LINK);
         }
 
         public TextLink sortByDescriptionPublished() {
         	return new TextLink(FormsAdminEnum.DESCRIPTION_PUBLISHED_LINK);
         }
 
-        public TextLink sortByTriggerWorking() {
-        	return new TextLink(FormsAdminEnum.TRIGGER_WORKING_LINK);
+        public TextLink sortByTriggerManage() {
+        	return new TextLink(FormsAdminEnum.TRIGGER_MANAGE_LINK);
         }
         
         public TextLink sortByTriggerPublished() {
@@ -136,16 +134,16 @@ public class PageFormsAdmin extends FormsBar {
         	return new TextTableLink(FormsAdminEnum.EDIT_ENTRY_LINK);
         }
         
-        public TextLink previousWorking() {
-        	return new TextLink(FormsAdminEnum.PREVIOUS_WORKING);
+        public TextLink previousManage() {
+        	return new TextLink(FormsAdminEnum.PREVIOUS_MANAGE);
         }
         
-        public TextLink pageNumberWorking() {
-        	return new TextLink(FormsAdminEnum.PAGE_NUMBER_WORKING);
+        public TextLink pageNumberManage() {
+        	return new TextLink(FormsAdminEnum.PAGE_NUMBER_MANAGE);
         }
         
-        public TextLink nextWorking() {
-        	return new TextLink(FormsAdminEnum.NEXT_WORKING);
+        public TextLink nextManage() {
+        	return new TextLink(FormsAdminEnum.NEXT_MANAGE);
         }
         
         public TextLink previousPublished() {
@@ -164,8 +162,8 @@ public class PageFormsAdmin extends FormsBar {
 
     public class FormsAdminTextFields {
 
-        public TextField searchWorking() {
-            return new TextField(FormsAdminEnum.SEARCH_WORKING_TEXTFIELD);
+        public TextField searchManage() {
+            return new TextField(FormsAdminEnum.SEARCH_MANAGE_TEXTFIELD);
         }
 
         public TextField searchPublished() {
@@ -180,60 +178,60 @@ public class PageFormsAdmin extends FormsBar {
     		return new Text(FormsAddEnum.TITLE);
     	}
     	
-    	public TextTable entryNameWorking() {
-    		return new TextTable(FormsAdminEnum.NAME_WORKING_ENTRY);
+    	public TextTable entryNameManage() {
+    		return new TextTable(FormsAdminEnum.NAME_MANAGE_ENTRY);
     	}
     	
     	public TextTable entryNamePublished() {
     		return new TextTable(FormsAdminEnum.NAME_PUBLISHED_ENTRY);
     	}
     	
-    	public TextTable entryBaseFormIdWorking() {
-    		return new TextTable(FormsAdminEnum.BASE_FORM_ID_WORKING_ENTRY);
+    	public TextTable entryBaseFormIdManage() {
+    		return new TextTable(FormsAdminEnum.BASE_FORM_ID_MANAGE_ENTRY);
     	}
     	
     	public TextTable entryBaseFormIdPublished() {
     		return new TextTable(FormsAdminEnum.BASE_FORM_ID_PUBLISHED_ENTRY);
     	}
     	
-    	public TextTable entryVersionWorking() {
-    		return new TextTable(FormsAdminEnum.VERSION_WORKING_ENTRY);
+    	public TextTable entryVersionManage() {
+    		return new TextTable(FormsAdminEnum.VERSION_MANAGE_ENTRY);
     	}
     	
     	public TextTable entryVersionPublished() {
     		return new TextTable(FormsAdminEnum.VERSION_PUBLISHED_ENTRY);
     	}
     	
-    	public TextTable entryDescriptionWorking() {
-    		return new TextTable(FormsAdminEnum.DESCRIPTION_WORKING_ENTRY);
+    	public TextTable entryDescriptionManage() {
+    		return new TextTable(FormsAdminEnum.DESCRIPTION_MANAGE_ENTRY);
     	}
     	
     	public TextTable entryDescriptionPublished() {
     		return new TextTable(FormsAdminEnum.DESCRIPTION_PUBLISHED_ENTRY);
     	}
     	
-    	public TextTable entryStatusWorking() {
-    		return new TextTable(FormsAdminEnum.STATUS_WORKING_ENTRY);
+    	public TextTable entryStatusManage() {
+    		return new TextTable(FormsAdminEnum.STATUS_MANAGE_ENTRY);
     	}
 
-    	public TextTable entryTriggerWorking() {
-    		return new TextTable(FormsAdminEnum.TRIGGER_WORKING_ENTRY);
+    	public TextTable entryTriggerManage() {
+    		return new TextTable(FormsAdminEnum.TRIGGER_MANAGE_ENTRY);
     	}
     	
     	public TextTable entryTriggerPublished() {
     		return new TextTable(FormsAdminEnum.TRIGGER_PUBLISHED_ENTRY);
     	}
     	
-    	public Text entriesWorking() {
-    		return new Text(FormsAdminEnum.ENTRIES_WORKING_TEXT);
+    	public Text entriesManage() {
+    		return new Text(FormsAdminEnum.ENTRIES_MANAGE_TEXT);
     	}
     	
     	public Text entriesPublished() {
     		return new Text(FormsAdminEnum.ENTRIES_PUBLISHED_TEXT);
     	}
     	
-    	public Text noRecordsWorkingError() {
-    	return new Text(FormsAdminEnum.NO_RECORDS_FOUND_WORKING_ERROR);
+    	public Text noRecordsManageError() {
+    	return new Text(FormsAdminEnum.NO_RECORDS_FOUND_MANAGE_ERROR);
     	}
     	
     	public Text noRecordsPublishedError() {
@@ -243,11 +241,11 @@ public class PageFormsAdmin extends FormsBar {
     
     public class FormsTablesCheckBoxes {
         public CheckBox workingCheckAll() {
-            return new CheckBox(FormsAdminEnum.SELECT_ALL_WORKING_CHECKBOX);
+            return new CheckBox(FormsAdminEnum.SELECT_ALL_MANAGE_CHECKBOX);
         }
 
         public CheckBoxTable workingEntryCheck() {
-            return new CheckBoxTable(FormsAdminEnum.WORKING_CHECKBOX_ENTRY);
+            return new CheckBoxTable(FormsAdminEnum.MANAGE_CHECKBOX_ENTRY);
         }
         
         public CheckBox publishedCheckAll() {
