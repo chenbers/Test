@@ -57,8 +57,8 @@ public class AssetServiceImplTest {
     @Test
     public void testGetsRedFlagCountFromBeginDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
-        // Start date will be 2010-11-25 at some random time
-        final Date startDate = new DateTime(2011, 11, 25, 13, 45, 27, 1).toDate();
+        // Start date will be 2012-11-25 at some random time
+        final Date startDate = new DateTime(2012, 11, 25, 13, 45, 27, 1).toDate();
 
         // Expected end date is today's
         final DateMidnight dateMidnight = new DateMidnight();
@@ -144,8 +144,8 @@ public class AssetServiceImplTest {
     @Test
     public void testGetsRedFlagsFromBeginDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
-        // Start date will be 2010-11-25
-        final Date startDate = new DateTime(2011, 11, 25, 0, 0, 0, 0).toDate();
+        // Start date will be 2012-11-25
+        final Date startDate = new DateTime(2012, 11, 25, 0, 0, 0, 0).toDate();
 
         // Expected end date is today's
         DateMidnight dateMidnight = new DateMidnight();
