@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsAddEnum implements SeleniumEnums {
     DEFAULT_URL(appUrl + "/forms/build"),
-    TITLE("Add Form", "//span[@class='admin']"),
+    TITLE("Add Form", "//form[@id='formForm']/legend"),
 
     NAME_LABEL("Name:", "//label[@for='renameFormField']"),
     DESCRIPTION_LABEL("Description:", "//label[@for='description']"),
@@ -16,14 +16,14 @@ public enum FormsAddEnum implements SeleniumEnums {
     STATUS_LABEL("Status:", "//label[@for='select-status']"),
     HOS_LABEL("HOS:", "//label[@for='hos-filter']"),
     VEHICLE_TAGS_LABEL("Vehicle Tags:", "//label[@for='tags']"),
-    FILTER_GROUPS_LABEL("Filter Groups:", "//label[@for='group-search']"),
+    SELECT_GROUP_LABEL("Select Group", "//span[@class='navbar-text']"),
     PROPERTIES_LABEL("Properties", "//div[@class='propertiesPane']/h3"),
     VIEW_PROPERTIES_LABEL("First add a control, then select it to view its properties here.", "//li[@class='emptyData']"),
     
-    SAVE_TOP("Save", "//a[@id='saveForm-top']"),
-    CANCEL_TOP("Cancel", "//a[@id='cancelForm-top']"),
-    SAVE_BOTTOM("Save", "//a[@id='saveForm-bottom']"), 
-    CANCEL_BOTTOM("Cancel", "//a[@id='cancelForm-bottom']"),
+    SAVE_TOP("Save", "//a[@id='saveForm-']"),
+    CANCEL_TOP("Cancel", "//a[@id='cancelForm-']"),
+    SAVE_BOTTOM("Save", "//a[@id='saveForm-']"), 
+    CANCEL_BOTTOM("Cancel", "//a[@id='cancelForm-']"),
 
     NAME_FIELD(null, "renameFormField"),
     DESCRIPTION_FIELD(null, "description"),
@@ -36,7 +36,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     VEHICLE_TAGS_ARROW(null, "//div[@class='text-arrow']"),
     FILTER_GROUPS_FIELD("Filter Groups:", "group-search"), 
     GROUPS_ARROW(null, "//ins[@class='jstree-icon']"),//needs more work so I can select specific arrows
-    GROUPS_CHECKBOX(null, "//li[@id='1']/a/ins[1]"),//needs more work so I can select specific checkboxes
+    GROUPS_CHECKBOX(null, "//ins[@class='jstree-checkbox']"),//needs more work so I can select specific checkboxes
     
     TEXT_LINK("Text", "//a[@class='toolButton inputText ui-draggable']"),
     NUMERIC_LINK("Numeric", "//a[@class='toolButton inputNumeric ui-draggable']"),
