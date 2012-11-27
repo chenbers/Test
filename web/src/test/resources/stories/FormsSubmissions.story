@@ -5,7 +5,6 @@ I need a place to view and edit existing submitted forms.
 Scenario: TCXXXX Forms Submissions Page - UI Test
 Given I am logged in
 When I go to the forms submissions page
-Then I validate the Title text is "List Submissions"
 And I validate the Form dropdown is present
 And I validate the Date dropdown is present
 And I validate the Refresh button is present
