@@ -21,6 +21,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
+import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 
 public class LoginSteps extends WebSteps {
 	
@@ -91,6 +92,7 @@ public class LoginSteps extends WebSteps {
     PageAdminDevices devicesPage = new PageAdminDevices();
     PageAdminEditDevice deviceEditPage = new PageAdminEditDevice();
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
+    PageNotificationsSafety safteydiag = new PageNotificationsSafety();
     PageFormsSubmissions submissions = new PageFormsSubmissions();
 
     private static final PageLogin page = new PageLogin();
@@ -466,11 +468,57 @@ public class LoginSteps extends WebSteps {
     
     //TODO: MWEISS - This now works, I just need to make it universal so I can be fed a column from any page
     @Then("the \"$columnLink\" column sorts correctly")
+//    @Then("the \"$page\" \"$type\" \"$element\" column sorts correctly")  I'm thinking of implementing this method so it takes it and
+    //turns it into a string, and then I pass that string 
     public void thenIValidateTheSortByDateTimeColumnSortsCorrectly(String columnLink) {
 
+    	String notifRedFlagPageDateTime = "notifredflag._link().sortByDateTime().click();";
+    	String notifRedFlagPageGroup = "notifredflag._link().sortByGroup().click();";
+    	String notifRedFlagPageDriver = "notifredflag._link().sortByDriver().click();";    	
+    	String notifRedFlagPageVehicle = "notifredflag._link().sortByVehicle().click();";    
+    	
+    	String notifDiagPageDateTime = "notifdiag._link().sortByDateTime().click();";
+    	String notifDiagPageGroup = "notifdiag._link().sortByGroup().click();";
+    	String notifDiagPageDriver = "notifdiag._link().sortByDriver().click();";    	
+    	String notifDiagPageVehicle = "notifdiag._link().sortByVehicle().click();";    
+    	
+    	String notifSafetyPageDateTime = "notifsafety._link().sortByDateTime().click();";
+    	String notifSafetyPageGroup = "notifsafety._link().sortByGroup().click();";
+    	String notifSafetyPageDriver = "notifsafety._link().sortByDriver().click();";    	
+    	String notifSafetyPageVehicle = "notifsafety._link().sortByVehicle().click();";  
+    	
+    	String notifZonesPageDateTime = "notifzones._link().sortByDateTime().click();";
+    	String notifZonesPageGroup = "notifzones._link().sortByGroup().click();";
+    	String notifZonesPageDriver = "notifzones._link().sortByDriver().click();";    	
+    	String notifZonesPageVehicle = "notifzones._link().sortByVehicle().click();";  
+    	
+    	String notifHOSPageDateTime = "notifhos._link().sortByDateTime().click();";
+    	String notifHOSPageGroup = "notifhos._link().sortByGroup().click();";
+    	String notifHOSPageDriver = "notifhos._link().sortByDriver().click();";    	
+    	String notifHOSPageVehicle = "notifhos._link().sortByVehicle().click();";  
+    	
+    	String notifEmergencyPageDateTime = "notifemergency._link().sortByDateTime().click();";
+    	String notifEmergencyPageGroup = "notifemergency._link().sortByGroup().click();";
+    	String notifEmergencyPageDriver = "notifemergency._link().sortByDriver().click();";    	
+    	String notifEmergencyPageVehicle = "notifemergency._link().sortByVehicle().click();"; 
+    	
+    	String notifCrashPageDateTime = "notifcrash._link().sortByDateTime().click();";
+    	String notifCrashPageGroup = "notifcrash._link().sortByGroup().click();";
+    	String notifCrashPageDriver = "notifcrash._link().sortByDriver().click();";    	
+    	String notifCrashPageVehicle = "notifcrash._link().sortByVehicle().click();"; 
+    	String notifCrashPageOccupants = "notifcrash._link().sortByOccupants().click();";
+    	String notifCrashPageStatus = "notifcrash._link().sortByStatus().click();";    	
+    	String notifCrashPageWeather = "notifcrash._link().sortByWeather().click();"; 
+    	
+    	String notifDriverLoginsPageDateTime = "notifdriverlogins._link().sortByDateTime().click();";
+    	String notifDriverLoginsPageGroup = "notifdriverlogins._link().sortByGroup().click();";
+    	String notifDriverLoginsPageDriver = "notifdriverlogins._link().sortByDriver().click();";    	
+    	String notifDriverLoginsPageVehicle = "notifdriverlogins._link().sortByVehicle().click();"; 
+    	
     	if(columnLink.equals("Sort By Date Time")){
     		descending();
     		notifdiag._link().sortByDateTime().click();
+    		System.out.println("And I click the sort link");
     		ascending();
     	}
     }
