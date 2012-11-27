@@ -41,7 +41,7 @@ public class PageFormsAdmin extends FormsBar {
     public class FormsAdminButtons {
     	
     	public TextButton newForm() {
-    		return new TextButton(FormsAdminEnum.NEW_FORM_LINK);
+    		return new TextButton(FormsAdminEnum.NEW_FORM_BUTTON);
     	}
     }
 
@@ -294,7 +294,7 @@ public class PageFormsAdmin extends FormsBar {
 
 
     protected boolean checkIsOnPage() {
-        return _link().sortByEdit().isPresent() && _link().sortByPublish().isPresent();
+        return _link().sortByStatusManage().isPresent() && _button().newForm().isPresent();
     }
     
 }

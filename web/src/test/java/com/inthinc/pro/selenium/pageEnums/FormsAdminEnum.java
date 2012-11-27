@@ -11,7 +11,7 @@ public enum FormsAdminEnum implements SeleniumEnums {
     //No longer on page SEARCH_HEADER("Search:", "//div[@id='staging-forms-table_filter']"),
     //No longer on page FORMS_HEADER("Forms", "//label[@for='formSelection']"),
     
-    NEW_FORM_LINK("Create Form", "//a[@class='btn btn-inthinc pull-left']"),
+    NEW_FORM_BUTTON(null, "//i[@class='icon-plus icon-large']"),
     
     MANAGE_TAB("Working", "//div[2]/div[1]/div/ul/li[1]/a"),
     PUBLISHED_TAB("Published", "//div[2]/div[1]/div/ul/li[2]/a"),

@@ -3,47 +3,9 @@ In order for drivers to submit electronic forms
 As an Administrator
 I need an interface to create a form and to forward to devices for drivers to complete
 
-Scenario: TCXXXX Forms Add Page - UI Test - Main page
-Given I am logged in
-When I go to the forms admin page
-And I click the New Form button
-Then I validate the Title text is "Add Form"
-And I validate the Save Top button is present
-And I validate the Save Bottom button is present
-And I validate the Cancel Top button is present
-And I validate the Cancel Bottom button is present
-And I validate the Name Label text is present
-And I validate the Description Label text is present
-And I validate the Trigger Label text is present
-And I validate the Version Label text is present
-And I validate the Status Label text is present
-And I validate the Filter Groups Label text is present
-And I validate the Properties Label text is present
-And I validate the View Properties Label text is present
-And I validate the Name textfield is present
-And I validate the Description textfield is present
-And I validate the Trigger dropdown is present
-And I validate the Version text is present
-And I validate the Status dropdown is present
-And I validate the Filter Groups textfield is present
-And I validate the 1st Row of the Groups checkbox is present
-And I validate the Text link is present
-And I validate the Numeric link is present
-And I validate the Date link is present
-And I validate the Choose One link is present
-And I validate the Select Multiple link is present
-
 Scenario: TCXXXX Forms Add Page - Save Top Button
 Given I am logged in
 When I go to the forms admin page
-And I click the New Form button
-And I check the 1st Row of the Groups checkbox
-And I type "Form TCXXXXAdd1" in the Name textfield
-And I click the Text link
-And I click the Save Top button
-Then I validate I am on the Forms Admin page
-When I type "Form TCXXXXAdd1" into the Search Manage textfield
-Then I validate the 1st Row of the Entry Name Manage text is "Form TCXXXXAdd1"
 When I click the Published link
 And I type "Form TCXXXXAdd1" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present

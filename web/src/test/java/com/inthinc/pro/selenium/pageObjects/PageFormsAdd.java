@@ -326,8 +326,8 @@ public class PageFormsAdd extends FormsTables {
     		return new Text(FormsAddEnum.VEHICLE_TAGS_LABEL);
     	}
     	
-    	public Text filterGroupsLabel() {
-    		return new Text(FormsAddEnum.FILTER_GROUPS_LABEL);
+    	public Text selectGroupLabel() {
+    		return new Text(FormsAddEnum.SELECT_GROUP_LABEL);
     	}
     	
     	public Text propertiesLabel() {
