@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
@@ -38,21 +39,25 @@ public class PageFormsManage extends FormsBar {
         
     }
 
-    public class FormsAdminButtons {
+    public class FormsManageButtons {
     	
     	public TextButton newForm() {
     		return new TextButton(FormsManageEnum.NEW_FORM_BUTTON);
     	}
+    	
+    	public Button gear() {
+    		return new Button(FormsManageEnum.GEAR);
+    	}
     }
 
-    public class FormsAdminDropDowns {
+    public class FormsManageDropDowns {
     	
     	public DropDown recordsPerPage() {
     		return new DropDown(FormsManageEnum.RECORDS_DROPDOWN);
     	}
     }
     
-    public class FormsAdminLinks extends FormsBarLinks {
+    public class FormsManageLinks extends FormsBarLinks {
     	
 //        public TextLink sortBySelectManage() {
 //        	return new TextLink(FormsManageEnum.SELECT_MANAGE_LINK);
@@ -62,27 +67,27 @@ public class PageFormsManage extends FormsBar {
 //        	return new TextLink(FormsManageEnum.SELECT_PUBLISHED_LINK);
 //        }
         
-        public TextLink sortByNameManage() {
+        public TextLink sortByName() {
         	return new TextLink(FormsManageEnum.NAME_LINK);
         }
         
-        public TextLink sortByBaseFormIdManage() {
+        public TextLink sortByBaseFormId() {
         	return new TextLink(FormsManageEnum.BASE_FORM_ID_LINK);
         }
 
-        public TextLink sortByVersionManage() {
+        public TextLink sortByVersion() {
         	return new TextLink(FormsManageEnum.VERSION_LINK);
         }      
 
-        public TextLink sortByDescriptionManage() {
+        public TextLink sortByDescription() {
         	return new TextLink(FormsManageEnum.DESCRIPTION_LINK);
         }
         
-        public TextLink sortByStatusManage() {
+        public TextLink sortByStatus() {
         	return new TextLink(FormsManageEnum.STATUS_LINK);
         }
 
-        public TextLink sortByTriggerManage() {
+        public TextLink sortByTrigger() {
         	return new TextLink(FormsManageEnum.TRIGGER_LINK);
         }
         
@@ -98,107 +103,116 @@ public class PageFormsManage extends FormsBar {
         	return new TextTableLink(FormsManageEnum.EDIT_ENTRY_LINK);
         }
         
-        public TextLink previousManage() {
+        public TextLink entryPublish() {
+        	return new TextLink(FormsManageEnum.PUBLISH_ENTRY_LINK);
+        }
+
+        public TextLink entryCopy() {
+        	return new TextLink(FormsManageEnum.COPY_ENTRY_LINK);
+        }
+        
+        public TextLink previous() {
         	return new TextLink(FormsManageEnum.PREVIOUS_MANAGE);
         }
         
-        public TextLink pageNumberManage() {
+        public TextLink pageNumber() {
         	return new TextLink(FormsManageEnum.PAGE_NUMBER_MANAGE);
         }
         
-        public TextLink nextManage() {
+        public TextLink next() {
         	return new TextLink(FormsManageEnum.NEXT_MANAGE);
         }
         
     }
 
-    public class FormsAdminTextFields {
+    public class FormsManageTextFields {
 
-        public TextField searchManage() {
+        public TextField search() {
             return new TextField(FormsManageEnum.SEARCH_TEXTFIELD);
         }
         
     }
     
-    public class FormsAdminTexts {
+    public class FormsManageTexts {
     	
     	public Text title() {
     		return new Text(FormsAddEnum.TITLE);
     	}
     	
-    	public TextTable entryNameManage() {
+    	public TextTable entryName() {
     		return new TextTable(FormsManageEnum.NAME_MANAGE_ENTRY);
     	}
     	
-    	public TextTable entryBaseFormIdManage() {
+    	public TextTable entryBaseFormId() {
     		return new TextTable(FormsManageEnum.BASE_FORM_ID_MANAGE_ENTRY);
     	}
     	
-    	public TextTable entryVersionManage() {
+    	public TextTable entryVersion() {
     		return new TextTable(FormsManageEnum.VERSION_MANAGE_ENTRY);
     	}
     	
-    	public TextTable entryDescriptionManage() {
+    	public TextTable entryDescription() {
     		return new TextTable(FormsManageEnum.DESCRIPTION_MANAGE_ENTRY);
     	}
     	
-    	public TextTable entryStatusManage() {
+    	public TextTable entryStatus() {
     		return new TextTable(FormsManageEnum.STATUS_MANAGE_ENTRY);
     	}
 
-    	public TextTable entryTriggerManage() {
+    	public TextTable entryTrigger() {
     		return new TextTable(FormsManageEnum.TRIGGER_MANAGE_ENTRY);
     	}
     	
-    	public Text entriesManage() {
+    	public Text entries() {
     		return new Text(FormsManageEnum.ENTRIES_MANAGE_TEXT);
     	}
     	
-    	public Text noRecordsManageError() {
+    	public Text noRecordsError() {
     		return new Text(FormsManageEnum.NO_RECORDS_FOUND_MANAGE_ERROR);
     	}
 
     }
     
     public class FormsTablesCheckBoxes {
-        public CheckBox workingCheckAll() {
-            return new CheckBox(FormsManageEnum.SELECT_ALL_CHECKBOX);
-        }
-
-        public CheckBoxTable workingEntryCheck() {
-            return new CheckBoxTable(FormsManageEnum.CHECKBOX_ENTRY);
-        }
+// THESE ARE NOT CURRENTLY ON THE PAGE ANYMORE
+//        public CheckBox checkAll() {
+//            return new CheckBox(FormsManageEnum.SELECT_ALL_CHECKBOX);
+//        }
+//
+//        public CheckBoxTable entryCheck() {
+//            return new CheckBoxTable(FormsManageEnum.CHECKBOX_ENTRY);
+//        }
 
     }
     
-    public class FormsAdminPopUps extends MastheadPopUps {}
+    public class FormsManagePopUps extends MastheadPopUps {}
 
-    public FormsAdminButtons _button() {
-        return new FormsAdminButtons();
+    public FormsManageButtons _button() {
+        return new FormsManageButtons();
     }
     
     public FormsTablesCheckBoxes _checkBox() {
     	return new FormsTablesCheckBoxes();
     }
 
-    public FormsAdminDropDowns _dropDown() {
-        return new FormsAdminDropDowns();
+    public FormsManageDropDowns _dropDown() {
+        return new FormsManageDropDowns();
     }
 
-    public FormsAdminLinks _link() {
-        return new FormsAdminLinks();
+    public FormsManageLinks _link() {
+        return new FormsManageLinks();
     }
 
-    public FormsAdminTexts _text() {
-        return new FormsAdminTexts();
+    public FormsManageTexts _text() {
+        return new FormsManageTexts();
     }
 
-    public FormsAdminTextFields _textField() {
-        return new FormsAdminTextFields();
+    public FormsManageTextFields _textField() {
+        return new FormsManageTextFields();
     }
     
-    public FormsAdminPopUps _popUp(){
-        return new FormsAdminPopUps();
+    public FormsManagePopUps _popUp(){
+        return new FormsManagePopUps();
     }
    
 
@@ -208,7 +222,7 @@ public class PageFormsManage extends FormsBar {
 
 
     protected boolean checkIsOnPage() {
-        return _link().sortByStatusManage().isPresent() && _button().newForm().isPresent();
+        return _link().sortByStatus().isPresent() && _button().newForm().isPresent();
     }
     
 }
