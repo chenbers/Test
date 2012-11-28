@@ -13,11 +13,6 @@ public enum FormsManageEnum implements SeleniumEnums {
     
     NEW_FORM_BUTTON(null, "//i[@class='icon-plus icon-large']"),
     
-    MANAGE_TAB("Working", "//div[2]/div[1]/div/ul/li[1]/a"),
-    PUBLISHED_TAB("Published", "//div[2]/div[1]/div/ul/li[2]/a"),
-    SUBMISSIONS_TAB("Published", "//div[2]/div[1]/div/ul/li[3]/a"),
-    CUSTOMERS_TAB("Published", "//div[2]/div[1]/div/ul/li[4]/a"),
-    
     RECORDS_DROPDOWN("records per page", "//select[@name='staging-forms-table_length']"),
     SEARCH_TEXTFIELD("Search:", "//div[@id='staging-forms-table_filter']/label/input"),
     
