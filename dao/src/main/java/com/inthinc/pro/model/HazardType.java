@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.Period;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
@@ -24,8 +26,8 @@ public enum HazardType implements OptionValue {
     WEATHER_SLIPPERY(1,             10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather", "Wet/Slippery"),
     WEATHER_FLOODING(2,             10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather", "Flooding"),
     WEATHER_SNOWICE(3,              10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather", "Show/Ice") ,
-    WEATHER_VISIBILITY(5,           10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather", "Low Visibility (Fog/Smoke)"),
     WEATHER_WINDGUSTS(4,            10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather", "Wind Gusts"),
+    WEATHER_VISIBILITY(5,           10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather", "Low Visibility (Fog/Smoke)"),
     WEATHER_OTHER(6,                10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather", "Other"),
     
     ROADACTIVITY_TRAFFIC(21,        5*MeasurementConversionUtil.METERS_IN_MILE , Severity.NORMAL, Period.hours(4), "Road Activity", "Traffic"),
@@ -74,8 +76,12 @@ public enum HazardType implements OptionValue {
         return code;
     }
 
-    public long getShelfLifeSeconds() {
-        return defaultDuration.getSeconds();
+    public long getShelfLifeSeconds() { 
+    	System.out.println("getShelfLifeSeconds for "+this+" would have returned "+defaultDuration.getSeconds());
+    	Duration duration = defaultDuration.toDurationFrom(new DateTime());
+    	System.out.println("getShelfLifeSeconds for "+this+" about to return "+duration.toStandardSeconds().getSeconds());
+    	return duration.toStandardSeconds().getSeconds();
+        //return defaultDuration.toStandardSeconds().getSeconds();
     }
     @XmlElement(name = "radiusMeters")
     @JsonProperty(value = "radiusMeters")
