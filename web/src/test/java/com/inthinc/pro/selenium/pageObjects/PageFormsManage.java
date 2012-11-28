@@ -52,15 +52,7 @@ public class PageFormsManage extends FormsBar {
     	}
     }
     
-    public class FormsAdminLinks {
-    	
-    	public TextLink working() {
-    		return new TextLink(FormsManageEnum.MANAGE_TAB);
-    	}
-    	
-    	public TextLink published() {
-    		return new TextLink(FormsManageEnum.PUBLISHED_TAB);
-    	}
+    public class FormsAdminLinks extends FormsBarLinks {
     	
 //        public TextLink sortBySelectManage() {
 //        	return new TextLink(FormsManageEnum.SELECT_MANAGE_LINK);
