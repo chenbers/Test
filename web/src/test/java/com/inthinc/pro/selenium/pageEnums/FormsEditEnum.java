@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsEditEnum implements SeleniumEnums {
     DEFAULT_URL(appUrl + "/forms/buildedit"),
-    TITLE("Edit Form", "//span[@class='admin']"),
+    TITLE("Edit Form", "//form[@id='formForm']/legend"),
 
     NAME_LABEL("Name:", "//label[@for='renameFormField']"),
     DESCRIPTION_LABEL("Description:", "//label[@for='description']"),

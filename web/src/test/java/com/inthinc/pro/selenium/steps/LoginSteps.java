@@ -454,16 +454,10 @@ public class LoginSteps extends WebSteps {
     //TODO: This can be deleted once forms is integrated into the main site
     //will need to go through all the story files and change this line to
     //And I click the Forms link
-    @When("I go to the forms admin page")
-    public void whenIGoToTheFormsAdminPage() {
+    @When("I go to the forms manage page")
+    public void whenIGoToTheFormsManagePage() {
     	//loginPage.open("https://schlumberger.inthinc.com:8443/forms/");  // for slb
     	loginPage.open("http://dev.tiwipro.com:8080/forms/");  //for dev
-    }
-    
-    @When("I go to the forms submissions page")
-    public void whenIGoToTheFormsSubmissionsPage() {    	
-    	//loginPage.open("https://schlumberger.inthinc.com:8443/forms/submissions");  // for slb
-    	loginPage.open("http://dev.tiwipro.com:8080/forms/submissions");  //for dev
     }
     
     //TODO: MWEISS - This now works, I just need to make it universal so I can be fed a column from any page
