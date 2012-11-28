@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsManageEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms"),
+    DEFAULT_URL(appUrl + "/forms/forms"),
     TITLE("Forms", "//span[@class='admin']"),
 
     //No longer on page SEARCH_HEADER("Search:", "//div[@id='staging-forms-table_filter']"),
@@ -35,9 +35,11 @@ public enum FormsManageEnum implements SeleniumEnums {
     DESCRIPTION_MANAGE_ENTRY("Description", "//table[@id='staging-forms-table']/tbody/tr[###]/td[4]"),
     STATUS_MANAGE_ENTRY("Status", "//table[@id='staging-forms-table']/tbody/tr[###]/td[5]"),
     TRIGGER_MANAGE_ENTRY("Trigger", "//table[@id='staging-forms-table']/tbody/tr[###]/td[6]"),
-    PUBLISH_ENTRY_LINK("Publish", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]"),
-    EDIT_ENTRY_LINK("Edit", "//table[@id='staging-forms-table']/tbody/tr[###]/td[8]"),
-    
+    GEAR(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]"),
+    EDIT_ENTRY_LINK("Edit", "//a[contains(@id,'edit_')]"),
+    PUBLISH_ENTRY_LINK("Publish", "//a[contains(@id,'publish_')]"),
+    COPY_ENTRY_LINK("Copy", "//a[contains(@id,'copy_')]"),
+
     NO_RECORDS_FOUND_MANAGE_ERROR("No matching records found", "//table[@id='staging-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
     
     ENTRIES_MANAGE_TEXT("Showing ### to ### of ### entries", "//div[@id='staging-forms-table_info']"),
