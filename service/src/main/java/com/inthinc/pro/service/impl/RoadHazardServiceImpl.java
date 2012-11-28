@@ -69,7 +69,7 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
                 String groupKey = type.toString().substring(0, endOfGroupIndex);
                 try{
                     type.setGroup(messageSource.getMessage(type.getClass().getSimpleName()+"."+groupKey+".group", null, theLocale));
-                    type.setName(messageSource.getMessage(type.getClass().getSimpleName()+"."+type.name()+".name", null, theLocale));
+                    type.setName (messageSource.getMessage(type.getClass().getSimpleName()+"."+type.name()+".name", null, theLocale));
                 } catch(NoSuchMessageException nsme){
                     logger.error(nsme);
                 }
