@@ -1,8 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.CheckBox;
-import com.inthinc.pro.automation.elements.CheckBoxTable;
+import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -45,8 +43,8 @@ public class PageFormsManage extends FormsBar {
     		return new TextButton(FormsManageEnum.NEW_FORM_BUTTON);
     	}
     	
-    	public Button gear() {
-    		return new Button(FormsManageEnum.GEAR);
+    	public ButtonTable gear() {
+    		return new ButtonTable(FormsManageEnum.GEAR);
     	}
     }
 
@@ -90,24 +88,20 @@ public class PageFormsManage extends FormsBar {
         public TextLink sortByTrigger() {
         	return new TextLink(FormsManageEnum.TRIGGER_LINK);
         }
-        
-        public TextLink sortByPublish() {
-        	return new TextLink(FormsManageEnum.PUBLISH_LINK);
-        }
-        
-        public TextLink sortByEdit() {
-        	return new TextLink(FormsManageEnum.EDIT_LINK);
-        }
-        
-        public TextTableLink entryEdit() {
+// HAS CURRENTLY BEEN REMOVED        
+//        public TextLink sortByPublish() {
+//        	return new TextLink(FormsManageEnum.PUBLISH_LINK);
+//        }
+//                
+        public TextTableLink edit() {
         	return new TextTableLink(FormsManageEnum.EDIT_ENTRY_LINK);
         }
         
-        public TextLink entryPublish() {
+        public TextLink publish() {
         	return new TextLink(FormsManageEnum.PUBLISH_ENTRY_LINK);
         }
 
-        public TextLink entryCopy() {
+        public TextLink copy() {
         	return new TextLink(FormsManageEnum.COPY_ENTRY_LINK);
         }
         

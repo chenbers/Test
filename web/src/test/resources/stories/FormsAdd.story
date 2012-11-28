@@ -6,6 +6,14 @@ I need an interface to create a form and to forward to devices for drivers to co
 Scenario: TCXXXX Forms Add Page - Save Top Button
 Given I am logged in
 When I go to the forms admin page
+And I click the New Form button
+And I check the 1st Row of the Groups checkbox
+And I type "Form TCXXXXAdd1" in the Name textfield
+And I click the Text link
+And I click the Save Top button
+Then I validate I am on the Forms Admin page
+When I type "Form TCXXXXAdd1" into the Search Manage textfield
+Then I validate the 1st Row of the Entry Name Manage text is "Form TCXXXXAdd1"
 When I click the Published link
 And I type "Form TCXXXXAdd1" into the Search Published textfield
 Then I validate the 1st Row of the Entry Base Form Id Published text is not present
@@ -82,6 +90,106 @@ Then I validate the 1st Row of the Entry Publish link is not present
 When I click the Published link
 And I type "Form TCXXXXAdd4" into the Search Published textfield
 Then I validate the 1st Row of the Entry Name Published text is "Form TCXXXXAdd4"
+
+Scenario: TCXXXX: Forms Add Page - Add Form link top (cancel - no changes)
+Given I am logged in
+When I go to the forms manage page
+And I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "No Trigger"
+And I validate the Version text is ""
+And I validate the Status dropdown is "Active"
+And I validate the Filter Groups field is ""
+And I validate the 1st Row of the Groups checkbox is not checked
+And I validate the View Properties Label text is present
+When I click the Cancel Top button
+Then I validate I am on the Forms Manage page
+When I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "No Trigger"
+And I validate the Version text is ""
+And I validate the Status dropdown is "Active"
+And I validate the Filter Groups field is ""
+And I validate the 1st Row of the Groups checkbox is not checked
+And I validate the View Properties Label text is present
+
+Scenario: TCXXXX: Forms Add Page - Add Form link top (cancel - changes)
+Given I am logged in
+When I go to the forms manage page
+And I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+When I type "TCXXXX" into the Name field
+And I type "TCXXXX" into the Description field
+And I select "Post Trip" from the Trigger dropdown
+And I select "Inactive" from the Status dropdown
+And I type "fleet" into the Filter Groups field
+And I check the 1st Row of the Groups checkbox
+And I click the Cancel Top button
+Then I validate I am on the Forms Manage page
+When I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the 1st Row of the Groups checkbox is not checked
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "No Trigger"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the Status dropdown is "Active"
+
+Scenario: TCXXXX: Forms Add Page - Add Form link bottom (cancel - no changes)
+Given I am logged in
+When I go to the forms manage page
+And I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "No Trigger"
+And I validate the Version text is ""
+And I validate the Status dropdown is "Active"
+And I validate the Filter Groups field is ""
+And I validate the 1st Row of the Groups checkbox is not checked
+And I validate the View Properties Label text is present
+When I click the Cancel Bottom button
+Then I validate I am on the Forms Manage page
+When I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "No Trigger"
+And I validate the Version text is ""
+And I validate the Status dropdown is "Active"
+And I validate the Filter Groups field is ""
+And I validate the 1st Row of the Groups checkbox is not checked
+And I validate the View Properties Label text is present
+
+Scenario: TCXXXX: Forms Add Page - Add Form link bottom (cancel - changes)
+Given I am logged in
+When I go to the forms manage page
+And I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the Name field is ""
+When I type "TCXXXX" into the Name field
+And I type "TCXXXX" into the Description field
+And I select "Post Trip" from the Trigger dropdown
+And I select "Inactive" from the Status dropdown
+And I type "fleet" into the Filter Groups field
+And I check the 1st Row of the Groups checkbox
+And I click the Cancel Bottom button
+Then I validate I am on the Forms Manage page
+When I click the New Form link
+Then I validate I am on the Forms Add page
+And I validate the 1st Row of the Groups checkbox is not checked
+And I validate the Name field is ""
+And I validate the Description field is ""
+And I validate the Trigger dropdown is "No Trigger"
+And I validate the Version text is ""
+And I validate the Filter Groups field is ""
+And I validate the Status dropdown is "Active"
 
 Scenario: TCXXXX Forms Add Page - UI Test - Text link
 Given I am logged in

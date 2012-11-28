@@ -154,6 +154,14 @@ public class PageFormsAdd extends FormsTables {
     		return new DropDown(FormsAddEnum.KIND_DROPDOWN);
     	}
     	
+    	public DropDown triggerProduct() {
+    		return new DropDown(FormsAddEnum.TRIGGER_PRODUCT);
+    	}
+    	
+    	public DropDown triggerAction() {
+    		return new DropDown(FormsAddEnum.TRIGGER_ACTION);
+    	}
+    	
     }
     
     public class FormsAddLinks {

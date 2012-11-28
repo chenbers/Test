@@ -28,6 +28,8 @@ public enum FormsAddEnum implements SeleniumEnums {
     NAME_FIELD(null, "renameFormField"),
     DESCRIPTION_FIELD(null, "description"),
     TRIGGER_DROPDOWN(null, "select-trigger"),
+    TRIGGER_PRODUCT(null, "select-triggerProductType"),
+    TRIGGER_ACTION(null, "select-triggerActionType"),
     STATUS_DROPDOWN(null, "select-status"),
     ROUTE_TRIGGER_EXPRESSION_FIELD(null, "routeTrigger"),
     VERSION_TEXT(null, "//input[@id='version']"),

@@ -23,7 +23,8 @@ public enum FormsManageEnum implements SeleniumEnums {
     DESCRIPTION_LINK("Description", "//th[@id='column-staging-description']"),
     STATUS_LINK("Status", "//th[@id='column-status']"),
     TRIGGER_LINK("Trigger", "//th[@id='column-staging-trigger']"),
-    PUBLISH_LINK("Publish", "//th[@id='column-staging-publish']"),
+    // IS CURRENTLY NO LONGER PRESENT
+    //    PUBLISH_LINK("Publish", "//th[@id='column-staging-publish']"),
     EDIT_LINK("Edit", "//th[@id='column-staging-edit']"),
 
     SELECT_ALL_CHECKBOX(null, "//th[@id='column-staging-select']/input[@id='select-all']"),
@@ -35,8 +36,8 @@ public enum FormsManageEnum implements SeleniumEnums {
     DESCRIPTION_MANAGE_ENTRY("Description", "//table[@id='staging-forms-table']/tbody/tr[###]/td[4]"),
     STATUS_MANAGE_ENTRY("Status", "//table[@id='staging-forms-table']/tbody/tr[###]/td[5]"),
     TRIGGER_MANAGE_ENTRY("Trigger", "//table[@id='staging-forms-table']/tbody/tr[###]/td[6]"),
-    GEAR(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]"),
-    EDIT_ENTRY_LINK("Edit", "//a[contains(@id,'edit_')]"),
+    GEAR(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/button"),
+    EDIT_ENTRY_LINK("Edit", "//table[@id='staging-forms-table']/tbody/tr[1]/td[7]/div/ul/li[###]"),
     PUBLISH_ENTRY_LINK("Publish", "//a[contains(@id,'publish_')]"),
     COPY_ENTRY_LINK("Copy", "//a[contains(@id,'copy_')]"),
 
