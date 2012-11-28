@@ -77,11 +77,8 @@ public enum HazardType implements OptionValue {
     }
 
     public long getShelfLifeSeconds() { 
-    	System.out.println("getShelfLifeSeconds for "+this+" would have returned "+defaultDuration.getSeconds());
     	Duration duration = defaultDuration.toDurationFrom(new DateTime());
-    	System.out.println("getShelfLifeSeconds for "+this+" about to return "+duration.toStandardSeconds().getSeconds());
     	return duration.toStandardSeconds().getSeconds();
-        //return defaultDuration.toStandardSeconds().getSeconds();
     }
     @XmlElement(name = "radiusMeters")
     @JsonProperty(value = "radiusMeters")
