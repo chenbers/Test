@@ -74,8 +74,8 @@ public class PageFormsAdd extends FormsTables {
     
     public class FormsAddCheckBoxes {
     	
-    	public CheckBoxTable groups() {
-    		return new CheckBoxTable(FormsAddEnum.GROUPS_CHECKBOX);
+    	public CheckBox groups() {
+    		return new CheckBox(FormsAddEnum.GROUPS_CHECKBOX);
     	}
     	
     	public CheckBox readOnly() {

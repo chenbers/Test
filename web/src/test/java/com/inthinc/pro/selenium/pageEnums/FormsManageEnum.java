@@ -30,23 +30,23 @@ public enum FormsManageEnum implements SeleniumEnums {
     SELECT_ALL_CHECKBOX(null, "//th[@id='column-staging-select']/input[@id='select-all']"),
     CHECKBOX_ENTRY(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
     
-    NAME_MANAGE_ENTRY("Name", "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
-    BASE_FORM_ID_MANAGE_ENTRY("Base Form ID", "//table[@id='staging-forms-table']/tbody/tr[###]/td[2]"),
-    VERSION_MANAGE_ENTRY("Version", "//table[@id='staging-forms-table']/tbody/tr[###]/td[3]"),
-    DESCRIPTION_MANAGE_ENTRY("Description", "//table[@id='staging-forms-table']/tbody/tr[###]/td[4]"),
-    STATUS_MANAGE_ENTRY("Status", "//table[@id='staging-forms-table']/tbody/tr[###]/td[5]"),
-    TRIGGER_MANAGE_ENTRY("Trigger", "//table[@id='staging-forms-table']/tbody/tr[###]/td[6]"),
+    NAME_ENTRY("Name", "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
+    BASE_FORM_ID_ENTRY("Base Form ID", "//table[@id='staging-forms-table']/tbody/tr[###]/td[2]"),
+    VERSION_ENTRY("Version", "//table[@id='staging-forms-table']/tbody/tr[###]/td[3]"),
+    DESCRIPTION_ENTRY("Description", "//table[@id='staging-forms-table']/tbody/tr[###]/td[4]"),
+    STATUS_ENTRY("Status", "//table[@id='staging-forms-table']/tbody/tr[###]/td[5]"),
+    TRIGGER_ENTRY("Trigger", "//table[@id='staging-forms-table']/tbody/tr[###]/td[6]"),
     GEAR(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/button"),
-    EDIT_ENTRY_LINK("Edit", "//table[@id='staging-forms-table']/tbody/tr[1]/td[7]/div/ul/li[###]"),
-    PUBLISH_ENTRY_LINK("Publish", "//a[contains(@id,'publish_')]"),
-    COPY_ENTRY_LINK("Copy", "//a[contains(@id,'copy_')]"),
+    EDIT_ENTRY_LINK("Edit", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[1]"),
+    PUBLISH_ENTRY_LINK("//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[2]"),
+    COPY_ENTRY_LINK("Copy", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[3]"),
 
-    NO_RECORDS_FOUND_MANAGE_ERROR("No matching records found", "//table[@id='staging-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
+    NO_RECORDS_FOUND_ERROR("No matching records found", "//table[@id='staging-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
     
-    ENTRIES_MANAGE_TEXT("Showing ### to ### of ### entries", "//div[@id='staging-forms-table_info']"),
+    ENTRIES_TEXT("Showing ### to ### of ### entries", "//div[@id='staging-forms-table_info']"),
     
-    PREVIOUS_MANAGE("Previous", "//li[@class='prev']"), 
-    PAGE_NUMBER_MANAGE(null, "//li[###]/a[@href='#']"),
+    PREVIOUS("Previous", "//li[@class='prev']"), 
+    PAGE_NUMBER(null, "//div[2]/div/ul/li[###]/a"),//needs more work to select the right page
     NEXT_MANAGE("Next", "//li[@class='next']"),
     
     ;

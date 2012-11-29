@@ -1,15 +1,9 @@
 package com.inthinc.pro.selenium.steps;
 
-import java.util.regex.Pattern;
-
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
-import com.inthinc.pro.automation.jbehave.AutoAnnotationBuilder;
-import com.inthinc.pro.automation.jbehave.AutoPageRunner;
-import com.inthinc.pro.automation.jbehave.AutoStepVariables;
-import com.inthinc.pro.automation.jbehave.RegexTerms;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.RandomValues;
@@ -18,6 +12,8 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
 import com.inthinc.pro.selenium.pageObjects.PageAdminDevices;
 import com.inthinc.pro.selenium.pageObjects.PageAdminEditDevice;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
+import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
+import com.inthinc.pro.selenium.pageObjects.PageFormsAdd;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
@@ -93,7 +89,10 @@ public class LoginSteps extends WebSteps {
     PageAdminEditDevice deviceEditPage = new PageAdminEditDevice();
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
     PageNotificationsSafety safteydiag = new PageNotificationsSafety();
+    PageFormsManage manage = new PageFormsManage();
+    PageFormsAdd add = new PageFormsAdd();
     PageFormsSubmissions submissions = new PageFormsSubmissions();
+    
 
     private static final PageLogin page = new PageLogin();
     private RandomValues random;
@@ -207,6 +206,53 @@ public class LoginSteps extends WebSteps {
     	i++;
     	}
     }   
+    
+    @Then("I generate 100 forms")
+    public void thenIGenerateOneHundredForms() {
+    	int i = 1;
+    	
+    	while (i < 6) {
+    	manage._button().newForm().click();
+    	add._textField().name().type("FormPreTrip"+i);
+    	add._dropDown().trigger().selectTheOptionContaining("Pre Trip", 1);
+    	add._checkBox().groups().click();
+    	add._link().text().click();
+    	add._button().saveTop().click();
+    	i++;
+    	}
+    	
+    	while (i < 12) {
+    	manage._button().newForm().click();
+    	add._textField().name().type("FormPostTrip"+i);
+    	add._dropDown().trigger().selectTheOptionContaining("Post Trip", 1);
+    	add._checkBox().groups().click();
+    	add._link().text().click();
+    	add._button().saveTop().click();
+    	i++;
+    	}
+    	
+    	while (i < 18) {
+    	manage._button().newForm().click();
+    	add._textField().name().type("FormInactive"+i);
+    	add._dropDown().status().selectTheOptionContaining("Inactive", 1);
+    	add._textField().description().type("Required");
+    	add._checkBox().groups().click();
+    	add._link().text().click();
+    	add._button().saveTop().click();
+    	i++;
+    	}
+    	
+    	while (i < 101) {
+    	manage._button().newForm().click();
+    	add._textField().name().type("FormGeneric"+i);
+    	add._checkBox().groups().click();
+    	add._link().text().click();
+    	add._button().saveTop().click();
+    	i++;
+    	}
+    	
+    	System.out.println("SUCCESS!");
+    }
 
 //    @When("I enter non valid email text into the email address field")
 //    public void whenIEnterNonValidEmailTextIntoTheEmailAddressField() {
