@@ -1,10 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.CheckBox;
-import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
-import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -42,46 +39,46 @@ public class PageFormsPublished extends FormsBar {
 
     public class FormsPublishedDropDowns {
 
-    	public DropDown recordsPerPagePublished() {
+    	public DropDown recordsPerPage() {
     		return new DropDown(FormsPublishedEnum.RECORDS_DROPDOWN);
     	}
     }
     
     public class FormsPublishedLinks extends FormsBarLinks{
     	    
-//        public TextLink sortBySelectPublished() {
+//        public TextLink sortBySelect() {
 //        	return new TextLink(FormsPublishedEnum.SELECT_PUBLISHED_LINK);
 //        }
 
-        public TextLink sortByNamePublished() {
+        public TextLink sortByName() {
         	return new TextLink(FormsPublishedEnum.NAME_LINK);
         }
         
-        public TextLink sortByBaseFormIdPublished() {
+        public TextLink sortByBaseFormId() {
         	return new TextLink(FormsPublishedEnum.BASE_FORM_ID_LINK);
         }
         
-        public TextLink sortByVersionPublished() {
+        public TextLink sortByVersion() {
         	return new TextLink(FormsPublishedEnum.VERSION_LINK);
         }        
         
-        public TextLink sortByDescriptionPublished() {
+        public TextLink sortByDescription() {
         	return new TextLink(FormsPublishedEnum.DESCRIPTION_LINK);
         }
         
-        public TextLink sortByTriggerPublished() {
+        public TextLink sortByTrigger() {
         	return new TextLink(FormsPublishedEnum.TRIGGER_LINK);
         }
         
-        public TextLink previousPublished() {
+        public TextLink previous() {
         	return new TextLink(FormsPublishedEnum.PREVIOUS);
         }
         
-        public TextLink pageNumberPublished() {
-        	return new TextLink(FormsPublishedEnum.PAGE_NUMBER);
+        public TextTableLink pageNumber() {
+        	return new TextTableLink(FormsPublishedEnum.PAGE_NUMBER);
         }
         
-        public TextLink nextPublished() {
+        public TextLink next() {
         	return new TextLink(FormsPublishedEnum.NEXT);
         }
         
@@ -89,7 +86,7 @@ public class PageFormsPublished extends FormsBar {
 
     public class FormsPublishedTextFields {
 
-        public TextField searchPublished() {
+        public TextField search() {
             return new TextField(FormsPublishedEnum.SEARCH_TEXTFIELD);
         }
         
@@ -101,42 +98,42 @@ public class PageFormsPublished extends FormsBar {
     		return new Text(FormsAddEnum.TITLE);
     	}
 
-    	public TextTable entryNamePublished() {
+    	public TextTable entryName() {
     		return new TextTable(FormsPublishedEnum.NAME_ENTRY);
     	}
 
-    	public TextTable entryBaseFormIdPublished() {
+    	public TextTable entryBaseFormId() {
     		return new TextTable(FormsPublishedEnum.BASE_FORM_ID_ENTRY);
     	}
 
-    	public TextTable entryVersionPublished() {
+    	public TextTable entryVersion() {
     		return new TextTable(FormsPublishedEnum.VERSION_ENTRY);
     	}
 
-    	public TextTable entryDescriptionPublished() {
+    	public TextTable entryDescription() {
     		return new TextTable(FormsPublishedEnum.DESCRIPTION_ENTRY);
     	}
     	
-    	public TextTable entryTriggerPublished() {
+    	public TextTable entryTrigger() {
     		return new TextTable(FormsPublishedEnum.TRIGGER_ENTRY);
     	}
     	
-    	public Text entriesPublished() {
+    	public Text entries() {
     		return new Text(FormsPublishedEnum.ENTRIES_TEXT);
     	}
     	
-    	public Text noRecordsPublishedError() {
+    	public Text noRecordsError() {
     		return new Text(FormsPublishedEnum.NO_RECORDS_FOUND_ERROR);
     	}
     }
     
     public class FormsTablesCheckBoxes {
 // THESE ARE NOT CURRENTLY ON THE PAGE ANYMORE        
-//        public CheckBox publishedCheckAll() {
+//        public CheckBox checkAll() {
 //            return new CheckBox(FormsPublishedEnum.SELECT_ALL_CHECKBOX);
 //        }
 //
-//        public CheckBoxTable publishedEntryCheck() {
+//        public CheckBoxTable entryCheck() {
 //            return new CheckBoxTable(FormsPublishedEnum.CHECKBOX_ENTRY);
 //        }
     }
@@ -178,7 +175,7 @@ public class PageFormsPublished extends FormsBar {
 
 
     protected boolean checkIsOnPage() {
-        return _textField().searchPublished().isPresent() && _dropDown().recordsPerPagePublished().isPresent();
+        return _textField().search().isPresent() && _dropDown().recordsPerPage().isPresent();
     }
     
 }

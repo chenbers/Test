@@ -97,20 +97,20 @@ public class PageFormsManage extends FormsBar {
         	return new TextTableLink(FormsManageEnum.EDIT_ENTRY_LINK);
         }
         
-        public TextLink publish() {
-        	return new TextLink(FormsManageEnum.PUBLISH_ENTRY_LINK);
+        public TextTableLink publish() {
+        	return new TextTableLink(FormsManageEnum.PUBLISH_ENTRY_LINK);
         }
 
-        public TextLink copy() {
-        	return new TextLink(FormsManageEnum.COPY_ENTRY_LINK);
+        public TextTableLink copy() {
+        	return new TextTableLink(FormsManageEnum.COPY_ENTRY_LINK);
         }
         
         public TextLink previous() {
-        	return new TextLink(FormsManageEnum.PREVIOUS_MANAGE);
+        	return new TextLink(FormsManageEnum.PREVIOUS);
         }
         
-        public TextLink pageNumber() {
-        	return new TextLink(FormsManageEnum.PAGE_NUMBER_MANAGE);
+        public TextTableLink pageNumber() {
+        	return new TextTableLink(FormsManageEnum.PAGE_NUMBER);
         }
         
         public TextLink next() {
@@ -134,35 +134,35 @@ public class PageFormsManage extends FormsBar {
     	}
     	
     	public TextTable entryName() {
-    		return new TextTable(FormsManageEnum.NAME_MANAGE_ENTRY);
+    		return new TextTable(FormsManageEnum.NAME_ENTRY);
     	}
     	
     	public TextTable entryBaseFormId() {
-    		return new TextTable(FormsManageEnum.BASE_FORM_ID_MANAGE_ENTRY);
+    		return new TextTable(FormsManageEnum.BASE_FORM_ID_ENTRY);
     	}
     	
     	public TextTable entryVersion() {
-    		return new TextTable(FormsManageEnum.VERSION_MANAGE_ENTRY);
+    		return new TextTable(FormsManageEnum.VERSION_ENTRY);
     	}
     	
     	public TextTable entryDescription() {
-    		return new TextTable(FormsManageEnum.DESCRIPTION_MANAGE_ENTRY);
+    		return new TextTable(FormsManageEnum.DESCRIPTION_ENTRY);
     	}
     	
     	public TextTable entryStatus() {
-    		return new TextTable(FormsManageEnum.STATUS_MANAGE_ENTRY);
+    		return new TextTable(FormsManageEnum.STATUS_ENTRY);
     	}
 
     	public TextTable entryTrigger() {
-    		return new TextTable(FormsManageEnum.TRIGGER_MANAGE_ENTRY);
+    		return new TextTable(FormsManageEnum.TRIGGER_ENTRY);
     	}
     	
     	public Text entries() {
-    		return new Text(FormsManageEnum.ENTRIES_MANAGE_TEXT);
+    		return new Text(FormsManageEnum.ENTRIES_TEXT);
     	}
     	
     	public Text noRecordsError() {
-    		return new Text(FormsManageEnum.NO_RECORDS_FOUND_MANAGE_ERROR);
+    		return new Text(FormsManageEnum.NO_RECORDS_FOUND_ERROR);
     	}
 
     }
