@@ -12,8 +12,9 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
 import com.inthinc.pro.selenium.pageObjects.PageAdminDevices;
 import com.inthinc.pro.selenium.pageObjects.PageAdminEditDevice;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
-import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageFormsAdd;
+import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
+import com.inthinc.pro.selenium.pageObjects.PageFormsPublished;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
@@ -108,7 +109,7 @@ public class LoginSteps extends WebSteps {
     // page._textField().password().type(MasterTest.switchCase(autouser.getPassword()));
     // }
 
-    @Given("I clean the database")
+    @Given("I clean the forms database")
     public void cleanup() {
     	//TODO: Add code to clear out the forms database before running all tests
     }
@@ -207,8 +208,8 @@ public class LoginSteps extends WebSteps {
     	}
     }   
     
-    @Then("I generate 100 forms")
-    public void thenIGenerateOneHundredForms() {
+    @Then("I generate 100 forms for the manage page test")
+    public void thenIGenerateOneHundredFormsForTheManagePageTest() {
     	int i = 1;
     	
     	while (i < 6) {
@@ -249,6 +250,69 @@ public class LoginSteps extends WebSteps {
     	add._link().text().click();
     	add._button().saveTop().click();
     	i++;
+    	}
+    	
+    	System.out.println("SUCCESS!");
+    }
+    
+    @Then("I generate 100 forms for the publish page test")
+    public void thenIGenerateOneHundredFormsForThePublishPageTest() {
+    	int i = 10;
+    	int h = 1;
+    	int j = 1;
+    	int k = 1;
+    	int l = 1;
+    			
+    	
+    	while (i < 96) {
+        	manage._button().newForm().click();
+        	add._textField().name().type("FormGeneric"+i);
+        	add._checkBox().groups().click();
+        	add._link().text().click();
+        	add._button().saveTop().click();
+        	manage._dropDown().recordsPerPage().select("100");
+    		manage._button().gear().row(h).click();
+        	manage._link().publish().row(h).click();
+        	i++; h++;
+    	}
+    	
+    	while (j < 6) {
+        	manage._button().newForm().click();
+        	add._textField().name().type("FormPostTrip"+j);
+        	add._dropDown().trigger().selectTheOptionContaining("Post Trip", 1);
+        	add._checkBox().groups().click();
+        	add._link().text().click();
+        	add._button().saveTop().click();
+        	manage._dropDown().recordsPerPage().select("100");
+    		manage._button().gear().row(h).click();
+        	manage._link().publish().row(h).click();
+        	j++; h++;
+    	}
+    	
+    	while (k < 6) {
+    		manage._button().newForm().click();
+        	add._textField().name().type("FormPreTrip"+k);
+        	add._dropDown().trigger().selectTheOptionContaining("Pre Trip", 1);
+        	add._checkBox().groups().click();
+        	add._link().text().click();
+        	add._button().saveTop().click();
+        	manage._dropDown().recordsPerPage().select("100");
+    		manage._button().gear().row(h).click();
+        	manage._link().publish().row(h).click();
+        	k++; h++;
+    	}
+    	
+    	while (l < 6) {
+    		manage._button().newForm().click();
+	    	add._textField().name().type("FormPublish"+l);
+	    	add._textField().description().type("Required");
+	    	add._checkBox().groups().click();
+	    	add._link().text().click();
+	    	add._button().saveTop().click();
+	    	manage._dropDown().recordsPerPage().select("100");
+			manage._button().gear().row(h).click();
+	    	manage._link().publish().row(h).click();
+	    	l++; h++;
     	}
     	
     	System.out.println("SUCCESS!");

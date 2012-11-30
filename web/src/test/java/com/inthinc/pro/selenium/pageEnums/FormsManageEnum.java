@@ -37,9 +37,9 @@ public enum FormsManageEnum implements SeleniumEnums {
     STATUS_ENTRY("Status", "//table[@id='staging-forms-table']/tbody/tr[###]/td[5]"),
     TRIGGER_ENTRY("Trigger", "//table[@id='staging-forms-table']/tbody/tr[###]/td[6]"),
     GEAR(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/button"),
-    EDIT_ENTRY_LINK("Edit", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[1]"),
-    PUBLISH_ENTRY_LINK("//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[2]"),
-    COPY_ENTRY_LINK("Copy", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[3]"),
+    EDIT_ENTRY_LINK("Edit", "//tr[###]/td[7]/div/ul/li[1]"),
+    PUBLISH_ENTRY_LINK("Publish", "//tr[###]/td[7]/div/ul/li[2]"),
+    COPY_ENTRY_LINK("Copy", "//tr[###]/td[7]/div/ul/li[3]"),
 
     NO_RECORDS_FOUND_ERROR("No matching records found", "//table[@id='staging-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
     
