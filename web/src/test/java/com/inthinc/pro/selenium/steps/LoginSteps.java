@@ -14,7 +14,6 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminEditDevice;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageFormsAdd;
 import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
-import com.inthinc.pro.selenium.pageObjects.PageFormsPublished;
 import com.inthinc.pro.selenium.pageObjects.PageFormsSubmissions;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
