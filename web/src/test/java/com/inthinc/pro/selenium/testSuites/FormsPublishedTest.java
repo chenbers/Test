@@ -20,9 +20,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, 
 		PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class, 
-        PageTeamDriverStatistics.class, PageDriverPerformance.class,
-        PageVehiclePerformance.class, PageFormsSubmissions.class, 
-        PageFormsManage.class, PageFormsAdd.class, PageFormsPublished.class })
+		PageFormsManage.class, PageFormsAdd.class, PageFormsPublished.class })
 @StoryPath(path="FormsPublished.story")
 public class FormsPublishedTest extends WebStories  {
 
