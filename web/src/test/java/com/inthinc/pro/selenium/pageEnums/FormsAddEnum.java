@@ -40,6 +40,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     GROUPS_ARROW(null, "//ins[@class='jstree-icon']"),//needs more work so I can select specific arrows
     GROUPS_CHECKBOX(null, "//ins[@class='jstree-checkbox']"),//needs more work so I can select specific checkboxes
     
+    ADD_FIELD_TEXT("Add Field", "//span[@class='brand']"),
     TEXT_LINK("Text", "//a[@class='toolButton inputText ui-draggable']"),
     NUMERIC_LINK("Numeric", "//a[@class='toolButton inputNumeric ui-draggable']"),
     DATE_LINK("Date", "//a[@class='toolButton inputDate ui-draggable']"),
