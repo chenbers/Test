@@ -93,7 +93,6 @@ public class LoginSteps extends WebSteps {
     PageFormsAdd add = new PageFormsAdd();
     PageFormsSubmissions submissions = new PageFormsSubmissions();
     
-
     private static final PageLogin page = new PageLogin();
     private RandomValues random;
 
@@ -119,6 +118,11 @@ public class LoginSteps extends WebSteps {
     	loginPage._textField().username().type("mweiss");
     	loginPage._textField().password().type("password");
     	loginPage._button().logIn().click();
+    }
+    
+    @When("I log back in")
+    public void whenILogBackIn() {
+//    	loginPage.loginProcess(loginPage.username, password);
     }
     
     @When("I create one thousand users")
@@ -316,6 +320,12 @@ public class LoginSteps extends WebSteps {
     	
     	System.out.println("SUCCESS!");
     }
+    
+     
+     @Given("I generate submissions")
+    public void givenIGenerateSubmissions() {
+    	 //TODO: Call SubmissionsGen class
+     }
 
 //    @When("I enter non valid email text into the email address field")
 //    public void whenIEnterNonValidEmailTextIntoTheEmailAddressField() {

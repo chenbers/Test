@@ -40,7 +40,7 @@ public class PageFormsSubmissions extends FormsTables {
         
     }
 
-    public class FormsSubmissionsButtons {
+    public class FormsSubmissionsButtons extends FormsBarButtons {
 
     	public Button refresh() {
     		return new Button(FormsSubmissionsEnum.REFRESH);
@@ -88,7 +88,7 @@ public class PageFormsSubmissions extends FormsTables {
         
     }
     
-    public class FormsSubmissionsLinks {
+    public class FormsSubmissionsLinks extends FormsBarLinks {
     	
     	public TextLink sortByDateTime() {
     		return new TextLink(FormsSubmissionsEnum.DATE_SORT);

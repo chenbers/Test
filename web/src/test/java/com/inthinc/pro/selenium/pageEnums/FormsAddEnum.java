@@ -20,10 +20,10 @@ public enum FormsAddEnum implements SeleniumEnums {
     PROPERTIES_LABEL("Properties", "//div[@class='propertiesPane']/h3"),
     VIEW_PROPERTIES_LABEL("First add a control, then select it to view its properties here.", "//li[@class='emptyData']"),
     
-    SAVE_TOP("Save", "//a[@id='saveForm-']"),
-    CANCEL_TOP("Cancel", "//a[@id='cancelForm-']"),
-    SAVE_BOTTOM("Save", "//a[@id='saveForm-']"), 
-    CANCEL_BOTTOM("Cancel", "//a[@id='cancelForm-']"),
+    SAVE_TOP("Save", "//a[@id='saveForm-top']"),
+    CANCEL_TOP("Cancel", "//a[@id='cancelForm-top']"),
+    SAVE_BOTTOM("Save", "//a[@id='saveForm-bottom']"), 
+    CANCEL_BOTTOM("Cancel", "//a[@id='cancelForm-bottom']"),
 
     NAME_FIELD(null, "renameFormField"),
     DESCRIPTION_FIELD(null, "description"),
@@ -40,6 +40,7 @@ public enum FormsAddEnum implements SeleniumEnums {
     GROUPS_ARROW(null, "//ins[@class='jstree-icon']"),//needs more work so I can select specific arrows
     GROUPS_CHECKBOX(null, "//ins[@class='jstree-checkbox']"),//needs more work so I can select specific checkboxes
     
+    ADD_FIELD_TEXT("Add Field", "//span[@class='brand']"),
     TEXT_LINK("Text", "//a[@class='toolButton inputText ui-draggable']"),
     NUMERIC_LINK("Numeric", "//a[@class='toolButton inputNumeric ui-draggable']"),
     DATE_LINK("Date", "//a[@class='toolButton inputDate ui-draggable']"),

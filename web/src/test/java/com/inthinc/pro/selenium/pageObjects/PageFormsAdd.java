@@ -350,6 +350,10 @@ public class PageFormsAdd extends FormsTables {
     		return new Text(FormsAddEnum.VERSION_TEXT);
     	}
     	
+    	public Text addFieldLabel() {
+    		return new Text(FormsAddEnum.ADD_FIELD_TEXT);
+    	}
+    	
     	public Text nameError() {
     		return new Text(FormsAddEnum.NAME_TEXT_ERROR);
     	}
