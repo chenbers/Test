@@ -32,7 +32,8 @@
 	border-style: none;
 }
 </style>
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript"
+			src="http://maps.google.com/maps/api/js?sensor=false"></script>
 		<script type="text/javascript" title="inthinc.maps">
 		console.log("inthinc.maps starting");
 		var map;
@@ -145,13 +146,10 @@
 				setUndoDisabled(true);
                 console.log("map.bounds: "+map.getBounds());
                 google.maps.event.addListener(map, 'bounds_changed', function(){console.log("bounds_changed");hazardsService.retrieveHazards(map.getBounds())});
-                
-                
-                
-                
-                
+
         		var marker;
         		<ui:repeat value="#{hazardsBean.tableData}" var="hazard">
+        		//TODO: this could be refactored to just create an array of arrays with the hazard details we want to use?  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
         		marker = createMarker(  new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), 'hazard#{hazard.hazardID}', "/tiwipro/images/ico_warning.png");
         		console.log("about to add: "+marker.getPosition());
                 markers.push(marker);
@@ -216,26 +214,60 @@
 	</ui:define>
 
 	<ui:define name="content">
-      <div style="height: 500px; width: 99%; border: 1px solid red;">
-        <div id="map_canvas" style="float: left; width: 100%; height: 50%"></div>
-        <div style="float: right; width: 100%; height: 50%; overflow: auto">
-            <button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
-            <div id="to_from" style="float: left; width: 50%; border: 1px solid red;" >
-            	<form action="#" onsubmit="calcRouteNoParams(); return false;">
-            		<input type="text" id="origin" value="#{messages.hazard_origin}" />
-            		 #{messages.hazard_to}
-            		<input type="text" id="destination" value="#{messages.hazard_destination}" />
-            		<input type="submit" id="submit" value="#{messages.hazard_findRoute}" />
-            	</form>
-            </div>
-            <div id="directions_panel" style="float: left; width: 50%; border: 1px solid red;" ></div>
-            <div id="hazards_panel" style="float: right; width: 50%; border: 1px solid red;"></div>
-        </div>
-      </div>
-      <script type="text/javascript">
-          initialize();
-      </script>
+		<a4j:region id="main">
+			<table width="920" border="0" cellspacing="0" cellpadding="0"
+				align="center" style="margin: 0 auto 0 auto;">
+				<tr>
+					<td valign="top" width="130"><ui:include
+							src="/includes/navigation/adminSideNav.xhtml">
+							<ui:param name="selectedAction" value="go_adminHazards" />
+							<ui:param name="parentAction" value="go_adminHazards" />
+							<ui:param name="context" value="hazards" />
+						</ui:include></td>
+					<td valign="top">
+						<!-- START PANEL -->
+						<div class="">
+							<div class="panel_nw">
+								<div class="panel_title">
+									<span class="hazards">
+										<h:outputText value="#{messages.adminHeader_hazards}" />
+									</span>
+									<span class="panel_links"> 
+										<a4j:status id="refresh_ajax_status" for="main">
+											<f:facet name="start">
+												<h:outputText>
+													<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+												</h:outputText>
+											</f:facet>
+										</a4j:status>
+									</span>
+								</div>
+							</div>
 
+							<div class="panel_w">
+								<div class="panel_content">
+									<div id="map_canvas" style="float: left; width: 100%; height: 330px"></div>
+									<div style="float: right; width: 100%; height: 50%; overflow: auto">
+										<button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
+										<div id="to_from" style="float: left; width: 50%; border: 1px solid red;">
+											<form action="#" onsubmit="calcRouteNoParams(); return false;">
+												<input type="text" id="origin" value="#{messages.hazard_origin}" /> #{messages.hazard_to}
+												<input type="text" id="destination" value="#{messages.hazard_destination}" /> 
+												<input type="submit" id="submit" value="#{messages.hazard_findRoute}" />
+											</form>
+										</div>
+										<div id="directions_panel" style="float: left; width: 50%; border: 1px solid red;"></div>
+										<div id="hazards_panel" style="float: right; width: 50%; border: 1px solid red;"></div>
+									</div>
+								</div>
+								<script type="text/javascript">
+          							initialize();
+      							</script>
+							</div>
+						</div> <!-- END PANEL -->
+					</td>
+				</tr>
+			</table>
+		</a4j:region>
 	</ui:define>
-
 </ui:composition>
