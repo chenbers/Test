@@ -276,6 +276,8 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         expectedHosDetailCountMap.put(RuleSetType.US_OIL_7DAY, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_7DAY, Integer.valueOf(3));
         expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_8DAY, Integer.valueOf(3)); 
+        expectedHosDetailCountMap.put(RuleSetType.US_OIL_NO_WAIT_7DAY, Integer.valueOf(3));
+        expectedHosDetailCountMap.put(RuleSetType.US_OIL_NO_WAIT_8DAY, Integer.valueOf(3)); 
     }
     @Test
     public void gainSummmaryTestCases() {
