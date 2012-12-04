@@ -1,11 +1,9 @@
 package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.utils.Id;
-import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsManageEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms/forms"),
+    DEFAULT_URL(appUrl + "/forms"),
     TITLE("Forms", "//span[@class='admin']"),
 
     //No longer on page SEARCH_HEADER("Search:", "//div[@id='staging-forms-table_filter']"),
@@ -27,8 +25,8 @@ public enum FormsManageEnum implements SeleniumEnums {
     //    PUBLISH_LINK("Publish", "//th[@id='column-staging-publish']"),
     EDIT_LINK("Edit", "//th[@id='column-staging-edit']"),
 
-    SELECT_ALL_CHECKBOX(null, "//th[@id='column-staging-select']/input[@id='select-all']"),
-    CHECKBOX_ENTRY(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
+//    SELECT_ALL_CHECKBOX(null, "//th[@id='column-staging-select']/input[@id='select-all']"),
+//    CHECKBOX_ENTRY(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
     
     NAME_ENTRY("Name", "//table[@id='staging-forms-table']/tbody/tr[###]/td[1]"),
     BASE_FORM_ID_ENTRY("Base Form ID", "//table[@id='staging-forms-table']/tbody/tr[###]/td[2]"),
@@ -37,16 +35,17 @@ public enum FormsManageEnum implements SeleniumEnums {
     STATUS_ENTRY("Status", "//table[@id='staging-forms-table']/tbody/tr[###]/td[5]"),
     TRIGGER_ENTRY("Trigger", "//table[@id='staging-forms-table']/tbody/tr[###]/td[6]"),
     GEAR(null, "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/button"),
-    EDIT_ENTRY_LINK("Edit", "//tr[###]/td[7]/div/ul/li[1]"),
-    PUBLISH_ENTRY_LINK("Publish", "//tr[###]/td[7]/div/ul/li[2]"),
-    COPY_ENTRY_LINK("Copy", "//tr[###]/td[7]/div/ul/li[3]"),
+    EDIT_ENTRY_LINK("Edit", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[1]"),
+    PUBLISH_ENTRY_LINK(null,"//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[2]"),
+    COPY_ENTRY_LINK("Copy", "//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[3]"),
+    PUBLISH_DISABLED_LINK(null,"//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[@class='disabled']/a[@class='publish']"),
 
     NO_RECORDS_FOUND_ERROR("No matching records found", "//table[@id='staging-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
     
     ENTRIES_TEXT("Showing ### to ### of ### entries", "//div[@id='staging-forms-table_info']"),
     
     PREVIOUS("Previous", "//li[@class='prev']"), 
-    PAGE_NUMBER(null, "//div[2]/div/ul/li[###]/a"),//needs more work to select the right page
+    PAGE_NUMBER(null, "//form/div/div[2]div[2]/div/ul/li[###]/a"),//needs more work to select the right page
     NEXT_MANAGE("Next", "//li[@class='next']"),
     
     ;
