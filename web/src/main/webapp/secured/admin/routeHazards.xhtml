@@ -40,14 +40,14 @@
 		var inthinc = {
 			maps: {
 	            HazardsService: function (){
-	            	this.serviceURL="www.iShouldRetrieveThisFromTheApp.com";//TODO: retrieve from app, use jsf context or bean?
-	                console.log("//TODO: implement inthinc.maps.HazardService()");
+	            	this.serviceURL='www.iShouldRetrieveThisFromTheApp.com';//TODO: retrieve from app, use jsf context or bean?
+	                console.log('//TODO: implement inthinc.maps.HazardService()');
 	            }
 			},
             nextID: 1,
             cache: {},
 			HazardsService: function(){
-				console.log("//TODO: implement inthincMaps.HazardService()");
+				console.log('//TODO: implement inthincMaps.HazardService()');
 			}
 		};
 		/* CreateMarker(GLatLng, divID, image or null)
@@ -57,47 +57,47 @@
          * divID is the id of a DIV you want displayed in the info window. 
          */
         function createMarker(point, divID, iconImage) {
-        	console.log("createMarker("+point+", "+divID+", "+iconImage+")");
-        	console.log("map.div: "+map.getDiv());
+        	console.log('createMarker('+point+', '+divID+', '+iconImage+')');
+        	console.log('map.div: '+map.getDiv());
             //Use passed in image.
             if(iconImage != null){
-            	console.log("new google.maps.Marker({position: point, map: map, icon: iconImage});");
+            	console.log('new google.maps.Marker({position: point, map: map, icon: iconImage});');
                 marker = new google.maps.Marker({
                 	position: point, 
                 	map: map,
                 	icon: iconImage});
             } else {
                 //Use default GoogleMap marker image.
-                console.log("new google.maps.Marker({map: map, position: point });");
+                console.log('new google.maps.Marker({map: map, position: point });');
                 marker = new google.maps.Marker({
                 	map: map,
                 	position: point
                 });
             }
        		if(divID != null) {
-       			console.log("1 ");
+       			console.log('1 ');
             	google.maps.event.addListener(marker, 'click', function() {
                     var node = document.getElementById(divID).cloneNode(true);
                     node.style.display = 'block';
                     marker.openInfoWindow(node);
                     });
        		} else {
-       			console.log("2 ");
+       			console.log('2 ');
        			google.maps.event.addListener(marker, 'click', (function(marker) {
        				return function() {
        					infowindow.setContent('Hazard Details go here'); //TODO: get actual Hazard Details HERE!
        				}
        			}));
        		}
-       		console.log("marker: "+marker);
+       		console.log('marker: '+marker);
             return marker;
         }
 		var markers = [];
 		var infowindow = new google.maps.InfoWindow();
 		inthinc.maps.HazardsService.prototype.retrieveHazards = 
 			function(latLngBounds){
-			 console.log("retrieveHazards");
-             console.log("retrieveHazards for "+latLngBounds.getNorthEast()+" , "+latLngBounds.getSouthWest());
+			 console.log('retrieveHazards');
+             console.log('retrieveHazards for '+latLngBounds.getNorthEast()+' , '+latLngBounds.getSouthWest());
 
 			 var hardCodedResults = [
                                      new google.maps.LatLng(40.725015,-111.951027), 
@@ -105,7 +105,7 @@
                                      new google.maps.LatLng(40.747257,-111.906738)];
              return hardCodedResults;//TODO: obviously we need to replace hardcoded results with something from the database... currently I'm thinking a ajax call returning json results???
 			};
-		console.log("inthinc.maps done");
+		console.log('inthinc.maps done');
 		</script>
 		<script type="text/javascript">
 			var directionsDisplay;
@@ -123,7 +123,7 @@
 					mapTypeId : google.maps.MapTypeId.ROADMAP
 				}
 				map = new google.maps.Map(
-						document.getElementById("map_canvas"), myOptions);
+						document.getElementById('map_canvas'), myOptions);
 
 				directionsDisplay = new google.maps.DirectionsRenderer({
 					'map' : map,
@@ -131,7 +131,7 @@
 					'draggable' : true
 				});
 				directionsDisplay.setPanel(document
-						.getElementById("directions_panel"));
+						.getElementById('directions_panel'));
 
 				google.maps.event.addListener(directionsDisplay,
 						'directions_changed', function() {
@@ -139,29 +139,38 @@
 								oldDirections.push(currentDirections);
 								setUndoDisabled(false);
 							}
-							currentDirections = directionsDisplay
-									.getDirections();
+							currentDirections = directionsDisplay.getDirections();
 						});
 
 				setUndoDisabled(true);
-                console.log("map.bounds: "+map.getBounds());
-                google.maps.event.addListener(map, 'bounds_changed', function(){console.log("bounds_changed");hazardsService.retrieveHazards(map.getBounds())});
+                console.log('map.bounds: '+map.getBounds());
+                google.maps.event.addListener(map, 'bounds_changed', function(){console.log('bounds_changed');hazardsService.retrieveHazards(map.getBounds())});
 
         		var marker;
         		<ui:repeat value="#{hazardsBean.tableData}" var="hazard">
         		//TODO: this could be refactored to just create an array of arrays with the hazard details we want to use?  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
-        		marker = createMarker(  new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), 'hazard#{hazard.hazardID}', "/tiwipro/images/ico_warning.png");
-        		console.log("about to add: "+marker.getPosition());
+        		marker = createMarker(  new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), 'hazard#{hazard.hazardID}', '/tiwipro/images/ico_warning.png');
+        		console.log('about to add: '+marker.getPosition());
                 markers.push(marker);
-                console.log("added: "+marker);
+                console.log('added: '+marker);
                 </ui:repeat>
+                
+                console.log('about to add click listener for addDestination');
+                var numberOfWaypoints = 0;
+    			$('addDestination').click(function() {
+    				console.log('addDestination clicked');
+    				// $('addDestination').append('<input type="text" name="waypoint'+numberOfWaypoints+'" id="waypoint'+numberOfWaypoints+'" />');
+    				numberOfWaypoints++;
+    			});
+                console.log('done adding click listener for addDestination');
 			}
+
 			function calcRouteNoParams(){
-				console.log("calcRouteNoParams()");
-				calcRoute($("origin").getValue(), $("destination").getValue());
+				console.log('calcRouteNoParams()');
+				calcRoute($('origin').getValue(), $('destination').getValue());
 			}
 			function calcRoute(start, end) {
-				console.log("calcRoute("+start+", "+end+")");
+				console.log('calcRoute('+start+', '+end+')');
 				var request = {
 					origin : start,
 					destination : end,
@@ -172,7 +181,7 @@
 						directionsDisplay.setDirections(response);
 						var boundsCount = 0;
 						directionsDisplay.getDirections().routes.forEach(function(element, index, array){
-							console.log("element.bounds"+element.bounds);
+							console.log('element.bounds'+element.bounds);
 							if(boundsCount == 0) {
 								bounds = element.bounds;
 						    } else {
@@ -188,10 +197,10 @@
 				});
 				
 				
-				console.log("map: "+map);
-				console.log("map.bounds: "+map.getBounds());
-				console.log("map.bounds.ne: "+map.getBounds().getNorthEast());
-				console.log("map.bounds.sw: "+map.getBounds().getSouthWest());
+				console.log('map: '+map);
+				console.log('map.bounds: '+map.getBounds());
+				console.log('map.bounds.ne: '+map.getBounds().getNorthEast());
+				console.log('map.bounds.sw: '+map.getBounds().getSouthWest());
 				hazardsService.retrieveHazards(map.getBounds());
 			}
 			
@@ -208,7 +217,7 @@
 			}
 
 			function setUndoDisabled(value) {
-				document.getElementById("undo").disabled = value;
+				document.getElementById('undo').disabled = value;
 			}
 		</script>
 	</ui:define>
@@ -251,9 +260,11 @@
 										<button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
 										<div id="to_from" style="float: left; width: 50%; border: 1px solid red;">
 											<form action="#" onsubmit="calcRouteNoParams(); return false;">
-												<input type="text" id="origin" value="#{messages.hazard_origin}" /> #{messages.hazard_to}
+												<input type="text" id="origin" value="#{messages.hazard_origin}" /> 
+												<div id="waypointContainer"></div>
 												<input type="text" id="destination" value="#{messages.hazard_destination}" /> 
 												<input type="submit" id="submit" value="#{messages.hazard_findRoute}" />
+												<a href="#" id="addDestination">#{messages.hazard_addDestination}</a>
 											</form>
 										</div>
 										<div id="directions_panel" style="float: left; width: 50%; border: 1px solid red;"></div>
