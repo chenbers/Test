@@ -26,6 +26,23 @@ public interface RoadHazardService extends GenericService<Hazard> {
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude);
 
+    @GET
+    @Path("/roadhazard/getRH/{mcmID}/{lat}/{lng}/{distanceInMeters}")
+    public Response getRH(
+            @PathParam("mcmID") String mcmID,
+            @PathParam("lat") Double latitude,
+            @PathParam("lng") Double longitude,
+            @PathParam("distanceInMeters") Integer distanceInMeters);
+    
+    @GET
+    @Path("/roadhazard/getRH/{acctID}/{sw_lat}/{sw_lng}/{ne_lat}/{ne_lng}")    
+    public Response getRH(
+    		@PathParam("acctID") Integer acctID,
+    		@PathParam("sw_lat")Double sw_latitude,
+            @PathParam("sw_lng")Double sw_longitude,
+            @PathParam("ne_lat")Double ne_latitude,
+            @PathParam("ne_lng")Double ne_longitude);
+
     /**
      * Returns Road Hazard Type defaults including values for:
      * type:

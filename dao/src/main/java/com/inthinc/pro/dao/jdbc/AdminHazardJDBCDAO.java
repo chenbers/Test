@@ -1,7 +1,6 @@
 package com.inthinc.pro.dao.jdbc;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,14 +8,12 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,7 +26,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import com.inthinc.pro.dao.RoadHazardDAO;
 import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.BoundingBox;
-import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
@@ -156,6 +152,9 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     }
     public List<Hazard> findAllInAccount(Integer acctID) {
         return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); //TODO: jwimmer: verify that this is the correct order of lat/lngs
+    }
+    public List<Hazard> findInAccount(Integer acctID, BoundingBox box){
+    	return findHazardsByUserAcct(acctID, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
     public List<Hazard> findHazardsByUserAcct(Integer acctID, Double lat1, Double lng1, Double lat2, Double lng2){
         List<Hazard> results;

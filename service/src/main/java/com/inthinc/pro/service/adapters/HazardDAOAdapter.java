@@ -51,6 +51,10 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
         return roadHazardDAO.findAllInAccount(accountID);
     }
     
+    public List<Hazard> findInAccountBoundingBox(Integer accountID, BoundingBox box){
+    	return roadHazardDAO.findInAccount(accountID, box);
+    }
+    
     public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInKm){
         return roadHazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInKm);
     }
