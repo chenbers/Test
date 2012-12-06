@@ -85,7 +85,7 @@
        			console.log('2 ');
        			google.maps.event.addListener(marker, 'click', (function(marker) {
        				return function() {
-       					infowindow.setContent('Hazard Details go here'); //TODO: get actual Hazard Details HERE!
+       					infowindow.setContent('Hazard Details go here'); console.log("//TODO: get actual Hazard Details HERE!");
        				}
        			}));
        		}
@@ -108,7 +108,9 @@
 		console.log('inthinc.maps done');
 		</script>
 		<script type="text/javascript">
+		jQuery.noConflict();
 		jQuery(document).ready(function($){
+			
 			var directionsDisplay;
 			var directionsService = new google.maps.DirectionsService();
 			var hazardsService = new inthinc.maps.HazardsService();
@@ -116,8 +118,8 @@
 			var currentDirections = null;
 			var bounds = new google.maps.LatLngBounds();
 			var numberOfWaypoints = 0;
-
-			// old initialize() method
+			
+			// old initialize() method 
 			console.log('this must happen before you can create markers!');
 			var myOptions = {
 				zoom : 3,
@@ -125,13 +127,17 @@
 				mapTypeId : google.maps.MapTypeId.ROADMAP
 			}
 			console.log('about to populate map: '+map);
-			map = new google.maps.Map($('map_canvas'), myOptions);
+			
+			map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+			console.log('done populating map: '+map);
+			
 			console.log('done populating map: '+map);
 			directionsDisplay = new google.maps.DirectionsRenderer({
 				'map' : map,
 				'preserveViewport' : true,
 				'draggable' : true
 			});
+			
 			directionsDisplay.setPanel(document.getElementById('directions_panel'));
 			console.log('directionsDisplay: '+directionsDisplay);
 			google.maps.event.addListener(directionsDisplay,
@@ -145,18 +151,19 @@
 			console.log('done populating map: '+map);
 			setUndoDisabled(true);
 			console.log('map: '+map);
-               console.log('map.bounds: '+map.getBounds());
-               google.maps.event.addListener(map, 'bounds_changed', function(){console.log('bounds_changed');hazardsService.retrieveHazards(map.getBounds())});
-
+            console.log('map.bounds: '+map.getBounds());
+			google.maps.event.addListener(map, 'bounds_changed', function(){console.log('bounds_changed');hazardsService.retrieveHazards(map.getBounds())});
+			
+            
        		var marker;
        		<ui:repeat value="#{hazardsBean.tableData}" var="hazard">
-       		//TODO: this could be refactored to just create an array of arrays with the hazard details we want to use?  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
-       		marker = createMarker(  new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), 'hazard#{hazard.hazardID}', '/tiwipro/images/ico_warning.png');
-       		console.log('about to add: '+marker.getPosition());
+       		//TODO: this could be refactored to just create an array of arrays with the hazard details we want to use  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
+       		marker = createMarker(new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), 'hazard#{hazard.hazardID}' , '/tiwipro/images/ico_warning.png'); 
+       		//console.log('about to add: '+marker.getPosition());
             markers.push(marker);
-            console.log('added: '+marker);
+            //console.log('added: '+marker);
             </ui:repeat>
-               
+            
             console.log('about to add click listener for addDestination');
             $('addDestination').onclick = function addDestination(){
             	console.log('onclick happened; numberOfWaypoints: '+numberOfWaypoints);
@@ -166,9 +173,11 @@
    				return false;
 			}
             console.log('done adding click listener for addDestination');
+             
+            console.log('document ready');
 		});
 		
-		console.log('made it out of the jQuery ready block!!!');
+		console.log('made it out of the jQuery ready block');
 		function calcRouteNoParams(){
 			console.log('calcRouteNoParams()');
 			var waypoints = '';
