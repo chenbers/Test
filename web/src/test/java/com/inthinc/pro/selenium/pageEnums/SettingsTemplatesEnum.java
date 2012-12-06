@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum SettingsTemplatesEnum implements SeleniumEnums {
 	
 	ACCOUNT_DROPDOWN("Account:","select-account"),
+	
 	TEMPLATE_BUTTON("",""),
 	
 	NEW_TEMPLATE_LINK("New ...","new-template"),
@@ -14,15 +15,15 @@ public enum SettingsTemplatesEnum implements SeleniumEnums {
 	DELETE_TEMPLATE_LINK("Delete ...","delete-template"),
 	COMMIT_TEMPLATE_LINK("Commit ...","commit-template"),
 	
-	TEMPLATE_NAME(null,"template-name"),
-	TEMPLATE_DESCRIPTION(null,"template-description"),
+	TEMPLATE_NAME_TEXTFIELD(null,"template-name"),
+	TEMPLATE_DESCRIPTION_TEXTFIELD(null,"template-description"),
 	
 	VEHICLE_SETTING_ID_TEXT("ID","column-vehicle-settingID"),
 	VEHICLE_NAME_TEXT("Name","column-vehicle-name"),
 	VEHICLE_CATEGORY_TEXT("Category","column-vehicle-category"),
-	VEHICLE_UNTI_TEXT("Unit","column-vehicle-unit"),
+	VEHICLE_UNIT_TEXT("Unit","column-vehicle-unit"),
 	DESIRED_VALUES_TEXT("Values","column-vehicle-desired-values"),
-	DESIRED_MEDIFIED_TEXT("Modified","column-vehicle-desired-modified"),
+	DESIRED_MODIFIED_TEXT("Modified","column-vehicle-desired-modified"),
 	
 	;
 
