@@ -218,5 +218,5 @@ public class PageFormsManage extends FormsBar {
     protected boolean checkIsOnPage() {
         return _link().sortByStatus().isPresent() && _button().newForm().isPresent();
     }
-    
+    public TextTableLink publishDisabled() {return new TextTableLink(FormsManageEnum.PUBLISH_DISABLED_LINK);}
 }

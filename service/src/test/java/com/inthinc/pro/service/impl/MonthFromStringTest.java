@@ -51,7 +51,13 @@ public class MonthFromStringTest {
             int endMonth = end.getMonthOfYear();
 			assertEquals((now.getMonthOfYear())%12+1,endMonth);
 			assertEquals(1,end.dayOfMonth().get());
-			assertEquals(now.getYear()-1, end.getYear());
+			if (!formattedTime.equalsIgnoreCase("dec")) {
+			    assertEquals(now.getYear()-1, end.getYear());
+			}
+			else {
+			    // last december so end year == this year
+			    assertEquals(now.getYear(), end.getYear());
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,7 +81,12 @@ public class MonthFromStringTest {
 			DateTime end = interval.getEnd();
 //			int endMonth = end.dayOfMonth().get();
             int endMonth = end.getMonthOfYear();
-            assertEquals((lastMonthIdx+1)%12,endMonth);
+            if (!lastMonth.equalsIgnoreCase("nov")) {
+                assertEquals((lastMonthIdx+1)%12,endMonth);
+            }
+            else {
+                assertEquals(12,endMonth);
+            }
 			assertEquals(1,end.dayOfMonth().get());
 			assertEquals(now.getYear(), end.getYear());
 		} catch (ParseException e) {
