@@ -145,6 +145,11 @@ public class HazardsBean extends BaseBean {
         return "adminEditHazard";
     }
 
+    public String route() {
+    	//TODO: implement
+    	System.out.println("route()  ");
+    	return "adminRouteHazards";
+    }
     /**
      * Called when the user chooses to edit an item.
      */
