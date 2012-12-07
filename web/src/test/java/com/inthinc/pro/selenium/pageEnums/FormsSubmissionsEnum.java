@@ -27,7 +27,7 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     EDITED_DROPDOWN(null, "//th[@id='column-filter-submission-edited']/span/select"),  
     APPROVED_DROPDOWN(null, "//th[@id='column-filter-submission-status']/span/select"),
 
-    GROUP_FIELD(null, "column-filter-submission-group"),
+    GROUP_FIELD("Group", "//th[@id='column-filter-submission-group']/span/input"),
     DRIVER_FIELD(null, "column-filter-submission-driver"),
     VEHICLE_FIELD(null, "column-filter-submission-vehicle"),
     
