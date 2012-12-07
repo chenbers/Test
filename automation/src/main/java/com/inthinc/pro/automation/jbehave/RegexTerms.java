@@ -32,6 +32,7 @@ public class RegexTerms {
     
     public static final String getRowNumber = "\\p{Digit}*(?=\\w+\\s+Row)"; // Grabs the number before the suffix
     public static final String getRowTextNumber = "\\w+(?=\\s+Row)";
+    public static final String getLastRowNumber = "Last Row";
     
     public static final String addLowercaseWordSpaceBefore = "\\s+[a-z]+"; // Matches any lower case word with a space in front
     public static final String addAnyCaseWordSpaceAfter = "\\w+\\s+";
