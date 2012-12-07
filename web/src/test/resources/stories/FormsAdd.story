@@ -10,13 +10,20 @@ And I click the New Form button
 Then I validate the Save Top button is present
 And I validate the Cancel Top button is present
 And I validate the Name textfield is present
+And I validate the Name textfield is ""
 And I validate the Description textfield is present
+And I validate the Description textfield is ""
 And I validate the Trigger dropdown is present
-And I validate the Version text is not present
+And I validate the Trigger dropdown is "No Trigger"
+And I validate the Version text is present
+And I validate the Version text is ""
 And I validate the Status dropdown is present
+And I validate the Status dropdown is "Active"
 And I validate the Filter Groups textfield is present
-And I validate the Group checkbox is present
-And I validate the Add Field Label is present
+And I validate the Filter Groups textfield is ""
+And I validate the Groups checkbox is present
+And I validate the Groups checkbox is not checked
+And I validate the Add Field Label text is present
 And I validate the Text link is present
 And I validate the Numeric link is present
 And I validate the Date link is present
