@@ -541,7 +541,7 @@ And I click the Down Arrow button
 And I uncheck the 1st Row of the Map Layers checkbox
 And I select "English (United States)" from the Locale dropdown
 And I select "English" from the Measurement dropdown
-And I select "Miles Per Gallon (US)" from the Fuel Efficiency dropdown
+And I select "Miles Per Gallon (US)" from the Fuel Efficiency Ratio dropdown
 And I type "t@t.com" into the Email1 textfield
 And I type "" into the Email2 textfield
 And I type "" into the Phone1 textfield
@@ -556,7 +556,7 @@ And I save the Map Type text as ORIGINALmapType
 And I save the Map Layers text as ORIGINALmapLayers
 And I save the Locale text as ORIGINALlocale
 And I save the Measurement text as ORIGINALmeasurement
-And I save the Fuel Efficiency text as ORIGINALfuelEff
+And I save the Fuel Efficiency Ratio text as ORIGINALfuelEff
 And I save the Email1 text as ORIGINALemailOne
 And I save the Email2 text as ORIGINALemailTwo
 And I save the Phone1 text as ORIGINALphoneOne
@@ -572,7 +572,7 @@ And I click the Down Arrow button
 And I check the 1st Row of the Map Layers checkbox
 And I select "Deutsch" from the Locale dropdown
 And I select "Metric" from the Measurement dropdown
-And I select "Kilometers Per Liter" from the Fuel Efficiency dropdown
+And I select "Kilometers Per Liter" from the Fuel Efficiency Ratio dropdown
 And I type "test@test.com" into the Email1 textfield
 And I type "test2@test.com" into the Email2 textfield
 And I type "0000000000" into the Phone1 textfield
@@ -587,7 +587,7 @@ And I validate the Map Type text is not ORIGINALmapType
 And I validate the Map Layers text is not ORIGINALmapLayers
 And I validate the Locale text is not ORIGINALlocale
 And I validate the Measurement text is not ORIGINALmeasurement
-And I validate the Fuel Efficiency text is not ORIGINALfuelEff
+And I validate the Fuel Efficiency Ratio text is not ORIGINALfuelEff
 And I validate the Email1 text is not ORIGINALemailOne
 And I validate the Email2 text is not ORIGINALemailTwo
 And I validate the Phone1 text is not ORIGINALphoneOne
@@ -624,7 +624,7 @@ And I click the Down Arrow button
 And I uncheck the 1st Row of the Map Layers checkbox
 And I select "English (United States)" from the Locale dropdown
 And I select "English" from the Measurement dropdown
-And I select "Miles Per Gallon (US)" from the Fuel Efficiency dropdown
+And I select "Miles Per Gallon (US)" from the Fuel Efficiency Ratio dropdown
 And I type "t@t.com" into the Email1 textfield
 And I type "" into the Email2 textfield
 And I type "" into the Phone1 textfield
@@ -639,7 +639,7 @@ And I save the Map Type text as ORIGINALmapType
 And I save the Map Layers text as ORIGINALmapLayers
 And I save the Locale text as ORIGINALlocale
 And I save the Measurement text as ORIGINALmeasurement
-And I save the Fuel Efficiency text as ORIGINALfuelEff
+And I save the Fuel Efficiency Ratio text as ORIGINALfuelEff
 And I save the Email1 text as ORIGINALemailOne
 And I save the Email2 text as ORIGINALemailTwo
 And I save the Phone1 text as ORIGINALphoneOne
@@ -655,7 +655,7 @@ And I click the Down Arrow button
 And I click the 1st Row of the Map Layers checkbox
 And I select "Deutsch" from the Locale dropdown
 And I select "Metric" from the Measurement dropdown
-And I select "Kilometers Per Liter" from the Fuel Efficiency dropdown
+And I select "Kilometers Per Liter" from the Fuel Efficiency Ratio dropdown
 And I type "test@test.com" into the Email1 textfield
 And I type "test2@test.com" into the Email2 textfield
 And I type "0000000000" into the Phone1 textfield
@@ -670,7 +670,7 @@ And I validate the Map Type text is ORIGINALmapType
 And I validate the Map Layers text is ORIGINALmapLayers
 And I validate the Locale text is ORIGINALlocale
 And I validate the Measurement text is ORIGINALmeasurement
-And I validate the Fuel Efficiency text is ORIGINALfuelEff
+And I validate the Fuel Efficiency Ratio text is ORIGINALfuelEff
 And I validate the Email1 text is ORIGINALemailOne
 And I validate the Email2 text is ORIGINALemailTwo
 And I validate the Phone1 text is ORIGINALphoneOne
@@ -696,7 +696,7 @@ And I validate the Map Layers dropdown is present
 And I validate the User Name text is present
 And I validate the Locale dropdown is present
 And I validate the Measurement dropdown is present
-And I validate the Fuel Efficiency dropdown is present
+And I validate the Fuel Efficiency Ratio dropdown is present
 And I validate the Email1 textfield is present
 And I validate the Email2 textfield is present
 And I validate the Text Message1 textfield is present
