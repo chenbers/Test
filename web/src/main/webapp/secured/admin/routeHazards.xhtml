@@ -333,8 +333,10 @@
 												<input type="submit" id="submit" value="#{messages.hazard_findRoute}" />
 												<a href="#" id="addDestination">#{messages.hazard_addDestination}</a>
 											</form>
+											<div id="directions_panel" style="float: left; border: 1px solid red;"></div>
 										</div>
-										<div id="directions_panel" style="float: left; width: 49%; border: 1px solid red;">
+										
+										<div id="hazards_panel" style="float: right; width: 49%; border: 1px solid red;">
 										<a4j:form id="hazards-form">
 									        <rich:dataTable id="hazards-table" value="#{hazardsBean.tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
 									            rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" >
@@ -388,7 +390,6 @@
 									        </rich:dataTable>
 									        </a4j:form>
 										</div>
-										<div id="hazards_panel" style="float: right; width: 50%; border: 1px solid red;"></div>
 									</div>
 								</div>
 							</div>
