@@ -12,15 +12,20 @@ public enum AdminUsersEnum implements SeleniumEnums {
     BATCH_EDIT(batchEdit, "admin-table-form:personTable-adminTableEdit"),
 
     SEARCH_TEXT(search, Xpath.start().table(Id.id("grid_nav_search_box")).tbody().tr().td("1").toString()),
-    SEARCH_TEXT_FIELD(null, "admin-table-form:personTable-filterTable"),
-    SEARCH_BUTTON(search, "admin-table-form:personTable-adminTableSearch"),
 
+    NAME_TEXTFIELD("Name", "//input[@id='personTable-form:personTable:namefsp']"),
+    USER_NAME_TEXTFIELD("User Name", "personTable-form:personTable:usernamefsp"),
+    EMAILONE_TEXTFIELD("E-mail 1", "//input[@id='personTable-form:personTable:priEmailfsp']"),
+    
+    ENTRY_NAME(null, "personTable-form:personTable:###:personTableName"),
+    ENTRY_USERNAME(null, "personTable-form:personTable:###:username"),
+    
     EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),
 
     TABLE_HEADERS(null, "admin-table-form:personTable:***header:sortDiv"),
     TABLE_ENTRIES(null, "admin-table-form:personTable:###:***"),
     SELECT_ALL_CHECKBOX(null, "admin-table-form:personTable:selectAll"),
-    NAME(null, "admin-table-form:personTable:nameheader"),
+    NAME(null, "personTable-form:personTable:nameheader:sortDiv"),
     USER_STATUS(null, "admin-table-form:personTable:statusheader"),
     USER_NAME(null, "admin-table-form:personTable:usernameheader"),
     USER_GROUP(null, "admin-table-form:personTable:groupNameheader"),

@@ -70,27 +70,27 @@ public class PageMyAccount extends NavigationBar {
 
 	public class MyAccountTextFields extends NavigationBarTextFields {
 
-		public TextField phone1() {
+		public TextField phoneOne() {
 			return new TextField(MyAccountEnum.PHONE1_TEXTFIELD);
 		}
 
-		public TextField phone2() {
+		public TextField phoneTwo() {
 			return new TextField(MyAccountEnum.PHONE2_TEXTFIELD);
 		}
 
-		public TextField email1() {
+		public TextField emailOne() {
 			return new TextField(MyAccountEnum.EMAIL1_TEXTFIELD);
 		}
 
-		public TextField email2() {
+		public TextField EmailTwo() {
 			return new TextField(MyAccountEnum.EMAIL2_TEXTFIELD);
 		}
 
-		public TextField textMessage1() {
+		public TextField textMessageOne() {
 			return new TextField(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
 		}
 
-		public TextField textMessage2() {
+		public TextField textMessageTwo() {
 			return new TextField(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
 		}
 	}
@@ -139,7 +139,7 @@ public class PageMyAccount extends NavigationBar {
 		    return new DropDown(MyAccountEnum.MAP_LAYERS_SELECTOR);
 		}
 
-		public DropDown fuelEfficiency() {
+		public DropDown fuelEfficiencyRatio() {
 			return new DropDown(MyAccountEnum.FUEL_EFFICIENCY_SELECT);
 		}
 
@@ -154,27 +154,27 @@ public class PageMyAccount extends NavigationBar {
 
 	public class MyAccountTexts extends NavigationBarTexts {
 
-		public Text email1() {
+		public Text emailOne() {
 			return new Text(MyAccountEnum.EMAIL1_TEXT);
 		}
 
-		public Text email2() {
+		public Text EmailTwo() {
 			return new Text(MyAccountEnum.EMAIL2_TEXT);
 		}
 
-		public Text phone1() {
+		public Text phoneOne() {
 			return new Text(MyAccountEnum.PHONE1_TEXT);
 		}
 
-		public Text phone2() {
+		public Text phoneTwo() {
 			return new Text(MyAccountEnum.PHONE2_TEXT);
 		}
 
-		public Text textMessage1() {
+		public Text textMessageOne() {
 			return new Text(MyAccountEnum.TEXT_MESSAGES1_TEXT);
 		}
 
-		public Text textMessage2() {
+		public Text textMessageTwo() {
 			return new Text(MyAccountEnum.TEXT_MESSAGES2_TEXT);
 		}
 
@@ -198,7 +198,7 @@ public class PageMyAccount extends NavigationBar {
 	        return new Text(MyAccountEnum.MAP_LAYERS_TEXT);
 	    }
 
-		public Text fuelEfficiency() {
+		public Text fuelEfficiencyRatio() {
 			return new Text(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TEXT);
 		}
 
@@ -226,23 +226,23 @@ public class PageMyAccount extends NavigationBar {
 			return new Text(MyAccountEnum.USER_NAME_TEXT);
 		}
 
-		public Text errorEmail1() {
+		public Text errorEmailOne() {
 			return new TextFieldError(MyAccountEnum.EMAIL1_TEXTFIELD);
 		}
 
-		public Text errorEmail2() {
+		public Text errorEmailTwo() {
 			return new TextFieldError(MyAccountEnum.EMAIL2_TEXTFIELD);
 		}
 
-		public Text errorPhone1() {
+		public Text errorPhoneOne() {
 			return new TextFieldError(MyAccountEnum.PHONE1_TEXTFIELD);
 		}
 
-		public Text errorPhone2() {
+		public Text errorPhoneTwo() {
 			return new TextFieldError(MyAccountEnum.PHONE2_TEXTFIELD);
 		}
 
-		public Text errorText1() {
+		public Text errorTextOne() {
 			return new TextFieldError(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
 		}
 
@@ -250,24 +250,24 @@ public class PageMyAccount extends NavigationBar {
 			return new TextFieldError(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
 		}
 		
-		public Text labelTextFieldEmail1() {
+		public Text labelTextFieldEmailOne() {
             return new TextFieldLabel(MyAccountEnum.EMAIL1_TEXTFIELD);
         }
 
-        public Text labelTextFieldEmail2() {
+        public Text labelTextFieldEmailTwo() {
             return new TextFieldLabel(MyAccountEnum.EMAIL2_TEXTFIELD);
         }
 
 
-        public Text labelTextFieldPhone1() {
+        public Text labelTextFieldPhoneOne() {
             return new TextFieldLabel(MyAccountEnum.PHONE1_TEXTFIELD);
         }
 
-        public Text labelTextFieldPhone2() {
+        public Text labelTextFieldPhoneTwo() {
             return new TextFieldLabel(MyAccountEnum.PHONE2_TEXTFIELD);
         }
 
-        public Text labelTextFieldText1() {
+        public Text labelTextFieldTextOne() {
             return new TextFieldLabel(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
         }
 
@@ -287,31 +287,31 @@ public class PageMyAccount extends NavigationBar {
 			return new TextLabel(MyAccountEnum.INFORMATION_TEXT);
 		}
 
-		public Text labelEmail1() {
+		public Text labelEmailOne() {
 			return new TextLabel(MyAccountEnum.EMAIL1_TEXT);
 		}
 
-		public Text labelEmail2() {
+		public Text labelEmailTwo() {
 			return new TextLabel(MyAccountEnum.EMAIL2_TEXT);
 		}
 
-		public Text labelPhone1() {
+		public Text labelPhoneOne() {
 			return new TextLabel(MyAccountEnum.PHONE1_TEXT);
 		}
 
-		public Text labelPhone2() {
+		public Text labelPhoneTwo() {
 			return new TextLabel(MyAccountEnum.PHONE2_TEXT);
 		}
 
-		public Text labelTextMessage1() {
+		public Text labelTextMessageOne() {
 			return new TextLabel(MyAccountEnum.TEXT_MESSAGES1_TEXT);
 		}
 
-		public Text labelTextMessage2() {
+		public Text labelTextMessageTwo() {
 			return new TextLabel(MyAccountEnum.TEXT_MESSAGES2_TEXT);
 		}
 
-		public Text labelFuelEfficiency() {
+		public Text labelFuelEfficiencyRatio() {
 			return new TextLabel(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TEXT);
 		}
 
@@ -401,7 +401,7 @@ public class PageMyAccount extends NavigationBar {
 		_text().labelUserName().validateTheDefaultValue();
 		_text().labelLocale().validateTheDefaultValue();
 		_text().labelMeasurement().validateTheDefaultValue();
-		_text().labelFuelEfficiency().validateTheDefaultValue();
+		_text().labelFuelEfficiencyRatio().validateTheDefaultValue();
 
 		/* Red Flag Preferences */
 		_text().labelRedFlagInfo().validateTheDefaultValue();
@@ -410,16 +410,16 @@ public class PageMyAccount extends NavigationBar {
 
 		/* Contact Information */
 		_text().titleEmailAddresses().validateTheDefaultValue();
-		_text().labelEmail1().validateTheDefaultValue();
-		_text().labelEmail2().validateTheDefaultValue();
+		_text().labelEmailOne().validateTheDefaultValue();
+		_text().labelEmailTwo().validateTheDefaultValue();
 
 		_text().titlePhoneNumbers().validateTheDefaultValue();
-		_text().labelPhone1().validateTheDefaultValue();
-		_text().labelPhone2().validateTheDefaultValue();
+		_text().labelPhoneOne().validateTheDefaultValue();
+		_text().labelPhoneTwo().validateTheDefaultValue();
 
 		_text().titleTextMessages().validateTheDefaultValue();
-		_text().labelTextMessage1().validateTheDefaultValue();
-		_text().labelTextMessage2().validateTheDefaultValue();
+		_text().labelTextMessageOne().validateTheDefaultValue();
+		_text().labelTextMessageTwo().validateTheDefaultValue();
 
 		return this;
 	}
