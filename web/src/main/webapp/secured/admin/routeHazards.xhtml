@@ -56,7 +56,7 @@
          * default icon if null is passed for iconImage.
          * divID is the id of a DIV you want displayed in the info window. 
          */
-        function createMarker(point, divID, iconImage) {
+        function createMarker(point, divID, iconImage, hazard) {
         	console.log('createMarker('+point+', '+divID+', '+iconImage+')');
         	console.log('map.div: '+map.getDiv());
             //Use passed in image.
@@ -83,16 +83,40 @@
                     });
        		} else {
        			console.log('2 ');
-       			google.maps.event.addListener(marker, 'click', (function(marker) {
-       				return function() {
-       					infowindow.setContent('Hazard Details go here'); console.log("//TODO: get actual Hazard Details HERE!");
-       				}
-       			}));
+       			google.maps.event.addListener(marker, 'click', (function(){
+       					var detail = '<dt>#{messages.hazard_description}</dt><dd>'+hazard.details+'</dd>';
+       					var radius = '<dt></dt><dd></dd>';
+       					var endTime = '<dt></dt><dd></dd>';
+       					var content = '<dl>'+detail+radius+endTime+'</dl>';
+       					infowindow.setContent(content); 
+       					infowindow.setPosition(hazard.point);
+       					infowindow.open(map);
+       				}));
        		}
        		console.log('marker: '+marker);
             return marker;
         }
+		function createCircle(point, radius, marker) {
+			//function drawCircle(       center,  m                 radius                    , nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity)
+			//drawCircle(new GLatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, 10  , '#445566', 2          , .5       , '#112233' , .25);
+			
+			
+			var circleOptions = {
+					map: map,
+					fillColor: '#112233',
+					fillOpacity: .10,
+					strokeColor: '#445566',
+					strokeOpacity: .20,
+					strokeWeight: 2,
+				}
+			var circle = new google.maps.Circle(circleOptions);
+			circle.setCenter(point);
+			circle.setRadius(radius);
+			circle.setMap(map);
+			return circle;
+		}
 		var markers = [];
+		var hazards = [];
 		var infowindow = new google.maps.InfoWindow();
 		inthinc.maps.HazardsService.prototype.retrieveHazards = 
 			function(latLngBounds){
@@ -106,26 +130,43 @@
              return hardCodedResults;//TODO: obviously we need to replace hardcoded results with something from the database... currently I'm thinking a ajax call returning json results???
 			};
 		console.log('inthinc.maps done');
+		function Hazard(lat, lng, radiusMeters, type, endTime, details, status){
+			this.point = new google.maps.LatLng(lat, lng);
+			this.radiusMeters = radiusMeters;
+			this.type = type;
+			this.endTime = endTime;
+			this.details = details;
+			this.status = status;
+		}
+		Hazard.prototype.drawRadius = function() {
+			createCircle(this.point, this.radius);
+		}
 		</script>
 		<script type="text/javascript">
-		jQuery.noConflict();
-		jQuery(document).ready(function($){
-			
-			var directionsDisplay;
-			var directionsService = new google.maps.DirectionsService();
-			var hazardsService = new inthinc.maps.HazardsService();
-			var oldDirections = [];
-			var currentDirections = null;
-			var bounds = new google.maps.LatLngBounds();
-			var numberOfWaypoints = 0;
-			
-			// old initialize() method 
-			console.log('this must happen before you can create markers!');
-			var myOptions = {
+		
+		var directionsDisplay;
+		var directionsService = new google.maps.DirectionsService();
+		var hazardsService = new inthinc.maps.HazardsService();
+		var oldDirections = [];
+		var currentDirections = null;
+		var bounds = new google.maps.LatLngBounds();
+		var numberOfWaypoints = 0;
+		var myOptions = {
 				zoom : 3,
 				center : new google.maps.LatLng(40, -111),
 				mapTypeId : google.maps.MapTypeId.ROADMAP
-			}
+			};
+   		var marker;
+   		var hazard;
+   		var markerCircle;
+   		
+		jQuery.noConflict();
+		jQuery(document).ready(function($){
+
+			
+			// old initialize() method 
+			console.log('this must happen before you can create markers!  todo: the center should be determined differently???');
+
 			console.log('about to populate map: '+map);
 			
 			map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
@@ -152,26 +193,35 @@
 			setUndoDisabled(true);
 			console.log('map: '+map);
             console.log('map.bounds: '+map.getBounds());
-			google.maps.event.addListener(map, 'bounds_changed', function(){console.log('bounds_changed');hazardsService.retrieveHazards(map.getBounds())});
+			google.maps.event.addListener(map, 'bounds_changed', function(){
+					console.log('bounds_changed');
+					hazardsService.retrieveHazards(map.getBounds())
+					
+				});
 			
             
-       		var marker;
+
        		<ui:repeat value="#{hazardsBean.tableData}" var="hazard">
        		//TODO: this could be refactored to just create an array of arrays with the hazard details we want to use  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
-       		marker = createMarker(new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), 'hazard#{hazard.hazardID}' , '/tiwipro/images/ico_warning.png'); 
+       		var markerLatLng = new google.maps.LatLng(#{hazard.lat}, #{hazard.lng});
+       		var formattedEndTime = '<h:outputText value="#{item.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" /></h:outputText>';
+       		hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, '#{messages[item.type]}', formattedEndTime, '#{hazard.description}', '#{messages[item.status]}');
+       		marker = createMarker(markerLatLng, null , '/tiwipro/images/ico_warning.png', hazard); //'hazard#{hazard.hazardID}' for divID 
        		//console.log('about to add: '+marker.getPosition());
             markers.push(marker);
+            hazards.push(hazard); //todo: this might be unnecessary... since the hazard is in the marker???
             //console.log('added: '+marker);
+            createCircle(markerLatLng, #{hazard.radiusMeters}, marker); 
             </ui:repeat>
             
             console.log('about to add click listener for addDestination');
-            $('addDestination').onclick = function addDestination(){
+            jQuery('#addDestination').click(function addDestination(){
             	console.log('onclick happened; numberOfWaypoints: '+numberOfWaypoints);
                	// $('waypointContainer').insert('<input type="text" name="waypoint'+numberOfWaypoints+'" id="waypoint'+numberOfWaypoints+'" />');
-               	$('waypointContainer').insert('<input type="text" name="waypoint" class="waypoint" id="waypoint'+numberOfWaypoints+'" />');
+               	jQuery('#waypointContainer').append('<input type="text" name="waypoint" class="waypoint" id="waypoint'+numberOfWaypoints+'" />');
    				numberOfWaypoints++;
    				return false;
-			}
+			});
             console.log('done adding click listener for addDestination');
              
             console.log('document ready');
@@ -273,9 +323,9 @@
 							<div class="panel_w">
 								<div class="panel_content">
 									<div id="map_canvas" style="float: left; width: 100%; height: 330px"></div>
-									<div style="float: right; width: 100%; height: 50%; overflow: auto">
+									<div style="float: right; width: 100%; overflow: auto">
 										<button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
-										<div id="to_from" style="float: left; width: 50%; border: 1px solid red;">
+										<div id="to_from" style="float: left; width: 49%; border: 1px solid red;">
 											<form action="#" onsubmit="calcRouteNoParams(); return false;">
 												<input type="text" id="origin" value="#{messages.hazard_origin}" /> 
 												<div id="waypointContainer"></div>
@@ -284,11 +334,71 @@
 												<a href="#" id="addDestination">#{messages.hazard_addDestination}</a>
 											</form>
 										</div>
-										<div id="directions_panel" style="float: left; width: 50%; border: 1px solid red;"></div>
+										<div id="directions_panel" style="float: left; width: 49%; border: 1px solid red;">
+										<a4j:form id="hazards-form">
+									        <rich:dataTable id="hazards-table" value="#{hazardsBean.tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
+									            rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" >
+									
+									            <!-- Data -->
+									            <rich:column id="mapColumn">
+									                <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
+									                    <rich:componentControl for="hazardLocationModal" event="onclick" disableDefault="true" operation="show">
+									                        <f:param name="lat" value="#{item.latitude}" />
+									                        <f:param name="lng" value="#{item.longitude}" />
+									                    </rich:componentControl>
+									                </h:graphicImage>
+									               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
+									                    <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+									                    <h:outputText id="addressLocation" value="#{hazardsBean.item.location}" converter="#{latLngAddressConverter}" />
+									                </rich:toolTip>
+									               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{hazardsBean.addressFormat == 2}">
+									                <h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+									                <a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
+									               </rich:toolTip>
+									               <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{hazardsBean.addressFormat == 3}">
+									                <h:inputHidden id="hazardLat" value="#{item.latitude}"/>
+									                <h:inputHidden id="hazardLng" value="#{item.longitude}"/>
+									                <h:outputText id="hazardAddress" />
+									               </rich:toolTip>
+									            </rich:column>
+									            
+									            <rich:column id="description" sortBy="#{item.description}" >
+									                <f:facet name="header">
+									                    <h:outputText value="#{messages.hazard_description}" />
+									                </f:facet>
+									               <h:outputText value="#{item.description}"/>
+									            </rich:column>
+									           
+									            
+									           <rich:column id="type" sortBy="#{item.type}" >
+									                <f:facet name="header">
+									                    <h:outputText value="#{messages.hazard_type}" />
+									                </f:facet>
+									               <h:outputText value="#{messages[item.type]}"/>
+									            </rich:column>
+
+									            <rich:column id="endTime" sortBy="#{item.endTime}" >
+									                <f:facet name="header">
+									                    <h:outputText value="#{messages.hazard_endTime}" />
+									                </f:facet>
+									                <h:outputText value="#{item.endTime}">
+									                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
+									                </h:outputText>
+									            </rich:column>
+									        </rich:dataTable>
+									        </a4j:form>
+										</div>
 										<div id="hazards_panel" style="float: right; width: 50%; border: 1px solid red;"></div>
 									</div>
 								</div>
 							</div>
+							
+							<!-- begin hazards panel -->
+							<div class="panel_e">
+							    
+						        </div>
+							<!-- end hazards panel -->
+							
 						</div> <!-- END PANEL -->
 					</td>
 				</tr>
