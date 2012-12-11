@@ -1,9 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-<<<<<<< HEAD
-public class PageConfiguratorVehicle {
-
-=======
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextField;
@@ -85,6 +81,5 @@ public class PageConfiguratorVehicle {
 	public ConfiguratorVehicleText _text() {
 		return new ConfiguratorVehicleText();
 	}
-	
->>>>>>> changed line endings
+
 }

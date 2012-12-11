@@ -6,7 +6,8 @@ public enum ApplyTemplatesEnum implements SeleniumEnums {
 	
 	ACCOUNT_DROPDOWN("Account:","select-account"),
 	GROUP_NAV_TREE("Group","group-dropdown"),
-		TEMPLATE_BUTTON("Template",""),
+	
+	TEMPLATE_BUTTON("Template",""),
 	
 	AUDITION_LINK("Audition ...","audition-template"),
 	APPLY_LINK("Apply ...","apply-template"),
