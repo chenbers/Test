@@ -7,6 +7,7 @@ import org.jbehave.core.annotations.When;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
+import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 
@@ -16,6 +17,7 @@ public class LoginSteps extends WebSteps {
     AutomationUser login;
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
     PageNotificationsSafety safteydiag = new PageNotificationsSafety();
+    PageFormsManage manage = new PageFormsManage();
     
     private static final PageLogin page = new PageLogin();
 
@@ -407,7 +409,67 @@ public class LoginSteps extends WebSteps {
 			}
 			i++; j++; z++;
 		}
-    	
     }
+    
+    @When("I copy the last form")
+    public void iCopyTheLastForm() {
+    	iActOnTheLastForm("copy");
+    }
+    @When("I edit the last form")
+    public void iEditTheLastForm() {
+    	iActOnTheLastForm("edit");
+    }
+    
+    public void iActOnTheLastForm(String sType) {
+    	String[] sEntries;
+    	String sEntry;
+    	int iRow=0, iNext=0, iTop=0, iLast=0, iDiff=0, j=-1;
+    	
+    	try{
+    		sEntries = manage._text().entries().getText().split(" ");
+    		while(sEntries[1].equalsIgnoreCase("0")) {
+    			sEntries = manage._text().entries().getText().split(" ");
+    		}
+    	} catch(Exception t) {}
+    	
+    	try {
+    		sEntries = manage._text().entries().getText().split(" ");
+    		for(String entry : sEntries) {
+    			j++;
+    			if(entry.equalsIgnoreCase("entries")) {
+    				iRow 	= j-1;
+    			}
+    		}
+    		
+			sEntry = sEntries[iRow];
+    		if(sEntry.matches("^[0-9]+$")) {
+    			iRow = Integer.parseInt(sEntry);
+    		}
 
+    		if(iRow>100) {
+    			iNext = Math.round(iRow/100);
+    			manage._dropDown().recordsPerPage().selectRow(4);
+    			for(int z=0; z<iNext; z++) {
+    				manage._link().next().click();
+    				iRow-=iNext;
+    			}
+    		} else {
+    			manage._dropDown().recordsPerPage().selectRow(4);
+    		}
+    		
+    		sEntries = manage._text().entries().getText().split(" ");
+			iTop 	= Integer.parseInt(sEntries[1]);
+			iLast 	= Integer.parseInt(sEntries[3]);
+			iDiff	= iLast - iTop + 1;
+
+    		manage._button().gear().row(iDiff).click();
+    		if(sType.equalsIgnoreCase("copy")) {
+    			manage._link().copy().row(iDiff).click();
+    		} else {
+    			manage._link().edit().row(iDiff).click();
+    		}
+    	} catch(Exception p) {
+    		System.out.println(p.getStackTrace());
+    	}
+    }
 }
