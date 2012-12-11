@@ -3,14 +3,14 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FormsAddEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms/build"),
+    DEFAULT_URL("forms/build"),
     TITLE("Add Form", "//form[@id='formForm']/legend"),
 
     NAME_LABEL("Name:", "//label[@for='renameFormField']"),
     DESCRIPTION_LABEL("Description:", "//label[@for='description']"),
     TRIGGER_LABEL("Trigger:", "//label[@for='select-trigger']"),
     ROUTE_LABEL("Route Trigger Expression:", "//label[@for='routeTrigger']"),
-    VERSION_LABEL("Version:", "//label[@for='version']"),
+//    VERSION_LABEL("Version:", "//label[@for='version']"),
     STATUS_LABEL("Status:", "//label[@for='select-status']"),
     HOS_LABEL("HOS:", "//label[@for='hos-filter']"),
     VEHICLE_TAGS_LABEL("Vehicle Tags:", "//label[@for='tags']"),
@@ -34,9 +34,14 @@ public enum FormsAddEnum implements SeleniumEnums {
     HOS_DROPDOWN(null, "//select[@id='select-hos-status']"),
     VEHICLE_TAGS_DROPDOWN(null, "//div[@class='text-wrap']"),
     VEHICLE_TAGS_ARROW(null, "//div[@class='text-arrow']"),
-    FILTER_GROUPS_FIELD("Filter Groups:", "group-search"),
+    FILTER_GROUPS_FIELD(null, "//div/span/input[@id='group-search']"),
     GROUPS_ARROW(null, "//ins[@class='jstree-icon']"),			//needs more work so I can select specific arrows
     GROUPS_CHECKBOX(null, "//ins[@class='jstree-checkbox']"),	//needs more work so I can select specific checkboxes
+    GROUPS_NAV_TEXT(null,"//li[contains(@class,'jstree-checked')]/a"),											// debug
+    GROUPS_NAV_CHECKBOX(null,"//li[contains(@class,'jstree-checked')]/a/ins[@class='jstree-checkbox']"),		// debug
+    GROUPS_NAV_SEARCHED(null,"//li/a[@class='jstree-search']"),													// debug
+    GROUPS_NAV_SEARCHED_TEXT(null,"//li/a[@class='jstree-search']"),											// debug
+    GROUPS_NAV_SEARCHED_CHECKBOX(null,"//li/a[@class='jstree-search']/ins[@class='jstree-checkbox']"),			// debug
     
     ADD_FIELD_TEXT("Add Field", "//span[@class='brand']"),
     TEXT_LINK("Text", "//a[@class='toolButton inputText ui-draggable']"),
@@ -50,12 +55,12 @@ public enum FormsAddEnum implements SeleniumEnums {
     DELETE_CONTROL(null, "//a[@class='deleteControl']"),
     DELETE_ROW(null,"//div[2]/div[3]/div[2]/div[2]/div/div[2]/div[###]/div/a[@id='delete_form']"),	// this will delete the specified field by row
     
-    DATANAME_FIELD("untitled###", "property_Data Name"),
+    DATANAME_FIELD("untitled###", "property_name"),
     CAPTION_FIELD(null, "//li[2]/div/ul/li/input"),
     HINT_FIELD(null, "//li[3]/div/ul/li/input"),
-    DEFAULT_VALUE(null, "//input[@id='property_Default Value']"),
-    READ_ONLY_CHECKBOX(null, "//input[@id='property_Read Only']"),
-    REQUIRED_CHECKBOX(null, "property_Required"),
+    DEFAULT_VALUE(null, "//input[@id='property_defaultValue']"),
+    READ_ONLY_CHECKBOX(null, "//input[@id='property_readOnly']"),
+    REQUIRED_CHECKBOX(null, "property_required"),
     LENGTH_CHECKBOX(null, "property_range_enabled"),
     MINIMUM_TEXT_FIELD(null, "//input[@class='editorTextfield min']"),
     MINIMUM_TEXT_INCLUSIVE_CHECKBOX(null, "property_range_min_inclusive"),
@@ -71,15 +76,21 @@ public enum FormsAddEnum implements SeleniumEnums {
     MINIMUM_DATE_INCLUSIVE_CHECKBOX(null, "property_range_min_inclusive"), 
     MAXIMUM_DATE_TEXTFIELD(null, "//div/input[@class='editorTextfield max hasDatepicker']"),
     MAXIMUM_DATE_INCLUSIVE_CHECKBOX(null, "property_range_max_inclusive"), 
-    MINIMUM_NUMERIC_USE_EXPRESSION(null,"//*[@id='property_range_min_expression']"),
-    MAXIMUM_NUMERIC_USE_EXPRESSION(null,"//*[@id='property_range_max_expression']"),
+    MINIMUM_ADD_NUMERIC_USE_EXPRESSION("Use Expression","//input[@id='property_range_min_expression']"),
+    MAXIMUM_ADD_NUMERIC_USE_EXPRESSION("Use Expression","//input[@id='property_range_max_expression']"),
     INVALID_TEXT_FIELD(null, "//li[8]/div/ul/li/input"),
     KIND_DROPDOWN(null, "//select[@class='editorSelect']"),
     ADD_OPTION_LINK("Add Option", "//a[@class='addOption']"),
     BULK_EDIT_LINK("bulk edit", "//a[@class='optionsEditorLink']"),
-    OPTION_FIELD(null, "//li[###]/div/div[1]/ul/li/input"),
+    OPTION_FIELD(null, "//li[###]/div/div/ul/li/input"),
     OPTION_UNDERLYING_VALUE_FIELD(null, "//li[###]/div/div[2]/input"),
-    OPTION_REMOVE(null, "//a[@class='removeOption']"),//we are going to need to be able to reference which option # you want to remove
+    OPTION_REMOVE(null, "//li[###]/div[@class='uiText']/a[@class='removeOption']"),
+    
+    FIRST_TEXT_ELEMENT(null,"//div[contains(@class,'control inputText')]"),
+    FIRST_NUMERIC_ELEMENT(null,"//div[contains(@class,'control inputNumeric')]"),
+    FIRST_DATE_ELEMENT(null,"//div[contains(@class,'control inputDate')]"),
+    FIRST_SELECT_ONE_ELEMENT(null,"//div[contains(@class,'control inputSelectOne')]"),
+    FIRST_SELECT_MULTIPLE_ELEMENT(null,"//div[contains(@class,'control inputSelectMany')]"),
     
     ADVANCED_ARROW(null, "//div[@class='icon']"),
     RELEVANCE_FIELD(null, "property_Relevance"),
