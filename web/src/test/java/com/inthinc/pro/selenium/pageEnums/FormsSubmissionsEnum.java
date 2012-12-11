@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsSubmissionsEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms/submissions"),
+    DEFAULT_URL("forms/submissions"),
 //No longer on page    TITLE("List Submissions", "//span[@class='admin']"),
 
     DATE_HEADER("Search:", "//label[@for='dateSelection']"),
@@ -27,7 +27,7 @@ public enum FormsSubmissionsEnum implements SeleniumEnums {
     EDITED_DROPDOWN(null, "//th[@id='column-filter-submission-edited']/span/select"),  
     APPROVED_DROPDOWN(null, "//th[@id='column-filter-submission-status']/span/select"),
 
-    GROUP_FIELD("Group", "//th[@id='column-filter-submission-group']/span/input"),
+    GROUP_FIELD(null, "column-filter-submission-group"),
     DRIVER_FIELD(null, "column-filter-submission-driver"),
     VEHICLE_FIELD(null, "column-filter-submission-vehicle"),
     
