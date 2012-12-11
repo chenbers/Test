@@ -6,6 +6,32 @@ Meta:
 
 Narrative: 
 
+Scenario: TC6274: My Account Edit - UI
+Given I am logged in
+When I click the My Account link
+And I click the Edit button
+Then I validate I am on the My Account Edit page
+And I validate the Save button is present
+And I validate the Cancel button is present
+And I validate the Name text is present
+And I validate the Group text is present
+And I validate the Team text is present
+And I validate the Information dropdown is present
+And I validate the Warning dropdown is present
+And I validate the Critical dropdown is present
+And I validate the Map Type dropdown is present
+And I validate the Map Layers dropdown is present
+And I validate the User Name text is present
+And I validate the Locale dropdown is present
+And I validate the Measurement dropdown is present
+And I validate the Fuel Efficiency Ratio dropdown is present
+And I validate the Email One textfield is present
+And I validate the Email Two textfield is present
+And I validate the Text Message One textfield is present
+And I validate the Text Message Two textfield is present
+And I validate the Phone One textfield is present
+And I validate the Phone Two textfield is present
+
 Scenario: TC1267: My Account - Edit Account - Bookmark Entry
 Given I am logged in
 When I click the My Account link
@@ -13,7 +39,7 @@ And I click the Edit button
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-Given I am logged in
+And I log back in
 Then I validate I am on the My Account page
 
 Scenario: TC1269: My Account - Edit Account - Bookmark Entry to Different Account
@@ -23,7 +49,7 @@ And I click the Edit button
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-Given I am logged in an account that can be edited
+And I log back in under the editable account
 Then I validate I am on the My Account page
 
 Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart drivers (REQUIRES USER HAS DATA)
@@ -476,14 +502,14 @@ Scenario: TC1276: My Account - Edit Account - Missing Required Field Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "" into the Email1 textfield
-And I type "" into the Email2 textfield
-And I type "" into the Phone1 textfield
-And I type "" into the Phone2 textfield
+And I type "" into the Email One textfield
+And I type "" into the Email Two textfield
+And I type "" into the Phone One textfield
+And I type "" into the Phone Two textfield
 And I type "" into the Text Message1 textfield
 And I type "" into the Text Message2 textfield
 And I click the Save button
-Then I validate the Error Email1 text is "Required"
+Then I validate the Error Email One text is "Required"
 
 Scenario: TC1277: My Account - Edit Account - Phone Max Characters Error
 Given I am logged in
@@ -542,12 +568,12 @@ And I uncheck the 1st Row of the Map Layers checkbox
 And I select "English (United States)" from the Locale dropdown
 And I select "English" from the Measurement dropdown
 And I select "Miles Per Gallon (US)" from the Fuel Efficiency Ratio dropdown
-And I type "t@t.com" into the Email1 textfield
-And I type "" into the Email2 textfield
-And I type "" into the Phone1 textfield
-And I type "" into the Phone2 textfield
-And I type "" into the Text Message1 textfield
-And I type "" into the Text Message2 textfield
+And I type "t@t.com" into the Email One textfield
+And I type "" into the Email Two textfield
+And I type "" into the Phone One textfield
+And I type "" into the Phone Two textfield
+And I type "" into the Text Message One textfield
+And I type "" into the Text Message Two textfield
 And I click the Save button
 And I save the Red Flag Info text as ORIGINALinfo
 And I save the Red Flag Warn text as ORIGINALwarn
@@ -557,12 +583,12 @@ And I save the Map Layers text as ORIGINALmapLayers
 And I save the Locale text as ORIGINALlocale
 And I save the Measurement text as ORIGINALmeasurement
 And I save the Fuel Efficiency Ratio text as ORIGINALfuelEff
-And I save the Email1 text as ORIGINALemailOne
-And I save the Email2 text as ORIGINALemailTwo
-And I save the Phone1 text as ORIGINALphoneOne
-And I save the Phone2 text as ORIGINALphoneTwo
-And I save the Text Message1 text as ORIGINALtextOne
-And I save the Text Message2 text as ORIGINALtextTwo
+And I save the Email One text as ORIGINALemailOne
+And I save the Email Two text as ORIGINALemailTwo
+And I save the Phone One text as ORIGINALphoneOne
+And I save the Phone Two text as ORIGINALphoneTwo
+And I save the Text Message One text as ORIGINALtextOne
+And I save the Text Message Two text as ORIGINALtextTwo
 And I click the Edit button
 And I select the option containing "E-mail 1" from the Information dropdown
 And I select the option containing "Text Message 1" from the Warning dropdown
@@ -573,10 +599,10 @@ And I check the 1st Row of the Map Layers checkbox
 And I select "Deutsch" from the Locale dropdown
 And I select "Metric" from the Measurement dropdown
 And I select "Kilometers Per Liter" from the Fuel Efficiency Ratio dropdown
-And I type "test@test.com" into the Email1 textfield
-And I type "test2@test.com" into the Email2 textfield
-And I type "0000000000" into the Phone1 textfield
-And I type "1111111111" into the Phone2 textfield
+And I type "test@test.com" into the Email One textfield
+And I type "test2@test.com" into the Email Two textfield
+And I type "0000000000" into the Phone One textfield
+And I type "1111111111" into the Phone Two textfield
 And I type "8015551212@tmomail.com" into the Text Message1 textfield
 And I type "8015551213@tmomail.com" into the Text Message2 textfield
 And I click the Save button
@@ -588,12 +614,12 @@ And I validate the Map Layers text is not ORIGINALmapLayers
 And I validate the Locale text is not ORIGINALlocale
 And I validate the Measurement text is not ORIGINALmeasurement
 And I validate the Fuel Efficiency Ratio text is not ORIGINALfuelEff
-And I validate the Email1 text is not ORIGINALemailOne
-And I validate the Email2 text is not ORIGINALemailTwo
-And I validate the Phone1 text is not ORIGINALphoneOne
-And I validate the Phone2 text is not ORIGINALphoneTwo
-And I validate the Text Message1 text is not ORIGINALtextOne
-And I validate the Text Message2 text is not ORIGINALtextTwo
+And I validate the Email One text is not ORIGINALemailOne
+And I validate the Email Two text is not ORIGINALemailTwo
+And I validate the Phone One text is not ORIGINALphoneOne
+And I validate the Phone Two text is not ORIGINALphoneTwo
+And I validate the Text Message One text is not ORIGINALtextOne
+And I validate the Text Message Two text is not ORIGINALtextTwo
 And I click the Edit button
 And I select "English (United States)" from the Locale dropdown
 And I click the Save button
@@ -602,11 +628,11 @@ Scenario: TC1272: My Account - Edit Account - E-mail Address Format Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "tlc1960@test" into the Email1 textfield
-And I type "tina1960test.com" into the Email2 textfield
+And I type "tlc1960@test" into the Email One textfield
+And I type "tina1960test.com" into the Email Two textfield
 And I click the Save button
-Then I validate the Error Email1 text is "Incorrect format (jdoe@tiwipro.com)"
-And I validate the Error Email2 text is "Incorrect format (jdoe@tiwipro.com)"
+Then I validate the Error Email One text is "Incorrect format (jdoe@tiwipro.com)"
+And I validate the Error Email Two text is "Incorrect format (jdoe@tiwipro.com)"
 
 SScenario: TC1271: My Account - Edit Account - Cancel Button (Changes) -  Requires DE7955 is fixed
 Given I am logged in
@@ -625,12 +651,12 @@ And I uncheck the 1st Row of the Map Layers checkbox
 And I select "English (United States)" from the Locale dropdown
 And I select "English" from the Measurement dropdown
 And I select "Miles Per Gallon (US)" from the Fuel Efficiency Ratio dropdown
-And I type "t@t.com" into the Email1 textfield
-And I type "" into the Email2 textfield
-And I type "" into the Phone1 textfield
-And I type "" into the Phone2 textfield
-And I type "" into the Text Message1 textfield
-And I type "" into the Text Message2 textfield
+And I type "t@t.com" into the Email One textfield
+And I type "" into the Email Two textfield
+And I type "" into the Phone One textfield
+And I type "" into the Phone Two textfield
+And I type "" into the Text Message One textfield
+And I type "" into the Text Message Two textfield
 And I click the Save button
 And I save the Red Flag Info text as ORIGINALinfo
 And I save the Red Flag Warn text as ORIGINALwarn
@@ -640,12 +666,12 @@ And I save the Map Layers text as ORIGINALmapLayers
 And I save the Locale text as ORIGINALlocale
 And I save the Measurement text as ORIGINALmeasurement
 And I save the Fuel Efficiency Ratio text as ORIGINALfuelEff
-And I save the Email1 text as ORIGINALemailOne
-And I save the Email2 text as ORIGINALemailTwo
-And I save the Phone1 text as ORIGINALphoneOne
-And I save the Phone2 text as ORIGINALphoneTwo
-And I save the Text Message1 text as ORIGINALtextOne
-And I save the Text Message2 text as ORIGINALtextTwo
+And I save the Email One text as ORIGINALemailOne
+And I save the Email Two text as ORIGINALemailTwo
+And I save the Phone One text as ORIGINALphoneOne
+And I save the Phone Two text as ORIGINALphoneTwo
+And I save the Text Message One text as ORIGINALtextOne
+And I save the Text Message Two text as ORIGINALtextTwo
 And I click the Edit button
 And I select the option containing "E-mail 1" from the Information dropdown
 And I select the option containing "Text Message 1" from the Warning dropdown
@@ -656,12 +682,12 @@ And I click the 1st Row of the Map Layers checkbox
 And I select "Deutsch" from the Locale dropdown
 And I select "Metric" from the Measurement dropdown
 And I select "Kilometers Per Liter" from the Fuel Efficiency Ratio dropdown
-And I type "test@test.com" into the Email1 textfield
-And I type "test2@test.com" into the Email2 textfield
-And I type "0000000000" into the Phone1 textfield
-And I type "1111111111" into the Phone2 textfield
-And I type "8015551212@tmomail.com" into the Text Message1 textfield
-And I type "8015551213@tmomail.com" into the Text Message2 textfield
+And I type "test@test.com" into the Email One textfield
+And I type "test2@test.com" into the Email Two textfield
+And I type "0000000000" into the Phone One textfield
+And I type "1111111111" into the Phone Two textfield
+And I type "8015551212@tmomail.com" into the Text Message One textfield
+And I type "8015551213@tmomail.com" into the Text Message Two textfield
 And I click the Cancel button
 Then I validate the Red Flag Info text is ORIGINALinfo
 And I validate the Red Flag Warn text is ORIGINALwarn
@@ -671,35 +697,9 @@ And I validate the Map Layers text is ORIGINALmapLayers
 And I validate the Locale text is ORIGINALlocale
 And I validate the Measurement text is ORIGINALmeasurement
 And I validate the Fuel Efficiency Ratio text is ORIGINALfuelEff
-And I validate the Email1 text is ORIGINALemailOne
-And I validate the Email2 text is ORIGINALemailTwo
-And I validate the Phone1 text is ORIGINALphoneOne
-And I validate the Phone2 text is ORIGINALphoneTwo
-And I validate the Text Message1 text is ORIGINALtextOne
-And I validate the Text Message2 text is ORIGINALtextTwo
-
-Scenario: TC6274: My Account Edit - UI
-Given I am logged in
-When I click the My Account link
-And I click the Edit button
-Then I validate I am on the My Account Edit page
-And I validate the Save button is present
-And I validate the Cancel button is present
-And I validate the Name text is present
-And I validate the Group text is present
-And I validate the Team text is present
-And I validate the Information dropdown is present
-And I validate the Warning dropdown is present
-And I validate the Critical dropdown is present
-And I validate the Map Type dropdown is present
-And I validate the Map Layers dropdown is present
-And I validate the User Name text is present
-And I validate the Locale dropdown is present
-And I validate the Measurement dropdown is present
-And I validate the Fuel Efficiency Ratio dropdown is present
-And I validate the Email1 textfield is present
-And I validate the Email2 textfield is present
-And I validate the Text Message1 textfield is present
-And I validate the Text Message2 textfield is present
-And I validate the Phone1 textfield is present
-And I validate the Phone2 textfield is present
+And I validate the Email One text is ORIGINALemailOne
+And I validate the Email Two text is ORIGINALemailTwo
+And I validate the Phone One text is ORIGINALphoneOne
+And I validate the Phone Two text is ORIGINALphoneTwo
+And I validate the Text Message One text is ORIGINALtextOne
+And I validate the Text Message Two text is ORIGINALtextTwo
