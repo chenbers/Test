@@ -151,7 +151,7 @@
 		var currentDirections = null;
 		var bounds = new google.maps.LatLngBounds();
 		var numberOfWaypoints = 0;
-		var myOptions = {
+		var mapOptions = {
 				zoom : 3,
 				center : new google.maps.LatLng(40, -111),
 				mapTypeId : google.maps.MapTypeId.ROADMAP
@@ -169,7 +169,7 @@
 
 			console.log('about to populate map: '+map);
 			
-			map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+			map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 			console.log('done populating map: '+map);
 			
 			console.log('done populating map: '+map);
@@ -296,7 +296,7 @@
 				<tr>
 					<td valign="top" width="130"><ui:include
 							src="/includes/navigation/adminSideNav.xhtml">
-							<ui:param name="selectedAction" value="go_adminHazards" />
+							<ui:param name="selectedAction" value="go_adminRouteHazard" />
 							<ui:param name="parentAction" value="go_adminHazards" />
 							<ui:param name="context" value="hazards" />
 						</ui:include></td>
