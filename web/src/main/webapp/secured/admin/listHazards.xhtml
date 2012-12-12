@@ -179,7 +179,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_location}" />
                 </f:facet>
-               <h:outputText value="#{item.location}"/>
+               <h:outputText value="#{item.location}"/>#{hazardsBean.addressFormat}
             </rich:column>
             
             <rich:column id="description" sortBy="#{item.description}" >
@@ -331,7 +331,7 @@
                           if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
                               reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
                           } else {
-                              lkFrZn(lat.value,lng.value,index);
+                              //bad lat lng
                           }
                       }
                    }
@@ -339,7 +339,7 @@
                       new GClientGeocoder().getLocations(latlng, 
                               function(response){
                                   if (!response || response.Status.code != 200) {
-                                      lkFrZn(latlng.lat(),latlng.lng(),index);
+                                      // no response typically== bad lat lng
                                   } else {
                                       addressElement.innerHTML = response.Placemark[0].address;
                                   }
