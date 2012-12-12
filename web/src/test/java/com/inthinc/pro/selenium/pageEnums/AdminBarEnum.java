@@ -17,12 +17,18 @@ public enum AdminBarEnum implements SeleniumEnums {
 
     ADD_VEHICLE("Add Vehicle", "link=Add Vehicle", "side-nav-form:vehicles-vlst-vehicles"),
 
-    DEVICES_IMAGE(null, "//tr[4]/td/dl/dd/table/tbody/tr/td[1]"),
+    DEVICES_IMAGE(null, "//tr[3]/td/dl/dd/table/tbody/tr/td[1]"),
     DEVICES("Devices", "link=Devices", "//a[@id='side-nav-form:***-vlt-devices']"),
 
-    ZONES_IMAGE(null, "//tr[5]/td/dl/dd/table/tbody/tr/td[1]"),
-    ZONES("Zones", "link=Zones", "//tr[5]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-zones"),
+    ZONES_IMAGE(null, "//tr[4]/td/dl/dd/table/tbody/tr/td[1]"),
+    ZONES("Zones", "link=Zones", "//tr[4]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-zones"),
 
+    ROAD_HAZARDS_IMAGE(null, "//tr[5]/td/dl/dd/table/tbody/tr/td[1]"),
+    ROAD_HAZARDS("Road Hazards", "link=Road Hazards", "//tr[5]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-hazards"),
+    
+    ADD_HAZARD("Add Hazard", "link=Add Hazard", "side-nav-form:hazards-vlst-AddHazard"),
+    ROUTE_HAZARDS("Route Hazards", "link=Route Hazards", "side-nav-form:hazards-vlst-RouteHazard"),
+    
     RED_FLAGS_IMAGE(null, "//tr[6]/td/dl/dd/table/tbody/tr/td[1]"),
     RED_FLAGS("Red Flags", "link=Red Flags", "//tr[6]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-redFlags"),
 
