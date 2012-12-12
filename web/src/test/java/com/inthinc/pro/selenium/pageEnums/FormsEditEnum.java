@@ -39,11 +39,11 @@ public enum FormsEditEnum implements SeleniumEnums {
     FILTER_GROUPS_FIELD(null, "//div/span/input[@id='group-search']"),
     GROUPS_ARROW(null, "//ins[@class='jstree-icon']"),			//needs more work so I can select specific arrows
     GROUPS_CHECKBOX(null, "//ins[@class='jstree-checkbox']"),	//needs more work so I can select specific checkboxes
-    GROUPS_NAV_TEXT(null,"//li[contains(@class,'jstree-checked')]/a"),											// debug
-    GROUPS_NAV_CHECKBOX(null,"//li[contains(@class,'jstree-checked')]/a/ins[@class='jstree-checkbox']"),		// debug
-    GROUPS_NAV_SEARCHED(null,"//li/a[@class,'jstree-search']"),													// debug
-    GROUPS_NAV_SEARCHED_TEXT(null,"//li/a[@class='jstree-search')]"),											// debug
-    GROUPS_NAV_SEARCHED_CHECKBOX(null,"//li/a[@class='jstree-search']/ins[@class='jstree-checkbox']"),			// debug
+    GROUPS_NAV_TEXT(null,"//li[contains(@class,'jstree-checked')]/a"),
+    GROUPS_NAV_CHECKBOX(null,"//li[contains(@class,'jstree-checked')]/a/ins[@class='jstree-checkbox']"),
+    GROUPS_NAV_SEARCHED(null,"//li/a[@class,'jstree-search']"),
+    GROUPS_NAV_SEARCHED_TEXT(null,"//li/a[@class='jstree-search')]"),
+    GROUPS_NAV_SEARCHED_CHECKBOX(null,"//li/a[@class='jstree-search']/ins[@class='jstree-checkbox']"),
     
     ADD_FIELD_TEXT("Add Field", "//span[@class='brand']"),
     TEXT_LINK("Text", "//a[@class='toolButton inputText ui-draggable']"),
