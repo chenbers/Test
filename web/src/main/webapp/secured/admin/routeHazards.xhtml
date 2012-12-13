@@ -367,6 +367,43 @@
 												<input type="text" id="destination" value="#{messages.hazard_destination}" style="width: 80%"/> 
 												<input type="submit" id="submit" value="#{messages.hazard_findRoute}" style="width: 80%"/><br/>
 												<a href="#" id="addDestination">#{messages.hazard_addDestination}</a>
+												<div id="d_options" style=""> 
+													<div id="d_optph">
+														<div style="display: none;"></div>
+														<div style="" >
+															<div id="d_options_d_tpl" >
+																<div style="float: left; white-space: nowrap;">
+																	<div  style="">
+																		<input type="checkbox" id="ddopt_avhwy" name="ddopt_avhwy" />
+																		<label for="ddopt_avhwy" >#{messages.directions_avoidHighways}</label>
+																	</div>
+																	<div style="">
+																		<input type="checkbox" id="dopt_avtoll" name="dopt_avtoll" />
+																		<label for="dopt_avtoll" >#{messages.directions_avoidToll}s</label>
+																	</div>
+																</div>
+																<div id="d_options_mikm_d" style="float:right;">
+																	<span class="secondary" id="d_options_mikm_tpl">
+																		<a href="javascript:void(0)" msgid="1537" id="dopt_mikm_m" tabindex="5" jsaction="dopt.su" jsprops="unit:'m'" class="anchor-selected">miles</a>
+																		&nbsp;/&nbsp;
+																		<a href="javascript:void(0)" msgid="1616" id="dopt_mikm_k" tabindex="5" jsaction="dopt.su" jsprops="unit:'k'">km</a> 
+																	</span>
+																</div>
+															</div>
+														</div>
+														<div style="display: none;" >
+															<div >
+																<div id="d_options_mikm_w" ></div>
+															</div>
+														</div>
+														<div style="display: none;" >
+															<div > 
+																<div id="d_options_mikm_b" ></div> 
+															</div>
+														</div>
+													</div>
+												</div>
+												
 											</form>
 										</div>
 										
