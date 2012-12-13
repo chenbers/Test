@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum AdminUsersEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/admin/people"),
+    DEFAULT_URL(appUrl + "/admin", appUrl + "/admin/people"),
     TITLE("Admin - Users", Xpath.start().span(Id.clazz("admin")).toString()),
 
     DELETE(delete, "admin-table-form:personTable-adminTableDelete"),

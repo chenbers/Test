@@ -1,13 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.CheckBoxTable;
-import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TextField;
-import com.inthinc.pro.automation.elements.TextFieldError;
-import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
@@ -16,21 +10,11 @@ public class PageMyAccount extends NavigationBar {
 	public PageMyAccount() {
 	}
 	public class MyAccountPopUps extends MastheadPopUps{
+		
 		public MyAccountChangePassword changeMyPassword(){
 			return new MyAccountChangePassword();
 		}
 	}
-	
-    public class MyAccountTablesCheckBoxes {
-
-        public CheckBoxTable mapLayers() {
-            return new CheckBoxTable(MyAccountEnum.MAP_LAYERS_CHECKBOX);
-        }
-    }
-    
-    public MyAccountTablesCheckBoxes _checkBox() {
-        return new MyAccountTablesCheckBoxes();
-    }
 
     public class MyAccountTablesTexts extends MyAccountTexts {
         
@@ -39,62 +23,7 @@ public class PageMyAccount extends NavigationBar {
         }
         
     }
-	
-	public MyAccountPopUps _popUp(){
-		return new MyAccountPopUps();
-	}
-	
-	public MyAccountTextFields _textField() {
-		return new MyAccountTextFields();
-	}
-
-	public MyAccountTexts _text() {
-		return new MyAccountTexts();
-	}
-
-	public MyAccountLinks _link() {
-		return new MyAccountLinks();
-	}
-
-	public MyAccountButtons _button() {
-		return new MyAccountButtons();
-	}
-
-	public MyAccountDropDowns _dropDown() {
-		return new MyAccountDropDowns();
-	}
-
-	public class MyAccountLinks extends NavigationBarLinks {
-
-	}
-
-	public class MyAccountTextFields extends NavigationBarTextFields {
-
-		public TextField phoneOne() {
-			return new TextField(MyAccountEnum.PHONE1_TEXTFIELD);
-		}
-
-		public TextField phoneTwo() {
-			return new TextField(MyAccountEnum.PHONE2_TEXTFIELD);
-		}
-
-		public TextField emailOne() {
-			return new TextField(MyAccountEnum.EMAIL1_TEXTFIELD);
-		}
-
-		public TextField EmailTwo() {
-			return new TextField(MyAccountEnum.EMAIL2_TEXTFIELD);
-		}
-
-		public TextField textMessageOne() {
-			return new TextField(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
-		}
-
-		public TextField textMessageTwo() {
-			return new TextField(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
-		}
-	}
-
+    
 	public class MyAccountButtons extends NavigationBarButtons {
 
 		public TextButton changePassword() {
@@ -103,52 +32,6 @@ public class PageMyAccount extends NavigationBar {
 
 		public TextButton edit() {
 			return new TextButton(MyAccountEnum.EDIT_BUTTON);
-		}
-
-		public TextButton save() {
-			return new TextButton(MyAccountEnum.SAVE_BUTTON);
-		}
-
-		public TextButton cancel() {
-			return new TextButton(MyAccountEnum.CANCEL_BUTTON);
-		}
-		
-		public Button downArrow() {
-            return new Button(MyAccountEnum.MAP_LAYERS_ARROW);
-		}
-	}
-
-	public class MyAccountDropDowns {
-		public DropDown critical() {
-			return new DropDown(MyAccountEnum.CRITICAL_SELECT);
-		}
-
-		public DropDown information() {
-			return new DropDown(MyAccountEnum.INFORMATION_SELECT);
-		}
-
-		public DropDown warning() {
-			return new DropDown(MyAccountEnum.WARNING_SELECT);
-		}
-		
-		public DropDown mapType() {
-		    return new DropDown(MyAccountEnum.MAP_TYPE_SELECTOR);
-		}
-		
-		public DropDown mapLayers() {
-		    return new DropDown(MyAccountEnum.MAP_LAYERS_SELECTOR);
-		}
-
-		public DropDown fuelEfficiencyRatio() {
-			return new DropDown(MyAccountEnum.FUEL_EFFICIENCY_SELECT);
-		}
-
-		public DropDown locale() {
-			return new DropDown(MyAccountEnum.LOCALE_SELECT);
-		}
-
-		public DropDown measurement() {
-			return new DropDown(MyAccountEnum.MEASUREMENT_SELECT);
 		}
 	}
 
@@ -225,55 +108,6 @@ public class PageMyAccount extends NavigationBar {
 		public Text userName() {
 			return new Text(MyAccountEnum.USER_NAME_TEXT);
 		}
-
-		public Text errorEmailOne() {
-			return new TextFieldError(MyAccountEnum.EMAIL1_TEXTFIELD);
-		}
-
-		public Text errorEmailTwo() {
-			return new TextFieldError(MyAccountEnum.EMAIL2_TEXTFIELD);
-		}
-
-		public Text errorPhoneOne() {
-			return new TextFieldError(MyAccountEnum.PHONE1_TEXTFIELD);
-		}
-
-		public Text errorPhoneTwo() {
-			return new TextFieldError(MyAccountEnum.PHONE2_TEXTFIELD);
-		}
-
-		public Text errorTextOne() {
-			return new TextFieldError(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
-		}
-
-		public Text errorText2() {
-			return new TextFieldError(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
-		}
-		
-		public Text labelTextFieldEmailOne() {
-            return new TextFieldLabel(MyAccountEnum.EMAIL1_TEXTFIELD);
-        }
-
-        public Text labelTextFieldEmailTwo() {
-            return new TextFieldLabel(MyAccountEnum.EMAIL2_TEXTFIELD);
-        }
-
-
-        public Text labelTextFieldPhoneOne() {
-            return new TextFieldLabel(MyAccountEnum.PHONE1_TEXTFIELD);
-        }
-
-        public Text labelTextFieldPhoneTwo() {
-            return new TextFieldLabel(MyAccountEnum.PHONE2_TEXTFIELD);
-        }
-
-        public Text labelTextFieldTextOne() {
-            return new TextFieldLabel(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
-        }
-
-        public Text labelTextFieldText2() {
-            return new TextFieldLabel(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
-        }
 
 		public Text labelRedFlagCritical() {
 			return new TextLabel(MyAccountEnum.CRITICAL_TEXT);
@@ -380,55 +214,42 @@ public class PageMyAccount extends NavigationBar {
 		}
 
 	}
-
-	public PageMyAccount page_titlesAndLabels_validate() {
-
-		/* Titles for the separate sections */
-		_text().titleAccountMain().validateTheDefaultValue();
-		_text().titleLoginInfo().validateTheDefaultValue();
-		_text().titleAccountInfo().validateTheDefaultValue();
-		_text().titleRedFlags().validateTheDefaultValue();
-		_text().titleMapPreferences().validateTheDefaultValue();
-		_text().titleContactInfo().validateTheDefaultValue();
-
-		/* Labels for the seperate rows */
-		/* Account Information */
-		_text().labelName().validateTheDefaultValue();
-		_text().labelGroup().validateTheDefaultValue();
-		_text().labelTeam().validateTheDefaultValue();
-
-		/* Login Information */
-		_text().labelUserName().validateTheDefaultValue();
-		_text().labelLocale().validateTheDefaultValue();
-		_text().labelMeasurement().validateTheDefaultValue();
-		_text().labelFuelEfficiencyRatio().validateTheDefaultValue();
-
-		/* Red Flag Preferences */
-		_text().labelRedFlagInfo().validateTheDefaultValue();
-		_text().labelRedFlagWarning().validateTheDefaultValue();
-		_text().labelRedFlagCritical().validateTheDefaultValue();
-
-		/* Contact Information */
-		_text().titleEmailAddresses().validateTheDefaultValue();
-		_text().labelEmailOne().validateTheDefaultValue();
-		_text().labelEmailTwo().validateTheDefaultValue();
-
-		_text().titlePhoneNumbers().validateTheDefaultValue();
-		_text().labelPhoneOne().validateTheDefaultValue();
-		_text().labelPhoneTwo().validateTheDefaultValue();
-
-		_text().titleTextMessages().validateTheDefaultValue();
-		_text().labelTextMessageOne().validateTheDefaultValue();
-		_text().labelTextMessageTwo().validateTheDefaultValue();
-
-		return this;
+	
+    public MyAccountTablesCheckBoxes _checkBox() {
+        return new MyAccountTablesCheckBoxes();
+    }
+    
+	public MyAccountPopUps _popUp(){
+		return new MyAccountPopUps();
+	}
+	
+	public MyAccountTextFields _textField() {
+		return new MyAccountTextFields();
 	}
 
-	@Override
-	public PageMyAccount validate() {
-		page_titlesAndLabels_validate();
-		return this;
+	public MyAccountTexts _text() {
+		return new MyAccountTexts();
 	}
+
+	public MyAccountLinks _link() {
+		return new MyAccountLinks();
+	}
+
+	public MyAccountButtons _button() {
+		return new MyAccountButtons();
+	}
+
+	public MyAccountDropDowns _dropDown() {
+		return new MyAccountDropDowns();
+	}
+
+	public class MyAccountLinks extends NavigationBarLinks {}
+
+	public class MyAccountTextFields extends NavigationBarTextFields {}
+	
+    public class MyAccountTablesCheckBoxes {}
+    
+	public class MyAccountDropDowns {}
 
 	@Override
 	public String getExpectedPath() {
@@ -443,7 +264,7 @@ public class PageMyAccount extends NavigationBar {
     @Override
     protected boolean checkIsOnPage() {
         return (_button().edit().isPresent() && _button().changePassword().isPresent()) || 
-               (_button().save().isPresent() && _button().cancel().isPresent());
+               (_text().mapType().isPresent() && _text().mapLayers().isPresent());
     }
 
 }
