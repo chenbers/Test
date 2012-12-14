@@ -244,6 +244,7 @@ And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
 And I select "Top - Test Group WR" from the Team dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text does not contain "kph"
 And I validate the 1st Row of the Entry Detail text does not contain "kilometers"
@@ -450,6 +451,7 @@ And I validate the 1st Row of the Odometer Value text contains "mi"
 And I click on the Notifications link
 And I click on the Safety link
 And I select "Top - Test Group WR" from the Team dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text does not contain "kph"
 And I validate the 1st Row of the Entry Detail text does not contain "kilometers"
@@ -515,31 +517,31 @@ Scenario: TC1277: My Account - Edit Account - Phone Max Characters Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "0000000000000000" into the PhoneOne textfield
-And I type "1111111111111111" into the PhoneTwo textfield
+And I type "0000000000000000" into the Phone One textfield
+And I type "1111111111111111" into the Phone Two textfield
 And I click the Save button
-Then I validate the Error PhoneOne text is "Must consist of up to 15 numeric characters"
-And I validate the Error PhoneTwo text is "Must consist of up to 15 numeric characters"
+Then I validate the Error Phone One text is "Must consist of up to 15 numeric characters"
+And I validate the Error Phone Two text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1278: My Account - Edit Account - Phone Missing Character Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "00" into the PhoneOne textfield
-And I type "11" into the PhoneTwo textfield
+And I type "00" into the Phone One textfield
+And I type "11" into the Phone Two textfield
 And I click the Save button
-Then I validate the Error PhoneOne text is "Must consist of up to 15 numeric characters"
-And I validate the Error PhoneTwo text is "Must consist of up to 15 numeric characters"
+Then I validate the Error Phone One text is "Must consist of up to 15 numeric characters"
+And I validate the Error Phone Two text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1279: My Account - Edit Account - Phone Special Character Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "& ^ $" into the PhoneOne textfield
-And I type "& ^ $" into the PhoneTwo textfield
+And I type "& ^ $" into the Phone One textfield
+And I type "& ^ $" into the Phone Two textfield
 And I click the Save button
-Then I validate the Error PhoneOne text is "Must consist of up to 15 numeric characters"
-And I validate the Error PhoneTwo text is "Must consist of up to 15 numeric characters"
+Then I validate the Error Phone One text is "Must consist of up to 15 numeric characters"
+And I validate the Error Phone Two text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1282: My Account - Edit Account - Text Message Format Error
 Given I am logged in
