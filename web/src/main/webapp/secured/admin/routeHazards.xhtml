@@ -344,18 +344,21 @@
                 }
             }
          }
+		var geocoder = new google.maps.Geocoder();
         function reverseGeocodeTripAddress(latlng,addressElement,index){
-/*         	console.log('reverseGeocodeTripAddress('+latlng+','+addressElement+','+index+')');
+         	console.log('reverseGeocodeTripAddress('+latlng+','+addressElement+','+index+')');
         	var request = {location: latlng};
-            google.maps.Geocoder.getLocations(latlng, 
+            geocoder.geocode(request, 
                     function(result, geoStatus){
-            			console.log('result: '+result);
-                        if (result || geoStatus != google.maps.GeocoderStatus.OK) {
+		            	console.log('result: '+result);
+		            	console.log('geoStatus: '+geoStatus);
+                        if (!result || geoStatus != google.maps.GeocoderStatus.OK) {
                             console.log('// no response typically== bad lat lng');
                         } else {
+                        	console.log('formatted_address: '+result[0].formatted_address);
                             addressElement.innerHTML = result[0].formatted_address;
                         }
-                    }); */
+                    });
           }
         //]]> 
 		</script>
