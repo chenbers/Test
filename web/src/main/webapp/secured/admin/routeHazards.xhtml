@@ -152,6 +152,7 @@
 		var currentDirections = null;
 		var bounds = new google.maps.LatLngBounds();
 		var numberOfWaypoints = 0;
+		var units = 'imperial';
 		var mapOptions = {
 				zoom : 3,
 				center : new google.maps.LatLng(40, -111),
@@ -230,26 +231,59 @@
 			});
             console.log('done adding click listener for addDestination');
              
+            jQuery('#showDirOptions').click(function showHideOptions(){
+            	var options = jQuery('#d_options');
+            	var theLink = jQuery('#showDirOptions');
+            	var showText = '#{messages.hazard_showDirOpts}';
+            	var hideText = '#{messages.hazard_hideDirOpts}';
+            	if(options.is(':visible')){
+            		options.hide();
+            		theLink.html(showText);
+            	} else {
+            		options.show();
+            		theLink.html(hideText);
+            	}
+            });
+            
             console.log('document ready');
 		});
 		
 		console.log('made it out of the jQuery ready block');
+		var waypoints = [];
 		function calcRouteNoParams(){
 			console.log('calcRouteNoParams()');
-			var waypoints = '';
 			
-			
-			calcRoute($('origin').getValue(), $('destination').getValue());
+			jQuery('.waypoint').each(function(index, value){
+				console.log(index+' : '+jQuery(this).val());
+				var point = jQuery(this).val();
+				waypoints.push({
+				    location: point,
+				    stopover:true
+				});
+				console.log('waypoints: '+waypoints);
+			});
+			var avoid = '';
+			if(jQuery('#ddopt_avhwy').is(':checked')){
+				avoid+='highways|';
+			}
+			if(jQuery('#dopt_avtoll').is(':checked')){
+				avoid+='tolls';
+			}
+			calcRoute(jQuery('#origin').val(), jQuery('#destination').val(), waypoints, avoid, units);
 		}
-		function calcRoute(start, end, waypoints) {
-			console.log('calcRoute('+start+', '+end+')');
+		function calcRoute(start, end, waypoints, avoids, units) {
+			console.log('calcRoute('+start+', '+end+', '+waypoints+', '+avoids+', '+units+')');
 			var request = {
 				origin : start,
 				destination : end,
 				waypoints : waypoints,
 				travelMode : google.maps.DirectionsTravelMode.DRIVING
 			};
+			console.log('request: '+request);
 			directionsService.route(request, function(response, status) {
+				console.log('request: '+request);
+				console.log('status: '+status);
+				console.log('response: '+response);
 				if (status == google.maps.DirectionsStatus.OK) {
 					directionsDisplay.setDirections(response);
 					var boundsCount = 0;
@@ -361,32 +395,33 @@
 									<div style="float: right; width: 100%; overflow: auto">
 										<button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
 										<div id="to_from" style="float: left; width: 49%; ">
-											<form action="#" onsubmit="calcRouteNoParams(); return false;">
+											<form action="javascript:void(0);" onsubmit="calcRouteNoParams(); return false;">
 												<input type="text" id="origin" value="#{messages.hazard_origin}" style="width: 80%"/> 
 												<div id="waypointContainer"></div>
 												<input type="text" id="destination" value="#{messages.hazard_destination}" style="width: 80%"/> 
 												<input type="submit" id="submit" value="#{messages.hazard_findRoute}" style="width: 80%"/><br/>
-												<a href="#" id="addDestination">#{messages.hazard_addDestination}</a>
-												<div id="d_options" style=""> 
+												<a href="javascript:void(0)" id="addDestination">#{messages.hazard_addDestination}</a>
+												<a href="javascript:void(0)" id="showDirOptions">#{messages.hazard_showDirOpts}</a>
+												<div id="d_options" style="display: none;"> 
 													<div id="d_optph">
 														<div style="display: none;"></div>
 														<div style="" >
 															<div id="d_options_d_tpl" >
 																<div style="float: left; white-space: nowrap;">
-																	<div  style="">
-																		<input type="checkbox" id="ddopt_avhwy" name="ddopt_avhwy" />
+																	<div  style="overflow:auto;">
+																		<input type="checkbox" id="ddopt_avhwy" name="ddopt_avhwy" style="float:left;" />
 																		<label for="ddopt_avhwy" >#{messages.directions_avoidHighways}</label>
 																	</div>
-																	<div style="">
-																		<input type="checkbox" id="dopt_avtoll" name="dopt_avtoll" />
-																		<label for="dopt_avtoll" >#{messages.directions_avoidToll}s</label>
+																	<div style="overflow:auto;">
+																		<input type="checkbox" id="dopt_avtoll" name="dopt_avtoll" style="float:left;"/>
+																		<label for="dopt_avtoll" >#{messages.directions_avoidTolls}</label>
 																	</div>
 																</div>
 																<div id="d_options_mikm_d" style="float:right;">
 																	<span class="secondary" id="d_options_mikm_tpl">
-																		<a href="javascript:void(0)" msgid="1537" id="dopt_mikm_m" tabindex="5" jsaction="dopt.su" jsprops="unit:'m'" class="anchor-selected">miles</a>
-																		&nbsp;/&nbsp;
-																		<a href="javascript:void(0)" msgid="1616" id="dopt_mikm_k" tabindex="5" jsaction="dopt.su" jsprops="unit:'k'">km</a> 
+																		<a href="javascript:void(0)" id="dopt_mikm_m" style="">#{messages.mi_label}</a>
+																		 / 
+																		<a href="javascript:void(0)" id="dopt_mikm_k" style="">#{messages.km_label}</a> 
 																	</span>
 																</div>
 															</div>
