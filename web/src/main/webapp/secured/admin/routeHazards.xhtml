@@ -252,7 +252,7 @@
 		var waypoints = [];
 		function calcRouteNoParams(){
 			console.log('calcRouteNoParams()');
-			
+			waypoints = [];
 			jQuery('.waypoint').each(function(index, value){
 				console.log(index+' : '+jQuery(this).val());
 				var point = jQuery(this).val();
@@ -345,15 +345,17 @@
             }
          }
         function reverseGeocodeTripAddress(latlng,addressElement,index){
-        	console.log('reverseGeocodeTripAddress('+latlng+','+addressElement+','+index+')');
-            new GClientGeocoder().getLocations(latlng, 
-                    function(response){
-                        if (!response || response.Status.code != 200) {
+/*         	console.log('reverseGeocodeTripAddress('+latlng+','+addressElement+','+index+')');
+        	var request = {location: latlng};
+            google.maps.Geocoder.getLocations(latlng, 
+                    function(result, geoStatus){
+            			console.log('result: '+result);
+                        if (result || geoStatus != google.maps.GeocoderStatus.OK) {
                             console.log('// no response typically== bad lat lng');
                         } else {
-                            addressElement.innerHTML = response.Placemark[0].address;
+                            addressElement.innerHTML = result[0].formatted_address;
                         }
-                    });
+                    }); */
           }
         //]]> 
 		</script>
