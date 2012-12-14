@@ -40,7 +40,7 @@ And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
 And I log back in
-Then I validate I am on the My Account page
+Then I validate I am on the My Account Edit page
 
 Scenario: TC1269: My Account - Edit Account - Bookmark Entry to Different Account
 Given I am logged in
@@ -50,7 +50,7 @@ And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
 And I log back in under the editable account
-Then I validate I am on the My Account page
+Then I validate I am on the My Account Edit page
 
 Scenario: TC1275: My Account - Edit Account - Measurement Validation for Waysmart drivers (REQUIRES USER HAS DATA)
 Given I am logged in

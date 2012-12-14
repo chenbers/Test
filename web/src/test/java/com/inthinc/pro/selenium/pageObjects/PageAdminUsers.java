@@ -82,10 +82,6 @@ public class PageAdminUsers extends AdminTables {
 //            return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
 //        }
         
-        public TextLink editColumns() {
-        	return new TextLink(AdminUsersEnum.EDIT_COLUMNS_LINK);
-        }
-        
         public TextLink sortByEmail(){
             return new TextLink(AdminUsersEnum.EMAIL_1);
         }

@@ -14,6 +14,7 @@ import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
+import com.inthinc.pro.selenium.pageObjects.PageMyAccountEdit;
 import com.inthinc.pro.selenium.pageObjects.PageMyMessages;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
@@ -30,7 +31,7 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
 import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
-@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageMyAccount.class, PageMyMessages.class, PageExecutiveOverallExpansion.class, 
+@PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageMyAccount.class, PageMyAccountEdit.class, PageMyMessages.class, PageExecutiveOverallExpansion.class, 
         PageReportsDrivers.class, PageReportsVehicles.class,
         PageNotificationsRedFlags.class, PageNotificationsSafety.class, 
         PageDriverPerformance.class, PageDriverPerformanceSeatBelt.class, PageDriverPerformanceSpeed.class, PageDriverPerformanceStyle.class, PageDriverPerformanceTrips.class,

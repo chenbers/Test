@@ -1,7 +1,6 @@
 package com.inthinc.device.emulation;
 
-import com.inthinc.device.devices.WaysmartDevice;
-import com.inthinc.device.devices.WaysmartDevice.Direction;
+import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
@@ -14,11 +13,11 @@ public class TripFaker {
 	public static void main(String args[]) {
 		
         //TiwiProDevice tiwi = new TiwiProDevice("011596000041321", AutoSilos.QA);
-        //TiwiProDevice tiwi = new TiwiProDevice("999999000109743", AutoSilos.QA);
+        TiwiProDevice tiwi = new TiwiProDevice("999999000109743", AutoSilos.QA);
         //TiwiProDevice tiwi = new TiwiProDevice("999649010582821", AutoSilos.QA);
         NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
         //noteTest.testDVIRNote("MCM821853", "300034012559130");
-		WaysmartDevice tiwi = new WaysmartDevice("999900000000000", "MCM990000", AutoSilos.QA, Direction.gprs);
+		//WaysmartDevice tiwi = new WaysmartDevice("999900000000000", "MCM990000", AutoSilos.QA, Direction.gprs);
         tiwi.dump_settings();
         DeviceState state = tiwi.getState();
         tiwi.increment_time(60);
@@ -96,9 +95,9 @@ public class TripFaker {
         AutomationDeviceEvents.statistics(tiwi);
         //tiwi.logout_driver(null, 890, 204, 200);
         
-        tiwi.setEmployeeID("DASTARDLY1");										 //THESE THREE LINES ARE FOR SENDING IN HOS
-        state.setHosState(HOSState.OCCUPANT_ON_DUTY);							 //DRIVER ON DUTY AS AN OCCUPANT IN A 
-        AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT");	 //VEHICLE
+        //tiwi.setEmployeeID("DASTARDLY1");										 //THESE THREE LINES ARE FOR SENDING IN HOS
+        //state.setHosState(HOSState.OCCUPANT_ON_DUTY);							 //DRIVER ON DUTY AS AN OCCUPANT IN A 
+        //AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT");	 //VEHICLE
         //note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
     	//note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
         

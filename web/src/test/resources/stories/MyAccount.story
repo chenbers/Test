@@ -11,7 +11,7 @@ Given I am logged in
 And I click the Admin link
 And I click the Edit Columns link
 And the Edit Columns popup opens
-And I check the 19th Row of the Column checkbox
+And I check the 21st Row of the Column checkbox
 And I click the Save button
 And the Edit Columns popup closes
 And I type "MyAccountTest" into the User Name textfield

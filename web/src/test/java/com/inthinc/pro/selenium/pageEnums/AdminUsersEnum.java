@@ -20,7 +20,7 @@ public enum AdminUsersEnum implements SeleniumEnums {
     ENTRY_NAME(null, "personTable-form:personTable:###:personTableName"),
     ENTRY_USERNAME(null, "personTable-form:personTable:###:username"),
     
-    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),
+    EDIT_COLUMNS_LINK(editColumns, "personTable-form:personTable-adminTableEditColumns"),
 
     TABLE_HEADERS(null, "admin-table-form:personTable:***header:sortDiv"),
     TABLE_ENTRIES(null, "admin-table-form:personTable:###:***"),
