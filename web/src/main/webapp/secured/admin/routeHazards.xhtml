@@ -244,7 +244,14 @@
             		theLink.html(hideText);
             	}
             });
-            
+            jQuery('#dopt_mikm_m').click(function(){
+            	units = 'imperial';
+            	calcRouteNoParams();
+            });
+			jQuery('#dopt_mikm_k').click(function(){
+            	units = 'metric';
+            	calcRouteNoParams();
+            });
             console.log('document ready');
 		});
 		
