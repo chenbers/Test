@@ -32,8 +32,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageMyAccount.class, PageMyAccountEdit.class, PageMyMessages.class, PageExecutiveOverallExpansion.class, 
-        PageReportsDrivers.class, PageReportsVehicles.class,
-        PageNotificationsRedFlags.class, PageNotificationsSafety.class, 
+        PageReportsDrivers.class, PageReportsVehicles.class, PageNotificationsRedFlags.class, PageNotificationsSafety.class, 
         PageDriverPerformance.class, PageDriverPerformanceSeatBelt.class, PageDriverPerformanceSpeed.class, PageDriverPerformanceStyle.class, PageDriverPerformanceTrips.class,
         PageVehiclePerformance.class, PageVehiclePerformanceSeatBelt.class, PageVehiclePerformanceSpeed.class, PageVehiclePerformanceStyle.class, PageVehiclePerformanceTrips.class,
         PageTeamDriverStatistics.class, PageTeamVehicleStatistics.class, PageTeamSpeed.class})

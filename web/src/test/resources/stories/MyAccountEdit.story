@@ -506,8 +506,8 @@ And I type "" into the Email One textfield
 And I type "" into the Email Two textfield
 And I type "" into the Phone One textfield
 And I type "" into the Phone Two textfield
-And I type "" into the Text Message1 textfield
-And I type "" into the Text Message2 textfield
+And I type "" into the Text Message One textfield
+And I type "" into the Text Message Two textfield
 And I click the Save button
 Then I validate the Error Email One text is "Required"
 
@@ -515,38 +515,38 @@ Scenario: TC1277: My Account - Edit Account - Phone Max Characters Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "0000000000000000" into the Phone1 textfield
-And I type "1111111111111111" into the Phone2 textfield
+And I type "0000000000000000" into the PhoneOne textfield
+And I type "1111111111111111" into the PhoneTwo textfield
 And I click the Save button
-Then I validate the Error Phone1 text is "Must consist of up to 15 numeric characters"
-And I validate the Error Phone2 text is "Must consist of up to 15 numeric characters"
+Then I validate the Error PhoneOne text is "Must consist of up to 15 numeric characters"
+And I validate the Error PhoneTwo text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1278: My Account - Edit Account - Phone Missing Character Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "00" into the Phone1 textfield
-And I type "11" into the Phone2 textfield
+And I type "00" into the PhoneOne textfield
+And I type "11" into the PhoneTwo textfield
 And I click the Save button
-Then I validate the Error Phone1 text is "Must consist of up to 15 numeric characters"
-And I validate the Error Phone2 text is "Must consist of up to 15 numeric characters"
+Then I validate the Error PhoneOne text is "Must consist of up to 15 numeric characters"
+And I validate the Error PhoneTwo text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1279: My Account - Edit Account - Phone Special Character Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "& ^ $" into the Phone1 textfield
-And I type "& ^ $" into the Phone2 textfield
+And I type "& ^ $" into the PhoneOne textfield
+And I type "& ^ $" into the PhoneTwo textfield
 And I click the Save button
-Then I validate the Error Phone1 text is "Must consist of up to 15 numeric characters"
-And I validate the Error Phone2 text is "Must consist of up to 15 numeric characters"
+Then I validate the Error PhoneOne text is "Must consist of up to 15 numeric characters"
+And I validate the Error PhoneTwo text is "Must consist of up to 15 numeric characters"
 
 Scenario: TC1282: My Account - Edit Account - Text Message Format Error
 Given I am logged in
 When I click the My Account link
 And I click the Edit button
-And I type "8015551234 @domain.com" into the Text Message1 textfield
-And I type "801555123411111@domain@domain.com" into the Text Message2 textfield
+And I type "8015551234 @domain.com" into the Text Message One textfield
+And I type "801555123411111@domain@domain.com" into the Text Message Two textfield
 And I click the Save button
 Then I validate the Error Text1 text is "Incorrect format (8015551212@tmomail.com)"
 And I validate the Error Text2 text is "Incorrect format (8015551212@tmomail.com)"
@@ -603,8 +603,8 @@ And I type "test@test.com" into the Email One textfield
 And I type "test2@test.com" into the Email Two textfield
 And I type "0000000000" into the Phone One textfield
 And I type "1111111111" into the Phone Two textfield
-And I type "8015551212@tmomail.com" into the Text Message1 textfield
-And I type "8015551213@tmomail.com" into the Text Message2 textfield
+And I type "8015551212@tmomail.com" into the Text Message One textfield
+And I type "8015551213@tmomail.com" into the Text Message Two textfield
 And I click the Save button
 Then I validate the Red Flag Info text is not ORIGINALinfo
 And I validate the Red Flag Warn text is not ORIGINALwarn
