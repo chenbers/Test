@@ -1,13 +1,6 @@
-<ui:composition template="/layout/layout.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich"
-    xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jstl/core"
-    xmlns:security="http://pro.tiwi.com/jsf/security"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:security="http://pro.tiwi.com/jsf/security" xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:param name="adminSelected" value="current" />
     <ui:param name="title" value="#{messages.adminHeader_routeHazards}" />
@@ -40,15 +33,10 @@
         var map;
         var inthinc = {
             maps: {
-                HazardsService: function (){
-                    console.log('//TODO: implement inthinc.maps.HazardService()');
-                }
+                HazardsService: function (){}
             },
             nextID: 1,
-            cache: {},
-            HazardsService: function(){
-                console.log('//TODO: implement inthincMaps.HazardService()');
-            }
+            cache: {}
         };
         /* CreateMarker(google.maps.LatLng, divID, image or null)
          *  
@@ -74,9 +62,9 @@
                     position: point
                 });
             }
-               if(divID != null) {
+            if(divID != null) {
                    console.log('1 ');
-                google.maps.event.addListener(marker, 'click', function() {
+                   google.maps.event.addListener(marker, 'click', function() {
                     var node = document.getElementById(divID).cloneNode(true);
                     node.style.display = 'block';
                     marker.openInfoWindow(node);
@@ -120,8 +108,16 @@
         var infowindow = new google.maps.InfoWindow();
         inthinc.maps.HazardsService.prototype.retrieveHazards = 
             function(latLngBounds){
-             console.log('retrieveHazards');
-             console.log('retrieveHazards for '+latLngBounds.getNorthEast()+' , '+latLngBounds.getSouthWest());
+                console.log('retrieveHazards');
+                console.log('retrieveHazards for '+latLngBounds.getNorthEast()+' , '+latLngBounds.getSouthWest());
+             
+                jQuery.ajax( {
+                     type:'Get',
+                     url:'/service/api/roadhazard/getRH/del3688/43.7104/-111.9919.json',
+                     success:function(data) {
+                         alert(data);
+                         }
+                });
 
              var hardCodedResults = [
                                      new google.maps.LatLng(40.725015,-111.951027), 
@@ -159,9 +155,9 @@
                 center : new google.maps.LatLng(40, -111),
                 mapTypeId : google.maps.MapTypeId.ROADMAP
             };
-           var marker;
-           var hazard;
-           var markerCircle;
+        var marker;
+        var hazard;
+        var markerCircle;
         jQuery(document).ready(function($){
             // old initialize() method 
             console.log('this must happen before you can create markers!  todo: the mao center should be determined differently???');
@@ -263,8 +259,9 @@
             }
             
             origin_textbox.focus(function(){
-                if(origin_textbox.val() == '#{messages.hazard_origin}')
+                if(origin_textbox.val() == '#{messages.hazard_origin}') {
                     origin_textbox.val('');
+                }
             }).focusout(function(){
                 if(origin_textbox.val() == '') {
                     origin_textbox.val('#{messages.hazard_origin}');
@@ -406,8 +403,7 @@
         <a4j:region id="main">
             <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
                 <tr>
-                    <td valign="top" width="130">
-                        <ui:include src="/includes/navigation/adminSideNav.xhtml">
+                    <td valign="top" width="130"><ui:include src="/includes/navigation/adminSideNav.xhtml">
                             <ui:param name="selectedAction" value="go_adminRouteHazard" />
                             <ui:param name="parentAction" value="go_adminHazards" />
                             <ui:param name="context" value="hazards" />
@@ -417,11 +413,8 @@
                         <div class="">
                             <div class="panel_nw">
                                 <div class="panel_title">
-                                    <span class="hazards">
-                                        <h:outputText value="#{messages.adminHeader_hazards}" />
-                                    </span>
-                                    <span class="panel_links"> 
-                                        <a4j:status id="refresh_ajax_status" for="main">
+                                    <span class="hazards"> <h:outputText value="#{messages.adminHeader_hazards}" />
+                                    </span> <span class="panel_links"> <a4j:status id="refresh_ajax_status" for="main">
                                             <f:facet name="start">
                                                 <h:outputText>
                                                     <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
@@ -437,104 +430,101 @@
                                     <div id="map_canvas" style="float: left; width: 100%; height: 330px"></div>
                                     <div style="float: right; width: 100%; overflow: auto">
                                         <button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
-                                        <div id="to_from" style="float: left; width: 49%; ">
+                                        <div id="to_from" style="float: left; width: 49%;">
                                             <form action="javascript:void(0);" onsubmit="calcRouteNoParams(); return false;">
-                                                <input type="text" id="origin" value="#{messages.hazard_origin}" style="width: 80%"/> 
+                                                <input type="text" id="origin" value="#{messages.hazard_origin}" style="width: 80%" />
                                                 <div id="waypointContainer"></div>
-                                                <input type="text" id="destination" value="#{messages.hazard_destination}" style="width: 80%"/> 
-                                                <input type="submit" id="submit" value="#{messages.hazard_findRoute}" style="width: 80%"/><br/>
-                                                <a href="javascript:void(0)" id="addDestination">#{messages.hazard_addDestination}</a>
+                                                <input type="text" id="destination" value="#{messages.hazard_destination}" style="width: 80%" /> <input type="submit" id="submit"
+                                                    value="#{messages.hazard_findRoute}" style="width: 80%" /><br /> <a href="javascript:void(0)" id="addDestination">#{messages.hazard_addDestination}</a>
                                                 <a href="javascript:void(0)" id="showDirOptions">#{messages.hazard_showDirOpts}</a>
-                                                <div id="d_options" style="display: none;"> 
+                                                <div id="d_options" style="display: none;">
                                                     <div id="d_optph">
                                                         <div style="display: none;"></div>
-                                                        <div style="" >
-                                                            <div id="d_options_d_tpl" >
+                                                        <div style="">
+                                                            <div id="d_options_d_tpl">
                                                                 <div style="float: left; white-space: nowrap;">
-                                                                    <div  style="overflow:auto;">
-                                                                        <input type="checkbox" id="ddopt_avhwy" name="ddopt_avhwy" style="float:left;" />
-                                                                        <label for="ddopt_avhwy" >#{messages.directions_avoidHighways}</label>
+                                                                    <div style="overflow: auto;">
+                                                                        <input type="checkbox" id="ddopt_avhwy" name="ddopt_avhwy" style="float: left;" /> <label for="ddopt_avhwy">#{messages.directions_avoidHighways}</label>
                                                                     </div>
-                                                                    <div style="overflow:auto;">
-                                                                        <input type="checkbox" id="dopt_avtoll" name="dopt_avtoll" style="float:left;"/>
-                                                                        <label for="dopt_avtoll" >#{messages.directions_avoidTolls}</label>
+                                                                    <div style="overflow: auto;">
+                                                                        <input type="checkbox" id="dopt_avtoll" name="dopt_avtoll" style="float: left;" /> <label for="dopt_avtoll">#{messages.directions_avoidTolls}</label>
                                                                     </div>
                                                                 </div>
-                                                                <div id="d_options_mikm_d" style="float:right;">
-                                                                    <span class="secondary" id="d_options_mikm_tpl">
+                                                                <div id="d_options_mikm_d" style="float: right;">
+                                                                    <span class="secondary" id="d_options_mikm_tpl"> 
                                                                         <a href="javascript:void(0)" id="dopt_mikm_m" style="">#{messages.mi_label}</a>
-                                                                         / 
-                                                                        <a href="javascript:void(0)" id="dopt_mikm_k" style="">#{messages.km_label}</a> 
+                                                                        / 
+                                                                        <a href="javascript:void(0)" id="dopt_mikm_k" style="">#{messages.km_label}</a>
                                                                     </span>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div style="display: none;" >
-                                                            <div >
-                                                                <div id="d_options_mikm_w" ></div>
+                                                        <div style="display: none;">
+                                                            <div>
+                                                                <div id="d_options_mikm_w"></div>
                                                             </div>
                                                         </div>
-                                                        <div style="display: none;" >
-                                                            <div > 
-                                                                <div id="d_options_mikm_b" ></div> 
+                                                        <div style="display: none;">
+                                                            <div>
+                                                                <div id="d_options_mikm_b"></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
                                             </form>
                                             <div id="directions_panel" style="float: left;"></div>
                                         </div>
-                                        
-                                        <div id="hazards_panel" style="float: right; width: 49%;">
-                                        <a4j:form id="hazards-form">
-                                            <h:panelGroup layout="block">
-                                            <rich:dataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%"> 
-                                    
-                                                <!-- Data -->
-                                                <rich:column id="mapColumn">
-                                                    <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="map-icon">
-                                                    </h:graphicImage>
-                                                   <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
-                                                        <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-                                                        <h:outputText id="addressLocation" value="#{hazardsBean.item.location}" converter="#{latLngAddressConverter}" />
-                                                    </rich:toolTip>
-                                                   <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{hazardsBean.addressFormat == 2}">
-                                                    <h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-                                                    <a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
-                                                   </rich:toolTip>
-                                                   <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{hazardsBean.addressFormat == 3}">
-                                                    <h:inputHidden id="hazardLat" value="#{item.latitude}"/>
-                                                    <h:inputHidden id="hazardLng" value="#{item.longitude}"/>
-                                                    <h:outputText id="hazardAddress" />
-                                                   </rich:toolTip>
-                                                </rich:column>
-                                                
-                                                <rich:column id="description" sortBy="#{item.description}" >
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{messages.hazard_description}" />
-                                                    </f:facet>
-                                                   <h:outputText value="#{item.description}"/>
-                                                </rich:column>
-                                               
-                                                
-                                               <rich:column id="type" sortBy="#{item.type}" >
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{messages.hazard_type}" />
-                                                    </f:facet>
-                                                   <h:outputText value="#{messages[item.type]}"/>
-                                                </rich:column>
 
-                                                <rich:column id="endTime" sortBy="#{item.endTime}" >
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{messages.hazard_endTime}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{item.endTime}">
-                                                        <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
-                                                    </h:outputText>
-                                                </rich:column>
-                                            </rich:dataTable>
-                                            </h:panelGroup>
+                                        <div id="hazards_panel" style="float: right; width: 49%;">
+                                            <a4j:form id="hazards-form">
+                                                <h:panelGroup layout="block">
+                                                    <rich:dataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid"
+                                                        rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%">
+
+                                                        <!-- Data -->
+                                                        <rich:column id="mapColumn">
+                                                            <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="map-icon">
+                                                            </h:graphicImage>
+                                                            <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
+                                                                <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+                                                                <h:outputText id="addressLocation" value="#{hazardsBean.item.location}" converter="#{latLngAddressConverter}" />
+                                                            </rich:toolTip>
+                                                            <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{hazardsBean.addressFormat == 2}">
+                                                                <h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+                                                                <a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a>
+                                                            </rich:toolTip>
+                                                            <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{hazardsBean.addressFormat == 3}">
+                                                                <h:inputHidden id="hazardLat" value="#{item.latitude}" />
+                                                                <h:inputHidden id="hazardLng" value="#{item.longitude}" />
+                                                                <h:outputText id="hazardAddress" />
+                                                            </rich:toolTip>
+                                                        </rich:column>
+
+                                                        <rich:column id="description" sortBy="#{item.description}">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{messages.hazard_description}" />
+                                                            </f:facet>
+                                                            <h:outputText value="#{item.description}" />
+                                                        </rich:column>
+
+
+                                                        <rich:column id="type" sortBy="#{item.type}">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{messages.hazard_type}" />
+                                                            </f:facet>
+                                                            <h:outputText value="#{messages[item.type]}" />
+                                                        </rich:column>
+
+                                                        <rich:column id="endTime" sortBy="#{item.endTime}">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{messages.hazard_endTime}" />
+                                                            </f:facet>
+                                                            <h:outputText value="#{item.endTime}">
+                                                                <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
+                                                            </h:outputText>
+                                                        </rich:column>
+                                                    </rich:dataTable>
+                                                </h:panelGroup>
                                             </a4j:form>
                                         </div>
                                     </div>
@@ -546,24 +536,21 @@
             </table>
         </a4j:region>
         <!-- START LOCATION MODAL -->
-        <rich:modalPanel id="hazardLocationModal" width="540" height="450" headerClass="popupHeader" 
-            onshow="initializeHazardMap(hazardBean.item.lat, hazardBean.item.lng);">
+        <rich:modalPanel id="hazardLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeHazardMap(hazardBean.item.lat, hazardBean.item.lng);">
             <f:facet name="header">
                 <h:outputText id="mapModalHeader" value="#{messages.hazard_location}" />
             </f:facet>
             <f:facet name="controls">
-                <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
-                    onclick="Richfaces.hideModalPanel('hazardLocationModal')" />
+                <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('hazardLocationModal')" />
             </f:facet>
-    
+
             <div class="eventmap-border">
                 <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
             </div>
-    
+
             <div class="popupactions">
-                <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" 
-                    onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
-                    <span class="edit"> <h:outputText value="#{messages.button_close}" /> 
+                <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
+                    <span class="edit"> <h:outputText value="#{messages.button_close}" />
                     </span>
                 </a4j:commandButton>
             </div>
