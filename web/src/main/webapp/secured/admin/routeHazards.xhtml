@@ -1,359 +1,373 @@
 <ui:composition template="/layout/layout.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:security="http://pro.tiwi.com/jsf/security"
-	xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:security="http://pro.tiwi.com/jsf/security"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
-	<ui:param name="adminSelected" value="current" />
-	<ui:param name="title" value="#{messages.adminHeader_routeHazards}" />
+    <ui:param name="adminSelected" value="current" />
+    <ui:param name="title" value="#{messages.adminHeader_routeHazards}" />
 
-	<ui:define name="scripts">
-		<style type="text/css">
+    <ui:define name="scripts">
+        <style type="text/css">
 .col1 {
-	width: 95%;
+    width: 95%;
 }
 
 .col2 {
-	width: 5%;
-	vertical-align: top;
+    width: 5%;
+    vertical-align: top;
 }
 
 .latLngText {
-	color: #336699;
-	background-color: transparent;
-	font-family: Verdana, Arial;
-	font-weight: bold;
-	font-size: xx-small;
-	border-style: none;
+    color: #336699;
+    background-color: transparent;
+    font-family: Verdana, Arial;
+    font-weight: bold;
+    font-size: xx-small;
+    border-style: none;
 }
 </style>
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-		<script type="text/javascript" title="inthinc.maps">
-		//<![CDATA[
-		jQuery.noConflict();
-		console.log("inthinc.maps starting");
-		var map;
-		var inthinc = {
-			maps: {
-	            HazardsService: function (){
-	                console.log('//TODO: implement inthinc.maps.HazardService()');
-	            }
-			},
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" title="inthinc.maps">
+        //<![CDATA[
+        jQuery.noConflict();
+        console.log("inthinc.maps starting");
+        var map;
+        var inthinc = {
+            maps: {
+                HazardsService: function (){
+                    console.log('//TODO: implement inthinc.maps.HazardService()');
+                }
+            },
             nextID: 1,
             cache: {},
-			HazardsService: function(){
-				console.log('//TODO: implement inthincMaps.HazardService()');
-			}
-		};
-		/* CreateMarker(google.maps.LatLng, divID, image or null)
+            HazardsService: function(){
+                console.log('//TODO: implement inthincMaps.HazardService()');
+            }
+        };
+        /* CreateMarker(google.maps.LatLng, divID, image or null)
          *  
          * Creates a marker using specified image or
          * default icon if null is passed for iconImage.
          * divID is the id of a DIV you want displayed in the info window. 
          */
         function createMarker(point, divID, iconImage, hazard) {
-        	console.log('createMarker('+point+', '+divID+', '+iconImage+')');
-        	console.log('map.div: '+map.getDiv());
+            console.log('createMarker('+point+', '+divID+', '+iconImage+')');
+            console.log('map.div: '+map.getDiv());
             //Use passed in image.
             if(iconImage != null){
-            	console.log('new google.maps.Marker({position: point, map: map, icon: iconImage});');
+                console.log('new google.maps.Marker({position: point, map: map, icon: iconImage});');
                 marker = new google.maps.Marker({
-                	position: point, 
-                	map: map,
-                	icon: iconImage});
+                    position: point, 
+                    map: map,
+                    icon: iconImage});
             } else {
                 //Use default GoogleMap marker image.
                 console.log('new google.maps.Marker({map: map, position: point });');
                 marker = new google.maps.Marker({
-                	map: map,
-                	position: point
+                    map: map,
+                    position: point
                 });
             }
-       		if(divID != null) {
-       			console.log('1 ');
-            	google.maps.event.addListener(marker, 'click', function() {
+               if(divID != null) {
+                   console.log('1 ');
+                google.maps.event.addListener(marker, 'click', function() {
                     var node = document.getElementById(divID).cloneNode(true);
                     node.style.display = 'block';
                     marker.openInfoWindow(node);
                     });
-       		} else {
-       			console.log('2 ');
-       			google.maps.event.addListener(marker, 'click', (function(){
-       					var detail = '<dt>#{messages.hazard_description}</dt><dd>'+hazard.details+'</dd>';
-       					var radius = '<dt></dt><dd></dd>';
-       					var endTime = '<dt></dt><dd></dd>';
-       					var content = '<dl>'+detail+radius+endTime+'</dl>';
-       					infowindow.setContent(content); 
-       					infowindow.setPosition(hazard.point);
-       					infowindow.open(map);
-       				}));
-       		}
-       		console.log('marker: '+marker);
+               } else {
+                   console.log('2 ');
+                   google.maps.event.addListener(marker, 'click', (function(){
+                           var detail = '<dt>#{messages.hazard_description}</dt><dd>'+hazard.details+'</dd>';
+                           var radius = '<dt></dt><dd></dd>';
+                           var endTime = '<dt></dt><dd></dd>';
+                           var content = '<dl>'+detail+radius+endTime+'</dl>';
+                           infowindow.setContent(content); 
+                           infowindow.setPosition(hazard.point);
+                           infowindow.open(map);
+                       }));
+               }
+               console.log('marker: '+marker);
             return marker;
         }
-		function createCircle(point, radius, marker) {
-			//function drawCircle(       center,  m                 radius                    , nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity)
-			//drawCircle(new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, 10  , '#445566', 2          , .5       , '#112233' , .25);
-			
-			
-			var circleOptions = {
-					map: map,
-					fillColor: '#112233',
-					fillOpacity: .10,
-					strokeColor: '#445566',
-					strokeOpacity: .20,
-					strokeWeight: 2,
-				}
-			var circle = new google.maps.Circle(circleOptions);
-			circle.setCenter(point);
-			circle.setRadius(radius);
-			circle.setMap(map);
-			return circle;
-		}
-		var markers = [];
-		var hazards = [];
-		var infowindow = new google.maps.InfoWindow();
-		inthinc.maps.HazardsService.prototype.retrieveHazards = 
-			function(latLngBounds){
-			 console.log('retrieveHazards');
+        function createCircle(point, radius, marker) {
+            //function drawCircle(       center,  m                 radius                    , nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity)
+            //drawCircle(new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, 10  , '#445566', 2          , .5       , '#112233' , .25);
+            
+            
+            var circleOptions = {
+                    map: map,
+                    fillColor: '#112233',
+                    fillOpacity: .10,
+                    strokeColor: '#445566',
+                    strokeOpacity: .20,
+                    strokeWeight: 2,
+                }
+            var circle = new google.maps.Circle(circleOptions);
+            circle.setCenter(point);
+            circle.setRadius(radius);
+            circle.setMap(map);
+            return circle;
+        }
+        var markers = [];
+        var hazards = [];
+        var infowindow = new google.maps.InfoWindow();
+        inthinc.maps.HazardsService.prototype.retrieveHazards = 
+            function(latLngBounds){
+             console.log('retrieveHazards');
              console.log('retrieveHazards for '+latLngBounds.getNorthEast()+' , '+latLngBounds.getSouthWest());
 
-			 var hardCodedResults = [
+             var hardCodedResults = [
                                      new google.maps.LatLng(40.725015,-111.951027), 
                                      new google.maps.LatLng(40.718119,-111.904163),
                                      new google.maps.LatLng(40.747257,-111.906738)];
              return hardCodedResults;//TODO: obviously we need to replace hardcoded results with something from the database... currently I'm thinking a ajax call returning json results???
-			};
-		console.log('inthinc.maps done');
-		function Hazard(lat, lng, radiusMeters, type, endTime, details, status){
-			this.point = new google.maps.LatLng(lat, lng);
-			this.radiusMeters = radiusMeters;
-			this.type = type;
-			this.endTime = endTime;
-			this.details = details;
-			this.status = status;
-		}
-		Hazard.prototype.drawRadius = function() {
-			createCircle(this.point, this.radius);
-		}
-		//]]>
-		</script>
-		<script type="text/javascript">
-		console.log('about to initialize vars');
-		var directionsDisplay;
-		var directionsService = new google.maps.DirectionsService();
-		var hazardsService = new inthinc.maps.HazardsService();
-		var oldDirections = [];
-		var currentDirections = null;
-		var bounds = new google.maps.LatLngBounds();
-		var numberOfWaypoints = 0;
-		var units = 'imperial';
-		var mapOptions = {
-				zoom : 3,
-				center : new google.maps.LatLng(40, -111),
-				mapTypeId : google.maps.MapTypeId.ROADMAP
-			};
-   		var marker;
-   		var hazard;
-   		var markerCircle;
-		jQuery(document).ready(function($){
-			// old initialize() method 
-			console.log('this must happen before you can create markers!  todo: the mao center should be determined differently???');
+            };
+        console.log('inthinc.maps done');
+        function Hazard(lat, lng, radiusMeters, type, endTime, details, status){
+            this.point = new google.maps.LatLng(lat, lng);
+            this.radiusMeters = radiusMeters;
+            this.type = type;
+            this.endTime = endTime;
+            this.details = details;
+            this.status = status;
+        }
+        Hazard.prototype.drawRadius = function() {
+            createCircle(this.point, this.radius);
+        }
+        //]]>
+        </script>
+        <script type="text/javascript">
+        //<![CDATA[
+        console.log('about to initialize vars');
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        var hazardsService = new inthinc.maps.HazardsService();
+        var oldDirections = [];
+        var currentDirections = null;
+        var bounds = new google.maps.LatLngBounds();
+        var numberOfWaypoints = 0;
+        var units = 'imperial';
+        var mapOptions = {
+                zoom : 3,
+                center : new google.maps.LatLng(40, -111),
+                mapTypeId : google.maps.MapTypeId.ROADMAP
+            };
+           var marker;
+           var hazard;
+           var markerCircle;
+        jQuery(document).ready(function($){
+            // old initialize() method 
+            console.log('this must happen before you can create markers!  todo: the mao center should be determined differently???');
 
-			console.log('about to populate map: '+map);
-			
-			map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-			console.log('done populating map: '+map);
-			
-			console.log('done populating map: '+map);
-			directionsDisplay = new google.maps.DirectionsRenderer({
-				'map' : map,
-				'preserveViewport' : true,
-				'draggable' : true
-			});
-			
-			directionsDisplay.setPanel(document.getElementById('directions_panel'));
-			console.log('directionsDisplay: '+directionsDisplay);
-			google.maps.event.addListener(directionsDisplay,
-					'directions_changed', function() {
-						if (currentDirections) {
-							oldDirections.push(currentDirections);
-							setUndoDisabled(false);
-						}
-						currentDirections = directionsDisplay.getDirections();
-					});
-			console.log('done populating map: '+map);
-			setUndoDisabled(true);
-			console.log('map: '+map);
+            console.log('about to populate map: '+map);
+            
+            map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+            console.log('done populating map: '+map);
+            
+            console.log('done populating map: '+map);
+            directionsDisplay = new google.maps.DirectionsRenderer({
+                'map' : map,
+                'preserveViewport' : true,
+                'draggable' : true
+            });
+            
+            directionsDisplay.setPanel(document.getElementById('directions_panel'));
+            console.log('directionsDisplay: '+directionsDisplay);
+            google.maps.event.addListener(directionsDisplay,
+                    'directions_changed', function() {
+                        if (currentDirections) {
+                            oldDirections.push(currentDirections);
+                            setUndoDisabled(false);
+                        }
+                        currentDirections = directionsDisplay.getDirections();
+                    });
+            console.log('done populating map: '+map);
+            setUndoDisabled(true);
+            console.log('map: '+map);
             console.log('map.bounds: '+map.getBounds());
-			google.maps.event.addListener(map, 'bounds_changed', function(){
-					console.log('bounds_changed');
-					hazardsService.retrieveHazards(map.getBounds())
-					
-				});
-			
+            google.maps.event.addListener(map, 'bounds_changed', function(){
+                    console.log('bounds_changed');
+                    hazardsService.retrieveHazards(map.getBounds())
+                    
+                });
             
-
-       		<ui:repeat value="#{hazardsBean.tableData}" var="hazard">
-       		//TODO: this could be refactored to just create an array of arrays with the hazard details we want to use  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
-       		var markerLatLng = new google.maps.LatLng(#{hazard.lat}, #{hazard.lng});
-       		var formattedEndTime = '<h:outputText value="#{item.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" /></h:outputText>';
-       		hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, '#{messages[item.type]}', formattedEndTime, '#{hazard.description}', '#{messages[item.status]}');
-       		marker = createMarker(markerLatLng, null , '/tiwipro/images/ico_warning.png', hazard); //'hazard#{hazard.hazardID}' for divID 
-       		//console.log('about to add: '+marker.getPosition());
-            markers.push(marker);
-            hazards.push(hazard); //todo: this might be unnecessary... since the hazard is in the marker???  
-            //console.log('added: '+marker);
-            createCircle(markerLatLng, #{hazard.radiusMeters}, marker); 
+            
+          //]]> 
+           <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
+               //TODO: this could be refactored to just create an array of arrays with the hazard details we want to use  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
+               var markerLatLng = new google.maps.LatLng(#{hazard.lat}, #{hazard.lng});
+               var formattedEndTime = '<h:outputText value="#{item.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" /></h:outputText>';
+               hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, '#{messages[item.type]}', formattedEndTime, '#{hazard.description}', '#{messages[item.status]}');
+               marker = createMarker(markerLatLng, null , '/tiwipro/images/ico_warning.png', hazard); //'hazard#{hazard.hazardID}' for divID 
+               //console.log('about to add: '+marker.getPosition());
+               markers.push(marker);
+               hazards.push(hazard); //todo: this might be unnecessary... since the hazard is in the marker???  
+               //console.log('added: '+marker);
+               createCircle(markerLatLng, #{hazard.radiusMeters}, marker); 
             </ui:repeat>
-            
+          //<![CDATA[
             console.log('about to add click listener for addDestination');
             jQuery('#addDestination').click(function addDestination(){
-            	console.log('onclick happened; numberOfWaypoints: '+numberOfWaypoints);
-            	var waypointIndex = numberOfWaypoints;
-               	// $('waypointContainer').insert('<input type="text" name="waypoint'+numberOfWaypoints+'" id="waypoint'+numberOfWaypoints+'" />');
-               	jQuery('#waypointContainer').append('<div id="waypoint'+waypointIndex+'Container"><input type="text" name="waypoint" class="waypoint" id="waypoint'+waypointIndex+'" style="width: 80%; float: left;" /><div id="rmWaypoint'+waypointIndex+'" style="float: right; padding: 2px;"><img id="rmWaypointImg'+waypointIndex+'" style="border: 0px; vertical-align: middle;" src="/tiwipro/images/ico_addAnother_remove.png"/></div></div>');
-               	jQuery('#waypoint'+waypointIndex).val(jQuery('#destination').val());
-               	jQuery('#destination').val('');
-               	jQuery('#rmWaypoint'+waypointIndex).click(function(){
-               		console.log(waypointIndex+' remove clicked');
-               		console.log('jQuery(#waypoint'+waypointIndex+'Container).empty();');
-               		jQuery('#waypoint'+waypointIndex+'Container').empty();
-               		console.log(waypointIndex+' done');
-               	});
-   				numberOfWaypoints++;
-   				return false;
-			});
+                console.log('onclick happened; numberOfWaypoints: '+numberOfWaypoints);
+                var waypointIndex = numberOfWaypoints;
+                   // $('waypointContainer').insert('<input type="text" name="waypoint'+numberOfWaypoints+'" id="waypoint'+numberOfWaypoints+'" />');
+                   jQuery('#waypointContainer').append('<div id="waypoint'+waypointIndex+'Container"><input type="text" name="waypoint" class="waypoint" id="waypoint'+waypointIndex+'" style="width: 80%; float: left;" /><div id="rmWaypoint'+waypointIndex+'" style="float: right; padding: 2px;"><img id="rmWaypointImg'+waypointIndex+'" style="border: 0px; vertical-align: middle;" src="/tiwipro/images/ico_addAnother_remove.png"/></div></div>');
+                   jQuery('#waypoint'+waypointIndex).val(jQuery('#destination').val());
+                   jQuery('#destination').val('');
+                   jQuery('#rmWaypoint'+waypointIndex).click(function(){
+                       console.log(waypointIndex+' remove clicked');
+                       console.log('jQuery(#waypoint'+waypointIndex+'Container).empty();');
+                       jQuery('#waypoint'+waypointIndex+'Container').empty();
+                       console.log(waypointIndex+' done');
+                   });
+                   numberOfWaypoints++;
+                   return false;
+            });
             console.log('done adding click listener for addDestination');
              
             jQuery('#showDirOptions').click(function showHideOptions(){
-            	var options = jQuery('#d_options');
-            	var theLink = jQuery('#showDirOptions');
-            	var showText = '#{messages.hazard_showDirOpts}';
-            	var hideText = '#{messages.hazard_hideDirOpts}';
-            	if(options.is(':visible')){
-            		options.hide();
-            		theLink.html(showText);
-            	} else {
-            		options.show();
-            		theLink.html(hideText);
-            	}
+                var options = jQuery('#d_options');
+                var theLink = jQuery('#showDirOptions');
+                var showText = '#{messages.hazard_showDirOpts}';
+                var hideText = '#{messages.hazard_hideDirOpts}';
+                if(options.is(':visible')){
+                    options.hide();
+                    theLink.html(showText);
+                } else {
+                    options.show();
+                    theLink.html(hideText);
+                }
             });
             jQuery('#dopt_mikm_m').click(function(){
-            	units = 'imperial';
-            	calcRouteNoParams();
+                units = 'imperial';
+                calcRouteNoParams();
             });
-			jQuery('#dopt_mikm_k').click(function(){
-            	units = 'metric';
-            	calcRouteNoParams();
+            jQuery('#dopt_mikm_k').click(function(){
+                units = 'metric';
+                calcRouteNoParams();
             });
-			var origin_textbox = jQuery('#origin');
-			origin_textbox.focus(function(){
-				if(origin_textbox.val() == '#{messages.hazard_origin}')
-					origin_textbox.val('');
-			}).focusout(function(){
-				if(origin_textbox.val() == '')
-					origin_textbox.val('#{messages.hazard_origin}');
-			});
-			
-			var destination_textbox = jQuery('#destination');
-			destination_textbox.focus(function(){
-				if(destination_textbox.val() == '#{messages.hazard_destination}')
-					destination_textbox.val('');
-			}).focusout(function(){
-				if(destination_textbox.val() == '')
-					destination_textbox.val('#{messages.hazard_destination}');
-			});
+            var origin_textbox = jQuery('#origin');
+            var destination_textbox = jQuery('#destination');
+            var getDir_btn = jQuery('#submit').attr('disabled', true);
+            getDir_btn.enableIfValid = function enableIfValid(){
+                var hasNotChanged = (origin_textbox.val() == '#{messages.hazard_origin}') || (destination_textbox.val() == '#{messages.hazard_destination}');
+                var empty = (origin_textbox.val() == '') || (destination_textbox.val() == '');
+                getDir_btn.attr('disabled', hasNotChanged && !empty);
+            }
+            
+            origin_textbox.focus(function(){
+                if(origin_textbox.val() == '#{messages.hazard_origin}')
+                    origin_textbox.val('');
+            }).focusout(function(){
+                if(origin_textbox.val() == '') {
+                    origin_textbox.val('#{messages.hazard_origin}');
+                }
+                getDir_btn.enableIfValid();
+            });
+            
+            destination_textbox.focus(function(){
+                if(destination_textbox.val() == '#{messages.hazard_destination}') {
+                    destination_textbox.val('');
+                }
+            }).focusout(function(){
+                if(destination_textbox.val() == '') {
+                    destination_textbox.val('#{messages.hazard_destination}');
+                } 
+                getDir_btn.enableIfValid();
+            });
             console.log('document ready');
-		});
-		
-		console.log('made it out of the jQuery ready block');
-		var waypoints = [];
-		function calcRouteNoParams(){
-			console.log('calcRouteNoParams()');
-			waypoints = [];
-			jQuery('.waypoint').each(function(index, value){
-				console.log(index+' : '+jQuery(this).val());
-				var point = jQuery(this).val();
-				waypoints.push({
-				    location: point,
-				    stopover:true
-				});
-				console.log('waypoints: '+waypoints);
-			});
-			var avoid = '';
-			if(jQuery('#ddopt_avhwy').is(':checked')){
-				avoid+='highways|';
-			}
-			if(jQuery('#dopt_avtoll').is(':checked')){
-				avoid+='tolls';
-			}
-			calcRoute(jQuery('#origin').val(), jQuery('#destination').val(), waypoints, avoid, units);
-		}
-		function calcRoute(start, end, waypoints, avoids, units) {
-			console.log('calcRoute('+start+', '+end+', '+waypoints+', '+avoids+', '+units+')');
-			var request = {
-				origin : start,
-				destination : end,
-				waypoints : waypoints,
-				travelMode : google.maps.DirectionsTravelMode.DRIVING
-			};
-			console.log('request: '+request);
-			directionsService.route(request, function(response, status) {
-				console.log('request: '+request);
-				console.log('status: '+status);
-				console.log('response: '+response);
-				if (status == google.maps.DirectionsStatus.OK) {
-					directionsDisplay.setDirections(response);
-					var boundsCount = 0;
-					directionsDisplay.getDirections().routes.forEach(function(element, index, array){
-						console.log('element.bounds'+element.bounds);
-						if(boundsCount == 0) {
-							bounds = element.bounds;
-					    } else {
-							bounds.extend(element.bounds.getNorthEast());
-							bounds.extend(element.bounds.getSouthWest());
-						}
-						map.fitBounds(bounds);
-					});
-					console.log(response);
-					console.log(response);
-					console.log(response);
-				}
-			});
-			
-			
-			console.log('map: '+map);
-			console.log('map.bounds: '+map.getBounds());
-			console.log('map.bounds.ne: '+map.getBounds().getNorthEast());
-			console.log('map.bounds.sw: '+map.getBounds().getSouthWest());
-			hazardsService.retrieveHazards(map.getBounds());
-		}
-		
-		function showHazards() {
-			
-		}
+        });
+        
+        console.log('made it out of the jQuery ready block');
+        var waypoints = [];
+        function calcRouteNoParams(){
+            console.log('calcRouteNoParams()');
+            waypoints = [];
+            jQuery('.waypoint').each(function(index, value){
+                console.log(index+' : '+jQuery(this).val());
+                var point = jQuery(this).val();
+                waypoints.push({
+                    location: point,
+                    stopover:true
+                });
+                console.log('waypoints: '+waypoints);
+            });
+            var avoid = '';
+            if(jQuery('#ddopt_avhwy').is(':checked')){
+                avoid+='highways|';
+            }
+            if(jQuery('#dopt_avtoll').is(':checked')){
+                avoid+='tolls';
+            }
+            calcRoute(jQuery('#origin').val(), jQuery('#destination').val(), waypoints, avoid, units);
+        }
+        function calcRoute(start, end, waypoints, avoids, units) {
+            console.log('calcRoute('+start+', '+end+', '+waypoints+', '+avoids+', '+units+')');
+            var request = {
+                origin : start,
+                destination : end,
+                waypoints : waypoints,
+                travelMode : google.maps.DirectionsTravelMode.DRIVING
+            };
+            console.log('request: '+request);
+            directionsService.route(request, function(response, status) {
+                console.log('request: '+request);
+                console.log('status: '+status);
+                console.log('response: '+response);
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                    var boundsCount = 0;
+                    directionsDisplay.getDirections().routes.forEach(function(element, index, array){
+                        console.log('element.bounds'+element.bounds);
+                        if(boundsCount == 0) {
+                            bounds = element.bounds;
+                        } else {
+                            bounds.extend(element.bounds.getNorthEast());
+                            bounds.extend(element.bounds.getSouthWest());
+                        }
+                        map.fitBounds(bounds);
+                    });
+                    console.log(response);
+                    console.log(response);
+                    console.log(response);
+                }
+            });
+            
+            
+            console.log('map: '+map);
+            console.log('map.bounds: '+map.getBounds());
+            console.log('map.bounds.ne: '+map.getBounds().getNorthEast());
+            console.log('map.bounds.sw: '+map.getBounds().getSouthWest());
+            hazardsService.retrieveHazards(map.getBounds());
+        }
+        
+        function showHazards() {
+            
+        }
 
-		function undo() {
-			currentDirections = null;
-			directionsDisplay.setDirections(oldDirections.pop());
-			if (!oldDirections.length) {
-				setUndoDisabled(true);
-			}
-		}
+        function undo() {
+            currentDirections = null;
+            directionsDisplay.setDirections(oldDirections.pop());
+            if (!oldDirections.length) {
+                setUndoDisabled(true);
+            }
+        }
 
-		function setUndoDisabled(value) {
-			$('undo').disabled = value;
-		}
-		</script>
-		<script type="text/javascript">
-        //<![CDATA[
-		function getAddress(index){
+        function setUndoDisabled(value) {
+            $('undo').disabled = value;
+        }
+        //]]> 
+        </script>
+        <script type="text/javascript">
+        //<![CDATA[ 
+        function getAddress(index){
             console.log('getAddress('+index+')');
             var address = document.getElementById('hazards-form:hazards-table:'+index+':hazardAddress');
             var lat = document.getElementById('hazards-form:hazards-table:'+index+':hazardLat');
@@ -368,192 +382,192 @@
                 }
             }
          }
-		var geocoder = new google.maps.Geocoder();
+        var geocoder = new google.maps.Geocoder();
         function reverseGeocodeTripAddress(latlng,addressElement,index){
-         	console.log('reverseGeocodeTripAddress('+latlng+','+addressElement+','+index+')');
-        	var request = {location: latlng};
+             console.log('reverseGeocodeTripAddress('+latlng+','+addressElement+','+index+')');
+            var request = {location: latlng};
             geocoder.geocode(request, 
                     function(result, geoStatus){
-		            	console.log('result: '+result);
-		            	console.log('geoStatus: '+geoStatus);
+                        console.log('result: '+result);
+                        console.log('geoStatus: '+geoStatus);
                         if (!result || geoStatus != google.maps.GeocoderStatus.OK) {
                             console.log('// no response typically== bad lat lng');
                         } else {
-                        	console.log('formatted_address: '+result[0].formatted_address);
+                            console.log('formatted_address: '+result[0].formatted_address);
                             addressElement.innerHTML = result[0].formatted_address;
                         }
                     });
           }
         //]]> 
-		</script>
-	</ui:define>
+        </script>
+    </ui:define>
 
-	<ui:define name="content">
-		<a4j:region id="main">
-			<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-				<tr>
-					<td valign="top" width="130">
-						<ui:include src="/includes/navigation/adminSideNav.xhtml">
-							<ui:param name="selectedAction" value="go_adminRouteHazard" />
-							<ui:param name="parentAction" value="go_adminHazards" />
-							<ui:param name="context" value="hazards" />
-						</ui:include></td>
-					<td valign="top">
-						<!-- START PANEL -->
-						<div class="">
-							<div class="panel_nw">
-								<div class="panel_title">
-									<span class="hazards">
-										<h:outputText value="#{messages.adminHeader_hazards}" />
-									</span>
-									<span class="panel_links"> 
-										<a4j:status id="refresh_ajax_status" for="main">
-											<f:facet name="start">
-												<h:outputText>
-													<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
-												</h:outputText>
-											</f:facet>
-										</a4j:status>
-									</span>
-								</div>
-							</div>
+    <ui:define name="content">
+        <a4j:region id="main">
+            <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+                <tr>
+                    <td valign="top" width="130">
+                        <ui:include src="/includes/navigation/adminSideNav.xhtml">
+                            <ui:param name="selectedAction" value="go_adminRouteHazard" />
+                            <ui:param name="parentAction" value="go_adminHazards" />
+                            <ui:param name="context" value="hazards" />
+                        </ui:include></td>
+                    <td valign="top">
+                        <!-- START PANEL -->
+                        <div class="">
+                            <div class="panel_nw">
+                                <div class="panel_title">
+                                    <span class="hazards">
+                                        <h:outputText value="#{messages.adminHeader_hazards}" />
+                                    </span>
+                                    <span class="panel_links"> 
+                                        <a4j:status id="refresh_ajax_status" for="main">
+                                            <f:facet name="start">
+                                                <h:outputText>
+                                                    <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+                                                </h:outputText>
+                                            </f:facet>
+                                        </a4j:status>
+                                    </span>
+                                </div>
+                            </div>
 
-							<div class="panel_w">
-								<div class="panel_content">
-									<div id="map_canvas" style="float: left; width: 100%; height: 330px"></div>
-									<div style="float: right; width: 100%; overflow: auto">
-										<button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
-										<div id="to_from" style="float: left; width: 49%; ">
-											<form action="javascript:void(0);" onsubmit="calcRouteNoParams(); return false;">
-												<input type="text" id="origin" value="#{messages.hazard_origin}" style="width: 80%"/> 
-												<div id="waypointContainer"></div>
-												<input type="text" id="destination" value="#{messages.hazard_destination}" style="width: 80%"/> 
-												<input type="submit" id="submit" value="#{messages.hazard_findRoute}" style="width: 80%"/><br/>
-												<a href="javascript:void(0)" id="addDestination">#{messages.hazard_addDestination}</a>
-												<a href="javascript:void(0)" id="showDirOptions">#{messages.hazard_showDirOpts}</a>
-												<div id="d_options" style="display: none;"> 
-													<div id="d_optph">
-														<div style="display: none;"></div>
-														<div style="" >
-															<div id="d_options_d_tpl" >
-																<div style="float: left; white-space: nowrap;">
-																	<div  style="overflow:auto;">
-																		<input type="checkbox" id="ddopt_avhwy" name="ddopt_avhwy" style="float:left;" />
-																		<label for="ddopt_avhwy" >#{messages.directions_avoidHighways}</label>
-																	</div>
-																	<div style="overflow:auto;">
-																		<input type="checkbox" id="dopt_avtoll" name="dopt_avtoll" style="float:left;"/>
-																		<label for="dopt_avtoll" >#{messages.directions_avoidTolls}</label>
-																	</div>
-																</div>
-																<div id="d_options_mikm_d" style="float:right;">
-																	<span class="secondary" id="d_options_mikm_tpl">
-																		<a href="javascript:void(0)" id="dopt_mikm_m" style="">#{messages.mi_label}</a>
-																		 / 
-																		<a href="javascript:void(0)" id="dopt_mikm_k" style="">#{messages.km_label}</a> 
-																	</span>
-																</div>
-															</div>
-														</div>
-														<div style="display: none;" >
-															<div >
-																<div id="d_options_mikm_w" ></div>
-															</div>
-														</div>
-														<div style="display: none;" >
-															<div > 
-																<div id="d_options_mikm_b" ></div> 
-															</div>
-														</div>
-													</div>
-												</div>
-												
-											</form>
-											<div id="directions_panel" style="float: left;"></div>
-										</div>
-										
-										<div id="hazards_panel" style="float: right; width: 49%;">
-										<a4j:form id="hazards-form">
-											<h:panelGroup layout="block">
-											<rich:dataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%"> 
-									
-									            <!-- Data -->
-									            <rich:column id="mapColumn">
-									                <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="map-icon">
-									                </h:graphicImage>
-									               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
-									                    <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-									                    <h:outputText id="addressLocation" value="#{hazardsBean.item.location}" converter="#{latLngAddressConverter}" />
-									                </rich:toolTip>
-									               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{hazardsBean.addressFormat == 2}">
-									                <h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-									                <a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
-									               </rich:toolTip>
-									               <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{hazardsBean.addressFormat == 3}">
-									                <h:inputHidden id="hazardLat" value="#{item.latitude}"/>
-									                <h:inputHidden id="hazardLng" value="#{item.longitude}"/>
-									                <h:outputText id="hazardAddress" />
-									               </rich:toolTip>
-									            </rich:column>
-									            
-									            <rich:column id="description" sortBy="#{item.description}" >
-									                <f:facet name="header">
-									                    <h:outputText value="#{messages.hazard_description}" />
-									                </f:facet>
-									               <h:outputText value="#{item.description}"/>
-									            </rich:column>
-									           
-									            
-									           <rich:column id="type" sortBy="#{item.type}" >
-									                <f:facet name="header">
-									                    <h:outputText value="#{messages.hazard_type}" />
-									                </f:facet>
-									               <h:outputText value="#{messages[item.type]}"/>
-									            </rich:column>
+                            <div class="panel_w">
+                                <div class="panel_content">
+                                    <div id="map_canvas" style="float: left; width: 100%; height: 330px"></div>
+                                    <div style="float: right; width: 100%; overflow: auto">
+                                        <button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
+                                        <div id="to_from" style="float: left; width: 49%; ">
+                                            <form action="javascript:void(0);" onsubmit="calcRouteNoParams(); return false;">
+                                                <input type="text" id="origin" value="#{messages.hazard_origin}" style="width: 80%"/> 
+                                                <div id="waypointContainer"></div>
+                                                <input type="text" id="destination" value="#{messages.hazard_destination}" style="width: 80%"/> 
+                                                <input type="submit" id="submit" value="#{messages.hazard_findRoute}" style="width: 80%"/><br/>
+                                                <a href="javascript:void(0)" id="addDestination">#{messages.hazard_addDestination}</a>
+                                                <a href="javascript:void(0)" id="showDirOptions">#{messages.hazard_showDirOpts}</a>
+                                                <div id="d_options" style="display: none;"> 
+                                                    <div id="d_optph">
+                                                        <div style="display: none;"></div>
+                                                        <div style="" >
+                                                            <div id="d_options_d_tpl" >
+                                                                <div style="float: left; white-space: nowrap;">
+                                                                    <div  style="overflow:auto;">
+                                                                        <input type="checkbox" id="ddopt_avhwy" name="ddopt_avhwy" style="float:left;" />
+                                                                        <label for="ddopt_avhwy" >#{messages.directions_avoidHighways}</label>
+                                                                    </div>
+                                                                    <div style="overflow:auto;">
+                                                                        <input type="checkbox" id="dopt_avtoll" name="dopt_avtoll" style="float:left;"/>
+                                                                        <label for="dopt_avtoll" >#{messages.directions_avoidTolls}</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="d_options_mikm_d" style="float:right;">
+                                                                    <span class="secondary" id="d_options_mikm_tpl">
+                                                                        <a href="javascript:void(0)" id="dopt_mikm_m" style="">#{messages.mi_label}</a>
+                                                                         / 
+                                                                        <a href="javascript:void(0)" id="dopt_mikm_k" style="">#{messages.km_label}</a> 
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: none;" >
+                                                            <div >
+                                                                <div id="d_options_mikm_w" ></div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: none;" >
+                                                            <div > 
+                                                                <div id="d_options_mikm_b" ></div> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </form>
+                                            <div id="directions_panel" style="float: left;"></div>
+                                        </div>
+                                        
+                                        <div id="hazards_panel" style="float: right; width: 49%;">
+                                        <a4j:form id="hazards-form">
+                                            <h:panelGroup layout="block">
+                                            <rich:dataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%"> 
+                                    
+                                                <!-- Data -->
+                                                <rich:column id="mapColumn">
+                                                    <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="map-icon">
+                                                    </h:graphicImage>
+                                                   <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
+                                                        <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+                                                        <h:outputText id="addressLocation" value="#{hazardsBean.item.location}" converter="#{latLngAddressConverter}" />
+                                                    </rich:toolTip>
+                                                   <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{hazardsBean.addressFormat == 2}">
+                                                    <h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
+                                                    <a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
+                                                   </rich:toolTip>
+                                                   <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{hazardsBean.addressFormat == 3}">
+                                                    <h:inputHidden id="hazardLat" value="#{item.latitude}"/>
+                                                    <h:inputHidden id="hazardLng" value="#{item.longitude}"/>
+                                                    <h:outputText id="hazardAddress" />
+                                                   </rich:toolTip>
+                                                </rich:column>
+                                                
+                                                <rich:column id="description" sortBy="#{item.description}" >
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{messages.hazard_description}" />
+                                                    </f:facet>
+                                                   <h:outputText value="#{item.description}"/>
+                                                </rich:column>
+                                               
+                                                
+                                               <rich:column id="type" sortBy="#{item.type}" >
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{messages.hazard_type}" />
+                                                    </f:facet>
+                                                   <h:outputText value="#{messages[item.type]}"/>
+                                                </rich:column>
 
-									            <rich:column id="endTime" sortBy="#{item.endTime}" >
-									                <f:facet name="header">
-									                    <h:outputText value="#{messages.hazard_endTime}" />
-									                </f:facet>
-									                <h:outputText value="#{item.endTime}">
-									                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
-									                </h:outputText>
-									            </rich:column>
-									        </rich:dataTable>
-									        </h:panelGroup>
-									        </a4j:form>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div> <!-- END PANEL -->
-					</td>
-				</tr>
-			</table>
-		</a4j:region>
-		<!-- START LOCATION MODAL -->
-	    <rich:modalPanel id="hazardLocationModal" width="540" height="450" headerClass="popupHeader" 
-	        onshow="initializeHazardMap(hazardBean.item.lat, hazardBean.item.lng);">
-	        <f:facet name="header">
-	            <h:outputText id="mapModalHeader" value="#{messages.hazard_location}" />
-	        </f:facet>
-	        <f:facet name="controls">
-	            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
-	                onclick="Richfaces.hideModalPanel('hazardLocationModal')" />
-	        </f:facet>
-	
-	        <div class="eventmap-border">
-	            <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
-	        </div>
-	
-	        <div class="popupactions">
-	            <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" 
-	                onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
-	                <span class="edit"> <h:outputText value="#{messages.button_close}" /> 
-	                </span>
-	            </a4j:commandButton>
-	        </div>
-	    </rich:modalPanel>
-	    <!-- END LOCATION MODAL -->
-	</ui:define>
+                                                <rich:column id="endTime" sortBy="#{item.endTime}" >
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{messages.hazard_endTime}" />
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.endTime}">
+                                                        <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
+                                                    </h:outputText>
+                                                </rich:column>
+                                            </rich:dataTable>
+                                            </h:panelGroup>
+                                            </a4j:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- END PANEL -->
+                    </td>
+                </tr>
+            </table>
+        </a4j:region>
+        <!-- START LOCATION MODAL -->
+        <rich:modalPanel id="hazardLocationModal" width="540" height="450" headerClass="popupHeader" 
+            onshow="initializeHazardMap(hazardBean.item.lat, hazardBean.item.lng);">
+            <f:facet name="header">
+                <h:outputText id="mapModalHeader" value="#{messages.hazard_location}" />
+            </f:facet>
+            <f:facet name="controls">
+                <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
+                    onclick="Richfaces.hideModalPanel('hazardLocationModal')" />
+            </f:facet>
+    
+            <div class="eventmap-border">
+                <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+            </div>
+    
+            <div class="popupactions">
+                <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" 
+                    onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
+                    <span class="edit"> <h:outputText value="#{messages.button_close}" /> 
+                    </span>
+                </a4j:commandButton>
+            </div>
+        </rich:modalPanel>
+        <!-- END LOCATION MODAL -->
+    </ui:define>
 </ui:composition>
