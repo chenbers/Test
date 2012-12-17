@@ -252,6 +252,23 @@
             	units = 'metric';
             	calcRouteNoParams();
             });
+			var origin_textbox = jQuery('#origin');
+			origin_textbox.focus(function(){
+				if(origin_textbox.val() == '#{messages.hazard_origin}')
+					origin_textbox.val('');
+			}).focusout(function(){
+				if(origin_textbox.val() == '')
+					origin_textbox.val('#{messages.hazard_origin}');
+			});
+			
+			var destination_textbox = jQuery('#destination');
+			destination_textbox.focus(function(){
+				if(destination_textbox.val() == '#{messages.hazard_destination}')
+					destination_textbox.val('');
+			}).focusout(function(){
+				if(destination_textbox.val() == '')
+					destination_textbox.val('#{messages.hazard_destination}');
+			});
             console.log('document ready');
 		});
 		
