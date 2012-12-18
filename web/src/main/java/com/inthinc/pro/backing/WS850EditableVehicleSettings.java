@@ -1,0 +1,113 @@
+package com.inthinc.pro.backing;
+
+import java.util.Map;
+
+import com.inthinc.pro.backing.VehiclesBean.VehicleView;
+import com.inthinc.pro.dao.util.NumberUtil;
+import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+
+public class WS850EditableVehicleSettings extends EditableVehicleSettings {
+
+    private Integer[] speedSettings;
+    private Double maxSpeed;
+    private Integer hardAcceleration; //SensitivitySlider value
+    private Integer hardBrake; //SensitivitySlider value
+    private Integer hardTurn; //SensitivitySlider value
+    private Integer hardVertical; //SensitivitySlider value
+
+    private Integer dotVehicleType;
+
+    public WS850EditableVehicleSettings(Integer vehicleID,Integer[] speedSettings, Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, double maxSpeed,Integer dotVehicleType) {
+        super(vehicleID, ProductType.WS850, null);
+        this.speedSettings = speedSettings;
+        this.maxSpeed = maxSpeed;
+        this.hardAcceleration = hardAcceleration;
+        this.hardBrake = hardBrake;
+        this.hardTurn = hardTurn;
+        this.hardVertical = hardVertical;
+        this.dotVehicleType = dotVehicleType;
+    }
+
+    public Double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(Double maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+
+    public Integer[] getSpeedSettings() {
+        return speedSettings;
+    }
+
+    public void setSpeedSettings(Integer[] speedSettings) {
+        this.speedSettings = speedSettings;
+    }
+
+    public Integer getHardAcceleration() {
+        return hardAcceleration;
+    }
+
+    public void setHardAcceleration(Integer hardAcceleration) {
+        this.hardAcceleration = hardAcceleration;
+    }
+
+    public Integer getHardBrake() {
+        return hardBrake;
+    }
+
+    public void setHardBrake(Integer hardBrake) {
+        this.hardBrake = hardBrake;
+    }
+
+    public Integer getHardTurn() {
+        return hardTurn;
+    }
+
+    public void setHardTurn(Integer hardTurn) {
+        this.hardTurn = hardTurn;
+    }
+
+    public Integer getHardVertical() {
+        return hardVertical;
+    }
+
+    public void setHardVertical(Integer hardVertical) {
+        this.hardVertical = hardVertical;
+    }
+
+    public Integer getDotVehicleType() {
+        return dotVehicleType;
+    }
+
+    public void setDotVehicleType(Integer dotVehicleType) {
+        this.dotVehicleType = dotVehicleType;
+    }
+
+    @Override
+    public void dealWithSpecialSettings(VehicleView vehicle, VehicleView batchItem, Map<String, Boolean> updateField, Boolean isBatchEdit) {
+        // TODO Auto-generated method stub
+
+    }
+    public String getSpeedSettingsString(){
+        
+        StringBuilder speedSet = new StringBuilder();
+        
+        for (int i = 0; i<TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
+            
+           speedSet.append(speedSettings[i]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
+           speedSet.append(' '); 
+        }
+        speedSet.append(speedSettings[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
+        
+        return speedSet.toString();
+     }
+    public Integer getMaxSpeedLimitInteger() {
+        return NumberUtil.intValue(getMaxSpeed());
+    }
+
+    public void setMaxSpeedLimitInteger(Integer maxSpeedLimitInteger) {
+        setMaxSpeed((double) maxSpeedLimitInteger);
+    }
+}

@@ -74,7 +74,15 @@ public enum SettingType implements BaseEnum
     EVENT_IDLING(46, 105, 2, 1, "idlingEvent"),
     IDLING_TIMEOUT(47,106, 64, 60, "idleThreshold"),
     BUZZER_IDLE(48, 184, 2, 0, "idleBuzzer"),
-    TIWI_SPEED_LIMIT(49,14,0,0,"speed_limit");
+    TIWI_SPEED_LIMIT(49,14,0,0,"speed_limit"),
+    
+    //WS850
+    WS850_HARD_ACCEL_SETTING(50,10061,10,5, "hardAcceleration"),
+    WS850_HARD_BRAKE_SETTING(51,10062,10,5, "hardBrake"),
+    WS850_HARD_TURN_SETTING(52,10063,10,5, "hardTurn"),
+    WS850_HARD_VERT_SETTING(53,10063,15,10, "hardVertical"),
+    WS850_SPEED_LIMIT(54,10054,0,0,"speed_limit"),
+    WS850_SEVERE_SPEED_LIMIT(55,10058,0,0,"severe_speed_threshold");
     
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table
