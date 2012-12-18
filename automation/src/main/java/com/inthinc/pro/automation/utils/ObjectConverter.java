@@ -11,6 +11,7 @@ import org.json.XML;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inthinc.pro.automation.logging.Log;
@@ -112,16 +113,53 @@ public class ObjectConverter {
         }
     }
     
-    private static <T> T convertJSONObjectToObject(JSONObject source, String objectName, Class<T> clazz){
+    
+    public static <T> List<T> convertJsonListToListOfObjects(String list, Class<T> clazz) {
+    	Throwable error;
+    	try {
+        	List<T> listOfObjects = new ArrayList<T>();
+    		JSONArray array = new JSONArray(list);
+    		for (int i=0; i<array.length(); ++i) {
+    			if (array.get(i) instanceof JSONObject) {
+    				JSONObject next = array.getJSONObject(i);
+    				T nextObject = mapper.readValue(next.toString(), clazz);
+    				listOfObjects.add(nextObject);
+    			}
+    		}
+    		return listOfObjects;
+    	} catch (JsonParseException e) {
+            error = e;
+		} catch (JsonMappingException e) {
+            error = e;
+		} catch (IOException e) {
+            error = e;
+		} catch (JSONException e) {
+            error = e;
+		}
+    	
+    	throw new IllegalArgumentException(error);
+    }
+    
+    
+    public static <T> T convertJSONObjectToObject(JSONObject source, String objectName, Class<T> clazz){
+    	Throwable error;
+        try {
+        	return convertJSONObjectToObject(source.getJSONObject(objectName), clazz);
+        } catch (JSONException e) {
+            error = e;
+        }
+
+        throw new IllegalArgumentException(error);
+    }
+    
+    public static <T> T convertJSONObjectToObject(JSONObject source, Class<T> clazz){
         Throwable error;
         try {
-            String object = source.getJSONObject(objectName).toString();
+            String object = source.toString();
             return mapper.readValue(object, clazz);
         } catch (JsonGenerationException e) {
             error = e;
         } catch (JsonMappingException e) {
-            error = e;
-        } catch (JSONException e) {
             error = e;
         } catch (IOException e) {
             error = e;
