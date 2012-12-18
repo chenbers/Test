@@ -7,7 +7,7 @@ import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.RedFlagAlert;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 
 @SuppressWarnings("serial")
 public class RedFlagAlertMapper extends AbstractMapper
@@ -38,7 +38,7 @@ public class RedFlagAlertMapper extends AbstractMapper
                 
             
             
-            Integer[] speedSettingsArray = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+            Integer[] speedSettingsArray = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
             
             String[] list = valueStr.split(" ");
             for (int i = 0; i < list.length; i++)

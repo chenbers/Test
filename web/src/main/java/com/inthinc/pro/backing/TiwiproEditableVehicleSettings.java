@@ -11,7 +11,7 @@ import com.inthinc.pro.backing.ui.AutologoffSetting;
 import com.inthinc.pro.backing.ui.IdlingSetting;
 import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
@@ -51,9 +51,9 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     public void setSpeedSettings(Integer[] speedSettings) {
         if (speedSettings == null)
         {
-            this.speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
-            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
-                this.speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+            this.speedSettings = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
+            for (int i = 0; i < SpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+                this.speedSettings[i] = SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
             }
         }
         else {
@@ -74,9 +74,9 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 		
         if (speedSettings == null)
         {
-            Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
-            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
-                speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+            Integer[] speedSettings = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
+            for (int i = 0; i < SpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+                speedSettings[i] = SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
             }
         }
         return speedSettings;
@@ -85,12 +85,12 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
        
        StringBuilder speedSet = new StringBuilder();
        
-       for (int i = 0; i<TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
+       for (int i = 0; i<SpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
            
-          speedSet.append(speedSettings[i]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
+          speedSet.append(speedSettings[i]+SpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
           speedSet.append(' '); 
        }
-       speedSet.append(speedSettings[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
+       speedSet.append(speedSettings[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]+SpeedingConstants.INSTANCE.SPEED_LIMITS[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
        
        return speedSet.toString();
 	}

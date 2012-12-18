@@ -5,9 +5,10 @@ import java.util.Map;
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 
 public class WS850EditableVehicleSettings extends EditableVehicleSettings {
+
 
     private Integer[] speedSettings;
     private Double maxSpeed;
@@ -28,6 +29,9 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
         this.hardVertical = hardVertical;
         this.dotVehicleType = dotVehicleType;
     }
+    public WS850EditableVehicleSettings() {
+        super();
+    }
 
     public Double getMaxSpeed() {
         return maxSpeed;
@@ -42,7 +46,17 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
     }
 
     public void setSpeedSettings(Integer[] speedSettings) {
-        this.speedSettings = speedSettings;
+        if (speedSettings == null)
+        {
+            this.speedSettings = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
+            for (int i = 0; i < SpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+                this.speedSettings[i] = SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+            }
+        }
+        else {
+            
+            this.speedSettings = speedSettings;
+        }
     }
 
     public Integer getHardAcceleration() {
@@ -94,12 +108,12 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
         
         StringBuilder speedSet = new StringBuilder();
         
-        for (int i = 0; i<TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
+        for (int i = 0; i<SpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
             
-           speedSet.append(speedSettings[i]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
+           speedSet.append(speedSettings[i]+SpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
            speedSet.append(' '); 
         }
-        speedSet.append(speedSettings[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
+        speedSet.append(speedSettings[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]+SpeedingConstants.INSTANCE.SPEED_LIMITS[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
         
         return speedSet.toString();
      }
