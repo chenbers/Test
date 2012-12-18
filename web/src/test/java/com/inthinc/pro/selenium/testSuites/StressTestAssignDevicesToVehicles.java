@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.jbehave.core.annotations.UsingSteps;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
@@ -29,7 +30,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @StoryPath(path="StressTestAssignDevicesToVehicles.story")
 
 public class StressTestAssignDevicesToVehicles extends WebStories {
-    
+	@Ignore
     @Test
     public void test(){}
 	

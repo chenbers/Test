@@ -52,16 +52,16 @@ public enum AdminBarEnum implements SeleniumEnums {
     SEARCH_BUTTON("Search", "admin-table-form:***Table-adminTableSearch" ),
     SEARCH_LABEL("Search", "//table[@id='grid_nav_search_box']/tbody/tr/td[1]" ),
     SEARCH_TEXTFIELD(null, "admin-table-form:***Table-filterTable" ),
-    DELETE("Delete", "admin-table-form:***Table-adminTableDelete"),
+    DELETE("Delete", "personTable-form:***Table-adminTableDelete"),
     BATCH_EDIT("Batch Edit", "admin-table-form:***Table-adminTableEdit" ),
     
-    COUNTER("Showing XXX to YYY of ZZZ records","admin-table-form:recordCounts"),
+    COUNTER("Showing XXX to YYY of ZZZ records","personTable-form:header"),
 
     
     TITLE(null, Xpath.start().span(Id.clazz("admin")).toString()),
 
     
-    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),
+    EDIT_COLUMNS_LINK(editColumns, "***Table-form:***Table-adminTableEditColumns"),
 
     TABLE_HEADERS(null, "admin-table-form:***Table:*column*header:sortDiv"),
     TABLE_ENTRIES(null, "admin-table-form:***Table:###:*column*"),

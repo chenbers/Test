@@ -424,7 +424,7 @@ Scenario: TC1413: Notifications > Emergency - Search
 
 Scenario: TC1423: Notifications > Emergency - Edit Columns - Check Box Selection via Spacebar
 
-FormsAdmin.story
+FormsManage.story
 
 Scenario: TCXXXX: Forms Admin Page - Table Properties NEED TO IMPLEMENT CHECKING ALPHABETICAL ORDER IN A NEW STEP
 Given I am logged in
@@ -460,6 +460,12 @@ And I save the 1st Row of the Name link as SAVEDFORM
 And I click the 1st Row of the Select checkbox
 And click the Delete button
 Then I validate the 1st Row of the Name link is not SAVEDFORM
+
+//Add test for previous and next and page number functionality in table
+
+//Add test for checking filtering text when using the search field
+
+FormsPublished.story
 
 FormsAdd.story
 

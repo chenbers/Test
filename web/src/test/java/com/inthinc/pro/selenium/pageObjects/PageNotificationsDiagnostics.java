@@ -10,7 +10,7 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
     
     public PageNotificationsDiagnostics() {
         page = "diagnostics";
-        super.enums = new SeleniumEnums[]{ NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
+        enums = new SeleniumEnums[] { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
 
     }
     

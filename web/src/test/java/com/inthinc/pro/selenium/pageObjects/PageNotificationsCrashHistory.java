@@ -18,9 +18,8 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     
     private String pageScroller = "crashHistory-form:crashHistory-bottomScroller_table";
 	
-    protected SeleniumEnums[] enums = { NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, NotificationsCrashHistoryEnum.TEAM_DROP_DOWN };
-    
     public PageNotificationsCrashHistory() {
+    	
 //        checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
 //        checkMe.add(NotificationsCrashHistoryEnum.TITLE);
         page = "crashHistory";
@@ -114,10 +113,10 @@ public class PageNotificationsCrashHistory extends NotificationsEventsBar {
         
     }
     
-    public class NotificationsCrashHistoryDropDown extends EventsBarDropDowns {
+    public class NotificationsCrashHistoryDropDown {
         
         public DHXDropDown team() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, page);
+            return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, enums);
         }
         
         public DHXDropDown timeFrame() {

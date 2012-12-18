@@ -204,7 +204,7 @@ public class Device extends BaseEntity implements HasAccountId
      */
     public boolean isTextMsgReceiveCapable() {
         // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implemented
-        return ProductType.WAYSMART.equals(this.productVersion);
+        return ProductType.WAYSMART.equals(this.productVersion) || ProductType.WAYSMART_850.equals(this.productVersion);
     }
     
     /**

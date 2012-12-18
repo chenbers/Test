@@ -2,11 +2,15 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsDriverLoginsEnum;
 
 public class PageNotificationsDriverLogins extends NotificationsEventsBar {
 
     public PageNotificationsDriverLogins() {
+    	
+        enums = new SeleniumEnums[] { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
+    	
         page = "driverLogins";
         checkMe.add(NotificationsDriverLoginsEnum.TITLE);
         checkMe.add(NotificationsDriverLoginsEnum.MESSAGE);

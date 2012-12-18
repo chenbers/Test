@@ -175,13 +175,6 @@
                </rich:toolTip>
             </rich:column>
             
-            <rich:column id="date" sortBy="#{item.stateID}" >
-                <f:facet name="header">
-                    <h:outputText value="#{messages.hazard_region}" />
-                </f:facet>
-                <h:outputText value="#{item.state.name}" />
-            </rich:column>
-            
             <rich:column id="location" sortBy="#{item.location}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_location}" />

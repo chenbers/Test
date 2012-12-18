@@ -2,11 +2,15 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
 
 public class PageNotificationsSafety extends NotificationsEventsBar {
 
     public PageNotificationsSafety() {
+    	
+        enums = new SeleniumEnums[] { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
+    	
         page = "safety";
         url = NotificationsSafetyEnum.DEFAULT_URL;
         checkMe.add(NotificationsSafetyEnum.MAIN_TITLE);

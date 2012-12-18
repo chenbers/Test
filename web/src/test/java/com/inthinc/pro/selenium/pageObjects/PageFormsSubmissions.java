@@ -40,7 +40,7 @@ public class PageFormsSubmissions extends FormsTables {
         
     }
 
-    public class FormsSubmissionsButtons {
+    public class FormsSubmissionsButtons extends FormsBarButtons {
 
     	public Button refresh() {
     		return new Button(FormsSubmissionsEnum.REFRESH);
@@ -88,7 +88,7 @@ public class PageFormsSubmissions extends FormsTables {
         
     }
     
-    public class FormsSubmissionsLinks {
+    public class FormsSubmissionsLinks extends FormsBarLinks {
     	
     	public TextLink sortByDateTime() {
     		return new TextLink(FormsSubmissionsEnum.DATE_SORT);
@@ -181,10 +181,10 @@ public class PageFormsSubmissions extends FormsTables {
     	public Text entries() {
     		return new Text(FormsSubmissionsEnum.ENTRIES_TEXT);
     	}
-    	
-    	public Text title() {
-    		return new Text(FormsSubmissionsEnum.TITLE);
-    	}
+//NO LONGER ON THIS PAGE    	
+//    	public Text title() {
+//    		return new Text(FormsSubmissionsEnum.TITLE);
+//    	}
     	
     	public TextTableLink formEntry() {
     		return new TextTableLink(FormsSubmissionsEnum.FORM_TEXT_ENTRY);

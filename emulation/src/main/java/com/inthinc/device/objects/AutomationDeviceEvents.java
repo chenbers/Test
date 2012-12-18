@@ -158,6 +158,7 @@ public class AutomationDeviceEvents {
 			if (locationStr.length() > EventAttr.NO_GPS_LOCK_LOCATION.getSize()){
 				throw new IllegalArgumentException("Cannot have a location string longer than " + EventAttr.NO_GPS_LOCK_LOCATION.getSize());
 			}
+			note.addAttr(EventAttr.CLEAR_DRIVER_FLAG, 128);
 			note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
 			note.addAttr(EventAttr.DRIVER_HOS_STATE, state.getHosState());
 			note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, locationStr);

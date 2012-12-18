@@ -21,18 +21,7 @@ public class PageLogin extends Masthead {
 		checkMe.add(LoginEnum.LOGIN_BUTTON);
 	}
 	
-    public class LoginPopUps extends MastheadPopUps{
-//    	public ForgotPassword forgotPassword(){
-//    		return new ForgotPassword();
-//    	}
-//    	
-//    	public LoginError loginError(){
-//    		return new LoginError();
-//    	}
-//    	public MessageSent messageSent(){
-//    	    return new MessageSent();
-//    	}
-    }
+    public class LoginPopUps extends MastheadPopUps{}
     
     public LoginPopUps _popUp(){
     	return new LoginPopUps();

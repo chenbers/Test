@@ -29,6 +29,7 @@ import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementLengthType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -89,12 +90,12 @@ public class AdminHazardTest extends BaseJDBCTest {
             hazard.setLatitude(locations.get(locationName).getLat());
             hazard.setLongitude(locations.get(locationName).getLng());
             hazard.setLocation("IT created for "+locationName+" at "+new DateTime().toString("yyyyMMddkkmmss"));
-            System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
-            hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+            System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN.getRadius());
+            hazard.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN.getRadius());
             hazard.setStartTime(new Date());
             hazard.setStateID(45);//UTah
             hazard.setStatus(HazardStatus.ACTIVE);
-            hazard.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
+            hazard.setType(HazardType.ROADRESTRICTIONS_BAN);
             hazard.setUserID(1655);//jwimmer user
             hazard.setVehicleID(6956);//ATAT aka jwimmer truck
             
@@ -120,12 +121,12 @@ public class AdminHazardTest extends BaseJDBCTest {
         hazardToInsert.setLatitude(0.0);
         hazardToInsert.setLongitude(0.0);
         hazardToInsert.setLocation("IT created for 0,0 at "+new DateTime());
-        System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
-        hazardToInsert.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+        System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN.getRadius());
+        hazardToInsert.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN.getRadius());
         hazardToInsert.setStartTime(new Date());
         hazardToInsert.setStateID(45);//UTah
         hazardToInsert.setStatus(HazardStatus.ACTIVE);
-        hazardToInsert.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
+        hazardToInsert.setType(HazardType.ROADRESTRICTIONS_BAN);
         hazardToInsert.setUserID(1655);//jwimmer user
         hazardToInsert.setVehicleID(6956);//ATAT aka jwimmer truck
         
@@ -174,12 +175,12 @@ public class AdminHazardTest extends BaseJDBCTest {
         hazardToInsert.setLatitude(0.0);
         hazardToInsert.setLongitude(0.0);
         hazardToInsert.setLocation("IT created for 0,0 at "+new DateTime());
-        System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
-        hazardToInsert.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN_CLOSURE.getRadius());
+        System.out.println("radius: "+HazardType.ROADRESTRICTIONS_BAN.getRadius());
+        hazardToInsert.setRadiusMeters(HazardType.ROADRESTRICTIONS_BAN.getRadius());
         hazardToInsert.setStartTime(new Date());
         hazardToInsert.setStateID(45);//UTah
         hazardToInsert.setStatus(HazardStatus.ACTIVE);
-        hazardToInsert.setType(HazardType.ROADRESTRICTIONS_BAN_CLOSURE);
+        hazardToInsert.setType(HazardType.ROADRESTRICTIONS_BAN);
         hazardToInsert.setUserID(1655);//jwimmer user
         hazardToInsert.setVehicleID(6956);//ATAT aka jwimmer truck
         
@@ -242,7 +243,8 @@ public class AdminHazardTest extends BaseJDBCTest {
         
         AdminVehicleJDBCDAO vehicleJDBCDAO = new AdminVehicleJDBCDAO();
         vehicleJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
-        List<Vehicle> vehicles = vehicleJDBCDAO.findVehiclesByAccountWithinDistance(new Integer(1), new Long(200), locations.get("inthinc"));
+        Long twoHundredMilesInKM = MeasurementLengthType.ENGLISH_MILES.convertToMeters(200).longValue();
+        List<Vehicle> vehicles = vehicleJDBCDAO.findVehiclesByAccountWithinDistance(new Integer(1), twoHundredMilesInKM, locations.get("inthinc"));
         for(Vehicle vehicle: vehicles){
             System.out.println("vehicle.device: "+vehicle.getDevice());
             System.out.println("vehicle: "+vehicle);
