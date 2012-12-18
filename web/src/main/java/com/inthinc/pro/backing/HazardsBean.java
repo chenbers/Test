@@ -101,15 +101,17 @@ public class HazardsBean extends BaseBean {
         return SelectItemUtil.toList(MeasurementLengthType.class, false);
     }
     public Map<Integer, Hazard> getHazards() {
+    	logger.info("public Map<Integer, Hazard> getHazards()");
         if (hazards == null) {
             loadHazards();
         }
         return hazards;
     }
     public void initTableData(){
+    	logger.info("public void initTableData() "); 
         for(Integer key: getHazards().keySet()){
             //set driver display value
-            Hazard hazard = getHazards().get(key);
+            Hazard hazard = hazards.get(key);
             if(hazard.getDriver() == null)
                 hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
             if(hazard.getUser() == null)

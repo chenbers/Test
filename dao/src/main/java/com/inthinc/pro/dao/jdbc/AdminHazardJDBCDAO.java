@@ -183,6 +183,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     public List<Hazard> findHazardsByUserAcct(User user, BoundingBox box) {
         return findHazardsByUserAcct(user, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
+
     @Override
     public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer kilometers) {
         List<Hazard> allInAccount = findAllInAccount(accountID);

@@ -14,7 +14,7 @@ public interface RoadHazardDAO extends GenericDAO<Hazard, Integer> {
      * @param lat1 north //TODO: jwimmer: verify that these are documented correctly
      * @param lng1 west
      * @param lat2 south
-     * @param lng2 ease
+     * @param lng2 east
      * @return the list of Road Hazards in this account and bounding box.
      */
     List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2);
@@ -26,7 +26,7 @@ public interface RoadHazardDAO extends GenericDAO<Hazard, Integer> {
      * @return the list of Road Hazards in this account and bounding box.
      */
     List<Hazard> findHazardsByUserAcct(User user, BoundingBox box);
-
+    
     /**
      * Returns all Road Hazards in a user's account.
      * @param accountID The accountID which will be used for filtering.

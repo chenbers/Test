@@ -49,13 +49,14 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
 			@PathParam("sw_lng") Double sw_longitude,
 			@PathParam("ne_lat") Double ne_latitude,
 			@PathParam("ne_lng") Double ne_longitude) {
-		// TODO Auto-generated method stub  findHazardsByUserAcct
+	    logger.debug("public Response getRH("+acctID+", "+sw_latitude+", "+sw_longitude+", "+ne_latitude+", "+ne_longitude+")");
         HazardDAOAdapter hdaoa = getDao();
         List<Hazard> responseList;
         Response response;
         try {
             BoundingBox box = new BoundingBox(sw_latitude, sw_longitude, ne_latitude, ne_longitude);
-			responseList = hdaoa.findHazardsByUserAcct(principal.getUser(), box );
+            //responseList = hdaoa.findHazardsByUserAcct(principal.getUser(), box );
+            responseList = hdaoa.findInAccountBoundingBox(acctID, box);
             response = Response.ok(new GenericEntity<List<Hazard>>(responseList) {}).build();
         } catch (EmptyResultDataAccessException e){
             response = Response.noContent().build();
@@ -86,7 +87,7 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
 	
     @Override
     public Response getRH(String mcmID, Double latitude, Double longitude) {
-        logger.error("public Response getRH(String "+mcmID+", Double "+latitude+", Double "+longitude+")");
+        logger.info("public Response getRH(String "+mcmID+", Double "+latitude+", Double "+longitude+")");
         Integer twoHundredMilesInKm = 322;
         return getRH(mcmID, latitude, longitude, twoHundredMilesInKm);
     }
@@ -95,7 +96,7 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
     private MessageSource                 messageSource;
     @Override
     public Response types(String locale) {
-        logger.error("public Response types(String "+locale+")");
+        logger.info("public Response types(String "+locale+")");
         Locale theLocale = new Locale(locale);
 //        ResourceBundle resources = cache.get(locale);
 //        if(resources == null){
