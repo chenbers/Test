@@ -22,18 +22,14 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     private static final String WIRELINE_DOOR_ALARM_PASSCODE_PREFIX = "75";
 
     public WaySmartSettingManager(ConfiguratorDAO configuratorDAO, SensitivitySliders sensitivitySliders,
-            ProductType productType, VehicleSetting vehicleSetting) {
+            VehicleSetting vehicleSetting) {
         
-        super(configuratorDAO,sensitivitySliders,productType, vehicleSetting);
+        super(configuratorDAO,sensitivitySliders,ProductType.WAYSMART, vehicleSetting);
     }
     public WaySmartSettingManager(ConfiguratorDAO configuratorDAO, SensitivitySliders sensitivitySliders,
-                                    ProductType productType, Integer vehicleID, Integer deviceID) {
+                                    Integer vehicleID, Integer deviceID) {
         
-        super(configuratorDAO,sensitivitySliders,productType,vehicleID,deviceID);
-    }
-    @Override
-    public void init() {
- 
+        super(configuratorDAO,sensitivitySliders,ProductType.WAYSMART,vehicleID,deviceID);
     }
     public EditableVehicleSettings createDefaultValues(Integer vehicleID){
         
@@ -95,7 +91,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 	        
 	        if (vehicleSetting == null) {
 	            
-	            vehicleSetting = createVehicleSetting(vehicleID);
+	            vehicleSetting = new VehicleSetting(vehicleID,ProductType.WAYSMART);
 	        }
 	        DesiredSettings newSettings = new DesiredSettings();
 
@@ -214,12 +210,12 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     	}
     	return passcode;
     }
-    private VehicleSetting createVehicleSetting(Integer vehicleID){
-        
-        VehicleSetting vehicleSetting = new VehicleSetting(vehicleID,ProductType.WAYSMART);
-
-        return vehicleSetting;
-    }
+//    private VehicleSetting createVehicleSetting(Integer vehicleID){
+//        
+//        VehicleSetting vehicleSetting = new VehicleSetting(vehicleID,ProductType.WAYSMART);
+//
+//        return vehicleSetting;
+//    }
 
 
    @Override

@@ -60,7 +60,7 @@ public class TiwiproSettingManagerTest {
         
         VehicleSettingManager tiwiproSettingManager = new TiwiproSettingManager(new ConfiguratorHessianDAO(), 
                 sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.TIWIPRO, VEHICLE_ID, DEVICE_ID);
+                VEHICLE_ID, DEVICE_ID);
         EditableVehicleSettings editableVehicleSettings = tiwiproSettingManager.createDefaultValues(VEHICLE_ID);
         assertTrue(editableVehicleSettings instanceof TiwiproEditableVehicleSettings);
         TiwiproEditableVehicleSettings tevs = (TiwiproEditableVehicleSettings) editableVehicleSettings;
@@ -71,8 +71,7 @@ public class TiwiproSettingManagerTest {
     public void createFromExistingCustomValues(){
         
         VehicleSettingManager tiwiproSettingManager = new TiwiproSettingManager(new ConfiguratorHessianDAO(),  
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.TIWIPRO,vehicleSettingCustom);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(),vehicleSettingCustom);
         EditableVehicleSettings editableVehicleSettings = tiwiproSettingManager.associateSettings(VEHICLE_ID);
         assertTrue(editableVehicleSettings instanceof TiwiproEditableVehicleSettings);
         TiwiproEditableVehicleSettings tevs = (TiwiproEditableVehicleSettings) editableVehicleSettings;
@@ -86,8 +85,7 @@ public class TiwiproSettingManagerTest {
     public void createFromExistingSliderValues(){
         
         VehicleSettingManager tiwiproSettingManager = new TiwiproSettingManager(new ConfiguratorHessianDAO(),  
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.TIWIPRO, vehicleSettingSlider);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(),vehicleSettingSlider);
         EditableVehicleSettings editableVehicleSettings = tiwiproSettingManager.associateSettings(VEHICLE_ID);
         assertTrue(editableVehicleSettings instanceof TiwiproEditableVehicleSettings);
         TiwiproEditableVehicleSettings tevs = (TiwiproEditableVehicleSettings) editableVehicleSettings;
@@ -106,8 +104,7 @@ public class TiwiproSettingManagerTest {
         settings.put(SettingType.IDLING_TIMEOUT.getSettingID(), idlingSetting+"");
         vehicleSettingSlider.setDesired(settings);
         VehicleSettingManager tiwiproSettingManager = new TiwiproSettingManager(new ConfiguratorHessianDAO(),  
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.TIWIPRO, vehicleSettingSlider);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(),vehicleSettingSlider);
         
         EditableVehicleSettings editableVehicleSettings = tiwiproSettingManager.createDefaultValues(VEHICLE_ID);
         ((TiwiproEditableVehicleSettings)editableVehicleSettings).setIdlingSeconds(idlingSetting);
@@ -125,8 +122,7 @@ public class TiwiproSettingManagerTest {
         settings.put(SettingType.IDLING_TIMEOUT.getSettingID(), actualIdling+"");
         vehicleSettingSlider.setActual(settings);
         VehicleSettingManager tiwiproSettingManager = new TiwiproSettingManager(new ConfiguratorHessianDAO(),  
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.TIWIPRO, vehicleSettingSlider);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(), vehicleSettingSlider);
         
         EditableVehicleSettings editableVehicleSettings = tiwiproSettingManager.createDefaultValues(VEHICLE_ID);
         ((TiwiproEditableVehicleSettings)editableVehicleSettings).setIdlingSeconds(desiredIdling);
@@ -144,8 +140,7 @@ public class TiwiproSettingManagerTest {
         settings.put(SettingType.BUZZER_IDLE.getSettingID(), 0+"");
         vehicleSettingSlider.setActual(settings);
         VehicleSettingManager tiwiproSettingManager = new TiwiproSettingManager(new ConfiguratorHessianDAO(),  
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.TIWIPRO, vehicleSettingSlider);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(), vehicleSettingSlider);
         
         EditableVehicleSettings editableVehicleSettings = tiwiproSettingManager.createDefaultValues(VEHICLE_ID);
         ((TiwiproEditableVehicleSettings)editableVehicleSettings).setIdleBuzzer(true);
