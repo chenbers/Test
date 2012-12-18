@@ -30,6 +30,16 @@ public class AutomationDevices {
         return null;
     }
     
+    public Device getWS850(){
+        List<Device> devices = getDevices();
+        for (Device device : devices){
+            if (device.getProductVersion().equals(ProductType.WS850)){
+                return device;
+            }
+        }
+        return null;
+    }
+    
     public List<Device> getDevices(){
         List<Device> devices=null;
         List<Device> active = new ArrayList<Device>();
