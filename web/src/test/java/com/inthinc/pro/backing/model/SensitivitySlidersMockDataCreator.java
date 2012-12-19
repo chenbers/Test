@@ -68,6 +68,7 @@ public class SensitivitySlidersMockDataCreator {
         sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
         //WS850
+        sfcm = new SensitivitySliderValues();
         sfcm.setSettingID(10061);
         sfcm.setSliderType(SliderType.HARD_ACCEL_SLIDER);
         sfcm.setSensitivitySubtype(0);
