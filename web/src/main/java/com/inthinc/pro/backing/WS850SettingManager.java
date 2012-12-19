@@ -44,7 +44,7 @@ public class WS850SettingManager extends VehicleSettingManager {
         Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.WS850_SEVERE_SPEED_LIMIT.getSettingID()));
         if (maxSpeed < 1.0)
             maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
-        Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.IDLING_TIMEOUT.getSettingID()));
+        Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()));
         
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
         return new WS850EditableVehicleSettings(vs.getVehicleID(),speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, maxSpeed,VehicleDOTType.NON_DOT.getConfiguratorSetting(),idlingThresholdSeconds);

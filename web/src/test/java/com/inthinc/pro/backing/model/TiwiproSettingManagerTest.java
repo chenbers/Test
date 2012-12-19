@@ -12,13 +12,11 @@ import org.junit.Test;
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.backing.TiwiproEditableVehicleSettings;
 import com.inthinc.pro.backing.TiwiproSettingManager;
+import com.inthinc.pro.backing.ui.IdlingSetting;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
-import com.inthinc.pro.backing.model.SensitivitySlidersMockDataCreator;
-import com.inthinc.pro.backing.ui.AutologoffSetting;
-import com.inthinc.pro.backing.ui.IdlingSetting;
 
 public class TiwiproSettingManagerTest {
     private SensitivitySlidersMockDataCreator sensitivitySlidersMockDataCreator;
