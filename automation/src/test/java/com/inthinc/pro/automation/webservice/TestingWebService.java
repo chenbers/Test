@@ -24,6 +24,8 @@ import com.inthinc.pro.automation.models.Gender;
 import com.inthinc.pro.automation.models.Group;
 import com.inthinc.pro.automation.models.GroupStatus;
 import com.inthinc.pro.automation.models.GroupType;
+import com.inthinc.pro.automation.models.Hazard;
+import com.inthinc.pro.automation.models.Hazard.HazardUrls;
 import com.inthinc.pro.automation.models.Person;
 import com.inthinc.pro.automation.models.Roles;
 import com.inthinc.pro.automation.models.Status;
@@ -76,6 +78,22 @@ public class TestingWebService {
     
     private void addToDeleteList(BaseEntity instance, int id){
         toDelete.push(new Tuple<Class<? extends BaseEntity>, Integer>(instance.getClass(), id));
+    }
+    
+
+    @Test
+    @Ignore
+    public void testGettingRoadHazard() {
+    	
+    	services = new RestCommands("0001", "password");
+    	
+    	HazardUrls custom = new HazardUrls("MCM100343", "18.9", "-89.67");
+    	Hazard haz = new Hazard();
+    	haz.setCustomUrl(custom);
+    	List<Hazard> list = services.getCustomUrl(Hazard.class, haz);
+    	for (Hazard hazard : list) {
+    		Log.info(hazard);
+    	}
     }
     
     @Test
@@ -183,7 +201,9 @@ public class TestingWebService {
     }
     
     
+    
     @Test
+    @Ignore
     public void testInactivatingEmployee(){
         services = new RestCommands(restUsername, password);
         

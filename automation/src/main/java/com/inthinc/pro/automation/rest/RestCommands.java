@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.rest;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.httpclient.methods.DeleteMethod;
@@ -8,8 +9,11 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.inthinc.pro.automation.enums.WebDateFormat;
+import com.inthinc.pro.automation.interfaces.HasCustomUrl;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.BaseEntity;
 import com.inthinc.pro.automation.models.Event;
@@ -128,6 +132,34 @@ public class RestCommands {
             Log.error(http.getResults());
         }
         return null;
+    }
+    
+
+    /**
+     * Expects to get JSON objects from the URL
+     * @param type
+     * @param instance
+     * @return
+     */
+    public <T extends BaseEntity> List<T> getCustomUrl(Class<T> type, HasCustomUrl instance) {
+		GetMethod get = new GetMethod(baseUrl + instance.getCustomUrl());
+    	try {
+    		List<T> list = new ArrayList<T>();
+    		String results = http.httpRequest(get);
+    		JSONArray ja = new JSONArray(results);
+    		for (int i=0; i<ja.length(); ++i) {
+    			list.add(ObjectConverter.convertJSONObjectToObject(ja.getJSONObject(i), type));
+    		}
+    		return list;
+    	} catch (AutoHTTPException e) {
+            Log.error(e.getReason());
+            Log.error(http.getResults());
+        } catch (JSONException e) {
+            Log.error(e);
+            Log.error(http.getResults());
+		}
+
+		return null;
     }
 
     public HTTPCommands getHttp() {

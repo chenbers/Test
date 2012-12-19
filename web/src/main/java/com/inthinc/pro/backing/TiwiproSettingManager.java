@@ -10,7 +10,7 @@ import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class TiwiproSettingManager extends VehicleSettingManager{
@@ -38,8 +38,8 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         Integer hardTurn = hardTurnSlider.getDefaultValueIndex();
         Integer hardAcceleration =  hardAccelerationSlider.getDefaultValueIndex();
         Integer hardBrake = hardBrakeSlider.getDefaultValueIndex();
-        Integer[] speedSettings = convertFromSpeedSettings(TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
-        Double maxSpeed = TiwiproSpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
+        Integer[] speedSettings = convertFromSpeedSettings(SpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
+        Double maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
                 
         return new TiwiproEditableVehicleSettings(vehicleID==null?-1:vehicleID, ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, idlingThresholdSeconds, idleBuzzerDefault, maxSpeed);
     }
@@ -57,7 +57,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         Integer[] speedSettings = convertFromSpeedSettings(vs.getBestOption(SettingType.SPEED_SETTING.getSettingID())); 
         Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.TIWI_SPEED_LIMIT.getSettingID()));
         if (maxSpeed < 1.0)
-            maxSpeed = TiwiproSpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
+            maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
 
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
         return new TiwiproEditableVehicleSettings(vs.getVehicleID(),ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, idlingThresholdSeconds, idleBuzzer, maxSpeed);
@@ -68,19 +68,19 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         
         if (speedSet == null) return createSpeedSettings();
         
-        Integer[] speedSettingValues= new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+        Integer[] speedSettingValues= new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
         String[] speeds = speedSet.split(" ");
         for (int i = 0; i < speeds.length; i++){
             
-            speedSettingValues[i] = NumberUtil.convertString(speeds[i])-TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[i];
+            speedSettingValues[i] = NumberUtil.convertString(speeds[i])-SpeedingConstants.INSTANCE.SPEED_LIMITS[i];
         }
         return speedSettingValues;
     }
     
     private Integer[] createSpeedSettings(){
-        Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
-        for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
-            speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+        Integer[] speedSettings = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
+        for (int i = 0; i < SpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+            speedSettings[i] = SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
         }
 
         return speedSettings;
@@ -89,12 +89,12 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         
         StringBuilder speedSet = new StringBuilder();
         
-        for (int i = 0; i<TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
+        for (int i = 0; i<SpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
             
-           speedSet.append(speedSettings[i]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
+           speedSet.append(speedSettings[i]+SpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
            speedSet.append(' '); 
         }
-        speedSet.append(speedSettings[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
+        speedSet.append(speedSettings[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]+SpeedingConstants.INSTANCE.SPEED_LIMITS[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
         
         return speedSet.toString();
      }
