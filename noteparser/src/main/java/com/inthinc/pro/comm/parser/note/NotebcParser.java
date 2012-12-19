@@ -41,7 +41,6 @@ public class NotebcParser implements NoteParser{
 			else
 				parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
 			
-				
 			if (parser != null)
 			{
 				offset = parser.parseAttrib(data, offset, (attrib == null) ? String.valueOf(attribCode) : attrib.getFieldName(), attribMap);

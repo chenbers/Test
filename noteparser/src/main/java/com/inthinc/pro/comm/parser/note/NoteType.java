@@ -191,6 +191,7 @@ public enum NoteType {
 	CRASH(209, new Attrib[]{}),
 	SPEED_COACHING(210, new Attrib[]{}),
 	RF_KILL(218, new Attrib[]{}),
+    CREATE_ROAD_HAZARD(226, new Attrib[]{}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),

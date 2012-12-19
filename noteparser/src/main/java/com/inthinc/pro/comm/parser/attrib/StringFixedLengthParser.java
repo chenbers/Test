@@ -32,7 +32,7 @@ public class StringFixedLengthParser implements AttribParser {
 		if (parserType.equals(AttribParserType.STRING_FIXED_LENGTH36))
 			length = 36;
 			
-		assert(data.length > offset + 2 + length);
+//		assert(data.length > offset + 2 + length);
 
 		attribMap.put(code, ReadUtil.createString(data, offset, length));
 
