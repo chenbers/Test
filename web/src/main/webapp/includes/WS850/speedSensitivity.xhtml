@@ -43,6 +43,7 @@
 	jQuery("#hardVerticalLevel").html(getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.hardVertical},
   				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.defaultValueIndex},
 				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.sliderPositionCount}));
+	jQuery("#idlingThreshold").html(getIdlingLabel(#{vehiclesBean.item.editableVehicleSettings.idlingSlider}));
   });
   function getLabel(valueLabel, addon){
 
@@ -67,6 +68,18 @@
         input.setValue(Number(input.input.value) - 1);
     }
   }
+  function getIdlingLabel(sliderValue){
+		if (sliderValue == 0) return "#{messages.IdlingSetting_disabled}";
+		if ((sliderValue &lt; 10)  ) return getIdlingLabelSeconds(sliderValue);
+		return  ((sliderValue-4))+":00";
+	}
+	function getIdlingLabelSeconds(sliderValue) {
+		  idlingSeconds = (sliderValue+1)*30;
+		  var seconds = idlingSeconds%60;
+		  if(seconds == 0)
+			  seconds = "00";
+		return Math.floor(idlingSeconds/60) +":"+seconds;
+	}
   </script> 
 
     <c:if test="empty editableVehicleSettings">
@@ -310,6 +323,43 @@
                                              						adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
                                     </td>
                                     <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity5}" />
+                                    </td>
+                                 </tr>
+            					<tr class="tableOdd">
+                                 	<td></td>
+                                     <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="idlingThreshold" style="font-weight:bold">
+                                       </span>
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr class="tableOdd">
+                                 	<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                     	            	<ui:param name="messageKey" value="editDevice_idling"/>
+                                      	<h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idlingThreshold" value="#{updateField['editableVehicleSettings.idlingSeconds']}" />
+                                      	<h:outputText value="#{messages[messageKey]}" />
+                                   	</td>
+                                   	<td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                     	<h:outputText value="#{messages.editDevice_sensitivity1}" />
+                                   	</td>
+                                 	<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    	<rich:inputNumberSlider id="#{context}-idlingThreshold" 
+                                          value="#{vehiclesBean.item.editableVehicleSettings.idlingSlider}"
+                                          disabled="#{disabled or vehiclesBean.speedInfoDisabled}"   
+                                          onfocus="this.select();" 
+                                          showToolTip="false" 
+                                          showBoundaryValues="false"
+                                          showInput="false" 
+                                          showArrows="false"
+                                          minValue="#{vehiclesBean.item.editableVehicleSettings.idlingSecondsMin}" 
+                                          maxValue="#{vehiclesBean.item.editableVehicleSettings.idlingSecondsMax}" 
+										  handleSelectedClass="handleSelected"
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('idlingThreshold').innerHTML = getIdlingLabel(this.value);adminSetCheckbox(this.mainTable.id,'style','idlingThreshold','#{context}-update_','');" >
+                                          </rich:inputNumberSlider>
+									</td>
+									<td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                           <h:outputText value="#{messages.editDevice_sensitivity5}" />
                                     </td>
                                  </tr>
