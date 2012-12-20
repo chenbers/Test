@@ -132,6 +132,10 @@
         Hazard.prototype.drawRadius = function() {
             createCircle(this.point, this.radius);
         }
+        function buildLocFilter(){
+        	return map.getBounds().getSouthWest().lat()+":"+map.getBounds().getSouthWest().lng()
+        	   +":"+map.getBounds().getNorthEast().lat()+":"+map.getBounds().getNorthEast().lng();
+        }
         //]]>
         </script>
         <script type="text/javascript">
@@ -185,7 +189,8 @@
             console.log('map.bounds: '+map.getBounds());
             google.maps.event.addListener(map, 'bounds_changed', function(){
                     console.log('bounds_changed');
-                    hazardsService.retrieveHazards(map.getBounds())
+                    hazardsService.retrieveHazards(map.getBounds());
+                    jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue').val(buildLocFilter()).change();
                     
                 });
             
@@ -487,8 +492,8 @@
                                                             <f:facet name="header"> MAP
                                                                 <h:panelGroup>
                                                                     <h:outputText value="Map" /><br />
-                                                                    <h:inputText value="#{hazardsBean.filterBoundsValue}" id="input">
-                                                                    <a4j:support event="onblur" immediate="true" rerender="tablePanel"   />
+                                                                    <h:inputText value="#{hazardsBean.filterBoundsValue}" id="filterBoundsValue">
+                                                                    <a4j:support event="onchange" ignoreDupResponses="true" requestDelay="700" reRender="tablePanel" focus="input" />
                                                                     </h:inputText>
                                                                 </h:panelGroup>
                                                             </f:facet>
