@@ -167,7 +167,9 @@
         jQuery(document).ready(function($){
             // old initialize() method 
             console.log('this must happen before you can create markers!  todo: the mao center should be determined differently???');
-
+            var origin_textbox = jQuery('#origin');
+            var destination_textbox = jQuery('#destination');
+            var getDir_btn = jQuery('#submit').attr('disabled', true);
             console.log('about to populate map: '+map);
             
             map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
@@ -248,15 +250,15 @@
             });
             jQuery('#dopt_mikm_m').click(function(){
                 units = google.maps.UnitSystem.IMPERIAL;
-                calcRouteNoParams();
+                if(!getDir_btn.attr('disabled'))
+                    calcRouteNoParams();
             });
             jQuery('#dopt_mikm_k').click(function(){
                 units = google.maps.UnitSystem.METRIC;
-                calcRouteNoParams();
+                if(!getDir_btn.attr('disabled'))
+                    calcRouteNoParams();
             });
-            var origin_textbox = jQuery('#origin');
-            var destination_textbox = jQuery('#destination');
-            var getDir_btn = jQuery('#submit').attr('disabled', true);
+
             getDir_btn.enableIfValid = function enableIfValid(){
                 var hasNotChanged = (origin_textbox.val() == '#{messages.hazard_origin}') || (destination_textbox.val() == '#{messages.hazard_destination}');
                 var empty = (origin_textbox.val() == '') || (destination_textbox.val() == '');
@@ -290,9 +292,9 @@
             });
             console.log('about to hide bounds filter value');
             var boundsFilter = jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue');
-            console.log(boundsFilter.val());
+/*             console.log(boundsFilter.val());
             boundsFilter.val('TEST');
-            console.log(boundsFilter.val());
+            console.log(boundsFilter.val()); */
             console.log('document ready');
         });
         
