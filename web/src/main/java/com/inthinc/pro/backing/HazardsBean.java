@@ -58,7 +58,7 @@ public class HazardsBean extends BaseBean {
     private boolean defaultRadius = true;
     private boolean defaultExpTime = true;
     protected List<Hazard> tableData;
-    protected List<Hazard> filteredTableData;
+    //protected List<Hazard> filteredTableData;
     private String sendHazardMsg;
     static final List<String> AVAILABLE_COLUMNS;
     static {
@@ -93,7 +93,41 @@ public class HazardsBean extends BaseBean {
         if (hazards.isEmpty())
             hazards = new HashMap<Integer,Hazard>();
     }
-
+    private String filterBoundsValue ="";
+    
+    public String getFilterBoundsValue() {
+        return filterBoundsValue;
+    }
+    public void setFilterBoundsValue(String filterBoundsValue) {
+        this.filterBoundsValue = filterBoundsValue;
+    }
+    public boolean filterBounds(Object current) {
+        Hazard currentHazard = (Hazard) current;
+        
+        logger.debug("filterBoundsValue: "+filterBoundsValue+" currentHazard"+currentHazard);
+        String[] bounds = filterBoundsValue.split(":");
+        //default to the world
+        Double lat1 = -90.0;
+        Double lng1 = -180.0;
+        Double lat2 = 90.0;
+        Double lng2 = 180.0;
+        if(bounds.length == 4) {
+            lat1 = Double.valueOf(bounds[0]);
+            lng1 = Double.valueOf(bounds[1]);
+            lat2 = Double.valueOf(bounds[2]);
+            lng2 = Double.valueOf(bounds[3]);
+//            logger.debug("lat1: "+lat1);
+//            logger.debug("lng1: "+lng1);
+//            logger.debug("lat2: "+lat2);
+//            logger.debug("lng2: "+lng2);
+        }
+        boolean result = currentHazard.getLat() > lat1
+                && currentHazard.getLng() > lng1
+                && currentHazard.getLat() < lat2
+                && currentHazard.getLng() < lng2;
+        if(result)logger.debug("returning "+result+" for "+currentHazard.getLat()+":"+currentHazard.getLongitude());
+        return result;
+    }
     public List<SelectItem> getHazardTypeSelectItems(){
         return SelectItemUtil.toList(HazardType.class, false);
     }

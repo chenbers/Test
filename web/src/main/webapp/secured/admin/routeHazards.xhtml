@@ -106,23 +106,19 @@
             function(latLngBounds){
                 console.log('retrieveHazards');
                 console.log('retrieveHazards for '+latLngBounds.getNorthEast()+' , '+latLngBounds.getSouthWest());
-             
-/*                 jQuery.ajax( {
+                var results = [];
+           /*       jQuery.ajax( {
                      type:'Get',
                      //http://localhost/service/api/roadhazard/getRH/del3688/43.7104/-111.9919.json
                      // /roadhazard/getRH/{acctID}/{sw_lat}/{sw_lng}/{ne_lat}/{ne_lng}
-                     url:'/service/api/roadhazard/getRH/#{hazardsBean.accountID}/'+latLngBounds.getSouthWest().lat()+'/'+latLngBounds.getSouthWest().lng()+'/'+latLngBounds.getNorthEast().lat()+'/'+latLngBounds.getNorthEast().lng(),
+                     url:'/service/api/roadhazard/getRH/#{hazardsBean.accountID}/'+latLngBounds.getSouthWest().lat()+'/'+latLngBounds.getSouthWest().lng()+'/'+latLngBounds.getNorthEast().lat()+'/'+latLngBounds.getNorthEast().lng()+'.json',
                      success:function(data) {
                          console.log('data: '+data);
                          console.log('accountID: #{hazardsBean.accountID}');
+                         results = data;
                          }
-                }); */
-
-             var hardCodedResults = [
-                                     new google.maps.LatLng(40.725015,-111.951027), 
-                                     new google.maps.LatLng(40.718119,-111.904163),
-                                     new google.maps.LatLng(40.747257,-111.906738)];
-             return hardCodedResults;//TODO: obviously we need to replace hardcoded results with something from the database... currently I'm thinking a ajax call returning json results???
+                 });  */
+             return results;
             };
         console.log('inthinc.maps done');
         function Hazard(lat, lng, radiusMeters, type, endTime, details, status){
@@ -482,11 +478,20 @@
                                         <div id="hazards_panel" style="float: right; width: 49%;">
                                             <a4j:form id="hazards-form">
                                                 <h:panelGroup layout="block">
-                                                    <rich:dataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid"
+                                                    <a4j:outputPanel id="tablePanel" ajaxRendered="true">
+                                                    <rich:extendedDataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid"
                                                         rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%">
 
                                                         <!-- Data -->
-                                                        <rich:column id="mapColumn">
+                                                        <rich:column id="mapColumn" filterMethod="#{hazardsBean.filterBounds}">
+                                                            <f:facet name="header"> MAP
+                                                                <h:panelGroup>
+                                                                    <h:outputText value="Map" /><br />
+                                                                    <h:inputText value="#{hazardsBean.filterBoundsValue}" id="input">
+                                                                    <a4j:support event="onblur" immediate="true" rerender="tablePanel"   />
+                                                                    </h:inputText>
+                                                                </h:panelGroup>
+                                                            </f:facet>
                                                             <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="map-icon">
                                                             </h:graphicImage>
                                                             <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
@@ -527,7 +532,8 @@
                                                                 <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
                                                             </h:outputText>
                                                         </rich:column>
-                                                    </rich:dataTable>
+                                                    </rich:extendedDataTable>
+                                                    </a4j:outputPanel>
                                                 </h:panelGroup>
                                             </a4j:form>
                                         </div>
