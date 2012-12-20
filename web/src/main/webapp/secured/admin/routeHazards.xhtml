@@ -1,6 +1,13 @@
-<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jstl/core"
-    xmlns:security="http://pro.tiwi.com/jsf/security" xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition template="/layout/layout.xhtml" 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:security="http://pro.tiwi.com/jsf/security" 
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:param name="adminSelected" value="current" />
     <ui:param name="title" value="#{messages.adminHeader_routeHazards}" />
@@ -191,10 +198,8 @@
                     console.log('bounds_changed');
                     hazardsService.retrieveHazards(map.getBounds());
                     jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue').val(buildLocFilter()).change();
-                    
                 });
-            
-            
+
           //]]> 
            <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
                //TODO: this could be refactored to just create an array of arrays with the hazard details we want to use  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
@@ -283,7 +288,11 @@
             }).keyup(function(){
                 getDir_btn.enableIfValid();
             });
-            
+            console.log('about to hide bounds filter value');
+            var boundsFilter = jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue');
+            console.log(boundsFilter.val());
+            boundsFilter.val('TEST');
+            console.log(boundsFilter.val());
             console.log('document ready');
         });
         
@@ -489,10 +498,9 @@
 
                                                         <!-- Data -->
                                                         <rich:column id="mapColumn" filterMethod="#{hazardsBean.filterBounds}">
-                                                            <f:facet name="header"> MAP
+                                                            <f:facet name="header">
                                                                 <h:panelGroup>
-                                                                    <h:outputText value="Map" /><br />
-                                                                    <h:inputText value="#{hazardsBean.filterBoundsValue}" id="filterBoundsValue">
+                                                                    <h:inputText value="#{hazardsBean.filterBoundsValue}" id="filterBoundsValue" height="1px" width="1px" style="opacity:0.01; height: 1px; width: 1px;">
                                                                     <a4j:support event="onchange" ignoreDupResponses="true" requestDelay="700" reRender="tablePanel" focus="input" />
                                                                     </h:inputText>
                                                                 </h:panelGroup>
