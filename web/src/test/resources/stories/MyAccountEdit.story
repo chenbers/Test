@@ -148,6 +148,8 @@ And I select "Past Year" from the Time Frame dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text does not contain "mph"
 And I validate the 1st Row of the Entry Detail text does not contain "miles"
+And I validate the 2nd Row of the Entry Detail text does not contain "mph"
+And I validate the 2nd Row of the Entry Detail text does not contain "miles"
 And I click the Logo button
 And I validate the Label Crashes Per Mil text is "Crashes per million kilometers"
 And I validate the Label Distance Since Last Crash text is "Kilometers since last crash"
@@ -248,6 +250,8 @@ And I select "Past Year" from the Time Frame dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text does not contain "kph"
 And I validate the 1st Row of the Entry Detail text does not contain "kilometers"
+And I validate the 2nd Row of the Entry Detail text does not contain "kph"
+And I validate the 2nd Row of the Entry Detail text does not contain "kilometers"
 And I click the Logo button
 And I validate the Label Crashes Per Mil text is "Crashes per million miles"
 And I validate the Label Distance Since Last Crash text is "Miles since last crash"
@@ -353,6 +357,8 @@ And I select "Past Year" from the Time Frame dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text does not contain "mph"
 And I validate the 1st Row of the Entry Detail text does not contain "miles"
+And I validate the 2nd Row of the Entry Detail text does not contain "mph"
+And I validate the 2nd Row of the Entry Detail text does not contain "miles"
 And I click the Logo button
 And I validate the Label Crashes Per Mil text is "Crashes per million kilometers"
 And I validate the Label Distance Since Last Crash text is "Kilometers since last crash"
@@ -455,6 +461,8 @@ And I select "Past Year" from the Time Frame dropdown
 And I click on the Refresh button
 And I validate the 1st Row of the Entry Detail text does not contain "kph"
 And I validate the 1st Row of the Entry Detail text does not contain "kilometers"
+And I validate the 2nd Row of the Entry Detail text does not contain "kph"
+And I validate the 2nd Row of the Entry Detail text does not contain "kilometers"
 And I click the Logo button
 And I validate the Label Crashes Per Mil text is "Crashes per million miles"
 And I validate the Label Distance Since Last Crash text is "Miles since last crash"
@@ -550,8 +558,8 @@ And I click the Edit button
 And I type "8015551234 @domain.com" into the Text Message One textfield
 And I type "801555123411111@domain@domain.com" into the Text Message Two textfield
 And I click the Save button
-Then I validate the Error Text1 text is "Incorrect format (8015551212@tmomail.com)"
-And I validate the Error Text2 text is "Incorrect format (8015551212@tmomail.com)"
+Then I validate the Error Text One text is "Incorrect format (8015551212@tmomail.com)"
+And I validate the Error Text Two text is "Incorrect format (8015551212@tmomail.com)"
 
 Scenario: TC1280: My Account - Edit Account - Save Button
 Given I am logged in an account that can be edited
