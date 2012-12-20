@@ -155,7 +155,7 @@
         var currentDirections = null;
         var bounds = new google.maps.LatLngBounds();
         var numberOfWaypoints = 0;
-        var units = 'imperial';
+        var units = google.maps.UnitSystem.IMPERIAL;
         var mapOptions = {
                 zoom : 3,
                 center : new google.maps.LatLng(40, -111),
@@ -247,11 +247,11 @@
                 }
             });
             jQuery('#dopt_mikm_m').click(function(){
-                units = 'imperial';
+                units = google.maps.UnitSystem.IMPERIAL;
                 calcRouteNoParams();
             });
             jQuery('#dopt_mikm_k').click(function(){
-                units = 'metric';
+                units = google.maps.UnitSystem.METRIC;
                 calcRouteNoParams();
             });
             var origin_textbox = jQuery('#origin');
@@ -325,7 +325,8 @@
                 origin : start,
                 destination : end,
                 waypoints : waypoints,
-                travelMode : google.maps.DirectionsTravelMode.DRIVING
+                travelMode : google.maps.DirectionsTravelMode.DRIVING,
+                unitSystem: units
             };
             console.log('request: '+request);
             directionsService.route(request, function(response, status) {
