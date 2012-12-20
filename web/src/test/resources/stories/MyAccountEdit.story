@@ -476,37 +476,24 @@ When I click the My Account link
 And I click the Edit button
 And I select "Metric" from the Measurement dropdown
 And I click the Save button
-And I click the My Messages link
-And I click the My Account link
 Then I validate the Measurement text is "Metric"
-And I click group "Test Group WR" Groups navtree
+When I click group "Test Group WR" Groups navtree
 And I click the year Duration link
-And I click the Sort By Distance Driven link
-And I click the Sort By Distance Driven link
 And I save the Fuel Efficiency Team Value text as DFE1
 And I click the Vehicle Statistics link
-And I validate I am on the Team Vehicle Statistics page
 And I click the year Duration link
-And I click the Sort By Distance Driven link
-And I click the Sort By Distance Driven link
 And I save the Fuel Efficiency Team Value text as DFE2
 And I click the My Account link
 And I click the Edit button
 And I select "English" from the Measurement dropdown
 And I click the Save button
-And I click the My Messages link
-And I click the My Account link
-And I validate the Measurement text is "English"
-And I click group "Test Group WR" Groups navtree
+Then I validate the Measurement text is "English"
+When I click group "Test Group WR" Groups navtree
 And I click the year Duration link
-And I click the Sort By Distance Driven link
-And I click the Sort By Distance Driven link
-And I validate the Fuel Efficiency Team Value text is not DFE1
-And I click the Vehicle Statistics link
-And I validate I am on the Team Vehicle Statistics page
-And I click the Sort By Distance Driven link
-And I click the Sort By Distance Driven link
-And I validate the Fuel Efficiency Team Value text is not DFE2
+Then I validate the Fuel Efficiency Team Value text is not DFE1
+When I click the Vehicle Statistics link
+And I click the year Duration link
+Then I validate the Fuel Efficiency Team Value text is not DFE2
 
 Scenario: TC1276: My Account - Edit Account - Missing Required Field Error
 Given I am logged in
