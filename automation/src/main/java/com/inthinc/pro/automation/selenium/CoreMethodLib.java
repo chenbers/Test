@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -31,7 +30,6 @@ import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
 import com.inthinc.pro.automation.utils.AutomationThread;
-import com.inthinc.pro.automation.utils.KeyCommands;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 
