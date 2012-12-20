@@ -451,7 +451,7 @@
 								</tr>
 						</table>	
 						<h:panelGroup id="editReportSchedule-managerDeliveryTypePanel" rendered="#{reportScheduleBean.enableDeliverToGroupManager}">
-						<table id="editReportSchedule-managerDeliveryTypeTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+						<table id="editReportSchedule-managerDeliveryTypeTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center"> 
 								<tr>
 									<td>											   
 									<h:selectOneRadio id="managerDeliveryType" onchange="checkMultiple('managerDeliveryType')" value="#{reportScheduleBean.item.managerDeliveryType}" converter="SimpleBeanConverter"  layout="pageDirection" disabled="${reportScheduleBean.teamOnlySelected}" disabledClass="disabled"> 
@@ -508,14 +508,17 @@
 			      function loadDeliveryElements()
 			      {
 			    	  if (document.getElementById("edit_form:editReportSchedule-deliverToManagers") != null) {
+			    		  var val = document.getElementById("edit_form:editReportSchedule-deliverToManagers").value;
 				          if(document.getElementById("editReportSchedule-emailList") != null) {
-						  	document.getElementById('editReportSchedule-emailList').style.display = ((document.getElementById("edit_form:editReportSchedule-deliverToManagers").value == 'FALSE') ? '' : 'none');
+						  	document.getElementById('editReportSchedule-emailList').style.display = ((val == 'FALSE') ? '' : 'none');
 				          }
 				          if(document.getElementById("editReportSchedule-managerDeliveryTypeTable") != null) {
-							  document.getElementById('editReportSchedule-managerDeliveryTypeTable').style.display = ((document.getElementById("edit_form:editReportSchedule-deliverToManagers").value == 'TRUE') ? '' : 'none');
+							  document.getElementById('editReportSchedule-managerDeliveryTypeTable').style.display = ((val == 'TRUE') ? '' : 'none');
 				          }
 			    	  }
 			      }
+			      
+			      
 				 
 	      </script>
 	</ui:define>
