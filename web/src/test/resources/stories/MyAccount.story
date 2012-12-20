@@ -9,6 +9,11 @@ Narrative:
 Scenario: TC1266: My Account - Account Information (needs to be updated once new admin page is done)
 Given I am logged in
 And I click the Admin link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 21st Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
 And I type "MyAccountTest" into the User Name textfield
 And I click the Sort By Name link
 Then I validate the 1st Row of the Entry User Name text is "MyAccountTest"

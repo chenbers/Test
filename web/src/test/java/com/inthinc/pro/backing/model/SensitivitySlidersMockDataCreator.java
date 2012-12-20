@@ -67,6 +67,57 @@ public class SensitivitySlidersMockDataCreator {
         sfcm.setMinFirmwareVersion(0);
         sfcm.setProductType(ProductType.TIWIPRO);
         sensitivitySliderValuesList.add(sfcm);
+        //WS850
+        sfcm = new SensitivitySliderValues();
+        sfcm.setSettingID(10061);
+        sfcm.setSliderType(SliderType.HARD_ACCEL_SLIDER);
+        sfcm.setSensitivitySubtype(0);
+        String[] valuesWS850_HARD_ACCEL = {"3000 40","1000 25","975 25","950 25","925 25","900 25","850 25","825 25","800 25","750 25","700 25","665 25","610 25","555 25","500 25"};
+        sfcm.setValues(Arrays.asList(valuesWS850_HARD_ACCEL));
+        sfcm.setDefaultValueIndex(4);
+        sfcm.setMaxFirmwareVersion(1000000);
+        sfcm.setMinFirmwareVersion(0);
+        sfcm.setProductType(ProductType.WS850);
+        sensitivitySliderValuesList.add(sfcm);
+        
+        //Hard Brake
+        sfcm = new SensitivitySliderValues();
+        sfcm.setSettingID(10062);
+        sfcm.setSliderType(SliderType.HARD_BRAKE_SLIDER);
+        sfcm.setSensitivitySubtype(0);
+        String[] valuesWS850_HARD_BRAKE = {"2250 100","1400 60","1175 60","1100 50","1025 50","950 50","875 40","800 40","750 35","700 25"};
+        sfcm.setValues(Arrays.asList(valuesWS850_HARD_BRAKE));
+        sfcm.setDefaultValueIndex(4);
+        sfcm.setMaxFirmwareVersion(1000000);
+        sfcm.setMinFirmwareVersion(0);
+        sfcm.setProductType(ProductType.WS850);
+        sensitivitySliderValuesList.add(sfcm);
+        //HARD_TURN
+        sfcm = new SensitivitySliderValues();
+        sfcm.setSettingID(10063);
+        sfcm.setSliderType(SliderType.HARD_TURN_SLIDER);
+        sfcm.setSensitivitySubtype(0);
+        String[] valuesWS850_HARD_TURN = {"2250 100","1375 55","1175 45","1100 40","1025 35","950 30","875 25","800 25","700 25","600 25"};
+        sfcm.setValues(Arrays.asList(valuesWS850_HARD_TURN));
+        sfcm.setDefaultValueIndex(4);
+        sfcm.setMaxFirmwareVersion(1000000);
+        sfcm.setMinFirmwareVersion(0);
+        sfcm.setProductType(ProductType.WS850);
+        sensitivitySliderValuesList.add(sfcm);
+        
+        //HARD_BUMP
+        sfcm = new SensitivitySliderValues();
+        sfcm.setSettingID(10064);
+        sfcm.setSliderType(SliderType.HARD_BUMP_SLIDER);
+        sfcm.setSensitivitySubtype(0);
+        String[] valuesWS850_HARD_BUMP = {"3000 900 300","3000 80 300","2200 70 275","2000 70 250","1800 65 225","1500 60 188","1300 55 163","1200 50 150",
+                                    "1000 50 125","950 45 119","900 45 113","850 45 106","750 35 94","650 30 81","500 25 63"};
+        sfcm.setValues(Arrays.asList(valuesWS850_HARD_BUMP));
+        sfcm.setDefaultValueIndex(9);
+        sfcm.setMaxFirmwareVersion(1000000);
+        sfcm.setMinFirmwareVersion(0);
+        sfcm.setProductType(ProductType.WS850);
+        sensitivitySliderValuesList.add(sfcm);
         //Hard brake
         //DVX
         sfcm = new SensitivitySliderValues();

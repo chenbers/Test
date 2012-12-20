@@ -49,11 +49,13 @@ public abstract class VehicleSettingManager {
         hardTurnSlider = new VehicleSensitivitySlider(sensitivitySliders,SliderType.HARD_TURN_SLIDER,productType,minFirmwareVersion, maxFirmwareVersion);
        
     }
-    public abstract void init();
+    public void init(){}
     public abstract Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings,Map<String, Boolean> updateField);
-    public abstract void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, 
-    										Integer userID, String reason,
-			  								Map<String, Boolean> updateField);
+    public void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason,
+            Map<String, Boolean> updateField){
+     Map<Integer, String> setMap = evaluateSettings(vehicleID,editableVehicleSettings,updateField);
+     configuratorDAO.setVehicleSettings(vehicleID, setMap, userID, reason);
+ }
 
     public void updateVehicleSettings(Integer vehicleID, 
     								  EditableVehicleSettings editableVehicleSettings, 
@@ -191,6 +193,6 @@ public abstract class VehicleSettingManager {
 				return notBatchEdit(updateField) || updateField.get(property);
 			}
 	private boolean notBatchEdit(Map<String, Boolean> updateField) {
-		return updateField == null;
-	}
+        return updateField == null;
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.backing.TiwiproSettingManager;
+import com.inthinc.pro.backing.WS850SettingManager;
 import com.inthinc.pro.backing.WaySmartSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -69,9 +70,14 @@ public class VehicleSettingsFactory {
         	ProductType productType = device.getProductVersion();
             switch (productType){
             case WAYSMART:
-        		vehicleSettingManagers.put(vehicle.getVehicleID(),new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,vehicle.getVehicleID(),device.getDeviceID()));
+        		vehicleSettingManagers.put(vehicle.getVehicleID(),new WaySmartSettingManager(configuratorDAO,sensitivitySliders,vehicle.getVehicleID(),device.getDeviceID()));
+        		break;
             case TIWIPRO:
-        		vehicleSettingManagers.put(vehicle.getVehicleID(),new TiwiproSettingManager(configuratorDAO, sensitivitySliders,productType,vehicle.getVehicleID(),device.getDeviceID()));
+        		vehicleSettingManagers.put(vehicle.getVehicleID(),new TiwiproSettingManager(configuratorDAO, sensitivitySliders,vehicle.getVehicleID(),device.getDeviceID()));
+        		break;
+            case WS850:
+                vehicleSettingManagers.put(vehicle.getVehicleID(),new WS850SettingManager(configuratorDAO, sensitivitySliders,vehicle.getVehicleID(),device.getDeviceID()));
+                break;
             default:
         		vehicleSettingManagers.put(vehicle.getVehicleID(),new UnknownSettingManager());
             }
@@ -100,9 +106,11 @@ public class VehicleSettingsFactory {
         if (productType == null) return new UnknownSettingManager();
         switch (productType){
             case WAYSMART:
-               return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,vehicleSetting);
+               return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,vehicleSetting);
             case TIWIPRO:
-                return new TiwiproSettingManager(configuratorDAO, sensitivitySliders,productType,vehicleSetting);
+                return new TiwiproSettingManager(configuratorDAO, sensitivitySliders,vehicleSetting);
+            case WS850:
+                return  new WS850SettingManager(configuratorDAO,sensitivitySliders,vehicleSetting);
             default:
                 return new UnknownSettingManager();
        }
@@ -117,9 +125,11 @@ public class VehicleSettingsFactory {
         if (productType == null) return new UnknownSettingManager();
         switch (productType){
             case WAYSMART:
-               return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,null,null);
+               return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,null,null);
             case TIWIPRO:
-                return new TiwiproSettingManager(configuratorDAO,sensitivitySliders, productType,null,null);
+                return new TiwiproSettingManager(configuratorDAO,sensitivitySliders,null,null);
+            case WS850:
+                return  new WS850SettingManager(configuratorDAO,sensitivitySliders,null,null);
             default:
                 return new UnknownSettingManager();
        }
@@ -130,9 +140,11 @@ public class VehicleSettingsFactory {
         if (productType == null) return new UnknownSettingManager();
         switch (productType){
             case WAYSMART:
-               return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,productType,vehicleID,deviceID);
+               return  new WaySmartSettingManager(configuratorDAO,sensitivitySliders,vehicleID,deviceID);
             case TIWIPRO:
-                return new TiwiproSettingManager(configuratorDAO, sensitivitySliders,productType,vehicleID,deviceID);
+                return new TiwiproSettingManager(configuratorDAO, sensitivitySliders,vehicleID,deviceID);
+            case WS850:
+                return  new WS850SettingManager(configuratorDAO,sensitivitySliders,vehicleID,deviceID);
             default:
                 return new UnknownSettingManager();
        }
