@@ -36,7 +36,6 @@
         <script type="text/javascript" title="inthinc.maps">
         //<![CDATA[
         jQuery.noConflict();
-        console.log("inthinc.maps starting");
         var map;
         var inthinc = {
             maps: {
@@ -52,7 +51,6 @@
          * divID is the id of a DIV you want displayed in the info window. 
          */
         function createMarker(point, divID, iconImage, hazard) {
-            console.log('createMarker('+point+', '+divID+', '+iconImage+')');
             //Use passed in image.
             if(iconImage != null){
                 marker = new google.maps.Marker({
@@ -84,7 +82,6 @@
                            infowindow.open(map);
                        }));
                }
-               console.log('marker: '+marker);
             return marker;
         }
         function createCircle(point, radius, marker) {
@@ -109,25 +106,7 @@
         var markers = [];
         var hazards = [];
         var infowindow = new google.maps.InfoWindow();
-        inthinc.maps.HazardsService.prototype.retrieveHazards = 
-            function(latLngBounds){
-                console.log('retrieveHazards');
-                console.log('retrieveHazards for '+latLngBounds.getNorthEast()+' , '+latLngBounds.getSouthWest());
-                var results = [];
-           /*       jQuery.ajax( {
-                     type:'Get',
-                     //http://localhost/service/api/roadhazard/getRH/del3688/43.7104/-111.9919.json
-                     // /roadhazard/getRH/{acctID}/{sw_lat}/{sw_lng}/{ne_lat}/{ne_lng}
-                     url:'/service/api/roadhazard/getRH/#{hazardsBean.accountID}/'+latLngBounds.getSouthWest().lat()+'/'+latLngBounds.getSouthWest().lng()+'/'+latLngBounds.getNorthEast().lat()+'/'+latLngBounds.getNorthEast().lng()+'.json',
-                     success:function(data) {
-                         console.log('data: '+data);
-                         console.log('accountID: #{hazardsBean.accountID}');
-                         results = data;
-                         }
-                 });  */
-             return results;
-            };
-        console.log('inthinc.maps done');
+        
         function Hazard(lat, lng, radiusMeters, type, endTime, details, status){
             this.point = new google.maps.LatLng(lat, lng);
             this.radiusMeters = radiusMeters;
@@ -147,7 +126,6 @@
         </script>
         <script type="text/javascript">
         //<![CDATA[
-        console.log('about to initialize vars');
         var directionsDisplay;
         var directionsService = new google.maps.DirectionsService();
         var hazardsService = new inthinc.maps.HazardsService();
@@ -166,16 +144,13 @@
         var markerCircle;
         jQuery(document).ready(function($){
             // old initialize() method 
-            console.log('this must happen before you can create markers!  todo: the mao center should be determined differently???');
+            console.log('this must happen before you can create markers!  todo: the map center should be determined differently???');
             var origin_textbox = jQuery('#origin');
             var destination_textbox = jQuery('#destination');
             var getDir_btn = jQuery('#submit').attr('disabled', true);
-            console.log('about to populate map: '+map);
             
             map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-            console.log('done populating map: '+map);
             
-            console.log('done populating map: '+map);
             directionsDisplay = new google.maps.DirectionsRenderer({
                 'map' : map,
                 'preserveViewport' : true,
@@ -183,7 +158,6 @@
             });
             
             directionsDisplay.setPanel(document.getElementById('directions_panel'));
-            console.log('directionsDisplay: '+directionsDisplay);
             google.maps.event.addListener(directionsDisplay,
                     'directions_changed', function() {
                         if (currentDirections) {
@@ -192,48 +166,33 @@
                         }
                         currentDirections = directionsDisplay.getDirections();
                     });
-            console.log('done populating map: '+map);
             setUndoDisabled(true);
-            console.log('map: '+map);
-            console.log('map.bounds: '+map.getBounds());
             google.maps.event.addListener(map, 'bounds_changed', function(){
-                    console.log('bounds_changed');
-                    hazardsService.retrieveHazards(map.getBounds());
                     jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue').val(buildLocFilter()).change();
                 });
 
           //]]> 
            <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
-               //TODO: this could be refactored to just create an array of arrays with the hazard details we want to use  might not buy us anything if we continue to use the divID portion (since that probably requires looping through tableData again anyway?)
                var markerLatLng = new google.maps.LatLng(#{hazard.lat}, #{hazard.lng});
                var formattedEndTime = '<h:outputText value="#{item.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" /></h:outputText>';
                hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, '#{messages[item.type]}', formattedEndTime, '#{hazard.description}', '#{messages[item.status]}');
                marker = createMarker(markerLatLng, null , '/tiwipro/images/ico_warning.png', hazard); //'hazard#{hazard.hazardID}' for divID 
-               //console.log('about to add: '+marker.getPosition());
                markers.push(marker);
                hazards.push(hazard); //todo: this might be unnecessary... since the hazard is in the marker???  
-               //console.log('added: '+marker);
                createCircle(markerLatLng, #{hazard.radiusMeters}, marker); 
             </ui:repeat>
           //<![CDATA[
-            console.log('about to add click listener for addDestination');
             jQuery('#addDestination').click(function addDestination(){
-                console.log('onclick happened; numberOfWaypoints: '+numberOfWaypoints);
                 var waypointIndex = numberOfWaypoints;
-                   // $('waypointContainer').insert('<input type="text" name="waypoint'+numberOfWaypoints+'" id="waypoint'+numberOfWaypoints+'" />');
                    jQuery('#waypointContainer').append('<div id="waypoint'+waypointIndex+'Container"><input type="text" name="waypoint" class="waypoint" id="waypoint'+waypointIndex+'" style="width: 80%; float: left;" /><div id="rmWaypoint'+waypointIndex+'" style="float: right; padding: 2px;"><img id="rmWaypointImg'+waypointIndex+'" style="border: 0px; vertical-align: middle;" src="/tiwipro/images/ico_addAnother_remove.png"/></div></div>');
                    jQuery('#waypoint'+waypointIndex).val(jQuery('#destination').val());
                    jQuery('#destination').val('');
                    jQuery('#rmWaypoint'+waypointIndex).click(function(){
-                       console.log(waypointIndex+' remove clicked');
-                       console.log('jQuery(#waypoint'+waypointIndex+'Container).empty();');
                        jQuery('#waypoint'+waypointIndex+'Container').empty();
-                       console.log(waypointIndex+' done');
                    });
                    numberOfWaypoints++;
                    return false;
             });
-            console.log('done adding click listener for addDestination');
              
             jQuery('#showDirOptions').click(function showHideOptions(){
                 var options = jQuery('#d_options');
@@ -290,56 +249,37 @@
             }).keyup(function(){
                 getDir_btn.enableIfValid();
             });
-            console.log('about to hide bounds filter value');
             var boundsFilter = jQuery('#hazards-form\\:hazards-table\\:filterBoundsValue');
-/*             console.log(boundsFilter.val());
-            boundsFilter.val('TEST');
-            console.log(boundsFilter.val()); */
-            console.log('document ready');
         });
         
-        console.log('made it out of the jQuery ready block');
         var waypoints = [];
         function calcRouteNoParams(){
-            console.log('calcRouteNoParams()');
             waypoints = [];
             jQuery('.waypoint').each(function(index, value){
-                console.log(index+' : '+jQuery(this).val());
                 var point = jQuery(this).val();
                 waypoints.push({
                     location: point,
                     stopover:true
                 });
-                console.log('waypoints: '+waypoints);
             });
-            var avoid = '';
-            if(jQuery('#ddopt_avhwy').is(':checked')){
-                avoid+='highways|';
-            }
-            if(jQuery('#dopt_avtoll').is(':checked')){
-                avoid+='tolls';
-            }
-            calcRoute(jQuery('#origin').val(), jQuery('#destination').val(), waypoints, avoid, units);
+
+            calcRoute(jQuery('#origin').val(), jQuery('#destination').val(), waypoints, jQuery('#ddopt_avhwy').is(':checked'), jQuery('#dopt_avtoll').is(':checked'), units);
         }
-        function calcRoute(start, end, waypoints, avoids, units) {
-            console.log('calcRoute('+start+', '+end+', '+waypoints+', '+avoids+', '+units+')');
+        function calcRoute(start, end, waypoints, avoidhwy, avoidtolls, units) {
             var request = {
                 origin : start,
                 destination : end,
                 waypoints : waypoints,
                 travelMode : google.maps.DirectionsTravelMode.DRIVING,
-                unitSystem: units
+                unitSystem: units,
+                avoidHighways: avoidhwy,
+                avoidTolls: avoidtolls
             };
-            console.log('request: '+request);
             directionsService.route(request, function(response, status) {
-                console.log('request: '+request);
-                console.log('status: '+status);
-                console.log('response: '+response);
                 if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(response);
                     var boundsCount = 0;
                     directionsDisplay.getDirections().routes.forEach(function(element, index, array){
-                        console.log('element.bounds'+element.bounds);
                         if(boundsCount == 0) {
                             bounds = element.bounds;
                         } else {
@@ -348,22 +288,8 @@
                         }
                         map.fitBounds(bounds);
                     });
-                    console.log(response);
-                    console.log(response);
-                    console.log(response);
                 }
             });
-            
-            
-            console.log('map: '+map);
-            console.log('map.bounds: '+map.getBounds());
-            console.log('map.bounds.ne: '+map.getBounds().getNorthEast());
-            console.log('map.bounds.sw: '+map.getBounds().getSouthWest());
-            hazardsService.retrieveHazards(map.getBounds());
-        }
-        
-        function showHazards() {
-            
         }
 
         function undo() {
@@ -382,7 +308,6 @@
         <script type="text/javascript">
         //<![CDATA[ 
         function getAddress(index){
-            console.log('getAddress('+index+')');
             var address = document.getElementById('hazards-form:hazards-table:'+index+':hazardAddress');
             var lat = document.getElementById('hazards-form:hazards-table:'+index+':hazardLat');
             var lng = document.getElementById('hazards-form:hazards-table:'+index+':hazardLng');
@@ -392,22 +317,18 @@
                 if( lat.value >= -90 && lat.value <= 90 &&  lng.value >= -180 &&  lng.value <= 180){
                     reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address,index);
                 } else {
-                    console.log('bad lat lng');
+                    console.log('bad lat:lng'+lat+":"+lng);
                 }
             }
          }
         var geocoder = new google.maps.Geocoder();
         function reverseGeocodeTripAddress(latlng,addressElement,index){
-             console.log('reverseGeocodeTripAddress('+latlng+','+addressElement+','+index+')');
             var request = {location: latlng};
             geocoder.geocode(request, 
                     function(result, geoStatus){
-                        console.log('result: '+result);
-                        console.log('geoStatus: '+geoStatus);
                         if (!result || geoStatus != google.maps.GeocoderStatus.OK) {
-                            console.log('// no response typically== bad lat lng');
+                            console.log('// no response typically== bad lat:lng'+lat+":"+lng);
                         } else {
-                            console.log('formatted_address: '+result[0].formatted_address);
                             addressElement.innerHTML = result[0].formatted_address;
                         }
                     });
