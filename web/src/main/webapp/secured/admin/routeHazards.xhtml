@@ -479,7 +479,7 @@
                                             <a4j:form id="hazards-form">
                                                 <h:panelGroup layout="block">
                                                     <a4j:outputPanel id="tablePanel" ajaxRendered="true">
-                                                    <rich:extendedDataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid"
+                                                    <rich:dataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid"
                                                         rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%">
 
                                                         <!-- Data -->
@@ -532,7 +532,7 @@
                                                                 <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" />
                                                             </h:outputText>
                                                         </rich:column>
-                                                    </rich:extendedDataTable>
+                                                    </rich:dataTable>
                                                     </a4j:outputPanel>
                                                 </h:panelGroup>
                                             </a4j:form>
