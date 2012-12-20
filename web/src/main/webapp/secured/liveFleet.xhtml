@@ -260,6 +260,9 @@
 	        	<ui:param name="distance" value="#{driverLocation.dist}" />
 	        	<ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
 	        	<ui:param name="messageDevicePhone" value="#{messages.livefleet_devicePhone}" /> 
+	        	<ui:param name="messageAddressLatLng" value="#{messages.livefleet_latlng}" />
+	        	<ui:param name="lat" value="#{driverLocation.loc.lat}"/>
+	        	<ui:param name="lng" value="#{driverLocation.loc.lng}"/>
  		 		<ui:param name="context" value="liveFleet" />
 			</ui:include>
 	</rich:panel>

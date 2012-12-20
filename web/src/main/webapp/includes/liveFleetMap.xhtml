@@ -143,6 +143,9 @@
 												<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
 												<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
 												<ui:param name="addressLookupAddressFormat" value="#{driverLocationBean.addressFormat}" />
+									        	<ui:param name="messageAddressLatLng" value="#{messages.livefleet_latlng}" />
+	        									<ui:param name="lat" value="#{driverLocation.loc.lat}"/>
+	        									<ui:param name="lng" value="#{driverLocation.loc.lng}"/>
 										</ui:include>
 								</rich:panel>
 						</h:form>
