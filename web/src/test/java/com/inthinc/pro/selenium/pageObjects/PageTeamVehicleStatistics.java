@@ -11,8 +11,8 @@ import com.inthinc.pro.selenium.pageEnums.TeamVehicleStatsEnum;
 
 public class PageTeamVehicleStatistics extends TeamBar {
 
-    private String pageScroller = "teamStatisticsForm:drivers:driverScroller_table";
-    private static final String page = "teamStatistics";
+    private String pageScroller = "teamStatisticsVehicleForm:drivers:driverScroller_table";
+    private static final String page = "teamVehicleStatistics";
 
     public class TeamDashboardStatisticsLinks extends TeamBarLinks {
 
