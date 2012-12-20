@@ -305,7 +305,7 @@
 										<h:selectOneMenu id="editReportSchedule-group" value="#{reportScheduleBean.item.groupID}" style="width:250px;"
 											required="true" requiredMessage="#{messages.required}">
 											<f:selectItems value="#{reportScheduleBean.groups}"/> 
-											<a4j:support event="onchange" reRender="driverListSelect,editReportSchedule-managerDeliveryTypePanel" ajaxSingle="true"/>
+											<a4j:support event="onchange" reRender="driverListSelect,editReportSchedule-managerDeliveryTypePanel" ajaxSingle="true" oncomplete="loadDeliveryElements();"/>
 										</h:selectOneMenu>
 										<ui:include src="/includes/dhtmlSelectBox.xhtml">	
      					 					<ui:param name="selectBoxID" value="edit_form:editReportSchedule-group" />
@@ -326,7 +326,7 @@
 									<h:selectManyMenu id="editRSGroups" value="#{reportScheduleBean.item.groupIDSelectList}" style="width:250px;size:auto"
 											required="true" requiredMessage="#{messages.required}">
 										<f:selectItems value="#{reportScheduleBean.groups}"/>
-										<a4j:support event="onchange" reRender="editReportSchedule-managerDeliveryTypePanel" ajaxSingle="true"/>
+										<a4j:support event="onchange" reRender="editReportSchedule-managerDeliveryTypePanel" ajaxSingle="true" oncomplete="loadDeliveryElements();"/>
 									</h:selectManyMenu>
 									<rich:jQuery selector="#editRSGroups" timing="onload"
 										query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
@@ -507,19 +507,14 @@
 				  
 			      function loadDeliveryElements()
 			      {
-			    	  console.log('loadDeliveryElements()');
 			    	  if (document.getElementById("edit_form:editReportSchedule-deliverToManagers") != null) {
-			    		  console.log('found deliverToManagers element');
 				          if(document.getElementById("editReportSchedule-emailList") != null) {
-				    		  console.log('found emailList element');
 						  	document.getElementById('editReportSchedule-emailList').style.display = ((document.getElementById("edit_form:editReportSchedule-deliverToManagers").value == 'FALSE') ? '' : 'none');
 				          }
 				          if(document.getElementById("editReportSchedule-managerDeliveryTypeTable") != null) {
-				    		  console.log('found managerDeliveryType element');
 							  document.getElementById('editReportSchedule-managerDeliveryTypeTable').style.display = ((document.getElementById("edit_form:editReportSchedule-deliverToManagers").value == 'TRUE') ? '' : 'none');
 				          }
 			    	  }
-			    	  console.log('loadDeliveryElements() - done');
 			      }
 				 
 	      </script>
