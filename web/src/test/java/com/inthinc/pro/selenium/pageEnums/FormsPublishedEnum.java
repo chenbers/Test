@@ -3,14 +3,14 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FormsPublishedEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms/published"),
+    DEFAULT_URL("forms/published"),
     TITLE("Forms", "//span[@class='admin']"),
 
     //No longer on page SEARCH_HEADER("Search:", "//div[@id='staging-forms-table_filter']"),
     //No longer on page FORMS_HEADER("Forms", "//label[@for='formSelection']"),
 
     RECORDS_DROPDOWN("records per page", "//select[@name='published-forms-table_length']"),
-    SEARCH_TEXTFIELD("Search:", "//div[@id='published-forms-table_filter']/label/input"),
+    SEARCH_TEXTFIELD(null, "//div[@id='published-forms-table_filter']/label/input"),
     
     //No longer on page SELECT_PUBLISHED_LINK("Select", "//th[@id='column-published-select']"),
     NAME_LINK("Name", "//th[@id='column-published-name']"),    

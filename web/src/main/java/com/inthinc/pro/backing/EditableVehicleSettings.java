@@ -6,9 +6,8 @@ import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.util.MessageUtil;
 
-public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed this extends because it breaks the batch editing
+public abstract class EditableVehicleSettings {
 
 
     //This is for the different settings that have to be displayed for different products on the Admin->vehicle pages
@@ -61,9 +60,9 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
     	return true;
     }
     public String getProductDisplayName(){
-        if(getProductType().equals(ProductType.UNKNOWN)){
-        	return MessageUtil.getMessageString(getProductType().name());
-        }
+//        if(getProductType().equals(ProductType.UNKNOWN)){
+//        	return MessageUtil.getMessageString(getProductType().name());
+//        }
         return getProductType().getDescription();
 
     }

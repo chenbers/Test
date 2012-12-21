@@ -1,12 +1,13 @@
 package com.inthinc.pro.model.configurator;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.inthinc.pro.model.SensitivitySliderValues;
 
@@ -46,11 +47,11 @@ public class SensitivitySlider {
         return sliderPositionCount+1;
     }
     private boolean settingsAllNull(Map<Integer,String> settings){
-        Set<Entry<Integer,String>> settingEntries = settings.entrySet();
+        Collection<String> settingValues = settings.values();
         
-        for (Entry<Integer,String> settingEntry : settingEntries){
+        for (String value : settingValues){
             
-            if (settingEntry.getValue() != null) return false;
+            if (value != null) return false;
         }
         return true;
     }
@@ -107,19 +108,14 @@ public class SensitivitySlider {
         if (it.hasNext()){
             values = it.next().getValues();
         }    
-         
         return (values != null) && (sliderValue <= values.size());
     }
     private Map<Integer, String> getValuesForSliderValue(Integer sliderValue){
         
         Map<Integer, String> settings = new HashMap<Integer, String>();
-        Iterator<Entry<Integer,SensitivitySliderValues>> settingsEntrySetIterator = settingsForThisSlider.entrySet().iterator();
         
-        while(settingsEntrySetIterator.hasNext()){
-            
-            Entry<Integer,SensitivitySliderValues> settingsEntry= settingsEntrySetIterator.next();
-            
-            settings.put(settingsEntry.getValue().getSettingID(), settingsEntry.getValue().getValues().get(sliderValue-1));
+        for (SensitivitySliderValues settingsEntry: settingsForThisSlider.values()){
+            settings.put(settingsEntry.getSettingID(), settingsEntry.getValues().get(sliderValue-1));
         }
         return settings;
     }

@@ -21,6 +21,9 @@
 	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
 	        	<ui:param name="distance" value="#{driverLoc.dist}" />   							*OPTIONAL*
 	        	<ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
+	        	<ui:param name="messageAddressLatLng" value="#{messages.livefleet_latlng}" />
+	        	<ui:param name="lat" value="#{driverLocation.loc.lat}"/>
+	        	<ui:param name="lng" value="#{driverLocation.loc.lng}"/>
                	<ui:param name="context" value="#{context}-pageName"/> 
 			</ui:include>
 			
@@ -85,6 +88,8 @@
 			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
 				<h:outputText id="bubbleAddress"/>
 			</ui:fragment>
+			<h:outputText value="#{messageAddressLatLng}:"/>
+			<h:panelGroup><h:outputText value="#{lat}"/>,<h:outputText value="#{lng}"/></h:panelGroup>
 			<f:facet name="footer">
                <h:outputFormat value="#{messages.vehicleBubble_distance}" rendered="#{distance ne null}">
                      <h:outputText value="#{messageDistance} "/>

@@ -3,8 +3,8 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum FormsManageEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms"),
-    TITLE("Forms", "//span[@class='admin']"),
+    DEFAULT_URL("forms/"),
+    TITLE(null, "//span[@class='admin']"),
 
     //No longer on page SEARCH_HEADER("Search:", "//div[@id='staging-forms-table_filter']"),
     //No longer on page FORMS_HEADER("Forms", "//label[@for='formSelection']"),
@@ -12,7 +12,7 @@ public enum FormsManageEnum implements SeleniumEnums {
     NEW_FORM_BUTTON(null, "//i[@class='icon-plus icon-large']"),
     
     RECORDS_DROPDOWN("records per page", "//select[@name='staging-forms-table_length']"),
-    SEARCH_TEXTFIELD("Search:", "//div[@id='staging-forms-table_filter']/label/input"),
+    SEARCH_TEXTFIELD(null, "//div[@id='staging-forms-table_filter']/label/input"),
     
     //No longer on page SELECT_MANAGE_LINK("Select", "//th[@id='column-working-select']"),
     NAME_LINK("Name", "//th[@id='column-staging-name']"),  
@@ -41,11 +41,12 @@ public enum FormsManageEnum implements SeleniumEnums {
     PUBLISH_DISABLED_LINK(null,"//table[@id='staging-forms-table']/tbody/tr[###]/td[7]/div/ul/li[@class='disabled']/a[@class='publish']"),
 
     NO_RECORDS_FOUND_ERROR("No matching records found", "//table[@id='staging-forms-table']/tbody/tr/td[@class='dataTables_empty']"),
+    SUCCESS_ALERT(null,"//div[@id='#success-alert']"),
     
-    ENTRIES_TEXT("Showing ### to ### of ### entries", "//div[@id='staging-forms-table_info']"),
+    ENTRIES_TEXT(null, "//div[@id='staging-forms-table_info']"),
     
     PREVIOUS("Previous", "//li[@class='prev']"), 
-    PAGE_NUMBER(null, "//form/div/div[2]div[2]/div/ul/li[###]/a"),//needs more work to select the right page
+    PAGE_NUMBER(null, "//form/div/div[2]div[2]/div/ul/li[###]/a"),
     NEXT_MANAGE("Next", "//li[@class='next']"),
     
     ;

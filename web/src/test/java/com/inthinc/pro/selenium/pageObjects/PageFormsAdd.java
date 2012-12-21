@@ -10,6 +10,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.FormsAddEnum;
+import com.inthinc.pro.selenium.pageEnums.FormsEditEnum;
 
 public class PageFormsAdd extends FormsTables {
 
@@ -64,10 +65,12 @@ public class PageFormsAdd extends FormsTables {
     	public CheckBox rangeEnableDate()				{return new CheckBox(FormsAddEnum.RANGE_DATE_CHECKBOX);}
     	public CheckBox minimumDateInclusive()			{return new CheckBox(FormsAddEnum.MINIMUM_DATE_INCLUSIVE_CHECKBOX);}
     	public CheckBox maximumDateInclusive()			{return new CheckBox(FormsAddEnum.MAXIMUM_DATE_INCLUSIVE_CHECKBOX);}
-    	public CheckBox minimumNumericUseExpression()	{return new CheckBox(FormsAddEnum.MINIMUM_NUMERIC_USE_EXPRESSION);}
-    	public CheckBox maximumNumericUseExpression()	{return new CheckBox(FormsAddEnum.MAXIMUM_NUMERIC_USE_EXPRESSION);}
+    	public CheckBox minimumNumericUseExpression()	{return new CheckBox(FormsAddEnum.MINIMUM_ADD_NUMERIC_USE_EXPRESSION);}
+    	public CheckBox maximumNumericUseExpression()	{return new CheckBox(FormsAddEnum.MAXIMUM_ADD_NUMERIC_USE_EXPRESSION);}
     	public CheckBox looped()						{return new CheckBox(FormsAddEnum.LOOPED_CHECKBOX);}
     	public CheckBox displayOnOneScreen()			{return new CheckBox(FormsAddEnum.DISPLAY_ON_ONE_SCREEN_CHECKBOX);}
+    	public CheckBox groupSelected()					{return new CheckBox(FormsAddEnum.GROUPS_NAV_CHECKBOX);}				// debug
+    	public CheckBox groupSearched()					{return new CheckBox(FormsAddEnum.GROUPS_NAV_SEARCHED_CHECKBOX);}		// debug
     }
 
     public class FormsAddDropDowns {
@@ -93,7 +96,13 @@ public class PageFormsAdd extends FormsTables {
     	public TextTableLink previewArea() 				{return new TextTableLink(FormsAddEnum.PREVIEW_AREA);}
     	public TextTableLink controlFlowArrow() 		{return new TextTableLink(FormsAddEnum.CONTROL_FLOW_ARROW);}
     	public TextTableLink deleteRow() 				{return new TextTableLink(FormsAddEnum.DELETE_ROW);}
-    }
+
+    	public TextLink firstText()						{return new TextLink(FormsEditEnum.FIRST_TEXT_ELEMENT);}
+    	public TextLink firstDate()						{return new TextLink(FormsEditEnum.FIRST_DATE_ELEMENT);}
+    	public TextLink firstNumeric()					{return new TextLink(FormsEditEnum.FIRST_NUMERIC_ELEMENT);}
+    	public TextLink firstSelectOne()				{return new TextLink(FormsEditEnum.FIRST_SELECT_ONE_ELEMENT);}
+    	public TextLink firstSelectMultiple()			{return new TextLink(FormsEditEnum.FIRST_SELECT_MULTIPLE_ELEMENT);}
+}
 
     public class FormsAddTextFields {
     	public TextField name() 						{return new TextField(FormsAddEnum.NAME_FIELD);}
@@ -119,12 +128,12 @@ public class PageFormsAdd extends FormsTables {
     }
     
     public class FormsAddTexts  {
+//    	public Text versionLabel()						{return new Text(FormsAddEnum.VERSION_LABEL);}
     	public Text title()								{return new Text(FormsAddEnum.TITLE);}
     	public Text nameLabel()							{return new Text(FormsAddEnum.NAME_LABEL);}
     	public Text descriptionLabel()					{return new Text(FormsAddEnum.DESCRIPTION_LABEL);}
     	public Text triggerLabel()						{return new Text(FormsAddEnum.TRIGGER_LABEL);}
     	public Text routeTriggerExpressionLabel ()		{return new Text(FormsAddEnum.ROUTE_LABEL);}
-    	public Text versionLabel()						{return new Text(FormsAddEnum.VERSION_LABEL);}
     	public Text statusLabel()						{return new Text(FormsAddEnum.STATUS_LABEL);}
     	public Text HOSLabel() 							{return new Text(FormsAddEnum.HOS_LABEL);}
     	public Text vehicleTagsLabel() 					{return new Text(FormsAddEnum.VEHICLE_TAGS_LABEL);}
@@ -136,6 +145,8 @@ public class PageFormsAdd extends FormsTables {
     	public Text controlError() 						{return new Text(FormsAddEnum.CONTROL_TEXT_ERROR);}
     	public Text groupError()						{return new Text(FormsAddEnum.GROUP_TEXT_ERROR);}
     	public Text dataNameError()						{return new Text(FormsAddEnum.DATA_NAME_ERROR);}
+    	public Text groupName()							{return new Text(FormsAddEnum.GROUPS_NAV_TEXT);}
+    	public Text groupSearchedName()					{return new Text(FormsAddEnum.GROUPS_NAV_SEARCHED_TEXT);}
     }
 
     public FormsAddButtons _button() 					{return new FormsAddButtons();}

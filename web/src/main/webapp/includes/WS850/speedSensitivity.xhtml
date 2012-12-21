@@ -1,0 +1,372 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+
+  <!-- 
+  Required Parameters:
+  ======================
+          device: The device to show the settings for.
+
+  Optional Parameters:
+  ======================
+          disabled: Whether the number sliders are disabled for input or not.
+         batchEdit: Whether the device is being batch-edited.
+       updateField: A map of field name to boolean values for which fields to update; required if batchEdit
+                    is true.
+
+  To use:
+  ==============
+  <ui:include src="/includes/speedSensitivity.xhtml">
+    <ui:param name="editableVehicleSettings" value="#{myBean.editableVehicleSettings}" />
+    <ui:param name="disabled" value="true" />
+    <ui:param name="context" value="#{context}-pageName"/> 
+  </ui:include>
+
+  -->
+  <script>
+  jQuery(function(){
+	
+	jQuery("#hardBrakeLevel").html(getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.hardBrake},
+				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardBrakeSlider.defaultValueIndex},
+				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardBrakeSlider.sliderPositionCount}));
+	jQuery("#hardAccelerationLevel").html(getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.hardAcceleration},
+				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardAccelerationSlider.defaultValueIndex},
+				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardAccelerationSlider.sliderPositionCount}));
+	jQuery("#hardTurnLevel").html(getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.hardTurn},
+				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardTurnSlider.defaultValueIndex},
+				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardTurnSlider.sliderPositionCount}));
+	jQuery("#hardVerticalLevel").html(getCurrentValueLabel(#{vehiclesBean.item.editableVehicleSettings.hardVertical},
+  				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.defaultValueIndex},
+				#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.sliderPositionCount}));
+	jQuery("#idlingThreshold").html(getIdlingLabel(#{vehiclesBean.item.editableVehicleSettings.idlingSlider}));
+  });
+  function getLabel(valueLabel, addon){
+
+      if (valueLabel == 'custom') return "#{messages.editDevice_custom}";
+      if (valueLabel == "more") return "#{messages.editDevice_more} (+" + addon + ")";
+      if (valueLabel == "average") return "#{messages.editDevice_average}";
+      if (valueLabel == "less") return "#{messages.editDevice_less} (-" + addon + ")";
+  }
+  function bumpSpeeds(up,checkboxPrefix,checkboxSet)
+  {
+    for (var i = 0; i &lt; 15; i+=5)
+    {
+      if ( checkboxSet ) {
+      	var check = document.getElementById("#{formName}:" + checkboxPrefix + "speed" + i);                                 
+      	check.checked = true;
+      }
+      
+      var input = document.getElementById("#{formName}:speed" + i).component;
+      if (up)
+        input.setValue(Number(input.input.value) + 1);
+      else
+        input.setValue(Number(input.input.value) - 1);
+    }
+  }
+  function getIdlingLabel(sliderValue){
+		if (sliderValue == 0) return "#{messages.IdlingSetting_disabled}";
+		if ((sliderValue &lt; 10)  ) return getIdlingLabelSeconds(sliderValue);
+		return  ((sliderValue-4))+":00";
+	}
+	function getIdlingLabelSeconds(sliderValue) {
+		  idlingSeconds = (sliderValue+1)*30;
+		  var seconds = idlingSeconds%60;
+		  if(seconds == 0)
+			  seconds = "00";
+		return Math.floor(idlingSeconds/60) +":"+seconds;
+	}
+  </script> 
+
+    <c:if test="empty editableVehicleSettings">
+      <c:set var="disabled" value="true" />
+    </c:if>
+	    <div class="msg">
+			<p id="info">
+				<h:outputText  id="editMessage1" value="#{messages.editDevice_speedSensitivityInfo}"/>
+			</p>
+		</div>
+                      <table width="790" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="390" valign="top">
+
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_speedNotification}" /></div>
+                            <div class="spacer"></div>
+
+                            <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                              <tr class="datagrid">
+                                <th><h:outputText value="#{messages.editDevice_speedHeader}" /></th>
+                                <th colspan="2"><h:outputText value="#{messages.editDevice_speedSettingHeader}" /></th>
+                              </tr>
+                              <c:forEach begin="0" var="index" end="14" step="5">
+                                <c:set var="id" value="speed#{index}" />
+                                <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
+                                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_#{id}" value="#{updateField[id]}" />
+                                    <ui:param name="msgKey" value="#{vehiclesBean.measurementType}_speedSettingShort#{index}"/>
+	                                <h:outputText value="#{messages[msgKey]}"/>
+                                  </td>
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
+                                          id="#{id}" value="#{vehiclesBean.item.editableVehicleSettings.speedSettings[index]}" width="250"
+                                          converter="MphToKphConverter"
+                                          showToolTip="false" showBoundaryValues="false" 
+                                          minValue="${tiwiprofn:convertMphToKph(minimum)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
+                                  </td>
+                                  <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                                    <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
+                                  </td>
+                                </tr>
+                              </c:forEach>
+                              <ui:fragment rendered="#{not disabled and not vehiclesBean.speedInfoDisabled}">
+                                <tr class="tableEven">
+                                  <td colspan="3" align="right" style="border-bottom: 1px solid #8BAD37">
+                                    <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
+                                    <a href="#" id="#{context}-plus" onclick="bumpSpeeds(true,'#{context}-update_',#{batchEdit}); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                    <a href="#" id="#{context}-minus" onclick="bumpSpeeds(false,'#{context}-update_',#{batchEdit}); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                  </td>
+                                </tr>
+                              </ui:fragment>
+                              <tr>
+                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}_maxSpeed" value="#{updateField['editableVehicleSettings.maxSpeed']}" />
+                                	<h:outputText value="#{messages.editDevice_speedMax}"/>
+                                </td>
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
+                                          id="#{context}_maxSpeed" value="#{editableVehicleSettings.maxSpeedLimitInteger}" width="250"
+                                          converter="MphToKphConverter"
+                                          showToolTip="false" showBoundaryValues="false" 
+                                          minValue="${tiwiprofn:convertMphToKph(25)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1" 
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id);"/>
+                                  </td>
+                                <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                                  <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter" />
+                                </td>
+                              </tr>
+                            </table>
+
+                            <div class="spacer"></div>
+
+                          </td>
+                          <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+                          <td width="390" valign="top">
+
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_sensitivityTitle}" /></div>
+                            <div class="spacer"></div>
+
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                              <tr class="datagrid">
+                                <th><h:outputText value="#{messages.editDevice_sensitivityHeader}" /></th>
+                                <th colspan="3"><h:outputText value="#{messages.editDevice_sensitivitySettingHeader}"  /></th>
+                              </tr>
+                                 <tr class="tableOdd">
+                                 	<td></td>
+                                     <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="hardAccelerationLevel" style="font-weight:bold">
+                                       </span>
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr class="tableOdd'}">
+                                     <td style="padding: 0px 12px 5px 12px; border-bottom: 1px solid #8BAD37;">
+                     	               <ui:param name="messageKey" value="editDevice_hardAcceleration"/>
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardAcceleration" value="#{updateField['editableVehicleSettings.hardAcceleration']}" />
+                                       <h:outputText value="#{messages[messageKey]}" />
+                                     </td>
+                                     <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity1}" />
+                                     </td>
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                        <rich:inputNumberSlider id="#{context}-hardAcceleration" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
+                                             value="#{vehiclesBean.item.editableVehicleSettings.hardAcceleration}" 
+                                             showToolTip="false" showBoundaryValues="false" 
+                                             handleSelectedClass="handleSelected"
+                                             showInput="false" minValue="1" 
+                                             maxValue="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].adjustedHardAccelerationSetting}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardAccelerationSlider.sliderPositionCount}.png')"
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardAccelerationLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardAccelerationSlider.defaultValueIndex},
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardAccelerationSlider.sliderPositionCount});
+                                             								adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardAccelerationLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardAccelerationSlider.defaultValueIndex},
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardAccelerationSlider.sliderPositionCount});
+                                             						adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity5}" />
+                                    </td>
+                                 </tr>
+                                 <tr class="tableEven">
+                                 	<td></td>
+                                     <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="hardBrakeLevel" style="font-weight:bold">
+                                       </span>
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr class="tableEven">
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                     	               <ui:param name="messageKey" value="editDevice_hardBrake"/>
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardBrake" value="#{updateField['editableVehicleSettings.hardBrake']}" />
+                                       <h:outputText value="#{messages[messageKey]}" />
+                                     </td>
+                                     <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity1}" />
+                                     </td>
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                        <rich:inputNumberSlider id="#{context}-hardBrake" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
+                                             value="#{vehiclesBean.item.editableVehicleSettings.hardBrake}" 
+                                             showToolTip="false" showBoundaryValues="false" 
+                                             handleSelectedClass="handleSelected"
+                                             showInput="false" minValue="1" 
+                                             maxValue="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].adjustedHardBrakeSetting}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardBrakeSlider.sliderPositionCount}.png')"
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardBrakeLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardBrakeSlider.defaultValueIndex},
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardBrakeSlider.sliderPositionCount});
+                                             								adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardBrakeLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardBrakeSlider.defaultValueIndex},
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardBrakeSlider.sliderPositionCount});
+                                             						adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity5}" />
+                                    </td>
+                                 </tr>
+                                 <tr class="tableOdd">
+                                 	<td></td>
+                                     <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="hardVerticalLevel" style="font-weight:bold">
+                                       </span>
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr class="tableOdd">
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                     	               <ui:param name="messageKey" value="editDevice_hardVertical"/>
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardVertical" value="#{updateField['editableVehicleSettings.hardVertical']}" />
+                                       <h:outputText value="#{messages[messageKey]}" />
+                                     </td>
+                                     <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity1}" />
+                                     </td>
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                        <rich:inputNumberSlider id="#{context}-hardVertical" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
+                                             value="#{vehiclesBean.item.editableVehicleSettings.hardVertical}" 
+                                             showToolTip="false" showBoundaryValues="false" 
+                                             handleSelectedClass="handleSelected"
+                                             showInput="false" minValue="1" 
+                                             maxValue="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].adjustedHardVerticalSetting}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.sliderPositionCount}.png')"
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardVerticalLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.defaultValueIndex},
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.sliderPositionCount});
+                                             								adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardVerticalLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.defaultValueIndex},
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardVerticalSlider.sliderPositionCount});
+                                             						adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity5}" />
+                                    </td>
+                                 </tr>
+                                 <tr class="tableEven">
+                                 	<td></td>
+                                     <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="hardTurnLevel" style="font-weight:bold">
+                                       </span>
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr class="tableEven">
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                     	               <ui:param name="messageKey" value="editDevice_hardTurn"/>
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardTurn" value="#{updateField['editableVehicleSettings.hardTurn']}" />
+                                       <h:outputText value="#{messages[messageKey]}" />
+                                     </td>
+                                     <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity1}" />
+                                     </td>
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                        <rich:inputNumberSlider id="#{context}-hardTurn" 
+                                             disabled="#{disabled or vehiclesBean.speedInfoDisabled}" 
+                                             value="#{vehiclesBean.item.editableVehicleSettings.hardTurn}" 
+                                             showToolTip="false" showBoundaryValues="false" 
+                                             handleSelectedClass="handleSelected"
+                                             showInput="false" minValue="1" 
+                                             maxValue="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].adjustedHardTurnSetting}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardTurnSlider.sliderPositionCount}.png')"
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardTurnLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardTurnSlider.defaultValueIndex},
+                                             								#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardTurnSlider.sliderPositionCount});
+                                             								adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('hardTurnLevel').innerHTML = getCurrentValueLabel(this.value,
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardTurnSlider.defaultValueIndex},
+                                             						#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID].hardTurnSlider.sliderPositionCount});
+                                             						adminSetCheckbox(this.mainTable.id,'style','#{context}','#{index}')" />
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity5}" />
+                                    </td>
+                                 </tr>
+            					<tr class="tableOdd">
+                                 	<td></td>
+                                     <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="idlingThreshold" style="font-weight:bold">
+                                       </span>
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr class="tableOdd">
+                                 	<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                     	            	<ui:param name="messageKey" value="editDevice_idling"/>
+                                      	<h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idlingThreshold" value="#{updateField['editableVehicleSettings.idlingSeconds']}" />
+                                      	<h:outputText value="#{messages[messageKey]}" />
+                                   	</td>
+                                   	<td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                     	<h:outputText value="#{messages.editDevice_sensitivity1}" />
+                                   	</td>
+                                 	<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    	<rich:inputNumberSlider id="#{context}-idlingThreshold" 
+                                          value="#{vehiclesBean.item.editableVehicleSettings.idlingSlider}"
+                                          disabled="#{disabled or vehiclesBean.speedInfoDisabled}"   
+                                          onfocus="this.select();" 
+                                          showToolTip="false" 
+                                          showBoundaryValues="false"
+                                          showInput="false" 
+                                          showArrows="false"
+                                          minValue="#{vehiclesBean.item.editableVehicleSettings.idlingSecondsMin}" 
+                                          maxValue="#{vehiclesBean.item.editableVehicleSettings.idlingSecondsMax}" 
+										  handleSelectedClass="handleSelected"
+                                          onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('idlingThreshold').innerHTML = getIdlingLabel(this.value);adminSetCheckbox(this.mainTable.id,'style','idlingThreshold','#{context}-update_','');" >
+                                          </rich:inputNumberSlider>
+									</td>
+									<td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity5}" />
+                                    </td>
+                                 </tr>
+                            </table>
+
+                          </td>
+                        </tr>
+                      </table>
+
+</ui:composition>

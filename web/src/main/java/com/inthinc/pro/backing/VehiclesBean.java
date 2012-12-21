@@ -205,7 +205,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         List<String> classNames = new ArrayList<String>();
         if(vehicleSettingManagers.get(null) == null){
-            vehicleSettingManagers.put(null, new TiwiproSettingManager(null,null, batchEditProductChoice, null));
+            vehicleSettingManagers.put(null, new TiwiproSettingManager(null,null, null));
         }
         for (Entry<Integer,VehicleSettingManager> vsm : vehicleSettingManagers.entrySet()){
             
@@ -791,7 +791,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public String getProductTypeName() {
             if(editableVehicleSettings == null) return ProductType.UNKNOWN.getDescription();
-//            return editableVehicleSettings.getProductType().getDescription().getProductName();
             return editableVehicleSettings.getProductDisplayName();
         }
         public String getProductTypeDir() {

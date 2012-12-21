@@ -82,6 +82,7 @@ import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.ReportManagerDeliveryType;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.SensitivitySliderValues;
@@ -1454,6 +1455,8 @@ public class SiloServiceTest {
             userList.add(user);
 
             reportSchedules(acctID, person.getUser().getUserID(), groupID);
+            
+            reportSchedulesToManager(acctID, person.getUser().getUserID(), groupID);
 
         }
         // update all to female
@@ -1641,6 +1644,68 @@ public class SiloServiceTest {
         reportScheduleHessianDAO.deleteByID(reportScheduleWeekly.getReportScheduleID());
         reportSchedulesByUser = reportScheduleHessianDAO.getReportSchedulesByUserID(userID);
         assertEquals("after delete report schedules for userID: " + userID, 2, reportSchedulesByUser.size());   
+    }
+    
+    private void reportSchedulesToManager(Integer acctID, Integer userID, Integer groupID) {
+        
+        ReportScheduleHessianDAO reportScheduleHessianDAO = new ReportScheduleHessianDAO();
+
+        reportScheduleHessianDAO.setSiloService(siloService);
+        
+        // Weekly report create
+        ReportSchedule reportScheduleToManager = new ReportSchedule();
+        reportScheduleToManager.setReportDuration(Duration.DAYS);
+        reportScheduleToManager.setStatus(Status.ACTIVE);
+        reportScheduleToManager.setReportID(0);
+        reportScheduleToManager.setName("Report Schedule");
+        reportScheduleToManager.setOccurrence(Occurrence.WEEKLY);
+        reportScheduleToManager.setUserID(userID);
+        reportScheduleToManager.setGroupID(groupID);
+        reportScheduleToManager.setReportID(1);
+        reportScheduleToManager.setAccountID(acctID);
+        
+        Calendar lastDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        lastDate.set(Calendar.HOUR, 0);
+        lastDate.set(Calendar.MINUTE, 0);
+        lastDate.set(Calendar.SECOND, 0);
+        lastDate.set(Calendar.MILLISECOND, 0);
+        lastDate.add(Calendar.DATE, -7);
+        
+        Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        endDate.set(Calendar.HOUR, 0);
+        endDate.set(Calendar.MINUTE, 0);
+        endDate.set(Calendar.SECOND, 0);
+        endDate.set(Calendar.MILLISECOND, 0);
+        
+        reportScheduleToManager.setLastDate(lastDate.getTime());
+        reportScheduleToManager.setEndDate(endDate.getTime());
+        reportScheduleToManager.setStartDate(lastDate.getTime());
+        
+        reportScheduleToManager.setDeliverToManagers(true);
+        reportScheduleToManager.setManagerDeliveryType(ReportManagerDeliveryType.EXCLUDE_DIVISIONS);
+        reportScheduleToManager.setOccurrence(Occurrence.DAILY);
+        
+        
+        Integer rptId = reportScheduleHessianDAO.create(acctID, reportScheduleToManager);
+        logger.debug("Report Schedule ID: " + rptId);
+        logger.debug("Report Schedule acctID: " + acctID);
+        assertNotNull(rptId);
+        reportScheduleToManager.setReportScheduleID(rptId);
+        
+        
+        // find 
+        String[] ignoreFields = { "modified", 
+//                "emailToString",    // list might be in different order (could extract and test)
+// TODO:  This is here until backend python is deployed to dev
+//"managerDeliveryType",
+                "endDate",          // not sure why this is different
+                "startDate" };      // not sure why this is different
+
+        ReportSchedule reportSchedule = reportScheduleHessianDAO.findByID(rptId);
+        Util.compareObjects(reportScheduleToManager, reportSchedule, ignoreFields);
+
+        // delete
+        reportScheduleHessianDAO.deleteByID(reportScheduleToManager.getReportScheduleID());
     }
     
     private boolean checkTypes(String type,List<ReportSchedule> reports) {
