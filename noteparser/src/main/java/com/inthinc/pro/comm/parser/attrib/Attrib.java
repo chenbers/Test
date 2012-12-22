@@ -309,6 +309,7 @@ public enum Attrib {
 	IMEI(24593, AttribParserType.STRING_VAR_LENGTH26),
 	MCMID(24594, AttribParserType.STRING_VAR_LENGTH26),
     RHA_DESCRIPTION(24595, AttribParserType.STRING_VAR_LENGTH32), 
+    FOB_ID(24597, AttribParserType.STRING_VAR_LENGTH32), 
 	
 	
 	// BINARY 
