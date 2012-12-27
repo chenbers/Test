@@ -265,7 +265,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
                 person.setFirst("First1");
                 person.setLast("Last");
                 
-                Driver driver = new Driver(1, 1, Status.ACTIVE, null,null,null,null, null, null, null, null, null, 1);
+                Driver driver = new Driver(1, 1, Status.ACTIVE, null,null,null,null, null, null, null, null, null, null, 1);
                 driver.setPerson(person);
                 return driver;
             }
@@ -275,7 +275,7 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
                 person.setFirst("John");
                 person.setLast("Smith");
                 
-                Driver driver = new Driver(11771, 11771, Status.ACTIVE, null,null,null,null, null, null, null, null, null, 1);
+                Driver driver = new Driver(11771, 11771, Status.ACTIVE, null,null,null,null, null, null, null, null, null, null, 1);
                 driver.setPerson(person);
                 return driver;
             }

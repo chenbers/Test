@@ -147,7 +147,7 @@ public abstract class BaseITData {
         Person person = createPerson(group.getAccountID(), group.getGroupID(), ((idx == null) ? "" : idx) + "Driver"+group.getName(), "Last"+group.getGroupID());
         Date expired = Util.genDate(2012, 9, 30);
         
-        Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l"+person.getPersonID(), 
+        Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, null, "l"+person.getPersonID(), 
                                         States.getStateByAbbrev("UT"), "ABCD", expired, null, RuleSetType.US_OIL, group.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);

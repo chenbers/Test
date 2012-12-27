@@ -1813,7 +1813,7 @@ public class SiloServiceTest {
         String ignoreFields[] = { "modified", "person", "barcode", "rfid1", "rfid2" };
         for (Person person : groupPersonList) {
             Date expired = Util.genDate(2010, 9, 30);
-            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, RuleSetType.US_OIL, groupID);
+            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, RuleSetType.US_OIL, groupID);
             
             // create
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
@@ -1996,7 +1996,7 @@ public class SiloServiceTest {
         personDAO.setSiloService(siloService);
         Date expired = Util.genDate(2010, 8, 30);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
-        Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, RuleSetType.NON_DOT, groupID);
+        Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, RuleSetType.NON_DOT, groupID);
         User user = new User(0, 0, randomRole(acctID), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
         Person person = new Person(0, acctID, TimeZone.getDefault(), 

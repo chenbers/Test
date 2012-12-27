@@ -27,6 +27,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private String barcode;
     private Long rfid1;
     private Long rfid2;
+    private String fobID;
     private String license; // max 10 characters
     @Column(name = "stateID")
     private State state;
@@ -43,7 +44,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 //    private Cellblock cellblock;
 
 
-    public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
+    public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String fobID, String license, State state, String licenseClass, Date expiration, String certifications,
             RuleSetType dot, Integer groupID) {
         super();
         this.driverID = driverID;
@@ -52,6 +53,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.barcode = barcode;
         this.rfid1 = rfid1;
         this.rfid2 = rfid2;
+        this.fobID = fobID;
         this.license = license;
         this.state = state;
         this.licenseClass = licenseClass;
@@ -201,7 +203,15 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Override
     public String toString() {
         return "Driver [barcode=" + barcode + ", certifications=" + certifications + ", dot=" + dot + ", driverID=" + driverID + ", expiration=" + expiration + ", groupID=" + groupID + ", license="
-                + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status + "]";
+                + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", fobID=" + fobID + ", state=" + state + ", status=" + status + "]";
+    }
+
+    public String getFobID() {
+        return fobID;
+    }
+
+    public void setFobID(String fobID) {
+        this.fobID = fobID;
     }
 
 //    public Cellblock getCellblock() {

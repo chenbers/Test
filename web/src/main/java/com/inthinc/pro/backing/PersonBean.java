@@ -116,6 +116,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("barcode");
         AVAILABLE_COLUMNS.add("rfid1");
         AVAILABLE_COLUMNS.add("rfid2");
+        AVAILABLE_COLUMNS.add("fobid");
         AVAILABLE_COLUMNS.add("driver_groupID");
 //        AVAILABLE_COLUMNS.add("driver_provider");
 //        AVAILABLE_COLUMNS.add("driver_providerUsername");
@@ -469,6 +470,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (value == null)
                 value = 0L;
             return Long.toHexString(value);
+        }
+        else if (column.equals("driver_fobID")) {
+            if (person.getDriver() != null) {
+                return person.getDriver().getFobID();
+            }
+            return null;
         }
         else if (column.equals("locale")) {
             if (person.getUser() != null && person.getLocale() != null)

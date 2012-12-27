@@ -66,7 +66,7 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
             List<Driver> driverList = new ArrayList<Driver>();
 
             for (int i = 1; i < 5; i++) {
-                Driver driver = new Driver(i, i, Status.ACTIVE, "", 0l, 0l, "", null, null, null, null, null, GROUP_ID);
+                Driver driver = new Driver(i, i, Status.ACTIVE, "", 0l, 0l, "1wireID"+i, "", null, null, null, null, null, GROUP_ID);
                 Person person = new Person();
                 person.setPersonID(i);
                 person.setFirst("F" + i);
