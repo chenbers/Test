@@ -191,11 +191,12 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         Double kilometers = meters / 1000.0;
         List<Hazard> allInAccount = findAllInAccount(accountID);
         List<Hazard> results = new ArrayList<Hazard>();
+        Date rightNow = new Date();
         for(Hazard hazard: allInAccount) {
             LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
             float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
             logger.debug("dist: "+dist);
-            Date rightNow =new Date();
+            
             if(dist < kilometers && hazard.getStatus().equals(HazardStatus.ACTIVE) && hazard.getEndTime().after(rightNow)) {
                 results.add(hazard);
             } 
