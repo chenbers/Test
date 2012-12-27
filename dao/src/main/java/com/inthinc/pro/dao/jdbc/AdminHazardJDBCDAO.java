@@ -196,7 +196,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
             logger.debug("dist: "+dist);
             Date rightNow =new Date();
-            if(dist < kilometers && hazard.getStatus().equals(HazardStatus.ACTIVE) && hazard.getEndTime().before(rightNow)) {
+            if(dist < kilometers && hazard.getStatus().equals(HazardStatus.ACTIVE) && hazard.getEndTime().after(rightNow)) {
                 results.add(hazard);
             } 
         }
