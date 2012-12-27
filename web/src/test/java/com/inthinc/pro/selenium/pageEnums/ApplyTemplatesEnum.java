@@ -5,7 +5,6 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum ApplyTemplatesEnum implements SeleniumEnums {
 	
 	ACCOUNT_DROPDOWN("Account:","select-account"),
-	
 	GROUP_NAV_TREE("Group","group-dropdown"),
 	
 	TEMPLATE_BUTTON("Template",""),
@@ -14,7 +13,6 @@ public enum ApplyTemplatesEnum implements SeleniumEnums {
 	APPLY_LINK("Apply ...","apply-template"),
 	
 	ACCEPT_TEMPLATE_VALUE_CHECKBOX("Accept Template Value","select-all"),
-	
 	VEHICLE_TEXT("Vehicle","column-setting-vehicleID"),
 	SETTING_ID_TEXT("SetingID","column-setting-settingID"),
 	SETTING_TEXT("Setting","column-setting-setting"),

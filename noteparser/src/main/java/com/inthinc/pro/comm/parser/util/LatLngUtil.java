@@ -46,13 +46,12 @@ public class LatLngUtil {
 	}
 	
 /*	
-	public static LatLng readLatLng(byte[] data)
+	public static LatLng readLatLng(byte[] data, int size)
 	{
 		double latitude = 0.0;
 		double longitude = 0.0;
-		int version = data[2];
 		
-		if (version == 2)
+		if (size == 3)
 		{
 			int hexLatitude;
 			int hexLongitude;
@@ -100,6 +99,6 @@ public class LatLngUtil {
 		
 		return latLng;
 	}
-*/
+	*/
 }
 	

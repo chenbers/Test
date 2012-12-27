@@ -21,6 +21,10 @@ public abstract class AdminBar extends NavigationBar {
 			return new TextLinkContextSense(AdminBarEnum.ADD_CUSTOM_ROLE);
 		}
 
+		public TextLinkContextSense adminAddHazard() {
+			return new TextLinkContextSense(AdminBarEnum.ADD_HAZARD);
+		}
+		
 		public TextLinkContextSense adminAddRedFlag() {
 			return new TextLinkContextSense(AdminBarEnum.ADD_RED_FLAG);
 		}
@@ -59,6 +63,14 @@ public abstract class AdminBar extends NavigationBar {
 
 		public TextLinkContextSense adminReports() {
 			return new TextLinkContextSense(AdminBarEnum.REPORTS);
+		}
+		
+		public TextLinkContextSense adminRoadHazards() {
+			return new TextLinkContextSense(AdminBarEnum.ROAD_HAZARDS);
+		}
+		
+		public TextLinkContextSense adminRouteHazards() {
+			return new TextLinkContextSense(AdminBarEnum.ROUTE_HAZARDS);
 		}
 
 		public TextLinkContextSense adminSpeedByStreet() {

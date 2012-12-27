@@ -55,6 +55,7 @@ public class ReportSchedule implements Cloneable {
     private Boolean iftaOnly;
     private Boolean includeInactiveDrivers;
     private Boolean includeZeroMilesDrivers;
+    private ReportManagerDeliveryType managerDeliveryType;
 
     public ReportSchedule() {
 
@@ -379,4 +380,13 @@ public class ReportSchedule implements Cloneable {
     public void setIncludeZeroMilesDrivers(Boolean includeZeroMilesDrivers) {
         this.includeZeroMilesDrivers = includeZeroMilesDrivers;
     }
+
+    public ReportManagerDeliveryType getManagerDeliveryType() {
+        return managerDeliveryType;
+    }
+
+    public void setManagerDeliveryType(ReportManagerDeliveryType managerDeliveryType) {
+        this.managerDeliveryType = managerDeliveryType;
+    }
+
 }

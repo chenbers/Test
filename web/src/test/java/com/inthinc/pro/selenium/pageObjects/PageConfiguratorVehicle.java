@@ -81,5 +81,5 @@ public class PageConfiguratorVehicle {
 	public ConfiguratorVehicleText _text() {
 		return new ConfiguratorVehicleText();
 	}
-	
+
 }

@@ -6,6 +6,7 @@ public class HOSOccupantInfo extends BaseEntity {
     
     private String fullName;
     private String empId;
+    private String fobId;
     
     public HOSOccupantInfo(String fullName, String empId) {
         super();
@@ -32,4 +33,13 @@ public class HOSOccupantInfo extends BaseEntity {
     public void setEmpId(String empId) {
         this.empId = empId;
     }
+
+    public String getFobId() {
+        return fobId;
+    }
+
+    public void setFobId(String fobId) {
+        this.fobId = fobId;
+    }
+    
 }
