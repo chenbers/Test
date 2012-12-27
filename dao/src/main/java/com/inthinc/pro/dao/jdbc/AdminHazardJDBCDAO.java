@@ -185,7 +185,8 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     }
 
     @Override
-    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer kilometers) {
+    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters) {
+        Double kilometers = meters / 1000.0;
         List<Hazard> allInAccount = findAllInAccount(accountID);
         List<Hazard> results = new ArrayList<Hazard>();
         for(Hazard hazard: allInAccount) {

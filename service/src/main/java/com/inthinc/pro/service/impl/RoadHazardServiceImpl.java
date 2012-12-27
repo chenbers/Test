@@ -77,7 +77,7 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
         List<Hazard> responseList;
         Response response;
         try {
-            responseList = hdaoa.findByDeviceLocationRadius(mcmID, new LatLng(latitude, longitude), distanceInMeters*1000);
+            responseList = hdaoa.findByDeviceLocationRadius(mcmID, new LatLng(latitude, longitude), distanceInMeters);
             response = Response.ok(new GenericEntity<List<Hazard>>(responseList) {}).build();
         } catch (EmptyResultDataAccessException e){
             response = Response.noContent().build();

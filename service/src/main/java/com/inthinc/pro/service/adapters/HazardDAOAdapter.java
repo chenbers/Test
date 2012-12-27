@@ -58,11 +58,11 @@ public class HazardDAOAdapter extends BaseDAOAdapter<Hazard> {
     	return roadHazardDAO.findInAccount(accountID, box);
     }
     
-    public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInKm){
-        return roadHazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInKm);
+    public List<Hazard> findAllInAccountRadius(Integer accountID, LatLng location, Integer distanceInMeters){
+        return roadHazardDAO.findAllInAccountWithinDistance(accountID, location, distanceInMeters);
     }
-    public List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer distanceInKm) {
-        return roadHazardDAO.findByDeviceLocationRadius(mcmID, location, distanceInKm);
+    public List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer distanceInMeters) {
+        return roadHazardDAO.findByDeviceLocationRadius(mcmID, location, distanceInMeters);
     }
     // Getters and setters -----------------------------------------------------
 

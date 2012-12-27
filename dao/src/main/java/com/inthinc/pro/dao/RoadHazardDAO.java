@@ -46,17 +46,17 @@ public interface RoadHazardDAO extends GenericDAO<Hazard, Integer> {
      * Returns all Road Hazards in a user's account within a given radius
      * @param accountID the accountID which will be used for filtering.
      * @param location the LatLng representation of where the device queried from.
-     * @param kilometers the given radius
+     * @param meters the given radius
      * @return the list of Road Hazards in this account within a given radius.
      */
-    List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer kilometers);
+    List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters);
     
     /**
      * Returns Road Hazards for a device, given: 
      * @param mcmID the mcmID 
      * @param location the LatLng representation of where the device queried from.
-     * @param kilometers the given radius
+     * @param meters the given radius
      * @return
      */
-    List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer kilometers);
+    List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer meters);
 }
