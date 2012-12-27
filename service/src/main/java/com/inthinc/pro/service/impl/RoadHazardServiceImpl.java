@@ -88,8 +88,8 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
     @Override
     public Response getRH(String mcmID, Double latitude, Double longitude) {
         logger.info("public Response getRH(String "+mcmID+", Double "+latitude+", Double "+longitude+")");
-        Integer twoHundredMilesInKm = 322;
-        return getRH(mcmID, latitude, longitude, twoHundredMilesInKm);
+        Integer twoHundredMilesInMeters = 321869;
+        return getRH(mcmID, latitude, longitude, twoHundredMilesInMeters);
     }
 
     private final WeakHashMap<Locale, ResourceBundle> cache = new WeakHashMap<Locale, ResourceBundle>();

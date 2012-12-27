@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -186,6 +187,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
 
     @Override
     public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters) {
+        logger.debug("public List<Hazard> findAllInAccountWithinDistance(Integer "+accountID+", LatLng "+location+", Integer "+meters+")");
         Double kilometers = meters / 1000.0;
         List<Hazard> allInAccount = findAllInAccount(accountID);
         List<Hazard> results = new ArrayList<Hazard>();
@@ -193,7 +195,8 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
             LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
             float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
             logger.debug("dist: "+dist);
-            if(dist < kilometers) {
+            Date rightNow =new Date();
+            if(dist < kilometers && hazard.getStatus().equals(HazardStatus.ACTIVE) && hazard.getEndTime().before(rightNow)) {
                 results.add(hazard);
             } 
         }
