@@ -44,23 +44,18 @@ public class RoadHazardEndpointSteps {
     	jt.setDataSource(new ITDataSource().getRealDataSource());
     	
     	sQuery = "SELECT acctID FROM device WHERE mcmID='" + mcmID + "'";
-    	System.out.println("mcmID=" + mcmID + ", lat=" + latitude + ", lng=" + longitude + ", query=" + sQuery);
     	iAcct = jt.queryForInt(sQuery);
 
     	sQuery = "" + sHRt +
     	"SELECT haz AS hazardID, " + sHRt +
     	"		loc AS location, " + sHRt +
-    	/*"		sta AS status, " + sHRt +*/
     	"		null AS status, " + sHRt +
-    	/*"		typ AS typeID, " + sHRt +*/ 
     	"		typ AS type, " + sHRt + 
     	"		des AS description " + sHRt +
     	"  FROM " + sHRt +  
     	"      (SELECT hazardID AS haz, " + sHRt +
-    	/*"              location AS loc, " + sHRt +*/
     	"              '' AS loc, " + sHRt +
     	"              status AS sta, " + sHRt +
-    	/*"              type AS typ, " + sHRt +*/
     	"                CASE type " + sHRt + 
     	"			     WHEN  1 THEN 'WEATHER_SLIPPERY' " + sHRt +
     	"				 WHEN  2 THEN 'WEATHER_FLOODING' " + sHRt +
