@@ -15,7 +15,6 @@ import org.jbehave.core.annotations.Given;
 import org.junit.Assert;
 
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.aggregation.db.DBUtil;
 import com.inthinc.pro.automation.models.Hazard;
 import com.inthinc.pro.automation.models.Hazard.HazardUrls;
 import com.inthinc.pro.automation.models.HazardType;
@@ -28,8 +27,7 @@ public class RoadHazardEndpointSteps {
     List<Object> lo;
     HazardType type;
 	SiloService ss;
-	DBUtil db;
-	String sHRt = System.lineSeparator();
+	String sHRt = System.getProperty("line.separator");
     
     @Given("I verify endpoint data for MCMID_IMEA \"$mcmID\" and latitude \"$latitude\" and longitude \"$longitude\"")
     @When( "I verify endpoint data for MCMID_IMEA \"$mcmID\" and latitude \"$latitude\" and longitude \"$longitude\"")
