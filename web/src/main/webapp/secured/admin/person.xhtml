@@ -150,6 +150,12 @@
                               </h:outputText>
                             </td>
                           </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_fobID}:" /></td>
+                            <td>
+                              <h:outputText value="#{personBean.item.driver.fobID}" id="fobID" />
+                            </td>
+                          </tr>
                         </table>
                         
                         <a4j:outputPanel rendered="#{personBean.item.cellblock.provider.code ne 0}">

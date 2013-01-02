@@ -1,7 +1,6 @@
 package com.inthinc.pro.dao.jdbc;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,14 +8,13 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,7 +27,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import com.inthinc.pro.dao.RoadHazardDAO;
 import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.BoundingBox;
-import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
@@ -52,18 +49,18 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     static {
         //columnMap.put("hazardID", "hazardID");
         columnMap.put("acctID", "acctID");
-        columnMap.put("driverID", "driverID");// TODO: should be name
+        columnMap.put("driverID", "driverID");
         columnMap.put("userID","userID");
-        columnMap.put("vehicleID", "vehicleID");// TODO: should be name
-        columnMap.put("deviceID", "deviceID");// TODO: should be name?
+        columnMap.put("vehicleID", "vehicleID");
+        columnMap.put("deviceID", "deviceID");
         columnMap.put("latitude", "latitude");
         columnMap.put("longitude", "longitude");
         columnMap.put("radius", "radius");
         columnMap.put("startTime", "startTime");
         columnMap.put("endTime", "endTime");
-        columnMap.put("type", "type");// TODO: should be name
+        columnMap.put("type", "type");
         columnMap.put("description", "description");
-        columnMap.put("status", "status");// TODO: should be name
+        columnMap.put("status", "status");
         columnMap.put("location", "location");
         columnMap.put("stateID", "stateID");
         columnMap.put("created", "created");
@@ -155,7 +152,10 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         return theInteger;
     }
     public List<Hazard> findAllInAccount(Integer acctID) {
-        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); //TODO: jwimmer: verify that this is the correct order of lat/lngs
+        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); 
+    }
+    public List<Hazard> findInAccount(Integer acctID, BoundingBox box){
+    	return findHazardsByUserAcct(acctID, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
     public List<Hazard> findHazardsByUserAcct(Integer acctID, Double lat1, Double lng1, Double lat2, Double lng2){
         List<Hazard> results;
@@ -184,15 +184,20 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     public List<Hazard> findHazardsByUserAcct(User user, BoundingBox box) {
         return findHazardsByUserAcct(user, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
+
     @Override
-    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer kilometers) {
+    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters) {
+        logger.debug("public List<Hazard> findAllInAccountWithinDistance(Integer "+accountID+", LatLng "+location+", Integer "+meters+")");
+        Double kilometers = meters / 1000.0;
         List<Hazard> allInAccount = findAllInAccount(accountID);
         List<Hazard> results = new ArrayList<Hazard>();
+        Date rightNow = new Date();
         for(Hazard hazard: allInAccount) {
             LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
             float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
             logger.debug("dist: "+dist);
-            if(dist < kilometers) {
+            
+            if(dist < kilometers && hazard.getStatus().equals(HazardStatus.ACTIVE) && hazard.getEndTime().after(rightNow)) {
                 results.add(hazard);
             } 
         }

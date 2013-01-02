@@ -27,7 +27,7 @@ And I click the Save Top button
 And I validate the Error Master text is "1 error(s) occurred. Please verify all the data entered is correct." 
 And I validate the Error Date text is "Date/Time in the future is not valid."
 
-Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop
+Scenario: TC5628: HOS - Fuel Stops - Cancel Add Fuel Stop  (will fail until defect DE7966 is fixed)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
@@ -358,25 +358,25 @@ And I validate the Sort By Vehicle Fuel link is present
 And I validate the Sort By Trailer Fuel link is present
 And I validate the Sort By Edited link is present
 
-Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi
+Scenario: TC5700: HOS - Fuel Stops - Vehicle field Tiwi (will fail until defect DE7844 is fixed)
 Given I am logged in
 When I click the HOS link
 And I click the HOS Fuel Stops link
 And I type "" into the Vehicle textfield
 And I click the Refresh button
 Then I validate the Vehicle textfield is ""
-And I type a valid "Vehicle Tiwi" into the Vehicle textfield
-And I validate the Get Suggestion textfield is ""
+And I type "TIWI00" into the Vehicle textfield
+And I validate the suggested row 1 from the Vehicle textfield is ""
 And I type "" into the Vehicle textfield
-And I type a "Valid Vehicle Name HOS" into the Vehicle textfield
-And I save the Vehicle Name as CURRENTVEHICLE
+And I type "autogen01" into the Vehicle textfield
+And I save the Vehicle textfield as CURRENTVEHICLE
 And I click the Refresh button
-And I validate the Get Suggestion textfield is CURRENTVEHICLE
+And I validate the suggested row 1 from the Vehicle textfield is CURRENTVEHICLE
 And I type "" into the Vehicle textfield
-And I type a "Valid Vehicle Name HOS/IFTA" into the Vehicle textfield
-And I save the Vehicle Name as CURRENTVEHICLE2
+And I type "TEST VEHICLE 1" into the Vehicle textfield
+And I save the Vehicle textfield as CURRENTVEHICLE2
 And I click the Refresh button
-And I validate the Get Suggestion textfield is CURRENTVEHICLE2
+And I validate the suggested row 1 from the Vehicle textfield is CURRENTVEHICLE2
 And I click the Add button
 And I validate I am on the Add Fuel page
 And I click the Cancel Top button

@@ -31,9 +31,11 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.ReportManagerDeliveryType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TimeFrame;
@@ -194,8 +196,18 @@ public class EmailReportJob extends QuartzJobBean {
         for(Integer groupID:groupIds){
             groupIdSet.add(groupID);
         }
+        
+        ReportManagerDeliveryType managerDeliveryType = source.getManagerDeliveryType() == null ? ReportManagerDeliveryType.ALL : source.getManagerDeliveryType();
+        
         for(Integer groupID:groupIdSet){
             Group group = getAccountGroupHierarchy(source.getAccountID()).getGroup(groupID);
+            if (managerDeliveryType == ReportManagerDeliveryType.EXCLUDE_DIVISIONS && group.getType() == GroupType.DIVISION ||
+                managerDeliveryType == ReportManagerDeliveryType.EXCLUDE_TEAMS && group.getType() == GroupType.TEAM) {
+                if(logger.isDebugEnabled()){
+                    logger.debug(String.format("Skipping group [%d] due to manager delivery time of [%s].", group.getGroupID(), managerDeliveryType.name()));
+                }
+                continue;
+            }
             if(group.getManagerID() != null && group.getManagerID() > 0){
                 Person manager = personDAO.findByID(group.getManagerID());
                 if(manager.getStatus().equals(Status.ACTIVE)){

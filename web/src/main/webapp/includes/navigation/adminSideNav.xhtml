@@ -140,6 +140,18 @@
                </ui:include>
             </td>
           </tr>
+          <tr>
+            <td valign="top" class="sub_wrapper">
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_route_warning.png"/>
+                  <ui:param name="actionBean" value="#{hazardsBean}"/>
+                  <ui:param name="action" value="route"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminRouteHazard') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminRouteHazard}"/>
+                  <ui:param name="context" value="#{context}-vlst-RouteHazard"/>
+               </ui:include>
+            </td>
+          </tr>
         </ui:fragment>
         </security:authorize>
         <!-- Red Flags -->

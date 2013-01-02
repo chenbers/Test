@@ -266,9 +266,13 @@
 									<tr>
 										<td>
 											<div>
-												<input type="checkbox" disabled="disabled" checked="checked"/>
 												<h:outputText value="#{messages.reportSchedule_notifyGroupManager}" />
 											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText cols ="40" rows="5" style="padding-left:10px;" value="- #{messages[reportScheduleBean.item.managerDeliveryType]}" />
 										</td>
 									</tr>
 								</h:outputText>
@@ -276,7 +280,6 @@
 									<tr>
 										<td>
 											<span>
-												<input type="checkbox" disabled="disabled" checked="checked"/>
 												<h:outputText value="#{messages.reportSchedule_notifyByEmail}" />
 											</span>
 										</td>

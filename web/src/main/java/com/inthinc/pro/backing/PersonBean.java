@@ -116,6 +116,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("barcode");
         AVAILABLE_COLUMNS.add("rfid1");
         AVAILABLE_COLUMNS.add("rfid2");
+        AVAILABLE_COLUMNS.add("fobID");
         AVAILABLE_COLUMNS.add("driver_groupID");
 //        AVAILABLE_COLUMNS.add("driver_provider");
 //        AVAILABLE_COLUMNS.add("driver_providerUsername");
@@ -158,6 +159,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     
     private List<PersonIdentifiers> personIdentifiersList;
 	private Map<Integer, Boolean> selectedMap = new HashMap<Integer, Boolean>();
+	private Integer passwordDaysRemaining;
 	
 	
     public void initBean()
@@ -303,7 +305,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return (loginExpire!=0)? loginExpire - daysSinceLastLogin:NOT_SET_TO_EXPIRE;
     }
     public Integer getPasswordDaysRemaining() {
-        return getPasswordDaysRemaining(getAccount(),userDAO.findByID(this.getUser().getUserID()));
+    	if(passwordDaysRemaining==null){
+    		passwordDaysRemaining = getPasswordDaysRemaining(getAccount(),userDAO.findByID(this.getUser().getUserID()));
+    	}
+        return passwordDaysRemaining;
     }
     public static Integer getPasswordDaysRemaining(Account account, User user) {
         Integer passwordExpire;
@@ -465,6 +470,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (value == null)
                 value = 0L;
             return Long.toHexString(value);
+        }
+        else if (column.equals("driver_fobID")) {
+            if (person.getDriver() != null) {
+                return person.getDriver().getFobID();
+            }
+            return null;
         }
         else if (column.equals("locale")) {
             if (person.getUser() != null && person.getLocale() != null)

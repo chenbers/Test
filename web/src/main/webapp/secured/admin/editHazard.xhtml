@@ -10,7 +10,8 @@
               xmlns:t="http://myfaces.apache.org/tomahawk">
 
   <ui:param name="adminSelected" value="current" />
-  <ui:param name="title" value="#{messages.adminHeader_hazards}"/>
+  <ui:param name="title" value="#{hazardsBean.add ? messages.adminHeader_addHazard : messages.adminHeader_editHazard}"/>
+  
   
   <ui:define name="scripts">
     <style>
@@ -49,7 +50,7 @@
       <tr>
         <td valign="top" width="130">
           <ui:include src="/includes/navigation/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="go_adminAddHazard" />
+            <ui:param name="selectedAction" value="go_adminAddHazard"/>
             <ui:param name="parentAction" value="go_adminHazards" />
             <ui:param name="context" value="hazards"/>
           </ui:include>
@@ -59,7 +60,7 @@
           <div class="">
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="hazards"><h:outputText value="#{messages.adminHeader_hazards}" /></span>
+                <span class="hazards"><h:outputText value="#{hazardsBean.add ? messages.adminHeader_addHazard : messages.adminHeader_editHazard}" /></span>
                 <span class="panel_links">
                     <a4j:status id="refresh_ajax_status" for="main">
                         <f:facet name="start">

@@ -5,7 +5,6 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum SettingsTemplatesEnum implements SeleniumEnums {
 	
 	ACCOUNT_DROPDOWN("Account:","select-account"),
-	
 	TEMPLATE_BUTTON("",""),
 	
 	NEW_TEMPLATE_LINK("New ...","new-template"),
@@ -24,7 +23,6 @@ public enum SettingsTemplatesEnum implements SeleniumEnums {
 	VEHICLE_UNIT_TEXT("Unit","column-vehicle-unit"),
 	DESIRED_VALUES_TEXT("Values","column-vehicle-desired-values"),
 	DESIRED_MODIFIED_TEXT("Modified","column-vehicle-desired-modified"),
-	
 	;
 
 	private String text, url;

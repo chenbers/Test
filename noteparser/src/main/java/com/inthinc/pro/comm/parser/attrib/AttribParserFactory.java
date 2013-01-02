@@ -54,6 +54,8 @@ public class AttribParserFactory {
         	return STRING_VAR_LENGTH_PARSER;        	
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH9))
         	return STRING_VAR_LENGTH_PARSER;        	
+        if (parserType.equals(AttribParserType.STRING_VAR_LENGTH10))
+            return STRING_VAR_LENGTH_PARSER;            
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH11))
         	return STRING_VAR_LENGTH_PARSER;        	
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH20))
@@ -62,6 +64,8 @@ public class AttribParserFactory {
         	return STRING_VAR_LENGTH_PARSER;        	
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH30))
         	return STRING_VAR_LENGTH_PARSER;        	
+        if (parserType.equals(AttribParserType.STRING_VAR_LENGTH32))
+            return STRING_VAR_LENGTH_PARSER;            
 
         
         if (parserType.equals(AttribParserType.STRING_PREFACED_LENGTH))

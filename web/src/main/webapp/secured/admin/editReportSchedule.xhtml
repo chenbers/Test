@@ -212,7 +212,7 @@
 								<td>
 									<rich:message for="editReportSchedule-report" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 									<h:selectOneMenu id="editReportSchedule-report" value="#{reportScheduleBean.item.reportID}" required="true" requiredMessage="#{messages.required}" style="width:250px">
-										<a4j:support action="#{reportScheduleBean.reportGroupChangeAction}" event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
+										<a4j:support action="#{reportScheduleBean.reportGroupChangeAction}" event="onchange" reRender="reportConfigTable" ajaxSingle="true" oncomplete="loadDeliveryElements();"/>
 										<f:selectItems value="#{reportScheduleBean.reportGroups}"/> 
 									</h:selectOneMenu>
 								</td>
@@ -305,7 +305,7 @@
 										<h:selectOneMenu id="editReportSchedule-group" value="#{reportScheduleBean.item.groupID}" style="width:250px;"
 											required="true" requiredMessage="#{messages.required}">
 											<f:selectItems value="#{reportScheduleBean.groups}"/> 
-											<a4j:support event="onchange" reRender="driverListSelect" ajaxSingle="true"/>
+											<a4j:support event="onchange" reRender="driverListSelect,editReportSchedule-managerDeliveryTypePanel" ajaxSingle="true" oncomplete="loadDeliveryElements();"/>
 										</h:selectOneMenu>
 										<ui:include src="/includes/dhtmlSelectBox.xhtml">	
      					 					<ui:param name="selectBoxID" value="edit_form:editReportSchedule-group" />
@@ -326,6 +326,7 @@
 									<h:selectManyMenu id="editRSGroups" value="#{reportScheduleBean.item.groupIDSelectList}" style="width:250px;size:auto"
 											required="true" requiredMessage="#{messages.required}">
 										<f:selectItems value="#{reportScheduleBean.groups}"/>
+										<a4j:support event="onchange" reRender="editReportSchedule-managerDeliveryTypePanel" ajaxSingle="true" oncomplete="loadDeliveryElements();"/>
 									</h:selectManyMenu>
 									<rich:jQuery selector="#editRSGroups" timing="onload"
 										query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
@@ -427,27 +428,40 @@
 							<tr>
 								<td>
 									<div>
-										<h:selectOneRadio id="editReportSchedule-deliverToManagers" value="#{reportScheduleBean.item.deliverToManagers}" layout="pageDirection" disabledClass="disabled">
-											<f:selectItem itemDisabled="#{!reportScheduleBean.enableDeliverToGroupManager}" itemValue="TRUE" itemLabel="#{messages.reportSchedule_notifyGroupManager}" ></f:selectItem>
-											<f:selectItem itemValue="FALSE" itemLabel="#{messages.reportSchedule_notifyByEmail}"></f:selectItem>
-										</h:selectOneRadio>
+ 										<ui:fragment rendered="#{reportScheduleBean.enableDeliverToGroupManager}">
+											<h:selectOneMenu id="editReportSchedule-deliverToManagers" value="#{reportScheduleBean.item.deliverToManagers}" layout="pageDirection" 
+  		                            			onclick="document.getElementById('editReportSchedule-emailList').style.display = (this.value == 'TRUE' ? 'none' : '');document.getElementById('editReportSchedule-managerDeliveryTypeTable').style.display = (this.value == 'TRUE' ? '' : 'none');"> 
+												<f:selectItem itemValue="TRUE" itemLabel="#{messages.reportSchedule_notifyGroupManager}" ></f:selectItem>
+												<f:selectItem itemValue="FALSE" itemLabel="#{messages.reportSchedule_notifyByEmail}"></f:selectItem>
+											</h:selectOneMenu>
+										</ui:fragment>
+ 										<ui:fragment rendered="#{!reportScheduleBean.enableDeliverToGroupManager}">
+ 											<h:outputText value="#{messages.reportSchedule_notifyByEmail}"></h:outputText>
+										</ui:fragment>
 									</div>
 								</td>
-							</tr>						
-							<tr>
-								<td>
-									<div class="instructions"><h:outputText value="#{messages.editReportSchedule_reportsByEmailInstructions}" /></div>
-									<h:inputTextarea cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
-								</td>
 							</tr>
-							<tr>
-								<td>
-								</td>
-							</tr>
-						</table>
+						</table>			
+						<table id="editReportSchedule-emailList" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+								<tr>
+									<td>
+										<div class="instructions"><h:outputText value="#{messages.editReportSchedule_reportsByEmailInstructions}" /></div>
+										<h:inputTextarea cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
+									</td>
+								</tr>
+						</table>	
+						<h:panelGroup id="editReportSchedule-managerDeliveryTypePanel" rendered="#{reportScheduleBean.enableDeliverToGroupManager}">
+						<table id="editReportSchedule-managerDeliveryTypeTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center"> 
+								<tr>
+									<td>											   
+									<h:selectOneRadio id="managerDeliveryType" onchange="checkMultiple('managerDeliveryType')" value="#{reportScheduleBean.item.managerDeliveryType}" converter="SimpleBeanConverter"  layout="pageDirection" disabled="${reportScheduleBean.teamOnlySelected}" disabledClass="disabled"> 
+										<f:selectItems value="#{reportScheduleBean.managerDeliveryTypes}"/> 
+									</h:selectOneRadio>
+									</td>
+								</tr>
+						</table>	
+						</h:panelGroup>
 						</ui:fragment>
-
-
 
 						</h:panelGroup>
 						</ui:fragment>
@@ -480,6 +494,7 @@
 				 function bodyLoad()
 				  {
 		
+					loadDeliveryElements();
 				    var elements = document.getElementById("edit_form").elements;
 				    for (var i = 0; i &lt; elements.length; i++)
 				      for (var j = 0; j &lt; formElements.length; j++)
@@ -490,6 +505,20 @@
 				        }
 				  }
 				  
+			      function loadDeliveryElements()
+			      {
+			    	  if (document.getElementById("edit_form:editReportSchedule-deliverToManagers") != null) {
+			    		  var val = document.getElementById("edit_form:editReportSchedule-deliverToManagers").value;
+				          if(document.getElementById("editReportSchedule-emailList") != null) {
+						  	document.getElementById('editReportSchedule-emailList').style.display = ((val == 'FALSE') ? '' : 'none');
+				          }
+				          if(document.getElementById("editReportSchedule-managerDeliveryTypeTable") != null) {
+							  document.getElementById('editReportSchedule-managerDeliveryTypeTable').style.display = ((val == 'TRUE') ? '' : 'none');
+				          }
+			    	  }
+			      }
+			      
+			      
 				 
 	      </script>
 	</ui:define>

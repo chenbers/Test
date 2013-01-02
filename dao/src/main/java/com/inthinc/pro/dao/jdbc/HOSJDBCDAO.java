@@ -806,6 +806,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 driverLogin.setVehicleDotType(RuleSetType.valueOf(resultSet.getInt(10)));
                 driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(11)));
                 driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(12)));
+                driverLogin.setFobId(resultSet.getString(13));
             }
 
         }   // end try
@@ -852,6 +853,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 driverLogin.setTimezoneID(resultSet.getString(6));
                 driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(7)));
                 driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(8)));
+                driverLogin.setFobId(resultSet.getString(9));
             }
 
         }   // end try
@@ -893,6 +895,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 driverLogin.setDriverID(resultSet.getInt(1));
                 driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(2)));
                 driverLogin.setTimezoneID(resultSet.getString(3));
+                driverLogin.setFobId(resultSet.getString(4));
             }
 
         }   // end try
@@ -1002,6 +1005,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 occupantInfo = new HOSOccupantInfo();
                 occupantInfo.setFullName(resultSet.getString(1));
                 occupantInfo.setEmpId(resultSet.getString(2));
+                occupantInfo.setFobId(resultSet.getString(3));
             }
         }   // end try
         catch (SQLException e) { 
