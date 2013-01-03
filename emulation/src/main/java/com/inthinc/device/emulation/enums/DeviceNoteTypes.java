@@ -538,7 +538,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
     
     /**
      * Only the key value is passed around, so with this method<br />
-     * we can quickly get the right EventAttr and use it as a key
+     * we can quickly get the right DeviceNoteType and use it as a key
      * @param code
      * @return
      */

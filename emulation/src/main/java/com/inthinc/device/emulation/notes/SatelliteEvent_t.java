@@ -94,7 +94,7 @@ public class SatelliteEvent_t extends DeviceNote {
 		return ((first << Byte.SIZE) | second) & 0xFFFF;
 	}
 	
-	public byte[] Package(boolean addSize) {
+	protected byte[] Package(boolean addSize) {
 	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 	    if (addSize) {
@@ -145,14 +145,28 @@ public class SatelliteEvent_t extends DeviceNote {
 	}
 	
 	public static SatelliteEvent_t unPackageS(byte[] packagedNote){
+	    try {
+	        return unPackageS(packagedNote, true);
+	    } catch (IllegalArgumentException e) {
+	        return Notes850.unpackageN(packagedNote);
+	    }
+	}
+	
+	public static SatelliteEvent_t unPackageS(byte[] packagedNote, boolean hasSize){
 		ByteArrayInputStream bais = new ByteArrayInputStream(packagedNote);
-		bais.read(); 	// pos 0, length of struct including this byte
-		DeviceNoteTypes type = DeviceNoteTypes.valueOf(byteToInt(bais, 1));  
-		
-		int version = byteToInt(bais, 1);  // Note Type Version
-		if ( version != m_nVersion) { // version == 3
-			throw new IllegalArgumentException("Not a SatelliteEvent: nVersion is " + version); 
+		if (hasSize) {
+		    byteToInt(bais, 1); 	// pos 0, length of struct including this byte
 		}
+		int noteType = byteToInt(bais, 1);
+        int version = byteToInt(bais, 1);  // Note Type Version
+        if ( version != m_nVersion) { // version == 3
+            throw new IllegalArgumentException("Not a SatelliteEvent_t: nVersion is " + version); 
+        }
+		DeviceNoteTypes type = DeviceNoteTypes.valueOf(noteType);  
+		if (type == null) {
+		    throw new IllegalArgumentException("Not a SatelliteEvent_t: nType is " + noteType);
+		}
+		
 		AutomationCalendar time = new AutomationCalendar(byteToLong(bais, 4) * 1000);
 		
 		int flags = bais.read(); // trip flags

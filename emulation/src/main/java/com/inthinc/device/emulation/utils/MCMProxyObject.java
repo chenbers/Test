@@ -41,6 +41,7 @@ import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.interfaces.MCMService;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.notes.NoteBC;
+import com.inthinc.device.emulation.notes.Notes850;
 import com.inthinc.device.emulation.notes.SatNote;
 import com.inthinc.device.emulation.notes.SatelliteEvent;
 import com.inthinc.device.emulation.notes.SatelliteEvent_t;
@@ -145,7 +146,7 @@ public class MCMProxyObject implements MCMService{
     public byte[] ws850Note(String mcmID, Direction waysDirection, List<DeviceNote> noteList) {
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
         for (DeviceNote note : noteList){
-            byte[] array = ((SatelliteEvent_t)note).Package(false);
+            byte[] array = note.Package();
             temp.add(array); 
             printNote(note);
         }
@@ -517,12 +518,12 @@ public class MCMProxyObject implements MCMService{
         } else if (clazz.equals(TiwiNote.class)) {
             reply = tiwiNote(state.getImei(),
             		notes);
+        } else if (clazz.equals(Notes850.class)) {
+            reply = ws850Note(state.getMcmID(), state.getWaysDirection(), notes);
         } else if (clazz.equals(SatelliteEvent_t.class)){
         	if (state.getWaysDirection().equals(Direction.sat)){
 //        		sendSatNote(state.getImei(), notes);
         		sendSatSMTP(state.getImei(), notes);
-            } else if (state.getProductVersion().shouldSendNoteHessian()) {
-                reply = ws850Note(state.getMcmID(), state.getWaysDirection(), notes);
         	} else {
         		reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
@@ -547,6 +548,11 @@ public class MCMProxyObject implements MCMService{
 	                reply[i] = notebc(state.getMcmID(),
 	                        state.getWaysDirection(),
 	                        sendingQueue.get(noteClass), state.getImei());
+	            
+	            } else if (sendingQueue.containsKey(Notes850.class)) {
+	                noteClass = Notes850.class;
+                    reply[i] = ws850Note(state.getMcmID(), state.getWaysDirection(), sendingQueue.get(noteClass));
+
 	            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
 	                noteClass = SatelliteEvent.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
@@ -557,6 +563,7 @@ public class MCMProxyObject implements MCMService{
 		                        state.getWaysDirection(),
 		                        sendingQueue.get(noteClass), state.getImei());
 	            	}
+	            
 	            } else if (sendingQueue.containsKey(TiwiNote.class)) {
 	                noteClass = TiwiNote.class;
 	                reply[i] = tiwiNote(state.getImei(),
@@ -566,8 +573,6 @@ public class MCMProxyObject implements MCMService{
 	            	if (state.getWaysDirection().equals(Direction.sat)){
 //	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
 	            	    sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
-	            	} else if (state.getProductVersion().shouldSendNoteHessian()) {
-            	        reply[i] = ws850Note(state.getMcmID(), state.getWaysDirection(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 	                            state.getWaysDirection(),
