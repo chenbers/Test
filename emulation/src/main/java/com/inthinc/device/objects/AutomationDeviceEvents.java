@@ -10,7 +10,6 @@ import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
-import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 
 public class AutomationDeviceEvents {
@@ -228,9 +227,7 @@ public class AutomationDeviceEvents {
 		}
 	}
 	
-    public static OneWirePairingEvent pairOneWire(DeviceState state, GeoPoint location, String fobID){
-        return classes.new OneWirePairingEvent(state, location, fobID);
-    }
+   
 	   
     public class OneWirePairingEvent extends AutomationDeviceEvents {
         private OneWirePairingEvent(DeviceState state, GeoPoint location, String fobID){
@@ -240,6 +237,7 @@ public class AutomationDeviceEvents {
             note.addAttr(EventAttr.ATTR_FOB_ID, fobID);
         }
     }
+    
     
     public class RequestFobInfoEvent extends AutomationDeviceEvents {
         private RequestFobInfoEvent(DeviceState state, GeoPoint location, String fobID) {
@@ -683,6 +681,15 @@ public class AutomationDeviceEvents {
     		NoteEventTypes expectedType){
     	return classes.new NoteEvent(state, location, deltaX, deltaY, deltaZ, expectedType);
     }
+
+    public static void pairOneWire(DeviceBase device, String fobID) {
+        device.addEvent(pairOneWire(device.getState(), device.getCurrentLocation(), fobID));
+    }
+    
+    public static OneWirePairingEvent pairOneWire(DeviceState state, GeoPoint location, String fobID){
+        return classes.new OneWirePairingEvent(state, location, fobID);
+    }
+    
     
     public static void powerOff(DeviceBase device){
 		device.addEvent(powerOff(device.getState(), device.getCurrentLocation()));
@@ -699,6 +706,14 @@ public class AutomationDeviceEvents {
     public static PowerOnEvent powerOn(DeviceState state, GeoPoint location){
 		return classes.new PowerOnEvent(state, location);
 	}
+    
+    public static void requestFobInfo(DeviceBase device, String fobID) {
+        device.addEvent(requestFobInfo(device.getState(), device.getCurrentLocation(), fobID));
+    }
+
+    public static RequestFobInfoEvent requestFobInfo(DeviceState state, GeoPoint location, String fobID) {
+        return classes.new RequestFobInfoEvent(state, location, fobID);
+    }
     
     public static void rfKill(DeviceBase device){
     	device.addEvent(rfKill(device.getState(), device.getCurrentLocation()));

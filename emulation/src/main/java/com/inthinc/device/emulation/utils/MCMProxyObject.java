@@ -142,11 +142,11 @@ public class MCMProxyObject implements MCMService{
     }
     
 
-    private byte[] ws850Note(String mcmID, Direction waysDirection, List<DeviceNote> noteList) {
+    public byte[] ws850Note(String mcmID, Direction waysDirection, List<DeviceNote> noteList) {
         List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
         for (DeviceNote note : noteList){
-            byte[] array = note.Package();
-            temp.add(array);
+            byte[] array = ((SatelliteEvent_t)note).Package(false);
+            temp.add(array); 
             printNote(note);
         }
         return notes(mcmID,waysDirection.getIndex(), temp);
@@ -521,6 +521,8 @@ public class MCMProxyObject implements MCMService{
         	if (state.getWaysDirection().equals(Direction.sat)){
 //        		sendSatNote(state.getImei(), notes);
         		sendSatSMTP(state.getImei(), notes);
+            } else if (state.getProductVersion().shouldSendNoteHessian()) {
+                reply = ws850Note(state.getMcmID(), state.getWaysDirection(), notes);
         	} else {
         		reply = sendHttpNote(state.getMcmID(),
                         state.getWaysDirection(),
