@@ -8,7 +8,8 @@
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.startAddress}" />
             <ui:param name="context" value="#{context}-pageName"/> 
             <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />  
-            
+        	<ui:param name="lat" value="#{driverLocation.loc.lat}"/>  optional
+        	<ui:param name="lng" value="#{driverLocation.loc.lng}"/>  optional
 	</ui:include>
 -->
 <ui:composition 
@@ -46,6 +47,7 @@
 			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
 				<h:outputText id="#{tripBubbleAddress}"/>
 			</ui:fragment>
+			<h:panelGroup rendered="#{not empty lat}"><h:outputText value="#{lat}"/>,<h:outputText value="#{lng}"/></h:panelGroup>
 		
 	</h:panelGrid>
 </div>

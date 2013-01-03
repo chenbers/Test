@@ -17,13 +17,7 @@
 					mapsbs = portalmap.getMap();
 					initLayers();
 
-//					mapsbs = new GMap2(document.getElementById("map-canvas"), {googleBarOptions: opts});
 					mapsbs.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}), #{speedLimitChangeRequests.mapzoom});
-//					mapsbs.addControl(new GLargeMapControl());
-					//mapsbs.addControl(new GMapTypeControl());
-					//mapsbs.addControl(new GOverviewMapControl()); 
-					//mapsbs.setMapType(G_NORMAL_MAP);					
-			       	//mapsbs.enableScrollWheelZoom();
 			       	
 	        		geocoder =new GClientGeocoder();
 	        				       

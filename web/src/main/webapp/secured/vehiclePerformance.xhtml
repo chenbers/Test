@@ -131,6 +131,8 @@
   	        <ui:param name="addressLookupAddressFormat" value="#{vehiclePerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  		 	<ui:param name="context" value="vehiclePerformanceStart" />
+            <ui:param name="lat" value="#{vehiclePerformanceBean.lastTrip.beginningPoint.lat}" />
+            <ui:param name="lng" value="#{vehiclePerformanceBean.lastTrip.beginningPoint.lng}" />
 	</ui:include>
 	
 	<ui:include src="/includes/tripBubble.xhtml">
@@ -141,6 +143,8 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{vehiclePerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
 		 	<ui:param name="context" value="vehiclePerformanceEnd" />
+            <ui:param name="lat" value="#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}" />
+            <ui:param name="lng" value="#{vehiclePerformanceBean.lastTrip.routeLastStep.lng}" />
 	</ui:include>
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripInProgressBubble" />
@@ -150,6 +154,8 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{vehiclePerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
 		 	<ui:param name="context" value="vehiclePerformanceInProgress" />
+            <ui:param name="lat" value="#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}" />
+            <ui:param name="lng" value="#{vehiclePerformanceBean.lastTrip.routeLastStep.lng}" />
 	</ui:include>
 	
 	

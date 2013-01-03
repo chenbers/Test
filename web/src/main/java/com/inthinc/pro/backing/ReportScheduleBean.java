@@ -40,6 +40,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.Occurrence;
+import com.inthinc.pro.model.ReportManagerDeliveryType;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
@@ -303,6 +304,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         getItem().setDriverName(null);
         getItem().setVehicleName(null);
         getItem().setListDisplay(null);
+        getItem().setDeliverToManagers(Boolean.FALSE);
+        getItem().setManagerDeliveryType(ReportManagerDeliveryType.ALL);
         getAllGroupUsers();
 
     }
@@ -343,6 +346,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         reportSchedule.setAccountID(getAccountID());
         reportSchedule.setUserID(getUserID());
         reportSchedule.setDeliverToManagers(Boolean.FALSE);
+        reportSchedule.setManagerDeliveryType(ReportManagerDeliveryType.ALL);
         List<Boolean> booleanList = new ArrayList<Boolean>();
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
@@ -400,8 +404,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     protected void doSave(List<ReportScheduleView> saveItems, boolean create) {
         logger.debug(String.format("doSave() - ENTER"));
         for (final ReportScheduleView reportSchedule : saveItems) {
-            if (reportSchedule.getDeliverToManagers() != null)
+            if (reportSchedule.getDeliverToManagers() != null) {
                 logger.debug(String.format("reportSchedule.notifyGroupManagers = %s", reportSchedule.getDeliverToManagers().toString()));
+            }
             if (reportSchedule.getOccurrence().equals(Occurrence.DAILY) || reportSchedule.getOccurrence().equals(Occurrence.WEEKLY)) {
                 // Calendar now = Calendar.getInstance();
                 DateTime now = new DateTime(DateTimeZone.forID(getPerson().getTimeZone().getID()));
@@ -793,6 +798,26 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return false;
     }
 
+    public Boolean getTeamOnlySelected() {
+        if (getItem() == null || getItem().getReport() == null)
+            return false;
+        
+        if (getItem().getGroupID() != null) {
+            Group group = getGroupHierarchy().getGroup(getItem().getGroupID());
+            if (group != null)
+                return group.getType() == GroupType.TEAM; 
+        }
+        if (getItem().getGroupIDList() != null && getItem().getGroupIDList().size() > 0) {
+            for (Integer groupID : getItem().getGroupIDList()) {
+                Group group = getGroupHierarchy().getGroup(groupID);
+                if (group.getType() != GroupType.TEAM)
+                    return Boolean.FALSE;
+            }
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+    
     public Boolean getEnableDeliverToGroupManager() {
         Boolean result = Boolean.FALSE;
         if (getItem() == null || getItem().getReport() == null)
@@ -876,6 +901,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public List<SelectItem> getReportParamTypes() {
         return SelectItemUtil.toList(ReportParamType.class, false, ReportParamType.NONE);
+    }
+    
+    public List<SelectItem> getManagerDeliveryTypes() {
+        return SelectItemUtil.toList(ReportManagerDeliveryType.class, false);
     }
 
     public static class ReportScheduleView extends ReportSchedule implements EditItem {

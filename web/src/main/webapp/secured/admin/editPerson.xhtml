@@ -301,13 +301,20 @@
                                 <f:converter converterId="HexConverter" />
                               </h:outputText>
                             </td>
-                          </tr>                          
+                          </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid2}:" /></td>
                             <td>
                               <h:outputText value="#{personBean.item.driver.rfid2}">
                                 <f:converter converterId="HexConverter" />
                               </h:outputText>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_fobID}:" /></td>
+                            <td>
+                              <h:outputText  rendered="#{(not empty personBean.item.driver.fobID)}" value="#{personBean.item.driver.fobID}"/>
+                              <h:commandLink rendered="#{(not empty personBean.item.driver.fobID)}"><h:outputText value="#{messages.editPerson_clearFobPairing}" /></h:commandLink>
                             </td>
                           </tr>
                        </table>

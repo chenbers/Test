@@ -3,23 +3,17 @@ package com.inthinc.pro.backing;
 import java.util.Map;
 
 import com.inthinc.pro.backing.model.VehicleSettingManager;
+import com.inthinc.pro.backing.ui.IdlingSetting;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class WS850SettingManager extends VehicleSettingManager {
-    public final int NUM_SPEEDS = 15;
-    public final Integer[] DEFAULT_SPEED_SETTING = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};    
-//    public final Integer[] DEFAULT_SPEED_SETTING = {5, 10, 15, 20, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25};    
-    public final String DEFAULT_SPEED_SET = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-    public final Integer[] SPEED_LIMITS = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75};
-    public final String[] SPEED_FIELDS = {"speed0","speed1","speed2","speed3","speed4","speed5","speed6","speed7","speed8","speed9","speed10","speed11","speed12","speed13","speed14"};
-
-    private static final Double DEFAULT_MAX_SPEED_LIMIT = 78.0;
 
     public WS850SettingManager(ConfiguratorDAO configuratorDAO, SensitivitySliders sensitivitySliders, VehicleSetting vehicleSetting) {
         
@@ -35,11 +29,11 @@ public class WS850SettingManager extends VehicleSettingManager {
         Integer hardTurn = hardTurnSlider.getDefaultValueIndex();
         Integer hardAcceleration =  hardAccelerationSlider.getDefaultValueIndex();
         Integer hardBrake = hardBrakeSlider.getDefaultValueIndex();
-        Integer[] speedSettings = convertFromSpeedSettings(DEFAULT_SPEED_SET);
-        Double maxSpeed = DEFAULT_MAX_SPEED_LIMIT;
+        Integer[] speedSettings = convertFromSpeedSettings(SpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
+        Double maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
+        Integer idlingThresholdSeconds = IdlingSetting.DEFAULT.getSeconds();
         
-//        public WS850EditableVehicleSettings(Integer[] speedSettings, Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, Integer dotVehicleType) {
-        return new WS850EditableVehicleSettings(vehicleID==null?-1:vehicleID, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical,maxSpeed,VehicleDOTType.NON_DOT.getConfiguratorSetting());
+        return new WS850EditableVehicleSettings(vehicleID==null?-1:vehicleID, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical,maxSpeed,VehicleDOTType.NON_DOT.getConfiguratorSetting(), idlingThresholdSeconds);
     }
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
         Integer hardVertical = hardVerticalSlider.getSliderValueFromSettings(vs);
@@ -49,28 +43,29 @@ public class WS850SettingManager extends VehicleSettingManager {
         Integer[] speedSettings = convertFromSpeedSettings(vs.getBestOption(SettingType.WS850_SPEED_LIMIT.getSettingID())); 
         Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.WS850_SEVERE_SPEED_LIMIT.getSettingID()));
         if (maxSpeed < 1.0)
-            maxSpeed = DEFAULT_MAX_SPEED_LIMIT;
+            maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
+        Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()));
         
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
-        return new WS850EditableVehicleSettings(vs.getVehicleID(),speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, maxSpeed,VehicleDOTType.NON_DOT.getConfiguratorSetting());
+        return new WS850EditableVehicleSettings(vs.getVehicleID(),speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, maxSpeed,VehicleDOTType.NON_DOT.getConfiguratorSetting(),idlingThresholdSeconds);
     }
     private Integer[] convertFromSpeedSettings(String speedSet){
         
         if (speedSet == null) return createSpeedSettings();
         
-        Integer[] speedSettingValues= new Integer[NUM_SPEEDS];
+        Integer[] speedSettingValues= new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
         String[] speeds = speedSet.split(" ");
         for (int i = 0; i < speeds.length; i++){
             
-            speedSettingValues[i] = NumberUtil.convertString(speeds[i])-SPEED_LIMITS[i];
+            speedSettingValues[i] = NumberUtil.convertString(speeds[i])-SpeedingConstants.INSTANCE.SPEED_LIMITS[i];
         }
         return speedSettingValues;
     }
     
     private Integer[] createSpeedSettings(){
-        Integer[] speedSettings = new Integer[NUM_SPEEDS];
-        for (int i = 0; i < NUM_SPEEDS; i++){
-            speedSettings[i] = DEFAULT_SPEED_SETTING[i]; 
+        Integer[] speedSettings = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
+        for (int i = 0; i < SpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+            speedSettings[i] = SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
         }
 
         return speedSettings;
@@ -79,12 +74,12 @@ public class WS850SettingManager extends VehicleSettingManager {
         
         StringBuilder speedSet = new StringBuilder();
         
-        for (int i = 0; i<NUM_SPEEDS-1;i++){
+        for (int i = 0; i<SpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
             
-           speedSet.append(speedSettings[i]+SPEED_LIMITS[i]);
+           speedSet.append(speedSettings[i]+SpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
            speedSet.append(' '); 
         }
-        speedSet.append(speedSettings[NUM_SPEEDS-1]+SPEED_LIMITS[NUM_SPEEDS-1]);
+        speedSet.append(speedSettings[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]+SpeedingConstants.INSTANCE.SPEED_LIMITS[SpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
         
         return speedSet.toString();
      }
@@ -125,6 +120,10 @@ public class WS850SettingManager extends VehicleSettingManager {
                                         ws850EditableVehicleSettings.getMaxSpeed().toString(), 
                                         vehicleSetting.getBestOption(SettingType.WS850_SEVERE_SPEED_LIMIT.getSettingID()), 
                                         fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.maxSpeed"));
+            newSettings.addSettingIfNeeded(SettingType.WS850_IDLING_TIMEOUT, 
+                    ws850EditableVehicleSettings.getIdlingSeconds().toString(), 
+                    vehicleSetting.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()), 
+                    fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.idlingSeconds"));
 
             return newSettings.getDesiredSettings();
         }

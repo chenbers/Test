@@ -7,7 +7,7 @@ import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.RedFlagAlert;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 
 public class DaoUtilRedFlagAlertMapper extends DaoUtilMapper {
 	
@@ -20,7 +20,7 @@ public class DaoUtilRedFlagAlertMapper extends DaoUtilMapper {
 
         if (value instanceof String)
         {
-            Integer[] speedSettingsArray = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+            Integer[] speedSettingsArray = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
             
             String[] list = ((String)value).split(" ");
             for (int i = 0; i < list.length; i++)

@@ -1,6 +1,6 @@
 package com.inthinc.pro.model.configurator;
 
-public enum TiwiproSpeedingConstants {
+public enum SpeedingConstants {
     INSTANCE;
     
     public final int NUM_SPEEDS = 15;

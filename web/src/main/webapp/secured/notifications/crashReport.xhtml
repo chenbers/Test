@@ -81,17 +81,10 @@
 			function initMap() {
 				
 				if (GBrowserIsCompatible()) {					
-					//GUnload();//causing problems with java applet in page
-					//var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
 					portalmap.init(true, "map-canvas");
 					initLayers();
 					map = portalmap.getMap();
 					
-//					map = new GMap2(document.getElementById("map-canvas"));						
-//					map.addControl(new GLargeMapControl());
-//					map.addControl(new GMapTypeControl());
-//					map.addControl(new GOverviewMapControl()); 
-//					map.setMapType(G_NORMAL_MAP);
 					map.setCenter(crashPoint.latlng, 14);
 					
 					var vehicleIcon = new GIcon(baseIcon);

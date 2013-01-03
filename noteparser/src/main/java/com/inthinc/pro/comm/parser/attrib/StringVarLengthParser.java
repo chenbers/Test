@@ -13,6 +13,8 @@ public class StringVarLengthParser implements AttribParser {
         	maxLength = 4;
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH9))
         	maxLength = 9;
+        if (parserType.equals(AttribParserType.STRING_VAR_LENGTH10))
+            maxLength = 10;
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH11))
         	maxLength = 11;
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH20))
@@ -21,6 +23,8 @@ public class StringVarLengthParser implements AttribParser {
         	maxLength = 26;
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH30))
         	maxLength = 30;
+        if (parserType.equals(AttribParserType.STRING_VAR_LENGTH32))
+            maxLength = 32;
 
         int length = 0;
 		for (length = 0; data[offset + length] != 0 && length < maxLength; length++);

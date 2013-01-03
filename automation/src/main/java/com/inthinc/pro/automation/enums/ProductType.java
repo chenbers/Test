@@ -8,7 +8,6 @@ public enum ProductType implements IndexEnum {
 	TIWIPRO_R74(5, "R74"), 
 	TIWIPRO_R747(7, "R747"),
 	WAYSMART_850(12),
-	
 	;
 	
 	private final int index;

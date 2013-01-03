@@ -75,6 +75,7 @@ public class LatLongParser implements AttribParser {
 		
 		attribMap.put(Attrib.MAXLATITUDE.getFieldName(), latitude);
 		attribMap.put(Attrib.MAXLONGITUDE.getFieldName(), longitude);
+		
 
 		return offset+6;
 	}
