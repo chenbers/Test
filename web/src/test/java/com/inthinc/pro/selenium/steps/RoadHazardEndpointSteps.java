@@ -1,8 +1,5 @@
 package com.inthinc.pro.selenium.steps;
 
-import it.config.ITDataSource;
-import it.config.IntegrationConfig;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
