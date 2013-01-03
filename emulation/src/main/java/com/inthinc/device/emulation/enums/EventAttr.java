@@ -425,6 +425,7 @@ public enum EventAttr implements IndexEnum{
     VEHICLE_ID_STR(24592, 20, true),        // string 20 max, variable length,              \0 terminated
     IMEI(24593, 15, true),                  // string 15 max, variable length,              \0 terminated
     MCM_ID_STR(24594, 9, true),             // string  9 max, variable length,              \0 terminated
+    ATTR_FOB_ID(24597, 32, true),
     RHA_DESCRIPTION(24595, 32, true),     
     SKIP_INT(32000),
     
