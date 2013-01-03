@@ -125,7 +125,11 @@ public class WS850SettingManager extends VehicleSettingManager {
                     vehicleSetting.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()), 
                     fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.idlingSeconds"));
 
-            return newSettings.getDesiredSettings();
+            newSettings.addSettingIfNeeded(SettingType.WS850_HOS_SETTING,
+                    ""+ws850EditableVehicleSettings.getDotVehicleType(), 
+                    vehicleSetting.getBestOption(SettingType.WS850_HOS_SETTING.getSettingID()),
+                    fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.dotVehicleType"));
+           return newSettings.getDesiredSettings();
         }
         catch(IllegalArgumentException iae){
          
