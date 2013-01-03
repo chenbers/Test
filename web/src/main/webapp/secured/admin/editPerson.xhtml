@@ -313,7 +313,6 @@
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_fobID}:" /></td>
                             <td>
-                              <h:outputText  rendered="#{(empty personBean.item.driver.fobID)}" value="#{messages.editPerson_driver_fobIDIsNull}"/>
                               <h:outputText  rendered="#{(not empty personBean.item.driver.fobID)}" value="#{personBean.item.driver.fobID}"/>
                               <h:commandLink rendered="#{(not empty personBean.item.driver.fobID)}"><h:outputText value="#{messages.editPerson_clearFobPairing}" /></h:commandLink>
                             </td>

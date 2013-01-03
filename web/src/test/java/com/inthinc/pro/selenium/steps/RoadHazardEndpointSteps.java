@@ -1,13 +1,17 @@
 package com.inthinc.pro.selenium.steps;
 
-import it.config.ITDataSource;
-
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import org.apache.log4j.Logger;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.annotations.Given;
@@ -143,4 +147,89 @@ public class RoadHazardEndpointSteps {
 
         return dist;
     }
+    
+    
+    
+    //TODO: copied wholesale from dao/src/test/java/com/it... TEMPORARILY until the "right" way to share integration configuration is determined
+    //OR until automation tests can be moved into the projects they are tests (i.e. webservice tests should be in service project, configurator test in configurator project ....)
+    private class ITDataSource {
+        org.apache.commons.dbcp.BasicDataSource datasource;
+        
+        public ITDataSource() {
+            initDataSourceFromProperties(new IntegrationConfig());
+        }
+
+        private void initDataSourceFromProperties(IntegrationConfig config) {
+            //datasource = new DriverManagerDataSource();
+            datasource = new org.apache.commons.dbcp.BasicDataSource();
+            datasource.setDriverClassName(config.getProperty(IntegrationConfig.JDBC_DRIVER_CLASS_NAME));
+            datasource.setUrl(config.getProperty(IntegrationConfig.JDBC_MYSQL_URL));
+            datasource.setConnectionProperties(IntegrationConfig.JDBC_MYSQL_CONNECTION_PROPERTIES);
+            datasource.setUsername(config.getProperty(IntegrationConfig.JDBC_MYSQL_USERNAME));
+            datasource.setPassword(config.getProperty(IntegrationConfig.JDBC_MYSQL_PASSWORD));
+            datasource.setInitialSize(1);
+            datasource.setMaxActive(10);
+        }
+        
+        public Connection getConnection() {
+            try {
+                return datasource.getConnection();
+            } catch (SQLException e) {
+                System.out.println("Error: getConnection failed with: "+e);
+                return null;
+            }
+        }
+
+        public DataSource getRealDataSource() {
+            return datasource;
+        }
+    }
+    
+    private class IntegrationConfig extends Properties {
+        private final static String CONFIG_PROPERTIES_FILENAME = "it.properties";
+        public final static String SILO_HOST = "siloDataAccessHost";
+        public final static String SILO_PORT = "siloDataAccessPort";
+        public final static String MCM_HOST = "mcmDataAccessHost";
+        public final static String MCM_PORT = "mcmDataAccessPort";
+        public final static String MAP_SERVER_URL = "mapserver.geonames.url";
+        
+        public final static String JDBC_DRIVER_CLASS_NAME = "jdbc.mysql.driverClassName";
+        public final static String JDBC_MYSQL_URL = "jdbc.mysql.url";
+        public final static String JDBC_MYSQL_USERNAME = "jdbc.mysql.username";
+        public final static String JDBC_MYSQL_PASSWORD = "jdbc.mysql.password";
+        public final static String JDBC_MYSQL_CONNECTION_PROPERTIES = "jdbc.mysql.connectionProperties";
+
+        public final static String MINA_HOST = "minaHost";
+        public final static String MINA_PORT = "minaPort";
+
+        public IntegrationConfig() {
+            this(CONFIG_PROPERTIES_FILENAME);
+        }
+        public IntegrationConfig(String propFileName) {
+            try {
+                
+                load(Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName == null ? CONFIG_PROPERTIES_FILENAME : propFileName));
+            } catch (Exception e) {
+                System.out.println(CONFIG_PROPERTIES_FILENAME + " cannot be loaded.");
+                e.printStackTrace();
+            }
+        }
+
+        public int getIntegerProp(String key) {
+            String value = getProperty(key);
+
+            if (value == null) {
+                System.out.println("Error getting value for property: " + key);
+                return 0;
+            }
+
+            try {
+                return new Integer(value).intValue();
+            } catch (NumberFormatException e) {
+                System.out.println("Error getting integer value for property: " + key);
+            }
+            return 0;
+        }
+    }
+    //end wholesale copy paste //TODO: replace with a bestPractice/permanent solution
 }
