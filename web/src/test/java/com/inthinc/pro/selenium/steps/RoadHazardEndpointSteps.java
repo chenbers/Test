@@ -3,6 +3,8 @@ package com.inthinc.pro.selenium.steps;
 import it.config.ITDataSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +16,8 @@ import org.jbehave.core.annotations.Given;
 
 import org.junit.Assert;
 
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.automation.models.Hazard;
 import com.inthinc.pro.automation.models.Hazard.HazardUrls;
-import com.inthinc.pro.automation.models.HazardType;
 import com.inthinc.pro.automation.rest.RestCommands;
 
 
@@ -25,8 +25,6 @@ public class RoadHazardEndpointSteps {
 	RestCommands restServices;
 	List<Map<String, Object>> dbResults;
     List<Object> lo;
-    HazardType type;
-	SiloService ss;
 	String sHRt = System.getProperty("line.separator");
     
     @Given("I verify endpoint data for MCMID_IMEA \"$mcmID\" and latitude \"$latitude\" and longitude \"$longitude\"")
@@ -104,6 +102,7 @@ public class RoadHazardEndpointSteps {
        		iHz = Integer.parseInt(sHazID.substring(9));
        		iDbHazardID[iRow] = iHz;
         }
+        Arrays.sort(iDbHazardID);
         
     	HazardUrls custom = new HazardUrls(mcmID,latitude.toString(),longitude.toString());
     	Hazard hazard = new Hazard();
@@ -117,12 +116,15 @@ public class RoadHazardEndpointSteps {
     		hazardID = hazards.getHazardID();
     		iEpHazardID[counter] = hazardID;
     	}
+    	Arrays.sort(iEpHazardID);
+    	
     	Assert.assertTrue("Expected more than one row, but found " + counter,counter>1);
     	Assert.assertTrue("iDbHazardID==iEpHazardID should be true. ",iDbHazardID.length == iEpHazardID.length);
-    	iRow=0;
-    	for(int i=0; i<iDbHazardID.length; i++) {
-    		Assert.assertTrue("Expected '" + iDbHazardID[i] + "', but was '" + iEpHazardID[i] + ", instead.",iDbHazardID[i]==iEpHazardID[i]);
-    	}
+    	Assert.assertTrue("Lists should be equal: " + iDbHazardID + sHRt + iEpHazardID,Arrays.equals(iDbHazardID,iEpHazardID));
+//    	iRow=0;
+//    	for(int i=0; i<iDbHazardID.length; i++) {
+//    		Assert.assertTrue("Expected '" + iDbHazardID[i] + "', but was '" + iEpHazardID[i] + ", instead.",iDbHazardID[i]==iEpHazardID[i]);
+//    	}
     }
     
     public static double distanceBetween(String lat1, String lng1, String lat2, String lng2) {
