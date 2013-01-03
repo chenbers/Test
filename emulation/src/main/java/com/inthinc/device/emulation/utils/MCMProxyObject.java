@@ -123,15 +123,10 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> tiwiNote(String mcmID, List<? extends DeviceNote> noteList){
         if (regularNote ){
             List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
-            Log.debug("\nnote(mcmID=%s, noteList=%s)", mcmID, noteList);
             for (DeviceNote note : noteList){
                 byte[] array = note.Package();
                 temp.add(array);
                 printNote(note);
-                
-                if (array.length <=17){
-                    throw new IllegalArgumentException("Note cannot be 17 bytes long: " + note);
-                }
             }
             return note(mcmID, temp);
         } else {
@@ -146,6 +141,24 @@ public class MCMProxyObject implements MCMService{
         return null;
     }
     
+
+    private byte[] ws850Note(String mcmID, Direction waysDirection, List<DeviceNote> noteList) {
+        List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
+        for (DeviceNote note : noteList){
+            byte[] array = note.Package();
+            temp.add(array);
+            printNote(note);
+        }
+        return notes(mcmID,waysDirection.getIndex(), temp);
+    }
+
+    @Override
+    public byte[] notes(String mcmID, int connectType, List<byte[]> noteList) throws HessianException {
+        byte[] reply = proxy.notes(mcmID, connectType, noteList);
+        printReply(new String(reply));
+        DeviceStatistics.addCall();
+        return reply;
+    }
 
     @Override
     public List<Map<String, Object>> note(String mcmID, List<byte[]> noteList) {
@@ -551,6 +564,8 @@ public class MCMProxyObject implements MCMService{
 	            	if (state.getWaysDirection().equals(Direction.sat)){
 //	            		sendSatNote(state.getImei(), sendingQueue.get(noteClass));
 	            	    sendSatSMTP(state.getImei(), sendingQueue.get(noteClass));
+	            	} else if (state.getProductVersion().shouldSendNoteHessian()) {
+            	        reply[i] = ws850Note(state.getMcmID(), state.getWaysDirection(), sendingQueue.get(noteClass));
 	            	} else {
 	            		reply[i] = sendHttpNote(state.getMcmID(),
 	                            state.getWaysDirection(),
@@ -584,6 +599,7 @@ public class MCMProxyObject implements MCMService{
         
         return reply;
     }
+
 
     @Override
     public Integer crash(String mcmID, List<byte[]> crashDataList)
@@ -652,4 +668,6 @@ public class MCMProxyObject implements MCMService{
         DeviceStatistics.addCall();
         return reply;
     }
+    
+
 }

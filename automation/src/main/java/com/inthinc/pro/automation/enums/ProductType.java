@@ -34,5 +34,9 @@ public enum ProductType implements IndexEnum {
     public boolean isWaysmart() {
         return name().contains("WAYSMART");
     }
+
+    public boolean shouldSendNoteHessian() {
+        return this.equals(WAYSMART_850);
+    }
 	
 }
