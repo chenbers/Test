@@ -44,17 +44,28 @@ public class WaysmartDevice extends DeviceBase {
         }
     };
 
-    protected final static ProductType productVersion = ProductType.WAYSMART;
+    protected final ProductType productVersion;
 
 
     public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
             Direction comMethod) {
         this(IMEI, MCM, server, comMethod, DeviceProps.getWaysmartDefaults());
     }
+    
+    public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
+            Direction comMethod, ProductType productType) {
+        this(IMEI, MCM, server, comMethod, DeviceProps.getWaysmartDefaults(), productType);
+    }
 
     public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
             Direction comMethod, Map<DeviceProps, String> settings) {
-        super(IMEI, productVersion, settings, server);
+        this(IMEI, MCM, server, comMethod, settings, ProductType.WAYSMART);
+    }
+    
+    public WaysmartDevice(String IMEI, String MCM, AutoSilos server, 
+            Direction comMethod, Map<DeviceProps, String> settings, ProductType productType) {
+        super(IMEI, productType, settings, server);
+        productVersion = productType;
         state.setMcmID(MCM);
         state.setWaysDirection(comMethod);
         setState(147);
@@ -63,11 +74,20 @@ public class WaysmartDevice extends DeviceBase {
     public WaysmartDevice(String IMEI, String MCM, Direction comMethod) {
         this(IMEI, MCM, AutoSilos.QA, comMethod);
     }
+    
+    public WaysmartDevice(String IMEI, String MCM, Direction comMethod, ProductType productType) {
+        this(IMEI, MCM, AutoSilos.QA, comMethod, productType);
+    }
 
     public WaysmartDevice(DeviceState state, AutoSilos server) {
-    	super(state, server);
+    	this(state, server, ProductType.WAYSMART);
 	}
-
+    
+    public WaysmartDevice(DeviceState state, AutoSilos server, ProductType productType) {
+        super(state, server);
+        productVersion = productType;
+    }
+    
 
 	@Override
     protected void ackFwdCmds(String[] reply) {

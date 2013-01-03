@@ -349,7 +349,7 @@ public abstract class DeviceNote implements Comparable<DeviceNote> {
         
         if (state == null){
         	note = new TiwiNote(type, location);        	
-        } else if (state.getProductVersion().equals(ProductType.WAYSMART)){
+        } else if (state.getProductVersion().isWaysmart()){
 //        	if (state.getWaysDirection().equals(Direction.sat)){
         		note = new SatelliteEvent_t(type, state, location);
 //        	} else if (NoteBC.getTypes().contains(type)){

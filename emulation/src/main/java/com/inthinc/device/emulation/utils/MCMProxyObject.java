@@ -52,7 +52,6 @@ import com.inthinc.device.hessian.tcp.ProDAOException;
 import com.inthinc.device.noteservice.NoteService;
 import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.pro.automation.enums.AutoSilos;
-import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
@@ -594,7 +593,7 @@ public class MCMProxyObject implements MCMService{
 
 	public Object dumpSet(DeviceState state, Map<Integer, String> settings) {
 		try {
-				if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				if (state.getProductVersion().isWaysmart()){
 				return dumpSet(state.getMcmID(), state.getProductVersion().getIndex(), settings);
 			} else {
 				return dumpSet(state.getImei(), state.getProductVersion().getIndex(), settings);
@@ -611,7 +610,7 @@ public class MCMProxyObject implements MCMService{
 
 	public Object reqSet(DeviceState state) {
 		try {
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				return reqSet(state.getMcmID());
 			} else {
 				return reqSet(state.getImei());
