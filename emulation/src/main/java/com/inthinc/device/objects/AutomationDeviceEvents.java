@@ -228,6 +228,26 @@ public class AutomationDeviceEvents {
 		}
 	}
 	
+    public static OneWirePairingEvent pairOneWire(DeviceState state, GeoPoint location, String fobID){
+        return classes.new OneWirePairingEvent(state, location, fobID);
+    }
+	   
+    public class OneWirePairingEvent extends AutomationDeviceEvents {
+        private OneWirePairingEvent(DeviceState state, GeoPoint location, String fobID){
+            super(DeviceNoteTypes.ONE_WIRE_PAIRING, state, location);
+            
+            note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
+            note.addAttr(EventAttr.ATTR_FOB_ID, fobID);
+        }
+    }
+    
+    public class RequestFobInfoEvent extends AutomationDeviceEvents {
+        private RequestFobInfoEvent(DeviceState state, GeoPoint location, String fobID) {
+            super(DeviceNoteTypes.REQUEST_FOB_INFO, state, location);
+            note.addAttr(EventAttr.ATTR_FOB_ID, fobID);
+        }
+    }
+	
 	private static void hosChangeState(DeviceState state, DeviceNote note){
     	int tripFlag = state.getTripFlags() & 0xF0;
 

@@ -654,6 +654,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return returnValue;
     }
 
+    public void clearFob() {
+        //set fobID to an empty string to ensure that updateDriver picks it up as a change
+        getItem().getDriver().setFobID("");
+        super.save();
+    }
+    
     @Override
     public String save() {
         // see if we're partially editing one of the batch items

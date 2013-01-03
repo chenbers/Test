@@ -46,7 +46,6 @@ public class HanSoloTrip extends Thread{
         hanSolosFirstTrip();
     }
     
-
     public void rfSwitchTestTrip() {
         String imei = "FAKEIMEIDEVICE"; 
         AutoSilos address=AutoSilos.QA; 
