@@ -215,6 +215,10 @@ public enum DeviceNoteTypes implements BaseEnum  {
     TRIAX_STATUS_EX(110, EventAttr.MAGICA, EventAttr.ORIENTATION_TRIAX, EventAttr.DMM_ZLEVEL, EventAttr.RMS_LEVEL, EventAttr.RMS_WINDWO, EventAttr.YWINDOW, EventAttr.DMM_YLEVEL, EventAttr.XACCEL, EventAttr.SLOPE, EventAttr.DVX, EventAttr.CAL_VERSION, EventAttr.NUMERATOR, EventAttr.DENOMINATOR, EventAttr.INTERCEPTS, EventAttr.G_TRIGGER_LEVEL, EventAttr.DIAGNOSTIC),
     CRASH_DATA_EXTENDED(112),
     HOS_CHANGE_STATE_NO_GPS_LOCK(113, EventAttr.DRIVER_HOS_STATE, EventAttr.CLEAR_DRIVER_FLAG, EventAttr.DRIVER_ID_STR, EventAttr.NO_GPS_LOCK_LOCATION),
+    /**
+     * 
+     * Attributes [...] ATTR_FOB_ID
+     */
     NEWDRIVER_HOSRULE(116, EventAttr.DRIVER_ID_STR, EventAttr.CURRENT_HOS_RULESET),
 
     /**
@@ -455,6 +459,18 @@ public enum DeviceNoteTypes implements BaseEnum  {
     //Put in for customer G&K to help detect tampering to tiwis.
     POWER_INTERRUPTED(229),
     
+    /**
+     * Sent by 850 to pair an EmpID to a fobID
+     * Attributes [ATTR_DRIVER_ID_STR, ATTR_FOB_ID]
+     */
+    ONE_WIRE_PAIRING(230, EventAttr.DRIVER_ID_STR, EventAttr.ATTR_FOB_ID),
+    
+    /**
+     * Sent by 850 to pair an EmpID to a fobID
+     * Attributes [ATTR_FOB_ID]
+     */
+    REQUEST_FOB_INFO(231, EventAttr.ATTR_FOB_ID),
+    
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
     STRIPPED_LOWER_LIMIT(243),
@@ -522,7 +538,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
     
     /**
      * Only the key value is passed around, so with this method<br />
-     * we can quickly get the right EventAttr and use it as a key
+     * we can quickly get the right DeviceNoteType and use it as a key
      * @param code
      * @return
      */

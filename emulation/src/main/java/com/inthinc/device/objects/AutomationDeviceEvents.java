@@ -10,7 +10,6 @@ import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
-import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 
 public class AutomationDeviceEvents {
@@ -32,7 +31,7 @@ public class AutomationDeviceEvents {
 		private FuelStopEvent(DeviceState state, GeoPoint location, int vehicleGallons, int odometerX100, int trailerGallons, String locationS){
 			super(DeviceNoteTypes.FUEL_STOP, state, location);
 			
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				note.addAttr(EventAttr.VEHICLE_GALLONS, vehicleGallons);
 				note.addAttr(EventAttr.ODOMETER, odometerX100);
 				note.addAttr(EventAttr.TRAILER_GALLONS, trailerGallons);
@@ -46,8 +45,8 @@ public class AutomationDeviceEvents {
 		private EnterZoneEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.WSZONES_ARRIVAL_EX, state, location);
 
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
-				
+			if (state.getProductVersion().isWaysmart()){
+                note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
 			} else {
 				note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
 			}
@@ -61,7 +60,7 @@ public class AutomationDeviceEvents {
             note.addAttr(EventAttr.LOW_IDLE, state.getLowIdle());
             note.addAttr(EventAttr.HIGH_IDLE, state.getHighIdle());
             
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 			    
 			} else {
 			    
@@ -77,7 +76,7 @@ public class AutomationDeviceEvents {
 
 			endOfTripAttrs(state, note);
 			
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
                 
             } else {
             	
@@ -90,7 +89,7 @@ public class AutomationDeviceEvents {
         private IgnitionOnEvent(DeviceState state, GeoPoint location){
         	super(DeviceNoteTypes.IGNITION_ON, state, location);
         	
-        	if (state.getProductVersion().equals(ProductType.WAYSMART)){
+        	if (state.getProductVersion().isWaysmart()){
 //              note.addAttr(EventAttr.DRIVER_STR, employeeID);
 //              note.addAttr(EventAttr.DRIVER_ID, driverID);
           } else {
@@ -114,7 +113,7 @@ public class AutomationDeviceEvents {
 		private LeaveZoneEvent (DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.WSZONES_ARRIVAL, state, location);
 
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				
 			} else {
 				note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
@@ -128,7 +127,7 @@ public class AutomationDeviceEvents {
         private LocationEvent(DeviceState state, GeoPoint location){
         	super(DeviceNoteTypes.LOCATION, state, location);
             
-            if (state.getProductVersion().equals(ProductType.WAYSMART)){
+            if (state.getProductVersion().isWaysmart()){
                 
             } else {
             	
@@ -228,6 +227,25 @@ public class AutomationDeviceEvents {
 		}
 	}
 	
+   
+	   
+    public class OneWirePairingEvent extends AutomationDeviceEvents {
+        private OneWirePairingEvent(DeviceState state, GeoPoint location, String fobID){
+            super(DeviceNoteTypes.ONE_WIRE_PAIRING, state, location);
+            
+            note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
+            note.addAttr(EventAttr.ATTR_FOB_ID, fobID);
+        }
+    }
+    
+    
+    public class RequestFobInfoEvent extends AutomationDeviceEvents {
+        private RequestFobInfoEvent(DeviceState state, GeoPoint location, String fobID) {
+            super(DeviceNoteTypes.REQUEST_FOB_INFO, state, location);
+            note.addAttr(EventAttr.ATTR_FOB_ID, fobID);
+        }
+    }
+	
 	private static void hosChangeState(DeviceState state, DeviceNote note){
     	int tripFlag = state.getTripFlags() & 0xF0;
 
@@ -256,7 +274,7 @@ public class AutomationDeviceEvents {
 		public LogoutEvent (DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.CLEAR_DRIVER, state, location);
 			endOfTripAttrs(state, note);
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				note.addAttr(EventAttr.DRIVER_ID_STR, state.getEmployeeID());
 			} else {
 				note.addAttr(EventAttr.LOGOUT_TYPE, LogoutMethod.RFID_LOGOUT.getIndex());
@@ -272,7 +290,7 @@ public class AutomationDeviceEvents {
 
 			endOfTripAttrs(state, note);
 			
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				
 			} else {
 				
@@ -286,7 +304,7 @@ public class AutomationDeviceEvents {
         	
         	endOfTripAttrs(state, note);
         	
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				
 			} else {
 				
@@ -298,7 +316,7 @@ public class AutomationDeviceEvents {
     	private NoDriverEvent(DeviceState state, GeoPoint location){
     		super(DeviceNoteTypes.NO_DRIVER, state, location);
 
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				
 			} else {
 				
@@ -320,7 +338,7 @@ public class AutomationDeviceEvents {
         	this.deltaZ = deltaZ;
             this.eventType = eventType;
             
-            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
+            if (state.getProductVersion().isWaysmart()) {
                 note.addAttr(EventAttr.PACKED_DELTAV, packDeltaVS());
 
             } else {
@@ -361,7 +379,7 @@ public class AutomationDeviceEvents {
 
 			endOfTripAttrs(state, note);
 
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				
 			} else {
 				note.addAttr(EventAttr.FIRMWARE_VERSION, state.getWMP());
@@ -376,7 +394,7 @@ public class AutomationDeviceEvents {
     	private PowerOnEvent(DeviceState state, GeoPoint location){
     		super(DeviceNoteTypes.POWER_ON, state, location);
 			
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
                 
             } else {
             	
@@ -399,7 +417,7 @@ public class AutomationDeviceEvents {
         private SeatBeltEvent(DeviceState state, GeoPoint location){
         	super(DeviceNoteTypes.SEATBELT, state, location);
             
-            if (state.getProductVersion().equals(ProductType.WAYSMART)) {
+            if (state.getProductVersion().isWaysmart()) {
                 note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
                 note.addAttr(EventAttr.DISTANCE, state.getSeatbeltViolationDistanceX100());
                 note.addAttr(EventAttr.MAX_RPM, state.getMaxRpm());
@@ -424,7 +442,7 @@ public class AutomationDeviceEvents {
         	super(DeviceNoteTypes.IGNITION_OFF, state, location);
         	note.addAttr(EventAttr.SEATBELT_CLICKS, 1);
         	endOfTripAttrs(state, note);
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				
 			} else {
 				
@@ -437,11 +455,11 @@ public class AutomationDeviceEvents {
     	private static final int FLAG = 1;
         
         private SpeedingEvent(DeviceState state, GeoPoint location){
-        	super(state.getProductVersion().equals(ProductType.WAYSMART) ? 
+        	super(state.getProductVersion().isWaysmart() ? 
         			DeviceNoteTypes.SPEEDING_EX4 : DeviceNoteTypes.SPEEDING_EX3, 
         			state, location);
         	
-        	if (state.getProductVersion().equals(ProductType.WAYSMART)) {
+        	if (state.getProductVersion().isWaysmart()) {
             	
             	
             	note.addAttr(EventAttr.TOP_SPEED, state.getTopSpeed());
@@ -485,7 +503,7 @@ public class AutomationDeviceEvents {
 		private StatisticsEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.STATS, state, location);
 
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				
 			} else {
 				note.addAttr(EventAttr.BASE_VER, 0);
@@ -504,7 +522,7 @@ public class AutomationDeviceEvents {
     		super(DeviceNoteTypes.UNPLUGGED, state, location);
     		endOfTripAttrs(state, note);
     		
-    		if (state.getProductVersion().equals(ProductType.WAYSMART)){
+    		if (state.getProductVersion().isWaysmart()){
     			
     		} else {
     			note.addAttr(EventAttr.BACKUP_BATTERY, 6748);
@@ -663,6 +681,15 @@ public class AutomationDeviceEvents {
     		NoteEventTypes expectedType){
     	return classes.new NoteEvent(state, location, deltaX, deltaY, deltaZ, expectedType);
     }
+
+    public static void pairOneWire(DeviceBase device, String fobID) {
+        device.addEvent(pairOneWire(device.getState(), device.getCurrentLocation(), fobID));
+    }
+    
+    public static OneWirePairingEvent pairOneWire(DeviceState state, GeoPoint location, String fobID){
+        return classes.new OneWirePairingEvent(state, location, fobID);
+    }
+    
     
     public static void powerOff(DeviceBase device){
 		device.addEvent(powerOff(device.getState(), device.getCurrentLocation()));
@@ -679,6 +706,14 @@ public class AutomationDeviceEvents {
     public static PowerOnEvent powerOn(DeviceState state, GeoPoint location){
 		return classes.new PowerOnEvent(state, location);
 	}
+    
+    public static void requestFobInfo(DeviceBase device, String fobID) {
+        device.addEvent(requestFobInfo(device.getState(), device.getCurrentLocation(), fobID));
+    }
+
+    public static RequestFobInfoEvent requestFobInfo(DeviceState state, GeoPoint location, String fobID) {
+        return classes.new RequestFobInfoEvent(state, location, fobID);
+    }
     
     public static void rfKill(DeviceBase device){
     	device.addEvent(rfKill(device.getState(), device.getCurrentLocation()));
@@ -770,7 +805,7 @@ public class AutomationDeviceEvents {
     	note.addAttr(EventAttr.OBD_PCT, state.getOBDPercent() * 10);
     	note.addAttr(EventAttr.GPS_PCT, state.getGPSPercent() * 10);
     	
-    	if (state.getProductVersion().equals(ProductType.WAYSMART)){
+    	if (state.getProductVersion().isWaysmart()){
     	    if (state.getSeatbeltDistanceX100()!=0){
     	        note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
                 note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());    

@@ -25,6 +25,8 @@ public interface MCMService extends HessianService, SbsHessianInterface
      */
     List<Map<String, Object>> note(String mcmID, List<byte[]> noteList) throws HessianException;
     
+    byte[] notes(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
+    
     List<Map<String, Object>> notebc(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
     
     List<Map<String, Object>> notews(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
