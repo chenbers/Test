@@ -37,13 +37,6 @@
         //<![CDATA[
         jQuery.noConflict();
         var map;
-        var inthinc = {
-            maps: {
-                HazardsService: function (){}
-            },
-            nextID: 1,
-            cache: {}
-        };
         /* CreateMarker(google.maps.LatLng, divID, image or null)
          *  
          * Creates a marker using specified image or
@@ -128,7 +121,7 @@
         //<![CDATA[
         var directionsDisplay;
         var directionsService = new google.maps.DirectionsService();
-        var hazardsService = new inthinc.maps.HazardsService();
+        //var hazardsService = new inthinc.maps.HazardsService();
         var oldDirections = [];
         var currentDirections = null;
         var bounds = new google.maps.LatLngBounds();
