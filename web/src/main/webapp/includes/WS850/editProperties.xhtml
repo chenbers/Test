@@ -31,8 +31,8 @@
               </td>
               
               <td>                     
-				<h:selectOneMenu value="#{vehiclesBean.item.dotVehicleType}" id="editVehicle-DOT" onchange="checkMultiple(this)" converter="SimpleBeanConverter" disabled="#{vehiclesBean.vehicleInfoDisabled}">
-                      <f:selectItems value="#{vehiclesBean.dotTypes}" />
+				<h:selectOneMenu value="#{vehiclesBean.item.hosDotType}" id="editVehicle-DOT" onchange="checkMultiple(this)" converter="SimpleBeanConverter" disabled="#{vehiclesBean.vehicleInfoDisabled}">
+                      <f:selectItems value="#{vehiclesBean.ws850DotTypes}" />
 				</h:selectOneMenu>
               </td>
             </tr>

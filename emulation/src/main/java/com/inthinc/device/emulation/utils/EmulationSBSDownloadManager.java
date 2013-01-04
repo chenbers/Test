@@ -12,13 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.inthinc.device.emulation.interfaces.SbsHessianInterface;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.sbs.SbsUpdater;
-import com.inthinc.sbs.downloadmanager.SbsDownloadAction;
 import com.inthinc.sbs.downloadmanager.SbsDownloadManager;
 import com.inthinc.sbs.simpledatatypes.VisitedMap;
 import com.inthinc.sbs.utils.AbstractSbsMapLoader;
