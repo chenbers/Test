@@ -78,10 +78,6 @@
             return marker;
         }
         function createCircle(point, radius, marker) {
-            //function drawCircle(       center,  m                 radius                    , nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity)
-            //drawCircle(new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, 10  , '#445566', 2          , .5       , '#112233' , .25);
-            
-            
             var circleOptions = {
                     map: map,
                     fillColor: '#112233',
@@ -410,6 +406,7 @@
                                             <a4j:form id="hazards-form">
                                                 <h:panelGroup layout="block">
                                                     <a4j:outputPanel id="tablePanel" ajaxRendered="true">
+                                                    <div id="directionsTitle" class="panel_title" style="background: none; height: auto;"><h:outputText value="#{messages.hazard_nearRoute}" /></div>
                                                     <rich:dataTable value="#{hazardsBean.tableData}" id="hazards-table" var="item" rowKeyVar="index" styleClass="datagrid filterabledatagrid"
                                                         rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" width="100%">
 
