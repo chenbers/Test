@@ -28,7 +28,15 @@ public class WS850EditableVehicleSettings extends EditableVehicleSettings {
 
     private Integer dotVehicleType;
 
-    public WS850EditableVehicleSettings(Integer vehicleID,Integer[] speedSettings, Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, double maxSpeed,Integer dotVehicleType, Integer idlingThreshold) {
+    public WS850EditableVehicleSettings(Integer vehicleID,
+                                        Integer[] speedSettings, 
+                                        Integer hardAcceleration, 
+                                        Integer hardBrake, 
+                                        Integer hardTurn, 
+                                        Integer hardVertical, 
+                                        double maxSpeed,
+                                        Integer dotVehicleType, 
+                                        Integer idlingThreshold) {
         super(vehicleID, ProductType.WS850, null);
         this.speedSettings = speedSettings;
         this.maxSpeed = maxSpeed;
