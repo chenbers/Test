@@ -677,7 +677,7 @@ public class OrganizationBean extends BaseBean
     }
     public List<SelectItem> getDotOfficeTypeSelectItems()
     {
-        return SelectItemUtil.toList(DOTOfficeType.class, true, DOTOfficeType.NONE);
+        return SelectItemUtil.toList(DOTOfficeType.class, false);
     }
     public GroupDAO getGroupDAO()
     {
