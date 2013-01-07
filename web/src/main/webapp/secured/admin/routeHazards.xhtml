@@ -358,6 +358,7 @@
                                     <div style="float: right; width: 100%; overflow: auto">
                                         <button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
                                         <div id="to_from" style="float: left; width: 49%;">
+                                        <div id="directionsTitle" class="panel_title" style="background: none; height: auto;"><h:outputText value="#{messages.hazard_directions}" /></div>
                                             <form action="javascript:void(0);" onsubmit="calcRouteNoParams(); return false;">
                                                 <input type="text" id="origin" value="#{messages.hazard_origin}" style="width: 80%" />
                                                 <div id="waypointContainer"></div>
