@@ -30,4 +30,17 @@ public class OneWireTests {
         ws.flushNotes();
     }
 
+    @Test
+    public void oneWirePairing_incorrect_expectInvalidFobFwdCmd(){
+        String imei = "MCMFAKE01";
+        String badFobID = "BADFOB01";
+        String empID = "FAKE1WRE01";
+        WaysmartDevice ws = new WaysmartDevice(imei, imei, AutoSilos.QA, Direction.gprs, ProductType.WAYSMART_850);
+        ws.firstLocation(new GeoPoint());
+        ws.getState().setEmployeeID(empID);
+        AutomationDeviceEvents.pairOneWire(ws, badFobID);
+        AutomationDeviceEvents.requestFobInfo(ws, badFobID);
+        ws.flushNotes();
+    }
+    
 }
