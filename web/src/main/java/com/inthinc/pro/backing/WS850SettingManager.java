@@ -6,7 +6,7 @@ import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.backing.ui.IdlingSetting;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
-import com.inthinc.pro.model.VehicleDOTType;
+import com.inthinc.pro.model.WS850HOSDOTType;
 import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
@@ -33,7 +33,8 @@ public class WS850SettingManager extends VehicleSettingManager {
         Double maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
         Integer idlingThresholdSeconds = IdlingSetting.DEFAULT.getSeconds();
         
-        return new WS850EditableVehicleSettings(vehicleID==null?-1:vehicleID, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical,maxSpeed,VehicleDOTType.NON_DOT.getConfiguratorSetting(), idlingThresholdSeconds);
+        
+        return new WS850EditableVehicleSettings(vehicleID==null?-1:vehicleID, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical,maxSpeed, WS850HOSDOTType.LIGHT_DUTY_NO_HOS.getConfiguratorSetting(), idlingThresholdSeconds);
     }
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
         Integer hardVertical = hardVerticalSlider.getSliderValueFromSettings(vs);
@@ -45,9 +46,9 @@ public class WS850SettingManager extends VehicleSettingManager {
         if (maxSpeed < 1.0)
             maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
         Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()));
-        
+        Integer dotVehicleType = NumberUtil.convertString(vs.getBestOption(SettingType.WS850_HOS_SETTING.getSettingID()));
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
-        return new WS850EditableVehicleSettings(vs.getVehicleID(),speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, maxSpeed,VehicleDOTType.NON_DOT.getConfiguratorSetting(),idlingThresholdSeconds);
+        return new WS850EditableVehicleSettings(vs.getVehicleID(),speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical, maxSpeed,dotVehicleType,idlingThresholdSeconds);
     }
     private Integer[] convertFromSpeedSettings(String speedSet){
         
