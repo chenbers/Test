@@ -764,14 +764,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public CoreMethodInterface enterKey() {
-        getActiveElement().sendKeys(Keys.ENTER);
+        findElement(myEnum).sendKeys(Keys.ENTER);
+    	//getActiveElement().sendKeys(Keys.ENTER);
         waitForPageToLoad();
         return this;
     }
     
     @Override
     public CoreMethodInterface spacebarKey() {
-        getActiveElement().sendKeys(Keys.SPACE);
+    	getActiveElement().sendKeys(Keys.SPACE);
         waitForPageToLoad();
         return this;
     }

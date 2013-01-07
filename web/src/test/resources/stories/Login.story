@@ -23,13 +23,20 @@ Given I am logged in
 When I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-And I validate I am on the Login page
+And I log back in
+Then I validate I am on the Executive Dashboard page
+
+Scenario: Log In - Bookmark Entry to Different Account - Need to create a test case
 Given I am logged in
+When I bookmark the page
+And I click the Logout link
+And I click the bookmark I just added
+And I log back in under the editable account
 Then I validate I am on the Executive Dashboard page
 
 Scenario: TC1243: Log In - Default Command Button
 Given I am on the Login page
-When I type "SecondPrime" into the User Name textfield
+When I type "secondPrime" into the User Name textfield
 And I type "2ut2CFmnH$f!" into the Password textfield
 And I press the Enter Key
 Then I validate I am on the Executive Dashboard page
@@ -74,6 +81,7 @@ And I validate the Legal Notice link is present
 And I validate the Privacy Policy link is present
 And I validate the Forgot Username Or Password link is present
 And I validate the Logo text is present
+And I validate the Copyright text is present
 
 Scenario: TC1251 - Log In - User Name Incorrect Case Error
 Given I am on the Login page

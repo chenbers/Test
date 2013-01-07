@@ -46,15 +46,15 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     DETAIL_ENTRY(null, "***-form:***:###:detail"),
     STATUS_ENTRY("exclude", "***-form:***:###:exclude"), 
 
-    HEADER_LEVEL("Level", "***-form:***:levelheader"),
-    HEADER_DETAILS("Alert Details", "***-form:***:alertsheader"),
+    HEADER_LEVEL("Level", "***-form:***:levelheader:sortDiv"),
+    HEADER_DETAILS("Alert Details", "***-form:***:alertsheader:sortDiv"),
     SORT_DATE_TIME("Date/Time", "***-form:***:dateheader:sortDiv"),
     SORT_GROUP("Group", "***-form:***:groupheader:sortDiv"),
     SORT_DRIVER("Driver", "***-form:***:driverheader:sortDiv"),
     SORT_VEHICLE("Vehicle", "***-form:***:vehicleheader:sortDiv"),
-    HEADER_CATEGORY("Category", "***-form:***:categoryheader"),
-    HEADER_DETAIL("Detail", "***-form:***:detailheader"),
-    HEADER_STATUS("Status", "***-form:***:excludeheader"),
+    HEADER_CATEGORY("Category", "***-form:***:categoryheader:sortDiv"),
+    HEADER_DETAIL("Detail", "***-form:***:detailheader:sortDiv"),
+    HEADER_STATUS("Status", "***-form:***:excludeheader:sortDiv"),
 
     ;
     private String text, url;
