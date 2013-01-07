@@ -42,6 +42,10 @@ public class PageLogin extends Masthead {
     }
     public class LoginTexts extends MastheadTexts{
     	
+    	public Text logo() {
+    		return new Text(LoginEnum.LOGO_TEXT);
+    	}
+    	
     	public TextFieldLabel username(){
     		return new TextFieldLabel(LoginEnum.USERNAME_FIELD);
     	}
@@ -52,6 +56,10 @@ public class PageLogin extends Masthead {
     	
     	public Text error() {
     		return new Text(LoginEnum.ERROR_TEXT);
+    	}
+    	
+    	public Text copyright() {
+    		return new Text(LoginEnum.COPYRIGHT_TEXT);
     	}
     }
     
@@ -73,10 +81,6 @@ public class PageLogin extends Masthead {
     public class LoginLinks extends MastheadLinks{
     	public TextLink forgotUsernameOrPassword(){
     		return new TextLink(LoginEnum.FORGOT_USERNAME_LINK);
-    	}
-    	
-    	public TextLink logo() {
-    		return new TextLink(LoginEnum.LOGO_TEXT);
     	}
     }
     

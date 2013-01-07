@@ -8,6 +8,55 @@ Meta:
 
 Narrative:
 
+Scenario: TC1464: Notifications - Red Flags - Edit Columns - UI
+Given I am logged in
+When I click the Notifications link
+And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+Then I validate the 1st Row of the Column checkbox is present
+And I validate the 2nd Row of the Column checkbox is present
+And I validate the 3rd Row of the Column checkbox is present
+And I validate the 4th Row of the Column checkbox is present
+And I validate the 5th Row of the Column checkbox is present
+And I validate the 6th Row of the Column checkbox is present
+And I validate the 7th Row of the Column checkbox is present
+And I validate the 8th Row of the Column checkbox is present
+And I uncheck the 1st Row of the Column checkbox
+And I uncheck the 2nd Row of the Column checkbox
+And I uncheck the 3rd Row of the Column checkbox
+And I uncheck the 4th Row of the Column checkbox
+And I uncheck the 5th Row of the Column checkbox
+And I uncheck the 6th Row of the Column checkbox
+And I uncheck the 7th Row of the Column checkbox
+And I uncheck the 8th Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is not checked
+And I validate the 2nd Row of the Column checkbox is not checked
+And I validate the 3rd Row of the Column checkbox is not checked
+And I validate the 4th Row of the Column checkbox is not checked
+And I validate the 5th Row of the Column checkbox is not checked
+And I validate the 6th Row of the Column checkbox is not checked
+And I validate the 7th Row of the Column checkbox is not checked
+And I validate the 8th Row of the Column checkbox is not checked
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I validate the 1st Row of the Column checkbox is checked
+And I validate the 2nd Row of the Column checkbox is checked
+And I validate the 3rd Row of the Column checkbox is checked
+And I validate the 4th Row of the Column checkbox is checked
+And I validate the 5th Row of the Column checkbox is checked
+And I validate the 6th Row of the Column checkbox is checked
+And I validate the 7th Row of the Column checkbox is checked
+And I validate the 8th Row of the Column checkbox is checked
+And I validate the Save button is present
+And I validate the Cancel button is present
+
 Scenario: TC1434: Notifications - Red Flags - Bookmark Entry 
 Given I am logged in
 When I click the Notifications link
@@ -15,8 +64,7 @@ And I click the Red Flags link
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-Then I validate I am on the Login page
-Given I am logged in
+And I log back in
 Then I validate I am on the Notifications Red Flags page
 
 Scenario: TC1437: Notifications - Red Flags - Driver Link
@@ -24,19 +72,32 @@ Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Driver link as SAVEDENTRY
 And I click the 1st Row of the Entry Driver link
-Then I validate the Driver Name link is SAVEDENTRY
+Then I validate the Driver Name link contains SAVEDENTRY
+
+Scenario: Notifications - Red Flags - Group Link (Need to add a rally story)
+Given I am logged in
+When I click the Notifications link
+And I click the Red Flags link
+And I select "Top" from the Team dropdown
+And I select "Past Year" from the Time Frame dropdown
+And I click the Refresh button
+And I click the Sort By Group link
+And I save the 1st Row of the Entry Group link as SAVEDENTRY
+And I click the 1st Row of the Entry Group link
+And I validate the Driver Team Value text is SAVEDENTRY
+Then I validate the Team Name text is SAVEDENTRY
 
 Scenario: TC1450: Notifications - Red Flags - Table Properties NEED ASSISTANCE IN IMPLEMENTING HOW TO CHECK ORDER
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 Then I validate the Sort By Date Time column sorts correctly
 And I validate the Sort By Driver column sorts correctly
@@ -59,6 +120,18 @@ Scenario: TC1452: Notifications - Red Flags - UI
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I check the 2nd Row of the Column checkbox
+And I check the 3rd Row of the Column checkbox
+And I check the 4th Row of the Column checkbox
+And I check the 5th Row of the Column checkbox
+And I check the 6th Row of the Column checkbox
+And I check the 7th Row of the Column checkbox
+And I check the 8th Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
 Then I validate I am on the Notifications Red Flags page
 And I validate the Team dropdown is present
 And I validate the Time Frame dropdown is present
@@ -87,13 +160,14 @@ Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
 And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SAVEDENTRY
+Then I validate I am on the Vehicle Performance page
+And I validate the Vehicle Name link contains SAVEDENTRY
 
 Scenario: TC1455: Notifications - Red Flags - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -238,7 +312,7 @@ And I click the Edit Columns link
 And the Edit Columns popup opens
 And I validate the 1st Row of the Column checkbox is not checked
 And I check the 1st Row of the Column checkbox
-And I click the Save button
+And I press the Enter Key
 And the Edit Columns popup closes
 And I validate the Header Level text is present
 
@@ -285,37 +359,12 @@ When I click the Notifications link
 And I click the Red Flags link
 Then I validate the Header Level text is present
 
-Scenario: TC1464: Notifications - Red Flags - Edit Columns - UI
-Given I am logged in
-When I click the Notifications link
-And I click the Red Flags link
-And I click the Edit Columns link
-And the Edit Columns popup opens
-Then I validate the 1st Row of the Column checkbox is present
-And I validate the 2nd Row of the Column checkbox is present
-And I validate the 3rd Row of the Column checkbox is present
-And I validate the 4th Row of the Column checkbox is present
-And I validate the 5th Row of the Column checkbox is present
-And I validate the 6th Row of the Column checkbox is present
-And I validate the 7th Row of the Column checkbox is present
-And I validate the 8th Row of the Column checkbox is present
-And I validate the 1st Row of the Column checkbox is checked
-And I validate the 2nd Row of the Column checkbox is checked
-And I validate the 3rd Row of the Column checkbox is checked
-And I validate the 4th Row of the Column checkbox is checked
-And I validate the 5th Row of the Column checkbox is checked
-And I validate the 6th Row of the Column checkbox is checked
-And I validate the 7th Row of the Column checkbox is checked
-And I validate the 8th Row of the Column checkbox is checked
-And I validate the Save button is present
-And I validate the Cancel button is present
-
-Scenario: TC1465: Notifications - Red Flags - Exclude Link - Cancel Button
+Scenario: TC1465: Notifications - Red Flags - Exclude Link - No Button
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
@@ -331,7 +380,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the Counter text as TABLECOUNT
 And I click the 1st Row of the Entry Status link
@@ -341,12 +390,12 @@ And the Exclude Event popup closes
 Then I validate the Counter text is TABLECOUNT
 And I validate the 1st Row of the Entry Status link is "include"
 
-Scenario: TC1469: Notifications - Red Flags - Exclude Link - OK Button
+Scenario: TC1469: Notifications - Red Flags - Exclude Link - Yes Button
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the Counter text as TABLECOUNT
 And I click the 1st Row of the Entry Status link
@@ -361,7 +410,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
@@ -378,7 +427,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
@@ -392,7 +441,7 @@ And I validate the 1st Row of the Entry Status link is "include"
 And I click the 1st Row of the Entry Status link
 And I validate the 1st Row of the Entry Status link is "exclude"
 
-Scenario: TC5744: Notifications - Red Flags - Time Frame
+Scenario: TC5744: Notifications - Red Flags - Time Frame (requires entries from today and yesterday)
 Given I am logged in
 When I click the Notifications link
 And I click the Red Flags link

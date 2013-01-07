@@ -15,8 +15,7 @@ And I click the Diagnostics link
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-Then I validate I am on the Login page
-Given I am logged in
+And I log back in
 Then I validate I am on the Notifications Diagnostics page
 
 Scenario: TC1371: Notifications - Diagnostics - Driver Link
@@ -87,7 +86,7 @@ And I click the Sort By Driver link
 And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
 Then I validate I am on the Vehicle Performance page
-And I validate the Vehicle Name link is SAVEDENTRY
+And I validate the Vehicle Name link contains SAVEDENTRY
 
 Scenario: TC1386: Notifications - Diagnostics - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -288,12 +287,12 @@ Scenario: TC1396: Notifications > Diagnostics > Exclude Link - Event Interaction
 Given I am logged in
 When I click the Notifications link
 And I click the Diagnostics link
-And I save the Records text as RECORDS
+And I save the Counter text as RECORDS
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
 And I press the Enter key
 And the Exclude Event popup closes
-Then I validate the Records text is RECORDS
+Then I validate the Counter text is RECORDS
 And I validate the 1st Row of the Entry Status link is "include"
 
 Scenario: TC1399: Notifications - Diagnostics - Exclude Link - UI

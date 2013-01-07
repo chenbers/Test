@@ -140,7 +140,8 @@ And I click the Sort By Vehicle link
 And I click the Sort By Vehicle link
 And I save the 1st Row of the Vehicle Value link as SAVEDENTRY
 And I click the 1st Row of the Vehicle Value link
-Then I validate the Vehicle Name link is SAVEDENTRY
+Then I validate I am on the Vehicle Performance page
+And I validate the Vehicle Name link contains SAVEDENTRY
 
 Scenario: TC1571: Reports - Drivers - Edit Columns - Cancel Button (Changes)
 Given I am logged in

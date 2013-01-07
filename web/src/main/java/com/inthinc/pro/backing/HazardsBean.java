@@ -78,7 +78,6 @@ public class HazardsBean extends BaseBean {
         loadHazards(-90.0, -180.0, 90.0, 180.0); 
     }
     public void loadHazards(Double lat1, Double lng1, Double lat2, Double lng2) {
-        logger.debug("public void loadHazards(Double "+lat1+", Double "+lng1+", Double "+lat2+", Double "+lng2+")");
         List<Hazard> justHazards = adminHazardJDBCDAO.findHazardsByUserAcct(this.getUser(), lat1, lng1, lat2, lng2);
         if(hazards == null){
             hazards = new HashMap<Integer, Hazard>();
@@ -88,8 +87,6 @@ public class HazardsBean extends BaseBean {
             hazards.put(hazard.getHazardID(), hazard);
         }
         
-        logger.debug("adminHazardJDBCDAO: "+adminHazardJDBCDAO);
-        logger.debug("hazards: "+hazards);
         if (hazards.isEmpty())
             hazards = new HashMap<Integer,Hazard>();
     }
@@ -103,8 +100,6 @@ public class HazardsBean extends BaseBean {
     }
     public boolean filterBounds(Object current) {
         Hazard currentHazard = (Hazard) current;
-        
-        logger.debug("filterBoundsValue: "+filterBoundsValue+" currentHazard"+currentHazard);
         String[] bounds = filterBoundsValue.split(":");
         //default to the world
         Double lat1 = -90.0;
@@ -116,16 +111,11 @@ public class HazardsBean extends BaseBean {
             lng1 = Double.valueOf(bounds[1]);
             lat2 = Double.valueOf(bounds[2]);
             lng2 = Double.valueOf(bounds[3]);
-//            logger.debug("lat1: "+lat1);
-//            logger.debug("lng1: "+lng1);
-//            logger.debug("lat2: "+lat2);
-//            logger.debug("lng2: "+lng2);
         }
         boolean result = currentHazard.getLat() > lat1
                 && currentHazard.getLng() > lng1
                 && currentHazard.getLat() < lat2
                 && currentHazard.getLng() < lng2;
-        if(result)logger.debug("returning "+result+" for "+currentHazard.getLat()+":"+currentHazard.getLongitude());
         return result;
     }
     public List<SelectItem> getHazardTypeSelectItems(){
@@ -135,14 +125,12 @@ public class HazardsBean extends BaseBean {
         return SelectItemUtil.toList(MeasurementLengthType.class, false);
     }
     public Map<Integer, Hazard> getHazards() {
-    	logger.info("public Map<Integer, Hazard> getHazards()");
         if (hazards == null) {
             loadHazards();
         }
         return hazards;
     }
     public void initTableData(){
-    	logger.info("public void initTableData() "); 
         for(Integer key: getHazards().keySet()){
             //set driver display value
             Hazard hazard = hazards.get(key);
@@ -199,7 +187,6 @@ public class HazardsBean extends BaseBean {
     }
     
     public void editListener(ActionEvent event){
-        logger.debug("editListener event: "+event);
         Integer hazardIDToEdit = (Integer)event.getComponent().getAttributes().get("hazardID");
         item = hazards.get(hazardIDToEdit);
     }
@@ -249,9 +236,7 @@ public class HazardsBean extends BaseBean {
         try {
             for(Device device: findDevicesInRadius()){
                 if(device.getStatus() == DeviceStatus.ACTIVE && device.isWaySmart()){
-                    logger.debug("about to send to device: "+device);
                     queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
-                    logger.debug("sent to device device.name: "+device.getName());
                 }
             }
             setSendHazardMsg("hazardSendToDevice.success");
@@ -265,10 +250,8 @@ public class HazardsBean extends BaseBean {
         queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
     }
     private static void queueForwardCommand(Device device, String address, byte[] data, int command) {
-        logger.debug("queueForwardCommand Begin");
         ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
         int addToQueue = fwdCmdSpoolWS.add(device, fcs);
-        logger.debug("addToQueue: "+addToQueue);
         if (addToQueue == -1)
             throw new ProDAOException("Iridium Forward command spool failed.");
     }
@@ -277,7 +260,6 @@ public class HazardsBean extends BaseBean {
      * Called when the user clicks to save changes when adding or editing.
      */
     public String save() {
-        logger.debug("HazardsBean.save() ");
         // validate
         if (!validate())
             return null;
@@ -298,7 +280,6 @@ public class HazardsBean extends BaseBean {
         item.setLocation(location);
         item.setModified(new Date());
         if (add) {
-            logger.debug("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item.getAccountID(),item));
 
@@ -415,7 +396,6 @@ public class HazardsBean extends BaseBean {
         return true;
     }
     public void onTypeChange() {
-        logger.debug("onTypeChange();");
         DateTime startTime = new DateTime(item.getStartTime().getTime());
         Date newEndTime =        (item.getType()==null)?null: startTime.plus(item.getType().getDefaultDuration()).toDate();
         Double newRadiusMeters = (item.getType()==null)?null: item.getType().getRadius();
@@ -431,20 +411,16 @@ public class HazardsBean extends BaseBean {
     }
     
     public void onExpTimeChangeListener(ActionEvent event){
-        logger.debug("onExpTimeChangeListener event: "+event);
         defaultExpTime = false;
     }
     public void onExpTimeChange() {
-        logger.debug("onExpTimeChange");
         defaultExpTime = false;
     }
     public void onRadiusChange() {
-        logger.debug("onRadiusChange() ");
         defaultRadius = false;
         item.setRadiusMeters((Double) item.getRadiusUnits().convertToMeters(item.getRadiusInUnits()));
     }
     public void onUnitChange() {
-        logger.debug("onUnitChange()");
         if(item.getRadiusMeters() !=null){
             item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
         }

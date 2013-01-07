@@ -16,6 +16,11 @@ public class TextObject extends ElementBase implements TextBased {
     public Boolean assertContains(String compareAgainst) {
         return assertTrue(getText().contains(compareAgainst), myEnum + " does not contain the text: \"" + compareAgainst +"\"");
     }
+    
+    @Override
+    public Boolean capitalizedContains(String compareAgainst) {
+    	return assertTrue(getText().equalsIgnoreCase(compareAgainst), myEnum + " does not contain the text: \"" + compareAgainst +"\"");
+    }
 
     @Override
     public Boolean assertDoesNotContain(String compareAgainst) {

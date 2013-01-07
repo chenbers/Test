@@ -13,8 +13,7 @@ And I validate I am on the Live Fleet page
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-And I validate I am on the Login page
-Given I am logged in
+And I log back in
 Then I validate I am on the Live Fleet page
 
 Scenario: TC1229: Live Fleet - Bookmark Entry to Different Account
@@ -24,8 +23,7 @@ And I validate I am on the Live Fleet page
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-And I validate I am on the Login page
-Given I am logged in an account that can be edited
+And I log back in under the editable account
 Then I validate I am on the Live Fleet page
 
 Scenario: TC1232: Live Fleet - Driver Link

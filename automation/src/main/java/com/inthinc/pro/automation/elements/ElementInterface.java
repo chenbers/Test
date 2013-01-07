@@ -277,6 +277,15 @@ public interface ElementInterface {
          */
         @Validate(englishName="not close to")
         public Boolean validateDoesNotContain(String expectedPart);
+
+        /**
+         * Validates that the Element ignores capital letters
+         * @param compareAgainst
+         * @return
+         */
+        @Validate(englishName="capitalized contains")
+		public Boolean capitalizedContains(String compareAgainst);
+
     }
     
     public interface TextFieldWithSuggestions extends Typeable {
