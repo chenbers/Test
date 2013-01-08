@@ -47,7 +47,8 @@ public enum AttribParserType {
 	ACKDATA(44),
 	
 	INTEGER_SKIP(45),
-	NOTEFLAGS(46);
+	NOTEFLAGS(46),
+    BYTEARRAY(47);
 	
 	private static final Map<Integer,AttribParserType> lookup = new HashMap<Integer,AttribParserType>();
 

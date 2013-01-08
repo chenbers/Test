@@ -1,5 +1,10 @@
 package com.inthinc.pro.dao.mock;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +19,7 @@ import com.inthinc.hos.ddl.HOSOccupantLog;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
@@ -419,5 +425,12 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         if (vehicleID.equals(MOCK_VEHICLE_ID2))
             mileageMap.put(MOCK_DRIVER_ID1, VEHICLE2_MILEAGE);
         return mileageMap;
+    }
+
+    @Override
+    public String fetchIMEIForOccupant(Integer driverID, Integer startTime) 
+    {
+        String imei = "";
+        return imei;
     }
 }
