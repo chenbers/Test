@@ -318,7 +318,11 @@ public class OrganizationBean extends BaseBean {
     public void update() {
         if (validate((GroupTreeNodeImpl) tempGroupTreeNode)) {
             copyGroupTreeNode((GroupTreeNodeImpl) tempGroupTreeNode, (GroupTreeNodeImpl) selectedGroupNode, true);
-            // selectedGroupNode.getBaseEntity().setAddressID(updateAddress(selectedGroupNode.getBaseEntity()));
+            
+            //Need to update address here - it's horrible but not obvious where the state gets set to null if the field is cleared
+            if (selectedGroupNode.getBaseEntity().getAddress().getState() == null){
+                selectedGroupNode.getBaseEntity().getAddress().setState(new com.inthinc.pro.model.State(0,"",""));
+            }
             groupDAO.update((Group) selectedGroupNode.getBaseEntity());
             if (selectedParentGroupID != null) {
                 setExpandedNode(selectedGroupNode.getParent());
@@ -479,6 +483,7 @@ public class OrganizationBean extends BaseBean {
         Address address = new Address();
         if (copyFromGroup.getAddress() != null) {
             Address copyFromAddress = copyFromGroup.getAddress();
+            //Here if the address has any null fields set the addressID to null so we get a new one
             address.setAddrID(copyFromAddress.getAddrID());
             address.setAccountID(copyFromAddress.getAccountID());
             address.setAddr1(copyFromAddress.getAddr1());
@@ -508,7 +513,7 @@ public class OrganizationBean extends BaseBean {
         if (group == null) {
             g = new Group();
             g.setAccountID(getAccountID());
-            g.setGroupID(0);
+            g.setGroupID(0);//Shouldn't this be null?
             g.setStatus(GroupStatus.GROUP_ACTIVE);
             g.setMapZoom(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getMapZoom());
             g.setMapCenter(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getMapCenter());

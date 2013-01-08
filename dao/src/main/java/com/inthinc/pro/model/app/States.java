@@ -76,6 +76,6 @@ public class States implements BaseAppEntity
                 return state;
             }
         }
-        return null;
+        return new State(0,"","");
     }
 }
