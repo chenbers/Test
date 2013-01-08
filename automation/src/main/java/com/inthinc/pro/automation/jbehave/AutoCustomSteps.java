@@ -106,15 +106,19 @@ public class AutoCustomSteps {
         AutoStepVariables.getVariables().put(variableName, writer.toString());
     }
     
+    @Given("I capitalize $variableName")
+    @When("I capitalize $variableName")
+    @Then("I capitalize $variableName")
+    public void capitalizeVariables(@Named("variableName")String variableName) {
+    	StringWriter writer = new StringWriter();
+        variableName.toUpperCase();
+        AutoStepVariables.getVariables().put(variableName, writer.toString());
+    }
+    
     @Given("I press the Enter Key")
     @When("I press the Enter Key")
     @Then("I press the Enter Key")
     public void keyEnter() {
-    	
-    	//WebDriver driver = new FirefoxDriver();
-    	//driver.findElement(By.xpath("//button[@class='btn btn-large btn-block btn-inthinc']")).sendKeys(Keys.RETURN);
-    	//CoreMethodLib.getSeleniumThread().keyDownNative(java.awt.event.KeyEvent.VK_ENTER + "");
-    	//CoreMethodLib.getSeleniumThread().keyUpNative(java.awt.event.KeyEvent.VK_ENTER + "");
         CoreMethodLib.getSeleniumThread().enterKey();
     }
     

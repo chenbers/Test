@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
-
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
 import com.inthinc.device.emulation.enums.DeviceEnums.TripFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
@@ -18,10 +16,12 @@ import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.device.objects.AutomationBridgeFwdCmdParser;
 import com.inthinc.device.objects.AutomationDeviceEvents;
+import com.inthinc.device.objects.WaysmartClasses.ForwardCommandEventInterface;
 import com.inthinc.device.objects.WaysmartClasses.MultiForwardCmd;
 import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.interfaces.IndexEnum;
+import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class WaysmartDevice extends DeviceBase {
@@ -44,17 +44,28 @@ public class WaysmartDevice extends DeviceBase {
         }
     };
 
-    protected final static ProductType productVersion = ProductType.WAYSMART;
+    protected final ProductType productVersion;
 
 
     public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
             Direction comMethod) {
         this(IMEI, MCM, server, comMethod, DeviceProps.getWaysmartDefaults());
     }
+    
+    public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
+            Direction comMethod, ProductType productType) {
+        this(IMEI, MCM, server, comMethod, DeviceProps.getWaysmartDefaults(), productType);
+    }
 
     public WaysmartDevice(String IMEI, String MCM, AutoSilos server,
             Direction comMethod, Map<DeviceProps, String> settings) {
-        super(IMEI, productVersion, settings, server);
+        this(IMEI, MCM, server, comMethod, settings, ProductType.WAYSMART);
+    }
+    
+    public WaysmartDevice(String IMEI, String MCM, AutoSilos server, 
+            Direction comMethod, Map<DeviceProps, String> settings, ProductType productType) {
+        super(IMEI, productType, settings, server);
+        productVersion = productType;
         state.setMcmID(MCM);
         state.setWaysDirection(comMethod);
         setState(147);
@@ -63,11 +74,20 @@ public class WaysmartDevice extends DeviceBase {
     public WaysmartDevice(String IMEI, String MCM, Direction comMethod) {
         this(IMEI, MCM, AutoSilos.QA, comMethod);
     }
+    
+    public WaysmartDevice(String IMEI, String MCM, Direction comMethod, ProductType productType) {
+        this(IMEI, MCM, AutoSilos.QA, comMethod, productType);
+    }
 
     public WaysmartDevice(DeviceState state, AutoSilos server) {
-    	super(state, server);
+    	this(state, server, ProductType.WAYSMART);
 	}
-
+    
+    public WaysmartDevice(DeviceState state, AutoSilos server, ProductType productType) {
+        super(state, server);
+        productVersion = productType;
+    }
+    
 
 	@Override
     protected void ackFwdCmds(String[] reply) {
@@ -131,7 +151,7 @@ public class WaysmartDevice extends DeviceBase {
     }
 
     protected WaysmartDevice set_IMEI(HashMap<DeviceProps, String> settings) {
-    	Log.d("set_IMEI %s", "IMEI: " + state.getImei() + ", Server: " + server);
+    	Log.debug("set_IMEI %s", "IMEI: " + state.getImei() + ", Server: " + server);
         state.setSetting(DeviceProps.MCM_ID_W, state.getMcmID());
         state.setSetting(DeviceProps.WITNESS_ID_W, state.getImei());
         return this;
@@ -213,6 +233,16 @@ public class WaysmartDevice extends DeviceBase {
     protected WaysmartDevice was_speeding() {
     	super.was_speeding();
         return this;
+    }
+
+    @Override
+    protected void ackFwdCmds(byte[] reply) {
+        List<MultiForwardCmd> commands = AutomationBridgeFwdCmdParser.processCommands(new String(reply));
+        for (MultiForwardCmd cmd : commands) {
+            for (ForwardCommandEventInterface event: cmd.events) {
+                Log.info(event.getHeader());
+            }
+        }
     }
 
 

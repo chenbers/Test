@@ -49,18 +49,18 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
     static {
         //columnMap.put("hazardID", "hazardID");
         columnMap.put("acctID", "acctID");
-        columnMap.put("driverID", "driverID");// TODO: should be name
+        columnMap.put("driverID", "driverID");
         columnMap.put("userID","userID");
-        columnMap.put("vehicleID", "vehicleID");// TODO: should be name
-        columnMap.put("deviceID", "deviceID");// TODO: should be name?
+        columnMap.put("vehicleID", "vehicleID");
+        columnMap.put("deviceID", "deviceID");
         columnMap.put("latitude", "latitude");
         columnMap.put("longitude", "longitude");
         columnMap.put("radius", "radius");
         columnMap.put("startTime", "startTime");
         columnMap.put("endTime", "endTime");
-        columnMap.put("type", "type");// TODO: should be name
+        columnMap.put("type", "type");
         columnMap.put("description", "description");
-        columnMap.put("status", "status");// TODO: should be name
+        columnMap.put("status", "status");
         columnMap.put("location", "location");
         columnMap.put("stateID", "stateID");
         columnMap.put("created", "created");
@@ -152,7 +152,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHaza
         return theInteger;
     }
     public List<Hazard> findAllInAccount(Integer acctID) {
-        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); //TODO: jwimmer: verify that this is the correct order of lat/lngs
+        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); 
     }
     public List<Hazard> findInAccount(Integer acctID, BoundingBox box){
     	return findHazardsByUserAcct(acctID, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());

@@ -41,6 +41,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleIdentifiers;
 import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.WS850HOSDOTType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.BeanUtil;
@@ -695,6 +696,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return SelectItemUtil.toList(VehicleDOTType.class, false);
     }
 
+    public List<SelectItem> getWs850DotTypes() {
+        return SelectItemUtil.toList(WS850HOSDOTType.class, false);
+    }
     
     public List<SelectItem> getTiwiProTypes() {
         return SelectItemUtil.toList(VehicleType.class, false);
@@ -924,6 +928,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         		((WaySmartEditableVehicleSettings)editableVehicleSettings).setDotVehicleType(vehicleDOTType.getConfiguratorSetting());
         	}
         	
+        }
+        public WS850HOSDOTType getHosDotType(){
+            if(editableVehicleSettings instanceof WS850EditableVehicleSettings){
+                return WS850HOSDOTType.getFromSetting(((WS850EditableVehicleSettings)editableVehicleSettings).getDotVehicleType());
+            }
+            return null;
+        }
+        
+        public void setHosDotType(WS850HOSDOTType ws850HosDotType){
+            if(editableVehicleSettings instanceof WS850EditableVehicleSettings){
+                ((WS850EditableVehicleSettings)editableVehicleSettings).setDotVehicleType(ws850HosDotType.getConfiguratorSetting());
+            }
+            
         }
     }
 

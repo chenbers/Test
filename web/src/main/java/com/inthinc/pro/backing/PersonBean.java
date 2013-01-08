@@ -116,7 +116,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("barcode");
         AVAILABLE_COLUMNS.add("rfid1");
         AVAILABLE_COLUMNS.add("rfid2");
-        AVAILABLE_COLUMNS.add("fobid");
+        AVAILABLE_COLUMNS.add("fobID");
         AVAILABLE_COLUMNS.add("driver_groupID");
 //        AVAILABLE_COLUMNS.add("driver_provider");
 //        AVAILABLE_COLUMNS.add("driver_providerUsername");
@@ -654,6 +654,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return returnValue;
     }
 
+    public void clearFob() {
+        //set fobID to an empty string to ensure that updateDriver picks it up as a change
+        getItem().getDriver().setFobID("");
+        super.save();
+    }
+    
     @Override
     public String save() {
         // see if we're partially editing one of the batch items

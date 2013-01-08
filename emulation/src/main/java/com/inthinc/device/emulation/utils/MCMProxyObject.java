@@ -41,6 +41,7 @@ import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.interfaces.MCMService;
 import com.inthinc.device.emulation.notes.DeviceNote;
 import com.inthinc.device.emulation.notes.NoteBC;
+import com.inthinc.device.emulation.notes.Notes850;
 import com.inthinc.device.emulation.notes.SatNote;
 import com.inthinc.device.emulation.notes.SatelliteEvent;
 import com.inthinc.device.emulation.notes.SatelliteEvent_t;
@@ -52,7 +53,6 @@ import com.inthinc.device.hessian.tcp.ProDAOException;
 import com.inthinc.device.noteservice.NoteService;
 import com.inthinc.device.resources.DeviceStatistics;
 import com.inthinc.pro.automation.enums.AutoSilos;
-import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.pro.automation.utils.AutomationStringUtil;
@@ -124,15 +124,10 @@ public class MCMProxyObject implements MCMService{
     public List<Map<String, Object>> tiwiNote(String mcmID, List<? extends DeviceNote> noteList){
         if (regularNote ){
             List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
-            Log.debug("\nnote(mcmID=%s, noteList=%s)", mcmID, noteList);
             for (DeviceNote note : noteList){
                 byte[] array = note.Package();
                 temp.add(array);
                 printNote(note);
-                
-                if (array.length <=17){
-                    throw new IllegalArgumentException("Note cannot be 17 bytes long: " + note);
-                }
             }
             return note(mcmID, temp);
         } else {
@@ -147,6 +142,24 @@ public class MCMProxyObject implements MCMService{
         return null;
     }
     
+
+    public byte[] ws850Note(String mcmID, Direction waysDirection, List<DeviceNote> noteList) {
+        List<byte[]> temp = new ArrayList<byte[]>(noteList.size());
+        for (DeviceNote note : noteList){
+            byte[] array = note.Package();
+            temp.add(array); 
+            printNote(note);
+        }
+        return notes(mcmID,waysDirection.getIndex(), temp);
+    }
+
+    @Override
+    public byte[] notes(String mcmID, int connectType, List<byte[]> noteList) throws HessianException {
+        byte[] reply = proxy.notes(mcmID, connectType, noteList);
+        printReply(new String(reply));
+        DeviceStatistics.addCall();
+        return reply;
+    }
 
     @Override
     public List<Map<String, Object>> note(String mcmID, List<byte[]> noteList) {
@@ -505,6 +518,8 @@ public class MCMProxyObject implements MCMService{
         } else if (clazz.equals(TiwiNote.class)) {
             reply = tiwiNote(state.getImei(),
             		notes);
+        } else if (clazz.equals(Notes850.class)) {
+            reply = ws850Note(state.getMcmID(), state.getWaysDirection(), notes);
         } else if (clazz.equals(SatelliteEvent_t.class)){
         	if (state.getWaysDirection().equals(Direction.sat)){
 //        		sendSatNote(state.getImei(), notes);
@@ -533,6 +548,11 @@ public class MCMProxyObject implements MCMService{
 	                reply[i] = notebc(state.getMcmID(),
 	                        state.getWaysDirection(),
 	                        sendingQueue.get(noteClass), state.getImei());
+	            
+	            } else if (sendingQueue.containsKey(Notes850.class)) {
+	                noteClass = Notes850.class;
+                    reply[i] = ws850Note(state.getMcmID(), state.getWaysDirection(), sendingQueue.get(noteClass));
+
 	            } else if (sendingQueue.containsKey(SatelliteEvent.class)) {
 	                noteClass = SatelliteEvent.class;
 	            	if (state.getWaysDirection().equals(Direction.sat)){
@@ -543,6 +563,7 @@ public class MCMProxyObject implements MCMService{
 		                        state.getWaysDirection(),
 		                        sendingQueue.get(noteClass), state.getImei());
 	            	}
+	            
 	            } else if (sendingQueue.containsKey(TiwiNote.class)) {
 	                noteClass = TiwiNote.class;
 	                reply[i] = tiwiNote(state.getImei(),
@@ -586,6 +607,7 @@ public class MCMProxyObject implements MCMService{
         return reply;
     }
 
+
     @Override
     public Integer crash(String mcmID, List<byte[]> crashDataList)
             throws ProDAOException {
@@ -594,7 +616,7 @@ public class MCMProxyObject implements MCMService{
 
 	public Object dumpSet(DeviceState state, Map<Integer, String> settings) {
 		try {
-				if (state.getProductVersion().equals(ProductType.WAYSMART)){
+				if (state.getProductVersion().isWaysmart()){
 				return dumpSet(state.getMcmID(), state.getProductVersion().getIndex(), settings);
 			} else {
 				return dumpSet(state.getImei(), state.getProductVersion().getIndex(), settings);
@@ -611,7 +633,7 @@ public class MCMProxyObject implements MCMService{
 
 	public Object reqSet(DeviceState state) {
 		try {
-			if (state.getProductVersion().equals(ProductType.WAYSMART)){
+			if (state.getProductVersion().isWaysmart()){
 				return reqSet(state.getMcmID());
 			} else {
 				return reqSet(state.getImei());
@@ -653,4 +675,6 @@ public class MCMProxyObject implements MCMService{
         DeviceStatistics.addCall();
         return reply;
     }
+    
+
 }

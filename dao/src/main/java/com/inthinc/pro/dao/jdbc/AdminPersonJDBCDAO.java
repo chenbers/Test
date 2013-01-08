@@ -85,6 +85,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		columnMap.put("barcode", "d.barcode");
 		columnMap.put("rfid1", "d.rfid1");
 		columnMap.put("rfid2", "d.rfid2");
+		columnMap.put("fobID", "d.fobID");
 		columnMap.put("driver_groupID", "d.groupID");
 	}
 	
@@ -151,7 +152,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 		personSelect
 				.append("SELECT p.personID, p.acctID, p.priPhone, p.secPhone, p.priEmail, p.secEmail, p.priText, p.secText, p.info, p.warn, p.crit, p.tzID, p.empID, p.reportsTo, p.title, p.dob, p.gender, p.locale, p.measureType, p.fuelEffType, p.first, p.middle, p.last, p.suffix, p.status, ")
 				.append("u.userID, u.status, convert(u.username using utf8) as username, u.groupID, u.mapType, u.password,  u.lastLogin, u.passwordDT, ")
-				.append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2 ")
+				.append("d.driverID, d.groupID, d.status, d.license, d.class, d.stateID, d.expiration, d.certs, d.dot, d.barcode, d.rfid1, d.rfid2, d.fobID ")
 				.append("FROM person AS p LEFT JOIN user as u USING (personID) LEFT JOIN driver as d USING (personID) WHERE (p.acctID = :acct_id) and  (d.groupID IN (:group_list) OR u.groupID IN (:group_list)) AND (p.status != 3 AND (d.status != 3 OR u.status !=3))");
 		
 		/***FILTERING***/
@@ -258,6 +259,7 @@ public class AdminPersonJDBCDAO extends SimpleJdbcDaoSupport{
 	                    driver.setBarcode(rs.getString("d.barcode"));
 	                    driver.setRfid1(rs.getObject("d.rfid1") == null ? null : rs.getLong("d.rfid1"));
 	                    driver.setRfid2(rs.getObject("d.rfid2")== null ? null : rs.getLong("d.rfid2"));
+	                    driver.setFobID(rs.getString("d.fobID"));
 	                    person.setDriver(driver);
 	                    driver.setPerson(person);
                 	}

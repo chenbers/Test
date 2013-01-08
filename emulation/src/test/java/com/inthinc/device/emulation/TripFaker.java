@@ -1,7 +1,7 @@
 package com.inthinc.device.emulation;
 
-import com.inthinc.device.devices.TiwiProDevice;
-import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
+import com.inthinc.device.devices.WaysmartDevice;
+import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
@@ -13,11 +13,11 @@ public class TripFaker {
 	public static void main(String args[]) {
 		
         //TiwiProDevice tiwi = new TiwiProDevice("011596000041321", AutoSilos.QA);
-        TiwiProDevice tiwi = new TiwiProDevice("999999000109743", AutoSilos.QA);
+        //TiwiProDevice tiwi = new TiwiProDevice("999999000109743", AutoSilos.QA);
         //TiwiProDevice tiwi = new TiwiProDevice("999649010582821", AutoSilos.QA);
         NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
         //noteTest.testDVIRNote("MCM821853", "300034012559130");
-		//WaysmartDevice tiwi = new WaysmartDevice("999900000000000", "MCM990000", AutoSilos.QA, Direction.gprs);
+		WaysmartDevice tiwi = new WaysmartDevice("999900000000000", "MCM990000", AutoSilos.QA, Direction.gprs);
         tiwi.dump_settings();
         DeviceState state = tiwi.getState();
         tiwi.increment_time(60);
@@ -33,13 +33,13 @@ public class TripFaker {
         //AutomationDeviceEvents.seatbelt(tiwi);
         tiwi.update_location(new GeoPoint(33.0104, -117.111), 15);
         tiwi.update_location(new GeoPoint(33.0104, -117.113), 15);
-        //AutomationDeviceEvents.panic(tiwi);
+        AutomationDeviceEvents.panic(tiwi);  								//NECESSARY FOR AUTOMATION TESTS, WS ONLY
         
         //state.setSeatbeltViolationDistanceX100(500);
         
         tiwi.increment_time(20);
-        //AutomationDeviceEvents.seatbelt(tiwi);
-        //AutomationDeviceEvents.hardLeft(tiwi, 105);
+        AutomationDeviceEvents.seatbelt(tiwi);
+        AutomationDeviceEvents.hardLeft(tiwi, 105);
 
         tiwi.update_location(new GeoPoint(33.01, -117.113), 15);
         tiwi.update_location(new GeoPoint(33.0097, -117.1153), 15);

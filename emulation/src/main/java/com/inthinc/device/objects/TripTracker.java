@@ -9,12 +9,8 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Distance_Calc;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.GoogleTrips;
-import com.inthinc.pro.automation.enums.AutoSilos;
-import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutoServers;
 import com.inthinc.sbs.Sbs;
-import com.inthinc.sbs.SpeedLimit;
 
 public class TripTracker implements Iterable<GeoPoint> {
 
@@ -110,7 +106,7 @@ public class TripTracker implements Iterable<GeoPoint> {
         if (last == null){
             state.setHeading(Heading.NORTH);
             state.setSpeed(0);
-            if (!state.getProductVersion().equals(ProductType.WAYSMART)){
+            if (!state.getProductVersion().isWaysmart()){
                 state.setOdometerX100(0);
             }
             return next;

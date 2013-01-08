@@ -161,11 +161,6 @@
 						initLayers();
 					  	map = portalmap.getMap();
 									 
-//						 map = new GMap2(document.getElementById("map-canvas"));
-			
-//		                 map.addControl(new GMapTypeControl());
-//						 map.setMapType(G_NORMAL_MAP);
-
 						 <ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
 						 	 map.setCenter(new GLatLng('#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}'),12);
 						 </ui:fragment>

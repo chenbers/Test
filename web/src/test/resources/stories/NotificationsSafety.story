@@ -89,7 +89,8 @@ And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SAVEDENTRY
+Then I validate I am on the Vehicle Performance page
+And I validate the Vehicle Name link contains SAVEDENTRY
 
 Scenario: TC1491: Notifications - Safety - Edit Columns - Cancel Button (Changes)
 Given I am logged in
