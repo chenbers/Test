@@ -94,6 +94,7 @@ public enum NoteType {
 	LIGHT_DUTY(97, new Attrib[]{}),
 	HEAVY_DUTY(98, new Attrib[]{}),
 	MISSING_IWI_CONF(99, new Attrib[]{}),
+    INVALID_DRIVER(103, new Attrib[]{}),  //Created during processing, not sent from device
 	TRIAX_STATUS_EX(110, new Attrib[]{Attrib.MAGICA, Attrib.ORIENTATIONTRIAX, Attrib.ZLEVEL, Attrib.RMSLEVEL, Attrib.RMSWINDOW, Attrib.YWINDOW, Attrib.YLEVEL, Attrib.XACCEL, Attrib.SLOPE, Attrib.DVX, Attrib.CALVERSION, Attrib.NUMERATOR, Attrib.DENOMINATOR, Attrib.INTERCEPTS, Attrib.GTRIGGERLEVEL, Attrib.DIAGNOSTIC}),
 	
 	CRASH_DATA_EXTENDED(112, new Attrib[]{}),
@@ -143,10 +144,11 @@ public enum NoteType {
 			Attrib.SMTOOLSRESETSTATUS, Attrib.SMTOOLSFIRMWAREREV, Attrib.SMTOOLSHARDWAREREV}),
 	OBD_PARAMS_STATUS(149, new Attrib[]{Attrib.RPMCOLLECTED, Attrib.SPEEDCOLLECTED, Attrib.ODOMETERCOLLECTED, Attrib.BRAKECOLLECTED, Attrib.SEATBELTCOLLECTED, Attrib.RPMREQUESTS, Attrib.SPEEDREQUESTS, Attrib.ODOMETERREQUESTS, Attrib.BRAKEREQUESTS,
 			Attrib.SEATBELTREQUESTS, Attrib.RPMRECEIVES, Attrib.SPEEDRECEIVES, Attrib.ODOMETERRECEIVES, Attrib.BRAKERECEIVES, Attrib.SEATBELTRECEIVES}),
-//	POWER_ON(150, new Attrib[]{}),
+	POWER_ON(150, new Attrib[]{}),
 	INTRASTATE_BND_CROSSED(151, new Attrib[]{}),
 	POTENTIAL_CRASH(152, new Attrib[]{Attrib.DELTAVS}),
 	CANCEL_POTENTIAL_CRASH(153, new Attrib[]{Attrib.DELTAVS}),
+    SMTOOLS_DEVICE_STATUS_EX(155, new Attrib[]{}),
 	CHECK_HOURS(157, new Attrib[]{Attrib.DRIVERSTR}),
 	WIRELINE_STATUS(158, new Attrib[]{}),
 	WIRELINE_ALARM(159, new Attrib[]{}),
@@ -162,7 +164,7 @@ public enum NoteType {
 	PARKING_BRAKE(172, new Attrib[]{Attrib.STATE}),
 	UNIT_INFO(173, new Attrib[]{Attrib.DATA}),
 	FULLCONFIDENCE_LEVEL(174, new Attrib[]{Attrib.DELTAVS, Attrib.CONFIDENCELEVEL}),
-//	CRASH_DATA_HI_RES(175, new Attrib[]{Attrib.SKIPPARSING}),
+	CRASH_DATA_HI_RES(175, new Attrib[]{Attrib.CRASHDATA}),
 	DSS_MICROSLEEP(176, new Attrib[]{Attrib.DATA}),
 	DSS_DISTRACTION_STATS(177, new Attrib[]{Attrib.DATA}),
 	SECONDARY_NOTEEVENT(178, new Attrib[]{Attrib.DELTAVS}),
@@ -190,14 +192,18 @@ public enum NoteType {
 	IDLING(208, new Attrib[]{}),
 	CRASH(209, new Attrib[]{}),
 	SPEED_COACHING(210, new Attrib[]{}),
+    CHECK_HOURS_EX(215, new Attrib[]{}),
 	RF_KILL(218, new Attrib[]{}),
     CREATE_ROAD_HAZARD(226, new Attrib[]{}),
+    RHA_CONFIRM_REJECT(227, new Attrib[]{}),
+    SEND_ROAD_HAZARDS(228, new Attrib[]{}),
+
     ONE_WIRE_PAIRING(230, new Attrib[]{Attrib.DRIVERSTR, Attrib.FOB_ID}),
     FOB_INFO(231, new Attrib[]{Attrib.FOB_ID}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),
-
+    STRIPPED_VSETTINGS(247, new Attrib[]{Attrib.VSETTINGS}),
 	WIFI_STRIPPED_GET_WITNESSII_TRACE(248, new Attrib[]{Attrib.CRASHTRACE}),
 	STRIPPED_GET_WITNESSII_LIST_EX(249, new Attrib[]{}),
 	STRIPPED_GET_SPECIFIC_DETAIL_RECORDS(250, new Attrib[]{}),

@@ -19,11 +19,19 @@ public enum Attrib {
 	NOTESPEEDLIMIT(19, AttribParserType.BYTE, "speedLimit"),
 	NOTEMAPREV(20, AttribParserType.BYTE, "maprev"),
 
+    WITNESSVER(25, AttribParserType.INTEGER),
+    FIRMWAREVER(150, AttribParserType.INTEGER),
+	
 	OBDPCT(49, AttribParserType.BYTE),
 	GPSFILTER(166, AttribParserType.SHORT),
 	
 	TYPE_FWDCMD_ID(194, AttribParserType.LONG),
 	TYPE_FWDCMD(195, AttribParserType.INTEGER),
+	
+	EMU_HASH_1(202, AttribParserType.INTEGER),
+	EMU_HASH_2(203, AttribParserType.INTEGER),
+	EMU_HASH_3(204, AttribParserType.INTEGER),
+	EMU_HASH_4(205, AttribParserType.INTEGER),
 	
 	MPGODO(224, AttribParserType.INTEGER),
 	
@@ -330,7 +338,9 @@ public enum Attrib {
 //	WITNESSIIARCHIVE(49165, AttribParserType.BYTE),
 //	WITNESSIIARCHIVEHEADER(49166, AttribParserType.BYTE),
 	ACKDATA(49167, AttribParserType.ACKDATA),
-	CRASHTRACE(49168, AttribParserType.BYTE);
+	CRASHTRACE(49168, AttribParserType.BYTEARRAY),
+    VSETTINGS(49169, AttribParserType.BYTEARRAY),
+    CRASHDATA(49170, AttribParserType.BYTEARRAY);
 	
 	private static final Map<Integer,Attrib> lookup = new HashMap<Integer,Attrib>();
 
