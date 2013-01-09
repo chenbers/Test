@@ -20,7 +20,7 @@ public class TimeFrameTest {
         @AfterClass
         public static void tearDownAfterClass() throws Exception {
             
-            TimeFrame.current = null;            
+            TimeFrame.setCurrentForTesting(null);            
         }
        
 
@@ -101,7 +101,7 @@ public class TimeFrameTest {
 	   public void timeFrameTest()
 	   {
 	       DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss z");
-	       TimeFrame.current = new DateTime(TEST_TIME);
+	       TimeFrame.setCurrentForTesting(new DateTime(TEST_TIME));
 	       
 	       int cnt = 0;
 	       for (TimeFrame timeFrame : TimeFrame.values()) {
