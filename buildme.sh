@@ -15,7 +15,7 @@ else
     exit 1
 fi
 echo "Getting wars"
-find ${WORKSPACE} -type f -iname "*.war" -print -exec /bin/cp {} ${TMP_DIR}
+find ${WORKSPACE} -type f -iname "*.war" -print -exec /bin/cp {} ${TMP_DIR} \;
 
 tar -C ${WORKSPACE} -zcf ${TARBALL_FILENAME}.tgz ${TARBALL_FILENAME}
 if [ -f "${TARBALL_FILENAME}.tgz" ]
