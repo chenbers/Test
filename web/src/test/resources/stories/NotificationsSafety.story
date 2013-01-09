@@ -15,16 +15,16 @@ And I click the Safety link
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-And I validate I am on the Login page
-Given I am logged in
-Then I validate I am on the Notifications Safety page
+Then I validate I am on the Login page
+And I log back in
+And I validate I am on the Notifications Safety page
 
 Scenario: TC1437: Notifications - Safety - Driver Link
 Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Driver link as SAVEDENTRY
@@ -36,7 +36,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 Then I validate the Sort By Date Time column sorts correctly
 And I validate the Sort By Driver column sorts correctly
@@ -84,7 +84,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
@@ -292,14 +292,15 @@ Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I combine SAVEDDETAIL with "
+" with SAVEDDATETIME and save them as SAVEDCOMBINED
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text contains SAVEDDATETIME
-And I validate the Message text contains SAVEDDETAIL
+Then I validate the Message text is SAVEDCOMBINED
 And I validate the Yes button is present
 And I validate the No button is present
 And I validate the Close button is present
@@ -309,7 +310,7 @@ Given I am logged in
 When I click the Notifications link
 And I click the Safety link
 And I select "Top" from the Team dropdown
-And I select "Past 30 Days" from the Time Frame dropdown
+And I select "Past Year" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
@@ -327,6 +328,11 @@ Scenario: TC5743: Notifications - Safety - Time Frame
 Given I am logged in
 When I click the Notifications link
 And I click the Safety link
+And I click the Edit Columns link
+And the Edit Columns popup opens
+And I check the 1st Row of the Column checkbox
+And I click the Save button
+And the Edit Columns popup closes
 And I select "Top" from the Team dropdown
 And I select "Today" from the Time Frame dropdown
 And I click the Refresh button
