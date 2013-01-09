@@ -49,8 +49,21 @@ function check_jenkins_variables {
 
 
 function setup_variables {
-    if [ -f "version.txt" ] && [ -f "/etc/lsb-release" ]
+    if [ -f "/etc/lsb-release" ]
     then
+        LSB_RELEASE="$(pwd)/lsb-release"
+    else
+        LSB_RELEASE="/etc/lsb-release"
+    fi
+    if [ -f "${LSB_RELEASE}" ]
+    then
+        if [ -f "version.txt" ]
+        then
+            SRC_VERSION=$(cat version.txt)
+        else
+            SRC_VERSION="1.0"
+        fi
+
         ARCH=$(uname -m)
         if [ "${ARCH}" = "x86_64" ]
         then
@@ -60,13 +73,7 @@ function setup_variables {
             ARCH_UBU="x86"
             echo "ARCH_UBU is ${ARCH_UBU}"
         fi
-        #Use source /etc/lsb-release instead of sed/awking, it's a bash variable file, sets 
-        # Example values :
-        # DISTRIB_ID=Ubuntu
-        # DISTRIB_RELEASE=10.04
-        # DISTRIB_CODENAME=lucid
-        # DISTRIB_DESCRIPTION="Ubuntu 10.04.4 LTS"
-        source /etc/lsb-release
+        source ${LSB_RELEASE}
 
     #######################################
     #
@@ -80,7 +87,7 @@ function setup_variables {
         if [ ! "${DEB_repository_dir}" ]; then DEB_repository_dir="/var/www/debian"; echo "DEB_repository_dir not specified, using default ${DEB_repository_dir}"; fi
         if [ ! "${DEB_Package}" ]; then DEB_Package="inthinc-${JOB_NAME}"; echo "DEB_Package not specified, using default ${DEB_Package}"; fi
         if [ ! "${DEB_Source}" ]; then DEB_Source="${JOB_NAME}"; echo "DEB_Source not specified, using default ${DEB_Source}"; fi
-        if [ ! "${DEB_Version}" ]; then DEB_Version="$(cat version.txt)-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"; echo "DEB_Version not specified, using default ${DEB_Version}"; fi
+        if [ ! "${DEB_Version}" ]; then DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"; echo "DEB_Version not specified, using default ${DEB_Version}"; fi
         if [ ! "${DEB_Architecture}" ]; then DEB_Architecture="${ARCH_UBU}"; echo "DEB_Architecture not specified, using default ${DEB_Architecture}"; fi
         if [ ! "${DEB_Maintainer}" ]; then DEB_Maintainer="Inthinc Jenkins <jenkins@inthinc.com>"; echo "DEB_Maintainer not specified, using default ${DEB_Maintainer}"; fi
         if [ ! "${DEB_InstalledSize}" ]; then DEB_InstalledSize="${SIZE_KB}"; echo "DEB_InstalledSize not specified, using figured value ${DEB_InstalledSize}"; fi
@@ -96,7 +103,7 @@ function setup_variables {
         if [ ! "${DEB_Conflicts}" ]; then echo "DEB_Conflicts not specified, and no default skipping"; fi
         if [ ! "${DEB_Replaces}" ]; then echo "DEB_Replaces not specified, and no default skipping"; fi
         if [ ! "${DEB_Provides}" ]; then echo "DEB_Provides not specified, and no default skipping"; fi
-        if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; fi
+        if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_F    ilename ${DEB_Package_Filename}"; fi
 
         # We should get these from our pre-compile build script
         # DEB_PreDepends
@@ -296,9 +303,9 @@ function create_archive {
     fi
 }
 
-
-setup_variables
+echo "Starting ${0} on $(hostname) at $(date)"
 check_jenkins_variables
+setup_variables
 setup_temp_dir
 extract_built_tarball
 update_control_file
