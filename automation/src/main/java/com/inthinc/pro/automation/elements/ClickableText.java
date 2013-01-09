@@ -88,9 +88,4 @@ public class ClickableText extends ClickableObject implements ClickableTextBased
         return this.textStuff.validateIsNot(expected);
     }
 
-	@Override
-	public Boolean capitalizedContains(String compareAgainst) {
-		return this.textStuff.assertContains(compareAgainst);
-	}
-
 }

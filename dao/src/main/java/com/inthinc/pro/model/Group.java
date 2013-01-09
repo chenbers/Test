@@ -282,7 +282,7 @@ public class Group extends BaseEntity implements HasAccountId
 	@Override
     public String toString() {
         return "Group [accountID=" + accountID + ", description=" + description + ", groupID=" + groupID + ", managerID=" + managerID + ", mapLat=" + mapLat + ", mapLng=" + mapLng + ", mapZoom="
-                + mapZoom + ", name=" + name + ", parentID=" + parentID + ", status=" + status + ", type=" + type + ", zoneRev=" + zoneRev + "dotOfficeType="+dotOfficeType+"]";
+                + mapZoom + ", name=" + name + ", parentID=" + parentID + ", status=" + status + ", type=" + type + ", zoneRev=" + zoneRev + "dotOfficeType="+dotOfficeType+", addressID"+addressID+"]";
     }
 
     

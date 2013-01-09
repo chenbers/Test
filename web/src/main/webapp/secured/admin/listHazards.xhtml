@@ -155,10 +155,6 @@
             <!-- Data -->
             <rich:column id="mapColumn">
                 <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
-                    <rich:componentControl for="hazardLocationModal" event="onclick" disableDefault="true" operation="show">
-                        <f:param name="lat" value="#{item.latitude}" />
-                        <f:param name="lng" value="#{item.longitude}" />
-                    </rich:componentControl>
                 </h:graphicImage>
                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
                     <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
@@ -331,7 +327,7 @@
                           if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
                               reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
                           } else {
-                              console.out('bad lat lng');
+                              console.log('bad lat lng');
                           }
                       }
                    }
@@ -339,7 +335,7 @@
                       new GClientGeocoder().getLocations(latlng, 
                               function(response){
                                   if (!response || response.Status.code != 200) {
-                                      console.lpg('// no response typically== bad lat lng');
+                                      console.log('// no response typically== bad lat lng');
                                   } else {
                                       addressElement.innerHTML = response.Placemark[0].address;
                                   }
@@ -464,30 +460,4 @@
     </table>
     </a4j:region>
   </ui:define>
-
-    <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="hazardLocationModal" width="540" height="450" headerClass="popupHeader" 
-        onshow="initializeHazardMap(hazardBean.item.lat, hazardBean.item.lng);">
-        <f:facet name="header">
-            <h:outputText id="mapModalHeader" value="#{messages.hazard_location}" />
-        </f:facet>
-        <f:facet name="controls">
-            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
-                onclick="Richfaces.hideModalPanel('hazardLocationModal')" />
-        </f:facet>
-
-        <div class="eventmap-border">
-            <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
-        </div>
-
-        <div class="popupactions">
-            <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" 
-                onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
-                <span class="edit"> <h:outputText value="#{messages.button_close}" /> 
-                </span>
-            </a4j:commandButton>
-        </div>
-    </rich:modalPanel>
-    <!-- END LOCATION MODAL -->
-
 </ui:composition>
