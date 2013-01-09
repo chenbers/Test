@@ -11,10 +11,18 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class TimeFrameTest {
+    
+        @AfterClass
+        public static void tearDownAfterClass() throws Exception {
+            
+            TimeFrame.current = null;            
+        }
+       
 
 	   @Test
 	    public void timeIntervalTest(){
