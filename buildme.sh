@@ -14,8 +14,16 @@ else
     echo "Exiting at $(date)"
     exit 1
 fi
-echo "Getting wars"
+echo "Getting wars : "
 find ${WORKSPACE} -type f -iname "*.war" -print -exec /bin/cp {} ${TMP_DIR} \;
+echo "Cleaning old tgz files"
+find ${WORKSPACE} -maxdepth 1 -type f -iname "*.tgz" -mtime +1 -print -exec /bin/rm {} \;
+
+
+if [ -f "${TARBALL_FILENAME}.tgz" ]
+then
+    /bin/rm ${TARBALL_FILENAME}.tgz
+fi
 
 tar -C ${WORKSPACE} -zcf ${TARBALL_FILENAME}.tgz ${TARBALL_FILENAME}
 if [ -f "${TARBALL_FILENAME}.tgz" ]
