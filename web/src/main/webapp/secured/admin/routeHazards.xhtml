@@ -67,7 +67,7 @@
                    google.maps.event.addListener(marker, 'click', (function(){
                            var detail = '<dt>#{messages.hazard_description}</dt><dd>'+hazard.details+'</dd>';
                            var type = '<dt>#{messages.hazard_type}</dt><dd>'+hazard.type+'</dd>';
-                           var radius = '<dt>#{messages.hazard_radius}</dt><dd>'+hazard.radius+'</dd>';
+                           var radius = '<dt>#{messages.hazard_radius}</dt><dd>'+hazard.radiusMeters+' meters</dd>';
                            var endTime = '<dt>#{messages.hazard_endTime}</dt><dd>'+hazard.endTime+'</dd>';
                            var content = '<dl>'+detail+type+radius+endTime+'</dl>';
                            infowindow.setContent(content); 
@@ -163,8 +163,9 @@
           //]]> 
            <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
                var markerLatLng = new google.maps.LatLng(#{hazard.lat}, #{hazard.lng});
-               var formattedEndTime = '<h:outputText value="#{item.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" /></h:outputText>';
-               hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, '#{messages[item.type]}', formattedEndTime, '#{hazard.description}', '#{messages[item.status]}');
+               //
+               var formattedEndTime = '<h:outputText value="#{hazard.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{hazardsBean.user.person.timeZone}" /></h:outputText>';
+               hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, '#{messages[hazard.type]}', formattedEndTime, '#{hazard.description}', '#{messages[hazard.status]}');
                marker = createMarker(markerLatLng, null , '/tiwipro/images/ico_warning.png', hazard); //'hazard#{hazard.hazardID}' for divID 
                markers.push(marker);
                hazards.push(hazard); //todo: this might be unnecessary... since the hazard is in the marker???  
