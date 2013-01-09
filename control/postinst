@@ -1,0 +1,47 @@
+#!/bin/bash
+U_UID="1090"
+U_GID="1090"
+MY_USER="tiwipro"
+TOMCAT_USER="tomcat6"
+MY_USER_HOME="/usr/local/tiwipro"
+TOMCAT_WEBAPPS_DIR="/var/lib/tomcat6/webapps"
+WARS="hoskiosk tiwiproutil tiwipro scheduler service"
+GROUP_EXISTS=$(id -g ${MY_USER} 2>/dev/null)
+if [ "$?" -eq 0 ]
+then
+    echo "Group ${MY_USER} already exists"
+    U_GID=${GROUP_EXISTS}
+else
+    echo "Group ${MY_USER} does not exist, creating"
+    groupadd -g ${U_GID} ${MY_USER}
+fi
+
+
+MY_USER_EXISTS=$(id -u ${TOMCAT_USER} 2>/dev/null)
+if [ "$?" -eq 0 ]
+then
+    echo "User ${TOMCAT_USER} exists"
+fi
+
+echo "Adding ${TOMCAT_USER} to group ${MY_USER}"
+usermod -a -G ${MY_USER} ${TOMCAT_USER}
+
+service ${TOMCAT_USER} status 2>&1 >/dev/null
+if [ "$?" -ne 1 ] && [ -d "${TOMCAT_WEBAPPS_DIR}" ]
+then
+    echo -n "Stopping service ${TOMCAT_USER} :"
+    service ${TOMCAT_USER} stop
+    while service ${TOMCAT_USER} status 2>&1 > /dev/null; do echo -n "."; sleep 1; done
+
+    for WAR in ${WARS}
+    do
+        if [ -d "${TOMCAT_WEBAPPS_DIR}/${WAR}" ] && [ -f "${TOMCAT_WEBAPPS_DIR}/${WAR}.war" ]
+        then
+            /bin/rm -Rf ${TOMCAT_WEBAPPS_DIR}/${WAR}
+        fi
+    done
+else
+    echo "${TOMCAT_USER} doesn't seem to be installed, exiting at $(date)"
+    exit 1
+fi
+
