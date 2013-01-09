@@ -892,6 +892,8 @@ public class ReportServiceTest {
 
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
         	List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), TimeFrame.ONE_DAY_AGO.getInterval(dateTimeZone), getGroupHierarchy());
+System.out.println("ReportTestConst.timezone: " + ReportTestConst.timeZone + " joda timezone: " + dateTimeZone);
+System.out.println("current time (joda) " + new DateTime() + " currentTime TimeFrame: " + TimeFrame.current);
 System.out.println("getDriverScores: " + itData.teamGroupData.get(teamType).group.getGroupID() + "interval: " +  TimeFrame.ONE_DAY_AGO.getInterval(dateTimeZone));
         	assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
         	Score score = driverScoreList.get(0).getScore();
