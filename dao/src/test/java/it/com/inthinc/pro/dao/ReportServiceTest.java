@@ -883,7 +883,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void teamStats() {
         GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
         groupReportHessianDAO.setReportService(reportService);
