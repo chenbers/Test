@@ -111,14 +111,13 @@ public class AutomationDeviceEvents {
 	
 	public class LeaveZoneEvent extends AutomationDeviceEvents {
 		private LeaveZoneEvent (DeviceState state, GeoPoint location){
-			super(DeviceNoteTypes.WSZONES_ARRIVAL, state, location);
+			super(DeviceNoteTypes.WSZONES_DEPARTURE_EX, state, location);
 
 			if (state.getProductVersion().isWaysmart()){
-				
+                note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
 			} else {
 				note.addAttr(EventAttr.ZONE_ID, state.getZoneID());
 			}
-			state.setZoneID(0);
 		}
 	}
 		

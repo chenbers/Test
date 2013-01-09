@@ -47,7 +47,7 @@ public class TripFaker {
         tiwi.increment_time(20);
         //AutomationDeviceEvents.seatbelt(tiwi);
         tiwi.getState().setSpeedLimit(40);
-        //tiwi.enter_zone(2);
+        tiwi.enter_zone(1062);
         
         tiwi.update_location(new GeoPoint(33.0163, -117.1159), 15);
         tiwi.update_location(new GeoPoint(33.018, -117.1153), 15);
@@ -83,7 +83,7 @@ public class TripFaker {
         tiwi.update_location(new GeoPoint(33.0108, -117.108), 15);
         tiwi.update_location(new GeoPoint(33.0108, -117.109), 15);
 
-        tiwi.leave_zone(2);
+        tiwi.leave_zone(1062);
 
         tiwi.increment_time(20);
         
