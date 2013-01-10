@@ -42,7 +42,7 @@ public class WS850SettingManager extends VehicleSettingManager {
         Integer hardAcceleration = hardAccelerationSlider.getSliderValueFromSettings(vs);
         Integer hardBrake = hardBrakeSlider.getSliderValueFromSettings(vs);
         Integer[] speedSettings = convertFromSpeedSettings(vs.getBestOption(SettingType.WS850_SPEED_LIMIT.getSettingID())); 
-        Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.WS850_SEVERE_SPEED_LIMIT.getSettingID()));
+        Double maxSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.WS850_MAX_SPEED_LIMIT.getSettingID()))/100.0;
         if (maxSpeed < 1.0)
             maxSpeed = SpeedingConstants.INSTANCE.DEFAULT_MAX_SPEED_LIMIT;
         Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getBestOption(SettingType.WS850_IDLING_TIMEOUT.getSettingID()));
@@ -117,9 +117,10 @@ public class WS850SettingManager extends VehicleSettingManager {
                                         ws850EditableVehicleSettings.getSpeedSettingsString(), 
                                         vehicleSetting.getBestOption(SettingType.WS850_SPEED_LIMIT.getSettingID()), 
                                         updateSpeedSettings(updateField));
-            newSettings.addSettingIfNeeded(SettingType.WS850_SEVERE_SPEED_LIMIT, 
-                                        ws850EditableVehicleSettings.getMaxSpeed().toString(), 
-                                        vehicleSetting.getBestOption(SettingType.WS850_SEVERE_SPEED_LIMIT.getSettingID()), 
+            Integer maxSpeed = new Integer(NumberUtil.intValue(ws850EditableVehicleSettings.getMaxSpeed()*100.00));
+            newSettings.addSettingIfNeeded(SettingType.WS850_MAX_SPEED_LIMIT, 
+                                        maxSpeed.toString(), 
+                                        vehicleSetting.getBestOption(SettingType.WS850_MAX_SPEED_LIMIT.getSettingID()), 
                                         fieldIsIncludedInBatchEditOrNotBatchEdit(updateField,"editableVehicleSettings.maxSpeed"));
             newSettings.addSettingIfNeeded(SettingType.WS850_IDLING_TIMEOUT, 
                     ws850EditableVehicleSettings.getIdlingSeconds().toString(), 
