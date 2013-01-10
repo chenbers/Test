@@ -121,7 +121,7 @@ public enum TimeFrame implements BaseEnum {
     private static final Logger logger = Logger.getLogger(TimeFrame.class);
     private AggregationDuration driveQDuration;
     private Integer code;
-    public static DateTime current;
+    private static DateTime current;
 
     TimeFrame(AggregationDuration driveQDuration, Integer code) {
         this.driveQDuration = driveQDuration;
@@ -143,6 +143,9 @@ public enum TimeFrame implements BaseEnum {
         if (current == null)
             return new DateTime();
         return current;
+    }
+    public static void setCurrentForTesting(DateTime testCurrent) {
+        current = testCurrent;
     }
     
     public Interval getInterval() {

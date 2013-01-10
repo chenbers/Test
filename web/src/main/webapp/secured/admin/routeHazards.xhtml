@@ -32,11 +32,13 @@
     border-style: none;
 }
 </style>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript" title="inthinc.maps">
+        var lengthUnitText = '<h:outputText value="miles" converter="MeasurementTextConverter"></h:outputText>';
         //<![CDATA[
         jQuery.noConflict();
         var map;
+        
         /* CreateMarker(google.maps.LatLng, divID, image or null)
          *  
          * Creates a marker using specified image or
@@ -58,24 +60,24 @@
                 });
             }
             if(divID != null) {
-                   google.maps.event.addListener(marker, 'click', function() {
+                google.maps.event.addListener(marker, 'click', function() {
                     var node = document.getElementById(divID).cloneNode(true);
                     node.style.display = 'block';
                     marker.openInfoWindow(node);
-                    });
-               } else {
-                   google.maps.event.addListener(marker, 'click', (function(){
-                           var detail = '<dt>#{messages.hazard_description}</dt><dd>'+hazard.details+'</dd>';
-                           var type = '<dt>#{messages.hazard_type}</dt><dd>'+hazard.type+'</dd>';
-                           var radius = '<dt>#{messages.hazard_radius}</dt><dd>'+hazard.radius+'</dd>';
-                           var endTime = '<dt>#{messages.hazard_endTime}</dt><dd>'+hazard.endTime+'</dd>';
-                           var content = '<dl>'+detail+type+radius+endTime+'</dl>';
-                           infowindow.setContent(content); 
-                           infowindow.setPosition(hazard.point);
-                           infowindow.open(map);
-                       }));
-               }
-            return marker;
+                });
+            } else {
+                google.maps.event.addListener(marker, 'click', (function(){
+                    var detail = '<dt>#{messages.hazard_description}</dt><dd>'+hazard.details+'</dd>';
+                    var type = '<dt>#{messages.hazard_type}</dt><dd>'+hazard.type+'</dd>';
+                    var radius = '<dt>#{messages.hazard_radius}</dt><dd>'+hazard.radiusInUnits+' '+lengthUnitText+' </dd>';
+                    var endTime = '<dt>#{messages.hazard_endTime}</dt><dd>'+hazard.endTime+'</dd>';
+                    var content = '<dl>'+detail+type+radius+endTime+'</dl>';
+                    infowindow.setContent(content); 
+                    infowindow.setPosition(hazard.point);
+                    infowindow.open(map);
+                }));
+           }
+           return marker;
         }
         function createCircle(point, radius, marker) {
             var circleOptions = {
@@ -84,8 +86,8 @@
                     fillOpacity: .10,
                     strokeColor: '#445566',
                     strokeOpacity: .20,
-                    strokeWeight: 2,
-                }
+                    strokeWeight: 2
+                };
             var circle = new google.maps.Circle(circleOptions);
             circle.setCenter(point);
             circle.setRadius(radius);
@@ -96,9 +98,11 @@
         var hazards = [];
         var infowindow = new google.maps.InfoWindow();
         
-        function Hazard(lat, lng, radiusMeters, type, endTime, details, status){
+        
+        function Hazard(lat, lng, radiusMeters, radiusInUnits, type, endTime, details, status){
             this.point = new google.maps.LatLng(lat, lng);
             this.radiusMeters = radiusMeters;
+            this.radiusInUnits = radiusInUnits;
             this.type = type;
             this.endTime = endTime;
             this.details = details;
@@ -107,6 +111,7 @@
         Hazard.prototype.drawRadius = function() {
             createCircle(this.point, this.radius);
         }
+        
         function buildLocFilter(){
         	return map.getBounds().getSouthWest().lat()+":"+map.getBounds().getSouthWest().lng()
         	   +":"+map.getBounds().getNorthEast().lat()+":"+map.getBounds().getNorthEast().lng();
@@ -133,7 +138,7 @@
         var markerCircle;
         jQuery(document).ready(function($){
             // old initialize() method 
-            console.log('this must happen before you can create markers!  todo: the map center should be determined differently???');
+            //console.log('this must happen before you can create markers!  todo: the map center should be determined differently???');
             var origin_textbox = jQuery('#origin');
             var destination_textbox = jQuery('#destination');
             var getDir_btn = jQuery('#submit').attr('disabled', true);
@@ -163,8 +168,9 @@
           //]]> 
            <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
                var markerLatLng = new google.maps.LatLng(#{hazard.lat}, #{hazard.lng});
-               var formattedEndTime = '<h:outputText value="#{item.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.user.person.timeZone}" /></h:outputText>';
-               hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, '#{messages[item.type]}', formattedEndTime, '#{hazard.description}', '#{messages[item.status]}');
+               var testUnits = '<h:outputText  value="mile" converter="MeasurementTextConverter"></h:outputText>';
+               var formattedEndTime = '<h:outputText value="#{hazard.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{hazardsBean.user.person.timeZone}" /></h:outputText>';
+               hazard = new Hazard(#{hazard.lat}, #{hazard.lng}, #{hazard.radiusMeters}, #{hazard.radiusInUnits}, '#{messages[hazard.type]}', formattedEndTime, '#{hazard.description}', '#{messages[hazard.status]}');
                marker = createMarker(markerLatLng, null , '/tiwipro/images/ico_warning.png', hazard); //'hazard#{hazard.hazardID}' for divID 
                markers.push(marker);
                hazards.push(hazard); //todo: this might be unnecessary... since the hazard is in the marker???  
@@ -306,7 +312,7 @@
                 if( lat.value >= -90 && lat.value <= 90 &&  lng.value >= -180 &&  lng.value <= 180){
                     reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address,index);
                 } else {
-                    console.log('bad lat:lng'+lat+":"+lng);
+                    //console.log('bad lat:lng'+lat+":"+lng);
                 }
             }
          }
@@ -316,7 +322,7 @@
             geocoder.geocode(request, 
                     function(result, geoStatus){
                         if (!result || geoStatus != google.maps.GeocoderStatus.OK) {
-                            console.log('// no response typically== bad lat:lng'+lat+":"+lng);
+                            //console.log('// no response typically== bad lat:lng'+lat+":"+lng);
                         } else {
                             addressElement.innerHTML = result[0].formatted_address;
                         }
@@ -439,7 +445,7 @@
 
                                                         <rich:column id="description" sortBy="#{item.description}">
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{messages.hazard_description}" />
+                                                                <h:outputText value="#{messages.hazard_description}" />  
                                                             </f:facet>
                                                             <h:outputText value="#{item.description}" />
                                                         </rich:column>

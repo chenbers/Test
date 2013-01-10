@@ -17,12 +17,9 @@ public class PageNotificationsSafety extends NotificationsEventsBar {
         checkMe.add(NotificationsSafetyEnum.MAIN_TITLE_COMMENT);
     }
 
-    public class NotificationsSafetyLinks extends EventsBarLinks {
-
-    }
+    public class NotificationsSafetyLinks extends EventsBarLinks {}
 
     public class NotificationsSafetyTexts extends EventsBarTexts {
-
 
         public Text title() {
             return new Text(NotificationsSafetyEnum.MAIN_TITLE);
@@ -31,23 +28,16 @@ public class PageNotificationsSafety extends NotificationsEventsBar {
         public Text note() {
             return new Text(NotificationsSafetyEnum.MAIN_TITLE_COMMENT);
         }
-
     }
 
-    public class NotificationsSafetyTextFields extends EventsBarTextFields {
+    public class NotificationsSafetyTextFields extends EventsBarTextFields {}
 
-    }
+    public class NotificationsSafetyButtons extends EventsBarButtons {}
 
-    public class NotificationsSafetyButtons extends EventsBarButtons {
-
-
-    }
-
-    public class NotificationsSafetyDropDowns extends EventsBarDropDowns {
-
-    }
+    public class NotificationsSafetyDropDowns extends EventsBarDropDowns {}
 
     public class NotificationsSafetyPopUps extends MastheadPopUps {
+    	
         public NotificationsSafetyPopUps() {
             super(page, Types.REPORT, 3);
         }
