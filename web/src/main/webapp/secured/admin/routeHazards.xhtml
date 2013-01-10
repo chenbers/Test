@@ -34,7 +34,7 @@
 </style>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript" title="inthinc.maps">
-        var lengthUnitText = '<h:outputFormat value="#{messages.label_two_parameters}"><a4j:actionparam value=" " /><a4j:actionparam value="miles" converter="MeasurementTextConverter"/></h:outputFormat>';
+        var lengthUnitText = '<h:outputText value="miles" converter="MeasurementTextConverter"></h:outputText>';
         //<![CDATA[
         jQuery.noConflict();
         var map;
@@ -87,7 +87,7 @@
                     strokeColor: '#445566',
                     strokeOpacity: .20,
                     strokeWeight: 2,
-                }
+                };
             var circle = new google.maps.Circle(circleOptions);
             circle.setCenter(point);
             circle.setRadius(radius);
@@ -137,7 +137,7 @@
         var markerCircle;
         jQuery(document).ready(function($){
             // old initialize() method 
-            console.log('this must happen before you can create markers!  todo: the map center should be determined differently???');
+            //console.log('this must happen before you can create markers!  todo: the map center should be determined differently???');
             var origin_textbox = jQuery('#origin');
             var destination_textbox = jQuery('#destination');
             var getDir_btn = jQuery('#submit').attr('disabled', true);
@@ -311,7 +311,7 @@
                 if( lat.value >= -90 && lat.value <= 90 &&  lng.value >= -180 &&  lng.value <= 180){
                     reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address,index);
                 } else {
-                    console.log('bad lat:lng'+lat+":"+lng);
+                    //console.log('bad lat:lng'+lat+":"+lng);
                 }
             }
          }
@@ -321,7 +321,7 @@
             geocoder.geocode(request, 
                     function(result, geoStatus){
                         if (!result || geoStatus != google.maps.GeocoderStatus.OK) {
-                            console.log('// no response typically== bad lat:lng'+lat+":"+lng);
+                            //console.log('// no response typically== bad lat:lng'+lat+":"+lng);
                         } else {
                             addressElement.innerHTML = result[0].formatted_address;
                         }
