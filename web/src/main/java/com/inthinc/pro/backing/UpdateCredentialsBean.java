@@ -25,10 +25,10 @@ import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 
 public class UpdateCredentialsBean extends BaseBean
 {
+    private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(UpdateCredentialsBean.class);
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddDDDFFWww");
 

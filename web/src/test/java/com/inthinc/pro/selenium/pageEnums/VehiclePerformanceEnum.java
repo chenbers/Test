@@ -6,7 +6,7 @@ public enum VehiclePerformanceEnum implements SeleniumEnums {
 
     DEFAULT_URL(appUrl + "/vehicle"), 
     
-    VEHICLE_NAME(null, "vehiclePerformanceBreadCrumb:vehiclePerformance"),
+    VEHICLE_NAME("Vehicle Performance:", "vehiclePerformanceBreadCrumb:vehiclePerformance"),
     BREADCRUMB_ITEM(null, "vehiclePerformanceBreadCrumb:breadcrumbitem:###:vehiclePerformance-dashboard"), 
 
     VIEW_ALL_TRIPS("View all trips", "vehiclePerformanceTrips"), 

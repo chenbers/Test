@@ -1,7 +1,5 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-
-
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum MyAccountEnum implements SeleniumEnums {
@@ -39,11 +37,7 @@ public enum MyAccountEnum implements SeleniumEnums {
     /* Map Preferences */
     MAP_PREFERENCES_HEADER("Map Preferences", "//span[@class='map']"),
     MAP_TYPE_TEXT("Map Type", "myAccountMapType"),
-    MAP_TYPE_SELECTOR(null, "my_form:editAccount-mapType"),
     MAP_LAYERS_TEXT("Map Layers", "myAccountMayLayers"),
-    MAP_LAYERS_SELECTOR("Layers","my_form:myAccountMapLayersSelect"),
-    MAP_LAYERS_ARROW(null, "//div[@class='ui-icon ui-icon-triangle-1-s']"),
-    MAP_LAYERS_CHECKBOX(null, "ddcl-my_form:myAccountMapLayersSelect-i###"),
     
     /* Contact Information */
     CONTACT_HEADER("Contact Information", "//span[@class='contact']", "//td[3]/div/div[@class='panel_nw']/div[@class='panel_title']/span"),
@@ -60,30 +54,6 @@ public enum MyAccountEnum implements SeleniumEnums {
     TEXT_MESSAGES1_TEXT("Text Message 1:", "myAccountPriText"),
     TEXT_MESSAGES2_TEXT("Text Message 2:", "myAccountSecText"),
 
-    /* Edit Page Buttons */
-    SAVE_BUTTON("Save", "my_form:editAccountSave"),
-    CANCEL_BUTTON("Cancel", "editAccountCancel"),
-
-    /* Edit Page Selects */
-    LOCALE_SELECT(null, "my_form:editAccountLocale"),
-    MEASUREMENT_SELECT(null, "my_form:editAccountMeasurement", "//selct[@name='my_form:editAccountMeasurement']"),
-    FUEL_EFFICIENCY_SELECT(null, "my_form:editAccountFuelEfficiency", "//select[@name='my_form:editAccountFuelEfficiency']"),
-    INFORMATION_SELECT(null, "my_form:editAccount-info", "//select[@name='my_form:editAccount-info'"),
-    WARNING_SELECT(null, "my_form:editAccount-warn", "//select[@name='my_form:editAccount-warn'"),
-    CRITICAL_SELECT(null, "my_form:editAccount-crit", "//select[@name='my_form:editAccount-crit"),
-
-
-    /* Edit Page text fields */
-    EMAIL1_TEXTFIELD(email + " 1:", "my_form:editAccount-priEmail", "//input[@name='my_form:editAccount-priEmail"),
-    EMAIL2_TEXTFIELD(email + " 2:", "my_form:editAccount-secEmail", "//input[@name='my_form:editAccount-secEmail"),
-
-    PHONE1_TEXTFIELD("Phone 1:", "my_form:editAccount-priPhone", "//input[@name='my_form:editAccount-priPhone"),
-    PHONE2_TEXTFIELD("Phone 2:", "my_form:editAccount-secPhone", "//input[@name='my_form:editAccount-secPhone"),
-
-    TEXT_MESSAGES1_TEXTFIELD("Text Message 1:", "my_form:editAccount-priText", "//input[@name='my_form:editAccount-priText"),
-    TEXT_MESSAGES2_TEXTFIELD("Text Message 2:", "my_form:editAccount-secText", "//input[@name='my_form:editAccount-secText"),
-
-    
     ;
 
     private String text, url;

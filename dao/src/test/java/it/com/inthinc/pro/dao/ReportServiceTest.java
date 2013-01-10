@@ -883,7 +883,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    // @Ignore
+//    @Ignore
     public void teamStats() {
         GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
         groupReportHessianDAO.setReportService(reportService);
@@ -892,10 +892,8 @@ public class ReportServiceTest {
 
         for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
         	List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), TimeFrame.ONE_DAY_AGO.getInterval(dateTimeZone), getGroupHierarchy());
-
         	assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
         	Score score = driverScoreList.get(0).getScore();
-//        	System.out.println("weighted mpg = " + score.getWeightedMpg());
         	assertEquals(teamType + " weighted mpg", expectedDailyMPGLight[teamType].doubleValue(), score.getWeightedMpg().doubleValue(), 0.1);
 /*        	
         	System.out.println("group ID " + driverScoreList.get(0).getDriver().getGroupID() );

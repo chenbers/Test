@@ -8,6 +8,9 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.WeakHashMap;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -15,15 +18,18 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.enums.EnumUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.service.RoadHazardService;
 import com.inthinc.pro.service.adapters.HazardDAOAdapter;
+import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdapter> implements RoadHazardService {
     private static final Logger logger = Logger.getLogger(RoadHazardService.class);
@@ -32,29 +38,65 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
      * Header key name where error messages will be stored under.
      */
     public static final String HEADER_ERROR_MESSAGE = "ERROR_MESSAGE";
-
     
-    @Override
-    public Response getRH(String mcmID, Double latitude, Double longitude) {
-        logger.error("public Response getRH(String "+mcmID+", Double "+latitude+", Double "+longitude+")");
+    @Autowired
+    TiwiproPrincipal principal;
+
+	@Override
+	public Response getRH(
+			@PathParam("acctID") Integer acctID,
+			@PathParam("sw_lat") Double sw_latitude,
+			@PathParam("sw_lng") Double sw_longitude,
+			@PathParam("ne_lat") Double ne_latitude,
+			@PathParam("ne_lng") Double ne_longitude) {
+	    logger.debug("public Response getRH("+acctID+", "+sw_latitude+", "+sw_longitude+", "+ne_latitude+", "+ne_longitude+")");
         HazardDAOAdapter hdaoa = getDao();
-        Integer TwoHundredMilesInKm = 322;
         List<Hazard> responseList;
         Response response;
         try {
-            responseList = hdaoa.findByDeviceLocationRadius(mcmID, new LatLng(latitude, longitude), TwoHundredMilesInKm);
+            BoundingBox box = new BoundingBox(sw_latitude, sw_longitude, ne_latitude, ne_longitude);
+            //responseList = hdaoa.findHazardsByUserAcct(principal.getUser(), box );
+            responseList = hdaoa.findInAccountBoundingBox(acctID, box);
             response = Response.ok(new GenericEntity<List<Hazard>>(responseList) {}).build();
         } catch (EmptyResultDataAccessException e){
             response = Response.noContent().build();
         }
         return response;
+	}
+	
+	@Override
+	@GET
+	@Path("/roadhazard/getRH/{mcmID}/{lat}/{lng}/{distanceInMeters}")
+	public Response getRH(@PathParam("mcmID") String mcmID,
+			@PathParam("lat") Double latitude,
+			@PathParam("lng") Double longitude,
+			@PathParam("distanceInMeters") Integer distanceInMeters) {
+		// TODO Auto-generated method stub
+        HazardDAOAdapter hdaoa = getDao();
+        
+        List<Hazard> responseList;
+        Response response;
+        try {
+            responseList = hdaoa.findByDeviceLocationRadius(mcmID, new LatLng(latitude, longitude), distanceInMeters);
+            response = Response.ok(new GenericEntity<List<Hazard>>(responseList) {}).build();
+        } catch (EmptyResultDataAccessException e){
+            response = Response.noContent().build();
+        }
+        return response;
+	}
+	
+    @Override
+    public Response getRH(String mcmID, Double latitude, Double longitude) {
+        logger.info("public Response getRH(String "+mcmID+", Double "+latitude+", Double "+longitude+")");
+        Integer twoHundredMilesInMeters = 321869;
+        return getRH(mcmID, latitude, longitude, twoHundredMilesInMeters);
     }
 
     private final WeakHashMap<Locale, ResourceBundle> cache = new WeakHashMap<Locale, ResourceBundle>();
     private MessageSource                 messageSource;
     @Override
     public Response types(String locale) {
-        logger.error("public Response types(String "+locale+")");
+        logger.info("public Response types(String "+locale+")");
         Locale theLocale = new Locale(locale);
 //        ResourceBundle resources = cache.get(locale);
 //        if(resources == null){
@@ -69,7 +111,7 @@ public class RoadHazardServiceImpl extends AbstractService<Hazard, HazardDAOAdap
                 String groupKey = type.toString().substring(0, endOfGroupIndex);
                 try{
                     type.setGroup(messageSource.getMessage(type.getClass().getSimpleName()+"."+groupKey+".group", null, theLocale));
-                    type.setName(messageSource.getMessage(type.getClass().getSimpleName()+"."+type.name()+".name", null, theLocale));
+                    type.setName (messageSource.getMessage(type.getClass().getSimpleName()+"."+type.name()+".name", null, theLocale));
                 } catch(NoSuchMessageException nsme){
                     logger.error(nsme);
                 }

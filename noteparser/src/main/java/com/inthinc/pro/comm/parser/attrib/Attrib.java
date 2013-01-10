@@ -19,11 +19,19 @@ public enum Attrib {
 	NOTESPEEDLIMIT(19, AttribParserType.BYTE, "speedLimit"),
 	NOTEMAPREV(20, AttribParserType.BYTE, "maprev"),
 
+    WITNESSVER(25, AttribParserType.INTEGER),
+    FIRMWAREVER(150, AttribParserType.INTEGER),
+	
 	OBDPCT(49, AttribParserType.BYTE),
 	GPSFILTER(166, AttribParserType.SHORT),
 	
 	TYPE_FWDCMD_ID(194, AttribParserType.LONG),
 	TYPE_FWDCMD(195, AttribParserType.INTEGER),
+	
+	EMU_HASH_1(202, AttribParserType.INTEGER),
+	EMU_HASH_2(203, AttribParserType.INTEGER),
+	EMU_HASH_3(204, AttribParserType.INTEGER),
+	EMU_HASH_4(205, AttribParserType.INTEGER),
 	
 	MPGODO(224, AttribParserType.INTEGER),
 	
@@ -290,10 +298,12 @@ public enum Attrib {
 	TEXTMESSAGE(24577, AttribParserType.STRING_PREFACED_LENGTH),
 
 	DRIVERSTR(24578, AttribParserType.STRING_FIXED_LENGTH10),
+//    DRIVERSTR(24578, AttribParserType.STRING_VAR_LENGTH10),	
 	EMUNAMEDEVICE(24579, AttribParserType.STRING_FIXED_LENGTH29),
 	EMUNAMETRANSFORM(24580, AttribParserType.STRING_FIXED_LENGTH29),
 	FILENAME(24581, AttribParserType.STRING_FIXED_LENGTH32),
-	LOCATION(24582, AttribParserType.STRING_FIXED_LENGTH30),
+//	LOCATION(24582, AttribParserType.STRING_FIXED_LENGTH30),
+    LOCATION(24582, AttribParserType.STRING_VAR_LENGTH32),
 	REPORTID(24583, AttribParserType.STRING_FIXED_LENGTH4),
 	SERVICEID(24584, AttribParserType.STRING_VAR_LENGTH),
 	SILICONID(24585, AttribParserType.STRING_FIXED_LENGTH16),
@@ -306,7 +316,8 @@ public enum Attrib {
 	VEHICLENAME(24592, AttribParserType.STRING_VAR_LENGTH30),
 	IMEI(24593, AttribParserType.STRING_VAR_LENGTH26),
 	MCMID(24594, AttribParserType.STRING_VAR_LENGTH26),
-    RHA_DESCRIPTION(24595, AttribParserType.STRING_VAR_LENGTH), 
+    RHA_DESCRIPTION(24595, AttribParserType.STRING_VAR_LENGTH32), 
+    FOB_ID(24597, AttribParserType.STRING_VAR_LENGTH32), 
 	
 	
 	// BINARY 
@@ -327,7 +338,9 @@ public enum Attrib {
 //	WITNESSIIARCHIVE(49165, AttribParserType.BYTE),
 //	WITNESSIIARCHIVEHEADER(49166, AttribParserType.BYTE),
 	ACKDATA(49167, AttribParserType.ACKDATA),
-	CRASHTRACE(49168, AttribParserType.BYTE);
+	CRASHTRACE(49168, AttribParserType.BYTEARRAY),
+    VSETTINGS(49169, AttribParserType.BYTEARRAY),
+    CRASHDATA(49170, AttribParserType.BYTEARRAY);
 	
 	private static final Map<Integer,Attrib> lookup = new HashMap<Integer,Attrib>();
 

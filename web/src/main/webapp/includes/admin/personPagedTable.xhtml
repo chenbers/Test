@@ -117,7 +117,10 @@
       <f:converter converterId="HexConverter" />
       </h:outputText>
     </rich:column>
-    
+    <rich:column id="fobID" rendered="#{personBean.tableColumns['fobID'].visible}" sortBy="#{fobID}" filterBy="#{fobID}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_fobID}" /></f:facet>
+      <h:outputText value="#{item.driver.fobID}" />
+    </rich:column>
     <rich:column id="displayName" rendered="#{personBean.tableColumns['locale'].visible}" sortBy="#{locale}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_locale}" /></f:facet>
       <h:outputText value="#{item.locale.displayName}" />

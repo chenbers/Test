@@ -925,7 +925,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     }
     private Boolean canRedFlag(Role role){
         
-        return role.isAdmin() || role.contains(REDFLAG_ACCESS_POINT);
+        return role != null && (role.isAdmin() || role.contains(REDFLAG_ACCESS_POINT));
     }
     private Role getRole(Integer roleID){
         if (roles == null) {

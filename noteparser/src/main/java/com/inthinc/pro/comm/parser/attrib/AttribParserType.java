@@ -14,10 +14,12 @@ public enum AttribParserType {
 	STRING_VAR_LENGTH(6),	
 	STRING_VAR_LENGTH4(7),	
 	STRING_VAR_LENGTH9(8),	
+    STRING_VAR_LENGTH10(31),
 	STRING_VAR_LENGTH11(9),	
 	STRING_VAR_LENGTH20(10),	
 	STRING_VAR_LENGTH26(11),	
 	STRING_VAR_LENGTH30(12),	
+    STRING_VAR_LENGTH32(32),    
 	
 	STRING_PREFACED_LENGTH(20),
 	STRING_FIXED_LENGTH4(21),
@@ -45,7 +47,8 @@ public enum AttribParserType {
 	ACKDATA(44),
 	
 	INTEGER_SKIP(45),
-	NOTEFLAGS(46);
+	NOTEFLAGS(46),
+    BYTEARRAY(47);
 	
 	private static final Map<Integer,AttribParserType> lookup = new HashMap<Integer,AttribParserType>();
 

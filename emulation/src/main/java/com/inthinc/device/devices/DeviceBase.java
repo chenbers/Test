@@ -372,13 +372,17 @@ public abstract class DeviceBase {
                     ackFwdCmds((List<Map<String, Object>>) reply);
                 } else if (reply instanceof String[]) {
                     ackFwdCmds((String[]) reply);
+                } else if (reply instanceof byte[]) {
+                    ackFwdCmds((byte[]) reply);
                 } else if (reply != null) {
                 	Log.debug("Reply from Server: " + reply);
-                }
+                } 
             }
         }
         return this;
     }
+
+    protected abstract void ackFwdCmds(byte[] reply);
 
     protected abstract DeviceBase set_ignition(Integer time_delta);//
 

@@ -48,7 +48,7 @@ public class ScoringNoteSorter {
 
         Iterator<Map<String, Object>> itr = notes.iterator();
         mileage = 0;
-        if (type.equals(ProductType.WAYSMART))
+        if (type.isWaysmart())
             mileage = ((Integer) notes.get(0).get(odometer)) - ((Integer) notes.get(notes.size() - 1).get(odometer));
 
         while (itr.hasNext()) {
@@ -56,7 +56,7 @@ public class ScoringNoteSorter {
             Map<String, Object> next = itr.next();
             DeviceNoteTypes eventType = DeviceNoteTypes.valueOf((Integer) next.get("type"));
 
-            if (!type.equals(ProductType.WAYSMART))
+            if (!type.isWaysmart())
                 mileage += ((Integer) next.get(odometer));
 
             Map<String, Integer> map = new HashMap<String, Integer>();
@@ -124,7 +124,7 @@ public class ScoringNoteSorter {
             if (!note.containsKey(limit))
                 note.put(limit, 78);
             int l = (Integer) note.get(limit);
-            if (deviceType.equals(ProductType.WAYSMART)) {
+            if (deviceType.isWaysmart()) {
 
             } else {
                 m = (Integer) note.get(odometer);

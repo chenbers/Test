@@ -12,7 +12,7 @@ public enum PopUpEnum implements SeleniumEnums {
     X(null, "//div[@id='***ContentDiv']/div/img"),
     TITLE("E-mail this report to the following e-mail addresses.", "//table[@id='***ContentTable']/tbody/tr/td/div[@class='popupsubtitle']"),
 
-    EDIT_HEADER("Edit Columns", "editColumnsHeader"),
+    EDIT_HEADER("Edit Columns", "***_editColumnsHeader"),
     EDIT_LABEL(null,    "***_editColumnsForm:***-editColumnsGrid:###"),
     EDIT_CHECKBOX(null, "***_editColumnsForm:***-editColumnsGrid:###:***-col"),
     EDIT_SAVE(save, "***_editColumnsForm:***-editColumnsPopupSave"),

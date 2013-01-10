@@ -494,6 +494,11 @@ public class TiwiProDevice extends DeviceBase {
         return 0;
     }
 
+    @Override
+    protected void ackFwdCmds(byte[] reply) {
+        throw new IllegalArgumentException("Tiwis should not get byte[] results from calls!!!");
+    }
+
 
     
 }

@@ -26,8 +26,6 @@
         function initializeCrashMap(lat, lng) 
         {            
           if (GBrowserIsCompatible()) {
-//            map = new GMap2(document.getElementById("address-canvas"));
-//            map.addControl(new GLargeMapControl());
 			if (map == null) {
 		  		portalmap.init(false, "address-canvas");
 		  		initLayers();

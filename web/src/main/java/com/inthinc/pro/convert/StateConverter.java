@@ -22,6 +22,6 @@ public class StateConverter extends BaseConverter
         if (value instanceof State)
             return ((State)value).getName();
         else
-            return null;
+            return "";
     }
 }

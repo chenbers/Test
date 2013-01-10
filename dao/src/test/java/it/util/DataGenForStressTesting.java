@@ -555,7 +555,7 @@ public class DataGenForStressTesting extends DataGenForTesting {
         
         Date expired = Util.genDate(2012, 9, 30);
         
-        Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null,null, "l"+person.getPersonID(), 
+        Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null,null, null, "l"+person.getPersonID(), 
                                         States.getStateByAbbrev("UT"), "ABCD", expired, null, null, group.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);

@@ -58,7 +58,7 @@ public class HazardsBean extends BaseBean {
     private boolean defaultRadius = true;
     private boolean defaultExpTime = true;
     protected List<Hazard> tableData;
-    protected List<Hazard> filteredTableData;
+    //protected List<Hazard> filteredTableData;
     private String sendHazardMsg;
     static final List<String> AVAILABLE_COLUMNS;
     static {
@@ -78,7 +78,6 @@ public class HazardsBean extends BaseBean {
         loadHazards(-90.0, -180.0, 90.0, 180.0); 
     }
     public void loadHazards(Double lat1, Double lng1, Double lat2, Double lng2) {
-        logger.debug("public void loadHazards(Double "+lat1+", Double "+lng1+", Double "+lat2+", Double "+lng2+")");
         List<Hazard> justHazards = adminHazardJDBCDAO.findHazardsByUserAcct(this.getUser(), lat1, lng1, lat2, lng2);
         if(hazards == null){
             hazards = new HashMap<Integer, Hazard>();
@@ -88,12 +87,37 @@ public class HazardsBean extends BaseBean {
             hazards.put(hazard.getHazardID(), hazard);
         }
         
-        logger.debug("adminHazardJDBCDAO: "+adminHazardJDBCDAO);
-        logger.debug("hazards: "+hazards);
         if (hazards.isEmpty())
             hazards = new HashMap<Integer,Hazard>();
     }
-
+    private String filterBoundsValue ="";
+    
+    public String getFilterBoundsValue() {
+        return filterBoundsValue;
+    }
+    public void setFilterBoundsValue(String filterBoundsValue) {
+        this.filterBoundsValue = filterBoundsValue;
+    }
+    public boolean filterBounds(Object current) {
+        Hazard currentHazard = (Hazard) current;
+        String[] bounds = filterBoundsValue.split(":");
+        //default to the world
+        Double lat1 = -90.0;
+        Double lng1 = -180.0;
+        Double lat2 = 90.0;
+        Double lng2 = 180.0;
+        if(bounds.length == 4) {
+            lat1 = Double.valueOf(bounds[0]);
+            lng1 = Double.valueOf(bounds[1]);
+            lat2 = Double.valueOf(bounds[2]);
+            lng2 = Double.valueOf(bounds[3]);
+        }
+        boolean result = currentHazard.getLat() > lat1
+                && currentHazard.getLng() > lng1
+                && currentHazard.getLat() < lat2
+                && currentHazard.getLng() < lng2;
+        return result;
+    }
     public List<SelectItem> getHazardTypeSelectItems(){
         return SelectItemUtil.toList(HazardType.class, false);
     }
@@ -109,7 +133,7 @@ public class HazardsBean extends BaseBean {
     public void initTableData(){
         for(Integer key: getHazards().keySet()){
             //set driver display value
-            Hazard hazard = getHazards().get(key);
+            Hazard hazard = hazards.get(key);
             if(hazard.getDriver() == null)
                 hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
             if(hazard.getUser() == null)
@@ -145,6 +169,11 @@ public class HazardsBean extends BaseBean {
         return "adminEditHazard";
     }
 
+    public String route() {
+    	//TODO: implement
+    	System.out.println("route()  ");
+    	return "adminRouteHazards";
+    }
     /**
      * Called when the user chooses to edit an item.
      */
@@ -158,7 +187,6 @@ public class HazardsBean extends BaseBean {
     }
     
     public void editListener(ActionEvent event){
-        logger.debug("editListener event: "+event);
         Integer hazardIDToEdit = (Integer)event.getComponent().getAttributes().get("hazardID");
         item = hazards.get(hazardIDToEdit);
     }
@@ -208,9 +236,7 @@ public class HazardsBean extends BaseBean {
         try {
             for(Device device: findDevicesInRadius()){
                 if(device.getStatus() == DeviceStatus.ACTIVE && device.isWaySmart()){
-                    logger.debug("about to send to device: "+device);
                     queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
-                    logger.debug("sent to device device.name: "+device.getName());
                 }
             }
             setSendHazardMsg("hazardSendToDevice.success");
@@ -224,10 +250,8 @@ public class HazardsBean extends BaseBean {
         queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
     }
     private static void queueForwardCommand(Device device, String address, byte[] data, int command) {
-        logger.debug("queueForwardCommand Begin");
         ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
         int addToQueue = fwdCmdSpoolWS.add(device, fcs);
-        logger.debug("addToQueue: "+addToQueue);
         if (addToQueue == -1)
             throw new ProDAOException("Iridium Forward command spool failed.");
     }
@@ -236,7 +260,6 @@ public class HazardsBean extends BaseBean {
      * Called when the user clicks to save changes when adding or editing.
      */
     public String save() {
-        logger.debug("HazardsBean.save() ");
         // validate
         if (!validate())
             return null;
@@ -257,7 +280,6 @@ public class HazardsBean extends BaseBean {
         item.setLocation(location);
         item.setModified(new Date());
         if (add) {
-            logger.debug("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
             item.setHazardID(adminHazardJDBCDAO.create(item.getAccountID(),item));
 
@@ -374,7 +396,6 @@ public class HazardsBean extends BaseBean {
         return true;
     }
     public void onTypeChange() {
-        logger.debug("onTypeChange();");
         DateTime startTime = new DateTime(item.getStartTime().getTime());
         Date newEndTime =        (item.getType()==null)?null: startTime.plus(item.getType().getDefaultDuration()).toDate();
         Double newRadiusMeters = (item.getType()==null)?null: item.getType().getRadius();
@@ -390,20 +411,16 @@ public class HazardsBean extends BaseBean {
     }
     
     public void onExpTimeChangeListener(ActionEvent event){
-        logger.debug("onExpTimeChangeListener event: "+event);
         defaultExpTime = false;
     }
     public void onExpTimeChange() {
-        logger.debug("onExpTimeChange");
         defaultExpTime = false;
     }
     public void onRadiusChange() {
-        logger.debug("onRadiusChange() ");
         defaultRadius = false;
         item.setRadiusMeters((Double) item.getRadiusUnits().convertToMeters(item.getRadiusInUnits()));
     }
     public void onUnitChange() {
-        logger.debug("onUnitChange()");
         if(item.getRadiusMeters() !=null){
             item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
         }

@@ -14,12 +14,12 @@ public class TextObject extends ElementBase implements TextBased {
 
     @Override
     public Boolean assertContains(String compareAgainst) {
-        return assertTrue(getText().contains(compareAgainst), myEnum + " does not contain the text: \"" + compareAgainst +"\"");
+        return assertTrue(getText().equalsIgnoreCase(compareAgainst), myEnum + " does not contain the text: \"" + compareAgainst +"\"");
     }
-
+    
     @Override
     public Boolean assertDoesNotContain(String compareAgainst) {
-        return assertFalse(getText().contains(compareAgainst), myEnum + " does not contain the text: \"" + compareAgainst +"\"");
+        return assertFalse(getText().equalsIgnoreCase(compareAgainst), myEnum + " does not contain the text: \"" + compareAgainst +"\"");
     }
 
     @Override

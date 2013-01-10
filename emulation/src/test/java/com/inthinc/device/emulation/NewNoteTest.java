@@ -52,7 +52,7 @@ public class NewNoteTest {
         note.addAttr(EventAttr.RHA_TYPE, 1);
         note.addAttr(EventAttr.RHA_RADIUS_METERS, 10);
         Date currentTime = new Date();
-        note.addAttr(EventAttr.RHA_ENDTIME, currentTime.getTime()/1000 + 86400); //One day later
+        note.addAttr(EventAttr.RHA_END_TIME, currentTime.getTime()/1000 + 86400); //One day later
 		note.addAttr(EventAttr.RHA_DESCRIPTION, "Test Description");
 
 		List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();

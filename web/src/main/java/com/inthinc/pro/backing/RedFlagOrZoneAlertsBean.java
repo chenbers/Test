@@ -32,7 +32,7 @@ import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -325,9 +325,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             item.setMaxSpeed(null);
         }
         else if (item.getSpeedSettings() == null){
-            Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
-            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
-                speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+            Integer[] speedSettings = new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS];
+            for (int i = 0; i < SpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+                speedSettings[i] = SpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
             }
             item.setSpeedSettings(speedSettings);
         }
@@ -575,7 +575,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if (isBatchEdit()) {
                 flag.setSpeedSelected(null);
                 if (flag.getSpeedSettings() == null)
-                    flag.setSpeedSettings(new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS]);
+                    flag.setSpeedSettings(new Integer[SpeedingConstants.INSTANCE.NUM_SPEEDS]);
                 final Map<String, Boolean> updateField = getUpdateField();
                 for (final String key : updateField.keySet())
                     if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true)) {
@@ -923,7 +923,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
         public Boolean[] getSpeedSelected() {
             if ((speedSelected == null)) {
-                speedSelected = new Boolean[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+                speedSelected = new Boolean[SpeedingConstants.INSTANCE.NUM_SPEEDS];
                 
                 for (int i = 0; i < speedSelected.length && getSpeedSettings()!=null; i++)
                     

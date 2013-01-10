@@ -119,25 +119,25 @@ public class TAE {
 	}
 
 	public static enum RedFlagPrefs implements SeleniumValueEnums, TextEnum{
-	    EMAIL1(1, MyAccountEnum.EMAIL1_TEXTFIELD),
-	    EMAIL2(2, MyAccountEnum.EMAIL2_TEXTFIELD),
-	    PHONE1(3, MyAccountEnum.PHONE1_TEXTFIELD),
-	    PHONE2(4, MyAccountEnum.PHONE2_TEXTFIELD),
-	    TEXT1(5, MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD),
-	    TEXT2(6, MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
+	    EMAIL1(1, MyAccountEditEnum.EMAIL1_TEXTFIELD),
+	    EMAIL2(2, MyAccountEditEnum.EMAIL2_TEXTFIELD),
+	    PHONE1(3, MyAccountEditEnum.PHONE1_TEXTFIELD),
+	    PHONE2(4, MyAccountEditEnum.PHONE2_TEXTFIELD),
+	    TEXT1(5, MyAccountEditEnum.TEXT_MESSAGES1_TEXTFIELD),
+	    TEXT2(6, MyAccountEditEnum.TEXT_MESSAGES2_TEXTFIELD);
 	
 	    private String text;
-	    private MyAccountEnum ID;
+	    private MyAccountEditEnum ID;
 	    private Integer position;
 	
-	    private RedFlagPrefs(Integer position, MyAccountEnum ID) {
+	    private RedFlagPrefs(Integer position, MyAccountEditEnum ID) {
 	        this.position = position;
             this.ID = ID;
             this.text = ID.getText();
 	    }
 	    
 	    @Override
-	    public MyAccountEnum getID() {
+	    public MyAccountEditEnum getID() {
 	        return ID;
 	    }
  

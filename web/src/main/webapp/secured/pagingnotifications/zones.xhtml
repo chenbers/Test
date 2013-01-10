@@ -10,7 +10,7 @@
 	<t:saveState value="#{pagingZoneEventsBean}"/>
 
 	<ui:param name="zonesSubSelected" value="current" />
-    <ui:param name="context" value="zone"/>
+    <ui:param name="context" value="zoneEvents"/>
     <ui:param name="ajaxPanels" value="#{context}_table,#{context}_search"/>
 
 	<ui:param name="title" value="#{messages.navigation_notifications} - #{messages.notes_tab_zone}"/>	
@@ -27,7 +27,7 @@
 				<ui:include src="/includes/notificationsHeaderTitle.xhtml">	
 	           		<ui:param name="title" value="#{messages.notes_zone_title}"/>
 	           		<ui:param name="description" value="#{messages.notes_zone_description}"/>
-  					<ui:param name="context" value="zone" />
+  					<ui:param name="context" value="zoneEvents" />
   					<ui:param name="style" value="event" />
 	   			</ui:include>  
 
@@ -35,7 +35,7 @@
 		   			<h:panelGroup layout="block" styleClass="panel_content">
 						<ui:include src="/includes/notificationsHeader.xhtml">	
 		    				<ui:param name="bean" value="#{pagingZoneEventsBean}"/>
-	  	 					<ui:param name="context" value="zone" />
+	  	 					<ui:param name="context" value="zoneEvents" />
 		    			</ui:include>    							
 	
 			            <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
@@ -44,7 +44,7 @@
 			             		<ui:param name="clearTitle" value="#{messages.notes_zone_clearTitle}"/>
 			             		<ui:param name="clearInst" value="#{messages.notes_zone_clearInst}"/>
 			             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
-	    	 					<ui:param name="context" value="zone" />
+	    	 					<ui:param name="context" value="zoneEvents" />
 	    	 					<ui:param name="tableColumns" value="#{zoneEventsTableColumns.tableColumns}" />
 			    			</ui:include>    							
 			            </h:panelGroup>
@@ -72,7 +72,7 @@
 			<ui:include src="/includes/emailReportPopup.xhtml">	
 				<ui:param  name="id" value="#{context}_reportEmailModal" />
 				<ui:param  name="reportBean" value="#{pagingZoneEventsBean}"/>
-    	 		<ui:param name="context" value="zone" />
+    	 		<ui:param name="context" value="zoneEvents" />
 			</ui:include>
 		</h:outputText>
 	</ui:define>

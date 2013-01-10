@@ -131,7 +131,8 @@ When I click the Reports link
 And I click the Vehicles link
 And I save the 1st Row of the Vehicle Value link as SAVEDVEHICLE
 And I click the 1st Row of the Vehicle Value link
-Then I validate the Vehicle Name link is SAVEDVEHICLE
+Then I validate I am on the Vehicle Performance page
+And I validate the Vehicle Name link contains SAVEDVEHICLE
 
 Scenario: TC1644: Reports - Vehicles - Edit Columns - Cancel Button (Changes)
 Given I am logged in

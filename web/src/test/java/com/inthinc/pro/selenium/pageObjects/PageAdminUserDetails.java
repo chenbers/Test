@@ -58,6 +58,14 @@ public class PageAdminUserDetails extends AdminBar {
         public TextLink backToUsers() {
             return new TextLink(AdminBarEnum.GO_BACK, page);
         }
+        
+        public TextLink emailOne() {
+        	return new TextLink(AdminUserDetailsEnum.EMAIL_1);
+        }
+        
+        public TextLink emailTwo() {
+        	return new TextLink(AdminUserDetailsEnum.EMAIL_2);
+        }
     }
 
     public class UserDetailsTextFields extends AdminBarTextFields {}
@@ -75,7 +83,71 @@ public class PageAdminUserDetails extends AdminBar {
             temp.setID("display-form:"+temp.getIDs()[0]);
             return new Text(temp);
         }
+        
+        public Text firstName() {
+        	return new Text(AdminUserDetailsEnum.FIRST_NAME);
+        }
+        
+        public Text middleName() {
+        	return new Text(AdminUserDetailsEnum.MIDDLE_NAME);
+        }
+        
+        public Text lastName() {
+        	return new Text(AdminUserDetailsEnum.LAST_NAME);
+        }
+        
+        public Text locale() {
+        	return new Text(AdminUserDetailsEnum.LOCALE);
+        }
+        
+        public Text measurement() {
+        	return new Text(AdminUserDetailsEnum.MEASUREMENT);
+        }
+        
+        public Text fuelEfficiencyRatio() {
+        	return new Text(AdminUserDetailsEnum.FUEL_EFFICIENCY_RATIO);
+        }
+        
+        public Text userName() {
+        	return new Text(AdminUserDetailsEnum.USER_NAME);
+        }
+        
+        public Text group() {
+        	return new Text(AdminUserDetailsEnum.GROUP);
+        }
+        
+        public Text team() {
+        	return new Text(AdminUserDetailsEnum.TEAM);
+        }
+        
+        public Text textMessageOne() {
+        	return new Text(AdminUserDetailsEnum.TEXT_1);
+        }
+        
+        public Text textMessageTwo() {
+        	return new Text(AdminUserDetailsEnum.TEXT_2);
+        }
+        
+        public Text phoneOne() {
+        	return new Text(AdminUserDetailsEnum.PHONE_1);
+        }
+        
+        public Text phoneTwo() {
+        	return new Text(AdminUserDetailsEnum.PHONE_2);
+        }
 
+        public Text redFlagInfo() {
+        	return new Text(AdminUserDetailsEnum.INFORMATION);
+        }
+        
+        public Text redFlagWarn() {
+        	return new Text(AdminUserDetailsEnum.WARNING);
+        }
+        
+        public Text redFlagCritical() {
+        	return new Text(AdminUserDetailsEnum.CRITICAL);
+        }
+        
     }
 
     private static String page = "person";
@@ -111,7 +183,7 @@ public class PageAdminUserDetails extends AdminBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _link().backToUsers().isPresent() && _text().labels(UserColumns.FIRST_NAME).isPresent();
+        return _link().backToUsers().isPresent();// && _text().labels(UserColumns.FIRST_NAME).isPresent();
     }
 
 }

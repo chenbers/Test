@@ -314,7 +314,7 @@ public class PageTeamDriverStatistics extends TeamBar {
 
     @Override
     protected boolean checkIsOnPage() {
-        return _text().crashesTeamHeader().isPresent() && _text().distanceDrivenTeamHeader().isPresent();
+        return _link().sortByDriver().isPresent() && _link().sortByVehicle().isPresent();
     }
 
 }
