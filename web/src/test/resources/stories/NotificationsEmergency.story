@@ -15,8 +15,7 @@ And I click the Emergency link
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-Then I validate I am on the Login page
-Given I am logged in
+And I log back in
 Then I validate I am on the Notifications Emergency page
 
 Scenario: TC1403: Notifications - Emergency - Bookmark Entry to Different Account
@@ -26,8 +25,7 @@ And I click the Emergency link
 And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
-Then I validate I am on the Login page
-Given I am logged in an account that can be edited
+And I log back in under the editable account
 Then I validate I am on the Notifications Emergency page
 
 Scenario: TC1405: Notifications - Emergency - Driver Link
@@ -84,7 +82,8 @@ And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SAVEDENTRY
+Then I validate I am on the Vehicle Performance page
+And I validate the Vehicle Name link contains SAVEDENTRY
 
 Scenario: TC1420: Notifications - Emergency - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -259,7 +258,6 @@ Given I am logged in
 When I click the Notifications link
 And I click the Emergency link
 Then I validate the Sort By Date Time link is present
-
 
 Scenario: TC1429: Notifications - Emergency - Edit Columns - UI
 Given I am logged in

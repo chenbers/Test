@@ -128,7 +128,7 @@
                           </table>
                         </li>
                         <li class="r">
-                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" oncomplete="clearOutline()" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
+                          <h:commandButton id="hazardsAdd" action="#{hazardsBean.add}" reRender="displayHazard,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.hazard_addHazard}" /></span></h:commandButton>
                         </li>
                       </ul>
                     </h:panelGroup>
@@ -155,10 +155,6 @@
             <!-- Data -->
             <rich:column id="mapColumn">
                 <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
-                    <rich:componentControl for="hazardLocationModal" event="onclick" disableDefault="true" operation="show">
-                        <f:param name="lat" value="#{item.latitude}" />
-                        <f:param name="lng" value="#{item.longitude}" />
-                    </rich:componentControl>
                 </h:graphicImage>
                <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
                     <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
@@ -175,18 +171,11 @@
                </rich:toolTip>
             </rich:column>
             
-            <rich:column id="date" sortBy="#{item.stateID}" >
-                <f:facet name="header">
-                    <h:outputText value="#{messages.hazard_region}" />
-                </f:facet>
-                <h:outputText value="#{item.state.name}" />
-            </rich:column>
-            
             <rich:column id="location" sortBy="#{item.location}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_location}" />
                 </f:facet>
-               <h:outputText value="#{item.location}"/>
+               <h:outputText value="#{item.location}"/>#{hazardsBean.addressFormat}
             </rich:column>
             
             <rich:column id="description" sortBy="#{item.description}" >
@@ -272,11 +261,28 @@
                 </a4j:form>
 
                 <script type="text/javascript">
-                  function clearOutline(){
-                    document.getElementById("hazards-form:points").value = "";
-                    map.clearOverlays();
-                  }
+              //<![CDATA[
+                var poly;
+                function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
+                    //console.log("draw circle with radius = "+radius);
+                    var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
+                    var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
 
+                    var points = [];
+                    var step = parseInt(360/nodes)||10;
+                    var bounds = map.getBounds();
+                    for(var i=0; i<=360; i+=step) {
+                        var pint = new GLatLng(center.lat() + (radius/latConv * Math.cos(i * Math.PI/180))
+                            , center.lng() + (radius/lngConv * Math.sin(i * Math.PI/180)));
+                        points.push(pint);
+                        //bounds.extend(pint); //this is for fit function
+                    }
+                    fillColor = fillColor||lineColor||"#0055ff";
+                    lineWidth = lineWidth||2;
+                    poly = new GPolygon(points,lineColor,lineWidth,lineOpacity,fillColor,fillOpacity);
+                    map.addOverlay(poly);
+                }
+              //]]>
                   function showHazard(editable){
                     map.clearOverlays();
                     var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
@@ -305,11 +311,7 @@
                      bounds = new GLatLngBounds();
                      map = portalmap.getMap();
                      if (!showHazard(false)){
-                         console.log("#{hazardsBean.groupHierarchy.topGroup.mapLat}");
-                         console.log("#{hazardsBean.groupHierarchy.topGroup.mapLng}");
-                         console.log("#{hazardsBean.groupHierarchy.topGroup}");
-                         console.log("#{hazardsBean.groupHierarchy}");
-                         //map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
+                         map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
                      }
                      bounds = map.getBounds();
                      addMarkers();
@@ -325,7 +327,7 @@
                           if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
                               reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
                           } else {
-                              lkFrZn(lat.value,lng.value,index);
+                              console.log('bad lat lng');
                           }
                       }
                    }
@@ -333,7 +335,7 @@
                       new GClientGeocoder().getLocations(latlng, 
                               function(response){
                                   if (!response || response.Status.code != 200) {
-                                      lkFrZn(latlng.lat(),latlng.lng(),index);
+                                      console.log('// no response typically== bad lat lng');
                                   } else {
                                       addressElement.innerHTML = response.Placemark[0].address;
                                   }
@@ -341,7 +343,7 @@
                     }
                   function addMarkers(){
                       var progress = 0;
-                      console.log("map: "+map);
+                      //console.log("map: "+map);
                       var progressBar = new ProgressbarControl(map);
                       
                       if (markerClusterer != null) {
@@ -352,13 +354,12 @@
                       bounds.extend(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}));
                       
                       <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
-                          console.log("hazard.lat: #{hazard.lat}");
-                          console.log("hazard.lng: #{hazard.lng}");
                           marker = createMarker(  new GLatLng(#{hazard.lat}, #{hazard.lng}), 
                                                   #{hazard.hazardID}, null,
                                                   "/images/ico_warning.png",
                                                   fillBubbleMarker,0);
                           markers.push(marker);
+                          drawCircle(new GLatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, 10, '#445566', 2, .5, '#112233', .25);
                           progressBar.updateLoader(progress++);
                           bounds.extend(marker.getPoint());
                           
@@ -459,30 +460,4 @@
     </table>
     </a4j:region>
   </ui:define>
-
-    <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="hazardLocationModal" width="540" height="450" headerClass="popupHeader" 
-        onshow="initializeHazardMap(hazardBean.item.lat, hazardBean.item.lng);">
-        <f:facet name="header">
-            <h:outputText id="mapModalHeader" value="#{messages.hazard_location}" />
-        </f:facet>
-        <f:facet name="controls">
-            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
-                onclick="Richfaces.hideModalPanel('hazardLocationModal')" />
-        </f:facet>
-
-        <div class="eventmap-border">
-            <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
-        </div>
-
-        <div class="popupactions">
-            <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" 
-                onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
-                <span class="edit"> <h:outputText value="#{messages.button_close}" /> 
-                </span>
-            </a4j:commandButton>
-        </div>
-    </rich:modalPanel>
-    <!-- END LOCATION MODAL -->
-
 </ui:composition>

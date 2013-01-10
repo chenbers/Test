@@ -66,8 +66,7 @@ public class WaysmartSettingManagerTest {
     public void createDefaultValues(){
         
         VehicleSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(), 
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.WAYSMART, 1,1);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(),1,1);
         
         EditableVehicleSettings editableVehicleSettings = waySmartSettingManager.createDefaultValues(1);
         assertTrue(editableVehicleSettings instanceof WaySmartEditableVehicleSettings);
@@ -76,8 +75,7 @@ public class WaysmartSettingManagerTest {
     public void createFromExistingCustomValues(){
         
         VehicleSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(),  
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.WAYSMART,vehicleSettingCustom);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(),vehicleSettingCustom);
        
         EditableVehicleSettings editableVehicleSettings = waySmartSettingManager.associateSettings(1);
         assertTrue(editableVehicleSettings instanceof WaySmartEditableVehicleSettings);
@@ -91,8 +89,7 @@ public class WaysmartSettingManagerTest {
     public void createFromExistingSliderValues(){
         
         VehicleSettingManager waySmartSettingManager = new WaySmartSettingManager(new ConfiguratorHessianDAO(),  
-                sensitivitySlidersMockDataCreator.getSensitivitySliders(),
-                ProductType.WAYSMART,vehicleSettingSlider);
+                sensitivitySlidersMockDataCreator.getSensitivitySliders(),vehicleSettingSlider);
         EditableVehicleSettings editableVehicleSettings = waySmartSettingManager.associateSettings(1);
         assertTrue(editableVehicleSettings instanceof WaySmartEditableVehicleSettings);
         WaySmartEditableVehicleSettings tevs = (WaySmartEditableVehicleSettings) editableVehicleSettings;

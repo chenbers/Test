@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.jbehave.core.annotations.UsingSteps;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
@@ -14,7 +15,7 @@ import com.inthinc.pro.selenium.steps.SearchCrashesSteps;
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageAdminUsers.class})
 @StoryPath(path="SearchCrashes.story")
 public class SearchCrashesStory extends WebStories {
-
+	@Ignore
     @Test
     public void test(){};
 }

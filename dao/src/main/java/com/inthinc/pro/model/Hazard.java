@@ -1,26 +1,53 @@
 package com.inthinc.pro.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonMethod;
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.inthinc.pro.notegen.PackageNote;
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+@JsonAutoDetect(JsonMethod.NONE)
 public class Hazard extends BaseEntity implements HasAccountId {
-    private Integer hazardID;
+    private Integer hazardID;                       // unique id from the portal
     private Integer acctID;
+    //private final int reported;                     // unix time when it was reported   //TODO: deterimine if they still want to store REPORTED separate from START
     private Date startTime;
     private Date endTime;
-    private Integer radiusMeters;
+    //private final int shelflife;                  // active for this many seconds since reported     //probably not necessary because of endTime
+    @XmlElement(name = "radius")
+    private Integer radiusMeters;                   // distance in meters
     private Integer radiusInUnits;
     private MeasurementLengthType radiusUnits;
-    private HazardType type;
-    private String description = "";
+    private HazardType type;                        // type of road hazard
+    @XmlElement(name = "details")
+    private String description = "";                // details of the hazard (max 60 chars)
     private Integer driverID;
     private Integer userID;
     private Integer vehicleID;
     private Integer deviceID;
-    private Double latitude;
-    private Double longitude;
+    @XmlElement(name = "lat")
+    private Double latitude;                        // latitude   (degrees * 1e6) ...   int on device
+    @XmlElement(name = "long")
+    private Double longitude;                       // longitude  (degrees * 1e6) ...   int on device
+    @XmlAttribute
     private Integer stateID; 
     private String location = "";
     private HazardStatus status;
+    //private final boolean urgent;                   // true if urgent                   //TODO: determine if I need to worry about Urgent?  I thought PRD stated ALL are urgent???
+    //private final String group;                     // group name (max 40 chars)        //TODO: determine if group is necessary???
+    public String testDeleteMes = "tests";
     
     private Driver view_driver;
     private User view_user;
@@ -29,6 +56,95 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public Hazard() {
         super();
     }
+//    public Hazard(byte[] rawData){
+//        ByteBuffer wrapped = ByteBuffer.wrap(rawData);
+//        short packetSize = wrapped.getShort();
+//        Integer hazardID = wrapped.getInt();
+//        int type = (int)wrapped.get();
+//        //LatLng location =  wrapped.get// not seeing a build in way to pull 6 bytes back out and into 2 longs???
+//        
+//        
+//    }
+    @XmlElement(name = "typeID")
+    @JsonProperty(value = "typeID")
+    public int getTypeID(){
+        return type.getCode();
+    }
+    @XmlElement(name = "hazardID")
+    @JsonProperty(value = "hazardID")
+    public Integer getHazardID() {
+        return hazardID;
+    }
+    @JsonProperty(value = "startTime")
+    public long getStartTimeInt() {
+        return getStartTime().getTime()/1000;
+    }
+    @JsonProperty(value = "endTime")
+    public long getEndTimeInt() {
+        return getEndTime().getTime()/1000;
+    }
+    @JsonProperty(value = "radiusMeters")
+    public Integer getRadiusMeters() {
+        if(radiusMeters!=null){
+            return radiusMeters;
+        } else if(getType()==null){
+            return radiusMeters;
+        }
+
+        return ((Double)getType().getRadius()).intValue();
+    }
+    @JsonProperty(value = "description")
+    public String getDescription() {
+        return description;
+    }
+    @JsonProperty(value = "lat")
+    public Double getLat(){
+        return getLatitude();
+    }
+    @JsonProperty(value = "lng")
+    public Double getLng() {
+        return getLongitude();
+    }
+    /**
+     * 
+     * Device expecting the following order of parameters when sent over hessian:
+     * 
+     * packet size - short (2 byte)
+     * rh id - integer (4 byte)
+     * type - 1 byte
+     * location - compressed lat/long (6 byte)
+     * radius - unsigned short (2 byte)  [meters]
+     * start time - time_t (4 byte)
+     * end time - time_t (4 byte)
+     * details - string (60 char)
+     * 
+     * @return
+     */
+    public byte[] toByteArray(){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream stream = new DataOutputStream(baos);
+        try {
+            short baseSize = 23;//NOTE: if fields are added/removed/resized this will need to be updated!
+            short descSize = (short) (this.getDescription().length()*2);
+            stream.writeShort(baseSize+descSize); 
+            stream.writeInt(this.hazardID);
+            stream.write((byte)this.type.getCode()); 
+            stream.flush();
+            PackageNote.longToByte(baos, PackageNote.encodeLat(this.getLatitude()), 3);
+            PackageNote.longToByte(baos, PackageNote.encodeLng(this.getLongitude()), 3);
+            stream.writeShort(this.getRadiusMeters());
+            int startTime = (int) (this.getStartTime().getTime()/1000);
+            stream.writeInt(startTime);
+            int endTime = (int) (this.getEndTime().getTime()/1000);
+            stream.writeInt(endTime);
+            stream.writeChars(this.getDescription());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return baos.toByteArray();
+    }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -71,20 +187,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-    public Integer getRadiusMeters() {
-        if(radiusMeters!=null){
-            return radiusMeters;
-        } else if(getType()==null){
-            return radiusMeters;
-        }
-
-        return ((Double)getType().getRadius()).intValue();
-    }
     public HazardType getType() {
         return type;
-    }
-    public String getDescription() {
-        return description;
     }
     public void setDescription(String description) {
         this.description = description;
@@ -98,14 +202,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public Integer getDeviceID() {
         return deviceID;
     }
-    public Double getLat(){
-        return getLatitude();
-    }
     public Double getLatitude() {
         return latitude;
-    }
-    public Double getLng() {
-        return getLongitude();
     }
     public Double getLongitude() {
         return longitude;
@@ -130,9 +228,6 @@ public class Hazard extends BaseEntity implements HasAccountId {
     }
     public void setStatus(HazardStatus status) {
         this.status = status;
-    }
-    public Integer getHazardID() {
-        return hazardID;
     }
     public void setHazardID(Integer hazardID) {
         this.hazardID = hazardID;
@@ -195,7 +290,8 @@ public class Hazard extends BaseEntity implements HasAccountId {
         this.radiusUnits = MeasurementLengthType.valueOf(code);
     }
     public Integer getRadiusInUnits() {
-        return radiusInUnits;
+        Integer calculatedFromMeters =(getRadiusUnits()!=null && getRadiusMeters()!=null)?(Integer) getRadiusUnits().convertFromMeters(getRadiusMeters()).intValue():null;
+        return radiusInUnits!=null?radiusInUnits:calculatedFromMeters;
     }
     public void setRadiusInUnits(Integer radiusInUnits) {
         this.radiusInUnits = radiusInUnits;

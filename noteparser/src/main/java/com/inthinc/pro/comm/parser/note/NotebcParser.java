@@ -31,7 +31,6 @@ public class NotebcParser implements NoteParser{
 		{
 			AttribParser parser = null;
 			int attribCode = ReadUtil.read(data, offset, 2);
-			logger.info("attribCode: " + attribCode);
 			offset += 2;
 			
 			Attrib attrib = Attrib.get(attribCode);
@@ -42,7 +41,6 @@ public class NotebcParser implements NoteParser{
 			else
 				parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
 			
-				
 			if (parser != null)
 			{
 				offset = parser.parseAttrib(data, offset, (attrib == null) ? String.valueOf(attribCode) : attrib.getFieldName(), attribMap);

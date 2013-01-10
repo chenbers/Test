@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.junit.Ignore;
+
 import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.interfaces.SiloService;
 import com.inthinc.device.emulation.utils.GeoPoint;
@@ -39,6 +41,7 @@ import com.inthinc.pro.selenium.util.AutomationSiloService;
  * @author dtanner
  *
  */
+@Ignore
 public class MassDeviceTest {
     
 //	private final Integer accountID=4342; // DEV

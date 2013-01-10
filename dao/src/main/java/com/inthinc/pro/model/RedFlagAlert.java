@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
-import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.configurator.SpeedingConstants;
 
 @SuppressWarnings("serial")
 @XmlRootElement
@@ -363,8 +363,8 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
 
     public void setSpeedSettings(Integer[] speedSettings) {
         this.speedSettings = speedSettings;
-        if ((speedSettings != null) && (speedSettings.length != TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS))
-            throw new IllegalArgumentException("speedSettings.length must be " + TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS);
+        if ((speedSettings != null) && (speedSettings.length != SpeedingConstants.INSTANCE.NUM_SPEEDS))
+            throw new IllegalArgumentException("speedSettings.length must be " + SpeedingConstants.INSTANCE.NUM_SPEEDS);
     }
 
     public Boolean isHardAccelerationNull(){
@@ -511,7 +511,4 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     public void setNotifyManagers(Boolean notifyManagers) {
         this.notifyManagers = notifyManagers;
     }
-
-    
-
 }

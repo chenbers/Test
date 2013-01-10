@@ -1,0 +1,28 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+
+	<ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
+	<tr>
+		<td width="100"><h:outputText value="#{messages.editVehicle_DOT}"/></td>
+<td><h:outputText value="#{messages[vehiclesBean.item.hosDotType]}" /></td>  
+  </tr>
+	</ui:fragment>
+    <tr>
+      <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
+      <td><h:outputText value="#{vehiclesBean.item.vtype.description}" /></td>
+    </tr>
+   <tr>
+     <td width="100"><h:outputText value="#{messages.editDevice_ifta}" /></td>
+     <td><c:set var="ifta" value="#{vehiclesBean.item.ifta?'yes':'no'}" />
+     	<h:outputText value="#{messages[ifta]}" />
+     </td>
+   </tr>
+
+
+</ui:composition>

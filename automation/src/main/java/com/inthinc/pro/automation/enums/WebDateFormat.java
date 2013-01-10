@@ -27,6 +27,8 @@ public enum WebDateFormat implements TextEnum {
     CASSANDRA_MONTHS("yyyy-MM"),
     CASSANDRA_DAYS("yyyy-MM-dd"),
     
+    ANDROID_LOGCAT("MM-dd HH:mm:ss.SSS"),
+    
     ;
 
     private String format;

@@ -18,11 +18,10 @@ public class AttribParserFactory {
 	private static AttribParser STRING_VAR_LENGTH_PARSER = new StringVarLengthParser();
 	private static AttribParser ODOMETER_PARSER = new OdometerParser();
 	private static AttribParser NOTESFLAGS_PARSER = new NoteFlagsParser();
-
 	private static AttribParser LATLONG_PARSER = new LatLongParser();
 	private static AttribParser GPS_LOCK_FLAG_PARSER = new GpsLockFlagParser();
-	
 	private static AttribParser ACKDATA_PARSER = new AckDataParser();
+    private static AttribParser BYTE_ARRAY_PARSER = new ByteArrayParser();
 
 	private static Logger logger = LoggerFactory.getLogger(AttribParserFactory.class.getName());
 	
@@ -54,6 +53,8 @@ public class AttribParserFactory {
         	return STRING_VAR_LENGTH_PARSER;        	
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH9))
         	return STRING_VAR_LENGTH_PARSER;        	
+        if (parserType.equals(AttribParserType.STRING_VAR_LENGTH10))
+            return STRING_VAR_LENGTH_PARSER;            
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH11))
         	return STRING_VAR_LENGTH_PARSER;        	
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH20))
@@ -62,6 +63,8 @@ public class AttribParserFactory {
         	return STRING_VAR_LENGTH_PARSER;        	
         if (parserType.equals(AttribParserType.STRING_VAR_LENGTH30))
         	return STRING_VAR_LENGTH_PARSER;        	
+        if (parserType.equals(AttribParserType.STRING_VAR_LENGTH32))
+            return STRING_VAR_LENGTH_PARSER;            
 
         
         if (parserType.equals(AttribParserType.STRING_PREFACED_LENGTH))
@@ -108,6 +111,9 @@ public class AttribParserFactory {
         
 		if (parserType.equals(AttribParserType.NOTEFLAGS))
 			return NOTESFLAGS_PARSER;
+
+        if (parserType.equals(AttribParserType.BYTEARRAY))
+            return BYTE_ARRAY_PARSER;
 		
         logger.info("Unrecognized parser type: " + parserType);
         return null;

@@ -51,17 +51,32 @@ public class FormsServiceDAOTest {
     public void formsServiceDAOGetFormTest() {
 
         FormsServiceDAO formsDAO = new FormsServiceDAO();
-
+//http://qa.tiwipro.com:8483/forms_service
         formsDAO.setProtocol("http");
         formsDAO.setHost("dev.tiwipro.com");
-        formsDAO.setPort(8473);
+        formsDAO.setPort(8080);
         formsDAO.setUsername("jhoward");
         formsDAO.setPassword("password");
         formsDAO.setPath("forms_service");
         SubmissionData formSubmission = formsDAO.getForm(new Date().getTime(), 1);
         assertNotNull(formSubmission);
     }
+ 
+    @Ignore
+    @Test
+    public void formsServiceDAOGetFormQATest() {
 
+        FormsServiceDAO formsDAO = new FormsServiceDAO();
+//http://qa.tiwipro.com:8483/forms_service
+        formsDAO.setProtocol("https");
+        formsDAO.setHost("qa.tiwipro.com");
+        formsDAO.setPort(8483);
+        formsDAO.setUsername("jhoward");
+        formsDAO.setPassword("password");
+        formsDAO.setPath("forms_service");
+        SubmissionData formSubmission = formsDAO.getForm(new Date().getTime(), 1);
+        assertNotNull(formSubmission);
+    }
     @SuppressWarnings("unused")
     @Test
     public void testHttp() {
@@ -145,7 +160,7 @@ public class FormsServiceDAOTest {
         String json;
         try {
             json = mapper.writeValueAsString(submissionData);
-            String jsonString = "{\"driverID\":1,\"driverName\":\"Jacquie Howard\",\"vehicleID\":200,\"vehicleName\":\"Jacquie's Car\",\"groupID\":4917,\"formID\":100,\"timestamp\":102030423,\"approved\":false,"+
+            String jsonString = "{\"driverID\":1,\"driverName\":\"Jacquie Howard\",\"driverTimeZoneID\":null,\"vehicleID\":200,\"vehicleName\":\"Jacquie's Car\",\"groupID\":4917,\"groupName\":null,\"groupPath\":null,\"formID\":100,\"timestamp\":102030423,\"approved\":false,"+
             "\"formTitle\":\"Form Title\","+
                     "\"dataList\":[{\"tag\":\"0\",\"question\":\"question0\",\"answer\":\"answer0\"},"+
                                   "{\"tag\":\"1\",\"question\":\"question1\",\"answer\":\"answer1\"},"+
@@ -182,6 +197,9 @@ public class FormsServiceDAOTest {
             if (statusCode == HttpStatus.SC_OK) {
                 InputStream body = method.getResponseBodyAsStream();
                 ObjectMapper mapper = new ObjectMapper();
+//                byte[] bytes = new byte[2000];
+//                int count = body.read(bytes);
+//                String buffer = new String(bytes);
                 SubmissionData value = mapper.readValue(body, SubmissionData.class);
                 assertNotNull(value);
             }

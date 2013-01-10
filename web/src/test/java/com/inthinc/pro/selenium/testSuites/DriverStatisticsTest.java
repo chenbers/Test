@@ -36,7 +36,7 @@ public class DriverStatisticsTest extends WebRallyTest {
 //        CORRECT_ADMIN_USERNAME = admin.getUsername();
 //        CORRECT_ADMIN_PASSWORD = admin.getPassword();
 //    }
-    
+    @Ignore
     @Before
     public void before(){
         pl = new PageLogin();
@@ -129,7 +129,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         
         //TODO test deletion of vehicle, zone, zone alert, and red flag.
     }
-
+    @Ignore
     @Test
     public void bookmarkPageTest4578() {
         set_test_case("TC4578");
@@ -146,7 +146,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         ptds._text().teamName().assertTheSameAs(team);
         
     }
-    
+    @Ignore
     @Test
     public void switchTeamTest4582(){
         //TODO: jwimmer: verify that this test is working
@@ -204,7 +204,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         //set_test_case("TC5516");//TODO: when test is complete uncomment this line and remove @Ignore
         //TODO create method
     }
-    
+    @Ignore
     private void createDriver(String first, String last, String team){
         
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
@@ -220,7 +220,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         paeu._button().saveTop().click();
         
     }
-    
+    @Ignore
     private void deleteUser(String fullName){ 
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();

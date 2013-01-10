@@ -25,6 +25,8 @@ public interface MCMService extends HessianService, SbsHessianInterface
      */
     List<Map<String, Object>> note(String mcmID, List<byte[]> noteList) throws HessianException;
     
+    byte[] notes(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
+    
     List<Map<String, Object>> notebc(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
     
     List<Map<String, Object>> notews(String mcmID, int connectType, List<byte[]> noteList) throws HessianException;
@@ -33,6 +35,7 @@ public interface MCMService extends HessianService, SbsHessianInterface
     
     List<Map<Integer, String>> reqSet(String imei) throws HessianException;
     
+    List<Map<String, Object>> getRH(String mcmID, int lat, int lng, int radius) throws HessianException;
     
     /**
      * request: "audioUpdate", IMEI, HessianMap:<br />

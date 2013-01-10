@@ -2,46 +2,44 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
+import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsZonesEnum;
 
 public class PageNotificationsZones extends NotificationsEventsBar {
 
     public PageNotificationsZones() {
-        page = "zoneEvents";
-        super.checkMe.add(NotificationsZonesEnum.TITLE);
-        super.checkMe.add(NotificationsZonesEnum.NOTE);
+    	
+        enums = new SeleniumEnums[] { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
+    	
+        page = "zone";
+        url = NotificationsZonesEnum.DEFAULT_URL;
+        checkMe.add(NotificationsZonesEnum.MAIN_TITLE);
+        checkMe.add(NotificationsZonesEnum.MAIN_TITLE_COMMENT);
     }
+
+    public class NotificationsZonesLinks extends EventsBarLinks{}
     
-    
-    public class ZonesLinks extends EventsBarLinks{
+    public class NotificationsZonesTexts extends EventsBarTexts{
         
-    }
-    public class ZonesTexts extends EventsBarTexts{
-        
-        public Text title(){
-            return new Text(NotificationsZonesEnum.TITLE);
+        public Text title() {
+            return new Text(NotificationsZonesEnum.MAIN_TITLE);
         }
         
-        public Text note(){
-            return new Text(NotificationsZonesEnum.NOTE);
+        public Text note() {
+            return new Text(NotificationsZonesEnum.MAIN_TITLE_COMMENT);
         }
-        
-
-
-
     }
-    public class ZonesTextFields extends EventsBarTextFields{
+    
+    public class NotificationsZonesTextFields extends EventsBarTextFields{}
+    
+    public class NotificationsZonesButtons extends EventsBarButtons{}
+    
+    public class NotificationsZonesDropDowns extends EventsBarDropDowns{}
+    
+    public class NotificationsZonesPopUps extends MastheadPopUps{
         
-    }
-    public class ZonesButtons extends EventsBarButtons{
-        
-    }
-    public class ZonesDropDowns extends EventsBarDropDowns{
-        
-    }
-    public class ZonesPopUps extends MastheadPopUps{
-        
-        public ZonesPopUps() {
+        public NotificationsZonesPopUps() {
             super(page, Types.REPORT, 3);
         }
 
@@ -53,53 +51,53 @@ public class PageNotificationsZones extends NotificationsEventsBar {
             return new Email();
         }
         
-        public ExcludeEvent excludeEvent(){
+        public ExcludeEvent excludeEvent() {
             return new ExcludeEvent(true);
         }
         
-        public LocationPopUp location(){
+        public LocationPopUp location() {
             return new LocationPopUp();
         }
     }
     
-    
-    public class ZonesPager{
-        public Paging pageIndex(){
-            return new Paging();
-        }
+    public NotificationsZonesLinks _link() {
+        return new NotificationsZonesLinks();
     }
     
-    public ZonesLinks _link(){
-        return new ZonesLinks();
-    }
-    
-    public ZonesTexts _text(){
-        return new ZonesTexts();
+    public NotificationsZonesTexts _text() {
+        return new NotificationsZonesTexts();
     }
         
-    public ZonesButtons _button(){
-        return new ZonesButtons();
+    public NotificationsZonesButtons _button() {
+        return new NotificationsZonesButtons();
     }
     
-    public ZonesTextFields _textField(){
-        return new ZonesTextFields();
+    public NotificationsZonesTextFields _textField() {
+        return new NotificationsZonesTextFields();
     }
     
-    public ZonesDropDowns _dropDown(){
-        return new ZonesDropDowns();
+    public NotificationsZonesDropDowns _dropDown() {
+        return new NotificationsZonesDropDowns();
     }
     
-    public ZonesPopUps _popUp(){
-        return new ZonesPopUps();
+    public NotificationsZonesPopUps _popUp() {
+        return new NotificationsZonesPopUps();
     }
     
-    public ZonesPager _page(){
-        return new ZonesPager();
+    public NotificationsZonesPager _page() {
+        return new NotificationsZonesPager();
+    }
+    
+    public class NotificationsZonesPager {
+    	
+        public Paging pageIndex() {
+            return new Paging();
+        }
     }
 
     @Override
     public SeleniumEnums setUrl() {
-        return NotificationsZonesEnum.URL;
+        return NotificationsZonesEnum.DEFAULT_URL;
     }
 
     @Override

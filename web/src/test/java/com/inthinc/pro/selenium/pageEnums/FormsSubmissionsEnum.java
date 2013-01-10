@@ -5,8 +5,8 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum FormsSubmissionsEnum implements SeleniumEnums {
-    DEFAULT_URL(appUrl + "/forms/submissions"),
-    TITLE("List Submissions", "//span[@class='admin']"),
+    DEFAULT_URL("forms/submissions"),
+//No longer on page    TITLE("List Submissions", "//span[@class='admin']"),
 
     DATE_HEADER("Search:", "//label[@for='dateSelection']"),
     FORM_HEADER("Forms", "//label[@for='formSelection']"),

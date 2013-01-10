@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -768,7 +769,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         } // end finally
         return 1;
     }
-
+    
     @Override
     public HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer) 
     {
@@ -806,6 +807,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 driverLogin.setVehicleDotType(RuleSetType.valueOf(resultSet.getInt(10)));
                 driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(11)));
                 driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(12)));
+                driverLogin.setFobId(resultSet.getString(13));
             }
 
         }   // end try
@@ -852,6 +854,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 driverLogin.setTimezoneID(resultSet.getString(6));
                 driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(7)));
                 driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(8)));
+                driverLogin.setFobId(resultSet.getString(9));
             }
 
         }   // end try
@@ -893,6 +896,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 driverLogin.setDriverID(resultSet.getInt(1));
                 driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(2)));
                 driverLogin.setTimezoneID(resultSet.getString(3));
+                driverLogin.setFobId(resultSet.getString(4));
             }
 
         }   // end try
@@ -1002,6 +1006,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 occupantInfo = new HOSOccupantInfo();
                 occupantInfo.setFullName(resultSet.getString(1));
                 occupantInfo.setEmpId(resultSet.getString(2));
+                occupantInfo.setFobId(resultSet.getString(3));
             }
         }   // end try
         catch (SQLException e) { 
@@ -1091,4 +1096,48 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             close(conn);
         } // end finally
     }
+    
+    private final static String FETCH_IMEI_FOR_OCCUPANT = "SELECT imei FROM hosvehiclelogin l, device d WHERE l.deviceID=d.deviceID AND l.logoutTime IS NULL and l.occupantFlag=1 AND l.driverID = ? AND loginTime < ?"; 
+    @Override
+    public String fetchIMEIForOccupant(Integer driverID, Integer startTime) 
+    {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String imei = "";
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try
+        {
+            conn = getConnection();
+            
+            statement = conn.prepareCall(FETCH_IMEI_FOR_OCCUPANT);
+
+
+            statement.setInt(1, driverID);
+            statement.setString(2, dateFormat.format(startTime));
+            
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) 
+                imei = resultSet.getString(1);
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return imei;
+    }
+
 }

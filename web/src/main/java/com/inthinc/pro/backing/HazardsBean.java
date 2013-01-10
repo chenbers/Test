@@ -14,13 +14,20 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.map.GoogleAddressLookup;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.ForwardCommandID;
+import com.inthinc.pro.model.ForwardCommandSpool;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
@@ -35,9 +42,8 @@ import com.inthinc.pro.util.SelectItemUtil;
 
 @KeepAlive
 public class HazardsBean extends BaseBean {
-    /**
-     * 
-     */
+    private static Logger logger = Logger.getLogger(HazardsBean.class);
+
     private static final long serialVersionUID = -6165871690791113017L;
     //private List<Hazard> hazards;
     private HashMap<Integer, Hazard> hazards;
@@ -45,13 +51,15 @@ public class HazardsBean extends BaseBean {
     private AdminVehicleJDBCDAO adminVehicleJDBCDAO;
     private DriverDAO driverDAO;
     private UserDAO userDAO;
+    private static FwdCmdSpoolWS fwdCmdSpoolWS;
 
     private Hazard item;
     private boolean editing;
     private boolean defaultRadius = true;
     private boolean defaultExpTime = true;
     protected List<Hazard> tableData;
-    protected List<Hazard> filteredTableData;
+    //protected List<Hazard> filteredTableData;
+    private String sendHazardMsg;
     static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
@@ -66,11 +74,10 @@ public class HazardsBean extends BaseBean {
     }
 
     public void loadHazards(){
-        //load the world
+        //load the world?
         loadHazards(-90.0, -180.0, 90.0, 180.0); 
     }
     public void loadHazards(Double lat1, Double lng1, Double lat2, Double lng2) {
-        System.out.println("public void loadHazards(Double "+lat1+", Double "+lng1+", Double "+lat2+", Double "+lng2+")");
         List<Hazard> justHazards = adminHazardJDBCDAO.findHazardsByUserAcct(this.getUser(), lat1, lng1, lat2, lng2);
         if(hazards == null){
             hazards = new HashMap<Integer, Hazard>();
@@ -79,12 +86,38 @@ public class HazardsBean extends BaseBean {
         for(Hazard hazard: justHazards){
             hazards.put(hazard.getHazardID(), hazard);
         }
-        System.out.println("adminHazardJDBCDAO: "+adminHazardJDBCDAO);
-        System.out.println("hazards: "+hazards);
+        
         if (hazards.isEmpty())
             hazards = new HashMap<Integer,Hazard>();
     }
-
+    private String filterBoundsValue ="";
+    
+    public String getFilterBoundsValue() {
+        return filterBoundsValue;
+    }
+    public void setFilterBoundsValue(String filterBoundsValue) {
+        this.filterBoundsValue = filterBoundsValue;
+    }
+    public boolean filterBounds(Object current) {
+        Hazard currentHazard = (Hazard) current;
+        String[] bounds = filterBoundsValue.split(":");
+        //default to the world
+        Double lat1 = -90.0;
+        Double lng1 = -180.0;
+        Double lat2 = 90.0;
+        Double lng2 = 180.0;
+        if(bounds.length == 4) {
+            lat1 = Double.valueOf(bounds[0]);
+            lng1 = Double.valueOf(bounds[1]);
+            lat2 = Double.valueOf(bounds[2]);
+            lng2 = Double.valueOf(bounds[3]);
+        }
+        boolean result = currentHazard.getLat() > lat1
+                && currentHazard.getLng() > lng1
+                && currentHazard.getLat() < lat2
+                && currentHazard.getLng() < lng2;
+        return result;
+    }
     public List<SelectItem> getHazardTypeSelectItems(){
         return SelectItemUtil.toList(HazardType.class, false);
     }
@@ -100,10 +133,13 @@ public class HazardsBean extends BaseBean {
     public void initTableData(){
         for(Integer key: getHazards().keySet()){
             //set driver display value
-            Hazard hazard = getHazards().get(key);
-            hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
-            hazard.setUser(userDAO.findByID(hazard.getUserID()));
-            hazard.setState(States.getStateById(hazard.getStateID()));
+            Hazard hazard = hazards.get(key);
+            if(hazard.getDriver() == null)
+                hazard.setDriver(driverDAO.findByID(hazard.getDriverID()));
+            if(hazard.getUser() == null)
+                hazard.setUser(userDAO.findByID(hazard.getUserID()));
+            if(hazard.getState() == null)
+                hazard.setState(States.getStateById(hazard.getStateID()));
         }
     }
     public List<Hazard> getTableData() {
@@ -133,6 +169,11 @@ public class HazardsBean extends BaseBean {
         return "adminEditHazard";
     }
 
+    public String route() {
+    	//TODO: implement
+    	System.out.println("route()  ");
+    	return "adminRouteHazards";
+    }
     /**
      * Called when the user chooses to edit an item.
      */
@@ -146,7 +187,6 @@ public class HazardsBean extends BaseBean {
     }
     
     public void editListener(ActionEvent event){
-        System.out.println("editListener event: "+event);
         Integer hazardIDToEdit = (Integer)event.getComponent().getAttributes().get("hazardID");
         item = hazards.get(hazardIDToEdit);
     }
@@ -169,12 +209,57 @@ public class HazardsBean extends BaseBean {
 
         return "adminHazards";
     }
-
+    public List<Device> findDevicesInRadius() {
+        List<Device> results = new ArrayList<Device>();
+        Long twoHundredMilesInKM = MeasurementLengthType.ENGLISH_MILES.convertToMeters(200).longValue();
+        List<Vehicle> vehicles = adminVehicleJDBCDAO.findVehiclesByAccountWithinDistance(getAccountID(), twoHundredMilesInKM, new LatLng(this.item.getLat(), this.item.getLng()));
+        for(Vehicle vehicle: vehicles) {
+            results.add(vehicle.getDevice());
+        }
+        return results;
+    }
+    
+    /**
+     * Sends the given Hazard to Devices in range, in this account.
+     * Device expecting the following order of parameters:
+     * packet size - short (2 byte)
+     * rh id - integer (4 byte)
+     * type - byte
+     * location - compressed lat/long (6 byte)
+     * radius - unsigned integer (4 byte)  [meters]
+     * start time - time_t (4 byte)
+     * end time - time_t (4 byte)
+     * details - string (60 char)
+     * @param hazard the Hazard Object to send
+     */
+    public void sendHazard(Hazard hazard){
+        try {
+            for(Device device: findDevicesInRadius()){
+                if(device.getStatus() == DeviceStatus.ACTIVE && device.isWaySmart()){
+                    queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
+                }
+            }
+            setSendHazardMsg("hazardSendToDevice.success");
+        } catch (Exception e) {
+            logger.error("sendHazard("+hazard+") throwing exception: "+e);
+            setSendHazardMsg("hazardSendToDevice.error");
+            return;
+        }
+    }
+    public static void sendHazardToDevice(Hazard hazard, Device device) {
+        queueForwardCommand(device, device.getImei(), hazard.toByteArray(), ForwardCommandID.NEW_ROAD_HAZARD);
+    }
+    private static void queueForwardCommand(Device device, String address, byte[] data, int command) {
+        ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
+        int addToQueue = fwdCmdSpoolWS.add(device, fcs);
+        if (addToQueue == -1)
+            throw new ProDAOException("Iridium Forward command spool failed.");
+    }
+    
     /**
      * Called when the user clicks to save changes when adding or editing.
      */
     public String save() {
-        System.out.println("HazardsBean.save() ");
         // validate
         if (!validate())
             return null;
@@ -190,20 +275,20 @@ public class HazardsBean extends BaseBean {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NullPointerException npe){
-            System.out.println("null pointer when trying to find location "+npe);
+            logger.warn("null pointer when trying to find location "+npe);
         }
         item.setLocation(location);
         item.setModified(new Date());
         if (add) {
-            System.out.println("hazardsBean add ... item: "+item);
             item.setAccountID(getUser().getPerson().getAccountID());
-            item.setHazardID(adminHazardJDBCDAO.create(item));
+            item.setHazardID(adminHazardJDBCDAO.create(item.getAccountID(),item));
 
             Hazard newItem = adminHazardJDBCDAO.findByID(item.getHazardID());
             hazards.put(newItem.getHazardID(), newItem);
         } else {
             adminHazardJDBCDAO.update(item);
         }
+        sendHazard(item);
         
      // add a message
         final String summary = MessageUtil.formatMessageString(add ? "hazard_added" : "hazard_updated", item.getLocation());
@@ -311,7 +396,6 @@ public class HazardsBean extends BaseBean {
         return true;
     }
     public void onTypeChange() {
-        System.out.println("onTypeChange();");
         DateTime startTime = new DateTime(item.getStartTime().getTime());
         Date newEndTime =        (item.getType()==null)?null: startTime.plus(item.getType().getDefaultDuration()).toDate();
         Double newRadiusMeters = (item.getType()==null)?null: item.getType().getRadius();
@@ -321,26 +405,22 @@ public class HazardsBean extends BaseBean {
             item.setEndTime(newEndTime);
         }
         if(defaultRadius){
-           item.setRadiusMeters(newRadiusMeters);
+            item.setRadiusMeters(newRadiusMeters);
             item.setRadiusInUnits(radiusInUnits);
         }
     }
     
     public void onExpTimeChangeListener(ActionEvent event){
-        System.out.println("onExpTimeChangeListener event: "+event);
         defaultExpTime = false;
     }
     public void onExpTimeChange() {
-        System.out.println("onExpTimeChange");
         defaultExpTime = false;
     }
     public void onRadiusChange() {
-        System.out.println("onRadiusChange() ");
         defaultRadius = false;
         item.setRadiusMeters((Double) item.getRadiusUnits().convertToMeters(item.getRadiusInUnits()));
     }
     public void onUnitChange() {
-        System.out.println("onUnitChange()");
         if(item.getRadiusMeters() !=null){
             item.setRadiusInUnits((Integer) item.getRadiusUnits().convertFromMeters(item.getRadiusMeters()).intValue());
         }
@@ -400,5 +480,17 @@ public class HazardsBean extends BaseBean {
     }
     public void setAdminVehicleJDBCDAO(AdminVehicleJDBCDAO adminVehicleJDBCDAO) {
         this.adminVehicleJDBCDAO = adminVehicleJDBCDAO;
+    }
+    public String getSendHazardMsg() {
+        return sendHazardMsg;
+    }
+    public void setSendHazardMsg(String sendHazardMsg) {
+        this.sendHazardMsg = sendHazardMsg;
+    }
+    public FwdCmdSpoolWS getFwdCmdSpoolWS() {
+        return fwdCmdSpoolWS;
+    }
+    public void setFwdCmdSpoolWS(FwdCmdSpoolWS fwdCmdSpoolWS) {
+        this.fwdCmdSpoolWS = fwdCmdSpoolWS;
     }
 }

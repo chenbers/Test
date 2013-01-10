@@ -223,8 +223,11 @@ public class RandomValues extends Random{
 		while (itr.hasNext()) {
 			line = itr.next().split("=");
 			HashMap<ProductType, Integer> state = new HashMap<ProductType, Integer>();
+			state.put(ProductType.TIWIPRO_R71, Integer.parseInt(line[0]));
 			state.put(ProductType.TIWIPRO_R74, Integer.parseInt(line[0]));
+			state.put(ProductType.TIWIPRO_R747, Integer.parseInt(line[0]));
 			state.put(ProductType.WAYSMART, Integer.parseInt(line[2]));
+			state.put(ProductType.WAYSMART_850, Integer.parseInt(line[2]));
 			states.put(line[1], state);
 		}
 	}

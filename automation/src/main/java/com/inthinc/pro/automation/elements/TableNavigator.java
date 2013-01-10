@@ -36,8 +36,18 @@ public class TableNavigator <T extends ElementBase>{
     public T getRow(){
         String isNumber = RegexTerms.getMatch(RegexTerms.getRowNumber, stepAsString);
         Integer rowNumber = null;
-        if (!isNumber.equals("")){
+        if (!isNumber.isEmpty()){
             rowNumber = Integer.parseInt(isNumber);
+        } else if (!RegexTerms.getMatch(RegexTerms.getLastRowNumber, stepAsString).isEmpty()) {
+            rowNumber = -1;
+            for (T row : instance) {
+                if (row.isPresent()){
+                    ++rowNumber;
+                }
+            }
+            if (rowNumber < 0) {
+                throw new StepException(stepAsString, "No rows on the Table", new NullPointerException("Table is empty"));
+            }
         } else {
             Pattern pat = Pattern.compile(RegexTerms.getRowTextNumber);
             Matcher mat = pat.matcher(stepAsString);

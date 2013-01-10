@@ -242,6 +242,17 @@ public class NoteBC extends DeviceNote {
         return temp;
     }
 
+    public NoteBC copy(DeviceNoteTypes type, AutomationCalendar time, boolean copyAttr){
+        NoteBC result = new NoteBC(type, time, location, heading, sats, speed, speedLimit, nLinkID, odometer, nBoundaryID, nDriverID);
+        if(copyAttr)
+            result.addAttrs(attrs);
+        
+        return result;
+    }
+    
+    public  NoteBC copy(DeviceNoteTypes type, boolean copyAttr) {
+        return copy(type, time, copyAttr);
+    }
 
 	@Override
 	public boolean equals(Object obj){

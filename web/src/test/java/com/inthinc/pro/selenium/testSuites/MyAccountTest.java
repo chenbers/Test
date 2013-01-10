@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.PageObjects;
 import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
+import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
@@ -14,7 +16,8 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 
 @UsingSteps(instances={LoginSteps.class})
 @PageObjects(list={PageLogin.class, PageExecutiveDashboard.class, PageMyAccount.class, 
-		PageExecutiveOverallExpansion.class, PageAdminUsers.class })
+		PageExecutiveOverallExpansion.class, PageAdminUsers.class, PageAdminUserDetails.class, 
+		PageAdminAddEditUser.class })
 @StoryPath(path="MyAccount.story")
 public class MyAccountTest extends WebStories {
     

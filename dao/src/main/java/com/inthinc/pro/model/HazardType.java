@@ -4,48 +4,61 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.Period;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.zone.option.type.OptionValue;
 
+@XmlRootElement
+@XmlType(name = "hazardType")
+@XmlEnum
+@JsonSerialize(using = HazardTypeSerializer.class)
 public enum HazardType implements OptionValue {
-    OTHER(0,                        5*MeasurementConversionUtil.METERS_IN_MILE , Severity.URGENT, Period.hours(72), "Other"),
-    WEATHER_SLIPPERY(1,             10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather - Slippery (Wet/Snow/Ice)"),
-    WEATHER_FLOODING(2,             10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather - Flooding"), 
-    WEATHER_VISIBILITY(3,           10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather - Low Visibility (Fog/Smoke)"),
-    WEATHER_WINDGUSTS(4,            10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather - Wind Gusts"),
-    ROADACTIVITY_TRAFFIC(5,         5*MeasurementConversionUtil.METERS_IN_MILE , Severity.NORMAL, Period.hours(4), "Road Activity - Traffic"),
-    ROADACTIVITY_DEBRIS(6,          5*MeasurementConversionUtil.METERS_IN_MILE , Severity.NORMAL, Period.hours(72), "Road Activity - Debris"),
-    ROADRESTRICTIONS_WEIGHT(7,      10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Weight Restrictions (Bridge)"),
-    ROADRESTRICTIONS_HEIGHT(8,      10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Height Restrictions (Overpass Clearance)"),
-    ROADRESTRICTIONS_WIDTH(9,       10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Width Restrictions (Narrow Lane)"),
-    ROADRESTRICTIONS_BAN_CLOSURE(10,10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Road Ban/Closure"),
-    ROADRESTRICTIONS_SHARPTURN(11,  10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Sharp Turn"),
-    ROADRESTRICTIONS_STEEPGRADE(12, 10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Steep Grade"),
-    ROADRESTRICTIONS_MICRO(13,      15*MeasurementConversionUtil.METERS_IN_FOOT, Severity.NORMAL, Period.years(1), "Micro Hazards - Oil Well Head"),
-  
-
-/*  //This section more closely matches PRD 1.4, but does NOT coincide with firmware's doc???
-    WEATHER_OTHER(14, 10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather - Other"),
-    WEATHER_SNOWICE(15, 10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "Weather - Snow/Ice"),
-    ROADACTIVITY_CONSTRUCTION(16 , 5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.months(3), "Road Activity - Construction"),
-    ROADACTIVITY_ACCIDENT(17, 5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.hours(4), "Road Activity - Accident"),
-    ROADACTIVITY_DISABLEDVEHICLE(18, 5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.hours(4), "Road Activity - Disabled Vehicle"),
-    ROADACTIVITY_OTHER(19, 5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.hours(72), "Road Activity - Other"),
-    ROADRESTRICTIONS_CLOSURE(20, 5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Closure"), //JUST closure above combined with road ban
-    ROADRESTRICTIONS_OTHER(21, 5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "Road Restrictions - Other"),
-  */
+    WEATHER_SLIPPERY(1,             10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "WEATHER", "SLIPPERY"),
+    WEATHER_FLOODING(2,             10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "WEATHER", "FLOODING"),
+    WEATHER_SNOWICE(3,              10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "WEATHER", "SNOWICE") ,
+    WEATHER_WINDGUSTS(4,            10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "WEATHER", "WINDGUSTS"),
+    WEATHER_VISIBILITY(5,           10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "WEATHER", "VISIBILITY"),
+    WEATHER_OTHER(6,                10*MeasurementConversionUtil.METERS_IN_MILE, Severity.URGENT, Period.hours(72), "WEATHER", "OTHER"),
+    
+    ROADACTIVITY_TRAFFIC(21,        5*MeasurementConversionUtil.METERS_IN_MILE , Severity.NORMAL, Period.hours(4), "ROADACTIVITY", "TRAFFIC"),
+    ROADACTIVITY_DEBRIS(9,          5*MeasurementConversionUtil.METERS_IN_MILE , Severity.NORMAL, Period.hours(72), "ROADACTIVITY", "DEBRIS"),
+    ROADACTIVITY_CONSTRUCTION(7,    5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.months(3), "ROADACTIVITY", "CONSTRUCTION"),
+    ROADACTIVITY_ACCIDENT(8,        5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.hours(4), "ROADACTIVITY", "ACCIDENT"),
+    ROADACTIVITY_DISABLEDVEHICLE(10,5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.hours(4), "ROADACTIVITY", "DISABLEDVEHICLE"),
+    ROADACTIVITY_OTHER(11,          5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.hours(72), "ROADACTIVITY", "OTHER"),
+    
+    ROADRESTRICTIONS_WEIGHT(12,     10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "WEIGHT"),
+    ROADRESTRICTIONS_HEIGHT(13,     10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "HEIGHT"),
+    ROADRESTRICTIONS_WIDTH(20,      10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "WIDTH"),
+    ROADRESTRICTIONS_BAN(14,        10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "BAN"),
+    ROADRESTRICTIONS_CLOSURE(15,    5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "CLOSURE"),
+    ROADRESTRICTIONS_SHARPTURN(16,  10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "SHARPTURN"),
+    ROADRESTRICTIONS_STEEPGRADE(17, 10*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "STEEPGRADE"),
+    ROADRESTRICTIONS_OTHER(18,      5*MeasurementConversionUtil.METERS_IN_MILE, Severity.NORMAL, Period.years(1), "ROADRESTRICTIONS", "OTHER"),
+    
+    MICRO_WELLHEAD(19,              15*MeasurementConversionUtil.METERS_IN_FOOT, Severity.NORMAL, Period.years(1), "MICRO", "WELLHEAD"),
     ;
 
     private int code;
+    private String group;
     private String name;
     private double radius;
     private Severity severity;
     private Period defaultDuration;
 
-    private HazardType(int code, double radius, Severity severity, Period defaultDuration, String name) {
+    private HazardType(int code, double radius, Severity severity, Period defaultDuration, String group, String name) {
         this.code = code;
+        this.group = group;
         this.name = name;
         this.radius = radius;
         this.severity = severity;
@@ -63,12 +76,38 @@ public enum HazardType implements OptionValue {
         return code;
     }
 
+    public long getShelfLifeSeconds() { 
+    	Duration duration = defaultDuration.toDurationFrom(new DateTime());
+    	return duration.toStandardSeconds().getSeconds();
+    }
+    @XmlElement(name = "radiusMeters")
+    @JsonProperty(value = "radiusMeters")
+    public double getRadius() {
+        return radius;
+    }
+    @XmlElement(name = "details")
+    public String getDetails() {
+        return group +" "+ name;
+    }
+    @XmlElement(name = "urgent")
+    public boolean isUrgent() {
+        return severity.equals(Severity.URGENT);
+    }
+    
+    public String getGroup() {
+        return group;
+    }
+    
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
     public void setCode(int code) {
         this.code = code;
     }
-
+    
     @Override
-    public String getName() {
+    public String getName(){
         return name;
     }
 
@@ -90,11 +129,6 @@ public enum HazardType implements OptionValue {
         return null;
     }
     
-//    @Override
-//    public String toString() {
-//        return this.getClass().getSimpleName()+"."+super.toString();
-//    }
-
     public enum Severity {
         URGENT(0, "Urgent"),
         NORMAL(1, "Normal");
@@ -144,10 +178,6 @@ public enum HazardType implements OptionValue {
         }
     }
 
-    public double getRadius() {
-        return radius;
-    }
-
     public void setRadius(double radius) {
         this.radius = radius;
     }
@@ -167,4 +197,5 @@ public enum HazardType implements OptionValue {
     public void setDefaultDuration(Period defaultDuration) {
         this.defaultDuration = defaultDuration;
     }
+    
 }

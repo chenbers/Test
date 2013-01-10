@@ -9,13 +9,13 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
 
 
     public PageNotificationsEmergency() {
+    	
+        enums = new SeleniumEnums[] { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
         page = "emergency";
         checkMe.add(NotificationsEmergencyEnum.MAIN_TITLE);
     }
 
-    public class NotificationsEmergencyLinks extends EventsBarLinks {
-
-    }
+    public class NotificationsEmergencyLinks extends EventsBarLinks {}
 
     public class NotificationsEmergencyTexts extends EventsBarTexts {
 
@@ -25,19 +25,11 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
 
     }
 
-    public class NotificationsEmergencyTextFields extends EventsBarTextFields {
+    public class NotificationsEmergencyTextFields extends EventsBarTextFields {}
 
-    }
+    public class NotificationsEmergencyButtons extends EventsBarButtons {}
 
-    public class NotificationsEmergencyButtons extends EventsBarButtons {
-
-
-    }
-
-    public class NotificationsEmergencyDropDowns extends EventsBarDropDowns {
-
-
-    }
+    public class NotificationsEmergencyDropDowns extends EventsBarDropDowns {}
 
     public class NotificationsEmergencyPopUps extends MastheadPopUps {
         public NotificationsEmergencyPopUps() {

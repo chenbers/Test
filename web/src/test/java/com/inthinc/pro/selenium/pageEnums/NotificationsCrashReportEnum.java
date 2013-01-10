@@ -6,19 +6,19 @@ public enum NotificationsCrashReportEnum implements SeleniumEnums {
 
     DEFAULT_URL(appUrl + "/notifications/crashReport"),
     
-    BACK("Back to Crash History List", "NEED HARD CODED ID"),
-    
+    BACK("Back to Crash History List", "//a[contains(@id,'crashReportBack')]"),
+
     CRASH_DETAILS_HEADER("Crash Details", "//td[1]/div[@class='panel_title']"),
     CRASH_ROUTE_HEADER("Crash Route", "//td[2]/div[@class='panel_title']"),
     CRASH_EVENTS_HEADER("Crash Location", "//div[@class='panel_title']"),
     
-    CRASH_REPORT_STATUS("Crash Report Status", "NEED HARD CODED ID"),
-    DATE_TIME("Date/Time", "NEED HARD CODED ID"),
+    CRASH_REPORT_STATUS("Crash Report Status", "//td[1]/div[2]/div/table/tbody/tr[1]/td[2]"),
+    DATE_TIME("Date/Time", "//div/table/tbody/tr[2]/td[2]/span"),
     VEHICLE("Vehicle", "crashHistoryVehiclePerformance"),
     DRIVER("Driver", "crashReport-driverPerformance"),
-    WEATHER("Weather", "NEED HARD CODED ID"),
-    OCCUPANT_COUNT("Occupant Count", "NEED HARD CODED ID"),
-    DESCRIPTION_MESSAGE("Description:", "NEED HARD CODED ID"),
+    WEATHER("Weather", "//tr[5]/td[2]"),
+    OCCUPANT_COUNT("Occupant Count", "//tr[6]/td[2]"),
+    DESCRIPTION_MESSAGE("Description:", "//tr[7]/td[2]"),
     
     TIME_HEADER("Time", "NEED HARD CODED ID"),
     RPM_HEADER("RPM", "NEED HARD CODED ID"),

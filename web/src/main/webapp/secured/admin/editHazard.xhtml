@@ -10,7 +10,8 @@
               xmlns:t="http://myfaces.apache.org/tomahawk">
 
   <ui:param name="adminSelected" value="current" />
-  <ui:param name="title" value="#{messages.adminHeader_hazards}"/>
+  <ui:param name="title" value="#{hazardsBean.add ? messages.adminHeader_addHazard : messages.adminHeader_editHazard}"/>
+  
   
   <ui:define name="scripts">
     <style>
@@ -39,6 +40,7 @@
        var marker;
        var hazardlat = "#{hazardsBean.item.latitude}";
        var hazardlng = "#{hazardsBean.item.longitude}";
+       var hazardRadius = "#{hazardsBean.item.radiusMeters}";
     </script>
   </ui:define>
   
@@ -48,7 +50,7 @@
       <tr>
         <td valign="top" width="130">
           <ui:include src="/includes/navigation/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="go_adminHazards" />
+            <ui:param name="selectedAction" value="go_adminAddHazard"/>
             <ui:param name="parentAction" value="go_adminHazards" />
             <ui:param name="context" value="hazards"/>
           </ui:include>
@@ -58,7 +60,7 @@
           <div class="">
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="hazards"><h:outputText value="#{messages.adminHeader_hazards}" /></span>
+                <span class="hazards"><h:outputText value="#{hazardsBean.add ? messages.adminHeader_addHazard : messages.adminHeader_editHazard}" /></span>
                 <span class="panel_links">
                     <a4j:status id="refresh_ajax_status" for="main">
                         <f:facet name="start">
@@ -90,15 +92,15 @@
                             <tr>
                               <td><h:outputText value="#{messages.hazard_address}" /></td>
                               <td>
-                                <h:inputText id="hazardAddress" value="" class="text" size="30" maxlength="126" onkeypress="if (event &amp;&amp; event.keyCode == 13) { showAddress(this.value); return false; } return true;" />
+                                <h:inputText id="hazardAddress" value="" class="text" size="30" maxlength="126" onkeypress="if (event &amp;&amp; event.keyCode == 13) { showAddressWithHazard(this.value); return false; } return true;" />
                               </td>
                             </tr>
                           </table>
                         </li>
-                        <li class="l"><button id="hazardsSearch" type="submit" class="left" onclick="showAddress(document.getElementById('hazards-form:hazardAddress').value); return false;"><span class="search"><h:outputText value="#{messages.hazard_locate}" /></span></button></li>
+                        <li class="l"><button id="hazardsSearch" type="submit" class="left" onclick="showAddressWithHazard(document.getElementById('hazards-form:hazardAddress').value); return false;"><span class="search"><h:outputText value="#{messages.hazard_locate}" /></span></button></li>
                         <li class="r">
                            <h:commandButton id="reset" action="#{hazardsBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.hazard_reset}" /></span></h:commandButton>
-                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}"  reRender="edithazard,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazard_save}" /></span></a4j:commandButton>
+                           <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}"  reRender="edithazard,headerForm" onsubmit="javascript:alert('test');console.log('test');Richfaces.showModalPanel('confirmRecipients')" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazard_save}" /></span></a4j:commandButton>
                            <h:outputText value="&#160;" /><a4j:commandButton id="hazardsCancel" action="#{hazardsBean.cancelEdit}"  onclick="cancelEdit()" reRender="points,editHazard,headerForm" oncomplete="showHazard(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
@@ -143,16 +145,16 @@
                                     <h:selectOneMenu value="#{hazardsBean.item.type}" id="hazardType" required="true" requiredMessage="#{messages.required}" style="width:190px">
                                         <f:selectItem itemValue="#{null}" itemLabel="" />
                                         <f:selectItems value="#{hazardsBean.hazardTypeSelectItems}"/>
-                                        <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits, endCalendar" />
+                                        <a4j:support event="onchange" action="#{hazardsBean.onTypeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits, endCalendar" oncomplete="showHazard();" />
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
                             <tr>
                                 <td><h:outputText value="#{messages.hazard_radius}"/>:</td>
                                 <td>
-                                    <h:inputHidden value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters" />
-                                    <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;">
-                                        <a4j:support event="onchange" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" />
+                                    <h:inputHidden value="#{hazardsBean.item.radiusMeters}" id="hazardRadiusMeters"  />
+                                    <h:inputText value="#{hazardsBean.item.radiusInUnits}" id="hazardRadiusInUnits" style="width: 50px; float: left; margin-right: 10px;" >
+                                        <a4j:support event="onblur" action="#{hazardsBean.onRadiusChange}" reRender="hazardRadiusInUnits, hazardRadiusMeters" oncomplete="showHazard();" />
                                     </h:inputText>
                                     <h:selectOneMenu value="#{hazardsBean.item.radiusUnits}" id="hazardRadiusUnits"  style="width:100px;">
                                         <f:selectItems value="#{measurementBean.lengthTypeItems}"/>
@@ -171,7 +173,7 @@
                                 <td><h:outputText value="#{messages.hazard_endTime}"/>:</td>
                                 <td>
                                     <rich:message for="endCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                    <rich:calendar id="endCalendar" required="true" requiredMessage="#{messages.required}" inputSize="20" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
+                                    <rich:calendar id="endCalendar" inputSize="20" value="#{hazardsBean.item.endTime}" datePattern="#{messages.dateFormatNoTimezone}" style="width:190px">
                                         <a4j:support event="onchanged" action="#{hazardsBean.onExpTimeChange}" reRender="hazardRadiusMeters, hazardRadiusInUnits" />
                                     </rich:calendar>
                                 </td>
@@ -194,43 +196,83 @@
 
 
                 <script type="text/javascript">
+              //<![CDATA[
                   function clearOutline(){
                     removeZoneOverlay();
 //                    map.clearOverlays();
                   }
+                  function showAddressWithHazard(address){
+                      if (address.length == 0){
+                          map.setCenter(new GLatLng(39.0, -104.0), 4);
+                          return;
+                      }
 
+                      geocoder.getLatLng(address,
+                          function(point) {
+                              if (!point) {
+                                  alert("The address: [" + address + "] was not found.");
+                              } else {
+                                  map.setCenter(point, map.getZoom());
+                                  if(marker)
+                                      map.removeOverlay(marker);
+                                  marker = new GMarker(point);
+                                  map.addOverlay(marker);
+                                  marker.openInfoWindowHtml(address);
+                                  updateCoordinates(point.lng(), point.lat());
+                                  GEvent.addListener(marker, "click", function() {
+                                      marker.openInfoWindowHtml(address);
+                                  });
+                             }
+                          }
+                    );
+                  }
+                  var poly;
+                  function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
+                      //console.log("drawCircle with radius "+radius);
+                      var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
+                      var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
+
+                      var points = [];
+                      var step = parseInt(360/nodes)||10;
+                      var bounds = map.getBounds();
+                      for(var i=0; i<=360; i+=step) {
+                          var pint = new GLatLng(center.lat() + (radius/latConv * Math.cos(i * Math.PI/180))
+                              , center.lng() + (radius/lngConv * Math.sin(i * Math.PI/180)));
+                          points.push(pint);
+                          bounds.extend(pint); //this is for fit function
+                      }
+                      fillColor = fillColor||lineColor||"#0055ff";
+                      lineWidth = lineWidth||2;
+                      poly = new GPolygon(points,lineColor,lineWidth,lineOpacity,fillColor,fillOpacity);
+                      map.addOverlay(poly);
+                  }
+                  var hazardPoint;
                   function showHazard(){
-                    // map.clearOverlays();
+                	//console.log("showHazard()");
+                    map.clearOverlays();
                     removeZoneOverlay();
-                    console.log("showHazard item: #{hazardsBean.item}");
-                    console.log("showHazard lat: #{hazardsBean.item.latitude}");
-                    console.log("showHazard lng: #{hazardsBean.item.longitude}");
-                    var hazardPoint;
-                    if(hazardlat &amp;&amp; hazardlng){
-                         console.log("hazard: "+hazard);
-                         //hazardPoint = new GLatLng(#{hazardsBean.item.latitude}, #{hazardsBean.item.longitude});
+                    
+                    if(hazardlat && hazardlng && hazardlat != "" && hazardlng !=""){
+                         hazardPoint = new GLatLng(hazardlat, hazardlng);
                     } else {
-                    	console.log("no hazardPoint... presumably we are EDITING");
+                    	console.log("no hazardPoint... presumably ADDING");
                     }
                     if (hazardPoint){
 //                      centerMapAtHazard(getLatLngBounds(hazardPoint));
                         map.setCenter(hazardPoint);
                         marker = new GMarker(hazardPoint);
                         map.addOverlay(marker);
+                        //console.log("radius in meters "+hazardRadius);
+                        hazardRadius = document.getElementById("hazards-form:hazardRadiusMeters").value / 1000;
+                        drawCircle(hazardPoint, hazardRadius, 20, '#445566', 2, .5, '#112233', .25);
                       return true;
                     }
                     return false;
                   }
 
-                  function storeOutline(){
-                    console.log("in storeOutline");
-                  }
-
                   function cancelEdit(){
-                	  console.log("in cancelEdit");
-                    //stopDrawing();
-                    // map.clearOverlays();
-                    //removeZoneOverlay();
+                    console.log("in cancelEdit");
+                    map.clearOverlays();
                   }
 
                   function select(type){
@@ -262,6 +304,12 @@
                     
                     document.getElementById("hazards-form:editHazard-lng-hide").value = (Math.round(lng*10000.0)/10000.0).toString();
                     document.getElementById("hazards-form:editHazard-lat-hide").value = (Math.round(lat*10000.0)/10000.0).toString();
+                    
+                    hazardlat = lat;
+                    hazardlng = lng;
+                    hazardPoint = new GLatLng(hazardlat, hazardlng);
+                    
+                    showHazard();
                   }
 
                   function bodyLoad(){
@@ -270,29 +318,22 @@
                         initLayers();
                         map = portalmap.getMap();
 
-                      GEvent.addListener(drawZone, "startHazard", function(type){
-                        select(type);
-                      });
-                      GEvent.addListener(drawZone, "endHazard", function(type, points){
-                        select("hand");
-                        storeOutline();
-                      });
                       GEvent.addListener(drawZone, "cancelHazard", function(type){
                         showHazard(true);
                         select("hand");
-                      });
-                      GEvent.addListener(drawZone, "updateHazard", function(points){
-                        storeOutline();
                       });
                       GEvent.addListener(map, "mousemove", function(latLng) {
                         //updateCoordinates(latLng.lng(), latLng.lat());
                       });
                       GEvent.addListener(map, "click", function(overlay, latLng) {
-                          if(marker)
-                              map.removeOverlay(marker);
-                          updateCoordinates(latLng.lng(), latLng.lat());
-                          marker = new GMarker(latLng);
-                          map.addOverlay(marker);
+                    	  if(latLng){
+	                          if(marker) {
+	                              map.removeOverlay(marker);
+	                          }
+	                          updateCoordinates(latLng.lng(), latLng.lat());
+	                          marker = new GMarker(latLng);
+	                          map.addOverlay(marker);
+                          }
                       });
 
                       if (!showHazard(false)){
@@ -300,24 +341,25 @@
                       }
                     }
                   }
+                //]]>
                 </script>
 
-                    <rich:modalPanel id="summary" headerClass="popupHeader"
+                    <rich:modalPanel id="confirmRecipients" headerClass="popupHeader"
                     controlsClass="popupControls" width="500" height="140"
                     autosized="true" resizeable="false" zindex="2001">
                     <f:facet name="header" >
-                        <h:outputText value="#{messages.hazard_saveSummary}" />
+                        <h:outputText value="#{messages.hazard_confirmRecipients}" />
                     </f:facet>
                     <f:facet name="controls">
                         <h:graphicImage value="/images/modal_close.png"
                             style="cursor:pointer"
-                            onclick="Richfaces.hideModalPanel('summary')" />
+                            onclick="Richfaces.hideModalPanel('confirmRecipients')" />
                     </f:facet>
 
                     <div class="popupsubtitle"><h:outputText
-                        value="#{messages.hazard_saveSummaryDetail}" /></div>
+                        value="#{messages.hazard_confirmRecipientsDetail}" /></div>
                         
-                    <h:form id="confirmCloseSummary">
+                    <h:form id="confirmCloseConfirmRecipients">
                         <rich:dataTable id="editHazard-sendList"
                             value="#{hazardsBean.sendToVehiclesList}" var="item"
                             styleClass="datagrid filterabledatagrid"
@@ -340,7 +382,7 @@
                         <div class="popupactions">
                         <button id="editHazard-confirmDeleteCancel" type="submit"
                             class="left"
-                            onclick="Richfaces.hideModalPanel('summary'); return false;">
+                            onclick="Richfaces.hideModalPanel('confirmRecipients'); return false;">
                         <span class="ok"> <h:outputText
                             value="#{messages.button_ok}" /> </span></button>
                         </div>

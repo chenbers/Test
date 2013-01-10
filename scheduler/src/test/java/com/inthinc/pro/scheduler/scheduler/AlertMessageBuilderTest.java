@@ -56,6 +56,48 @@ public class AlertMessageBuilderTest {
        assertEquals("12343546456 driver (vehicle) A pre-trip inspection passed near Address. See http://dev.tiwipro.com:8080/forms/submissions for details.",text);
     }
 
+    @Test
+    public void inspectionNotDoneTest() {
+        List<String> parameterList = new ArrayList<String>();
+        parameterList.add("12343546456");
+        parameterList.add("driver");
+        parameterList.add("vehicle");
+        parameterList.add("Address");
+
+        AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder(alertID, messageID, Locale.getDefault(), address, AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION, acknowledge, parameterList);
+        assertNotNull(alertMessageBuilder);
+        String text = LocalizedMessage.getStringWithValues(alertMessageBuilder.getAlertMessageType().toString(),alertMessageBuilder.getLocale(),
+                (String[])alertMessageBuilder.getParamterList().toArray(new String[alertMessageBuilder.getParamterList().size()]));
+       assertEquals("12343546456 driver is driving vehicle vehicle near Address without an inspection.",text);
+    }
+    @Test
+    public void inspectionUnsafeTest() {
+        List<String> parameterList = new ArrayList<String>();
+        parameterList.add("12343546456");
+        parameterList.add("driver");
+        parameterList.add("vehicle");
+        parameterList.add("Address");
+
+        AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder(alertID, messageID, Locale.getDefault(), address, AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE, acknowledge, parameterList);
+        assertNotNull(alertMessageBuilder);
+        String text = LocalizedMessage.getStringWithValues(alertMessageBuilder.getAlertMessageType().toString(),alertMessageBuilder.getLocale(),
+                (String[])alertMessageBuilder.getParamterList().toArray(new String[alertMessageBuilder.getParamterList().size()]));
+       assertEquals("12343546456 driver is driving vehicle vehicle near Address after inspection and found to be unsafe.",text);
+    }
+    @Test
+    public void didntDoInspectionTest() {
+        List<String> parameterList = new ArrayList<String>();
+        parameterList.add("12343546456");
+        parameterList.add("driver");
+        parameterList.add("vehicle");
+        parameterList.add("Address");
+
+        AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder(alertID, messageID, Locale.getDefault(), address, AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION, acknowledge, parameterList);
+        assertNotNull(alertMessageBuilder);
+        String text = LocalizedMessage.getStringWithValues(alertMessageBuilder.getAlertMessageType().toString(),alertMessageBuilder.getLocale(),
+                (String[])alertMessageBuilder.getParamterList().toArray(new String[alertMessageBuilder.getParamterList().size()]));
+       assertEquals("12343546456 driver left vehicle vehicle near Address without a post-trip inspection.",text);
+    }
     private FormSubmission createFormSubmission() {
         FormSubmission submission = new FormSubmission();
         submission.setFormTitle("Pre-trip Inspection");

@@ -33,7 +33,7 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP)),
             
     VEHICLE(5, 
-            EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING, EventType.RF_SWITCH),
+            EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING, EventType.RF_SWITCH, EventType.POWER_INTERRUPTED),
             EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_IDLING)), 
             
     WIRELINE(6, 
@@ -63,9 +63,11 @@ public enum EventSubCategory implements BaseEnum
     		EnumSet.of(EventType.NEW_DRIVER, EventType.NEW_OCCUPANT, EventType.INVALID_DRIVER, EventType.INVALID_OCCUPANT),
     		null),
     RF_SWITCH(13,EnumSet.of(EventType.RF_SWITCH),EnumSet.of(AlertMessageType.ALERT_TYPE_RF_SWITCH)),
-    DVIR(14, EnumSet.of(EventType.DVIR), 
+    DVIR(14, EnumSet.of(EventType.DVIR, EventType.DVIR_DRIVEN_UNSAFE, EventType.DVIR_DRIVEN_NOPREINSPEC, EventType.DVIR_DRIVEN_NOPOSTINSPEC), 
             EnumSet.of(AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_FAIL,AlertMessageType.ALERT_TYPE_DVIR_PRE_TRIP_PASS,
-                    AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS));
+                    AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_FAIL, AlertMessageType.ALERT_TYPE_DVIR_POST_TRIP_PASS,
+                    AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_INSPECTED_UNSAFE,AlertMessageType.ALERT_TYPE_DVIR_DRIVEN_WITHOUT_INSPECTION,
+                    AlertMessageType.ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION));
     
     private int code;
     private Set<EventType> eventTypeSet;

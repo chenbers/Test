@@ -35,6 +35,7 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
 
+import mockit.NonStrictExpectations;
 /**
  * Unit Test for the StateMileageFuelByVehicle class.
  */
@@ -80,12 +81,12 @@ public class StateMileageFuelByVehicleReportCriteriaTest { //extends BaseUnitTes
         reportCriteriaSUT.setStateMileageDAO(stateMileageDAOMock);
         
         // Strict JMockit expectations
-        new Expectations() {
-        	{
-        		stateMileageDAOMock.getFuelStateMileageByVehicle(GROUP_ID, (Interval)any, false);
-        		// returning null in purpose, so no processing is done in initDataSet
-        	}
-        };
+		new NonStrictExpectations() {
+         {
+          stateMileageDAOMock.getFuelStateMileageByVehicle((Integer)any, (Interval)any, false);
+          // returning null in purpose, so no processing is done in initDataSet
+         }
+        }; 
         
         // Run the test
         assertNull(reportCriteriaSUT.getMainDataset());

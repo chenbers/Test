@@ -33,7 +33,6 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.EventType;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.ZoneEvent;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -406,7 +405,7 @@ public class PaginationTest {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void redFlags() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -463,7 +462,7 @@ public class PaginationTest {
 	}
 
     @Test
-    @Ignore
+//    @Ignore
     public void redFlagSorts() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);
@@ -552,7 +551,7 @@ public class PaginationTest {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void redFlagFilters() {
 
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
@@ -614,7 +613,7 @@ public class PaginationTest {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void redFlagZones() {
     	RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
     	redFlagDAO.setSiloService(siloService);

@@ -1,3 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
-public class AdminTest extends WebStories {}
+import org.junit.Ignore;
+
+@Ignore
+public class AdminTest {}

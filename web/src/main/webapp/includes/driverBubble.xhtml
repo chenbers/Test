@@ -18,6 +18,9 @@
 	        	<ui:param name="vehicleTime" value="#{driverLoc.time}" />
 	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
 	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
+	        	<ui:param name="messageAddressLatLng" value="#{messages.livefleet_latlng}" />  optional
+	        	<ui:param name="lat" value="#{driverLocation.loc.lat}"/>  optional
+	        	<ui:param name="lng" value="#{driverLocation.loc.lng}"/>  optional
 			</ui:include>
 			
 			The backing bean must implement two actions:  driverDetailAction and vehicleDetailAction
@@ -83,6 +86,8 @@
 			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
 				<h:outputText id="bubbleAddress"/>
 			</ui:fragment>
+			<h:outputText value="#{messageAddressLatLng}:" rendered="#{not empty messageAddressLatLng}"/>
+			<h:panelGroup rendered="#{not empty messageAddressLatLng}"><h:outputText value="#{lat}"/>,<h:outputText value="#{lng}"/></h:panelGroup>
 		</h:panelGrid>
 	</div>
 </ui:composition>

@@ -60,6 +60,7 @@ public class Group extends BaseEntity implements HasAccountId
         this.name = name;
         this.parentID = parentID;
         this.status = GroupStatus.GROUP_ACTIVE;
+        this.dotOfficeType = DOTOfficeType.NONE;
     }
 
     public Group(Integer groupID, Integer accountID, String name, Integer parentID, GroupType type, Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
@@ -281,7 +282,7 @@ public class Group extends BaseEntity implements HasAccountId
 	@Override
     public String toString() {
         return "Group [accountID=" + accountID + ", description=" + description + ", groupID=" + groupID + ", managerID=" + managerID + ", mapLat=" + mapLat + ", mapLng=" + mapLng + ", mapZoom="
-                + mapZoom + ", name=" + name + ", parentID=" + parentID + ", status=" + status + ", type=" + type + ", zoneRev=" + zoneRev + "]";
+                + mapZoom + ", name=" + name + ", parentID=" + parentID + ", status=" + status + ", type=" + type + ", zoneRev=" + zoneRev + "dotOfficeType="+dotOfficeType+", addressID"+addressID+"]";
     }
 
     

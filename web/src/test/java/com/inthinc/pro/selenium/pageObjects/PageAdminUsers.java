@@ -21,7 +21,7 @@ public class PageAdminUsers extends AdminTables {
         page = "person";
         checkMe.add(AdminUsersEnum.BATCH_EDIT);
         checkMe.add(AdminUsersEnum.EDIT_COLUMNS_LINK);
-        checkMe.add(AdminUsersEnum.SEARCH_BUTTON);
+        checkMe.add(AdminUsersEnum.NAME_TEXTFIELD);
         checkMe.add(AdminUsersEnum.SELECT_ALL_CHECKBOX);
         checkMe.add(AdminUsersEnum.NAME);
         checkMe.add(AdminUsersEnum.USER_STATUS);
@@ -78,9 +78,9 @@ public class PageAdminUsers extends AdminTables {
         public TextTableLink tableEntryUserEmail1() {
             return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, UserColumns.EMAIL_1);
         }
-        public TextLink sortByColumn(UserColumns column) {
-            return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
-        }
+//        public TextLink sortByColumn(UserColumns column) {
+//            return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
+//        }
         
         public TextLink sortByEmail(){
             return new TextLink(AdminUsersEnum.EMAIL_1);
@@ -220,21 +220,37 @@ public class PageAdminUsers extends AdminTables {
         public TextLink sortByDriverTeam(){
             return new TextLink(AdminUsersEnum.DRIVER_TEAM);
         }
+        
+        public TextTableLink entryName() {
+        	return new TextTableLink(AdminUsersEnum.ENTRY_NAME);
+        }
 
     }
 
     public class AdminUsersTextFields extends AdminTablesTextFields {
 
-        public TextField search() {
-            return new TextField(AdminBarEnum.SEARCH_TEXTFIELD, page);
+        public TextField name() {
+            return new TextField(AdminUsersEnum.NAME_TEXTFIELD);
+        }
+        
+        public TextField userName() {
+            return new TextField(AdminUsersEnum.USER_NAME_TEXTFIELD);
+        }
+        
+        public TextField emailOne() {
+            return new TextField(AdminUsersEnum.EMAILONE_TEXTFIELD);
         }
 
     }
     
     public class AdminUsersTexts extends AdminTablesTexts {
 
-        public TextTable tableColumn(UserColumns column) {
-            return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
+//        public TextTable tableColumn(UserColumns column) {
+//            return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
+//        }
+        
+        public TextTable entryUserName() {
+        	return new TextTable(AdminUsersEnum.ENTRY_USERNAME);
         }
         
     }
@@ -294,23 +310,23 @@ public class PageAdminUsers extends AdminTables {
         this._button().search().click();
         return this;
     }
-    public PageAdminUsers clickFullNameMatching(UserColumns column, String value){
-        this.showAllColumns();
-        this.search(value);
-        Iterator<TextBased> rowIterator = this._text().tableColumn(column).iterator();
-        boolean clicked = false;
-        int rowNumber = 0;
-        while(rowIterator.hasNext()&&!clicked){
-            TextBased rowCol = rowIterator.next();
-            rowNumber++;
-            if(rowCol.getText().equals(value)){
-                this._link().tableEntryUserFullName().row(rowNumber).click();
-                return this;
-            }
-        }
-        addError("clickFullNameMatching("+column+", "+value+")", ErrorLevel.FATAL);
-        return this;
-    }
+//    public PageAdminUsers clickFullNameMatching(UserColumns column, String value){
+//        this.showAllColumns();
+//        this.search(value);
+//        Iterator<TextBased> rowIterator = this._text().tableColumn(column).iterator();
+//        boolean clicked = false;
+//        int rowNumber = 0;
+//        while(rowIterator.hasNext()&&!clicked){
+//            TextBased rowCol = rowIterator.next();
+//            rowNumber++;
+//            if(rowCol.getText().equals(value)){
+//                this._link().tableEntryUserFullName().row(rowNumber).click();
+//                return this;
+//            }
+//        }
+//        addError("clickFullNameMatching("+column+", "+value+")", ErrorLevel.FATAL);
+//        return this;
+//    }
 
     @Override
     public SeleniumEnums setUrl() {

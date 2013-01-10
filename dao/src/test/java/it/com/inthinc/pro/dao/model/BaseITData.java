@@ -3,6 +3,7 @@ package it.com.inthinc.pro.dao.model;
 import static org.junit.Assert.assertNotNull;
 import it.com.inthinc.pro.dao.Util;
 import it.config.ReportTestConst;
+import it.util.DataGenForFormsTesting;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -28,6 +29,7 @@ import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmpIDException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
+import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
@@ -54,6 +56,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Role;
 
 public abstract class BaseITData {
@@ -144,7 +147,7 @@ public abstract class BaseITData {
         Person person = createPerson(group.getAccountID(), group.getGroupID(), ((idx == null) ? "" : idx) + "Driver"+group.getName(), "Last"+group.getGroupID());
         Date expired = Util.genDate(2012, 9, 30);
         
-        Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l"+person.getPersonID(), 
+        Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, null, "l"+person.getPersonID(), 
                                         States.getStateByAbbrev("UT"), "ABCD", expired, null, RuleSetType.US_OIL, group.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
@@ -218,7 +221,13 @@ public abstract class BaseITData {
             }
             catch (DuplicateEntryException ex)
             {
-                throw ex;
+                if (cnt == 9)
+                    throw ex;
+            }
+            catch (HessianException ex)
+            {
+                if (cnt == 9)
+                    throw ex;
             }
         }
         
@@ -271,7 +280,7 @@ public abstract class BaseITData {
     
     }
 
-    protected Person createPerson(Integer acctID, Integer groupID, String first, String last)
+    public Person createPerson(Integer acctID, Integer groupID, String first, String last)
     {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
@@ -519,7 +528,61 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
     }
 
     
+    public User createFormsUser(Integer accountID, Integer groupID) {
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        
+        // create a role with just the forms accessPoint
+        List<AccessPoint> accessPoints = new ArrayList<AccessPoint>();
+        accessPoints.add(new AccessPoint(24,15));
+        Role formsrole = new Role(accountID, null, "FormsOnly", accessPoints);
+        Integer roleID = roleDAO.create(accountID, formsrole);
 
+        List<Integer> roleIDs = new ArrayList<Integer>();
+        roleIDs.add(roleID);
+        List<Role> roles = roleDAO.getRoles(accountID);
+        for (Role role : roles)
+            if (role.getName().toLowerCase().contains("normal"))
+                roleIDs.add(role.getRoleID());
+
+        // create a person
+        Person person = createPerson(accountID, groupID, "Forms"+groupID, "Forms"+groupID); 
+        String username = "TEST_FORMS_"+person.getPersonID();
+        User user = new User(0, person.getPersonID(), roleIDs, Status.ACTIVE, username, PASSWORD, groupID);
+        Integer userID = userDAO.create(person.getPersonID(), user);
+        user.setUserID(userID);
+     
+        return user;
+
+        
+    }
+
+    public User createNormalUser(Integer accountID, Integer groupID) {
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        
+        // create a role with just the forms accessPoint
+        List<Integer> roleIDs = new ArrayList<Integer>();
+        List<Role> roles = roleDAO.getRoles(accountID);
+        for (Role role : roles)
+            if (role.getName().toLowerCase().contains("normal"))
+                roleIDs.add(role.getRoleID());
+
+        // create a person
+        Person person = createPerson(accountID, groupID, "Normal"+groupID, "Normal"+groupID); 
+        String username = "TEST_NORMAL_"+person.getPersonID();
+        User user = new User(0, person.getPersonID(), roleIDs, Status.ACTIVE, username, PASSWORD, groupID);
+        Integer userID = userDAO.create(person.getPersonID(), user);
+        user.setUserID(userID);
+     
+        return user;
+
+        
+    }
 
 
 }

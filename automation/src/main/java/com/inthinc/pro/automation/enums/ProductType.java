@@ -7,7 +7,7 @@ public enum ProductType implements IndexEnum {
 	TIWIPRO_R71(3), 
 	TIWIPRO_R74(5, "R74"), 
 	TIWIPRO_R747(7, "R747"),
-	
+	WAYSMART_850(12),
 	;
 	
 	private final int index;
@@ -30,5 +30,13 @@ public enum ProductType implements IndexEnum {
 	public String getTiwiVersion(){
 	    return version;
 	}
+
+    public boolean isWaysmart() {
+        return name().contains("WAYSMART");
+    }
+
+    public boolean shouldSendNoteHessian() {
+        return this.equals(WAYSMART_850);
+    }
 	
 }

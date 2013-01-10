@@ -16,7 +16,7 @@ And I bookmark the page
 And I click the Logout link
 And I click the bookmark I just added
 Then I validate I am on the Login page
-Given I am logged in
+When I log back in
 Then I validate I am on the Notifications Zones page
 
 Scenario: TC5712: Notifications - Zones - Driver Link
@@ -86,7 +86,8 @@ And I click the Refresh button
 And I click the Sort By Driver link
 And I save the 1st Row of the Entry Vehicle link as SAVEDENTRY
 And I click the 1st Row of the Entry Vehicle link
-Then I validate the Vehicle Name link is SAVEDENTRY
+Then I validate I am on the Vehicle Performance page
+And I validate the Vehicle Name link contains SAVEDENTRY
 
 Scenario: TC5723: Notifications - Zones - Edit Columns - Cancel Button (Changes)
 Given I am logged in
@@ -287,16 +288,17 @@ Scenario: TC5733: Notifications - Zones - Exclude Link - Zone Arrival Event
 Given I am logged in
 When I click the Notifications link
 And I click the Zones link
-And I click the first entry from the Team dropdown
+And I select "Top" from the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I select "Zone Arrival" from the Category dropdown
-And I save the text in the first Entry Date Time text as SAVEDDATETIME
-And I save the text in the first Entry Detail text as SAVEDDETAIL
-And I click the first Exclude link in the Status column
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I combine SAVEDDETAIL with "
+" with SAVEDDATETIME and save them as SAVEDCOMBINED
+And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the SAVEDDATETIME text is present
-And I validate the SAVEDDETAIL text is present
+Then I validate the Message text is SAVEDCOMBINED
 And I click the Yes button
 And I validate the first link in the Status column is "include"
 
@@ -308,12 +310,13 @@ And I click the first entry in the Team dropdown
 And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I select "Zone Departure" from the Category dropdown
-And I save the text in the first Entry Date Time text as SAVEDDATETIME
-And I save the text in the first Entry Detail text as SAVEDDETAIL
-And I click the first Exclude link in the Status column
+And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
+And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I combine SAVEDDETAIL with "
+" with SAVEDDATETIME and save them as SAVEDCOMBINED
+And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the SAVEDDATETIME text is present
-And I validate the SAVEDDETAIL text is present
+Then I validate the Message text is SAVEDCOMBINED
 And I click the Yes button
 And I validate the first link in the Status column is "include"
 
@@ -326,10 +329,11 @@ And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I combine SAVEDDETAIL with "
+" with SAVEDDATETIME and save them as SAVEDCOMBINED
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text contains SAVEDDATETIME
-And I validate the Message text contains SAVEDDETAIL
+Then I validate the Message text is SAVEDCOMBINED
 And I validate the Yes button is present
 And I validate the No button is present
 And I validate the Close button is present
@@ -343,10 +347,11 @@ And I select "Past 30 Days" from the Time Frame dropdown
 And I click the Refresh button
 And I save the 1st Row of the Entry Date Time text as SAVEDDATETIME
 And I save the 1st Row of the Entry Detail text as SAVEDDETAIL
+And I combine SAVEDDETAIL with "
+" with SAVEDDATETIME and save them as SAVEDCOMBINED
 And I click the 1st Row of the Entry Status link
 And the Exclude Event popup opens
-Then I validate the Message text contains SAVEDDATETIME
-And I validate the Message text contains SAVEDDETAIL
+Then I validate the Message text is SAVEDCOMBINED
 And I click the Yes button
 And the Exclude Event popup closes
 And I validate the 1st Row of the Entry Status link is "include"

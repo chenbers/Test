@@ -1,17 +1,22 @@
 package com.inthinc.pro.dao.jdbc;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
@@ -19,15 +24,18 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.inthinc.pro.dao.RoadHazardDAO;
+import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.Hazard;
 import com.inthinc.pro.model.HazardStatus;
 import com.inthinc.pro.model.HazardType;
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.User;
 import com.mysql.jdbc.Statement;
 
-public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
-
+public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport implements RoadHazardDAO{
     private static final Logger logger = Logger.getLogger(AdminHazardJDBCDAO.class);
     private static String HAZARD_COLUMNS_STRING="";// = " acctID, driverID, userID, vehicleID, deviceID, latitude, longitude, radius, startTime, endTime, type, description, status, location, stateID, created, modified ";
     private static final String HAZARD_UPDATE_PRE = "UPDATE hazard set"; //
@@ -41,18 +49,18 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
     static {
         //columnMap.put("hazardID", "hazardID");
         columnMap.put("acctID", "acctID");
-        columnMap.put("driverID", "driverID");// TODO: should be name
+        columnMap.put("driverID", "driverID");
         columnMap.put("userID","userID");
-        columnMap.put("vehicleID", "vehicleID");// TODO: should be name
-        columnMap.put("deviceID", "deviceID");// TODO: should be name?
+        columnMap.put("vehicleID", "vehicleID");
+        columnMap.put("deviceID", "deviceID");
         columnMap.put("latitude", "latitude");
         columnMap.put("longitude", "longitude");
         columnMap.put("radius", "radius");
         columnMap.put("startTime", "startTime");
         columnMap.put("endTime", "endTime");
-        columnMap.put("type", "type");// TODO: should be name
+        columnMap.put("type", "type");
         columnMap.put("description", "description");
-        columnMap.put("status", "status");// TODO: should be name
+        columnMap.put("status", "status");
         columnMap.put("location", "location");
         columnMap.put("stateID", "stateID");
         columnMap.put("created", "created");
@@ -73,6 +81,7 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         }
         HAZARD_UPDATE += HAZARD_UPDATE_POST;
     };
+    private static final String ACCOUNT_ID_FROM_MCMID = "SELECT acctID FROM device WHERE mcmid = :mcmID ";
     private static final String HAZARD_SELECT_BY_ID = //
     "SELECT hazardID, " + HAZARD_COLUMNS_STRING + " "+//
             "FROM hazard " + //
@@ -90,8 +99,6 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
     private static final String HAZARD_DELETE_BY_ID = //
     "DELETE FROM hazard WHERE hazardID = ?"; // 
 
-    
-
     private static ParameterizedRowMapper<Hazard> hazardRowMapper = new ParameterizedRowMapper<Hazard>() {
         @Override
         public Hazard mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -104,8 +111,21 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
             hazard.setDeviceID(ObjectToInteger(rs.getObject("deviceID")));
             hazard.setType(HazardType.valueOf((Integer)rs.getObject("type")));
             hazard.setRadiusMeters(rs.getInt("radius"));
-            hazard.setStartTime(rs.getDate("startTime"));
-            hazard.setEndTime(rs.getDate("endTime"));
+            String strStartDate = rs.getString("startTime");
+            String strEndDate = rs.getString("endTime");
+            
+            SimpleDateFormat dateFormat = getDateFormat(TimeZone.getTimeZone("UTC"));
+            java.util.Date startDate = null;
+            java.util.Date endDate = null;
+            try{
+                 startDate = dateFormat.parse(strStartDate);
+                 endDate = dateFormat.parse(strEndDate);
+            } catch (Exception e){
+                logger.error(e);
+            }
+            
+            hazard.setStartTime(startDate);
+            hazard.setEndTime(endDate);
             hazard.setDescription(rs.getString("description"));
             hazard.setStatus(HazardStatus.valueOf(rs.getInt("status")));
             hazard.setLocation(rs.getString("location"));
@@ -114,6 +134,11 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
             hazard.setLongitude(rs.getDouble("longitude"));
             return hazard;
         }
+    };
+    public static SimpleDateFormat getDateFormat(TimeZone timeZone){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(timeZone);
+        return dateFormat;
     };
     private static Integer ObjectToInteger(Object theObj){
         Integer theInteger;
@@ -126,54 +151,92 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
         }
         return theInteger;
     }
-
-    /**
-     * @param user
-     * @param lat1
-     * @param lng1
-     * @param lat2
-     * @param lng2
-     * @return
-     */
-    public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
-        System.out.println("public List<Hazard> findHazardsByUserAcct(User " + user + ", Double " + lat1 + ", Double " + lng1 + ", Double " + lat2 + ", Double " + lng2 + ")");
+    public List<Hazard> findAllInAccount(Integer acctID) {
+        return findHazardsByUserAcct(acctID, LatLng.MIN_LAT, LatLng.MIN_LNG, LatLng.MAX_LAT, LatLng.MAX_LNG); 
+    }
+    public List<Hazard> findInAccount(Integer acctID, BoundingBox box){
+    	return findHazardsByUserAcct(acctID, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
+    }
+    public List<Hazard> findHazardsByUserAcct(Integer acctID, Double lat1, Double lng1, Double lat2, Double lng2){
         List<Hazard> results;
         Map<String, Object> args = new HashMap<String, Object>();
-        args.put("acctID", user.getPerson().getAcctID());
+        args.put("acctID", acctID);
         args.put("lat1", lat1);
         args.put("lng1", lng1);
         args.put("lat2", lat2);
         args.put("lng2", lng2);
-        System.out.println("simpleJdbcTemplate: " + getSimpleJdbcTemplate());
+        logger.debug("simpleJdbcTemplate: " + getSimpleJdbcTemplate());
         for (String key : args.keySet()) {
-            System.out.println(key + " " + args.get(key));
+            logger.debug(key + " " + args.get(key));
         }
-        System.out.println(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS);
+        logger.debug(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS);
         results = getSimpleJdbcTemplate().query(HAZARD_SELECT_BY_ACCOUNT_AND_BOUNDS, hazardRowMapper, args);
-        System.out.println("results" + results);
+        logger.debug("results" + results);
         return results;
     }
+    @Override
+    public List<Hazard> findHazardsByUserAcct(User user, Double lat1, Double lng1, Double lat2, Double lng2) {
+        logger.debug("public List<Hazard> findHazardsByUserAcct(User " + user + ", Double " + lat1 + ", Double " + lng1 + ", Double " + lat2 + ", Double " + lng2 + ")");
+        return findHazardsByUserAcct(user.getPerson().getAcctID(), lat1, lng1, lat2, lng2);
+    }
 
+    @Override
     public List<Hazard> findHazardsByUserAcct(User user, BoundingBox box) {
         return findHazardsByUserAcct(user, box.getSw().getLat(), box.getSw().getLng(), box.getNe().getLat(), box.getNe().getLng());
     }
 
-    public void update(Hazard hazard) {
-        // TODO: implement
+    @Override
+    public List<Hazard> findAllInAccountWithinDistance(Integer accountID, LatLng location, Integer meters) {
+        logger.debug("public List<Hazard> findAllInAccountWithinDistance(Integer "+accountID+", LatLng "+location+", Integer "+meters+")");
+        Double kilometers = meters / 1000.0;
+        List<Hazard> allInAccount = findAllInAccount(accountID);
+        List<Hazard> results = new ArrayList<Hazard>();
+        Date rightNow = new Date();
+        for(Hazard hazard: allInAccount) {
+            LatLng hazardLocation = new LatLng(hazard.getLat(), hazard.getLng());
+            float dist = GeoUtil.distBetween(location, hazardLocation, MeasurementType.METRIC);
+            logger.debug("dist: "+dist);
+            
+            if(dist < kilometers && hazard.getStatus().equals(HazardStatus.ACTIVE) && hazard.getEndTime().after(rightNow)) {
+                results.add(hazard);
+            } 
+        }
+        return results;
+    }
+    private Integer findAccountID(String mcmID) throws EmptyResultDataAccessException {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put("mcmID",mcmID);
+        return getSimpleJdbcTemplate().queryForInt(ACCOUNT_ID_FROM_MCMID, args);
+    }
+    @Override
+    public List<Hazard> findByDeviceLocationRadius(String mcmID, LatLng location, Integer meters) throws EmptyResultDataAccessException {
+        List<Hazard> results;
+        //TODO: firmware WANTS to only send down NEW road hazards ?
+        return findAllInAccountWithinDistance(findAccountID(mcmID), location, meters);
     }
 
+    @Override
+    public Integer update(Hazard hazard) {
+        deleteByID(hazard.getHazardID());
+        return create(hazard.getAccountID(), hazard);
+        //return getJdbcTemplate().update(HAZARD_UPDATE, new Object[] { hazard });  //TODO: jwimmer: this SHOULD work?
+        //throw new NotImplementedException("AdminHazardJDBCDAO update(Hazard) not yet implemented");
+    }
+
+    @Override
     public Integer deleteByID(Integer hazardID) {
         return getJdbcTemplate().update(HAZARD_DELETE_BY_ID, new Object[] { hazardID });
     }
 
+    @Override
     public Hazard findByID(Integer hazardID) {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("hazardID", hazardID);
         return getSimpleJdbcTemplate().queryForObject(HAZARD_SELECT_BY_ID, hazardRowMapper, args);
     }
 
-    // @Override
-    public Integer create(final Hazard hazard) {
+    @Override
+    public Integer create(Integer id, final Hazard hazard) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -189,16 +252,16 @@ public class AdminHazardJDBCDAO extends SimpleJdbcDaoSupport {
                 ps.setDouble(6, hazard.getLatitude());
                 ps.setDouble(7, hazard.getLongitude());
                 ps.setInt(8, hazard.getRadiusMeters());
-                ps.setDate(9, new Date(hazard.getStartTime().getTime()));
-                ps.setDate(10, new Date(hazard.getEndTime().getTime()));
+                ps.setTimestamp(9, new Timestamp(hazard.getStartTime().getTime()));
+                ps.setTimestamp(10, new Timestamp(hazard.getEndTime().getTime()));
                 ps.setInt(11, hazard.getType().getCode());
                 ps.setString(12, hazard.getDescription());
                 ps.setInt(13, hazard.getStatus().getCode());
                 ps.setString(14, hazard.getLocation());
                 ps.setObject(15, hazard.getStateID(), Types.INTEGER);
-                ps.setDate(16, new Date(System.currentTimeMillis()));
-                ps.setDate(17, new Date(System.currentTimeMillis()));
-                System.out.println(ps.toString());
+                ps.setTimestamp(16, new Timestamp(System.currentTimeMillis()));
+                ps.setTimestamp(17, new Timestamp(System.currentTimeMillis()));
+                logger.debug(ps.toString());
                 return ps;
             }
         };

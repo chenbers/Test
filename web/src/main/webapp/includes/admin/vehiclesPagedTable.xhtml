@@ -132,7 +132,7 @@
       <f:facet name="header">
 		<h:outputText value="#{messages.vehiclesHeader_DOT}" />    
       </f:facet>
-      <h:outputText value="#{messages[item.dotVehicleType]}" />
+      <h:outputText value="#{item.dotVehicleType eq null?(item.hosDotType eq null?'':messages[item.hosDotType]):messages[item.dotVehicleType]}" />
     </rich:column>
     <rich:column id="ePhone" rendered="#{vehiclesBean.tableColumns['ephone'].visible}">
       <f:facet name="header">

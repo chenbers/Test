@@ -117,7 +117,7 @@ public class DriverVehicleScoreWrapperTest {
         score.setAggressiveRightEvents(1);
         
         wrapper.setScore(score);
-        wrapper.setDriver(new Driver(id, id, Status.ACTIVE, "", 0l,0l,"", null,"",null, "", null, GROUP_ID));
+        wrapper.setDriver(new Driver(id, id, Status.ACTIVE, "", 0l,0l, "1wireID","", null,"",null, "", null, GROUP_ID));
         wrapper.setVehicle(null);
 		
 		return wrapper;

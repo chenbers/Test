@@ -294,6 +294,5 @@ public class BaseBean implements Serializable {
             return displayName + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')';
         else
             return displayName + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')';
-        
     }
 }

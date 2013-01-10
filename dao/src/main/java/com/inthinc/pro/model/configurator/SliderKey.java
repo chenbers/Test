@@ -44,10 +44,7 @@ public class SliderKey {
         
         SliderKey otherSliderKey = (SliderKey) obj;
         
-        return (sliderType.equals(otherSliderKey.sliderType) &&
-                productType.equals(otherSliderKey.productType) &&
-                minFirmwareVersion.equals(otherSliderKey.minFirmwareVersion) &&
-                maxFirmwareVersion.equals(otherSliderKey.maxFirmwareVersion));
+        return equals(otherSliderKey);
     }
     @Override
     public int hashCode() {

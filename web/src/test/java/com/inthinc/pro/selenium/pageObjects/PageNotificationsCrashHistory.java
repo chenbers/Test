@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -11,14 +12,16 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsCrashHistoryEnum;
+import com.inthinc.pro.selenium.pageObjects.NotificationsEventsBar.EventsBarDropDowns;
 
-public class PageNotificationsCrashHistory extends NotificationsBar {
+public class PageNotificationsCrashHistory extends NotificationsEventsBar {
     
     private String pageScroller = "crashHistory-form:crashHistory-bottomScroller_table";
 	
     public PageNotificationsCrashHistory() {
-        checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
-        checkMe.add(NotificationsCrashHistoryEnum.TITLE);
+    	
+//        checkMe.add(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN);
+//        checkMe.add(NotificationsCrashHistoryEnum.TITLE);
         page = "crashHistory";
     }
     
@@ -26,7 +29,7 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         
         @Override
         public TextLink editColumns() {
-            return new TextLink(NotificationsBarEnum.EDIT_COLUMNS);    
+            return new TextLink(NotificationsCrashHistoryEnum.EDIT_COLUMNS);    
         }
         
         public TextLink addCrashReport() {
@@ -34,19 +37,19 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
         
         public TextLink sortByDateTime(){
-            return new TextLink(NotificationsBarEnum.SORT_DATE_TIME);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_DATE_TIME);
         }
         
         public TextLink sortByGroup(){
-            return new TextLink(NotificationsBarEnum.SORT_GROUP);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_GROUP);
         }
         
         public TextLink sortByDriver(){
-            return new TextLink(NotificationsBarEnum.SORT_DRIVER);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_DRIVER);
         }
         
         public TextLink sortByVehicle(){
-            return new TextLink(NotificationsBarEnum.SORT_VEHICLE);
+            return new TextLink(NotificationsCrashHistoryEnum.SORT_VEHICLE);
         }
         
         public TextLink sortByOccupants(){
@@ -62,7 +65,7 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
         
         public TextTableLink entryGroup() {
-            return new TextTableLink(NotificationsBarEnum.GROUP_ENTRY);
+            return new TextTableLink(NotificationsCrashHistoryEnum.GROUP_ENTRY);
         }
         
         public TextTableLink entryDriver() {
@@ -78,26 +81,26 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         }
     }
     
-    public class NotificationsCrashHistoryButtons extends NotificationsBarButtons {
+    public class NotificationsCrashHistoryButtons extends EventsBarButtons {
         
-        public Button refresh() {
-            return new Button(NotificationsBarEnum.REFRESH);
+        public TextButton refresh() {
+            return new TextButton(NotificationsCrashHistoryEnum.REFRESH);
         }
         
         public Button tools() {
-            return new Button(NotificationsBarEnum.TOOLS);
+            return new Button(NotificationsCrashHistoryEnum.TOOLS);
         }
         
         public Button exportToPDF() {
-            return new Button(NotificationsBarEnum.EXPORT_TO_PDF);
+            return new Button(NotificationsCrashHistoryEnum.EXPORT_TO_PDF);
         }
         
         public Button emailThisReport() {
-            return new Button(NotificationsBarEnum.EMAIL_REPORT);
+            return new Button(NotificationsCrashHistoryEnum.EMAIL_REPORT);
         }
         
         public Button exportToExcel() {
-            return new Button(NotificationsBarEnum.EXPORT_TO_EXCEL);
+            return new Button(NotificationsCrashHistoryEnum.EXPORT_TO_EXCEL);
         }
         
         public Button search() {
@@ -110,15 +113,14 @@ public class PageNotificationsCrashHistory extends NotificationsBar {
         
     }
     
-    public class NotificationsCrashHistoryDropDown extends NotificationsBarDropDowns {
-    	SeleniumEnums[] enums = {NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, NotificationsCrashHistoryEnum.TEAM_DROP_DOWN};
+    public class NotificationsCrashHistoryDropDown {
         
         public DHXDropDown team() {
             return new DHXDropDown(NotificationsCrashHistoryEnum.TEAM_DROP_DOWN, enums);
         }
         
         public DHXDropDown timeFrame() {
-            return new DHXDropDown(NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, enums );
+            return new DHXDropDown(NotificationsCrashHistoryEnum.TIME_FRAME_DROP_DOWN, page);
         }
     }
     

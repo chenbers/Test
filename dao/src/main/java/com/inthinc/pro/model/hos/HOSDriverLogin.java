@@ -20,6 +20,7 @@ public class HOSDriverLogin extends BaseEntity {
     private RuleSetType vehicleDotType;
     private FuelEfficiencyType fuelEfficiencyType; 
     private MeasurementType measurementType; 
+    private String fobId;
     
     
     
@@ -32,6 +33,15 @@ public class HOSDriverLogin extends BaseEntity {
 
     public HOSDriverLogin() {
         super();
+    }
+    
+
+    public String getFobId() {
+        return fobId;
+    }
+
+    public void setFobId(String fobId) {
+        this.fobId = fobId;
     }
 
     public Integer getDriverID() {
