@@ -80,7 +80,7 @@ public enum SettingType implements BaseEnum
     WS850_HARD_TURN_SETTING(52,10063,10,5, "hardTurn"),
     WS850_HARD_VERT_SETTING(53,10064,15,10, "hardVertical"),
     WS850_SPEED_LIMIT(54,10054,0,0,"speed_limit"),
-    WS850_SEVERE_SPEED_LIMIT(55,10058,0,0,"severe_speed_threshold"),
+    WS850_MAX_SPEED_LIMIT(55,10030,0,0,"max_speed_threshold"),
     WS850_IDLING_TIMEOUT(56,10060,0,0,"idleThreshold"),
     WS850_HOS_SETTING(57, 10029, 0, 0, "hos_vehicle_type");
     
