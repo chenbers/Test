@@ -86,7 +86,7 @@
                     fillOpacity: .10,
                     strokeColor: '#445566',
                     strokeOpacity: .20,
-                    strokeWeight: 2,
+                    strokeWeight: 2
                 };
             var circle = new google.maps.Circle(circleOptions);
             circle.setCenter(point);
@@ -111,6 +111,7 @@
         Hazard.prototype.drawRadius = function() {
             createCircle(this.point, this.radius);
         }
+        
         function buildLocFilter(){
         	return map.getBounds().getSouthWest().lat()+":"+map.getBounds().getSouthWest().lng()
         	   +":"+map.getBounds().getNorthEast().lat()+":"+map.getBounds().getNorthEast().lng();
