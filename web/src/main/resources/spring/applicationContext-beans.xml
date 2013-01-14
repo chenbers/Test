@@ -438,6 +438,7 @@
   </bean>
   <bean id="googleMapURLBean" class="com.inthinc.pro.backing.GoogleMapURLBean">
     <property name="mapUrl" value="${google.map.url}" />
+    <property name="mapV3Url" value="${google.map.v3.url}" />
     <property name="mapGeoUrl" value="${google.map.geo.url}" />
   </bean>
 

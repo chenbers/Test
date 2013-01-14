@@ -15,53 +15,60 @@
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="ajaxPanels" value="inputFormPanel"/>
 	<ui:define name="scripts">
- 		<ui:include src="/includes/map/portalMap.xhtml"/>
-		
+ 		<ui:include src="/includes/map/portalMap3.xhtml"/>
+		<a4j:loadScript src="/js/mapv3/markerclusterer.js"/>
+<!-- 		
 		<a4j:loadScript src="/js/markerclusterer_packed.js"/>
 		<a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
-		
+ -->		
+				
+		<a4j:loadScript src="/js/mapv3/mapBubble.js"/>
 			
 			
 		<script type="text/javascript">
-
 		//<![CDATA[
+
 		var map = null;
 	  	var markerClusterer;
 		var markers = [];
 	    var addressLatLng = null;
 		var mapNeedsInit = true;
 		
+/*		
 	    var baseIcon = new GIcon();
 			baseIcon.iconSize = new GSize(25, 30);
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 			baseIcon.shadow=null;
+*/
 
 	    function initMap() {
-	       		
-	      if (GBrowserIsCompatible()) {
-	    	  
 	    	  if (mapNeedsInit) {
-
-
-				portalmap.init();
+	    		  
+				console.log('map default loc: ' + mapDefaultLoc + " " + mapDefaultZoom);	    		  
+				inthincMap.init({
+					'center' : {
+						'lat' : mapDefaultLoc.lat(),
+						'lng' : mapDefaultLoc.lng()
+					},
+					'zoom' : mapDefaultZoom
+				});
 				initLayers();
-				map = portalmap.getMap();
-	        	geocoder = new GClientGeocoder();
-				map.setCenter(mapDefaultLoc);
-				bounds = new GLatLngBounds();
-			    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
+				map = inthincMap.getMap();
+
+				bounds = new google.maps.LatLngBounds();
+
+				var marker = inthincMap.createMarker({ position: mapDefaultLoc });
+				bounds.extend(marker.getPosition());
+				
 				var node = document.getElementById("defaultMessage").cloneNode(true);
 				node.style.display = 'block';
-			    marker.openInfoWindow(node);
+				
+				inthincMap.createInfoWindow({content: node, marker : marker});
 
-			
-			    mapNeedsInit = false;
+				mapNeedsInit = false;
 
 	    	  }
-	      }
 		}
 		
 		function refresh()
@@ -76,10 +83,11 @@
    			var count = document.getElementById(countId).value;
 
    			// Clear all existing markers and zoom boundary.
-			map.clearOverlays();
-			portalmap.restoreLayersState();
+   			inthincMap.clearMarkers();
+//			map.clearOverlays();
+//			portalmap.restoreLayersState();
 			
-			bounds = new GLatLngBounds();
+			bounds = new google.maps.LatLngBounds();
    			
 			//Text field is blank, process form for only number of vehicles dropdown.
 	   		if(address.length == 0)  
@@ -87,33 +95,23 @@
 	   			notifyBean(mapDefaultLoc.lat(), mapDefaultLoc.lng(), count);
    				return;
    	   		}
+		    inthincMap.lookupAddress(address,
+		   	          function(result, status) {
+		    	  			if (status != google.maps.GeocoderStatus.OK) {
+			        		  	console.log(address + " not found");
+			        	  } else {
+								var loc = result[0].geometry.location;
 
-	   	    if (geocoder) {
-	   	        geocoder.getLatLng(
-	   	          address,
-	   	          function(point) {
-	   	        	  if (!point) {
-	   	        		  alert(address + " not found");
-	   	        	  } else {
-	  	     
-		   				 //Create Marker
-						 var marker = new GMarker(point);
-						 GEvent.addListener(marker, "click", function() {
-					         	marker.openInfoWindowHtml("<b>" + address + "</b>");  });
-						 
-						 map.addOverlay(marker);
-						 bounds.extend(marker.getPoint());
-						
-						 //Immediately display info window.
-						 marker.openInfoWindow("<b>" + address + "</b>");
-						         	  
-						 //Pass Geocode lookup LatLng and max count to Bean.
-						 var loc = marker.getLatLng();
-						 notifyBean(loc.lat(), loc.lng(), count);
-	    	         }
-	   	          }
-	   	        );
-	   	    }
+								var marker = inthincMap.createMarker({position : loc}); 
+								inthincMap.createInfoWindow({
+									content: "<b>" + address + "</b>", 
+									marker : marker
+								});
+
+								bounds.extend(marker.getPosition());
+								notifyBean(loc.lat(), loc.lng(), count);
+						}
+			});
    	    }
 
 		/* Check if Enter pressed in form.
@@ -140,11 +138,8 @@
    	   			{	return true;  }
    		}
 
-		    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
-			function bodyUnload()
-			{
-				GUnload();
-			}
+		    var mapDefaultLoc= new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng})
+		    var mapDefaultZoom = #{liveFleetBean.addressZoom};
 	
 			function bodyLoad()
 			{
@@ -156,10 +151,9 @@
 				addressLookupAddressFormat = #{liveFleetBean.addressFormat};
 			}
 	
-	
 			function funcToCall(obj) {
+				
 				jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-
 				if (		obj.callFuncID == 0 ) {
 					fillBubbleMarker(obj.itemID,obj.subID);
 					
@@ -171,11 +165,12 @@
 					
 				} else if ( obj.callFuncID == 4 ) {
 					fillBubbleMap(obj.noteID);
-				}	
+				}
 			} 		 
- 
 
+ 
 	   		//]]>
+
 		</script>	
 	
 	</ui:define>
@@ -202,39 +197,64 @@
 			var marker;
 			var driverLoc;
 			var bounds;
+			
+			function addMarkerListener(marker, itemID)
+			{
+				google.maps.event.addListener(marker, "click", function() {
+						var latlng = marker.getPosition();
+<!-- TODO: not sure about this currentMarker global type var (filled in by mapbubble.js getAddressforCurrentMarker) -->						
+	 					currentMarker = marker;	
+	 					alert("in click listener itemID = " + itemID);
+						lkFrZnBubble(latlng.lat(),latlng.lng(),0,0,itemID,0,0);
+//						lkFrZnBubble(#{item.loc.lat},#{item.loc.lng},0,#{item.vehicle.vehicleID},null,null,4);">
+
+//						fillBubbleMarker(itemID, 0);
+				});
+				
+			}
 
 			function addMarkers()
 			{
+/*
+TODO:
 				var progress = 0;
 				var progressBar = new ProgressbarControl(map);
-				
+*/				
 				if (markerClusterer != null) {
 			          markerClusterer.clearMarkers();
 			        }
-				progressBar.start(#{fn:length(liveFleetBean.drivers)});
+//				progressBar.start(#{fn:length(liveFleetBean.drivers)});
 
 				markers = [];
 
-				bounds.extend(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
+				bounds.extend(new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-			
+/*
 					marker = createMarker(	new GLatLng(#{driver.loc.lat}, #{driver.loc.lng}), 
 											#{driver.vehicle.vehicleID}, null,
 											"#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}",
 											fillBubbleMarker,0);
+*/					
+					marker = inthincMap.createMarker({
+						position: new google.maps.LatLng(#{driver.loc.lat}, #{driver.loc.lng}),
+						iconImage : "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}"
+					});
+					addMarkerListener(marker, #{driver.vehicle.vehicleID});	
 					markers.push(marker);
-					progressBar.updateLoader(progress++);
-					bounds.extend(marker.getPoint());
+//					progressBar.updateLoader(progress++);
+					bounds.extend(marker.getPosition());
 					
 				</ui:repeat>
 				
 				markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
 				
-				progressBar.remove();
+//				progressBar.remove();
+				inthincMap.centerAndZoom(bounds);
 
-				map.setZoom(map.getBoundsZoomLevel(bounds));
-	    		map.setCenter(bounds.getCenter());
+//				map.setZoom(map.getBoundsZoomLevel(bounds));
+//	    		map.setCenter(bounds.getCenter());
+	    		
 			}
 		</script>
 		</rich:panel>
