@@ -3,7 +3,6 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
-import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsZonesEnum;
 
 public class PageNotificationsZones extends NotificationsEventsBar {
@@ -12,7 +11,7 @@ public class PageNotificationsZones extends NotificationsEventsBar {
     	
         enums = new SeleniumEnums[] { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
     	
-        page = "zone";
+        page = "zoneEvents";
         url = NotificationsZonesEnum.DEFAULT_URL;
         checkMe.add(NotificationsZonesEnum.MAIN_TITLE);
         checkMe.add(NotificationsZonesEnum.MAIN_TITLE_COMMENT);
