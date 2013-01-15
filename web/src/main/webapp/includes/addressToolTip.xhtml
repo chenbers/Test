@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j">
+	<rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{addressFormat == 1 and condition}">
+		<h:outputText id="address" value="#{latLng}" converter="#{latLngAddressConverter}" />
+	</rich:toolTip>
+	<rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{addressFormat == 2 and condition}">
+		<h:inputHidden id="linkText" value="#{latLng}" converter="#{latLngAddressConverter}" />
+		<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
+    </rich:toolTip>
+    <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{addressFormat == 3 and condition}">
+		<h:inputHidden id="eventLat" value="#{latLng.lat}"/>
+		<h:inputHidden id="eventLng" value="#{latLng.lng}"/>
+		<h:outputText id="eventAddress" />
+    </rich:toolTip>
+        
+</ui:composition>
+	

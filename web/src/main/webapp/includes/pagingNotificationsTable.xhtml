@@ -40,19 +40,12 @@
                         
                     </rich:componentControl>
                 </h:graphicImage>
-               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1}">
-                    <h:outputText id="address" value="#{event.latLng}" converter="#{latLngAddressConverter}" />
-                </rich:toolTip>
-               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2}">
-	               	<h:inputHidden id="linkText" value="#{item.event.latLng}" converter="#{latLngAddressConverter}" />
-  					<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
-               </rich:toolTip>
-               
-              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3}">
-				<h:inputHidden id="eventLat" value="#{event.latitude}"/>
-				<h:inputHidden id="eventLng" value="#{event.longitude}"/>
- 				<h:outputText id="eventAddress" />
-                </rich:toolTip>
+		  		<ui:include src="/includes/addressToolTip.xhtml">	
+   					<ui:param name="addressFormat" value="#{bean.addressFormat}" />
+   					<ui:param name="condition" value="true" />
+   					<ui:param name="latLng" value="#{event.latLng}" />
+   					<ui:param name="index" value="#{index}" />
+				</ui:include>
 				<div id="noteID#{event.noteID}" style="display: none;">
                 	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 						<f:facet name="header">

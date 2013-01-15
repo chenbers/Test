@@ -11,53 +11,61 @@
     <ui:param name="notificationsSelected" value="current" />
 	
     <ui:define name="scripts">
-		<ui:include src="/includes/map/portalMap.xhtml"/>
-		<a4j:loadScript src="/js/drawZone.js" />
-		<a4j:loadScript src="/js/mapGeocode.js" />
+    	<ui:include src="/includes/map/portalMap3.xhtml"/>
+		<a4j:loadScript src="/js/mapv3/drawZone.js" />
+		
         <script type="text/javascript">
-          var map = null;
-          var geocoder = null;
-          var errorMessage = null;
-          
-          function initializeMap(lat, lng, zonePoints, noteID) 
-          {
-            if (GBrowserIsCompatible()) {
-				if (map == null) {
-  			  		portalmap.init(false, "address-canvas");
-			  		initLayers();
-			  		map = portalmap.getMap();
-				}
-				else {
-					map.clearOverlays();
-					portalmap.restoreLayersState();
-				}
-              
-	          	var location = new GLatLng(lat, lng)
-              	map.setCenter(location, 15);
-              	map.addOverlay(new GMarker(location));
-               
-  			  	errorMessage = "#{messages.sbs_badLatLng}"
+	  	  var mapNeedsInit = true;
 
-              
-		      	var outline = fromOutlineString(zonePoints);
-              	if (outline) {
+	  	  function initializeMap(lat, lng, zonePoints, noteID) 
+          {
+			var location = new google.maps.LatLng(lat, lng);
+  			if (mapNeedsInit) {
+				inthincMap.init({
+					'canvasID' : 'address-canvas',
+					'center' : {
+						'lat' : lat,
+						'lng' : lng
+					},
+					'zoom' : 15
+				});
+				initLayers();
+              	mapNeedsInit = false;
+  			}
+  			else {
+  				inthincMap.clearMarkers();
+  				removeZoneOverlay();
+  			}
+
+
+			// Note: only zone events have zonePoints
+		    var outline = fromOutlineString(zonePoints);
+            if (outline) {
             	// Draw Zone and set center
-                	centerMapAtZone(getLatLngBounds(outline));
-                	loadZone(outline, false);
-                	map.addOverlay(new GMarker(getLatLngBounds(outline).getCenter()));
-                	showInfoBubble(noteID, getLatLngBounds(outline).getCenter());
-              	}
-              	else{
-            	  	showInfoBubble(noteID, location);
-              	}
+            		zoneBounds = getLatLngBounds(outline);
+                	inthincMap.centerAndZoom(zoneBounds);
+                	loadZone(outline, false, inthincMap.getMap());
+                	inthincMap.createMarker({ position: zoneBounds.getCenter()});
+                	showInfoBubble(noteID, zoneBounds.getCenter());
             }
+            else{
+            	  	showInfoBubble(noteID, location);
+            }
+
           }
 
 	      function showInfoBubble(divID, latLng)
 	      {
 	    	  var node = document.getElementById(divID).cloneNode(true);
 	    	  node.style.display = 'block';
-       		  map.openInfoWindow(latLng, node);
+			  var marker = inthincMap.createMarker({ 
+				  position: latLng 
+			  });
+			  inthincMap.createInfoWindow({
+				  content: node, 
+				  marker : marker
+				});
+
 		  }
           
           function initializeTable()
@@ -71,42 +79,8 @@
           }
           
 
-  		/* CreateMarker(GLatLng, divID, GIcon or null)
-  		 *	
-  		 * Creates a marker using specified GIcon or
-  		 * default icon if null is passed for iconImage.
-  		 * divID is the id of a DIV you want displayed in the info window. 
-  		 */
-          function createMarker(point, divID, iconImage) 
-          {
-          	var markerIcon;
-          	var marker;
-
-  			//Use passed in image.
-          	if(iconImage != null)
-          	{
-  				markerIcon = new GIcon(baseIcon);
-  	       	    markerIcon.image = iconImage;
-  	       	 	markerOptions = { icon:markerIcon };
-  	       	 	marker = new GMarker(point, markerOptions);
-          	}
-          	//Use default GoogleMap marker image.
-          	else
-          	{
-  		      	markerIcon = new GIcon();
-  				marker = new GMarker(point);
-          	}
-         
-         		GEvent.addListener(marker, "click", function() {
-  					var node = document.getElementById(divID).cloneNode(true);
-            			node.style.display = 'block';
-  		            marker.openInfoWindow(node);
-  		 			});
-
-          	return marker;
-          }
         </script>
-          <rich:panel id="script">
+		<rich:panel id="script">
           <script type="text/javascript">
           
   		 function getLink(index){
@@ -127,7 +101,7 @@
 	      		if (address.innerHTML.length==0){
 		      		
 					if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-						reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
+						reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address,index);
 					}
 					else {						
 						lkFrZn(lat.value,lng.value,index);
@@ -139,16 +113,15 @@
        
 
           function reverseGeocodeTripAddress(latlng, addressElement, index){
-       	   
-       		new GClientGeocoder().getLocations(latlng, 
-          			function(response){
-      			        if (!response || response.Status.code != 200) {
-      			        	lkFrZn(latlng.lat(),latlng.lng(),index);	  
-      			        } 
-      			        else {
-   			             	addressElement.innerHTML = response.Placemark[0].address;
-      			        }
-      		    	});
+			inthincMap.reverseGeocode(latlng.lat(), latlng.lng(), function(result, status) {
+		    	  if (status != google.maps.GeocoderStatus.OK) {
+			        	lkFrZn(latlng.lat(),latlng.lng(),index);	  
+		    	  }
+		    	  else {
+		              addressElement.innerHTML = result[0].formatted_address;
+		    	  }
+			});
+       		
           }
           
           function checkForZoneName(zoneName) {              
