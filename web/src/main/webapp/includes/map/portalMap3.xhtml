@@ -25,10 +25,19 @@
 
 	<script type="text/javascript">
 	
+		function translateMapType(portalMapType) {
+			if (portalMapType == 'G_NORMAL_MAP')
+				return google.maps.MapTypeId.ROADMAP;
+			if (portalMapType == 'G_SATELLITE_MAP')
+				return google.maps.MapTypeId.SATELLITE;
+			if (portalMapType == 'G_HYBRID_MAP')
+				return google.maps.MapTypeId.HYBRID;
+			if (portalMapType == 'G_PHYSICAL_MAP')
+				return google.maps.MapTypeId.TERRAIN;
+		}
 		function initLayers() {
 			inthincMap.reinit();
-// TODO			
-//			inthincMap.getMap().setMapType(#{customMapsBean.googleMapType});
+			inthincMap.getMap().setMapTypeId(translateMapType('#{customMapsBean.googleMapType}'));
 			i = 0;
 			<ui:repeat value="#{customMapsBean.customMaps}" var="customMap">
 				inthincMap.addWMSLayer( {

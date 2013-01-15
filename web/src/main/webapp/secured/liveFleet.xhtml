@@ -16,36 +16,21 @@
 	<ui:param name="ajaxPanels" value="inputFormPanel"/>
 	<ui:define name="scripts">
  		<ui:include src="/includes/map/portalMap3.xhtml"/>
-		<a4j:loadScript src="/js/mapv3/markerclusterer.js"/>
-<!-- 		
-		<a4j:loadScript src="/js/markerclusterer_packed.js"/>
-		<a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
- -->		
-				
+		<a4j:loadScript src="/js/mapv3/markerclusterer_compiled.js"/>
 		<a4j:loadScript src="/js/mapv3/mapBubble.js"/>
 			
 			
 		<script type="text/javascript">
 		//<![CDATA[
 
-		var map = null;
 	  	var markerClusterer;
 		var markers = [];
 	    var addressLatLng = null;
 		var mapNeedsInit = true;
 		
-/*		
-	    var baseIcon = new GIcon();
-			baseIcon.iconSize = new GSize(25, 30);
-			baseIcon.iconAnchor = new GPoint(6, 20);
-			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-			baseIcon.shadow=null;
-*/
-
 	    function initMap() {
-	    	  if (mapNeedsInit) {
+			if (mapNeedsInit) {
 	    		  
-				console.log('map default loc: ' + mapDefaultLoc + " " + mapDefaultZoom);	    		  
 				inthincMap.init({
 					'center' : {
 						'lat' : mapDefaultLoc.lat(),
@@ -54,7 +39,6 @@
 					'zoom' : mapDefaultZoom
 				});
 				initLayers();
-				map = inthincMap.getMap();
 
 				bounds = new google.maps.LatLngBounds();
 
@@ -68,7 +52,7 @@
 
 				mapNeedsInit = false;
 
-	    	  }
+			}
 		}
 		
 		function refresh()
@@ -84,8 +68,6 @@
 
    			// Clear all existing markers and zoom boundary.
    			inthincMap.clearMarkers();
-//			map.clearOverlays();
-//			portalmap.restoreLayersState();
 			
 			bounds = new google.maps.LatLngBounds();
    			
@@ -111,31 +93,32 @@
 								bounds.extend(marker.getPosition());
 								notifyBean(loc.lat(), loc.lng(), count);
 						}
-			});
-   	    }
+				});
+   		}
 
 		/* Check if Enter pressed in form.
 		 * Process form if user pressed enter in form fields.
-		 */
-   		function checkEnter(e)
-   		{ 
+		*/
+		function checkEnter(e) { 
    			var characterCode;
 
-   			if(e.which){ 
-   			e = e;
-   			characterCode = e.which; //NN4's which property
+   			if(e.which) { 
+   				e = e;
+   				characterCode = e.which; //NN4's which property
    			}
-   			else{
-   			e = event;
-   			characterCode = e.keyCode;//IE's keyCode property
+   			else {
+   				e = event;
+   				characterCode = e.keyCode;//IE's keyCode property
    			}
    			
    			//if generated character code is equal to ascii 13 (if enter key)
    			if(characterCode == 13) {    				
-					processForm('liveFleetAddressTextBox', 'countComboBox');
-   					return false; }
-   			else
-   	   			{	return true;  }
+				processForm('liveFleetAddressTextBox', 'countComboBox');
+   				return false; 
+			}
+   			else {	
+   				return true;  
+   			}
    		}
 
 		    var mapDefaultLoc= new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng})
@@ -178,7 +161,7 @@
 	
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form id="liveFleetVehicleBubbles">
-			<rich:panel id="mapMarkers">
+		<rich:panel id="mapMarkers">
 		<script type="text/javascript">
 		//<![CDATA[
 		//Pulled out of markerclusterer.js
@@ -204,61 +187,37 @@
 						var latlng = marker.getPosition();
 <!-- TODO: not sure about this currentMarker global type var (filled in by mapbubble.js getAddressforCurrentMarker) -->						
 	 					currentMarker = marker;	
-	 					alert("in click listener itemID = " + itemID);
 						lkFrZnBubble(latlng.lat(),latlng.lng(),0,0,itemID,0,0);
-//						lkFrZnBubble(#{item.loc.lat},#{item.loc.lng},0,#{item.vehicle.vehicleID},null,null,4);">
-
-//						fillBubbleMarker(itemID, 0);
 				});
 				
 			}
 
 			function addMarkers()
 			{
-/*
-TODO:
-				var progress = 0;
-				var progressBar = new ProgressbarControl(map);
-*/				
 				if (markerClusterer != null) {
 			          markerClusterer.clearMarkers();
-			        }
-//				progressBar.start(#{fn:length(liveFleetBean.drivers)});
-
+			          inthincMap.clearMarkers();
+		        }
 				markers = [];
-
 				bounds.extend(new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-/*
-					marker = createMarker(	new GLatLng(#{driver.loc.lat}, #{driver.loc.lng}), 
-											#{driver.vehicle.vehicleID}, null,
-											"#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}",
-											fillBubbleMarker,0);
-*/					
 					marker = inthincMap.createMarker({
 						position: new google.maps.LatLng(#{driver.loc.lat}, #{driver.loc.lng}),
 						iconImage : "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}"
 					});
 					addMarkerListener(marker, #{driver.vehicle.vehicleID});	
 					markers.push(marker);
-//					progressBar.updateLoader(progress++);
 					bounds.extend(marker.getPosition());
 					
 				</ui:repeat>
-				
-				markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
-				
-//				progressBar.remove();
-				inthincMap.centerAndZoom(bounds);
 
-//				map.setZoom(map.getBoundsZoomLevel(bounds));
-//	    		map.setCenter(bounds.getCenter());
-	    		
+				inthincMap.centerAndZoom(bounds);
+				markerClusterer = new MarkerClusterer(inthincMap.getMap(),markers,{styles:styles});
 			}
-		</script>
+			</script>
 		</rich:panel>
-			<rich:panel id="mapPopups" rendered="#{liveFleetBean.selectedVehicleID ne null}">
+		<rich:panel id="mapPopups" rendered="#{liveFleetBean.selectedVehicleID ne null}">
 		
 			<ui:param name="driverLocation" value="#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID]}"/>
 			<ui:include src="../includes/vehicleBubble.xhtml">
@@ -465,16 +424,15 @@ TODO:
 								 oncomplete="getAddressForPosition(#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lat},#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lng})">
 							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
 						</a4j:jsFunction>
-		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
-			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
-			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
-			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
-			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
-		</a4j:jsFunction> 	 					
-					
+						<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
+							<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+							<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+							<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
+							<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
+							<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
+							<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
+							<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
+						</a4j:jsFunction> 	 					
 					</a4j:form>
 				</a4j:region>
 				</div>
@@ -509,8 +467,6 @@ TODO:
       					</rich:dataGrid>
 						
 						</div>
-<!--						<div style="clear:both"/>-->
-	  					
 					</div>
 					<div class="panel_sw">
 					<div class="panel_statusbar"></div>

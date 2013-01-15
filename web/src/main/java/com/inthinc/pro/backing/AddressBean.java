@@ -126,7 +126,6 @@ public class AddressBean extends BaseBean {
     }    
 
     public Map<String,String> getZoneData() {
-//        JSONObject jSonObject = new JSONObject();
         Map<String,String> jSonObject = new HashMap<String,String>();
         
         try {
