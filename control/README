@@ -1,0 +1,85 @@
+#!/bin/bash
+###############################################################################################
+#
+# VARIABLES IN HERE ARE USED TO CREATE A DEBIAN PACKAGE, THIS IS A MASTER LIST
+# Usage : Set these variables in your Jenkins job's section "Prepare an environment for the run"
+#
+# The variables starting with DEB_ generally reference fields in the control file, described here
+# http://www.debian.org/doc/debian-policy/ch-controlfields.html
+#
+# Some variables describe relationships to other packages, described here
+# http://www.debian.org/doc/debian-policy/ch-relationships.html
+#
+# Put them in the Properties Content section in the format
+# Variable_Name=""
+# 
+# Example : 
+# BASE_INSTALL_DIR="/usr/local/tiwipro"
+#
+###############################################################################################
+#The filename that will be used to tar up things created by the compile script, which will be untarred into ${BASE_INSTALL_DIR} and then packaged up
+TARBALL_FILENAME=""
+
+#The base directory that files will be installed into the target server, inside the package this is relative, but once installed it'll be not relative to root /
+BASE_INSTALL_DIR=""
+
+#The name of the S3 bucket where the Apt repository will be sync'd to
+DEB_S3_bucket=""
+
+#The local directory where an Apt repository exists
+DEB_repository_dir=""
+
+#The name of the package, this is dynamic based on the Jenkins job name, unless you specify otherwise
+DEB_Package=""
+
+#The name of the source package
+DEB_Source=""
+
+#The version number of a package. The format is: [epoch:]upstream_version[-debian_revision]
+DEB_Version=""
+
+#Depending on context and the control file used, the Architecture field can include the following sets of values: all, source, x86_64, i386
+DEB_Architecture=""
+
+#The name <email> of the person/group/people who own this package's creation
+DEB_Maintainer=""
+
+#The size of the package once installed, forcing this may give a wrong value, the default is to do a du -sk on the final directory before creating the package
+DEB_InstalledSize=""
+
+DEB_PreDepends=""
+
+
+#This declares an absolute dependency. A package will not be configured unless all of the packages listed in its Depends field have been correctly configured (unless there is a circular dependency as described above).
+DEB_Depends=""
+
+#The Recommends field should list packages that would be found together with this one in all but unusual installations.
+DEB_Recommends=""
+
+#This is used to declare that one package may be more useful with one or more others. Using this field tells the packaging system and the user that the listed packages are related to this one and can perhaps enhance its usefulness, but that installing this one without them is perfectly reasonable.
+DEB_Suggests=""
+
+#When one binary package declares a conflict with another using a Conflicts field, dpkg will refuse to allow them to be unpacked on the system at the same time
+DEB_Conflicts=""
+
+#List of functions that this packages replaces, installing this will cause other things that provide the same functionality to be removed
+DEB_Replaces=""
+
+#List of functions this package provides
+DEB_Provides=""
+
+#The section of the Apt repository this package belongs in, main, non-free, contrib, admin, devel, doc, libs, mail, inthinc?
+DEB_Section=""
+
+#The priority of the package, one of required, important, or standard
+DEB_Priority=""
+
+#required, important, or standard
+DEB_Homepage=""
+
+#A multi line long description of the package
+DEB_Description=""
+
+#A list of filenames or extensions to add as config files, a recursive find is run on the final build dir to create the final list
+#An asterisk is added to the entry, so *.conf isn't needed and may not work, .conf settings.py are the default
+DEB_Conffiles=""
