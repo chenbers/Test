@@ -758,9 +758,9 @@ public class DeviceState {
 	}
 
 	public DeviceState setMcmID(String mcmID) {
-        if (mcmID != null && mcmID.length() > 9){
-            throw new IllegalArgumentException("MCMID has a max value of 9 characters.");
-        }
+//        if (mcmID != null && mcmID.length() > 9){
+//            throw new IllegalArgumentException("MCMID has a max value of 9 characters.");
+//        }
         this.mcmID = mcmID;
 		return this;
     }
