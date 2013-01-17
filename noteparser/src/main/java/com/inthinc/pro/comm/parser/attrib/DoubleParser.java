@@ -15,4 +15,7 @@ public class DoubleParser implements AttribParser {
 		return offset+8;
 	}
 
+   public Object parseString(String val){
+       return Double.parseDouble(val);
+   }
 }

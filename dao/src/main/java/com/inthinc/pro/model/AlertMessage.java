@@ -33,7 +33,15 @@ public class AlertMessage
     private String address;         // delivery address (e.g. the email address dave@mydomain.com)
     private String message;         // the text of the message (e.g "dave was speeding at 9...")
     
+    private String attribs;         
+    
     private Long noteID;
+    
+    private Integer driverID;
+
+    private Integer vehicleID;
+    
+    private Integer deviceID;
     
     private Integer personID;
     
@@ -62,7 +70,7 @@ public class AlertMessage
         
     }
     public AlertMessage(Integer messageID, AlertMessageDeliveryType alertMessageDeliveryType, AlertMessageType alertMessageType, RedFlagLevel level, String address, String message, Long noteID,
-            Integer personID, Integer alertID, Integer zoneID, Boolean acknowledge, AlertEscalationStatus status) {
+            Integer personID, Integer alertID, Integer zoneID, Boolean acknowledge, AlertEscalationStatus status, String attribs, Integer driverID, Integer vehicleID, Integer deviceID) {
         super();
         this.messageID = messageID;
         this.alertMessageDeliveryType = alertMessageDeliveryType;
@@ -76,6 +84,36 @@ public class AlertMessage
         this.zoneID = zoneID;
         this.acknowledge = acknowledge;
         this.status = status;
+        this.attribs = attribs;
+        this.driverID = driverID;
+        this.vehicleID = vehicleID;
+        this.deviceID = deviceID;
+    }
+    
+    
+    public Integer getDriverID() {
+        return driverID;
+    }
+    public void setDriverID(Integer driverID) {
+        this.driverID = driverID;
+    }
+    public Integer getVehicleID() {
+        return vehicleID;
+    }
+    public void setVehicleID(Integer vehicleID) {
+        this.vehicleID = vehicleID;
+    }
+    public Integer getDeviceID() {
+        return deviceID;
+    }
+    public void setDeviceID(Integer deviceID) {
+        this.deviceID = deviceID;
+    }
+    public String getAttribs() {
+        return attribs;
+    }
+    public void setAttribs(String attribs) {
+        this.attribs = attribs;
     }
     public String getAddress()
     {

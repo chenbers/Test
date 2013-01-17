@@ -165,6 +165,11 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.inthinc.pro.noteparser</groupId>
+			<artifactId>noteparser</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.inthinc.pro.reports</groupId>
 			<artifactId>reports</artifactId>
 			<scope>compile</scope>

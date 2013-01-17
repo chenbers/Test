@@ -79,5 +79,9 @@ public class LatLongParser implements AttribParser {
 
 		return offset+6;
 	}
-	
+
+	public Object parseString(String val){
+       return val;
+   }
+
 }
