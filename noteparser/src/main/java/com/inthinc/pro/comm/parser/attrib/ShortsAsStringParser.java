@@ -32,4 +32,9 @@ public class ShortsAsStringParser implements AttribParser {
 
 		return offset+(2*length);
 	}
+	
+   public Object parseString(String val){
+       return val;
+   }
+
 }

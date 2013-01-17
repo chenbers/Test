@@ -13,4 +13,7 @@ public class IntegerSkipParser implements AttribParser {
 		return offset+4;
 	}
 
+   public Object parseString(String val){
+       return Integer.parseInt(val);
+   }
 }
