@@ -11,17 +11,17 @@
     <ui:param name="notificationsSelected" value="current" />
 	
     <ui:define name="scripts">
-    	<ui:include src="/includes/map/portalMap3.xhtml"/>
+    	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 		<a4j:loadScript src="/js/mapv3/drawZone.js" />
 		
         <script type="text/javascript">
-	  	  var mapNeedsInit = true;
+	  	  var map = null;
 
 	  	  function initializeMap(lat, lng, zonePoints, noteID) 
           {
 			var location = new google.maps.LatLng(lat, lng);
-  			if (mapNeedsInit) {
-				inthincMap.init({
+  			if (map == null) {
+				map = inthincMap.init({
 					'canvasID' : 'address-canvas',
 					'center' : {
 						'lat' : lat,
@@ -29,11 +29,10 @@
 					},
 					'zoom' : 15
 				});
-				initLayers();
-              	mapNeedsInit = false;
+				initLayers(map, "#{context}-layerControl");
   			}
   			else {
-  				inthincMap.clearMarkers();
+  				inthincMap.clearMarkers(map);
   				removeZoneOverlay();
   			}
 
@@ -43,9 +42,9 @@
             if (outline) {
             	// Draw Zone and set center
             		zoneBounds = getLatLngBounds(outline);
-                	inthincMap.centerAndZoom(zoneBounds);
-                	loadZone(outline, false, inthincMap.getMap());
-                	inthincMap.createMarker({ position: zoneBounds.getCenter()});
+                	inthincMap.centerAndZoom(map, zoneBounds);
+                	loadZone(outline, false, map);
+                	inthincMap.createMarker(map, { position: zoneBounds.getCenter()});
                 	showInfoBubble(noteID, zoneBounds.getCenter());
             }
             else{
@@ -58,10 +57,10 @@
 	      {
 	    	  var node = document.getElementById(divID).cloneNode(true);
 	    	  node.style.display = 'block';
-			  var marker = inthincMap.createMarker({ 
+			  var marker = inthincMap.createMarker(map, { 
 				  position: latLng 
 			  });
-			  inthincMap.createInfoWindow({
+			  inthincMap.createInfoWindow(map, {
 				  content: node, 
 				  marker : marker
 				});
@@ -113,7 +112,7 @@
        
 
           function reverseGeocodeTripAddress(latlng, addressElement, index){
-			inthincMap.reverseGeocode(latlng.lat(), latlng.lng(), function(result, status) {
+			inthincMap.reverseGeocode(map, latlng.lat(), latlng.lng(), function(result, status) {
 		    	  if (status != google.maps.GeocoderStatus.OK) {
 			        	lkFrZn(latlng.lat(),latlng.lng(),index);	  
 		    	  }

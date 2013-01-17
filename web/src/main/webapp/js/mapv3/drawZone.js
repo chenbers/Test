@@ -186,7 +186,7 @@ function getLatLngBounds(outline)
   if (outline)
   {
     var bounds = new google.maps.LatLngBounds();
-    for (i = 0; i < outline.length; i++) {
+    for (var i = 0; i < outline.length; i++) {
     	bounds.extend(outline[i]);
   	}
     return bounds;

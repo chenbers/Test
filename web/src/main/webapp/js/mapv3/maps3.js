@@ -15,18 +15,74 @@
 	// set up the namespace
 	var inthincMap =  inthincMap || {};  
 	inthincMap = (function() {
-    		var map = null;
-    		var saveLatLng;
-    		var saveZoom;
-    		var layers = new Array();
-    		var markers = new Array();
-    		var openinfowindow = null;
-    		var mapLoaded = false;
+
+			var geocoder = new google.maps.Geocoder();
+			
+			function MapState(map) {
+				this.map = map;
+				this.markers = new Array();
+	    		this.openinfowindow = null;
+			}
+			var mapStates = new Array();
+			
+    		function findMapStateForMap(map) {
+  				for (var j = 0; j < mapStates.length; j++) {
+  					if (mapStates[j].map == map) {
+  						return mapStates[j];
+  					}
+  				}
+  				return null;
+    		}
+    		function clearMarkersForMap(map) {
+  				for (var j = 0; j < mapStates.length; j++) {
+  					if (mapStates[j].map == map) {
+  						mapStates[j].markers = new Array();
+  					}
+  				}
+    		}
     		
-    		var geocoder = new google.maps.Geocoder();
     		
     		
       		var wmsOverlays = (function(){
+        		function MapLayers(map) {
+        			this.map = map;
+        			this.layers = new Array();
+        			this.initialized = false;
+        		}
+        		var mapLayers = new Array();
+        		
+        		function findLayersForMap(map) {
+      				for (var j = 0; j < mapLayers.length; j++) {
+      					if (mapLayers[j].map == map) {
+      						return mapLayers[j].layers;
+      					}
+      				}
+      				return null;
+        		}
+        		function isInitialized(map) {
+      				for (var j = 0; j < mapLayers.length; j++) {
+      					if (mapLayers[j].map == map) {
+      						return mapLayers[j].initialized;
+      					}
+      				}
+      				return false;
+        		}
+        		function setInitialized(map, initialized) {
+      				for (var j = 0; j < mapLayers.length; j++) {
+      					if (mapLayers[j].map == map) {
+      						mapLayers[j].initialized = initialized;
+      						break;
+      					}
+      				}
+        		}
+        		function clearLayersForMap(map) {
+      				for (var j = 0; j < mapLayers.length; j++) {
+      					if (mapLayers[j].map == map) {
+      						mapLayers[j].layers = new Array();
+      						mapLayers[j].initialized = false;
+      					}
+      				}
+        		}
       			
       			function isTemplate(wmsURL) {
       		    	return((wmsURL.indexOf('{X}') >= 0  || wmsURL.indexOf('{x}') >= 0) &&
@@ -34,13 +90,17 @@
      					   (wmsURL.indexOf('{Z}') >= 0  || wmsURL.indexOf('{z}') >= 0));
       			}
       			
-      			function createOverlayControl(overlayControlDiv, label) {
-          			overlayControlDiv.setAttribute("id", "overlay-controls");
+      			function createOverlayControl(map, overlayControlDiv, id, label) {
+      				var layers = findLayersForMap(map);
+      				if (layers == null)
+      					return;
+
+      				overlayControlDiv.setAttribute("id", id+'_div');
           			var overlaySelect = document.createElement('SELECT');
           			overlaySelect.setAttribute("multiple", "true");
-          			overlaySelect.setAttribute("id", "overlay-select");
+          			overlaySelect.setAttribute("id", id);
           			overlayControlDiv.appendChild(overlaySelect);
-  					for (i = 0; i < layers.length; i++) {
+  					for (var i = 0; i < layers.length; i++) {
       					var overlaySelectOption = document.createElement('OPTION');
       					overlaySelectOption.setAttribute('id', layers[i].id);
       					if (layers[i].selected) {
@@ -49,9 +109,7 @@
       					}
       					overlaySelectOption.innerHTML = layers[i].displayName;
       					overlaySelect.appendChild(overlaySelectOption);
-  						
   					}
-          			
       			}
       			
       			function getTileUrl(url, tile, zoom) {
@@ -72,8 +130,8 @@
       		    	return wmsLayerUrl;
       		    };
 
-      		    function initDropdownChecklist(label, map) {
-			    	jQuery("#overlay-select").dropdownchecklist({ 
+      		    function initDropdownChecklist(map, controlId, label) {
+			    	jQuery('#' + controlId).dropdownchecklist({ 
 			    			icon: {
 			    				placement: 'right', 
 			    				toOpen: 'ui-icon-triangle-1-s', 
@@ -83,15 +141,15 @@
   							maxDropHeight: 150, 
   							explicitClose: 'Close',
   							onItemClick: function(item) {
+  			      				var layers = findLayersForMap(map);
   								i = item.attr("index");
   								checked = item.attr("checked");
 								if (checked) {
-									console.log("push layer: " + layers[i].layer.opacity);
-  									map.overlayMapTypes.push(layers[i].layer);
+									map.overlayMapTypes.push(layers[i].layer);
   									layers[i].selected = true;
   								} else {
 									var removeIndex = -1;
-									for (cnt = 0; cnt < map.overlayMapTypes.getLength(); cnt++) {
+									for (var cnt = 0; cnt < map.overlayMapTypes.getLength(); cnt++) {
 										if (map.overlayMapTypes.getAt(cnt).name === layers[i].id) {
 											removeIndex = cnt;
 										}
@@ -115,7 +173,7 @@
 				};
       			
       			return {
-      				addOverlay: function(options, map) {
+      				addOverlay: function(map, options) {
       					var id = options.id;
       					var baseURL = options.url;
       					var displayName = options.displayName;
@@ -137,31 +195,37 @@
   						    name: id,
   						    tileSize: new google.maps.Size(256, 256)
   						});
+  	      				var layers = findLayersForMap(map);
+  	      				if (layers == null) {
+  	      					mapLayers.push(new MapLayers(map));
+  	      					layers = findLayersForMap(map);
+  	      				}
       					layers.push({id : id, selected : selected, displayName : displayName, layer : layer});
    					
       				},
-      				addControlToMap: function(label, map) {
+      				addControlToMap: function(map, controlId, label) {
       					var layersLabel = label ? label : "Layers";
       					
       	    			var overlayControlDiv = document.createElement('div');
-      	    		    createOverlayControl(overlayControlDiv, layersLabel);
+      	    		    createOverlayControl(map, overlayControlDiv, controlId, layersLabel);
       					overlayControlDiv.index = 1;
   					    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(overlayControlDiv);
   	
+//  					    initDropdownChecklist(map, controlId, layersLabel);
   					    google.maps.event.addListener(map, 'idle', function(){
-  					    	if(!mapLoaded) {
-  					    		mapLoaded = true;
-  		  					    setTimeout(function() {initDropdownChecklist(layersLabel, map);}, 1000);
+  					    	if (!isInitialized(map)) {
+  		  					    setTimeout(function() {initDropdownChecklist(map, controlId, layersLabel);}, 1000);
+  		  					    setInitialized(map, true);
   					    	}
   					    });
   					    
       				},
-      				clear: function(map) {
-      					jQuery("#overlay-select").empty();
-      					jQuery("#overlay-select").dropdownchecklist("destroy");
+      				clear: function(map, controlId) {
+      					jQuery("#"+controlId).empty();
+      					jQuery("#"+controlId).dropdownchecklist("destroy");
       					map.overlayMapTypes.clear();
       					map.controls[google.maps.ControlPosition.RIGHT_TOP].clear();
-      					layers = new Array();
+      					clearLayersForMap(map);
       				},
 
       			};
@@ -169,12 +233,14 @@
       		})();
 
 
-      		function showInfoWindow(infowindow, marker) {
-				if (openinfowindow)
-					openinfowindow.close();
+      		function showInfoWindow(map, infowindow, marker) {
+      			var mapState = findMapStateForMap(map);
+				if (mapState && mapState.openinfowindow)
+					mapState.openinfowindow.close();
 				infowindow.open(map, marker ? marker : null);
-				openinfowindow = infowindow;
+				mapState.openinfowindow = infowindow;
       		}
+      		
       		return {
       			/*
       			 * 
@@ -207,32 +273,23 @@
 
 							 
 					 };
-					map = new google.maps.Map(document.getElementById(canvasID), mapOptions); 
-
-
-					google.maps.event.addListener(map, 'center_changed', function() {
-                  		saveLatLng = map.getCenter();
-					});
-
-					google.maps.event.addListener(map, "zoom_changed", function() {
-                  		saveZoom = map.getZoom();
-    				});
+					var map = new google.maps.Map(document.getElementById(canvasID), mapOptions);
+					mapStates.push(new MapState(map));
+					
+					return map;
       			},
-      			getMap: function() {
-      				return map;
-      			},
-      			zoom: function(zoomTo) {
+      			zoom: function(map, zoomTo) {
       				map.setZoom(zoomTo);
       			}, 
-      			center: function(lat, lng) {
+      			center: function(map, lat, lng) {
       				map.setCenter(
       					new google.maps.LatLng(lat, lng)
       				);
       			},
-      			centerAndZoom : function(bounds) {
+      			centerAndZoom : function(map, bounds) {
       				map.fitBounds(bounds);
       			},
-  				lookupAddress: function(address, resultHandler) {
+  				lookupAddress: function(map, address, resultHandler) {
   					geocoder.geocode({'address': address}, resultHandler ? resultHandler : function (result, status) {
   			    	  if (status != google.maps.GeocoderStatus.OK) {
   			    		console.log('Geocoding failed for address: ' +  address + " status: "+ status);
@@ -241,7 +298,7 @@
   			    	  }
   			   		});
   				},
-  				reverseGeocode: function(lat, lng, resultHandler) {
+  				reverseGeocode: function(map, lat, lng, resultHandler) {
   					geocoder.geocode({'location': new google.maps.LatLng(lat, lng)}, resultHandler ? resultHandler : function (result, status) {
   			    	  if (status != google.maps.GeocoderStatus.OK) {
   			    		console.log('Reverse Geocoding failed for lat, lng: ' +  lat + ', ' + lng + " status: "+ status);
@@ -253,20 +310,20 @@
   			    	  }
   			   		});
   				},
-      			addWMSLayer: function(options) {
-      				wmsOverlays.addOverlay(options, map);
+      			addWMSLayer: function(map, options) {
+      				wmsOverlays.addOverlay(map, options);
 
       			},
-      			addOverlaysControl: function(label) {
-      				wmsOverlays.addControlToMap(label, map);
+      			addOverlaysControl: function(map, controlId, label) {
+      				wmsOverlays.addControlToMap(map, controlId, label);
       			},
-      			reinit: function() {
-		        	wmsOverlays.clear(map);
+      			reinit: function(map, controlId) {
+		        	wmsOverlays.clear(map, controlId);
       			},
-      			createMarker : function (options ) 
+      			createMarker : function (map, options ) 
       		    {
+          			var mapState = findMapStateForMap(map);
       				var position = options.position;		
-      				
       				// optional
       				var iconImage = options.iconImage ? options.iconImage : null;
       				
@@ -277,16 +334,17 @@
 						 	icon : iconImage,
 						 	
 					});
-					markers.push(marker);
+					mapState.markers.push(marker);
       		    	return marker;
       		    },
-      		    clearMarkers : function() {
-      		    	while (markers.length > 0) {
-      		    		marker = markers.pop();
+      		    clearMarkers : function(map) {
+          			var mapState = findMapStateForMap(map);
+      		    	while (mapState.markers.length > 0) {
+      		    		marker = mapState.markers.pop();
       		    		marker.setMap(null);
       		    	}
       		    },
-      			createInfoWindow : function (options) 
+      			createInfoWindow : function (map, options) 
       		    {
       				var content = options.content ? options.content : "";
       				var marker = options.marker ? options.marker : null;
@@ -296,16 +354,16 @@
     					content: content
     			 	});
     				if (marker) {
-    					showInfoWindow(infowindow, marker);
+    					showInfoWindow(map, infowindow, marker);
     					if (addListener) {
 							google.maps.event.addListener(marker, 'click', function() {
-		    					showInfoWindow(infowindow, marker);
+		    					showInfoWindow(map, infowindow, marker);
 							});
     					};
     				}
     				else if (options.position) {
     					infowindow.setPosition(options.position);
-    					showInfoWindow(infowindow);
+    					showInfoWindow(map, infowindow);
     				}
 
     				return infowindow;

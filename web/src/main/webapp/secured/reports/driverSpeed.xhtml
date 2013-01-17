@@ -16,7 +16,7 @@
 			<ui:param name="formName" value="driverSpeedForm" />
 			<ui:param name="mapDiv" value="address-canvas" />
 		</ui:include>
-		<a4j:loadScript src="/js/speedByStreet.js" />
+		<a4j:loadScript src="/js/mapv3/speedByStreet.js" />
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
@@ -669,8 +669,11 @@ var firstLoad = new Boolean(true);
 </rich:modalPanel>
 <!-- END FORGIVE MODAL -->
 
-<!-- START SBS MODAL -->
+<!-- START SBS MODAL 
 	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null,'#{request.contextPath}/images/ico_violation.png');"
+					onhide="onSBSModalHide()">
+-->					
+	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="sbsPopupInit(event.parameters.lat,event.parameters.lon, '#{request.contextPath}/images/ico_violation.png')"
 					onhide="onSBSModalHide()">
       <f:facet name="header">
         <h:outputText value="#{messages.sbs_header}" />
@@ -678,7 +681,7 @@ var firstLoad = new Boolean(true);
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('SLChangeRequestPanel')" />
       </f:facet>
-	  <ui:include src="../../includes/speedLimitChangeRequestPanel.xhtml" >
+	  <ui:include src="../../includes/mapv3/speedLimitChangeRequestPanel.xhtml" >
 	  		<ui:param name="context" value="driverSpeed" />
 	  </ui:include>
 	  

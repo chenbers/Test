@@ -35,12 +35,12 @@
 			if (portalMapType == 'G_PHYSICAL_MAP')
 				return google.maps.MapTypeId.TERRAIN;
 		}
-		function initLayers() {
-			inthincMap.reinit();
-			inthincMap.getMap().setMapTypeId(translateMapType('#{customMapsBean.googleMapType}'));
+		function initLayers(map, controlID) {
+			inthincMap.reinit(map, controlID);
+			map.setMapTypeId(translateMapType('#{customMapsBean.googleMapType}'));
 			i = 0;
 			<ui:repeat value="#{customMapsBean.customMaps}" var="customMap">
-				inthincMap.addWMSLayer( {
+				inthincMap.addWMSLayer(map,  {
 					id : "#{customMap.customMapID}", 
 					url : "#{customMap.url}", 
 					displayName : "#{customMap.name}", 
@@ -54,11 +54,11 @@
 				i = i + 1;
 			</ui:repeat>
 			if (i > 0) {
-				inthincMap.addOverlaysControl("#{messages.mapLayers}");
+				inthincMap.addOverlaysControl(map, controlID, "#{messages.mapLayers}");
 			}
 
-			google.maps.event.addListener(inthincMap.getMap(), "maptypeid_changed", function() {
-				mapTypeId= inthincMap.getMap().getMapTypeId();
+			google.maps.event.addListener(map, "maptypeid_changed", function() {
+				mapTypeId= this.getMapTypeId();
 				if (mapTypeId == google.maps.MapTypeId.ROADMAP)
 					setGoogleMapType('G_NORMAL_MAP'); 				
 				else if (mapTypeId == google.maps.MapTypeId.SATELLITE)
@@ -69,8 +69,7 @@
 					setGoogleMapType('G_PHYSICAL_MAP'); 				
     		});
     		
-			google.maps.event.addListener(inthincMap.getMap(), "layerselect", function(layerId, checked) {
-console.log('layerselect triggered: ' + layerId + ' ' + checked);				
+			google.maps.event.addListener(map, "layerselect", function(layerId, checked) {
 				setGoogleMapLayerState(layerId, checked);
     		});
 			

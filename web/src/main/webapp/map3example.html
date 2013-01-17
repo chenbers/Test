@@ -9,7 +9,8 @@
 
     <style type="text/css">
       html, body{ height: 100%; margin: 0; padding: 0;}
-      #map-canvas { height: 100%; margin: 0; padding: 0;}
+      #map-canvas { height: 50%; margin: 0; padding: 0;}
+      #map-canvas2 { height: 50%; margin: 0; padding: 0;}
     </style>
  	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
@@ -34,8 +35,12 @@
 	
 
 	<script type="text/javascript">
+		var map1 = null;
+		var map2 = null;
+		var currentMap = map1;
+		var currentControlId = "map1ID";
 		function initialize() {
-			inthincMap.init({
+			map1 = inthincMap.init({
 				'canvasID': 'map-canvas',
 				'zoom': 6,
 				'center' : {
@@ -44,33 +49,68 @@
 				},
 				'overviewMapControl' : true
 			});
-			
-			google.maps.event.addListener(inthincMap.getMap(), "maptypeid_changed", function() {
+/*			
+			map1 = new google.maps.Map(document.getElementById('map-canvas'), {
+				 zoom: 6,
+				 center: new google.maps.LatLng(38.5482, -95.8008),
+				 mapTypeId: google.maps.MapTypeId.ROADMAP
+			}); 
+*/
+			google.maps.event.addListener(map1, "maptypeid_changed", function() {
 				mapTypeId= inthincMap.getMap().getMapTypeId();
 				jQuery("#mapType").html("Map Type: " + mapTypeId );
     		});
     		
-			google.maps.event.addListener(inthincMap.getMap(), "layerselect", function(layerId, checked) {
+			google.maps.event.addListener(map1, "layerselect", function(layerId, checked) {
+				jQuery("#mapLayer").html("Map Layer: " + layerId + " checked: " + checked);
+    		});
+
+		}
+		function initialize2() {
+			
+			map2 = inthincMap.init({
+				'canvasID': 'map-canvas2',
+				'zoom': 10,
+				'center' : {
+					'lat' : 38.5482,
+					'lng' : -95.8008
+				},
+				'overviewMapControl' : true
+			});
+/*			
+			map2 = new google.maps.Map(document.getElementById('map-canvas2'), { 
+			 zoom: 6,
+			 center: new google.maps.LatLng(38.5482, -95.8008),
+			 mapTypeId: google.maps.MapTypeId.ROADMAP
+		}); 
+*/			
+			google.maps.event.addListener(map2, "maptypeid_changed", function() {
+				mapTypeId= inthincMap.getMap().getMapTypeId();
+				jQuery("#mapType").html("Map Type: " + mapTypeId );
+    		});
+    		
+			google.maps.event.addListener(map2, "layerselect", function(layerId, checked) {
 				jQuery("#mapLayer").html("Map Layer: " + layerId + " checked: " + checked);
     		});
 
 		}
 
 		function centerMap() {
-			inthincMap.center(0,0);
+			inthincMap.center(currentMap, 0,0);
 		}
 		function zoomMap() {
-			inthincMap.zoom(12);
+			inthincMap.zoom(currentMap, 12);
 		}
 		function centerMapInBounds() {
-			inthincMap.centerInBounds();
+			bounds = new google.maps.LatLngBounds(new google.maps.LatLng(38.5482, -95.8008), new google.maps.LatLng(45.5482, -105.8008))
+			inthincMap.centerAndZoom(currentMap, bounds);
 		}
 		function lookupAddress() {
 			  var address = document.getElementById('input-address').value;
-			  inthincMap.lookupAddress(address);
+			  inthincMap.lookupAddress(currentMap, address);
 		}
 		function addOverlays() {
-			inthincMap.addWMSLayer({ 
+			inthincMap.addWMSLayer(currentMap, { 
 				id: 1, 
 				url : 'http://tile.openstreetmap.org/{Z}/{X}/{Y}.png', 
 				displayName : 'Open Streets', 
@@ -78,7 +118,7 @@
 				opacity : 0.5, 
 
 			});
-			inthincMap.addWMSLayer( {
+			inthincMap.addWMSLayer(currentMap,  {
 				id : 2, 
 				url : 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{Z}/{Y}/{X}', 
 				displayName : 'Topo', 
@@ -89,7 +129,7 @@
 				usePng : true, 
 				selected : true
 			});
-			inthincMap.addWMSLayer( {
+			inthincMap.addWMSLayer(currentMap,  {
 				id : 3, 
 				url : 'http://testteen.tiwipro.com:8086/cgi-bin/mapserv?map=/var/www/mapserver/sbs/limits.map&', 
 				displayName : 'Speed Limits', 
@@ -97,32 +137,55 @@
 				opacity : 0.5, 
 			});
 			
-			inthincMap.addOverlaysControl('Layers');
+			inthincMap.addOverlaysControl(currentMap, currentControlId, 'Layers');
 			
 		}
 		function clearOverlays() {
 			
-			inthincMap.reinit();
+			inthincMap.reinit(currentMap, currentControlId);
 			
 		}
 		function createMarker() {
 			
-			inthincMap.createMarker({
-				position : inthincMap.getMap().getCenter(),
+			inthincMap.createMarker(currentMap, {
+				position : currentMap.getCenter(),
 //				iconImage : "images/ico_end_trip.png"
 			});
 			
 		}
 		function clearMarkers() {
 			
-			inthincMap.clearMarkers();
+			inthincMap.clearMarkers(currentMap);
 		}
-
+		function showInfoWindow() {
+  			inthincMap.createInfoWindow(currentMap, {
+  				content:"Hello from Map: " + currentControlId,
+				position : currentMap.getCenter(),
+  			});
+		}
+		function init() {
+			initialize();
+			initialize2();
+			setMap(1);
+		}
+		function setMap(id) {
+			if (id == 1) {
+				currentMap = map1;
+				currentControlId = "map1ID";
+			}
+			else {
+				currentMap = map2;
+				currentControlId = "map2ID";
+			}
+		}
+		
 	</script>
 	
 </head>
-<body onload="initialize()">
+<body onload="init();">
 <div id="menu" style="background-color:#FFFFCC;height:100%;width:150px;float:left;">
+	<input type="radio" value="1" name="MapSelect" checked onchange="setMap(1);">Map 1</input>
+	<input type="radio" value="2"name="MapSelect" onchange="setMap(2);">Map 2</input>
 	<input type="button" onclick="centerMap();" value="Center"/>
 	<input type="button" onclick="zoomMap();" value="Zoom"/>
 	<input type="button" onclick="centerMapInBounds();" value="Center In Bounds"/>
@@ -132,6 +195,7 @@
 	<input type="button" onclick="clearOverlays();" value="Clear Overlays"/>
 	<input type="button" onclick="createMarker();" value="Create Marker"/>
 	<input type="button" onclick="clearMarkers();" value="Clear Markers"/>
+	<input type="button" onclick="showInfoWindow();" value="Show Info Window"/>
 	<p><span id="mapType">
 		Map Type: 
 	</span></p>
@@ -140,7 +204,9 @@
 	</span></p>
 	
 </div>
-<div id="map-canvas"/>
+<div id="map-canvas"></div>
+<div>Second Map:</div>
+<div id="map-canvas2"></div>
 </body>
 </html>
 

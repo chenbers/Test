@@ -12,7 +12,7 @@
 -->
 <ui:composition>
 	
-		<ui:include src="/includes/map/portalMap.xhtml"/>
+		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 
 	    <script type="text/javascript">
 	    
@@ -31,23 +31,25 @@
 
 
 	    var map = null;
-	    var geocoder;
-	    
+
 		function initialize(lat, lng) 
-	      {
-	        if (map == null) {
-				portalmap.init(false, "#{mapDiv}");
-				initLayers();
-				map = portalmap.getMap();
-	        }
-	        else {
-				map.clearOverlays();
-				portalmap.restoreLayersState();
-	        }
-			var location = new GLatLng(lat, lng)
-			map.setCenter(location, 14);
-			map.addOverlay(new GMarker(location)); 
-	      }
+	    {
+  			if (map == null) {
+				map = inthincMap.init({
+					'canvasID' : '#{mapDiv}',
+					'center' : {
+						'lat' : lat,
+						'lng' : lng
+					},
+					'zoom' : 14
+				});
+				initLayers(map, "#{formName}-layersControl");
+  			}
+  			else {
+  				inthincMap.clearMarkers(map);
+  			}
+        	inthincMap.createMarker(map, { position: new google.maps.LatLng(lat, lng)});
+	    }
 
 		function setAverageSpeedDifference(index){
     		
@@ -74,7 +76,7 @@
 	      		var lng = document.getElementById("#{formName}:notificationsTable:"+index+":eventLng");
 	    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
 						
-	    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
+	    			reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address, null);
 				}
 				else {
 					
@@ -83,21 +85,15 @@
 	  		}
     	}
         function reverseGeocodeTripAddress(latlng, addressElement){
+			inthincMap.reverseGeocode(map, latlng.lat(), latlng.lng(), function(result, status) {
+		    	  if (status != google.maps.GeocoderStatus.OK) {
+			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
+		    	  }
+		    	  else {
+		              addressElement.innerHTML = result[0].formatted_address;
+		    	  }
+			});
 
-            if (!geocoder) geocoder = new GClientGeocoder();
-                
-         	geocoder.getLocations(latlng, 
-        			function(response){
-    			        if (!response || response.Status.code != 200) {
-        			        
-    			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
-
-    			        } 
-    			        else {
-
-    		             	addressElement.innerHTML = response.Placemark[0].address;
-    			        }
-    		    	});
         }
          	
     	</script>

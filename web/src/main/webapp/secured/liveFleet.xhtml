@@ -15,7 +15,7 @@
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="ajaxPanels" value="inputFormPanel"/>
 	<ui:define name="scripts">
- 		<ui:include src="/includes/map/portalMap3.xhtml"/>
+ 		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 		<a4j:loadScript src="/js/mapv3/markerclusterer_compiled.js"/>
 		<a4j:loadScript src="/js/mapv3/mapBubble.js"/>
 			
@@ -26,31 +26,30 @@
 	  	var markerClusterer;
 		var markers = [];
 	    var addressLatLng = null;
-		var mapNeedsInit = true;
+		var map = null;
 		
 	    function initMap() {
-			if (mapNeedsInit) {
+			if (map == null) {
 	    		  
-				inthincMap.init({
+				map = inthincMap.init({
 					'center' : {
 						'lat' : mapDefaultLoc.lat(),
 						'lng' : mapDefaultLoc.lng()
 					},
 					'zoom' : mapDefaultZoom
 				});
-				initLayers();
+				initLayers(map, "livefleet-layerControl");
 
 				bounds = new google.maps.LatLngBounds();
 
-				var marker = inthincMap.createMarker({ position: mapDefaultLoc });
+				var marker = inthincMap.createMarker(map, { position: mapDefaultLoc });
 				bounds.extend(marker.getPosition());
 				
 				var node = document.getElementById("defaultMessage").cloneNode(true);
 				node.style.display = 'block';
 				
-				inthincMap.createInfoWindow({content: node, marker : marker});
+				inthincMap.createInfoWindow(map, {content: node, marker : marker});
 
-				mapNeedsInit = false;
 
 			}
 		}
@@ -67,7 +66,7 @@
    			var count = document.getElementById(countId).value;
 
    			// Clear all existing markers and zoom boundary.
-   			inthincMap.clearMarkers();
+   			inthincMap.clearMarkers(map);
 			
 			bounds = new google.maps.LatLngBounds();
    			
@@ -77,15 +76,15 @@
 	   			notifyBean(mapDefaultLoc.lat(), mapDefaultLoc.lng(), count);
    				return;
    	   		}
-		    inthincMap.lookupAddress(address,
+		    inthincMap.lookupAddress(map, address,
 		   	          function(result, status) {
 		    	  			if (status != google.maps.GeocoderStatus.OK) {
 			        		  	console.log(address + " not found");
 			        	  } else {
 								var loc = result[0].geometry.location;
 
-								var marker = inthincMap.createMarker({position : loc}); 
-								inthincMap.createInfoWindow({
+								var marker = inthincMap.createMarker(map, {position : loc}); 
+								inthincMap.createInfoWindow(map, {
 									content: "<b>" + address + "</b>", 
 									marker : marker
 								});
@@ -196,13 +195,13 @@
 			{
 				if (markerClusterer != null) {
 			          markerClusterer.clearMarkers();
-			          inthincMap.clearMarkers();
+			          inthincMap.clearMarkers(map);
 		        }
 				markers = [];
 				bounds.extend(new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-					marker = inthincMap.createMarker({
+					marker = inthincMap.createMarker(map, {
 						position: new google.maps.LatLng(#{driver.loc.lat}, #{driver.loc.lng}),
 						iconImage : "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}"
 					});
@@ -212,8 +211,8 @@
 					
 				</ui:repeat>
 
-				inthincMap.centerAndZoom(bounds);
-				markerClusterer = new MarkerClusterer(inthincMap.getMap(),markers,{styles:styles});
+				inthincMap.centerAndZoom(map, bounds);
+				markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
 			}
 			</script>
 		</rich:panel>
