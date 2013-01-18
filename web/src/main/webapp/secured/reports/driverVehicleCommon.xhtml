@@ -48,7 +48,10 @@
   			else {
   				inthincMap.clearMarkers(map);
   			}
-        	inthincMap.createMarker(map, { position: new google.maps.LatLng(lat, lng)});
+			inthincMap.center(map, lat, lng);
+        	inthincMap.createMarker(map, { 
+        		position: new google.maps.LatLng(lat, lng)
+        	});
 	    }
 
 		function setAverageSpeedDifference(index){
@@ -76,7 +79,7 @@
 	      		var lng = document.getElementById("#{formName}:notificationsTable:"+index+":eventLng");
 	    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
 						
-	    			reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address, null);
+	    			reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address);
 				}
 				else {
 					
@@ -86,12 +89,21 @@
     	}
         function reverseGeocodeTripAddress(latlng, addressElement){
 			inthincMap.reverseGeocode(map, latlng.lat(), latlng.lng(), function(result, status) {
-		    	  if (status != google.maps.GeocoderStatus.OK) {
-			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
-		    	  }
-		    	  else {
-		              addressElement.innerHTML = result[0].formatted_address;
-		    	  }
+/* TODO:				
+				if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {    
+console.log("OVER_QUERY_LIMIT " + addressElement);		    		  
+	            	setTimeout(function() {
+	            		reverseGeocodeTripAddress(latlng, addressElement);
+	            		}, 200);
+				}
+				else
+*/					
+					if (status === google.maps.GeocoderStatus.OK) {
+		        	addressElement.innerHTML = result[0].formatted_address;
+				}
+		    	else {
+					addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
+		    	}
 			});
 
         }
