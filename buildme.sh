@@ -2,13 +2,16 @@
 if [ -z "${TARBALL_FILENAME}" ] || [ ! "${TARBALL_FILENAME}" ]; then TARBALL_FILENAME="tp$(date +%Y%m%d)"; echo "TARBALL_FILENAME not specified, using default ${TARBALL_FILENAME}"; fi
 TMP_DIR="${WORKSPACE}/${TARBALL_FILENAME}"
 if [ ! -d "${WORKSPACE}/logs" ]
+then
     mkdir -p ${WORKSPACE}/logs
 fi
+
 if [ ! "${catalina_home}" ]
 then
     catalina_home=${WORKSPACE}
     CATALINA_HOME=${WORKSPACE}
 fi
+
 if [ -d "${TMP_DIR}" ]
 then
     /bin/rm -Rf ${TMP_DIR}
