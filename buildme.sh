@@ -15,7 +15,16 @@ else
     exit 1
 fi
 echo "Getting wars : "
-find ${WORKSPACE} -type f -iname "*.war" -print -exec /bin/cp {} ${TMP_DIR} \;
+# Old way, which overwrote identical wars in order they are found, could probably work if we just added | grep target
+# and checked for already added war of the same name or cp -i
+# find ${WORKSPACE} -type f -iname "*.war" -print -exec /bin/cp {} ${TMP_DIR} \;
+/bin/cp ${WORKSPACE}/web/target/tiwipro.war ${TMP_DIR}
+/bin/cp ${WORKSPACE}/webutil/target/tiwiproutil.war ${TMP_DIR}
+/bin/cp ${WORKSPACE}/service/target/service.war ${TMP_DIR}
+/bin/cp ${WORKSPACE}/scheduler/target/scheduler.war ${TMP_DIR}
+/bin/cp ${WORKSPACE}/hoskiosk/target/hoskiosk.war ${TMP_DIR}
+
+
 echo "Cleaning old tgz files"
 find ${WORKSPACE} -maxdepth 1 -type f -iname "*.tgz" -mtime +1 -print -exec /bin/rm {} \;
 
