@@ -23,6 +23,7 @@ echo "Getting wars : "
 /bin/cp ${WORKSPACE}/service/target/service.war ${TMP_DIR}
 /bin/cp ${WORKSPACE}/scheduler/target/scheduler.war ${TMP_DIR}
 /bin/cp ${WORKSPACE}/hoskiosk/target/hoskiosk.war ${TMP_DIR}
+/bin/cp ${WORKSPACE}/include_wars/*.war ${TMP_DIR}
 
 
 echo "Cleaning old tgz files"
