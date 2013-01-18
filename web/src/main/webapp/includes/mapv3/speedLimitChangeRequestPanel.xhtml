@@ -31,13 +31,10 @@
 <rich:panel id="script">
 	<script type="text/javascript">
 		function showSegments(){
-			var bcolor = '#EBFFCA';
 			if (streetSegments) {
-				console.log('showSegments need clear ' );
 				streetSegments.clearSegments();
 			}
 			else {
-				console.log('showSegments first time ' );
 				streetSegments = new StreetSegments();
 			}
 	        mapsbs.setCenter(new google.maps.LatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}));
@@ -46,7 +43,7 @@
 			var count = 0;
 			<ui:repeat value="#{speedLimitChangeRequests.changeRequests}" var="changeRequest">
 	         
-				bcolor = (bcolor == '#EBFFCA') ?  '#ffffff' : '#EBFFCA';
+				var bcolor = (count % 2 == 0) ?  ROW_EVEN_COLOR : ROW_ODD_COLOR;
 				var gLatLngArray = new Array();
 				<ui:repeat value="#{changeRequest.streetSegmentPoints}" var="point">
 					gLatLngArray.push(new google.maps.LatLng(#{point.x},#{point.y}));
@@ -54,7 +51,7 @@
 		         
 				var polyline = new google.maps.Polyline({
 					path: gLatLngArray,
-					strokeColor: '#666666',
+					strokeColor: POLYLINE_COLOR,
 					strokeWeight: 10,
 					strokeOpacity : 0.5
 				});

@@ -3,34 +3,35 @@ var streetSegments = null;
 var preciseLat = null;
 var preciseLng = null;
 var limit;
-var geocoder = new google.maps.Geocoder();
 
-var iconImage;
-
+// colors
+var POLYLINE_COLOR = '#666666';
+var POLYLINE_SELECTED_COLOR = '#ff0000';
+var ROW_SELECTED_COLOR = '#DfDfF8';
+var ROW_ODD_COLOR = '#ffffff';
+var ROW_EVEN_COLOR = '#EBFFCA';
     
 	function initMap(lat, lng, zoom){
-		console.log('sbs initMap');
-// TODO: should this check for mapsbs == null and init or reinit?		
-		mapsbs = new google.maps.Map(document.getElementById('map-sbs'), {
-			 zoom: zoom,
-			 center: new google.maps.LatLng(lat, lng),
-			 mapTypeId: google.maps.MapTypeId.ROADMAP,
-			 mapTypeControl: true,
-			 mapTypeControlOptions : {
-				style : google.maps.MapTypeControlStyle.DROPDOWN_MENU, 
-			 },
-			 overviewMapControl: true,
-			 overviewMapControlOptions: {
-			      opened: true,
-			 }
-		});
-		
-		console.log('sbs panel initMap - complete ' + mapsbs.getZoom());
+		if (!mapsbs) {
+			mapsbs = inthincMap.init({
+				'canvasID' : 'map-sbs',
+				'center' : {
+					'lat' : lat,
+					'lng' : lng
+				},
+				'zoom' : zoom,
+				'overviewMapControl' : true
+			});
+			initLayers(mapsbs, "sbs-layersControl");
 
-		google.maps.event.addListener(mapsbs, "click", function(mouseEvent) {
-			reverseGeocode(mouseEvent.latLng.lat(), mouseEvent.latLng.lng(), "", false);
-        });
 
+			google.maps.event.addListener(mapsbs, "click", function(mouseEvent) {
+				reverseGeocode(mouseEvent.latLng.lat(), mouseEvent.latLng.lng(), "", false);
+	        });
+		}
+		else {
+			inthincMap.clearMarkers(mapsbs);
+		}
 	}
     
     
@@ -77,22 +78,21 @@ var iconImage;
 		 		var streetSegment = this.findSegment(id);
 		 		
 				if (streetSegment.selected){
-				  	setPolyLineColor(streetSegment.polyline, "#666666");
+				  	setPolyLineColor(streetSegment.polyline, POLYLINE_COLOR);
 					streetSegment.selected = false;
 					this.segmentSelected = null;
 			 		streetSegment.row.style.backgroundColor = streetSegment.bcolor;
 				}
 		 		else {
 				  	this.deselectAllSegments();
-				  	setPolyLineColor(streetSegment.polyline, "#ff0000");
+				  	setPolyLineColor(streetSegment.polyline, POLYLINE_SELECTED_COLOR);
 					streetSegment.selected = true;
 					this.segmentSelected = streetSegment;
-			 		streetSegment.row.style.backgroundColor = '#DfDfF8';
+			 		streetSegment.row.style.backgroundColor = ROW_SELECTED_COLOR;
 			 		panTo(streetSegment);
 				}
 		 	},
 		    clearSegments : function() {
-		    	console.log("clear segments - cnt = " + this.streetSegments.length);
 	    		for (var i = 0; i < this.streetSegments.length; i++) {
 		    			this.streetSegments[i].polyline.setMap(null);
 	    		}
@@ -109,12 +109,10 @@ var iconImage;
 			},
 			deselectAllSegments : function () {
 		  		if (this.segmentSelected){
-		  			console.log('deselectAll');
-				  	setPolyLineColor(this.segmentSelected.polyline, "#666666");
+				  	setPolyLineColor(this.segmentSelected.polyline, POLYLINE_COLOR);
 				  	this.segmentSelected.selected = false;
 				  	this.segmentSelected.row.style.backgroundColor = segmentSelected.bcolor;
 				  	this.segmentSelected = null;
-		  			console.log('deselectAll-done');
 			 	}
 		 	},
 		 	hoverSegment : function (id, pan) {
@@ -122,8 +120,8 @@ var iconImage;
 			 		this.hoverDeselectAllSegments();
 			 		var streetSegment = this.findSegment(id);
 			 		if (streetSegment) {
-				  		setPolyLineColor(streetSegment.polyline, "#ff0000");
-				  		streetSegment.row.style.backgroundColor = '#DfDfF8';
+				  		setPolyLineColor(streetSegment.polyline, POLYLINE_SELECTED_COLOR);
+				  		streetSegment.row.style.backgroundColor = ROW_SELECTED_COLOR;
 				 		if (pan) {
 				 			panTo(streetSegment);
 				 		}
@@ -133,7 +131,7 @@ var iconImage;
 		 	hoverDeselectAllSegments : function() {
 			 	if (!this.segmentSelected) {
 		    		for (var i = 0; i < this.streetSegments.length; i++) {
-		    			setPolyLineColor(this.streetSegments[i].polyline, "#666666");
+		    			setPolyLineColor(this.streetSegments[i].polyline, POLYLINE_COLOR);
 				 		this.streetSegments[i].row.style.backgroundColor = this.streetSegments[i].bcolor;
 			  		}
 			  	}
@@ -154,14 +152,11 @@ var iconImage;
   		preciseLat = lat;
   		preciseLng = lng;
   		limit = (isMarker) ? 10 : 1;
-		geocoder.geocode({
-			'location': new google.maps.LatLng(lat, lng)
-		}, addAddressToMap);
+  		inthincMap.reverseGeocode(mapsbs, lat, lng, addAddressToMap);
 	}
 
   	function addAddressToMap(result, status) {
 		if (status != google.maps.GeocoderStatus.OK) {
-			console.log('Reverse Geocoding failed status: '+ status);
 			setUnableToGeocodeError();
 		}
 		else {
@@ -178,19 +173,16 @@ var iconImage;
 			}
 		}
 	}
-	
+  	
   	function addMarker(lat, lng, markerImage) {
-		new google.maps.Marker({ 
+  		inthincMap.createMarker(mapsbs, {
 			position : new google.maps.LatLng(lat, lng), 
-			map : mapsbs,
-			icon : markerImage
-		});
+			iconImage : markerImage
+  		}); 
   	}
 
   	function showLocation(address) {
-  		geocoder.geocode({
-  			'address' : address
-  		}, addAddressToMap);
+  		inthincMap.lookupAddress(mapsbs, address, addAddressToMap);
   	}
 
   	function panTo(segment) {
