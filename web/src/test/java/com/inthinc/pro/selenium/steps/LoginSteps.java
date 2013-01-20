@@ -6,6 +6,7 @@ import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.models.AutomationUser;
+import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageFormsManage;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
@@ -18,6 +19,7 @@ public class LoginSteps extends WebSteps {
     PageNotificationsDiagnostics notifdiag = new PageNotificationsDiagnostics();
     PageNotificationsSafety safteydiag = new PageNotificationsSafety();
     PageFormsManage manage = new PageFormsManage();
+    PageAdminVehicles pav = new PageAdminVehicles();
     
     private static final PageLogin page = new PageLogin();
 
@@ -296,6 +298,11 @@ public class LoginSteps extends WebSteps {
     public void whenIGoToTheFormsManagePage() {
     	//loginPage.open("https://schlumberger.inthinc.com:8443/forms/");  // for slb
     	loginPage.open("http://dev.tiwipro.com:8080/forms/");  //for dev
+    }
+    
+    @When("I go to the admin vehicles page")
+    public void whenIGoToTheAdminVehiclesPage() {
+    	pav.load();
     }
     
     //TODO: MWEISS - This now works, I just need to make it universal so I can be fed a column from any page
