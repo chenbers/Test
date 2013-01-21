@@ -26,7 +26,7 @@ var ROW_EVEN_COLOR = '#EBFFCA';
 
 
 			google.maps.event.addListener(mapsbs, "click", function(mouseEvent) {
-				reverseGeocode(mouseEvent.latLng.lat(), mouseEvent.latLng.lng(), "", false);
+				reverseGeocode(mouseEvent.latLng.lat(), mouseEvent.latLng.lng(), false);
 	        });
 		}
 		else {
