@@ -670,10 +670,18 @@ var firstLoad = new Boolean(true);
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('SLChangeRequestPanel')" />
       </f:facet>
-		<ui:include src="../../includes/mapv3/speedLimitChangeRequestPanel.xhtml" >
-			<ui:param name="context" value="vehicleSpeedSixtyFive" />
-		</ui:include>
-		
+		<table width="920" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+		<tr>
+		<td valign="top">
+          <!-- START PANEL -->
+          <div>
+			<ui:include src="../../includes/mapv3/speedLimitChangeRequestPanel.xhtml" >
+				<ui:param name="context" value="vehicleSpeedSixtyFive" />
+			</ui:include>
+	  	  </div>
+		</td>
+		</tr>
+		</table>	  	  	
 	</rich:modalPanel>
 <!-- END SBS MODAL -->
 

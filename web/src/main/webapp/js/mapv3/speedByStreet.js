@@ -2,7 +2,7 @@ var mapsbs = null;
 var streetSegments = null;
 var preciseLat = null;
 var preciseLng = null;
-var limit;
+var limit = 1;
 
 // colors
 var POLYLINE_COLOR = '#666666';
