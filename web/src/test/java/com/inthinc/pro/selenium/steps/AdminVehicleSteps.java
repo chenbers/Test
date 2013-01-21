@@ -1,12 +1,15 @@
 package com.inthinc.pro.selenium.steps;
 
 import org.jbehave.core.annotations.Then;
+import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.selenium.pageObjects.PageAdminAddEditVehicle;
+import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleDetails;
 
 public class AdminVehicleSteps extends StepsAdmin { 
     
-    private PageAdminAddEditVehicle vehicleAddEdit = new PageAdminAddEditVehicle();
+	private PageAdminAddEditVehicle vehicleAddEdit = new PageAdminAddEditVehicle();
+	private PageAdminVehicleDetails details = new PageAdminVehicleDetails();
     
     @Then ("I should be able to edit Vehicle information")
     public void thenIShouldBeAbleToEditVehicleInformation(){
@@ -22,7 +25,6 @@ public class AdminVehicleSteps extends StepsAdmin {
         test.assertEquals(true, vehicleAddEdit._dropDown().zone().isEditable());
         test.assertEquals(true, vehicleAddEdit._dropDown().DOT().isEditable());
         test.assertEquals(true, vehicleAddEdit._checkBox().iftaCheckbox().isClickable());
-        
     }
     
     @Then ("I should be able to edit Wireline information")

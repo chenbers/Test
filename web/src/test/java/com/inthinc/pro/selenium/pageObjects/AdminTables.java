@@ -11,6 +11,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
 
 public abstract class AdminTables extends AdminBar {
 
@@ -18,9 +19,7 @@ public abstract class AdminTables extends AdminBar {
 
     public class AdminTablesButtons extends AdminBarButtons {
 
-        public TextButton batchEdit() {
-            return new TextButton(AdminBarEnum.BATCH_EDIT, page);
-        }
+        public TextButton batchEdit() 			{return new TextButton(AdminBarEnum.BATCH_EDIT, page);}
 
         public TextButton search() {
             return new TextButton(AdminBarEnum.SEARCH_BUTTON, page){
@@ -69,15 +68,9 @@ public abstract class AdminTables extends AdminBar {
     }
 
     public class AdminTablesTexts extends AdminBarTexts {
-
-        
-        public Text labelSearchBox() {
-            return new TextFieldLabel(AdminBarEnum.SEARCH_TEXTFIELD, page);
-        }
-        
-        public Text counter() {
-            return new Text(AdminBarEnum.COUNTER);
-        }
+        public Text labelTitle()		{return new TextFieldLabel(AdminBarEnum.TITLE, page);}
+        public Text labelSearchBox() 	{return new TextFieldLabel(AdminBarEnum.SEARCH_TEXTFIELD, page);}
+        public Text counter() 			{return new Text(AdminBarEnum.COUNTER);}
     }
 
 

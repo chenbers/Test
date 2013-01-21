@@ -189,6 +189,7 @@ public enum NoteType {
 //	SPEEDING_LOG4(192, new Attrib[]{}),
 
 //	SNITCH_DIAGNOSTICS(200, new Attrib[]{}),
+	UNPLUGGED(202, new Attrib[]{}),
 	IDLING(208, new Attrib[]{}),
 	CRASH(209, new Attrib[]{}),
 	SPEED_COACHING(210, new Attrib[]{}),
@@ -242,7 +243,7 @@ public enum NoteType {
 
 	public boolean isStrippedNote()
 	{
-		return (code.intValue() > 245 && code.intValue() < 255);
+		return isStrippedNote(code);
 	}
 
 	public static boolean isStrippedNote(int code)
@@ -252,40 +253,42 @@ public enum NoteType {
 	
 	public boolean isTripStartNoteType()
 	{
-		return  isTripStartNoteType(getCode());
+		return  isTripStartNoteType(this);
 	}
 
-	public static boolean  isTripStartNoteType(int code)
+	public static boolean  isTripStartNoteType(NoteType noteType)
 	{
-		return (get(code) == NEWDRIVER || get(code) == NEWDRIVER_HOSRULE || get(code) == IGNITION_ON);
+	    return (noteType == NEWDRIVER || noteType == NEWDRIVER_HOSRULE || noteType == IGNITION_ON);
 	}
 
 	public boolean isTripEndNoteType()
 	{
-		return isTripEndNoteType(getCode());
+		return isTripEndNoteType(this);
 	}
 
-	public static boolean isTripEndNoteType(int code)
+	public static boolean isTripEndNoteType(NoteType noteType)
 	{
-		return (get(code) == CLEAR_DRIVER 
-				|| get(code) == LOW_BATTERY 
-				|| get(code) == IGNITION_OFF 
-				|| get(code) == RF_KILL 
-				|| get(code) == HOS_CHANGE_STATE_EX 
-				|| get(code) == HOS_CHANGE_STATE_NO_GPS_LOCK
-//				|| get(code) == LOW_POWER_MODE
+		return (noteType == CLEAR_DRIVER 
+				|| noteType == LOW_BATTERY 
+				|| noteType == IGNITION_OFF 
+				|| noteType == RF_KILL 
+				|| noteType == HOS_CHANGE_STATE_EX 
+				|| noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
+//				|| noteType == LOW_POWER_MODE
 				);
 	}
 
 	public boolean isIdleNoteType()
 	{
-		return isIdleNoteType(getCode());
+		return isIdleNoteType(this);
 	}
 
-	public static boolean isIdleNoteType(int code)
+	public static boolean isIdleNoteType(NoteType noteType)
 	{
-		return (get(code) == IDLE_STATS || get(code) == IDLING);
+		return (noteType == IDLE_STATS || noteType == IDLING);
 	}
 
-	
+	public String toString() {
+	    return String.valueOf(code);
+	}
 }
