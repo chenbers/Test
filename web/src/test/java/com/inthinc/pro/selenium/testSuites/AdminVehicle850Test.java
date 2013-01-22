@@ -8,8 +8,6 @@ import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
-import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
-import com.inthinc.pro.selenium.pageObjects.PageExecutiveOverallExpansion;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.steps.AdminVehicleSteps;
 import com.inthinc.pro.selenium.steps.LoginSteps;
@@ -18,8 +16,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @PageObjects(list={PageLogin.class, 
         PageAdminVehicles.class,
         PageAdminVehicleDetails.class,
-        PageAdminVehicleEdit.class,
-        PageExecutiveDashboard.class, PageExecutiveOverallExpansion.class,})
+        PageAdminVehicleEdit.class})
 @StoryPath(path="AdminVehicle850.story")
 public class AdminVehicle850Test extends WebStories  {
 
