@@ -41,67 +41,53 @@
 								style="width: 500px; height: 500px; border: 0"></div>
 							</h:panelGroup> 
 							<script type="text/javascript">
+							var map = null;
 							function showAddress(address) {
-								  
-								  var geocoder = new GClientGeocoder();
-								  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
-								  geocoder.getLocations(address,
-									    function(response) {
-									      if(response.Status.code!=200){
-									        alert('"' + address + '" not found');
-									      } else {
-									        var place = response.Placemark[0];
-									        var accuracy = place.AddressDetails.Accuracy;
-									        var point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
-									        map.setCenter(point, zoomLookup[accuracy]);
-											var marker = new GMarker(point);
-											map.addOverlay(marker);
-											marker.openInfoWindowHtml(address);
-									      }
-									    }
-								    );
-																		  
+						  		inthincMap.lookupAddress(map, address, function (result, status) {
+									if (status != google.maps.GeocoderStatus.OK) {
+						  				console.log('Geocoding failed for address: ' +  address + " status: "+ status);
+						  			} else {
+						  				inthincMap.clearMarkers(map);
+						  			    map.fitBounds(result[0].geometry.viewport);
+						  			    var marker = inthincMap.createMarker(map, { position: result[0].geometry.location });
+						  			  	inthincMap.createInfoWindow(map, {content: result[0].formatted_address, marker : marker});
+				  			    	  }
+			  			   		});
 							}
 							
-							function clearMap(){
-								portalmap.reinit();
-								GUnload();
-								map = null;
-							}			    
-							
-							function initMap(){			    
-								if (GBrowserIsCompatible()) {
-									if (map == null) {
-		 								portalmap.init(false, '#{context}map-canvas');
-			 							map = portalmap.getMap();
-			 							initLayers();
-									}
-									map.setCenter(new GLatLng(#{latValue},#{longValue}),#{zoomLevel});
-						
-									GEvent.addListener(map, "moveend", function() {
-										  var center = map.getCenter();
-										  var zoom = map.getZoom();
-										  updateMapValues(center.lat(),center.lng(),zoom);
+							function initMap(){
+								if (map == null) {
+									map = inthincMap.init({
+										'canvasID' : '#{context}map-canvas',
+										'center' : {
+											'lat' : #{latValue},
+											'lng' : #{longValue}
+										},
+										'zoom' : #{zoomLevel}
 									});
-									<h:outputText rendered="#{readOnly}">
-										map.disableDragging();
-										map.disableScrollWheelZoom();
-										map.disableDoubleClickZoom();
-									</h:outputText>
-									<h:outputText rendered="#{not readOnly}">
-										map.addControl(new GLargeMapControl());
-									</h:outputText>
+									initLayers(map, "#{context}-layersControl");
+									google.maps.event.addListener(map, "center_changed", function() {
+										  updateMapValues(map);
+									});
+									google.maps.event.addListener(map, "zoom_changed", function() {
+										  updateMapValues(map);
+									});
 								}
+								else {
+									inthincMap.center(map, #{latValue}, #{latValue});
+									inthincMap.zoom(map, #{zoomLevel});
+								}
+								inthincMap.setReadOnly(map, #{readOnly});
 							}
-                            function updateMapValues(lat,lng,zoom){
+                            function updateMapValues(map){
             					
 								var latField = document.getElementById('#{formName}:#{context}-latvalue');
 								var longField = document.getElementById('#{formName}:#{context}-longvalue');
 								var zoomField = document.getElementById('#{formName}:#{context}-zoomlevel');
 				
-								latField.value = lat;
-								longField.value = lng;
-								zoomField.value = zoom;
+								latField.value = map.getCenter().lat();
+								longField.value = map.getCenter().lng();
+								zoomField.value = map.getZoom();
                                 
 							};
 						</script> 

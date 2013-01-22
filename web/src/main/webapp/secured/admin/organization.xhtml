@@ -11,11 +11,7 @@
     <ui:param name="title" value="#{messages.adminHeader_organization}"/>
 	<ui:param name="adminSelected" value="current" />
 	<ui:define name="scripts">
-	  	<ui:include src="/includes/map/portalMap.xhtml"/>
-	  	<script type="text/javascript">
-			var map = null;
-		</script>
-        <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6"></script>
+	  	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 	</ui:define>
 
 	<ui:define name="content">
@@ -73,7 +69,6 @@
       										nodeFace="#{item.data.treeNodeType}"
       										nodeSelectListener="#{organizationBean.selectNode}"
       										reRender="contentPanel"
-      										onclick="clearMap();"
           									oncomplete="initMap();"
       										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
       										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"

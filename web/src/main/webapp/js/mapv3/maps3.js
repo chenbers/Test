@@ -344,8 +344,7 @@
       		    		marker.setMap(null);
       		    	}
       		    },
-      			createInfoWindow : function (map, options) 
-      		    {
+      			createInfoWindow : function (map, options) {
       				var content = options.content ? options.content : "";
       				var marker = options.marker ? options.marker : null;
       				var addListener = options.addListener ? options.addListener : true;
@@ -367,6 +366,13 @@
     				}
 
     				return infowindow;
+      		    },
+      		    setReadOnly : function(map, readOnly) {
+					map.setOptions({
+						disableDefaultUI : readOnly,
+						draggable : !readOnly,
+						scrollwheel : !readOnly
+					});
       		    }
       		};    	
       	})();

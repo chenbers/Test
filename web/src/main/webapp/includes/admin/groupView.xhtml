@@ -11,14 +11,14 @@
 	<ul id="grid_nav_dark">
 		<li class="r">
 			<a4j:commandButton id="#{context}-groupViewAdd"
-				action="#{organizationBean.add}"  onclick="clearMap(); this.disabled=true;"
+				action="#{organizationBean.add}"  onclick="this.disabled=true;"
 				reRender="contentPanel" styleClass="left" oncomplete="initMap(); this.disabled=false;">
 				<span class="add"><h:outputText
 					value="#{messages.button_add}" /></span></a4j:commandButton>
 		</li>
 		<li class="r">
 			<a4j:commandButton id="#{context}-groupViewEdit"
-				action="#{organizationBean.edit}" onclick="clearMap();"
+				action="#{organizationBean.edit}" 
 				reRender="contentPanel" styleClass="left" oncomplete="initMap(); this.disabled=false;">
 				<span class="edit"><h:outputText
 					value="#{messages.button_edit}" /></span></a4j:commandButton>
