@@ -413,28 +413,6 @@
 		<view-id>/secured/admin/device.faces</view-id>
 		<action>#{devicesBean.view}</action>
 	</url-mapping>
-<!--  should these be removed -->	
-	<url-mapping id="adminzoneAlertsAccess">
-		<pattern>/app/admin/zoneAlerts</pattern>
-		<view-id>/secured/admin/zoneAlerts.faces</view-id>
-		<action onPostback="false">#{zoneAlertsBean.resetList}</action>
-	</url-mapping>
-	<url-mapping id="adminZoneAlerts">
-		<pattern>/app/admin/zoneAlerts</pattern>
-		<view-id>/secured/admin/zoneAlerts.faces</view-id>
-		<action onPostback="false">#{zoneAlertsBean.resetList}</action>
-	</url-mapping>
-	<url-mapping id="adminEditZoneAlert">
-		<pattern>/app/admin/editZoneAlert</pattern>
-		<view-id>/secured/admin/editZoneAlert.faces</view-id>
-	</url-mapping>
-	<url-mapping id="adminZoneAlert">
-		<pattern>/app/admin/zoneAlert/#{zoneAlertsBean.itemID}</pattern>
-		<view-id>/secured/admin/zoneAlert.faces</view-id>
-		<action>#{zoneAlertsBean.view}</action>
-	</url-mapping>
-<!--  END - should these be removed -->	
-	
 	<url-mapping id="adminredFlagsAccess">
 		<pattern>/app/admin/redFlags</pattern>
 		<view-id>/secured/admin/redFlags.faces</view-id>

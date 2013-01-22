@@ -431,20 +431,6 @@
  </navigation-rule>
  <navigation-rule>
   <navigation-case>
-   <from-outcome>go_adminZoneAlerts</from-outcome>
-   <to-view-id>/secured/admin/zoneAlerts.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
- <navigation-rule>
-  <navigation-case>
-   <from-outcome>go_adminZoneAlert</from-outcome>
-   <to-view-id>/secured/admin/zoneAlert.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
- <navigation-rule>
-  <navigation-case>
    <from-outcome>go_adminAddZoneAlert</from-outcome>
    <to-view-id>/secured/admin/editZoneAlert.xhtml</to-view-id>
   </navigation-case>
