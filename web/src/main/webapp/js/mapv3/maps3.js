@@ -371,7 +371,8 @@
 					map.setOptions({
 						disableDefaultUI : readOnly,
 						draggable : !readOnly,
-						scrollwheel : !readOnly
+						scrollwheel : !readOnly,
+						disableDoubleClickZoom : readOnly
 					});
       		    }
       		};    	
