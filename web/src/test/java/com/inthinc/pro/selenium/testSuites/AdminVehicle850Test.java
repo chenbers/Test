@@ -16,8 +16,7 @@ import com.inthinc.pro.selenium.steps.LoginSteps;
 @PageObjects(list={PageLogin.class, 
         PageAdminVehicles.class,
         PageAdminVehicleDetails.class,
-        PageAdminVehicleEdit.class,
-        })
+        PageAdminVehicleEdit.class})
 @StoryPath(path="AdminVehicle850.story")
 public class AdminVehicle850Test extends WebStories  {
 
