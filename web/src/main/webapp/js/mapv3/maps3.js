@@ -242,14 +242,8 @@
       		}
       		
       		return {
-      			/*
-      			 * 
-      			 * NOTES:
-      			 * 	Old version had a googleBarOptions param.  I'm removing for now.  It was used in SBS request only.
-      			 */
-      			
-//      			init: function(showOverviewControl, canvas, opts) {
       			init: function(options) {
+      				var options  = options ? options : new Array();
 					var zoom = options.zoom ? options.zoom : 10;
 					var centerLat = options.center ? (options.center.lat ? options.center.lat : 0.0) : 38.5482;
 					var centerLng = options.center ? (options.center.lng ? options.center.lng : 0.0) : -95.8008;
@@ -290,13 +284,36 @@
       				map.fitBounds(bounds);
       			},
   				lookupAddress: function(map, address, resultHandler) {
-  					geocoder.geocode({'address': address}, resultHandler ? resultHandler : function (result, status) {
+  					geocoder.geocode({'address': address }, resultHandler ? resultHandler : function (result, status) {
   			    	  if (status != google.maps.GeocoderStatus.OK) {
   			    		console.log('Geocoding failed for address: ' +  address + " status: "+ status);
   			    	  } else {
   			    		  map.fitBounds(result[0].geometry.viewport);
   			    	  }
   			   		});
+  				},
+  				showAddress : function (map, address) {
+  					if (address.length == 0)
+  					{
+  						map.setCenter(new GLatLng(39.0, -104.0));
+  						map.setZoom(4);
+  						return;
+  					}
+  					geocoder.geocode({'address': address }, function (result, status) {
+    			    	  if (status != google.maps.GeocoderStatus.OK) {
+							alert("The address: [" + address + "] was not found.");
+    			    		console.log('Geocoding failed for address: ' +  address + " status: "+ status);
+    			    	  } else {
+    			    		  map.fitBounds(result[0].geometry.viewport);
+    			    		  var marker = inthincMap.createMarker(map, {
+    			    			  position : result[0].geometry.location
+    			    		  });
+    			    		  inthincMap.createInfoWindow(map,  {
+    			      				content : result[0].formatted_address,
+    			      				marker: marker
+   			      			  });
+    			    	  }
+   			   		});
   				},
   				reverseGeocode: function(map, lat, lng, resultHandler) {
   					geocoder.geocode({'location': new google.maps.LatLng(lat, lng)}, resultHandler ? resultHandler : function (result, status) {

@@ -15,9 +15,10 @@
   
   <ui:define name="scripts">
   	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
-    <script src="#{facesContext.externalContext.requestContextPath}/js/mapv3/drawZone.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/mapv3/zone.js" type="text/javascript"></script>
     <script type="text/javascript">    
       var map = null;
+      var zone = null;
       function bodyLoad()
       {
           loadSpeedElements();
@@ -55,16 +56,13 @@
       }
       function showZone()
       {
-        removeZoneOverlay();
-        if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
+		if (zone != null) {
+			zone.clear();
+    	}
+		if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
         { 
-           
-	        var outline = fromOutlineString(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
-	        if (outline)
-	        {
-	          inthincMap.centerAndZoom(map, getLatLngBounds(outline));
-	          loadZone(outline, false, map);
-	        }
+           zone = new Zone(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
+           zone.displayOnMap(map, true);
         }
       }
     </script>

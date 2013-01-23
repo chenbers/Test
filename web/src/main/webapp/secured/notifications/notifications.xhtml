@@ -12,10 +12,11 @@
 	
     <ui:define name="scripts">
     	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
-		<a4j:loadScript src="/js/mapv3/drawZone.js" />
+		<a4j:loadScript src="/js/mapv3/zone.js" />
 		
         <script type="text/javascript">
 	  	  var map = null;
+	  	  var zone = null;
 
 	  	  function initializeMap(lat, lng, zonePoints, noteID) 
           {
@@ -33,23 +34,23 @@
   			}
   			else {
   				inthincMap.clearMarkers(map);
-  				removeZoneOverlay();
+  				if (zone != null) {
+  					zone.clear();
+  					zone = null;
+  				}
   			}
 
 
 			// Note: only zone events have zonePoints
-		    var outline = fromOutlineString(zonePoints);
-            if (outline) {
-            	// Draw Zone and set center
-            		zoneBounds = getLatLngBounds(outline);
-                	inthincMap.centerAndZoom(map, zoneBounds);
-                	loadZone(outline, false, map);
-                	inthincMap.createMarker(map, { position: zoneBounds.getCenter()});
-                	showInfoBubble(noteID, zoneBounds.getCenter());
-            }
+			if (zonePoints) {
+				zone = new Zone(zonePoints);
+				var zoneCenter = zone.displayOnMap(map, true).getCenter();
+            	inthincMap.createMarker(map, { position: zoneCenter});
+            	showInfoBubble(noteID, zoneCenter);
+			}
             else{
-            	  	showInfoBubble(noteID, location);
-            }
+        	  	showInfoBubble(noteID, location);
+	        }
 
           }
 
