@@ -242,8 +242,8 @@
       		}
       		
       		return {
-      			init: function(options) {
-      				var options  = options ? options : new Array();
+      			init: function(options_) {
+      				var options  = options_ ? options_ : new Array();
 					var zoom = options.zoom ? options.zoom : 10;
 					var centerLat = options.center ? (options.center.lat ? options.center.lat : 0.0) : 38.5482;
 					var centerLng = options.center ? (options.center.lng ? options.center.lng : 0.0) : -95.8008;
@@ -354,8 +354,7 @@
 					marker = new google.maps.Marker({ 
 							position : position, 
 						 	map: map,
-						 	icon : iconImage,
-						 	
+						 	icon : iconImage
 					});
 					mapState.markers.push(marker);
       		    	return marker;
@@ -390,20 +389,36 @@
 
     				return infowindow;
       		    },
-      			createInfoWindowFromDiv : function (map, divID, location) {
+      			createInfoWindowFromDiv : function (map, divID, location, options_) {
+      				var options  = options_ ? options_ : new Array();
       				var node = document.getElementById(divID).cloneNode(true);
       		    	node.style.display = 'block';
       				var marker = this.createMarker(map, { 
-      					  position: location 
+      					  position: location,
+      					  iconImage : options.iconImage
       				});
     				var infowindow = new google.maps.InfoWindow({
     					content: node
     			 	});
-   					showInfoWindow(map, infowindow, marker);
+    				if (!options.hideInfoWindow) {
+   						showInfoWindow(map, infowindow, marker);
+    				}
 					google.maps.event.addListener(marker, 'click', function() {
     					showInfoWindow(map, infowindow, marker);
 					});
     				return infowindow;
+      		    },
+      		    addPolyline : function (map, latLngArray,  options_) {
+      				var options  = options_ ? options_ : new Array();
+    				var polyline = new google.maps.Polyline({
+    					path: latLngArray,
+    					strokeColor: options.strokeColor ? options.strokeColor : '#ffffff',
+    					strokeWeight: options.strokeWeight ? options.strokeWeight : 1,
+    					strokeOpacity : options.strokeOpacity ? options.strokeOpacity : 1,
+    					map : options.show ? map : null
+    				});
+    				return polyline;
+
       		    },
       		    setReadOnly : function(map, readOnly) {
 					map.setOptions({
