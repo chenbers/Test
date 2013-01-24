@@ -43,16 +43,7 @@
 							<script type="text/javascript">
 							var map = null;
 							function showAddress(address) {
-						  		inthincMap.lookupAddress(map, address, function (result, status) {
-									if (status != google.maps.GeocoderStatus.OK) {
-						  				console.log('Geocoding failed for address: ' +  address + " status: "+ status);
-						  			} else {
-						  				inthincMap.clearMarkers(map);
-						  			    map.fitBounds(result[0].geometry.viewport);
-						  			    var marker = inthincMap.createMarker(map, { position: result[0].geometry.location });
-						  			  	inthincMap.createInfoWindow(map, {content: result[0].formatted_address, marker : marker});
-				  			    	  }
-			  			   		});
+								inthincMap.showAddress(map, address);
 							}
 							
 							function initMap(){

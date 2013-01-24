@@ -287,12 +287,15 @@
   					geocoder.geocode({'address': address }, resultHandler ? resultHandler : function (result, status) {
   			    	  if (status != google.maps.GeocoderStatus.OK) {
   			    		console.log('Geocoding failed for address: ' +  address + " status: "+ status);
-  			    	  } else {
+  			    	  }
+  			    	  else {
   			    		  map.fitBounds(result[0].geometry.viewport);
+  			    		console.log("address: " + result[0].formatted_address);
+  			    				
   			    	  }
   			   		});
   				},
-  				showAddress : function (map, address) {
+  				showAddress : function (map, address, callback) {
   					if (address.length == 0)
   					{
   						map.setCenter(new GLatLng(39.0, -104.0));
@@ -312,6 +315,9 @@
     			      				content : result[0].formatted_address,
     			      				marker: marker
    			      			  });
+    			    		  if (callback) {
+    			    			  callback(result[0].geometry.location);
+    			    		  }
     			    	  }
    			   		});
   				},
@@ -382,6 +388,21 @@
     					showInfoWindow(map, infowindow);
     				}
 
+    				return infowindow;
+      		    },
+      			createInfoWindowFromDiv : function (map, divID, location) {
+      				var node = document.getElementById(divID).cloneNode(true);
+      		    	node.style.display = 'block';
+      				var marker = this.createMarker(map, { 
+      					  position: location 
+      				});
+    				var infowindow = new google.maps.InfoWindow({
+    					content: node
+    			 	});
+   					showInfoWindow(map, infowindow, marker);
+					google.maps.event.addListener(marker, 'click', function() {
+    					showInfoWindow(map, infowindow, marker);
+					});
     				return infowindow;
       		    },
       		    setReadOnly : function(map, readOnly) {

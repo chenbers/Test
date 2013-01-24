@@ -18,7 +18,7 @@
 	  	  var map = null;
 	  	  var zone = null;
 
-	  	  function initializeMap(lat, lng, zonePoints, noteID) 
+	  	  function initializeMap(lat, lng, zonePoints, divID) 
           {
 			var location = new google.maps.LatLng(lat, lng);
   			if (map == null) {
@@ -45,29 +45,24 @@
 			if (zonePoints) {
 				zone = new Zone(zonePoints);
 				var zoneCenter = zone.displayOnMap(map, true).getCenter();
-            	inthincMap.createMarker(map, { position: zoneCenter});
-            	showInfoBubble(noteID, zoneCenter);
+            	if (divID) {
+					inthincMap.createInfoWindowFromDiv(map, divID, zoneCenter);
+            	}
+            	else {
+					inthincMap.createMarker(map, { position: zoneCenter});            		
+            	}
 			}
             else{
-        	  	showInfoBubble(noteID, location);
+            	if (divID) {
+   		    	  inthincMap.createInfoWindowFromDiv(map, divID, location);
+            	}
+            	else {
+                	inthincMap.createMarker(map, { position: location});
+            	}
 	        }
 
           }
 
-	      function showInfoBubble(divID, latLng)
-	      {
-	    	  var node = document.getElementById(divID).cloneNode(true);
-	    	  node.style.display = 'block';
-			  var marker = inthincMap.createMarker(map, { 
-				  position: latLng 
-			  });
-			  inthincMap.createInfoWindow(map, {
-				  content: node, 
-				  marker : marker
-				});
-
-		  }
-          
           function initializeTable()
           {
               jQuery(".clickable-map-icon").click(function(){

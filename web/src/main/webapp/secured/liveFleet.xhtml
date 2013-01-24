@@ -30,7 +30,6 @@
 		
 	    function initMap() {
 			if (map == null) {
-	    		  
 				map = inthincMap.init({
 					'center' : {
 						'lat' : mapDefaultLoc.lat(),
@@ -41,16 +40,7 @@
 				initLayers(map, "livefleet-layerControl");
 
 				bounds = new google.maps.LatLngBounds();
-
-				var marker = inthincMap.createMarker(map, { position: mapDefaultLoc });
-				bounds.extend(marker.getPosition());
-				
-				var node = document.getElementById("defaultMessage").cloneNode(true);
-				node.style.display = 'block';
-				
-				inthincMap.createInfoWindow(map, {content: node, marker : marker});
-
-
+				inthincMap.createInfoWindowFromDiv(map, "defaultMessage", mapDefaultLoc);
 			}
 		}
 		
@@ -76,23 +66,23 @@
 	   			notifyBean(mapDefaultLoc.lat(), mapDefaultLoc.lng(), count);
    				return;
    	   		}
-		    inthincMap.lookupAddress(map, address,
-		   	          function(result, status) {
-		    	  			if (status != google.maps.GeocoderStatus.OK) {
-			        		  	console.log(address + " not found");
-			        	  } else {
-								var loc = result[0].geometry.location;
-
-								var marker = inthincMap.createMarker(map, {position : loc}); 
-								inthincMap.createInfoWindow(map, {
-									content: "<b>" + address + "</b>", 
-									marker : marker
-								});
-
-								bounds.extend(marker.getPosition());
-								notifyBean(loc.lat(), loc.lng(), count);
-						}
-				});
+		    inthincMap.lookupAddress(map, address, function (result, status) {
+				if (status != google.maps.GeocoderStatus.OK) {
+			    	console.log('Geocoding failed for address: ' +  address + " status: "+ status);
+			    } else {
+			    	var position = result[0].geometry.location; 
+			    	bounds.extend(position);
+ 					notifyBean(position.lat(), position.lng(), count);
+				}
+		    });
+   		}
+   		
+   		function showAddress() {
+   			var address = document.getElementById('liveFleetAddressTextBox').value;
+	   		if(address.length == 0) {
+   				return;
+   	   		}
+		    inthincMap.showAddress(map, address);
    		}
 
 		/* Check if Enter pressed in form.
@@ -120,40 +110,68 @@
    			}
    		}
 
-		    var mapDefaultLoc= new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng})
-		    var mapDefaultZoom = #{liveFleetBean.addressZoom};
+		var mapDefaultLoc= new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng})
+		var mapDefaultZoom = #{liveFleetBean.addressZoom};
 	
-			function bodyLoad()
-			{
-				initMap();
-				addMarkers();
-				defaultAddressElement = "liveFleetVehicleBubbles:bubbleAddress";
-				bubbleElement = "vehicleBubble";
-				errorMessage = "#{messages.sbs_badLatLng}"
-				addressLookupAddressFormat = #{liveFleetBean.addressFormat};
+		function bodyLoad() {
+			initMap();
+			addMarkers();
+			defaultAddressElement = "liveFleetVehicleBubbles:bubbleAddress";
+			bubbleElement = "vehicleBubble";
+			errorMessage = "#{messages.sbs_badLatLng}"
+			addressLookupAddressFormat = #{liveFleetBean.addressFormat};
+		}
+	
+		function funcToCall(obj) {
+			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
+			if (obj.callFuncID == 0 ) {
+				fillBubbleMarker(obj.itemID,obj.subID);
+			} else if ( obj.callFuncID == 1 ) {
+				fillTripBubble(obj.itemID,obj.subID);
+			} else if ( obj.callFuncID == 2 ) {
+				fillEventBubble(obj.itemID,obj.subID);
+			} else if ( obj.callFuncID == 4 ) {
+				fillBubbleMap(obj.noteID);
 			}
-	
-			function funcToCall(obj) {
-				
-				jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-				if (		obj.callFuncID == 0 ) {
-					fillBubbleMarker(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 1 ) {
-					fillTripBubble(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 2 ) {
-					fillEventBubble(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 4 ) {
-					fillBubbleMap(obj.noteID);
-				}
-			} 		 
+		} 		 
+		
+// pulled out of map bubble
+// TODO: NEEDS MORE REFACTORING!!!
+		// called from liveFleet.xhtml	
+		function getAddressForCurrentMarker() {
+			 	if((addressLookupAddressFormat == 1)||(addressLookupAddressFormat == 2)){
+			 		displayCurrentMarkerWindow();
+			 	}
+			 	else if (addressLookupAddressFormat == 3) { 
+			 		console.log('currentMarker pos : ' + currentMarker.getPosition());
+			 		console.log('defaultAddressElement : ' + defaultAddressElement);
+			 		reverseGeocodeAddress3(map, currentMarker.getPosition(), defaultAddressElement, addAddressToBubbleForMarker);
+			 	}
+		}
 
- 
-	   		//]]>
+		//called from liveFleet.xhtml	
+		function getAddressForPosition(lat,lng){
 
-		</script>	
+			if((addressLookupAddressFormat == 1)||(addressLookupAddressFormat == 2)){
+
+					var node = document.getElementById(bubbleElement).cloneNode(true);
+					
+					node.style.display = 'block';
+						
+					inthincMap.createInfoWindow({ 
+						content : node,
+						position : new google.maps.LatLng(lat,lng),
+						addListener : false
+					});
+			 	}
+			 	else if (addressLookupAddressFormat == 3){ 	 	
+			 		reverseGeocodeAddress3(map, new google.maps.LatLng(lat,lng),defaultAddressElement,addAddressToBubbleForMap);
+			 	}
+		}
+		
+		//]]>
+
+	</script>	
 	
 	</ui:define>
 	<ui:define name="content">
@@ -410,7 +428,7 @@
 				
 				<a4j:region id="jsFormRegion">
 					<a4j:form id="jsForm">
-						<a4j:jsFunction reRender="driversDataTable,mapMarkers,mapPopups,driverScroller,liveFleetLegend" name="notifyBean" oncomplete="bodyLoad()">				
+						<a4j:jsFunction reRender="driversDataTable,mapMarkers,mapPopups,driverScroller,liveFleetLegend" name="notifyBean" oncomplete="bodyLoad();showAddress();">				
 							<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
 							<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
 							<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	

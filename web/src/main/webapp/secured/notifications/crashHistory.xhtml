@@ -15,143 +15,8 @@
     <ui:param name="ajaxPanels" value="crashHistoryTable,crashHistorySearch"/>
     <ui:param name="context" value="crashHistory"/>
     <ui:param name="title" value="#{messages.navigation_notifications} - #{messages.notes_tab_crashhistory}"/>
-    <ui:define name="scripts">
-   		<ui:include src="/includes/map/portalMap.xhtml"/>
-    
-        <script type="text/javascript">  
-        var map = null;
-        var geocoder = null;
-        var errorMessage = null;
-          	
-        function initializeCrashMap(lat, lng) 
-        {            
-          if (GBrowserIsCompatible()) {
-			if (map == null) {
-		  		portalmap.init(false, "address-canvas");
-		  		initLayers();
-		  		map = portalmap.getMap();
-			}
-			else {
-				map.clearOverlays();
-				portalmap.restoreLayersState();
-			}
-
-            var location = new GLatLng(lat, lng)
-            map.setCenter(location, 15);
-            map.addOverlay(new GMarker(location)); 
-          }
-        }
-        
-        function initializeCrashTable()
-        {
-            jQuery(".clickable-map-icon").click(function(){
-                var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='ddress']").text();
-                jQuery('#mapModalHeader').text("#{messages.driver_event_location} " + address);
-              });
-            jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
-            jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-            
-        }
-
-		/* CreateMarker(GLatLng, divID, GIcon or null)
-		 *	
-		 * Creates a marker using specified GIcon or
-		 * default icon if null is passed for iconImage.
-		 * divID is the id of a DIV you want displayed in the info window. 
-		 */
-        function createMarker(point, divID, iconImage) 
-        {
-        	var markerIcon;
-        	var marker;
-
-			//Use passed in image.
-        	if(iconImage != null)
-        	{
-				markerIcon = new GIcon(baseIcon);
-	       	    markerIcon.image = iconImage;
-	       	 	markerOptions = { icon:markerIcon };
-	       	 	marker = new GMarker(point, markerOptions);
-        	}
-        	//Use default GoogleMap marker image.
-        	else
-        	{
-		      	markerIcon = new GIcon();
-				marker = new GMarker(point);
-        	}
-       
-       		GEvent.addListener(marker, "click", function() {
-					var node = document.getElementById(divID).cloneNode(true);
-          			node.style.display = 'block';
-		            marker.openInfoWindow(node);
-		 			});
-
-        	return marker;
-        }
-        function tryThis(crashIndex,tableIndex) {           
-            var itemToFind =  "crashHistory-form:crashHistory:"+tableIndex+":crashMenu";
-            var crash = document.getElementById(itemToFind);          
-			var crashID = crash.options[crash.selectedIndex].value;
-                      
-            updCrshStat(crashID);
-        }
-		</script>
-          <rich:panel id="script">
-          <script language="javascript" type="text/javascript">
-          
-   		 function getLink(index){
-			 
-       		var link = document.getElementById("link_"+index);
-       		var linkText = document.getElementById("crashHistory-form:crashHistory:"+index+":linkText").value;
-       		if (link.href.length==0){
- 	      		
- 				link.href = linkText;
- 			}
- 		 }
-		 function getAddress(index){
-			 
-	      		var address = document.getElementById("crashHistory-form:crashHistory:"+index+":eventAddress");
-  				var lat = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLat");
-  				var lng = document.getElementById("crashHistory-form:crashHistory:"+index+":eventLng");
-	      		
-	      		if (address.innerHTML.length==0){
-		      		      				
-					if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-						reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
-					}
-					else {
-						lkFrZn(lat.value,lng.value,index);						
-					}
-								
-	      		}
-			 
-		 }
-          function reverseGeocodeTripAddress(latlng,addressElement,index){
-              
-      		new GClientGeocoder().getLocations(latlng, 
-          			function(response){
-      			        if (!response || response.Status.code != 200) { 	  
-							lkFrZn(latlng.lat(),latlng.lng(),index);
-      			        } 
-      			        else {
-   			             	addressElement.innerHTML = response.Placemark[0].address;
-      			        }
-      		    	});
-          }
-
-          function checkForZoneName(zoneName) {             
-              var nameAndIndex = zoneName.split(",");
-              var name = nameAndIndex[0];
-              var indx = nameAndIndex[1];
-              
-        	  var addressEl = document.getElementById("crashHistory-form:crashHistory:"+indx+":eventAddress");                        
- 			  addressEl.innerHTML = name;
-          }            
-      		</script>
-          </rich:panel>
-    </ui:define>    
 
 	<ui:define name="content">
-		
 		<a4j:keepAlive beanName="crashHistoryBean" />
 		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
 		  <tr>
@@ -212,7 +77,7 @@
 						</table>
 					  </li>
 					  <li class="l">
-						<a4j:commandButton id="crashHistoryRefresh" styleClass="left" oncomplete="initializeCrashTable()"
+						<a4j:commandButton id="crashHistoryRefresh" styleClass="left" oncomplete="initializeTable()"
 									reRender="header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
 	           				<span class="refresh">
