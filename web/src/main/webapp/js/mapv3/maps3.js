@@ -21,6 +21,7 @@
 			function MapState(map) {
 				this.map = map;
 				this.markers = new Array();
+				this.overlays = new Array();
 	    		this.openinfowindow = null;
 			}
 			var mapStates = new Array();
@@ -417,6 +418,8 @@
     					strokeOpacity : options.strokeOpacity ? options.strokeOpacity : 1,
     					map : options.show ? map : null
     				});
+          			var mapState = findMapStateForMap(map);
+          			mapState.overlays.push(polyline);
     				return polyline;
 
       		    },
@@ -427,6 +430,17 @@
 						scrollwheel : !readOnly,
 						disableDoubleClickZoom : readOnly
 					});
+      		    },
+      		    clearOverlays : function(map) {
+          			var mapState = findMapStateForMap(map);
+      		    	while (mapState.overlays.length > 0) {
+      		    		overlay = mapState.overlays.pop();
+      		    		overlay.setMap(null);
+      		    	}
+      		    },
+      		    clear : function(map) {
+      		    	this.clearMarkers(map);
+      		    	this.clearOverlays(map);
       		    }
       		};    	
       	})();
