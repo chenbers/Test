@@ -48,7 +48,7 @@ import com.thoughtworks.selenium.SeleniumException;
  */
 public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethodInterface {
 
-    public static Integer PAGE_TIMEOUT = 30000;
+    public static Integer PAGE_TIMEOUT = 7000;// 30000;
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
     private final Browsers browser;
@@ -93,7 +93,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib click(SeleniumEnumWrapper myEnum) {
         String element = getClickable(getLocator(myEnum));
         click(element);
-        AutomationThread.pause(20, "click(" + myEnum + ")");
+//        AutomationThread.pause(20, "click(" + myEnum + ")");
+        AutomationThread.pause(5, "click(" + myEnum + ")");
         loadPause();
         return this;
     }
@@ -141,7 +142,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib doubleClick(SeleniumEnumWrapper myEnum) {
         String element = getClickable(getLocator(myEnum));
         doubleClick(element);
-        AutomationThread.pause(10, "double click(" + myEnum + ")");
+//        AutomationThread.pause(10, "double click(" + myEnum + ")");
+        AutomationThread.pause(3, "double click(" + myEnum + ")");
         loadPause();
         return this;
     }
@@ -596,7 +598,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getLocator(myEnum);
 
         select(element, label);
-        AutomationThread.pause(5, "Pausing so browser has a chance to catch up");
+//        AutomationThread.pause(5, "Pausing so browser has a chance to catch up");
+        AutomationThread.pause(1, "Pausing so browser has a chance to catch up");
         loadPause();
         return this;
     }
@@ -657,7 +660,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         type(element, text);
         fireEvent(element, "keyup");
         fireEvent(element, "blur");
-        AutomationThread.pause(20, "Give the page a second to catch up if it has some refreshing to do");
+//        AutomationThread.pause(20, "Give the page a second to catch up if it has some refreshing to do");
+        AutomationThread.pause(7, "Give the page a second to catch up if it has some refreshing to do");
         loadPause();
         return this;
     }
@@ -666,7 +670,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib typeKeys(SeleniumEnumWrapper myEnum, String value) {
         String element = getLocator(myEnum);
         typeKeys(element, value);
-        AutomationThread.pause(5, "Let the portal catch up");
+//        AutomationThread.pause(5, "Let the portal catch up");
+        AutomationThread.pause(2, "Let the portal catch up");
         loadPause();
         return this;
     }
@@ -693,7 +698,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             boolean foundByString = ((element instanceof String) && (isElementPresent((String) element)));
             boolean foundByEnum = ((element instanceof SeleniumEnumWrapper) && (isElementPresent((SeleniumEnumWrapper) element)));
             found = foundByString || foundByEnum;
-            AutomationThread.pause(5, "waitForElementPresent: " + element); //5 seconds
+//            AutomationThread.pause(5, "waitForElementPresent: " + element); //5 seconds
+            AutomationThread.pause(2, "waitForElementPresent: " + element); //5 seconds
             x++;
             doneWaiting = x > secondsToWait;
         }
@@ -732,7 +738,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodInterface click(String xpath, Integer matchNumber) {
         getMatches(xpath, matchNumber).click();
-        AutomationThread.pause(3, "Wait for elements to refresh");
+//        AutomationThread.pause(3, "Wait for elements to refresh");
+        AutomationThread.pause(2, "Wait for elements to refresh");
         return this;
     }
     
@@ -752,7 +759,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
     
     private WebElement getMatches(String xpath, Integer matchNumber){
-        waitForElementPresent(xpath, 10);
+//        waitForElementPresent(xpath, 10);
+        waitForElementPresent(xpath, 5);
         List<WebElement> allMatches= getWrappedDriver().findElements(By.xpath(xpath));
         if(matchNumber < allMatches.size())
             return allMatches.get(matchNumber);
@@ -789,7 +797,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodInterface tabKey() {
         getActiveElement().sendKeys(Keys.TAB);
-        waitForPageToLoad();
+        waitForPageToLoad(PAGE_TIMEOUT);
         return this;
     }
 
@@ -797,21 +805,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodInterface enterKey() {
         findElement(myEnum).sendKeys(Keys.ENTER);
     	//getActiveElement().sendKeys(Keys.ENTER);
-        waitForPageToLoad();
+        waitForPageToLoad(PAGE_TIMEOUT);
         return this;
     }
     
     @Override
     public CoreMethodInterface spacebarKey() {
     	getActiveElement().sendKeys(Keys.SPACE);
-        waitForPageToLoad();
+        waitForPageToLoad(PAGE_TIMEOUT);
         return this;
     }
     
     @Override
     public CoreMethodInterface periodKey() {
         getActiveElement().sendKeys(Keys.DECIMAL);
-        waitForPageToLoad();
+        waitForPageToLoad(PAGE_TIMEOUT);
         return this;
     }   
     
