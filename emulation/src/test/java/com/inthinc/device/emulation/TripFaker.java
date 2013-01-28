@@ -12,8 +12,8 @@ public class TripFaker {
 	public static void main(String args[]) {
 		
 		//TiwiProDevice tiwi = new TiwiProDevice("011596000041321", AutoSilos.QA);
-        TiwiProDevice tiwi = new TiwiProDevice("999999000109743", AutoSilos.QA);
-        //TiwiProDevice tiwi = new TiwiProDevice("999649010582821", AutoSilos.QA);
+        //TiwiProDevice tiwi = new TiwiProDevice("120275615159901", AutoSilos.DEV);
+        TiwiProDevice tiwi = new TiwiProDevice("999999000109751", AutoSilos.QA);
         NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
         //noteTest.testDVIRNote("MCM821853", "300034012559130");
 		//WaysmartDevice tiwi = new WaysmartDevice("999900000000000", "MCM990000", AutoSilos.QA, Direction.gprs);
