@@ -26,96 +26,64 @@ public class AlertsTripsTest {
         
         NewNoteTest noteTest = new NewNoteTest(AutoSilos.DEV);
         DeviceState state = tiwi01.getState();
+        tiwi01.dump_settings();
         
-        tiwi01.increment_time(-60);
+        tiwi01.increment_time(60);
         tiwi01.getState().setWMP(17116);
         tiwi01.firstLocation(new GeoPoint(33.0104, -117.111));
         tiwi01.power_on_device();
-        AutomationDeviceEvents.install(tiwi01);
-        tiwi01.turn_key_on(15);
-        ;
+        tiwi01.turn_key_on(15);														//ALERT_TYPE_IGNITION_ON
+        AutomationDeviceEvents.install(tiwi01);										//ALERT_TYPE_INSTALL
+        AutomationDeviceEvents.firmwareCurrent(tiwi01);								//ALERT_TYPE_FIRMWARE_CURRENT
+        AutomationDeviceEvents.qSICurrent(tiwi01);								//ALERT_TYPE_QSI_UPDATED
+        																			//dvirInspectionMatch(note)
         
+        tiwi01.getState().setLowIdle(300).setHighIdle(300);							//ALERT_TYPE_IDLING
+        AutomationDeviceEvents.idling(tiwi01);
         
-//        tiwi01.getState().setLowIdle(300).setHighIdle(300);
-        //AutomationDeviceEvents.idling(tiwi01);
-//        tiwi01.getState().setSpeedLimit(5);
+        AutomationDeviceEvents.parkingBrake(tiwi01);								//ALERT_TYPE_PARKING_BRAKE
         
-        //tiwi01.increment_time(20);
-        //AutomationDeviceEvents.seatbelt(tiwi01);
-//        tiwi01.update_location(new GeoPoint(33.0104, -117.111), 15);
-//        tiwi01.update_location(new GeoPoint(33.0104, -117.113), 15);
-//        AutomationDeviceEvents.panic(tiwi01);
+        tiwi01.increment_time(20);
+        AutomationDeviceEvents.seatbelt(tiwi01);									//ALERT_TYPE_SEATBELT
         
-        //state.setSeatbeltViolationDistanceX100(500);
-        
-//        tiwi01.increment_time(-20);
-//        AutomationDeviceEvents.seatbelt(tiwi01);
-//        AutomationDeviceEvents.hardLeft(tiwi01, 105);
-//
-//        tiwi01.update_location(new GeoPoint(33.01, -117.113), 15);
-//        tiwi01.update_location(new GeoPoint(33.0097, -117.1153), 15);
-//        tiwi01.update_location(new GeoPoint(33.015, -117.116), 15);
-//        
-//        tiwi01.increment_time(-20);
-        //AutomationDeviceEvents.seatbelt(tiwi01);
-//        tiwi01.getState().setSpeedLimit(40);
-//        tiwi01.enter_zone(1062);
-//        
-//        tiwi01.update_location(new GeoPoint(33.0163, -117.1159), 15);
-//        tiwi01.update_location(new GeoPoint(33.018, -117.1153), 15);
-//        tiwi01.update_location(new GeoPoint(33.0188, -117.118), 15);
-//        tiwi01.update_location(new GeoPoint(33.0192, -117.1199), 15);
-        
-        //AutomationDeviceEvents.rfKill(tiwi01);
-        
-//        tiwi01.update_location(new GeoPoint(33.021, -117.119), 15);
-//        tiwi01.update_location(new GeoPoint(33.022, -117.114), 15);
-//        tiwi01.update_location(new GeoPoint(33.0205, -117.111), 15);
-//        
-//        tiwi01.increment_time(-20);
-        //AutomationDeviceEvents.seatbelt(tiwi01);
-        //tiwi01.tampering(4);
-        
-        //AutomationDeviceEvents.powerInterruption(tiwi01);
-        
-        //noteTest.testSeatbeltClicks("", "999999000582802");
+        tiwi01.increment_time(20);
+        AutomationDeviceEvents.hardBump(tiwi01, 90);								//ALERT_TYPE_HARD_BUMP
+        tiwi01.increment_time(20);
+        AutomationDeviceEvents.hardBrake(tiwi01, 200);								//ALERT_TYPE_HARD_BRAKE
+        tiwi01.increment_time(20);
+        AutomationDeviceEvents.hardAccel(tiwi01, 50);								//ALERT_TYPE_HARD_ACCEL
+        tiwi01.increment_time(20);
+        AutomationDeviceEvents.hardLeft(tiwi01, 105);								//ALERT_TYPE_HARD_LEFT
+        tiwi01.increment_time(20);
 
-        //AutomationDeviceEvents.seatbeltClick(tiwi01);
+        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40); //ALERT_TYPE_SPEEDING
+        tiwi01.addEvent( AutomationDeviceEvents.speeding(state, null));
         
-//        tiwi01.update_location(new GeoPoint(33.02, -117.109), 15);
-//        tiwi01.update_location(new GeoPoint(33.02, -117.108), 15);
-//        tiwi01.update_location(new GeoPoint(33.022, -117.104), 15);
-//        tiwi01.update_location(new GeoPoint(33.0217, -117.103), 15);
-//        tiwi01.update_location(new GeoPoint(33.0213, -117.1015), 15);
-//        tiwi01.update_location(new GeoPoint(33.0185, -117.1019), 15);
-//        tiwi01.update_location(new GeoPoint(33.017, -117.102), 15);
-//        tiwi01.update_location(new GeoPoint(33.015, -117.1032), 15);
-//        tiwi01.update_location(new GeoPoint(33.013, -117.105), 15);
-//        tiwi01.update_location(new GeoPoint(33.011, -117.106), 15);
-//        tiwi01.update_location(new GeoPoint(33.0108, -117.108), 15);
-//        tiwi01.update_location(new GeoPoint(33.0108, -117.109), 15);
-//
-//        tiwi01.leave_zone(1062);
-//
-//        tiwi01.increment_time(-20);
+        tiwi01.update_location(new GeoPoint(33.0104, -117.111), 15);
+        tiwi01.update_location(new GeoPoint(33.0104, -117.113), 15);
+
+        AutomationDeviceEvents.crash(tiwi01);										//ALERT_TYPE_CRASH
+        AutomationDeviceEvents.panic(tiwi01);										//ALERT_TYPE_PANIC     
+        AutomationDeviceEvents.manDown(tiwi01);										//ALERT_TYPE_MAN_DOWN
+        AutomationDeviceEvents.manDownOK(tiwi01);								    //ALERT_TYPE_MAN_DOWN_OK
+        AutomationDeviceEvents.HOSNoHours(tiwi01);									//ALERT_TYPE_HOS_NO_HOURS_REMAINING
+        AutomationDeviceEvents.HOSDOTStopped(tiwi01);								//ALERT_TYPE_HOS_DOT_STOPPED
+        AutomationDeviceEvents.wirelineAlarm(tiwi01);								//ALERT_TYPE_WIRELINE_ALARM
+        AutomationDeviceEvents.witnessHeartbeat(tiwi01);							//ALERT_TYPE_WITNESS_HEARTBEAT_VIOLATION
+        AutomationDeviceEvents.witnessUpdated(tiwi01);								//ALERT_TYPE_WITNESS_UPDATED
+        tiwi01.enter_zone(6405);													//ALERT_TYPE_ENTER_ZONE
+        AutomationDeviceEvents.zonesCurrent(tiwi01);								//ALERT_TYPE_ZONES_CURRENT
+        tiwi01.leave_zone(6405);													//ALERT_TYPE_LEAVE_ZONE        
+        AutomationDeviceEvents.lowBattery(tiwi01);									//ALERT_TYPE_LOW_BATTERY
+        AutomationDeviceEvents.dSSMicrosleep(tiwi01);								//ALERT_TYPE_DSS_MICROSLEEP
+        AutomationDeviceEvents.txtMsgReceived(tiwi01);								//ALERT_TYPE_TEXT_MSG_RECEIVED
+        AutomationDeviceEvents.noDriver(tiwi01);									//ALERT_TYPE_NO_DRIVER
+        AutomationDeviceEvents.noThumbDrive(tiwi01);								//ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE;																			//ALERT_TYPE_NO_INTERNAL_THUMB_DRIVE
         
-        //AutomationDeviceEvents.seatbelt(tiwi01);
-//        tiwi01.update_location(new GeoPoint(33.0106, -117.11), 15);
-//        tiwi01.last_location(new GeoPoint(33.0104, -117.111), 15);
-        
-//        AutomationDeviceEvents.statistics(tiwi01);
-        //tiwi01.logout_driver(null, 890, 204, 200);
-        
-        //tiwi01.setEmployeeID("DASTARDLY1");										 //THESE THREE LINES ARE FOR SENDING IN HOS
-        //state.setHosState(HOSState.OCCUPANT_ON_DUTY);							 //DRIVER ON DUTY AS AN OCCUPANT IN A 
-        //AutomationDeviceEvents.hosChangeNoGPSLock(tiwi01, "SALT LAKE CITY, UT");	 //VEHICLE
-        //note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
-    	//note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
-        
-    	//tiwi01.getState().setSeatBeltTopSpeed(75).setSeatbeltDistanceX100(58);
+        tiwi01.increment_time(20);
     	
         tiwi01.turn_key_off(30);
-        //AutomationDeviceEvents.lowBattery(tiwi01);
+
         tiwi01.power_off_device(900);
     }
 }
