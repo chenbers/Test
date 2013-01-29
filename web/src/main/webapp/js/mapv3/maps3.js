@@ -17,6 +17,7 @@
 	inthincMap = (function() {
 
 			var geocoder = new google.maps.Geocoder();
+        	var addressCache = {};
 			
 			function MapState(map) {
 				this.map = map;
@@ -323,17 +324,54 @@
    			   		});
   				},
   				reverseGeocode: function(map, lat, lng, resultHandler) {
+					if (!resultHandler && addressCache[lat + lng]) {
+						return addressCache[lat + lng];
+					}
   					geocoder.geocode({'location': new google.maps.LatLng(lat, lng)}, resultHandler ? resultHandler : function (result, status) {
   			    	  if (status != google.maps.GeocoderStatus.OK) {
   			    		console.log('Reverse Geocoding failed for lat, lng: ' +  lat + ', ' + lng + " status: "+ status);
   			    	  }
   			    	  else {
   			    		  map.fitBounds(result[0].geometry.viewport);
-  			    		console.log("address: " + result[0].formatted_address);
+  			    		  addressCache[lat + lng] = result[0].formatted_address;
   			    				
   			    	  }
   			   		});
   				},
+  				// addressElement:
+  				//			lat
+  				//			lng
+  				//			domElement (sets innerHTML)
+  				//			altText 
+  				reverseGeocodeList : function(addressElements) {
+  					var delay = 250;
+  					var reverseGeocode = function() {
+  						if (addressElements.length == 0) return;
+  						var element = addressElements.shift();
+  						if (addressCache[element.lat + element.lng]) {
+  							element.domElement.innerHTML = addressCache[element.lat + element.lng];
+  	    			       	reverseGeocode();
+  						} else {
+  		  					setTimeout(function() { 
+  		  						geocoder.geocode({'location': new google.maps.LatLng(element.lat, element.lng)}, function (result, status) {
+  									if (status == google.maps.GeocoderStatus.OK) {
+  										element.domElement.innerHTML = result[0].formatted_address;
+  				    			        addressCache[element.lat + element.lng] = result[0].formatted_address;
+  									}
+  									else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+  										addressElements.push(element);
+  									}
+  									else {
+  										element.domElement.innerHTML = element.altText;
+  									}
+  				    			    reverseGeocode();
+  		  						})
+  		  					}, delay);
+  						}
+  					};
+  					reverseGeocode();
+  	        	},
+
       			addWMSLayer: function(map, options) {
       				wmsOverlays.addOverlay(map, options);
 

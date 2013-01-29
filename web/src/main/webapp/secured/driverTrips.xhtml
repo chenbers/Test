@@ -28,62 +28,33 @@
 		var showIdleMarkers = true;
 		var showTamperMarkers = true;
 		var addressLookup = (function() {
-        	var addresses = {};
-        	var addressElements; //an array of the html elements that need the address after the point is reverse geocoded
-    		var collectAddressElements = function() {
-        		addressElements = [];
+        	var collectAddressElements = function() {
+        		var addressElements = [];
    				jQuery('td[id$="address_column"]').each( function() {
 	   					var addressElement = {
-	   						"element" : this,
 	   						"lat" : jQuery(this).find('*[id$="eventLat"]')[0].value,
 	   						"lng" : jQuery(this).find('*[id$="eventLng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="eventAddress"]'),
-	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   						"domElement" : jQuery(this).find('*[id$="eventAddress"]')[0],
+	   						"altText" : jQuery(this).find('*[id$="zoneName"]')[0].value
 	   					};		
 	   					addressElements.push(addressElement);
 	   				}
    				)
    				jQuery('td[id$="end_column"]').each( function() {
 	   					var addressElement = {
-	   						"element" : this,
 	   						"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
 	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="address"]'),
-	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   						"domElement" : jQuery(this).find('*[id$="address"]')[0],
+	   						"altText" : jQuery(this).find('*[id$="zoneName"]')[0].value
 	   					};		
 	   					addressElements.push(addressElement);
 	   				}
    				)
+   				return addressElements;
     		}
         	return {
         		findAddresses : function() {
-		    		var delay = 250;
-		    		collectAddressElements();
-					var reverseGeocode = function() {
-						if (addressElements.length == 0) return;
-						var element = addressElements.shift();
-						if(addresses[element.lat + element.lng]) {
-    			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
-    			        	reverseGeocode();
-						} else {
-	  						setTimeout(function() { 
-	  							inthincMap.reverseGeocode(map, element.lat, element.lng, function (result, status) {
-									if (status == google.maps.GeocoderStatus.OK) {
-			    			        	element.address[0].innerHTML = result[0].formatted_address;
-			    			        	addresses[element.lat + element.lng] = result[0].formatted_address;
-									}
-									else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-			    			        	addressElements.push(element);
-									}
-									else {
-			    			        	element.address[0].innerHTML = element.zoneName[0].value;
-									}
-			    			        reverseGeocode();
-			    			        
-							})}, delay);
-						}
-					}
-					reverseGeocode();
+		    		inthincMap.reverseGeocodeList(collectAddressElements());
         		}
         	};
         })();
