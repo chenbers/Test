@@ -3,6 +3,9 @@ package com.inthinc.pro.comm.parser.attrib;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 
 public enum Attrib {
@@ -343,10 +346,13 @@ public enum Attrib {
     CRASHDATA(49170, AttribParserType.BYTEARRAY);
 	
 	private static final Map<Integer,Attrib> lookup = new HashMap<Integer,Attrib>();
+    private static final Map<String,Attrib> lookupName = new HashMap<String,Attrib>();
 
 	static {
-	     for(Attrib a : EnumSet.allOf(Attrib.class))
+	     for(Attrib a : EnumSet.allOf(Attrib.class)) {
 	          lookup.put(a.getCode(), a);
+              lookupName.put(a.getFieldName(), a);
+	     }
 	}
 
 	private int code;
@@ -379,8 +385,88 @@ public enum Attrib {
 	public static Attrib get(int code) { 
 	     return lookup.get(code); 
 	}
+
+    public static Attrib getForName(String name) { 
+         return lookupName.get(name); 
+    }
+    
 	public AttribParserType getAttribParserType()
 	{
 		return attribParserType;
 	}
+	
+    /**
+     * Converts a HashMap.toString() back to a HashMap
+     * @param text
+     * @return HashMap<String, String>
+     */
+	public static Map<String,Object> convertToHashMap(String text){
+        Map<String,Object> map = new HashMap<String,Object>();
+        Pattern p = Pattern.compile("[\\{\\}\\=\\, ]++");
+        String[] split = p.split(text);
+        String strCode = "";
+        String strVal = "";
+        Object val = null;
+        for ( int i=1; i+2 <= split.length; i+=2 ){
+            strCode = split[i];
+            strVal = split[i+1];
+
+            val = Attrib.parseStringValue(strCode, strVal);
+            map.put(strCode,  val);
+
+        }
+
+        return map;
+    }
+
+	public static Object parseStringValue(String attribName, String strVal) {
+    	Object val = null;
+        AttribParser parser = null;
+    	Attrib attrib = getForName(attribName);
+        if (attrib == null) {
+            int code = 0;
+            try {
+                code = Integer.parseInt(attribName);
+            } catch (NumberFormatException e)
+            {}
+            if (code != 0)    
+                parser = getAttribParser(code);
+        }    
+        else
+            parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
+    
+        if (parser != null) {
+            val = parser.parseString(strVal);
+        }
+        return val;
+	}
+        
+    public static AttribParser getAttribParser(int code)
+    {
+        AttribParser attribParser = null;
+
+        if (code <= 127)                     
+            attribParser = new ByteParser();
+        
+        if (code >= 128 && 191 >= code) 
+            attribParser = new ShortParser();
+        
+        if (code >= 192 && 254 >= code) 
+            attribParser = new IntegerParser();
+        
+        if (code >= 8000 && code < 9000)
+            attribParser = new ByteParser();
+        
+        if (code >= 16000 && code < 17000)
+            attribParser = new ShortParser();
+        
+        if (code >= 32000 && code < 33000)
+            attribParser = new IntegerParser();
+
+        if (code >= 40960 && code < 40964)
+            attribParser = new DoubleParser();
+        
+        return attribParser;
+    }
+
 };

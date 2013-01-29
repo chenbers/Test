@@ -37,7 +37,7 @@ public class NotebcParser implements NoteParser{
 
 			
 			if (attrib == null)
-				parser = getAttribParser(attribCode);			
+				parser = Attrib.getAttribParser(attribCode);			
 			else
 				parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
 			
@@ -96,35 +96,5 @@ public class NotebcParser implements NoteParser{
 		}
 		return attribMap;
 	
-	}
-	
-
-	private AttribParser getAttribParser(int code)
-	{
-		AttribParser attribParser = null;
-
-        if (code <= 127)                     
-        	attribParser = new ByteParser();
-        
-        if (code >= 128 && 191 >= code) 
-        	attribParser = new ShortParser();
-        
-        if (code >= 192 && 254 >= code) 
-        	attribParser = new IntegerParser();
-		
-		if (code >= 8000 && code < 9000)
-			attribParser = new ByteParser();
-		
-		if (code >= 16000 && code < 17000)
-			attribParser = new ShortParser();
-		
-		if (code >= 32000 && code < 33000)
-			attribParser = new IntegerParser();
-
-		if (code >= 40960 && code < 40964)
-			attribParser = new DoubleParser();
-		
-		return attribParser;
-		
 	}
 }

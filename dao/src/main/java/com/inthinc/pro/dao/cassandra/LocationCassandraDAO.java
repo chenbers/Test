@@ -611,7 +611,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 
         LastLocation lastLocation = null;
         Integer latestLocationTimestamp = 0;
-        Integer latestNoteType = 0;
+        Integer latestNoteTypeCode = 0;
         Composite noteId = null;
 
         // First grab the last note for the asset that has a valid lat/lng (not stripped)
@@ -621,13 +621,13 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             Composite noteTimeType = entry.getKey();
 
             latestLocationTimestamp = bigIntegerSerializer.fromByteBuffer((ByteBuffer) noteTimeType.get(0)).intValue();
-            latestNoteType = bigIntegerSerializer.fromByteBuffer((ByteBuffer) noteTimeType.get(1)).intValue();
+            latestNoteTypeCode = bigIntegerSerializer.fromByteBuffer((ByteBuffer) noteTimeType.get(1)).intValue();
             noteId = entry.getValue();
             break;
         }
 
         // if the last note for this asset isn't an endtrip, let's see if we more recent breadcrumbs
-        if (!NoteType.isTripEndNoteType(latestNoteType)) {
+        if (!NoteType.isTripEndNoteType(NoteType.get(latestNoteTypeCode))) {
             lastLocation = fetchLastBreadcrumb(breadcrumb_cf, id, latestLocationTimestamp, isDriver);
         }
 

@@ -17,4 +17,8 @@ public class OdometerParser implements AttribParser {
 		return offset+3;
 	}
 
+   public Object parseString(String val){
+       return Integer.parseInt(val);
+   }
+
 }

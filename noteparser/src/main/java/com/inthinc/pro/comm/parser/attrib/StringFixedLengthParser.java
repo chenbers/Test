@@ -38,5 +38,9 @@ public class StringFixedLengthParser implements AttribParser {
 
 		return offset+length;
 	}
+	
+    public Object parseString(String val){
+        return val;
+    }
 }
 

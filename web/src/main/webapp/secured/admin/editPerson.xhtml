@@ -317,45 +317,8 @@
                               <h:outputText  rendered="#{(not empty personBean.item.driver.fobID)}" value="#{personBean.item.driver.fobID}"/>
                               <h:commandLink rendered="#{(not empty personBean.item.driver.fobID)}"
                                 onclick="Richfaces.showModalPanel('clearFobID'); return false;" style="vertical-align: middle;"><img src="/tiwipro/images/ico_addAnother_remove.png" alt="#{messages.editPerson_clearFobPairing}" /></h:commandLink>
-                              <rich:modalPanel id="clearFobID" headerClass="popupHeader"
-                                    controlsClass="popupControls" width="500" height="140"
-                                    autosized="true" resizeable="false" zindex="2001" domElementAttachment="form">
-                                    <a4j:support event="onhide" reRender="fobIDValues" />
-                                    <f:facet name="header" >
-                                        <h:outputText value="#{messages.editPerson_clearFobPairing}" />
-                                    </f:facet>
-                                    <f:facet name="controls">
-                                        <h:graphicImage value="/images/modal_close.png"
-                                            style="cursor:pointer"
-                                            onclick="Richfaces.hideModalPanel('clearFobID')" />
-                                    </f:facet>
-                
-                                    <div class="popupsubtitle"><h:outputText
-                                        value="#{messages.editPerson_clearFobPairing}" /></div>
-                                        
-                                    <h:form id="confirmCloseSummary">
-
-                                        <a4j:region id="clearFobRegion">
-                                        <div id="clearFobMessage" style="margin: 15px;"><h:outputText value="#{messages.editPerson_confirmClearFob}" /></div>
-                                        <div class="popupactions">
-                                        <button id="confirmClearCancel" type="reset"
-                                            class="left" onclick="Richfaces.hideModalPanel('clearFobID'); return false;">
-                                            <span class="cancel"> 
-                                                <h:outputText value="#{messages.button_cancel}" />
-                                            </span>
-                                        </button>
-                                        <a4j:commandButton action="#{personBean.clearFob}" id="confirmClearOK" 
-                                            styleClass="left" oncomplete="Richfaces.hideModalPanel('clearFobID');">
-                                            <span class="ok">
-                                                <h:outputText value="#{messages.button_ok}" /> 
-                                            </span>
-                                        </a4j:commandButton>
-                                        
-                                        </div>
-                                        </a4j:region>
-                                    </h:form>
-                                </rich:modalPanel>
-                                </a4j:outputPanel>
+                              
+                              </a4j:outputPanel>
                             </td>
                           </tr>
                        </table>
@@ -895,6 +858,43 @@
           </div>
 
           </a4j:form>
+            <rich:modalPanel id="clearFobID" headerClass="popupHeader"
+                controlsClass="popupControls" width="500" height="140"
+                autosized="true" resizeable="false" zindex="2001" domElementAttachment="form">
+                <f:facet name="header" >
+                    <h:outputText value="#{messages.editPerson_clearFobPairing}" />
+                </f:facet>
+                <f:facet name="controls">
+                    <h:graphicImage value="/images/modal_close.png"
+                        style="cursor:pointer"
+                        onclick="Richfaces.hideModalPanel('clearFobID')" />
+                </f:facet>
+    
+                <div class="popupsubtitle"><h:outputText
+                    value="#{messages.editPerson_clearFobPairing}" /></div>
+                    
+                <h:form id="confirmCloseSummary">
+    
+                    <a4j:region id="clearFobRegion">
+                    <div id="clearFobMessage" style="margin: 15px;"><h:outputText value="#{messages.editPerson_confirmClearFob}" /></div>
+                    <div class="popupactions">
+                    <button id="confirmClearCancel" type="reset"
+                        class="left" onclick="Richfaces.hideModalPanel('clearFobID');">
+                        <span class="cancel"> 
+                            <h:outputText value="#{messages.button_cancel}" />
+                        </span>
+                    </button>
+                    <a4j:commandButton action="#{personBean.clearFob}" id="confirmClearOK" 
+                        styleClass="left" oncomplete="Richfaces.hideModalPanel('clearFobID');" reRender="fobIDValues">
+                        <span class="ok">
+                            <h:outputText value="#{messages.button_ok}" /> 
+                        </span>
+                    </a4j:commandButton>
+                    
+                    </div>
+                    </a4j:region>
+                </h:form>
+            </rich:modalPanel>
           <!-- END PANEL -->
         </td>
 
@@ -960,7 +960,7 @@
 
 
     if(document.getElementById("edit-form:editPerson-isUser"))
-    	showSection("userInfoPanel", document.getElementById("edit-form:editPerson-isUser").checked);
+    	showSection("edit-form:userInfoPanel", document.getElementById("edit-form:editPerson-isUser").checked);
 	
 /*
     if(document.getElementById("edit-form:editPerson-isDriver")){
