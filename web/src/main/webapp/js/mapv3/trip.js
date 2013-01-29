@@ -3,8 +3,10 @@ var ADDRESS_LOOKUP_SERVER_SIDE2 = 2;
 var ADDRESS_LOOKUP_CLIENT_SIDE = 3;
 var VIOLATION_BUBBLE_ID = "eventBubble";
 var VIOLATION_BUBBLE_ADDRESS_ID = "tripsMapForm:bubbleAddress";
+var DEFAULT_COLOR = "#0000ff";
 
 function Trip(outline, imagePath, addressLookupType, inProgress) {
+	
 	this.points = outline;
 	this.imagePath = imagePath;
 	this.inProgress = inProgress;
@@ -19,9 +21,11 @@ function Trip(outline, imagePath, addressLookupType, inProgress) {
 
 Trip.prototype = {
 	constructor: Trip,
-	displayOnMap: function(map) {
+	displayOnMap: function(map, options_) {
+		var options  = options_ ? options_ : new Array();
+		var color = options.color ? options.color : DEFAULT_COLOR;
 		this.polyline = inthincMap.addPolyline(map, this.points, {
-			strokeColor:  "#0000ff",
+			strokeColor:  color,
 			strokeWeight: 6,
 			strokeOpacity : 0.5,
 			show : true
@@ -80,6 +84,8 @@ Trip.prototype = {
 				url: iconImage
 			}
 		});
+		
+		violationMarker.itemID = itemID;
 		var self = this;
 		
 		google.maps.event.addListener(violationMarker, 'click', function() {
@@ -87,7 +93,16 @@ Trip.prototype = {
      	 	callback(itemID);
 		});
 	},
-	displaySelectedViolationPopup : function() {
+	selectViolationMarker : function (map, itemID, callback) {
+		var markers = inthincMap.getMarkers(map);
+		for (var i = 0; i < markers.length; i++) {
+			if (markers[i].itemID && markers[i].itemID == itemID) {
+	     	 	this.selectedViolationMarker = markers[i];
+	     	 	callback(itemID);
+			}
+		}
+	},
+	displaySelectedEventPopup : function() {
 		var marker = this.selectedViolationMarker;
 		if (this.doReverseGeocode) {
 			reverseGeocodeAddress(map, marker.getPosition().lat(), marker.getPosition().lng(), VIOLATION_BUBBLE_ADDRESS_ID, function() {

@@ -50,8 +50,8 @@
 				</ui:fragment>
 			}
 			
-			function displaySelectedViolationPopup() {
-				vehicleTrip.displaySelectedViolationPopup();
+			function displaySelectedEventPopup() {
+				vehicleTrip.displaySelectedEventPopup();
 			}				
 			function bodyLoad()
 			{
@@ -654,7 +654,7 @@
 </div>
 <a4j:form id="bubbleForm">
 		<a4j:queue requestDelay="500" />
-		<a4j:jsFunction name="reRenderEventBubble" reRender="mapPopups" oncomplete="displaySelectedViolationPopup()">
+		<a4j:jsFunction name="reRenderEventBubble" reRender="mapPopups" oncomplete="displaySelectedEventPopup()">
 			<a4j:actionparam name="eventId" assignTo="#{vehiclePerformanceBean.selectedViolationID}"/>
 		</a4j:jsFunction>
 </a4j:form>	

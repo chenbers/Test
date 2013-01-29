@@ -451,6 +451,13 @@
       		    clear : function(map) {
       		    	this.clearMarkers(map);
       		    	this.clearOverlays(map);
+      		    },
+      		    getMarkers : function(map) {
+          			var mapState = findMapStateForMap(map);
+          			if (mapState)
+          				return mapState.markers;
+          			
+          			return new Array();
       		    }
       		};    	
       	})();
