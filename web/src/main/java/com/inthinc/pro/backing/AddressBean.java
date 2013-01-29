@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.dom.ThisExpression;
+import org.richfaces.json.JSONException;
 import org.richfaces.json.JSONObject;
 
 import com.inthinc.pro.model.LatLng;
@@ -24,7 +25,10 @@ public class AddressBean extends BaseBean {
     private String  itemID;
     private String  subID;
     private int     callFuncID;
-    
+    private String addressElementID;
+    private String json;
+
+
     public AddressBean() {
         super();
         zones = this.getProUser().getZones();
@@ -125,6 +129,24 @@ public class AddressBean extends BaseBean {
         zoneName += "," + new String(String.valueOf(elemIndex));
     }    
 
+    
+    public void lookUpZone() {
+        LatLng latLng = new LatLng(zoneLat, zoneLng);
+        zoneName = MiscUtil.findZoneName(this.getProUser().getZones(), latLng);
+        if ( zoneName == null ) {
+            zoneName = MessageUtil.getMessageString("sbs_badLatLng");
+        }
+        JSONObject dataToJSON = new JSONObject();
+        try {
+            dataToJSON.put("zoneName", zoneName);
+            dataToJSON.put("elementID", addressElementID);
+            json = dataToJSON.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }    
+
+    
     public Map<String,String> getZoneData() {
         Map<String,String> jSonObject = new HashMap<String,String>();
         
@@ -142,4 +164,22 @@ public class AddressBean extends BaseBean {
         
         return jSonObject;
     }
+    public String getAddressElementID() {
+        return addressElementID;
+    }
+
+
+    public void setAddressElementID(String addressElementID) {
+        this.addressElementID = addressElementID;
+    }
+
+    public String getJson() {
+        return json;
+    }
+
+
+    public void setJson(String json) {
+        this.json = json;
+    }
+
 }

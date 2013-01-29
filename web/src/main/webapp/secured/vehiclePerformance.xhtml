@@ -12,81 +12,47 @@
 	<ui:param name="title" value="#{messages.vehiclePerformanceTab} - #{vehiclePerformanceBean.vehicle.name}"/>
 	<ui:define name="scripts">
         <a4j:loadScript src="/js/FusionCharts.js" />
- 		<ui:include src="/includes/map/portalMap.xhtml"/>
+ 		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+ 		<ui:include src="/includes/mapv3/zoneLookup.xhtml"/>
+		<script src="#{facesContext.externalContext.request.contextPath}/js/mapv3/trip.js" type="text/javascript"></script>	
+ 		
 	  	<script	 type="text/javascript">
-	  		var baseIcon = new GIcon();
-				baseIcon.iconSize = new GSize(21, 20);
-				baseIcon.iconAnchor = new GPoint(6, 20);
-				baseIcon.infoWindowAnchor = new GPoint(5, 1);
-	
-	  		var map;
-	  		function initMap(lat,lng,zoom){
- 					portalmap.init();
- 					portalmap.zoom(zoom);
- 					portalmap.center(new GLatLng(lat, lng));
- 					initLayers();
-					addressLookupAddressFormat = #{vehiclePerformanceBean.addressFormat};
- 					bounds = new GLatLngBounds();
- 					map = portalmap.getMap();
-					
+			var map = null;
+			var vehicleTrip = null;
+  			function initMap(lat,lng,zoom){
+				map = inthincMap.init({
+					'canvasID' : 'map-canvas',
+					'center' : {
+						'lat' : lat,
+						'lng' : lng
+					},
+					'zoom' : zoom
+				});
+				initLayers(map, "vpmap-layerControl");
 			}
+	  				
 			function drawTrip()
 			{
 				<ui:fragment rendered="#{vehiclePerformanceBean.hasLastTrip}">
-					var polyline = new GPolyline([
-										<ui:repeat value="#{vehiclePerformanceBean.lastTrip.route}" var="route">
-											new GLatLng(#{route.lat}, #{route.lng}),
-									  	</ui:repeat>
-									  	//Repeating the last step to finish JS array.
-									  	new GLatLng(#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}, #{vehiclePerformanceBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
-
-					map.addOverlay(polyline);
-
-
-					<ui:repeat value="#{vehiclePerformanceBean.lastTrip.route}" var="rt2">
-						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
-					</ui:repeat>
 				
-					//Start of trip marker
-					var startlatlng = new GLatLng(#{vehiclePerformanceBean.lastTrip.route[0].lat}, #{vehiclePerformanceBean.lastTrip.route[0].lng});
-					marker = createMarker(startlatlng, null,0, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,1);
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-		
-					//End of trip marker
-					var endlatlng = new GLatLng(#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}, #{vehiclePerformanceBean.lastTrip.routeLastStep.lng});
-					if ("#{vehiclePerformanceBean.lastTrip.inProgress}" == "true")
-					{
-						marker = createMarker(endlatlng,null, 1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,1);
-					}
-					else
-					{
-						marker = createMarker(endlatlng,null, 2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,1);
-					}
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-		
-					//Create Violation markers. //IDLE EVENT is the only event with different icon.
-					var violation;
-					<ui:repeat value="#{vehiclePerformanceBean.violationEvents}" var="violation">
-						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						marker = createMarker(violation, "#{violation.noteID}", null, "#{eventTypeIcons.iconMap[violation.eventType]}",fillEventBubble,2);
-						map.addOverlay(marker);
-						bounds.extend(marker.getPoint());
+					var tripPoints = new Array();
+		    		<ui:repeat value="#{vehiclePerformanceBean.lastTrip.route}" var="route">
+			    		var pt = new google.maps.LatLng(#{route.lat}, #{route.lng});
+						tripPoints.push(pt);
 					</ui:repeat>
-		
-					//Zoom and Center on trip.
-					map.setZoom(map.getBoundsZoomLevel(bounds));
-				    map.setCenter(bounds.getCenter());
+
+					vehicleTrip = new Trip(tripPoints, "#{facesContext.externalContext.request.contextPath}", "#{vehiclePerformanceBean.addressFormat}", "#{vehiclePerformanceBean.lastTrip.inProgress}");
+					vehicleTrip.displayOnMap(map);
+					//Create Violation markers. //IDLE EVENT is the only event with different icon.
+					<ui:repeat value="#{vehiclePerformanceBean.violationEvents}" var="violation">
+						vehicleTrip.addViolationMarker(map, new google.maps.LatLng("#{violation.latitude}", "#{violation.longitude}"), "#{eventTypeIcons.iconMap[violation.eventType]}", "#{violation.noteID}", reRenderEventBubble);
+					</ui:repeat>
 				</ui:fragment>
 			}
 			
-			
-			function bodyUnload()
-			{
-				GUnload();
-			}
-			
+			function displaySelectedViolationPopup() {
+				vehicleTrip.displaySelectedViolationPopup();
+			}				
 			function bodyLoad()
 			{
 				// Init Google map if hasLastTrip is true;
@@ -96,20 +62,6 @@
 		 		</h:outputText>
 			}
 
-
-			function funcToCall(obj) {
-				jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-
-				if (		obj.callFuncID == 0 ) {
-					fillBubbleMarker(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 1 ) {
-					fillTripBubble(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 2 ) {
-					fillEventBubble(obj.itemID,obj.subID);
-				}	
-			} 				
 		</script>
 	</ui:define>
 
@@ -118,11 +70,8 @@
 	<ui:define name="content">
    
     <t:saveState value="#{vehiclePerformanceBean}"/>
-<!-- BEGIN GOOGLE BUBBLES -->
-	<rich:panel id="mapPopups">
-
-      	<h:form id="tripsMapForm">
-		<a4j:queue requestDelay="500" />
+  	<h:form id="tripForm">
+	<a4j:queue requestDelay="500" />
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
@@ -157,9 +106,11 @@
             <ui:param name="lat" value="#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}" />
             <ui:param name="lng" value="#{vehiclePerformanceBean.lastTrip.routeLastStep.lng}" />
 	</ui:include>
-	
-	
-				<ui:param name="violation" value="#{vehiclePerformanceBean.violationEventsMap[vehiclePerformanceBean.selectedViolationID]}"/>
+	</h:form>	
+
+	<rich:panel id="mapPopups">
+      	<h:form id="tripsMapForm">
+		<ui:param name="violation" value="#{vehiclePerformanceBean.violationEventsMap[vehiclePerformanceBean.selectedViolationID]}"/>
 		<ui:include src="/includes/eventBubble.xhtml">
 	            <ui:param name="eventType" value="#{violation.eventType}" />
 	            <ui:param name="eventDateTime" value="#{violation.time}" />
@@ -176,10 +127,11 @@
 	            <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
 	            <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
 		 		<ui:param name="context" value="vehiclePerformance" />
+    	        <ui:param name="lat" value="#{violation.latitude}" />
+	            <ui:param name="lng" value="#{violation.longitude}" />
 		</ui:include>
-<!-- END GOOGLE BUBBLES -->
-</h:form>
-</rich:panel>
+		</h:form>
+	</rich:panel>
 <div id="wrapper">
 
 <h:form id="vehiclePerformanceBreadCrumb">
@@ -700,31 +652,11 @@
   </tr>
 </table>
 </div>
-					<a4j:form id="dispatchForm">
-						<a4j:queue requestDelay="500" />
-								<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>					
-					</a4j:form>
-	<a4j:form id="bubbleForm">
+<a4j:form id="bubbleForm">
 		<a4j:queue requestDelay="500" />
-		<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
+		<a4j:jsFunction name="reRenderEventBubble" reRender="mapPopups" oncomplete="displaySelectedViolationPopup()">
 			<a4j:actionparam name="eventId" assignTo="#{vehiclePerformanceBean.selectedViolationID}"/>
 		</a4j:jsFunction>
-		<ui:fragment rendered="#{vehiclePerformanceBean.selectedViolationID ne null}">
-		<a4j:jsFunction name="fillBubbleMap" reRender="mapPopups" oncomplete="getAddressForPosition(#{vehiclePerformanceBean.violationEventsMap[vehiclePerformanceBean.selectedViolationID].latitude},#{vehiclePerformanceBean.violationEventsMap[vehiclePerformanceBean.selectedViolationID].longitude})">
-			<a4j:actionparam name="eventId" assignTo="#{vehiclePerformanceBean.selectedViolationID}"/>
-		</a4j:jsFunction>
-		</ui:fragment>		
-		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
-			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
-			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
-			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
-			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
-		</a4j:jsFunction> 		
-	</a4j:form>	
- 	
-
+</a4j:form>	
 </ui:define>
 </ui:composition>

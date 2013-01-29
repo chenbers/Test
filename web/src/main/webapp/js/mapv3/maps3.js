@@ -409,6 +409,16 @@
 					});
     				return infowindow;
       		    },
+      		    // figure out a better name
+      			infoWindowAtMarker : function (map, divID, marker) {
+      				var node = document.getElementById(divID).cloneNode(true);
+      		    	node.style.display = 'block';
+    				var infowindow = new google.maps.InfoWindow({
+    					content: node
+    			 	});
+    				showInfoWindow(map, infowindow, marker);
+    				return infowindow;
+      		    },
       		    addPolyline : function (map, latLngArray,  options_) {
       				var options  = options_ ? options_ : new Array();
     				var polyline = new google.maps.Polyline({
