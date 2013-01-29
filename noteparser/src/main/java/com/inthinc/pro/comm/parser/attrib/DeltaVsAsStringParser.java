@@ -37,4 +37,8 @@ public class DeltaVsAsStringParser implements AttribParser {
 		return offset+4;
 	}
 
+   public Object parseString(String val){
+       return val;
+   }
+
 }

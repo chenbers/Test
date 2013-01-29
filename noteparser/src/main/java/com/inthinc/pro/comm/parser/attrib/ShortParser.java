@@ -15,4 +15,7 @@ public class ShortParser implements AttribParser {
 		return offset+2;
 	}
 
+   public Object parseString(String val){
+       return Integer.parseInt(val);
+   }
 }

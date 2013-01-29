@@ -14,4 +14,8 @@ public class ByteArrayParser implements AttribParser {
 		return offset+1;
 	}
 
+	   public Object parseString(String val){
+	       return val.getBytes();
+	   }
+
 }

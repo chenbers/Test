@@ -35,5 +35,10 @@ public class StringVarLengthParser implements AttribParser {
 
 		return offset+(length+1);
 	}
+
+	public Object parseString(String val){
+        return val;
+    }
 }
+
 

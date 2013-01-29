@@ -16,4 +16,8 @@ public class GpsLockFlagParser implements AttribParser {
 		return offset+1;
 	}
 
+   public Object parseString(String val){
+       return Integer.parseInt(val);
+   }
+
 }

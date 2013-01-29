@@ -14,16 +14,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.comm.parser.attrib.Attrib;
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
+import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
+import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.AlertEscalationStatus;
@@ -146,7 +150,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         return null;
     }
 
-    final String FETCH_ALERT_MESSAGE = "SELECT noteID,personID,alertID,alertTypeID,deliveryMethodID,status,level,escalationOrdinal,escalationTryCount FROM message WHERE msgID = ?";
+    final String FETCH_ALERT_MESSAGE = "SELECT noteID,driverID,vehicleID,deviceID,attribs,personID,alertID,alertTypeID,deliveryMethodID,status,level,escalationOrdinal,escalationTryCount FROM message WHERE msgID = ?";
 
     @Override
     public AlertMessage findByID(Integer id) {
@@ -163,14 +167,18 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 AlertMessage alertMessage = new AlertMessage();
                 alertMessage.setMessageID(id);
                 alertMessage.setNoteID(resultSet.getLong(1));
-                alertMessage.setPersonID(resultSet.getInt(2));
-                alertMessage.setAlertID(resultSet.getInt(3));
-                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(4)));
-                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(5)));
-                alertMessage.setStatus(AlertEscalationStatus.valueOf(resultSet.getInt(6)));
-                alertMessage.setLevel(RedFlagLevel.valueOf(resultSet.getInt(7)));
-                alertMessage.setEscalationOrdinal(resultSet.getInt(8));
-                alertMessage.setEscalationTryCount(resultSet.getInt(9));
+                alertMessage.setDriverID(resultSet.getInt(2));
+                alertMessage.setVehicleID(resultSet.getInt(3));
+                alertMessage.setDeviceID(resultSet.getInt(4));
+                alertMessage.setAttribs(resultSet.getString(5));
+                alertMessage.setPersonID(resultSet.getInt(6));
+                alertMessage.setAlertID(resultSet.getInt(7));
+                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(8)));
+                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(9)));
+                alertMessage.setStatus(AlertEscalationStatus.valueOf(resultSet.getInt(10)));
+                alertMessage.setLevel(RedFlagLevel.valueOf(resultSet.getInt(11)));
+                alertMessage.setEscalationOrdinal(resultSet.getInt(12));
+                alertMessage.setEscalationTryCount(resultSet.getInt(13));
                 return alertMessage;
             }
 
@@ -223,7 +231,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
         return messageBuilders;
     }
-
+    
     private List<AlertMessageBuilder> getMessageBuilders(Connection conn, List<AlertMessage> messages, AlertMessageDeliveryType messageDeliveryType) {
         List<AlertMessageBuilder> messageBuilders = new ArrayList<AlertMessageBuilder>();
 
@@ -237,8 +245,19 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
             Event event = eventDAO.findByID(alertMessage.getNoteID());
             if (event == null) {
-                logger.debug("event is Null ");
-                continue;
+                logger.debug("alertMessage.getAttribs(): " + alertMessage.getAttribs());
+                if (alertMessage.getAttribs() != null && !alertMessage.getAttribs().equalsIgnoreCase("")) {
+                    Mapper mapper = new EventHessianMapper();
+                    event = mapper.convertToModelObject(Attrib.convertToHashMap(alertMessage.getAttribs()), Event.class);
+                    event.setDriverID(alertMessage.getDriverID());
+                    event.setVehicleID(alertMessage.getVehicleID());
+                    event.setDeviceID(alertMessage.getDeviceID());
+                    logger.debug("event: " + event);
+                }    
+                if (event == null) {
+                    logger.debug("event is Null ");
+                    continue;
+                }
             }
 
             Locale locale = getLocale(person);
@@ -315,7 +334,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         try {
             // Grab all the messages for this job
             preparedStatement = (PreparedStatement) conn
-                    .prepareStatement("SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge FROM message WHERE owner=?");
+                    .prepareStatement("SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge, attribs, driverID, vehicleID, deviceID FROM message WHERE owner=?");
             preparedStatement.setLong(1, owner);
             messageResultSet = preparedStatement.executeQuery();
 
@@ -324,7 +343,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 AlertMessage alertMessage = new AlertMessage(messageResultSet.getInt("msgID"), AlertMessageDeliveryType.valueOf(messageResultSet.getInt("deliveryMethodID")),
                         AlertMessageType.valueOf(messageResultSet.getInt("alertTypeID")), RedFlagLevel.valueOf(messageResultSet.getInt("level")), messageResultSet.getString("address"),
                         messageResultSet.getString("message"), messageResultSet.getLong("noteID"), messageResultSet.getInt("personID"), messageResultSet.getInt("alertID"),
-                        messageResultSet.getInt("zoneID"), messageResultSet.getBoolean("acknowledge"), AlertEscalationStatus.valueOf(messageResultSet.getInt("status")));
+                        messageResultSet.getInt("zoneID"), messageResultSet.getBoolean("acknowledge"), AlertEscalationStatus.valueOf(messageResultSet.getInt("status")), messageResultSet.getString("attribs"), messageResultSet.getInt("driverID"), messageResultSet.getInt("vehicleID"), messageResultSet.getInt("deviceID"));
                 messages.add(alertMessage);
             }
         } catch (SQLException e) { // handle database errors in the usual manner
@@ -540,6 +559,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
         }
 
         private void addAlertRelatedData(Event event, MeasurementType personMeasurementType, AlertMessageType alertMessageType, Integer zoneID) {
+            logger.debug("addAlertRelatedData alertMessageType: " + alertMessageType);
             switch (alertMessageType) {
                 case ALERT_TYPE_ENTER_ZONE:
                 case ALERT_TYPE_EXIT_ZONE:
