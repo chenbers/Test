@@ -270,7 +270,7 @@ public class SiloServiceTest {
         sensitivitySliders.init();
         SensitivitySlider slider = sensitivitySliders.getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.TIWIPRO,0,1000000));
         
-        assertEquals(4,slider.getDefaultValueIndex());
+        assertEquals(9,slider.getDefaultValueIndex());
         Set<Integer> idsForThisSlider = slider.getSettingIDsForThisSlider();
         assertTrue(idsForThisSlider.contains(new Integer(157)));
         assertTrue(idsForThisSlider.size()==1);
@@ -279,7 +279,7 @@ public class SiloServiceTest {
         assertTrue(settings.size()==1);
         assertTrue(settings.get(157) != null);
         SensitivitySliderValues sensitivitySliderValues = settings.get(157);
-        assertEquals(new Integer(4),(Integer)sensitivitySliderValues.getDefaultValueIndex());
+        assertEquals(new Integer(9),(Integer)sensitivitySliderValues.getDefaultValueIndex());
         
         Map<Integer,String> settingValues = slider.getSettingValuesFromSliderValue(1);
         assertTrue(settingValues.size()==1);
