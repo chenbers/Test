@@ -91,7 +91,7 @@
 		<geotools.version>2.6.5</geotools.version>
 		<log4j.version>1.2.12</log4j.version>
 		<jmockit.version>0.999.4</jmockit.version>
-		<hos.version>0.0.16</hos.version>
+		<hos.version>0.0.17</hos.version>
 		<selenium.version>2.26.0</selenium.version>
 		<jbehave.core.version>3.7.5</jbehave.core.version>
         <jacksonVersion>2.0.2</jacksonVersion>
@@ -593,7 +593,17 @@ WWUUnm]]>
 			</dependency>
 			<dependency>
 				<groupId>com.inthinc.hos</groupId>
-				<artifactId>hos</artifactId>
+				<artifactId>hosRules</artifactId>
+				<version>${hos.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.inthinc.hos</groupId>
+				<artifactId>hosUtils</artifactId>
+				<version>${hos.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.inthinc.hos</groupId>
+				<artifactId>hosDDL</artifactId>
 				<version>${hos.version}</version>
 			</dependency>
             <!-- Jackson -->
@@ -640,9 +650,20 @@ WWUUnm]]>
 		</dependency>
 		<dependency>
 			<groupId>com.inthinc.hos</groupId>
-			<artifactId>hos</artifactId>
+			<artifactId>hosRules</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.inthinc.hos</groupId>
+			<artifactId>hosUtils</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.inthinc.hos</groupId>
+			<artifactId>hosDDL</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
 	</dependencies>
 	<reporting>
 		<plugins>
