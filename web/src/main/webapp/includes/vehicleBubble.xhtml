@@ -77,16 +77,24 @@
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 1}"> <!--Address -->
+<!-- 			
+			<ui:fragment rendered="#{addressLookupAddressFormat == 1}"> 
 				<h:outputText value="#{vehicleAddress}" />
 			</ui:fragment>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 2}"> <!-- Link -->
+			<ui:fragment rendered="#{addressLookupAddressFormat == 2}"> 
 				<a href="#{vehicleAddress}" target="_blank">#{messages.livefleet_address}</a> 
 			</ui:fragment>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
+			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> 
 				<h:outputText id="bubbleAddress"/>
 			</ui:fragment>
-			<h:outputText value="#{messageAddressLatLng}:"/>
+-->			
+			<ui:include src="/includes/addressLookup.xhtml">
+				<ui:param name="addressLookupType" value="#{addressLookupAddressFormat}" />
+				<ui:param name="address" value="#{vehicleAddress}" />
+				<ui:param name="lat" value="#{lat}" />
+				<ui:param name="lng" value="#{lng}" />
+			</ui:include>
+ 			<h:outputText value="#{messageAddressLatLng}:"/>
 			<h:panelGroup><h:outputText value="#{lat}"/>,<h:outputText value="#{lng}"/></h:panelGroup>
 			<f:facet name="footer">
                <h:outputFormat value="#{messages.vehicleBubble_distance}" rendered="#{distance ne null}">

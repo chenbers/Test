@@ -235,13 +235,6 @@
       		})();
 
 
-      		function showInfoWindow(map, infowindow, marker) {
-      			var mapState = findMapStateForMap(map);
-				if (mapState && mapState.openinfowindow)
-					mapState.openinfowindow.close();
-				infowindow.open(map, marker ? marker : null);
-				mapState.openinfowindow = infowindow;
-      		}
       		
       		return {
       			init: function(options_) {
@@ -324,9 +317,6 @@
    			   		});
   				},
   				reverseGeocode: function(map, lat, lng, resultHandler) {
-					if (!resultHandler && addressCache[lat + lng]) {
-						return addressCache[lat + lng];
-					}
   					geocoder.geocode({'location': new google.maps.LatLng(lat, lng)}, resultHandler ? resultHandler : function (result, status) {
   			    	  if (status != google.maps.GeocoderStatus.OK) {
   			    		console.log('Reverse Geocoding failed for lat, lng: ' +  lat + ', ' + lng + " status: "+ status);
@@ -342,11 +332,16 @@
   				//			lat
   				//			lng
   				//			domElement (sets innerHTML)
-  				//			altText 
-  				reverseGeocodeList : function(addressElements) {
+  				//			altText
+  				reverseGeocodeList : function(addressElements, callback) {
   					var delay = 250;
   					var reverseGeocode = function() {
-  						if (addressElements.length == 0) return;
+  						if (addressElements.length == 0) {
+  							if (callback) {
+  								callback();
+  							}
+  							return;
+  						}
   						var element = addressElements.shift();
   						if (addressCache[element.lat + element.lng]) {
   							element.domElement.innerHTML = addressCache[element.lat + element.lng];
@@ -364,6 +359,7 @@
   									else {
   										element.domElement.innerHTML = element.altText;
   									}
+  									console.log("address: " + element.domElement.innerHTML);
   				    			    reverseGeocode();
   		  						})
   		  					}, delay);
@@ -414,16 +410,16 @@
     					content: content
     			 	});
     				if (marker) {
-    					showInfoWindow(map, infowindow, marker);
+    					this.showInfoWindow(map, infowindow, marker);
     					if (addListener) {
 							google.maps.event.addListener(marker, 'click', function() {
-		    					showInfoWindow(map, infowindow, marker);
+		    					this.showInfoWindow(map, infowindow, marker);
 							});
     					};
     				}
     				else if (options.position) {
     					infowindow.setPosition(options.position);
-    					showInfoWindow(map, infowindow);
+    					this.showInfoWindow(map, infowindow);
     				}
 
     				return infowindow;
@@ -440,23 +436,29 @@
     					content: node
     			 	});
     				if (!options.hideInfoWindow) {
-   						showInfoWindow(map, infowindow, marker);
+   						this.showInfoWindow(map, infowindow, marker);
     				}
 					google.maps.event.addListener(marker, 'click', function() {
-    					showInfoWindow(map, infowindow, marker);
+    					this.showInfoWindow(map, infowindow, marker);
 					});
     				return infowindow;
       		    },
-      		    // figure out a better name
       			infoWindowAtMarker : function (map, divID, marker) {
       				var node = document.getElementById(divID).cloneNode(true);
       		    	node.style.display = 'block';
     				var infowindow = new google.maps.InfoWindow({
     					content: node
     			 	});
-    				showInfoWindow(map, infowindow, marker);
+    				this.showInfoWindow(map, infowindow, marker);
     				return infowindow;
       		    },
+          		showInfoWindow : function (map, infowindow, marker) {
+          			var mapState = findMapStateForMap(map);
+    				if (mapState && mapState.openinfowindow != null)
+    					mapState.openinfowindow.close();
+    				infowindow.open(map, marker ? marker : null);
+    				mapState.openinfowindow = infowindow;
+          		},
       		    addPolyline : function (map, latLngArray,  options_) {
       				var options  = options_ ? options_ : new Array();
     				var polyline = new google.maps.Polyline({
@@ -489,6 +491,11 @@
       		    clear : function(map) {
       		    	this.clearMarkers(map);
       		    	this.clearOverlays(map);
+          			var mapState = findMapStateForMap(map);
+          		    if (mapState && mapState.openinfowindow != null) {
+    					mapState.openinfowindow.close();
+    					mapState.openinfowindow = null;
+          		    }
       		    },
       		    getMarkers : function(map) {
           			var mapState = findMapStateForMap(map);

@@ -5,152 +5,144 @@
 		<ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}" />
 		<ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}" />
 
-		<a4j:loadScript id="markclust" src="/js/markerclusterer_packed.js" />
-		<a4j:loadScript id="progbar" src="/js/progressbarcontrol_packed.js" />
+		<a4j:loadScript src="/js/mapv3/markerclusterer_compiled.js"/>
+		<a4j:loadScript src="/js/mapv3/markerclustererWrapper.js"/>
+		<a4j:loadScript src="/js/mapv3/addressLookup.js"/>
 
-		<ui:include src="/includes/map/portalMap.xhtml" />
 
 		<script type="text/javascript">
+			//<![CDATA[
+// move to team page?
+		var map = null;
+		var isReverseGeocode = false;
+		var BUBBLE_DIV_ID = "driverBubble";
+		var bounds;
 
-	  	var map;
-	  	var markerClusterer;
-		var markers = [];
-//	  	var mapNeedsInit = true;
-	  	var overviewMapControl;
-	    
-	    var baseIcon = new GIcon();
-		baseIcon.iconSize = new GSize(25, 30);
-		baseIcon.iconAnchor = new GPoint(6, 20);
-		baseIcon.infoWindowAnchor = new GPoint(5, 1);
-		baseIcon.shadow=null;
-		
-		//<![CDATA[
-		//Pulled out of markerclusterer.js
-		  var sizes = [53, 56, 66, 78, 90];
-		  var styles = [];
+	    function initMap(lat,lng,zoom) {
+			if (map == null) {
+				map = inthincMap.init({
+					'center' : {
+						'lat' : lat,
+						'lng' : lng
+					},
+					'zoom' : zoom,
+					'overviewMapControl' : true
 
-		  var i = 0;
-		  for (i = 1; i <= 5; ++i) {
-		    styles.push({
-		      'url': "#{request.contextPath}/images/markerClusterer/m" + i + ".png",
-		      'height': sizes[i - 1],
-		      'width': sizes[i - 1]
-		    });
-		  }
-		//]]>
-
-	  	function initMap(lat,lng,zoom)
-	  	{
-			portalmap.init(true);
-			portalmap.zoom(zoom);
-			portalmap.center(new GLatLng(lat, lng));
-			initLayers();
-			bounds = new GLatLngBounds();
-			map = portalmap.getMap();
+				});
+				initLayers(map, "team-layerControl");
+			}
+			else {
+				inthincMap.clear(map);
+				inthincMap.setCenter(lat, lng);
+				inthincMap.setZoom(zoom);
+			}
+			bounds = new google.maps.LatLngBounds();
 		}
-	  	function centerMap() 
-	  	{
-	  		map.setZoom(map.getBoundsZoomLevel(bounds)-1);
-		    map.setCenter(bounds.getCenter());
-		}
-	       
-		// Creates a marker whose info window displays the link to the driver corresponding
-		// to the given index.
 
-		function selectMarker(lat,lng)
-		{
-			
-			map.panTo(new GLatLng(lat, lng));
-		}
-		
-
-		function initLiveFleetMap(){
+		function initLiveFleetMap() {
 			initMap(#{mapxcenter},#{mapycenter},#{mapzoom});
  			addMarkers();
-	    	centerMap();
-	    	defaultAddressElement = "liveFleetMapForm:bubbleAddress";
-			bubbleElement = "driverBubble";
-			errorMessage = "#{messages.sbs_badLatLng}"
-			addressLookupAddressFormat = #{driverLocationBean.addressFormat};	
+			isReverseGeocode = #{driverLocationBean.addressFormat == 3};
 		}
 		
-		function refreshMap()
-		{
-			mapNeedsInit = false;
-			map.clearOverlays();
+		function refreshMap() {
+			inthincMap.clear(map);
 			addMarkers();
-			#{oncomplete};
 		}
 
-		function funcToCall(obj) {
-			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-
-			if ( obj.callFuncID == 0 ) {
-				fillBubbleMarker(obj.itemID,obj.subID);
-			}		
-			#{oncomplete};
-		}  	
+		
+		//]]>
 	</script>
 
-		<a4j:region id="main">
+	<a4j:region id="main">
 
-				<rich:panel id="scripts">
-						<script type="text/javascript">
+		<rich:panel id="scripts">
+			<script type="text/javascript">
+			//<![CDATA[
+			var selectedMarker;
+			function showInfoWindowForItemID(itemID) {
+				var markers = inthincMap.getMarkers(map);
+				for (var i = 0; i < markers.length; i++) {
+					if (markers[i].itemID && markers[i].itemID == itemID) {
+						initInfoWindow(markers[i]);
+					}
+				}
+			}
+			//]]>
+			function initInfoWindow(marker) {
+				selectedMarker = marker;
+				fillBubbleMarker(selectedMarker.itemID);
+			}
+			function showInfoWindow() {
+				if (isReverseGeocode == true) {
+					addressLookup.findAddress(BUBBLE_DIV_ID, function() {
+						inthincMap.infoWindowAtMarker(map, BUBBLE_DIV_ID, selectedMarker);
+					});
+				}
+				else {
+					inthincMap.infoWindowAtMarker(map, BUBBLE_DIV_ID, selectedMarker);
+				}
+			}
+			
+			function addMarkerListener(marker)
+			{
+				google.maps.event.addListener(marker, "click", function() {
+					initInfoWindow(marker);
+				});
+			}
+
 			function addMarkers()
 			{
-				var progress = 0;
-				var progressBar = new ProgressbarControl(map);
-				if ((markerClusterer != null) &amp;&amp;(markers)&amp;&amp;(markers.length &gt; 0)){
+				if (markerClusterer != null) {
 			          markerClusterer.clearMarkers();
-			        }
-		        
-				markers = [];
+			          inthincMap.clearMarkers(map);
+		        }
+				var markers = [];
 
-				progressBar.start(#{fn:length(driverLocationBean.driverLocations)});
 				<ui:repeat value="#{driverLocationBean.driverLocations}" var="driverLocation">
-				
-					var latlng = new GLatLng(#{driverLocation.loc.lat}, #{driverLocation.loc.lng});									
-					var marker = createMarker(	latlng, "#{driverLocation.driver.driverID}", null,
-	        		 							"#{driverLocationBean.mapIconMap.icons[driverLocation.position]}",
-	        		 							fillBubbleMarker,0);
-				    bounds.extend(marker.getPoint());
+					marker = inthincMap.createMarker(map, {
+						position: new google.maps.LatLng(#{driverLocation.loc.lat}, #{driverLocation.loc.lng}),
+						iconImage : "#{driverLocationBean.mapIconMap.icons[driverLocation.position]}"
+					});
+					marker.itemID = #{driverLocation.driver.driverID};
+					addMarkerListener(marker);	
 					markers.push(marker);
-					progressBar.updateLoader(progress++);
+					bounds.extend(marker.getPosition());
 					
 				</ui:repeat>
-				markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
-				progressBar.remove();
+
+				inthincMap.centerAndZoom(map, bounds);
+				markerClusterer = new MarkerClusterer(map,markers,{styles:getMarkerClustererStyles('#{request.contextPath}')});
+
 			}
-		</script>
-
-
-						<h:form id="liveFleetMapForm">
-								<rich:panel id="mapPopups" rendered="#{driverLocationBean.selectedDriverID != null}">
-										<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}" />
-										<ui:include src="/includes/driverBubble.xhtml">
-												<ui:param name="hiddenDivID" value="bubble" />
-												<ui:param name="driver" value="#{driverLocation.driver}" />
-												<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
-												<ui:param name="bean" value="#{driverLocationBean}" />
-												<ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
-												<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
-												<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
-												<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
-												<ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
-												<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
-												<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
-												<ui:param name="vehicleTime" value="#{driverLocation.time}" />
-												<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
-												<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
-												<ui:param name="addressLookupAddressFormat" value="#{driverLocationBean.addressFormat}" />
-									        	<ui:param name="messageAddressLatLng" value="#{messages.livefleet_latlng}" />
-	        									<ui:param name="lat" value="#{driverLocation.loc.lat}"/>
-	        									<ui:param name="lng" value="#{driverLocation.loc.lng}"/>
-										</ui:include>
-								</rich:panel>
-						</h:form>
-
-				</rich:panel>
+			</script>
+			<h:form id="liveFleetMapForm">
+					<rich:panel id="mapPopups" rendered="#{driverLocationBean.selectedDriverID != null}">
+							<ui:param name="driverLocation" value="#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID]}" />
+							<ui:include src="/includes/driverBubble.xhtml">
+									<ui:param name="hiddenDivID" value="bubble" />
+									<ui:param name="driver" value="#{driverLocation.driver}" />
+									<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
+									<ui:param name="bean" value="#{driverLocationBean}" />
+									<ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
+									<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
+									<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
+									<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
+									<ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
+									<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
+									<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
+									<ui:param name="vehicleTime" value="#{driverLocation.time}" />
+									<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
+									<ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
+									<ui:param name="addressLookupAddressFormat" value="#{driverLocationBean.addressFormat}" />
+						        	<ui:param name="messageAddressLatLng" value="#{messages.livefleet_latlng}" />
+  									<ui:param name="lat" value="#{driverLocation.loc.lat}"/>
+   									<ui:param name="lng" value="#{driverLocation.loc.lng}"/>
+							</ui:include>
+					</rich:panel>
+			</h:form>
+		</rich:panel>
+				
 				<div class="">
 				<div class="panel_nw">
 				<div class="panel_title"><span class="map">#{title}</span> <span class="panel_links"> <a4j:form id="refresh">
@@ -160,7 +152,7 @@
 												<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
 								</f:facet>
 						</a4j:status>
-						<a4j:commandButton id="#{context}-liveFleetMapRefresh" image="/images/ico_refresh.png" immediate="true" reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"
+						<a4j:commandButton id="#{context}-liveFleetMapRefresh" image="/images/ico_refresh.png" immediate="true" reRender="scripts" oncomplete="refreshMap();#{oncomplete};" title="#{messages.refresh}"
 								alt="#{messages.refresh}" value="#{messages.refresh}" action="#{driverLocationBean.resetMap}">
 						</a4j:commandButton>
 
@@ -172,9 +164,9 @@
 								</h:outputLink>
 						</ui:fragment>
 
-				</a4j:form> <a4j:form id="dispatchForm">
-						<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}" />
-				</a4j:form> </span></div>
+				</a4j:form> 
+				</span>
+				</div>
 				</div>
 				<div class="panel_w"><rich:panel id="map">
 						<div class="panel_content"><h:form name="maplinks2">
@@ -192,14 +184,14 @@
 				<div class="panel_title"><span class="legend">#{legend}</span> <span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
-				<div class="panel_content"><rich:dataGrid id="icos1" value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
+				<div class="panel_content">
+				<rich:dataGrid id="icos1" value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend"
 						rendered="#{driverLocationBean.teamLevel}" columns="3" border="0" cellpadding="5" cellspacing="5">
-
-						<div onclick="fillBubbleMap(#{icon.entityID})" style="cursor: pointer;"><img src="#{icon.iconURL}" style="vertical-align: middle" /> <h:outputText value="#{icon.caption}"
-								style="margin-left:5px" /></div>
-
-				</rich:dataGrid> <rich:dataGrid id="icos2" value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend" rendered="#{!driverLocationBean.teamLevel}"
-						columns="3" border="0" cellpadding="5" cellspacing="5">
+						<div onclick="showInfoWindowForItemID(#{icon.entityID})" style="cursor: pointer;"><img src="#{icon.iconURL}" style="vertical-align: middle" /> 
+						<h:outputText value="#{icon.caption}" style="margin-left:5px" /></div>
+				</rich:dataGrid> 
+				<rich:dataGrid id="icos2" value="#{driverLocationBean.legendIcons}" var="icon" styleClass="carlegend" columnClasses="carlegend" rowClasses="carlegend" 
+						rendered="#{!driverLocationBean.teamLevel}" columns="3" border="0" cellpadding="5" cellspacing="5">
 						<img src="#{icon.iconURL}" style="vertical-align: middle" />
 						<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
 				</rich:dataGrid>
@@ -215,25 +207,9 @@
 		</a4j:region>
 
 		<a4j:form id="bubbleForm">
-				<a4j:jsFunction id="filBubMark" name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker();#{oncomplete}">
+				<a4j:jsFunction id="filBubMark" name="fillBubbleMarker" reRender="mapPopups" oncomplete="showInfoWindow();#{oncomplete}">
 						<a4j:actionparam id="drvId" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}" />
-						<a4j:actionparam id="sub" name="subId" />
 				</a4j:jsFunction>
-				<a4j:jsFunction id="filBubMap" name="fillBubbleMap" reRender="mapPopups"
-						oncomplete="getAddressForPosition(#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lat},
-								#{driverLocationBean.driverLocationsMap[driverLocationBean.selectedDriverID].loc.lng});#{oncomplete}">
-						<a4j:actionparam id="drvId1" name="driverId" assignTo="#{driverLocationBean.selectedDriverID}" />
-				</a4j:jsFunction>
-				<a4j:jsFunction id="zoneFix" name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);#{oncomplete}">
-						<a4j:actionparam id="lat" name="latitude" assignTo="#{addressBean.zoneLat}" />
-						<a4j:actionparam id="lng" name="longitude" assignTo="#{addressBean.zoneLng}" />
-						<a4j:actionparam id="elmIndx" name="elemIndex" assignTo="#{addressBean.elemIndex}" />
-						<a4j:actionparam id="ntID" name="noteID" assignTo="#{addressBean.noteID}" />
-						<a4j:actionparam id="itmID" name="itemID" assignTo="#{addressBean.itemID}" />
-						<a4j:actionparam id="subID1" name="subID" assignTo="#{addressBean.subID}" />
-						<a4j:actionparam id="calFncID" name="callFuncID" assignTo="#{addressBean.callFuncID}" />
-				</a4j:jsFunction>
-
 		</a4j:form>
 
 </ui:composition>

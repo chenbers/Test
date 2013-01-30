@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j">
+	<ui:fragment rendered="#{addressLookupType == 1}"> <!--Address -->
+		<h:outputText value="#{vehicleAddress}" />
+	</ui:fragment>
+	<ui:fragment rendered="#{addressLookupType == 2}"> <!-- Link -->
+		<a href="#{address}" target="_blank">#{messages.livefleet_address}</a> 
+	</ui:fragment>
+	<ui:fragment rendered="#{addressLookupType == 3}"> <!--LatLng -->
+		<h:outputText id="addressLookupElement"/>
+		<h:inputHidden id="addressLookupAltText" value="#{address}"/>
+		<h:inputHidden id="addressLookupLat" value="#{lat}"/>
+		<h:inputHidden id="addressLookupLng" value="#{lng}"/>
+	</ui:fragment>
+</ui:composition>

@@ -17,6 +17,8 @@
     <ui:param name="homeSelected" value="current" />
 	
     <ui:define name="scripts">
+  	   <ui:include src="/includes/mapv3/portalMap.xhtml" />
+  	   
 	   <a4j:loadScript src="/js/jquery.address-1.2rc.min.js"/>
        <style>
        		.rich-tabpanel {
@@ -398,8 +400,10 @@
 				selectedTab="#{teamCommonBean.selectedTabId}" switchType="ajax">
                		<ui:include src="/includes/teamPage/new_teamStatistics.xhtml"/>
                		<ui:include src="/includes/teamPage/new_teamVehicleStatistics.xhtml"/>
+<!--               		
                 	<ui:include src="/includes/teamPage/new_teamTrips.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamStops.xhtml"/>
+-->                	
                 	<ui:include src="/includes/teamPage/new_liveTeamMap.xhtml"/>
                 	<ui:include src="/includes/teamPage/new_teamOverallPieChart.xhtml"/>
                  	<ui:include src="/includes/teamPage/new_teamDrivingStyle3dBar.xhtml"/>
