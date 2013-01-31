@@ -8,6 +8,13 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.enums.AutoSilos;
 
+/**
+ * @author Mike Weiss
+ * This test has been written to make sure all alerts are coming in.  You can access the test email account at inthincalertsmaster@gmail.com with the
+ * password !AmTheAlertsMaster.  There are 36 alert notifications in total that should come in.  8 are for WaySmart devices (For DVIR, plus one for ignition on),
+ * the remainder are tiwi alerts.
+ *
+ */
 public class AlertsTripsTest {
 	
 	
