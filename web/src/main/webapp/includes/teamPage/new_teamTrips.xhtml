@@ -50,17 +50,17 @@
 	}
 	</style>
 	
-	<ui:include src="/includes/map/portalMap.xhtml"/>
+	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 	
-	
-	<a4j:loadScript src="/js/arrowedPolyline.js"/>
-	<a4j:loadScript src="/js/labeledMarker.js"/>
-	<a4j:loadScript src="/js/markerClustererWithMergedMarkerSets.js"/>
-	<a4j:loadScript src="/js/teamTrips.js"/>
-	
+	<a4j:loadScript src="/js/mapv3/arrowedPolyline.js"/>
+	<a4j:loadScript src="/js/mapv3/markerwithlabel.js"/>
+	<a4j:loadScript src="/js/mapv3/markerClustererWithMergedMarkerSets.js"/>
+	<a4j:loadScript src="/js/mapv3/teamTrips.js"/>
 	<script type="text/javascript">
 	
-	window.TeamTrips = {};
+	window.TeamTrips = {
+			map : null
+	};
 
 	var icons = [	"#{request.contextPath}/images/green_circle.png",
 					"#{request.contextPath}/images/yellow_circle.png", 
@@ -79,11 +79,24 @@
 		if ( zoom > 15 ) {
 			zoom = 15;
 		}
-		portalmap.init(true, "teamTrip-map-canvas");
-		portalmap.zoom(zoom);
-		portalmap.center(new GLatLng(#{teamCommonBean.group.mapLat},#{teamCommonBean.group.mapLng}));
-		initLayers();
-		TeamTrips.map = portalmap.getMap();
+		if (TeamTrips.map  == null) {
+			TeamTrips.map  = inthincMap.init({
+				'canvasID' : 'teamTrip-map-canvas',
+				'center' : {
+					'lat' : #{teamCommonBean.group.mapLat},
+					'lng' : #{teamCommonBean.group.mapLng}
+				},
+				'zoom' : zoom,
+				'overviewMapControl' : true
+
+			});
+			initLayers(TeamTrips.map, "team-layerControl");
+		}
+		else {
+			inthincMap.clear(TeamTrips.map);
+			inthincMap.setCenter(TeamTrips.map,lat, lng);
+			inthincMap.setZoom(TeamTrips.map, zoom);
+		}
 		initTeamTripsClusters(TeamTrips.map,icons);
 	}
 	var dayClickFunction = function(event){
@@ -109,7 +122,7 @@
 		
  </script>
  
-    <rich:tab id="teamTrips" oncomplete="Team.tabChange();" ontableave="GUnload();" reRender="headerForm:contextSensitiveHelp">
+    <rich:tab id="teamTrips" oncomplete="Team.tabChange();" reRender="headerForm:contextSensitiveHelp">
 	<f:setPropertyActionListener value="teamTrips" target="#{helpBean.subID}" /> 		
    	
 	 <a4j:queue name="tripsQueue"/>    
@@ -179,7 +192,7 @@
 		</a4j:jsFunction>
  						
 		<a4j:jsFunction id="getEventData" ajaxSingle="true" status="teamStatus" name="getEventData" action="#{teamTripsBean.createClusterBubbleData}" 
-				eventsQueue="tripsQueue" data="#{teamTripsBean.clusterLatLng}" oncomplete="addAddressesToClusterBubble(TeamTrips.map, data)" reRender="clusterBubbleForm">
+				eventsQueue="tripsQueue" data="#{teamTripsBean.clusterLatLng}" oncomplete="showClusterBubble(TeamTrips.map, data)" reRender="clusterBubbleForm">
 						<a4j:actionparam name="clusterEventData" assignTo="#{teamTripsBean.clusterEventData}"/>
 		</a4j:jsFunction>
 		
@@ -213,7 +226,7 @@
 					</h:panelGrid>
 				</div>
 				</h:form>
-	<div id="clusterBubbleTable" style="display:none">
+	<div id="clusterBubbleTable" style="display:none;padding-top:10px;">
 		<h:form id="clusterBubbleForm">
 			<rich:dataTable	value="#{teamTripsBean.clusterBubbleEvents}" 
 					       		id="clusterEvents" 

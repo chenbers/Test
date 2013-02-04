@@ -452,6 +452,16 @@
     				this.showInfoWindow(map, infowindow, marker);
     				return infowindow;
       		    },
+      			infoWindowAtPosition : function (map, divID, position) {
+      				var node = document.getElementById(divID).cloneNode(true);
+      		    	node.style.display = 'block';
+    				var infowindow = new google.maps.InfoWindow({
+    					content: node
+    			 	});
+					infowindow.setPosition(position);
+					this.showInfoWindow(map, infowindow);
+    				return infowindow;
+      		    },
           		showInfoWindow : function (map, infowindow, marker) {
           			var mapState = findMapStateForMap(map);
     				if (mapState && mapState.openinfowindow != null)
@@ -488,14 +498,17 @@
       		    		overlay.setMap(null);
       		    	}
       		    },
-      		    clear : function(map) {
-      		    	this.clearMarkers(map);
-      		    	this.clearOverlays(map);
+      		    clearInfoWindow : function (map) {
           			var mapState = findMapStateForMap(map);
           		    if (mapState && mapState.openinfowindow != null) {
     					mapState.openinfowindow.close();
     					mapState.openinfowindow = null;
           		    }
+      		    },
+      		    clear : function(map) {
+      		    	this.clearMarkers(map);
+      		    	this.clearOverlays(map);
+      		    	this.clearInfoWindow(map);
       		    },
       		    getMarkers : function(map) {
           			var mapState = findMapStateForMap(map);
