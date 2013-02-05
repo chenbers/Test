@@ -311,7 +311,7 @@
     			      				marker: marker
    			      			  });
     			    		  if (callback) {
-    			    			  callback(result[0].geometry.location);
+    			    			  callback(result[0].geometry.location, marker);
     			    		  }
     			    	  }
    			   		});
@@ -396,10 +396,12 @@
       		    },
       		    clearMarkers : function(map) {
           			var mapState = findMapStateForMap(map);
-      		    	while (mapState.markers.length > 0) {
-      		    		marker = mapState.markers.pop();
-      		    		marker.setMap(null);
-      		    	}
+          			if (mapState) {
+	      		    	while (mapState.markers.length > 0) {
+	      		    		marker = mapState.markers.pop();
+	      		    		marker.setMap(null);
+	      		    	}
+          			}
       		    },
       			createInfoWindow : function (map, options) {
       				var content = options.content ? options.content : "";
@@ -412,8 +414,9 @@
     				if (marker) {
     					this.showInfoWindow(map, infowindow, marker);
     					if (addListener) {
+    						var that = this;
 							google.maps.event.addListener(marker, 'click', function() {
-		    					this.showInfoWindow(map, infowindow, marker);
+		    					that.showInfoWindow(map, infowindow, marker);
 							});
     					};
     				}
@@ -438,8 +441,9 @@
     				if (!options.hideInfoWindow) {
    						this.showInfoWindow(map, infowindow, marker);
     				}
+    				var that = this;
 					google.maps.event.addListener(marker, 'click', function() {
-    					this.showInfoWindow(map, infowindow, marker);
+    					that.showInfoWindow(map, infowindow, marker);
 					});
     				return infowindow;
       		    },

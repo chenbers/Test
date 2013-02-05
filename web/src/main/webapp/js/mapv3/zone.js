@@ -2,7 +2,7 @@
 var ZONE_COLOR = "#0033FF"; // the color of the zone on the map
 
 // outline is either a string in form "(x1,y1);(x2,y2);(x3,y3)"  or array of google.maps.LatLng
-function Zone(outline) {
+function Zone(outline, options_) {
 	if (typeof(outline) == "string") {
 		this.points = fromOutlineString(outline);
 	}
@@ -11,6 +11,13 @@ function Zone(outline) {
 	}
 	this.zoneOverlay = null;
 	this.editable = false;
+	var options  = options_ ? options_ : new Array();
+	this.strokeColor = options.strokeColor ? options.strokeColor : ZONE_COLOR;
+	this.strokeWeight = options.strokeWeight ? options.strokeWeight : 2;
+	this.strokeOpacity = options.strokeOpacity ? options.strokeOpacity : 0.7;
+	this.fillColor = options.fillColor ? options.fillColor : ZONE_COLOR;
+	this.fillOpacity = options.fillOpacity ? options.fillOpacity : 0.2;
+
 }
 Zone.prototype = {
 		    constructor: Zone,
@@ -23,11 +30,11 @@ Zone.prototype = {
 		    	this.editable = (editable) ? editable : false;
 		    	this.zoneOverlay = new google.maps.Polygon({
 		    		path : this.points,
-		    		strokeColor : ZONE_COLOR,
-		    		strokeWeight: 2,
-		    		strokeOpacity: 0.7,
-		    		fillColor : ZONE_COLOR,
-		    		fillOpacity: 0.2,
+		    		strokeColor : this.strokeColor,
+		    		strokeWeight: this.strokeWeight,
+		    		strokeOpacity: this.strokeOpacity,
+		    		fillColor : this.fillColor,
+		    		fillOpacity: this.fillOpacity,
 		    		editable : this.editable
 		    	});
 		    	var bounds = this.getBounds();
