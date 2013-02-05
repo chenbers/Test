@@ -57,6 +57,7 @@ function MarkerLabel_(marker, crossURL, handCursorURL) {
   // Code is included here to ensure the veil is always exactly the same size as the label.
   this.eventDiv_ = document.createElement("div");
   this.eventDiv_.style.cssText = this.labelDiv_.style.cssText;
+  
 
   // This is needed for proper behavior on MSIE:
   this.eventDiv_.setAttribute("onselectstart", "return false;");
