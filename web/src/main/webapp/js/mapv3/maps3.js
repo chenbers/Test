@@ -359,7 +359,7 @@
   									else {
   										element.domElement.innerHTML = element.altText;
   									}
-  									console.log("address: " + element.domElement.innerHTML);
+  									console.log("address: " + element.domElement.innerHTML + " altText: " + element.altText);
   				    			    reverseGeocode();
   		  						})
   		  					}, delay);

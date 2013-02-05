@@ -15,6 +15,7 @@
    		<ui:include src="/secured/reports/driverVehicleCommon.xhtml">
 			<ui:param name="formName" value="notificationsTableForm" />
 			<ui:param name="mapDiv" value="address-canvas" />
+			<ui:param name="doReverseGeocode" value="#{vehicleSpeedBean.addressFormat == 3}" />
 		</ui:include>
 	</ui:define>
 
@@ -520,6 +521,7 @@ var firstLoad = new Boolean(true);
 				<h:inputHidden id="eventLat" value="#{item.event.latitude}"/>
 				<h:inputHidden id="eventLng" value="#{item.event.longitude}"/>
  				<h:outputText id="eventAddress" />
+				<h:inputHidden id="altText" value="#{item.event.addressStr}"/>
 			</ui:fragment>
 					              </a4j:commandLink>
 				              	</div>

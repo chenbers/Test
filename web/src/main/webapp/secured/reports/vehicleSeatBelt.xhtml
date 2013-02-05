@@ -17,6 +17,7 @@
    		<ui:include src="/secured/reports/driverVehicleCommon.xhtml">
 			<ui:param name="formName" value="eventTableForm" />
 			<ui:param name="mapDiv" value="map-canvas" />
+			<ui:param name="doReverseGeocode" value="#{vehicleSeatBeltBean.addressFormat == 3}" />
 		</ui:include>
 	</ui:define>
 
@@ -204,6 +205,7 @@
 				<h:inputHidden id="eventLat" value="#{item.event.latitude}"/>
 				<h:inputHidden id="eventLng" value="#{item.event.longitude}"/>
  				<h:outputText id="eventAddress" />
+				<h:inputHidden id="altText" value="#{item.event.addressStr}"/>
 			</ui:fragment>
 					              </a4j:commandLink>
 				              	</div>

@@ -27,6 +27,7 @@
 		var showWarnings = true;
 		var showIdleMarkers = true;
 		var showTamperMarkers = true;
+		var doReverseGeocode = false; 
 		var addressLookup = (function() {
         	var collectAddressElements = function() {
         		var addressElements = [];
@@ -54,7 +55,9 @@
     		}
         	return {
         		findAddresses : function() {
-		    		inthincMap.reverseGeocodeList(collectAddressElements());
+        			if (doReverseGeocode == true ) {
+		    			inthincMap.reverseGeocodeList(collectAddressElements());
+        			}
         		}
         	};
         })();
@@ -125,6 +128,7 @@
 		}
 
 		function bodyLoad()		{
+			doReverseGeocode = #{driverTripsBean.addressFormat == 3};
 			initMap(#{driverTripsBean.anchorLat}, #{driverTripsBean.anchorLng}, 14);
 			if ( #{driverTripsBean.selectedTrips[0] ne null} ) {
 		   		showTrips();

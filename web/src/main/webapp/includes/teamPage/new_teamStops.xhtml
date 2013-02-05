@@ -9,86 +9,53 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
-	<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />	
-	
+	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+	<a4j:loadScript src="/js/mapv3/addressLookup.js"/>
 	<script language="javascript" type="text/javascript">
 
-		function onStopTabSelectionComplete(){								
+		var doReverseGeocode = false;
+		function onStopTabSelectionComplete(){
+			doReverseGeocode = #{teamStopsBean.addressFormat == 3};
 			initStopTimeFrameChangeListener();
 		}
 
-		function initStopTimeFrameChangeListener() {
-			Team.disableTimeFrame("#timeFrameForm\\:timeFrameWeek");		
-			Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
-			Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
-			Team.getSelectedTab().bind('timeFrameChange', function(){				
-				Team.disableTimeFrame("#timeFrameForm\\:timeFrameWeek");
-				Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
-				Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
-			});
-		}	
 
 		var addressLookup = (function() {
-        	var addresses = {};
-        	var addressElements; //an array of the html elements that need the address after the point is reverse geocoded
     		var collectAddressElements = function() {
-        		addressElements = [];
-        		
-    	    	jQuery('td[id$="address_column_start"]').each(function(){
-					var addressElement = {
-            			"element" : this,
-						"lat" : jQuery(this).find('*[id$="latStart"]')[0].value,
-   						"lng" : jQuery(this).find('*[id$="lngStart"]')[0].value,
-   						"address" : jQuery(this).find('*[id$="addressStart"]')
-					};
-   					addressElements.push(addressElement);
-    	    	})
-    	    	
+        		var addressElements = [];
     	    	jQuery('td[id$="address_column"]').each(function(){
 					var addressElement = {
-	            			"element" : this,
+							"domElement" : jQuery(this).find('*[id$="address"]')[0],
 							"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
 	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="address"]')
+	   						"altText" : jQuery(this).find('*[id$="altText"]')[0].value
 						};
 	   					addressElements.push(addressElement);
-    	    	})
+    	    	});
+    	    	return addressElements;
     		}
         	return {
         		findAddresses : function() {
-		    		if (geocoder == null) geocoder = new GClientGeocoder();
-		    		var delay = 250;
-		    		collectAddressElements();
-					var reverseGeocode = function() {
-						if (addressElements.length == 0) return;
-						var element = addressElements.shift();
-						if(addresses[element.lat + element.lng]) {
-    			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
-    			        	reverseGeocode();
-						} else {
-							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
-								if(element.lat == '' || element.lng == ''){
-									element.address[0].innerHTML = "#{messages.teamStopsNoAddressFound}";
-									addresses[element.lat + element.lng] = "#{messages.teamStopsNoAddressFound}";
-								} else if (!response) {
-		  			         	  	element.address[0].innerHTML = "#{messages.teamStopsNoAddressFound}";
-		         				} else if (response.Status.code == 200) {
-		    			        	element.address[0].innerHTML = response.Placemark[0].address;
-		    			        	addresses[element.lat + element.lng] = response.Placemark[0].address;
-		    			        } else if (response.Status.code == 620) {
-		    			        	addressElements.push(element);
-		    			        } else {
-		  			         	  	element.address[0].innerHTML = "#{messages.teamStopsNoAddressFound}";
-		    			        }
-		    			        reverseGeocode();
-							}) }, delay);
-						}
-					}
-					reverseGeocode();
+        			if (doReverseGeocode == true) {
+        				inthincMap.reverseGeocodeList(collectAddressElements());
+        			}
         		}
         	};
         }());
 		
+		function initStopTimeFrameChangeListener() {
+			disableTimeFrames();
+			Team.getSelectedTab().bind('timeFrameChange', function(){
+				addressLookup.findAddresses();
+				disableTimeFrames();
+			});
+		}	
+
+		function disableTimeFrames() {
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameWeek");		
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameMonth");
+			Team.disableTimeFrame("#timeFrameForm\\:timeFrameYear");
+		}	
 
     </script>
     
@@ -154,7 +121,7 @@
 					<ui:param  name="id" value="#{context}_reportEmailModal" />
 					<ui:param  name="reportBean" value="#{teamStopsBean}"/>
 					<ui:param name="context" value="#{context}" />
-					<ui:param name = "onemail" value="addressLookup.findAddresses();initStopTimeFrameChangeListener();"/>
+					<ui:param name = "onemail" value="addressLookup.findAddresses();disableTimeFrames();"/>
 				</ui:include>
 			</h:outputText>
 		</ui:fragment>
@@ -180,7 +147,7 @@
                		 				<h:selectOneRadio id="stopsCheckDriver" immediate="true" style="text-decoration:none;border:0;"
                		 					value="#{teamStopsBean.selectedDriverID}">
                		 					<f:selectItem itemValue="#{drivers.driverID}"/>
-               		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="addressLookup.findAddresses();initStopTimeFrameChangeListener();"/>                	 					                 						
+               		 					<a4j:support event="onclick" reRender="stopsPanel" oncomplete="addressLookup.findAddresses();disableTimeFrames();"/>                	 					                 						
                 					</h:selectOneRadio>
                 				</a4j:region>              		
               				</rich:column>
@@ -330,10 +297,22 @@
 	                					</rich:column>
 	                		
 	                					<rich:column id="address_column">
-	                						<h:inputHidden id="lat" value="#{stops.lat}"/>
-											<h:inputHidden id="lng" value="#{stops.lng}"/>								
- 											<h:outputText id="address" style="width:100px;display:inline-block;"/>
+                                            <ui:fragment rendered="#{teamStopsBean.addressFormat == 1}">
+                                              	<!--Address -->
+                                              	<h:outputText value="#{stops.address}" style="width:100px;display:inline-block;"/>
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{teamStopsBean.addressFormat == 2}" >
+                                              	<!-- Link -->
+                                              	<a href="#{stops.address}" target="_blank" style="width:100px;display:inline-block;">#{messages.livefleet_address}</a>
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{teamStopsBean.addressFormat == 3}">
+	                							<h:inputHidden id="lat" value="#{stops.lat}"/>
+												<h:inputHidden id="lng" value="#{stops.lng}"/>								
+ 												<h:outputText id="address" style="width:100px;display:inline-block;"/>
+ 												<h:inputHidden id="altText" value="#{stops.address}" />
+                                            </ui:fragment>
 	                					</rich:column>
+	                					
 	                		
 	                					<rich:column>	                			
                             				<h:outputText value="#{stops.arriveTime * 1000}" rendered="#{stops.arriveTime != null}"  style="width:50px;display:inline-block;">
@@ -386,7 +365,7 @@
 	                					</rich:column>	  
 	                					<f:facet name="footer">  
 	                						<rich:datascroller 	align="center" 
-	                							oncomplete="addressLookup.findAddresses();initStopTimeFrameChangeListener();"							
+	                							oncomplete="addressLookup.findAddresses();disableTimeFrames();"							
             			 						id="stopsTripsTableScroller"/>
             							</f:facet>            		                		            		             		       		
 									</rich:dataTable>	
