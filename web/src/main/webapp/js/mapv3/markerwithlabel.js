@@ -62,6 +62,7 @@ function MarkerLabel_(marker, crossURL, handCursorURL) {
   // This is needed for proper behavior on MSIE:
   this.eventDiv_.setAttribute("onselectstart", "return false;");
   this.eventDiv_.setAttribute("ondragstart", "return false;");
+  
 
   // Get the DIV for the "X" to be displayed when the marker is raised.
   this.crossDiv_ = MarkerLabel_.getSharedCross(crossURL);
