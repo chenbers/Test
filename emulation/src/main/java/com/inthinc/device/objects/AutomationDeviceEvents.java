@@ -1,17 +1,28 @@
 package com.inthinc.device.objects;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+
+import org.apache.http.client.ClientProtocolException;
 
 import com.inthinc.device.devices.DeviceBase;
-import com.inthinc.device.devices.TiwiProDevice;
+import com.inthinc.device.devices.WaysmartDevice.Direction;
+import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceEnums.LogoutMethod;
 import com.inthinc.device.emulation.enums.DeviceEnums.TripFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.notes.DeviceNote;
+import com.inthinc.device.emulation.notes.SatelliteEvent_t;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
+import com.inthinc.device.emulation.utils.GeoPoint.Heading;
+import com.inthinc.device.emulation.utils.MCMProxyObject;
+import com.inthinc.pro.automation.enums.AutoSilos;
 import com.inthinc.pro.automation.logging.Log;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class AutomationDeviceEvents {
 	
@@ -634,8 +645,6 @@ public class AutomationDeviceEvents {
     	return classes.new InstallEvent(state, location);
     }
     
-    
-
     public static LeaveZoneEvent leaveZone(DeviceState state, GeoPoint location){
 		return classes.new LeaveZoneEvent(state, location);
 	}
@@ -1031,13 +1040,53 @@ public class AutomationDeviceEvents {
 		device.addEvent(dVIRPreTripPass(device.getState(), device.getCurrentLocation()));
 	}
 	
-
-//	DVIRPreTripPassEvent 
-//	DVIRPostTripFailEvent 
-//	DVIRPostTripPassEvent
-//	DVIRUnsafeEvent
-//	DVIRNoPreInspectionEvent
-//	DVIRNoPostInspectionEvent
+	public static DVIRPostTripFailEvent dVIRPostTripFail(DeviceState state, GeoPoint location){
+		return classes.new DVIRPostTripFailEvent(state, location);
+	}
+	
+	public static void dVIRPostTripFail(DeviceBase device){
+		device.addEvent(dVIRPostTripFail(device.getState(), device.getCurrentLocation()));
+	}
+	
+	public static DVIRPostTripPassEvent dVIRPostTripPass(DeviceState state, GeoPoint location){
+		return classes.new DVIRPostTripPassEvent(state, location);
+	}
+	
+	public static void dVIRPostTripPass(DeviceBase device){
+		device.addEvent(dVIRPostTripPass(device.getState(), device.getCurrentLocation()));
+	}
+	
+	public static DVIRUnsafeEvent dVIRUnsafe(DeviceState state, GeoPoint location){
+		return classes.new DVIRUnsafeEvent(state, location);
+	}
+	
+	public static void dVIRUnsafe(DeviceBase device){
+		device.addEvent(dVIRUnsafe(device.getState(), device.getCurrentLocation()));
+	}
+	
+	public static DVIRNoPreInspectionEvent dVIRNoPreInspection(DeviceState state, GeoPoint location){
+		return classes.new DVIRNoPreInspectionEvent(state, location);
+	}
+	
+	public static void dVIRNoPreInspection(DeviceBase device){
+		device.addEvent(dVIRNoPreInspection(device.getState(), device.getCurrentLocation()));
+	}
+	
+	public static DVIRNoPostInspectionEvent dVIRNoPostInspection(DeviceState state, GeoPoint location){
+		return classes.new DVIRNoPostInspectionEvent(state, location);
+	}
+	
+	public static void dVIRNoPostInspection(DeviceBase device){
+		device.addEvent(dVIRNoPostInspection(device.getState(), device.getCurrentLocation()));
+	}
+	
+	public static RequestSettingsEvent requestSettings(DeviceState state, GeoPoint location){
+		return classes.new RequestSettingsEvent(state, location);
+	}
+	
+	public static void requestSettings(DeviceBase device){
+		device.addEvent(requestSettings(device.getState(), device.getCurrentLocation()));
+	}
 	
 	
 	public class PanicEvent extends AutomationDeviceEvents {
@@ -1164,6 +1213,24 @@ public class AutomationDeviceEvents {
 		
 		private DVIRPreTripFailEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.PRE_TRIP_INSPECTION, state, location);
+
+			SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
+					new AutomationCalendar(), new GeoPoint(), false, false,
+					HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+					65, 0, 0, 47, 0);
+			
+			note.addAttr(EventAttr.INSPECTION_TYPE, 1);
+			note.addAttr(EventAttr.VEHICLE_SAFE_TO_OPERATE, 0);
+
+			List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+			notes.add(note);
+			try {
+				new MCMProxyObject(AutoSilos.DEV).sendHttpNote(state.getMcmID(), Direction.wifi, notes, state.getImei());
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -1172,6 +1239,24 @@ public class AutomationDeviceEvents {
 		
 		private DVIRPreTripPassEvent(DeviceState state, GeoPoint location){
 			super(DeviceNoteTypes.PRE_TRIP_INSPECTION, state, location);
+
+			SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
+					new AutomationCalendar(), new GeoPoint(), false, false,
+					HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+					65, 0, 0, 47, 0);
+			
+			note.addAttr(EventAttr.INSPECTION_TYPE, 1);
+			note.addAttr(EventAttr.VEHICLE_SAFE_TO_OPERATE, 1);
+
+			List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+			notes.add(note);
+			try {
+				new MCMProxyObject(AutoSilos.DEV).sendHttpNote(state.getMcmID(), Direction.wifi, notes, state.getImei());
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -1179,7 +1264,25 @@ public class AutomationDeviceEvents {
 	public class DVIRPostTripFailEvent extends AutomationDeviceEvents {
 		
 		private DVIRPostTripFailEvent(DeviceState state, GeoPoint location){
-			super(DeviceNoteTypes.PRE_TRIP_INSPECTION, state, location);
+			super(DeviceNoteTypes.POST_TRIP_INSPECTION, state, location);
+
+			SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
+					new AutomationCalendar(), new GeoPoint(), false, false,
+					HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+					65, 0, 0, 47, 0);
+			
+			note.addAttr(EventAttr.INSPECTION_TYPE, 2);
+			note.addAttr(EventAttr.VEHICLE_SAFE_TO_OPERATE, 0);
+
+			List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+			notes.add(note);
+			try {
+				new MCMProxyObject(AutoSilos.DEV).sendHttpNote(state.getMcmID(), Direction.wifi, notes, state.getImei());
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -1187,15 +1290,33 @@ public class AutomationDeviceEvents {
 	public class DVIRPostTripPassEvent extends AutomationDeviceEvents {
 		
 		private DVIRPostTripPassEvent(DeviceState state, GeoPoint location){
-			super(DeviceNoteTypes.PRE_TRIP_INSPECTION, state, location);
+			super(DeviceNoteTypes.POST_TRIP_INSPECTION, state, location);
+			
+			SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
+					new AutomationCalendar(), new GeoPoint(), false, false,
+					HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+					65, 0, 0, 47, 0);
+			
+			note.addAttr(EventAttr.INSPECTION_TYPE, 2);
+			note.addAttr(EventAttr.VEHICLE_SAFE_TO_OPERATE, 1);
+
+			List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+			notes.add(note);
+			try {
+				new MCMProxyObject(AutoSilos.DEV).sendHttpNote(state.getMcmID(), Direction.wifi, notes, state.getImei());
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		
+				
 	}
 	
 	public class DVIRUnsafeEvent extends AutomationDeviceEvents {
 		
 		private DVIRUnsafeEvent(DeviceState state, GeoPoint location){
-			super(DeviceNoteTypes.PRE_TRIP_INSPECTION, state, location);
+			super(DeviceNoteTypes.DVIR_DRIVEN_UNSAFE, state, location);
 		}
 		
 	}
@@ -1203,7 +1324,7 @@ public class AutomationDeviceEvents {
 	public class DVIRNoPreInspectionEvent extends AutomationDeviceEvents {
 		
 		private DVIRNoPreInspectionEvent(DeviceState state, GeoPoint location){
-			super(DeviceNoteTypes.PRE_TRIP_INSPECTION, state, location);
+			super(DeviceNoteTypes.DVIR_DRIVEN_NOPREINSPEC, state, location);
 		}
 		
 	}
@@ -1211,12 +1332,18 @@ public class AutomationDeviceEvents {
 	public class DVIRNoPostInspectionEvent extends AutomationDeviceEvents {
 		
 		private DVIRNoPostInspectionEvent(DeviceState state, GeoPoint location){
-			super(DeviceNoteTypes.PRE_TRIP_INSPECTION, state, location);
+			super(DeviceNoteTypes.DVIR_DRIVEN_NOPOSTINSPEC, state, location);
 		}
 		
 	}
 	
-	
+	public class RequestSettingsEvent extends AutomationDeviceEvents {
+		
+		private RequestSettingsEvent(DeviceState state, GeoPoint location){
+			super(DeviceNoteTypes.REQUEST_SETTINGS, state, location);
+		}
+		
+	}
 	
 
 }

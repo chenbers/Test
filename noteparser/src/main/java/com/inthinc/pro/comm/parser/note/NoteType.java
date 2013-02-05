@@ -194,7 +194,7 @@ public enum NoteType {
 	CRASH(209, new Attrib[]{}),
 	SPEED_COACHING(210, new Attrib[]{}),
     CHECK_HOURS_EX(215, new Attrib[]{}),
-	RF_KILL(218, new Attrib[]{}),
+    GET_VSETTINGS(218, new Attrib[]{}),
     CREATE_ROAD_HAZARD(226, new Attrib[]{}),
     RHA_CONFIRM_REJECT(227, new Attrib[]{}),
     SEND_ROAD_HAZARDS(228, new Attrib[]{}),
@@ -271,7 +271,6 @@ public enum NoteType {
 		return (noteType == CLEAR_DRIVER 
 				|| noteType == LOW_BATTERY 
 				|| noteType == IGNITION_OFF 
-				|| noteType == RF_KILL 
 				|| noteType == HOS_CHANGE_STATE_EX 
 				|| noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
 //				|| noteType == LOW_POWER_MODE
