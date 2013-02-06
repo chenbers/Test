@@ -252,9 +252,6 @@
 							 mapTypeId: mapTypeId,
 							 mapTypeControl: true,
 							 panControl: true,
-//							 zoomControlOptions : {
-//								 style: google.maps.ZoomControlStyle.LARGE
-//							 },
 							 mapTypeControlOptions : {
 								style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
 							 },
