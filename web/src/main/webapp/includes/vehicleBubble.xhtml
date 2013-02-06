@@ -77,17 +77,6 @@
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
-<!-- 			
-			<ui:fragment rendered="#{addressLookupAddressFormat == 1}"> 
-				<h:outputText value="#{vehicleAddress}" />
-			</ui:fragment>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 2}"> 
-				<a href="#{vehicleAddress}" target="_blank">#{messages.livefleet_address}</a> 
-			</ui:fragment>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> 
-				<h:outputText id="bubbleAddress"/>
-			</ui:fragment>
--->			
 			<ui:include src="/includes/addressLookup.xhtml">
 				<ui:param name="addressLookupType" value="#{addressLookupAddressFormat}" />
 				<ui:param name="address" value="#{vehicleAddress}" />

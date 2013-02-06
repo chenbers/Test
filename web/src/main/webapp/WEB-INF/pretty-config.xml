@@ -84,16 +84,14 @@
     <url-mapping id="team">
         <pattern>/app/team/#{teamCommonBean.groupID}</pattern>
         <view-id>/secured/dashboard/new_team.faces</view-id>
-    </url-mapping>  
-    <!--<url-mapping id="newteam">
-        <pattern>/app/newteam/#{teamCommonBean.groupID}</pattern>
-        <view-id>/secured/dashboard/new_team.faces</view-id>
-    </url-mapping>-->   
+    </url-mapping>
+<!--       
 	<url-mapping id="groupOverview">
 		<pattern>/app/groupOverview</pattern>
 		<query-param name="groupID">#{navigationBean.groupID}</query-param>
 		<view-id>/secured/groupOverview.faces</view-id>
 	</url-mapping>
+ -->	
 	<url-mapping id="driverPerformance">
 		<pattern>/app/driver/#{driverPerformanceBean.driverID}</pattern>
 		<view-id>/secured/driverPerformance.faces</view-id>

@@ -3,8 +3,21 @@
 	            xmlns:h="http://java.sun.com/jsf/html" 
 	            xmlns:rich="http://richfaces.org/rich"
 	            xmlns:a4j="http://richfaces.org/a4j">
+<!-- 
+Usage:
+Include this on page:
+		<a4j:loadScript src="/js/mapv3/addressLookup.js"/>
+
+			<ui:include src="/includes/addressLookup.xhtml">
+				<ui:param name="addressLookupType" value="#{addressLookupAddressFormat}" />
+				<ui:param name="address" value="#{vehicleAddress}" />
+				<ui:param name="lat" value="#{lat}" />
+				<ui:param name="lng" value="#{lng}" />
+			</ui:include>
+	            
+-->
 	<ui:fragment rendered="#{addressLookupType == 1}"> <!--Address -->
-		<h:outputText value="#{vehicleAddress}" />
+		<h:outputText value="#{address}" />
 	</ui:fragment>
 	<ui:fragment rendered="#{addressLookupType == 2}"> <!-- Link -->
 		<a href="#{address}" target="_blank">#{messages.livefleet_address}</a> 

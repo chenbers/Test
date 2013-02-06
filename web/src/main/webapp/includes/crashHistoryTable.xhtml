@@ -21,7 +21,7 @@
             <!-- Data -->
             <rich:column id="mapColumn">
                 <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
-                    <rich:componentControl for="crashLocationModal" event="onclick" disableDefault="true" operation="show">
+                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
                         <f:param name="lat" value="#{item.latitude}" />
                         <f:param name="lng" value="#{item.longitude}" />
                     </rich:componentControl>
@@ -184,32 +184,6 @@
 
     </rich:modalPanel>
 
-    <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="crashLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng);">
-        <f:facet name="header">
-            <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
-        </f:facet>
-        <f:facet name="controls">
-            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
-            	onclick="Richfaces.hideModalPanel('crashLocationModal')" />
-        </f:facet>
-
-        <div class="eventmap-border">
-        	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
-        </div>
-
-		<h:form>
-        <div class="popupactions">
-        	<a4j:commandButton id="crashHistoryTableNo" value="#{messages.button_close}" 
-        		onclick="Richfaces.hideModalPanel('crashLocationModal')" styleClass="left">
-            	<span class="edit"> <h:outputText value="#{messages.button_close}" /> 
-            	</span>
-        	</a4j:commandButton>
-        </div>
-		</h:form>
-    </rich:modalPanel>
-    <!-- END LOCATION MODAL -->
-    
 	<a4j:form id="updateCrashStatus">
 		<a4j:jsFunction name="updCrshStat" action="#{crashHistoryBean.updateCrashStatus}" 
 			reRender="#{context}" >
@@ -217,12 +191,5 @@
 		</a4j:jsFunction>
 	</a4j:form>	    
 	
-	<a4j:form id="lookForZone">
-		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="checkForZoneName('#{addressBean.zoneName}')">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>			
-		</a4j:jsFunction>
-	</a4j:form>   
 
 </ui:composition>

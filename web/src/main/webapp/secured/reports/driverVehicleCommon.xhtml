@@ -38,7 +38,7 @@
 	    {
   			if (map == null) {
 				map = inthincMap.init({
-					'canvasID' : '#{mapDiv}',
+					'canvasID' : 'address-canvas',
 					'center' : {
 						'lat' : lat,
 						'lng' : lng
@@ -86,6 +86,33 @@
     	}
 		
     	</script>
+    	
+    	
+    	<!-- START LOCATION MODAL -->
+	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" resizeable="false">
+		<f:facet name="header">
+	    	<h:outputText value="#{messages.driver_event_location}" />
+	    </f:facet>
+	    <f:facet name="controls">
+	    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+	    </f:facet>
+	
+	    <div class="eventmap-border">
+	    	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+	    </div>
+	
+		<h:form>
+	    <div class="popupactions">
+	    	<a4j:commandButton id="eventLocationModalClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+	   			<span class="edit">
+	   				<h:outputText value="#{messages.button_close}" />
+	   			</span>
+		 	</a4j:commandButton>
+	    </div>
+	    </h:form>
+	</rich:modalPanel>
+<!-- END LOCATION MODAL -->
+    	
 
 </ui:composition>
 </html>

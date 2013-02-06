@@ -11,8 +11,7 @@
 
 
 		<script type="text/javascript">
-			//<![CDATA[
-// move to team page?
+		//<![CDATA[
 		var map = null;
 		var isReverseGeocode = false;
 		var BUBBLE_DIV_ID = "driverBubble";
@@ -112,7 +111,10 @@
 				</ui:repeat>
 
 				inthincMap.centerAndZoom(map, bounds);
-				markerClusterer = new MarkerClusterer(map,markers,{styles:getMarkerClustererStyles('#{request.contextPath}')});
+				markerClusterer = new MarkerClusterer(map, markers, {
+					styles : getMarkerClustererStyles('#{request.contextPath}'),
+					maxZoom : 20
+				});
 
 			}
 			</script>

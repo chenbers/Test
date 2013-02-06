@@ -1,7 +1,7 @@
 /*
  	Usage:
  		include in your xhtml page within the <ui:define name="scripts"> section
-		<a4j:loadScript src="/js/map/maps.js"/>  
+		<a4j:loadScript src="/js/mapv3/maps3.js"/>  
  	Dependency:
 		include google maps prior
 		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
@@ -265,7 +265,6 @@
 					 };
 					var map = new google.maps.Map(document.getElementById(canvasID), mapOptions);
 					mapStates.push(new MapState(map));
-					
 					return map;
       			},
       			zoom: function(map, zoomTo) {
@@ -278,6 +277,9 @@
       			},
       			centerAndZoom : function(map, bounds) {
       				map.fitBounds(bounds);
+      			},
+      			triggerResize : function (map) {
+      				google.maps.events.trigger(map, 'resize');
       			},
   				lookupAddress: function(map, address, resultHandler) {
   					geocoder.geocode({'address': address }, resultHandler ? resultHandler : function (result, status) {

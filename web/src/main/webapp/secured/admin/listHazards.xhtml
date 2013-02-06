@@ -305,7 +305,10 @@
     				}
 
     				inthincMap.centerAndZoom(map, bounds);
-    				markerClusterer = new MarkerClusterer(map,markers,{styles:getMarkerClustererStyles('#{request.contextPath}')});
+    				markerClusterer = new MarkerClusterer(map,markers,{
+    					styles:getMarkerClustererStyles('#{request.contextPath}'),
+    					maxZoom : 20
+					});
     			}
 	
   				var bubbleMarker = null;

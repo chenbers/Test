@@ -11,13 +11,6 @@
          
        <ui:define name="scripts">
           <a4j:loadScript src="/js/FusionCharts.js"/>  
-          <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-          <script> 
-				function bodyUnload()
-				{
-					GUnload();
-				}
-          </script>  
        </ui:define>  
         <ui:param name="title" value="#{messages.overview} - #{navigationBean.group.name}"/>
       	<ui:param name="homeSelected" value="current" />

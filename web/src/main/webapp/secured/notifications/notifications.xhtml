@@ -62,7 +62,7 @@
 	        }
 
           }
-
+	  	  
           function initializeTable()
           {
               jQuery(".clickable-map-icon").click(function(){
@@ -94,14 +94,12 @@
    				var lng = document.getElementById("#{context}-form:#{context}:"+index+":eventLng");
 	      		
 	      		if (address.innerHTML.length==0){
-		      		
 					if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
 						reverseGeocodeTripAddress(new google.maps.LatLng(lat.value,lng.value),address,index);
 					}
 					else {						
 						lkFrZn(lat.value,lng.value,index);
 					}
-								
 	      		}
 			 
 		 }
@@ -167,5 +165,41 @@
                 </ul>
             </div>
         </div>
+    
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" 
+    	onshow="initializeMap(event.parameters.lat, event.parameters.lng, event.parameters.zonePoints, event.parameters.noteID);"
+    	resizeable="false">
+        <f:facet name="header">
+            <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+        </f:facet>
+
+        <div class="eventmap-border">
+        <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+        </div>
+
+		<h:form>
+        <div class="popupactions">
+        	<a4j:commandButton id="close" type="button" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+            	<span class="edit"> 
+            		<h:outputText value="#{messages.button_close}" /> 
+            	</span>
+        	</a4j:commandButton>
+        </div>
+        </h:form>
+    </rich:modalPanel>
+    
+    
+    <a4j:form id="lookForZone">
+		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="checkForZoneName('#{addressBean.zoneName}')">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>			
+		</a4j:jsFunction>
+	</a4j:form>   
+    
     </ui:define>
+    
 </ui:composition>
