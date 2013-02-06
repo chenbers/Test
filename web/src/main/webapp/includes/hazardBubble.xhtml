@@ -5,26 +5,23 @@
 -->
 <ui:composition 
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
 	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:pretty="http://ocpsoft.com/prettyfaces">
-
-		<a4j:loadScript src="/js/mapBubble.js"/>
-	<div id="vehicleBubble" style="display:none">
+	xmlns:h="http://java.sun.com/jsf/html">
+	<div id="hazardBubble" style="display:none">
 		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header" footerClass="google_popups_footer">
-			<h:outputText value="#{messages.hazard_latitude}:"/>
-			<h:outputText value="#{item.latitude}" />
-			<h:outputText value="#{messages.hazard_longitude}:"/>
-			<h:outputText value="#{item.longitude}"/>
+			<ui:fragment rendered="#{hazard.description}">
+				<h:outputText value="#{messages.hazard_description}:"/>
+				<h:outputText value="#{hazard.description}" />
+			</ui:fragment>
 			<h:outputText value="#{messages.hazard_type}:"/>
-            <h:outputText value="#{item.type}"/>
-			//TODO: add rest of hazard details
+			<h:outputText value="#{messages[hazard.type]}"/>
+			<h:outputText value="#{messages.hazard_radius}:"/>
+			<h:panelGroup>               
+            	<h:outputText value="#{hazard.radiusInUnits} "/>
+            	<h:outputText value="miles" converter="MeasurementTextConverter"></h:outputText>
+            </h:panelGroup>
+			<h:outputText value="#{messages.hazard_endTime}:"/>
+            <h:outputText value="#{hazard.endTime}"><f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{timeZone}" /></h:outputText>
 		</h:panelGrid>
 	</div>
 </ui:composition>

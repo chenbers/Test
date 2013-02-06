@@ -60,6 +60,7 @@ public class HazardsBean extends BaseBean {
     protected List<Hazard> tableData;
     //protected List<Hazard> filteredTableData;
     private String sendHazardMsg;
+    private Integer selectedHazardID;
     static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
@@ -492,5 +493,12 @@ public class HazardsBean extends BaseBean {
     }
     public void setFwdCmdSpoolWS(FwdCmdSpoolWS fwdCmdSpoolWS) {
         this.fwdCmdSpoolWS = fwdCmdSpoolWS;
+    }
+    
+    public Integer getSelectedHazardID() {
+        return selectedHazardID;
+    }
+    public void setSelectedHazardID(Integer selectedHazardID) {
+        this.selectedHazardID = selectedHazardID;
     }
 }

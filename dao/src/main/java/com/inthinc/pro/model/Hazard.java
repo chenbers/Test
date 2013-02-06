@@ -105,6 +105,10 @@ public class Hazard extends BaseEntity implements HasAccountId {
     public Double getLng() {
         return getLongitude();
     }
+    
+    public LatLng getLatLng() {
+        return new LatLng(getLat(), getLng());
+    }
     /**
      * 
      * Device expecting the following order of parameters when sent over hessian:
