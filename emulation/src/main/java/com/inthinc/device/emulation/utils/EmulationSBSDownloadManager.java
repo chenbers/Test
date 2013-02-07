@@ -16,7 +16,6 @@ import com.inthinc.device.emulation.interfaces.SbsHessianInterface;
 import com.inthinc.device.hessian.tcp.HessianException;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.sbs.SbsUpdater;
-import com.inthinc.sbs.downloadmanager.SbsDownloadAction;
 import com.inthinc.sbs.downloadmanager.SbsDownloadManager;
 import com.inthinc.sbs.simpledatatypes.VisitedMap;
 import com.inthinc.sbs.utils.AbstractSbsMapLoader;
@@ -256,25 +255,23 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
             return new HashMap<String, Object>();
         }
     }
-
+    
+    @Override
     public boolean queueGetSbsBase(int fileAsInt, int baseline) {
         getSbsBase(fileAsInt, baseline);
         return true;
     }
-
+    
+    @Override
     public boolean queueCheckSbsEditNG(int fileAsInt, int baseline, int currentVersion) {
         checkSbsEditNG(baseline, fileAsInt, currentVersion);
         return true;
     }
 
+    @Override
     public boolean queueGetSbsEditNG(int fileAsInt, int baseline, int currentVersion, int newVersion) {
         getSbsEditNG(fileAsInt, baseline, currentVersion, newVersion);
         return true;
     }
 
-    @Override
-    public boolean queueAction(SbsDownloadAction arg0) {
-        // TODO Auto-generated method stub
-        return false;
-    }
 }
