@@ -1,7 +1,6 @@
 package com.inthinc.device.emulation;
 
-import com.inthinc.device.devices.WaysmartDevice;
-import com.inthinc.device.devices.WaysmartDevice.Direction;
+import com.inthinc.device.devices.TiwiProDevice;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
@@ -12,12 +11,12 @@ public class TripFaker {
 	
 	public static void main(String args[]) {
 		
-		//TiwiProDevice tiwi = new TiwiProDevice("011596000041321", AutoSilos.QA);
+		TiwiProDevice tiwi = new TiwiProDevice("999649010582820", AutoSilos.QA);
         //TiwiProDevice tiwi = new TiwiProDevice("120275615159901", AutoSilos.DEV);
         //TiwiProDevice tiwi = new TiwiProDevice("999999000109751", AutoSilos.QA);
         NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
         //noteTest.testDVIRNote("MCM821853", "300034012559130");
-		WaysmartDevice tiwi = new WaysmartDevice("300123321", "MCM913542", AutoSilos.QA, Direction.gprs);
+		//WaysmartDevice tiwi = new WaysmartDevice("300123321", "MCM913542", AutoSilos.QA, Direction.gprs);
         tiwi.dump_settings();
         DeviceState state = tiwi.getState();
         tiwi.increment_time(60);
