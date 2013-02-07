@@ -261,10 +261,14 @@ public class EmailReportJob extends QuartzJobBean {
                         
                         for (Integer driverID : driverIDList) {
                             Driver driver = findDriver(driverList, driverID);
-                            if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
+                            if (driver == null) {
+                            	logger.info("Driver may have been moved off this team.  DriverID is :" + driverID);
+                            	continue;
+                            }
+                            else if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
                                 logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
                             else {
-                                logger.info("Sending to  driver with Primary E-Mail address: " + driver.getPerson().getPriEmail());
+                                logger.info("Sending to driver with Primary E-Mail address: " + driver.getPerson().getPriEmail());
                                 List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
                                 for (ReportCriteria rc : rcList) {
                                     if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
