@@ -255,13 +255,13 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
             return new HashMap<String, Object>();
         }
     }
-
+    
     @Override
     public boolean queueGetSbsBase(int fileAsInt, int baseline) {
         getSbsBase(fileAsInt, baseline);
         return true;
     }
-
+    
     @Override
     public boolean queueCheckSbsEditNG(int fileAsInt, int baseline, int currentVersion) {
         checkSbsEditNG(baseline, fileAsInt, currentVersion);
@@ -273,4 +273,5 @@ public class EmulationSBSDownloadManager implements SbsDownloadManager {
         getSbsEditNG(fileAsInt, baseline, currentVersion, newVersion);
         return true;
     }
+
 }
