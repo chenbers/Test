@@ -1,5 +1,6 @@
 package com.inthinc.pro.map;
 
+import java.security.InvalidKeyException;
 import java.util.List;
 import java.util.Locale;
 
@@ -9,6 +10,8 @@ import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Zone;
 
 public abstract class  AddressLookup {
+    private static String CLIENT_ID = "gme-inthinc";
+    private static String CLIENT_KEY ="75DvrHN4--GCuiYpLF3JifZGIx4=";
 	public enum AddressFormat{ADDRESS(1), LINK(2), LATLNG(3);
 	
 		private int code;
@@ -92,22 +95,15 @@ public abstract class  AddressLookup {
          return language;
      }
 
-    protected String getClientID() {
-        return "gme-inthinc";
-    }
-    protected String getClientKey() {
-        return "gme-inthinc";
-    }
     protected Geocoder getGeocoder() throws NoAddressFoundException {
-//        Geocoder geocoder;
-//        try {
-//            geocoder = new Geocoder(getClientID(), getClientKey());
-//        } catch (InvalidKeyException e) {
-//            throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_MAP_KEY);
-//        }
-//        
-//        return geocoder;
-        return new Geocoder();
+        Geocoder geocoder;
+        try {
+            geocoder = new Geocoder(CLIENT_ID, CLIENT_KEY);
+        } catch (InvalidKeyException e) {
+            throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_MAP_KEY);
+        }
+        
+        return geocoder;
     }
 
 }
