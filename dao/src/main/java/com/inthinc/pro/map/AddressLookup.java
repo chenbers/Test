@@ -3,6 +3,7 @@ package com.inthinc.pro.map;
 import java.util.List;
 import java.util.Locale;
 
+import com.google.code.geocoder.Geocoder;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Zone;
@@ -58,7 +59,7 @@ public abstract class  AddressLookup {
         try{
             String returnAddress = getAddress(latLng);
             if (returnAddress == null)
-                throw new NoAddressFoundException(null, null, null);
+                throw new NoAddressFoundException(null, null);
             return returnAddress;
         }
         catch(NoAddressFoundException nafe){
@@ -84,4 +85,29 @@ public abstract class  AddressLookup {
         }
         return null;
     }
+    protected String getLanguage() {
+        String language = "en";
+         if (getLocale() != null && getLocale().getLanguage() != null)
+             language = getLocale().getLanguage();
+         return language;
+     }
+
+    protected String getClientID() {
+        return "gme-inthinc";
+    }
+    protected String getClientKey() {
+        return "gme-inthinc";
+    }
+    protected Geocoder getGeocoder() throws NoAddressFoundException {
+//        Geocoder geocoder;
+//        try {
+//            geocoder = new Geocoder(getClientID(), getClientKey());
+//        } catch (InvalidKeyException e) {
+//            throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_MAP_KEY);
+//        }
+//        
+//        return geocoder;
+        return new Geocoder();
+    }
+
 }

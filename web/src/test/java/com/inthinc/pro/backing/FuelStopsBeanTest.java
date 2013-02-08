@@ -60,7 +60,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         
          locateVehicleByTime =(LocateVehicleByTime)applicationContext.getBean("locateVehicleByTime");
          googleAddressLookupBean = new GoogleAddressLookup();
-         googleAddressLookupBean.setGoogleMapGeoUrl("https://maps-api-ssl.google.com/maps/geo?client=gme-inthinc&sensor=false&q=");
+
          locateVehicleByTime.setGoogleAddressLookupBean(googleAddressLookupBean);
     }
     @After

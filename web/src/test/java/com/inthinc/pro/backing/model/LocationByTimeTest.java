@@ -24,7 +24,6 @@ public class LocationByTimeTest {
         mockHOSDAO = new MockHOSDAO();
         locateVehicleByTime = new LocateVehicleByTime();
         googleAddressLookupBean = new GoogleAddressLookup();
-        googleAddressLookupBean.setGoogleMapGeoUrl("https://maps-api-ssl.google.com/maps/geo?client=gme-inthinc&sensor=false&q=");
         locateVehicleByTime.setHosDAO(mockHOSDAO);
         locateVehicleByTime.setGoogleAddressLookupBean(googleAddressLookupBean);
     }

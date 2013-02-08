@@ -1,7 +1,5 @@
 package com.inthinc.pro.reports;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +36,6 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
     @Before
     public void setup() {
         AddressLookup addressLookup = new GoogleAddressLookup();
-        ((GoogleAddressLookup)addressLookup).setGoogleMapGeoUrl("https://maps-api-ssl.google.com/maps/geo?client=gme-inthinc&sensor=false&q=");
         reportAddressLookup = new ReportAddressLookupBean();
         reportAddressLookup.setReportAddressLookupBean(addressLookup);
     }
