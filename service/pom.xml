@@ -352,6 +352,11 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.6.5</version>
 		</dependency>
+		<dependency>
+    		<groupId>com.google.code.geocoder-java</groupId>
+    		<artifactId>geocoder-java</artifactId>
+    		<version>0.12</version>
+  		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>
