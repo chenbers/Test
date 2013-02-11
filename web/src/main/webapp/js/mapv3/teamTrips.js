@@ -624,11 +624,12 @@
  */
 	function displayAllTrips(map, driversTrips){
 	    clearDownTrips(map);
-	    
-		var length = driversTrips.length;
-		for (var i=0;i<length;i++){
-			addDriverTrips(map, driversTrips[i].driverIndex,driversTrips[i]);
-		}
+	    if (driverTrips) {
+	    	var length = driversTrips.length;
+	    	for (var i=0;i<length;i++){
+	    		addDriverTrips(map, driversTrips[i].driverIndex,driversTrips[i]);
+	    	}
+	    }
 	}
 
 /**

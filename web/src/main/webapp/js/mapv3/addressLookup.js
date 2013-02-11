@@ -11,7 +11,7 @@
 	   					addressElements.push(addressElement);
    				});
    				return addressElements;
-    		}
+    		};
         	return {
         		findAddress : function(divID, callback) {
 		    		inthincMap.reverseGeocodeList(collectAddressElements(divID), callback);
