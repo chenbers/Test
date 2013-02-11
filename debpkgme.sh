@@ -49,7 +49,7 @@ function check_jenkins_variables {
 
 
 function setup_variables {
-    if [ -f "/etc/lsb-release" ]
+    if [ -f "$(pwd)/lsb-release" ]
     then
         LSB_RELEASE="$(pwd)/lsb-release"
     else
