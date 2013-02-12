@@ -228,8 +228,7 @@
       					map.overlayMapTypes.clear();
       					map.controls[google.maps.ControlPosition.RIGHT_TOP].clear();
       					clearLayersForMap(map);
-      				},
-
+      				}
       			};
       			
       		})();
@@ -257,7 +256,7 @@
 							 },
 							 overviewMapControl: overviewMapControl,
 							 overviewMapControlOptions: {
-							      opened: overviewMapControl,
+							      opened: overviewMapControl
 							 }
 
 
