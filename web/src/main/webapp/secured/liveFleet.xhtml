@@ -15,6 +15,9 @@
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="ajaxPanels" value="inputFormPanel"/>
 	<ui:define name="scripts">
+		<!-- Use Internet Explorer 8 Standards mode (errors occur in faces javascript with IE 9 otherwise) -->
+		<meta http-equiv="x-ua-compatible" content="IE=8" />
+	
  		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 		<a4j:loadScript src="/js/mapv3/markerclusterer_compiled.js"/>
 		<a4j:loadScript src="/js/mapv3/markerclustererWrapper.js"/>
@@ -55,8 +58,6 @@
    			// Clear all existing markers and zoom boundary.
    			inthincMap.clearMarkers(map);
 			
-			bounds = new google.maps.LatLngBounds();
-   			
 			//Text field is blank, process form for only number of vehicles dropdown.
 	   		if(address.length == 0)  
    			{

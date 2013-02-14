@@ -309,7 +309,7 @@
     			    			  position : result[0].geometry.location
     			    		  });
     			    		  inthincMap.createInfoWindow(map,  {
-    			      				content : result[0].formatted_address,
+    			      				content : result[0].formatted_address + "<br/>" + result[0].geometry.location,
     			      				marker: marker
    			      			  });
     			    		  if (callback) {
