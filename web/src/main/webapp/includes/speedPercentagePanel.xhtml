@@ -22,7 +22,7 @@
 			"'> <categories> <category label='   '/> </categories><dataset><dataset seriesName='#{messages.speeding_percentage_speeding_bar_label}' color='1e88c8' showValues='0'> <set value='0'/></dataset><dataset seriesName='#{messages.speeding_percentage_distance_bar_label}' color='cccccc' showValues='0'> <set value='0'/></dataset></dataset><lineset seriesName='#{messages.speeding_percentage_speeding_line_label}' color='000066' showValues='0' ></lineset></chart>"
 //]]>
 			speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "SpeedChartID", "#{xywidth}", "#{xyheight}", "0", "1");
-			speedingChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
+// 			speedingChart.addVariable("ChartNoDataText", "#{messages.chartChartNoData}");
 
 			speedingChart.setDataXML(speedingChartXML);	
  			speedingChart.setTransparent(true);
