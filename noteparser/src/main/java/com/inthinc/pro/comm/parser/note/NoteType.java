@@ -1,6 +1,7 @@
 package com.inthinc.pro.comm.parser.note;
 
 import com.inthinc.pro.comm.parser.attrib.Attrib;
+
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +50,7 @@ public enum NoteType {
 	TIMESTAMP(42, new Attrib[]{}),
 //	HOS_RECEIVED(43, new Attrib[]{}),
 	LOCATION_DEBUG(44, new Attrib[]{}),
-//	CRASH_DATA(45, new Attrib[]{}),
+	CRASH_DATA(45, new Attrib[]{}),
 	NO_DRIVER(46, new Attrib[]{Attrib.TOPSPEED, Attrib.DISTANCE, Attrib.MAXRPM}),
 	ON_ROAD(47, new Attrib[]{}),
 	OFF_ROAD(48, new Attrib[]{}),
@@ -195,6 +196,12 @@ public enum NoteType {
 	SPEED_COACHING(210, new Attrib[]{}),
     CHECK_HOURS_EX(215, new Attrib[]{}),
     GET_VSETTINGS(218, new Attrib[]{}),
+    
+    //DVIR
+    DVIR_DRIVEN_UNSAFE(223, new Attrib[]{}),
+    DVIR_DRIVEN_NOPREINSPEC(224, new Attrib[]{}),
+    DVIR_DRIVEN_NOPOSTINSPEC(225, new Attrib[]{}),
+    
     CREATE_ROAD_HAZARD(226, new Attrib[]{}),
     RHA_CONFIRM_REJECT(227, new Attrib[]{}),
     SEND_ROAD_HAZARDS(228, new Attrib[]{}),
