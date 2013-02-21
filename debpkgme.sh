@@ -99,18 +99,35 @@ function merge_tomcat6_blank_with_tmp {
 }
 
 function setup_tomcat2_variables {
+
+    declare -x DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     declare -x U_GID="1090"
     declare -x MY_GROUP_USER="tiwipro"
     declare -x TOMCAT_USER="tomcat2"
     declare -x MY_USER_HOME="/usr/local/${TOMCAT_USER}"
-    declare -x TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}//webapps"
+    declare -x TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}/webapps"
     declare -x WARS="hoskiosk tiwiproutil tiwipro service"
     declare -x BASE_INSTALL_DIR="${MY_USER_HOME}"
-    declare -x DEB_Package="tomcat2_qa"
+    declare -x DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>1.4), nginx-full"
+    declare -x DEB_Package="inthinc-${JOB_NAME}-tomcat2"
     declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     declare -x DEB_Conflicts="tomcat2, tiwipro-wars"
     declare -x DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}.deb"
     declare -x DEB_Provides="tomcat2, tiwipro-wars"
+    echo "Setup tomcat2 variables :"
+    echo "U_GID ${U_GID}"
+    echo "MY_GROUP_USER ${MY_GROUP_USER}"
+    echo "TOMCAT_USER ${TOMCAT_USER }"
+    echo "MY_USER_HOME ${MY_USER_HOME}"
+    echo "TOMCAT_WEBAPPS_DIR ${TOMCAT_WEBAPPS_DIR}"
+    echo "WARS ${WARS}"
+    echo "BASE_INSTALL_DIR ${BASE_INSTALL_DIR}"
+    echo "DEB_Depends ${DEB_Depends}"
+    echo "DEB_Package ${DEB_Package}"
+    echo "DEB_Package_u ${DEB_Package_u}"
+    echo "DEB_Conflicts ${DEB_Conflicts}"
+    echo "DEB_Package_Filename ${DEB_Package_Filename}"
+    echo "DEB_Provides ${DEB_Provides}"
 }
 
 function update_control_scripts {
@@ -266,6 +283,11 @@ function update_control_file {
      then
          echo "Failed to create ${CONTROL_FILE}, exiting at $(date)"
          exit 1
+    fi
+    if [ ! "${DEB_Package_u}" ]
+     then
+        echo "Missing DEB_Package_u, setting at $(date)"
+        declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     fi
 
     if [ "${DEB_Package_u}" ]; then echo "Package: ${DEB_Package_u}" | tee ${CONTROL_FILE}; fi
