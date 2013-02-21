@@ -99,7 +99,7 @@ function merge_tomcat6_blank_with_tmp {
 }
 
 function setup_tomcat2_variables {
-
+echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
     declare -x DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     declare -x U_GID="1090"
     declare -x MY_GROUP_USER="tiwipro"
