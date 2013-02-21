@@ -214,8 +214,8 @@ function reprepro_clean {
 # reprepro --ask-passphrase -Vb /var/www/debian removematched precise portal-backend-dev-deb
 # Delete from file
 # reprepro --ask-passphrase -Vb /var/www/debian deleteunreferenced
-echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}"
-reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}
+echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}"
+reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}
 echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
 reprepro -Vb ${DEB_repository_dir} deleteunreferenced
 }
@@ -268,7 +268,7 @@ function update_control_file {
          exit 1
     fi
 
-    if [ "${DEB_Package}" ]; then echo "Package: ${DEB_Package}" | tee ${CONTROL_FILE}; fi
+    if [ "${DEB_Package_u}" ]; then echo "Package: ${DEB_Package_u}" | tee ${CONTROL_FILE}; fi
     if [ "${DEB_Source}" ]; then echo "Source: ${DEB_Source}" | tee -a ${CONTROL_FILE}; fi
     if [ "${DEB_Version}" ]; then echo "Version: ${DEB_Version}" | tee -a ${CONTROL_FILE}; fi
     if [ "${DEB_Architecture}" ]; then echo "Architecture: ${DEB_Architecture}" | tee -a ${CONTROL_FILE}; fi
@@ -398,7 +398,7 @@ function reprepro_add {
     else
         echo "We are not running on the master node, skipping reprepro steps"
         echo "Additional steps required to add these packages to the master node"
-        echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}"
+        echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}"
         echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
         echo "reprepro -Vb ${DEB_repository_dir} includedeb ${DISTRIB_CODENAME} ${DEB_Package_Filename}"
     fi
