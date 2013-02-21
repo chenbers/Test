@@ -107,6 +107,7 @@ function setup_tomcat2_variables {
     declare -x WARS="hoskiosk tiwiproutil tiwipro service"
     declare -x BASE_INSTALL_DIR="${MY_USER_HOME}"
     declare -x DEB_Package="tomcat2_qa"
+    declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     declare -x DEB_Conflicts="tomcat2, tiwipro-wars"
     declare -x DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}.deb"
     declare -x DEB_Provides="tomcat2, tiwipro-wars"
@@ -165,6 +166,7 @@ function setup_variables {
         if [ ! "${DEB_S3_bucket}" ] || [ ! "${DEB_S3_bucket}" ]; then DEB_S3_bucket="ci-inthinc-com"; echo "DEB_S3_bucket not specified, using default ${DEB_S3_bucket}"; export DEB_S3_bucket; fi
         if [ ! "${DEB_repository_dir}" ]; then DEB_repository_dir="/var/www/debian"; echo "DEB_repository_dir not specified, using default ${DEB_repository_dir}"; fi
         if [ ! "${DEB_Package}" ]; then DEB_Package="inthinc-${JOB_NAME}"; echo "DEB_Package not specified, using default ${DEB_Package}"; fi
+        declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
         if [ ! "${DEB_Source}" ]; then DEB_Source="${JOB_NAME}"; echo "DEB_Source not specified, using default ${DEB_Source}"; fi
         if [ ! "${DEB_Version}" ]; then DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"; echo "DEB_Version not specified, using default ${DEB_Version}"; fi
         if [ ! "${DEB_Architecture}" ]; then DEB_Architecture="${ARCH_UBU}"; echo "DEB_Architecture not specified, using default ${DEB_Architecture}"; fi
@@ -216,7 +218,6 @@ echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DE
 reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}
 echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
 reprepro -Vb ${DEB_repository_dir} deleteunreferenced
- 
 }
 
 function reprepro_publish {
@@ -381,6 +382,7 @@ function create_archive {
         exit 1
     else
         echo "Successfully created package ${DEB_Package_Filename} at $(date)"
+        echo "MD5sum for new pacakage is $(md5sum ${DEB_Package_Filename})"
     fi
 }
 
