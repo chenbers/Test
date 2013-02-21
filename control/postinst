@@ -1,19 +1,18 @@
 #!/bin/bash
-U_UID="1090"
 U_GID="1090"
-MY_USER="tiwipro"
+MY_GROUP_USER="tiwipro"
 TOMCAT_USER="tomcat6"
 MY_USER_HOME="/usr/local/tiwipro"
 TOMCAT_WEBAPPS_DIR="/var/lib/tomcat6/webapps"
 WARS="hoskiosk tiwiproutil tiwipro scheduler service"
-GROUP_EXISTS=$(id -g ${MY_USER} 2>/dev/null)
+GROUP_EXISTS=$(id -g ${MY_GROUP_USER} 2>/dev/null)
 if [ "$?" -eq 0 ]
 then
-    echo "Group ${MY_USER} already exists"
+    echo "Group ${MY_GROUP_USER} already exists"
     U_GID=${GROUP_EXISTS}
 else
-    echo "Group ${MY_USER} does not exist, creating"
-    groupadd -g ${U_GID} ${MY_USER}
+    echo "Group ${MY_GROUP_USER} does not exist, creating"
+    groupadd -g ${U_GID} ${MY_GROUP_USER}
 fi
 
 
@@ -21,10 +20,13 @@ MY_USER_EXISTS=$(id -u ${TOMCAT_USER} 2>/dev/null)
 if [ "$?" -eq 0 ]
 then
     echo "User ${TOMCAT_USER} exists"
+else
+    echo "Creating user ${TOMCAT_USER}"
+    useradd -M -d ${MY_USER_HOME} -s /bin/bash -g ${U_GID} ${USER}
 fi
 
-echo "Adding ${TOMCAT_USER} to group ${MY_USER}"
-usermod -a -G ${MY_USER} ${TOMCAT_USER}
+echo "Adding ${TOMCAT_USER} to group ${MY_GROUP_USER}"
+usermod -a -G ${MY_GROUP_USER} ${TOMCAT_USER}
 
 service ${TOMCAT_USER} status 2>&1 >/dev/null
 if [ "$?" -ne 1 ] && [ -d "${TOMCAT_WEBAPPS_DIR}" ]

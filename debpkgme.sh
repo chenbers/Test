@@ -15,7 +15,7 @@ if [ -z "${TARBALL_FILENAME}" ] || [ ! "${TARBALL_FILENAME}" ]; then TARBALL_FIL
 
 function check_jenkins_variables {
     REQUIRED_JENKINS_ENV_VARS="BUILD_NUMBER BUILD_ID JOB_NAME BUILD_TAG EXECUTOR_NUMBER NODE_LABELS WORKSPACE JENKINS_HOME JENKINS_URL BUILD_URL JOB_URL"
-    OPTIONAL_JENKINS_ENV_VARS="DEB_S3_bucket DEB_repository_dir DEB_Package DEB_Source DEB_Version DEB_Architecture DEB_Maintainer DEB_InstalledSize DEB_PreDepends DEB_Depends DEB_Recommends DEB_Suggests DEB_Conflicts DEB_Replaces DEB_Provides DEB_Section DEB_Priority DEB_Homepage DEB_Description DEB_Conffiles NODE_NAME "
+    OPTIONAL_JENKINS_ENV_VARS="DEB_S3_bucket DEB_repository_dir DEB_Package DEB_Source DEB_Version DEB_Architecture DEB_Maintainer DEB_InstalledSize DEB_PreDepends DEB_Depends DEB_Recommends DEB_Suggests DEB_Conflicts DEB_Replaces DEB_Provides DEB_Section DEB_Priority DEB_Homepage DEB_Description DEB_Conffiles NODE_NAME TOMCAT6_REPO"
     echo -n "Checking Jenkins ENV Variables : "
     for MY_VAR in ${REQUIRED_JENKINS_ENV_VARS}
     do
@@ -47,6 +47,85 @@ function check_jenkins_variables {
     echo ""
 }
 
+function reset_control_in_temp {
+    if [ -d "${TMP_DIR}/control" ]
+    then
+        echo "Resetting control dir"
+        /bin/rm -Rf ${TMP_DIR}/control
+        cp -R ${WORKSPACE}/control ${TMP_DIR}
+    else
+        echo "No ${TMP_DIR}/control to wipe"
+    fi
+}
+
+function get_tomcat6_blank {
+    if [ -d "${WORKSPACE}/tomcat6" ]
+    then
+        echo "Tomcat6 dir exists"
+    else
+        echo "Cloning Tomcat6 from repo"
+        cd ${WORKSPACE}
+        git clone --depth=1 ${TOMCAT6_REPO} tomcat6
+        rm -Rf tomcat6/.git*
+        for D in ${T6_DIRS}
+        do
+            if [ -d "tomcat6/${D}" ]
+            then
+                echo "Have ${D}"
+            else
+                echo "Creating ${D}"
+                mkdir -p tomcat6/${D}
+            fi
+        done
+    fi
+}
+
+function merge_tomcat6_blank_with_tmp {
+    if [ -d "${TMP_DIR}/${TARBALL_FILENAME}" ] && [ -d "${WORKSPACE}/tomcat6" ] && [ ! -d "${WORKSPACE}/tomcat6/webapps" ]
+    then
+        echo "Merging wars into tomcat6"
+        /bin/mv ${TMP_DIR}/${TARBALL_FILENAME} ${WORKSPACE}/tomcat6/webapps
+        if [ -d "${WORKSPACE}/tomcat6/webapps" ] && [ ! -d "${TMP_DIR}/${TARBALL_FILENAME}" ] && [ -d "${TMP_DIR}" ]
+        then
+            /bin/mv ${WORKSPACE}/tomcat6 ${TMP_DIR}/${TARBALL_FILENAME}
+        else
+            echo "ERROR: Failed to move tomcat6 and ${TMP_DIR}/${TARBALL_FILENAME} or temp dir missing, exiting at $(date)"
+            exit 1
+        fi
+    else
+        echo "ERROR: Missing tomcat6 or temp dir, exiting at $(date)"
+        exit 1
+    fi
+}
+
+function setup_tomcat2_variables {
+    declare -x U_GID="1090"
+    declare -x MY_GROUP_USER="tiwipro"
+    declare -x TOMCAT_USER="tomcat2"
+    declare -x MY_USER_HOME="/usr/local/${TOMCAT_USER}"
+    declare -x TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}//webapps"
+    declare -x WARS="hoskiosk tiwiproutil tiwipro service"
+    declare -x BASE_INSTALL_DIR="${MY_USER_HOME}"
+    declare -x DEB_Package="tomcat2_qa"
+    declare -x DEB_Conflicts="tomcat2, tiwipro-wars"
+    declare -x DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}.deb"
+    declare -x DEB_Provides="tomcat2, tiwipro-wars"
+}
+
+function update_control_scripts {
+    CONTROL_SCRIPTS=$(find -maxdepth 1 -type f ${TMP_DIR}/control/)
+    for CONTROL_SCRIPT in ${CONTROL_SCRIPTS}
+    do
+        #perl -pi -e "s/^U_UID=.*/U_UID=\"${U_UID}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        perl -pi -e "s/^MY_GROUP_USER=.*/MY_GROUP_USER=\"${MY_GROUP_USER}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        perl -pi -e "s/^TOMCAT_USER=.*/TOMCAT_USER=\"${TOMCAT_USER}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        perl -pi -e "s/^MY_USER_HOME=.*/MY_USER_HOME=\"${MY_USER_HOME}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        perl -pi -e "s/^TOMCAT_WEBAPPS_DIR=.*/TOMCAT_WEBAPPS_DIR=\"${TOMCAT_WEBAPPS_DIR}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        perl -pi -e "s/^WARS=.*/WARS=\"${WARS}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        #debug print postinst, if we add more install scripts or other things the previous control perl subs change we should make this part smarter
+        cat ${TMP_DIR}/control/${CONTROL_SCRIPT}
+    done
+}
 
 function setup_variables {
     if [ -f "$(pwd)/lsb-release" ]
@@ -104,6 +183,8 @@ function setup_variables {
         if [ ! "${DEB_Replaces}" ]; then echo "DEB_Replaces not specified, and no default skipping"; fi
         if [ ! "${DEB_Provides}" ]; then echo "DEB_Provides not specified, and no default skipping"; fi
         if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_F    ilename ${DEB_Package_Filename}"; fi
+        if [ ! "${TOMCAT6_REPO}" ]; then TOMCAT6_REPO="git://github.com/jonzobrist/tomcat6.git"; echo "TOMCAT6_REPO not specified, using default ${TOMCAT6_REPO}"; fi
+        if [ ! "${T6_DIRS}" ]; then T6_DIRS="bkup endorsed logarchive logs temp tmp work"; echo "T6_DIRS not specified, using default ${T6_DIRS}"; fi
 
         # We should get these from our pre-compile build script
         # DEB_PreDepends
@@ -303,30 +384,60 @@ function create_archive {
     fi
 }
 
+function reprepro_add {
+    # This way doesn't work wit the way I'm using the env variables straight from Jenkins
+    #if [ "${NODE_NAME}" = "master" ]
+    # Going to use the username, and hard code ubuntu = vagrant instance, and jenkins = master node
+    if [ "${USER}" = "jenkins" ]
+    then
+        echo "We are running on the master node, running reprepro locally"
+        reprepro_clean
+        reprepro_publish
+    else
+        echo "We are not running on the master node, skipping reprepro steps"
+        echo "Additional steps required to add these packages to the master node"
+        echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}"
+        echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
+        echo "reprepro -Vb ${DEB_repository_dir} includedeb ${DISTRIB_CODENAME} ${DEB_Package_Filename}"
+    fi
+}
+
 echo "Starting ${0} on $(hostname) at $(date)"
 check_jenkins_variables
 setup_variables
+cleanup
 setup_temp_dir
 extract_built_tarball
 update_control_file
 create_archive
-# This way doesn't work wit the way I'm using the env variables straight from Jenkins
-#if [ "${NODE_NAME}" = "master" ]
-# Going to use the username, and hard code ubuntu = vagrant instance, and jenkins = master node
+reprepro_add
+
+setup_tomcat2_variables
+reset_control_in_temp
+setup_variables
+cleanup
+setup_temp_dir
+extract_built_tarball
+update_control_file
+update_control_scripts
+get_tomcat6_blank
+create_archive
+reprepro_add
+
+#do each war thing here
+#for war in ls webapps/*war
+#make a package with a user named the same thing as the war
+
 if [ "${USER}" = "jenkins" ]
 then
-    echo "We are running on the master node, running reprepro locally"
-    reprepro_clean
-    reprepro_publish
+    echo "We are running on the master node, running s3cmd locally"
     s3_sync
 else
     echo "We are not running on the master node, skipping reprepro steps"
     echo "Additional steps required to add these packages to the master node"
-    echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}"
-    echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
-    echo "reprepro -Vb ${DEB_repository_dir} includedeb ${DISTRIB_CODENAME} ${DEB_Package_Filename}"
     echo "s3cmd --verbose --delete-removed  sync ${DEB_repository_dir} s3://${DEB_S3_bucket}/"
 fi
+
 cleanup
 exit 0
 
