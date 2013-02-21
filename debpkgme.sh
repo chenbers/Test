@@ -95,7 +95,7 @@ function setup_variables {
         if [ ! "${DEB_Priority}" ]; then DEB_Priority="optional"; echo "DEB_Priority not specified, using default ${DEB_Priority}"; fi
         if [ ! "${DEB_Homepage}" ]; then DEB_Homepage="http://www.inthinc.com/"; echo "DEB_Homepage not specified, using default ${DEB_Homepage}"; fi
         if [ ! "${DEB_Description}" ]; then DEB_Description="Inthinc Generic Package Description : ${BUILD_TAG} ${BUILD_ID} ${NODE_NAME} built at ${JENKINS_URL} on $(date)"; echo "DEB_Description not specified, using default : "; echo "${DEB_Description}"; fi
-        if [ ! "${DEB_Conffiles}" ]; then DEB_Conffiles=".conf settings.py"; echo "DEB_Conffiles not specified, using default : "; echo "${DEB_Conffiles}"; fi
+        if [ ! "${DEB_Conffiles}" ]; then DEB_Conffiles=".conf settings.py .properties .xml .policy"; echo "DEB_Conffiles not specified, using default : "; echo "${DEB_Conffiles}"; fi
         if [ ! "${DEB_PreDepends}" ]; then echo "DEB_PreDepends not specified, and no default skipping"; fi
         if [ ! "${DEB_Depends}" ]; then echo "DEB_Depends not specified, and no default skipping"; fi
         if [ ! "${DEB_Recommends}" ]; then echo "DEB_Recommends not specified, and no default skipping"; fi
