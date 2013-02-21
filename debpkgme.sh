@@ -117,7 +117,7 @@ function setup_tomcat2_variables {
     echo "Setup tomcat2 variables :"
     echo "U_GID ${U_GID}"
     echo "MY_GROUP_USER ${MY_GROUP_USER}"
-    echo "TOMCAT_USER ${TOMCAT_USER }"
+    echo "TOMCAT_USER ${TOMCAT_USER}"
     echo "MY_USER_HOME ${MY_USER_HOME}"
     echo "TOMCAT_WEBAPPS_DIR ${TOMCAT_WEBAPPS_DIR}"
     echo "WARS ${WARS}"
@@ -184,6 +184,7 @@ function setup_variables {
         if [ ! "${DEB_repository_dir}" ]; then DEB_repository_dir="/var/www/debian"; echo "DEB_repository_dir not specified, using default ${DEB_repository_dir}"; fi
         if [ ! "${DEB_Package}" ]; then DEB_Package="inthinc-${JOB_NAME}"; echo "DEB_Package not specified, using default ${DEB_Package}"; fi
         declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+        echo "Set DEB_Package_u to ${DEB_Package_u}"
         if [ ! "${DEB_Source}" ]; then DEB_Source="${JOB_NAME}"; echo "DEB_Source not specified, using default ${DEB_Source}"; fi
         if [ ! "${DEB_Version}" ]; then DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"; echo "DEB_Version not specified, using default ${DEB_Version}"; fi
         if [ ! "${DEB_Architecture}" ]; then DEB_Architecture="${ARCH_UBU}"; echo "DEB_Architecture not specified, using default ${DEB_Architecture}"; fi
@@ -201,7 +202,7 @@ function setup_variables {
         if [ ! "${DEB_Conflicts}" ]; then echo "DEB_Conflicts not specified, and no default skipping"; fi
         if [ ! "${DEB_Replaces}" ]; then echo "DEB_Replaces not specified, and no default skipping"; fi
         if [ ! "${DEB_Provides}" ]; then echo "DEB_Provides not specified, and no default skipping"; fi
-        if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_F    ilename ${DEB_Package_Filename}"; fi
+        if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_Filename ${DEB_Package_Filename}"; fi
         if [ ! "${TOMCAT6_REPO}" ]; then TOMCAT6_REPO="git://github.com/jonzobrist/tomcat6.git"; echo "TOMCAT6_REPO not specified, using default ${TOMCAT6_REPO}"; fi
         if [ ! "${T6_DIRS}" ]; then T6_DIRS="bkup endorsed logarchive logs temp tmp work"; echo "T6_DIRS not specified, using default ${T6_DIRS}"; fi
 
@@ -231,10 +232,15 @@ function reprepro_clean {
 # reprepro --ask-passphrase -Vb /var/www/debian removematched precise portal-backend-dev-deb
 # Delete from file
 # reprepro --ask-passphrase -Vb /var/www/debian deleteunreferenced
-echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}"
-reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}
-echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
-reprepro -Vb ${DEB_repository_dir} deleteunreferenced
+    if [ ! "${DEB_Package_u}" ]
+     then
+        echo "Missing DEB_Package_u, setting at $(date)"
+        declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+    fi
+    echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}"
+    reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}
+    echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
+    reprepro -Vb ${DEB_repository_dir} deleteunreferenced
 }
 
 function reprepro_publish {
