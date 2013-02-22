@@ -139,17 +139,35 @@ echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
 
 function update_control_scripts {
     echo "Enter function update_control_scripts"
-    CONTROL_SCRIPTS=$(find -maxdepth 1 -type f ${TMP_DIR}/control/)
+    CONTROL_SCRIPTS=$(find ${TMP_DIR}/control/ -maxdepth 1 -type f)
     for CONTROL_SCRIPT in ${CONTROL_SCRIPTS}
     do
+        echo "Modifying ${CONTROL_SCRIPT} in ${TMP_DIR}/control at $(date)"
         #perl -pi -e "s/^U_UID=.*/U_UID=\"${U_UID}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
-        perl -pi -e "s/^MY_GROUP_USER=.*/MY_GROUP_USER=\"${MY_GROUP_USER}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
-        perl -pi -e "s/^TOMCAT_USER=.*/TOMCAT_USER=\"${TOMCAT_USER}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
-        perl -pi -e "s/^MY_USER_HOME=.*/MY_USER_HOME=\"${MY_USER_HOME}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
-        perl -pi -e "s/^TOMCAT_WEBAPPS_DIR=.*/TOMCAT_WEBAPPS_DIR=\"${TOMCAT_WEBAPPS_DIR}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
-        perl -pi -e "s/^WARS=.*/WARS=\"${WARS}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        echo "DEBUG : group ${MY_GROUP_USER} tomcat ${TOMCAT_USER} home ${MY_USER_HOME} webapps ${TOMCAT_WEBAPPS_DIR} wars ${WARS}"
+        MY_GROUP_USER_esc=$(echo ${MY_GROUP_USER} | sed -e 's/\//\\\//g')
+	TOMCAT_USER_esc=$(echo ${TOMCAT_USER} | sed -e 's/\//\\\//g')
+	MY_USER_HOME_esc=$(echo ${MY_USER_HOME} | sed -e 's/\//\\\//g')
+	TOMCAT_WEBAPPS_DIR_esc=$(echo ${TOMCAT_WEBAPPS_DIR} | sed -e 's/\//\\\//g')
+	WARS_esc=$(echo ${WARS} | sed -e 's/\//\\\//g')
+#	DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+        echo "perl -pi -e \"s/^MY_GROUP_USER=.*/MY_GROUP_USER=${MY_GROUP_USER_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^MY_GROUP_USER=.*/MY_GROUP_USER=\"${MY_GROUP_USER_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^TOMCAT_USER=.*/TOMCAT_USER=${TOMCAT_USER_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^TOMCAT_USER=.*/TOMCAT_USER=\"${TOMCAT_USER_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^MY_USER_HOME=.*/MY_USER_HOME=${MY_USER_HOME_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^MY_USER_HOME=.*/MY_USER_HOME=\"${MY_USER_HOME_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^TOMCAT_WEBAPPS_DIR=.*/TOMCAT_WEBAPPS_DIR=${TOMCAT_WEBAPPS_DIR_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^TOMCAT_WEBAPPS_DIR=.*/TOMCAT_WEBAPPS_DIR=\"${TOMCAT_WEBAPPS_DIR_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^WARS=.*/WARS=${WARS_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^WARS=.*/WARS=\"${WARS_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
         #debug print postinst, if we add more install scripts or other things the previous control perl subs change we should make this part smarter
-        cat ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        cat ${CONTROL_SCRIPT}
     done
 }
 
@@ -355,7 +373,6 @@ function extract_built_tarball {
 function create_archive {
     echo "Enter function create_archive"
     echo "Creating archive at $(date)"
-    update_control_file
     echo "2.0" > ${TMP_DIR}/debian-binary
     mkdir -p ${TMP_DIR}/data
     cd ${TMP_DIR}/data
@@ -451,17 +468,17 @@ function reprepro_add {
 }
 
 echo "Starting ${0} on $(hostname) at $(date)"
-echo "############################################ $(date)"
-echo "First pass, creating default debian package : "
-echo "############################################ $(date)"
-check_jenkins_variables
-setup_variables
-cleanup
-setup_temp_dir
-extract_built_tarball
-update_control_file
-create_archive
-reprepro_add
+#echo "############################################ $(date)"
+#echo "First pass, creating default debian package : "
+#echo "############################################ $(date)"
+#check_jenkins_variables
+#setup_variables
+#cleanup
+#setup_temp_dir
+#extract_built_tarball
+#update_control_file
+#create_archive
+#reprepro_add
 
 echo "############################################ $(date)"
 echo "Second pass, building for tomcat2 setup : "
@@ -476,7 +493,7 @@ update_control_file
 update_control_scripts
 get_tomcat6_blank
 create_archive
-reprepro_add
+#reprepro_add
 
 #do each war thing here
 #for war in ls webapps/*war
@@ -485,7 +502,7 @@ reprepro_add
 if [ "${USER}" = "jenkins" ]
 then
     echo "We are running on the master node, running s3cmd locally"
-    s3_sync
+#    s3_sync
 else
     echo "We are not running on the master node, skipping reprepro steps"
     echo "Additional steps required to add these packages to the master node"
