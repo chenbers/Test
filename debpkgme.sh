@@ -14,6 +14,7 @@ if [ -z "${TARBALL_FILENAME}" ] || [ ! "${TARBALL_FILENAME}" ]; then TARBALL_FIL
 #######################################
 
 function check_jenkins_variables {
+    echo "Enter function check_jenkins_variables"
     REQUIRED_JENKINS_ENV_VARS="BUILD_NUMBER BUILD_ID JOB_NAME BUILD_TAG EXECUTOR_NUMBER NODE_LABELS WORKSPACE JENKINS_HOME JENKINS_URL BUILD_URL JOB_URL"
     OPTIONAL_JENKINS_ENV_VARS="DEB_S3_bucket DEB_repository_dir DEB_Package DEB_Source DEB_Version DEB_Architecture DEB_Maintainer DEB_InstalledSize DEB_PreDepends DEB_Depends DEB_Recommends DEB_Suggests DEB_Conflicts DEB_Replaces DEB_Provides DEB_Section DEB_Priority DEB_Homepage DEB_Description DEB_Conffiles NODE_NAME TOMCAT6_REPO"
     echo -n "Checking Jenkins ENV Variables : "
@@ -48,6 +49,7 @@ function check_jenkins_variables {
 }
 
 function reset_control_in_temp {
+    echo "Enter function reset_control_in_temp"
     if [ -d "${TMP_DIR}/control" ]
     then
         echo "Resetting control dir"
@@ -59,6 +61,7 @@ function reset_control_in_temp {
 }
 
 function get_tomcat6_blank {
+    echo "Enter function get_tomcat6_blank"
     if [ -d "${WORKSPACE}/tomcat6" ]
     then
         echo "Tomcat6 dir exists"
@@ -81,6 +84,7 @@ function get_tomcat6_blank {
 }
 
 function merge_tomcat6_blank_with_tmp {
+    echo "Enter function merge_tomcat6_blank_with_tmp"
     if [ -d "${TMP_DIR}/${TARBALL_FILENAME}" ] && [ -d "${WORKSPACE}/tomcat6" ] && [ ! -d "${WORKSPACE}/tomcat6/webapps" ]
     then
         echo "Merging wars into tomcat6"
@@ -99,6 +103,7 @@ function merge_tomcat6_blank_with_tmp {
 }
 
 function setup_tomcat2_variables {
+    echo "Enter function setup_tomcat2_variables"
 echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
     declare -x DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     declare -x U_GID="1090"
@@ -131,6 +136,7 @@ echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
 }
 
 function update_control_scripts {
+    echo "Enter function update_control_scripts"
     CONTROL_SCRIPTS=$(find -maxdepth 1 -type f ${TMP_DIR}/control/)
     for CONTROL_SCRIPT in ${CONTROL_SCRIPTS}
     do
@@ -146,6 +152,7 @@ function update_control_scripts {
 }
 
 function setup_variables {
+    echo "Enter function setup_variables"
     if [ -f "$(pwd)/lsb-release" ]
     then
         LSB_RELEASE="$(pwd)/lsb-release"
@@ -222,11 +229,13 @@ function setup_variables {
 }
 
     function cleanup {
+    echo "Enter function cleanup"
         echo "Cleaning up ${TMP_DIR} at $(date)"
         /bin/rm -Rf ${TMP_DIR}
 }
 
 function reprepro_clean {
+    echo "Enter function reprepro_clean"
 # Example line 
 # Remove old package : 
 # reprepro --ask-passphrase -Vb /var/www/debian removematched precise portal-backend-dev-deb
@@ -244,6 +253,7 @@ function reprepro_clean {
 }
 
 function reprepro_publish {
+    echo "Enter function reprepro_publish"
 # Example line 
 # reprepro --ask-passphrase -Vb /var/www/debian includedeb precise /var/lib/jenkins/jobs/portal_backend_dev_deb/workspace/portal_backend_dev_deb_amd64.deb
 # With passphrase removed from key 
@@ -253,6 +263,7 @@ reprepro -Vb ${DEB_repository_dir} includedeb ${DISTRIB_CODENAME} ${DEB_Package_
 }
 
 function s3_sync {
+    echo "Enter function s3_sync"
     S3_CMD=$(which s3cmd)
     if [ -x "${S3_CMD}" ]
      then
@@ -265,6 +276,7 @@ function s3_sync {
 }
 
 function setup_temp_dir {
+    echo "Enter function setup_temp_dir"
     TMP_DIR="${WORKSPACE}/${TARBALL_FILENAME}-debs"
     if [ ! -d "${TMP_DIR}" ]
      then
@@ -281,6 +293,7 @@ function setup_temp_dir {
 }
 
 function update_control_file {
+    echo "Enter function update_control_file"
     SIZE_KB=$(du -sk ${TMP_DIR} | awk '{ print $1 }')
     CONTROL_FILE="${TMP_DIR}/control/control"
     cp -R ${WORKSPACE}/control ${TMP_DIR}
@@ -316,6 +329,7 @@ function update_control_file {
 }
 
 function extract_built_tarball {
+    echo "Enter function extract_built_tarball"
     cd ${TMP_DIR}
     echo "TARBALL_FILENAME is ${TARBALL_FILENAME}"
     if [ -f "${WORKSPACE}/${TARBALL_FILENAME}.tgz" ]
@@ -337,6 +351,7 @@ function extract_built_tarball {
 }
 
 function create_archive {
+    echo "Enter function create_archive"
     echo "Creating archive at $(date)"
     update_control_file
     echo "2.0" > ${TMP_DIR}/debian-binary
@@ -415,6 +430,7 @@ function create_archive {
 }
 
 function reprepro_add {
+    echo "Enter function reprepro_add"
     # This way doesn't work wit the way I'm using the env variables straight from Jenkins
     #if [ "${NODE_NAME}" = "master" ]
     # Going to use the username, and hard code ubuntu = vagrant instance, and jenkins = master node
@@ -433,6 +449,9 @@ function reprepro_add {
 }
 
 echo "Starting ${0} on $(hostname) at $(date)"
+echo "############################################ $(date)"
+echo "First pass, creating default debian package : "
+echo "############################################ $(date)"
 check_jenkins_variables
 setup_variables
 cleanup
@@ -442,9 +461,12 @@ update_control_file
 create_archive
 reprepro_add
 
-setup_tomcat2_variables
+echo "############################################ $(date)"
+echo "Second pass, building for tomcat2 setup : "
+echo "############################################ $(date)"
 reset_control_in_temp
 setup_variables
+setup_tomcat2_variables
 cleanup
 setup_temp_dir
 extract_built_tarball
