@@ -46,6 +46,8 @@ function check_jenkins_variables {
         fi
     done
     echo ""
+    perl -pi -e 's/=/="/' ${WORKSPACE}/env.bashrc
+    perl -pi -e 's/$/"/' ${WORKSPACE}/env.bashrc
 }
 
 function reset_control_in_temp {
@@ -105,20 +107,20 @@ function merge_tomcat6_blank_with_tmp {
 function setup_tomcat2_variables {
     echo "Enter function setup_tomcat2_variables"
 echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
-    declare -x DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
-    declare -x U_GID="1090"
-    declare -x MY_GROUP_USER="tiwipro"
-    declare -x TOMCAT_USER="tomcat2"
-    declare -x MY_USER_HOME="/usr/local/${TOMCAT_USER}"
-    declare -x TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}/webapps"
-    declare -x WARS="hoskiosk tiwiproutil tiwipro service"
-    declare -x BASE_INSTALL_DIR="${MY_USER_HOME}"
-    declare -x DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>1.4), nginx-full"
-    declare -x DEB_Package="inthinc-${JOB_NAME}-tomcat2"
-    declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
-    declare -x DEB_Conflicts="tomcat2, tiwipro-wars"
-    declare -x DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}.deb"
-    declare -x DEB_Provides="tomcat2, tiwipro-wars"
+    DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
+    U_GID="1090"
+    MY_GROUP_USER="tiwipro"
+    TOMCAT_USER="tomcat2"
+    MY_USER_HOME="/usr/local/${TOMCAT_USER}"
+    TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}/webapps"
+    WARS="hoskiosk tiwiproutil tiwipro service"
+    BASE_INSTALL_DIR="${MY_USER_HOME}"
+    DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>1.4), nginx-full"
+    DEB_Package="inthinc-${JOB_NAME}-tomcat2"
+    DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+    DEB_Conflicts="tomcat2, tiwipro-wars"
+    DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}.deb"
+    DEB_Provides="tomcat2, tiwipro-wars"
     echo "Setup tomcat2 variables :"
     echo "U_GID ${U_GID}"
     echo "MY_GROUP_USER ${MY_GROUP_USER}"
@@ -190,7 +192,7 @@ function setup_variables {
         if [ ! "${DEB_S3_bucket}" ] || [ ! "${DEB_S3_bucket}" ]; then DEB_S3_bucket="ci-inthinc-com"; echo "DEB_S3_bucket not specified, using default ${DEB_S3_bucket}"; export DEB_S3_bucket; fi
         if [ ! "${DEB_repository_dir}" ]; then DEB_repository_dir="/var/www/debian"; echo "DEB_repository_dir not specified, using default ${DEB_repository_dir}"; fi
         if [ ! "${DEB_Package}" ]; then DEB_Package="inthinc-${JOB_NAME}"; echo "DEB_Package not specified, using default ${DEB_Package}"; fi
-        declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+        DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
         echo "Set DEB_Package_u to ${DEB_Package_u}"
         if [ ! "${DEB_Source}" ]; then DEB_Source="${JOB_NAME}"; echo "DEB_Source not specified, using default ${DEB_Source}"; fi
         if [ ! "${DEB_Version}" ]; then DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"; echo "DEB_Version not specified, using default ${DEB_Version}"; fi
@@ -244,7 +246,7 @@ function reprepro_clean {
     if [ ! "${DEB_Package_u}" ]
      then
         echo "Missing DEB_Package_u, setting at $(date)"
-        declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+        DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     fi
     echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}"
     reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}
@@ -306,7 +308,7 @@ function update_control_file {
     if [ ! "${DEB_Package_u}" ]
      then
         echo "Missing DEB_Package_u, setting at $(date)"
-        declare -x DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+        DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     fi
 
     if [ "${DEB_Package_u}" ]; then echo "Package: ${DEB_Package_u}" | tee ${CONTROL_FILE}; fi
