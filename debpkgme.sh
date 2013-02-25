@@ -471,14 +471,14 @@ echo "Starting ${0} on $(hostname) at $(date)"
 #echo "############################################ $(date)"
 #echo "First pass, creating default debian package : "
 #echo "############################################ $(date)"
-#check_jenkins_variables
-#setup_variables
-#cleanup
-#setup_temp_dir
-#extract_built_tarball
-#update_control_file
-#create_archive
-#reprepro_add
+check_jenkins_variables
+setup_variables
+cleanup
+setup_temp_dir
+extract_built_tarball
+update_control_file
+create_archive
+reprepro_add
 
 echo "############################################ $(date)"
 echo "Second pass, building for tomcat2 setup : "
@@ -493,7 +493,7 @@ update_control_file
 update_control_scripts
 get_tomcat6_blank
 create_archive
-#reprepro_add
+reprepro_add
 
 #do each war thing here
 #for war in ls webapps/*war
@@ -502,7 +502,7 @@ create_archive
 if [ "${USER}" = "jenkins" ]
 then
     echo "We are running on the master node, running s3cmd locally"
-#    s3_sync
+    s3_sync
 else
     echo "We are not running on the master node, skipping reprepro steps"
     echo "Additional steps required to add these packages to the master node"
