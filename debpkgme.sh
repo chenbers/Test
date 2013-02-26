@@ -116,7 +116,7 @@ echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
     WARS="hoskiosk tiwiproutil tiwipro service"
     BASE_INSTALL_DIR="${MY_USER_HOME}"
     DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>1.4), nginx-full"
-    DEB_Package="inthinc-${JOB_NAME}-tomcat2"
+    DEB_Package="inthinc-${JOB_NAME}-tomcat2_${DISTRIB_CODENAME}"
     DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     DEB_Conflicts="tomcat2, tiwipro-wars"
     DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}.deb"
