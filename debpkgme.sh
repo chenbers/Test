@@ -106,7 +106,6 @@ function merge_tomcat6_blank_with_tmp {
 
 function setup_tomcat2_variables {
     echo "Enter function setup_tomcat2_variables"
-echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
     DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     U_GID="1090"
     MY_GROUP_USER="tiwipro"
@@ -173,7 +172,7 @@ function update_control_scripts {
 
 function setup_variables {
     echo "Enter function setup_variables"
-    if [ -f "$(pwd)/lsb-release" ]
+    if [ -f "${WORKSPACE}/lsb-release" ]
     then
         LSB_RELEASE="$(pwd)/lsb-release"
     else
@@ -198,6 +197,8 @@ function setup_variables {
             echo "ARCH_UBU is ${ARCH_UBU}"
         fi
         source ${LSB_RELEASE}
+        echo "Sourcing this ${LSB_RELEASE}"
+        cat ${LSB_RELEASE}
 
     #######################################
     #
