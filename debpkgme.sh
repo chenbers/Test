@@ -119,7 +119,7 @@ echo "DEBUG : Entered setup_tomcat2_variables at $(date)"
     DEB_Package="inthinc-${JOB_NAME}-tomcat2_${DISTRIB_CODENAME}"
     DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     DEB_Conflicts="tomcat2, tiwipro-wars"
-    DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}.deb"
+    DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}_${DISTRIB_CODENAME}.deb"
     DEB_Provides="tomcat2, tiwipro-wars"
     echo "Setup tomcat2 variables :"
     echo "U_GID ${U_GID}"
@@ -445,6 +445,7 @@ function create_archive {
     else
         echo "Successfully created package ${DEB_Package_Filename} at $(date)"
         echo "MD5sum for new pacakage is $(md5sum ${DEB_Package_Filename})"
+        echo "dpkg info for new pacakage is $(dpkg -I ${DEB_Package_Filename})"
     fi
 }
 
