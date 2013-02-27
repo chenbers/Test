@@ -22,13 +22,16 @@ then
     echo "User ${TOMCAT_USER} exists"
 else
     echo "Creating user ${TOMCAT_USER}"
-    useradd -M -d ${MY_USER_HOME} -s /bin/bash -g ${U_GID} ${USER}
+    useradd -M -d ${MY_USER_HOME} -s /bin/bash -g ${U_GID} ${TOMCAT_USER}
 fi
 
 echo "Adding ${TOMCAT_USER} to group ${MY_GROUP_USER}"
 usermod -a -G ${MY_GROUP_USER} ${TOMCAT_USER}
+chown -R ${TOMCAT_USER}:${MY_GROUP_USER} ${MY_USER_HOME}
+chmod -R u+rw,g+r,o-rwx ${TOMCAT_USER}:${MY_GROUP_USER} ${MY_USER_HOME}
+find ${MY_USER_HOME} -type d -exec chmod u+rwx,g+rx,o-rwx {} \;
 
-service ${TOMCAT_USER} status 2>&1 >/dev/null
+service ${TOMCAT_USER} status 2&>1 >/dev/null
 if [ "$?" -ne 1 ] && [ -d "${TOMCAT_WEBAPPS_DIR}" ]
 then
     echo -n "Stopping service ${TOMCAT_USER} :"
@@ -43,12 +46,12 @@ then
         fi
         if [ -f "${TOMCAT_WEBAPPS_DIR}/${WAR}.war" ]
         then
-            chown ${TOMCAT_USER}:${TOMCAT_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
+            chown ${TOMCAT_USER}:${MY_GROUP_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
+            chmod u+rw,g+r,o-rwx ${TOMCAT_USER}:${MY_GROUP_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
         fi
     done
 service ${TOMCAT_USER} start
 else
-    echo "${TOMCAT_USER} doesn't seem to be installed, exiting at $(date)"
-    exit 1
+    echo "${TOMCAT_USER} doesn't seem to be installed as a service, you will need to manually start it"
 fi
 
