@@ -116,10 +116,10 @@ function setup_tomcat2_variables {
     BASE_INSTALL_DIR="${MY_USER_HOME}"
     if [ "${DISTRIB_CODENAME}" == "lucid" ]
     then
-        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx-full"
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx"
     elif [ "${DISTRIB_CODENAME}" == "precise" ]
     then
-        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx"
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx-full"
     else
         DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx-full"
     fi
