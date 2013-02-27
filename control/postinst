@@ -27,16 +27,19 @@ fi
 
 echo "Adding ${TOMCAT_USER} to group ${MY_GROUP_USER}"
 usermod -a -G ${MY_GROUP_USER} ${TOMCAT_USER}
-chown -R ${TOMCAT_USER}:${MY_GROUP_USER} ${MY_USER_HOME}
-chmod -R u+rw,g+r,o-rwx ${TOMCAT_USER}:${MY_GROUP_USER} ${MY_USER_HOME}
-find ${MY_USER_HOME} -type d -exec chmod u+rwx,g+rx,o-rwx {} \;
+if [ -d "${MY_USER_HOME}" ]
+then
+    chown -R ${TOMCAT_USER}:${MY_GROUP_USER} ${MY_USER_HOME}
+    chmod -R u+rw,g+r,o-rwx ${MY_USER_HOME}
+    find ${MY_USER_HOME} -type d -exec chmod u+rwx,g+rx,o-rwx {} \;
+fi
 
 service ${TOMCAT_USER} status 2&>1 >/dev/null
 if [ "$?" -ne 1 ] && [ -d "${TOMCAT_WEBAPPS_DIR}" ]
 then
     echo -n "Stopping service ${TOMCAT_USER} :"
     service ${TOMCAT_USER} stop
-    while service ${TOMCAT_USER} status 2>&1 > /dev/null; do echo -n "."; sleep 1; done
+    while service ${TOMCAT_USER} status 2&>1 > /dev/null; do echo -n "."; sleep 1; done
 
     for WAR in ${WARS}
     do
