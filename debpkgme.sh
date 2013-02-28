@@ -72,6 +72,7 @@ function get_tomcat6_blank {
         cd ${WORKSPACE}
         git clone --depth=1 ${TOMCAT6_REPO} tomcat6
         rm -Rf tomcat6/.git*
+        echo "Checking dirs for tomcat6 ${T6_DIRS}"
         for D in ${T6_DIRS}
         do
             if [ -d "tomcat6/${D}" ]
@@ -502,6 +503,7 @@ extract_built_tarball
 update_control_file
 update_control_scripts
 get_tomcat6_blank
+merge_tomcat6_blank_with_tmp
 create_archive
 reprepro_add
 
