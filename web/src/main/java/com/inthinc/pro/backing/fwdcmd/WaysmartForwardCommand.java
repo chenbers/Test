@@ -71,7 +71,7 @@ public abstract class WaysmartForwardCommand {
     
     private void initDescriptions() {
         ForwardCommandSpool latest = null;
-        if (getForwardCommandIDs() != null) {
+        if (getForwardCommandIDs() != null && getDevice() != null) {
             List<ForwardCommandSpool> spoolList = fwdCmdSpoolWS.getForDevice(getDevice().getDeviceID(), getForwardCommandIDs());
             for (ForwardCommandSpool spoolItem : spoolList) {
                  System.out.println(spoolItem.getCommand() + " " + spoolItem.getProcessed() + " " + spoolItem.getCreated() + " " + spoolItem.getModified());

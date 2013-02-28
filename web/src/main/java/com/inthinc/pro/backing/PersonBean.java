@@ -406,6 +406,17 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     @Override
+    protected void initEditItem(Integer editID)
+    {
+        PersonView personView = createPersonView(personDAO.findByID(editID));
+        
+        items = new ArrayList<PersonView>();
+        items.add(personView);
+
+    }
+
+
+    @Override
     public String fieldValue(PersonView person, String column) {
         if (column.equals("user_status")) {
             if ((person.getUser() != null) && (person.getUser().getStatus() != null))
@@ -619,7 +630,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public void view() {
         super.view();
         if (getItem().getUser().getUserID() == null) return;
-        if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID())) {
+        if (getItem() != null && getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID())) {
             item = revertItem(getItem());
         }
     }
@@ -628,7 +639,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public String edit() {
         final String redirect = super.edit();
         // if editing the current user, reload from the DB in case changed elsewhere
-        if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID())) {
+        if (getItem() != null && getItem().isUserSelected() && getItem().getUser() !=null && getItem().getUser().getUserID() != null && getItem().getUser().getUserID().equals(getUserID())) {
             item = revertItem(getItem());
         }
         return redirect;
@@ -1735,6 +1746,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     {
     	super.setItems(items);
     }
+    
     
     public void initPersonIdentifierList(List<PersonIdentifiers> personIdentifiersList )
     {
