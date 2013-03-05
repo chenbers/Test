@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Exporting Charts as PDF or Images - Client-side export - Exporting multiple charts </title>
+<link rel="stylesheet" href="../../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../../Introduction/Overview.html", "Exporting as Image/PDF|../ECOverview.html", "Client-side export|ECClientOverview.html", "Setting for multiple charts" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td class="pageHeader">Exporting multiple charts </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>When you have multiple charts present on your page, there are three ways to export them using Export Component: </p>
+      <ol>
+        <li><span class="textBold">One to one</span> - Each chart in the page has its own instance of Export Component and they export to the same.  This is the easiest to setup and allows you to place the Export UI for each chart wherever you wish it to be.</li>
+        <li><span class="textBold">Many to one</span> - In this mode, there is only one instance of Export Component.  Multiple charts export their data to this instance. This instance then shows up a UI, wherein users can select which chart they want to save, as well as the export format. </li>
+        <li><span class="textBold">Batch Export Mode</span> - In this mode, again there is only one instance of Export Component. Multiple charts export their data to this instance. The difference is that in this mode, the output file can be a single file (that contains images of all the charts). Additionally, there are APIs that help you automatically export all the charts in the page. </li>
+      </ol>
+      <p class="highlightBlock">To  aid your understanding of this section, we will recommend you to go through  the <a href="ECClientOverview.html"><strong>Overview</strong></a> page of <span class="codeInline">Exporting  Charts as PDF or Images &gt; Client-side export </span></p>
+	  <p>The differences between each mode can be listed as under: </p></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><table width="95%" border="0" cellpadding="2" cellspacing="0" class="table">
+      <tr>
+        <td width="40%" class="header">Feature</td>
+        <td width="20%" class="header">One to One </td>
+        <td width="20%" class="header">Many to one </td>
+        <td class="header">Batch Mode </td>
+      </tr>
+      <tr>
+        <td width="40%" valign="top" class="textBold">Number of export component instances </td>
+        <td width="20%" valign="top" class="text">One export component instance per chart in the page </td>
+        <td width="20%" valign="top" class="text">Only one export component in the page. </td>
+        <td valign="top" class="text">Only one export component in the page.</td>
+      </tr>
+      <tr>
+        <td width="40%" valign="top" class="textBold">Possible triggers for export </td>
+        <td width="20%" valign="top" class="text">Both context menu and JavaScript API </td>
+        <td width="20%" valign="top" class="text">Both context menu and JavaScript API </td>
+        <td valign="top" class="text">JavaScript APIs pertaining to batch export. These APIs allow you to specify which charts to export in batch, and also to export all charts present in the page </td>
+      </tr>
+      <tr>
+        <td width="40%" valign="top" class="textBold">User Interface Mode of Export Component </td>
+        <td width="20%" valign="top" class="text">Compact</td>
+        <td width="20%" valign="top" class="text">Full</td>
+        <td valign="top" class="text">Both Compact and Full. But Full is recommended. </td>
+      </tr>
+      <tr>
+        <td width="40%" valign="top" class="textBold">Where to specify export related parameters? </td>
+        <td width="20%" valign="top" class="text">In XML </td>
+        <td width="20%" valign="top" class="text">In XML. </td>
+        <td valign="top" class="text">In XML. But all the parameters can be over-written collectively for the charts using the JavaScript API. </td>
+      </tr>
+      <tr>
+        <td valign="top" class="textBold">Number of Output Export Files </td>
+        <td valign="top" class="text">One output file per chart </td>
+        <td valign="top" class="text">One output file per chart </td>
+        <td valign="top" class="text">Both - one per chart, a single file containing all charts </td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text" height="25"> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">In this page, we explain the first two methods - <span class="codeInline">One to One</span> and <span class="codeInline">Many to One</span>. Let us start with the simpler one - <span class="codeInline">One to One</span> Mode. </td>
+  </tr>
+  <tr>
+  <td class="text">&nbsp;</td></tr>
+  <tr>
+    <td valign="top" class="text"> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="header"><a name="onetoone"></a>One to One Mode </td>
+  </tr>
+  
+  <tr>
+    <td valign="top" class="text"><p>This is the simplest saving mode when you have multiple charts in your page. In this mode, you basically create one instance of Export Component per chart, and link the same in chart's XML. Consider the XML code for 2 charts below:</p> 
+	<p><strong>Chart 1: </strong></p>
+<pre class="code_container prettyprint">&lt;chart yAxisName='Sales Figure' caption='Top 5 Sales Person' numberPrefix='$' useRoundEdges='1' bgColor='FFFFFF,FFFFFF' showBorder='0' exportEnabled='1' exportAtClient='1' <strong>exportHandler='fcExporter1'</strong>&gt;
+  &lt;set label='Alex' value='25000'  /&gt;
+  &lt;set label='Mark' value='35000' /&gt;
+  &lt;set label='David' value='42300' /&gt;
+  &lt;set label='Graham' value='35300' /&gt;
+  &lt;set label='John' value='31300' /&gt;
+&lt;/chart&gt;</pre>
+  <p class="text"> <strong>Chart 2: </strong></p>
+  <pre class="code_container prettyprint">&lt;chart yAxisName='Sales Figure' caption='Top 5 Sales Person' numberPrefix='$' useRoundEdges='1' bgColor='FFFFFF,FFFFFF' showBorder='0' exportEnabled='1' exportAtClient='1' <strong>exportHandler='fcExporter2'</strong>&gt;
+  &lt;set label='Alex' value='25000'  /&gt;
+  &lt;set label='Mark' value='35000' /&gt;
+  &lt;set label='David' value='42300' /&gt;
+  &lt;set label='Graham' value='35300' /&gt;
+  &lt;set label='John' value='31300' /&gt;
+&lt;/chart&gt;</pre></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text" height="25"> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">Note that the only difference between the two XMLs is reference to Client-side Export Handler - namely <span class="codeInline">fcExporter1</span> and <span class="codeInline">fcExporter2</span>. And the HTML code that defines these two charts and their handlers can be listed as under: </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text" height="25"> </td>
+  </tr>
+  <tr>
+    <td valign="top"><pre class="code_container prettyprint">&lt;html&gt;
+	&lt;head&gt;
+		&lt;script language=&quot;JavaScript&quot; src=&quot;../../FusionCharts/FusionCharts.js&quot;&gt;&lt;/script&gt;
+		&lt;script language=&quot;JavaScript&quot; src=&quot;../../FusionCharts/FusionChartsExportComponent.js&quot;&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body bgcolor=&quot;#ffffff&quot;&gt;
+
+		&lt;div id=&quot;chartdiv&quot; align=&quot;center&quot;&gt;The chart will appear within this DIV. This text will be replaced by the chart.&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myChart = new FusionCharts(&quot;../../FusionCharts/Column2D.swf&quot;, &quot;myChartId&quot;, &quot;500&quot;, &quot;300&quot;, &quot;0&quot;, &quot;1&quot;);
+		myChart.setXMLUrl(&quot;SimpleExample.xml&quot;);
+		myChart.render(&quot;chartdiv&quot;);
+		&lt;/script&gt;
+		&lt;div id=&quot;fcexpDiv&quot; align=&quot;center&quot;&gt;FusionCharts Export Handler Component&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myExportComponent = new FusionChartsExportObject(&quot;fcExporter1&quot;, &quot;../../FusionCharts/FCExporter.swf&quot;);
+		myExportComponent.Render(&quot;fcexpDiv&quot;);
+		&lt;/script&gt;
+		&lt;div id=&quot;chartdiv2&quot; align=&quot;center&quot;&gt;The chart will appear within this DIV. This text will be replaced by the chart.&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myChart2 = new FusionCharts(&quot;../../FusionCharts/Column3D.swf&quot;, &quot;myChartId2&quot;, &quot;500&quot;, &quot;300&quot;, &quot;0&quot;, &quot;1&quot;);
+		myChart2.setXMLUrl(&quot;SimpleExample2.xml&quot;);
+		myChart2.render(&quot;chartdiv2&quot;);
+		&lt;/script&gt;
+		&lt;div id=&quot;fcexpDiv2&quot; align=&quot;center&quot;&gt;FusionCharts Export Handler Component&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myExportComponent2 = new FusionChartsExportObject(&quot;fcExporter2&quot;, &quot;../../FusionCharts/FCExporter.swf&quot;);
+		myExportComponent2.Render(&quot;fcexpDiv2&quot;);
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</pre></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>Here, we have created:</p>
+      <ul>
+        <li>Two Charts - with DOM Id as <span class="codeInline">myChartId</span> and <span class="codeInline">myChartId2</span>. The first is a Column2D chart and latter is a Column3D chart.</li>
+        <li>Two Export Component Instances - with DOM Id as <span class="codeInline">fcExporter1</span> and <span class="codeInline">fcExporter2</span>, as we had earlier specified in chart XML.
+		<p class="highlightBlock">To provide cross-browser compatibility, we recommend you not to start the ID with a numerical value, nor use space as part of the ID. </p>
+		</li>
+    </ul>
+    <p>When you now run this page, you will see two charts with their own exporter component. The components allow you to download each chart's individual export file. Shown below is what the page looks like (with 3D chart already been exported). </p>    </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><img src="../Images/ECClientMultiple1.jpg" width="587" height="585" /></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+      <p>See it <a href="../../../Code/ExportChartSamples/ClientSide/MultipleCharts_One2One.html" target="_blank">live</a>! </p>
+      <p>Using this method, you can have any number of charts (with their respective export handler instance) in a single web page. Just make sure to link them correctly using the chart XML. </p>
+      <p>Let us now see how to use a single export component for multiple charts. </p></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="header"><a name="manytoone"></a>Many to one Mode </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>To enable a single Export Component handle multiple charts, we need to:</p>
+      <ul>
+        <li>Create the only instance of Export Component in the page at a location which you deem apt for your users to click. Like, if your page has a &quot;Configuration panel&quot; or &quot;Actions panel&quot;, you can place the instance of Export Component there, so that your users know where to click (to download output files) after exporting chart. </li>
+        <li>Create all the charts in the page. Have their XML link to the instance of Export Component that you earlier embedded.</li>
+        <li>Customize the export component to show full mode - this allows your users to select individual chart for download, in the format that they need.</li>
+      </ul>
+    <p>Shown below is an example. For this example, all the charts use the same XML, as listed under. Note that Export Handler of all charts refer to <span class="codeInline">fcExporter1</span>. </p></td>
+  </tr>
+  <tr>
+    <td valign="top"><pre class="code_container prettyprint">&lt;chart yAxisName='Sales Figure' caption='Top 5 Sales Person' numberPrefix='$' useRoundEdges='1' bgColor='FFFFFF,FFFFFF' showBorder='0' exportEnabled='1' exportAtClient='1' <strong>exportHandler='fcExporter1'</strong>&gt;
+  &lt;set label='Alex' value='25000'  /&gt;
+  &lt;set label='Mark' value='35000' /&gt;
+  &lt;set label='David' value='42300' /&gt;
+  &lt;set label='Graham' value='35300' /&gt;
+  &lt;set label='John' value='31300' /&gt;
+&lt;/chart&gt;</pre></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text" height="25"> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">The HTML code contains the following: </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text" height="25"> </td>
+  </tr>
+  <tr>
+    <td valign="top"><pre class="code_container prettyprint">&lt;html&gt;
+	&lt;head&gt;
+		&lt;script language=&quot;JavaScript&quot; src=&quot;../../FusionCharts/FusionCharts.js&quot;&gt;&lt;/script&gt;
+		&lt;script language=&quot;JavaScript&quot; src=&quot;../../FusionCharts/FusionChartsExportComponent.js&quot;&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body bgcolor=&quot;#ffffff&quot;&gt;
+		&lt;div id=&quot;chartdiv&quot; align=&quot;center&quot;&gt;The chart will appear within this DIV. This text will be replaced by the chart.&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myChart = new FusionCharts(&quot;../../FusionCharts/Column2D.swf&quot;, &quot;myChartId&quot;, &quot;500&quot;, &quot;300&quot;, &quot;0&quot;, &quot;1&quot;);
+		myChart.setXMLUrl(&quot;SimpleExample.xml&quot;);
+		myChart.render(&quot;chartdiv&quot;);
+		&lt;/script&gt;
+		&lt;div id=&quot;chartdiv2&quot; align=&quot;center&quot;&gt;The chart will appear within this DIV. This text will be replaced by the chart.&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myChart2 = new FusionCharts(&quot;../../FusionCharts/Column3D.swf&quot;, &quot;myChartId2&quot;, &quot;500&quot;, &quot;300&quot;, &quot;0&quot;, &quot;1&quot;);
+		myChart2.setXMLUrl(&quot;SimpleExample.xml&quot;);
+		myChart2.render(&quot;chartdiv2&quot;);
+		&lt;/script&gt;
+		&lt;div id=&quot;chartdiv3&quot; align=&quot;center&quot;&gt;The chart will appear within this DIV. This text will be replaced by the chart.&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myChart3 = new FusionCharts(&quot;../../FusionCharts/Pie3D.swf&quot;, &quot;myChartId3&quot;, &quot;500&quot;, &quot;300&quot;, &quot;0&quot;, &quot;1&quot;);
+		myChart3.setXMLUrl(&quot;SimpleExample.xml&quot;);
+		myChart3.render(&quot;chartdiv3&quot;);
+		&lt;/script&gt;
+		&lt;div id=&quot;fcexpDiv&quot; align=&quot;center&quot;&gt;FusionCharts Export Handler Component&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		var myExportComponent = new FusionChartsExportObject(&quot;fcExporter1&quot;, &quot;../../FusionCharts/FCExporter.swf&quot;);
+		//Set configuration
+		//Full Mode
+		myExportComponent.componentAttributes.fullMode = '1';
+		//Set saving type to individual
+		myExportComponent.componentAttributes.saveMode = 'individual';
+		//Show allowed export format drop-down
+		myExportComponent.componentAttributes.showAllowedTypes = '1';
+		//Width and height
+		myExportComponent.componentAttributes.width = '400';
+		myExportComponent.componentAttributes.height = '120';
+		//Message - caption of export component
+		myExportComponent.componentAttributes.showMessage = '1';
+		myExportComponent.componentAttributes.message = 'Export any chart from context menu and then use this to save';
+		//Set it to show allowed format types as well
+		myExportComponent.Render(&quot;fcexpDiv&quot;);
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</pre></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>In this code, we have:</p>
+      <ul>
+        <li>Created three charts that use the same XML data (thereby referring to same export handler <span class="codeInline">fcExporter1</span>). The charts are Column2D, Column3D and Pie3D</li>
+        <li>Created an instance of Export Component with DOM Id as <span class="codeInline">fcExporter1</span>. We have set the component to show in full mode. Additionally, we have set <span class="codeInline">saveMode</span> to individual, which is necessary for <span class="codeInline">Many-to-one</span> Mode. Since we want the users to be able to select saving format for each chart's export output, we have also set <span class="codeInline">showAllowedTypes</span> to 1.  Some other cosmetic configuration parameters have also been set.</li>
+      </ul>
+    <p>When you now run this page, you will first see three charts and empty export component on page, as shown below: </p></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+     <img src="../Images/ECClientMultiple2.jpg" width="842" height="570" />
+      <p>See it <a href="../../../Code/ExportChartSamples/ClientSide/MultipleCharts_Many2One.html" target="_blank">live</a>! </p>    </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+      When you now export any chart using its context menu, after export, the chart gets added to the Exporter Component, as shown below. The caption of the chart is used to list the chart. If caption is not present, a generic title is shown.   </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">&nbsp;</td></tr>
+  <tr>
+    <td valign="top" class="text"><img src="../Images/ECClientMultiple3.gif" width="355" height="128" /></td>
+  </tr>
+  
+  <tr>
+    <td valign="top" class="text">
+      <p>As you export other charts, they too get added to the component. Since all the charts here use the same XML and hence the same caption, the left side title of each chart is same in this screenshot. </p>    </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><img src="../Images/ECClientMultiple4.gif" width="357" height="125" /></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+      <p> The drop-down box, by default, shows the format which the user selected as output format for the chart in its context menu. However, for each chart, the user can choose a different output format and click on <strong>Save</strong> button to save the chart, as shown below. </p>    </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><img src="../Images/ECClientMultiple5.gif" width="355" height="126" /></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>If you, however, do not want the users to be able to select output format here, you can set:</p>
+      <p class="codeInline">myExportComponent.componentAttributes.showAllowedTypes = '0';</p>
+      <p>And, this will result in:</p>      </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><img src="../Images/ECClientMultiple6.gif" width="356" height="126" /></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+      <p>The cosmetics of this UI can be extensively configured by specifying the same in your HTML. Please refer to the page <span class="codeInline">Component UI Customization</span> to see the entire list. </p>    </td>
+  </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Simple example|ECClientSimple.html","Setting JavaScript callback|ECClientCallback.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+//]]></script>
+</body>
+</html>

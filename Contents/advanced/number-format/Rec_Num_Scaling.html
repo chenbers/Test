@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Number Formatting - Recursive Number Scaling</title>
+<link rel="stylesheet" href="../../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../../Introduction/Overview.html", "Advanced Charting", "Number Formatting|Basics.html", "Recursive Number Scaling" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td width="100%" class="pageHeader">Recursive Number Scaling </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+       <p>Recursive number scaling comes into the picture when you have number scales defined for your chart.It helps you to understand the chart data better by breaking-up the predefined number scale into smaller sections. For example, in a chart where  time  is being plotted, you can display 3.87 days as 3 days, 20 hours, 52 minutes and 25 seconds. </p>
+       <p>Let us jump to an example straightaway to understand this better. </p>
+      <p>Let us build a chart which indicates the time taken by a list of   automated processes. Each process in the list can take time ranging from a few   seconds to few days. And we have the data for each process in seconds itself.   Now, if we were to show all the data on the chart in seconds only, it will not   appear too legible. What we can do is build a scale indicating time and then specify   it to the chart. This scale will look something as under:</p>
+      <p>60 seconds = 1 minute<br />
+60 minute = 1 hr<br />
+24 hrs = 1 day<br />
+7 days = 1   week</p>
+      <p>We can define the same in our chart using:</p>
+      <p><span class="codeInline">&lt;chart defaultNumberScale='s' numberScaleValue='60,60,24,7'   numberScaleUnit='min,hr,day,wk'  ... &gt;</span>  </p>
+      <p>Please see the <a href="Number_Scaling.html">Number Scaling</a> page for more details on how to build a number scale. Now let us consider the XML/JSON below: </p></td>
+  </tr>
+ 
+  <tr>
+    <td>
+	 <div class="container">
+    <ul class="tabs">
+       <li><a href="#tab1">XML</a></li>
+       <li><a href="#tab2">JSON</a></li>
+    </ul>
+    <div class="tab_container">
+       <div id="tab1" class="tab_content">
+	<pre class="code_container prettyprint">&lt;chart defaultNumberScale='s' numberScaleValue='60,60,24,7' numberScaleUnit='min,hr,day,wk'&gt;
+   &lt;set label='A' value='38' /&gt;
+   &lt;set label='B' value='150' /&gt;
+   &lt;set label='C' value='81050' /&gt;
+   &lt;set label='D' value='334345' /&gt;
+   &lt;set label='E' value='534345' /&gt;
+&lt;/chart&gt;</pre>
+       </div>
+	<div id="tab2" class="tab_content">
+  
+  <pre id="pre-datajson" class="prettyprint code_container">{
+  "chart": {
+    "defaultnumberscale": "s",
+    "numberscalevalue": "60,60,24,7",
+    "numberscaleunit": "min,hr,day,wk"
+  },
+  "data": [
+    {
+      "label": "A",
+      "value": "38"
+    },
+    {
+      "label": "B",
+      "value": "150"
+    },
+    {
+      "label": "C",
+      "value": "81050"
+    },
+    {
+      "label": "D",
+      "value": "334345"
+    },
+    {
+      "label": "E",
+      "value": "534345"
+    }
+  ]
+}</pre></div></div></div>
+  <div style="clear:both"></div>
+	</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">The above XML/JSON when used for a Column chart will give us this: </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><img src="../../AttDesc/Images/RecNumScale.jpg" width="444" height="313" class="imageBorder" /></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">You can see above how owing to the number scale we defined, the values in seconds are getting converted into hours, mins etc. according to the magnitude of the value entered. Neat work, but will you not rather prefer this? </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><img src="../../AttDesc/Images/RecNumScale2.jpg" width="585" height="306" class="imageBorder" /></td>
+  </tr>
+ 
+  <tr>
+    <td valign="top" class="text"><p>Notice how 22.51 hours is converted to 22 hrs, 30 mins and 50 s; 3.87 days to 3 days, 20 hrs, 52 mins and 25 s. This chart makes use of recursive number scaling and after converting the time in seconds to say hours, whatever is left over is not converted into decimals and shown. It is rather converted into smaller units of time and broken down as far as possible - so the remaining seconds are first converted to minutes and then when the seconds are too few to be converted into minutes, they are displayed in seconds itself. This gives us a fair idea of how much time was used for each task. </p>
+       <p>To use recursive number scaling, all you have to do is set <span class="codeInline">&lt;chart ... scaleRecursively='1' .. &gt;. </span></p>
+       <p>The entire XML/JSON for the chart above is: </p>
+    </td>
+  </tr>
+ 
+  <tr>
+    <td>
+	 <div class="container">
+    <ul class="tabs">
+       <li><a href="#tab3">XML</a></li>
+       <li><a href="#tab4">JSON</a></li>
+    </ul>
+    <div class="tab_container">
+       <div id="tab3" class="tab_content">
+	<pre class="code_container prettyprint">&lt;chart defaultNumberScale='s' numberScaleValue='60,60,24,7' numberScaleUnit='min,hr,day,wk' <strong>scaleRecursively='1'</strong>&gt;<br />   &lt;set label='A' value='38' /&gt;<br />   &lt;set label='B' value='150' /&gt;<br />   &lt;set label='C' value='81050' /&gt;<br />   &lt;set label='D' value='334345' /&gt;<br />   &lt;set label='E' value='534345' /&gt;<br />&lt;/chart&gt;</pre>
+       </div>
+	<div id="tab4" class="tab_content">
+  
+  <pre id="pre-datajson" class="prettyprint code_container">{
+  "chart": {
+    "defaultnumberscale": "s",
+    "numberscalevalue": "60,60,24,7",
+    "numberscaleunit": "min,hr,day,wk",
+<strong>    "scalerecursively": "1"</strong>
+  },
+  "data": [
+    {
+      "label": "A",
+      "value": "38"
+    },
+    {
+      "label": "B",
+      "value": "150"
+    },
+    {
+      "label": "C",
+      "value": "81050"
+    },
+    {
+      "label": "D",
+      "value": "334345"
+    },
+    {
+      "label": "E",
+      "value": "534345"
+    }
+  ]
+}</pre>
+	</div></div></div>
+  <div style="clear:both"></div>
+	</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+       <p><a name="recursionlevels" id="recursionlevels"></a>You can also control the levels of recursion. Suppose in the above chart, instead of  3 days, 20 hrs, 52 mins and 25 s, you are pretty happy with showing 3 day, 20 hrs itself either for space constraints or some other good reason. You can control the levels of recursion for all the numbers on your chart using the <span class="codeInline">maxScaleRecursion</span> attribute. Suppose you want only two levels of recursion, then set <span class="codeInline">&lt;chart ... maxScaleRecursion='2'&gt;</span>. This will convert the above chart to:</p>
+       <p><img src="../../AttDesc/Images/RecNumScale3.jpg" width="441" height="306" class="imageBorder" /></p>
+       <p>Notice how all the numbers on the chart are using a maximum of two time units - the rest have been truncated. When you want all the units of a number to be shown on the chart, you can either omit the <span class="codeInline">maxScaleRecursion</span> attribute or set it to <span class="codeInline">-1</span>. </p>
+       <p>By default, all the units of a number are separated by a space. You can customize the separator using the <span class="codeInline">scaleSeparator</span> attribute. For example, setting <span class="codeInline"> scaleSeparator=', ' </span>will separate each unit with a comma as shown below: </p>
+       <p><img src="../../AttDesc/Images/RecNumScale4.jpg" width="441" height="306" class="imageBorder" /></p>
+       <p class="highlightBlock">Note: <br>
+        For Scatter and Bubble charts, <span class="codeInline">xScaleRecursively</span>, <span class="codeInline">xMaxScaleRecursion</span> and <span class="codeInline">xScaleSeparator</span>  attributes are used to scale the numbers recursively on the X-Axis. These attributes will work only when the <span class="codeInline">xAxisLabelMode</span> attribute is set to <span class="codeInline">AUTO</span> or <span class="codeInline">MIXED</span>.<br/>
+    To scale the numbers recursively on the Secondary Y-Axis in a Dual Y-Axis chart, the attributes <span class="codeInline">sScaleRecursively</span>, <span class="codeInline">sMaxScaleRecursion</span> and <span class="codeInline">sScaleSeparator</span> are used.</p>
+    </td>
+  </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Number Scaling|NumScaling.html","Input Number Formatting|FormInNum.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Basic Troubleshooting</title>
+<link rel="stylesheet" href="../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../Introduction/Overview.html", "Debugging your charts", "Basic Troubleshooting" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td class="pageHeader">Basic Troubleshooting</td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>When trying to make a chart using FusionCharts XT, 
+        if you get any errors (or if the chart does not render), there could be a 
+        lot of reasons behind it. Here, we will try and cover them up. We have divided 
+        the entire debugging process into three sections:</p>
+      <ul>
+        <li><a href="#basic">Basic Troubleshooting</a> - Manual problem solving methods</li>
+        <li><a href="Advanced.html">Advanced Troubleshooting</a> - Answers to the common issues faced</li>
+        <li><a href="Window.html">Using the Debug window in Flash charts</a> - Flash charts provides a Debug Window 
+          Mode, which helps you un-earth the problems with your Flash charts</li>
+        <li><a href="JS.html">Using the FusionCharts JavaScript class</a> - Mechanism to debug charts using JavaScript events and error handlers.</li>
+       </ul>
+     <a name="basic"></a> <p>Let us cover basic trouble shooting first. While creating your chart, 
+        if for some reason you do not see your chart like it should, check for 
+        the following actions:</p></td>
+  </tr>
+  
+ <tr>
+     <td valign="top" class="header"><a name="bt1"></a>If you do not see any chart at all </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <p>If you see an endless loading progress bar in your browser, or if the right   click menu (right click at the place where the chart is supposed to be) shows   &quot;Movie not loaded&quot;, check the following: </p>
+        <ul>
+           <li>Have you pasted the chart SWF and JavaScript files  (<span class="codeInline">FusionCharts.js</span>, <span class="codeInline">FusionCharts.HC.js</span>, <span class="codeInline">FusionCharts.HC.Charts.js </span> and <span class="codeInline">jquery.min.js</span>)  in the required folder? </li>
+           <li>Have you provided the name and path of the chart properly in your code?</li>
+        </ul>
+     </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+     <td valign="top" class="header"><a name="bt2" id="bt2"></a>If you get a &quot;Error in Loading Data.&quot; message, check the following:</td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <ul>
+           <li>Whether you've provided proper path to the XML/JSON data in your code.</li>
+           <li>Paste             the Data URL in your browser to check if it's returning a valid XML/JSON. Make             sure, there are no scripting or time-out errors and a valid XML/JSON is returned. Also, make sure that the XML/JSON isn't intermingled with HTML content.             The data provider page should return a clean XML/JSON only - not even HTML <span class="codeInline">&lt;head&gt;</span> or <span class="codeInline">&lt;body&gt;</span> tags.</li>
+           <li>Whether your XML/JSON file is named properly <span class="codeInline"></span> and not having a <span class="codeInline">.txt</span> extension (as many basic text editors append <span class="codeInline">.txt</span> after the file name).</li>
+           <li>If you're using an operating system that uses case-sensitive naming for file   system (like mac, linux etc.), check for the names of your XML/JSON and chart file. </li>
+           <li>Whether your chart files (SWF and JavaScript) and XML/JSON data are on the same domain or same sub-domain. Cross domain data loading is not allowed. </li>
+        </ul>
+     </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+     <td valign="top" class="header"><a name="bt3" id="bt3"></a>If you get an &quot;Invalid Data.&quot; message, it means that the XML/JSON data   is malformed. Check it again for common errors like: </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <ul>
+           <li>Presence of duplicate attributes in the XML/JSON.</li>
+           <li>Difference in case of tags. <span class="codeInline">&lt;chart&gt;</span> should end with <span class="codeInline">&lt;/chart&gt;</span> and <strong>not</strong> <span class="codeInline">&lt;/Chart&gt;</span> or <span class="codeInline">&lt;/CHART&gt; </span></li>
+           <li>Missing opening/closing quotation marks for any attributes. e.g., <span class="codeInline">&lt;chart numberSuffix=%'</span> should be <span class="codeInline">&lt;chart numberSuffix='%'</span>. </li>
+           <li>Missing closing tag for any element.</li>
+           <li>If you've double quotes  as part of your data,Encode them to<span class="codeInline"> &amp;quot; </span> Example: <span class="codeInline">&lt;set label='John says &amp;quot;Hi&amp;quot; to all.' /&gt;</span></li>
+           <li>If you've single quotes  as part of your data,  Encode them to<span class="codeInline"> &amp;apos; </span> Example: <span class="codeInline">&lt;set label='John&amp;apos; house' /&gt;</span></li>
+           <li>While using <a href="../FirstChart/HtmlEmbed.html">HTML embedding and Data String method</a>, if you're using any special characters in your data, make sure they're 
+          properly encoded. Like, 
+          % needs to be encoded as %25 &amp; as %26.   In Data URL 
+          method, you can provide most of the characters directly, without the 
+          need to encode.</li>
+           <li>While using <a href="../FirstChart/HtmlEmbed.html">HTML embedding and Data String method</a>, check for conflict 
+              of ' (XML Attribute Character) and &quot; (HTML Parameter Character). 
+              For example, if you're using &quot; for HTML parameters, then you need to make 
+              sure that all your XML attributes use ' as containers. 
+              <p>Example:</p>
+			   <pre class="prettyprint code_container">&lt;param name=&quot;FlashVars&quot; value=&quot;&lt;chart showLabels='1' showValues='1'&gt;...&lt;/chart&gt;&quot; /&gt;</pre></li>
+         </ul>
+     </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+     <td valign="top" class="header"><a name="bt4" id="bt4"></a>If you get a screen showing &quot;The chart will appear within this DIV...&quot; or &quot;Chart.&quot; or &quot;FusionCharts XT will load here&quot;, check if:</td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <ul>
+           <li>You've copied <span class="codeInline">FusionCharts.js</span>, <span class="codeInline">jquery.min.js</span>, <span class="codeInline">FusionCharts.HC.js</span> and <span class="codeInline">FusionCharts.HC.Charts.js</span> in the right folder.</li>
+           <li>You've included and provided the correct path of <span class="codeInline">FusionCharts.js</span> in your HTML code.</li>
+           <li>There are any JavaScript syntax or runtime errors that might have halted the execution of FusionCharts APIs.</li>
+           <li>Unique names are used for the chart's JavaScript variable, chart's ID&nbsp;and the HMTL DIV's ID?<br /><br />
+		<div class="highlightBlock">To provide cross-browser compatibility, we recommend you not to start the ID with a numerical value, nor use space as part of the ID. </div>
+		   </li>
+        </ul>
+     </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  
+  <tr> 
+    <td valign="top" class="header"><a name="bt5" id="bt5"></a>&quot;No data to display&quot; message</td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>If your chart shows a &quot;No data to display&quot; 
+        message, it could be the following scenarios:</p>
+      <ul>
+            <li>Your XML data doesn't contain any data that could be plotted by FusionCharts XT.             In this case, your XML just contains the <span class="codeInline">&lt;chart&gt;</span> or <span class="codeInline">&lt;dataset&gt;</span> tags without any             data between them.</li>
+                  <li>You might be using a single-series chart SWF and providing data in             multi-series format or vice-versa. In this case too, you'll get a &quot;No             data to display&quot; message.</li>
+                  <li>In some Dual Y Combination charts, you need to provide at least one             dataset for both the axis. Otherwise, you'll get a &quot;No data to             display&quot; message.</li>
+         </ul>      
+    </td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" class="header"><a name="bt6" id="bt6"></a>If you get a &quot;... is not a function of ...&quot; error when using any JavaScript API of the chart, make sure that: </td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><ul>
+       <li>Make sure that you're not calling the JavaScript method before the chart has loaded and rendered. You need to use <span class="codeInline"><a href="../JavaScript/JS_EventOverview.html#simple">FC_Rendered</a></span> function or define event listener for <span class="codeInline"><a href="../JavaScript/JS_EventOverview.html#advanced">Rendered</a></span> event of chart to track the loading of chart as explained in the <a href="../JavaScript/JS_Overview.html">FusionCharts XT and JavaScript</a> section.</li>
+       <li> Make sure that you're NOT running the chart from local file system (C:\ , D:\). Instead, run the chart from behind a server (localhost - IIS, Apache etc.). This is because the Flash Player security settings do not allow the chart to interact with JavaScript on local file system by default, unless otherwise specifically set. Still if you want to run the chart from local file system, you need to set up the <strong>Flash Player Global Security</strong> settings. To know more on how to set up <a href="../../Tools/FlashPlayerSecuritySetup/HowToSetup.html" target="_blank">click here</a>. </li>
+      </ul>
+    </td>
+  </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Advanced charting - Changing chart messages|../advanced/ChartMessages.html", "Advanced Troubleshooting|Advanced.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+//]]></script>
+</body>
+</html>

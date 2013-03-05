@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Exporting Pure JavaScript Charts </title>
+<link rel="stylesheet" href="../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../Introduction/Overview.html", "Exporting as Image/PDF|ECOverview.html", "Exporting pure JavaScript charts" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td class="pageHeader">Exporting Pure JavaScript Charts </td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>Pure JavaScript charts also provide support for exporting to JPEG, PNG, PDF, SVG formats. Let us see how we can implement this feature.</p></td></tr>
+    <tr>
+    <td class="header">Enabling Export</td>
+    </tr>
+    <tr>
+    <td class="text">
+    <p>Similar to FusionCharts XT Flash-based charts, the JavaScript chart's export feature can be enabled by specifying the <span class="codeInline">exportEnabled="1"</span> of the <span class="codeInline">&lt;chart&gt;</span> XML element or <span class="codeInline">exportEnabled:&quot;1&quot;</span> in JSON.</p>
+    <p>The following sample data enables the exporting feature of FusionCharts XT (both Flash and JavaScript charts alike) using the default settings.</p>
+    <div class="container">
+    <ul class="tabs">
+       <li><a href="#tab1">XML</a></li>
+       <li><a href="#tab2">JSON</a></li>
+    </ul>
+    <div class="tab_container">
+       <div id="tab1" class="tab_content">
+       <pre class="prettyprint code_container">&lt;chart <strong>exportEnabled='1'</strong> caption='Weekly Sales Summary'&nbsp;xAxisName='Week' yAxisName='Sales' numberPrefix='$'<strong> </strong>&gt; <br />&nbsp; &nbsp; &lt;set label='Week 1' value='14400' /&gt; <br />&nbsp; &nbsp; &lt;set label='Week 2' value='19600' /&gt; <br />&nbsp; &nbsp; &lt;set label='Week 3' value='24000' /&gt; <br />&nbsp; &nbsp; &lt;set label='Week 4' value='15700' /&gt; <br />&lt;/chart&gt;</pre>
+       
+       </div>
+       <div id="tab2" class="tab_content">
+         <pre id="pre-datajson" class="prettyprint code_container">{<br />&nbsp; &quot;chart&quot;:{
+<strong>    &quot;exportenabled&quot;:&quot;1&quot;</strong>,<br />&nbsp; &nbsp; &quot;caption&quot;:&quot;Weekly Sales Summary&quot;,<br />&nbsp; &nbsp; &quot;xaxisname&quot;:&quot;Week&quot;,<br />&nbsp; &nbsp; &quot;yaxisname&quot;:&quot;Sales&quot;,<br />&nbsp; &nbsp; &quot;numberprefix&quot;:&quot;$&quot;<br />&nbsp; },<br />&nbsp; &quot;data&quot;:[{<br />&nbsp; &nbsp; &nbsp; &quot;label&quot;:&quot;Week 1&quot;,<br />&nbsp; &nbsp; &nbsp; &quot;value&quot;:&quot;14400&quot;<br />&nbsp; &nbsp; },<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &quot;label&quot;:&quot;Week 2&quot;,<br />&nbsp; &nbsp; &nbsp; &quot;value&quot;:&quot;19600&quot;<br />&nbsp; &nbsp; },<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &quot;label&quot;:&quot;Week 3&quot;,<br />&nbsp; &nbsp; &nbsp; &quot;value&quot;:&quot;24000&quot;<br />&nbsp; &nbsp; },<br />&nbsp; &nbsp; {<br />&nbsp; &nbsp; &nbsp; &quot;label&quot;:&quot;Week 4&quot;,<br />&nbsp; &nbsp; &nbsp; &quot;value&quot;:&quot;15700&quot;<br />&nbsp; &nbsp; }<br />&nbsp; ]<br />}</pre>
+       </div></div></div>
+</td>
+    </tr>
+    <tr>
+    <td class="text"><p>Once the<span class="codeInline"> exportEnabled</span> attribute is set, a &quot;<span class="codeInline">Download</span>&quot; button will be displayed on the top-right corner of your chart. This button, when clicked, will provide you a list of various export file formats thereby enabling you to  download an image or PDF version of the chart.</p>
+    <p>The following image shows how the list will appear when the above data is used in a column 2D chart.</p>
+    <p><img src="Images/JSChart_Export_1.jpg" width="418" height="305"/></p>
+    <p>See it <a href="../../Code/ExportChartSamples/PureJavaScript/weekly-sales-js-export.html" target="_blank">live!</a></p>
+    <p class="highlightBlock">During export of the pure JavaScript charts, the chart data is sent to external servers for
+processing and converting to image. User must have an active internet connection for this feature to
+work. In case you want to process the exported data on your own server, you may setup the chart
+to send the data to your own server. The details of how to do the same has been explained <a href="#ownserver">later</a> on this
+page. </p>
+    <p>There is a possibility that the exported image/PDF appears slightly visually different with respect to
+colors and effects from your original chart that is being exported. </p>
+<p class="highlightBlock">FusionCharts XT Flash charts do not have a button to export the chart. Instead, upon right-clicking the Flash charts, users can select exporting options using a context-menu.</p>
+    </td>
+    </tr>
+    <tr>
+    <td class="header">Customizing the Export Feature</td>
+    </tr>
+    <tr>
+    <td class="text"><p>The export features of the JavaScript charts presently have limited customizability when
+compared to the Flash charts. This is primarily owing to certain <a href="ECOverview.html#limitation">limitations</a> of the present JavaScript export feature.</p>
+      <p>You can hide the "<span class="codeInline">Download</span>" button on the chart using the <span class="codeInline">exportShowMenuItem="0"</span>.
+This will hide the export button. But, you will still be able to export the chart using its <a href="javascript-ref/ECJavaScript.html">JavaScript
+API similar to FusionCharts XT Flash charts</a>. </p>
+</td>
+  </tr>
+  
+    <tr><td class="header"><a name="ownserver"></a>Setup your own server to process and export JavaScript charts</td>
+    </tr><tr>
+    </tr><tr>
+    <td class="text">
+    <p>You may want to set up the export service of the JavaScript charts on your own server. For this, you require PHP and Java running in your server. A JavaScript chart sends the export data to FusionCharts PHP Export Handler. It comprises of the following files (can be acquired from <span class="codeInline">FusionCharts Download Pack &gt; ExportHandlers &gt; PHP</span> folder) are required on your server:<br/>
+	<ol>
+	<li><span class="codeInline">index.php</span> (accepts initial export data and loads format specific export modules)</li>
+	<li><span class="codeInline">Resources/FCExporter_SVG2ALL.php </span>(Export module to export JavaScript charts with the help of Java Batik library)</li>
+	<li><a href="http://xmlgraphics.apache.org/batik/tools/rasterizer.html" target="_blank">Apache Batik SVG Rasterizer library (download)</a></li>
+	<li>(optional) <span class="codeInline">Resources/FCExporter_RLE2IMG.php</span> (Export module to export Flash charts to PNG/JPG)</li>
+	<li>(optional) <span class="codeInline">Resources/FCExporter_RLE2PDF.php</span> (Export module to export Flash charts to PDF)</li>
+	</ol>
+	<br/>
+	<strong>Server configurations required:</strong>
+	<ul>
+	<li>Create a directory called <span class="codeInline">temp</span> in the same directory as<span class="codeInline"> index.php</span>. If you have Linux or Unix servers, chmod this new directory to <span class="codeInline">777</span>.</li>
+	<li>Download the <span class="codeInline">Apache Batik SVG Rasterizer library</span> (as a compressed file) from here.</li>
+	<li>Extract the <span class="codeInline">Batik</span> library in a temporary location and upload <a href="http://xmlgraphics.apache.org/batik/download.cgi" target="_blank">batik-rasterizer.jar</a> and the entire lib directory to a location on your web server.</li>
+	<li>Edit <span class="codeInline">Resources/FCExporter_SVG2ALL.php</span>  and set the path to <span class="codeInline">batik-rasterier.jar</span> in the options section provided at the top of the php file as shown below:<br/>
+	  <br/>
+	<pre class="code_container prettyprint" >// Options
+define ('BATIK_PATH', 'batik-rasterizer.jar');</pre><br />
+	</li>
+	<li>Set the path to the <span class="codeInline">index.php</span> in the <span class="codeInline">exportHandler</span> attribute of your chart's XML/JSON data as shown below:
+	<br />
+	  <br />
+	<pre class="code_container prettyprint" >&lt;chart ExportHandler='http://myserver.com/exporter/index.php' ...&gt;</pre><br/>
+	</li>
+	<li>Enable Export using <span class="codeInline">exportEnabled ='1'</span> in your chart's XML/JSON data.</li>
+	</ul>
+	<p class="text">If you want to save the exported file at your server, configure <span class="codeInline">index.php</span> to:
+	<br />
+	<ol>
+	  <li>Specify the location where the exported files will be saved</li>
+	  <li>Whether to overwrite existing files or to apply intelligent file naming when a file with the same name already exists</li>
+	  <li>Specify the web path of the saved file
+	  </li>
+	  <br />
+	  </ol>
+	 <pre class="prettyprint code_container"> /* ----------------------- EXPORT PATH & URL -------------------------------- */     /**
+        * IMPORTANT: You need to change the location of folder where 
+        *            the exported chart images/PDFs will be saved on your 
+        *			  server. Please specify the path to a folder with 
+        *			  write permissions in the constant SAVE_PATH below. 
+        */ 
+      define ( "SAVE_PATH",  "./" );
+      /* Place your folder path here.*//**
+        *	IMPORTANT: This constant HTTP_URL stores the HTTP reference to 
+        *	           the folder where exported charts will be saved. 
+        *			   Please enter the HTTP representation of that folder 
+        *			   in this constant e.g., http://www.yourdomain.com/images/
+        */
+      define ( "HTTP_URL", "http://www.yourdomain.com/images/" );
+      /* Define your HTTP Mapping URL here. *//**
+*  OVERWRITEFILE sets whether the export handler will overwrite an existing file 
+*  the newly created exported file. If it is set to false the export handler will
+*  not overwrite. In this case if INTELLIGENTFILENAMING is set to true the handler
+*  will add a suffix to the new file name. The suffix is a randomly generated UUID.
+*  Additionally, you add a timestamp or random number as additional suffix.
+* 
+*/
+define ( "OVERWRITEFILE", false );
+define ( "INTELLIGENTFILENAMING", true ); 
+define ( "FILESUFFIXFORMAT", "TIMESTAMP" ) ;// can be TIMESTAMP or RANDOM/* Define file over-write, auto-naming and naming suffix configuration here.*/</pre>
+
+
+	</p>
+	</p>
+   
+    
+    </td>
+    </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Initiating Export from JavaScript|javascript-ref/ECJavaScript.html","Export Component Debug mode|ECReferenceDebugJS.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+//]]></script>
+</body>
+</html>

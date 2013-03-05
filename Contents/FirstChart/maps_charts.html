@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../assets/ui/js/jquery.min.js" ></script>
+<script type="text/javascript" src="../assets/ui/js/lib.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu {
+	position:absolute;
+	left:0px;
+	top:0px;
+	z-index:4;
+	visibility:hidden;
+}
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav, a.whtbtnshownav {
+	border-bottom:none !important;
+}
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whtopic.js"></script>
+<title>Rendering maps and charts in one page</title>
+</head>
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../introduction/overview.html", "Creating your first map|first_chart.html",  "Creating multiple maps in a page" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+   <tr>
+      <td class="pageHeader">Rendering  maps and charts in a page </td>
+   </tr>
+   <tr>
+      <td valign="top" class="text">
+         <p> In this page, we will learn how to render charts, gauges and maps from <a href="http://www.fusioncharts.com/widgets" target="_blank">FusionWidgets XT</a>, <a href="http://www.fusioncharts.com/PowerCharts" target="_blank">PowerCharts XT</a>, <a href="http://www.fusioncharts.com/maps" target="_blank">FusionMaps XT </a>and charts from FusionCharts XT in a single web page. </p>
+         <p>In this example, we will demonstrate a sales dashboard displaying a Column 3D chart,  a  Spline chart, an Angular gauge and a world map. You can see the breakdown of total revenue into monthly revenue from   products and services,  compare the overall revenue with that of the previous year, profit margin and explore which geography generates what kind of   revenue. The page will look like the image below: </p>
+         <p><img src="Images/chart_maps.jpg" width="862" height="543"  class="imageBorder" /></p>
+         <p>The process of embedding multiple charts and maps is similar to that of embedding <a href="MultipleCharts.html">multiple charts</a> in a single page. To create this example the steps are as follows:</p>
+         <ul>
+            <li>From individual packs of the products, copy all the necessary javascript files and keep them in a single folder (say &quot;JS&quot;). The  necessary JavaScript files are:
+               <ul>
+                  <li><span class="codeInline">FusionCharts.js</span> (from FusionCharts XT pack  or from the latest pack you have)</li>
+                  <li><span class="codeInline">FusionCharts.HC.js</span> (from FusionCharts XT pack or from the latest pack you have)</li>
+                  <li><span class="codeInline">FusionCharts.HC.Charts.js</span> (from FusionCharts XT pack)</li>
+                  <li><span class="codeInline">FusionCharts.HC.PowerCharts.js</span> (from PowerCharts XT pack)</li>
+				  <li><span class="codeInline">FusionCharts.HC.Widgets.js</span> (from FusionWidgets XT pack)</li>
+				  <li><span class="codeInline">FusionCharts.HC.Maps.js</span> (from FusionMaps XT pack)</li>
+                  <li><span class="codeInline">FusionCharts.HC.world.js</span> (from FusionMaps XT pack)</li>
+                  <li><span class="codeInline">jquery.min.js</span> (from any of the packs)</li>
+               </ul>
+            </li>
+            <li>You can copy the chart and map SWF  files from individual packs to a single folder  or multiple folders. The  necessary SWF files for the above example are:
+               <ul>
+			   <li><span class="codeInline">Column3D.swf</span> (from FusionCharts XT pack)</li>
+                  <li><span class="codeInline">MSSpline.swf</span> (from PowerCharts XT pack)</li>
+                  <li><span class="codeInline">AngularGauge.swf</span> (from FusionWidgets XT pack)</li>
+				  <li><span class="codeInline">FCMap_World.swf</span> (from FusionMaps XT pack)
+                  
+                  
+                     <p class="highlightBlock">For this example, we copy all the SWF files to&nbsp;single folder named &quot;SWF&quot;.</p></li>
+               </ul>
+            </li>
+            <li>Each  chart, gauge and map on the page should have a unique DOM-Id (which is specified in the JavaScript  constructor).</li>
+            <li>Each chart, gauge and map should be denoted by a unique JavaScript variable name (example, <span class="codeInline">var revenueChart = new FusionCharts (...); var salesComparison = new       FusionCharts(...);</span> ).</li>
+            <li>Each  chart should be rendered in a separate HTML container (DIV, SPAN etc), each container having unique id. The  chart embedding code must contain a reference to the ID of the container where the  chart is to be rendered ( <span class="codeInline">render(&quot;revenueDiv&quot;) ; .. render(&quot;chartContainerSpline&quot;);</span> ). </li>
+         </ul>
+         <br />
+         The following sample code embeds  maps and charts into a single HTML page : </td>
+   </tr>
+   <tr>
+      <td valign="top" class="text">
+         <pre class="code_container prettyprint lang-html">&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Creating charts, gauges and maps in a single page&lt;/title&gt;
+		&lt;script type=&quot;text/javascript&quot; src=&quot;JS/FusionCharts.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+	&lt;body&gt;
+		&lt;table border="0" cellspacing="5" cellpadding="0"&gt;
+		&lt;tr&gt;
+			 &lt;td&gt;
+				&lt;div id="revenueDiv"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 var revenueChart = new FusionCharts("SWF/MSColumn3D.swf", "chart2", "400", "250", "0");
+				 revenueChart.setXMLUrl("Data/Revenue2005.xml");
+				 revenueChart.render("revenueDiv");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			 &lt;td&gt;
+				&lt;div id="chartContainerSpline"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 var salesComparison = new FusionCharts("SWF/MSSpLine.swf", "chart3", "400", "250", "0");
+				 salesComparison.setXMLUrl("Data/SalesComparison.xml");
+				 salesComparison.render("chartContainerSpline");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;
+				&lt;div id="gaugeDiv"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 var ProfitMargin = new FusionCharts("SWF/AngularGauge.swf", "chart1", "300", "155", "0");
+				 ProfitMargin.setXMLUrl("Data/ProfitMargin.xml");
+				 ProfitMargin.render("gaugeDiv");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			 &lt;td&gt;
+				&lt;div id="worldMapContainer"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 // Uncomment the line below to render JavaScript charts and maps
+				 //FusionCharts.setCurrentRenderer("javascript");
+ 				 var worldMap = new FusionCharts("SWF/FCMap_World.swf", "Map1Id", "480", "300", "0");
+				 worldMap.setXMLUrl("Data/RegionWiseSales.xml");
+				 worldMap.render("worldMapContainer");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/table&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</pre>
+         <p>See it <a href="http://www.fusioncharts.com/demos/business/sales-dashboard/view/index.html" target="_blank">live</a>!</p>
+      </td>
+   </tr>
+   <tr>
+      <td valign="top" class="header"> Keeping  files of each product in different folders</td>
+   </tr>
+   <tr>
+      <td valign="top" class="text">
+         <p>Instead of keeping all the JavaScript files and SWF files of each product in one common folder you can also keep the files in different folders. For example - </p>
+         <ul>
+            <li><span class="codeInline">FusionCharts.js</span>, <span class="codeInline">FusionCharts.HC.js</span>, <span class="codeInline">jquery.min.js</span>, <span class="codeInline">FusionCharts.HC.Charts.js</span> and <span class="codeInline">Column3D.swf</span> in a folder named &quot;Charts&quot;</li>
+            <li><span class="codeInline">FusionCharts.HC.Widgets.js</span> and <span class="codeInline">AngularGauge.swf</span> in a folder named &quot;Widgets&quot;</li>
+            <li><span class="codeInline">FusionCharts.HC.PowerCharts.js</span> and <span class="codeInline">MSSpline.swf</span> in a folder named &quot;PowerCharts&quot;</li>
+            <li><span class="codeInline">FusionCharts.HC.Maps.js</span>, <span class="codeInline">FusionCharts.HC.world.js</span> and <span class="codeInline">FCMap_World.swf</span> in a folder named &quot;Maps&quot;</li>
+            <li>&quot;Charts&quot;, &quot;Widgets&quot;, &quot;PowerCharts&quot; and &quot;Maps&quot; folders are present in a single parent folder</li>
+         </ul>
+         <p>
+            In  cases like the above:</p>
+         <ol>
+            <li>You need to provide correct path of the SWF files. The path of the SWF files should be relative to the&nbsp;web page or HTML file.</li>
+            <li>More importantly, you need to explicitly declare  the path of each product specific  JavaScript  module. Use: 
+            
+           <ul>
+            <li><span class="codeInline">FusionCharts.options.html5ChartsSrc</span> property to set the path for <span class="codeInline">FusionCharts.HC.Charts.js</span> ( FusionCharts XT JavaScript module) </li>
+              <li><span class="codeInline">FusionCharts.options.html5WidgetsSrc</span> property to set the path for <span class="codeInline">FusionCharts.HC.Widgets.js</span> ( FusionWidgets XT JavaScript module) </li>
+              <li><span class="codeInline">FusionCharts.options.html5PowerChartsSrc</span> property to set the path for <span class="codeInline">FusionCharts.HC.PowerCharts.js</span> ( PowerCharts XT JavaScript module) </li>
+              <li><span class="codeInline">FusionCharts.options.html5MapsSrc</span> property to set the path for <span class="codeInline">FusionCharts.HC.Maps.js</span> ( FusionMaps XT JavaScript module) 
+              <p class="highlightBlock"><strong>Note</strong>: The paths for the JavaScript modules should always be relative to the path of <span class="codeInline">FusionCharts.js</span> and NOT relative to the path of the web page or HTML file. </p>
+              </li>
+            </ul>
+            </li>
+         </ol>
+         <p>The  code for the above folder structure will look as under: </p>
+         <pre class="code_container prettyprint lang-html">&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Creating charts, gauges and maps in a single page&lt;/title&gt;
+		&lt;script type=&quot;text/javascript&quot; src=&quot;Charts/FusionCharts.js&quot;&gt;&lt;/script&gt;
+		&lt;script type="text/javascript"&gt;
+<strong>			FusionCharts.options.html5PowerChartsSrc = "../PowerCharts/FusionCharts.HC.PowerCharts.js";
+			FusionCharts.options.html5WidgetsSrc = "../Widgets/FusionCharts.HC.Widgets.js";
+			FusionCharts.options.html5MapsSrc = "../Maps/FusionCharts.HC.Maps.js";
+</strong>		&lt;/script&gt;
+&lt;/head&gt;
+	&lt;body&gt;
+		&lt;table border="0" cellspacing="5" cellpadding="0"&gt;
+			&lt;tr&gt;
+			 &lt;td&gt;
+				&lt;div id="revenueDiv"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 var revenueChart = new FusionCharts("<strong>Charts/MSColumn3D.swf</strong>", "chart2", "400", "250", "0");
+				 revenueChart.setXMLUrl("Data/Revenue2005.xml");
+				 revenueChart.render("revenueDiv");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			 &lt;td&gt;
+				&lt;div id="chartContainerSpline"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 var salesComparison = new FusionCharts("<strong>PowerCharts/MSSpLine.swf</strong>", "chart3", "400", "250", "0");
+				 salesComparison.setXMLUrl("Data/SalesComparison.xml");
+				 salesComparison.render("chartContainerSpline");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+			&lt;td&gt;
+				&lt;div id="gaugeDiv&quot;&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 var ProfitMargin = new FusionCharts("<strong>Widgets/AngularGauge.swf</strong>", "chart1", "300", "155");
+				 ProfitMargin.setXMLUrl("Data/ProfitMargin.xml");
+				 ProfitMargin.render("chart1");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			 &lt;td&gt;
+				&lt;div id="worldMapContainer"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				 // Uncomment the line below to render JavaScript charts and maps
+				 //FusionCharts.setCurrentRenderer("javascript");
+ 				 var worldMap = new FusionCharts("<strong>Maps/FCMap_World.swf</strong>", "Map1Id", "480", "300");
+				 worldMap.setXMLUrl("Data/RegionWiseSales.xml");
+				 worldMap.render("worldMapContainer");
+				&lt;/script&gt;
+			 &lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/table&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</pre>
+      </td>
+   </tr>
+   <tr>
+      <td class="text">
+         <p>In the above code, we have declared the relative paths of all the JavaScript module files explicitly using the following properties:</p>
+         <ul>
+		 <li><span class="codeInline">FusionCharts.options.html5PowerChartsSrc = &quot;../PowerCharts/FusionCharts.HC.PowerCharts.js&quot;</span></li>
+            <li><span class="codeInline">FusionCharts.options.html5WidgetsSrc = &quot;../Widgets/FusionCharts.HC.Widgets.js&quot;</span></li>
+            <li><span class="codeInline">FusionCharts.options.html5MapsSrc = &quot;../Maps/FusionCharts.HC.Maps.js&quot;</span></li>
+            
+         </ul>
+         <p class="highlightBlock"><strong>Important</strong>: The above mentioned properties need to be declared before rendering of  any chart or map in the  page. To be safe, we have placed this&nbsp;declaration just after including <span class="codeInline">FusionCharts.js</span> in the HTML page.</p>
+         <p class="highlightBlock">Note: In the example above, we have not explicitly defined the path of <span class="codeInline">FusionCharts.HC.Charts.js</span> since it resides in the same folder as that of <span class="codeInline">FusionCharts.js</span>. This enables <span class="codeInline">FusionCharts.js</span> to load it automatically from the same location.</p>
+      </td>
+   </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Creating multiple maps in a page|multiple.html","Using HTML embedding method|html_embed.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+</script>
+</body>
+</html>

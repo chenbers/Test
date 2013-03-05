@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Debugging using JavaScript </title>
+<link rel="stylesheet" href="../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../Introduction/Overview.html", "Debugging your charts|Basic.html", "Using JavaScript" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td class="pageHeader">Debugging using JavaScript </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <p>FusionCharts JavaScript class provides a developer-friendly mechanism to debug charts. You can debug your charts in two ways. </p>
+       <ol>
+           <li><a href="#debugmode">Use the FusionCharts JS Library&rsquo;s internal <span class="codeInline">debugMode</span> to watch chart&rsquo;s activities</a></li>
+           <li><a href="#errorlist">Know the error code and possible cause of an error</a></li>
+           <li><a href="#simple">Write your own functions to trap specific error events raised by FusionCharts</a></li>
+       </ol>
+        <p class="header"><a name="debugmode" id="debugmode"></a>Using the FusionCharts JavaScript Debug Mode</p>
+		  <p>Apart from the Debug mode of individual  FusionCharts SWFs, the FusionCharts JavaScript Library has its own <span class="codeInline">debugMode</span> as  well. This allows users to watch the chart&rsquo;s JS activities and debug charts  accordingly.
+To enable the JavaScript Debug Mode, you  need to write the following lines of code:</p>
+		  <pre class="code_container prettyprint">FusionCharts.debugMode.enabled(true);</pre>
+		  <p>
+		     Next, you need to specify where you will  like to display the <span class="codeInline">debugMode</span> output. In case you want to see the error within  the browser&rsquo;s JavaScript console, you will need to write the following lines  of code.		     </p>
+		  <pre class="code_container prettyprint">FusionCharts.debugMode.outputTo( function() { console.log(arguments); } );</pre>
+		  <p>
+		     The above line of code will output the  <span class="codeInline">debugMode</span> messages somewhat as below:	      </p>
+		  <p><img src="Images/FirebugConsole.jpg" width="460" height="617" class="imageBorder" /></p>
+		  <p>See it <a href="../../Code/JavaScript/Errors/JSDebugMode.html" target="_blank">live</a>! </p>
+		  <p class="highlightBlock">
+		     Note that, depending upon your browser, you  may need to specifically enable &ldquo;JavaScript Console&rdquo;.</p>
+		  <p>
+		     In case, you want detailed information  regarding each event, you may use a more advanced JavaScript debugger such as  FireBug (available for FireFox) or FireBug-Lite (can be used on most browsers).</p>
+		  <p>If you are using an advanced JavaScript  console (like Firebug) that can display object hierarchy, you may want to  change the <span class="codeInline">debugMode</span> output format.To set the output format to &lsquo;verbose&rsquo;, use  the following line of code:</p>
+		  <pre class="code_container prettyprint">FusionCharts.debugMode.outputFormat('verbose');</pre>
+		  <p><img src="Images/FirebugConsoleVerbose.jpg" width="485" height="578" class="imageBorder" /></p>
+		  <p>See it <a href="../../Code/JavaScript/Errors/JSDebugModeOutputFormat.html" target="_blank">live</a>! </p>
+		  <p>All the above lines can be written in one  compact line of code:</p>
+		  <pre class="code_container prettyprint">FusionCharts.debugMode.enabled( function() { console.log(arguments); }, 'verbose');</pre>
+		  <p>The supported debugMode output formats are:  <span class="codeInline">text</span> (default), <span class="codeInline">verbose</span> and <span class="codeInline">event</span>. When the outputFormat is set to  <span class="codeInline">event</span>, the output function assigned to the debugger (using <span class="codeInline">debugMode.outputTo</span>  method) is sent arguments exactly matching <a href="../JavaScript/JS_EventOverview.html#eventparams">FusionCharts XT Advanced events model</a>:  <span class="codeInline">eventObject</span>, <span class="codeInline">argumentsObject</span>.</p>
+          <div class="highlightBlock">
+		  <div class="msg_handler_open_slider" ><strong><a>Advanced Note</a></strong> &laquo; </div><div class="msg_body_open" style="margin:5px;">FusionCharts XT also provides an interesting  function to remotely auto-include Firebug-Lite within your browser. This helps  in case you are running a browser with reduced features of &lsquo;console&rsquo;.
+To use this feature, write the following  lines of code: <br /><br />
+
+
+<pre class="code_container prettyprint">
+FusionCharts.debugMode._enableFirebugLite();</pre>
+<p>
+This method takes time for the console to  load (also needs internet connectivity) as the Firebug script is remotely  loaded.<br />
+In case you have a local copy of  Firebug-lite, simply pass the path to the script as a parameter of the above  function:</p><pre class="prettyprint code_container">FusionCharts.debugMode._enableFirebugLite('firebug-lite.js');</pre><br />
+
+See it <a href="../../Code/JavaScript/Errors/JSDebugModeFirebugLight.html" target="_blank">live</a>!
+</div></div>
+       <br />     </td>
+  </tr>
+  <tr>
+     <td valign="top" class="header"><a name="errorlist" id="errorlist"></a> Error Code and Description</td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <p>FusionCharts JavaScript Class  displays or logs errors messages when an error occurs while rendering a chart. The error message contains an error code. </p>
+        <p>The table below contains the list of Error codes and the description of each error. </p>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
+           <tr>
+              <td class="header">Error Code </td>
+              <td class="header"><span class="table">Nature</span></td>
+              <td class="header"><span class="table">Description</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081429 </span></td>
+              <td><span class="table">param</span></td>
+              <td><span class="table">Invalid parameters passed to the </span><span class="codeInline">getChartAttribute()</span><span class="table"> function.</span></td>
+           </tr>
+           <tr>
+              <td> 25081543 </td>
+              <td>param</td>
+              <td>Invalid parameters passed to the <span class="codeInline">getChartData()</span> function. Check whether you are specifying one of the valid data-format strings.</td>
+           </tr>
+           <tr>
+              <td><span class="table">25081617</span></td>
+              <td><span class="table">run</span></td>
+              <td><span class="table">Call to a particular method on Flash chart (ExternalInterface function) failed. Check whether the chart has been rendered or whether you have proper <a href="../../Tools/FlashPlayerSecuritySetup/HowToSetup.html">Flash Player Security settings</a>.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081621</span></td>
+              <td><span class="table">run</span></td>
+              <td><span class="table">This is an error caused when FusionCharts Flash object is sending data to non-existent object while accessing flashVars. This happens when a chart has been disposed from JavaScript, but due to manipulations by any other external script, the chart's HTMLNode is not deleted from the DOM.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081627</span></td>
+              <td><span class="table">param</span></td>
+              <td><span class="table">Invalid parameters (null, undefined, etc.) passed to the </span><span class="codeInline">setDataXML()</span><span class="table"> function.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081724</span></td>
+              <td><span class="table">param</span></td>
+              <td><span class="table">Invalid parameters (null, undefined, etc.) passed to the function </span><span class="codeInline">setDataURL() </span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081731</span></td>
+              <td><span class="table">param</span></td>
+              <td><span class="table">Invalid parameters (null, undefined, etc.) passed to the </span><span class="codeInline">configureLink()</span><span class="table"> function.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081803</span></td>
+              <td>Runtime</td>
+              <td><span class="table">Canvas text drawing is not supported in browser</span>. This error occurs when <a href="../JavaScript/JS_PrintManager.html">Print Manager</a> is activated. Make sure you are not using a very old browser version that does not have full support for HTML5 canvas.</td>
+           </tr>
+           <tr>
+              <td><span class="table">25081807</span></td>
+              <td>Runtime</td>
+              <td><span class="table">There was an error while drawing text on canvas.This error occurs when <a href="../JavaScript/JS_PrintManager.html">Print Manager</a> is activated. Make sure you are not using a very old browser version that does not have full support for HTML5 canvas.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081810</span></td>
+              <td>Runtime</td>
+              <td><span class="table">There was an error while drawing canvas.This error occurs when <a href="../JavaScript/JS_PrintManager.html">Print Manager</a> is created image. Make sure you are not using a very old browser version that does not have full support for HTML5 canvas.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081816</span></td>
+              <td>Runtime</td>
+              <td><span class="table">printManager is not compatible with your browser</span>. This error occurs when <a href="../JavaScript/JS_PrintManager.html">Print Manager</a> is enabled. Make sure you are not using a very old browser version that does not have support for HTML5 canvas.</td>
+           </tr>
+           <tr>
+              <td><span class="table">25081731</span></td>
+              <td><span class="table">param</span></td>
+              <td><span class="table">An invalid value was specified for renderer-name. Make sure you are using one of the valid renderer name strings while using the </span><span class="codeInline">setCurrentRenderer(</span><span class="table">) function or while specifying &quot;renderer&quot; parameter during FusionCharts construction.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081733</span></td>
+              <td><span class="table">type</span></td>
+              <td>An invalid data type was specified for renderer-name. Make sure you are not sending undefined or null to the <span class="codeInline">setCurrentRenderer()</span> function or to &quot;renderer&quot; parameter while FusionCharts construction.</td>
+           </tr>
+           <tr>
+              <td><span class="table">25081840</span></td>
+              <td><span class="table">run</span></td>
+              <td>An invalid value was specified for renderer-name. Make sure you are using one of the valid renderer name strings while using the <span class="codeInline">setCurrentRenderer()</span> function or while specifying &quot;renderer&quot; parameter during FusionCharts construction.</td>
+           </tr>
+           <tr>
+              <td><span class="table">25081843</span></td>
+              <td><span class="table">param</span></td>
+              <td><span class="table">Missing required parameter </span><span class="codeInline">swfUrl</span><span class="table"> while creating a new FusionCharts object.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081845</span></td>
+              <td><span class="table">run</span></td>
+              <td><span class="table">No active renderer. This is a critical error. Try hard-specifying the renderer name using the </span><span class="codeInline">setCurrentRenderer()</span><span class="table"> method.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081850</span></td>
+              <td><span class="table">run</span></td>
+              <td><span class="table">Error rendering chart. This is possibly caused when there is an issue while accessing the chart container HTMLNode element.</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">25081843</span></td>
+              <td><span class="table">comp</span></td>
+              <td><span class="table"> IECompatibility variable naming error. This error occurs when you have a JavaScript variable in the global window scope with the same name as that of the chart's Id.<br />
+                       <br />
+                 For example:<br />
+                 <span class="codeInline">var myChart = new FusionCharts('Column3D.swf', 'myChart');</span><br />
+                 Note that the chart id &quot;myChart&quot; is same as the JS variable name &quot;myChart&quot;</span></td>
+           </tr>
+           <tr>
+              <td><span class="table">03091549</span></td>
+              <td><span class="table">param</span></td>
+              <td><span class="table"> Unspecified event type </span>specified to the parameter of <span class="codeInline">addEventListener()</span> function. Refer to <a href="../JavaScript/API/Events.html">Event API</a> reference for valid event names.</td>
+           </tr>
+           <tr>
+              <td><span class="table">03091550</span></td>
+              <td><span class="table">param</span></td>
+              <td>Invalid  event type specified to the parameter of<span class="codeInline"> removeEventListener()</span> function. Refer to <a href="../JavaScript/API/Events.html">Event API</a> reference for valid event names.</td>
+           </tr>
+           <tr>
+              <td><span class="table">03091559</span></td>
+              <td><span class="table">param</span></td>
+              <td>Invalid event type specified to the parameter of <span class="codeInline">removeEventListener()</span> function. Refer to <a href="../JavaScript/API/Events.html">Event API</a> reference for valid event names.</td>
+           </tr>
+           <tr>
+              <td><span class="table">03091560</span></td>
+              <td><span class="table">param</span></td>
+              <td>Unrecognized event type provided to the <span class="codeInline">removeEventListener()</span> function. Refer to <a href="../JavaScript/API/Events.html">Event API</a> reference for valid event names.</td>
+           </tr>
+           <tr>
+              <td><span class="table">03091602</span></td>
+              <td><span class="table">param</span></td>
+              <td>Invalid event type (null, undefined, etc.) provided while event manager raises an event.</td>
+           </tr>
+           <tr>
+              <td><span class="table">03091609</span></td>
+              <td><span class="table">param</span></td>
+              <td>Invalid parameters passed to the <span class="codeInline">setChartDataUrl()</span> function. Check whether you are specifying one of the valid data-format strings.</td>
+           </tr>
+           <tr>
+              <td><span class="table">03091610</span></td>
+              <td><span class="table">param</span></td>
+              <td>Invalid parameters passed to the <span class="codeInline">setChartData()</span> function. Check whether you are specifying one of the valid data-format strings.</td>
+           </tr>
+           <tr>
+              <td height="48"><span class="table">03091611</span></td>
+              <td><span class="table">param</span></td>
+              <td>Invalid parameters passed to the <span class="codeInline">setChartData()</span> function. Check whether you are specifying one of the valid data-format strings.</td>
+           </tr>
+        </table>
+        
+     </td>
+  </tr>
+  <tr><td class="text">&nbsp;</td></tr>
+  <tr>
+     <td valign="top" class="header"><a name="simple" id="simple"></a>Using simple error events </td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <p>There are three error events which can be listened to using simple event listening. They are described as follows:</p>
+        <ul>
+           <li><span class="codeInline">FC_NoDataToDisplay</span> : This event is fired when the XML data loaded by chart did not contain any data to display. It   can be used to show an error message to user, or to take a corrective   measure. </li>
+           <li><span class="codeInline">FC_DataLoadError</span> : This event is fired when there was an error in loading data from the specified URL. It can   be used to show an error message to user, or to take a corrective   measure.</li>
+           <li><span class="codeInline">FC_DataXMLInvalid</span> : This event is fired when the XML data loaded by chart is invalid. It   can be used to show an error message to user, or to take a corrective   measure.</li>
+       </ul>
+        <p class="highlightBlock">To know more on how to listen to simple events like the ones listed above read <strong>FusionCharts XT and JavaScript</strong> &gt; <a href="../JavaScript/JS_EventOverview.html#simple">Listening to events</a> page.  </p>
+        <p>The image and the code below shows how <span class="codeInline">NoDataToDisplay</span> error is listened to and shown an alert message when the event is fired:</p>
+        <p><img src="Images/JSSimpleEventNodata.jpg" width="417" height="214" class="imageBorder" /></p>
+        <pre class="code_container prettyprint">&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Listening to simple error event NoDataToDisplay&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;../../FusionCharts/FusionCharts.js&quot; &gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="chartContainer"&gt;FusionCharts XT will load here &lt;/div&gt;
+
+	  &lt;script type="text/javascript"&gt;&lt;!--
+
+		  var myChart = new FusionCharts(&quot;../../FusionCharts/Column3D.swf&quot;, &quot;myChartId&quot;, &quot;400&quot;, &quot;300&quot;, &quot;0&quot;, &quot;1&quot;);
+		  myChart.<strong>setXMLData(&quot;&lt;chart/&gt;&quot;);</strong>
+		  myChart.render(&quot;chartContainer&quot;);
+
+		<strong>	function FC_NoDataToDisplay(DOMId)</strong>
+			{
+				alert(&quot;No data to display error occurred in chart having id - &quot; + DOMId);
+			}
+		  // -->
+	  &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+        <p>In the above code we have created a chart and set an empty XML with just the root element <span class="codeInline">&lt;chart/&gt;</span>. This makes the XML devoid of any chart data. </p>
+<p>Hence, the error event <span class="codeInline">FC_NoDataToDisplay</span> is being fired. We listen to that event declaring a function of the same name. The function gets automatically called by the chart in this case. We show an alert message when the function is called.</p>
+<p>See this example <a href="../../Code/JavaScript/Errors/NoDataToDisplay.html" target="_blank">live</a>! </p>     </td>
+  </tr>
+  
+  <tr>
+     <td valign="top" class="header"><a name="advanced"></a>Using advanced Error and Warning Events</td>
+  </tr>
+  <tr>
+     <td valign="top" class="text">
+        <p>FusionCharts JavaScript Library provides two error  events.</p>
+        <ol>
+           <li>Error</li>
+           <li>Warning</li>
+        </ol>
+        <p>You can listen to the above events globally  or on a per-chart basis. 
+           To listen to an error event globally, use  the following line of code:       </p><pre class="prettyprint code_container">FusionCharts.addEventListener(<strong>'Error'</strong>, function (eventObject, argumentsObject) {
+   alert('There was an error with  charts!\n' + argumentsObject.message);
+});</pre>
+           <p>
+           You can also use the legacy simple event  method:</p>
+
+            <pre class="prettyprint code_container">function FC_Error(eventObject, argumentsObject) {
+  alert('There was an error with  charts! \n' + argumentsObject.message);
+}</pre>
+            <p>The arguments of the event are:</p>
+            <ol>
+               <li>                  <span class="codeInline">id </span>: string &ndash; the error ID </li>
+               <li> <span class="codeInline">nature </span>: string &ndash; the category of error ( nature can be <span class="codeInline">TypeException</span>, <span class="codeInline">ValueRangeException</span>, <span class="codeInline">NotImplementedException</span>,&nbsp; <span class="codeInline">ParameterException</span>, <span class="codeInline">RuntimeException</span>, <span class="codeInline">designTimeError</span> or <span class="codeInline">UnspecifiedException </span>) </li>
+               <li> <span class="codeInline">source</span> : string &ndash; source or module where the error occurred</li>
+               <li> <span class="codeInline">message</span> : string &ndash; error message</li>
+            </ol>
+            <p class="highlightBlock">To know more on events and listening to the events read <strong>FusionCharts XT and JavaScript</strong> &gt; <a href="../JavaScript/JS_EventOverview.html">Listening to Events</a> page.</p>    </td>
+  </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("The new Debug window|Window.html", "Frequently Asked Questions|../FAQ.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+//]]></script>
+</body>
+</html>

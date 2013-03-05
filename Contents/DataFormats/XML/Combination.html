@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Combination Chart XML</title>
+<link rel="stylesheet" href="../../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../../Introduction/Overview.html","FusionCharts XT Data Formats", "XML|Overview.html", "Combination chart XML" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td class="pageHeader">Combination Chart XML</td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>Combination charts are helpful when you want 
+        to plot multiple chart types on the same chart, or use two different scales 
+        for two different axes. FusionCharts XT offers two categories of Combination 
+        Charts:</p>
+      <ol>
+        <li><strong>Single Y Axis Combination Chart</strong>: In these charts, 
+          there is only one y-axis and all the data sets are plotted against this 
+          axis.</li>
+        <li><strong>Dual Y Axis Combination Chart</strong>: In these charts, there 
+          are two y-axes, which can represent different scales (for example, revenue 
+          and quantity or visits and downloads, etc.). The axis on the left of 
+          the chart is called primary axis and the one on right is called secondary 
+          axis (though, you can reverse this in few charts by configuring the same in the XML). </li>
+      </ol>
+      <p>FusionCharts XT has both 2D and 3D combination charts. Shown 
+        below is a 2D Single Y Combination Chart.</p></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><img src="../../ChartSS/Images/Combi_2D.jpg" width="604" height="354" /></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p><a name="single"></a>In the above chart, all the data-series are 
+        plotted against the same (primary) y-axis. Each dataset has an attribute
+        <span class="codeInline">renderAs </span>that specifies whether the series has to be rendered as column, line or area. </p>
+      <p>The XML for the above chart looks as under:</p></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><pre class="prettyprint code_container">&lt;chart caption='Business Results 2005 v 2006' xAxisName='Month' yAxisName='Revenue' showValues='0' numberPrefix='$'&gt;
+      <br> &nbsp;&nbsp;&nbsp;&lt;categories&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Jan' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Feb' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Mar' /&gt;
+      &nbsp;&lt;category label='Apr' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='May' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Jun' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Jul' /&gt;
+     &nbsp;&nbsp;&lt;category label='Aug' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Sep' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Oct' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Nov' /&gt;
+      &nbsp;&lt;category label='Dec' /&gt;<br> &nbsp;&nbsp;&nbsp;&lt;/categories&gt;<br> <br> &nbsp;&nbsp;&nbsp;&lt;dataset seriesName='2006'&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='27400' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='29800' /&gt;
+      &nbsp;&lt;set value='25800' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='26800' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='29600' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='32600' /&gt;
+      &nbsp;&lt;set value='31800' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='36700' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='29700' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='31900' /&gt;
+      &nbsp;&lt;set value='34800' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='24800' /&gt;<br> &nbsp;&nbsp;&nbsp;&lt;/dataset&gt;<br> <br> &nbsp;&nbsp;&nbsp;&lt;dataset seriesName='2005' renderAs='Area'&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='10000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='11500' /&gt;
+      &nbsp;&lt;set value='12500' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='15000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='11000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='9800' /&gt;
+      &nbsp;&lt;set value='11800' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='19700' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='21700' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='21900' /&gt;
+       &lt;set value='22900' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='20800' /&gt;<br> &nbsp;&nbsp;&nbsp;&lt;/dataset&gt;<br> <br> &nbsp;&nbsp;&nbsp;&lt;dataset seriesName='2004' renderAs='Line'&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='7000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='10500' /&gt;
+      &nbsp;&lt;set value='9500' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='10000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='9000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='8800' /&gt;
+      &nbsp;&lt;set value='9800' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='15700' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='16700' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='14900' /&gt;
+      &nbsp;&lt;set value='12900' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='8800' /&gt;<br> &nbsp;&nbsp;&nbsp;&lt;/dataset&gt;<br> <br> &nbsp;&nbsp;&nbsp;&lt;trendlines&gt;
+      &nbsp;&nbsp;&lt;line startValue='22000' color='91C728' displayValue='Target' showOnTop='1'/&gt;<br> &nbsp;&nbsp;&nbsp;&lt;/trendlines&gt;
+      <br> &nbsp;&nbsp;&nbsp;&lt;styles&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;definition&gt;
+      &nbsp;&nbsp;&nbsp;&nbsp;&lt;style name='CanvasAnim' type='animation' param='_xScale' start='0' duration='1' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/definition&gt;
+      <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;application&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;apply toObject='Canvas' styles='CanvasAnim' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/application&gt;      <br> &nbsp;&nbsp;&nbsp;&lt;/styles&gt;<br> <br> &lt;/chart&gt;</pre></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>An example of a 2D Dual Y Combination Chart looks as under:</p></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><img src="../../ChartSS/Images/Combi_DY_CP_AS.jpg" width="598" height="397" /></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>As you can see in the image above, we are plotting 
+      a monthly sales and quantity chart. On the x-axis, we have the month names. 
+      Now, we have two y-axes in this chart:</p>
+       <ul>
+        <li>The primary y-axis (left) representing the Revenue figure. The columns 
+          in this chart are plotted against the primary y-axis. </li>
+        <li>The secondary y-axis (right) representing the Quantity figure. The 
+          area dataset on this chart adheres to the secondary axis. </li>
+      </ul>
+      <p>For Dual Y Axis combination charts, it is necessary to provide at least 
+        two datasets - one for the primary axis and the other for the secondary 
+        axis. If you do not provide this, the chart will not render properly.      </p>
+      <p>The XML for the above Dual Y Axis chart looks as under:</p></td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"> <pre class="prettyprint code_container">&lt;chart caption='Sales Volume' PYAxisName='Revenue' SYAxisName='Quantity' showvalues='0' numberPrefix='$' areaOverColumns='0'&gt;<br> <br> &nbsp;&nbsp;&nbsp;&lt;categories&gt;
+     &nbsp;&nbsp;&lt;category label='Jan' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Feb' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Mar' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Apr' /&gt;
+      &nbsp;&lt;category label='May' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Jun' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Jul' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Aug' /&gt;
+      &nbsp;&lt;category label='Sep' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Oct' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Nov' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;category label='Dec' /&gt;
+       &lt;/categories&gt;
+<br> &nbsp;&nbsp;&nbsp;&lt;dataset seriesName='Revenue' parentYAxis='P'&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='1700000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='610000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='1420000' /&gt;
+      &nbsp;&lt;set value='1350000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='2140000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='1210000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='1130000' /&gt;
+      &nbsp;&lt;set value='1560000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='2120000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='900000' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='1320000' /&gt;
+      &nbsp;&lt;set value='1010000' /&gt;<br> &nbsp;&nbsp;&nbsp;&lt;/dataset&gt;
+      <br> &nbsp;&nbsp;&nbsp;&lt;dataset seriesName='Quantity' parentYAxis='S' renderAs='Area'&gt;
+       &lt;set value='340' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='120' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='280' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='270' /&gt;
+      &nbsp;&lt;set value='430' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='240' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='230' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='310' /&gt;
+      &nbsp;&lt;set value='430' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='180' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='260' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set value='200' /&gt;
+    &lt;/dataset&gt;<br> <br> &nbsp;&nbsp;&nbsp;&lt;trendLines&gt;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;line startValue='2100000' color='009933' displayvalue='Target' /&gt; <br> &nbsp;&nbsp;&nbsp;&lt;/trendLines&gt;
+      <br> &nbsp;&nbsp;&nbsp;&lt;styles&gt;<br> <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;definition&gt;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style name='CanvasAnim' type='animation' param='_xScale' start='0' duration='1' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/definition&gt;<br> <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;application&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     &lt;apply toObject='Canvas' styles='CanvasAnim' /&gt;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/application&gt;&nbsp;&nbsp;&nbsp;<br> <br> &nbsp;&nbsp;&nbsp;&lt;/styles&gt;
+<br> &lt;/chart&gt;</pre></td>
+  </tr>
+ <tr><td>&nbsp;</td></tr>
+  <tr> 
+    <td valign="top" class="header">Brief Explanation</td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>The XML structure for a combination chart is 
+      very similar to that of <a href="MultiSeries.html">multi-series chart</a>. So, we will not be discussing it 
+      all over again. Rather we'll discuss the differences between them.</p>    </td>
+  </tr>
+  <tr> 
+    <td valign="top" class="header">Single Y Axis Combination Charts</td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>Single Y Axis Combination Charts allow you 
+        to plot multiple datasets as different types of plots (columns, lines 
+        or areas), but against the same y-axis (primary). Since all the datasets 
+        belong to the same primary axis, the number formatting properties do not 
+        change across them. </p>
+      <p>To select which dataset should be rendered as what plot type, you can use 
+        the <span class="codeInline">renderAs</span> property as under:</p>
+      <pre class="code_container prettyprint">&lt;dataset seriesName='2005' renderAs='Area'&gt;<br />
+&lt;dataset seriesName='2004' renderAs='Line'&gt;<br />
+&lt;dataset seriesName='2003' renderAs='Column'&gt; </pre>    </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td valign="top" class="header"><a name='dual' id='dual'></a>Dual Y Axis Combination Charts</td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"> <p>Dual Y Axis Combination Charts have two y-axes. Each y-axis can have its own scale and number formatting 
+        properties. You can also explicitly set the y-axis lower and upper limits for 
+        both the axes.</p>
+      <p>You choose the axis for each dataset using the <span class="codeInline">parentYAxis</span> 
+        property of the <span class="codeInline">&lt;dataset&gt;</span> element. This 
+        attribute can take a value of <span class="codeInline">P</span> or <span class="codeInline">S</span>. <span class="codeInline">P</span> denotes primary axis and <span class="codeInline">S</span> denotes 
+        secondary axis. Like, in our above example, we have the revenue dataset 
+        set on primary axis:</p>
+      <pre class="code_container prettyprint">&lt;dataset seriesName='Revenue' parentYAxis='P'&gt;</pre>
+      <p>
+      and the Quantity dataset set on secondary axis:</p>
+      <pre class="code_container prettyprint">&lt;dataset seriesName='Quantity' parentYAxis='S'&gt;</pre>
+      <p class="highlightBlock">In Dual Y 3D Combination Charts, the column chart 
+        by default plots on the primary axis and lines on the secondary. To switch this, you can use &lt;chart primaryAxisOnLeft='0' ...&gt;. You can have 
+        more than one primary or secondary datasets but at least one of each is 
+        required.</p>
+      <p>Each trend-line also needs to be associated with an axis, against which 
+        it will be plotted. Example:</p>
+     <pre class="code_container prettyprint">&lt;trendLines&gt;
+  &lt;line parentYAxis='S' or 'P' ... startValue='324'  .../&gt; <br />&lt;/trendLines&gt; </pre>
+      <p>By default, they conform to the primary axis.</p>  </td>
+  </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Multi Series chart XML|MultiSeries.html","Scatter &amp; Bubble chart XML|ScatterBubble.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+//]]></script>
+</body>
+</html>

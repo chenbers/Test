@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Exporting Charts as PDF or Images - Client-side export - Component UI </title>
+<link rel="stylesheet" href="../../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../../Introduction/Overview.html", "Exporting as Image/PDF|../ECOverview.html", "Client-side export|ECClientOverview.html", "Component UI customization" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td class="pageHeader">Component UI Customization</td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>As we have already seen earlier, the Export Component UI has two modes:</p>
+      <ul>
+        <li><span class="codeInline">Compact Mode</span> - For saving single chart, when one Export Component instance is present for each chart. In this mode, only a button and caption is visible for saving. </li>
+        <li><span class="codeInline">Full Mode</span> - For saving multiple charts, either individually or as a single file. In this mode, the user can select which chart to save along with the format.</li>
+      </ul>
+    <p>In both modes, you can customize the colors, fonts and titles of Export Component. Before we get into the attributes that actually does this, let us first quickly look at what the various elements of the Export Component are. The following diagram highlights the important elements: </p></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><img src="../Images/FCExporter_UI.gif" width="797" height="490" /></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="header">Configuration attributes </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>To configure any of the attributes of Export Component, the same needs to be specified in JavaScript (where the Export Component has been initialized). An example code is shown below: </p>    </td>
+  </tr>
+  <tr>
+    <td valign="top"><pre class="code_container prettyprint">
+&lt;div id=&quot;fcexpDiv&quot; align=&quot;center&quot;&gt;FusionCharts Export Handler Component&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+
+	var myExportComponent = new FusionChartsExportObject(&quot;fcExporter1&quot;, &quot;../../FusionCharts/FCExporter.swf&quot;);
+
+	//Customize the component properties
+	//Width and height
+	myExportComponent.componentAttributes.width = '400';
+	myExportComponent.componentAttributes.height = '60';
+
+	//Background color
+	myExportComponent.componentAttributes.bgColor = 'ffffdd';
+
+	//Border properties
+	myExportComponent.componentAttributes.borderThickness = '2';
+	myExportComponent.componentAttributes.borderColor = '0372AB';
+
+	//Font properties
+	myExportComponent.componentAttributes.fontFace = 'Arial';
+	myExportComponent.componentAttributes.fontColor = '0372AB';
+	myExportComponent.componentAttributes.fontSize = '12';
+
+	//Message - caption of export component
+	myExportComponent.componentAttributes.showMessage = '1';
+	myExportComponent.componentAttributes.message = 'Export the chart first, and then click on this button to save';
+
+	//Button visual configuration
+	myExportComponent.componentAttributes.btnWidth = '200';
+	myExportComponent.componentAttributes.btnHeight= '25';
+	myExportComponent.componentAttributes.btnColor = 'E1f5ff';
+	myExportComponent.componentAttributes.btnBorderColor = '0372AB';
+
+	//Button font properties
+	myExportComponent.componentAttributes.btnFontFace = 'Verdana';
+	myExportComponent.componentAttributes.btnFontColor = '0372AB';
+	myExportComponent.componentAttributes.btnFontSize = '15';
+
+	//Title of button
+	myExportComponent.componentAttributes.btnsavetitle = 'Save the chart'
+	myExportComponent.componentAttributes.btndisabledtitle = 'Waiting for export'; 
+
+	//Render the exporter SWF in our DIV fcexpDiv
+	myExportComponent.Render(&quot;fcexpDiv&quot;);
+
+&lt;/script&gt;</pre></td>
+  </tr>
+  <tr>
+    <td valign="top" class="text">
+      <p>See it <a href="../../../Code/ExportChartSamples/ClientSide/SimpleExampleCustom.html" target="_blank">live</a>! </p>
+      <p>As you can see above, we have specified various parameters for Export Component. This is done in the following syntax:</p>
+      <p><strong>Component_Instance.componentAttributes.Parameter_name = 'Value';</strong><br />
+        <br />
+        e.g., <span class="codeInline">myExportComponent.componentAttributes.width = '400';</span><br />
+      <p><a href="../javascript-ref/ECReferenceComponent.html">Click here</a> to see the list of attributes that can be customized for this component. </p>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"> </td>
+  </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Setting JavaScript callback|ECClientCallback.html","Configuring export formats|ECServerFormats.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+//]]></script>
+</body>
+</html>

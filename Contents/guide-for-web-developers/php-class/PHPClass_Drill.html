@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="iso-8859-1"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Using FusionCharts PHP Class - Creating Drill-down charts </title>
+<link rel="stylesheet" href="../../assets/ui/css/style.css" type="text/css" />
+<script type="text/javascript" src="../../assets/prettify/prettify.js"></script>
+<link rel="stylesheet" type="text/css" href="../../assets/prettify/prettify.css" />
+<script type="text/javascript" src="../../assets/ui/js/jquery.min.js" ></script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+
+a.whtbtnhide, a.whtbtnshow, a.whtbtnhidenav , a.whtbtnshownav { border-bottom:none !important; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="../../assets/ui/js/whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="../../assets/ui/js/whtopic.js"></script>
+<script type="text/javascript" src="../../assets/ui/js/lib.js"></script>
+</head>
+
+<body>
+<!-- breadcrumb starts here -->
+<div id="breadcrumb"></div>
+<script type="text/javascript">
+	document.write( addFCBreadcrumb( [ "Home|../../Introduction/Overview.html", "Guide for web developers", "Using PHP Class|PHPClass_BAsicExamples.html", "Creating Drill down charts" ] ) );
+</script>
+<!-- breadcrumb ends here -->
+
+
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td class="pageHeader">Creating Drill-down charts </td>
+  </tr>
+  <tr> 
+    <td valign="top" class="text"><p>In our previous example, we had used FusionCharts XT to plot a chart using data stored in database. We will now extend that example itself to create a drill-down chart which can show more information.</p>
+    <p><strong>Before you go further with this page, we recommend you to please see the previous sections, <a href="PHPClass_BasicExamples.html">Basic Examples</a> and <a href="PHPClass_Array.html">Creating Data from Array</a>, as we start off from concepts explained in those pages. </strong></p>
+    
+	<p>If you recall from previous example, we were showing the sum of factory output in a Pie chart as under: </p>
+	<p><img src="../Images/Code_DBOut.jpg" width="572" height="273" class="imageBorder" /></p>
+	<p>In this example, we will extend this example, so that when the users click  a Pie slice for a factory, they can drill down to see date wise production for that factory.</p> </td>
+  </tr>
+  
+  <tr>
+    <td valign="top" class="header">Setting up the pie chart for Link </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>To set up the pie chart to enable links for drill-down involves just minor tweaking of our previous <span class="codeInline">BasicDBExample.php</span>. We basically need to add the <span class="codeInline">link</span> attribute for each<span class="codeInline"> &lt;set&gt;</span> element. We create a new page <span class="codeInline">Default.php</span> (in DB_DrillDown folder) from the previous page with the   following code changes:</p>
+    <p class="highlightBlock">The code examples contained in this page are contained in<span class="codeInline"> Download Package &gt; Code &gt; PHPClass &gt; DB_DrillDown</span> folder. </p></td>
+  </tr>
+  
+  <tr>
+    <td valign="top">
+<pre class="prettyprint code_container">&lt;?php
+	<span class="codeComment">//We have included ../Includes/FusionCharts_Gen.php, which contains
+	//FusionCharts PHP Class to help us easily embed charts
+	//We have also used ../Includes/DBConn.php to easily connect to a database</span>
+	include(&quot;../Includes/FusionCharts_Gen.php&quot;);
+	include(&quot;../Includes/DBConn.php&quot;);
+?&gt;
+&lt;HTML&gt;
+	&lt;HEAD&gt;
+		&lt;TITLE&gt;
+			FusionCharts XT - Database and Drill-Down Example
+		&lt;/TITLE&gt;
+		
+		&lt;?php
+			<span class="codeComment">//You need to include the following JS file, if you intend to embed the chart using JavaScript.
+			//Embedding using JavaScripts avoids the &quot;Click to Activate...&quot; issue in Internet Explorer
+			//When you make your own charts, make sure that the path to this JS file is correct.
+			//Else, you will get JavaScript errors.</span>
+		?&gt;
+
+		&lt;SCRIPT LANGUAGE=&quot;Javascript&quot; SRC=&quot;../../FusionCharts/FusionCharts.js&quot;&gt;
+		&lt;/SCRIPT&gt;
+
+	&lt;/HEAD&gt;
+	&lt;BODY&gt;
+		&lt;CENTER&gt;
+
+		&lt;?php
+			<span class="codeComment">//In this example, we show how to connect FusionCharts to a database.
+			//For the sake of ease, we have used an MySQL databases containing two tables.</span>
+			
+			<span class="codeComment"># Connect to the Database</span>
+			$link = connectToDB();
+
+			<span class="codeComment"># Create a pie 3d chart object</span>
+			$FC = new FusionCharts(&quot;Pie3D&quot;,&quot;650&quot;,&quot;450&quot;);
+
+			<span class="codeComment"># Set Relative Path of chart SWF file.</span>
+			$FC-&gt;setSwfPath(&quot;../../FusionCharts/&quot;);
+
+			<span class="codeComment"># Store chart attributes </span>
+			$strParam=&quot;caption=Factory Output report;subCaption=By Quantity;pieSliceDepth=30;showBorder=1; 
+			formatNumberScale=0;numberSuffix= Units&quot;;
+
+			<span class="codeComment">#  Set chart attributes</span>
+			$FC-&gt;setChartParams($strParam);
+
+			<span class="codeComment"># Fetch all factory records creating SQL query</span>
+			$strQuery = &quot;select a.FactoryID, b.FactoryName, sum(a.Quantity) as total from Factory_output a, 
+			Factory_Master b where&nbsp;&nbsp; a.FactoryId=b.FactoryId group by a.FactoryId,b.FactoryName&quot;;
+
+			$result = mysql_query($strQuery) or die(mysql_error());
+
+			<span class="codeComment"># Pass the SQL query result and Drill-Down link format to PHP Class Function
+			# this function will automatically add chart data from database</span>
+			<span class="codeComment"><strong>/*
+			The last parameter passed, that is, &quot;Detailed.php?FactoryId=##FactoryID##&quot;
+			drill down link from the current chart
+			Here, the link redirects to another PHP file Detailed.php
+			with a query string variable -FactoryId 
+			whose value will be taken from the Query result created above.
+			Anything placed between ## and ## will be regarded
+			as a field/column name in the SQL query result.
+			Value from that column will be dynamically assigned as the query variable's value
+			Hence, for each dataplot in the chart the resultant query variable's value
+			will be different
+			*/</strong></span>
+
+			if ($result)
+				{
+					$FC-&gt;addDataFromDatabase($result, &quot;total&quot;, &quot;FactoryName&quot;,&quot;&quot;,
+					<strong>&quot;Detailed.php?FactoryId=##FactoryID##&quot;</strong>);
+				}
+			
+			mysql_close($link);
+
+			<span class="codeComment">#Create the chart </span>
+			$FC-&gt;renderChart();
+		?&gt;
+		&lt;/CENTER&gt;
+	&lt;/BODY&gt;
+&lt;/HTML&gt;</pre></td>
+  </tr>
+  
+  <tr>
+    <td valign="top" class="text"><p>As you can see in the code above, we are doing the following:</p>
+      <ol>
+        <li>Including the <span class="codeInline">FusionCharts.js</span> JavaScript class, <span class="codeInline"></span> and <span class="codeInline">DbConn.php</span> to enable easy embedding of FusionCharts. <span class="codeInline">DBConn.php</span> contains connection parameters to connect to  database.</li>
+        <li>Creating FusionCharts PHP class object for Pie 3D chart.</li>
+        <li>Setting the relative  path of chart SWF file.</li>
+        <li>Storing chart attributes in a variable <span class="codeInline">$strParam</span>.</li>
+        <li>Setting the chart attributes using <span class="codeInline">setChartParams()</span> function.</li>
+        <li>Fetching required records from database and store the output in <span class="codeInline">$result.</span></li>
+        <li>Calling the <span class="codeInline">addDataFromDatabase()</span> function to add chart data from database; we specify the link attribute which points to <span class="codeInline">Detailed.php</span> page that contains the chart to show details.The last parameter passed, that is,  <span class="codeInline">&quot;Detailed.php?FactoryId=##FactoryID##&quot;</span> drill down link from the current chart. Here, the link redirects to another PHP file Detailed.php  with a query string variable -FactoryId whose value will be taken from the Query result created above. Anything placed between ## and ## will be regarded  as a field/column name in the SQL query result. Value from that column will be dynamically assigned as the query variable's value. Hence, for each dataplot in the chart the resultant query variable's value will be different.</li>
+        <li>Closing database link.</li>
+        <li>Rendering chart .       </li>
+      </ol>    
+	  <p class="highlightBlock">Please go through the <a href="../fusioncharts-asp-class/Functions.html">FusionCharts PHP Class API Reference</a> section to know more about the functions used in the above code.</p> 
+	  <p>Let's now shift our attention to <span class="codeInline">Detailed.php</span> page.</p> </td>
+  </tr>
+  
+  <tr>
+    <td valign="top" class="header">Creating the detailed data chart page </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text"><p>The page <span class="codeInline">Detailed.php</span> contains the following code:</p> </td>
+  </tr>
+ 
+  <tr>
+    <td valign="top"><pre class="prettyprint code_container">&lt;?php
+	<span class="codeComment">//We have included ../Includes/FusionCharts_Gen.php, which contains
+	//FusionCharts PHP Class to help us easily embed charts
+	//We have also used ../Includes/DBConn.php to easily connect to a database</span>
+	include(&quot;../Includes/FusionCharts_Gen.php&quot;);
+	include(&quot;../Includes/DBConn.php&quot;);
+?&gt;
+&lt;HTML&gt;
+	&lt;HEAD&gt;
+		&lt;TITLE&gt;
+			FusionCharts XT - Database and Drill-Down Example
+		&lt;/TITLE&gt;
+
+		&lt;?php
+			<span class="codeComment">//You need to include the following JS file, if you intend to embed the chart using JavaScript.
+			//Embedding using JavaScripts avoids the &quot;Click to Activate...&quot; issue in Internet Explorer
+			//When you make your own charts, make sure that the path to this JS file is correct.
+			//Else, you will get JavaScript errors.</span>
+		?&gt;
+
+		&lt;SCRIPT LANGUAGE=&quot;Javascript&quot; SRC=&quot;../../FusionCharts/FusionCharts.js&quot;&gt;
+		&lt;/SCRIPT&gt;
+
+	&lt;/HEAD&gt;
+	&lt;BODY&gt;
+		&lt;CENTER&gt;
+
+		&lt;?php
+
+			<span class="codeComment">//This page is invoked from Default.php. When the user clicks on a pie
+			//slice in Default.php, the factory Id is passed to this page. We need
+			//to get that factory id, get information from database and then show
+			//a detailed chart.</span>   
+			
+			<span class="codeComment"><strong>//Request the factory Id from Querystring</strong></span>
+			<strong>$FactoryId = $_REQUEST['FactoryId'];</strong>
+
+			<span class="codeComment"># Create a column 2D chart object </span>
+			$FC = new FusionCharts(&quot;Column2D&quot;,&quot;600&quot;,&quot;300&quot;);
+
+			<span class="codeComment"># Set Relative Path of chart SWF file.</span>
+			$FC-&gt;setSwfPath(&quot;../../FusionCharts/&quot;);
+
+			<span class="codeComment">// Store Chart attributes in a variable</span>
+			$strParam=&quot;caption=Factory &quot; . $FactoryId . &quot; Output;subcaption=(In Units);xAxisName=Date;
+			formatNumberScale=0;decimals=0;rotateLabels=1;slantLabels=1&quot;;
+			
+			<span class="codeComment">#  Set chart attributes</span>
+			$FC-&gt;setChartParams($strParam);
+
+			<span class="codeComment">// Connect to the DataBase</span>
+			$link = connectToDB();
+
+			<span class="codeComment">//Now, we get the data for that factory</span>
+			<span class="codeComment">//storing chart values in 'Quantity' column and category names in 'DDate'</span>
+			$strQuery = &quot;select Quantity, DATE_FORMAT(DatePro,'%m/%d/%Y') as DDate from Factory_Output 
+			where FactoryId=&quot; . $FactoryId;
+
+			$result = mysql_query($strQuery) or die(mysql_error());
+
+			<span class="codeComment">//Pass the SQL query result to the FusionCharts PHP Class' function
+			//that will extract data from database and add to the chart.</span>
+
+			if ($result)
+				{
+					$FC-&gt;addDataFromDatabase($result, &quot;Quantity&quot;, &quot;DDate&quot;);
+				}
+
+			mysql_close($link);
+
+			<span class="codeComment">//Create the chart  - Column2D using FusionCharts PHP Class</span>
+			$FC-&gt;renderChart();
+
+		?&gt;
+		&lt;/CENTER&gt;
+	&lt;/BODY&gt;
+&lt;/HTML&gt;</pre></td>
+  </tr>
+ 
+  <tr>
+    <td valign="top" class="text"><p>Let's analyze the steps involved in the above code:</p> 
+	
+      <ol>
+        <li>Including  <span class="codeInline">FusionCharts.js</span> JavaScript class, <span class="codeInline"> </span> and <span class="codeInline">DBConn.php</span> to enable easy embedding of FusionCharts XT.</li>
+        <li>Requesting the factory ID for which we have to show detailed data. This data was sent to us as query string, as a part of pie chart link. FactoryId is stored in a variable <span class="codeInline">$FactoryId.</span></li>
+        <li>Creating a FusionCharts PHP class object for Column 2D chart.</li>
+        <li>Setting the relative path of chart SWF file.</li>
+        <li>Storing the chart attributes in a variable <span class="codeInline">$strParam</span>.</li>
+        <li>Setting the chart attributes through <span class="codeInline">setChartParams()</span> function.</li>
+        <li>Connecting to MySQL database through the <span class="codeInline">connectToDB()</span> function.</li>
+        <li>Fetching required data from database and storing in a variable <span class="codeInline">$result</span>.</li>
+        <li>Passing <span class="codeInline">$result</span> to the <span class="codeInline">addDataFromDatabase()</span> function that adds chart data from database.</li>
+        <li>Closing database connection.</li>
+        <li>Rendering chart.    </li>
+    </ol>    
+	<p class="highlightBlock">Please go through <a href="../fusioncharts-asp-class/Functions.html">FusionCharts PHP Class API Reference</a> section to know more about the functions used in the above code.</p> 
+	<p class="text">When you now run the app, you'll see the detailed page as under:</p> 
+	<p><img src="../Images/Code_Drill.jpg"   class="imageBorder" />&nbsp;</p></td>
+  </tr>
+</table>
+<!-- footer links starts-->
+<div id="fcfooter"></div>
+<script type="text/javascript">
+	document.getElementById("fcfooter").innerHTML =  addFCFooter("Plotting from database|PHPClass_DB.html","Using Multilingual text|PHPClass_UTF8Example.html");
+</script>
+<!-- footer links ends -->
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+
+	highlightSearch();
+
+//-->
+//]]></script>
+</body>
+</html>
