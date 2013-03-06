@@ -196,7 +196,7 @@ public abstract class MasterTest {
     }
     
     public Boolean validateStringContains(String partialString, String fullString) {
-        if (!fullString.equalsIgnoreCase(partialString)) {
+        if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
             return false;
         }
