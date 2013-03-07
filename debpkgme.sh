@@ -241,6 +241,7 @@ function setup_variables {
         if [ ! "${DEB_Provides}" ]; then echo "DEB_Provides not specified, and no default skipping"; fi
         if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_Filename ${DEB_Package_Filename}"; fi
         if [ ! "${TOMCAT6_REPO}" ]; then TOMCAT6_REPO="git://github.com/jonzobrist/tomcat6.git"; echo "TOMCAT6_REPO not specified, using default ${TOMCAT6_REPO}"; fi
+        if [ ! "${BLANK_TOMCAT_OVERLAY}" ]; then BLANK_TOMCAT_OVERLAY="git://it.inthinc.com/jonzobrist/tomcat6.git"; echo "BLANK_TOMCAT_OVERLAY not specified, using default ${BLANK_TOMCAT_OVERLAY}"; fi
         if [ ! "${T6_DIRS}" ]; then T6_DIRS="bkup endorsed logarchive logs temp tmp work"; echo "T6_DIRS not specified, using default ${T6_DIRS}"; fi
 
         # We should get these from our pre-compile build script

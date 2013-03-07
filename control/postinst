@@ -58,3 +58,10 @@ else
     echo "${TOMCAT_USER} doesn't seem to be installed as a service, you will need to manually start it"
 fi
 
+if [ -x "${TOMCAT_USER_HOME}/bin/setup.sh" ]
+then
+    echo "Running setup.sh script for ${TOMCAT_USER} at $(date)"
+    ${TOMCAT_USER_HOME}/bin/setup.sh
+else
+    echo "No setup.sh script for tomcat ${TOMCAT_USER}"
+fi
