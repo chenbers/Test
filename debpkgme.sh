@@ -67,6 +67,9 @@ function get_tomcat6_blank {
     if [ -d "${WORKSPACE}/tomcat6" ]
     then
         echo "Tomcat6 dir exists"
+        cd ${WORKSPACE}/tomcat6
+        git checkout develop
+        git pull
     else
         echo "Cloning Tomcat6 from repo"
         cd ${WORKSPACE}
@@ -84,6 +87,20 @@ function get_tomcat6_blank {
             fi
         done
     fi
+}
+
+function get_tomcat2_blank {
+    echo "Enter function get_tomcat2_blank"
+    if [ -d "${WORKSPACE}/tomcat2_configs" ]
+    then
+        echo "Tomcat2_configs dir exists"
+        /bin/rm -Rf ${WORKSPACE}/tomcat2_configs
+    fi
+    echo "Cloning Tomcat2 from repo"
+    cd ${WORKSPACE}
+    git clone --depth=1 ${BLANK_TOMCAT_OVERLAY} tomcat2_configs
+    rm -Rf tomcat2_configs/.git*
+    rsync -av ${WORKSPACE}/tomcat2_configs/* tomcat6
 }
 
 function merge_tomcat6_blank_with_tmp {
@@ -505,6 +522,7 @@ update_control_file
 update_control_scripts
 get_tomcat6_blank
 merge_tomcat6_blank_with_tmp
+get_tomcat2_blank
 create_archive
 reprepro_add
 
