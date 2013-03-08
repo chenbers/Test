@@ -43,6 +43,9 @@ public class RouteGetEndpointSteps extends WebSteps {
     String externActionID12 = "";//TODO: add actionID for this later
     String IMEI13 = "";//TODO: add imei for this later
     String externActionID13 = "";//TODO: add actionID for this later
+    String IMEI14 = "";//TODO: add imei for this later
+    String externActionID14 = "";//TODO: add actionID for this later
+
 
     @Given("I retrieve a standard route")
     public void givenIGoToTheRouteGetEndpointPage() {
@@ -73,6 +76,133 @@ public class RouteGetEndpointSteps extends WebSteps {
     	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI4 + "/" + externActionID4);  //for dev
     	String original = page._text().response().toString();
     	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+    
+    @Given("I retrieve a route with two deliveries")
+    public void givenIRetrieveARouteWithTwoDeliveries() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI5 + "/" + externActionID5);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+    
+    @Given("I retrieve a route with two deliveries and a preload activity, then cancel the preload activity")
+    public void givenIRetrieveARouteWithTwoDeliveriesAndAPreloadActivityThenCancelThePreloadActivity() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI6 + "/" + externActionID6);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to cancel a activity
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI6 + "/" + externActionID6);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+        
+    @Given("I retrieve a route with two deliveries and a load activity and then later add a preload activity")
+    public void givenIRetrieveARouteWithTwoDeliveriesAndALoadActivityAndThenLaterAddAPreloadActivity() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI7 + "/" + externActionID7);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to add a preload activity
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI7 + "/" + externActionID7);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+    
+    @Given("I retrieve a route with three deliveries, then cancel the second delivery activity and add a new delivery into the third delivery slot")
+    public void givenIRetrieveARouteWithThreeDeliveriesThenCancelTheSecondDeliveryActivityAndAddANewDeliveryIntoTheThirdDeliverySlot() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI8 + "/" + externActionID8);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to cancel the second delivery activity
+    	//TODO: Add code to add a new delivery activity into the third delivery slot
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI8 + "/" + externActionID8);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }    
+    
+    @Given("I retrieve a route with three deliveries, then cancel all delivery activities and add a new delivery")
+    public void givenIRetrieveARouteWithThreeDeliveriesThenCancelAllDeliveryActivitiesAndAddANewDelivery() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI9 + "/" + externActionID9);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to cancel all the delivery activities
+    	//TODO: Add code to add one new delivery activity
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI9 + "/" + externActionID9);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }    
+    
+    @Given("I retrieve a route with three deliveries and the driver delivers them out of order")
+    public void givenIRetrieveARouteWithThreeDeliveriesAndTheDriverDeliversThemOutOfOrder() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI10 + "/" + externActionID10);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to mark all 3 deliveries as complete but out of order
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI10 + "/" + externActionID10);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+    
+    @Given("I retrieve a route with three deliveries and then is sent to a dump site")
+    public void givenIRetrieveARouteWithThreeDeliveriesAndThenIsSentToADumpSite() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI11 + "/" + externActionID11);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to mark all deliveries as complete and then send the driver to a dump site
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI11 + "/" + externActionID11);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+    
+    @Given("I retrieve a route and then partially complete the route and move vehicles")
+    public void givenIRetrieveARouteAndThenPartiallyCompleteTheRouteAndMoveVehicles() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI12 + "/" + externActionID12);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to mark one delivery complete and then move the driver to a new vehicle and retrieve the route
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI12 + "/" + externActionID12);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+    
+    @Given("I retrieve a route and then partially complete the route and different driver retrieves the route from the same vehicle")
+    public void givenIRetrieveARouteAndThenPartiallyCompleteTheRouteAndDifferentDriverRetrievesTheRouteFromTheSameVehicle() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI13 + "/" + externActionID13);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to mark one delivery complete and then a different driver retrieves the route from the same vehicle
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI13 + "/" + externActionID13);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    }
+    
+    @Given("I retrieve a route and then partially complete the route and different driver retrieves the route from a different vehicle")
+    public void givenIRetrieveARouteAndThenPartiallyCompleteTheRouteAndDifferentDriverRetrievesTheRouteFromADifferentVehicle() {
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI14 + "/" + externActionID14);  //for dev
+    	String original = page._text().response().toString();
+    	boolean result = original.equals("");//TODO: Add string once I know it
+    	matched(result, original);
+    	//TODO: Add code to mark one delivery complete and then a different driver retrieves the route from a different vehicle
+    	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI14 + "/" + externActionID14);  //for dev
+    	original = page._text().response().toString();
+    	result = original.equals("");//TODO: Add string once I know it
     	matched(result, original);
     }
     
