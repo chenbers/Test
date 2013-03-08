@@ -66,11 +66,9 @@ function get_tomcat6_blank {
     echo "Enter function get_tomcat6_blank"
     if [ -d "${WORKSPACE}/tomcat6" ]
     then
-        echo "Tomcat6 dir exists"
-        cd ${WORKSPACE}/tomcat6
-        git checkout develop
-        git pull
-    else
+        echo "Tomcat6 dir exists, deleting"
+        /bin/rm -Rf ${WORKSPACE}/tomcat6
+    fi
         echo "Cloning Tomcat6 from repo"
         cd ${WORKSPACE}
         git clone --depth=1 ${TOMCAT6_REPO} tomcat6
@@ -86,7 +84,6 @@ function get_tomcat6_blank {
                 mkdir -p tomcat6/${D}
             fi
         done
-    fi
 }
 
 function get_tomcat2_blank {
