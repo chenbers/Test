@@ -521,8 +521,8 @@ extract_built_tarball
 update_control_file
 update_control_scripts
 get_tomcat6_blank
-merge_tomcat6_blank_with_tmp
 get_tomcat2_blank
+merge_tomcat6_blank_with_tmp
 create_archive
 reprepro_add
 
