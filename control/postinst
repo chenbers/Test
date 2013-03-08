@@ -50,7 +50,7 @@ then
         if [ -f "${TOMCAT_WEBAPPS_DIR}/${WAR}.war" ]
         then
             chown ${TOMCAT_USER}:${MY_GROUP_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
-            chmod u+rw,g+r,o-rwx ${TOMCAT_USER}:${MY_GROUP_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
+            chmod u+rw,g+r,o-rwx ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
         fi
     done
 service ${TOMCAT_USER} start
