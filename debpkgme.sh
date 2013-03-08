@@ -67,6 +67,9 @@ function get_tomcat6_blank {
     if [ -d "${WORKSPACE}/tomcat6" ]
     then
         echo "Tomcat6 dir exists"
+        cd ${WORKSPACE}/tomcat6
+        git checkout develop
+        git pull
     else
         echo "Cloning Tomcat6 from repo"
         cd ${WORKSPACE}
@@ -84,6 +87,20 @@ function get_tomcat6_blank {
             fi
         done
     fi
+}
+
+function get_tomcat2_blank {
+    echo "Enter function get_tomcat2_blank"
+    if [ -d "${WORKSPACE}/tomcat2_configs" ]
+    then
+        echo "Tomcat2_configs dir exists"
+        /bin/rm -Rf ${WORKSPACE}/tomcat2_configs
+    fi
+    echo "Cloning Tomcat2 from repo"
+    cd ${WORKSPACE}
+    git clone --depth=1 ${BLANK_TOMCAT_OVERLAY} tomcat2_configs
+    rm -Rf tomcat2_configs/.git*
+    rsync -av ${WORKSPACE}/tomcat2_configs/* tomcat6
 }
 
 function merge_tomcat6_blank_with_tmp {
@@ -241,6 +258,7 @@ function setup_variables {
         if [ ! "${DEB_Provides}" ]; then echo "DEB_Provides not specified, and no default skipping"; fi
         if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_Filename ${DEB_Package_Filename}"; fi
         if [ ! "${TOMCAT6_REPO}" ]; then TOMCAT6_REPO="git://github.com/jonzobrist/tomcat6.git"; echo "TOMCAT6_REPO not specified, using default ${TOMCAT6_REPO}"; fi
+        if [ ! "${BLANK_TOMCAT_OVERLAY}" ]; then BLANK_TOMCAT_OVERLAY="git://it.inthinc.com/jonzobrist/tomcat6.git"; echo "BLANK_TOMCAT_OVERLAY not specified, using default ${BLANK_TOMCAT_OVERLAY}"; fi
         if [ ! "${T6_DIRS}" ]; then T6_DIRS="bkup endorsed logarchive logs temp tmp work"; echo "T6_DIRS not specified, using default ${T6_DIRS}"; fi
 
         # We should get these from our pre-compile build script
@@ -504,6 +522,7 @@ update_control_file
 update_control_scripts
 get_tomcat6_blank
 merge_tomcat6_blank_with_tmp
+get_tomcat2_blank
 create_archive
 reprepro_add
 
