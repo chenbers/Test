@@ -231,8 +231,9 @@ public class EmailReportJob extends QuartzJobBean {
     private boolean processIndividualDriverReportSchedule(ReportSchedule reportSchedule, Person person) {
         
         try {
-            List<Integer> driverIDList = reportSchedule.getDriverIDList();
-            List<Driver> driverList = driverDAO.getAllDrivers(reportSchedule.getGroupID());
+            List<Integer> teamList = getTeamList(reportSchedule.getAccountID(), reportSchedule.getGroupIDList());
+            List<Driver> driverList = getAllDrivers(reportSchedule.getGroupIDList()); 
+            Map<Integer, List<Integer>> teamDriverIDMap = getReportDriverIDs(teamList, driverList);
             ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
             Person owner = null;
             if (reportSchedule.getUserID() != null) {
@@ -254,45 +255,44 @@ public class EmailReportJob extends QuartzJobBean {
                     case DRIVER_PERFORMANCE_INDIVIDUAL:
                     case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
                         Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
-                        List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
+                        for (Integer teamID : teamDriverIDMap.keySet()) {
+                            List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
                                 getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                                reportSchedule.getGroupID(), driverIDList,
+                                teamID, teamDriverIDMap.get(teamID),
                                 timeFrame.getInterval(), person.getLocale(), ryg, reportSchedule.getIncludeInactiveDrivers(), reportSchedule.getIncludeZeroMilesDrivers());
                         
-                        for (Integer driverID : driverIDList) {
-                            Driver driver = findDriver(driverList, driverID);
-                            if (driver == null) {
-                            	logger.info("Driver may have been moved off this team.  DriverID is :" + driverID);
-                            	continue;
-                            }
-                            else if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
-                                logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
-                            else {
-                                logger.info("Sending to driver with Primary E-Mail address: " + driver.getPerson().getPriEmail());
-                                List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
-                                for (ReportCriteria rc : rcList) {
-                                    if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
-                                        continue;
-                                    DriverPerformance dp = (DriverPerformance)rc.getMainDataset().get(0);
-                                    if (dp.getDriverID().equals(driverID)) {
-                                        driverReportCriteriaList.add(rc);
-                                        break;
-                                    }
+                            for (Integer driverID : teamDriverIDMap.get(teamID)) {
+                                Driver driver = findDriver(driverList, driverID);
+                                if (driver == null) {
+                                    logger.info("Driver may have been moved off this team.  DriverID is :" + driverID);
+                                    continue;
                                 }
-                                if (!driverReportCriteriaList.isEmpty()) {
-                                    IndividualReportEmail individualReportEmail = new IndividualReportEmail();
-                                    List<String> emailToList = new ArrayList<String>();
-                                    emailToList.add(driver.getPerson().getPriEmail());
-                                    ReportSchedule driverReportSchedule = reportSchedule.clone();
+                                else {
+                                    logger.info("Sending to driver with Primary E-Mail address: " + driver.getPerson().getPriEmail());
+                                    List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
+                                    for (ReportCriteria rc : rcList) {
+                                        if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
+                                            continue;
+                                        DriverPerformance dp = (DriverPerformance)rc.getMainDataset().get(0);
+                                        if (dp.getDriverID().equals(driverID)) {
+                                            driverReportCriteriaList.add(rc);
+                                            break;
+                                        }
+                                    }
+                                    if (!driverReportCriteriaList.isEmpty()) {
+                                        IndividualReportEmail individualReportEmail = new IndividualReportEmail();
+                                        List<String> emailToList = new ArrayList<String>();
+                                        emailToList.add(driver.getPerson().getPriEmail());
+                                        ReportSchedule driverReportSchedule = reportSchedule.clone();
                                     
-                                    driverReportSchedule.setDriverID(driver.getDriverID());
-                                    driverReportSchedule.setEmailTo(emailToList);
-                                    individualReportEmail.reportSchedule = driverReportSchedule;
-                                    individualReportEmail.driverPerson = driver.getPerson();
-                                    individualReportEmail.driverReportCriteriaList = driverReportCriteriaList;
-                                    individualReportEmail.owner = owner;
-                                    individualReportEmailList.add(individualReportEmail);
-//                                    emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList, owner);
+                                        driverReportSchedule.setDriverID(driver.getDriverID());
+                                        driverReportSchedule.setEmailTo(emailToList);
+                                        individualReportEmail.reportSchedule = driverReportSchedule;
+                                        individualReportEmail.driverPerson = driver.getPerson();
+                                        individualReportEmail.driverReportCriteriaList = driverReportCriteriaList;
+                                        individualReportEmail.owner = owner;
+                                        individualReportEmailList.add(individualReportEmail);
+                                    }
                                 }
                             }
                         }
@@ -308,7 +308,7 @@ public class EmailReportJob extends QuartzJobBean {
 
         }
         catch (Throwable ex) {
-            logger.error(ex);
+            logger.error("Exception:", ex);
             return false;
             
         }
@@ -316,6 +316,65 @@ public class EmailReportJob extends QuartzJobBean {
       return true;
     }
     
+    private List<Integer> getTeamList(Integer acctID, List<Integer> groupIDList) {
+        List<Integer> teamIDList = new ArrayList<Integer>();
+        for (Integer groupID : groupIDList) {
+            List<Group> groups = groupDAO.getGroupHierarchy(acctID, groupID);
+            for (Group group : groups) {
+                if (group.getType() == GroupType.TEAM) {
+                    boolean found = false;
+                    for (Integer teamID : teamIDList) {
+                        if (group.getGroupID().equals(teamID)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        teamIDList.add(group.getGroupID());
+                    }
+                }
+            }
+        }
+        return teamIDList;
+    }
+
+    private List<Driver> getAllDrivers(List<Integer> groupIDList) {
+        List<Driver> allDriverList = new ArrayList<Driver>();
+        for (Integer groupID : groupIDList) {
+            List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+            for (Driver driver : driverList) {
+                boolean found = false;
+                for (Driver rptDriver : allDriverList) {
+                    if (rptDriver.getDriverID().equals(driver.getDriverID())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    allDriverList.add(driver);
+            }
+            
+        }
+        return allDriverList;
+    }
+
+    private Map<Integer, List<Integer>> getReportDriverIDs(List<Integer> teamList, List<Driver> driverList) {
+        Map<Integer, List<Integer>> teamDriverListMap = new HashMap<Integer, List<Integer>>();
+        for (Integer teamID : teamList) {
+            List<Integer> driverIDList = new ArrayList<Integer>();
+            for (Driver driver : driverList) {
+                if (driver.getGroupID() != null && driver.getGroupID().equals(teamID)) {
+                    if (driver.getPerson() == null || driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
+                        logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
+                    else {
+                        driverIDList.add(driver.getDriverID());
+                    }
+                }
+            }
+            teamDriverListMap.put(teamID, driverIDList);
+        }
+        return teamDriverListMap;
+    }
     class IndividualReportEmail {
         ReportSchedule reportSchedule;
         Person driverPerson;

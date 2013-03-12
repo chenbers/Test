@@ -166,7 +166,7 @@
                                     </td>
                                  </tr>
                            </h:outputText>
-							<h:outputText rendered="#{not empty reportScheduleBean.item.groupName}">
+							<h:outputText rendered="#{not empty reportScheduleBean.item.groupName and reportScheduleBean.item.report.entityType ne 'ENTITY_INDIVIDUAL_DRIVER'}">
 									<tr>
 										<td width="100" valign="top">
 											<h:outputText value="#{messages.reportSchedule_group}"/>
@@ -179,8 +179,7 @@
 							<h:outputText rendered="#{not empty reportScheduleBean.item.listDisplay}">
 									<tr>
 										<td width="100" valign="top">
-											<h:outputText value="#{messages.reportSchedule_groups}" rendered="#{reportScheduleBean.item.report.entityType ne 'ENTITY_INDIVIDUAL_DRIVER'}"/>
-											<h:outputText value="#{messages.reportSchedule_drivers}" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_INDIVIDUAL_DRIVER'}"/>
+											<h:outputText value="#{messages.reportSchedule_groups}"/>
 										</td>
 										<td>
 											<ul style="list-style:none;margin:0;padding:0">
