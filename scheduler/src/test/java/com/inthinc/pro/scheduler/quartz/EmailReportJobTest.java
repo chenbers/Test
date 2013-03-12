@@ -347,12 +347,16 @@ public class EmailReportJobTest
         List<Integer> driverIDList = new ArrayList<Integer>();
         for (Driver driver : driverDAO.getAllDrivers(MOCK_GROUP_ID))
             driverIDList.add(driver.getDriverID());
+        
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(MOCK_GROUP_ID);
+
 
         ReportSchedule reportSchedule = buildReportSchedule(Occurrence.DAILY, TimeZone.getTimeZone("MST"));
         reportSchedule.setReportScheduleID(MOCK_REPORT_SCHEDULE_ID);
         reportSchedule.setAccountID(MOCK_ACCOUNT_ID);
         reportSchedule.setReportID(ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL.getCode());
-        reportSchedule.setDriverIDList(driverIDList);
+        reportSchedule.setGroupIDList(groupIDList);
         
         ReportScheduleDAO reportScheduleDAO = initReportScheduleDAO(reportSchedule);
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
@@ -496,6 +500,7 @@ public class EmailReportJobTest
         groupList.add(group);
         EasyMock.makeThreadSafe(groupDAO, true);
         expect(groupDAO.getGroupsByAcctID(EasyMock.isA(Integer.class))).andReturn(groupList).anyTimes();
+        expect(groupDAO.getGroupHierarchy(EasyMock.isA(Integer.class),EasyMock.isA(Integer.class))).andReturn(groupList).anyTimes();
         replay(groupDAO);
         return groupDAO;
     }

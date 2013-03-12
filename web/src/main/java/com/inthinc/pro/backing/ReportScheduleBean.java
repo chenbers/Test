@@ -457,7 +457,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             return null;
 
         StringBuffer buffer = new StringBuffer();
-        if (reportSchedule.getReport().getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER && reportSchedule.getDriverIDList() != null && !reportSchedule.getDriverIDList().isEmpty()) {
+        if (reportSchedule.getReport().getEntityType() != EntityType.ENTITY_INDIVIDUAL_DRIVER && reportSchedule.getDriverIDList() != null && !reportSchedule.getDriverIDList().isEmpty()) {
             List<Driver> driverList = getDriverList();
             for (Integer driverID : reportSchedule.getDriverIDList()) {
                 for (Driver driver : driverList) {
@@ -774,7 +774,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (getItem() == null || getItem().getReport() == null)
             return false;
         EntityType entityType = getItem().getReport().getEntityType();
-        if (entityType == EntityType.ENTITY_GROUP_LIST || entityType == EntityType.ENTITY_GROUP_LIST_AND_IFTA)
+        if (entityType == EntityType.ENTITY_GROUP_LIST || entityType == EntityType.ENTITY_GROUP_LIST_AND_IFTA || entityType == EntityType.ENTITY_INDIVIDUAL_DRIVER)
             return true;
         if (entityType == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
             ReportParamType paramType = getItem().getParamType();
@@ -788,7 +788,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (getItem() == null || getItem().getReport() == null)
             return false;
         EntityType entityType = getItem().getReport().getEntityType();
-        if (entityType == EntityType.ENTITY_GROUP || entityType == EntityType.ENTITY_INDIVIDUAL_DRIVER)
+        if (entityType == EntityType.ENTITY_GROUP)
             return true;
         if (entityType == EntityType.ENTITY_GROUP_OR_DRIVER) {
             ReportParamType paramType = getItem().getParamType();

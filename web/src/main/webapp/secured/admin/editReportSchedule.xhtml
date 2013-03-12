@@ -351,25 +351,6 @@
 										</td>
 									</tr>
 							</h:outputText>
-							<ui:fragment rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_INDIVIDUAL_DRIVER'}">
-								<tr>
-									<td valign="top">
-										<h:outputText value="#{messages.reportSchedule_drivers}"/>
-										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
-									</td>
-									<td>
-									<a4j:outputPanel id="driverListSelect">
-									<h:selectManyMenu id="editRSDrivers" value="#{reportScheduleBean.item.driverIDSelectList}" style="width:250px;size:auto"
-											required="true" requiredMessage="#{messages.required}">
-										<f:selectItems value="#{reportScheduleBean.teamDrivers}"/>
-									</h:selectManyMenu>
-									<rich:jQuery selector="#editRSDrivers" timing="onload"
-										query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-														width: 180,maxDropHeight: 150, firstItemChecksAll: true})"/>
-									</a4j:outputPanel>
-									</td>
-								</tr>
-							</ui:fragment>
 							<h:outputText id="iftaInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
 								<tr>
 									<td valign="top">
