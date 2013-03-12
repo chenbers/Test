@@ -24,7 +24,7 @@ public class GallonsToLitersConverter extends BaseConverter {
             {
             	NumberFormat nf = NumberFormat.getInstance(getLocale());
             	Float volume = nf.parse(value).floatValue();
-            	if((Float)volume <= 0) {
+            	if((Float)volume < 0) {
             		setErrorMessage(context,component);
             		return null;
             	}
