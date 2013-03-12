@@ -143,7 +143,7 @@ public class RouteGetEndpointSteps extends WebSteps {
     	matched(result, original);
     }
     
-    @Given("I retrieve a route with three deliveries and then is sent to a dump site")
+    @Given("I retrieve a route with three deliveries and then the driver is sent to a dump site")
     public void givenIRetrieveARouteWithThreeDeliveriesAndThenIsSentToADumpSite() {
     	page.open("http://dev.tiwipro.com:8080/forms_service/route/" + IMEI + "/" + externActionID11);  //for dev
     	String original = page._text().response().toString();

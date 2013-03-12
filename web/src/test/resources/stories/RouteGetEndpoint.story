@@ -32,8 +32,8 @@ Given I retrieve a route with three deliveries, then cancel all delivery activit
 Scenario: Receive trip data from Ortec with three deliveries and the driver delivers them out of order
 Given I retrieve a route with three deliveries and the driver delivers them out of order
 
-Scenario: Receive trip data from Ortec with three deliveries and then is sent to a dump site
-Given I retrieve a route with three deliveries and then is sent to a dump site
+Scenario: Receive trip data from Ortec with three deliveries and then the driver is sent to a dump site
+Given I retrieve a route with three deliveries and then the driver is sent to a dump site
 
 Scenario: Driver partially completes the route then moves vehicles
 Given I retrieve a route and then partially complete the route and move vehicles
