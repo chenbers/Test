@@ -291,7 +291,7 @@ public class SiloServiceTest {
         
         slider = sensitivitySliders.getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.WAYSMART,0,1000000));
         
-        assertEquals(slider.getDefaultValueIndex(),3);
+        assertEquals(slider.getDefaultValueIndex(),8);
         idsForThisSlider = slider.getSettingIDsForThisSlider();
         assertTrue(idsForThisSlider.contains(new Integer(1234)));
         assertTrue(idsForThisSlider.contains(new Integer(1232)));
