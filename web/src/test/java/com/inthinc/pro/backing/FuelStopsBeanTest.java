@@ -378,7 +378,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         UIInput truckGallonsUI = new HtmlInputText();
         UIInput trailerGallonsUI = new HtmlInputText();
         truckGallonsUI.setValue(null);
-        trailerGallonsUI.setValue(new Float(-0.0f));
+        trailerGallonsUI.setValue(new Float(-1.0f));
         fuelStopsBean.setTruckGallonsUI(truckGallonsUI);
         fuelStopsBean.setTrailerGallonsUI(trailerGallonsUI);
         item.setTrailerID("trailer");
