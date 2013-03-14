@@ -15,7 +15,9 @@ import com.inthinc.pro.automation.logging.Log;
 public class TestFolder extends RallyObject {
 	
 
-	
+	public TestFolder(RallyObject ro) {
+		http = ro.getHttp();
+	}
 	
 	public TestFolder(String username, String password, RallyWebServices space){
 		http=new RallyHTTP(username, password);
@@ -26,11 +28,12 @@ public class TestFolder extends RallyObject {
 	public JSONObject getFolder(String name) throws URIException, JSONException {
 		return getFolder(name,  false);
 	}
+	
 	public JSONObject getFolder(String name, Boolean fetch) throws JSONException, URIException {
-		NameValuePair[] parameter = {new NameValuePair("Name", name)};
-		return getFolder(parameter, fetch);
+		return getFolder(fetch, new NameValuePair("Name", name));
 	}
-	public JSONObject getFolder(NameValuePair[] parameters, Boolean fetch) throws JSONException, URIException {
+	
+	public JSONObject getFolder(Boolean fetch, NameValuePair ...parameters) throws JSONException, URIException {
 		String queryString = http.constructFilter(parameters);
 		http.constructQuery(queryString, 1, 20, fetch);
 		http.getObjects(RallyWebServices.TEST_FOLDER);
@@ -45,26 +48,18 @@ public class TestFolder extends RallyObject {
 	}
 	
 	public List<JSONArray> getFoldersByProject( String project){
-		return getAllFolders(new NameValuePair("Project.name", project), false);
+		return getAllFolders(new NameValuePair("Project.name", project));
 	}
 	public List<JSONArray> getFoldersByProject( String project, Boolean fetch){
-		return getAllFolders(new NameValuePair("Project.name", project), fetch);
+		return getAllFolders(fetch, new NameValuePair("Project.name", project));
 	}
 	
-	public List<JSONArray> getAllFolders( NameValuePair fetchingNames){
-		return getAllFolders(fetchingNames, false);
+	public List<JSONArray> getAllFolders( NameValuePair ...fetchingNames){
+		return getAllFolders(false, fetchingNames);
 	}
 	
-	public List<JSONArray> getAllFolders( NameValuePair fetchingNames, Boolean fetch) {
-		NameValuePair[] pair = {fetchingNames};
-		return getAllFolders(pair, fetch);
-	}
-
-	public List<JSONArray> getAllFolders( NameValuePair[] filter) {
-		return getAllFolders(filter, false);
-	}
 	
-	public List<JSONArray> getAllFolders( NameValuePair[] filterBy, Boolean fetch){
+	public List<JSONArray> getAllFolders(Boolean fetch, NameValuePair ...filterBy){
 		Integer pageSize = 200;
     	List<JSONArray> getAll = new ArrayList<JSONArray>();
     	try {
@@ -119,7 +114,7 @@ public class TestFolder extends RallyObject {
 	}
 
 	public JSONArray[] deleteFoldersByProject(String project) throws URIException, JSONException {
-		List<JSONArray> list = getAllFolders(new NameValuePair("Project.Name", project), false);
+		List<JSONArray> list = getAllFolders(new NameValuePair("Project.Name", project));
 		for (JSONArray array: list) {
 			for (int i=0;i<array.length();i++) {
 				http.deleteObject(array.getJSONObject(i));

@@ -89,7 +89,7 @@ public class TestCase extends RallyObject {
     private AutomationCalendar lastRun;
     private Verdicts lastVerdict;
 
-    private Map<String, Boolean> customFields = new HashMap<String, Boolean>();
+//    private Map<String, Boolean> customFields = new HashMap<String, Boolean>();
 
     private JSONObject testCase;
 
@@ -113,8 +113,8 @@ public class TestCase extends RallyObject {
 
     public JSONArray[] deleteCasesByProject(String project)
             throws URIException, JSONException {
-        List<JSONArray> list = getTestCases(new NameValuePair("Project.Name",
-                project), false);
+        List<JSONArray> list = getTestCases(false, new NameValuePair("Project.Name",
+                project));
         for (JSONArray array : list) {
             for (int i = 0; i < array.length(); i++) {
                 http.deleteObject(array.getJSONObject(i));
@@ -156,8 +156,8 @@ public class TestCase extends RallyObject {
      */
     public JSONObject get_test_case_by_ID(String testCaseFormattedID,
             Boolean fetch) {
-        return getTestCase(
-                new NameValuePair("FormattedID", testCaseFormattedID), fetch);
+        return getTestCase( fetch,
+                new NameValuePair("FormattedID", testCaseFormattedID));
     }
 
     public Object getField(Fields field) {
@@ -171,26 +171,26 @@ public class TestCase extends RallyObject {
         return fields;
     }
 
-    private void getFieldValues() {
-        NameValuePair search = new NameValuePair("Name", "Test Case");
-        String filter;
-        try {
-            filter = http.constructFilter(search, false);
-            http.constructQuery(filter, 1, 2, true);
-            http.getObjects(RallyWebServices.TYPE_DEFINITION);
-            JSONObject rallyTestCase = http.getResponse().getResults().getJSONObject(0);
-            JSONArray attrs = rallyTestCase.getJSONArray("Attributes");
-            for (int i = 0; i < attrs.length(); i++) {
-                JSONObject field = attrs.getJSONObject(i);
-                customFields.put(field.getString("ElementName"),
-                        field.getBoolean("Custom"));
-            }
-        } catch (URIException e) {
-            Log.error(e);
-        } catch (JSONException e) {
-            Log.error(e);
-        }
-    }
+//    private void getFieldValues() {
+//        NameValuePair search = new NameValuePair("Name", "Test Case");
+//        String filter;
+//        try {
+//            filter = http.constructFilter(search, false);
+//            http.constructQuery(filter, 1, 2, true);
+//            http.getObjects(RallyWebServices.TYPE_DEFINITION);
+//            JSONObject rallyTestCase = http.getResponse().getResults().getJSONObject(0);
+//            JSONArray attrs = rallyTestCase.getJSONArray("Attributes");
+//            for (int i = 0; i < attrs.length(); i++) {
+//                JSONObject field = attrs.getJSONObject(i);
+//                customFields.put(field.getString("ElementName"),
+//                        field.getBoolean("Custom"));
+//            }
+//        } catch (URIException e) {
+//            Log.error(e);
+//        } catch (JSONException e) {
+//            Log.error(e);
+//        }
+//    }
 
     public AutomationCalendar getLastRun() {
         return lastRun;
@@ -200,13 +200,13 @@ public class TestCase extends RallyObject {
         return lastVerdict;
     }
 
-    public JSONObject getTestCase(NameValuePair searchParams) {
-        return getTestCase(searchParams, false);
+    public JSONObject getTestCase(NameValuePair ...searchParams) {
+        return getTestCase(false, searchParams);
     }
 
-    public JSONObject getTestCase(NameValuePair searchParams, Boolean fetch) {
+    public JSONObject getTestCase(Boolean fetch, NameValuePair ...searchParams) {
         try {
-            String filter = http.constructFilter(searchParams, false);
+            String filter = http.constructFilter(searchParams);
             Log.debug(filter);
             http.constructQuery(filter, 1, 200, fetch);
 
@@ -227,25 +227,15 @@ public class TestCase extends RallyObject {
     }
 
     public JSONObject getTestCase(String testCaseFormattedID, boolean fullItem) {
-        return getTestCase(
-                new NameValuePair("FormattedID", testCaseFormattedID), fullItem);
+        return getTestCase(fullItem,
+                new NameValuePair("FormattedID", testCaseFormattedID));
     }
 
-    public List<JSONArray> getTestCases(NameValuePair pair) {
-        NameValuePair[] set = { pair };
-        return getTestCases(set, false);
+    public List<JSONArray> getTestCases(NameValuePair ...filterBy) {
+        return getTestCases(false, filterBy);
     }
 
-    public List<JSONArray> getTestCases(NameValuePair pair, Boolean fetch) {
-        NameValuePair[] set = { pair };
-        return getTestCases(set, fetch);
-    }
-
-    public List<JSONArray> getTestCases(NameValuePair[] filterBy) {
-        return getTestCases(filterBy, false);
-    }
-
-    public List<JSONArray> getTestCases(NameValuePair[] filterBy, Boolean fetch) {
+    public List<JSONArray> getTestCases(Boolean fetch, NameValuePair ...filterBy) {
         List<JSONArray> getAll = new ArrayList<JSONArray>();
         try {
             String filter = http.constructFilter(filterBy);
@@ -310,30 +300,30 @@ public class TestCase extends RallyObject {
         return parseTestCase();
     }
 
-    private JSONObject processForCustomFields(JSONObject testCase) {
-        if (customFields.isEmpty()) {
-            getFieldValues();
-        }
-        JSONArray keys = testCase.names();
-        for (int i = 0; i < keys.length(); i++) {
-            try {
-                if (keys.getString(i) == null)
-                    continue;
-                String key = keys.getString(i);
-                if (customFields.containsKey(key)) {
-                    if (customFields.get(key)) {
-                        Object values = testCase.get(key);
-                        testCase.remove(key);
-                        key = "Custom:" + key.toLowerCase().replace(" ", "_");
-                        testCase.put(key, values);
-                    }
-                }
-            } catch (JSONException e) {
-                Log.error(e);
-            }
-        }
-        return testCase;
-    }
+//    private JSONObject processForCustomFields(JSONObject testCase) {
+//        if (customFields.isEmpty()) {
+//            getFieldValues();
+//        }
+//        JSONArray keys = testCase.names();
+//        for (int i = 0; i < keys.length(); i++) {
+//            try {
+//                if (keys.getString(i) == null)
+//                    continue;
+//                String key = keys.getString(i);
+//                if (customFields.containsKey(key)) {
+//                    if (customFields.get(key)) {
+//                        Object values = testCase.get(key);
+//                        testCase.remove(key);
+//                        key = "Custom:" + key.toLowerCase().replace(" ", "_");
+//                        testCase.put(key, values);
+//                    }
+//                }
+//            } catch (JSONException e) {
+//                Log.error(e);
+//            }
+//        }
+//        return testCase;
+//    }
 
     public boolean setTestCase(String testCaseID) {
         testCase = getTestCase(testCaseID, true);
@@ -342,14 +332,14 @@ public class TestCase extends RallyObject {
 
     public JSONArray[] update(JSONObject testCase) {
         http.postObjects(RallyWebServices.TEST_CASE,
-                processForCustomFields(testCase));
+                testCase);
         JSONArray[] sendme = {http.getResponse().getErrors(), http.getResponse().getWarnings()};
         return sendme;
     }
 
     public JSONArray[] update() {
         http.postObjects(RallyWebServices.TEST_CASE,
-                processForCustomFields(testCase));
+                testCase);
         JSONArray[] sendme = {http.getResponse().getErrors(), http.getResponse().getWarnings()};
         return sendme;
     }
@@ -360,5 +350,9 @@ public class TestCase extends RallyObject {
         }
         return lastRun.compareDays(AutomationCalendar.now(WebDateFormat.RALLY_DATE_FORMAT));
     }
+
+	public void createNewTestCase(JSONObject testCase) {
+		http.postObjects(RallyWebServices.TEST_CASE, testCase, true);
+	}
 
 }
