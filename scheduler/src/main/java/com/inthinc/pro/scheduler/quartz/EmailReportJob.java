@@ -97,8 +97,6 @@ public class EmailReportJob extends QuartzJobBean {
 
 
         for (Account account : accounts) {
-//if (account.getAccountID().intValue() != 9580)
-//    continue;
             if (isValidAccount(account)){
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAccountID()));
             }
@@ -303,9 +301,10 @@ public class EmailReportJob extends QuartzJobBean {
             }
 
             // send all the e-mails only if we make it though without errors
+            boolean allowUnsubscribe = false;
             for (IndividualReportEmail individualReportEmail : individualReportEmailList ) {
                 logger.info("sending to driver "+individualReportEmail.driverPerson.getPriEmail());
-                emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner);
+                emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner, allowUnsubscribe);
               }
 
         }
@@ -391,6 +390,9 @@ public class EmailReportJob extends QuartzJobBean {
     }
 
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
+        emailReport(reportSchedule, person, reportCriteriaList, owner, true);
+    }
+    private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner, boolean allowUnsubscribe) {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         for (ReportCriteria reportCriteria : reportCriteriaList) {
@@ -428,11 +430,19 @@ public class EmailReportJob extends QuartzJobBean {
         }else{
             for (String address : reportSchedule.getEmailTo()) {
                 String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
-                String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
-                String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), 
-                        (owner == null) ? person.getFullName() : owner.getFullName(), 
-                        (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
-                        unsubscribeURL);
+                String message = null;
+                if (allowUnsubscribe) {
+                    String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
+                    message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), 
+                            (owner == null) ? person.getFullName() : owner.getFullName(), 
+                            (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
+                            unsubscribeURL);
+                }
+                else {
+                    message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage.groupManager", person.getLocale(), 
+                            (owner == null) ? person.getFullName() : owner.getFullName(), 
+                            (owner == null) ? person.getPriEmail() : owner.getPriEmail());
+                }
                 
                 // Change noreplyemail address based on account
                 String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;
