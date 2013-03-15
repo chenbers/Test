@@ -97,6 +97,8 @@ public class EmailReportJob extends QuartzJobBean {
 
 
         for (Account account : accounts) {
+//if (account.getAccountID().intValue() != 9580)
+//    continue;
             if (isValidAccount(account)){
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAccountID()));
             }
@@ -231,8 +233,8 @@ public class EmailReportJob extends QuartzJobBean {
     private boolean processIndividualDriverReportSchedule(ReportSchedule reportSchedule, Person person) {
         
         try {
-            List<Integer> teamList = getTeamList(reportSchedule.getAccountID(), reportSchedule.getGroupIDList());
-            List<Driver> driverList = getAllDrivers(reportSchedule.getGroupIDList()); 
+            List<Integer> teamList = getTeamList(reportSchedule.getAccountID(), reportSchedule.getGroupID());
+            List<Driver> driverList = getAllDrivers(reportSchedule.getGroupID()); 
             Map<Integer, List<Integer>> teamDriverIDMap = getReportDriverIDs(teamList, driverList);
             ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
             Person owner = null;
@@ -316,44 +318,39 @@ public class EmailReportJob extends QuartzJobBean {
       return true;
     }
     
-    private List<Integer> getTeamList(Integer acctID, List<Integer> groupIDList) {
+    private List<Integer> getTeamList(Integer acctID, Integer groupID) {
         List<Integer> teamIDList = new ArrayList<Integer>();
-        for (Integer groupID : groupIDList) {
-            List<Group> groups = groupDAO.getGroupHierarchy(acctID, groupID);
-            for (Group group : groups) {
-                if (group.getType() == GroupType.TEAM) {
-                    boolean found = false;
-                    for (Integer teamID : teamIDList) {
-                        if (group.getGroupID().equals(teamID)) {
-                            found = true;
-                            break;
-                        }
+        List<Group> groups = groupDAO.getGroupHierarchy(acctID, groupID);
+        for (Group group : groups) {
+            if (group.getType() == GroupType.TEAM) {
+                boolean found = false;
+                for (Integer teamID : teamIDList) {
+                    if (group.getGroupID().equals(teamID)) {
+                        found = true;
+                        break;
                     }
-                    if (!found) {
-                        teamIDList.add(group.getGroupID());
-                    }
+                }
+                if (!found) {
+                    teamIDList.add(group.getGroupID());
                 }
             }
         }
         return teamIDList;
     }
 
-    private List<Driver> getAllDrivers(List<Integer> groupIDList) {
+    private List<Driver> getAllDrivers(Integer groupID) {
         List<Driver> allDriverList = new ArrayList<Driver>();
-        for (Integer groupID : groupIDList) {
-            List<Driver> driverList = driverDAO.getAllDrivers(groupID);
-            for (Driver driver : driverList) {
-                boolean found = false;
-                for (Driver rptDriver : allDriverList) {
-                    if (rptDriver.getDriverID().equals(driver.getDriverID())) {
-                        found = true;
-                        break;
-                    }
+        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        for (Driver driver : driverList) {
+            boolean found = false;
+            for (Driver rptDriver : allDriverList) {
+                if (rptDriver.getDriverID().equals(driver.getDriverID())) {
+                    found = true;
+                    break;
                 }
-                if (!found)
-                    allDriverList.add(driver);
             }
-            
+            if (!found)
+                allDriverList.add(driver);
         }
         return allDriverList;
     }
