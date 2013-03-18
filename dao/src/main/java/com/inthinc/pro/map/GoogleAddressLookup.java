@@ -1,6 +1,7 @@
 package com.inthinc.pro.map;
 
 import java.math.BigDecimal;
+import java.security.InvalidKeyException;
 
 import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;
@@ -17,6 +18,9 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
 
 public class GoogleAddressLookup extends AddressLookup {
+    
+    private static String CLIENT_ID = "gme-inthinc";
+    private static String CLIENT_KEY ="75DvrHN4--GCuiYpLF3JifZGIx4=";
 	
     private MeasurementType measurementType = MeasurementType.ENGLISH;
     private boolean debugMode = true;
@@ -27,6 +31,17 @@ public class GoogleAddressLookup extends AddressLookup {
 		super();
 		setAddressFormat(AddressLookup.AddressFormat.ADDRESS);
 	}
+
+    protected Geocoder getGeocoder() throws NoAddressFoundException {
+        Geocoder geocoder;
+        try {
+            geocoder = new Geocoder(CLIENT_ID, CLIENT_KEY);
+        } catch (InvalidKeyException e) {
+            throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_MAP_KEY);
+        }
+        
+        return geocoder;
+    }
 
 	public String getClosestTownString(LatLng latLng, MeasurementType measurementType) throws NoAddressFoundException {
 	    return getClosestTownString(latLng, measurementType, false);

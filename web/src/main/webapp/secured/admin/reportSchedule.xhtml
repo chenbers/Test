@@ -166,7 +166,7 @@
                                     </td>
                                  </tr>
                            </h:outputText>
-							<h:outputText rendered="#{not empty reportScheduleBean.item.groupName and reportScheduleBean.item.report.entityType ne 'ENTITY_INDIVIDUAL_DRIVER'}">
+							<h:outputText rendered="#{not empty reportScheduleBean.item.groupName}">
 									<tr>
 										<td width="100" valign="top">
 											<h:outputText value="#{messages.reportSchedule_group}"/>
