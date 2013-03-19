@@ -455,7 +455,8 @@
       				
       		    	var marker;
 					marker = new google.maps.Marker({ 
-							position : position, 
+							position : position,
+							optimized : false,
 						 	map: map,
 						 	icon : iconImage
 					});
