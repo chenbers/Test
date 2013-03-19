@@ -774,7 +774,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (getItem() == null || getItem().getReport() == null)
             return false;
         EntityType entityType = getItem().getReport().getEntityType();
-        if (entityType == EntityType.ENTITY_GROUP_LIST || entityType == EntityType.ENTITY_GROUP_LIST_AND_IFTA || entityType == EntityType.ENTITY_INDIVIDUAL_DRIVER)
+        if (entityType == EntityType.ENTITY_GROUP_LIST || entityType == EntityType.ENTITY_GROUP_LIST_AND_IFTA)
             return true;
         if (entityType == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
             ReportParamType paramType = getItem().getParamType();
@@ -788,7 +788,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (getItem() == null || getItem().getReport() == null)
             return false;
         EntityType entityType = getItem().getReport().getEntityType();
-        if (entityType == EntityType.ENTITY_GROUP)
+        if (entityType == EntityType.ENTITY_GROUP || entityType == EntityType.ENTITY_INDIVIDUAL_DRIVER)
             return true;
         if (entityType == EntityType.ENTITY_GROUP_OR_DRIVER) {
             ReportParamType paramType = getItem().getParamType();

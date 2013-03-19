@@ -231,8 +231,8 @@ public class EmailReportJob extends QuartzJobBean {
     private boolean processIndividualDriverReportSchedule(ReportSchedule reportSchedule, Person person) {
         
         try {
-            List<Integer> teamList = getTeamList(reportSchedule.getAccountID(), reportSchedule.getGroupIDList());
-            List<Driver> driverList = getAllDrivers(reportSchedule.getGroupIDList()); 
+            List<Integer> teamList = getTeamList(reportSchedule.getAccountID(), reportSchedule.getGroupID());
+            List<Driver> driverList = getAllDrivers(reportSchedule.getGroupID()); 
             Map<Integer, List<Integer>> teamDriverIDMap = getReportDriverIDs(teamList, driverList);
             ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
             Person owner = null;
@@ -301,9 +301,10 @@ public class EmailReportJob extends QuartzJobBean {
             }
 
             // send all the e-mails only if we make it though without errors
+            boolean allowUnsubscribe = false;
             for (IndividualReportEmail individualReportEmail : individualReportEmailList ) {
                 logger.info("sending to driver "+individualReportEmail.driverPerson.getPriEmail());
-                emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner);
+                emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner, allowUnsubscribe);
               }
 
         }
@@ -316,44 +317,39 @@ public class EmailReportJob extends QuartzJobBean {
       return true;
     }
     
-    private List<Integer> getTeamList(Integer acctID, List<Integer> groupIDList) {
+    private List<Integer> getTeamList(Integer acctID, Integer groupID) {
         List<Integer> teamIDList = new ArrayList<Integer>();
-        for (Integer groupID : groupIDList) {
-            List<Group> groups = groupDAO.getGroupHierarchy(acctID, groupID);
-            for (Group group : groups) {
-                if (group.getType() == GroupType.TEAM) {
-                    boolean found = false;
-                    for (Integer teamID : teamIDList) {
-                        if (group.getGroupID().equals(teamID)) {
-                            found = true;
-                            break;
-                        }
+        List<Group> groups = groupDAO.getGroupHierarchy(acctID, groupID);
+        for (Group group : groups) {
+            if (group.getType() == GroupType.TEAM) {
+                boolean found = false;
+                for (Integer teamID : teamIDList) {
+                    if (group.getGroupID().equals(teamID)) {
+                        found = true;
+                        break;
                     }
-                    if (!found) {
-                        teamIDList.add(group.getGroupID());
-                    }
+                }
+                if (!found) {
+                    teamIDList.add(group.getGroupID());
                 }
             }
         }
         return teamIDList;
     }
 
-    private List<Driver> getAllDrivers(List<Integer> groupIDList) {
+    private List<Driver> getAllDrivers(Integer groupID) {
         List<Driver> allDriverList = new ArrayList<Driver>();
-        for (Integer groupID : groupIDList) {
-            List<Driver> driverList = driverDAO.getAllDrivers(groupID);
-            for (Driver driver : driverList) {
-                boolean found = false;
-                for (Driver rptDriver : allDriverList) {
-                    if (rptDriver.getDriverID().equals(driver.getDriverID())) {
-                        found = true;
-                        break;
-                    }
+        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        for (Driver driver : driverList) {
+            boolean found = false;
+            for (Driver rptDriver : allDriverList) {
+                if (rptDriver.getDriverID().equals(driver.getDriverID())) {
+                    found = true;
+                    break;
                 }
-                if (!found)
-                    allDriverList.add(driver);
             }
-            
+            if (!found)
+                allDriverList.add(driver);
         }
         return allDriverList;
     }
@@ -394,6 +390,9 @@ public class EmailReportJob extends QuartzJobBean {
     }
 
     private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
+        emailReport(reportSchedule, person, reportCriteriaList, owner, true);
+    }
+    private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner, boolean allowUnsubscribe) {
         // Set the current date of the reports
         FormatType formatType = FormatType.PDF;
         for (ReportCriteria reportCriteria : reportCriteriaList) {
@@ -431,11 +430,19 @@ public class EmailReportJob extends QuartzJobBean {
         }else{
             for (String address : reportSchedule.getEmailTo()) {
                 String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
-                String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
-                String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), 
-                        (owner == null) ? person.getFullName() : owner.getFullName(), 
-                        (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
-                        unsubscribeURL);
+                String message = null;
+                if (allowUnsubscribe) {
+                    String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
+                    message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), 
+                            (owner == null) ? person.getFullName() : owner.getFullName(), 
+                            (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
+                            unsubscribeURL);
+                }
+                else {
+                    message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage.groupManager", person.getLocale(), 
+                            (owner == null) ? person.getFullName() : owner.getFullName(), 
+                            (owner == null) ? person.getPriEmail() : owner.getPriEmail());
+                }
                 
                 // Change noreplyemail address based on account
                 String noReplyEmailAddress = DEFAULT_NO_REPLY_EMAIL_ADDRESS;

@@ -21,13 +21,11 @@ public class Project extends RallyObject{
 	public JSONObject getProject(String name, RallyWebServices space, Boolean fetch) {
 		http.setWorkspace(space);
 		try {
-			String queryString = http.constructFilter("( Name = \"" + name + "\" )");
+			String queryString = "( Name = \"" + name + "\" )";
 			http.constructQuery(queryString, 1, 20, fetch);
 			http.getObjects(RallyWebServices.PROJECT);
 			return http.getResponse().getResults().getJSONObject(0);
 		} catch (JSONException e) {
-			Log.error(e);
-		} catch (URIException e) {
 			Log.error(e);
 		}
 		return null;

@@ -38,7 +38,7 @@ public class MoveByFolder {
 			String oldFolder = itr.next();
 			String _ref = copyFolders.get(oldFolder).get("_ref");
 			NameValuePair[] filterBy = {new NameValuePair("TestFolder.ObjectID",oldFolder)};
-			List<JSONArray> testCases = caseWorker.getTestCases(filterBy, true);
+			List<JSONArray> testCases = caseWorker.getTestCases(true, filterBy);
 			for (JSONArray reply: testCases) {
 				for (int i=0;i<reply.length();i++) {
 					JSONObject testCase = reply.getJSONObject(i);
@@ -54,7 +54,7 @@ public class MoveByFolder {
 		TestFolder cabinet = new TestFolder(username, password, workspace);
 		NameValuePair[] filters = { new NameValuePair("FormattedID", formattedID)};
 		copyFolders = new HashMap<String, HashMap<String, String>>();
-		JSONObject topDog = cabinet.getFolder(filters, true);
+		JSONObject topDog = cabinet.getFolder(true, filters);
 		getChildren(cabinet, topDog.getString("ObjectID"), "");
 		
 		
@@ -62,7 +62,7 @@ public class MoveByFolder {
 	
 	private void getChildren(TestFolder cabinet, String objectID, String folderStruc) throws URIException, JSONException {
 		NameValuePair[] filters = {new NameValuePair("ObjectID", objectID)};
-		JSONObject topDog = cabinet.getFolder(filters, true);
+		JSONObject topDog = cabinet.getFolder(true, filters);
 		HashMap<String, String> additives = new HashMap<String, String>();
 		copyFolders.put(topDog.getString("ObjectID"), additives);
 		if (folderStruc.equals("")) {
@@ -103,12 +103,12 @@ public class MoveByFolder {
 					}
 					parameters[0] = new NameValuePair("Name",newFolder); 
 					parameters[1] = new NameValuePair("Project.Name", project.getString("_refObjectName"));
-					parent = folderCommand.getFolder(parameters, true);
+					parent = folderCommand.getFolder(true, parameters);
 					folder.put("New FolderID", parent.getString("ObjectID"));
 					folder.put("_ref", parent.getString("_ref"));
 				}catch(JSONException e) {
 					folderCommand.createFolder(newFolder, project, parent);
-					parent = folderCommand.getFolder(parameters, true);
+					parent = folderCommand.getFolder(true, parameters);
 					folder.put("New FolderID", parent.getString("ObjectID"));
 					folder.put("_ref", parent.getString("_ref"));
 				} catch (URIException e) {
