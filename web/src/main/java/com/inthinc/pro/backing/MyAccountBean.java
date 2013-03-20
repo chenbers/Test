@@ -142,13 +142,15 @@ public class MyAccountBean extends BaseBean
                         buffer.append(", ");
                     buffer.append(MessageUtil.getMessageString("zones_msg_title"));
                 }
-                for (CustomMap customMap : customMapsBean.getCustomMaps())
-                    if (customMap.getCustomMapID().equals(id)) {
-                        if (buffer.length() > 0)
-                            buffer.append(", ");
-                        buffer.append(customMap.getName());
-                        break;
-                    }
+                else {
+                    for (CustomMap customMap : customMapsBean.getCustomMaps())
+                        if (customMap.getCustomMapID().equals(id)) {
+                            if (buffer.length() > 0)
+                                buffer.append(", ");
+                            buffer.append(customMap.getName());
+                            break;
+                        }
+                }
             }
         return buffer.toString();
         
