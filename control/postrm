@@ -28,6 +28,7 @@ function remove_group {
             echo "Group ${MY_USER} exists and has no remaining members, deleting"
             U_GID=${GROUP_EXISTS}
             delgroup ${MY_GROUP_USER}
+        fi
     else
         echo "Group ${MY_GROUP_USER} does not exist, skipping removal"
     fi
