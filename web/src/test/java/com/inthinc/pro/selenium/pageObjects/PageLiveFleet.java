@@ -91,6 +91,10 @@ public class PageLiveFleet extends NavigationBar {
         public TextLink valueMapBubbleDriver(){
             return new TextLink(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DRIVER);
         }
+        
+        public TextLink marker(){
+        	return new TextLink(LiveFleetEnum.MAP_MARKER);
+        }
     }
 
     public class LiveFleetTexts extends NavigationBarTexts {
