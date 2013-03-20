@@ -46,6 +46,7 @@
     		
     		
     		
+    		
       		var wmsOverlays = (function(){
         		function MapLayers(map) {
         			this.map = map;
@@ -78,9 +79,22 @@
       					}
       				}
         		}
+        		function clearZones(zones) {
+        			for (var z = 0; z < zones.length; z++) {
+        				zones[z].clear();
+        			}
+        			
+        		}
         		function clearLayersForMap(map) {
       				for (var j = 0; j < mapLayers.length; j++) {
       					if (mapLayers[j].map == map) {
+      						var currentMapLayers = mapLayers[j].layers;
+      	  		    		for (var k = 0; k < currentMapLayers; k++) {
+      	  		    			if (currentMapLayers[k].type == 'zones') {
+      	  		    				clearZones(currentMapLayers[k].layer);
+      	  		    				currentMapLayers[k].layer = new Array();
+      	  		    			}
+      	      	      		}
       						mapLayers[j].layers = new Array();
       						mapLayers[j].initialized = false;
       					}
@@ -95,20 +109,24 @@
       			
       			function createOverlayControl(map, overlayControlDiv, id, label) {
       				var layers = findLayersForMap(map);
-      				if (layers == null)
-      					return;
 
       				overlayControlDiv.setAttribute("id", id+'_div');
           			var overlaySelect = document.createElement('SELECT');
           			overlaySelect.setAttribute("multiple", "true");
           			overlaySelect.setAttribute("id", id);
           			overlayControlDiv.appendChild(overlaySelect);
+          			
   					for (var i = 0; i < layers.length; i++) {
       					var overlaySelectOption = document.createElement('OPTION');
       					overlaySelectOption.setAttribute('id', layers[i].id);
       					if (layers[i].selected) {
       						overlaySelectOption.setAttribute('selected', 'selected');
-								map.overlayMapTypes.push(layers[i].layer);
+      						if(layers[i].type != 'zones') {
+      							map.overlayMapTypes.push(layers[i].layer);
+      						}
+      						else {
+								toggleZonesLayer(map, layers[i].layer, true);
+      						}
       					}
       					overlaySelectOption.innerHTML = layers[i].displayName;
       					overlaySelect.appendChild(overlaySelectOption);
@@ -132,6 +150,17 @@
       		    	var wmsLayerUrl = url + "VERSION=1.1.1&REQUEST=GetMap&LAYERS=" + layerName + "&STYLES=default&SRS=EPSG:4326&BBOX=" + bbox + "&WIDTH=256&HEIGHT=256&FORMAT=image/png&TRANSPARENT=TRUE";
       		    	return wmsLayerUrl;
       		    };
+      		    
+      		    function toggleZonesLayer(map, zones, displayZones) {
+  		    		for (var i = 0; i < zones.length; i++) {
+  		    			if (displayZones) {
+      		    			zones[i].displayOnMap(map, false, false, true);
+      		    		}
+  		    			else {
+  		    				zones[i].clear();
+  		    			}
+      		    	}
+      		    }
 
       		    function initDropdownChecklist(map, controlId, label) {
 			    	jQuery('#' + controlId).dropdownchecklist({ 
@@ -144,28 +173,33 @@
   							maxDropHeight: 150, 
   							explicitClose: 'Close',
   							onItemClick: function(item) {
-  			      				var layers = findLayersForMap(map);
   								i = item.attr("index");
   								checked = item.attr("checked");
-								if (checked) {
-									map.overlayMapTypes.push(layers[i].layer);
-  									layers[i].selected = true;
-  								} else {
-									var removeIndex = -1;
-									for (var cnt = 0; cnt < map.overlayMapTypes.getLength(); cnt++) {
-										if (map.overlayMapTypes.getAt(cnt).name === layers[i].id) {
-											removeIndex = cnt;
+  			      				var layers = findLayersForMap(map);
+  			      				if (layers[i].type == 'zones') {
+									toggleZonesLayer(map, layers[i].layer, checked);
+  									layers[i].selected = checked;
+  			      				}
+  			      				else {
+									if (checked) {
+										map.overlayMapTypes.push(layers[i].layer);
+	  									layers[i].selected = true;
+	  								} else {
+										var removeIndex = -1;
+										for (var cnt = 0; cnt < map.overlayMapTypes.getLength(); cnt++) {
+											if (map.overlayMapTypes.getAt(cnt).name === layers[i].id) {
+												removeIndex = cnt;
+											}
 										}
-									}
-									if (removeIndex > -1) {
-										map.overlayMapTypes.removeAt(removeIndex);
-      									layers[i].selected = false;
-									}
-									else {
-										console.log("ERROR can't find layer");
-									}
-  								};
-  								
+										if (removeIndex > -1) {
+											map.overlayMapTypes.removeAt(removeIndex);
+	      									layers[i].selected = false;
+										}
+										else {
+											console.log("ERROR can't find layer");
+										}
+	  								};
+  			      				}
  								google.maps.event.trigger(map, "layerselect", layers[i].id, checked);
   							},
   		      				textFormatFunction: function(options) {
@@ -203,9 +237,34 @@
   	      					mapLayers.push(new MapLayers(map));
   	      					layers = findLayersForMap(map);
   	      				}
-      					layers.push({id : id, selected : selected, displayName : displayName, layer : layer});
+      					layers.push({id : id, selected : selected, displayName : displayName, layer : layer, type : 'image'});
    					
       				},
+          		    addZonesOverlay : function (map, options) {
+      					var id = options.id;
+      					var displayName = options.displayName;
+      					var selected = options.selected ? options.selected : false;
+
+      					var zones = new Array();
+          		    	for (var i = 0; i < options.zones.length; i++) {
+          		    		var zonePts = options.zones[i].outline;
+          		    		var zone = new Zone(zonePts, {
+          		    			fillColor : '#333333',
+          		    			fillOpacity : 0.1,
+          		    			strokeWeight : 1,
+          		    			strokeOpacity :0.5,
+          		    			strokeColor : '#000000',
+          		    			label : options.zones[i].label
+          		    		});
+          		    		zones.push(zone);
+          		    	}
+  	      				var layers = findLayersForMap(map);
+  	      				if (layers == null) {
+  	      					mapLayers.push(new MapLayers(map));
+  	      					layers = findLayersForMap(map);
+  	      				}
+      					layers.push({id : id, selected : selected, displayName : displayName, layer : zones, type : 'zones'});
+          		    },
       				addControlToMap: function(map, controlId, label) {
       					var layersLabel = label ? label : "Layers";
       					
@@ -214,7 +273,6 @@
       					overlayControlDiv.index = 1;
   					    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(overlayControlDiv);
   	
-//  					    initDropdownChecklist(map, controlId, layersLabel);
   					    google.maps.event.addListener(map, 'idle', function(){
   					    	if (!isInitialized(map)) {
   		  					    setTimeout(function() {initDropdownChecklist(map, controlId, layersLabel);}, 1000);
@@ -362,7 +420,7 @@
   									else {
   										element.domElement.innerHTML = element.altText;
   									}
-  									console.log("address: " + element.domElement.innerHTML + " altText: " + element.altText);
+  									//console.log("address: " + element.domElement.innerHTML + " altText: " + element.altText);
   				    			    reverseGeocode();
   		  						})
   		  					}, delay);
@@ -377,6 +435,14 @@
       			},
       			addOverlaysControl: function(map, controlId, label) {
       				wmsOverlays.addControlToMap(map, controlId, label);
+      			},
+
+      			addZonesLayer: function(map, options) {
+      				// if we switch to tiles this can be used
+      				// wmsOverlays.addOverlay(map, options);
+      				wmsOverlays.addZonesOverlay(map, options);
+      				
+
       			},
       			reinit: function(map, controlId) {
 		        	wmsOverlays.clear(map, controlId);

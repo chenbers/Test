@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# we can be called with the following arguments (6.5 of Debian policy):
+#  remove:            (our version): remove our package
+#  purge:             (our version): purge our package
+#  upgrade:           (our version): upgrade to a new version
+#  failed-upgrade     (old version): failed to upgrade to a new version
+#  abort-install      (our version): aborted install
+#  abort-upgrade      (old version): aborted upgrade
+
+U_GID="1090"
+MY_GROUP_USER="tiwipro"
+TOMCAT_USER="tomcat6"
+MY_USER_HOME="/usr/share/tomcat6"
+TOMCAT_WEBAPPS_DIR="/var/lib/tomcat6/webapps"
+WARS="hoskiosk tiwiproutil tiwipro scheduler service"
+GROUP_EXISTS=$(id -g ${MY_GROUP_USER} 2>/dev/null)
+
+function remove_group {
+    GROUP_EXISTS=$(id -g ${MY_USER} 2>/dev/null)
+    if [ "$?" -eq 0 ]
+    then
+        OTHER_USERS=$(grep "^${MY_GROUP_USER}" /etc/group | sed -e 's/^.*://')
+        if [ "${OTHER_USERS}" ]
+        then
+            echo "Group ${MY_GROUP_USER} has other members, not deleting at $(date)"
+        else
+            echo "Group ${MY_USER} exists and has no remaining members, deleting"
+            U_GID=${GROUP_EXISTS}
+            delgroup ${MY_GROUP_USER}
+    else
+        echo "Group ${MY_GROUP_USER} does not exist, skipping removal"
+    fi
+}
+
+
+function remove_user {
+    MY_USER_EXISTS=$(id -u ${MY_USER} 2>/dev/null)
+    if [ "$?" -eq 0 ]
+    then
+        echo "User ${MY_USER} exists, deleting"
+        userdel ${MY_USER}
+    else
+        echo "User ${MY_USER} does not exist, skipping removal"
+    fi
+}
+
+function remove_ping {
+    if [ -f "/var/www/ping-mina.html" ]
+        then
+            /bin/rm /var/www/ping-mina.html
+    fi
+}
+
+function remove_files {
+    if [ -d "${MY_USER_HOME}" ]
+    then
+        echo "Removing user home ${MY_USER_HOME}"
+        /bin/rm -Rf ${MY_USER_HOME}
+    fi
+}
+
+case "$1" in
+    purge|abort-install)
+        remove_user
+        remove_group
+        remove_files
+        remove_ping
+    ;;
+    remove)
+        remove_user
+        remove_group
+    ;;
+    upgrade)
+        echo "I dunno, maybe clean the run dirs?"
+    ;;
+esac
+
