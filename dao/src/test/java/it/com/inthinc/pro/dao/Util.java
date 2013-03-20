@@ -1,6 +1,8 @@
 package it.com.inthinc.pro.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -8,13 +10,10 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import com.inthinc.pro.model.BaseEnum;
@@ -25,6 +24,11 @@ public class Util
     {
         return (int) (Math.random() * ((max - min) + 1)) + min;
     }
+    public static float randomFloat(float min, float max)
+    {
+        return (float) (Math.random() * ((max - min) + 1)) + min;
+    }
+    
     
     public static <T> void compareObjects(T obj1, T obj2)
     {
