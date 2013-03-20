@@ -248,10 +248,10 @@
           		    	for (var i = 0; i < options.zones.length; i++) {
           		    		var zonePts = options.zones[i].outline;
           		    		var zone = new Zone(zonePts, {
-          		    			fillColor : '#333333',
-          		    			fillOpacity : 0.1,
+          		    			fillColor : '#666666',
+          		    			fillOpacity : 0.2,
           		    			strokeWeight : 1,
-          		    			strokeOpacity :0.5,
+          		    			strokeOpacity :0.8,
           		    			strokeColor : '#000000',
           		    			label : options.zones[i].label
           		    		});
