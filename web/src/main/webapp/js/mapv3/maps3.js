@@ -310,7 +310,7 @@
 							 mapTypeControl: true,
 							 panControl: true,
 							 mapTypeControlOptions : {
-								style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
+								style : google.maps.MapTypeControlStyle.HORIZONTAL_BAR
 							 },
 							 overviewMapControl: overviewMapControl,
 							 overviewMapControlOptions: {
