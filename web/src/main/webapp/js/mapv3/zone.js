@@ -17,7 +17,7 @@ function Zone(outline, options_) {
 	this.strokeOpacity = options.strokeOpacity ? options.strokeOpacity : 0.7;
 	this.fillColor = options.fillColor ? options.fillColor : ZONE_COLOR;
 	this.fillOpacity = options.fillOpacity ? options.fillOpacity : 0.2;
-
+	this.label = options.label;
 }
 Zone.prototype = {
 		    constructor: Zone,
@@ -26,8 +26,9 @@ Zone.prototype = {
 		    		this.zoneOverlay.setMap(null);
 		    	}
 		    },
-		    displayOnMap : function(map, fitBounds, editable) {
+		    displayOnMap : function(map, fitBounds, editable, labelPopup) {
 		    	this.editable = (editable) ? editable : false;
+		    	this.labelPopup = (labelPopup) ? labelPopup : false;
 		    	this.zoneOverlay = new google.maps.Polygon({
 		    		path : this.points,
 		    		strokeColor : this.strokeColor,
@@ -42,6 +43,9 @@ Zone.prototype = {
 		    		map.fitBounds(bounds);
 		    	}
 		    	this.zoneOverlay.setMap(map);
+		    	if (this.labelPopup) {
+		    		this.attachInfoWindow(map, this.label);
+		    	}
 		    	return bounds;
 		    },
 		    getBounds : function() {
@@ -62,7 +66,28 @@ Zone.prototype = {
 	    	},
 	    	getOverlay : function () {
 	    		return this.zoneOverlay;
+	    	},
+	    	attachInfoWindow : function(map, html) {
+	    		var infoWindow = new google.maps.InfoWindow({
+	    			content : html
+	    		});
+	    		var that = this;
+	    		google.maps.event.addListener(this.zoneOverlay, 'click', function(e) {
+	    			var latLng = e.latLng;
+	    			that.zoneOverlay.setOptions({
+	    				fillColor : "#00ff00"
+	    			});
+	    			infoWindow.setPosition(latLng);
+	    			infoWindow.open(map);
+	    		});
+	    		google.maps.event.addListener(this.zoneOverlay, 'mouseout', function() {
+	    			that.zoneOverlay.setOptions({
+	    				fillColor : that.fillColor
+	    			});
+	    			infoWindow.close();
+	    		});
 	    	}
+
 	    	
 };
 		    

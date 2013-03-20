@@ -124,6 +124,7 @@ public class MyAccountBean extends BaseBean
     }
     public List<SelectItem> getMapLayers() {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.add(new SelectItem(CustomMapsBean.ZONE_LAYER_ID, MessageUtil.getMessageString("zones_msg_title")));
         for (CustomMap customMap : customMapsBean.getCustomMaps())
         {
                 selectItemList.add(new SelectItem(customMap.getCustomMapID(),customMap.getName()));
@@ -136,13 +137,20 @@ public class MyAccountBean extends BaseBean
         List<Integer> selectedMapLayerIDs = getUser().getSelectedMapLayerIDs();
         if (selectedMapLayerIDs != null)
             for (Integer id : selectedMapLayerIDs) {
-                for (CustomMap customMap : customMapsBean.getCustomMaps())
-                    if (customMap.getCustomMapID().equals(id)) {
-                        if (buffer.length() > 0)
-                            buffer.append(", ");
-                        buffer.append(customMap.getName());
-                        break;
-                    }
+                if (id.equals(CustomMapsBean.ZONE_LAYER_ID)) {
+                    if (buffer.length() > 0)
+                        buffer.append(", ");
+                    buffer.append(MessageUtil.getMessageString("zones_msg_title"));
+                }
+                else {
+                    for (CustomMap customMap : customMapsBean.getCustomMaps())
+                        if (customMap.getCustomMapID().equals(id)) {
+                            if (buffer.length() > 0)
+                                buffer.append(", ");
+                            buffer.append(customMap.getName());
+                            break;
+                        }
+                }
             }
         return buffer.toString();
         
