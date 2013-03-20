@@ -18,6 +18,7 @@
 
 			var geocoder = new google.maps.Geocoder();
         	var addressCache = {};
+        	var optimization = true;
 			
 			function MapState(map) {
 				this.map = map;
@@ -390,7 +391,7 @@
       		    	var marker;
 					marker = new google.maps.Marker({ 
 							position : position,
-							optimized : false,
+							optimization : optimization,
 						 	map: map,
 						 	icon : iconImage
 					});
@@ -517,6 +518,9 @@
       		    	this.clearOverlays(map);
       		    	this.clearInfoWindow(map);
       		    },
+      		    setOptimization : function(optimization) {
+      		    	this.optimization = optimization;
+      			},
       		    getMarkers : function(map) {
           			var mapState = findMapStateForMap(map);
           			if (mapState)
