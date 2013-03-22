@@ -53,6 +53,7 @@ import com.inthinc.pro.model.DOTOfficeType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -199,10 +200,25 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
     }
 
-    protected List<Driver> getReportDriverList(List<Group> reportGroupList) {
+    protected List<Driver> getReportDriverList(List<Group> reportGroupList){
+        return getReportDriverList(reportGroupList, getIncludeInactiveDrivers());
+    }
+    
+    protected List<Driver> getReportDriverList(List<Group> reportGroupList, boolean includeInactiveDrivers) {
         List<Driver> driverList = new ArrayList<Driver>();
         for (Group group : reportGroupList){
-            driverList.addAll(driverDAO.getDrivers(group.getGroupID()));
+//            driverList.addAll(driverDAO.getDrivers(group.getGroupID()));
+        	if (group.getGroupID() != null) {
+                List<Driver> groupDriverList = driverDAO.getDrivers(group.getGroupID());
+                if (groupDriverList != null && !groupDriverList.isEmpty()){
+                    //driverList.addAll(groupDriverList);
+                    for(Driver driver: groupDriverList){
+                        if(Status.ACTIVE.equals(driver.getStatus()) || (includeInactiveDrivers)){
+                            driverList.add(driver);
+                        }
+                    }
+                }
+            }
         }
         return driverList;
     }
