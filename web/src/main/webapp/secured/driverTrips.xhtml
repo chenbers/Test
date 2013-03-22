@@ -729,13 +729,11 @@
                 </div>
                 </div>
                 <div class="panel_w">
-                <a4j:form id="selectedTripMap">
-                    <rich:panel bodyClass="panel_content">
+                    <rich:panel bodyClass="panel_content" id="selectedTripMap">
                             <h:panelGroup styleClass="map-border" layout="block">
                                 <div id="map-canvas" style="width: 588px; height: 400px; border: 0"></div>
                             </h:panelGroup>
                     </rich:panel>
-                </a4j:form>
                 </div>
                     <rich:panel bodyClass="panel_content"  id="noTripsMessage">
                         	<h:outputText rendered="#{driverTripsBean.numTrips lt 1}">
