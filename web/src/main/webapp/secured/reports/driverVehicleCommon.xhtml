@@ -89,7 +89,8 @@
     	
     	
     	<!-- START LOCATION MODAL -->
-	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" resizeable="false">
+	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" controlsClass="popupControls" onshow="initialize(event.parameters.lat, event.parameters.lng);" 
+			autosized="true" resizeable="false" zindex="2000">
 		<f:facet name="header">
 	    	<h:outputText value="#{messages.driver_event_location}" />
 	    </f:facet>
