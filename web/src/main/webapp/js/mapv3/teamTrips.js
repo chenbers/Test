@@ -436,7 +436,7 @@
 				var bounds = new google.maps.LatLngBounds();
 				var overlaysLength = overlays.length; 
 				for(var j=0;j<overlaysLength; j++){
-					bounds = bounds.union(overlays[i].getBounds());
+					bounds = bounds.union(overlays[j].getBounds());
 				}
 				return bounds;
 			}
@@ -624,7 +624,7 @@
  */
 	function displayAllTrips(map, driversTrips){
 	    clearDownTrips(map);
-	    if (driverTrips) {
+	    if (driversTrips) {
 	    	var length = driversTrips.length;
 	    	for (var i=0;i<length;i++){
 	    		addDriverTrips(map, driversTrips[i].driverIndex,driversTrips[i]);
