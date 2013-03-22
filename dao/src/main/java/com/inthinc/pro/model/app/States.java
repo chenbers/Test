@@ -13,7 +13,7 @@ import com.inthinc.pro.model.State;
 public class States implements BaseAppEntity
 {
     Logger logger = Logger.getLogger(States.class);
-    private static Map<Integer, State> statesMap;
+    private static Map<Integer, State> statesMap = new HashMap<Integer, State>();
     
     private StateDAO stateDAO;
 

@@ -18,6 +18,7 @@
 
 			var geocoder = new google.maps.Geocoder();
         	var addressCache = {};
+        	var optimization = true;
 			
 			function MapState(map) {
 				this.map = map;
@@ -248,10 +249,10 @@
           		    	for (var i = 0; i < options.zones.length; i++) {
           		    		var zonePts = options.zones[i].outline;
           		    		var zone = new Zone(zonePts, {
-          		    			fillColor : '#333333',
-          		    			fillOpacity : 0.1,
+          		    			fillColor : '#666666',
+          		    			fillOpacity : 0.2,
           		    			strokeWeight : 1,
-          		    			strokeOpacity :0.5,
+          		    			strokeOpacity :0.8,
           		    			strokeColor : '#000000',
           		    			label : options.zones[i].label
           		    		});
@@ -310,7 +311,7 @@
 							 mapTypeControl: true,
 							 panControl: true,
 							 mapTypeControlOptions : {
-								style : google.maps.MapTypeControlStyle.DROPDOWN_MENU
+								style : google.maps.MapTypeControlStyle.HORIZONTAL_BAR
 							 },
 							 overviewMapControl: overviewMapControl,
 							 overviewMapControlOptions: {
@@ -456,7 +457,7 @@
       		    	var marker;
 					marker = new google.maps.Marker({ 
 							position : position,
-							optimized : false,
+							optimization : optimization,
 						 	map: map,
 						 	icon : iconImage
 					});
@@ -583,6 +584,9 @@
       		    	this.clearOverlays(map);
       		    	this.clearInfoWindow(map);
       		    },
+      		    setOptimization : function(optimization) {
+      		    	this.optimization = optimization;
+      			},
       		    getMarkers : function(map) {
           			var mapState = findMapStateForMap(map);
           			if (mapState)

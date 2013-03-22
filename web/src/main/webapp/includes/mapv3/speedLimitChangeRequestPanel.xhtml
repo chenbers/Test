@@ -48,7 +48,7 @@
 					gLatLngArray.push(new google.maps.LatLng(#{point.x},#{point.y}));
 				</ui:repeat>
 
-				var polyline = inthincMap.addPolyline(map, gLatLngArray, {
+				var polyline = inthincMap.addPolyline(mapsbs, gLatLngArray, {
 						strokeColor: POLYLINE_COLOR,
 						strokeWeight: 10,
 						strokeOpacity : 0.5,

@@ -191,7 +191,22 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
                     return arg0.getVehicleName().compareTo(arg1.getVehicleName()) * sortDirection;
                 }
             };
-        } else {
+        } 
+        else if (getSort().getField().equals("driverName")) {
+            comparator = new Comparator<Event>() {
+                @Override
+                public int compare(Event arg0, Event arg1) {
+                    if (arg0.getDriverName() == null && arg1.getDriverName() == null)
+                        return 0;
+                    if (arg0.getDriverName() == null)
+                        return -1;
+                    if (arg1.getDriverName() == null)
+                        return 1;
+                    return arg0.getDriverName().compareTo(arg1.getDriverName()) * sortDirection;
+                }
+            };
+        } 
+        else {
             comparator = new Comparator<Event>() {
                 @Override
                 public int compare(Event arg0, Event arg1) {
