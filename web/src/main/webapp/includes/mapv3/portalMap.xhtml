@@ -43,10 +43,9 @@
 			map.setMapTypeId(translateMapType('#{customMapsBean.googleMapType}'));
 			var zoneList = new Array();
 			<ui:repeat value="#{customMapsBean.zones}" var="zone">
-				var zoneName = "'" + #{zoneName} + "'";
 				zoneList.push({
 					outline: "#{zone.pointsString}",
-					label: zoneName 
+					label: '#{zone.displayName}'
 				});
 			</ui:repeat>
 			inthincMap.addZonesLayer(map,  {
