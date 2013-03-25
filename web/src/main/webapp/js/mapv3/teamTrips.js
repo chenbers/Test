@@ -137,7 +137,7 @@
 //									  'gridSize_y':80
 		};
 		var customClusterOptions ={ 
-				"canvasDrawFunction":drawCustomCluster,
+				"canvasDrawFunction":drawCustomCluster
       	};
 				  
 		markerClustererWithMergedMarkerSets = new MarkerClustererWithMergedMarkerSets(map, null, markerClustererOptions, customClusterOptions);
@@ -159,6 +159,12 @@
 			getEventData(eventsJSONArray);
 
 		});
+		
+		var map_ = map;
+		google.maps.event.addListener(map, 'zoom_changed', function() {
+			closeInfoWindow(map_);
+		});
+
 
 	}
 	/**
@@ -551,6 +557,7 @@
 		bounds = calculateTripBounds();
 		if (bounds != null){
 			inthincMap.centerAndZoom(map, bounds);
+			
 			showOverlays(map, driverIndex);
 		}
 	}
@@ -576,6 +583,7 @@
 			
 			//Already have these markers
 			tripsSelected[i] = document.getElementById("tripsTableForm:driversTrips:"+pageIndex+":checkDriver").checked; 
+ 
 			if (tripsSelected[i]){
 				showExistingDriverTrips(map,i);
 			}
@@ -639,7 +647,6 @@
  * @return
  */
 	function redisplayAllTrips(map, driversTrips){
-		
 		closeInfoWindow(map);	
 		var length = driversTrips.length;
 		for (var i=0;i<length;i++){
@@ -654,7 +661,6 @@
  * @return
  */	
     function resetTripsForSelectedDrivers(map){
-    	
        	clearDownTrips(map);
        	getLatestTrips(); //a4j:jsFunction gets trip data from backing bean
     }
