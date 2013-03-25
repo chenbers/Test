@@ -111,6 +111,7 @@
       				var layers = findLayersForMap(map);
 
       				overlayControlDiv.setAttribute("id", id+'_div');
+      				overlayControlDiv.style.paddingRight = '5px';
           			var overlaySelect = document.createElement('SELECT');
           			overlaySelect.setAttribute("multiple", "true");
           			overlaySelect.setAttribute("id", id);
