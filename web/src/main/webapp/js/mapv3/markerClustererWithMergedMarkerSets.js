@@ -167,6 +167,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_markers, opt_options, opt_
   // Add the map event listeners
   var that = this;
   google.maps.event.addListener(this.map_, 'zoom_changed', function() {
+	  
     var zoom = that.map_.getZoom();
 
     if (that.prevZoom_ != zoom) {
@@ -176,7 +177,7 @@ function MarkerClustererWithMergedMarkerSets(map, opt_markers, opt_options, opt_
   });
 
   google.maps.event.addListener(this.map_, 'idle', function() {
-    that.redraw();
+	that.redraw();
   });
 
   // Finally, add the markers
@@ -765,8 +766,7 @@ MarkerClustererWithMergedMarkerSets.prototype.addToClosestCluster_ = function(ma
   if (clusterToAddTo && clusterToAddTo.isMarkerInClusterBounds(marker)) {
     clusterToAddTo.addMarker(marker);
   } else {
-//    var cluster = new Cluster(this);
-    var cluster = new LabeledCluster(this, this.customCluster_opts_);
+	  var cluster = new LabeledCluster(this, this.customCluster_opts_);
 
     cluster.addMarker(marker);
     this.clusters_.push(cluster);
@@ -805,12 +805,6 @@ MarkerClustererWithMergedMarkerSets.prototype.showMarkers = function(markerSetIn
 		  this.resetViewport();
 		  this.redraw();
 
-		  if(this.markerSets_.length == 1){
-			  var that = this;
-			  this.mcfn_ = google.maps.event.addListener(this.map_, "idle", function () {
-				    that.resetViewport(false);
-			  });
-		  }
 	}
 };
 MarkerClustererWithMergedMarkerSets.prototype.hideMarkers = function(markerSetIndex) {
@@ -1348,6 +1342,7 @@ ClusterIcon.prototype.createCss = function(pos) {
  * @ignore
  */
 function StackedClusterIcon(cluster, styles, opt_padding, drawFunction) {
+	
   cluster.getMarkerClusterer().extend(StackedClusterIcon, google.maps.OverlayView);
 
 
@@ -1414,6 +1409,9 @@ StackedClusterIcon.prototype.draw = function() {
 		if (!this.div_ || this.div_ == null) {
 			this.div_ = document.createElement('DIV');
 		}
+		if (this.div_.childNodes != null && this.div_.childNodes.length > 0) {
+			return;
+		}
 	    this.drawFunction_(this.cluster_.markers_, this.sums_.text, this.div_, pos);
   }
 };
@@ -1434,7 +1432,7 @@ StackedClusterIcon.prototype.hide = function() {
  * Position and show the icon.
  */
 StackedClusterIcon.prototype.show = function() {
-	if (this.div_) {
+  if (this.div_) {
     this.div_.style.display = '';
   }
   this.visible_ = true;
