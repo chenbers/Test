@@ -89,7 +89,8 @@
     	
     	
     	<!-- START LOCATION MODAL -->
-	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" resizeable="false">
+	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" controlsClass="popupControls" onshow="initialize(event.parameters.lat, event.parameters.lng);" 
+			autosized="true" resizeable="false" zindex="2000">
 		<f:facet name="header">
 	    	<h:outputText value="#{messages.driver_event_location}" />
 	    </f:facet>
@@ -104,7 +105,7 @@
 		<h:form>
 	    <div class="popupactions">
 	    	<a4j:commandButton id="eventLocationModalClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
-	   			<span class="edit">
+	   			<span class="cancel">
 	   				<h:outputText value="#{messages.button_close}" />
 	   			</span>
 		 	</a4j:commandButton>

@@ -159,7 +159,7 @@
                               <td>
                             <rich:message for="editfuelStop_truckGallons" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{fuelStopsBean.item.truckGallons}" converter="GallonsToLitersConverter" id="editfuelStop_truckGallons" onchange="checkMultiple(this)" 
-                                  			styleClass="text" size="10" maxlength="10" required="#{(fuelStopsBean.item.trailerID eq null) or (empty fuelStopsBean.item.trailerID)}" 
+                                  			styleClass="text" size="10" maxlength="5" required="#{(fuelStopsBean.item.trailerID eq null) or (empty fuelStopsBean.item.trailerID)}" 
                                   			requiredMessage="#{messages.fuelStop_truckGallons_required}" binding="#{fuelStopsBean.truckGallonsUI}"/>
                                   			<rich:spacer width="5px"/>
 	                              <h:outputText value="editFuelStop_truckGallons" converter="MeasurementTextConverter"/>
@@ -186,7 +186,7 @@
                               <td>
                             <rich:message for="editfuelStop_trailerGallons" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{fuelStopsBean.item.trailerGallons}" converter="GallonsToLitersConverter" id="editfuelStop_trailerGallons" onchange="checkMultiple(this)" 
-                                  			styleClass="text" size="10" maxlength="10" 
+                                  			styleClass="text" size="10" maxlength="5" 
                                   			binding="#{fuelStopsBean.trailerGallonsUI}"/><rich:spacer width="5px"/>
 	                              <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
                               </td>

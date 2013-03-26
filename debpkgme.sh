@@ -209,7 +209,6 @@ function setup_variables {
         else
             SRC_VERSION="1.0"
         fi
-
         ARCH=$(uname -m)
         if [ "${ARCH}" = "x86_64" ]
         then
@@ -222,7 +221,6 @@ function setup_variables {
         source ${LSB_RELEASE}
         echo "Sourcing this ${LSB_RELEASE}"
         cat ${LSB_RELEASE}
-
     #######################################
     #
     # Jenkins passed values
@@ -257,7 +255,6 @@ function setup_variables {
         if [ ! "${TOMCAT6_REPO}" ]; then TOMCAT6_REPO="git://github.com/jonzobrist/tomcat6.git"; echo "TOMCAT6_REPO not specified, using default ${TOMCAT6_REPO}"; fi
         if [ ! "${BLANK_TOMCAT_OVERLAY}" ]; then BLANK_TOMCAT_OVERLAY="git@it.inthinc.com:tomcat2_configs.git"; echo "BLANK_TOMCAT_OVERLAY not specified, using default ${BLANK_TOMCAT_OVERLAY}"; fi
         if [ ! "${T6_DIRS}" ]; then T6_DIRS="bkup endorsed logarchive logs temp tmp work"; echo "T6_DIRS not specified, using default ${T6_DIRS}"; fi
-
         # We should get these from our pre-compile build script
         # DEB_PreDepends
         # DEB_Depends
@@ -273,7 +270,7 @@ function setup_variables {
     fi
 }
 
-    function cleanup {
+function cleanup {
     echo "Enter function cleanup"
         echo "Cleaning up ${TMP_DIR} at $(date)"
         /bin/rm -Rf ${TMP_DIR}
@@ -353,7 +350,6 @@ function update_control_file {
         echo "Missing DEB_Package_u, setting at $(date)"
         DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     fi
-
     if [ "${DEB_Package_u}" ]; then echo "Package: ${DEB_Package_u}" | tee ${CONTROL_FILE}; fi
     if [ "${DEB_Source}" ]; then echo "Source: ${DEB_Source}" | tee -a ${CONTROL_FILE}; fi
     if [ "${DEB_Version}" ]; then echo "Version: ${DEB_Version}" | tee -a ${CONTROL_FILE}; fi

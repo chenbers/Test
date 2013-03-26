@@ -100,6 +100,12 @@ public class Zone extends BaseEntity implements Cloneable
         this.points = points;
     }
 
+    public String getDisplayName() {
+        
+        if (name != null)
+            return name.replace("\\", "\\\\").replace("'", "\\'");
+        else return "";
+    }
     /**
      * @return The points formatted as <code>(lat,lng);(lat,lng),...</code>
      */

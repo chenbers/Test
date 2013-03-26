@@ -565,6 +565,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	
     @Override
     protected PersonView createAddItem() {
+    	rolePicker = new ListPicker(getPickFrom());
         final PersonView person = new PersonView();
         person.bean = this;
         person.setStatus(Status.ACTIVE);
@@ -642,6 +643,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (getItem() != null && getItem().isUserSelected() && getItem().getUser() !=null && getItem().getUser().getUserID() != null && getItem().getUser().getUserID().equals(getUserID())) {
             item = revertItem(getItem());
         }
+        
+        rolePicker = new ListPicker(getPickFrom(), getPicked());
         return redirect;
     }
 

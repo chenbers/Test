@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -258,6 +257,29 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                     logger.debug("event is Null ");
                     continue;
                 }
+            }
+            
+            if(event instanceof SpeedingEvent){
+	            if(!((SpeedingEvent)event).isValidEvent()){
+	            	
+	            	StringBuilder sb = new StringBuilder();
+	            	
+	            	sb.append("Invalid speeding event has occured! ")
+	            	.append(" DriverID: ")
+	            	.append(event.getDriverID() == null ? "Not Available " : String.valueOf(event.getDriverID()))
+	            	.append(" VehicleID: ")
+	            	.append(event.getVehicleID() == null ? "Not Available " : String.valueOf(event.getVehicleID()))
+	            	.append(" DeviceID: ")
+	            	.append(event.getDeviceID() == null ? "Not Available " : String.valueOf(event.getDeviceID()))
+	            	.append(" SpeedLimit: ")
+	            	.append(((SpeedingEvent)event).getSpeedLimit() == null ? "Not Available " : String.valueOf(((SpeedingEvent)event).getSpeedLimit()))
+	            	.append(" Speed: ")
+	            	.append(((SpeedingEvent)event).getSpeed()  == null ? "Not Available" : String.valueOf(((SpeedingEvent)event).getSpeed()));
+	            	
+	            	logger.error(sb.toString());
+	            	
+	            	continue;
+	            }
             }
 
             Locale locale = getLocale(person);

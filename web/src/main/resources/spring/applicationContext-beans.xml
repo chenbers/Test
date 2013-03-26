@@ -438,6 +438,7 @@
   </bean>
   <bean id="googleMapURLBean" class="com.inthinc.pro.backing.GoogleMapURLBean">
     <property name="mapUrl" value="${google.map.url}" />
+    <property name="markerOptimization" value="${google.marker.optimized}"></property>
   </bean>
 
   <!-- Web Util Beans - wraps access to servlet  -->
