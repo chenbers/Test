@@ -75,6 +75,33 @@ public class HanSoloTrip extends Thread{
 
     }
     
+    public void routeTestTrip() {
+        String imei = "FAKEIMEIDEVICE"; 
+        AutoSilos address=AutoSilos.QA; 
+        tiwi = new TiwiProDevice(imei, address);
+        tiwi.set_time(new AutomationCalendar());
+        
+        String start = "980 N 1050 E, Pleasant Grove, UT 84062";
+        String mid = "815 N 1020 E, Pleasant Grove, UT 84062";
+        String stop = "1002 N 1020 E, Pleasant Grove, UT 84062";
+       
+        TripDriver driver = new TripDriver(tiwi);
+        
+        driver.addToTrip(start, mid);
+        driver.addToTrip(mid, stop);
+        driver.addToTrip(stop, start);
+
+        DeviceState state = new DeviceState(null, ProductType.WAYSMART_850);
+
+//        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
+//        driver.addEvent(29, AutomationDeviceEvents.speeding(state, null));
+        driver.addEvent(30, AutomationDeviceEvents.routeStopArrival(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));
+        driver.addEvent(35, AutomationDeviceEvents.routeStopDeparture(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));;
+
+        driver.start();
+        
+
+    }
     
     public void de6739_funkyTrip() {
         String imei = "FAKEIMEIDEVICE"; 

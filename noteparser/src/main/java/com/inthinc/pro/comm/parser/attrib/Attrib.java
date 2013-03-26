@@ -139,7 +139,7 @@ public enum Attrib {
 	INSPECTIONTYPE(8291, AttribParserType.BYTE),
 	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
     RHA_TYPE(8293, AttribParserType.BYTE),
-	
+    ROUTE_STOP_TYPE(8299, AttribParserType.BYTE),
 	
 	
 	// SHORT 
@@ -282,6 +282,7 @@ public enum Attrib {
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
+	ROUTESTOPID(32860, AttribParserType.INTEGER),
 	
 	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
 	SEATBELTOUTDISTANCE(16437, AttribParserType.SHORT), //(distance miles x 100)

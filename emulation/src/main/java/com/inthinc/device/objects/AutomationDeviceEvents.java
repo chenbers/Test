@@ -257,6 +257,22 @@ public class AutomationDeviceEvents {
         }
     }
 	
+    public class RouteStopArrivalEvent extends AutomationDeviceEvents {
+        private RouteStopArrivalEvent(DeviceState state, GeoPoint location, String actionID){
+            super(DeviceNoteTypes.NOTE_TYPE_ROUTE_STOP, state, location);
+            
+            note.addAttr(EventAttr.ROUTE_STOP_ID, actionID);
+            note.addAttr(EventAttr.ROUTE_STOP_TYPE, 1);
+        }
+    }
+    public class RouteStopDepartureEvent extends AutomationDeviceEvents {
+        private RouteStopDepartureEvent(DeviceState state, GeoPoint location, String actionID){
+            super(DeviceNoteTypes.NOTE_TYPE_ROUTE_STOP, state, location);
+            
+            note.addAttr(EventAttr.ROUTE_STOP_ID, actionID);
+            note.addAttr(EventAttr.ROUTE_STOP_TYPE, 2);
+        }
+    }
 	private static void hosChangeState(DeviceState state, DeviceNote note){
     	int tripFlag = state.getTripFlags() & 0xF0;
 
@@ -789,7 +805,19 @@ public class AutomationDeviceEvents {
     public static TamperingEvent tampering(DeviceState state, GeoPoint location){
     	return classes.new TamperingEvent(state, location);
     }
+    public static void routeStopArrival(DeviceBase device, String actionID) {
+        device.addEvent(routeStopArrival(device.getState(), device.getCurrentLocation(), actionID));
+    }
+    public static RouteStopArrivalEvent routeStopArrival(DeviceState state, GeoPoint location, String actionID){
+        return classes.new RouteStopArrivalEvent(state, location, actionID);
+    }
     
+    public static void routeStopDeparture(DeviceBase device, String actionID) {
+        device.addEvent(routeStopDeparture(device.getState(), device.getCurrentLocation(), actionID));
+    }
+    public static RouteStopDepartureEvent routeStopDeparture(DeviceState state, GeoPoint location, String actionID){
+        return classes.new RouteStopDepartureEvent(state, location, actionID);
+    }
 
     protected DeviceNote note;
 
