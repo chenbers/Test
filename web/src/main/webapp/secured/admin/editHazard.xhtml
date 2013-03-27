@@ -230,9 +230,8 @@
 					
                     if(hazardlat && hazardlng && hazardlat != "" && hazardlng !=""){
                          hazardPoint = new google.maps.LatLng(hazardlat, hazardlng);
-                    } else {
-                    	console.log("no hazardPoint... presumably ADDING");
-                    }
+                    } 
+                    
                     if (hazardPoint){
                         hazardRadius = document.getElementById("hazards-form:hazardRadiusMeters").value / 1000;
                         if (hazardRadius > 0) {
@@ -244,7 +243,7 @@
 				}
 
 				function cancelEdit(){
-                    console.log("in cancelEdit");
+
 					inthincMap.clear(map);
 				}
 
