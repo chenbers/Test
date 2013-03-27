@@ -143,7 +143,7 @@
 	                  <h:panelGroup styleClass="map-border" layout="block">
 	                    <div id="map-canvas" style="height:100%;height:600px;border:0"></div>
 	                  </h:panelGroup>
-                  	<rich:simpleTogglePanel id="editZoneOptions" switchType="client" style="float:right;" opened="true">
+                  	<rich:simpleTogglePanel id="editZoneOptions" switchType="client" style="float:right;" opened="true"  onexpand="triggerResize();" oncollapse="triggerResize();">
                     	<h:panelGroup layout="block" style="width:270px">
                     	<table width="270" border="0" cellspacing="2" cellpadding="4" align="left">
                     	<a4j:repeat value="#{zonesBean.availableZoneOptions}" var="option" id="zoneOptions">
@@ -298,7 +298,22 @@
 							inthincMap.center(map, 39.0, -104.0);
 				    		inthincMap.zoom(map, 4);
 			    		}
-                  }
+                  	}
+					
+					function triggerResize()
+					{
+						mapWidth =jQuery("#map-canvas").css('width');
+					    setTimeout(function() {
+							var newMapWidth =jQuery("#map-canvas").css('width');
+							if (newMapWidth != mapWidth) {
+								triggerResize();							
+							}
+							else {
+								inthincMap.triggerResize(map);
+							}
+					    },100);
+					}
+
                 </script>
 
               </div>

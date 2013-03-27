@@ -338,7 +338,7 @@
       				map.fitBounds(bounds);
       			},
       			triggerResize : function (map) {
-      				google.maps.events.trigger(map, 'resize');
+      				google.maps.event.trigger(map, 'resize');
       			},
   				lookupAddress: function(map, address, resultHandler) {
   					geocoder.geocode({'address': address }, resultHandler ? resultHandler : function (result, status) {
