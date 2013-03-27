@@ -76,20 +76,20 @@ public class HanSoloTrip extends Thread{
     }
     
     public void routeTestTrip() {
-        String imei = "FAKEIMEIDEVICE"; 
-        AutoSilos address=AutoSilos.QA; 
-        tiwi = new TiwiProDevice(imei, address);
-        tiwi.set_time(new AutomationCalendar());
+//        waySmart = new WaysmartDevice("FAKEIMEIDEVICE", "FAKEIMEIDEVICE", AutoSilos.QA, ProductType.WAYSMART_850);
+        waySmart.set_time(new AutomationCalendar());
         
         String start = "980 N 1050 E, Pleasant Grove, UT 84062";
         String mid = "815 N 1020 E, Pleasant Grove, UT 84062";
         String stop = "1002 N 1020 E, Pleasant Grove, UT 84062";
+        String mid2 = "1100 N 1100 E, Pleasant Grove, UT 84062";
        
-        TripDriver driver = new TripDriver(tiwi);
+        TripDriver driver = new TripDriver(waySmart);
         
         driver.addToTrip(start, mid);
         driver.addToTrip(mid, stop);
         driver.addToTrip(stop, start);
+        driver.addToTrip(start, mid2);
 
         DeviceState state = new DeviceState(null, ProductType.WAYSMART_850);
 
@@ -264,13 +264,14 @@ public class HanSoloTrip extends Thread{
         AutoSilos address;
         String imei = "FAKEIMEIDEVICE"; 
         address=AutoSilos.QA;
+        
 //        String imei = "DEVICEDOESNTEXIST";
 
         //        imei = "500000000007272"; address=AutoSilos.DEV;// initialTime.setDate(time)
 //        imei = "011596000100366";     address=AutoSilos.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=AutoSilos.QA;   initialTime.setDate(1335460214);  // vehicleID=37706       deviceID=34506
 //        address=AutoSilos.QA;           initialTime.setDate(1334940345);  // vehicleID=7293        deviceID=3753
-        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
 //          address=AutoSilos.DEV;		initialTime.setDate(1334940345);
 //        address=AutoSilos.STAGE;        initialTime.setDate(1334940345);  // vehicleID=117441441   deviceID=117441936 
 //        address=AutoSilos.PROD;         initialTime.setDate(1334941814);  // vehicleID=1           deviceID=1
@@ -301,7 +302,7 @@ public class HanSoloTrip extends Thread{
 //        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=AutoSilos.QA; initialTime = 1316471529; vehicleID=7284; accountID=3;//deviceID=3763
         satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=AutoSilos.QA; initialTime = new AutomationCalendar(); vehicleID="dddd"; accountID=3;//deviceID=3763
         
-        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
+        trip.routeTestTrip();
         
         Log.info(trip);
     }
