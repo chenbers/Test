@@ -117,7 +117,7 @@
                           <div id="circle-outline" style="display:none"></div>
                         </div>
                       </h:panelGroup>
-                    <rich:simpleTogglePanel id="editHazardDetails" switchType="client" style="float:right;" opened="true">
+                    <rich:simpleTogglePanel id="editHazardDetails" switchType="client" style="float:right;" opened="true" onexpand="triggerResize();" oncollapse="triggerResize();">
                         <h:panelGroup layout="block" style="width:270px">
                         <table width="270" border="0" cellspacing="2" cellpadding="4" align="left">
                             <tr>
@@ -295,6 +295,20 @@
 	                    }
 					}
                 }
+
+				function triggerResize()
+				{
+					mapWidth =jQuery("#map-canvas").css('width');
+				    setTimeout(function() {
+						var newMapWidth =jQuery("#map-canvas").css('width');
+						if (newMapWidth != mapWidth) {
+							triggerResize();							
+						}
+						else {
+							inthincMap.triggerResize(map);
+						}
+				    },100);
+				}
                   
                 //]]>
                 </script>
