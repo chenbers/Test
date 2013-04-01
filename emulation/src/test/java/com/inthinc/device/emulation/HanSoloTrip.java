@@ -76,7 +76,7 @@ public class HanSoloTrip extends Thread{
     }
     
     public void routeTestTrip() {
-//        waySmart = new WaysmartDevice("FAKEIMEIDEVICE", "FAKEIMEIDEVICE", AutoSilos.QA, ProductType.WAYSMART_850);
+        waySmart = new WaysmartDevice("FAKEIMEIDEVICE", "FAKEIMEIDEVICE", AutoSilos.QA, Direction.gprs);
         waySmart.set_time(new AutomationCalendar());
         
         String start = "980 N 1050 E, Pleasant Grove, UT 84062";
@@ -91,7 +91,7 @@ public class HanSoloTrip extends Thread{
         driver.addToTrip(stop, start);
         driver.addToTrip(start, mid2);
 
-        DeviceState state = new DeviceState(null, ProductType.WAYSMART_850);
+        DeviceState state = new DeviceState("FAKEIMEIDEVICE", ProductType.WAYSMART_850);
 
 //        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
 //        driver.addEvent(29, AutomationDeviceEvents.speeding(state, null));
