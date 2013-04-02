@@ -129,7 +129,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
         DataOutputStream stream = new DataOutputStream(baos);
         try {
             short baseSize = 23;//NOTE: if fields are added/removed/resized this will need to be updated!
-            short descSize = (short) (this.getDescription().length()*2);
+            short descSize = (short) (this.getDescription().length());
             stream.writeShort(baseSize+descSize); 
             stream.writeInt(this.hazardID);
             stream.write((byte)this.type.getCode()); 
@@ -141,7 +141,7 @@ public class Hazard extends BaseEntity implements HasAccountId {
             stream.writeInt(startTime);
             int endTime = (int) (this.getEndTime().getTime()/1000);
             stream.writeInt(endTime);
-            stream.writeChars(this.getDescription());
+            stream.writeBytes(this.getDescription());
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
