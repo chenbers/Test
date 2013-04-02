@@ -97,6 +97,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
         return filteredList;
     }
 
+    // TODO: SHOULD THIS FILTERING BE HAPPENING HERE?  I believe it is also in the hos code.
     protected List<HOSStatus> getHOSStatusFilterList() {
         List<HOSStatus> statusFilterList = new ArrayList<HOSStatus>();
         statusFilterList.add(HOSStatus.OFF_DUTY);
@@ -109,6 +110,8 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
         statusFilterList.add(HOSStatus.HOS_DERERRAL);
         statusFilterList.add(HOSStatus.HOS_PERSONALTIME);
         statusFilterList.add(HOSStatus.TRAVELTIME_OCCUPANT);
+        statusFilterList.add(HOSStatus.HOS_PROP_CARRY_14HR);
+        statusFilterList.add(HOSStatus.HOS_ALTERNATE_SLEEPING);
         return statusFilterList;
     }
     void initDataSet(Interval interval, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)

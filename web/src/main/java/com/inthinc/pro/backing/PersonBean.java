@@ -1369,7 +1369,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
     
     public List<SelectItem> getDotTypes() {
-        return SelectItemUtil.toList(RuleSetType.class, false, RuleSetType.SLB_INTERNAL);
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        for (RuleSetType ruleSetType : EnumSet.allOf(RuleSetType.class)) {
+           if(ruleSetType != RuleSetType.SLB_INTERNAL && !ruleSetType.isDeprecated() )
+               selectItemList.add(new SelectItem(ruleSetType,MessageUtil.getMessageString(ruleSetType.toString())));
+        }
+        
+        return selectItemList;
+
     }
 
     public void measurementTypeChosenAction(){

@@ -22,6 +22,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
@@ -432,5 +433,11 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     {
         String imei = "";
         return imei;
+    }
+
+    @Override
+    public LatLng getVehicleHomeOfficeLocation(Integer vehicleID) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
