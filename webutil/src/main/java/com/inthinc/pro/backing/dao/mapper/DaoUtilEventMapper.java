@@ -61,7 +61,7 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
     private Class getEventType(Integer proEventType)
     {
         NoteType noteType = NoteType.valueOf(proEventType);
-        if (noteType.getEventClass() == null)
+        if (noteType == null || noteType.getEventClass() == null)
         {
             //logger.error("Unsupported Event Type requested type = [" + proEventType + "] returning Base Event");
             return NoteType.BASE.getEventClass();
