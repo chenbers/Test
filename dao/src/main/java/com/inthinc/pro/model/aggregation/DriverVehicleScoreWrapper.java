@@ -270,6 +270,16 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
 
     @Override
     public int compareTo(DriverVehicleScoreWrapper o) {
-        return this.driver.compareTo(o.getDriver());
+    	//in case of driver is null, the sorting process will throw null pointer exception. Check null bidirectionally.
+		if (o.getDriver() == null) {
+			//after
+			return 1;
+		}
+		if (this.getDriver() == null) {
+			//before
+			return -1;
+		} else {
+			return this.driver.compareTo(o.getDriver());
+		}
     }
 }
