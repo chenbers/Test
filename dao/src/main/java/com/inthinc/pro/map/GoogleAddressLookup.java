@@ -117,6 +117,20 @@ public class GoogleAddressLookup extends AddressLookup {
         return result.getFormattedAddress();
 		
 	}
+	
+	public LatLng lookupLatLngForAddress(String address) throws NoAddressFoundException {
+
+	    GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLanguage(getLanguage()).setAddress(address).getGeocoderRequest();
+        GeocodeResponse geocoderResponse = getGeocoder().geocode(geocoderRequest);
+        if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
+            throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_LAT_LNG_FOUND, address);
+        }
+        GeocoderResult result = geocoderResponse.getResults().get(0);
+        GeocoderGeometry geometry = result.getGeometry(); 
+//        System.out.println("location: " + geometry.getLocation() + " type: " + geometry.getLocationType());
+        return new LatLng(geometry.getLocation().getLat().doubleValue(), geometry.getLocation().getLng().doubleValue());
+	    
+	}
 
 	
 	private GeocodeResponse geocode(LatLng latLng) throws NoAddressFoundException	{

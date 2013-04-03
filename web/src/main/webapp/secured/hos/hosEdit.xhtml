@@ -12,6 +12,8 @@
 
 	<ui:define name="scripts">
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+		<script type="text/javascript" >
+		</script>
 	</ui:define>
 
 	<ui:param name="hosSelected" value="current" />
@@ -110,9 +112,10 @@
 		                              </ui:include>
 		                          </td>
 		                          <td>
+                                    <rich:message for="editHosLog_status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 		                            <h:selectOneMenu value="#{hosBean.item.status}" 
 		                              	id="editHosLog_status" 
-		                                onchange="checkMultiple(this)"
+		                                onchange="checkMultiple(this);"
 		                                converter="SimpleBeanConverter">
 		                              <f:selectItems value="#{hosBean.statuses}"/>
 		                            </h:selectOneMenu>

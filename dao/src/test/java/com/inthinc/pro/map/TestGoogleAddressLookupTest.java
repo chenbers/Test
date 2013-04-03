@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -160,5 +161,43 @@ public class TestGoogleAddressLookupTest {
             e.printStackTrace();
         }
         
+    }
+    @Test
+    public final void getLatLngForAddress() {
+        HashMap<LatLng, String> testData = new HashMap<LatLng, String>();
+
+        testData.put(new LatLng(32.4128, -97.2273),"Alvarado, TX");  
+        testData.put(new LatLng(35.5799, -92.1452),"Greers Ferry, AR");
+        testData.put(new LatLng(53.8875, -119.112),"Grande Cache, AB");
+        testData.put(new LatLng(45.193, -109.248), "602 N Hauser, Red Lodge, MT");
+        String address = null;
+        boolean debugMode = true;
+        try {
+            for (LatLng expectedLatLng : testData.keySet()) {
+                address = testData.get(expectedLatLng);
+                LatLng latLng = gal.lookupLatLngForAddress(address);
+                
+                float miles = GeoUtil.distBetween(expectedLatLng, latLng, MeasurementType.ENGLISH);
+                assertTrue("expected distance to be less than 3 miles for " + address + " ("+ miles + ")", (miles < 2.0));
+
+                if(debugMode) {
+                  System.out.println("address " + testData.get(expectedLatLng) + " expected " + expectedLatLng + ";  returned " + latLng + " distance between: " + miles);
+                  
+                  System.out.println();
+                }
+
+                // if you add to the list above, add this code back in to avoid the too many requests issues with google
+//                try {
+//                    Thread.sleep(3000l);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+                 
+            }
+        } catch (NoAddressFoundException e) {
+            e.printStackTrace();
+            fail("exception thrown for getClosestTownString");
+        }
     }
 }

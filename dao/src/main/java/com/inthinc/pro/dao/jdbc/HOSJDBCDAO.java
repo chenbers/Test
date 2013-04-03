@@ -29,6 +29,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
@@ -1140,4 +1141,55 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return imei;
     }
 
+    
+    
+    // home office location for vehicle is in the actual settings 
+    private final static String FETCH_VEHICLE_HOME_LOCATION = "select settingID, value from actualVSet where settingID in (1048, 1049) and vehicleID=?"; 
+    @Override
+    public LatLng getVehicleHomeOfficeLocation(Integer vehicleID) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        LatLng homeLocation = null;
+        try
+        {
+            conn = getConnection();
+            
+            statement = conn.prepareCall(FETCH_VEHICLE_HOME_LOCATION);
+
+
+            statement.setInt(1, vehicleID);
+            
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) { 
+                Integer settingID = resultSet.getInt(1);
+                if (homeLocation == null) {
+                    homeLocation = new LatLng();
+                }
+                if (settingID == 1048) {
+                    homeLocation.setLat(resultSet.getFloat(2));
+                }
+                else {
+                    homeLocation.setLng(resultSet.getFloat(2));
+                }
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return homeLocation;
+        
+    }
 }

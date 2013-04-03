@@ -4,7 +4,7 @@ import com.google.code.geocoder.model.GeocoderStatus;
 
 public class NoAddressFoundException extends Exception {
 
-	public enum reasons {NO_ADDRESS_FOUND, NO_MAP_KEY, COULD_NOT_REACH_SERVICE, CLIENTSIDE, CLIENTSIDE_UNRECOGNISED_RESULTTYPE, INVALID_LATLNG}
+	public enum reasons {NO_ADDRESS_FOUND, NO_MAP_KEY, COULD_NOT_REACH_SERVICE, CLIENTSIDE, CLIENTSIDE_UNRECOGNISED_RESULTTYPE, INVALID_LATLNG, NO_LAT_LNG_FOUND}
 	/**
 	 * 
 	 */
@@ -12,6 +12,7 @@ public class NoAddressFoundException extends Exception {
 
 	Double lat;
 	Double lng;
+	String address;
 	reasons reason;
 	GeocoderStatus geocoderStatus;
 	
@@ -34,6 +35,13 @@ public class NoAddressFoundException extends Exception {
         this.geocoderStatus = geocoderStatus;
     }
 
+    public NoAddressFoundException(Double lat, Double lng, reasons reason, String address) {
+        super();
+        this.lat = lat;
+        this.lng = lng;
+        this.address = address;
+        this.reason = reason;
+    }
 
 	public GeocoderStatus getGeocoderStatus() {
         return geocoderStatus;
