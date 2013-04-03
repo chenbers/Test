@@ -22,7 +22,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.device.emulation.enums.DeviceEnums.HosRuleSet;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSStatus;
@@ -53,7 +52,6 @@ import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.SelectItemUtil;
 
 public class HosBean extends BaseBean {
     
