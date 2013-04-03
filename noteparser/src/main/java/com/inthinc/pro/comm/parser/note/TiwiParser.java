@@ -34,8 +34,20 @@ public class TiwiParser implements NoteParser{
 			}
 			else if(attrID < 192)
 			{
-				attrVal =  ReadUtil.read(data, offset, 2);
-				offset += 2;
+			    if (attrID == Attrib.DELTAVX.getCode() 
+			       || attrID == Attrib.DELTAVY.getCode() 
+			       || attrID == Attrib.DELTAVZ.getCode()){
+
+			        Attrib attrib = Attrib.get(attrID);
+			        AttribParser parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
+			        offset = parser.parseAttrib(data, offset, attrib.getFieldName(), attribMap);
+			        continue;
+			    }
+			    else
+			    {
+    				attrVal =  ReadUtil.read(data, offset, 2);
+    				offset += 2;
+			    }	
 			}
 			else if(attrID < 255)
 			{

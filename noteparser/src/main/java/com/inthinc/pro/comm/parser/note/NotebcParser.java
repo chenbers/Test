@@ -25,14 +25,17 @@ public class NotebcParser implements NoteParser{
 		
 		HashMap<String, Object> attribMap = new HashMap<String, Object>();
 		parseHeader(data, attribMap);
+        logger.debug("attribMap: " + attribMap);
 		
 		int offset = 32;
 		while ((offset + 2) < data.length)
 		{
 			AttribParser parser = null;
 			int attribCode = ReadUtil.read(data, offset, 2);
-			offset += 2;
+
+//			logger.debug("attribCode: " + attribCode);
 			
+			offset += 2;
 			Attrib attrib = Attrib.get(attribCode);
 
 			

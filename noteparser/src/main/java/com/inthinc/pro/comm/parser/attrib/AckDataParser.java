@@ -67,7 +67,7 @@ public class AckDataParser implements AttribParser {
 	}
 
    public Object parseString(String val){
-       return Integer.parseInt(val);
+       return val.getBytes();
    }
 
 }
