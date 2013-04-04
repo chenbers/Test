@@ -249,6 +249,9 @@ WWUUnm]]>
                     <scmCommentPrefix>[Hudson]</scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <releaseProfiles>qa</releaseProfiles>
+                    <tagNameFormat>{project.version}</tagNameFormat>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
                 </configuration>
             </plugin>
             <plugin>
