@@ -2,11 +2,8 @@ Narrative:
 
 In order to confirm the GET Route endpoint is working correctly, I have these tests
 
-Scenario: Basic Route GET endpoint
-Given I retrieve a standard route
-
-Scenario: Retrieve route with two deliveries and a load activity
-Given I retrieve a route with two deliveries and a load activity
+Scenario: I retrieve a route with two deliveries and a pickup activity
+Given I retrieve a route with two deliveries and a pickup activity
 
 Scenario: Retrieve route with two deliveries, a load, and a preload activity
 Given I retrieve a route with two deliveries, a load, and a preload activity

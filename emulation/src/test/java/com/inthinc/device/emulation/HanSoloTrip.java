@@ -96,7 +96,7 @@ public class HanSoloTrip extends Thread{
 //        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
 //        driver.addEvent(29, AutomationDeviceEvents.speeding(state, null));
         driver.addEvent(30, AutomationDeviceEvents.routeStopArrival(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));
-        driver.addEvent(35, AutomationDeviceEvents.routeStopDeparture(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));;
+        driver.addEvent(35, AutomationDeviceEvents.routeStopDeparture(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));
 
         driver.start();
         
@@ -302,7 +302,7 @@ public class HanSoloTrip extends Thread{
 //        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=AutoSilos.QA; initialTime = 1316471529; vehicleID=7284; accountID=3;//deviceID=3763
         satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=AutoSilos.QA; initialTime = new AutomationCalendar(); vehicleID="dddd"; accountID=3;//deviceID=3763
         
-        trip.routeTestTrip();
+        trip.routeTestTrip();  //run the route test trip method
         
         Log.info(trip);
     }
