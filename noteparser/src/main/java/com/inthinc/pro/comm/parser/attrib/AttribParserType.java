@@ -32,23 +32,17 @@ public enum AttribParserType {
 	STRING_FIXED_LENGTH30(28),	
 	STRING_FIXED_LENGTH32(29),
 	STRING_FIXED_LENGTH36(30),
-	
-	
 	THREE_SHORTS_AS_STRING(35),	
 	FOUR_SHORTS_AS_STRING(36),	
-	
 	DELTAVS_AS_STRING(40),	
-	
 	LATLONG(41),
-	
 	GPS_LOCK_FLAG(42),
 	ODOMETER(43),
-
 	ACKDATA(44),
-	
 	INTEGER_SKIP(45),
 	NOTEFLAGS(46),
-    BYTEARRAY(47);
+    BYTEARRAY(47),
+    DELTAV(48);
 	
 	private static final Map<Integer,AttribParserType> lookup = new HashMap<Integer,AttribParserType>();
 

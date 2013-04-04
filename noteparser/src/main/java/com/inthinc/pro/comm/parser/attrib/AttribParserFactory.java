@@ -22,6 +22,7 @@ public class AttribParserFactory {
 	private static AttribParser GPS_LOCK_FLAG_PARSER = new GpsLockFlagParser();
 	private static AttribParser ACKDATA_PARSER = new AckDataParser();
     private static AttribParser BYTE_ARRAY_PARSER = new ByteArrayParser();
+    private static AttribParser DELTAV_PARSER = new DeltaVParser();
 
 	private static Logger logger = LoggerFactory.getLogger(AttribParserFactory.class.getName());
 	
@@ -115,6 +116,9 @@ public class AttribParserFactory {
         if (parserType.equals(AttribParserType.BYTEARRAY))
             return BYTE_ARRAY_PARSER;
 		
+        if (parserType.equals(AttribParserType.DELTAV))
+            return DELTAV_PARSER;
+
         logger.info("Unrecognized parser type: " + parserType);
         return null;
     }

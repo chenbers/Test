@@ -1,7 +1,6 @@
 package com.inthinc.pro.comm.parser.note;
 
 import com.inthinc.pro.comm.parser.attrib.Attrib;
-
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +49,7 @@ public enum NoteType {
 	TIMESTAMP(42, new Attrib[]{}),
 //	HOS_RECEIVED(43, new Attrib[]{}),
 	LOCATION_DEBUG(44, new Attrib[]{}),
-	CRASH_DATA(45, new Attrib[]{}),
+//	CRASH_DATA(45, new Attrib[]{}),
 	NO_DRIVER(46, new Attrib[]{Attrib.TOPSPEED, Attrib.DISTANCE, Attrib.MAXRPM}),
 	ON_ROAD(47, new Attrib[]{}),
 	OFF_ROAD(48, new Attrib[]{}),
@@ -104,9 +103,9 @@ public enum NoteType {
 	NEWDRIVER_HOSRULE(116, new Attrib[]{Attrib.DRIVERSTR, Attrib.MCMRULESET}),
 	WSZONES_ARRIVAL_EX(117, new Attrib[]{Attrib.ZONEID}),
 	WSZONES_DEPARTURE_EX(118, new Attrib[]{Attrib.ZONEID}),
-//	REQUEST_SPECIFIC_DETAIL_RECORDS(119, new Attrib[]{}),
-//	WITNESSII_STATUS(120, new Attrib[]{}),
-//	WITNESSII_LIST(121, new Attrib[]{}),
+	REQUEST_SPECIFIC_DETAIL_RECORDS(119, new Attrib[]{}),
+	WITNESSII_STATUS(120, new Attrib[]{}),
+	WITNESSII_LIST(121, new Attrib[]{}),
 	QSI_UP_TO_DATE(122, new Attrib[]{Attrib.UPTODATESTATUS}),
 	WITNESS_UP_TO_DATE(123, new Attrib[]{Attrib.UPTODATESTATUS}),
 	TRIAX_UP_TO_DATE(124, new Attrib[]{Attrib.UPTODATESTATUS}),
@@ -126,10 +125,10 @@ public enum NoteType {
 	WITNESSII_ARCHIVED_TRACE_UPLOADED(134, new Attrib[]{}),	
 	BOUNDARYDAT_UP_TO_DATE(136, new Attrib[]{}),
 	PLACES2DAT_UP_TO_DATE(137, new Attrib[]{}),
-//	SBD_RING_NULL(138, new Attrib[]{}),
-//	SBD_RING(139, new Attrib[]{}),
+	SBD_RING_NULL(138, new Attrib[]{}),
+	SBD_RING(139, new Attrib[]{}),
 	IDLE_STATS(140, new Attrib[]{Attrib.DURATION, Attrib.LOWIDLE2, Attrib.HIGHIDLE2}),
-//	WITNESSII_DIAGNOSTIC(141, new Attrib[]{}),
+	WITNESSII_DIAGNOSTIC(141, new Attrib[]{}),
 	AUTOMANDOWN(142, new Attrib[]{}),
 	AUTOMANOK(143, new Attrib[]{}),
 
@@ -181,27 +180,22 @@ public enum NoteType {
 	REMOTE_ON_MANDOWN(187, new Attrib[]{}),
 	REMOTE_AACK_MANDOWN(188, new Attrib[]{}),
 	SBS_UPDATE(189, new Attrib[]{Attrib.SKIPINT, Attrib.FILENAME, Attrib.BASELINEVERSION, Attrib.EXCEPTIONVERSION, Attrib.TIMELASTVISTED, Attrib.TIMELASTCHECKED, Attrib.MAPHASH, Attrib.MAPFILESIZE, Attrib.MINLATITUDE, Attrib.MINLONGITUDE, Attrib.MAXLATITUDE, Attrib.MAXLONGITUDE, Attrib.SBSEXMAPUPDATERESULT, Attrib.SBSDBUPDATERESULT}),
-//	EMU_TARBALL_UP_TO_DATE 190, new Attrib[]{}),
+	EMU_TARBALL_UP_TO_DATE(190, new Attrib[]{}),
 	SPEEDING_EX4(191, new Attrib[]{Attrib.TOPSPEED, Attrib.DISTANCE, Attrib.MAXRPM, Attrib.POSTEDSPEED, Attrib.AVGSPEED, Attrib.AVGRPM, Attrib.LINKID, Attrib.ZONEID, Attrib.SPEEDINGTYPE, Attrib.SEATBELTENGAGED, Attrib.STARTTIME, Attrib.STOPTIME, Attrib.MAXTIME, Attrib.COURSE, Attrib.MAXSPEEDLIMIT, Attrib.SBSSPEEDLIMIT, Attrib.ZONESPEEDLIMIT,
 			Attrib.WEATHERSPEEDLIMITPERCENT, Attrib.SEVERESPEEDTHRESHOLD, Attrib.SPEEDINGBUFFER, Attrib.SPEEDINGGRACEPERIOD, Attrib.SEVERESPEEDSECONDS, Attrib.SPEEDMODULEENABLED, Attrib.SPEEDSOURCE}),      
 				//, Attrib.SPEEDDATAHIRES, Attrib.OBDCONFIDENCEPERCENT, Attrib.GPSCONFIDENCEPERCENT, Attrib.OBDSPEED, Attrib.GPSSPEED, Attrib.FILTEREDSPEED,
 				//Attrib.GPSDISTANCE, Attrib.OBDDISTANCE, Attrib.LATLONGDIST, Attrib.VERSIONBASELINE1, Attrib.VERSIONBASELINE2, Attrib.VERSIONBASELINE3, Attrib.VERSIONBASELINE4, Attrib.VERSIONEXCEPTION1, Attrib.VERSIONEXCEPTION2, Attrib.VERSIONEXCEPTION3, Attrib.VERSIONEXCEPTION4}),
 	
-//	SPEEDING_LOG4(192, new Attrib[]{}),
+	SPEEDING_LOG4(192, new Attrib[]{}),
 
-//	SNITCH_DIAGNOSTICS(200, new Attrib[]{}),
+	SNITCH_DIAGNOSTICS(200, new Attrib[]{}),
 	UNPLUGGED(202, new Attrib[]{}),
+	SEATBELT_START(203, new Attrib[]{}),
 	IDLING(208, new Attrib[]{}),
 	CRASH(209, new Attrib[]{}),
 	SPEED_COACHING(210, new Attrib[]{}),
     CHECK_HOURS_EX(215, new Attrib[]{}),
     GET_VSETTINGS(218, new Attrib[]{}),
-    
-    //DVIR
-    DVIR_DRIVEN_UNSAFE(223, new Attrib[]{}),
-    DVIR_DRIVEN_NOPREINSPEC(224, new Attrib[]{}),
-    DVIR_DRIVEN_NOPOSTINSPEC(225, new Attrib[]{}),
-    
     CREATE_ROAD_HAZARD(226, new Attrib[]{}),
     RHA_CONFIRM_REJECT(227, new Attrib[]{}),
     SEND_ROAD_HAZARDS(228, new Attrib[]{}),

@@ -43,6 +43,7 @@ public enum Attrib {
 	POSTEDSPEED(3, AttribParserType.BYTE, "speedLimit"),
 	AVGRPM(4, AttribParserType.BYTE, "avgRPM"),
 	BASELINEVERSION(63, AttribParserType.BYTE),
+	SEATBELTCLICKS(79, AttribParserType.BYTE),	
 	BOOTLOADERREV(8193, AttribParserType.BYTE),
 	BRAKECOLLECTED(8194, AttribParserType.BYTE),
 	CALVERSION(8195, AttribParserType.BYTE),
@@ -139,9 +140,8 @@ public enum Attrib {
 	INSPECTIONTYPE(8291, AttribParserType.BYTE),
 	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
     RHA_TYPE(8293, AttribParserType.BYTE),
-    ROUTE_STOP_TYPE(8299, AttribParserType.BYTE),
-	
-	
+    ROUTE_STOP_TYPE(8299, AttribParserType.BYTE, "routestoptype"),//(0=new, 1=started, 2=completed, 3=abandoned, 4=workdayStart, 5=workdayEnd)
+        	
 	// SHORT 
 	ACCELERATION(16384, AttribParserType.SHORT),
 	ACKNOWLEDGEDCOMMANDID(16385, AttribParserType.SHORT),
@@ -151,9 +151,9 @@ public enum Attrib {
 	COURSE(140, AttribParserType.SHORT),
 	CPUPERCENTAGE(16388, AttribParserType.SHORT),
 	DATALENGTH(16389, AttribParserType.SHORT),
-	DELTAVX(131, AttribParserType.SHORT, "deltaX"),
-	DELTAVY(132, AttribParserType.SHORT, "deltaY"),
-	DELTAVZ(133, AttribParserType.SHORT, "deltaZ"),
+	DELTAVX(131, AttribParserType.DELTAV, "deltaX"),
+	DELTAVY(132, AttribParserType.DELTAV, "deltaY"),
+	DELTAVZ(133, AttribParserType.DELTAV, "deltaZ"),
 	DIGITALINPUTSTATUS(16390, AttribParserType.SHORT),
 	DIGITALOUTPUTSTATUS(16391, AttribParserType.SHORT),
 	DISTANCE(129, AttribParserType.SHORT, "distance"),
@@ -282,7 +282,8 @@ public enum Attrib {
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
-	ROUTESTOPID(32860, AttribParserType.INTEGER),
+	ROUTESTOPID(32860, AttribParserType.INTEGER, "routestopid"),
+	ATTR_ROUTE_ID(32862, AttribParserType.INTEGER, "routeid"),
 	
 	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
 	SEATBELTOUTDISTANCE(16437, AttribParserType.SHORT), //(distance miles x 100)
@@ -334,7 +335,7 @@ public enum Attrib {
 	NUMERATOR(49158, AttribParserType.THREE_SHORTS_AS_STRING),
 	ORIENTATION(49159, AttribParserType.THREE_SHORTS_AS_STRING),
 //	SENSORAGREEMENT(49160, AttribParserType.BYTE),
-	SPEEDDATAHIRES(49161, AttribParserType.BYTE),
+	SPEEDDATAHIRES(49161, AttribParserType.BYTEARRAY),
 	TEMPCOMPDATA(49162, AttribParserType.THREE_SHORTS_AS_STRING),
 	TEMPCOMPSAMPLEMAX(49163, AttribParserType.FOUR_SHORTS_AS_STRING),
 	TEMPCOMPSAMPLEMIN(49163, AttribParserType.FOUR_SHORTS_AS_STRING),
