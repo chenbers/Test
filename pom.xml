@@ -246,7 +246,7 @@ WWUUnm]]>
                 <version>2.4.1</version>
                 <inherited>true</inherited>
                 <configuration>
-                    <scmCommentPrefix>[Hudson]</scmCommentPrefix>
+                    <scmCommentPrefix>[Maven]</scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <releaseProfiles>qa</releaseProfiles>
                     <tagNameFormat>${project.version}</tagNameFormat>
