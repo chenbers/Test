@@ -224,7 +224,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	}
 	@Override
 	public String getAddress(LatLng latLng) {
-		return getAddressLookup().getAddressOrLatLng(latLng);
+		return getAddressLookup().getAddressOrZoneOrLatLng(latLng, getProUser().getZones());
 	}
 	
 	protected List<EventReportItem> populateAddresses(List<EventReportItem> events) {

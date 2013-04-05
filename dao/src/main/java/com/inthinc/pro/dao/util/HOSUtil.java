@@ -83,6 +83,24 @@ public class HOSUtil {
 
     }
     
+    public static HOSRec mapHOSRecord(HOSRecord hosRecord, long totalRealMinutes, Date endDate, Boolean isDriverDOT) {
+        HOSRec hosRec = new HOSRec((hosRecord.getHosLogID() == null) ? "" : hosRecord.getHosLogID().toString(), 
+                hosRecord.getStatus(), 
+                totalRealMinutes,
+                hosRecord.getLogTime(), 
+                hosRecord.getTimeZone(),
+                hosRecord.getDriverDotType(),
+                hosRecord.getVehicleName(),
+                (hosRecord.getSingleDriver() == null) ? false : hosRecord.getSingleDriver(),
+                (hosRecord.getVehicleIsDOT() == null) ? false : hosRecord.getVehicleIsDOT() && !isDriverDOT);
+        hosRec.setEndTimeDate(endDate);
+        hosRec.setVehicleInternalID(hosRecord.getVehicleID());
+        hosRec.setLat(hosRecord.getLat() == null || hosRecord.getLat() == 0f ? null : new Double(hosRecord.getLat()));
+        hosRec.setLng(hosRecord.getLng() == null || hosRecord.getLng() == 0f ? null : new Double(hosRecord.getLng()));
+        return hosRec;
+        
+    }
+    
     
     public static List<HOSRec> getRecListFromLogList(List<HOSRecord> hosRecList, Date endDate, boolean isDriverDOT)
     {
@@ -93,17 +111,7 @@ public class HOSUtil {
             if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()))
                 continue;
             long totalRealMinutes = DateUtil.deltaMinutes(hosRecord.getLogTime(), endDate);
-            HOSRec hosRec = new HOSRec(hosRecord.getHosLogID().toString(), 
-                    hosRecord.getStatus(), 
-                    totalRealMinutes,
-                    hosRecord.getLogTime(), 
-                    hosRecord.getTimeZone(),
-                    hosRecord.getDriverDotType(),
-                    hosRecord.getVehicleName(),
-                    (hosRecord.getSingleDriver() == null) ? false : hosRecord.getSingleDriver(),
-                    (hosRecord.getVehicleIsDOT() == null) ? false : hosRecord.getVehicleIsDOT() && !isDriverDOT);
-            hosRec.setEndTimeDate(endDate);
-            hosRec.setVehicleInternalID(hosRecord.getVehicleID());
+            HOSRec hosRec = HOSUtil.mapHOSRecord(hosRecord, totalRealMinutes, endDate, isDriverDOT); 
             endDate = hosRecord.getLogTime();
             
             recList.add(hosRec);

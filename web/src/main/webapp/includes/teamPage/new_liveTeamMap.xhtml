@@ -9,16 +9,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
-	
-        
-    <a4j:loadScript id="googleURL" src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 
 	<script type="text/javascript">
 	//<![CDATA[
 
 	
 	function onCompleteLiveTeam(){
-		
 		Team.disableTimeFrame("#timeFrameForm\\:timeFrameToday");
 		Team.disableTimeFrame("#timeFrameForm\\:timeFrameOneDay");
 		Team.disableTimeFrame("#timeFrameForm\\:timeFrameTwoDay");
@@ -34,7 +30,7 @@
 	//]]>
  </script>
 
-	<rich:tab id="teamLive" oncomplete="Team.tabChange();" ontableave="GUnload();" reRender="headerForm:contextSensitiveHelp">
+	<rich:tab id="teamLive" oncomplete="Team.tabChange();" reRender="headerForm:contextSensitiveHelp">
 		<f:setPropertyActionListener value="teamLive" target="#{helpBean.subID}" />
 		<f:facet name="label">
 	 		<h:panelGroup>

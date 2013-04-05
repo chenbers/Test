@@ -32,12 +32,12 @@
     border-style: none;
 }
 </style>
-        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
         <script type="text/javascript" title="inthinc.maps">
         var lengthUnitText = '<h:outputText value="miles" converter="MeasurementTextConverter"></h:outputText>';
         //<![CDATA[
         jQuery.noConflict();
-        var map;
+        var map = null;
         
         /* CreateMarker(google.maps.LatLng, divID, image or null)
          *  
@@ -128,11 +128,6 @@
         var bounds = new google.maps.LatLngBounds();
         var numberOfWaypoints = 0;
         var units = google.maps.UnitSystem.IMPERIAL;
-        var mapOptions = {
-                zoom : 3,
-                center : new google.maps.LatLng(40, -111),
-                mapTypeId : google.maps.MapTypeId.ROADMAP
-            };
         var marker;
         var hazard;
         var markerCircle;
@@ -143,7 +138,13 @@
             var destination_textbox = jQuery('#destination');
             var getDir_btn = jQuery('#submit').attr('disabled', true);
             
-            map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+			if (map == null) {
+				map = inthincMap.init();
+				initLayers(map, "listRTH-layerControl");
+				inthincMap.center(map, 40, -111);
+				inthincMap.zoom(map, 3);
+			}
+
             
             directionsDisplay = new google.maps.DirectionsRenderer({
                 'map' : map,
@@ -360,7 +361,7 @@
 
                             <div class="panel_w">
                                 <div class="panel_content">
-                                    <div id="map_canvas" style="float: left; width: 100%; height: 330px"></div>
+                                    <div id="map-canvas" style="float: left; width: 100%; height: 330px"></div>
                                     <div style="float: right; width: 100%; overflow: auto">
                                         <button id="undo" style="display: block; margin: auto" onclick="undo()">#{messages.hazard_undo}</button>
                                         <div id="to_from" style="float: left; width: 49%;">
@@ -496,7 +497,7 @@
 
             <div class="popupactions">
                 <a4j:commandButton id="hazardTableNo" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('hazardLocationModal')" styleClass="left">
-                    <span class="edit"> <h:outputText value="#{messages.button_close}" />
+                    <span class="cancel"> <h:outputText value="#{messages.button_close}" />
                     </span>
                 </a4j:commandButton>
             </div>

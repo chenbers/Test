@@ -16,4 +16,7 @@ public class LongParser implements AttribParser {
 		
 	}
 
+	public Object parseString(String val){
+       return Long.parseLong(val);
+   }
 }

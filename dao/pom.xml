@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
 		<artifactId>root</artifactId>
-		<version>2.0.31-SNAPSHOT</version>
+		<version>2.0.31</version>
 	</parent>
 
 	<groupId>com.inthinc.pro.dao</groupId>
@@ -125,10 +125,10 @@
 			<artifactId>asm-all</artifactId>
 			<version>3.1</version>
 		</dependency>
-		<dependency>
-			<groupId>vividsolutions</groupId>
-			<artifactId>jts</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
@@ -167,6 +167,12 @@
 			<version>2.5</version>
 			<type>jar</type>
 		</dependency>
+		
+		<dependency>
+    		<groupId>com.google.code.geocoder-java</groupId>
+    		<artifactId>geocoder-java</artifactId>
+    		<version>0.12</version>
+  		</dependency>
 
 		<!-- adding for note gen -->
 		<dependency>

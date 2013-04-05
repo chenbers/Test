@@ -3,6 +3,9 @@ package com.inthinc.pro.comm.parser.attrib;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import com.inthinc.pro.comm.parser.util.ReadUtil;
 
 
 public enum Attrib {
@@ -40,6 +43,7 @@ public enum Attrib {
 	POSTEDSPEED(3, AttribParserType.BYTE, "speedLimit"),
 	AVGRPM(4, AttribParserType.BYTE, "avgRPM"),
 	BASELINEVERSION(63, AttribParserType.BYTE),
+	SEATBELTCLICKS(79, AttribParserType.BYTE),	
 	BOOTLOADERREV(8193, AttribParserType.BYTE),
 	BRAKECOLLECTED(8194, AttribParserType.BYTE),
 	CALVERSION(8195, AttribParserType.BYTE),
@@ -136,21 +140,20 @@ public enum Attrib {
 	INSPECTIONTYPE(8291, AttribParserType.BYTE),
 	VEHICLESAFETOOPERATE(8292, AttribParserType.BYTE),
     RHA_TYPE(8293, AttribParserType.BYTE),
-	
-	
-	
+    ROUTE_STOP_TYPE(8299, AttribParserType.BYTE, "routestoptype"),//(0=new, 1=started, 2=completed, 3=abandoned, 4=workdayStart, 5=workdayEnd)
+        	
 	// SHORT 
 	ACCELERATION(16384, AttribParserType.SHORT),
 	ACKNOWLEDGEDCOMMANDID(16385, AttribParserType.SHORT),
 	BELOWTHRESHOLDFULLEVENTCOUNT(16386, AttribParserType.SHORT),
-	BOUNDARYID(148, AttribParserType.SHORT),
+	BOUNDARYID(148, AttribParserType.SHORT, "boundaryID"),
 	CONFIRMEDNOTEEVENTCOUNT(16387, AttribParserType.SHORT),
 	COURSE(140, AttribParserType.SHORT),
 	CPUPERCENTAGE(16388, AttribParserType.SHORT),
 	DATALENGTH(16389, AttribParserType.SHORT),
-	DELTAVX(131, AttribParserType.SHORT, "deltaX"),
-	DELTAVY(132, AttribParserType.SHORT, "deltaY"),
-	DELTAVZ(133, AttribParserType.SHORT, "deltaZ"),
+	DELTAVX(131, AttribParserType.DELTAV, "deltaX"),
+	DELTAVY(132, AttribParserType.DELTAV, "deltaY"),
+	DELTAVZ(133, AttribParserType.DELTAV, "deltaZ"),
 	DIGITALINPUTSTATUS(16390, AttribParserType.SHORT),
 	DIGITALOUTPUTSTATUS(16391, AttribParserType.SHORT),
 	DISTANCE(129, AttribParserType.SHORT, "distance"),
@@ -233,7 +236,7 @@ public enum Attrib {
 	FILESIZES(32791, AttribParserType.INTEGER),
 	FLAGS(32792, AttribParserType.INTEGER),
 	HIGHIDLE(220, AttribParserType.INTEGER, "HIGH_IDLE"),
-	LINKID(231, AttribParserType.INTEGER),
+	LINKID(231, AttribParserType.INTEGER, "linkID"),
 	LOOPS(32794, AttribParserType.INTEGER),
 	LOWIDLE(219, AttribParserType.INTEGER, "LOW_IDLE"),
 	MAPFILESIZE(32795, AttribParserType.INTEGER),
@@ -279,6 +282,8 @@ public enum Attrib {
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
+	ROUTESTOPID(32860, AttribParserType.INTEGER, "routestopid"),
+	ATTR_ROUTE_ID(32862, AttribParserType.INTEGER, "routeid"),
 	
 	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
 	SEATBELTOUTDISTANCE(16437, AttribParserType.SHORT), //(distance miles x 100)
@@ -330,7 +335,7 @@ public enum Attrib {
 	NUMERATOR(49158, AttribParserType.THREE_SHORTS_AS_STRING),
 	ORIENTATION(49159, AttribParserType.THREE_SHORTS_AS_STRING),
 //	SENSORAGREEMENT(49160, AttribParserType.BYTE),
-	SPEEDDATAHIRES(49161, AttribParserType.BYTE),
+	SPEEDDATAHIRES(49161, AttribParserType.BYTEARRAY),
 	TEMPCOMPDATA(49162, AttribParserType.THREE_SHORTS_AS_STRING),
 	TEMPCOMPSAMPLEMAX(49163, AttribParserType.FOUR_SHORTS_AS_STRING),
 	TEMPCOMPSAMPLEMIN(49163, AttribParserType.FOUR_SHORTS_AS_STRING),
@@ -343,10 +348,13 @@ public enum Attrib {
     CRASHDATA(49170, AttribParserType.BYTEARRAY);
 	
 	private static final Map<Integer,Attrib> lookup = new HashMap<Integer,Attrib>();
+    private static final Map<String,Attrib> lookupName = new HashMap<String,Attrib>();
 
 	static {
-	     for(Attrib a : EnumSet.allOf(Attrib.class))
+	     for(Attrib a : EnumSet.allOf(Attrib.class)) {
 	          lookup.put(a.getCode(), a);
+              lookupName.put(a.getFieldName(), a);
+	     }
 	}
 
 	private int code;
@@ -379,8 +387,88 @@ public enum Attrib {
 	public static Attrib get(int code) { 
 	     return lookup.get(code); 
 	}
+
+    public static Attrib getForName(String name) { 
+         return lookupName.get(name); 
+    }
+    
 	public AttribParserType getAttribParserType()
 	{
 		return attribParserType;
 	}
+	
+    /**
+     * Converts a HashMap.toString() back to a HashMap
+     * @param text
+     * @return HashMap<String, String>
+     */
+	public static Map<String,Object> convertToHashMap(String text){
+        Map<String,Object> map = new HashMap<String,Object>();
+        Pattern p = Pattern.compile("[\\{\\}\\=\\, ]++");
+        String[] split = p.split(text);
+        String strCode = "";
+        String strVal = "";
+        Object val = null;
+        for ( int i=1; i+2 <= split.length; i+=2 ){
+            strCode = split[i];
+            strVal = split[i+1];
+
+            val = Attrib.parseStringValue(strCode, strVal);
+            map.put(strCode,  val);
+
+        }
+
+        return map;
+    }
+
+	public static Object parseStringValue(String attribName, String strVal) {
+    	Object val = null;
+        AttribParser parser = null;
+    	Attrib attrib = getForName(attribName);
+        if (attrib == null) {
+            int code = 0;
+            try {
+                code = Integer.parseInt(attribName);
+            } catch (NumberFormatException e)
+            {}
+            if (code != 0)    
+                parser = getAttribParser(code);
+        }    
+        else
+            parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
+    
+        if (parser != null) {
+            val = parser.parseString(strVal);
+        }
+        return val;
+	}
+        
+    public static AttribParser getAttribParser(int code)
+    {
+        AttribParser attribParser = null;
+
+        if (code <= 127)                     
+            attribParser = new ByteParser();
+        
+        if (code >= 128 && 191 >= code) 
+            attribParser = new ShortParser();
+        
+        if (code >= 192 && 254 >= code) 
+            attribParser = new IntegerParser();
+        
+        if (code >= 8000 && code < 9000)
+            attribParser = new ByteParser();
+        
+        if (code >= 16000 && code < 17000)
+            attribParser = new ShortParser();
+        
+        if (code >= 32000 && code < 33000)
+            attribParser = new IntegerParser();
+
+        if (code >= 40960 && code < 40964)
+            attribParser = new DoubleParser();
+        
+        return attribParser;
+    }
+
 };

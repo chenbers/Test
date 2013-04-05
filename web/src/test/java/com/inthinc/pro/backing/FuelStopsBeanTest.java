@@ -60,7 +60,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         
          locateVehicleByTime =(LocateVehicleByTime)applicationContext.getBean("locateVehicleByTime");
          googleAddressLookupBean = new GoogleAddressLookup();
-         googleAddressLookupBean.setGoogleMapGeoUrl("https://maps-api-ssl.google.com/maps/geo?client=gme-inthinc&sensor=false&q=");
+
          locateVehicleByTime.setGoogleAddressLookupBean(googleAddressLookupBean);
     }
     @After
@@ -378,7 +378,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         UIInput truckGallonsUI = new HtmlInputText();
         UIInput trailerGallonsUI = new HtmlInputText();
         truckGallonsUI.setValue(null);
-        trailerGallonsUI.setValue(new Float(-0.0f));
+        trailerGallonsUI.setValue(new Float(-1.0f));
         fuelStopsBean.setTruckGallonsUI(truckGallonsUI);
         fuelStopsBean.setTrailerGallonsUI(trailerGallonsUI);
         item.setTrailerID("trailer");

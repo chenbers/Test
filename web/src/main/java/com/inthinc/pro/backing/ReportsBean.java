@@ -79,12 +79,23 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             case HOS_DAILY_DRIVER_LOG_REPORT:
                 if (params.getParamType() == ReportParamType.DRIVER )
-                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), 
-                        params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC ));
+                    reportCriteriaList.addAll(getReportCriteriaService()
+                    							.getHosDailyDriverLogReportCriteria(
+                    									getAccountGroupHierarchy(), 
+                    									params.getDriverID(), 
+                    									params.getDateRange().getInterval(), 
+                    									params.getLocale(), 
+                    									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
+                    									params.isIncludeInactiveDrivers()));
                 else
-                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(),  
-                            params.getGroupIDList(), 
-                            params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
+                    reportCriteriaList.addAll(getReportCriteriaService()
+                    							.getHosDailyDriverLogReportCriteria(
+                    									getAccountGroupHierarchy(),  
+                    									params.getGroupIDList(), 
+                    									params.getDateRange().getInterval(), 
+                    									params.getLocale(), 
+                    									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
+                    									params.isIncludeInactiveDrivers()));
                 break;
             case HOS_VIOLATIONS_SUMMARY_REPORT:
                 reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 

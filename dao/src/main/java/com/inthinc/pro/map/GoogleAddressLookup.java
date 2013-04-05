@@ -1,314 +1,155 @@
 package com.inthinc.pro.map;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.math.BigDecimal;
+import java.security.InvalidKeyException;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.XMLEvent;
-
+import com.google.code.geocoder.Geocoder;
+import com.google.code.geocoder.GeocoderRequestBuilder;
+import com.google.code.geocoder.model.GeocodeResponse;
+import com.google.code.geocoder.model.GeocoderAddressComponent;
+import com.google.code.geocoder.model.GeocoderGeometry;
+import com.google.code.geocoder.model.GeocoderRequest;
+import com.google.code.geocoder.model.GeocoderResult;
+import com.google.code.geocoder.model.GeocoderResultType;
+import com.google.code.geocoder.model.GeocoderStatus;
 import com.inthinc.pro.dao.util.GeoUtil;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
 
 public class GoogleAddressLookup extends AddressLookup {
+    
+    private static String CLIENT_ID = "gme-inthinc";
+    private static String CLIENT_KEY ="75DvrHN4--GCuiYpLF3JifZGIx4=";
 	
-    private String googleMapGeoUrl;
     private MeasurementType measurementType = MeasurementType.ENGLISH;
-    private boolean debugMode = false;
+    private boolean debugMode = true;
 	
 	private LatLng latLng;
-	private enum ResultType {
-        ADDRESS, CLOSEST_TOWN;
-    }
 	
 	public GoogleAddressLookup() {
 		super();
 		setAddressFormat(AddressLookup.AddressFormat.ADDRESS);
 	}
 
+    protected Geocoder getGeocoder() throws NoAddressFoundException {
+        Geocoder geocoder;
+        try {
+            geocoder = new Geocoder(CLIENT_ID, CLIENT_KEY);
+        } catch (InvalidKeyException e) {
+            throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_MAP_KEY);
+        }
+        
+        return geocoder;
+    }
+
 	public String getClosestTownString(LatLng latLng, MeasurementType measurementType) throws NoAddressFoundException {
 	    return getClosestTownString(latLng, measurementType, false);
 	}
+	
     public String getClosestTownString(LatLng latLng, MeasurementType measurementType, boolean debugMode) throws NoAddressFoundException {
         if(latLng != null){
             this.debugMode = debugMode;
             setMeasurementType(measurementType);
             this.latLng = latLng;
-    
-            StringBuilder request = new StringBuilder(googleMapGeoUrl).append(String.format("%f", latLng.getLat())).append(",").append(String.format("%f", latLng.getLng())).append("&output=xml");
-            if(this.debugMode)
-                System.out.println("request: "+request);
-            String address = null;
-            try {
-                address = sendRequest(new URL(request.toString()), ResultType.CLOSEST_TOWN);
-                if ((address == null) || address.isEmpty()) {
-                    throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
+            
+            GeocodeResponse geocoderResponse = geocode(latLng);
+            Placemark placemark = new Placemark();
+            boolean gotPlacemarkInfo = false;
+            for (GeocoderResult result : geocoderResponse.getResults()) {
+                placemark.setAddress(result.getFormattedAddress());
+                for (GeocoderAddressComponent component : result.getAddressComponents()) {
+                    for (String type : component.getTypes()) {
+                        try {
+                            GeocoderResultType componentType = GeocoderResultType.fromValue(type);
+                            if (componentType == GeocoderResultType.LOCALITY) {
+                                placemark.setLocality(component.getLongName());
+                            }
+                            else if (componentType == GeocoderResultType.ADMINISTRATIVE_AREA_LEVEL_1) {
+                                placemark.setState(component.getShortName());
+                            }
+                        } 
+                        catch (IllegalArgumentException ex) {
+                            // continue -- just a type the library doesn't know about
+                        }
+                    }
+                    gotPlacemarkInfo =  (placemark.getLocality() != null && placemark.getState() != null);
+                    if (gotPlacemarkInfo) {
+                        break;
+                    }
                 }
-            } catch (MalformedURLException murle) {
-                throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
+                
+                if (gotPlacemarkInfo) {
+                    break;
+                }
+                
             }
-            return address;
+            
+            if (gotPlacemarkInfo) {
+                // The location (lat, lng) in the original request is for the county not the city, so looking up the city to gauge the distance and heading)
+                Geocoder geocoder = getGeocoder();
+                GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(placemark.getCityState()).getGeocoderRequest();
+                geocoderResponse = geocoder.geocode(geocoderRequest);
+                if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
+                    return placemark.getDescription();
+                }
+                GeocoderResult result = geocoderResponse.getResults().get(0);
+                GeocoderGeometry geometry = result.getGeometry();
+                placemark.setLatLng(new LatLng(geometry.getLocation().getLat().doubleValue(), geometry.getLocation().getLng().doubleValue() ));
+                placemark.setDistanceFromTarget(placemark.getDistanceFromTarget(this.latLng, measurementType));
+                placemark.setHeadingToTarget(GeoUtil.headingBetween(placemark.getLatLng(), this.latLng));
+            }
+            
+            if(this.debugMode) {
+                double plat = (placemark == null || placemark.getLatLng() == null) ? 0.0d : placemark.getLatLng().getLat();
+                double plng = (placemark == null || placemark.getLatLng() == null) ? 0.0d : placemark.getLatLng().getLng();
+                System.out.println("http://maps.google.com/maps?f=d&source=s_d&saddr="+this.getLatLng().getLat()+","+this.getLatLng().getLng()+"&daddr="+plat+","+plng+"&geocode=&hl=en&mra=ls&vps=4&ie=UTF8");
+            }
+            return placemark.getDescription();
         }
         throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.CLIENTSIDE);
     }
 
 	@Override
-	public String getAddress(LatLng latLng)
-			throws NoAddressFoundException {
-    	if (!isValidLatLngRange(latLng)){
-        	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.INVALID_LATLNG);
-    	}
-		
-		this.latLng = latLng;
-		StringBuilder request = new StringBuilder(googleMapGeoUrl)
-		    .append(String.format("%f", latLng.getLat()))
-		    .append(",")
-		    .append(String.format("%f", latLng.getLng()))
-		    .append("&output=xml");
-		if (getLocale() != null && getLocale().getLanguage() != null)
-		    request.append("&hl=" + getLocale().getLanguage());
-		
-		String address = null;
-		try{
-			address = sendRequest(new URL(request.toString()), ResultType.ADDRESS);
-			if ((address == null) || address.isEmpty()) {
-				
-            	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
-			}
-		}
-		catch(MalformedURLException murle){
-			
-    	   throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
-		}
-		return address;
+	public String getAddress(LatLng latLng) throws NoAddressFoundException {
+    	GeocodeResponse geocoderResponse = geocode(latLng);
+        GeocoderResult result = geocoderResponse.getResults().get(0);
+        return result.getFormattedAddress();
 		
 	}
+	
+	public LatLng lookupLatLngForAddress(String address) throws NoAddressFoundException {
 
-	protected String sendRequst(URL mapServerURL) throws NoAddressFoundException {
-	    return sendRequest(mapServerURL, ResultType.ADDRESS);
+	    GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLanguage(getLanguage()).setAddress(address).getGeocoderRequest();
+        GeocodeResponse geocoderResponse = getGeocoder().geocode(geocoderRequest);
+        if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
+            throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.NO_LAT_LNG_FOUND, address);
+        }
+        GeocoderResult result = geocoderResponse.getResults().get(0);
+        GeocoderGeometry geometry = result.getGeometry(); 
+//        System.out.println("location: " + geometry.getLocation() + " type: " + geometry.getLocationType());
+        return new LatLng(geometry.getLocation().getLat().doubleValue(), geometry.getLocation().getLng().doubleValue());
+	    
 	}
-    protected String sendRequest(URL mapServerURL, ResultType resultType) throws NoAddressFoundException
-    {
-        URLConnection conn;
-        HttpURLConnection httpConn = null;
-        try
-        {
-            conn = mapServerURL.openConnection();
-            if (conn instanceof HttpURLConnection)
-            {
-                httpConn = (HttpURLConnection) conn;
-	            String status = httpConn.getResponseMessage();
-	            if (status.equals("OK"))
-	            {
-	                switch (resultType) {
-	                    case ADDRESS:      return parseAddress(httpConn.getInputStream());
-	                    case CLOSEST_TOWN: return describeBestPlacemark(getPlacemarks(httpConn.getInputStream()));
-	                    default: throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.CLIENTSIDE_UNRECOGNISED_RESULTTYPE);
-	                }
-	            }
-	            else {	
-	            	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
-	            }
-	        }
-        }
-        catch (IOException e)
-        {
-        	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);       
-        }
-        finally
-        {
-            if (httpConn != null)
-            {
-                httpConn.disconnect();
-                httpConn = null;
-            }
-        }
-        return null;
-    }
-    private String parseAddress(InputStream is)
-    {
-        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader reader = null;
-        String text="";
-        try
-        {
-            reader = inputFactory.createXMLStreamReader(is);
-            while (reader.hasNext())
-            {
-                int event = reader.next();
-                if (event == XMLStreamConstants.START_ELEMENT)
-                {
-                    String name = reader.getLocalName();
-                    if (name == null)
-                        continue;
-                    if (reader.hasNext())
-                    {
-                        event = reader.next();
-                        if (event == XMLStreamConstants.CHARACTERS)
-                        {
-                            String nextText = reader.getText();
-                            if (name.equalsIgnoreCase("address")){
-                                text = nextText;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch (XMLStreamException e)
-        {
-            return "";
-        }
-        finally
-        {
-            try
-            {
-                if (reader != null)
-                {
-                    reader.close();
-                    reader = null;
-                }
-            }
-            catch (XMLStreamException e)
-            {
-                reader = null;
-            }
-        }
-        return text;
-    }
 
-
-    public String getGoogleMapGeoUrl() {
-        return googleMapGeoUrl;
-    }
-
-
-    public void setGoogleMapGeoUrl(String googleMapGeoUrl) {
-        this.googleMapGeoUrl = googleMapGeoUrl;
-    }
-
-    private ArrayList<Placemark> getPlacemarks(InputStream is) { 
-        ArrayList<Placemark> results = new ArrayList<Placemark>();
-        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader reader = null;
-        try {
-            reader = inputFactory.createXMLStreamReader(is);
-            Placemark placemark = new Placemark();
-            int event;
-            HashMap<String, String> attributes = new HashMap<String, String>();
-            String name = "NOT YET SET";
-            while (reader.hasNext()) {
-                event = reader.next();
-
-                if (event == XMLStreamConstants.END_ELEMENT) {
-
-                    name = reader.getLocalName();
-                    if (name.equalsIgnoreCase("Placemark")) {
-                        placemark.setDistanceFromTarget(placemark.getDistanceFromTarget(this.latLng, measurementType));
-                        placemark.setHeadingToTarget(GeoUtil.headingBetween(this.latLng, placemark.getLatLng()));
-                        results.add(placemark);
-                    }
-                }
-                if (event == XMLStreamConstants.START_ELEMENT) {
-                    name = reader.getLocalName();
-                    attributes.putAll(getAttributes(reader));
-                }
-                if (name == null) {
-                    continue;
-                }
-
-                if (event == XMLStreamConstants.CHARACTERS) {
-                    String nextText = reader.getText(); 
-                    if ("placemark".equalsIgnoreCase(name)) {
-                        placemark = new Placemark(attributes.get("id"));
-                    } else if ("AddressDetails".equalsIgnoreCase(name)) {
-                        if (attributes != null) {
-                            placemark.setAccuracy(Integer.parseInt(attributes.get("Accuracy")));
-                        } else {
-                            //not finding accuracy is a problem, but because there are typicaly multiple results we don't want to Throw an exception
-                            //System.out.println("there was a problem... accuracy was not found on ONE of the placemarks?");
-                        }
-                    } else if ("address".equalsIgnoreCase(name)) {
-                        if(placemark.getAddress() == null)//TODO: catching weird artifacts on address, looks like it's because of the newline?
-                            placemark.setAddress(nextText);
-                    } else if ("LocalityName".equalsIgnoreCase(name)) {
-                        placemark.setLocality(nextText);
-                    } else if ("coordinates".equalsIgnoreCase(name)) {
-                        String[] latlngValues = nextText.split(",");
-                        placemark.setLatLng(new LatLng(Double.parseDouble(latlngValues[1]), Double.parseDouble(latlngValues[0])));
-                    } else if ("AdministrativeAreaName".equalsIgnoreCase(name)) {
-                        placemark.setState(nextText);
-                    } else {
-                        //System.out.println("currently ignoring XML (1): " + name + " : " + nextText);
-                    }
-                } else {
-                    //System.out.println("currently ignoring XML (2): " + name + " : " + getEventTypeString(event));
-                }
-            }
-        } catch (XMLStreamException e) {
-            //System.out.println("XMLStreamException: "+e);
-            return results; //return what you have
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                    reader = null;
-                }
-            } catch (XMLStreamException e) {
-                reader = null;
-            }
+	
+	private GeocodeResponse geocode(LatLng latLng) throws NoAddressFoundException	{
+	    
+        if (!isValidLatLngRange(latLng)){
+            throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.INVALID_LATLNG);
         }
-       return results;
-    }
-    public String describeBestPlacemark(ArrayList<Placemark> placemarks){
-        StringBuffer text = new StringBuffer();
-        double tempLat = 0d;
-        double tempLng = 0d;
-        int bestPlacemarkAccuracy =0;
-        for (Placemark p : placemarks) {
-            if(p != null && p.getAccuracy() != null) {
-                if(p.getAccuracy()>bestPlacemarkAccuracy){
-                    bestPlacemarkAccuracy = p.getAccuracy();
-                    if(5< p.getDistanceFromTarget()){
-                        text.append(String.format("%.2f",p.getDistanceFromTarget()) +" "+getDistanceType()+" "+p.getHeadingToTarget()+" of ");
-                    }
-                    text.append( p.getLocality() +", "+ p.getState());
-                    tempLat = p.getLatLng().getLat();
-                    tempLng = p.getLatLng().getLng();
-                    if(p.getAccuracy()>=8 && p.getLocality() != null && !p.getLocality().equals(""))
-                        break;
-                }
-            }
+        Geocoder geocoder = getGeocoder();
+        GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLanguage(getLanguage()).setLocation(new com.google.code.geocoder.model.LatLng(BigDecimal.valueOf(latLng.getLat()), BigDecimal.valueOf(latLng.getLng()))).getGeocoderRequest();
+        GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
+        if (geocoderResponse == null || geocoderResponse.getStatus() != GeocoderStatus.OK || geocoderResponse.getResults() == null || geocoderResponse.getResults().isEmpty()) {
+            throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
         }
-        if(this.debugMode)
-            System.out.println("http://maps.google.com/maps?f=d&source=s_d&saddr="+this.getLatLng().getLat()+","+this.getLatLng().getLng()+"&daddr="+tempLat+","+tempLng+"&geocode=&hl=en&mra=ls&vps=4&ie=UTF8");
-        return text.toString();
-    }
-    public class KMLElement{
-        HashMap<String, String> attributes;
-        String name;
-        String value;
-        ArrayList<KMLElement> children;
         
-        public String toString(){
-            return "KMLElement: [name="+name+", value="+value+", attributes="+attributes+", children="+children+" ]";
-        }
-    }
+        return geocoderResponse;
+	}
+	
     public class Placemark{
-        private String id;
         private String address;
-        private Integer accuracy;
         private String locality;
         private LatLng latLng;
         private float distanceFromTarget;
@@ -316,35 +157,18 @@ public class GoogleAddressLookup extends AddressLookup {
         private String state;
         public Placemark(){
         }
-        public Placemark(String id){
-            this.id = id;
-        }
-
         public String toString() {
-            return "Placemark: [ id=" + id + ", address=" + address + ", accuracy=" + accuracy + ", locality=" + locality + ", latLng=" + latLng + ", distanceFromTarget=" + distanceFromTarget
+            return "Placemark: [ address=" + address + ", locality=" + locality + ", state=" + state+ ", latLng=" + latLng + ", distanceFromTarget=" + distanceFromTarget
                     + ", heading=" + headingToTarget + "]";
         }
         public float getDistanceFromTarget(LatLng target, MeasurementType measurementType){
             return GeoUtil.distBetween(this.getLatLng(), target, measurementType);
-        }
-
-        public String getId() {
-            return id;
-        }
-        public void setId(String id) {
-            this.id = id;
         }
         public String getAddress() {
             return address;
         }
         public void setAddress(String address) {
                 this.address = address;
-        }
-        public Integer getAccuracy() {
-            return accuracy;
-        }
-        public void setAccuracy(Integer accuracy) {
-            this.accuracy = accuracy;
         }
         public String getLocality() {
             return locality;
@@ -376,49 +200,20 @@ public class GoogleAddressLookup extends AddressLookup {
         public String getState() {
             return state;
         }
+        public String getCityState() {
+            return getLocality() + ", " + getState();
+        }
+        public String getDescription() {
+            if (getLocality() == null) {
+                return getState();
+            }
+            if(getDistanceFromTarget() > 5) {
+                return String.format("%.2f", getDistanceFromTarget()) +" "+getDistanceType()+" "+getHeadingToTarget()+" of " + getLocality() +", "+ getState();
+            }
+            return getLocality() +", "+ getState();
+        }
     }
     
-    public final static String getEventTypeString(int eventType) {
-        switch (eventType) {
-            case XMLEvent.START_ELEMENT:
-                return "START_ELEMENT";
-            case XMLEvent.END_ELEMENT:
-                return "END_ELEMENT";
-            case XMLEvent.PROCESSING_INSTRUCTION:
-                return "PROCESSING_INSTRUCTION";
-            case XMLEvent.CHARACTERS:
-                return "CHARACTERS";
-            case XMLEvent.COMMENT:
-                return "COMMENT";
-            case XMLEvent.START_DOCUMENT:
-                return "START_DOCUMENT";
-            case XMLEvent.END_DOCUMENT:
-                return "END_DOCUMENT";
-            case XMLEvent.ENTITY_REFERENCE:
-                return "ENTITY_REFERENCE";
-            case XMLEvent.ATTRIBUTE:
-                return "ATTRIBUTE";
-            case XMLEvent.DTD:
-                return "DTD";
-            case XMLEvent.CDATA:
-                return "CDATA";
-            case XMLEvent.SPACE:
-                return "SPACE";
-        }
-        return "UNKNOWN_EVENT_TYPE , " + eventType;
-    }
-
-    private static HashMap<String, String> getAttributes(XMLStreamReader xmlr) {
-        HashMap<String,String> results = new HashMap<String,String>();
-        if (xmlr.getAttributeCount() > 0) {
-            int count = xmlr.getAttributeCount();
-            for (int i = 0; i < count; i++) { 
-                results.put(xmlr.getAttributeLocalName(i), xmlr.getAttributeValue(i));
-            }
-        }
-        return results;
-    }
-
     public void setMeasurementType(MeasurementType measurementType) {
         this.measurementType = measurementType;
     }

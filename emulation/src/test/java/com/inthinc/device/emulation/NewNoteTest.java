@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 
+import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
@@ -17,7 +18,9 @@ import com.inthinc.device.emulation.notes.SatelliteEvent_t;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
+import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.models.LatLng;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -34,6 +37,22 @@ public class NewNoteTest {
 		proxy = new MCMProxyObject(server);
 	}
 
+    public void testInstallNote(){
+        String imei = "MCMBILL033333335";
+        String fobID = "MCMFAKE01";
+        String empID = "FAKE1WRE01";
+        WaysmartDevice ws = new WaysmartDevice(imei, imei, AutoSilos.MY, Direction.gprs, ProductType.WAYSMART_850);
+        ws.firstLocation(new GeoPoint());
+        ws.getState().setEmployeeID(empID);
+        ws.getState().setVehicleID("gnaylor");
+        ws.getState().setAccountID(12);
+        ws.getState().setMcmID(imei);
+        
+        AutomationDeviceEvents.install(ws);
+        ws.flushNotes();
+    }
+
+	
 	public void testHazardNote(String mcmID, String imei){
 	    testHazardNote(mcmID, imei, 40.71015,-111.993438);
 	}
@@ -157,11 +176,13 @@ public class NewNoteTest {
 */        
         
         NewNoteTest test = new NewNoteTest(AutoSilos.QA);
+        test.testInstallNote();
+  /*      
         String imei = imeiOnQA;
         String mcmID = mcmIDOnQA;
         
         
-/*      test.testHazardNote(mcmID, imei);
+    test.testHazardNote(mcmID, imei);
         Thread.sleep(2*1000);
         test.testHazardNote(mcmID, imei, hazardLocations.get("bangerter_21st"));
         Thread.sleep(2*1000);
@@ -169,7 +190,6 @@ public class NewNoteTest {
         Thread.sleep(2*1000);
         test.testHazardNote(mcmID, imei, hazardLocations.get("summitPark"));
         Thread.sleep(2*1000);
-*/        
         
 		test.testDVIRNote(mcmID, imei, 1, 0);
         Thread.sleep(2*1000);
@@ -178,7 +198,7 @@ public class NewNoteTest {
         test.testDVIRNote(mcmID, imei, 2, 0);
         Thread.sleep(2*1000);
   
-/*        test.testNote(mcmID, imei, DeviceNoteTypes.DVIR_DRIVEN_UNSAFE);
+        test.testNote(mcmID, imei, DeviceNoteTypes.DVIR_DRIVEN_UNSAFE);
         Thread.sleep(2*1000);
         test.testNote(mcmID, imei, DeviceNoteTypes.DVIR_DRIVEN_NOPREINSPEC);
         Thread.sleep(2*1000);

@@ -438,6 +438,7 @@ public enum NoteType implements BaseEnum {
     MAN_DOWN_EX(221),
     STATS2(222),
     SAT_EVENT_CREATE_ROAD_HAZARD(226),
+    SAT_EVENT_REQUEST_ROAD_HAZARD(228),
     
     //DVIR
     DVIR_DRIVEN_UNSAFE(223, EventType.DVIR_DRIVEN_UNSAFE),
@@ -446,6 +447,10 @@ public enum NoteType implements BaseEnum {
     
     //Put in for customer G&K to help detect tampering to tiwis.
     POWER_INTERRUPTED(229, EventType.POWER_INTERRUPTED),
+    
+    //1-Wire
+    ONE_WIRE_PAIRING(230),
+    REQUEST_FOB_INFO(231),
     
     // new notifications without header information - not really a real notification.
     // used primarily for background communication

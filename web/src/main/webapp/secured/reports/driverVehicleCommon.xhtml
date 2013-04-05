@@ -12,7 +12,7 @@
 -->
 <ui:composition>
 	
-		<ui:include src="/includes/map/portalMap.xhtml"/>
+		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 
 	    <script type="text/javascript">
 	    
@@ -21,7 +21,9 @@
 	    	$.fn.refreshTable = function(index, refreshSpeed){
 	              jQuery('.rich-table-row:has(a[name*="excluded"]) a').css("color","#cccccc");
 	              jQuery('.rich-table-row:has(a[name*="excluded"]) td').css("color","#cccccc");
-				  setAddress(index);
+	              if ('#{doReverseGeocode}' == 'true') {
+				  	setAddress(index);
+	              }
 				  if (refreshSpeed) {
 		  			  setAverageSpeedDifference(index);
 		  			  setTopSpeedDifference(index);
@@ -31,23 +33,30 @@
 
 
 	    var map = null;
-	    var geocoder;
-	    
+
 		function initialize(lat, lng) 
-	      {
-	        if (map == null) {
-				portalmap.init(false, "#{mapDiv}");
-				initLayers();
-				map = portalmap.getMap();
-	        }
-	        else {
-				map.clearOverlays();
-				portalmap.restoreLayersState();
-	        }
-			var location = new GLatLng(lat, lng)
-			map.setCenter(location, 14);
-			map.addOverlay(new GMarker(location)); 
-	      }
+	    {
+  			if (map == null) {
+				map = inthincMap.init({
+					'canvasID' : 'address-canvas',
+					'center' : {
+						'lat' : lat,
+						'lng' : lng
+					},
+					'zoom' : 14
+				});
+				initLayers(map, "#{formName}-layersControl");
+  			}
+  			else {
+  				inthincMap.clearMarkers(map);
+  			}
+			inthincMap.center(map, lat, lng);
+        	inthincMap.createMarker(map, { 
+        		position: new google.maps.LatLng(lat, lng)
+        	});
+        	
+
+	    }
 
 		function setAverageSpeedDifference(index){
     		
@@ -65,42 +74,46 @@
     		
     	}
     	function setAddress(index){
-        	
-	  		var address = document.getElementById("#{formName}:notificationsTable:"+index+":eventAddress");
-	  		
-	  		if (address.innerHTML.length==0){
-
-	      		var lat = document.getElementById("#{formName}:notificationsTable:"+index+":eventLat");
-	      		var lng = document.getElementById("#{formName}:notificationsTable:"+index+":eventLng");
-	    		if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-						
-	    			reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address, null);
-				}
-				else {
-					
-					address.innerHTML ="#{messages.sbs_badLatLng}";
-				}
-	  		}
+    		var addressElements = [];
+			var addressElement = {
+						"domElement" : document.getElementById("#{formName}:notificationsTable:"+index+":eventAddress"),
+						"lat" : document.getElementById("#{formName}:notificationsTable:"+index+":eventLat").value,
+   						"lng" : document.getElementById("#{formName}:notificationsTable:"+index+":eventLng").value,
+   						"altText" : document.getElementById("#{formName}:notificationsTable:"+index+":altText").value
+			};
+   			addressElements.push(addressElement);
+			inthincMap.reverseGeocodeList(addressElements);
     	}
-        function reverseGeocodeTripAddress(latlng, addressElement){
-
-            if (!geocoder) geocoder = new GClientGeocoder();
-                
-         	geocoder.getLocations(latlng, 
-        			function(response){
-    			        if (!response || response.Status.code != 200) {
-        			        
-    			    	  	addressElement.innerHTML = "#{messages.sbs_badLatLng}"; 	  
-
-    			        } 
-    			        else {
-
-    		             	addressElement.innerHTML = response.Placemark[0].address;
-    			        }
-    		    	});
-        }
-         	
+		
     	</script>
+    	
+    	
+    	<!-- START LOCATION MODAL -->
+	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" controlsClass="popupControls" onshow="initialize(event.parameters.lat, event.parameters.lng);" 
+			autosized="true" resizeable="false" zindex="2000">
+		<f:facet name="header">
+	    	<h:outputText value="#{messages.driver_event_location}" />
+	    </f:facet>
+	    <f:facet name="controls">
+	    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+	    </f:facet>
+	
+	    <div class="eventmap-border">
+	    	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+	    </div>
+	
+		<h:form>
+	    <div class="popupactions">
+	    	<a4j:commandButton id="eventLocationModalClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+	   			<span class="cancel">
+	   				<h:outputText value="#{messages.button_close}" />
+	   			</span>
+		 	</a4j:commandButton>
+	    </div>
+	    </h:form>
+	</rich:modalPanel>
+<!-- END LOCATION MODAL -->
+    	
 
 </ui:composition>
 </html>

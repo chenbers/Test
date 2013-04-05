@@ -202,7 +202,7 @@ public enum EventAttr implements IndexEnum{
     VB_UPTIME_SUMMARY_ADJ(239),
     
     ENGINE_HOURS_X100(240),
-    
+
     // Attribute Id (255) has a stringId byte,
  	// followed by a null terminate string.
     STRING_TIWIPRO(255),
@@ -321,7 +321,7 @@ public enum EventAttr implements IndexEnum{
     VEHICLE_SAFE_TO_OPERATE(8292),
     RHA_TYPE(8293),
     RHA_CONFIRM(8294),
-    
+    ROUTE_STOP_TYPE(8299), //(0=new, 1=started, 2=completed, 3=abandoned)
 
     // two byte value Attributes 16384 [0x4000] to 24575 [0x5FFF]	
     
@@ -534,6 +534,7 @@ public enum EventAttr implements IndexEnum{
     NOTIFICATION_ENUM(32857),
     RHA_END_TIME(32858),
     RHA_ID(32859),
+    ROUTE_STOP_ID(32860),
     
 		    
 ////////////////////////////////////////////////////////////////////////////////////

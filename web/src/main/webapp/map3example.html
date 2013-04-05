@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>inthinc - Google Maps 3 Component Example</title>
+
+<!--  for dropdown checklist   	-->
+	<link type="text/css" href="css/jsDropdown/dropdownchecklist.css"/>
+
+    <style type="text/css">
+      html, body{ height: 100%; margin: 0; padding: 0;}
+      #map-canvas { height: 50%; margin: 0; padding: 0;}
+      #map-canvas2 { height: 50%; margin: 0; padding: 0;}
+    </style>
+ 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<!-- 
+ 	<script type="text/javascript" src="https://s3.amazonaws.com/resources.inthinc.com/jquery/jquery-1.7.2.min.js"></script>
+ 	<script type="text/javascript" src="https://s3.amazonaws.com/resources.inthinc.com/jquery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="https://s3.amazonaws.com/resources.inthinc.com/jquery/ui-1.9.1/js/jquery-ui-1.9.1.custom.min.js"></script>
+ 	
+    <script type="text/javascript" src="../src/main/js/jsDropdown/ui.dropdownchecklist-1.4-min.js"></script>
+	<script type="text/javascript" src="../src/main/js/maps3.js"></script>
+ -->	
+	
+	<script type="text/javascript"  src="js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript"> jQuery.noConflict(); </script>
+<!-- 
+	<script type="text/javascript" src="js/jsDropdown/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="js/jsDropdown/ui.dropdownchecklist-1.4-min.js"></script>
+ -->	
+	<script type="text/javascript" src="js/jsDropdown/jquery-ui-1.8.4.custom.min.js"></script>
+    <script type="text/javascript" src="js/jsDropdown/ui.dropdownchecklist-1.3-min.js"></script>
+	<script type="text/javascript" src="js/mapv3/maps3.js" ></script>
+	
+
+	<script type="text/javascript">
+		var map1 = null;
+		var map2 = null;
+		var currentMap = map1;
+		var currentControlId = "map1ID";
+		function initialize() {
+			map1 = inthincMap.init({
+				'canvasID': 'map-canvas',
+				'zoom': 6,
+				'center' : {
+					'lat' : 38.5482,
+					'lng' : -95.8008
+				},
+				'overviewMapControl' : true
+			});
+/*			
+			map1 = new google.maps.Map(document.getElementById('map-canvas'), {
+				 zoom: 6,
+				 center: new google.maps.LatLng(38.5482, -95.8008),
+				 mapTypeId: google.maps.MapTypeId.ROADMAP
+			}); 
+*/
+			google.maps.event.addListener(map1, "maptypeid_changed", function() {
+				mapTypeId= inthincMap.getMap().getMapTypeId();
+				jQuery("#mapType").html("Map Type: " + mapTypeId );
+    		});
+    		
+			google.maps.event.addListener(map1, "layerselect", function(layerId, checked) {
+				jQuery("#mapLayer").html("Map Layer: " + layerId + " checked: " + checked);
+    		});
+
+		}
+		function initialize2() {
+			
+			map2 = inthincMap.init({
+				'canvasID': 'map-canvas2',
+				'zoom': 10,
+				'center' : {
+					'lat' : 38.5482,
+					'lng' : -95.8008
+				},
+				'overviewMapControl' : true
+			});
+/*			
+			map2 = new google.maps.Map(document.getElementById('map-canvas2'), { 
+			 zoom: 6,
+			 center: new google.maps.LatLng(38.5482, -95.8008),
+			 mapTypeId: google.maps.MapTypeId.ROADMAP
+		}); 
+*/			
+			google.maps.event.addListener(map2, "maptypeid_changed", function() {
+				mapTypeId= inthincMap.getMap().getMapTypeId();
+				jQuery("#mapType").html("Map Type: " + mapTypeId );
+    		});
+    		
+			google.maps.event.addListener(map2, "layerselect", function(layerId, checked) {
+				jQuery("#mapLayer").html("Map Layer: " + layerId + " checked: " + checked);
+    		});
+
+		}
+
+		function centerMap() {
+			inthincMap.center(currentMap, 0,0);
+		}
+		function zoomMap() {
+			inthincMap.zoom(currentMap, 12);
+		}
+		function centerMapInBounds() {
+			bounds = new google.maps.LatLngBounds(new google.maps.LatLng(38.5482, -95.8008), new google.maps.LatLng(45.5482, -105.8008))
+			inthincMap.centerAndZoom(currentMap, bounds);
+		}
+		function lookupAddress() {
+			  var address = document.getElementById('input-address').value;
+			  inthincMap.lookupAddress(currentMap, address);
+		}
+		function addOverlays() {
+			inthincMap.addWMSLayer(currentMap, { 
+				id: 1, 
+				url : 'http://tile.openstreetmap.org/{Z}/{X}/{Y}.png', 
+				displayName : 'Open Streets', 
+				layerName : 'open',
+				opacity : 0.5, 
+
+			});
+			inthincMap.addWMSLayer(currentMap,  {
+				id : 2, 
+				url : 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{Z}/{Y}/{X}', 
+				displayName : 'Topo', 
+				layerName : 'open', 
+				minZoom : 5, 
+				maxZoom : 16, 
+				opacity : 0.5, 
+				usePng : true, 
+				selected : true
+			});
+			inthincMap.addWMSLayer(currentMap,  {
+				id : 3, 
+				url : 'http://testteen.tiwipro.com:8086/cgi-bin/mapserv?map=/var/www/mapserver/sbs/limits.map&', 
+				displayName : 'Speed Limits', 
+				layerName : 'limits',
+				opacity : 0.5, 
+			});
+			
+			inthincMap.addOverlaysControl(currentMap, currentControlId, 'Layers');
+			
+		}
+		function clearOverlays() {
+			
+			inthincMap.reinit(currentMap, currentControlId);
+			
+		}
+		function createMarker() {
+			
+			inthincMap.createMarker(currentMap, {
+				position : currentMap.getCenter(),
+//				iconImage : "images/ico_end_trip.png"
+			});
+			
+		}
+		function clearMarkers() {
+			
+			inthincMap.clearMarkers(currentMap);
+		}
+		function showInfoWindow() {
+  			inthincMap.createInfoWindow(currentMap, {
+  				content:"Hello from Map: " + currentControlId,
+				position : currentMap.getCenter(),
+  			});
+		}
+		function init() {
+			initialize();
+			initialize2();
+			setMap(1);
+		}
+		function setMap(id) {
+			if (id == 1) {
+				currentMap = map1;
+				currentControlId = "map1ID";
+			}
+			else {
+				currentMap = map2;
+				currentControlId = "map2ID";
+			}
+		}
+		
+	</script>
+	
+</head>
+<body onload="init();">
+<div id="menu" style="background-color:#FFFFCC;height:100%;width:150px;float:left;">
+	<input type="radio" value="1" name="MapSelect" checked onchange="setMap(1);">Map 1</input>
+	<input type="radio" value="2"name="MapSelect" onchange="setMap(2);">Map 2</input>
+	<input type="button" onclick="centerMap();" value="Center"/>
+	<input type="button" onclick="zoomMap();" value="Zoom"/>
+	<input type="button" onclick="centerMapInBounds();" value="Center In Bounds"/>
+	<input id="input-address"/>
+	<input type="button" onclick="lookupAddress();" value="Lookup Address"/>
+	<input type="button" onclick="addOverlays();" value="Add Overlays"/>
+	<input type="button" onclick="clearOverlays();" value="Clear Overlays"/>
+	<input type="button" onclick="createMarker();" value="Create Marker"/>
+	<input type="button" onclick="clearMarkers();" value="Clear Markers"/>
+	<input type="button" onclick="showInfoWindow();" value="Show Info Window"/>
+	<p><span id="mapType">
+		Map Type: 
+	</span></p>
+	<p><span id="mapLayer">
+		Map Layer: 
+	</span></p>
+	
+</div>
+<div id="map-canvas"></div>
+<div>Second Map:</div>
+<div id="map-canvas2"></div>
+</body>
+</html>
+

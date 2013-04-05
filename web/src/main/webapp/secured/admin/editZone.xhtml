@@ -30,13 +30,10 @@
 			border-style:none;	
 		}
   	</style>
-  	
-  	<ui:include src="/includes/map/portalMap.xhtml"/>
-    <a4j:loadScript src="/js/mapGeocode.js" />
-    <a4j:loadScript src="/js/drawZone.js" />
-    <script type="text/javascript">    
-       var map;
-    </script>
+   	<ui:include src="/includes/mapv3/portalMap.xhtml">
+		<ui:param name="libraries" value="drawing" />
+	</ui:include>            
+	<a4j:loadScript src="/js/mapv3/zone.js" />
   </ui:define>
   
   <ui:define name="content">
@@ -106,23 +103,13 @@
                           </table>
                         </li>
                         <li class="r">
-                           <h:commandButton id="reset" action="#{zonesBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.zones_reset}" /></span></h:commandButton>
-                           <h:outputText value="&#160;" /><a4j:commandButton id="zonesSave" action="#{zonesBean.save}" onclick="stopDrawing()" reRender="editZone,headerForm" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></a4j:commandButton>
-                           <h:outputText value="&#160;" /><a4j:commandButton id="zonesCancel" action="#{zonesBean.cancelEdit}"  onclick="cancelEdit()" reRender="points,editZone,headerForm" oncomplete="showZone(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
+                           <h:commandButton id="reset" action="#{zonesBean.reset}" onclick="reset()" styleClass="left"><span class="back"><h:outputText value="#{messages.zones_reset}" /></span></h:commandButton>
+                           <h:outputText value="&#160;" /><a4j:commandButton id="zonesSave" action="#{zonesBean.save}" onclick="save()" styleClass="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></a4j:commandButton>
+                           <h:outputText value="&#160;" /><a4j:commandButton id="zonesCancel" action="#{zonesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="l">
-                          <table>
-                            <tr>
-                              <td><a href="#" onclick="stopDrawing(); return false;"><h:graphicImage id="hand_b" value="/images/btn_hand_on.png" width="26" height="26" style="border:none" /></a></td>
-                              <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startRect(); return false;"><h:graphicImage id="rectangle_b" value="/images/btn_rectangle.png" width="26" height="26" style="border:none" /></a></td>
-                              <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startCircle(); return false;"><h:graphicImage id="circle_b" value="/images/btn_circle.png" width="26" height="26" style="border:none" /></a></td>
-                              <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startPolygon(); return false;"><h:graphicImage id="polygon_b" value="/images/btn_polygon.png" width="26" height="26" style="border:none" /></a></td>
-                            </tr>
-                          </table>
-                        </li>
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                             <tr>
@@ -133,7 +120,7 @@
                             </tr>
                           </table>
                         </li>
-                        <li class="l"><button id="zonesSearch" type="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
+                        <li class="l"><button id="zonesSearch" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" style="margin: 3px 0 0;">
                             <tr>
@@ -155,15 +142,10 @@
 				  <h:panelGrid columns="2" width="100%" columnClasses="col1,col2">
 	                  <h:panelGroup styleClass="map-border" layout="block">
 	                    <div id="map-canvas" style="height:100%;height:600px;border:0"></div>
-	                    <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
-	                      <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
-	                      <div id="circle-outline" style="display:none"></div>
-	                    </div>
 	                  </h:panelGroup>
-                  	<rich:simpleTogglePanel id="editZoneOptions" switchType="client" style="float:right;" opened="true">
+                  	<rich:simpleTogglePanel id="editZoneOptions" switchType="client" style="float:right;" opened="true"  onexpand="triggerResize();" oncollapse="triggerResize();">
                     	<h:panelGroup layout="block" style="width:270px">
                     	<table width="270" border="0" cellspacing="2" cellpadding="4" align="left">
-                    
                     	<a4j:repeat value="#{zonesBean.availableZoneOptions}" var="option" id="zoneOptions">
 	                        <tr>
 	                          <td width="160" valign="center">
@@ -206,110 +188,132 @@
 
 
                 <script type="text/javascript">
-                  function clearOutline()
-                  {
-                    document.getElementById("zones-form:points").value = "";
-                    removeZoneOverlay();
-//                    map.clearOverlays();
-				 }
+    	    		var map = null;
+            		var editZone = null;
+					var selectedShape = null;
+            	
+					function prepareEditZone() {
+						var zonePointsStr = document.getElementById("zones-form:points").value; 
+						if (zonePointsStr) {
+							editZone = new Zone(zonePointsStr);
+    	                	editZone.displayOnMap(map, true, true);
+        	            	setSelection(editZone.getOverlay());
+	        	            return true;
+       	        	    }
+            	        return false;
+					}
+					
+					function save() {
+						if (editZone) {
+	                    	document.getElementById("zones-form:points").value = editZone.getPointsStr();
+						}
+					}
 
-                  function showZone(editable)
-                  {
-                    // map.clearOverlays();
-                    removeZoneOverlay();
-                    
-                    var outline = fromOutlineString(document.getElementById("zones-form:points").value);
-                    if (outline)
-                    {
-                      centerMapAtZone(getLatLngBounds(outline));
-                      loadZone(outline, editable);
-                      return true;
+					function showAddress(address) {
+                    	inthincMap.showAddress(map, address);
                     }
-                    return false;
-                  }
 
-                  function storeOutline()
-                  {
-                    document.getElementById("zones-form:points").value = toOutlineString(getPolygonOutline());
-                  }
+                    function updateCoordinates(lng, lat) {
+                    	document.getElementById("lng").value = (Math.round(lng*10000.0)/10000.0).toString();
+                    	document.getElementById("lat").value = (Math.round(lat*10000.0)/10000.0).toString();
+                  	}
+                  	
+					function clearSelection() {
+    					if (selectedShape) {
+        					selectedShape.setMap(null);
+        					selectedShape = null;
+    					}
+  					}
 
-                  function cancelEdit()
-                  {
-                    stopDrawing();
-                    // map.clearOverlays();
-                    removeZoneOverlay();
-                    
-                    var outline = document.getElementById("backupPoints").value;
-                    if (outline == "")
-                      outline = document.getElementById("firstPoints").value;
-                    document.getElementById("zones-form:points").value = outline;
-                  }
+  					function setSelection(shape) {
+    					clearSelection();
+    					selectedShape = shape;
+    					shape.setEditable(true);
+  					}
 
-                  function select(type)
-                  {
-                    applyImage("hand", type);
-                    applyImage("rectangle", type);
-                    applyImage("circle", type);
-                    applyImage("polygon", type);
 
-                    if (type != "hand") {
-                        removeZoneOverlay();
-                        
-    	                //  map.clearOverlays();
-	  					// portalmap.restoreLayersState();
-                    }
-                  }
+                  	
+					var polyOptions = {
+			    		strokeColor : ZONE_COLOR,
+			    		fillColor : ZONE_COLOR,
+        				strokeWeight: 0,
+        				fillOpacity: 0.45,
+        				editable: true
+      				};
+					
+					function bodyLoad() {
+						if (map == null) {
+							map = inthincMap.init();
+							initLayers(map, "editZones-layerControl");
+							
+							var drawingManager = new google.maps.drawing.DrawingManager({
+						    	drawingMode: null,
+						        rectangleOptions: polyOptions,
+						        circleOptions: polyOptions,
+						        polygonOptions: polyOptions,
+						        map: map,
+						        drawingControl: true,
+						        drawingControlOptions: {
+						        	position: google.maps.ControlPosition.TOP_LEFT,
+						            drawingModes: [google.maps.drawing.OverlayType.RECTANGLE,
+						                           google.maps.drawing.OverlayType.CIRCLE,
+						                           google.maps.drawing.OverlayType.POLYGON]
+						        }
+							});
 
-                  function applyImage(type, selectedType)
-                  {
-                    var image = document.getElementById("zones-form:" + type + "_b");
-                    if (type == selectedType)
-                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + "_on.png";
-                    else
-                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + ".png";
-                  }
+					        google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
+					            // Switch back to non-drawing mode after drawing a shape.
+					            drawingManager.setDrawingMode(null);
 
-                  function updateCoordinates(lng, lat)
-                  {
-                    document.getElementById("lng").value = (Math.round(lng*10000.0)/10000.0).toString();
-                    document.getElementById("lat").value = (Math.round(lat*10000.0)/10000.0).toString();
-                  }
+					            var pointsList = null;
+					            switch (e.type) {
+					            	case google.maps.drawing.OverlayType.CIRCLE:
+					            		pointsList = getCirclePath(e.overlay);
+					            		break;
+					            	case google.maps.drawing.OverlayType.RECTANGLE:
+					            		pointsList = getRectanglePath(e.overlay);
+					            		break;
+					            	case google.maps.drawing.OverlayType.POLYGON:
+					            		pointsList = e.overlay.getPath().getArray();
+					            		break;
+					            }
+			            		editZone = new Zone(pointsList);
+			            		e.overlay.setMap(null);
+			            		editZone.displayOnMap(map, false, true);
+			            		setSelection(editZone.getOverlay());
+					        });
 
-                  function bodyLoad()
-                  {
-                    if (GBrowserIsCompatible())
-                    {
-	 					portalmap.init();
-	 					initLayers();
-	 					map = portalmap.getMap();
-		        	        
-	
-                      GEvent.addListener(drawZone, "startZone", function(type)
-                      {
-                        select(type);
-                      });
-                      GEvent.addListener(drawZone, "endZone", function(type, points)
-                      {
-                        select("hand");
-                        storeOutline();
-                      });
-                      GEvent.addListener(drawZone, "cancelZone", function(type)
-                      {
-                        showZone(true);
-                        select("hand");
-                      });
-                      GEvent.addListener(drawZone, "updateZone", function(points)
-                      {
-                        storeOutline();
-                      });
-                      GEvent.addListener(map, "mousemove", function(latLng) {
-                  		updateCoordinates(latLng.lng(), latLng.lat());
-	                  	});
+					        google.maps.event.addListener(drawingManager, 'drawingmode_changed', function() {
+					        	if (drawingManager.getDrawingMode() != null) {
+					        		clearSelection();
+					        	}
+					        });
 
-                      if (!showZone(false))
-                    	map.setCenter(new GLatLng(39.0, -104.0), 4);
-                    }
-                  }
+							google.maps.event.addListener(map, "mousemove", function(mouseEvent) {
+	                  			updateCoordinates(mouseEvent.latLng.lng(), mouseEvent.latLng.lat());
+							});
+						}
+
+						if (!prepareEditZone()) {
+							inthincMap.center(map, 39.0, -104.0);
+				    		inthincMap.zoom(map, 4);
+			    		}
+                  	}
+					
+					function triggerResize()
+					{
+						mapWidth =jQuery("#map-canvas").css('width');
+					    setTimeout(function() {
+							var newMapWidth =jQuery("#map-canvas").css('width');
+							if (newMapWidth != mapWidth) {
+								triggerResize();							
+							}
+							else {
+								inthincMap.triggerResize(map);
+							}
+					    },100);
+					}
+
                 </script>
 
               </div>

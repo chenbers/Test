@@ -474,7 +474,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
     STRIPPED_LOWER_LIMIT(243),
-
+    NOTE_TYPE_ROUTE_STOP(234, EventAttr.ROUTE_STOP_ID, EventAttr.ROUTE_STOP_TYPE),
 	/**
      * Sent on a forward command acknowledgement
      * Attributes ATTR_FWDCMD_ID, ATTR_FWDCMD_STATUS, ATTR_FWDCMD_COMMAND, [ATTR_FWDCMD_ERROR], [ATTR_VIOLATION_FLAGS]
@@ -500,7 +500,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
     STRIPPED_ACKNOWLEDGE(254),
     STRIPPED_UPPER_LIMIT(255),
     
-    MAX_ID(300),
+    MAX_ID(300), 
 
     ;
 

@@ -49,11 +49,47 @@
 		
   		
   	</style>
-  	<ui:include src="/includes/map/portalMap.xhtml"/>
-    <a4j:loadScript src="/js/mapGeocode.js" />
-    <a4j:loadScript src="/js/drawZone.js" />
-    <script type="text/javascript">    
-       var map;
+   	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+	<a4j:loadScript src="/js/mapv3/zone.js" />
+	<script type="text/javascript">
+                	var zone = null;
+                	var map = null;
+                	
+                	function clearZone() {
+                    	if (zone != null) {
+                    		zone.clear();
+                    		zone = null;
+                    	}
+                	}
+                  	function clearOutline() {
+                    	document.getElementById("zones-form:points").value = "";
+                    	clearZone();
+                  	}
+
+					function showZone() {
+						clearZone();
+						if (document.getElementById("zones-form:points").value) {
+							zone = new Zone(document.getElementById("zones-form:points").value);
+						}
+	                    if (zone) {
+	                    	zone.displayOnMap(map, true);
+		                    return true;
+        	            }
+            	        return false;
+					}
+					function bodyLoad() {
+						if (map == null) {
+							map = inthincMap.init();
+							initLayers(map, "zones-layerControl");
+						}
+						else {
+							clearZone();
+						}
+						if (!showZone()) {
+ 	                		inthincMap.center(map, 39.0, -104.0);
+ 				    		inthincMap.zoom(map, 4);
+ 				    	}
+					}
     </script>
   </ui:define>
   
@@ -205,48 +241,6 @@
 				   </h:panelGrid>
                 </a4j:form>
 
-                <script type="text/javascript">
-                  function clearOutline()
-                  {
-                    document.getElementById("zones-form:points").value = "";
-                    map.clearOverlays();
-                  }
-
-                  function showZone(editable)
-                  {
-                    map.clearOverlays();
-                    var outline = fromOutlineString(document.getElementById("zones-form:points").value);
-                    if (outline)
-                    {
-                      centerMapAtZone(getLatLngBounds(outline));
-                      loadZone(outline, editable);
-                      return true;
-                    }
-                    return false;
-                  }
-
-
-                  function cancelEdit()
-                  {
-                    stopDrawing();
-                    map.clearOverlays();
-                    var outline = document.getElementById("backupPoints").value;
-                    if (outline == "")
-                      outline = document.getElementById("firstPoints").value;
-                    document.getElementById("zones-form:points").value = outline;
-                  }
-
-
-                  function bodyLoad()
-                  {
- 					portalmap.init();
- 					initLayers();
- 					map = portalmap.getMap();
- 				    if (!showZone(false)) 
- 	                	map.setCenter(new GLatLng(39.0, -104.0), 4);
- 	                
-                  }
-                </script>
 
               </div>
             </div>

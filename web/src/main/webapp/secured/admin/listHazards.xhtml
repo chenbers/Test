@@ -52,29 +52,16 @@
                 margin: 0 0 0 8px;
         }
       </style>
-      <ui:include src="/includes/map/portalMap.xhtml"/>
-    <a4j:loadScript src="/js/mapGeocode.js" />
-    <a4j:loadScript src="/js/drawZone.js" />
-    <a4j:loadScript src="/js/markerclusterer_packed.js"/>
-    <a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
+	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+	<ui:include src="/includes/mapv3/addressOrZoneLookup.xhtml">
+    	<ui:param name="context" value="hazards" />
+	</ui:include>
+                    
+    <a4j:loadScript src="/js/mapv3/zone.js" />
+    <a4j:loadScript src="/js/mapv3/markerclusterer_compiled.js" />
+    <a4j:loadScript src="/js/mapv3/markerclustererWrapper.js" />
     <script type="text/javascript">
-    //<![CDATA[
-    //Pulled out of markerclusterer.js
-      var sizes = [53, 56, 66, 78, 90];
-      var styles = [];
-
-      var i = 0;
-      for (i = 1; i <= 5; ++i) {
-        styles.push({
-          'url': "#{request.contextPath}/images/markerClusterer/m" + i + ".png",
-          'height': sizes[i - 1],
-          'width': sizes[i - 1]
-        });
-      }
-    //]]>
-       var map;
-       var markerClusterer;
-       var markers = [];
+       var map = null;
     </script>
   </ui:define>
   
@@ -138,44 +125,33 @@
 
                   <h:panelGrid rows="2" width="100%" columnClasses="colSpan">
                   <h:panelGroup styleClass="map-border" layout="block">
-                  
                     <div id="map-canvas" style="height:100%;height:330px;border:0"></div>
-                    <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
-                      <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
-                      <div id="circle-outline" style="display:none"></div>
-                    </div>
                   </h:panelGroup>
                   
                   
                   
         <h:panelGroup layout="block" style="width: 790px; overflow: auto;">
-        <rich:dataTable id="hazards-table" value="#{hazardsBean.tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
+        <rich:dataTable id="hazards" value="#{hazardsBean.tableData}" var="item" styleClass="datagrid" rowKeyVar="index"
             rowClasses="tableOdd,tableEven" cellspacing="1" rows="100" >
 
             <!-- Data -->
             <rich:column id="mapColumn">
                 <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
                 </h:graphicImage>
-               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{hazardsBean.addressFormat == 1}">
-                    <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-                    <h:outputText id="addressLocation" value="#{hazardsBean.item.location}" converter="#{latLngAddressConverter}" />
-                </rich:toolTip>
-               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{hazardsBean.addressFormat == 2}">
-                <h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-                <a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
-               </rich:toolTip>
-               <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{hazardsBean.addressFormat == 3}">
-                <h:inputHidden id="hazardLat" value="#{item.latitude}"/>
-                <h:inputHidden id="hazardLng" value="#{item.longitude}"/>
-                <h:outputText id="hazardAddress" />
-               </rich:toolTip>
+                <ui:include src="/includes/addressToolTip.xhtml">
+                   	<ui:param name="context" value="hazards" />
+                	<ui:param name="addressFormat" value="#{hazardsBean.addressFormat}" />
+   					<ui:param name="condition" value="true" />
+   					<ui:param name="latLng" value="#{item.latLng}" />
+   					<ui:param name="index" value="#{index}" />
+				</ui:include>
             </rich:column>
             
             <rich:column id="location" sortBy="#{item.location}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_location}" />
                 </f:facet>
-               <h:outputText value="#{item.location}"/>#{hazardsBean.addressFormat}
+               <h:outputText value="#{item.location}"/>
             </rich:column>
             
             <rich:column id="description" sortBy="#{item.description}" >
@@ -185,7 +161,7 @@
                <h:outputText value="#{item.description}"/>
             </rich:column>
             
-            <rich:column id="driverName" sortBy="#{item.driverName}" >
+            <rich:column id="driverName" sortBy="#{item.driver.person.fullName}" >
                 <f:facet name="header">
                     <h:outputText value="#{messages.hazard_driver}" />
                 </f:facet>
@@ -249,186 +225,9 @@
             </rich:column>
         </rich:dataTable>
         </h:panelGroup>
-                  
-                  
-                  
-                  <a4j:outputPanel id="displayHazardOptions">
-                    <h:panelGroup>
-                        <rich:spacer height="5px"/><br/>
-                    </h:panelGroup>
-                   </a4j:outputPanel>
-                   </h:panelGrid>
-                </a4j:form>
-
-                <script type="text/javascript">
-              //<![CDATA[
-                var poly;
-                function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
-                    //console.log("draw circle with radius = "+radius);
-                    var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
-                    var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
-
-                    var points = [];
-                    var step = parseInt(360/nodes)||10;
-                    var bounds = map.getBounds();
-                    for(var i=0; i<=360; i+=step) {
-                        var pint = new GLatLng(center.lat() + (radius/latConv * Math.cos(i * Math.PI/180))
-                            , center.lng() + (radius/lngConv * Math.sin(i * Math.PI/180)));
-                        points.push(pint);
-                        //bounds.extend(pint); //this is for fit function
-                    }
-                    fillColor = fillColor||lineColor||"#0055ff";
-                    lineWidth = lineWidth||2;
-                    poly = new GPolygon(points,lineColor,lineWidth,lineOpacity,fillColor,fillOpacity);
-                    map.addOverlay(poly);
-                }
-              //]]>
-                  function showHazard(editable){
-                    map.clearOverlays();
-                    var outline = fromOutlineString(document.getElementById("hazards-form:points").value);
-                    if (outline){
-                      centerMapAtHazard(getLatLngBounds(outline));
-                      loadHazard(outline, editable);
-                      return true;
-                    }
-                    return false;
-                  }
-
-                  function cancelEdit(){
-                    stopDrawing();
-                    map.clearOverlays();
-                    var outline = document.getElementById("backupPoints").value;
-                    if (outline == ""){
-                      outline = document.getElementById("firstPoints").value;
-                    }
-                    document.getElementById("hazards-form:points").value = outline;
-                  }
-
-
-                  function bodyLoad(){
-                     portalmap.init();
-                     initLayers();
-                     bounds = new GLatLngBounds();
-                     map = portalmap.getMap();
-                     if (!showHazard(false)){
-                         map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
-                     }
-                     bounds = map.getBounds();
-                     addMarkers();
-                  }
-                  function getAddress(index){
-                      
-                      var address = document.getElementById("hazards-form:hazards-table:"+index+":hazardAddress");
-                      var lat = document.getElementById("hazards-form:hazards-table:"+index+":hazardLat");
-                      var lng = document.getElementById("hazards-form:hazards-table:"+index+":hazardLng");
-                      
-                      if (address.innerHTML.length==0){
-                                              
-                          if( lat.value &gt;= -90 &amp;&amp; lat.value &lt;= 90 &amp;&amp;  lng.value &gt;= -180 &amp;&amp;  lng.value &lt;= 180){
-                              reverseGeocodeTripAddress(new GLatLng(lat.value,lng.value),address,index);
-                          } else {
-                              console.log('bad lat lng');
-                          }
-                      }
-                   }
-                  function reverseGeocodeTripAddress(latlng,addressElement,index){
-                      new GClientGeocoder().getLocations(latlng, 
-                              function(response){
-                                  if (!response || response.Status.code != 200) {
-                                      console.log('// no response typically== bad lat lng');
-                                  } else {
-                                      addressElement.innerHTML = response.Placemark[0].address;
-                                  }
-                              });
-                    }
-                  function addMarkers(){
-                      var progress = 0;
-                      //console.log("map: "+map);
-                      var progressBar = new ProgressbarControl(map);
-                      
-                      if (markerClusterer != null) {
-                            markerClusterer.clearMarkers();
-                          }
-                      progressBar.start(#{fn:length(hazardsBean.tableData)});
-                      markers = [];
-                      bounds.extend(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}));
-                      
-                      <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
-                          marker = createMarker(  new GLatLng(#{hazard.lat}, #{hazard.lng}), 
-                                                  #{hazard.hazardID}, null,
-                                                  "/images/ico_warning.png",
-                                                  fillBubbleMarker,0);
-                          markers.push(marker);
-                          drawCircle(new GLatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, 10, '#445566', 2, .5, '#112233', .25);
-                          progressBar.updateLoader(progress++);
-                          bounds.extend(marker.getPoint());
-                          
-                      </ui:repeat>
-                      
-                      markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
-                      progressBar.remove();
-
-                      map.setZoom(map.getBoundsZoomLevel(bounds));
-                      map.setCenter(bounds.getCenter());
-                  }
-                  
-                  /* CreateMarker(GLatLng, divID, GIcon or null)
-                   *  
-                   * Creates a marker using specified GIcon or
-                   * default icon if null is passed for iconImage.
-                   * divID is the id of a DIV you want displayed in the info window. 
-                   */
-                  function createMarker(point, divID, iconImage) {
-                      var markerIcon;
-                      var marker;
-
-                      //Use passed in image.
-                      if(iconImage != null){
-                          markerIcon = new GIcon(baseIcon);
-                          markerIcon.image = iconImage;
-                          markerOptions = { icon:markerIcon };
-                          marker = new GMarker(point, markerOptions);
-                      } else {
-                          //Use default GoogleMap marker image.
-                          markerIcon = new GIcon();
-                          marker = new GMarker(point);
-                      }
-                 
-                      GEvent.addListener(marker, "click", function() {
-                              var node = document.getElementById(divID).cloneNode(true);
-                              node.style.display = 'block';
-                              marker.openInfoWindow(node);
-                              });
-
-                      return marker;
-                  }
-                </script>
-            <rich:panel id="mapPopups" rendered="#{liveFleetBean.selectedVehicleID ne null}">
-        
-            <ui:param name="driverLocation" value="#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID]}"/>
-            <ui:include src="/includes/hazardBubble.xhtml">
-                <ui:param name="driver" value="#{driverLocation.driver}" />
-                <ui:param name="vehicle" value="#{driverLocation.vehicle}" />
-                <ui:param name="device" value="#{driverLocation.device}" />
-                <ui:param name="bean" value="#{liveFleetBean}" />
-                <ui:param name="targetDriverID" value="#{driverLocation.driver.driverID}" />
-                <ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
-                <ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
-                <ui:param name="messageDriver" value="#{messages.livefleet_driver}" />
-                <ui:param name="targetVehicleID" value="#{driverLocation.vehicle.vehicleID}" />
-                <ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
-                <ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
-                <ui:param name="vehicleTime" value="#{driverLocation.time}" />
-                <ui:param name="messageAddress" value="#{messages.livefleet_address}" />
-                <ui:param name="vehicleAddress" value="#{driverLocation.addressStr}" />
-                <ui:param name="addressLookupAddressFormat" value="#{liveFleetBean.addressFormat}"/>
-                <ui:param name="distance" value="#{driverLocation.dist}" />
-                <ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
-                <ui:param name="messageDevicePhone" value="#{messages.livefleet_devicePhone}" /> 
-                <ui:param name="context" value="liveFleet" />
-            </ui:include>
-            </rich:panel>
-              </div>
+		</h:panelGrid>
+		</a4j:form>
+			</div>
             </div>
 
             <div class="panel_sw">
@@ -436,28 +235,111 @@
             </div>
 
             <ui:include src="../../includes/confirmDelete.xhtml">
-              <ui:param name="deleteBean" value="#{hazardsBean}" />
-              <ui:param name="reRender" value="points,displayHazard" />
-              <ui:param name="ondelete" value="showHazard(false)" />
-              <ui:param name="explanation" value="#{messages.hazard_confirmDelete}" />
-                   <ui:param name="context" value="hazards" />
-            </ui:include>
+				<ui:param name="deleteBean" value="#{hazardsBean}" />
+				<ui:param name="reRender" value="points,displayHazard" />
+				<ui:param name="ondelete" value="showHazard(false)" />
+				<ui:param name="explanation" value="#{messages.hazard_confirmDelete}" />
+				<ui:param name="context" value="hazards" />
+			</ui:include>
 
-          </div>
-                <a4j:region id="jsFormRegion">
-                    <a4j:form id="jsForm">
-
-                        <a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
-                            <a4j:actionparam name="hazardID" assignTo="#{hazardsBean.item.hazardID}"/>
-                            <a4j:actionparam name="subId" />
-                        </a4j:jsFunction>
-                    </a4j:form>
-                </a4j:region>
-          <!-- END PANEL -->
+			</div>
         </td>
 
       </tr>
     </table>
     </a4j:region>
+
+	<script type="text/javascript">
+    //<![CDATA[
+				function drawCircle(center, radius, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
+					fillColor = fillColor||lineColor||"#0055ff";
+					lineWidth = lineWidth||2;
+					var circle = new google.maps.Circle({
+						center : center,
+						radius : radius*1000
+					});
+					var points = getCirclePath(circle);
+					var hazardZone = new Zone(points, {
+	            			strokeColor : lineColor,
+	            			strokeWeight : lineWidth,
+	            			strokeOpacity : lineOpacity,
+	            			fillColor : fillColor,
+	            			fillOpacity : fillOpacity
+					});
+					hazardZone.displayOnMap(map, true, false);
+				}
+
+              //]]>
+				function bodyLoad() {
+					if (map == null) {
+						map = inthincMap.init();
+						initLayers(map, "listRH-layerControl");
+					}
+                    addMarkers();
+
+				}
+  
+				function addMarkers() {
+    				if (markerClusterer != null) {
+    			          markerClusterer.clearMarkers();
+    			          inthincMap.clear(map);
+    		        }
+    				var markers = [];
+                    var bounds = new google.maps.LatLngBounds();
+    				
+                    <ui:repeat value="#{hazardsBean.tableData}" var="hazard">
+    					var marker = inthincMap.createMarker(map, {
+    						position: new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}),
+    						iconImage : "#{request.contextPath}/images/ico_warning.png"
+    					});
+    					marker.itemID = #{hazard.hazardID};
+    					addMarkerListener(marker);	
+    					markers.push(marker);
+    					bounds.extend(marker.getPosition());
+                        drawCircle(new google.maps.LatLng(#{hazard.lat}, #{hazard.lng}), #{hazard.radiusMeters}/1000, '#445566', 2, .5, '#112233', .25);
+    					
+    				</ui:repeat>
+    				
+    				if (markers.length == 0) {
+    					bounds.extend(new google.maps.LatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}));
+    				}
+
+    				inthincMap.centerAndZoom(map, bounds);
+    				markerClusterer = new MarkerClusterer(map,markers,{
+    					styles:getMarkerClustererStyles('#{request.contextPath}'),
+    					maxZoom : 20
+					});
+    			}
+	
+  				var bubbleMarker = null;
+				function addMarkerListener(marker)	{
+					google.maps.event.addListener(marker, "click", function() {
+						bubbleMarker = marker;
+						fillBubbleMarker(marker.itemID);
+					});
+				}
+				function showBubble() {
+					inthincMap.infoWindowAtMarker(map, 'hazardBubble', bubbleMarker);
+					
+				}
+	</script>
+    
+    <!-- map bubbles -->
+	<rich:panel id="mapPopups" rendered="#{hazardsBean.selectedHazardID ne null}">
+		<ui:param name="hazard" value="#{hazardsBean.hazards[hazardsBean.selectedHazardID]}"/>
+		<ui:include src="/includes/hazardBubble.xhtml">
+			<ui:param name="hazard" value="#{hazard}" />
+			<ui:param name="timeZone" value="#{hazardsBean.user.person.timeZone}"/>
+		</ui:include>
+	</rich:panel>
+	<a4j:region id="jsFormRegion">
+    	<a4j:form id="jsForm">
+			<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="showBubble();"> 
+            	<a4j:actionparam name="hazardID" assignTo="#{hazardsBean.selectedHazardID}"/>
+        	</a4j:jsFunction>
+        </a4j:form>
+	</a4j:region>
+    
+    
   </ui:define>
 </ui:composition>

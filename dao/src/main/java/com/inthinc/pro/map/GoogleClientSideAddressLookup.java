@@ -5,9 +5,10 @@ import java.util.List;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Zone;
-
+// not sure if this class/type of address lookup is even valid anymore
+// google dropped support for csv output so using json 
 public class GoogleClientSideAddressLookup extends AddressLookup {
-    private String googleMapGeoUrl;
+    private static String googleMapGeoUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false";
 
 	public GoogleClientSideAddressLookup() {
 		super();
@@ -17,17 +18,15 @@ public class GoogleClientSideAddressLookup extends AddressLookup {
   @Override
   public String getAddress(LatLng latLng) throws NoAddressFoundException{
  
-  	if (!isValidLatLngRange(latLng)){
-    	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.INVALID_LATLNG);
-	}
-
-            StringBuilder request = new StringBuilder(googleMapGeoUrl)
+      if (!isValidLatLngRange(latLng)){
+          throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.INVALID_LATLNG);
+      }
+      StringBuilder request = new StringBuilder(googleMapGeoUrl)
+              .append("&latlng=")
               .append(String.format("%f", latLng.getLat()))
               .append(",")
-              .append(String.format("%f", latLng.getLng()))
-              .append("&output=csv");
-          
-          return request.toString();
+              .append(String.format("%f", latLng.getLng()));
+      return request.toString();
   }
 
     @Override
@@ -49,14 +48,6 @@ public class GoogleClientSideAddressLookup extends AddressLookup {
 			
 		}
         return null;
-    }
-
-    public String getGoogleMapGeoUrl() {
-        return googleMapGeoUrl;
-    }
-
-    public void setGoogleMapGeoUrl(String googleMapGeoUrl) {
-        this.googleMapGeoUrl = googleMapGeoUrl;
     }
 
 }

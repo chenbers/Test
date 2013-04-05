@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.model.SelectItem;
+
 import com.inthinc.pro.dao.CustomMapDAO;
 import com.inthinc.pro.model.CustomMap;
 import com.inthinc.pro.model.GoogleMapType;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.util.MessageUtil;
 
 
 public class CustomMapsBean extends BaseBean {
@@ -21,7 +25,9 @@ public class CustomMapsBean extends BaseBean {
 
     private Integer googleMapLayerID;
     private Boolean googleMapLayerSelected;
-
+    
+    private Boolean zonesMapLayerSelected;
+    public static final Integer ZONE_LAYER_ID = 0;
 
     private static final Map<String, GoogleMapType>  googleMapTypes;
     static
@@ -50,12 +56,22 @@ public class CustomMapsBean extends BaseBean {
         List<Integer> selectedMapLayerIDs = user.getSelectedMapLayerIDs();
         if (selectedMapLayerIDs != null)
             for (Integer id : selectedMapLayerIDs) {
-                for (CustomMap customMap : customMaps)
-                    if (customMap.getCustomMapID().equals(id)) {
-                        customMap.setSelected(true);
-                        break;
+                if (id.equals(ZONE_LAYER_ID)) {
+                    zonesMapLayerSelected = Boolean.TRUE;
+                }
+                else {
+                    for (CustomMap customMap : customMaps) {
+                        if (customMap.getCustomMapID().equals(id)) {
+                            customMap.setSelected(true);
+                            break;
+                        }
                     }
+                }
             }
+    }
+    
+    public List<Zone> getZones() {
+        return getProUser().getZones();
     }
     
     public CustomMapDAO getCustomMapDAO() {
@@ -110,6 +126,10 @@ public class CustomMapsBean extends BaseBean {
         if (googleMapLayerID == null || googleMapLayerSelected == null)
             return;
         
+        if (googleMapLayerID.equals(ZONE_LAYER_ID)) {
+            zonesMapLayerSelected = googleMapLayerSelected;
+            return;
+        }
         for (CustomMap customMap : customMaps)
             if (customMap.getCustomMapID().equals(googleMapLayerID)) {
                 customMap.setSelected(googleMapLayerSelected);
@@ -117,5 +137,13 @@ public class CustomMapsBean extends BaseBean {
             }
     }
     
+    public Boolean getZonesMapLayerSelected() {
+        return zonesMapLayerSelected;
+    }
+
+    public void setZonesMapLayerSelected(Boolean zonesMapLayerSelected) {
+        this.zonesMapLayerSelected = zonesMapLayerSelected;
+    }
+
 
 }

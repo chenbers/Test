@@ -457,7 +457,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             return null;
 
         StringBuffer buffer = new StringBuffer();
-        if (reportSchedule.getReport().getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER && reportSchedule.getDriverIDList() != null && !reportSchedule.getDriverIDList().isEmpty()) {
+        if (reportSchedule.getReport().getEntityType() != EntityType.ENTITY_INDIVIDUAL_DRIVER && reportSchedule.getDriverIDList() != null && !reportSchedule.getDriverIDList().isEmpty()) {
             List<Driver> driverList = getDriverList();
             for (Integer driverID : reportSchedule.getDriverIDList()) {
                 for (Driver driver : driverList) {

@@ -9,9 +9,10 @@ import com.inthinc.pro.automation.annotations.AutomationAnnotations.StoryPath;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageUtil;
 import com.inthinc.pro.selenium.steps.LoginSteps;
+import com.inthinc.pro.selenium.steps.StressTestSteps;
 import com.inthinc.pro.selenium.steps.UtilSteps;
 
-@UsingSteps(instances={LoginSteps.class, UtilSteps.class})
+@UsingSteps(instances={LoginSteps.class, StressTestSteps.class, UtilSteps.class})
 @PageObjects(list={PageLogin.class, PageUtil.class })
 @StoryPath(path="StressTestCreateDevices.story")
 

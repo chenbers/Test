@@ -4,6 +4,8 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 
 public class GeoUtil {
+    private static double EARTH_RADIUS_MI = 3958.75;
+    private static double EARTH_RADIUS_KM = 6371;
     /**
      * Calculates the bearing from the <code>origin</code> to the <code>destination</code>
      * @param origin the origin point LatLng
@@ -12,10 +14,8 @@ public class GeoUtil {
      */
     public static String headingBetween(LatLng origin, LatLng destination) {
         String results = " * ";
-        double deltaLong = Math.abs(origin.getLng() - destination.getLng());
-        double y = Math.sin(deltaLong) * Math.cos(destination.getLat());
-        double x = Math.cos(origin.getLat()) * Math.sin(destination.getLat()) - Math.sin(origin.getLat()) * Math.cos(origin.getLat()) * Math.cos(deltaLong);
-        double bearing = Math.toDegrees(Math.atan2(y, x));
+        double bearing = bearing(origin, destination);
+        
         double north = 360; // or full circle in degrees
         String[] directionals = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
         double bearingDegreesDelta = 360; // starting at zero and the farthest bearing couldn't be more than 360 degrees away
@@ -31,7 +31,17 @@ public class GeoUtil {
         }
         return results;
     }
+    public static double bearing(LatLng latLng1, LatLng latLng2) {
+        double deltaLong = Math.toRadians(latLng2.getLng() - latLng1.getLng());
 
+        double lat1 = Math.toRadians(latLng1.getLat());
+        double lat2 = Math.toRadians(latLng2.getLat());
+
+        double y = Math.sin(deltaLong) * Math.cos(lat2);
+        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);
+        double result = Math.toDegrees(Math.atan2(y, x));
+        return (result + 360.0) % 360.0;
+       }
     /**
      * Calculates the distance between <code>orig</code> and <code>dest</code in Miles or Kilometers.
      * @param orig the origin point LatLng
@@ -40,9 +50,7 @@ public class GeoUtil {
      * @return a float representation of the distance between the given points in Miles or Kilometers depending on english/metric units.
      */
     public static float distBetween(LatLng orig, LatLng dest, MeasurementType units) {
-        double earthRadiusMiles = 3958.75;
-        double earthRadiusKilo = 6371;
-        double earthRadius = (MeasurementType.ENGLISH.equals(units)) ? earthRadiusMiles : earthRadiusKilo;
+        double earthRadius = (MeasurementType.ENGLISH.equals(units)) ? EARTH_RADIUS_MI : EARTH_RADIUS_KM;
 
         double dLat = Math.toRadians(dest.getLat() - orig.getLat());
         double dLng = Math.toRadians(dest.getLng() - orig.getLng());

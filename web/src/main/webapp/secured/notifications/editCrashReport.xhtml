@@ -15,24 +15,21 @@
 	
    
     <ui:define name="scripts">
-   		<ui:include src="/includes/map/portalMap.xhtml"/>
-         <script src="#{facesContext.externalContext.request.contextPath}/js/mapGeocode.js" type="text/javascript"></script>
+   		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
          <script type="text/javascript">
          	function setLatLng(address) {
-             	
-         		  var geocoder = new GClientGeocoder();
-         		  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
-         		  
-         		  geocoder.getLocations(address,
-         			    function(response) {
-         			      if(response.Status.code!=200){
-         			    	 alert("The address: [" + address + "] was not found.");
-         			      } else {
-         			    	  var place = response.Placemark[0];
-         			    	  updateLocation(place.Point.coordinates[1],place.Point.coordinates[0]);							
-         			      }
-         			    }
-         		  );						
+				inthincMap.lookupAddress(map, address, function (result, status) {
+					if (status != google.maps.GeocoderStatus.OK) {
+      			    	alert("The address: [" + address + "] was not found.");
+					}
+	  			    else {
+						updateLocation(result[0].geometry.location.lat(),result[0].geometry.location.lng());							
+					}
+				});
+
+         	}
+         	function showAddress(address) {
+				inthincMap.showAddress(map, address);
          	}
          </script>
 	</ui:define>
@@ -66,42 +63,28 @@
 		<t:saveState value="#{crashReportBean}"></t:saveState>
 		
 		<script type="text/javascript">
-				var map,  crashMarker, eventListener, crashPolyline, editTripPolyline, editTripStartPoint, editTripEndPoint, addTripPoints = [], editTripPoints = [], crashPoints = [];
+				var map, crashMarker, eventListener, crashPolyline, editTripPolyline, editTripStartPoint, editTripEndPoint, addTripPoints = [], editTripPoints = [], editTripBounds, crashPoints = [], crashBounds;
 				
 				function placeCrashMarker(lat,lng){
 					if(map){
 						if(crashMarker)
-							map.removeOverlay(crashMarker);
-						var point = new GLatLng(lat,lng);
+							crashMarker.setMap(null);
+						var point = new google.maps.LatLng(lat,lng);
 			            crashMarker = createCrashMarker(point);
-						map.addOverlay(crashMarker);
 				    }
 	            }
 	
 	            function createCrashMarker(latLng){
-	                var baseIcon = new GIcon();
-	    			baseIcon.iconSize = new GSize(21, 20);
-	    			baseIcon.iconAnchor = new GPoint(6, 20);
-	    			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-	            	var icon = new GIcon(baseIcon);
-	            	icon.image = "#{facesContext.externalContext.request.contextPath}/images/icon_crash.png";
-	            	var options = { icon:icon };
-		       	 	marker = new GMarker(latLng, options);
-	            	return marker;
+		  			return inthincMap.createMarker(map, {
+		  				position : latLng,
+		  				iconImage : {
+							anchor : new google.maps.Point(6, 20),
+							scaledSize : new google.maps.Size(21, 20),
+							url :"#{request.contextPath}/images/icon_crash.png"
+						} 
+		  			});
+					
 	            }
-
-	            function createMarker(latLng,imageURL){
-	                var baseIcon = new GIcon();
-	    			baseIcon.iconSize = new GSize(21, 20);
-	    			baseIcon.iconAnchor = new GPoint(6, 20);
-	    			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-	            	var icon = new GIcon(baseIcon);
-	            	icon.image = imageURL;
-	            	var options = { icon:icon };
-		       	 	var marker = new GMarker(latLng, options);
-	            	return marker;
-	            }
-
 	            /*<![CDATA[*/
 		            function getClosestPointFromList(latLng,latLngArray){
 		            	if(latLng){
@@ -140,12 +123,18 @@
 	            /*]]>*/
 	        // add ability to show trip points, if they exist
 	    	<ui:fragment rendered="#{crashReportBean.useExistingTrip eq 'FALSE'  or  not empty crashReportBean.crashReportTrip.route}">		    	
+	 			crashBounds = new google.maps.LatLngBounds();
 				<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
-					crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
+	    			var pt = new google.maps.LatLng(#{point.lat}, #{point.lng});
+					crashPoints.push(pt);
+					crashBounds.extend(pt);
 		    	</a4j:repeat>   	
 
+		    	editTripBounds = new google.maps.LatLngBounds();
 		    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
-					editTripPoints.push(new GLatLng(#{route.lat}, #{route.lng}));
+		    		var pt = new google.maps.LatLng(#{route.lat}, #{route.lng});
+					editTripPoints.push(pt);
+					editTripBounds.extend(pt);
 	    		</a4j:repeat>
 			</ui:fragment>
 		</script>
@@ -154,60 +143,64 @@
 		<rich:panel id="initMap">
 			<script type="text/javascript">
 				function initMap()
-	            {		          
-					if (GBrowserIsCompatible()) {
-						 GUnload();
-						portalmap.init(false, "map-canvas");
-						initLayers();
-					  	map = portalmap.getMap();
-									 
-						 <ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
-						 	 map.setCenter(new GLatLng('#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}'),12);
-						 </ui:fragment>
-						 map.addControl(new GLargeMapControl());
+	            {
+					map = inthincMap.init({
+						'canvasID' : 'map-canvas',
+						'overviewMapControl' : true
 
-						 if(eventListener)
-						 	GEvent.removeListener(eventListener);
+					});
+					initLayers(map, "#{context}-layerControl");
 
-						 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq false and empty crashReportBean.crashReport.crashDataPoints}">
-						 	 eventListener = GEvent.addListener(map,"click", function(overlay, latLng) {     
-								  if (latLng) { 
-								    updateLocation(latLng.lat(),latLng.lng());
-								    
-								  }
-							 });
-						 </ui:fragment>					 
+					<ui:fragment rendered="#{crashReportBean.crashReport.lat eq null}">
+					 	 inthincMap.center(map, '#{crashReportBean.groupHierarchy.topGroup.mapLat}','#{crashReportBean.groupHierarchy.topGroup.mapLng}');
+					 	 inthincMap.zoom(map, 12);
+					 </ui:fragment>
 
-						 <ui:fragment rendered="#{crashReportBean.crashReport.lat ne null and empty crashReportBean.crashReport.crashDataPoints}">
-						 	map.setCenter(new GLatLng('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}'),15);
-						 	updateLocation('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
-						 </ui:fragment>
+					 if(eventListener)
+					 	google.maps.event.removeListener(eventListener);
 
-						 // Changed from test on useExistingTrip						 									
-						 <ui:fragment rendered="#{crashReportBean.crashReportTrip ne null}">						 
-		                	editTripStartPoint = new GLatLng(	#{crashReportBean.crashReportTrip.startLoc.lat},
-				                								#{crashReportBean.crashReportTrip.startLoc.lng});
-		                	editTripEndPoint = new GLatLng(		#{crashReportBean.crashReportTrip.endLoc.lat},
-				                								#{crashReportBean.crashReportTrip.endLoc.lng});
-							editTripPolyline = new GPolyline(editTripPoints, "#0000ff", 6, 1);
-							map.addOverlay(editTripPolyline);
+					 <ui:fragment rendered="#{crashReportBean.useExistingTrip eq false and empty crashReportBean.crashReport.crashDataPoints}">
+					 	eventListener = google.maps.event.addListener(map, "click", function(event) {     
+						    updateLocation(event.latLng.lat(), event.latLng.lng());
+						 });
+					 </ui:fragment>					 
 
-							// Should there be no crash points
-							var bounds = editTripPolyline.getBounds();
-		   					map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));							
+					 <ui:fragment rendered="#{crashReportBean.crashReport.lat ne null and empty crashReportBean.crashReport.crashDataPoints}">
+					 	 inthincMap.center(map, '#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
+					 	 inthincMap.zoom(map, 15);
+					 	 updateLocation('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
+					 </ui:fragment>
 
-		   					if ( crashPoints.length != 0 ) {
-								crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
-								map.addOverlay(crashPolyline);
+					 <ui:fragment rendered="#{crashReportBean.crashReportTrip ne null}">						 
+	                	editTripStartPoint = new google.maps.LatLng(	#{crashReportBean.crashReportTrip.startLoc.lat},
+			                								#{crashReportBean.crashReportTrip.startLoc.lng});
+	                	editTripEndPoint = new google.maps.LatLng(		#{crashReportBean.crashReportTrip.endLoc.lat},
+			                								#{crashReportBean.crashReportTrip.endLoc.lng});
+						tripPolyline = inthincMap.addPolyline(map, editTripPoints, {
+							strokeColor:  "#0000ff",
+							strokeWeight: 6,
+							strokeOpacity : 1,
+							show : true
+						});
+	   					
+						inthincMap.centerAndZoom(map, editTripBounds);
 
-								var bounds = crashPolyline.getBounds();
-		   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
-		   					}
+					 </ui:fragment>						 
 
-		   					placeCrashMarker('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
-						 </ui:fragment>						 
-					}
-	                          
+   					if ( crashPoints.length != 0 ) {
+							crashPolyline = inthincMap.addPolyline(map, crashPoints, {
+								strokeColor:  "#CB4B4B",
+								strokeWeight: 6,
+								strokeOpacity : 1,
+								show : true
+							});
+
+							inthincMap.centerAndZoom(map, crashBounds);
+   					}
+
+					<ui:fragment rendered="#{crashReportBean.crashReport.lat ne null}">
+	   					placeCrashMarker('#{crashReportBean.crashReport.lat}','#{crashReportBean.crashReport.lng}');
+	   				</ui:fragment>
 	            } 
 			</script>
 		</rich:panel>
@@ -218,35 +211,51 @@
 					function displayTrip(){						
 						var polyline;
 						var marker;
-				
-						map.clearOverlays();
+
+						inthincMap.clear(map);
 						
 						var points = new Array();
 						var index = 0;
-						var bounds = null;
+						var bounds = new google.maps.LatLngBounds();
 						
 	   					<ui:repeat value="#{crashReportBean.selectedTrip.route}" var="latLng">
-	   						points[index] = new GLatLng(#{latLng.lat}, #{latLng.lng}),
+	   						points[index] = new google.maps.LatLng(#{latLng.lat}, #{latLng.lng}),
+	   						bounds.extend(points[index]);
 	   						index++;
 	   					</ui:repeat>
 
-	   					polyline = new GPolyline(points,"#0000ff", 6);						
+						polyline = inthincMap.addPolyline(map, points, {
+							strokeColor:  "#0000ff",
+							strokeWeight: 6,
+							strokeOpacity : 0.5,
+							show : true
+						});
 	   					if ( index != 0 ) {				   									
-	   						map.addOverlay(polyline);	  
-	   						bounds = polyline.getBounds();
-	   						 											   																				
-							map.addOverlay(createMarker(points[0],"#{request.contextPath}/images/ico_start.png"));
-							map.addOverlay(createMarker(points[index-1],"#{request.contextPath}/images/ico_end_trip.png"));			
+							inthincMap.centerAndZoom(map, bounds);
+
+							inthincMap.createMarker(map, {
+	  							position : points[0],
+	  							iconImage : {
+  									anchor : new google.maps.Point(5, 13),
+  									scaledSize : new google.maps.Size(20, 20),
+									url: "#{request.contextPath}/images/ico_start.png"
+	  							}
+				  			});
+							inthincMap.createMarker(map, {
+	  							position : points[index-1],
+	  							iconImage : {
+  									anchor : new google.maps.Point(5, 13),
+  									scaledSize : new google.maps.Size(20, 20),
+									url: "#{request.contextPath}/images/ico_end_trip.png"
+	  							}
+				  			});
 						}
  						 	   					
-	   					if ( bounds != null ) {
-	   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));
-	   					}
    			
 	   					addTripPoints = points;
 
-	   					GEvent.addListener(polyline,"click",function(point){		   					
-	   						var tripPoint = getClosestPointFromList(point,addTripPoints);
+	   					google.maps.event.addListener(polyline,"click",function(event){		   					
+	   						var tripPoint = getClosestPointFromList(event.latLng,addTripPoints);
 	   						updateLocation(tripPoint.lat(),tripPoint.lng());
 	   						updateCrashTime(tripPoint.lat(),tripPoint.lng());
 						});									
@@ -420,7 +429,7 @@
 									<input id="editCrashReport-addressTextBox" type="text" size="42" value=""/>
 									<rich:spacer width="10px"/>
 									<a4j:commandButton id="editCrashReport-search" immediate="true" 
-										onclick="showAddressWithAccuracy(document.getElementById('editCrashReport-addressTextBox').value);setLatLng(document.getElementById('editCrashReport-addressTextBox').value);" 
+										onclick="showAddress(document.getElementById('editCrashReport-addressTextBox').value);setLatLng(document.getElementById('editCrashReport-addressTextBox').value);" 
 										styleClass="left">
 										<span class="search">
 											#{messages.group_locate}

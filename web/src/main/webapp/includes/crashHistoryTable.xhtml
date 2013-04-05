@@ -10,8 +10,8 @@
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
     
     
-    <h:form id="#{context}-form">
-    <rich:jQuery selector="document" query="ready(function(){initializeCrashTable()})" />          
+    <h:form id="#{context}-form">							 
+    <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />          
     <div class="datagrid_panel" style="width:925px; overflow: auto">
         
 
@@ -21,23 +21,18 @@
             <!-- Data -->
             <rich:column id="mapColumn">
                 <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
-                    <rich:componentControl for="crashLocationModal" event="onclick" disableDefault="true" operation="show">
+                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
                         <f:param name="lat" value="#{item.latitude}" />
                         <f:param name="lng" value="#{item.longitude}" />
                     </rich:componentControl>
                 </h:graphicImage>
-               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1}">
-                    <h:outputText id="address" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-                </rich:toolTip>
-               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2}">
-               	<h:inputHidden id="linkText" value="#{item.latLng}" converter="#{latLngAddressConverter}" />
-  				<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
-               </rich:toolTip>
-              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3}">
-				<h:inputHidden id="eventLat" value="#{item.latitude}"/>
-				<h:inputHidden id="eventLng" value="#{item.longitude}"/>
- 				<h:outputText id="eventAddress" />
-                </rich:toolTip>
+		  		<ui:include src="/includes/addressToolTip.xhtml">	
+   					<ui:param name="addressFormat" value="#{bean.addressFormat}" />
+   					<ui:param name="condition" value="true" />
+   					<ui:param name="latLng" value="#{item.latLng}" />
+   					<ui:param name="index" value="#{index}" />
+				</ui:include>
+                
             </rich:column>
             
             <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{item.time}" >
@@ -118,7 +113,7 @@
     
     <rich:datascroller id="#{context}-bottomScroller" for="#{context}" 
             immediate="true" scrollerListener="#{bean.scrollerListener}" 
-            reRender="#{context},header" oncomplete="initializeCrashTable();" 
+            reRender="#{context},header" oncomplete="initializeTable();" 
             page="#{bean.page}" styleClass="dataScroller" renderIfSinglePage="false"/>
             
     </h:form>
@@ -158,7 +153,7 @@
            	
              	<security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_FORGIVEACCESS">
             	<a4j:commandButton id="forgiveButton" action="#{bean.forgiveItemAction}" 
-            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
+            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeTable()"
                 	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 
                 	reRender="#{clearRerender}" styleClass="left">
                 	<span class="yes"> 
@@ -168,7 +163,7 @@
             	</security:authorize> 
             	        	
             	<a4j:commandButton id="confirmButton" action="#{bean.confirmItemAction}" 
-            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
+            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeTable()"
                 	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 
                 	reRender="#{clearRerender}" styleClass="left">
                 	<span class="yes"> 
@@ -176,7 +171,7 @@
                 	</span>
             	</a4j:commandButton>
             	<a4j:commandButton id="newButton" action="#{bean.newItemAction}" 
-            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeCrashTable()"
+            		oncomplete="Richfaces.hideModalPanel('clearCrashPanel');initializeTable()"
                 	onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" 
                 	reRender="#{clearRerender}" styleClass="left">
                 	<span class="yes"> 
@@ -189,31 +184,6 @@
 
     </rich:modalPanel>
 
-    <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="crashLocationModal" width="540" height="450" headerClass="popupHeader" 
-    	onshow="initializeCrashMap(event.parameters.lat, event.parameters.lng);">
-        <f:facet name="header">
-            <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
-        </f:facet>
-        <f:facet name="controls">
-            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
-            	onclick="Richfaces.hideModalPanel('crashLocationModal')" />
-        </f:facet>
-
-        <div class="eventmap-border">
-        	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
-        </div>
-
-        <div class="popupactions">
-        	<a4j:commandButton id="crashHistoryTableNo" value="#{messages.button_close}" 
-        		onclick="Richfaces.hideModalPanel('crashLocationModal')" styleClass="left">
-            	<span class="edit"> <h:outputText value="#{messages.button_close}" /> 
-            	</span>
-        	</a4j:commandButton>
-        </div>
-    </rich:modalPanel>
-    <!-- END LOCATION MODAL -->
-    
 	<a4j:form id="updateCrashStatus">
 		<a4j:jsFunction name="updCrshStat" action="#{crashHistoryBean.updateCrashStatus}" 
 			reRender="#{context}" >
@@ -221,12 +191,5 @@
 		</a4j:jsFunction>
 	</a4j:form>	    
 	
-	<a4j:form id="lookForZone">
-		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="checkForZoneName('#{addressBean.zoneName}')">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>			
-		</a4j:jsFunction>
-	</a4j:form>   
 
 </ui:composition>

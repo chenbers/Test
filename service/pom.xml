@@ -2,7 +2,7 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>com.inthinc.pro</groupId>
-		<version>2.0.31-SNAPSHOT</version>
+		<version>2.0.31</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.inthinc.pro.service</groupId>
@@ -148,7 +148,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core-test</artifactId>
+			<artifactId>spring-security-core</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -194,12 +196,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+		    <groupId>postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>postgres</groupId>
-			<artifactId>postgis</artifactId>
+		    <groupId>org.postgis</groupId>
+		    <artifactId>postgis-jdbc</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>
@@ -350,6 +352,11 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.6.5</version>
 		</dependency>
+		<dependency>
+    		<groupId>com.google.code.geocoder-java</groupId>
+    		<artifactId>geocoder-java</artifactId>
+    		<version>0.12</version>
+  		</dependency>
 	</dependencies>
 	<reporting>
 		<plugins>

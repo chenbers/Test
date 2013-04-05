@@ -77,8 +77,9 @@ public class RallyHTTP extends HTTPCommands {
         Log.debug(filter);
         return filter;
     }
-
-    public String constructFilter(NameValuePair[] filterBy) throws URIException {
+    
+    
+    public String constructFilter(NameValuePair ...filterBy) throws URIException {
         String filterRaw = null;
         for (NameValuePair pair : filterBy) {
             if (filterRaw == null) {
@@ -88,7 +89,7 @@ public class RallyHTTP extends HTTPCommands {
                         + constructFilter(pair, false) + " )";
             }
         }
-        return encodeURLQuery(filterRaw);
+        return filterRaw;
     }
 
     public String constructFilter(NameValuePair pair) throws URIException {
@@ -135,13 +136,13 @@ public class RallyHTTP extends HTTPCommands {
             Boolean create) {
         String url = null;
         try {
-            if (create)
-                url = request.getValue() + "/create.js";
-            else {
-                url = item.getString("_ref");
-            }
             JSONObject postJSON = new JSONObject();
             postJSON.put(request.getName(), item);
+            if (create){
+                url = request.getValue() + "/create.js";
+            } else {
+                url = item.getString("_ref");
+            }
             String content = postJSON.toString();
             Log.debug(AutomationStringUtil.toString(postJSON));
 
@@ -165,7 +166,7 @@ public class RallyHTTP extends HTTPCommands {
     }
 
     public void deleteObject(RallyWebServices type, String objectID) {
-        if (objectID.endsWith(".js")) {
+        if (!objectID.endsWith(".js")) {
             objectID = type.getValue() + "/" + objectID + ".js";
         }
         deleteObject(objectID);

@@ -13,10 +13,13 @@ import org.ajax4jsf.model.KeepAlive;
 import org.richfaces.json.JSONArray;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverStopReport;
 import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
@@ -150,8 +153,31 @@ public class TeamStopsBean extends BaseBean {
         String selectedDriverName = getSelectedDriverName();
         List<DriverStops> driverStops = driverDAO.getStops(selectedDriverID, selectedDriverName, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
         driverStopReport = new DriverStopReport(teamCommonBean.getGroup().getName(), selectedDriverID, selectedDriverName, teamCommonBean.getTimeFrame(), driverStops);
+        
+        fillInDriverStopAddressesAndZones(driverStopReport);
     }
-    
+    private void fillInDriverStopAddressesAndZones(DriverStopReport driverStopReport) {
+        AddressLookup addressLookup = this.getAddressLookup();
+        List<Zone> zones = getProUser().getZones();
+        if (addressLookup != null) {
+            for (DriverStops driverStop : driverStopReport.getDriverStops()) {
+                   if (driverStop.getLat() != null && driverStop.getLng() != null) {
+                        LatLng latLng = new LatLng(driverStop.getLat(), driverStop.getLng());
+                        driverStop.setAddress(addressLookup.getAddressOrZoneOrLatLng(latLng, zones));
+                        driverStop.setZoneName(findZoneName(zones, latLng));
+                    }
+            }
+        }
+    }    
+    private String findZoneName(List<Zone> zoneList,LatLng latLng) {
+        for ( Zone z: zoneList ) {
+            if (z.containsLatLng(latLng) ) {
+                return z.getName();
+            }
+        }
+        return null;
+    }
+
     private String getSelectedDriverName() {
         for (Driver driver : getDrivers()) {
             if (driver.getDriverID().equals(selectedDriverID))

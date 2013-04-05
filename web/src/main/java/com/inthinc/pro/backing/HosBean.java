@@ -23,8 +23,11 @@ import org.joda.time.Interval;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.HOSOrigin;
+import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.rules.HOSRules;
+import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -35,17 +38,20 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.dao.util.HOSUtil;
+import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandSpool;
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.SelectItemUtil;
 
 public class HosBean extends BaseBean {
     
@@ -153,6 +159,8 @@ public class HosBean extends BaseBean {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         for (HOSStatus e : EnumSet.allOf(HOSStatus.class))
         {
+            if (batchEdit && e == HOSStatus.HOS_PROP_CARRY_14HR)
+                continue;
              selectItemList.add(new SelectItem(e,MessageUtil.getMessageString(e.getName())));
         }
         
@@ -160,7 +168,14 @@ public class HosBean extends BaseBean {
     }
 
     public List<SelectItem> getDots() {
-        return SelectItemUtil.toList(RuleSetType.class, false, RuleSetType.SLB_INTERNAL);
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        for (RuleSetType ruleSetType : EnumSet.allOf(RuleSetType.class)) {
+           if(ruleSetType != RuleSetType.SLB_INTERNAL && !ruleSetType.isDeprecated() )
+               selectItemList.add(new SelectItem(ruleSetType,MessageUtil.getMessageString(ruleSetType.toString())));
+        }
+        
+        return selectItemList;
+        
     }
     
     public Integer getDriverID() {
@@ -319,8 +334,6 @@ public class HosBean extends BaseBean {
         this.selectAll = selectAll;
     }
     protected List<HosLogView> loadItems() {
-logger.info("in loadItems()");
-
         LinkedList<HosLogView> items = new LinkedList<HosLogView>();
         if (getDriverID() == null)
             return items;
@@ -549,12 +562,16 @@ logger.info("in loadItems()");
             }
             
             updateVehicleName();
+//            if (getUpdateField().get("location")) {
+//                updateLatLng();
+//            }
             // copy properties
             for (HosLogView t : selected)
                 BeanUtil.deepCopy(item, t, ignoreFields);
         }
         else {
             updateVehicleName();
+//            updateLatLng();
             if (!item.getDriverID().equals(getDriverID())) {
                 driverChange = true;
             }
@@ -601,6 +618,14 @@ logger.info("in loadItems()");
         }
         
     }
+    private void updateLatLng() {
+        try {
+            LatLng latLng = new GoogleAddressLookup().lookupLatLngForAddress(item.getLocation());
+            item.setLat(new Float(latLng.getLat()));
+            item.setLng(new Float(latLng.getLng()));
+        } catch (NoAddressFoundException e) {
+        }
+    }
 
     protected boolean validate(List<HosLogView> saveItems)
     {
@@ -629,6 +654,52 @@ logger.info("in loadItems()");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("hosLog_future_date_not_allowed"), null);
             context.addMessage("edit-form:editHosLog_dateTime", message);
             
+        }
+        HOSRules rules = RuleSetFactory.getRulesForRuleSetType(log.getDriverDotType());
+        if (rules == null || !rules.isValidStatusForRuleSet(log.getStatus())) {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("hosLog_invalid_status_for_ruleset"), null);
+            context.addMessage("edit-form:editHosLog_status", message);
+            
+        }
+        
+        if (log.getStatus() == HOSStatus.HOS_PROP_CARRY_14HR) {
+            if (log.getVehicleID() == null) {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("hosLog_vehicle_required_for_prop_carry_exception"), null);
+                context.addMessage("edit-form:editHosLog_vehicle", message);
+                
+            }
+            else {
+                LatLng homeOfficeLocation = hosDAO.getVehicleHomeOfficeLocation(item.getVehicleID());
+                if (homeOfficeLocation == null) {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("hosLog_home_office_required_for_prop_carry_exception"), null);
+                    context.addMessage("edit-form:editHosLog_vehicle", message);
+                }
+                else {
+                    
+                    DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+                    int daysBack = RuleSetFactory.getDaysBackForRuleSetType(log.getDriverDotType());
+                    Interval queryInterval = DateTimeUtil.getDaysBackInterval(new DateTime(log.getLogTime()), dateTimeZone, daysBack); 
+                    List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
+                    Collections.sort(hosRecordList);
+                    
+                    List<HOSRec> recList = HOSUtil.getRecListFromLogList(hosRecordList, log.getLogTime(), false);
+                    log.setLat(new Float(homeOfficeLocation.getLat()));
+                    log.setLng(new Float(homeOfficeLocation.getLng()));
+                        
+                    HOSRec newHOSRec = HOSUtil.mapHOSRecord(log, 0, log.getLogTime(), true);
+
+                    if (!rules.isValidException(newHOSRec, recList)) {
+                        valid = false;
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("hosLog_invalid_prop_carrier_exception"), null);
+                        context.addMessage("edit-form:editHosLog_status", message);
+                        
+                    }
+
+                }
+            }
         }
         
         return valid;

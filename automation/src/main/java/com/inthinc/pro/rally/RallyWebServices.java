@@ -18,15 +18,17 @@ public enum RallyWebServices {
 	
 	private String value, get, name;
 	private Integer id;
-	private static final int major = 1, minor = 33;
+	private static final int major = 1, minor = 40;
 	public static final String address = "rally1.rallydev.com";
 	public static final String host = "https://"+address+"/slm/webservice/"+major+"."+minor+"/";
 	
-	public static final String workSpaceString = "{\"_rallyAPIMinor\":\"33\"," +
-        "\"_rallyAPIMajor\":\"1\","+
-        "\"_type\":\"TestCase\","+
-        "\"_ref\":\"https://rally1.rallydev.com/slm/webservice/1.33/testcase/###.js\","+
-        "\"_refObjectName\":\"Reports &gt; Vehicles - Driver Link\",}";
+	public static final String workSpaceString = 
+			"{\"_rallyAPIMajor\": \"1\", " +
+			"\"_rallyAPIMinor\": \"40\", " +
+			"\"_ref\": \"https://rally1.rallydev.com/slm/webservice/1.40/workspace/###.js\", " +
+			"\"_refObjectName\": \"Sand Box\", " +
+			"\"_type\": \"Workspace\"}";
+
 	
 
     public static final String username = "dtanner@inthinc.com";

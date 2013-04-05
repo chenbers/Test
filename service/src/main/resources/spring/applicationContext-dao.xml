@@ -104,7 +104,6 @@
 		<property name="mapServerURLString" value="${mapserver.geonames.url}" />
 	</bean>
 	<bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
-		<property name="googleMapGeoUrl" value="${google.map.geo.url}" />
 	</bean>
 
 </beans>

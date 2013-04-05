@@ -450,10 +450,10 @@ public class FuelStopsBean extends BaseBean {
         return truckGallonsInvalid() && trailerGallonsInvalid();
     }
     private boolean truckGallonsInvalid(){
-    	return (getTruckGallonsUI().getLocalValue() == null)||((Float)getTruckGallonsUI().getLocalValue() <= 0.0f);
+    	return (getTruckGallonsUI().getLocalValue() == null)||((Float)getTruckGallonsUI().getLocalValue() < 0.0f);
     }
     private boolean trailerGallonsInvalid(){
-    	return (getTrailerGallonsUI().getLocalValue() == null)||((Float)getTrailerGallonsUI().getLocalValue() <= 0.0f);
+    	return (getTrailerGallonsUI().getLocalValue() == null)||((Float)getTrailerGallonsUI().getLocalValue() < 0.0f);
     }
     private void addMessageForField(String messageKey, String messageField, FacesMessage.Severity severity){
         FacesMessage message = new FacesMessage(severity, MessageUtil.getMessageString(messageKey), null);

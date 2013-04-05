@@ -400,10 +400,31 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         if (parameterMap.get(paramName) != null)
         {
             final int editID = Integer.parseInt(parameterMap.get(paramName));
+            if (!isItemInList(editID)) {
+                initEditItem(editID);
+            }
             selectItem(editID);
             return true;
         }
         return false;
+    }
+    
+    private boolean isItemInList(Integer id) {
+        if (getItems() == null || getItems().isEmpty())
+            return false;
+        
+        for (final T t : getItems()) {
+            if (t.getId().equals(id))
+                return true;
+        }
+
+        return false;
+        
+    }
+    
+    protected void initEditItem(Integer editID)
+    {
+        
     }
     
     /**

@@ -66,4 +66,8 @@ public class AckDataParser implements AttribParser {
 		return offset;
 	}
 
+   public Object parseString(String val){
+       return val.getBytes();
+   }
+
 }

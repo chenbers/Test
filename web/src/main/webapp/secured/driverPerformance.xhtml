@@ -12,81 +12,44 @@
 	<ui:param name="title" value="#{messages.driverPerformanceTab} - #{driverPerformanceBean.driver.person.fullName}"/>
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
- 		<ui:include src="/includes/map/portalMap.xhtml"/>
+ 		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+ 		<ui:include src="/includes/mapv3/zoneLookup.xhtml"/>
+		<script src="#{facesContext.externalContext.request.contextPath}/js/mapv3/trip.js" type="text/javascript"></script>	
 	  	<script	 type="text/javascript">
-	  		var baseIcon = new GIcon();
-				baseIcon.iconSize = new GSize(21, 20);
-				baseIcon.iconAnchor = new GPoint(6, 20);
-				baseIcon.infoWindowAnchor = new GPoint(5, 1);
-	
-	  		var map;
+	  		var map = null;
+	  		var driverTrip = null;
 	  		function initMap(lat,lng,zoom){
- 					portalmap.init();
- 					portalmap.zoom(zoom);
- 					portalmap.center(new GLatLng(lat, lng));
- 					initLayers();
-					addressLookupAddressFormat = #{driverPerformanceBean.addressFormat};
- 					bounds = new GLatLngBounds();
- 					map = portalmap.getMap();
-					
+				map = inthincMap.init({
+					'canvasID' : 'map-canvas',
+					'center' : {
+						'lat' : lat,
+						'lng' : lng
+					},
+					'zoom' : zoom
+				});
+				initLayers(map, "dpmap-layerControl");
 			}
 	  				
 			function drawTrip()
 			{
 				<ui:fragment rendered="#{driverPerformanceBean.hasLastTrip}">
-					var polyline = new GPolyline([
-										<ui:repeat value="#{driverPerformanceBean.lastTrip.route}" var="route">
-											new GLatLng(#{route.lat}, #{route.lng}),
-									  	</ui:repeat>
-									  	//Repeating the last step to finish JS array.
-									  	new GLatLng(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
-
-					map.addOverlay(polyline);
-
-					<ui:repeat value="#{driverPerformanceBean.lastTrip.route}" var="rt2">
-						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+					var tripPoints = new Array();
+		    		<ui:repeat value="#{driverPerformanceBean.lastTrip.route}" var="route">
+			    		var pt = new google.maps.LatLng(#{route.lat}, #{route.lng});
+						tripPoints.push(pt);
 					</ui:repeat>
-				
-		
-					//Start of trip marker
-					var startlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.beginningPoint.lat}, #{driverPerformanceBean.lastTrip.beginningPoint.lng});
-					marker = createMarker(startlatlng,null, 0, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,1);
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-		
-					//End of trip marker
-					var endlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng});
-					if ("#{driverPerformanceBean.lastTrip.inProgress}" == "true")
-					{
-						marker = createMarker(endlatlng, null,1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,1);
-					}
-					else
-					{
-						marker = createMarker(endlatlng, null,2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,1);
-					}
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-		
+
+					driverTrip = new Trip(tripPoints, "#{facesContext.externalContext.request.contextPath}", "#{driverPerformanceBean.addressFormat}", "#{driverPerformanceBean.lastTrip.inProgress}");
+					driverTrip.displayOnMap(map);
 					//Create Violation markers. //IDLE EVENT is the only event with different icon.
-					var violation;
 					<ui:repeat value="#{driverPerformanceBean.violationEvents}" var="violation">
-						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-
-						marker = createMarker(violation, "#{violation.noteID}", null, "#{eventTypeIcons.iconMap[violation.eventType]}",fillEventBubble,2);
-						map.addOverlay(marker);
-						bounds.extend(marker.getPoint());
+						driverTrip.addViolationMarker(map, new google.maps.LatLng("#{violation.latitude}", "#{violation.longitude}"), "#{eventTypeIcons.iconMap[violation.eventType]}", "#{violation.noteID}", reRenderEventBubble);
 					</ui:repeat>
-							
-					//Zoom and Center on trip.
-					map.setZoom(map.getBoundsZoomLevel(bounds));
-				    map.setCenter(bounds.getCenter());
 			    </ui:fragment>
 			}
-				
-			function bodyUnload()
-			{
-				GUnload();
-			}
+			function displaySelectedEventPopup() {
+				driverTrip.displaySelectedEventPopup();
+			}				
 			
 			function bodyLoad()
 			{
@@ -95,23 +58,7 @@
 					initMap(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng}, 14);
 					drawTrip();
 		 		</h:outputText>
-		 		
 			}
-
-
-			function funcToCall(obj) {
-				jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-
-				if (		obj.callFuncID == 0 ) {
-					fillBubbleMarker(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 1 ) {
-					fillTripBubble(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 2 ) {
-					fillEventBubble(obj.itemID,obj.subID);
-				}	
-			} 			
 		</script>
 	</ui:define>
 
@@ -119,11 +66,8 @@
 	
 	<ui:define name="content">
     <t:saveState value="#{driverPerformanceBean}"/>
-<!-- BEGIN GOOGLE BUBBLES -->
-	<rich:panel id="mapPopups">
-
-      	<h:form id="tripsMapForm">
-		<a4j:queue requestDelay="500" />
+  	<h:form id="tripForm">
+	<a4j:queue requestDelay="500" />
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
@@ -158,7 +102,11 @@
             <ui:param name="lat" value="#{driverPerformanceBean.lastTrip.routeLastStep.lat}" />
             <ui:param name="lng" value="#{driverPerformanceBean.lastTrip.routeLastStep.lng}" />
 	</ui:include>
-	
+	</h:form>
+		
+	<rich:panel id="mapPopups">
+      	<h:form id="tripsMapForm">
+		<a4j:queue requestDelay="500" />
 			<ui:param name="violation" value="#{driverPerformanceBean.violationEventsMap[driverPerformanceBean.selectedViolationID]}"/>
 			<ui:include src="/includes/eventBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
@@ -177,15 +125,16 @@
 	            <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
 	            <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
  				<ui:param name="context" value="driverPerformance" />
+    	        <ui:param name="lat" value="#{violation.latitude}" />
+	            <ui:param name="lng" value="#{violation.longitude}" />
 		</ui:include>
-<!-- END GOOGLE BUBBLES -->
-</h:form>
-</rich:panel>
+		</h:form>
+	</rich:panel>
 <div id="wrapper">
 
 <h:form id="breadcrumbForm">
 
-		<a4j:queue requestDelay="500" />
+	<a4j:queue requestDelay="500" />
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName}&#160;" />
@@ -634,7 +583,7 @@
                             
                             <rich:panel id="mpg_script">
                             	<h:inputHidden value="#{driverPerformanceBean.mpgHistory}" id="hiddenField5"/>
- 	<ui:param name="errorMessageListDP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
+						 	<ui:param name="errorMessageListDP" value="?PBarLoadingText=#{messages.chartPBarLoading}&amp;XMLLoadingText=#{messages.chartXMLLoading}&amp;ParsingDataText=#{messages.chartParsingData}&amp;ChartNoDataText=#{messages.chartChartNoData}&amp;RenderingChartText=#{messages.chartRenderingChart}&amp;LoadDataErrorText=#{messages.chartLoadDataError}&amp;InvalidXMLText=#{messages.chartInvalidXML}"/>
                             
 							<script type="text/javascript">
 								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf#{errorMessageListDP}", "ChartId", "450", "300", "0", "0");
@@ -706,33 +655,12 @@
   </tr>
 </table>
 </div>
-					<a4j:form id="dispatchForm">
-					
-		<a4j:queue requestDelay="500" />
-								<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}"/>					
-					</a4j:form>
-	<a4j:form id="bubbleForm">
-	
-		<a4j:queue requestDelay="500" />
-		<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
-			<a4j:actionparam name="eventId" assignTo="#{driverPerformanceBean.selectedViolationID}"/>
-		</a4j:jsFunction>
-		<ui:fragment rendered="#{driverPerformanceBean.selectedViolationID ne null}">
-		<a4j:jsFunction name="fillBubbleMap" reRender="mapPopups" 
-		oncomplete="getAddressForPosition(#{driverPerformanceBean.violationEventsMap[driverPerformanceBean.selectedViolationID].latitude},#{driverPerformanceBean.violationEventsMap[driverPerformanceBean.selectedViolationID].longitude})">
-			<a4j:actionparam name="eventId" assignTo="#{driverPerformanceBean.selectedViolationID}"/>
-		</a4j:jsFunction>
-		</ui:fragment>		
-		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
-			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
-			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
-			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
-			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
-		</a4j:jsFunction> 	
-	</a4j:form>	
+<a4j:form id="bubbleForm">
+	<a4j:queue requestDelay="500" />
+	<a4j:jsFunction name="reRenderEventBubble" reRender="mapPopups" oncomplete="displaySelectedEventPopup()">
+		<a4j:actionparam name="eventId" assignTo="#{driverPerformanceBean.selectedViolationID}"/>
+	</a4j:jsFunction>
+</a4j:form>	
 
 </ui:define>
 </ui:composition>

@@ -185,6 +185,17 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
        return null;
     }
     
+    @Override
+    protected void initEditItem(Integer editID)
+    {
+        VehicleView vehicleView = createVehicleView(vehicleDAO.findByID(editID));
+        vehicleSettingsFactory.resetToSettingManager(getVehicleSettingManagers(), vehicleView);
+        vehicleView.setEditableVehicleSettings(getVehicleSettingManagers().get(vehicleView.getVehicleID()).associateSettings(vehicleView.getVehicleID()));
+
+        items = new ArrayList<VehicleView>();
+        items.add(vehicleView);
+
+    }
     
     public void setVehicleSettingManagers(Map<Integer, VehicleSettingManager> vehicleSettingManagers) {
         this.vehicleSettingManagers = vehicleSettingManagers;

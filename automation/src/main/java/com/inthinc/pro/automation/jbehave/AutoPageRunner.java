@@ -35,6 +35,7 @@ public class AutoPageRunner {
     private AbstractPage currentPage;
     private Class<? extends AbstractPage> currentPageClass;
     
+    private String formerLocation;
     private String workingOnStep;
     private String elementType;
     private String elementName;
@@ -65,6 +66,7 @@ public class AutoPageRunner {
         elementType = null;
         currentPage = null;
         currentPageClass = null;
+        formerLocation = "";					// for short-circuiting multiple page checks
     }
     
     public void setEmbedder(Embedder embedder){
@@ -94,8 +96,13 @@ public class AutoPageRunner {
             String end = location.substring(mat.end());
             location = start + end;
         }
+        // dbean 2013/01/25 -- added following check for short-circuiting multiple pageObject validations and speed tests
+        if(formerLocation.equalsIgnoreCase(location)) {
+        	return;
+        }
+        formerLocation=location;
         
-        if (pageMap.containsKey(location) && pageMap.get(location).isOnPage()){ 
+        if (pageMap.containsKey(location) && pageMap.get(location).isOnPage()){
             currentPage = pageMap.get(location);    
             currentPageClass = currentPage.getClass();
         } else {

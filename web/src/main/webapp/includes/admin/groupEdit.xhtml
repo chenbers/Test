@@ -20,7 +20,7 @@
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="10"
-					action="#{organizationBean.update}" onclick="clearMap(); this.disabled=true;"  oncomplete="refreshNavigationTree();initMap(); this.disabled=false;"
+					action="#{organizationBean.update}" onclick="this.disabled=true;"  oncomplete="refreshNavigationTree();initMap(); this.disabled=false;"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -28,7 +28,7 @@
 			</li>
 			<li class="r">
 				<a4j:commandButton id="groupEditPanelAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="10"
-					action="#{organizationBean.save}" onclick="clearMap(); this.disabled=true;" oncomplete="refreshNavigationTree();initMap(); this.disabled=false;"
+					action="#{organizationBean.save}" onclick="this.disabled=true;" oncomplete="refreshNavigationTree();initMap(); this.disabled=false;"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -184,6 +184,10 @@
                         </table>
                         </h:panelGroup>
                         </a4j:region>
+                      </td>
+		</tr>
+		<tr>
+		<td>
 						<security:authorize ifAnyGranted="ROLE_HOSADMIN,ROLE_HOSACCESS">
 							<h:panelGroup rendered="#{organizationBean.accountIsHOS}">
 							<table width="500" border="0" cellspacing="2" cellpadding="4" align="left">
@@ -228,7 +232,7 @@
 			</li>
 			<li class="r">
 				<a4j:commandButton id="#{context}-groupEditEditEdit" rendered="#{organizationBean.groupState eq 'EDIT'}" tabindex="8"
-					action="#{organizationBean.update}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
+					action="#{organizationBean.update}" oncomplete="refreshNavigationTree();initMap();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
@@ -236,7 +240,7 @@
 			</li>
 			<li class="r">
 				<a4j:commandButton id="#{context}-groupEditEditAdd" rendered="#{organizationBean.groupState eq 'ADD'}" tabindex="8"
-					action="#{organizationBean.save}" onclick="clearMap()" oncomplete="refreshNavigationTree();initMap();"
+					action="#{organizationBean.save}" oncomplete="refreshNavigationTree();initMap();"
 					reRender="contentPanel,organizationTreePanel,navigation:recents" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="add"><h:outputText

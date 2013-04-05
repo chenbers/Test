@@ -19,6 +19,10 @@ public class DeviceAttributes implements Iterable<EventAttr>{
     public DeviceAttributes(){
         attrs = new HashMap<EventAttr, Object>();
     }
+	
+	public void removeAttribute(EventAttr key){
+		attrs.remove(key);
+    }
     
     public DeviceAttributes addAttribute(EventAttr key, Object value){
         if (value instanceof IndexEnum){
