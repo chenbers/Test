@@ -168,26 +168,26 @@
                     </a4j:outputPanel>
     				</li>
     	
-    				<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
+<!--     				<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li> -->
     				
-    				<li class="l crash-item" >
-    					<span><ins class="crash-pic">&#160;</ins></span>
-                       	<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/>
-              			<h:outputFormat value=" #{messages.crash_summary_overDistance} " >
-                          	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
-                      	</h:outputFormat> 
-    				</li>
+<!--     				<li class="l crash-item" > -->
+<!--     					<span><ins class="crash-pic">&#160;</ins></span> -->
+<!--                        	<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.crashesPerMillionMiles}" converter="PerMillionsMilesToPerMillionsKmEstimateConverter"/> -->
+<!--               			<h:outputFormat value=" #{messages.crash_summary_overDistance} " > -->
+<!--                           	<a4j:actionparam value="miles" converter="MeasurementTextConverter"/> -->
+<!--                       	</h:outputFormat>  -->
+<!--     				</li> -->
     				
-    				<li class="l crash-item" >    				
-                       			<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.daysSinceLastCrash}"/>
-                       			#{messages.crash_summary_daysSinceLastCrash} 
-    				</li>
-    				<li class="l crash-item">    		    				
-                        	    <h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/>
-                           		<h:outputFormat value=" #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} " >
-                                	<a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
-                            	</h:outputFormat>  		
-    				</li>
+<!--     				<li class="l crash-item" >    				 -->
+<!--                        			<h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.daysSinceLastCrash}"/> -->
+<!--                        			#{messages.crash_summary_daysSinceLastCrash}  -->
+<!--     				</li> -->
+<!--     				<li class="l crash-item">    		    				 -->
+<!--                         	    <h:outputText style="font-size:12px;" value="#{teamCrashSummaryBean.crashSummary.milesSinceLastCrash}" converter="DistanceConverter"/> -->
+<!--                            		<h:outputFormat value=" #{messages.crash_summary_totalDistanceDrivenSinceLastCrash} " > -->
+<!--                                 	<a4j:actionparam value="Miles" converter="MeasurementTextConverter"/> -->
+<!--                             	</h:outputFormat>  		 -->
+<!--     				</li> -->
     				
     				<h:outputText rendered="#{showContextMenu eq 'true'}">
     				<li class="r grid_icon">
@@ -203,7 +203,7 @@
     						</f:facet>
     					</a4j:status>
     				</li>
-    				<li class="r divider"><img src="#{request.contextPath}/images/grid_nav_divider.png" /></li>
+<!--     				<li class="r divider"><img src="#{request.contextPath}/images/grid_nav_divider.png" /></li> -->
     			</ul>
     		
         </a4j:region>
