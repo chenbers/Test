@@ -96,6 +96,8 @@
         <jbehave.core.version>3.7.5</jbehave.core.version>
         <jacksonVersion>2.0.2</jacksonVersion>
         <codehausjacksonVersion>1.9.9</codehausjacksonVersion>
+        <jacksonVersion>2.0.2</jacksonVersion>
+        <codehausjacksonVersion>1.9.9</codehausjacksonVersion>
     </properties>
     <build>
         <finalName>pro</finalName>
