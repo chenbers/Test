@@ -277,7 +277,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, adjustedList, endDate);
             ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, originalAdjustedList, endDate);
         }
-        List<HOSRec> hosRecapList = ddlUtil.getRecapList(adjustedList, endDate);
+        List<HOSRec> hosRecapList = HOSUtil.getRecListFromLogList(hosRecordList, endDate, driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT);
+        
         Collections.reverse(hosRecordList);
 
         Date currentTime = new Date();
