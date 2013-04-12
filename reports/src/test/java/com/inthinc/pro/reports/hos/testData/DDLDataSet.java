@@ -76,6 +76,9 @@ public class DDLDataSet {
     
 
     public DDLDataSet(String baseFilename) {
+        this(baseFilename, false);
+    }
+    public DDLDataSet(String baseFilename, boolean isFromDB) {
         account = MockData.createMockAccount();
         group = MockData.createMockGroup(account.getAccountID());
         driver = MockData.createMockDriver(account.getAccountID());
@@ -83,7 +86,12 @@ public class DDLDataSet {
 
         vehicleNameIDMap = new HashMap<String, Integer>();
 
-        hosRecordList = readInTestDataSet("ddl/" + baseFilename + ".csv", driver);
+        if (isFromDB) {
+            hosRecordList = readInDBTestDataSet("ddl/" + baseFilename + ".csv", driver);
+        }
+        else {
+            hosRecordList = readInTestDataSet("ddl/" + baseFilename + ".csv", driver);
+        }
 
         String values[] = baseFilename.split("_");
         interval = DateTimeUtil.getStartEndInterval(values[1], values[2], "MMddyyyy", DateTimeZone.getDefault());
@@ -93,6 +101,126 @@ public class DDLDataSet {
         hosOccupantLogList = genOccupantLogList(driver.getDriverID(), interval.getStart(), interval.getEnd());
     }
 
+    private List<HOSRecord> readInDBTestDataSet(String filename, Driver driver2) {
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        
+        hosVehicleDayDataList = new ArrayList<HOSVehicleDayData>();
+        List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
+        int cnt = 0;
+        BufferedReader in;
+        try {
+            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
+            
+            in = new BufferedReader(new InputStreamReader(stream));
+            // skip first line of titles
+            in.readLine();
+            String str; 
+            while ((str = in.readLine()) != null)
+            {  
+                String values[] = str.split(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+                for (int i = 0; i < values.length; i++) {
+                    if (values[i].startsWith("\"") && values[i].endsWith("\"")) {
+                        values[i] = values[i].substring(1, values[i].length()-1);
+                    }
+                }
+                //hosLogID,driverID,vehicleID,UNIX_TIMESTAMP(h.logTime) * 1000,tzName,status,driverDOTType,vehicleIsDOTFlag,vehicleOdometer,origin,"coalesce(h.trailerId, '')","coalesce(h.serviceId, '')",latitude,longitude,"coalesce(h.location, '')",originalLocation,deletedFlag,editedFlag,editCount,editUserName,truckGallons,trailerGallons,tripReportFlag,tripInspectionFlag,"coalesce(v.name, '')","UNIX_TIMESTAMP(coalesce(cl.logTime, 0)) * 1000","coalesce(v.license, '')",_empID,editUserID,singleDriver,status
+                HOSRecord hosRecord = new HOSRecord();
+                hosRecord.setHosLogID(parseLong(values[0]));
+                hosRecord.setDriverID(parseInt(values[1]));
+                hosRecord.setVehicleID(parseInt(values[2]));
+                long ms = parseLong(values[3]);
+                hosRecord.setLogTime(new Date(ms));
+                hosRecord.setTimeZone(TimeZone.getTimeZone(values[4]));
+                hosRecord.setStatus(HOSStatus.valueOf(parseInt(values[5])));
+                hosRecord.setDriverDotType(RuleSetType.valueOf(parseInt(values[6])));
+                hosRecord.setVehicleIsDOT(Boolean.valueOf(values[7]));
+                hosRecord.setVehicleOdometer(parseLong(values[8]));
+                hosRecord.setOrigin(HOSOrigin.valueOf(parseInt(values[9])));
+                hosRecord.setTrailerID(values[10]);
+                hosRecord.setServiceID(values[11]);
+                hosRecord.setLat(parseFloat(values[12]));
+                hosRecord.setLng(parseFloat(values[13]));
+                hosRecord.setLocation(values[14]);
+                hosRecord.setOriginalLocation(values[15]);
+                hosRecord.setDeleted(Boolean.valueOf(values[16]));
+                hosRecord.setEdited(Boolean.valueOf(values[17]));
+                hosRecord.setChangedCnt(parseInt(values[18]));
+                hosRecord.setEditUserName(values[19]);
+                hosRecord.setTruckGallons(parseFloat(values[20]));
+                hosRecord.setTrailerGallons(parseFloat(values[21]));
+                hosRecord.setTripReportFlag(Boolean.valueOf(values[22]));
+                hosRecord.setTripInspectionFlag(Boolean.valueOf(values[23]));
+                hosRecord.setVehicleName(values[24]);
+                ms = parseLong(values[25]);
+                hosRecord.setOriginalLogTime(new Date(ms));
+                hosRecord.setVehicleLicense(values[26]);
+                hosRecord.setEmployeeID(values[27]);
+                hosRecord.setEditUserID(parseInt(values[28]));
+                hosRecord.setSingleDriver(Boolean.valueOf(values[29]));
+                if (values.length > 30)
+                    hosRecord.setOriginalStatus(HOSStatus.valueOf(parseInt(values[30])));
+                
+
+//                if (rec.getStatus().equals(HOSStatus.DRIVING)) {
+//                    DateTime day = new DateMidnight(new DateTime(rec.getLogTime().getTime(), DateTimeZone.forTimeZone(rec.getTimeZone()))).toDateTime();
+//                    HOSVehicleDayData data = vehicleInDay(day, values[unitIdIdx]);
+//                    if (data == null) {
+//                        
+//                        data = new HOSVehicleDayData();
+//                        data.setDay(day.toDate());
+//                        data.setVehicleID(rec.getVehicleID());
+//                        data.setVehicleName(values[unitIdIdx]);
+//                        data.setVehicleMiles(1000l);
+//                        data.setStartOdometer(150000l);
+//                        
+//                        hosVehicleDayDataList.add(data);
+//
+//                    
+//                        data = new HOSVehicleDayData();
+//                        data.setDay(day.toDate());
+//                        data.setVehicleID(rec.getVehicleID()*100);
+//                        data.setVehicleName(values[unitIdIdx]+ " TEST");
+//                        data.setVehicleMiles(100l);
+//                        data.setStartOdometer(15000l);
+//                        
+//                        hosVehicleDayDataList.add(data);
+//
+//                    }
+//                }
+  
+                hosRecordList.add(hosRecord);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return hosRecordList;
+        
+    }
+    
+    private Integer parseInt(String value) {
+        try {
+            return Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+    private Long parseLong(String value) {
+        try {
+            return Long.valueOf(value);
+        } catch (NumberFormatException e) {
+            return 0l;
+        }
+    }
+    private Float parseFloat(String value) {
+        try {
+            return Float.valueOf(value);
+        } catch (NumberFormatException e) {
+            return 0f;
+        }
+    }
     private List<HOSRecord> readInTestDataSet(String filename, Driver driver) {
         
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
