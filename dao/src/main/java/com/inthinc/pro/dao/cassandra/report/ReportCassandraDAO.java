@@ -181,6 +181,36 @@ public abstract class ReportCassandraDAO extends AggregationCassandraDAO {
         score.setAggressiveTurn(getResultForScoreType(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN, map));
         score.setAggressiveBump(getResultForScoreType(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP, map));
         score.setDrivingStyle(getResultForScoreType(ScoreType.SCORE_DRIVING_STYLE, map));
+
+        
+        double galHeavy = convertLong2Double(getValue(map, MPGGALHEAVY));
+        double galLight = convertLong2Double(getValue(map, MPGGALLIGHT));
+        double galMedium = convertLong2Double(getValue(map, MPGGALMEDIUM));
+        long odomHeavy = getValue(map, MPGODOMETERHEAVY);
+        long odomLight = getValue(map, MPGODOMETERLIGHT);
+        long odomMedium = getValue(map, MPGODOMETERMEDIUM);
+        double mpgHeavy = (galHeavy == 0.0) ? 0.0 : odomHeavy / galHeavy;
+        double mpgLight = (galLight == 0.0) ? 0.0 : odomLight / galLight;
+        double mpgMedium = (galMedium == 0.0) ? 0.0 : odomMedium / galMedium;
+
+        logger.debug("Gallons: " + galHeavy + " " + galLight + " " + galMedium);
+        logger.debug("Odometer: " + odomHeavy + " " + odomLight + " " + odomMedium);
+        logger.debug("mpg: " + mpgHeavy + " " + mpgLight + " " + mpgMedium);
+        logger.debug("Math.round(mpgLight)/10.0d: " + Math.round(mpgLight) / 10.0d);
+
+        
+//        score.setMpgHeavy((mpgHeavy == 0.0) ? null : Math.round(mpgHeavy) / 10.0d);
+//        score.setMpgLight((mpgLight == 0.0) ? null : Math.round(mpgLight) / 10.0d);
+//        score.setMpgMedium((mpgMedium == 0.0) ? null : Math.round(mpgMedium) / 10.0d);
+
+        score.setMpgHeavy((mpgHeavy == 0.0) ? null : Math.round(mpgHeavy) * 10.0d);
+        score.setMpgLight((mpgLight == 0.0) ? null : Math.round(mpgLight)* 10.0d);
+        score.setMpgMedium((mpgMedium == 0.0) ? null : Math.round(mpgMedium)* 10.0d);
+
+        score.setOdometerHeavy((odomHeavy == 0.0) ? null : odomHeavy);
+        score.setOdometerLight((odomLight == 0.0) ? null :odomLight);
+        score.setOdometerMedium((odomMedium == 0.0) ? null : odomMedium);
+        
         return score;
     }
 
