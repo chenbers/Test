@@ -463,6 +463,9 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         HOSRecord priorRecord = null;
         for (int idx = 0; idx < hosRecordList.size(); idx++) {
             HOSRecord hosRecord = hosRecordList.get(idx);
+            if (hosRecord.getStatus() == null || hosRecord.getStatus().isInternal()) {
+                continue;
+            }
             DateTime hosRecordTime = new DateTime(hosRecord.getLogTime());
             
             if (hosRecordTime.isAfter(dayEnd)) {
