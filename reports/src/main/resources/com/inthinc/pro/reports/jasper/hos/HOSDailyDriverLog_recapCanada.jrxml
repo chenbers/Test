@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<field name="day" class="java.lang.Integer"/>
+	<field name="displayDay" class="java.lang.String"/>
 	<field name="ruleSetType" class="com.inthinc.hos.model.RuleSetType"/>
 	<field name="hoursAvailToday" class="java.lang.String"/>
 	<field name="hoursWorkedToday" class="java.lang.String"/>

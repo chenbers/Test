@@ -867,4 +867,31 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             
         }
     }
+    
+    
+    // Note: I extracted the test data from customer database by:
+    //      - running the stored proc hos_getFullRecords(driverID, start ms, end ms, 0) pad the dates a few days on each side
+    //      - exporting the results to a csv file
+    //      - naming the file <whatever>_mmddyyyy_mmddyyyy  where first mmddyyyy is start date of ddl and second is end date
+    //      - copy the file to the test/resources/ddl directory and call it from the test
+    // e.g. for this test I went to weatherford prod silo db and ran call hos_getFullRecords(184552443, 1364191200000, 1365228000000, 0)
+    @Test
+    public void defectTest() {
+            DDLDataSet ddlTestData = new DDLDataSet("pezinaFull_04012013_04042013", true);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+            Address address = new Address();
+            address.setAddr1("address 1");
+            address.setCity("city");
+            address.setZip("84120");
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
+            
+            // check the data
+            List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
+            assertEquals("expected one ReportCriteria item for each day", ddlTestData.numDays, criteriaList.size());
+
+            // turn on in base class to get a dump of report
+            dump("DDL", 1000, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
+            
+        }
 }

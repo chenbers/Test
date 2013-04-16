@@ -9,7 +9,6 @@ default-autowire="byName">
 
   <!-- DAO -->
  <!--
--->
  <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO"/>
   <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO"></bean>
   <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO"></bean>
@@ -17,6 +16,7 @@ default-autowire="byName">
   <bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" />
   <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" />
   <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" />
+-->
 
 
   <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>

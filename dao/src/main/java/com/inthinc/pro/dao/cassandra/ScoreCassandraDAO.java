@@ -59,11 +59,11 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
     private static final Integer NO_SCORE = -1;
 
     public static void main(String[] args) {
-        SiloService siloService = new SiloServiceCreator("192.168.1.218", 8199).getService();
+//        SiloService siloService = new SiloServiceCreator("192.168.1.218", 8199).getService();
 
         ScoreCassandraDAO dao = new ScoreCassandraDAO();
 
-        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+/*        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
         dao.setVehicleDAO(vehicleDAO);
 
@@ -74,9 +74,18 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloService);
         dao.setGroupDAO(groupDAO);
-
-        CassandraDB cassandraDB = new CassandraDB("Iridium Archive", "note", "localhost:9160", 10, false);
+*/
+        
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "note_prod", "chevron-node4.tiwipro.com:9160", 10, false);
         dao.setCassandraDB(cassandraDB);
+//        dao.printScore("2013-02-23", 13243, 8397); //tiwi
+//        dao.printScore("2013-02-23", 10715, 8397); //tiwi
+//        dao.printScore("2013-02-26", 1850, 9890); //ws
+//        dao.printScore("2013-02-26", 4095, 7356); //ws
+        dao.printScore("2013-04-10", 33431, 17001); //ws
+        
+//        dao.printScore("2013-02-23", 4807, 16722); //ws     
+//        dao.printScore("2013-02-23", 36059, 18161);
         /*
          * LastLocation ll = dao.getLastLocationForVehicle(52721); System.out.println("Location: " + ll);
          * 
@@ -92,6 +101,32 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
 
         dao.shutdown();
     }
+    
+    protected  void printScore(String day, Integer driverID, Integer vehicleID) {
+        Composite key = new Composite();
+        key.add(0, day);
+        key.add(1, driverID); 
+        
+        if (vehicleID != null)
+            key.add(2, vehicleID);
+
+        MultigetSliceCounterQuery<Composite, String> sliceQuery = HFactory.createMultigetSliceCounterQuery(getKeyspace(), compositeSerializer, stringSerializer);
+
+        sliceQuery.setColumnFamily("agg");
+        sliceQuery.setRange("", "", false, 1000); // get all the columns
+        sliceQuery.setKeys(key);
+
+        QueryResult<CounterRows<Composite, String>> result = sliceQuery.execute();
+        CounterRows<Composite, String> rows = result.get();
+        for (CounterRow<Composite, String> row : rows) {
+            CounterSlice<String> columnSlice = row.getColumnSlice();
+            List<HCounterColumn<String>> columnList = columnSlice.getColumns();
+            for (HCounterColumn<String> column : columnList) {
+                System.out.println("column.getName(): " + column.getName() + " column.getValue(): " + column.getValue());
+            }
+        }    
+    }
+
 
     @Override
     public ScoreableEntity findByID(Integer id) {
@@ -408,6 +443,7 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
 
     @Override
     public List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap) {
+        logger.debug("getVehicleReportData groupID: " + groupID);
 
         List<VehicleReportItem> vehicleReportItemList = new ArrayList<VehicleReportItem>();
         List<Vehicle> vehicleList = getVehicleDAO().getVehiclesInGroupHierarchy(groupID);
@@ -457,6 +493,7 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
 
     @Override
     public List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration, Map<Integer, Group> groupMap) {
+        logger.debug("getDriverReportData groupID: " + groupID);
         List<DriverReportItem> driverReportItemList = new ArrayList<DriverReportItem>();
         List<Driver> driverList = getDriverDAO().getAllDrivers(groupID);
         for (Driver driver : driverList) {
@@ -546,6 +583,7 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
 
     @Override
     public List<SpeedPercentItem> getSpeedPercentItems(Integer groupID, Duration duration, GroupHierarchy gh) {
+        logger.debug("getSpeedPercentItems groupID: " + groupID);
         List<SpeedPercentItem> speedPercentItemList = new ArrayList<SpeedPercentItem>();
         List<Integer> groupIDList = gh.getGroupIDList(groupID);
 
