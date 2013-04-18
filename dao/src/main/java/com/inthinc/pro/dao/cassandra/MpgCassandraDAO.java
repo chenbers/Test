@@ -67,7 +67,12 @@ public class MpgCassandraDAO extends AggregationCassandraDAO implements MpgDAO {
     @Override
     public List<MpgEntity> getEntities(Group group, Duration duration, GroupHierarchy gh) {
         logger.debug("getEntities: " + group.getGroupID());
-        return getForGroup(group.getGroupID(), duration, gh);
+        List<MpgEntity> mpgList = new ArrayList<MpgEntity>();
+        List<Integer> groupIDList = gh.getChildrenIDList(group.getGroupID());
+        for (Integer groupID : groupIDList){
+            mpgList.addAll(getForGroup(groupID, duration, gh));
+        }
+        return mpgList; 
     }
 
     @Override
@@ -133,7 +138,7 @@ public class MpgCassandraDAO extends AggregationCassandraDAO implements MpgDAO {
             rowKeys.addAll(createDateIDKeys(getTodayForGroup(groupId), groupId, duration.getDvqCode(), count));
 
         CounterRows<Composite, String> rows = fetchAggsForKeys(getDriverGroupAggCF(duration.getCode()), rowKeys);
-        Map<String, Map<String, Long>> driverMap = summarizeByID(rows);
+        Map<String, Map<String, Long>> driverMap = summarize(rows);
 
         for (Map.Entry<String, Map<String, Long>> entry : driverMap.entrySet()) {
             Map<String, Long> columnMap = entry.getValue();
@@ -159,12 +164,12 @@ public class MpgCassandraDAO extends AggregationCassandraDAO implements MpgDAO {
             mpgEntity.setMediumValue((mpgMedium == 0.0) ? null : Math.round(mpgMedium) / 10.0d);
             mpgEntity.setOdometer(getValue(columnMap, ODOMETER6));
             // mpgEntity.setDate(getDatefromString(entry.getKey()));
-            int subGroupId = Integer.parseInt(getKeyPart(entry.getKey(), 2));
-            mpgEntity.setGroupID(subGroupId);
-            mpgEntity.setEntityID(subGroupId);
-            mpgEntity.setEntityName(gh.getGroup(subGroupId).getName());
+//            int subGroupId = Integer.parseInt(getKeyPart(entry.getKey(), 2));
+            mpgEntity.setGroupID(groupID);
+            mpgEntity.setEntityID(groupID);
+            mpgEntity.setEntityName(gh.getGroup(groupID).getName());
 
-            logger.debug("mpg subGroupId: " + subGroupId + " key: " + entry.getKey());
+//            logger.debug("mpg subGroupId: " + subGroupId + " key: " + entry.getKey());
 
             mpgList.add(mpgEntity);
         }

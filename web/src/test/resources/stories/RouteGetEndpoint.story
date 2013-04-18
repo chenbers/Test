@@ -2,10 +2,10 @@ Narrative:
 
 In order to confirm the GET Route endpoint is working correctly, I have these tests
 
-Scenario: Basic Route GET endpoint
+Scenario: I retrieve a standard route
 Given I retrieve a standard route
 
-Scenario: Retrieve route with two deliveries and a load activity
+Scenario: I retrieve a route with two deliveries and a load activity
 Given I retrieve a route with two deliveries and a load activity
 
 Scenario: Retrieve route with two deliveries, a load, and a preload activity
@@ -46,8 +46,6 @@ Given I retrieve a route and then partially complete the route and a different d
 
 Scenario: Status 400 Code 100 Invalid IMEI
 Given I provide an invalid IMEI
-Then I validate the Response text contains "status":404,"code":100,"message":"Device Not Found.  Lookup failed for mcmID or IMEI: XX"
 
 Scenario: Status 400 Code 500 Route not found
 Given I provide an invalid RouteID
-Then I validate the Response text contains "status":400,"code":500,"message":"A route for RouteID: INVALID_ORTEC_ROUTE was not found."
