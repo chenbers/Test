@@ -282,7 +282,7 @@ public enum Attrib {
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
-	ROUTESTOPID(32860, AttribParserType.INTEGER, "routestopid"),
+	ROUTESTOPID(32861, AttribParserType.INTEGER, "routestopid"),
 	ATTR_ROUTE_ID(32862, AttribParserType.INTEGER, "routeid"),
 	
 	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
