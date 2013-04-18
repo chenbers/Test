@@ -145,7 +145,7 @@ public class DDLDataSet {
                 hosRecord.setDeleted(Boolean.valueOf(values[16]));
                 hosRecord.setEdited(Boolean.valueOf(values[17]));
                 hosRecord.setChangedCnt(parseInt(values[18]));
-                hosRecord.setEditUserName(values[19]);
+                hosRecord.setEditUserName("User " + values[28]);
                 hosRecord.setTruckGallons(parseFloat(values[20]));
                 hosRecord.setTrailerGallons(parseFloat(values[21]));
                 hosRecord.setTripReportFlag(Boolean.valueOf(values[22]));
@@ -155,7 +155,7 @@ public class DDLDataSet {
                 hosRecord.setOriginalLogTime(new Date(ms));
                 hosRecord.setVehicleLicense(values[26]);
                 hosRecord.setEmployeeID(values[27]);
-                hosRecord.setEditUserID(parseInt(values[28]));
+//                hosRecord.setEditUserID(parseInt(values[28]));
                 hosRecord.setSingleDriver(Boolean.valueOf(values[29]));
                 if (values.length > 30)
                     hosRecord.setOriginalStatus(HOSStatus.valueOf(parseInt(values[30])));
