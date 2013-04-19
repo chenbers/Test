@@ -244,6 +244,18 @@ public class WaysmartDevice extends DeviceBase {
             }
         }
     }
+    
+    public WaysmartDevice enter_zone(Integer zoneID) {
+    	state.setZoneID(zoneID);
+    	addEvent(AutomationDeviceEvents.enterZone(state, tripTracker.currentLocation()));
+        return this;
+    }
+    
+    public WaysmartDevice leave_zone(Integer zoneID) {
+    	state.setZoneID(zoneID);
+    	addEvent(AutomationDeviceEvents.leaveZone(state, tripTracker.currentLocation()));
+        return this;
+    }
 
 
 }

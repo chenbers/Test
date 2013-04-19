@@ -4,25 +4,22 @@ package com.inthinc.pro.backing;
 public class GoogleMapURLBean {
 
     private String mapUrl;
-    private String mapGeoUrl;
-    
-    public String getMapUrl() {
+    private String markerOptimization;
+
+	public String getMapUrl() {
         return mapUrl;
     }
 
     public void setMapUrl(String mapUrl) {
         this.mapUrl = mapUrl;
     }
+    
+    public String getMarkerOptimization() {
+		return markerOptimization;
+	}
 
-    public String getMapGeoUrl() {
-        return mapGeoUrl;
-    }
-
-    public void setMapGeoUrl(String mapGeoUrl) {
-        this.mapGeoUrl = mapGeoUrl;
-    }
-
-
-
+	public void setMarkerOptimization(String markerOptimization) {
+		this.markerOptimization = markerOptimization;
+	}
 
 }

@@ -15,230 +15,190 @@
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="ajaxPanels" value="inputFormPanel"/>
 	<ui:define name="scripts">
- 		<ui:include src="/includes/map/portalMap.xhtml"/>
-		
-		<a4j:loadScript src="/js/markerclusterer_packed.js"/>
-		<a4j:loadScript src="/js/progressbarcontrol_packed.js"/>
-		
-			
-			
+		<!-- Use Internet Explorer 8 Standards mode (errors occur in faces javascript with IE 9 otherwise) -->
+		<meta http-equiv="x-ua-compatible" content="IE=8" />
+	
+ 		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+		<a4j:loadScript src="/js/mapv3/markerclusterer_compiled.js"/>
+		<a4j:loadScript src="/js/mapv3/markerclustererWrapper.js"/>
+		<a4j:loadScript src="/js/mapv3/addressLookup.js"/>
 		<script type="text/javascript">
-
 		//<![CDATA[
+
 		var map = null;
-	  	var markerClusterer;
-		var markers = [];
-	    var addressLatLng = null;
-		var mapNeedsInit = true;
+		var isReverseGeocode = false;
+		var bounds;
+		var BUBBLE_DIV_ID = "vehicleBubble";
 		
-	    var baseIcon = new GIcon();
-			baseIcon.iconSize = new GSize(25, 30);
-			baseIcon.iconAnchor = new GPoint(6, 20);
-			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-			baseIcon.shadow=null;
-
 	    function initMap() {
-	       		
-	      if (GBrowserIsCompatible()) {
-	    	  
-	    	  if (mapNeedsInit) {
+			if (map == null) {
+				map = inthincMap.init({
+					'center' : {
+						'lat' : mapDefaultLoc.lat(),
+						'lng' : mapDefaultLoc.lng()
+					},
+					'zoom' : mapDefaultZoom
+				});
+				initLayers(map, "livefleet-layerControl");
 
-
-				portalmap.init();
-				initLayers();
-				map = portalmap.getMap();
-	        	geocoder = new GClientGeocoder();
-				map.setCenter(mapDefaultLoc);
-				bounds = new GLatLngBounds();
-			    var marker = createMarker(mapDefaultLoc, "defaultMessage", null, null, null);
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-				var node = document.getElementById("defaultMessage").cloneNode(true);
-				node.style.display = 'block';
-			    marker.openInfoWindow(node);
-
-			
-			    mapNeedsInit = false;
-
-	    	  }
-	      }
+				bounds = new google.maps.LatLngBounds();
+				inthincMap.createInfoWindowFromDiv(map, "defaultMessage", mapDefaultLoc);
+			}
 		}
 		
-		function refresh()
-		{
+		function refresh() {
 			processForm('liveFleetAddressTextBox', 'countComboBox');
 		}
 	    
-   		function processForm(addressId, countId)
-   		{
+   		function processForm(addressId, countId) {
 			//Get form elements
    			var address = document.getElementById(addressId).value;
    			var count = document.getElementById(countId).value;
 
    			// Clear all existing markers and zoom boundary.
-			map.clearOverlays();
-			portalmap.restoreLayersState();
+   			inthincMap.clearMarkers(map);
 			
-			bounds = new GLatLngBounds();
-   			
 			//Text field is blank, process form for only number of vehicles dropdown.
 	   		if(address.length == 0)  
    			{
 	   			notifyBean(mapDefaultLoc.lat(), mapDefaultLoc.lng(), count);
    				return;
    	   		}
-
-	   	    if (geocoder) {
-	   	        geocoder.getLatLng(
-	   	          address,
-	   	          function(point) {
-	   	        	  if (!point) {
-	   	        		  alert(address + " not found");
-	   	        	  } else {
-	  	     
-		   				 //Create Marker
-						 var marker = new GMarker(point);
-						 GEvent.addListener(marker, "click", function() {
-					         	marker.openInfoWindowHtml("<b>" + address + "</b>");  });
-						 
-						 map.addOverlay(marker);
-						 bounds.extend(marker.getPoint());
-						
-						 //Immediately display info window.
-						 marker.openInfoWindow("<b>" + address + "</b>");
-						         	  
-						 //Pass Geocode lookup LatLng and max count to Bean.
-						 var loc = marker.getLatLng();
-						 notifyBean(loc.lat(), loc.lng(), count);
-	    	         }
-	   	          }
-	   	        );
-	   	    }
-   	    }
+		    inthincMap.lookupAddress(map, address, function (result, status) {
+				if (status != google.maps.GeocoderStatus.OK) {
+			    	console.log('Geocoding failed for address: ' +  address + " status: "+ status);
+			    } else {
+			    	var position = result[0].geometry.location; 
+			    	bounds.extend(position);
+ 					notifyBean(position.lat(), position.lng(), count);
+				}
+		    });
+   		}
+   		
+   		function showAddress() {
+   			var address = document.getElementById('liveFleetAddressTextBox').value;
+	   		if(address.length == 0) {
+   				return;
+   	   		}
+		    inthincMap.showAddress(map, address);
+   		}
 
 		/* Check if Enter pressed in form.
 		 * Process form if user pressed enter in form fields.
-		 */
-   		function checkEnter(e)
-   		{ 
+		*/
+		function checkEnter(e) { 
    			var characterCode;
 
-   			if(e.which){ 
-   			e = e;
-   			characterCode = e.which; //NN4's which property
+   			if(e.which) { 
+   				e = e;
+   				characterCode = e.which; //NN4's which property
    			}
-   			else{
-   			e = event;
-   			characterCode = e.keyCode;//IE's keyCode property
+   			else {
+   				e = event;
+   				characterCode = e.keyCode;//IE's keyCode property
    			}
    			
    			//if generated character code is equal to ascii 13 (if enter key)
    			if(characterCode == 13) {    				
-					processForm('liveFleetAddressTextBox', 'countComboBox');
-   					return false; }
-   			else
-   	   			{	return true;  }
+				processForm('liveFleetAddressTextBox', 'countComboBox');
+   				return false; 
+			}
+   			else {	
+   				return true;  
+   			}
    		}
 
-		    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
-			function bodyUnload()
-			{
-				GUnload();
-			}
+		var mapDefaultLoc= new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng})
+		var mapDefaultZoom = #{liveFleetBean.addressZoom};
 	
-			function bodyLoad()
-			{
-				initMap();
-				addMarkers();
-				defaultAddressElement = "liveFleetVehicleBubbles:bubbleAddress";
-				bubbleElement = "vehicleBubble";
-				errorMessage = "#{messages.sbs_badLatLng}"
-				addressLookupAddressFormat = #{liveFleetBean.addressFormat};
-			}
-	
-	
-			function funcToCall(obj) {
-				jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
+		function bodyLoad() {
+			initMap();
+			addMarkers();
+			isReverseGeocode = #{liveFleetBean.addressFormat == 3};
 
-				if (		obj.callFuncID == 0 ) {
-					fillBubbleMarker(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 1 ) {
-					fillTripBubble(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 2 ) {
-					fillEventBubble(obj.itemID,obj.subID);
-					
-				} else if ( obj.callFuncID == 4 ) {
-					fillBubbleMap(obj.noteID);
-				}	
-			} 		 
- 
+		}
+		//]]>
 
-	   		//]]>
-		</script>	
+	</script>	
 	
 	</ui:define>
 	<ui:define name="content">
 	
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form id="liveFleetVehicleBubbles">
-			<rich:panel id="mapMarkers">
+		<rich:panel id="mapMarkers">
 		<script type="text/javascript">
-		//<![CDATA[
-		//Pulled out of markerclusterer.js
-		  var sizes = [53, 56, 66, 78, 90];
-		  var styles = [];
+			//<![CDATA[
 
-		  var i = 0;
-		  for (i = 1; i <= 5; ++i) {
-		    styles.push({
-		      'url': "#{request.contextPath}/images/markerClusterer/m" + i + ".png",
-		      'height': sizes[i - 1],
-		      'width': sizes[i - 1]
-		    });
-		  }
-		//]]>
-			var marker;
-			var driverLoc;
-			var bounds;
+			function showInfoWindowForItemID(itemID) {
+				
+				console.log('showInfoWindowForItemID ' + itemID);
+				
+				var markers = inthincMap.getMarkers(map);
+				for (var i = 0; i < markers.length; i++) {
+					if (markers[i].itemID && markers[i].itemID == itemID) {
+						initInfoWindow(markers[i]);
+					}
+				}
+			}
+			//]]>
+			var selectedMarker;
+			function initInfoWindow(marker) {
+				selectedMarker = marker;
+				fillBubbleMarker(selectedMarker.itemID);
+			}
+			function showInfoWindow() {
+				if (isReverseGeocode == true) {
+					addressLookup.findAddress(BUBBLE_DIV_ID, function() {
+						console.log('infoWindow on map' + selectedMarker.itemID);
+							inthincMap.infoWindowAtMarker(map, BUBBLE_DIV_ID, selectedMarker);
+					});
+				}
+				else {
+					inthincMap.infoWindowAtMarker(map, BUBBLE_DIV_ID, selectedMarker);
+				}
+			}
+			
+			function addMarkerListener(marker)
+			{
+				google.maps.event.addListener(marker, "click", function() {
+					initInfoWindow(marker);
+				});
+				
+			}
+
 
 			function addMarkers()
 			{
-				var progress = 0;
-				var progressBar = new ProgressbarControl(map);
-				
 				if (markerClusterer != null) {
 			          markerClusterer.clearMarkers();
-			        }
-				progressBar.start(#{fn:length(liveFleetBean.drivers)});
-
-				markers = [];
-
-				bounds.extend(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
+			          inthincMap.clearMarkers(map);
+		        }
+				var markers = [];
+				bounds.extend(new google.maps.LatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}));
 				
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-			
-					marker = createMarker(	new GLatLng(#{driver.loc.lat}, #{driver.loc.lng}), 
-											#{driver.vehicle.vehicleID}, null,
-											"#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}",
-											fillBubbleMarker,0);
+					var marker = inthincMap.createMarker(map, {
+						position: new google.maps.LatLng(#{driver.loc.lat}, #{driver.loc.lng}),
+						iconImage : "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}"
+					});
+					marker.itemID = #{driver.vehicle.vehicleID};
+					addMarkerListener(marker, marker.itemID);	
 					markers.push(marker);
-					progressBar.updateLoader(progress++);
-					bounds.extend(marker.getPoint());
+					bounds.extend(marker.getPosition());
 					
 				</ui:repeat>
-				
-				markerClusterer = new MarkerClusterer(map,markers,{styles:styles});
-				
-				progressBar.remove();
 
-				map.setZoom(map.getBoundsZoomLevel(bounds));
-	    		map.setCenter(bounds.getCenter());
+				inthincMap.centerAndZoom(map, bounds);
+				markerClusterer = new MarkerClusterer(map,markers,{
+					styles:getMarkerClustererStyles('#{request.contextPath}'),
+					maxZoom : 20
+				});
+
 			}
-		</script>
+			</script>
 		</rich:panel>
-			<rich:panel id="mapPopups" rendered="#{liveFleetBean.selectedVehicleID ne null}">
+		<rich:panel id="mapPopups" rendered="#{liveFleetBean.selectedVehicleID ne null}">
 		
 			<ui:param name="driverLocation" value="#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID]}"/>
 			<ui:include src="../includes/vehicleBubble.xhtml">
@@ -337,7 +297,7 @@
 									<f:facet name="header">
 									
 									</f:facet>
-									<a href="#" id="showGroup" onclick="lkFrZnBubble(#{item.loc.lat},#{item.loc.lng},0,#{item.vehicle.vehicleID},null,null,4);">
+									<a href="#" id="showGroup" onclick="showInfoWindowForItemID(#{item.vehicle.vehicleID});">
 										<img src="#{liveFleetBean.legendIconMap.icons[item.vehicle.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>
@@ -415,10 +375,10 @@
 				</rich:panel>
 				<hr />
 	            <!-- END INPUT FORM -->
-				<h:form id="liveFleetMapForm" name="mapLinks2">
 				<h:panelGroup styleClass="map-border" layout="block">
 					 <div id="map-canvas" style="width: 580px; height: 425px; border: 0"></div> 
 				</h:panelGroup>
+				<h:form id="liveFleetMapForm" name="mapLinks2">
 				<div id="defaultMessage" style="display: none">
 					<br/>
 						<h2>#{messages.livefleet}</h2>
@@ -432,29 +392,14 @@
 				
 				<a4j:region id="jsFormRegion">
 					<a4j:form id="jsForm">
-						<a4j:jsFunction reRender="driversDataTable,mapMarkers,mapPopups,driverScroller,liveFleetLegend" name="notifyBean" oncomplete="bodyLoad()">				
+						<a4j:jsFunction reRender="driversDataTable,mapMarkers,mapPopups,driverScroller,liveFleetLegend" name="notifyBean" oncomplete="bodyLoad();showAddress();">				
 							<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
 							<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
 							<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	
 						</a4j:jsFunction>
-						<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="getAddressForCurrentMarker()">
-							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
-							<a4j:actionparam name="subId" />
-						</a4j:jsFunction>
-						<a4j:jsFunction name="fillBubbleMap" reRender="mapPopups"
-								 oncomplete="getAddressForPosition(#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lat},#{liveFleetBean.driverLocationsMap[liveFleetBean.selectedVehicleID].loc.lng})">
+						<a4j:jsFunction name="fillBubbleMarker" reRender="mapPopups" oncomplete="showInfoWindow();">
 							<a4j:actionparam name="vehicleId" assignTo="#{liveFleetBean.selectedVehicleID}"/>
 						</a4j:jsFunction>
-		<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>	
-			<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}"/>	
-			<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}"/>
-			<a4j:actionparam name="subID" assignTo="#{addressBean.subID}"/>
-			<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}"/>
-		</a4j:jsFunction> 	 					
-					
 					</a4j:form>
 				</a4j:region>
 				</div>
@@ -489,8 +434,6 @@
       					</rich:dataGrid>
 						
 						</div>
-<!--						<div style="clear:both"/>-->
-	  					
 					</div>
 					<div class="panel_sw">
 					<div class="panel_statusbar"></div>

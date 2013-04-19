@@ -14,11 +14,11 @@
   <ui:param name="title" value="#{redFlagOrZoneAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagOrZoneAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}"/>
   
   <ui:define name="scripts">
-    <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-    <script src="#{facesContext.externalContext.requestContextPath}/js/mapGeocode.js" type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.requestContextPath}/js/drawZone.js" type="text/javascript"></script>
+  	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/mapv3/zone.js" type="text/javascript"></script>
     <script type="text/javascript">    
-      var map;
+      var map = null;
+      var zone = null;
       function bodyLoad()
       {
           loadSpeedElements();
@@ -44,38 +44,26 @@
 			  document.getElementById('editRedFlag-byMaxSpeed').style.display = (document.getElementById("edit-form:editRedFlag-speedSel:1").checked ? '' : 'none');
           }
       }
-      function loadMap(){
-          if (GBrowserIsCompatible())
-          {
-            GUnload();
-              
-            map = new GMap2(document.getElementById("map-canvas"));
-            map.disableDragging();
-            map.disableDoubleClickZoom();
-            map.disableInfoWindow();
-            showZone();
-          }
-
-
-      }    
+      function loadMap() {
+		if (map == null) {
+			map = inthincMap.init({
+				'canvasID' : 'map-canvas'
+			});
+			initLayers(map, "redFlags-layersControl");
+			inthincMap.setReadOnly(map, true);
+		}
+		showZone();
+      }
       function showZone()
       {
-        map.clearOverlays();
-        if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
+		if (zone != null) {
+			zone.clear();
+    	}
+		if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
         { 
-           
-	        var outline = fromOutlineString(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
-	        if (outline)
-	        {
-	          centerMapAtZone(getLatLngBounds(outline));
-	          loadZone(outline, false);
-	        }
+           zone = new Zone(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
+           zone.displayOnMap(map, true);
         }
-      }
-
-      function bodyUnload()
-      {
-        GUnload();
       }
     </script>
     <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>

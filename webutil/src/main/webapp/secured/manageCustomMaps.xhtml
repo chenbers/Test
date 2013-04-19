@@ -7,31 +7,36 @@
 	<a4j:loadScript src="/js/jquery-1.4.2.min.js"/>
 	<script type="text/javascript"> jQuery.noConflict(); </script>
     <a4j:loadStyle src="/css/jsDropdown/dropdownchecklist.css"/>
-    
-	<a4j:loadScript src="https://maps-api-ssl.google.com/maps?file=api&amp;v=2&amp;client=gme-inthinc&amp;sensor=false&amp;ahl=en" type="text/javascript"/>
+    <a4j:loadScript src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;client=gme-inthinc&amp;hl=en" />
     <a4j:loadScript src="/js/jsDropdown/jquery-ui-1.8.4.custom.min.js"/>
     <a4j:loadScript src="/js/jsDropdown/ui.dropdownchecklist-1.3-min.js"/>
-	<a4j:loadScript src="/js/maps.js"/>
+    
+    <!--  TODO: This is an exact copy of the maps3.js in the portal, eventually this should possibly move to our common s3 location -->
+	<a4j:loadScript src="/js/maps3.js"/>
 	
 	
 	<script type="text/javascript">
 	//<![CDATA[
+		
+		var map = null;
+		
 		function processAddressLookup(addressId)
    		{
    			var address = document.getElementById(addressId).value;
 	   		if(address.length == 0)  
    				return;
-	   		portalmap.lookupAddress(address);
+	   		inthincMap.lookupAddress(map, address);
    		}
    		function checkEnterAddressLookup(e, addressId)
    		{ 
-   			characterCode = (e.which) ? e.which : event.keyCode; 
+   			characterCode = (e.which) ? e.which : e.keyCode; 
    			if(characterCode == 13) {    				
    				processAddressLookup(addressId);
 				return false; 
 			}
 			return true;  
    		}
+   		
 
 		//]]>
 	</script>
@@ -231,7 +236,7 @@
  	            <f:facet name="header">
 					<h:outputText value="Map Preview" />
         	    </f:facet>
-				<div id="map_canvas" style="width: 475px; height: 400px; border: 0"></div>
+				<div id="map-canvas" style="width: 475px; height: 400px; border: 0"></div>
 			</rich:panel>
 			</a4j:form>
 			<a4j:outputPanel  id="addressLookup">
@@ -277,5 +282,10 @@
 
     	</rich:modalPanel>
 		
+	<script type="text/javascript">
+	//<![CDATA[
+   		google.maps.event.addDomListener(window, 'load', initLayers);
+		//]]>
+	</script>
     </ui:define>
 </ui:composition>

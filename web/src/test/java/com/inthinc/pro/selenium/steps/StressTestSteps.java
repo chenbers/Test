@@ -1,6 +1,5 @@
 package com.inthinc.pro.selenium.steps;
 
-import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.automation.utils.RandomValues;
@@ -77,14 +76,6 @@ public class StressTestSteps extends LoginSteps {
     PageAdminDevices devicesPage = new PageAdminDevices();
     PageAdminEditDevice deviceEditPage = new PageAdminEditDevice();    
     private RandomValues random;
-    
-    @Given("I log in to the util")
-    public void givenILogInToTheUtil() {
-    	loginPage.open("https://dev.tiwipro.com:8413/tiwiproutil");
-    	loginPage._textField().username().type("mweiss");
-    	loginPage._textField().password().type("password");
-    	loginPage._button().logIn().click();
-    }
     
     @When("I create one thousand vehicles")
     public void whenICreateOneThousandVehicles() {

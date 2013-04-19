@@ -105,7 +105,9 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="183" y="1" width="137" height="20">
-					<printWhenExpression><![CDATA[$F{lastReportedEvent.type} != null && $F{lastReportedEvent.lastUnassignedDate} == null]]></printWhenExpression>
+					<!-- This was commented out as if the device serial number is available it should always be shown -->
+					<!-- <printWhenExpression><![CDATA[$F{lastReportedEvent.type} != null && $F{lastReportedEvent.lastUnassignedDate} == null]]></printWhenExpression> -->
+					<printWhenExpression><![CDATA[$F{lastReportedEvent.deviceSerialNum} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{lastReportedEvent.deviceSerialNum}]]></textFieldExpression>
@@ -127,7 +129,9 @@
 			</textField>
 			<textField>
 				<reportElement mode="Transparent" x="183" y="1" width="137" height="20">
-					<printWhenExpression><![CDATA[$F{lastReportedEvent.type} == null || $F{lastReportedEvent.lastUnassignedDate} != null]]></printWhenExpression>
+					<!-- if the vehicle does not have a device serial number display 'unassigned' -->
+					<!-- <printWhenExpression><![CDATA[$F{lastReportedEvent.type} == null || $F{lastReportedEvent.lastUnassignedDate} != null]]></printWhenExpression> -->
+					<printWhenExpression><![CDATA[$F{lastReportedEvent.deviceSerialNum} == null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{vehicle.unassigned}]]></textFieldExpression>

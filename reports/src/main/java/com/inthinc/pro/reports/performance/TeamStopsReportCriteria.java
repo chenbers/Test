@@ -79,7 +79,6 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
         intervalList.remove(intervalList.size()-1);
         
         for (Interval dayInterval : intervalList) {
-System.out.println(" day interval: " + dayInterval);
             List<DriverStops> dayDriverStops = getDriverDAO().getStops(driverID, driverName, dayInterval);
             driverStops.addAll(dayDriverStops);
         }

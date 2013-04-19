@@ -104,7 +104,7 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new DropDown(NotificationsBarEnum.CATEGORY_FILTER, page);
         }
 
-        public DropDown statusFilter() {
+        public DropDown status() {
             return new DropDown(NotificationsBarEnum.STATUS_FILTER, page);
         }
 	}

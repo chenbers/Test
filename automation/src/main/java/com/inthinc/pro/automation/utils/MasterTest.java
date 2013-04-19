@@ -196,7 +196,7 @@ public abstract class MasterTest {
     }
     
     public Boolean validateStringContains(String partialString, String fullString) {
-        if (!fullString.equalsIgnoreCase(partialString)) {
+        if (!fullString.toLowerCase().contains(partialString.toLowerCase())) {
             addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
             return false;
         }
@@ -204,7 +204,7 @@ public abstract class MasterTest {
     }
     
     public Boolean validateStringDoesNotContain(String partialString, String fullString){
-        if (fullString.contains(partialString)) {
+        if (fullString.toLowerCase().contains(partialString.toLowerCase())) {
             addError(partialString + " is, but should not be, in " + fullString, ErrorLevel.FAIL);
             return false;
         }

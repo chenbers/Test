@@ -32,12 +32,10 @@
         }
     </style>
     
-    <ui:include src="/includes/map/portalMap.xhtml"/>
-    <a4j:loadScript src="/js/mapGeocode.js" />
-    <a4j:loadScript src="/js/drawZone.js" />
+    <ui:include src="/includes/mapv3/portalMap.xhtml"/>
+    <a4j:loadScript src="/js/mapv3/zone.js" />
     <script type="text/javascript">
-       var map;
-       var marker;
+       var map = null;
        var hazardlat = "#{hazardsBean.item.latitude}";
        var hazardlng = "#{hazardsBean.item.longitude}";
        var hazardRadius = "#{hazardsBean.item.radiusMeters}";
@@ -99,7 +97,7 @@
                         </li>
                         <li class="l"><button id="hazardsSearch" type="submit" class="left" onclick="showAddressWithHazard(document.getElementById('hazards-form:hazardAddress').value); return false;"><span class="search"><h:outputText value="#{messages.hazard_locate}" /></span></button></li>
                         <li class="r">
-                           <h:commandButton id="reset" action="#{hazardsBean.reset}" onclick="stopDrawing()" styleClass="left"><span class="back"><h:outputText value="#{messages.hazard_reset}" /></span></h:commandButton>
+                           <h:commandButton id="reset" action="#{hazardsBean.reset}" styleClass="left"><span class="back"><h:outputText value="#{messages.hazard_reset}" /></span></h:commandButton>
                            <h:outputText value="&#160;" /><a4j:commandButton id="hazardsSave" action="#{hazardsBean.save}"  reRender="edithazard,headerForm" onsubmit="javascript:alert('test');console.log('test');Richfaces.showModalPanel('confirmRecipients')" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.hazard_save}" /></span></a4j:commandButton>
                            <h:outputText value="&#160;" /><a4j:commandButton id="hazardsCancel" action="#{hazardsBean.cancelEdit}"  onclick="cancelEdit()" reRender="points,editHazard,headerForm" oncomplete="showHazard(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
@@ -119,7 +117,7 @@
                           <div id="circle-outline" style="display:none"></div>
                         </div>
                       </h:panelGroup>
-                    <rich:simpleTogglePanel id="editHazardDetails" switchType="client" style="float:right;" opened="true">
+                    <rich:simpleTogglePanel id="editHazardDetails" switchType="client" style="float:right;" opened="true" onexpand="triggerResize();" oncollapse="triggerResize();">
                         <h:panelGroup layout="block" style="width:270px">
                         <table width="270" border="0" cellspacing="2" cellpadding="4" align="left">
                             <tr>
@@ -197,108 +195,59 @@
 
                 <script type="text/javascript">
               //<![CDATA[
-                  function clearOutline(){
-                    removeZoneOverlay();
-//                    map.clearOverlays();
-                  }
-                  function showAddressWithHazard(address){
-                      if (address.length == 0){
-                          map.setCenter(new GLatLng(39.0, -104.0), 4);
-                          return;
-                      }
-
-                      geocoder.getLatLng(address,
-                          function(point) {
-                              if (!point) {
-                                  alert("The address: [" + address + "] was not found.");
-                              } else {
-                                  map.setCenter(point, map.getZoom());
-                                  if(marker)
-                                      map.removeOverlay(marker);
-                                  marker = new GMarker(point);
-                                  map.addOverlay(marker);
-                                  marker.openInfoWindowHtml(address);
-                                  updateCoordinates(point.lng(), point.lat());
-                                  GEvent.addListener(marker, "click", function() {
-                                      marker.openInfoWindowHtml(address);
-                                  });
-                             }
-                          }
-                    );
-                  }
-                  var poly;
-                  function drawCircle(center, radius, nodes, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
-                      //console.log("drawCircle with radius "+radius);
-                      var latConv = center.distanceFrom(new GLatLng(center.lat()+0.1, center.lng()))/100;
-                      var lngConv = center.distanceFrom(new GLatLng(center.lat(), center.lng()+0.1))/100;
-
-                      var points = [];
-                      var step = parseInt(360/nodes)||10;
-                      var bounds = map.getBounds();
-                      for(var i=0; i<=360; i+=step) {
-                          var pint = new GLatLng(center.lat() + (radius/latConv * Math.cos(i * Math.PI/180))
-                              , center.lng() + (radius/lngConv * Math.sin(i * Math.PI/180)));
-                          points.push(pint);
-                          bounds.extend(pint); //this is for fit function
-                      }
-                      fillColor = fillColor||lineColor||"#0055ff";
-                      lineWidth = lineWidth||2;
-                      poly = new GPolygon(points,lineColor,lineWidth,lineOpacity,fillColor,fillOpacity);
-                      map.addOverlay(poly);
-                  }
-                  var hazardPoint;
-                  function showHazard(){
-                	//console.log("showHazard()");
-                    map.clearOverlays();
-                    removeZoneOverlay();
-                    
+				var hazardZone;
+                var hazardPoint;
+                var hazardMarker = null;
+				function showAddressWithHazard(address) {
+					inthincMap.showAddress(map, address, function(position, locMarker) {
+						removeHazardMarker();
+						hazardMarker = locMarker;
+                        updateCoordinates(position.lng(), position.lat());
+						
+					});
+  				}
+				function drawCircle(center, radius, lineColor, lineWidth, lineOpacity, fillColor, fillOpacity) {
+					if (hazardZone != null) {
+						hazardZone.clear();
+					}
+					fillColor = fillColor||lineColor||"#0055ff";
+					lineWidth = lineWidth||2;
+					var circle = new google.maps.Circle({
+						center : center,
+						radius : radius*1000
+					});
+					var points = getCirclePath(circle);
+					hazardZone = new Zone(points, {
+	            			strokeColor : lineColor,
+	            			strokeWeight : lineWidth,
+	            			strokeOpacity : lineOpacity,
+	            			fillColor : fillColor,
+	            			fillOpacity : fillOpacity
+					});
+					hazardZone.displayOnMap(map, true, false);
+				}
+				function showHazard(){
+					
                     if(hazardlat && hazardlng && hazardlat != "" && hazardlng !=""){
-                         hazardPoint = new GLatLng(hazardlat, hazardlng);
-                    } else {
-                    	console.log("no hazardPoint... presumably ADDING");
-                    }
+                         hazardPoint = new google.maps.LatLng(hazardlat, hazardlng);
+                    } 
+                    
                     if (hazardPoint){
-//                      centerMapAtHazard(getLatLngBounds(hazardPoint));
-                        map.setCenter(hazardPoint);
-                        marker = new GMarker(hazardPoint);
-                        map.addOverlay(marker);
-                        //console.log("radius in meters "+hazardRadius);
                         hazardRadius = document.getElementById("hazards-form:hazardRadiusMeters").value / 1000;
-                        drawCircle(hazardPoint, hazardRadius, 20, '#445566', 2, .5, '#112233', .25);
+                        if (hazardRadius > 0) {
+                        	drawCircle(hazardPoint, hazardRadius, '#445566', 2, .5, '#112233', .25);
+                        }
                       return true;
                     }
                     return false;
-                  }
+				}
 
-                  function cancelEdit(){
-                    console.log("in cancelEdit");
-                    map.clearOverlays();
-                  }
+				function cancelEdit(){
 
-                  function select(type){
-                    applyImage("hand", type);
-                    applyImage("rectangle", type);
-                    applyImage("circle", type);
-                    applyImage("polygon", type);
+					inthincMap.clear(map);
+				}
 
-                    if (type != "hand") {
-                        removeZoneOverlay();
-                        
-                        //  map.clearOverlays();
-                        // portalmap.restoreLayersState();
-                    }
-                  }
-
-                  function applyImage(type, selectedType){
-                    var image = document.getElementById("hazards-form:" + type + "_b");
-                    if (type == selectedType){
-                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + "_on.png";
-                    } else{
-                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + ".png";
-                    }
-                  }
-
-                  function updateCoordinates(lng, lat){
+				function updateCoordinates(lng, lat){
                     document.getElementById("hazards-form:editHazard-lng").value = (Math.round(lng*10000.0)/10000.0).toString();
                     document.getElementById("hazards-form:editHazard-lat").value = (Math.round(lat*10000.0)/10000.0).toString();
                     
@@ -307,40 +256,60 @@
                     
                     hazardlat = lat;
                     hazardlng = lng;
-                    hazardPoint = new GLatLng(hazardlat, hazardlng);
+                    hazardPoint = new google.maps.LatLng(hazardlat, hazardlng);
                     
                     showHazard();
-                  }
+				}
 
-                  function bodyLoad(){
-                    if (GBrowserIsCompatible()){
-                        portalmap.init();
-                        initLayers();
-                        map = portalmap.getMap();
+  				function addHazardMarker(position) {
+  					removeHazardMarker();
+					inthincMap.center(map, position.lat(), position.lng());
+          			hazardMarker = inthincMap.createMarker(map, {
+          				position : position		
+          			});
+					
+				}
+  				function removeHazardMarker() {
+					if (hazardMarker != null) {
+						hazardMarker.setMap(null);
+					}
+				}					                  
 
-                      GEvent.addListener(drawZone, "cancelHazard", function(type){
-                        showHazard(true);
-                        select("hand");
-                      });
-                      GEvent.addListener(map, "mousemove", function(latLng) {
-                        //updateCoordinates(latLng.lng(), latLng.lat());
-                      });
-                      GEvent.addListener(map, "click", function(overlay, latLng) {
-                    	  if(latLng){
-	                          if(marker) {
-	                              map.removeOverlay(marker);
-	                          }
-	                          updateCoordinates(latLng.lng(), latLng.lat());
-	                          marker = new GMarker(latLng);
-	                          map.addOverlay(marker);
-                          }
-                      });
+				function bodyLoad(){
+					if (map == null) {
+						map = inthincMap.init();
+						initLayers(map, "editRH-layerControl");
+						google.maps.event.addListener(map, "click", function(mouseEvent) {
+	                    	addHazardMarker(mouseEvent.latLng);
+                  			updateCoordinates(mouseEvent.latLng.lng(), mouseEvent.latLng.lat());
+						});
 
-                      if (!showHazard(false)){
-                        map.setCenter(new GLatLng(#{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng}), 4);
-                      }
-                    }
-                  }
+					}
+					if (!showHazard(false)){
+						inthincMap.center(map, #{hazardsBean.groupHierarchy.topGroup.mapLat}, #{hazardsBean.groupHierarchy.topGroup.mapLng});
+			    		inthincMap.zoom(map, 4);
+	                }
+					else {
+	                    if (hazardPoint) {
+	                    	addHazardMarker(hazardPoint);
+	                    }
+					}
+                }
+
+				function triggerResize()
+				{
+					mapWidth =jQuery("#map-canvas").css('width');
+				    setTimeout(function() {
+						var newMapWidth =jQuery("#map-canvas").css('width');
+						if (newMapWidth != mapWidth) {
+							triggerResize();							
+						}
+						else {
+							inthincMap.triggerResize(map);
+						}
+				    },100);
+				}
+                  
                 //]]>
                 </script>
 

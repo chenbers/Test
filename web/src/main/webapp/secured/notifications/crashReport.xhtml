@@ -13,7 +13,7 @@
                 xmlns:security="http://pro.tiwi.com/jsf/security">
                 
     <ui:define name="scripts">
-   		<ui:include src="/includes/map/portalMap.xhtml"/>
+   		<ui:include src="/includes/mapv3/portalMap.xhtml"/>
 		
 		<tiwi:conditionalCSS browserVersion="IE"><script language="javascript" type="text/javascript" src="#{request.contextPath}/js/crshdetl.excanvas.min.js"></script></tiwi:conditionalCSS>
 	    <script language="javascript" type="text/javascript" src="#{request.contextPath}/js/crshdetl.jquery.flot.js"></script>
@@ -58,83 +58,115 @@
 			
 		</style>
 	    <script language="javascript" type="text/javascript">
-	     	var baseIcon = new GIcon();
-				baseIcon.iconSize = new GSize(20, 20);
-				baseIcon.iconAnchor = new GPoint(5, 13);
-				baseIcon.infoWindowAnchor = new GPoint(5, 1);
-
-			var map, vehicleMarker, plot, gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [], tripSpeed = [], crashPolyline, tripPolyline;
-			var crashPoint = {latlng: new GLatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
+			var map, vehicleMarker, plot, gpsSpeed = [], obdSpeed = [], rpm = [], crashPoints = [], tripPoints = [], tripSpeed = [], crashPolyline, tripPolyline, crashBounds, tripBounds;
+			var crashPoint = {latlng: new google.maps.LatLng(#{crashReportBean.crashReport.lat}, #{crashReportBean.crashReport.lng}), time: #{crashReportBean.crashReport.date.time}};
 			
 			/* TODO: Retrieve data via JSON */
+			crashBounds = new google.maps.LatLngBounds();
 	    	<a4j:repeat value="#{crashReportBean.crashReport.crashDataPoints}" var="point">
-	    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
-	    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new GLatLng(#{point.lat}, #{point.lng})]);
-	    		rpm.push([#{point.time.time}, #{point.rpm}, new GLatLng(#{point.lat}, #{point.lng})]);
-				crashPoints.push(new GLatLng(#{point.lat}, #{point.lng}));
+	    		gpsSpeed.push([#{point.time.time}, #{point.gpsSpeed}, new google.maps.LatLng(#{point.lat}, #{point.lng})]);
+	    		obdSpeed.push([#{point.time.time}, #{point.obdSpeed}, new google.maps.LatLng(#{point.lat}, #{point.lng})]);
+	    		rpm.push([#{point.time.time}, #{point.rpm}, new google.maps.LatLng(#{point.lat}, #{point.lng})]);
+				crashPoints.push(new google.maps.LatLng(#{point.lat}, #{point.lng}));
+				crashBounds.extend(new google.maps.LatLng(#{point.lat}, #{point.lng}));
 	    	</a4j:repeat>    	
 		
+	    	tripBounds = new google.maps.LatLngBounds();
 	    	<a4j:repeat value="#{crashReportBean.crashReportTrip.route}" var="route">
-				tripPoints.push(new GLatLng(#{route.lat}, #{route.lng}));
+				tripPoints.push(new google.maps.LatLng(#{route.lat}, #{route.lng}));
+				tripBounds.extend(new google.maps.LatLng(#{route.lat}, #{route.lng}));
     		</a4j:repeat>
 			
 			function initMap() {
+	  			if (map == null) {
+					map = inthincMap.init({
+						'canvasID' : 'map-canvas',
+						'center' : {
+							'lat' : crashPoint.latlng.lat(),
+							'lng' : crashPoint.latlng.lng()
+						},
+						'zoom' : 14,
+						'overviewMapControl' : true
+
+					});
+					initLayers(map, "#{context}-layerControl");
+	  			}
+	  			else {
+	  				inthincMap.clearMarkers(map);
+	  				inthincMap.center(map, crashPoint.latlng.lat(), crashPoint.latlng.lng());
+	  				inthincMap.zoom(map, 14);
+	  			}
+
+	  			vehicleMarker = inthincMap.createMarker(map, {
+	  				position : crashPoint.latlng,
+	  				iconImage : {
+						anchor : new google.maps.Point(5, 13),
+						scaledSize : new google.maps.Size(20, 20),
+						url :"#{request.contextPath}/images/ico_vehicle.png"
+					}
+	  			});
 				
-				if (GBrowserIsCompatible()) {					
-					portalmap.init(true, "map-canvas");
-					initLayers();
-					map = portalmap.getMap();
-					
-					map.setCenter(crashPoint.latlng, 14);
-					
-					var vehicleIcon = new GIcon(baseIcon);
-					vehicleIcon.image = "#{request.contextPath}/images/ico_vehicle.png";
-					markerOptions = { icon:vehicleIcon };					 					 
-					vehicleMarker = new GMarker(crashPoint.latlng, markerOptions);
-					map.addOverlay(vehicleMarker);
-				
-					var crashIcon = new GIcon(baseIcon);
-					crashIcon.iconSize = new GSize(25, 20);
-					crashIcon.image = "#{request.contextPath}/images/ico_vehicle_crash.png";
-					map.addOverlay(new GMarker(crashPoint.latlng, { icon: crashIcon }));
-					
+	  			inthincMap.createMarker(map, {
+	  				position : crashPoint.latlng,
+	  				iconImage : {
+						anchor : new google.maps.Point(5, 13),
+						scaledSize : new google.maps.Size(25, 20),
+						url :"#{request.contextPath}/images/ico_vehicle_crash.png"
+					} 
+	  			});
+				<ui:fragment rendered="#{crashReportBean.crashReportTrip.route ne null}">
 					//Start of trip marker					
-					<ui:fragment rendered="#{crashReportBean.crashReportTrip.route ne null}">
-						startlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[0].lat}, #{crashReportBean.crashReportTrip.route[0].lng});
-						marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{request.contextPath}/images/ico_start.png");
-						map.addOverlay(marker);					
-					
+					startlatlng = new google.maps.LatLng(#{crashReportBean.crashReportTrip.route[0].lat}, #{crashReportBean.crashReportTrip.route[0].lng});
+					inthincMap.createInfoWindowFromDiv(map, "#{trip.trip.startTime}_START", startlatlng, {
+			  			iconImage : {
+							anchor : new google.maps.Point(5, 13),
+							scaledSize : new google.maps.Size(20, 20),
+							url : "#{request.contextPath}/images/ico_start.png"
+			  			},
+			  			hideInfoWindow : true
+					});
 					//End of trip marker
-						endlatlng = new GLatLng(#{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lat}, #{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lng});
-						marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{request.contextPath}/images/ico_end_trip.png");
-						map.addOverlay(marker);
+					endlatlng = new google.maps.LatLng(#{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lat}, #{crashReportBean.crashReportTrip.route[fn:length(crashReportBean.crashReportTrip.route) - 1].lng});
+					inthincMap.createInfoWindowFromDiv(map, "#{trip.trip.endTime}_END", endlatlng, {
+		  				iconImage : {
+							anchor : new google.maps.Point(5, 13),
+							scaledSize : new google.maps.Size(20, 20),
+							url : "#{request.contextPath}/images/ico_end_trip.png"
+		  				},
+						hideInfoWindow : true
+					});
+					tripPolyline = inthincMap.addPolyline(map, tripPoints, {
+						strokeColor:  "#0000ff",
+						strokeWeight: 6,
+						strokeOpacity : 1,
+						show : true
+					});
+								
+					//Set here, just in case there are not crashdatapoints
+					inthincMap.centerAndZoom(map, tripBounds);
+				</ui:fragment>
 					
-						tripPolyline = new GPolyline(tripPoints, "#0000ff", 6, 1);
-						map.addOverlay(tripPolyline);
-						//Set here, just in case there are not crashdatapoints
-						var bounds = tripPolyline.getBounds();
-   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));   											
-					</ui:fragment>
-					
-					<ui:fragment rendered="#{crashReportBean.crashReport.crashDataPoints ne null}">
-						crashPolyline = new GPolyline(crashPoints, "#CB4B4B", 6, 1);
-						map.addOverlay(crashPolyline);
+				<ui:fragment rendered="#{crashReportBean.crashReport.crashDataPoints ne null}">
+						crashPolyline = inthincMap.addPolyline(map, crashPoints, {
+							strokeColor:  "#CB4B4B",
+							strokeWeight: 6,
+							strokeOpacity : 1,
+							show : true
+						});
 
-						var bounds = crashPolyline.getBounds();
-   						map.setCenter(bounds.getCenter(),map.getBoundsZoomLevel(bounds));   					
+						inthincMap.centerAndZoom(map, crashBounds);
 
-						GEvent.addListener(map, 'mousemove', function(point) {
+						google.maps.event.addListener(map, 'mousemove', function(mouseEvent) {
+							var point = mouseEvent.latLng;
 							var closestPoint = getClosestPointFromList(point, crashPoints);			
-							vehicleMarker.setLatLng(closestPoint.latlng);
+							vehicleMarker.setPosition(closestPoint.latlng);
 							plot.setCrosshair({ x: gpsSpeed[closestPoint.index][0], y:gpsSpeed[closestPoint.index][1]});
 			            	jQuery("#legend .legendLabel").each(
 				            	function(i){
 				            		jQuery(this).text(jQuery(this).text().replace(/=.*/, "= " + plot.getData()[i].data[closestPoint.index][1]));				
 							});
 						}); // for detecting if mouse is above displayed route
-					</ui:fragment>
-				}
-                      
+				</ui:fragment>
              }           
 
 	        /*<![CDATA[*/    
@@ -169,41 +201,6 @@
 			}
 			/*]]>*/
             
-
-		    function orderOfCreation(marker,b) 
-		    {
-		          return 1;
-		    }	
-
-			function createMarker(point, divID, iconImage) 
-	        {
-	        	var markerIcon;
-	        	var marker;
-
-				//Use passed in image.
-	        	if(iconImage != null)
-	        	{
-					markerIcon = new GIcon(baseIcon);
-		       	    markerIcon.image = iconImage;
-		       	 	markerOptions = { icon:markerIcon,zIndexProcess:orderOfCreation };
-		       	 	marker = new GMarker(point, markerOptions);
-	        	}
-	        	//Use default GoogleMap marker image.
-	        	else
-	        	{
-			      	markerIcon = new GIcon();
-					marker = new GMarker(point);
-	        	}
-	       
-	       		GEvent.addListener(marker, "click", function() {
-						var node = document.getElementById(divID).cloneNode(true);
-	          			node.style.display = 'block';
-			            marker.openInfoWindow(node);
-			 			});
-
-	        	return marker;
-	        }
-
 	        function formatDate(date) {
 		        var hour = date.getHours();
 		        var min = date.getMinutes();
@@ -221,9 +218,6 @@
 			function bodyLoad() {
 				initMap();
 			}
-			function bodyUnload() {
-				GUnload();
-			}	
 		</script>
 
 	</ui:define>

@@ -53,8 +53,6 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
-
-		<a4j:loadScript src="/js/mapBubble.js"/>
 	<div id="vehicleBubble" style="display:none">
 		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header" footerClass="google_popups_footer">
 			<f:facet name="header">
@@ -79,16 +77,13 @@
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 1}"> <!--Address -->
-				<h:outputText value="#{vehicleAddress}" />
-			</ui:fragment>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 2}"> <!-- Link -->
-				<a href="#{vehicleAddress}" target="_blank">#{messages.livefleet_address}</a> 
-			</ui:fragment>
-			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
-				<h:outputText id="bubbleAddress"/>
-			</ui:fragment>
-			<h:outputText value="#{messageAddressLatLng}:"/>
+			<ui:include src="/includes/addressLookup.xhtml">
+				<ui:param name="addressLookupType" value="#{addressLookupAddressFormat}" />
+				<ui:param name="address" value="#{vehicleAddress}" />
+				<ui:param name="lat" value="#{lat}" />
+				<ui:param name="lng" value="#{lng}" />
+			</ui:include>
+ 			<h:outputText value="#{messageAddressLatLng}:"/>
 			<h:panelGroup><h:outputText value="#{lat}"/>,<h:outputText value="#{lng}"/></h:panelGroup>
 			<f:facet name="footer">
                <h:outputFormat value="#{messages.vehicleBubble_distance}" rendered="#{distance ne null}">

@@ -56,7 +56,10 @@ public abstract class  AddressLookup {
 
     public String getAddressOrZoneOrLatLng(LatLng latLng, List<Zone> zones){
         try{
-            return getAddress(latLng);
+            String returnAddress = getAddress(latLng);
+            if (returnAddress == null)
+                throw new NoAddressFoundException(null, null);
+            return returnAddress;
         }
         catch(NoAddressFoundException nafe){
             String zone = findZoneName(zones,latLng);
@@ -81,4 +84,10 @@ public abstract class  AddressLookup {
         }
         return null;
     }
+    protected String getLanguage() {
+        String language = "en";
+         if (getLocale() != null && getLocale().getLanguage() != null)
+             language = getLocale().getLanguage();
+         return language;
+     }
 }

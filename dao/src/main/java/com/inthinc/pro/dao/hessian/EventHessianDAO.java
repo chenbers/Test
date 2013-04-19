@@ -13,16 +13,15 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.LoginEvent;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
 @SuppressWarnings("serial")
-public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
+public class EventHessianDAO<T, ID> extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
 
     @SuppressWarnings("unused")

@@ -25,6 +25,7 @@ public class UploadLatestFirmware {
             int uploadFW = ((Double)Double.parseDouble(split[2])).intValue();
             for (AutoSilos server : serverSet){
                 try {
+                	Log.info("Sending firmware to %s", server);
                     TiwiProDevice tiwi = new TiwiProDevice(type, server);
                     tiwi.uploadFirmware(uploadFW);
                 } catch (HessianException e ){

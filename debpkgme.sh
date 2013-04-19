@@ -14,8 +14,9 @@ if [ -z "${TARBALL_FILENAME}" ] || [ ! "${TARBALL_FILENAME}" ]; then TARBALL_FIL
 #######################################
 
 function check_jenkins_variables {
+    echo "Enter function check_jenkins_variables"
     REQUIRED_JENKINS_ENV_VARS="BUILD_NUMBER BUILD_ID JOB_NAME BUILD_TAG EXECUTOR_NUMBER NODE_LABELS WORKSPACE JENKINS_HOME JENKINS_URL BUILD_URL JOB_URL"
-    OPTIONAL_JENKINS_ENV_VARS="DEB_S3_bucket DEB_repository_dir DEB_Package DEB_Source DEB_Version DEB_Architecture DEB_Maintainer DEB_InstalledSize DEB_PreDepends DEB_Depends DEB_Recommends DEB_Suggests DEB_Conflicts DEB_Replaces DEB_Provides DEB_Section DEB_Priority DEB_Homepage DEB_Description DEB_Conffiles NODE_NAME "
+    OPTIONAL_JENKINS_ENV_VARS="DEB_S3_bucket DEB_repository_dir DEB_Package DEB_Source DEB_Version DEB_Architecture DEB_Maintainer DEB_InstalledSize DEB_PreDepends DEB_Depends DEB_Recommends DEB_Suggests DEB_Conflicts DEB_Replaces DEB_Provides DEB_Section DEB_Priority DEB_Homepage DEB_Description DEB_Conffiles NODE_NAME TOMCAT6_REPO"
     echo -n "Checking Jenkins ENV Variables : "
     for MY_VAR in ${REQUIRED_JENKINS_ENV_VARS}
     do
@@ -45,11 +46,156 @@ function check_jenkins_variables {
         fi
     done
     echo ""
+    perl -pi -e 's/=/="/' ${WORKSPACE}/env.bashrc
+    perl -pi -e 's/$/"/' ${WORKSPACE}/env.bashrc
 }
 
+function reset_control_in_temp {
+    echo "Enter function reset_control_in_temp"
+    if [ -d "${TMP_DIR}/control" ]
+    then
+        echo "Resetting control dir"
+        /bin/rm -Rf ${TMP_DIR}/control
+        cp -R ${WORKSPACE}/control ${TMP_DIR}
+    else
+        echo "No ${TMP_DIR}/control to wipe"
+    fi
+}
+
+function get_tomcat6_blank {
+    echo "Enter function get_tomcat6_blank"
+    if [ -d "${WORKSPACE}/tomcat6" ]
+    then
+        echo "Tomcat6 dir exists, deleting"
+        /bin/rm -Rf ${WORKSPACE}/tomcat6
+    fi
+        echo "Cloning Tomcat6 from repo"
+        cd ${WORKSPACE}
+        git clone --depth=1 ${TOMCAT6_REPO} tomcat6
+        rm -Rf tomcat6/.git*
+        echo "Checking dirs for tomcat6 ${T6_DIRS}"
+        for D in ${T6_DIRS}
+        do
+            if [ -d "tomcat6/${D}" ]
+            then
+                echo "Have ${D}"
+            else
+                echo "Creating ${D}"
+                mkdir -p tomcat6/${D}
+            fi
+        done
+}
+
+function get_tomcat2_blank {
+    echo "Enter function get_tomcat2_blank"
+    if [ -d "${WORKSPACE}/tomcat2_configs" ]
+    then
+        echo "Tomcat2_configs dir exists"
+        /bin/rm -Rf ${WORKSPACE}/tomcat2_configs
+    fi
+    echo "Cloning Tomcat2 from repo"
+    cd ${WORKSPACE}
+    git clone --depth=1 ${BLANK_TOMCAT_OVERLAY} tomcat2_configs
+    rm -Rf tomcat2_configs/.git*
+    rsync -av ${WORKSPACE}/tomcat2_configs/* tomcat6
+}
+
+function merge_tomcat6_blank_with_tmp {
+    echo "Enter function merge_tomcat6_blank_with_tmp"
+    if [ -d "${TMP_DIR}/${TARBALL_FILENAME}" ] && [ -d "${WORKSPACE}/tomcat6" ] && [ ! -d "${WORKSPACE}/tomcat6/webapps" ]
+    then
+        echo "Merging wars into tomcat6"
+        /bin/mv ${TMP_DIR}/${TARBALL_FILENAME} ${WORKSPACE}/tomcat6/webapps
+        if [ -d "${WORKSPACE}/tomcat6/webapps" ] && [ ! -d "${TMP_DIR}/${TARBALL_FILENAME}" ] && [ -d "${TMP_DIR}" ]
+        then
+            /bin/mv ${WORKSPACE}/tomcat6 ${TMP_DIR}/${TARBALL_FILENAME}
+        else
+            echo "ERROR: Failed to move tomcat6 and ${TMP_DIR}/${TARBALL_FILENAME} or temp dir missing, exiting at $(date)"
+            exit 1
+        fi
+    else
+        echo "ERROR: Missing tomcat6 or temp dir, exiting at $(date)"
+        exit 1
+    fi
+}
+
+function setup_tomcat2_variables {
+    echo "Enter function setup_tomcat2_variables"
+    DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
+    U_GID="1090"
+    MY_GROUP_USER="tiwipro"
+    TOMCAT_USER="tomcat2"
+    MY_USER_HOME="/usr/local/${TOMCAT_USER}"
+    TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}/webapps"
+    WARS="hoskiosk tiwiproutil tiwipro service"
+    BASE_INSTALL_DIR="${MY_USER_HOME}"
+    if [ "${DISTRIB_CODENAME}" == "lucid" ]
+    then
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx"
+    elif [ "${DISTRIB_CODENAME}" == "precise" ]
+    then
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx-full"
+    else
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx-full"
+    fi
+    DEB_Package="inthinc-${JOB_NAME}-tomcat2_${DISTRIB_CODENAME}"
+    DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+    DEB_Conflicts="tomcat2, tiwipro-wars"
+    DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}_${DISTRIB_CODENAME}.deb"
+    DEB_Provides="tomcat2, tiwipro-wars"
+    echo "Setup tomcat2 variables :"
+    echo "U_GID ${U_GID}"
+    echo "MY_GROUP_USER ${MY_GROUP_USER}"
+    echo "TOMCAT_USER ${TOMCAT_USER}"
+    echo "MY_USER_HOME ${MY_USER_HOME}"
+    echo "TOMCAT_WEBAPPS_DIR ${TOMCAT_WEBAPPS_DIR}"
+    echo "WARS ${WARS}"
+    echo "BASE_INSTALL_DIR ${BASE_INSTALL_DIR}"
+    echo "DEB_Depends ${DEB_Depends}"
+    echo "DEB_Package ${DEB_Package}"
+    echo "DEB_Package_u ${DEB_Package_u}"
+    echo "DEB_Conflicts ${DEB_Conflicts}"
+    echo "DEB_Package_Filename ${DEB_Package_Filename}"
+    echo "DEB_Provides ${DEB_Provides}"
+}
+
+function update_control_scripts {
+    echo "Enter function update_control_scripts"
+    CONTROL_SCRIPTS=$(find ${TMP_DIR}/control/ -maxdepth 1 -type f)
+    for CONTROL_SCRIPT in ${CONTROL_SCRIPTS}
+    do
+        echo "Modifying ${CONTROL_SCRIPT} in ${TMP_DIR}/control at $(date)"
+        #perl -pi -e "s/^U_UID=.*/U_UID=\"${U_UID}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
+        echo "DEBUG : group ${MY_GROUP_USER} tomcat ${TOMCAT_USER} home ${MY_USER_HOME} webapps ${TOMCAT_WEBAPPS_DIR} wars ${WARS}"
+        MY_GROUP_USER_esc=$(echo ${MY_GROUP_USER} | sed -e 's/\//\\\//g')
+	TOMCAT_USER_esc=$(echo ${TOMCAT_USER} | sed -e 's/\//\\\//g')
+	MY_USER_HOME_esc=$(echo ${MY_USER_HOME} | sed -e 's/\//\\\//g')
+	TOMCAT_WEBAPPS_DIR_esc=$(echo ${TOMCAT_WEBAPPS_DIR} | sed -e 's/\//\\\//g')
+	WARS_esc=$(echo ${WARS} | sed -e 's/\//\\\//g')
+#	DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+        echo "perl -pi -e \"s/^MY_GROUP_USER=.*/MY_GROUP_USER=${MY_GROUP_USER_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^MY_GROUP_USER=.*/MY_GROUP_USER=\"${MY_GROUP_USER_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^TOMCAT_USER=.*/TOMCAT_USER=${TOMCAT_USER_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^TOMCAT_USER=.*/TOMCAT_USER=\"${TOMCAT_USER_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^MY_USER_HOME=.*/MY_USER_HOME=${MY_USER_HOME_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^MY_USER_HOME=.*/MY_USER_HOME=\"${MY_USER_HOME_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^TOMCAT_WEBAPPS_DIR=.*/TOMCAT_WEBAPPS_DIR=${TOMCAT_WEBAPPS_DIR_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^TOMCAT_WEBAPPS_DIR=.*/TOMCAT_WEBAPPS_DIR=\"${TOMCAT_WEBAPPS_DIR_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        echo "perl -pi -e \"s/^WARS=.*/WARS=${WARS_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^WARS=.*/WARS=\"${WARS_esc}\"/" ${CONTROL_SCRIPT})
+	echo "perl out is ${PERLOUT} and retval is $?"
+        #debug print postinst, if we add more install scripts or other things the previous control perl subs change we should make this part smarter
+        cat ${CONTROL_SCRIPT}
+    done
+}
 
 function setup_variables {
-    if [ -f "/etc/lsb-release" ]
+    echo "Enter function setup_variables"
+    if [ -f "${WORKSPACE}/lsb-release" ]
     then
         LSB_RELEASE="$(pwd)/lsb-release"
     else
@@ -63,7 +209,6 @@ function setup_variables {
         else
             SRC_VERSION="1.0"
         fi
-
         ARCH=$(uname -m)
         if [ "${ARCH}" = "x86_64" ]
         then
@@ -74,7 +219,8 @@ function setup_variables {
             echo "ARCH_UBU is ${ARCH_UBU}"
         fi
         source ${LSB_RELEASE}
-
+        echo "Sourcing this ${LSB_RELEASE}"
+        cat ${LSB_RELEASE}
     #######################################
     #
     # Jenkins passed values
@@ -86,6 +232,8 @@ function setup_variables {
         if [ ! "${DEB_S3_bucket}" ] || [ ! "${DEB_S3_bucket}" ]; then DEB_S3_bucket="ci-inthinc-com"; echo "DEB_S3_bucket not specified, using default ${DEB_S3_bucket}"; export DEB_S3_bucket; fi
         if [ ! "${DEB_repository_dir}" ]; then DEB_repository_dir="/var/www/debian"; echo "DEB_repository_dir not specified, using default ${DEB_repository_dir}"; fi
         if [ ! "${DEB_Package}" ]; then DEB_Package="inthinc-${JOB_NAME}"; echo "DEB_Package not specified, using default ${DEB_Package}"; fi
+        DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+        echo "Set DEB_Package_u to ${DEB_Package_u}"
         if [ ! "${DEB_Source}" ]; then DEB_Source="${JOB_NAME}"; echo "DEB_Source not specified, using default ${DEB_Source}"; fi
         if [ ! "${DEB_Version}" ]; then DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"; echo "DEB_Version not specified, using default ${DEB_Version}"; fi
         if [ ! "${DEB_Architecture}" ]; then DEB_Architecture="${ARCH_UBU}"; echo "DEB_Architecture not specified, using default ${DEB_Architecture}"; fi
@@ -95,7 +243,7 @@ function setup_variables {
         if [ ! "${DEB_Priority}" ]; then DEB_Priority="optional"; echo "DEB_Priority not specified, using default ${DEB_Priority}"; fi
         if [ ! "${DEB_Homepage}" ]; then DEB_Homepage="http://www.inthinc.com/"; echo "DEB_Homepage not specified, using default ${DEB_Homepage}"; fi
         if [ ! "${DEB_Description}" ]; then DEB_Description="Inthinc Generic Package Description : ${BUILD_TAG} ${BUILD_ID} ${NODE_NAME} built at ${JENKINS_URL} on $(date)"; echo "DEB_Description not specified, using default : "; echo "${DEB_Description}"; fi
-        if [ ! "${DEB_Conffiles}" ]; then DEB_Conffiles=".conf settings.py"; echo "DEB_Conffiles not specified, using default : "; echo "${DEB_Conffiles}"; fi
+        if [ ! "${DEB_Conffiles}" ]; then DEB_Conffiles=".conf settings.py .properties .xml .policy"; echo "DEB_Conffiles not specified, using default : "; echo "${DEB_Conffiles}"; fi
         if [ ! "${DEB_PreDepends}" ]; then echo "DEB_PreDepends not specified, and no default skipping"; fi
         if [ ! "${DEB_Depends}" ]; then echo "DEB_Depends not specified, and no default skipping"; fi
         if [ ! "${DEB_Recommends}" ]; then echo "DEB_Recommends not specified, and no default skipping"; fi
@@ -103,8 +251,10 @@ function setup_variables {
         if [ ! "${DEB_Conflicts}" ]; then echo "DEB_Conflicts not specified, and no default skipping"; fi
         if [ ! "${DEB_Replaces}" ]; then echo "DEB_Replaces not specified, and no default skipping"; fi
         if [ ! "${DEB_Provides}" ]; then echo "DEB_Provides not specified, and no default skipping"; fi
-        if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_F    ilename ${DEB_Package_Filename}"; fi
-
+        if [ ! "${DEB_Package_Filename}" ]; then DEB_Package_Filename="${WORKSPACE}/${JOB_NAME}_${ARCH_UBU}.deb"; echo "DEB_Package_Filename not specified, using default ${DEB_Package_Filename}"; else echo "Using DEB_Package_Filename ${DEB_Package_Filename}"; fi
+        if [ ! "${TOMCAT6_REPO}" ]; then TOMCAT6_REPO="git://github.com/jonzobrist/tomcat6.git"; echo "TOMCAT6_REPO not specified, using default ${TOMCAT6_REPO}"; fi
+        if [ ! "${BLANK_TOMCAT_OVERLAY}" ]; then BLANK_TOMCAT_OVERLAY="git@it.inthinc.com:tomcat2_configs.git"; echo "BLANK_TOMCAT_OVERLAY not specified, using default ${BLANK_TOMCAT_OVERLAY}"; fi
+        if [ ! "${T6_DIRS}" ]; then T6_DIRS="bkup endorsed logarchive logs temp tmp work"; echo "T6_DIRS not specified, using default ${T6_DIRS}"; fi
         # We should get these from our pre-compile build script
         # DEB_PreDepends
         # DEB_Depends
@@ -120,25 +270,32 @@ function setup_variables {
     fi
 }
 
-    function cleanup {
+function cleanup {
+    echo "Enter function cleanup"
         echo "Cleaning up ${TMP_DIR} at $(date)"
         /bin/rm -Rf ${TMP_DIR}
 }
 
 function reprepro_clean {
+    echo "Enter function reprepro_clean"
 # Example line 
 # Remove old package : 
 # reprepro --ask-passphrase -Vb /var/www/debian removematched precise portal-backend-dev-deb
 # Delete from file
 # reprepro --ask-passphrase -Vb /var/www/debian deleteunreferenced
-echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}"
-reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}
-echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
-reprepro -Vb ${DEB_repository_dir} deleteunreferenced
- 
+    if [ ! "${DEB_Package_u}" ]
+     then
+        echo "Missing DEB_Package_u, setting at $(date)"
+        DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+    fi
+    echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}"
+    reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}
+    echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
+    reprepro -Vb ${DEB_repository_dir} deleteunreferenced
 }
 
 function reprepro_publish {
+    echo "Enter function reprepro_publish"
 # Example line 
 # reprepro --ask-passphrase -Vb /var/www/debian includedeb precise /var/lib/jenkins/jobs/portal_backend_dev_deb/workspace/portal_backend_dev_deb_amd64.deb
 # With passphrase removed from key 
@@ -148,6 +305,7 @@ reprepro -Vb ${DEB_repository_dir} includedeb ${DISTRIB_CODENAME} ${DEB_Package_
 }
 
 function s3_sync {
+    echo "Enter function s3_sync"
     S3_CMD=$(which s3cmd)
     if [ -x "${S3_CMD}" ]
      then
@@ -160,6 +318,7 @@ function s3_sync {
 }
 
 function setup_temp_dir {
+    echo "Enter function setup_temp_dir"
     TMP_DIR="${WORKSPACE}/${TARBALL_FILENAME}-debs"
     if [ ! -d "${TMP_DIR}" ]
      then
@@ -176,6 +335,7 @@ function setup_temp_dir {
 }
 
 function update_control_file {
+    echo "Enter function update_control_file"
     SIZE_KB=$(du -sk ${TMP_DIR} | awk '{ print $1 }')
     CONTROL_FILE="${TMP_DIR}/control/control"
     cp -R ${WORKSPACE}/control ${TMP_DIR}
@@ -185,8 +345,12 @@ function update_control_file {
          echo "Failed to create ${CONTROL_FILE}, exiting at $(date)"
          exit 1
     fi
-
-    if [ "${DEB_Package}" ]; then echo "Package: ${DEB_Package}" | tee ${CONTROL_FILE}; fi
+    if [ ! "${DEB_Package_u}" ]
+     then
+        echo "Missing DEB_Package_u, setting at $(date)"
+        DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+    fi
+    if [ "${DEB_Package_u}" ]; then echo "Package: ${DEB_Package_u}" | tee ${CONTROL_FILE}; fi
     if [ "${DEB_Source}" ]; then echo "Source: ${DEB_Source}" | tee -a ${CONTROL_FILE}; fi
     if [ "${DEB_Version}" ]; then echo "Version: ${DEB_Version}" | tee -a ${CONTROL_FILE}; fi
     if [ "${DEB_Architecture}" ]; then echo "Architecture: ${DEB_Architecture}" | tee -a ${CONTROL_FILE}; fi
@@ -206,6 +370,7 @@ function update_control_file {
 }
 
 function extract_built_tarball {
+    echo "Enter function extract_built_tarball"
     cd ${TMP_DIR}
     echo "TARBALL_FILENAME is ${TARBALL_FILENAME}"
     if [ -f "${WORKSPACE}/${TARBALL_FILENAME}.tgz" ]
@@ -227,8 +392,8 @@ function extract_built_tarball {
 }
 
 function create_archive {
+    echo "Enter function create_archive"
     echo "Creating archive at $(date)"
-    update_control_file
     echo "2.0" > ${TMP_DIR}/debian-binary
     mkdir -p ${TMP_DIR}/data
     cd ${TMP_DIR}/data
@@ -300,33 +465,74 @@ function create_archive {
         exit 1
     else
         echo "Successfully created package ${DEB_Package_Filename} at $(date)"
+        echo "MD5sum for new pacakage is $(md5sum ${DEB_Package_Filename})"
+        echo "dpkg info for new pacakage is $(dpkg -I ${DEB_Package_Filename})"
+    fi
+}
+
+function reprepro_add {
+    echo "Enter function reprepro_add"
+    # This way doesn't work wit the way I'm using the env variables straight from Jenkins
+    #if [ "${NODE_NAME}" = "master" ]
+    # Going to use the username, and hard code ubuntu = vagrant instance, and jenkins = master node
+    if [ "${USER}" = "jenkins" ]
+    then
+        echo "We are running on the master node, running reprepro locally"
+        reprepro_clean
+        reprepro_publish
+    else
+        echo "We are not running on the master node, skipping reprepro steps"
+        echo "Additional steps required to add these packages to the master node"
+        echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package_u}"
+        echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
+        echo "reprepro -Vb ${DEB_repository_dir} includedeb ${DISTRIB_CODENAME} ${DEB_Package_Filename}"
     fi
 }
 
 echo "Starting ${0} on $(hostname) at $(date)"
+#echo "############################################ $(date)"
+#echo "First pass, creating default debian package : "
+#echo "############################################ $(date)"
 check_jenkins_variables
 setup_variables
+cleanup
 setup_temp_dir
 extract_built_tarball
 update_control_file
 create_archive
-# This way doesn't work wit the way I'm using the env variables straight from Jenkins
-#if [ "${NODE_NAME}" = "master" ]
-# Going to use the username, and hard code ubuntu = vagrant instance, and jenkins = master node
+reprepro_add
+
+echo "############################################ $(date)"
+echo "Second pass, building for tomcat2 setup : "
+echo "############################################ $(date)"
+reset_control_in_temp
+setup_variables
+setup_tomcat2_variables
+cleanup
+setup_temp_dir
+extract_built_tarball
+update_control_file
+update_control_scripts
+get_tomcat6_blank
+get_tomcat2_blank
+merge_tomcat6_blank_with_tmp
+create_archive
+reprepro_add
+
+#do each war thing here
+#for war in ls webapps/*war
+#make a package with a user named the same thing as the war
+
 if [ "${USER}" = "jenkins" ]
 then
-    echo "We are running on the master node, running reprepro locally"
-    reprepro_clean
-    reprepro_publish
+    echo "We are running on the master node, running s3cmd locally"
     s3_sync
 else
     echo "We are not running on the master node, skipping reprepro steps"
     echo "Additional steps required to add these packages to the master node"
-    echo "reprepro -Vb ${DEB_repository_dir} removematched  ${DISTRIB_CODENAME} ${DEB_Package}"
-    echo "reprepro -Vb ${DEB_repository_dir} deleteunreferenced"
-    echo "reprepro -Vb ${DEB_repository_dir} includedeb ${DISTRIB_CODENAME} ${DEB_Package_Filename}"
     echo "s3cmd --verbose --delete-removed  sync ${DEB_repository_dir} s3://${DEB_S3_bucket}/"
 fi
+
 cleanup
 exit 0
 

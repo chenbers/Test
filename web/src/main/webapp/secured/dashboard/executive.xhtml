@@ -11,13 +11,6 @@
          
        <ui:define name="scripts">
           <a4j:loadScript src="/js/FusionCharts.js"/>  
-          <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
-          <script> 
-				function bodyUnload()
-				{
-					GUnload();
-				}
-          </script>  
        </ui:define>  
         <ui:param name="title" value="#{messages.overview} - #{navigationBean.group.name}"/>
       	<ui:param name="homeSelected" value="current" />
@@ -69,14 +62,14 @@
     				<td width="465" valign="top">
     				
 						<!-- START CRASH SUMMARY PANEL -->
-    					<ui:include src="/includes/crashSummary.xhtml">	
-                            <ui:param name="xyheight" value="100"/>
-                            <ui:param name="xywidth" value="440"/>  
-                            <ui:param name="zorder" value="0"/>	
-			            	<ui:param name="crashSummary" value="#{crashSummaryBean.crashSummary}"/>
-    					</ui:include>
+<!--     					<ui:include src="/includes/crashSummary.xhtml">	 -->
+<!--                             <ui:param name="xyheight" value="100"/> -->
+<!--                             <ui:param name="xywidth" value="440"/>   -->
+<!--                             <ui:param name="zorder" value="0"/>	 -->
+<!-- 			            	<ui:param name="crashSummary" value="#{crashSummaryBean.crashSummary}"/> -->
+<!--     					</ui:include> -->
     					<!-- END CRASH SUMMARY -->
-    					<div class="spacer"></div>
+<!--     					<div class="spacer"></div> -->
     					<ui:include src="/includes/speedPercentagePanel.xhtml">	
                             <ui:param name="xyheight" value="350"/>
                             <ui:param name="xywidth" value="440"/>  

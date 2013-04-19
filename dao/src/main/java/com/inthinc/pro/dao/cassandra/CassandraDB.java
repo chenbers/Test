@@ -1,35 +1,35 @@
 package com.inthinc.pro.dao.cassandra;
 
 import me.prettyprint.cassandra.model.AllOneConsistencyLevelPolicy;
-import me.prettyprint.cassandra.serializers.ByteBufferSerializer;
-import me.prettyprint.cassandra.serializers.BytesArraySerializer;
-import me.prettyprint.cassandra.serializers.CompositeSerializer;
-import me.prettyprint.cassandra.serializers.IntegerSerializer;
-import me.prettyprint.cassandra.serializers.BigIntegerSerializer;
-import me.prettyprint.cassandra.serializers.LongSerializer;
-import me.prettyprint.cassandra.serializers.StringSerializer;
-import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.factory.HFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class CassandraDB {
 
     private static Cluster cluster;
     private static String clusterName = "";
     private static String keyspaceName = "";
+    private static String cacheKeyspaceName = "";
     private static String nodeAddress = "";
     private static boolean autoDiscoverHosts = false;
     private static int maxActive = 50;
+    private static Logger logger = LoggerFactory.getLogger(CassandraDB.class);
 
-    public CassandraDB(String clusterName, String keyspaceName, String nodeAddress, int maxActive, boolean autoDiscoverHosts) {
+    public CassandraDB(boolean active, String clusterName, String keyspaceName, String cacheKeyspaceName, String nodeAddress, int maxActive, boolean autoDiscoverHosts) {
         CassandraDB.clusterName = clusterName;
         CassandraDB.keyspaceName = keyspaceName;
         CassandraDB.nodeAddress = nodeAddress;
         CassandraDB.maxActive = maxActive;
+        CassandraDB.cacheKeyspaceName = cacheKeyspaceName;
         CassandraDB.autoDiscoverHosts = autoDiscoverHosts;
 
+        logger.info("CassandrsaDB clusterName: " + clusterName + " nodeAddress: " + nodeAddress + " keyspaceName: " + keyspaceName + "  cacheKeyspaceName: " + cacheKeyspaceName + " autoDiscoverHosts: " + autoDiscoverHosts);
+        
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(nodeAddress);
 
         cassandraHostConfigurator.setRetryDownedHostsDelayInSeconds(5);
@@ -39,8 +39,8 @@ public class CassandraDB {
         cassandraHostConfigurator.setUseThriftFramedTransport(true);
         cassandraHostConfigurator.setUseSocketKeepalive(true);
 
-        cluster = HFactory.getOrCreateCluster(clusterName, cassandraHostConfigurator);
-        // Log.i("Cluster " + clusterName + " maxActive: " + maxActive + " created. Addresses: " + nodeAddress);
+        if (active)
+            cluster = HFactory.getOrCreateCluster(clusterName, cassandraHostConfigurator);
     }
 
     public void shutdown() {
@@ -64,6 +64,14 @@ public class CassandraDB {
         CassandraDB.keyspaceName = keyspaceName;
     }
 
+    public static String getCacheKeyspaceName() {
+        return cacheKeyspaceName;
+    }
+
+    public static void setCacheKeyspaceName(String cacheKeyspaceName) {
+        CassandraDB.cacheKeyspaceName = cacheKeyspaceName;
+    }
+    
     public static String getNodeAddress() {
         return nodeAddress;
     }
@@ -94,4 +102,10 @@ public class CassandraDB {
         return keyspaceOperator;
     }
 
+    public static Keyspace getCacheKeyspace() {
+        logger.debug("getCacheKeyspaceName(): " + cacheKeyspaceName);
+        Keyspace keyspaceOperator = HFactory.createKeyspace(cacheKeyspaceName, cluster);
+        keyspaceOperator.setConsistencyLevelPolicy(new AllOneConsistencyLevelPolicy());
+        return keyspaceOperator;
+    }
 }

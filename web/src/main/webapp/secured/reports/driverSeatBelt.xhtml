@@ -14,7 +14,7 @@
 		<a4j:loadScript src="/js/FusionCharts.js" />
 		<ui:include src="/secured/reports/driverVehicleCommon.xhtml">
 			<ui:param name="formName" value="driverSeatBeltForm" />
-			<ui:param name="mapDiv" value="map-canvas" />
+			<ui:param name="doReverseGeocode" value="#{driverSeatBeltBean.addressFormat == 3}" />
 		</ui:include>
 	</ui:define>
 
@@ -194,7 +194,7 @@
 						                  <f:param name="lat" value="#{item.event.latitude}"/>
 						                  <f:param name="lng" value="#{item.event.longitude}"/>
 						                </rich:componentControl>
- 			<ui:fragment rendered="#{driverSeatbeltBean.addressFormat == 1}"> <!--Address -->
+ 			<ui:fragment rendered="#{driverSeatBeltBean.addressFormat == 1}"> <!--Address -->
 				<h:outputText value="#{item.event.addressStr}" />
 			</ui:fragment>
 			<ui:fragment rendered="#{driverSeatBeltBean.addressFormat == 2}"> <!-- Link -->
@@ -204,6 +204,7 @@
 				<h:inputHidden id="eventLat" value="#{item.event.latitude}"/>
 				<h:inputHidden id="eventLng" value="#{item.event.longitude}"/>
  				<h:outputText id="eventAddress" />
+				<h:inputHidden id="altText" value="#{item.event.addressStr}"/>
 			</ui:fragment>
 					              </a4j:commandLink>
 				              	</div>
@@ -322,31 +323,6 @@
 </rich:modalPanel>
 <!-- END FORGIVE MODAL -->
  
-<!-- START LOCATION MODAL -->			
-<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);">
-      
-	<f:facet name="header">
-    	<h:outputText value="#{messages.driver_event_location}" />
-    </f:facet>
-    <f:facet name="controls">
-    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
-    </f:facet>
-
-    <div class="eventmap-border">
-    	<div id="map-canvas" style="width: 522px; height: 355px; border: 0"></div>
-    </div>
-
-	<h:form>
-    <div class="popupactions">
-    	<a4j:commandButton id="driverSeatBeltClose" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
-   			<span class="edit">
-   				<h:outputText value="#{messages.button_close}" />
-   			</span>
-	 	</a4j:commandButton>
-    </div>
-	</h:form>
-</rich:modalPanel>
-<!-- END LOCATION MODAL -->
 
 </ui:define>
 </ui:composition>

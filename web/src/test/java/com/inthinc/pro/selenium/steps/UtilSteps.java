@@ -1,12 +1,23 @@
 package com.inthinc.pro.selenium.steps;
 
+import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.When;
 
 import com.inthinc.pro.selenium.pageObjects.PageUtil;
+import com.inthinc.pro.selenium.pageObjects.PageUtilLogin;
 
 public class UtilSteps extends WebSteps {
 
+	PageUtilLogin utilLogin = new PageUtilLogin();
     PageUtil utilPage = new PageUtil();
+    
+    @Given("I log in to the util")
+    public void givenILogInToTheUtil() {
+    	utilLogin.open("https://dev.tiwipro.com:8413/tiwiproutil");
+    	utilLogin._textField().username().type("mweiss");
+    	utilLogin._textField().password().type("password");
+    	utilLogin._button().login().click();
+    }
     
     @When("I create one thousand devices")
     public void whenICreateOneThousandDevices() {

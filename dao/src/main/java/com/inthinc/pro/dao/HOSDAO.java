@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import com.inthinc.hos.ddl.HOSOccupantLog;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
@@ -38,4 +39,7 @@ public interface HOSDAO extends GenericDAO<HOSRecord, Long> {
     List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval);
     
     Long createFromNote(HOSRecord hosRecord);
+    
+    LatLng getVehicleHomeOfficeLocation(Integer vehicleID);
+
 }

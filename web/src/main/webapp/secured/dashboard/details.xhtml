@@ -4,7 +4,7 @@
 
     <ui:define name="scripts">
         <a4j:loadScript src="/js/FusionCharts.js" />
-        <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+  	   <ui:include src="/includes/mapv3/portalMap.xhtml" />
     </ui:define>
 
     <ui:param name="homeSelected" value="current" />
@@ -98,10 +98,6 @@
 	                                    jQuery(function(){
 											initLiveFleetMap();
 										});
-										function bodyUnload()
-										{
-											GUnload();
-										}
                                     </script>
                                     <ui:include src="/includes/liveFleetMap.xhtml">
                                         <ui:param name="mapheight" value="height:800px"/>

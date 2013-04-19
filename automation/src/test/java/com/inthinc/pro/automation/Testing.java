@@ -40,7 +40,7 @@ public class Testing {
 		NameValuePair filter = new NameValuePair("Project.name",project1);
 		pair[0] = filter;
 		TestCase testing = new TestCase(username, password, workspace);
-		List<JSONArray> hello = testing.getTestCases(pair, true);
+		List<JSONArray> hello = testing.getTestCases(true, pair);
 		String folderID = null;
 		for (JSONArray array: hello) {
 			for (int i=0; i<array.length();i++) {
@@ -151,12 +151,12 @@ public class Testing {
 					}
 					parameters[0] = new NameValuePair("Name",newFolder); 
 					parameters[1] = new NameValuePair("Project.Name", project.getString("_refObjectName"));
-					parent = folderCommand.getFolder(parameters, true);
+					parent = folderCommand.getFolder(true, parameters);
 					folder.put("New FolderID", parent.getString("ObjectID"));
 					folder.put("_ref", parent.getString("_ref"));
 				}catch(JSONException e) {
 					folderCommand.createFolder(newFolder, project, parent);
-					parent = folderCommand.getFolder(parameters, true);
+					parent = folderCommand.getFolder(true, parameters);
 					folder.put("New FolderID", parent.getString("ObjectID"));
 					folder.put("_ref", parent.getString("_ref"));
 				} catch (URIException e) {

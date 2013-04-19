@@ -660,6 +660,9 @@ public class OrganizationBean extends BaseBean {
         if (selectedGroupNode != null && ((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getManagerID() != null) {
             selectedPerson = personDAO.findByID(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getManagerID());
         }
+        else {
+            selectedPerson = null;
+        }
         return selectedPerson;
     }
 

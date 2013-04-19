@@ -6,7 +6,9 @@
 		<ui:define name="scripts">
 
 		<a4j:loadScript src="/js/FusionCharts.js" />
-		<ui:include src="/includes/map/portalMap.xhtml"/>
+	<ui:include src="/includes/mapv3/portalMap.xhtml"/>
+	<ui:include src="/includes/mapv3/zoneLookup.xhtml"/>
+	<script src="#{facesContext.externalContext.request.contextPath}/js/mapv3/trip.js" type="text/javascript"></script>	
 		<script type="text/javascript">
 		
         jQuery().ready(function() {        
@@ -17,116 +19,75 @@
 		var map;
 		var showWarnings = new Boolean(true);
 		var showIdleMarkers = new Boolean(true);
-		var baseIcon = new GIcon();
-			baseIcon.iconSize = new GSize(21, 20);
-			baseIcon.iconAnchor = new GPoint(6, 20);
-			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-		var bounds = new GLatLngBounds();
-		var mapNeedsInit = true;
 		var showTamperMarkers = true;
-		var ajaxCount = 0;
-		var currentElement;
-        var addressLookup = (function() {
-        	var addresses = {};
-        	var addressElements; //an array of the html elements that need the address after the point is reverse geocoded
-    		var collectAddressElements = function() {
-        		addressElements = [];
+		var doReverseGeocode = false;
+
+		var addressLookup = (function() {
+        	var collectAddressElements = function() {
+        		var addressElements = [];
    				jQuery('td[id$="address_column"]').each( function() {
 	   					var addressElement = {
-	   						"element" : this,
 	   						"lat" : jQuery(this).find('*[id$="eventLat"]')[0].value,
 	   						"lng" : jQuery(this).find('*[id$="eventLng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="eventAddress"]'),
-	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   						"domElement" : jQuery(this).find('*[id$="eventAddress"]')[0],
+	   						"altText" : jQuery(this).find('*[id$="zoneName"]')[0].value
 	   					};		
 	   					addressElements.push(addressElement);
 	   				}
    				)
    				jQuery('td[id$="end_column"]').each( function() {
 	   					var addressElement = {
-	   						"element" : this,
 	   						"lat" : jQuery(this).find('*[id$="lat"]')[0].value,
 	   						"lng" : jQuery(this).find('*[id$="lng"]')[0].value,
-	   						"address" : jQuery(this).find('*[id$="address"]'),
-	   						"zoneName" : jQuery(this).find('*[id$="zoneName"]')
+	   						"domElement" : jQuery(this).find('*[id$="address"]')[0],
+	   						"altText" : jQuery(this).find('*[id$="zoneName"]')[0].value
 	   					};		
 	   					addressElements.push(addressElement);
 	   				}
    				)
+   				return addressElements;
     		}
         	return {
         		findAddresses : function() {
-		    		if (geocoder == null) geocoder = new GClientGeocoder();
-		    		var delay = 250;
-		    		collectAddressElements();
-					var reverseGeocode = function() {
-						if (addressElements.length == 0) return;
-						var element = addressElements.shift();
-						if(addresses[element.lat + element.lng]) {
-    			        	element.address[0].innerHTML = addresses[element.lat + element.lng];
-    			        	reverseGeocode();
-						} else {
-							setTimeout(function() { geocoder.getLocations(new GLatLng(element.lat, element.lng), function(response) {
-		         				if (!response) {
-		    			        	element.address[0].innerHTML = element.zoneName[0].value;
-		         				} else if (response.Status.code == 200) {
-		    			        	element.address[0].innerHTML = response.Placemark[0].address;
-		    			        	addresses[element.lat + element.lng] = response.Placemark[0].address;
-		    			        } else if (response.Status.code == 620) {
-		    			        	addressElements.push(element);
-		    			        } else {
-		    			        	element.address[0].innerHTML = element.zoneName[0].value;
-		    			        }
-		    			        reverseGeocode();
-							}) }, delay);
-						}
-					}
-					reverseGeocode();
+        			if (doReverseGeocode == true)  {
+		    			inthincMap.reverseGeocodeList(collectAddressElements());
+        			}
         		}
         	};
         })();
 		
 		function initMap(lat,lng,zoom)	{
-			portalmap.init();
-			initLayers();
-			map = portalmap.getMap();
-			map.setCenter(new GLatLng(lat, lng), zoom);
-
-			errorMessage = "#{messages.sbs_badLatLng}"
-			bounds = new GLatLngBounds();
-			addressLookupAddressFormat = #{vehicleTripsBean.addressFormat};
-			defaultAddressElement = "tripsMapForm:bubbleAddress";
-			
+			map = inthincMap.init({
+				'canvasID' : 'map-canvas',
+				'center' : {
+					'lat' : lat,
+					'lng' : lng
+				},
+				'zoom' : zoom
+			});
+			initLayers(map, "vtmap-layerControl");
 		}
 			
 
-	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
-	    function showWarningsChanged()	    {
+	    function showWarningsChanged() {
 	    	showWarnings = document.getElementById('showWarningsCheckBox').checked;
 	    	drawSelectedTrips();
 		}
 
-		// Show Idle Markers Checkbox changed
-	    function showIdleChanged()	    {
+	    function showIdleChanged() {
 	    	showIdleMarkers = document.getElementById('showIdleCheckBox').checked;
       		drawSelectedTrips();
 	    	
 		}
 
-	 	// Show Tampering Markers Checkbox changed
-	    function showTamperingChanged(tamperingCheckBox)	    {
+	    function showTamperingChanged(tamperingCheckBox) {
 	    	showTamperMarkers = tamperingCheckBox.checked;
       		drawSelectedTrips();
 		}
 
 		//On page load and A4J Re-render
-		function showTrips()		{
+		function showTrips() {
 			drawSelectedTrips();
-			
-			if ( map != null ) {
-			    map.setZoom(map.getBoundsZoomLevel(bounds));
-			    map.setCenter(bounds.getCenter());
-			}
 	    }
 
 		function dynamicTableStyles() {
@@ -155,129 +116,71 @@
             addressLookup.findAddresses();
 		}
 
-		function setZoneNameSync(obj) {
-			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-			fillEventBubbleFromList(obj.noteID,obj.lat,obj.lng);		
-		}  
-		
-		function funcToCall(obj) {
-			jQuery('#dispatchForm\\:foundZoneName').val(obj.name);	
-
-			if (		obj.callFuncID == 0 ) {
-				fillBubbleMarker(obj.itemID,obj.subID);
-				
-			} else if ( obj.callFuncID == 1 ) {
-				fillTripBubble(obj.itemID,obj.subID);
-				
-			} else if ( obj.callFuncID == 2 ) {
-				fillEventBubble(obj.itemID,obj.subID);
-			}	
-		} 		 		
-		</script>
-
-		<script type="text/javascript">
-		
-		// This is called on pageLoad and A4J re-renders
 		function bodyLoad()		{
-			GUnload();
-			map=null;
+			doReverseGeocode = #{vehicleTripsBean.addressFormat == 3};
 			initMap(#{vehicleTripsBean.anchorLat}, #{vehicleTripsBean.anchorLng}, 14);
 			if ( #{vehicleTripsBean.selectedTrips[0] ne null} ) {				
 		   		showTrips();
 			}
 		}
-
    		
 		</script>
  		<rich:panel id="mapScript">	
 		<script type="text/javascript">
-   		function drawSelectedTrips()   		{
-				var polyline;
-				var marker;
-				var startlatlng;
-				var endlatlng;
-				var color;
+		var trip;
+   		function drawSelectedTrips()	{
+			inthincMap.clear(map);
 
-				if ( map == null ) {
-					return;
-				}
-
-				map.clearOverlays();
-				portalmap.restoreLayersState();
-				
-				
-   				<ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
-   				//alert('drawing selected trip #{trip.trip.startTime}');
-   				<ui:fragment rendered="#{trip.goodRoute}">
-   					if ("#{trip.trip.quality}" == "BAD")
+			<ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
+				<ui:fragment rendered="#{trip.goodRoute}">
+					var color;
+   			   		if ("#{trip.trip.quality}" == "BAD")
 						color = "#ee0000";
    					else if ("#{trip.trip.quality}" == "GOOD")
 						color = "#006600";
    					else if ("#{trip.trip.quality}" == "WAYSMART")
 						color = "#0000ee";
    					else color = "#0000ee";
-   				
-					polyline = new GPolyline([
-					<ui:repeat value="#{trip.route}" var="rt">
-							new GLatLng(#{rt.lat}, #{rt.lng}),
-					</ui:repeat>
-			  				new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
-					], color, 6);
-					map.addOverlay(polyline);
-
-					<ui:repeat value="#{trip.route}" var="rt2">
-						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+   			   		
+					var tripPoints = new Array();
+					<ui:repeat value="#{trip.route}" var="route">
+						tripPoints.push(new google.maps.LatLng(#{route.lat}, #{route.lng}));
 					</ui:repeat>
 
-					//Start of trip marker
-					startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
-					marker = createMarker(startlatlng, #{trip.trip.tripID}, 0,"#{facesContext.externalContext.request.contextPath}/images/ico_start.png", fillTripBubble,1);
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-
-					//End of trip marker
-					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-					if ("#{trip.inProgress}" == "true")
-					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},1, "#{facesContext.externalContext.request.contextPath}/images/ico_inprogress_trip.png", fillTripBubble,1);
-					}
-					else
-					{
-						marker = createMarker(endlatlng, #{trip.trip.tripID},2, "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png", fillTripBubble,1);
-					}
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
+					trip = new Trip(tripPoints, "#{facesContext.externalContext.request.contextPath}", "#{vehicleTripsBean.addressFormat}", "#{trip.inProgress}");
+					trip.displayOnMap(map, {
+						color : color
+					});
+   			   		
 					</ui:fragment>
   				</ui:repeat>
-
   				if(showWarnings == true)
 				{
-	  				var violation;
-					<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="violation">
-						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						map.addOverlay(createMarker(violation, "#{violation.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png",fillEventBubble,2));
+					<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="event">
+						trip.addViolationMarker(map, new google.maps.LatLng("#{event.latitude}", "#{event.longitude}"), "#{eventTypeIcons.iconMap[event.eventType]}", "#{event.noteID}", reRenderEventBubble);
 					</ui:repeat>
 				}
 
-				var idleMarker;
 				if(showIdleMarkers == true)
 				{
-					var idle;
-					<ui:repeat value="#{vehicleTripsBean.idleEvents}" var="idle">
-						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
-						map.addOverlay(createMarker(idle, "#{idle.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png",fillEventBubble,2));
+					<ui:repeat value="#{vehicleTripsBean.idleEvents}" var="event">
+						trip.addViolationMarker(map, new google.maps.LatLng("#{event.latitude}", "#{event.longitude}"), "#{eventTypeIcons.iconMap[event.eventType]}", "#{event.noteID}", reRenderEventBubble);
 					</ui:repeat>
 				}	
 
 				if(showTamperMarkers == true)
 				{
-					var tamper;
-					<ui:repeat value="#{vehicleTripsBean.tamperEvents}" var="tamperEvent">
-						tamper = new GLatLng(#{tamperEvent.latitude}, #{tamperEvent.longitude});
-						map.addOverlay(createMarker(tamper, "#{tamperEvent.noteID}", null,"#{facesContext.externalContext.request.contextPath}/images/ico_tampering.png",fillEventBubble,2));
+					<ui:repeat value="#{vehicleTripsBean.tamperEvents}" var="event">
+						trip.addViolationMarker(map, new google.maps.LatLng("#{event.latitude}", "#{event.longitude}"), "#{eventTypeIcons.iconMap[event.eventType]}", "#{event.noteID}", reRenderEventBubble);
 					</ui:repeat>
-				}	
-			}
+				}
+		}
+		function displaySelectedEventPopup() {
+			trip.displaySelectedEventPopup();
+		}			
+		function selectEvent(itemID) {
+			trip.selectViolationMarker(map, itemID, reRenderEventBubble);
+		}
 		</script>
 		</rich:panel>
 
@@ -285,11 +188,9 @@
 		<ui:param name="homeSelected" value="current" />
 
 		<ui:define name="content">
-
-				<h:form id="tripsMapForm">
+				  	<h:form id="tripForm">
 						<rich:panel id="tripBubbles">
 						<rich:panel id="tripBubblesInner" rendered="#{vehicleTripsBean.selectedTripID ne null}">
-								<!-- BEGIN GOOGLE BUBBLES -->
 								<ui:param name="trip" value="#{vehicleTripsBean.tripsMap[vehicleTripsBean.selectedTripID]}" />
 								<ui:include src="/includes/tripBubble.xhtml">
 										<ui:param name="hiddenDivID" value="tripStartBubble" />
@@ -326,8 +227,10 @@
 								</ui:include>
 						</rich:panel>
 						</rich:panel>
+					</h:form>	
+					<h:form id="tripsMapForm">
 						<rich:panel id="eventBubbles">
-								<!-- 		<rich:panel id="eventBubbles" rendered="#{vehicleTripsBean.selectedViolationID != null}">-->
+					 		<rich:panel id="eventBubblesInner" rendered="#{vehicleTripsBean.selectedViolationID != null}">
 								<ui:param name="violation" value="#{vehicleTripsBean.allEventsMap[vehicleTripsBean.selectedViolationID]}" />
 								<ui:include src="/includes/eventBubble.xhtml">
 										<ui:param name="hiddenDivID" value="#{violation.noteID}" />
@@ -346,11 +249,12 @@
 										<ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
 										<ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
 										<ui:param name="context" value="vehicleTrips" />
+						    	        <ui:param name="lat" value="#{violation.latitude}" />
+	            						<ui:param name="lng" value="#{violation.longitude}" />
 								</ui:include>
+							</rich:panel>	
 						</rich:panel>
 				</h:form>
-
-				<!-- END GOOGLE BUBBLES -->
 
 				<div id="wrapper"><h:form>
 						<ul id="grid_nav">
@@ -513,13 +417,11 @@
                                       </a4j:status>
                                       <a4j:form id="selectedEventsForm">
                                         <rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="5"
-                                          width="100%" onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,'#{item.noteID}');">
+                                          width="100%" onRowClick="selectEvent('#{item.noteID}');">
                   
                                           <!-- Data -->
                                           <rich:column style="cursor: pointer;">
-                                            <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 'IDLE'}" title="#{messages[item.eventType]}" />
-                                            <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
-                                            <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 'IDLE' and item.type ne 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
+											<h:graphicImage value="#{eventTypeIcons.iconAbsMap[item.eventType]}" title="#{messages[item.eventType]}" />
                                           </rich:column>
                   
                                           <rich:column id="address_column" style="cursor: pointer;">
@@ -795,37 +697,10 @@
 						</tr>
 				</table>
 				</div>
-				<a4j:form id="dispatchForm">
-						<h:inputHidden id="foundZoneName" value="#{addressBean.zoneName}" />
-				</a4j:form>
 				<a4j:form id="bubbleForm">
-						<a4j:jsFunction name="fillTripBubbleMarker" reRender="tripBubbles" oncomplete="getAddressForCurrentMarker()">
-								<a4j:actionparam name="tripId" assignTo="#{vehicleTripsBean.selectedTripID}" />
-						</a4j:jsFunction>
-						<a4j:jsFunction name="fillBubbleMarker" reRender="eventBubbles" oncomplete="getAddressForCurrentMarker()">
-								<a4j:actionparam name="eventId" assignTo="#{vehicleTripsBean.selectedViolationID}" />
-						</a4j:jsFunction>
-						<!--		<ui:fragment rendered="#{vehicleTripsBean.selectedViolationID ne null}">-->
-						<a4j:jsFunction name="fillBubbleMap" reRender="eventBubbles" oncomplete="getAddressForEvent()">
-								<a4j:actionparam name="eventId" assignTo="#{vehicleTripsBean.selectedViolationID}" />
-						</a4j:jsFunction>
-						<!--		</ui:fragment>		-->
-						<a4j:jsFunction name="lkFrZnEvtTbl" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="setZoneNameSync(data);">
-								<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}" />
-								<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}" />
-								<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}" />
-								<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}" />
-						</a4j:jsFunction>
-						<a4j:jsFunction name="lkFrZnBubble" data="#{addressBean.zoneData}" action="#{addressBean.lookForZone}" oncomplete="funcToCall(data);">
-								<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}" />
-								<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}" />
-								<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}" />
-								<a4j:actionparam name="noteID" assignTo="#{addressBean.noteID}" />
-								<a4j:actionparam name="itemID" assignTo="#{addressBean.itemID}" />
-								<a4j:actionparam name="subID" assignTo="#{addressBean.subID}" />
-								<a4j:actionparam name="callFuncID" assignTo="#{addressBean.callFuncID}" />
-						</a4j:jsFunction>
-
+					<a4j:jsFunction name="reRenderEventBubble" reRender="eventBubbles" oncomplete="displaySelectedEventPopup()">
+						<a4j:actionparam name="eventId" assignTo="#{driverTripsBean.selectedViolationID}"/>
+					</a4j:jsFunction>
 				</a4j:form>
 		</ui:define>
 

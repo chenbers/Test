@@ -22,21 +22,34 @@
 <ui:composition>
 
 	<script type="text/javascript">
-
 		function initLayers() {
-//			alert ('in init layers');
-			portalmap.reinit();	
-			var addControl = false;
-//			alert ('in init map - completed');
+			if (map == null) {
+				map = inthincMap.init({
+					'zoom' : 15
+				});
+			}
+			else {
+				inthincMap.reinit(map, "layerControl");
+			}
+			i = 0;
 			<ui:repeat value="#{customMapList}" var="customMap">
-//			alert ('add layer');
-				addControl = true;
-				portalmap.addWMSLayer("#{customMap.url}", "#{customMap.name}", "#{customMap.layer}", "#{customMap.minZoom}",  "#{customMap.maxZoom}",  "#{customMap.opacity}", "#{customMap.pngFormat}");
+				inthincMap.addWMSLayer(map,  {
+					id : "#{customMap.customMapID}", 
+					url : "#{customMap.url}", 
+					displayName : "#{customMap.name}", 
+					layerName : "#{customMap.layer}", 
+					minZoom : "#{customMap.minZoom}", 
+					maxZoom : "#{customMap.maxZoom}", 
+					opacity : #{customMap.opacity},  
+					usePng : "#{customMap.pngFormat}", 
+					selected : false
+				});
+				i = i + 1;
 			</ui:repeat>
-			if (addControl)
-				portalmap.addOverlaysControl();
+			if (i > 0) {
+				inthincMap.addOverlaysControl(map, "layerControl", "Layers");
+			}
 		}
-	
 	
 	</script>
 	

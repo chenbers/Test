@@ -1,0 +1,37 @@
+<html         xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+              
+<ui:composition>
+	<script type="text/javascript">
+          function setZoneNameInAddressField(data, request) {   
+			var myObj = eval("("+ data +")");
+			var addressEl = document.getElementById(myObj.elementID);                        
+			addressEl.innerHTML = myObj.zoneName;
+ 			  
+			var callback =request.options.parameters.callback;
+			if (callback) { 
+				callback();
+          	}
+          }
+	</script>
+
+
+    <a4j:form id="zoneLookup">
+		<a4j:jsFunction name="lookUpZone" action="#{addressBean.lookUpZone}" data="#{addressBean.json}"
+                 ajaxSingle="true" oncomplete="setZoneNameInAddressField(data, request);">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="addressElementID" assignTo="#{addressBean.addressElementID}"/>
+			<a4j:actionparam name="callback"/>
+		</a4j:jsFunction>
+	</a4j:form>   
+
+
+</ui:composition>
+</html>

@@ -49,7 +49,7 @@ public class NoteParserFactory {
 		if (method.equalsIgnoreCase(NOTE_METHOD)) 
 			parser = TIWIPRO_PARSER;
         if (method.equalsIgnoreCase(NOTE_WAYSMART850_METHOD))
-            return NOTEBC_PARSER;
+            parser =  NOTEBC_PARSER;
 
 		
 		if (parser == null)

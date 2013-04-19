@@ -28,8 +28,6 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
-
-		<a4j:loadScript src="/js/mapBubble.js"/>
 <div id="eventBubble" style="display:none">
 	<h:panelGrid columns="1" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 		<f:facet name="header">
@@ -49,6 +47,8 @@
 			<ui:fragment rendered="#{addressLookupAddressFormat == 3}"> <!--LatLng -->
 				<h:outputText id="bubbleAddress"/>
 			</ui:fragment>
+					
+		<h:panelGroup rendered="#{not empty lat}"><h:outputText value="#{lat}"/>,<h:outputText value="#{lng}"/></h:panelGroup>
 		
 		 <!-- SPEEDING EVENT -->
 		<h:outputText rendered="#{eventType.code eq '3'}" >
@@ -91,6 +91,8 @@
 				<li>#{messages.eventBubble_highIdleDuration}: <h:outputText value="#{eventHighIdle}"  /></li>
 			</ul>
 		</h:outputText>
+		
+		<h:outputText value="  "/>
 	</h:panelGrid>
 </div>
 </ui:composition>

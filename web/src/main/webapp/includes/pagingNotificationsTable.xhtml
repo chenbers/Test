@@ -40,19 +40,12 @@
                         
                     </rich:componentControl>
                 </h:graphicImage>
-               <rich:toolTip id="aaddressToolTip" mode="ajax" rendered="#{bean.addressFormat == 1}">
-                    <h:outputText id="address" value="#{event.latLng}" converter="#{latLngAddressConverter}" />
-                </rich:toolTip>
-               <rich:toolTip id="baddressToolTip" mode="ajax" onshow="getLink(#{index})" rendered="#{bean.addressFormat == 2}">
-	               	<h:inputHidden id="linkText" value="#{item.event.latLng}" converter="#{latLngAddressConverter}" />
-  					<a id="link_#{index}" href="" target="_blank">#{messages.livefleet_address}</a> 
-               </rich:toolTip>
-               
-              <rich:toolTip id="caddressToolTip" mode="client" onshow="getAddress(#{index})" rendered="#{bean.addressFormat == 3}">
-				<h:inputHidden id="eventLat" value="#{event.latitude}"/>
-				<h:inputHidden id="eventLng" value="#{event.longitude}"/>
- 				<h:outputText id="eventAddress" />
-                </rich:toolTip>
+		  		<ui:include src="/includes/addressToolTip.xhtml">	
+   					<ui:param name="addressFormat" value="#{bean.addressFormat}" />
+   					<ui:param name="condition" value="true" />
+   					<ui:param name="latLng" value="#{event.latLng}" />
+   					<ui:param name="index" value="#{index}" />
+				</ui:include>
 				<div id="noteID#{event.noteID}" style="display: none;">
                 	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 						<f:facet name="header">
@@ -203,39 +196,6 @@
 	   	<ui:param name="inst" value="#{clearInst}" />
 	</ui:include>
     
-
-    <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng, event.parameters.zonePoints, event.parameters.noteID);">
-        <f:facet name="header">
-            <h:outputText id="mapModalHeader" value="#{messages.driver_event_location}" />
-        </f:facet>
-        <f:facet name="controls">
-            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
-        </f:facet>
-
-        <div class="eventmap-border">
-        <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
-        </div>
-
-		<h:form>
-        <div class="popupactions">
-        	<a4j:commandButton id="close" type="button" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
-            	<span class="edit"> 
-            		<h:outputText value="#{messages.button_close}" /> 
-            	</span>
-        	</a4j:commandButton>
-        </div>
-        </h:form>
-    </rich:modalPanel>
-    <!-- END LOCATION MODAL -->
-    
-    <a4j:form id="lookForZone">
-		<a4j:jsFunction name="lkFrZn" action="#{addressBean.lookForZone}" oncomplete="checkForZoneName('#{addressBean.zoneName}')">
-			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
-			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
-			<a4j:actionparam name="elemIndex" assignTo="#{addressBean.elemIndex}"/>
-		</a4j:jsFunction>
-	</a4j:form>   
     
 
 </ui:composition>

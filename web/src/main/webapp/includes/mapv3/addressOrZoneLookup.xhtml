@@ -1,0 +1,65 @@
+<html         xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:a4j="http://richfaces.org/a4j">
+<!--  use with addressToolTip.xhtml -->              
+<ui:composition>
+	<script type="text/javascript">
+	//<![CDATA[
+
+    	function getLink(index){
+      		var link = document.getElementById("link_"+index);
+      		var linkText = document.getElementById("#{context}-form:#{context}:"+index+":linkText").value;
+      		if (link.href.length==0){
+	      		
+				link.href = linkText;
+			}
+		 }
+ 		 function getAddress(index){
+			var address = document.getElementById("#{context}-form:#{context}:"+index+":eventAddress");
+  			var lat = document.getElementById("#{context}-form:#{context}:"+index+":eventLat");
+   			var lng = document.getElementById("#{context}-form:#{context}:"+index+":eventLng");
+	      		
+	      	if (address.innerHTML.length==0){
+				if( lat.value >= -90 && lat.value <= 90 && lng.value >= -180 && lng.value <= 180) {
+					reverseGeocodeAddress(new google.maps.LatLng(lat.value,lng.value),address,index);
+				}
+				else {
+					lkFrZn(lat.value,lng.value,index);
+				}
+	      	}
+		 }
+
+          function reverseGeocodeAddress(latlng, addressElement, index){
+			inthincMap.reverseGeocode(map, latlng.lat(), latlng.lng(), function(result, status) {
+		    	  if (status != google.maps.GeocoderStatus.OK) {
+			        	lkFrZn(latlng.lat(),latlng.lng(),index);	  
+		    	  }
+		    	  else {
+		              addressElement.innerHTML = result[0].formatted_address;
+		    	  }
+			});
+          }
+          
+          function checkForZoneName(zoneName) {              
+              var nameAndIndex = zoneName.split(",");
+              var name = nameAndIndex[0];
+              var indx = nameAndIndex[1];
+              
+        	  var addressEl = document.getElementById("#{context}-form:#{context}:"+indx+":eventAddress");                        
+ 			  addressEl.innerHTML = name;
+          }
+	//]]>
+	</script>
+
+    <a4j:form id="#{context}-zoneLookup">
+		<a4j:jsFunction name="lookUpZone" action="#{addressBean.lookUpZone}" data="#{addressBean.json}"
+                 ajaxSingle="true" oncomplete="checkForZoneName(data);">
+			<a4j:actionparam name="latitude" assignTo="#{addressBean.zoneLat}"/>
+			<a4j:actionparam name="longitude" assignTo="#{addressBean.zoneLng}"/>
+			<a4j:actionparam name="addressElementID" assignTo="#{addressBean.addressElementID}"/>
+			<a4j:actionparam name="callback"/>
+		</a4j:jsFunction>
+	</a4j:form>   
+
+</ui:composition>
+</html>
