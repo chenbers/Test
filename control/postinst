@@ -62,6 +62,11 @@ if [ -f "/etc/nginx/sites-available/tiwipro" ]
 then
     ln -s /etc/nginx/sites-available/tiwipro /etc/nginx/sites-enabled/tiwipro
     NGINX_RELOAD=1
+    if [ -l "/etc/nginx/sites-enabled/default" ]
+    then
+        /bin/rm /etc/nginx/sites-enabled/default
+        NGINX_RELOAD=1
+    fi
 else
     echo "No /etc/nginx/sites-available/tiwipro"
 fi
