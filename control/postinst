@@ -1,7 +1,7 @@
 #!/bin/bash
 U_GID="1090"
 MY_GROUP_USER="tiwipro"
-TOMCAT_USER="tomcat6"
+MY_USER="tomcat6"
 MY_USER_HOME="/usr/share/tomcat6"
 TOMCAT_WEBAPPS_DIR="/var/lib/tomcat6/webapps"
 WARS="hoskiosk tiwiproutil tiwipro scheduler service"
@@ -16,30 +16,30 @@ else
 fi
 
 
-MY_USER_EXISTS=$(id -u ${TOMCAT_USER} 2>/dev/null)
+MY_USER_EXISTS=$(id -u ${MY_USER} 2>/dev/null)
 if [ "$?" -eq 0 ]
 then
-    echo "User ${TOMCAT_USER} exists"
+    echo "User ${MY_USER} exists"
 else
-    echo "Creating user ${TOMCAT_USER}"
-    useradd -M -d ${MY_USER_HOME} -s /bin/bash -g ${U_GID} ${TOMCAT_USER}
+    echo "Creating user ${MY_USER}"
+    useradd -M -d ${MY_USER_HOME} -s /bin/bash -g ${U_GID} ${MY_USER}
 fi
 
-echo "Adding ${TOMCAT_USER} to group ${MY_GROUP_USER}"
-usermod -a -G ${MY_GROUP_USER} ${TOMCAT_USER}
+echo "Adding ${MY_USER} to group ${MY_GROUP_USER}"
+usermod -a -G ${MY_GROUP_USER} ${MY_USER}
 if [ -d "${MY_USER_HOME}" ]
 then
-    chown -R ${TOMCAT_USER}:${MY_GROUP_USER} ${MY_USER_HOME}
+    chown -R ${MY_USER}:${MY_GROUP_USER} ${MY_USER_HOME}
     chmod -R u+rw,g+r,o-rwx ${MY_USER_HOME}
     find ${MY_USER_HOME} -type d -exec chmod u+rwx,g+rx,o-rwx {} \;
 fi
 
-service ${TOMCAT_USER} status 2&>1 >/dev/null
+service ${MY_USER} status 2&>1 >/dev/null
 if [ "$?" -ne 1 ] && [ -d "${TOMCAT_WEBAPPS_DIR}" ]
 then
-    echo -n "Stopping service ${TOMCAT_USER} :"
-    service ${TOMCAT_USER} stop
-    while service ${TOMCAT_USER} status 2&>1 > /dev/null; do echo -n "."; sleep 1; done
+    echo -n "Stopping service ${MY_USER} :"
+    service ${MY_USER} stop
+    while service ${MY_USER} status 2&>1 > /dev/null; do echo -n "."; sleep 1; done
 
     for WAR in ${WARS}
     do
@@ -49,19 +49,59 @@ then
         fi
         if [ -f "${TOMCAT_WEBAPPS_DIR}/${WAR}.war" ]
         then
-            chown ${TOMCAT_USER}:${MY_GROUP_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
+            chown ${MY_USER}:${MY_GROUP_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
             chmod u+rw,g+r,o-rwx ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
         fi
     done
-service ${TOMCAT_USER} start
+service ${MY_USER} start
 else
-    echo "${TOMCAT_USER} doesn't seem to be installed as a service, you will need to manually start it"
+    echo "${MY_USER} doesn't seem to be installed as a service, you will need to manually start it"
+fi
+
+if [ -f "/etc/nginx/sites-available/tiwipro" ]
+then
+    ln -s /etc/nginx/sites-available/tiwipro /etc/nginx/sites-enabled/tiwipro
+    NGINX_RELOAD=1
+else
+    echo "No /etc/nginx/sites-available/tiwipro"
+fi
+
+NGINX_USER="$(grep user /etc/nginx/nginx.conf | awk '{ print $2 }' | sed -e 's/;$//')"
+if [ "${NGINX_USER}" ]
+then
+    NGINX_USER_IN_MY_GROUP=$(id -G ${NGINX_USER} | grep ${U_GID})
+    if [ ! "${NGINX_USER_IN_MY_GROUP}" ]
+    then
+        echo "Nginx user ${NGINX_USER} not in my group ${MY_USER}, adding"
+        usermod -a -G ${MY_USER} ${NGINX_USER}
+        NGINX_RELOAD=1
+    else
+        echo "Nginx user ${NGINX_USER} already in my group ${MY_USER}, skipping"
+    fi
+else
+    echo "NGINX user does not exist, check it's install, exiting at $(date)"
+    exit 1
+fi
+
+NGINX_PID=$(pgrep nginx)
+
+if [ "${NGINX_RELOAD}" ]
+then
+    nginx -t
+    if [ "${NGINX_PID}" ]
+    then
+        echo "nginx running, reloading"
+        nginx -s reload
+    else
+        echo "nginx not running, starting"
+        service nginx start
+    fi
 fi
 
 if [ -x "${MY_USER_HOME}/bin/setup.sh" ]
 then
-    echo "Running setup.sh script for ${TOMCAT_USER} at $(date)"
+    echo "Running setup.sh script for ${MY_USER} at $(date)"
     ${MY_USER_HOME}/bin/setup.sh
 else
-    echo "No setup.sh script for tomcat ${TOMCAT_USER}"
+    echo "No setup.sh script for tomcat ${MY_USER}"
 fi
