@@ -124,7 +124,7 @@ public abstract class AggregationCassandraDAO extends GenericCassandraDAO {
     public final static String EMUFEATUREMASK = "emuFeatureMask";
 
     public final static String DATE_FORMAT = "yyyy-MM-dd";
-    public final static String MONTH_FORMAT = "yyyy-MM-dd";
+    public final static String MONTH_FORMAT = "yyyy-MM";
 
     protected static final Logger logger = Logger.getLogger(AggregationCassandraDAO.class);
     protected static final Integer NO_SCORE = -1;
@@ -222,6 +222,8 @@ public abstract class AggregationCassandraDAO extends GenericCassandraDAO {
     }
 
     protected List<Composite> createDateIDKeys(String aggDate, Integer ID, int binSize, int count) {
+        logger.debug("createDateIDKeys aggDate: " + aggDate + " ID: " + ID + " binSize: " + binSize + " count: " + count);
+        
         List<Composite> dateIDList = new ArrayList<Composite>();
         GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance();
         int year = Integer.parseInt(aggDate.substring(0, 4));
@@ -262,6 +264,8 @@ public abstract class AggregationCassandraDAO extends GenericCassandraDAO {
             if (period == Calendar.MONTH)
                 format = MONTH_FORMAT;
 
+            logger.debug("createDateIDKeys format: " + format);
+
             SimpleDateFormat dateFormat = new SimpleDateFormat(format);
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             for (; amount >= 0; amount--) {
@@ -273,6 +277,7 @@ public abstract class AggregationCassandraDAO extends GenericCassandraDAO {
             }
 
         }
+        logger.debug("keyList: " + dateIDList);
         return dateIDList;
     }
 
@@ -447,6 +452,8 @@ public abstract class AggregationCassandraDAO extends GenericCassandraDAO {
             case SCORE_COACHING_EVENTS:
                 score = (double) getValue(columnMap, SPEEDCOACHING1) + getValue(columnMap, SPEEDCOACHING2) + getValue(columnMap, SPEEDCOACHING3) + getValue(columnMap, SPEEDCOACHING4)
                         + getValue(columnMap, SPEEDCOACHING5);
+                
+                score = score / 10;
                 break;
             // subTypes of SPEEDING
             case SCORE_SPEEDING_21_30:
@@ -617,16 +624,22 @@ public abstract class AggregationCassandraDAO extends GenericCassandraDAO {
 
         if (strDate.contains(":"))
             strDate = strDate.substring(0, strDate.indexOf(":"));
-        // if passing in a month
-        if (strDate.length() < 9)
-            strDate += "-01";
 
         Calendar cal = new GregorianCalendar();
         cal.setTimeZone(tz);
         int year = Integer.parseInt(strDate.substring(0, 4));
         int month = Integer.parseInt(strDate.substring(5, 7));
-        int day = Integer.parseInt(strDate.substring(8, 10));
-        cal.set(year, month - 1, day, 0, 0, 0);
+        int day = 0;
+        // if passing in a month
+        if (strDate.length() < 9) {
+            cal.set(year, month - 1, 1, 0, 0, 0);
+            cal.add(cal.MONTH, 1);
+            cal.add(cal.DATE, -1);
+        }    
+        else {
+            day = Integer.parseInt(strDate.substring(8, 10));
+            cal.set(year, month - 1, day, 12, 00, 00);
+        }    
         return cal.getTime();
     }
 

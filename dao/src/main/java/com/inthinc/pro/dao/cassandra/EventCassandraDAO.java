@@ -22,6 +22,7 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -52,7 +53,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 {
 	private final static int MAX_EVENTS = 1000;
 	
-    private Mapper mapper = new EventHessianMapper();
+	SiloService siloService = null;
+	private Mapper mapper = new EventHessianMapper();
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
 
@@ -75,13 +77,14 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 		String startTime = (String) args[1];
 		String endTime = (String) args[2];
 */		
-//        SiloService siloService = new SiloServiceCreator("192.168.11.115", 8091).getService();
+        SiloService siloService = new SiloServiceCreator("tp-web10.tiwipro.com", 8099).getService();
 //        SiloService siloService = new SiloServiceCreator("dev-pro.inthinc.com", 8199).getService();
-        SiloService siloService = new SiloServiceCreator("localhost", 8199).getService();
+//        SiloService siloService = new SiloServiceCreator("localhost", 8199).getService();
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
 
-    	CassandraDB cassandraDB = new CassandraDB("Iridium Archive", "note", "localhost:9160", 10, false);
+//    	CassandraDB cassandraDB = new CassandraDB(true, "Iridium Archive", "note", "localhost:9160", 10, false);
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "note_prod", "chevron-node4.tiwipro.com:9160", 10, false);
     	EventCassandraDAO dao = new EventCassandraDAO();
     	dao.setCassandraDB(cassandraDB);
     	dao.setVehicleDAO(vehicleDAO);
@@ -122,6 +125,15 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 
     public EventCassandraDAO()
     {
+    }
+
+    
+    public SiloService getSiloService() {
+        return siloService;
+    }
+
+    public void setSiloService(SiloService siloService) {
+        this.siloService = siloService;
     }
 
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
@@ -176,7 +188,11 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     {
         logger.debug("EventCassandraDAO getEventsForDriver() driverID = " + driverID);
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
-        return fetchEventsForAsset(driverNoteTypeTimeIndex_CF, driverID, startDate, endDate, eventTypesArray, includeForgiven);
+        
+        if (DateUtil.differenceInDays(startDate, new Date()) > 60)
+            return fetchEventsForAssetOver60(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
+        else
+            return fetchEventsForAsset(true, driverID, startDate, endDate, eventTypesArray, includeForgiven);
     }
 
     @Override
@@ -184,7 +200,10 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     {
         logger.debug("EventCassandraDAO getEventsForvehicle() vehicleID = " + vehicleID);
         Integer[] eventTypesArray = getMapper().convertToArray(types, Integer.class);
-        return fetchEventsForAsset(vehicleNoteTypeTimeIndex_CF, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
+        if (DateUtil.differenceInDays(startDate, new Date()) > 60)
+            return fetchEventsForAssetOver60(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
+        else
+            return fetchEventsForAsset(false, vehicleID, startDate, endDate, eventTypesArray, includeForgiven);
     }
 
     
@@ -261,6 +280,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 
 	@Override
 	public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Integer daysBack) {
+        logger.debug("EventCassandraDAO getEventsForGroupFromVehicles() groupID = " + groupID);
 
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
@@ -269,6 +289,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 
 	@Override
     public Event getEventNearLocation(Integer driverID, Double latitude, Double longitude, Date startDate, Date endDate) {
+        logger.debug("EventCassandraDAO getEventNearLocation() driverID = " + driverID);
 //        return getMapper().convertToModelObject(getSiloService().getNoteNearLoc(driverID, latitude, longitude, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Event.class);
 		return null;
     }
@@ -276,6 +297,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     @Override
     public <T> T getEventByType(Long noteID, Class<T> clazz)
     {
+        logger.debug("EventCassandraDAO getEventByType() noteID = " + noteID);
 //        return getMapper().convertToModelObject(this.getSiloService().getNote(noteID), clazz);
     	return null;
     }
@@ -289,34 +311,10 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     @Override
     public Event findByID(Long id)
     {
-    	Composite startRange = new Composite();
-    	startRange.add(0, 0);
-    	startRange.add(1, 0);
-    	startRange.add(2, 0);
-    	startRange.add(3, 0);
-    	Composite endRange = new Composite();
-    	endRange.add(0, Integer.MAX_VALUE);
-    	endRange.add(1, Integer.MAX_VALUE);
-    	endRange.add(2, Integer.MAX_VALUE);
-    	endRange.add(3, Integer.MAX_VALUE);
-
-        SliceQuery<Long, Composite, String> sliceQuery = HFactory.createSliceQuery(getKeyspace(), longSerializer, compositeSerializer, stringSerializer);
-        sliceQuery.setRange(startRange, endRange, false, 1);
-        sliceQuery.setColumnFamily(noteIdIndex_CF);
-        
-        sliceQuery.setKey(id);
-        //rangeSlicesQuery.setReturnKeysOnly();
-        
-        QueryResult<ColumnSlice<Composite, String>> result = sliceQuery.execute();
-        ColumnSlice<Composite, String> columnSlice = result.get();            
-        
-        List<Composite> keyList = new ArrayList<Composite>();
-    	List<HColumn<Composite, String>> columnList = columnSlice.getColumns();
-        for (HColumn<Composite, String> column : columnList)
-        {
-        	keyList.add(column.getName());
-        }
-    	List<Event> eventList = fetchNotes(keyList, true);
+        logger.debug("EventCassandraDAO getEventByType() findByID = " + id);
+        List<Long> keyList = new ArrayList<Long>();
+        keyList.add(id);
+        List<Event> eventList = fetchNotes(keyList, true);
     	if (eventList.size() > 0)
     		return eventList.get(0);
     	
@@ -346,7 +344,6 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 			Integer includeForgiven, List<NoteType> noteTypes,
 			List<TableFilterField> filters) {
 		
-/*
 	    filters = fixFilters(filters);
 			try {
 			return getChangedCount(getSiloService().getDriverEventCount(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
@@ -357,15 +354,14 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         {
             return 0;
         }
- */
-		return 0;
+//		return 0;
 	}
+
 
 	@Override
 	public List<Event> getEventPage(Integer groupID, Date startDate, Date endDate,
 			Integer includeForgiven, List<NoteType> noteTypes,
 			PageParams pageParams) {
-/*
 	    pageParams.setFilterList(fixFilters(pageParams.getFilterList()));
 		try {
 			return getMapper().convertToModelObject(getSiloService().getDriverEventPage(groupID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), 
@@ -376,8 +372,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 		{
 			return Collections.emptyList();
 		}
-*/		
-		return Collections.emptyList();
+//		return Collections.emptyList();
 	}
 
 	private List<TableFilterField> fixFilters(List<TableFilterField> filters)
@@ -407,7 +402,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 
     private List<Event> fetchMostRecentForGroup(Integer groupID, Integer[] eventTypes, Integer eventCount, boolean includeForgiven)
     {
-        List<Composite> keyList = new ArrayList<Composite>();
+        List<Long> keyList = new ArrayList<Long>();
     	for(Integer eventType : eventTypes)
     	{
     		Composite startRange = new Composite();
@@ -418,8 +413,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     		Composite endRange = new Composite();
     		endRange.add(0, eventType);
     		endRange.add(1, (int)DateUtil.convertDateToSeconds(new Date()));
-    		
-    		keyList.addAll(fetchRowKeysFromIndex(driverGroupNoteTypeTimeIndex30_CF, groupID.intValue(), startRange, endRange, eventCount));
+
+//FIX    		
+//    		keyList.addAll(fetchRowKeysFromIndex(driverGroupNoteTypeTimeIndex30_CF, groupID.intValue(), startRange, endRange, eventCount));
     	}
     	
         int max = eventCount;
@@ -430,10 +426,29 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     	return fetchNotes(keyList, includeForgiven);
     }
 
-    
-    private List<Event> fetchEventsForAsset(String index_cf, Integer ID, Date startDate, Date endDate, Integer[] eventTypes, Integer includeForgiven)
+    private List<Event> fetchEventsForAsset(boolean isDriver, Integer ID, Date startDate, Date endDate, Integer[] eventTypes, Integer includeForgiven)
     {
-        List<Composite> keyList = new ArrayList<Composite>();
+        List<Event> eventList = new ArrayList<Event>();
+        for(Integer eventType : eventTypes)
+        {
+            
+        
+            Composite startRange = new Composite();
+            startRange.add(0, eventType);
+            startRange.add(1, (int)DateUtil.convertDateToSeconds(startDate));
+            
+            Composite endRange = new Composite();
+            endRange.add(0, eventType);
+            endRange.add(1, (int)DateUtil.convertDateToSeconds(endDate));
+
+            eventList.addAll(fetchNotesFromIndex(isDriver, ID, startRange, endRange, MAX_EVENTS, (includeForgiven == 1)));
+        }
+        return eventList;
+    }
+    
+    private List<Event> fetchEventsForAssetOver60(boolean isDriver, Integer ID, Date startDate, Date endDate, Integer[] eventTypes, Integer includeForgiven)
+    {
+        List<Long> keyList = new ArrayList<Long>();
     	for(Integer eventType : eventTypes)
     	{
     		
@@ -446,19 +461,67 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     		endRange.add(0, eventType);
     		endRange.add(1, (int)DateUtil.convertDateToSeconds(endDate));
 
-    		keyList.addAll(fetchRowKeysFromIndex(index_cf, ID.intValue(), startRange, endRange, MAX_EVENTS));
+    		keyList.addAll(fetchRowKeysFromIndex(isDriver, ID.intValue(), startRange, endRange, MAX_EVENTS));
     	}
     	
     	
     	return fetchNotes(keyList, (includeForgiven == 1));
     }
 
-    private List<Composite> fetchRowKeysFromIndex(String INDEX_CF, Integer rowKey, Composite startRange, Composite endRange, Integer count)
+    private List<Event> fetchNotesFromIndex(boolean isDriver, Integer rowKey, Composite startRange, Composite endRange, Integer count, boolean includeForgiven)
     {
-        SliceQuery<Composite, Composite, Composite> sliceQuery = HFactory.createSliceQuery(getKeyspace(), compositeSerializer, compositeSerializer, compositeSerializer);
-
-        sliceQuery.setRange(startRange, endRange, false, count);
+        String INDEX_CF = isDriver ? driverNoteTypeTimeIndex60_CF : vehicleNoteTypeTimeIndex60_CF;
         
+        SliceQuery<Integer, Composite, byte[]> sliceQuery = HFactory.createSliceQuery(getKeyspace(), integerSerializer, compositeSerializer, bytesArraySerializer);
+        sliceQuery.setRange(startRange, endRange, false, count);
+        sliceQuery.setColumnFamily(INDEX_CF);
+        sliceQuery.setKey(rowKey);
+        //rangeSlicesQuery.setReturnKeysOnly();
+        
+        QueryResult<ColumnSlice<Composite, byte[]>> result = sliceQuery.execute();
+        ColumnSlice<Composite, byte[]> columnSlice = result.get();            
+        List<HColumn<Composite, byte[]>> columnList = columnSlice.getColumns();
+        
+        Composite colName = null;
+        byte[] raw = null;
+        String method = "";
+        boolean forgiven = false;
+        Integer assetId = 0;
+        Long noteId = 0L;
+        List<Event> eventList = new ArrayList<Event>();
+        for (HColumn<Composite, byte[]> column : columnList)
+        {
+            colName = column.getName();
+            forgiven = booleanSerializer.fromByteBuffer((ByteBuffer) colName.get(5));
+            if ((includeForgiven || (!includeForgiven && forgiven == false))) {
+                method = stringSerializer.fromByteBuffer((ByteBuffer) colName.get(2));
+                assetId = bigIntegerSerializer.fromByteBuffer((ByteBuffer) colName.get(3)).intValue();
+                noteId = longSerializer.fromByteBuffer((ByteBuffer) colName.get(4));
+                raw = column.getValue();
+                
+                NoteParser parser = NoteParserFactory.getParserForMethod(method);
+                Map<String, Object> fieldMap = parser.parseNote(raw);
+                fieldMap.put("driverID", (isDriver) ? rowKey  : assetId);
+                fieldMap.put("vehicleID", (!isDriver) ? rowKey  : assetId);
+    
+                Event event = getMapper().convertToModelObject(fieldMap, Event.class);
+                event.setNoteID(noteId);
+                
+                if (event.isValidEvent())
+                    eventList.add(event);
+            }
+        }
+            
+        
+        
+        return eventList;
+     }
+
+    private List<Long> fetchRowKeysFromIndex(boolean isDriver, Integer rowKey, Composite startRange, Composite endRange, Integer count)
+    {
+        String INDEX_CF = isDriver ? driverNoteTypeTimeIndex_CF : vehicleNoteTypeTimeIndex_CF;
+        SliceQuery<Composite, Composite, Long> sliceQuery = HFactory.createSliceQuery(getKeyspace(), compositeSerializer, compositeSerializer, longSerializer);
+        sliceQuery.setRange(startRange, endRange, false, count);
         sliceQuery.setColumnFamily(INDEX_CF);
         
 		Composite rowKeyComp = new Composite();
@@ -466,42 +529,42 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         sliceQuery.setKey(rowKeyComp);
         //rangeSlicesQuery.setReturnKeysOnly();
         
-        QueryResult<ColumnSlice<Composite, Composite>> result = sliceQuery.execute();
-        ColumnSlice<Composite, Composite> columnSlice = result.get();            
+        QueryResult<ColumnSlice<Composite, Long>> result = sliceQuery.execute();
+        ColumnSlice<Composite, Long> columnSlice = result.get();            
         
-        List<Composite> keyList = new ArrayList<Composite>();
-    	List<HColumn<Composite, Composite>> columnList = columnSlice.getColumns();
-        for (HColumn<Composite, Composite> column : columnList)
+        List<Long> keyList = new ArrayList<Long>();
+    	List<HColumn<Composite, Long>> columnList = columnSlice.getColumns();
+        for (HColumn<Composite, Long> column : columnList)
         {
         	keyList.add(column.getValue());
         }
     	return keyList;
      }
 
-    private List<Event> fetchNotes(List<Composite> keys, boolean includeForgiven)
+    private List<Event> fetchNotes(List<Long> keys, boolean includeForgiven)
     {
     	List <Event> eventList = new ArrayList<Event>();
-    	MultigetSliceQuery<Composite, String, byte[]> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), compositeSerializer, stringSerializer, bytesArraySerializer);
+    	MultigetSliceQuery<Long, String, byte[]> sliceQuery = HFactory.createMultigetSliceQuery(getKeyspace(), longSerializer, stringSerializer, bytesArraySerializer);
         
         sliceQuery.setColumnFamily(note_CF);            
         sliceQuery.setRange(ATTRIBS_COL + "!", "~", false, 1000);  //get all the columns
         sliceQuery.setKeys(keys);
         
-        QueryResult<Rows<Composite, String, byte[]>> result = sliceQuery.execute();
+        QueryResult<Rows<Long, String, byte[]>> result = sliceQuery.execute();
         
-        Rows<Composite, String, byte[]> rows = result.get();     
-        for (Row<Composite, String, byte[]> row : rows)
+        Rows<Long, String, byte[]> rows = result.get();     
+        for (Row<Long, String, byte[]> row : rows)
         {
         	ColumnSlice<String, byte[]> columnSlice = row.getColumnSlice();
         	List<HColumn<String, byte[]>> columnList = columnSlice.getColumns();
         	
-        	int vehicleId = bigIntegerSerializer.fromByteBuffer((ByteBuffer) row.getKey().get(0)).intValue();
+        	long id  = row.getKey();
 
     		byte[] raw = null;
     		String method = "";
     		boolean forgiven = false;
     		int driverId = 0;
-    		long id = 0L;
+            int vehicleId = 0;
     		for (HColumn<String, byte[]> column : columnList)
         	{
         		if (column.getName().equalsIgnoreCase(RAW_COL))
@@ -510,8 +573,8 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         			method = new String(column.getValue());
         		else if (column.getName().equalsIgnoreCase(DRIVERID_COL))
         			driverId = bigIntegerSerializer.fromBytes(column.getValue()).intValue();
-        		else if (column.getName().equalsIgnoreCase(ID_COL))
-        			id = longSerializer.fromBytes(column.getValue()).longValue();
+                else if (column.getName().equalsIgnoreCase(VEHICLEID_COL))
+                    vehicleId = bigIntegerSerializer.fromBytes(column.getValue()).intValue();
             	else if (column.getName().equalsIgnoreCase(FORGIVEN_COL))
             		forgiven = true;
         	}
@@ -533,4 +596,9 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
 
 		return eventList;
     }
+
+    protected Integer getChangedCount(Map<String, Object> map) {
+        return (Integer) map.get("count");
+    }
+
 }
