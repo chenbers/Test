@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pre-Trip Inspection Violation Sub Report" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Heading 2" lineSpacing="Single" fontSize="14" isBold="true" isItalic="true"/>
+	<field name="dateTime" class="java.util.Date"/>
+	<field name="driverName" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
+	<field name="groupName" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement style="Heading 2" x="0" y="0" width="300" height="33"/>
+				<textElement lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.drivingNoPreTripInspection}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="802" height="25" backcolor="#C0C0C0"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="0" width="154" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.dateTime}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="219" y="0" width="154" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.driver}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="426" y="0" width="154" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.vehicle}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="634" y="0" width="154" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.divisionTeam}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="802" height="21"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="632" y="0" width="156" height="20"/>
+					<textElement textAlignment="Center" lineSpacing="Single"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="217" y="0" width="156" height="20"/>
+					<textElement textAlignment="Center" lineSpacing="Single"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="12" y="0" width="154" height="20"/>
+					<textElement textAlignment="Center" lineSpacing="Single"/>
+					<textFieldExpression class="java.util.Date"><![CDATA[$F{dateTime}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="424" y="0" width="156" height="20"/>
+					<textElement textAlignment="Center" lineSpacing="Single"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>
