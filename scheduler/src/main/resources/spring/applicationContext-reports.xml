@@ -29,6 +29,7 @@
     <property name="reportDAO" ref="reportDAO" />
     <property name="eventAggregationDAO" ref="eventAggregationDAO" />
     <property name="formsDAO" ref="formsDAO"/>
+    <property name="dvirViolationReportDAO" ref="dvirViolationReportDAO" />
   </bean>
 
   <!-- Forgot username/password Beans -->

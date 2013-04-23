@@ -29,4 +29,5 @@ default-autowire="byName">
   </bean>
   <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
   <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="dvirViolationReportDAO" class="com.inthinc.pro.dao.jdbc.DVIRViolationReportJDBCDAO" parent="genericJDBCDAO"/>
 </beans>

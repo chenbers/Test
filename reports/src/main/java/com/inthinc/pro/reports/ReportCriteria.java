@@ -150,6 +150,10 @@ public class ReportCriteria
         this.paramMap.put(RECORD_COUNT, mainDataset.size());
         this.mainDataset = mainDataset;
     }
+    
+    public void setRecordCountParam(int size){
+    	this.paramMap.put(RECORD_COUNT, size);
+    }
 
     public List getMainDataset()
     {
