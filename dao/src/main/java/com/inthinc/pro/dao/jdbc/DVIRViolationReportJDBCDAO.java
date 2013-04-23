@@ -22,55 +22,51 @@ public class DVIRViolationReportJDBCDAO extends GenericJDBCDAO implements DVIRVi
 	private static final long serialVersionUID = 6149304319504943377L;
 
 	@Override
-	public Collection<DVIRViolationReport> getDVIRViolationsForGroup(List<Integer> groupIDs, Interval interval) {		
-		List<DVIRViolationReport> retVal = new ArrayList<DVIRViolationReport>();
-		
-		Connection conn = null;
-		Statement stmnt = null;
-		ResultSet resultSet = null;
-		
-		try{
-			conn = this.getConnection();
-			stmnt = conn.createStatement();
-			
-			String sqlStatement = buildViolationSQL(groupIDs, interval);
-			
-			resultSet = stmnt.executeQuery(sqlStatement);
-			while(resultSet.next()){
-				DVIRViolationReport dvirViolationReport = new DVIRViolationReport(resultSet.getDate("dateTime"), 
-						resultSet.getString("driverName"), 
-						resultSet.getString("vehicleName"), 
-						resultSet.getString("groupName"), 
-						NoteType.valueOf(resultSet.getInt("noteType")));
-				
-				retVal.add(dvirViolationReport);
-			}
-		} catch(SQLException e){
-			System.out.println(e);
-			
-		} finally { // clean up and release the connection
-	        close(resultSet);
-	        close(stmnt);
-	        close(conn);
-	    } 
-		
-		return retVal;
-		
-		
-		/* The following is used if this class extends spring SimpleJdbcDaoSupport */
-		
-//		return getSimpleJdbcTemplate().query(buildViolationSQL(groupIDs, interval), new ParameterizedRowMapper<DVIRViolationReport>() {
-//
-//			@Override
-//			public DVIRViolationReport mapRow(ResultSet rs, int arg1) throws SQLException {
-//				return new DVIRViolationReport(rs.getDate("dateTime"), 
-//						rs.getString("driverName"), 
-//						rs.getString("vehicleName"), 
-//						rs.getString("groupName"), 
-//						NoteType.valueOf(rs.getInt("noteType")));
-//			}
-//		});
-	}
+    public Collection<DVIRViolationReport> getDVIRViolationsForGroup(List<Integer> groupIDs, Interval interval) {
+        List<DVIRViolationReport> retVal = new ArrayList<DVIRViolationReport>();
+        
+        Connection conn = null;
+        Statement stmnt = null;
+        ResultSet resultSet = null;
+        
+        try {
+            conn = this.getConnection();
+            stmnt = conn.createStatement();
+            
+            String sqlStatement = buildViolationSQL(groupIDs, interval);
+            
+            resultSet = stmnt.executeQuery(sqlStatement);
+            while (resultSet.next()) {
+                DVIRViolationReport dvirViolationReport = new DVIRViolationReport(resultSet.getDate("dateTime"), resultSet.getString("driverName"), resultSet.getString("vehicleName"),
+                                resultSet.getString("groupName"), NoteType.valueOf(resultSet.getInt("noteType")));
+                
+                retVal.add(dvirViolationReport);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            
+        } finally { // clean up and release the connection
+            close(resultSet);
+            close(stmnt);
+            close(conn);
+        }
+        
+        return retVal;
+        
+        /* The following is used if this class extends spring SimpleJdbcDaoSupport */
+        
+        // return getSimpleJdbcTemplate().query(buildViolationSQL(groupIDs, interval), new ParameterizedRowMapper<DVIRViolationReport>() {
+        //
+        // @Override
+        // public DVIRViolationReport mapRow(ResultSet rs, int arg1) throws SQLException {
+        // return new DVIRViolationReport(rs.getDate("dateTime"),
+        // rs.getString("driverName"),
+        // rs.getString("vehicleName"),
+        // rs.getString("groupName"),
+        // NoteType.valueOf(rs.getInt("noteType")));
+        // }
+        // });
+    }
 	
 	public static String buildViolationSQL(List<Integer> groupIDs, Interval interval) {
 		StringBuilder sb = new StringBuilder();

@@ -65,7 +65,7 @@ public class DVIRViolationReportCriteriaTest extends BaseUnitTest{
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-    public void testDVIRViolationReportCriteriaBuilder_1(){
+    public void testDVIRViolationReportCriteriaBuilder_allViolations(){
     	DVIRViolationReportCriteria.ViolationTypeListWharehouse wharehouse = null;
     	
     	List<ReportCriteria> reportCriterias = runTestReport(0, 1, 20, false, false, false);
@@ -82,7 +82,7 @@ public class DVIRViolationReportCriteriaTest extends BaseUnitTest{
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-    public void testDVIRViolationReportCriteriaBuilder_2(){
+    public void testDVIRViolationReportCriteriaBuilder_allViolationsManyResults(){
     	DVIRViolationReportCriteria.ViolationTypeListWharehouse wharehouse = null;
     	
     	List<ReportCriteria> reportCriterias = runTestReport(0, 2, 200, false, false, false);
@@ -99,7 +99,7 @@ public class DVIRViolationReportCriteriaTest extends BaseUnitTest{
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-    public void testDVIRViolationReportCriteriaBuilder_3(){
+    public void testDVIRViolationReportCriteriaBuilder_allViolationsNoResults(){
     	DVIRViolationReportCriteria.ViolationTypeListWharehouse wharehouse = null;
     	
     	List<ReportCriteria> reportCriterias = runTestReport(0, 3, 0, false, false, false);
@@ -116,7 +116,7 @@ public class DVIRViolationReportCriteriaTest extends BaseUnitTest{
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-    public void testDVIRViolationReportCriteriaBuilder_4(){
+    public void testDVIRViolationReportCriteriaBuilder_NoUnsafeViolations(){
     	DVIRViolationReportCriteria.ViolationTypeListWharehouse wharehouse = null;
     	
     	List<ReportCriteria> reportCriterias = runTestReport(0, 4, 20, true, false, false);
@@ -133,7 +133,7 @@ public class DVIRViolationReportCriteriaTest extends BaseUnitTest{
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-    public void testDVIRViolationReportCriteriaBuilder_5(){
+    public void testDVIRViolationReportCriteriaBuilder_NoPreTripViolations(){
     	DVIRViolationReportCriteria.ViolationTypeListWharehouse wharehouse = null;
     	
     	List<ReportCriteria> reportCriterias = runTestReport(0, 5, 20, false, true, false);
@@ -150,7 +150,7 @@ public class DVIRViolationReportCriteriaTest extends BaseUnitTest{
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-    public void testDVIRViolationReportCriteriaBuilder_6(){
+    public void testDVIRViolationReportCriteriaBuilder_NoPostTripViolations(){
     	DVIRViolationReportCriteria.ViolationTypeListWharehouse wharehouse = null;
     	
     	List<ReportCriteria> reportCriterias = runTestReport(0, 6, 20, false, false, true);

@@ -136,13 +136,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
     
     public DVIRViolationReportDAO getDvirViolationReportDAO() {
-		return dvirViolationReportDAO;
-	}
-
-	public void setDvirViolationReportDAO(
-			DVIRViolationReportDAO dvirViolationReportDAO) {
-		this.dvirViolationReportDAO = dvirViolationReportDAO;
-	}
+        return dvirViolationReportDAO;
+    }
+    
+    public void setDvirViolationReportDAO(DVIRViolationReportDAO dvirViolationReportDAO) {
+        this.dvirViolationReportDAO = dvirViolationReportDAO;
+    }
 
 	private Locale locale;
     private ReportAddressLookupBean reportAddressLookupBean;
@@ -1392,17 +1391,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return new DVIRPostTripReportCriteria(locale).build(accountGroupHierarchy, formsDAO, groupID, timeFrame);
     }
     
-    /*DVIR*/
+    /* DVIR */
     @Override
     public ReportCriteria getDVIRViolationReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
-    	List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
-    	DVIRViolationReportCriteria.Builder builder = 
-    			new DVIRViolationReportCriteria.Builder(accountGroupHierarchy, groupID, dvirViolationReportDAO, groupIDs, timeFrame ); //accountGroupHierarchy
-    	
-    	builder.setLocale(locale);
+        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
+        DVIRViolationReportCriteria.Builder builder = new DVIRViolationReportCriteria.Builder(accountGroupHierarchy, groupID, dvirViolationReportDAO, groupIDs, timeFrame); // accountGroupHierarchy
+        
+        builder.setLocale(locale);
         builder.setDateTimeZone(timeZone);
         return builder.build();
-    };
+    }
     
     public DriveTimeDAO getDriveTimeDAO() {
         return driveTimeDAO;
