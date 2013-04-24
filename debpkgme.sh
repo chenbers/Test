@@ -404,6 +404,7 @@ function create_archive {
     if [ -d ".${BASE_INSTALL_DIR}" ]; then echo "Moved build into .${BASE_INSTALL_DIR}"; else echo "Failed to create .${PARENT_DIR}, exiting at $(date)"; exit 1; fi
     if [ -d ".${BASE_INSTALL_DIR}/etc" ]
     then
+        HAVE_ETC_DIR="YES"
         echo "We have an etc dir in .${BASE_INSTALL_DIR}"
         /bin/cp -a .${BASE_INSTALL_DIR}/etc ${TMP_DIR}/data
     else
@@ -435,6 +436,12 @@ function create_archive {
         echo "Debug : find . -type f -iname \"*${EXT}\" | sed -e 's/^\.//' | tee -a ${CONF_FILE}"
         find . -type f -iname "*${EXT}" | sed -e 's/^\.//' |tee -a ${CONF_FILE}
     done
+    if [ -f "${HAVE_ETC_DIR}" ]
+    then
+        /bin/cp -a .${BASE_INSTALL_DIR}/etc ${TMP_DIR}/data
+        echo "Adding /etc/ files as conffiles"
+        find etc -type f | sed -e 's/^\.//' |tee -a ${CONF_FILE}
+    fi
     echo "Creating data.tar.gz for debian package"
     tar -zcf ${TMP_DIR}/data.tar.gz *
     cd ${TMP_DIR}/control
