@@ -33,6 +33,11 @@ then
     chmod -R u+rw,g+r,o-rwx ${MY_USER_HOME}
     find ${MY_USER_HOME} -type d -exec chmod u+rwx,g+rx,o-rwx {} \;
 fi
+if [ -d "/var/www" ]
+then
+    touch /var/www/ping.html
+    chown ${MY_USER}:${MY_USER} /var/www/ping.html
+fi
 
 service ${MY_USER} status 2&>1 >/dev/null
 if [ "$?" -ne 1 ] && [ -d "${TOMCAT_WEBAPPS_DIR}" ]
