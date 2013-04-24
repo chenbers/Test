@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.cassandra;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
@@ -119,8 +121,8 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         }
 */        
 
-        List<LatLng> route = dao.fetchRouteForTrip(21130, 0, 1365392424, false);        
-        System.out.println("route: " + route.size());
+        List<LatLng> route = dao.fetchRouteForTrip(20079, 0,1363957581, false);        
+//        System.out.println("route: " + route.size());
 //            Trip dTrip = dao.getLastTripForVehicle(21130);
 //        System.out.println("Trip: " + dTrip);
 
@@ -488,6 +490,9 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 logger.debug("tripFieldMap = " + fieldMap);
                 Trip trip = mapper.convertToModelObject(fieldMap, Trip.class);
                 logger.debug("trip: " + trip);
+                if (trip.getMileage() == null)
+                    trip.setMileage(0);
+                
                 trip.setStatus(TripStatus.TRIP_COMPLETED);
 
                 // logger.debug("LocationCassandraDAO fetchTrips() trip = " + trip);
@@ -544,8 +549,9 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 }
                 else  {
                     int mileage = sumMiles(vehicle.getVehicleID(), trip.getStartTime(), new Date());
+                    trip.setMileage(mileage);
                 }
-    
+                
                 trip.setRoute(fetchRouteForTrip(id, (int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()), isDriver));
             }    
         }
@@ -594,15 +600,28 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             Map<String, Object> fieldMap = parser.parseNote(raw);
             LatLng location = mapper.convertToModelObject(fieldMap, LatLng.class);
             location.setHeading(0);
-            logger.info("fieldMap: " + fieldMap);
-            logger.info("Trip LatLng: " + location);
-
+//            logger.info("fieldMap: " + fieldMap);
+//            logger.info("Trip LatLng: " + location);
+            
+//            log(fieldMap);
             locationList.add(location);
         }
 
         return locationList;
     }
 
+    private void log(Map<String, Object> fieldMap){
+        
+//        System.out.println(fieldMap);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Integer timeDS = ((Number)fieldMap.get(Attrib.NOTETIME.getFieldName())).intValue();
+        Integer odometer = ((Number)fieldMap.get(Attrib.NOTEODOMETER.getFieldName())).intValue();
+        Date time = new Date(timeDS*1000L);
+        
+        System.out.println("UPDATE note20 set odometer=" + odometer + " WHERE deviceID=43316 AND time='" + dateFormat.format(time) + "';");
+    } 
+    
     private LastLocation fetchLastLocationForAsset(String index_cf, String breadcrumb_cf, Integer id, boolean isDriver) {
 
         LastLocation lastLocation = null;
