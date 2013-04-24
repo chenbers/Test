@@ -436,7 +436,7 @@ function create_archive {
         echo "Debug : find . -type f -iname \"*${EXT}\" | sed -e 's/^\.//' | tee -a ${CONF_FILE}"
         find . -type f -iname "*${EXT}" | sed -e 's/^\.//' |tee -a ${CONF_FILE}
     done
-    if [ -f "${HAVE_ETC_DIR}" ]
+    if [ "${HAVE_ETC_DIR}" ]
     then
         /bin/cp -a .${BASE_INSTALL_DIR}/etc ${TMP_DIR}/data
         echo "Adding /etc/ files as conffiles"
