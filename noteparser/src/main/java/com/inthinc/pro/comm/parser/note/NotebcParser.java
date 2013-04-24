@@ -25,7 +25,7 @@ public class NotebcParser implements NoteParser{
 		
 		HashMap<String, Object> attribMap = new HashMap<String, Object>();
 		parseHeader(data, attribMap);
-        logger.debug("attribMap: " + attribMap);
+//        logger.debug("attribMap: " + attribMap);
 		
 		int offset = 32;
 		while ((offset + 2) < data.length)
