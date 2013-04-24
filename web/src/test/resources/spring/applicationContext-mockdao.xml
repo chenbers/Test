@@ -19,4 +19,12 @@ default-autowire="byName">
 	  <bean id="locateVehicleByTime" class="com.inthinc.pro.backing.model.LocateVehicleByTime">
 	  </bean>
     
+ <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO"/>
+  <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO"></bean>
+  <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO"></bean>
+  <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO"/>
+  <bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" />
+  <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" />
+  <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" />
+    
 </beans>
