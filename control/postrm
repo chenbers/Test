@@ -47,9 +47,9 @@ function remove_user {
 }
 
 function remove_ping {
-    if [ -f "/var/www/ping-mina.html" ]
+    if [ -f "/var/www/ping.html" ]
         then
-            /bin/rm /var/www/ping-mina.html
+            /bin/rm /var/www/ping.html
     fi
 }
 
