@@ -10,7 +10,7 @@
 
 U_GID="1090"
 MY_GROUP_USER="tiwipro"
-TOMCAT_USER="tomcat6"
+MY_USER="tomcat6"
 MY_USER_HOME="/usr/share/tomcat6"
 TOMCAT_WEBAPPS_DIR="/var/lib/tomcat6/webapps"
 WARS="hoskiosk tiwiproutil tiwipro scheduler service"
