@@ -124,8 +124,8 @@ function setup_tomcat2_variables {
     DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     U_GID="1090"
     MY_GROUP_USER="tiwipro"
-    TOMCAT_USER="tomcat2"
-    MY_USER_HOME="/usr/local/${TOMCAT_USER}"
+    MY_USER="tomcat2"
+    MY_USER_HOME="/usr/local/${MY_USER}"
     TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}/webapps"
     WARS="hoskiosk tiwiproutil tiwipro service"
     BASE_INSTALL_DIR="${MY_USER_HOME}"
@@ -141,12 +141,12 @@ function setup_tomcat2_variables {
     DEB_Package="inthinc-${JOB_NAME}-tomcat2_${DISTRIB_CODENAME}"
     DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
     DEB_Conflicts="tomcat2, tiwipro-wars"
-    DEB_Package_Filename="${WORKSPACE}/${TOMCAT_USER}_${JOB_NAME}_${ARCH_UBU}_${DISTRIB_CODENAME}.deb"
+    DEB_Package_Filename="${WORKSPACE}/${MY_USER}_${JOB_NAME}_${ARCH_UBU}_${DISTRIB_CODENAME}.deb"
     DEB_Provides="tomcat2, tiwipro-wars"
     echo "Setup tomcat2 variables :"
     echo "U_GID ${U_GID}"
     echo "MY_GROUP_USER ${MY_GROUP_USER}"
-    echo "TOMCAT_USER ${TOMCAT_USER}"
+    echo "MY_USER ${MY_USER}"
     echo "MY_USER_HOME ${MY_USER_HOME}"
     echo "TOMCAT_WEBAPPS_DIR ${TOMCAT_WEBAPPS_DIR}"
     echo "WARS ${WARS}"
@@ -166,9 +166,9 @@ function update_control_scripts {
     do
         echo "Modifying ${CONTROL_SCRIPT} in ${TMP_DIR}/control at $(date)"
         #perl -pi -e "s/^U_UID=.*/U_UID=\"${U_UID}\"/" ${TMP_DIR}/control/${CONTROL_SCRIPT}
-        echo "DEBUG : group ${MY_GROUP_USER} tomcat ${TOMCAT_USER} home ${MY_USER_HOME} webapps ${TOMCAT_WEBAPPS_DIR} wars ${WARS}"
+        echo "DEBUG : group ${MY_GROUP_USER} tomcat ${MY_USER} home ${MY_USER_HOME} webapps ${TOMCAT_WEBAPPS_DIR} wars ${WARS}"
         MY_GROUP_USER_esc=$(echo ${MY_GROUP_USER} | sed -e 's/\//\\\//g')
-	TOMCAT_USER_esc=$(echo ${TOMCAT_USER} | sed -e 's/\//\\\//g')
+	MY_USER_esc=$(echo ${MY_USER} | sed -e 's/\//\\\//g')
 	MY_USER_HOME_esc=$(echo ${MY_USER_HOME} | sed -e 's/\//\\\//g')
 	TOMCAT_WEBAPPS_DIR_esc=$(echo ${TOMCAT_WEBAPPS_DIR} | sed -e 's/\//\\\//g')
 	WARS_esc=$(echo ${WARS} | sed -e 's/\//\\\//g')
@@ -176,8 +176,8 @@ function update_control_scripts {
         echo "perl -pi -e \"s/^MY_GROUP_USER=.*/MY_GROUP_USER=${MY_GROUP_USER_esc}/\" ${CONTROL_SCRIPT}"
         PERLOUT=$(perl -pi -e "s/^MY_GROUP_USER=.*/MY_GROUP_USER=\"${MY_GROUP_USER_esc}\"/" ${CONTROL_SCRIPT})
 	echo "perl out is ${PERLOUT} and retval is $?"
-        echo "perl -pi -e \"s/^TOMCAT_USER=.*/TOMCAT_USER=${TOMCAT_USER_esc}/\" ${CONTROL_SCRIPT}"
-        PERLOUT=$(perl -pi -e "s/^TOMCAT_USER=.*/TOMCAT_USER=\"${TOMCAT_USER_esc}\"/" ${CONTROL_SCRIPT})
+        echo "perl -pi -e \"s/^MY_USER=.*/MY_USER=${MY_USER_esc}/\" ${CONTROL_SCRIPT}"
+        PERLOUT=$(perl -pi -e "s/^MY_USER=.*/MY_USER=\"${MY_USER_esc}\"/" ${CONTROL_SCRIPT})
 	echo "perl out is ${PERLOUT} and retval is $?"
         echo "perl -pi -e \"s/^MY_USER_HOME=.*/MY_USER_HOME=${MY_USER_HOME_esc}/\" ${CONTROL_SCRIPT}"
         PERLOUT=$(perl -pi -e "s/^MY_USER_HOME=.*/MY_USER_HOME=\"${MY_USER_HOME_esc}\"/" ${CONTROL_SCRIPT})

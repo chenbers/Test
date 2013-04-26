@@ -1,0 +1,23 @@
+# Inthinc nginx on Ubuntu site file
+#
+
+#HTTPS
+server {
+  listen 443;
+  server_name MY_ELB_ADDRESS
+  ssl on;
+  ssl_certificate /etc/ssl/certs/inthinc.com.crt;
+  root /var/www;
+  # Path to an SSL certificate;
+  ssl_certificate_key /etc/ssl/private/inthinc-private-key-2013.pem;
+  ssl_protocols       SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers         HIGH:!aNULL:!MD5;
+  # Path to the key for the SSL certificate;
+  include /etc/tiwipro/nginx-ssl/*
+}
+
+server {
+  listen 80;
+  server_name  qa.inthinc.com;
+  include /etc/tiwipro/nginx-nossl/*
+}

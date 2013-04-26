@@ -1,0 +1,22 @@
+# These apps go to tomcat version 6 using ssl
+# cas hoskiosk service tiwiproutil tiwipro
+
+location /service {
+    proxy_pass https://qa.inthinc.com:8423/service;
+    proxy_ssl_session_reuse on;
+    ### force timeouts if one of backend is died ##
+    proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+    ### Set headers ####
+    proxy_set_header        Accept-Encoding   "";
+    proxy_set_header        Host            $host;
+    proxy_set_header        X-Real-IP       $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    ### Most PHP, Python, Rails, Java App can use this header ###
+    #proxy_set_header X-Forwarded-Proto https;##
+    #This is better##
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    add_header              Front-End-Https   on;
+    ### By default we don't want to redirect it ####
+    proxy_redirect     off;
+}
+
