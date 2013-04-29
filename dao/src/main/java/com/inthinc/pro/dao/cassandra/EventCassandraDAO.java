@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.cassandra;
 
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -107,12 +108,59 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
     	events = dao.getMostRecentEmergencies(0, 100);
     	dao.logEvents(events);
 */
-    	List<Event> events = dao.getEventsForGroupFromVehicles(5260, EventCategory.VIOLATION.getNoteTypesInCategory(), new Date(1334078768000L), new Date(1334081277000L));
-    	dao.logEvents(events);
+//    	List<Event> events = dao.getEventsForGroupFromVehicles(5260, EventCategory.VIOLATION.getNoteTypesInCategory(), new Date(1334078768000L), new Date(1334081277000L));
+    	
+//    	List<Event> events = dao.fetchAllEventsForAsset(false, 20079, 0, 1365256141);
+//    	dao.logEvents2(events);
     	
     	dao.shutdown();
     }
-    
+
+    /*    
+    private List<Event> fetchAllEventsForAsset(boolean isDriver, Integer ID, Integer startTS, Integer endTS)
+    {
+        List<Long> keyList = new ArrayList<Long>();
+        Composite startRange = new Composite();
+        startRange.add(0, 0);
+        startRange.add(1, startTS);
+        
+        Composite endRange = new Composite();
+        endRange.add(0, Integer.MAX_VALUE);
+        endRange.add(1, endTS);
+
+        keyList.addAll(fetchRowKeysFromIndex(isDriver, ID.intValue(), startRange, endRange, MAX_EVENTS));
+        
+        return fetchNotes(keyList, true);
+    }
+
+    public List<Event> fetchAllEventsForAsset(boolean isDriver, Integer ID, Integer startTS, Integer endTS)
+    {
+        List<Event> eventList = new ArrayList<Event>();
+        Composite startRange = new Composite();
+        startRange.add(0, 0);
+        startRange.add(1, 0);
+        
+        Composite endRange = new Composite();
+        endRange.add(0, Integer.MAX_VALUE);
+        endRange.add(1, endTS);
+
+            eventList.addAll(fetchNotesFromIndex(isDriver, ID, startRange, endRange, MAX_EVENTS, true));
+        return eventList;
+    }
+    private void logEvents2(List<Event> events)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        for (Event event : events)
+        {
+//            logger.info(event.getTime().getTime()/1000 + " " + event.getOdometer());
+
+            System.out.println("UPDATE note20 set odometer=" + event.getOdometer() + " WHERE deviceID=43316 AND time='" + dateFormat.format(event.getTime()) + "';");
+        }
+        System.out.println("**************************************************");
+    }
+*/
+
     private void logEvents(List<Event> events)
     {
     	for (Event event : events)

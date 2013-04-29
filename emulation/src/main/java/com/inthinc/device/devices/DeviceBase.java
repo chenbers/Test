@@ -545,6 +545,10 @@ public abstract class DeviceBase {
         return this;
     }
 
-
+    public DeviceBase boundaryChange(){
+    	state.setBoundaryID(39);
+    	
+    	return this;
+    }
 
 }
