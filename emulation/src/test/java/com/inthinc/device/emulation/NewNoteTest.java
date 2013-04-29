@@ -15,6 +15,7 @@ import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.notes.SatelliteEvent_t;
+import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
@@ -138,6 +139,30 @@ public class NewNoteTest {
             e.printStackTrace();
         }
     }
+	
+	public void testDVIRRepairNote_WS850(String mcmID, String imei){
+	    DeviceNoteTypes type = DeviceNoteTypes.SAT_EVENT_DVIR_REPAIR;
+	    DeviceState state = new DeviceState(imei, ProductType.WAYSMART_850);
+	    GeoPoint location = new GeoPoint();
+	    
+	    SatelliteEvent_t note = new SatelliteEvent_t(type, state, location);
+	    
+	    note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test");
+	    note.addAttr(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, "INS_Test_1");
+	    note.addAttr(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, "SGN_Test_1");
+	    note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test");
+	    
+	    List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        
+        try {
+            proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
 
     public void testNote(String mcmID, String imei, DeviceNoteTypes type) {
         SatelliteEvent_t note = new SatelliteEvent_t(type,
@@ -185,6 +210,9 @@ public class NewNoteTest {
 
         String imeiOnQA = "30099FKEWS99999";
         String mcmIDOnQA = "MCMFAKEWS";
+        
+        String imeiOnQA_WS850 = "MCMFAKE01";
+        String mcmIDOnQA_WS850 = "MCMFAKE01";
 
 /*
         Map<String, LatLng> hazardLocations = new HashMap<String, LatLng>();
@@ -202,6 +230,10 @@ public class NewNoteTest {
 //        test.testInstallNote();
         
         test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
+        
+        /* DVIR Repair Note Tests */
+        test.testDVIRRepairNote_WS850(mcmIDOnQA_WS850, imeiOnQA_WS850);
+        
   /*      
         String imei = imeiOnQA;
         String mcmID = mcmIDOnQA;

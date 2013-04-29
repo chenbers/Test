@@ -21,6 +21,7 @@ import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
 import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.enums.ProductType;
 import com.inthinc.pro.automation.logging.Log;
 import com.inthinc.pro.automation.objects.AutomationCalendar;
 
@@ -50,6 +51,28 @@ public class AutomationDeviceEvents {
 				note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, locationS);
 			}
 		}
+	}
+	
+	/**
+	 * SAT_EVENT_DVIR_REPAIR(232, EventAttr.ATTR_DVIR_MECHANIC_ID_STR, EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, EventAttr.ATTR_DVIR_COMMENTS),
+	 * @author michaelreinicke
+	 *
+	 */
+	public class DvirRepairEvent extends AutomationDeviceEvents {
+	    private DvirRepairEvent(DeviceState state, GeoPoint location) {
+	        super(DeviceNoteTypes.SAT_EVENT_DVIR_REPAIR, state, location);
+	        
+	        if (state.getProductVersion().isWaysmart()){
+//	            note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test_1");
+	            note.addAttr(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, "INS_Test_1");
+	            note.addAttr(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, "SGN_Test_1");
+	            note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test");
+	        }
+	    }
+	}
+	
+	public static DvirRepairEvent dvirRepairEvent(DeviceState state, GeoPoint location){
+	    return classes.new DvirRepairEvent(state, location);
 	}
 	
 	
