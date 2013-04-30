@@ -33,17 +33,20 @@ then
     chmod -R u+rw,g+r,o-rwx ${MY_USER_HOME}
     find ${MY_USER_HOME} -type d -exec chmod u+rwx,g+rx,o-rwx {} \;
 fi
-if [ -d "/var/www" ]
+if [ ! -d "/var/www" ]
 then
-    touch /var/www/ping.html
-    chown ${MY_USER}:${MY_USER} /var/www/ping.html
-    if [ ! -f "/var/www/index.html" ] && [ ! -f "/var/www/index.htm" ] && [ ! -f "/var/www/default.htm" ] && [ -f "/etc/tiwipro/www/index.html" ]
-    then
-        echo "No index file in /var/www, adding one at $(date)"
-        cp /etc/tiwipro/www/index.html /var/www/index.html
-    else
-        echo "index file already exists in /var/www, not setting one up"
-    fi
+    echo "Creating /var/www"
+    mkdir -p /var/www
+fi
+
+touch /var/www/ping.html
+chown ${MY_USER}:${MY_USER} /var/www/ping.html
+if [ ! -f "/var/www/index.html" ] && [ ! -f "/var/www/index.htm" ] && [ ! -f "/var/www/default.htm" ] && [ -f "/etc/tiwipro/www/index.html" ]
+then
+    echo "No index file in /var/www, adding one at $(date)"
+    cp /etc/tiwipro/www/index.html /var/www/index.html
+else
+    echo "index file already exists in /var/www, not setting one up"
 fi
 
 service ${MY_USER} status 2&>1 >/dev/null
