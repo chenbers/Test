@@ -24,8 +24,8 @@ public enum EventCategory implements BaseEnum
     HOS(8, "HOS", EnumSet.of(EventSubCategory.HOS)),
     TEXT(9,"TEXT", EnumSet.of(EventSubCategory.TEXTMESSAGE)),
     DRIVER_LOGIN(10, "DRIVER", EnumSet.of(EventSubCategory.DRIVER)),
-    DVIR(11,"DVIR", EnumSet.of(EventSubCategory.DVIR));
-    
+    DVIR(11,"DVIR", EnumSet.of(EventSubCategory.DVIR)),
+    DIAGNOSTICS(12, "DIAGNOSTICS", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DVIR));
 
     private String description;
     private int code;
