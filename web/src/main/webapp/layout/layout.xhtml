@@ -97,12 +97,10 @@
 </head>
     <body onload="if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
      <script type="text/javascript"></script>
-<!--     <ui:insert name="header"> -->
-<!--         <ui:include src="/includes/header.xhtml"> -->
-<!--         </ui:include> -->
-<!--     </ui:insert> -->
-
-    <iframe src="https://localhost:8443/forms/bar" frameborder="0" marginheight="0" marginwidth="0" width="100%" style="position: fixed; top:0; height: 100%"/>
+    <ui:insert name="header">
+        <ui:include src="/includes/header.xhtml">
+        </ui:include>
+    </ui:insert>
     <ui:insert name="navigation">
         <ui:include src="/includes/navigation.xhtml" >
         <ui:param name="context" value="layout"/>
