@@ -73,11 +73,11 @@ else
     echo "${MY_USER} doesn't seem to be installed as a service, you will need to manually start it"
 fi
 
-if [ -f "/etc/nginx/sites-available/tiwipro" ]
+if [ -f "/etc/nginx/sites-available/tiwipro" ] && [ ! -L "/etc/nginx/sites-enabled/tiwipro" ]
 then
     ln -s /etc/nginx/sites-available/tiwipro /etc/nginx/sites-enabled/tiwipro
     NGINX_RELOAD=1
-    if [ -l "/etc/nginx/sites-enabled/default" ]
+    if [ -L "/etc/nginx/sites-enabled/default" ] || [ -f "/etc/nginx/sites-enabled/default" ]
     then
         /bin/rm /etc/nginx/sites-enabled/default
         NGINX_RELOAD=1
