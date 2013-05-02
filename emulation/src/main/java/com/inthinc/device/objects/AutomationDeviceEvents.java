@@ -1131,6 +1131,14 @@ public class AutomationDeviceEvents {
 		device.addEvent(dVIRNoPostInspection(device.getState(), device.getCurrentLocation()));
 	}
 	
+	public static void dVIRRepairAlertEvent(DeviceBase device){
+        device.addEvent(dVIRRepairAlertEvent(device.getState(), device.getCurrentLocation()));
+    }
+	
+	public static DVIRRepairAlertEvent dVIRRepairAlertEvent(DeviceState state, GeoPoint location){
+        return classes.new DVIRRepairAlertEvent(state, location);
+    }
+	
 	public static RequestSettingsEvent requestSettings(DeviceState state, GeoPoint location){
 		return classes.new RequestSettingsEvent(state, location);
 	}
@@ -1336,6 +1344,33 @@ public class AutomationDeviceEvents {
 			}
 		}
 		
+	}
+	
+	public class DVIRRepairAlertEvent extends AutomationDeviceEvents {
+	    
+	    private DVIRRepairAlertEvent(DeviceState state, GeoPoint location){
+	        super(DeviceNoteTypes.SAT_EVENT_DVIR_REPAIR, state, location);
+	        
+	        SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
+	                        new AutomationCalendar(), new GeoPoint(), false, false,
+	                        HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+	                        65, 0, 0, 47, 0);
+	        
+	        note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test_1");
+            note.addAttr(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, "INS_Test_1");
+            note.addAttr(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, "SGN_Test_1");
+            note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test");
+            
+            List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+            notes.add(note);
+            try {
+                new MCMProxyObject(AutoSilos.QA).sendHttpNote(state.getMcmID(), Direction.wifi, notes, state.getImei());
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+	    }
 	}
 	
 	public class DVIRPostTripPassEvent extends AutomationDeviceEvents {
