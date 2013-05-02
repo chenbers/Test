@@ -13,6 +13,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 
 /**
@@ -55,6 +56,16 @@ public class DriverDaoStub implements DriverDAO {
         return Collections.emptyList();
     }
 
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer driverID, Interval interval){
+        return Collections.emptyList();
+    }
+    
     @Override
     public List<DriverStops> getStops(Integer driverID, String driverName, Interval interval) {
         return Collections.emptyList();

@@ -23,6 +23,7 @@ import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.BaseUnitTest;
@@ -223,6 +224,16 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         @Override
         public Trip getLastTrip(Integer driverID) {
+            return null;
+        }
+
+        @Override
+        public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
+            return null;
+        }
+
+        @Override
+        public List<LatLng> getLocationsForTrip(Integer driverID, Interval interval){
             return null;
         }
 

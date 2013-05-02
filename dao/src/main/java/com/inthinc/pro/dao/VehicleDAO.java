@@ -3,8 +3,11 @@ package com.inthinc.pro.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.Interval;
+
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleName;
@@ -38,6 +41,10 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer> {
     List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate);
 
     Trip getLastTrip(Integer driverID);
+    
+    public List<LatLng> getLocationsForTrip(Integer vehicleID, Date startTime, Date endTime);
+    public List<LatLng> getLocationsForTrip(Integer vehicleD, Interval interval);
+
 
     /**
      * Gets a list of DriverLocation's near the specified LatLng.
