@@ -33,23 +33,26 @@ body {
 		<div class="navbar-inner">
 			<div class="container-fluid">
 				<a class="logo" href="#"></a>
-				<ul class="nav pull-left">
+				<ul class="nav nav-pills pull-left">
 					<li><pretty:link id="headerInitDashboard" mappingId="init-dashboard">Fleet</pretty:link></li>
-					<li><a href='/forms'>Forms</a></li>
-					<li><a href="#">Maintenance</a></li>
+					
+					<h:panelGroup rendered="#{navigationBarBean.accountIsFormsEnabled}"> 
+					<li><a href='#{navigationBarBean.formUrl}'>Forms</a></li> 
+					</h:panelGroup>
+<!-- 					<li><a href="#">Maintenance</a></li> -->
 				</ul>
 				<ul class="nav nav-pills pull-right">
 					<li>
-						<pretty:link id="headerMyMessages" mappingId="inbox" styleClass="tb-messages">
+						<pretty:link id="headerMyMessages" mappingId="inbox">
 							<h:outputText value="#{messages.navigation_myMessages}" />
 						</pretty:link>
 					</li>
 					<li>
-						<pretty:link id="headerMyAccount" mappingId="myAccount" styleClass="tb-account">
+						<pretty:link id="headerMyAccount" mappingId="myAccount">
 							<h:outputText value="#{messages.header_myAccount}" />
 						</pretty:link>
 					</li>
-					<li><a id="template-settings-logout" href="#{facesContext.externalContext.requestContextPath}/logout">Logout</a></li>
+					<li><a id="template-settings-logout" href="#{facesContext.externalContext.requestContextPath}/logout">#{messages.header_logout}</a></li>
 				</ul>
 			</div>
 		</div>
