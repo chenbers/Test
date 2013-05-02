@@ -12,8 +12,8 @@ public class DriverStops extends BaseEntity {
     private Long driveTime;
     private Long arriveTime;
     private Long departTime;
-    private Integer idleLo;
-    private Integer idleHi;
+    private Integer idleLo = 0;
+    private Integer idleHi = 0;
     private String zoneName;  
     private String address;
     private String vehicleName;
@@ -86,6 +86,7 @@ public class DriverStops extends BaseEntity {
     public Integer getIdleLo() {
         if (arriveTime == null || departTime == null)
             return 0;
+        
         return idleLo;
     }
     public void setIdleLo(Integer idleLo) {
@@ -117,7 +118,7 @@ public class DriverStops extends BaseEntity {
         if (departTime == null || arriveTime == null)
             return null;
         
-        Integer waitTime = (int)(departTime - arriveTime) - idleHi - idleLo;
+        Integer waitTime = (int)(departTime - arriveTime) - getIdleHi() - getIdleLo();
         
         if (waitTime < 0)
             return 0;
