@@ -165,6 +165,17 @@ public class TripDisplay implements Comparable<TripDisplay>
     {
         this.trip = trip;
     }
+    
+    public boolean areLocationsLoaded() {
+        return trip.getFullRouteLoaded();
+    }
+    
+    public void addLocations(List<LatLng> locations) {
+        if (!trip.getFullRouteLoaded()) {
+            route.addAll(1, locations);
+            trip.setFullRouteLoaded(true);
+        }
+    }
 
     public List<LatLng> getRoute()
     {

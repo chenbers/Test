@@ -1,6 +1,8 @@
 package com.inthinc.pro.comm.parser.note;
 
 import com.inthinc.pro.comm.parser.attrib.Attrib;
+import com.inthinc.pro.comm.parser.attrib.AttribParserType;
+
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -200,8 +202,12 @@ public enum NoteType {
     RHA_CONFIRM_REJECT(227, new Attrib[]{}),
     SEND_ROAD_HAZARDS(228, new Attrib[]{}),
 
+    //Put in for customer G&K to help detect tampering to tiwis.
+    POWER_INTERRUPTED(229, new Attrib[]{}),
+
     ONE_WIRE_PAIRING(230, new Attrib[]{Attrib.DRIVERSTR, Attrib.FOB_ID}),
     FOB_INFO(231, new Attrib[]{Attrib.FOB_ID}),
+    DVIR_REPAIR(232, new Attrib[]{Attrib.DVIR_COMMENTS,Attrib.DVIR_MECHANIC_ID,Attrib.DVIR_INSPECTOR_ID,Attrib.DVIR_SIGNOFF_ID}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),

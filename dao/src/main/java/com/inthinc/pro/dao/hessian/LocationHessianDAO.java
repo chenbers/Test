@@ -9,7 +9,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
 
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
@@ -22,6 +24,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
@@ -35,6 +38,8 @@ public class LocationHessianDAO   implements LocationDAO
     private Mapper mapper;
     private VehicleDAO vehicleDAO;
     private DriverDAO driverDAO;
+    private DeviceDAO deviceDAO;
+    private EventDAO eventDAO;
     
     
     public static void main(String[] args){
@@ -92,7 +97,27 @@ public class LocationHessianDAO   implements LocationDAO
 		this.driverDAO = driverDAO;
 	}
 
-	@Override
+    @Override
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
+
+    @Override
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
+    }
+
+    @Override
+    public EventDAO getEventDAO() {
+        return eventDAO;
+    }
+
+    @Override
+    public void setEventDAO(EventDAO eventDAO) {
+        this.eventDAO = eventDAO;
+    }
+
+    @Override
     public LastLocation getLastLocationForDriver(Integer driverID)
     {
         try
@@ -211,5 +236,13 @@ public class LocationHessianDAO   implements LocationDAO
             return Collections.emptyList();
         }	    
 	}
+
+	public List<LatLng> getLocationsForDriverTrip(Integer driverID, Date startTime, Date endTime) {
+        return null;
+    }
+    
+    public List<LatLng> getLocationsForVehicleTrip(Integer vehicleID, Date startTime, Date endTime) {
+        return null;
+    }
 
 }

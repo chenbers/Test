@@ -20,6 +20,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Trip;
@@ -132,6 +133,16 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
             return trips;
         }
 
+        @Override
+        public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
+            return null;
+        }
+
+        @Override
+        public List<LatLng> getLocationsForTrip(Integer driverID, Interval interval){
+            return null;
+        }
+        
         @Override
         public Integer create(Integer id, Driver entity) {
             return null;
