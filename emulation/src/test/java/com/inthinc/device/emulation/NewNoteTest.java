@@ -236,7 +236,7 @@ public class NewNoteTest {
         test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
         
         /* DVIR Repair Note Tests */
-        test.testDVIRRepairNote_WS850(mcmIDOnQA_WS850, imeiOnQA_WS850);
+        //test.testDVIRRepairNote_WS850(mcmIDOnQA_WS850, imeiOnQA_WS850);
         
   /*      
         String imei = imeiOnQA;

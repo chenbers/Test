@@ -7,6 +7,7 @@ import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 /**
  * @author Mike Weiss
@@ -96,6 +97,20 @@ public class AlertsTripsTest {
         AutomationDeviceEvents.dVIRPostTripFail(ws04);								//ALERT_TYPE_DVIR_POST_TRIP_FAIL
         ws04.turn_key_off(30);
         ws04.power_off_device(900);
+        
+        //QA special 
+        String imeiOnQA_WS850 = "MCMFAKE01";
+        String mcmIDOnQA_WS850 = "MCMFAKE01";
+        
+        WaysmartDevice waySmartRepairAlertQA = new WaysmartDevice(imeiOnQA_WS850, mcmIDOnQA_WS850, AutoSilos.QA, Direction.gprs);
+        waySmartRepairAlertQA.set_time(new AutomationCalendar());
+        waySmartRepairAlertQA.getState().setWMP(17116);
+        waySmartRepairAlertQA.firstLocation(new GeoPoint(33.0104, -117.111));
+        waySmartRepairAlertQA.power_on_device();
+        waySmartRepairAlertQA.turn_key_on(15);
+        AutomationDeviceEvents.dVIRRepairAlertEvent(waySmartRepairAlertQA);                          //ALERT_TYPE_DVIR_REPAIR
+        waySmartRepairAlertQA.turn_key_off(30);
+        waySmartRepairAlertQA.power_off_device(900);
         
         //WAYSMART05 TRIP FOR DVIR ALERTS
         ws05.getState().setWMP(17116);
