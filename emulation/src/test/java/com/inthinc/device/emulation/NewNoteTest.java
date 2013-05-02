@@ -96,7 +96,8 @@ public class NewNoteTest {
                 HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
                 65, 0, 0, 47, 0);
 
-        note.addAttr(EventAttr.DRIVER_ID_STR, "71572");
+        note.addAttr(EventAttr.DRIVER_ID_STR, "71572"); //QA SILO DRIVER
+//        note.addAttr(EventAttr.DRIVER_ID_STR, "44523");  //MY SILO DRIVER
 
         List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
         notes.add(note);
@@ -213,6 +214,9 @@ public class NewNoteTest {
         
         String imeiOnQA_WS850 = "MCMFAKE01";
         String mcmIDOnQA_WS850 = "MCMFAKE01";
+        
+        String imeiOnMY = "30023FKE1DE7570";
+        String mcmIDOnMY = "F1DE7570";
 
 /*
         Map<String, LatLng> hazardLocations = new HashMap<String, LatLng>();
@@ -226,7 +230,7 @@ public class NewNoteTest {
         String mcmID = mcmIDOnDev;
 */        
         
-        NewNoteTest test = new NewNoteTest(AutoSilos.QA);
+        NewNoteTest test = new NewNoteTest(AutoSilos.MY);
 //        test.testInstallNote();
         
         test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);

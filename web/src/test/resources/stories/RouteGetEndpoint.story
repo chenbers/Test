@@ -44,6 +44,9 @@ Given I retrieve a route and then partially complete the route and a different d
 Scenario: Driver partially completes the route then another driver picks up their route from a different vehicle
 Given I retrieve a route and then partially complete the route and a different driver retrieves the route from a different vehicle
 
+Scenario: Driver couples and decouples at the same location
+Given I couple and decouple at the same location
+
 Scenario: Status 400 Code 100 Invalid IMEI
 Given I provide an invalid IMEI
 

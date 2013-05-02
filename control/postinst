@@ -40,7 +40,7 @@ then
 fi
 
 touch /var/www/ping.html
-chown ${MY_USER}:${MY_USER} /var/www/ping.html
+chown ${MY_USER}:${MY_GROUP_USER} ${MY_USER_HOME} /var/www/ping.html
 if [ ! -f "/var/www/index.html" ] && [ ! -f "/var/www/index.htm" ] && [ ! -f "/var/www/default.htm" ] && [ -f "/etc/tiwipro/www/index.html" ]
 then
     echo "No index file in /var/www, adding one at $(date)"
@@ -73,11 +73,11 @@ else
     echo "${MY_USER} doesn't seem to be installed as a service, you will need to manually start it"
 fi
 
-if [ -f "/etc/nginx/sites-available/tiwipro" ]
+if [ -f "/etc/nginx/sites-available/tiwipro" ] && [ ! -L "/etc/nginx/sites-enabled/tiwipro" ]
 then
     ln -s /etc/nginx/sites-available/tiwipro /etc/nginx/sites-enabled/tiwipro
     NGINX_RELOAD=1
-    if [ -l "/etc/nginx/sites-enabled/default" ]
+    if [ -L "/etc/nginx/sites-enabled/default" ] || [ -f "/etc/nginx/sites-enabled/default" ]
     then
         /bin/rm /etc/nginx/sites-enabled/default
         NGINX_RELOAD=1
