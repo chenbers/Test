@@ -1,43 +1,44 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
-	            xmlns:ui="http://java.sun.com/jsf/facelets"
-	            xmlns:h="http://java.sun.com/jsf/html" 
-	            xmlns:rich="http://richfaces.org/rich"
-	            xmlns:a4j="http://richfaces.org/a4j"
-	            xmlns:c="http://java.sun.com/jstl/core"
-	            xmlns:f="http://java.sun.com/jsf/core"
-	            xmlns:t="http://myfaces.apache.org/tomahawk"
-	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
-    <div id="header">
-        <h:form id="headerForm">
-            <div id="logo"><pretty:link id="headerInitDashboard" mappingId="init-dashboard">
-                <h:graphicImage width="145px" height="45px" value="/images/x.gif" style="border:none" />
-            </pretty:link></div>
-            <div id="horz_nav">
-            <ul>
-                <li class="l text">
-                <a4j:outputPanel id="contextSensitiveHelp">
-                	<a class="tb-help" href='javascript:RH_ShowHelp(0, "#{helpBean.path}>NewWindow", 15, #{(empty helpMapIDOverride) ? helpBean.mapID : helpMapIDOverride})'>
-                		#{messages.header_help}
-                	</a>
-				</a4j:outputPanel>
-				</li>
-                <li class="l text">
-					<h:panelGroup rendered="#{treeNavigationBean.accountIsWaysmart}">
-                     <pretty:link id="headerMyMessages" mappingId="inbox" styleClass="tb-messages"> 
-                        <h:outputText value="#{messages.navigation_myMessages}"/>
-                     </pretty:link>
-                     </h:panelGroup>
-                     </li>                    
-                <li class="l text">
-                     <pretty:link id="headerMyAccount" mappingId="myAccount" styleClass="tb-account"> 
-                        <h:outputText value="#{messages.header_myAccount}"/>
-                     </pretty:link>
-                     </li>
-                <li class="l text"><h:outputLink styleClass="tb-logout" value="#{facesContext.externalContext.requestContextPath}/logout">#{messages.header_logout}</h:outputLink></li>
-            </ul>
-            </div>
-        </h:form>
-    </div>
+<!-- <ui:composition xmlns="http://www.w3.org/1999/xhtml"  -->
+<!-- 	            xmlns:ui="http://java.sun.com/jsf/facelets" -->
+<!-- 	            xmlns:h="http://java.sun.com/jsf/html"  -->
+<!-- 	            xmlns:rich="http://richfaces.org/rich" -->
+<!-- 	            xmlns:a4j="http://richfaces.org/a4j" -->
+<!-- 	            xmlns:c="http://java.sun.com/jstl/core" -->
+<!-- 	            xmlns:f="http://java.sun.com/jsf/core" -->
+<!-- 	            xmlns:t="http://myfaces.apache.org/tomahawk" -->
+<!-- 	            xmlns:pretty="http://ocpsoft.com/prettyfaces"> -->
+<!--     <div id="header"> -->
+<!--         <h:form id="headerForm"> -->
+<!--             <div id="logo"><pretty:link id="headerInitDashboard" mappingId="init-dashboard"> -->
+<!--                 <h:graphicImage width="145px" height="45px" value="/images/x.gif" style="border:none" /> -->
+<!--             </pretty:link></div> -->
+<!--             <div id="horz_nav"> -->
+<!--             <ul> -->
+<!--                 <li class="l text"> -->
+<!--                 <a4j:outputPanel id="contextSensitiveHelp"> -->
+<!--                 	<a class="tb-help" href='javascript:RH_ShowHelp(0, "#{helpBean.path}>NewWindow", 15, #{(empty helpMapIDOverride) ? helpBean.mapID : helpMapIDOverride})'> -->
+<!--                 		#{messages.header_help} -->
+<!--                 	</a> -->
+<!-- 				</a4j:outputPanel> -->
+<!-- 				</li> -->
+<!--                 <li class="l text"> -->
+<!-- 					<h:panelGroup rendered="#{treeNavigationBean.accountIsWaysmart}"> -->
+<!--                      <pretty:link id="headerMyMessages" mappingId="inbox" styleClass="tb-messages">  -->
+<!--                         <h:outputText value="#{messages.navigation_myMessages}"/> -->
+<!--                      </pretty:link> -->
+<!--                      </h:panelGroup> -->
+<!--                      </li>                     -->
+<!--                 <li class="l text"> -->
+<!--                      <pretty:link id="headerMyAccount" mappingId="myAccount" styleClass="tb-account">  -->
+<!--                         <h:outputText value="#{messages.header_myAccount}"/> -->
+<!--                      </pretty:link> -->
+<!--                      </li> -->
+<!--                 <li class="l text"><h:outputLink styleClass="tb-logout" value="#{facesContext.externalContext.requestContextPath}/logout">#{messages.header_logout}</h:outputLink></li> -->
+<!--             </ul> -->
+<!--             </div> -->
+<!--         </h:form> -->
+<!--     </div> -->
 
-
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <iframe src="#{facesContext.externalContext.requestContextPath}/app/navbar" frameborder="0" marginheight="0" marginwidth="0" width="100%" style="position: fixed; top:0; height: 50px" scrolling="no"/>
 </ui:composition>
