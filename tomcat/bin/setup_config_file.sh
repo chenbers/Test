@@ -1,13 +1,16 @@
 #!/bin/bash
 USER_DATA_FILE="/etc/user-data.sh"
+CHECKAPP_FILE="/etc/tiwipro/monitor/checkapp.txt"
+#DEBUG=1
 
-MY_VARS="AMI FS_BASE COMMANDS DISK_DEVICE EC2_RUN_OPTS F_INSTALL_PACKAGES GOOGLE_ID GROUP HOST_NAME INSTANCE_TYPE J_INSTALL_PHASE2_PACKAGES K_SSH_CMD LOCATION MY_ELB_ADDRESS MY_FORMS_PASSWORD MY_FORMS_USERNAME MY_GIS_ADDRESS MY_GIS_PASSWORD MY_GIS_USER MY_MAPSERVER_ADDRESS MY_MAPSERVER_PORT MY_POSTGRES_SERVER MYSQL_ROOT_PASSWORD MY_TEEN_CENT_PORT MY_TEEN_SILO_PORT MY_VOXEO_ADDRESS NS_SERVERS O_VOXEO_TOKEN POSTGRES_PASSWORD POSTGRES_USER PRIV_KEY_NAME Q_GOOGLE_ANALYTICS_KEY REGION SILO_NAME TIWIPRO_CLIENT_CENT_SERVER TIWIPRO_CLIENT_DB_SERVER TIWIPRO_SERVER_ID USER_HOME U_USER VOLUME_SIZE VOXEO_TOKEN WEB_DB_PASSWORD WEB_DB_SERVER WEB_DB_USER Y_SILO_ID AWS_ZONE"
+MY_VARS="AMI FS_BASE COMMANDS DISK_DEVICE EC2_RUN_OPTS F_INSTALL_PACKAGES GOOGLE_ID GROUP HOST_NAME INSTANCE_TYPE J_INSTALL_PHASE2_PACKAGES K_SSH_CMD LOCATION MY_ELB_ADDRESS MY_FORMS_PASSWORD MY_FORMS_USERNAME MY_GIS_ADDRESS MY_GIS_PASSWORD MY_GIS_USER MY_MAPSERVER_ADDRESS MY_MAPSERVER_PORT MY_POSTGRES_SERVER MYSQL_ROOT_PASSWORD MY_TEEN_CENT_PORT MY_TEEN_SILO_PORT MY_VOXEO_ADDRESS NS_SERVERS O_VOXEO_TOKEN POSTGRES_PASSWORD POSTGRES_USER PRIV_KEY_NAME Q_GOOGLE_ANALYTICS_KEY REGION SILO_NAME TIWIPRO_CLIENT_CENT_SERVER TIWIPRO_CLIENT_DB_SERVER TIWIPRO_SERVER_ID USER_HOME U_USER VOLUME_SIZE VOXEO_TOKEN WEB_DB_PASSWORD WEB_DB_SERVER WEB_DB_USER Y_SILO_ID AWS_ZONE CHECK_USER_PASSWORD CHECK_USER"
 
 function create_default_user_data {
     MY_INPUT_FILE="${1}"
+    get_checkapp_info
     setup_defaults
     check_values
-    debug_print
+    if [ "${DEBUG}" ]; then debug_print; fi
     for VAR in ${MY_VARS}
     do
         echo "declare -x ${VAR}=\"${VAR}\"" >> ${USER_DATA_FILE}
@@ -15,7 +18,20 @@ function create_default_user_data {
     parse_file ${USER_DATA_FILE}
 }
 
-
+function get_checkapp_info {
+    if [ -f "${CHECKAPP_FILE}" ] && [ "${SILO_NAME}" ]
+    then
+        echo "Reading check app users from ${CHECKAPP_FILE}"
+        CHECK_USER=$(grep ${SILO_NAME} ${CHECKAPP_FILE} | head -n 1 | awk '{ print $2 }')
+        CHECK_USER_PASSWORD=$(grep ${SILO_NAME} ${CHECKAPP_FILE} | head -n 1 | awk '{ print $3 }')
+        if [ ! "${CHECK_USER}" ] || [ ! "${CHECK_USER_PASSWORD}" ]
+        then
+            echo "Failed to get CHECK_USER or CHECK_USER_PASSWORD from ${CHECKAPP_FILE}"
+        fi
+    else
+        echo "Missing ${CHECKAPP_FILE} or SILO_NAME"
+    fi
+}
 
 ############################################################################################
 #
@@ -69,6 +85,8 @@ function setup_defaults {
     if [ ! "${WEB_DB_USER}" ]; then WEB_DB_USER="portalUser"; fi
     if [ ! "${Y_SILO_ID}" ]; then Y_SILO_ID="0"; fi
     if [ ! "${AWS_ZONE}" ]; then AWS_ZONE="us-east-1b"; fi
+    if [ ! "${CHECK_USER_PASSWORD}" ]; then CHECK_USER_PASSWORD="ohs8aiTh5Ug0"; fi
+    if [ ! "${CHECK_USER}" ]; then CHECK_USER="checkapp"; fi
 }
 ############################################################################################
 #
@@ -123,15 +141,17 @@ function debug_print {
     echo "WEB_DB_USER is $WEB_DB_USER"
     echo "Y_SILO_ID is $Y_SILO_ID"
     echo "AWS_ZONE is $AWS_ZONE"
+    echo "CHECK_USER_PASSWORD is $CHECK_USER_PASSWORD"
+    echo "CHECK_USER is $CHECK_USER"
 }
 
 function check_values {
-if [  "${AMI}" ] && [  "${FS_BASE}" ] && [  "${COMMANDS}" ] && [  "${SD_DISK_DEVICE}" ] && [  "${EC2_RUN_OPTS}" ] && [  "${F_INSTALL_PACKAGES}" ] && [  "${GOOGLE_ID}" ] && [  "${GROUP}" ] && [  "${HOST_NAME}" ] && [  "${INSTANCE_TYPE}" ] && [  "${J_INSTALL_PHASE2_PACKAGES}" ] && [  "${K_SSH_CMD}" ] && [  "${LOCATION}" ] && [  "${MY_FORMS_PASSWORD}" ] && [  "${MY_FORMS_USERNAME}" ] && [  "${MY_GIS_ADDRESS}" ] && [  "${MY_GIS_PASSWORD}" ] && [  "${MY_GIS_USER}" ] && [  "${MY_MAPSERVER_ADDRESS}" ] && [  "${MY_MAPSERVER_PORT}" ] && [  "${MY_POSTGRES_SERVER}" ] && [  "${MYSQL_ROOT_PASSWORD}" ] && [  "${MY_TEEN_CENT_PORT}" ] && [  "${MY_TEEN_SILO_PORT}" ] && [  "${MY_VOXEO_ADDRESS}" ] && [  "${NS_SERVERS}" ] && [  "${O_VOXEO_TOKEN}" ] && [  "${POSTGRES_PASSWORD}" ] && [  "${POSTGRES_USER}" ] && [  "${PRIV_KEY_NAME}" ] && [  "${Q_GOOGLE_ANALYTICS_KEY}" ] && [  "${REGION}" ] && [  "${SILO_NAME}" ] && [  "${MY_ELB_ADDRESS}" ] && [  "${TIWIPRO_CLIENT_CENT_SERVER}" ] && [  "${TIWIPRO_CLIENT_DB_SERVER}" ] && [  "${TIWIPRO_SERVER_ID}" ] && [  "${USER_HOME}" ] && [  "${U_USER}" ] && [  "${VOLUME_SIZE}" ] && [  "${VOXEO_TOKEN}" ] && [  "${WEB_DB_PASSWORD}" ] && [  "${WEB_DB_SERVER}" ] && [  "${WEB_DB_USER}" ] && [  "${Y_SILO_ID}" ] && [  "${AWS_ZONE}" ]
+if [  "${AMI}" ] && [  "${FS_BASE}" ] && [  "${COMMANDS}" ] && [  "${SD_DISK_DEVICE}" ] && [  "${EC2_RUN_OPTS}" ] && [  "${F_INSTALL_PACKAGES}" ] && [  "${GOOGLE_ID}" ] && [  "${GROUP}" ] && [  "${HOST_NAME}" ] && [  "${INSTANCE_TYPE}" ] && [  "${J_INSTALL_PHASE2_PACKAGES}" ] && [  "${K_SSH_CMD}" ] && [  "${LOCATION}" ] && [  "${MY_FORMS_PASSWORD}" ] && [  "${MY_FORMS_USERNAME}" ] && [  "${MY_GIS_ADDRESS}" ] && [  "${MY_GIS_PASSWORD}" ] && [  "${MY_GIS_USER}" ] && [  "${MY_MAPSERVER_ADDRESS}" ] && [  "${MY_MAPSERVER_PORT}" ] && [  "${MY_POSTGRES_SERVER}" ] && [  "${MYSQL_ROOT_PASSWORD}" ] && [  "${MY_TEEN_CENT_PORT}" ] && [  "${MY_TEEN_SILO_PORT}" ] && [  "${MY_VOXEO_ADDRESS}" ] && [  "${NS_SERVERS}" ] && [  "${O_VOXEO_TOKEN}" ] && [  "${POSTGRES_PASSWORD}" ] && [  "${POSTGRES_USER}" ] && [  "${PRIV_KEY_NAME}" ] && [  "${Q_GOOGLE_ANALYTICS_KEY}" ] && [  "${REGION}" ] && [  "${SILO_NAME}" ] && [  "${MY_ELB_ADDRESS}" ] && [  "${TIWIPRO_CLIENT_CENT_SERVER}" ] && [  "${TIWIPRO_CLIENT_DB_SERVER}" ] && [  "${TIWIPRO_SERVER_ID}" ] && [  "${USER_HOME}" ] && [  "${U_USER}" ] && [  "${VOLUME_SIZE}" ] && [  "${VOXEO_TOKEN}" ] && [  "${WEB_DB_PASSWORD}" ] && [  "${WEB_DB_SERVER}" ] && [  "${WEB_DB_USER}" ] && [  "${Y_SILO_ID}" ] && [  "${AWS_ZONE}" ] && [ "${CHECK_USER_PASSWORD}" ] && [ "${CHECK_USER}" ]
 then
     echo "All variables set"
 else
     echo "Missing variables, debug and exit at $(date)"
-    debug_print
+    if [ "${DEBUG}" ]; then debug_print; fi
     exit 1
 fi
 }
@@ -186,6 +206,8 @@ then
     perl -pi -e "s:WEB_DB_USER:${WEB_DB_USER}:g" ${MY_FILE}
     perl -pi -e "s:Y_SILO_ID:${Y_SILO_ID}:g" ${MY_FILE}
     perl -pi -e "s:AWS_ZONE:${AWS_ZONE}:g" ${MY_FILE}
+    perl -pi -e "s:CHECK_USER_PASSWORD:${CHECK_USER_PASSWORD}:g" ${MY_FILE}
+    perl -pi -e "s:CHECK_USER:${CHECK_USER}:g" ${MY_FILE}
 else
     echo "Missing file ${MY_FILE}, exiting at $(date)"
     exit 1
@@ -210,9 +232,10 @@ source ${USER_DATA_FILE}
 if [ "${1}" ] && [ -f "${1}" ]
 then
     MY_INPUT_FILE="${1}"
+    get_checkapp_info
     setup_defaults
     check_values
-    debug_print
+    if [ "${DEBUG}" ]; then debug_print; fi
     parse_file ${MY_INPUT_FILE}
 else
     echo "Usage ${0} filename"
