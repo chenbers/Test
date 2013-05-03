@@ -27,6 +27,7 @@ function get_checkapp_info {
         if [ ! "${CHECK_USER}" ] || [ ! "${CHECK_USER_PASSWORD}" ]
         then
             echo "Failed to get CHECK_USER or CHECK_USER_PASSWORD from ${CHECKAPP_FILE}"
+            echo "DEBUG : Have user ${CHECK_USER} and pass ${CHECK_USER_PASSWORD}"
         fi
     else
         echo "Missing ${CHECKAPP_FILE} or SILO_NAME"
