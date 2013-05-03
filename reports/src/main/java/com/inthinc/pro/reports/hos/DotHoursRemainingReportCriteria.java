@@ -108,7 +108,7 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
     {
 
        HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driver.getDot());
-       HOSAdjustedList hosAdjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
+       HOSAdjustedList hosAdjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList, currentDate.toDate());
        List<HOSRec> recListForHoursRemainingCalc = HOSUtil.getRecListFromLogList(hosRecordList, currentDate.toDate(), !(driver.getDot().equals(RuleSetType.NON_DOT)));
        MinutesRemainingData data = rules.getDOTMinutesRemaining(recListForHoursRemainingCalc, currentDate.toDate());
        if (data == null) {

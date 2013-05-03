@@ -38,6 +38,8 @@ import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.rules.HOSRules;
+import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -96,6 +98,19 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     private ResourceBundle resourceBundle;
     private DDLUtil ddlUtil;
     
+    private Date currentDateTime;
+    
+    public Date getCurrentDateTime() {
+        if (currentDateTime == null) {
+            return new Date();
+        }
+        return currentDateTime;
+    }
+
+    public void setCurrentDateTime(Date currentDateTime) {
+        this.currentDateTime = currentDateTime;
+    }
+
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
@@ -265,31 +280,23 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Collections.sort(hosRecordList);
 
         Date endDate = interval.getEnd().toDate();
-        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
-        HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList);
-        RuleSetType occupantTravelTimeRuleType = null;
-        for (HOSRecord logRec : hosRecordList) {
-            if (logRec.getStatus() != null && logRec.getStatus().equals(HOSStatus.TRAVELTIME_OCCUPANT))
-                occupantTravelTimeRuleType = logRec.getDriverDotType();
-        }
-        
-        if (occupantTravelTimeRuleType != null) {
-            ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, adjustedList, endDate);
-            ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, originalAdjustedList, endDate);
-        }
+        RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
+        Date currentTime = getCurrentDateTime();
+
+        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList, endDate);
+        HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList, endDate);
+
         List<HOSRec> hosRecapList = HOSUtil.getRecListFromLogList(hosRecordList, endDate, driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT);
-        
+        HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driverRuleSetType);
+        hosRecapList = rules.adjustStatuses(hosRecapList, endDate);
+
         Collections.reverse(hosRecordList);
 
-        Date currentTime = new Date();
-        
-        RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
 
         criteriaList = new ArrayList<ReportCriteria>();
 
         for (DateTime intervalDay = interval.getStart(); intervalDay.isBefore(interval.getEnd()); intervalDay = intervalDay.plusDays(1)) 
         {
-            
             LocalDate localDate = new LocalDate(intervalDay);
             DateTime driverDay = localDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
             DateTimeZone dateTimeZone = ddlUtil.getBestTimeZone(driverDay.toDate(), adjustedList.getHosList(), driver.getPerson().getTimeZone());
@@ -332,7 +339,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals(), isDSTStart, isDSTEnd));
  
             }
-            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone));
+            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone, new DateTime(currentTime)));
             dayData.setRecapType(ddlUtil.getRecapType(dayData.getRecap()));
 
             List<HosDailyDriverLog> dataList = new ArrayList<HosDailyDriverLog>();
@@ -361,7 +368,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 }
                 if (!alreadyAdded) {
                     VehicleInfo vehicleInfo = new VehicleInfo();
-                    Integer vehicleID = (Integer)(rec.getVehicleID());
+                    Integer vehicleID = Integer.valueOf(rec.getVehicleID().toString().trim());
                     vehicleInfo.setStartOdometer(getVehicleStartOdometer(day, rec, hosRecordList));
                     vehicleInfo.setName(getVehicleNameStr(vehicleID));
                     vehicleInfo.setVehicleID(rec.getVehicleID());

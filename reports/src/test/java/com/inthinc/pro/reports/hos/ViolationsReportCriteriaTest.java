@@ -519,10 +519,10 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         assertEquals(testCaseName[testCaseCnt] + " EmployeeId ", expected.getEmployeeId(), s.getEmployeeId());
         assertEquals(testCaseName[testCaseCnt] + " NotificationTime ", expected.getNotificationTime(), s.getNotificationTime());
         assertEquals(testCaseName[testCaseCnt] + " ruleType ", expected.getRuleType(), s.getRuleType());
-        if (expected.getVehicleId() == null)
-            assertNull(testCaseName[testCaseCnt] + " vehicleID ", s.getVehicleId());
+        if (expected.getVehicleName() == null)
+            assertNull(testCaseName[testCaseCnt] + " vehicleName ", s.getVehicleName());
         else
-            assertEquals(testCaseName[testCaseCnt] + " vehicleID ", expected.getVehicleId(), s.getVehicleId());
+            assertEquals(testCaseName[testCaseCnt] + " vehicleName ", expected.getVehicleName(), s.getVehicleName());
         assertEquals(testCaseName[testCaseCnt] + " violationList size ", expected.getViolationsList().size(), s.getViolationsList().size());
     }
 

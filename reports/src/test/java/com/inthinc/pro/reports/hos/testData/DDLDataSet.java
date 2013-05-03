@@ -43,6 +43,11 @@ public class DDLDataSet {
     Map<String, Integer> vehicleNameIDMap;
     Driver occupant;
     
+    public Date currentDateTime;
+    
+    // XML type
+    public TestCase testCase;
+    
     public static final int statusIdx = 0;
     public static final int descriptionIdx = 1;
     public static final int tmpLocationIdx = 2;
@@ -74,11 +79,15 @@ public class DDLDataSet {
     //2010-01-29 17:11:08.0
     public  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     
+    public static final int GAIN_CSV = 0;
+    public static final int INTHINC_DB_CSV = 1;
+    public static final int TEST_CASE_XML = 2;
+    
 
     public DDLDataSet(String baseFilename) {
-        this(baseFilename, false);
+        this(baseFilename, GAIN_CSV);
     }
-    public DDLDataSet(String baseFilename, boolean isFromDB) {
+    public DDLDataSet(String baseFilename, int origin) {
         account = MockData.createMockAccount();
         group = MockData.createMockGroup(account.getAccountID());
         driver = MockData.createMockDriver(account.getAccountID());
@@ -86,19 +95,86 @@ public class DDLDataSet {
 
         vehicleNameIDMap = new HashMap<String, Integer>();
 
-        if (isFromDB) {
+        if (origin == INTHINC_DB_CSV) {
             hosRecordList = readInDBTestDataSet("ddl/" + baseFilename + ".csv", driver);
+            String values[] = baseFilename.split("_");
+            interval = DateTimeUtil.getStartEndInterval(values[1], values[2], "MMddyyyy", DateTimeZone.getDefault());
         }
-        else {
+        else if (origin == GAIN_CSV){
             hosRecordList = readInTestDataSet("ddl/" + baseFilename + ".csv", driver);
+            String values[] = baseFilename.split("_");
+            interval = DateTimeUtil.getStartEndInterval(values[1], values[2], "MMddyyyy", DateTimeZone.getDefault());
+        }
+        else {  // TEST_CASE_XML
+            testCaseFromXML(baseFilename);
         }
 
-        String values[] = baseFilename.split("_");
-        interval = DateTimeUtil.getStartEndInterval(values[1], values[2], "MMddyyyy", DateTimeZone.getDefault());
-        
         numDays = interval.toPeriod().toStandardDays().getDays() + 1;
+System.out.println("numDays: " + numDays);        
         
         hosOccupantLogList = genOccupantLogList(driver.getDriverID(), interval.getStart(), interval.getEnd());
+    }
+    
+    private void testCaseFromXML(String baseFilename) {
+        String xmlFilename = "ddl/testcase/" + baseFilename + ".xml";
+        hosVehicleDayDataList = new ArrayList<HOSVehicleDayData>();
+        vehicleNameIDMap.put("vvv", 1);
+        try {
+            TestCaseXML testCaseXML = new TestCaseXML(xmlFilename);
+            for (TestCase tc : testCaseXML.getTestCases()) {
+                testCase = tc;
+                hosRecordList = testCase.getDriverLog();
+                // fix up
+                for (HOSRecord hosRecord : hosRecordList) {
+                    hosRecord.setDriverID(driver.getDriverID());
+                    hosRecord.setLocation("test");
+                    hosRecord.setOrigin(HOSOrigin.DEVICE);
+                    hosRecord.setDeleted(false);
+                    hosRecord.setEdited(false);
+                    hosRecord.setDriverDotType(RuleSetType.US);
+
+                    hosRecord.setOriginalLogTime(hosRecord.getLogTime());
+                    hosRecord.setVehicleID(1);
+                    hosRecord.setVehicleIsDOT(true);
+                    hosRecord.setVehicleName("vvv");
+                    hosRecord.setVehicleLicense("vv");
+                    hosRecord.setEmployeeID("emp");
+                    hosRecord.setSingleDriver(true);
+                    hosRecord.setServiceID("s");
+                    hosRecord.setTrailerID("tr");
+                    if (hosRecord.getStatus().equals(HOSStatus.DRIVING)) {
+                        DateTime day = new DateMidnight(new DateTime(hosRecord.getLogTime().getTime(), DateTimeZone.forTimeZone(hosRecord.getTimeZone()))).toDateTime();
+                        HOSVehicleDayData data = vehicleInDay(day, "vvv");
+                        if (data == null) {
+
+                            data = new HOSVehicleDayData();
+                            data.setDay(day.toDate());
+                            data.setVehicleID(1);
+                            data.setVehicleName("vvv");
+                            data.setVehicleMiles(1000l);
+                            data.setStartOdometer(150000l);
+
+                            hosVehicleDayDataList.add(data);
+
+                            data = new HOSVehicleDayData();
+                            data.setDay(day.toDate());
+                            data.setVehicleID(100);
+                            data.setVehicleName("vvv" + " TEST");
+                            data.setVehicleMiles(100l);
+                            data.setStartOdometer(15000l);
+
+                            hosVehicleDayDataList.add(data);
+
+                        }
+                    }
+                    currentDateTime = testCase.currentTime;
+                    interval = testCase.getInterval();
+                }
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private List<HOSRecord> readInDBTestDataSet(String filename, Driver driver2) {

@@ -27,8 +27,10 @@ import com.inthinc.hos.ddl.VehicleInfo;
 import com.inthinc.hos.model.DayTotals;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRecAdjusted;
+import com.inthinc.hos.model.HOSRecBase;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Status;
@@ -219,9 +221,12 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275804000000l),1020l,0,68,true,"","",1020l,RuleSetType.US_OIL, 1),
             new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275865200000l),0l,68,0,true,"","",1l,RuleSetType.US_OIL, 1),
             new HOSRecAdjusted("55",HOSStatus.ON_DUTY,new Date(1275865260000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275865200000l),0l,68,0,true,"","",2l,RuleSetType.US_OIL, 1),
-            new HOSRecAdjusted("generated",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275865351000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275865200000l),15l,68,1,true,"","",12l,RuleSetType.US_OIL, 5),
-            new HOSRecAdjusted("54",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275866100000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275866100000l),150l,69,10,true,"","",150l,RuleSetType.US_OIL, 5),
-            new HOSRecAdjusted("generated",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275875100000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275875100000l),0l,79,0,true,"","",12l,RuleSetType.US_OIL, 5),
+//            new HOSRecAdjusted("generated",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275865351000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275865200000l),15l,68,1,true,"","",12l,RuleSetType.US_OIL, 5),
+//            new HOSRecAdjusted("54",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275866100000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275866100000l),150l,69,10,true,"","",150l,RuleSetType.US_OIL, 5),
+//            new HOSRecAdjusted("generated",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275875100000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275875100000l),0l,79,0,true,"","",12l,RuleSetType.US_OIL, 5),
+            new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275865351000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275865200000l),15l,68,1,true,"","",12l,RuleSetType.US_OIL, 5),
+            new HOSRecAdjusted("54",HOSStatus.OFF_DUTY,new Date(1275866100000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275866100000l),150l,69,10,true,"","",150l,RuleSetType.US_OIL, 5),
+            new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275875100000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275875100000l),0l,79,0,true,"","",12l,RuleSetType.US_OIL, 5),
             new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275875808000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275875100000l),15l,79,1,false,"","",3l,RuleSetType.US_OIL, 5),
             new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("US/Mountain"),new Date(1275876000000l),240l,80,16,false,"","",240l,RuleSetType.US_OIL, 5),
         },
@@ -325,7 +330,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     @Test
     public void gainTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//        int testCaseCnt = 10; {
+//        int testCaseCnt = 13; {
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
             Address address = new Address();
@@ -656,6 +661,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         DateTime day = localDate.toDateTimeAtStartOfDay();
         LocalDate localDate2 = new LocalDate(new DateTime());
         DateTime day2 = localDate2.toDateTimeAtStartOfDay();
+System.out.println("day: " + DateUtil.getDisplayDate(day, DateTimeZone.getDefault()));
+System.out.println("day2: " + DateUtil.getDisplayDate(day2, DateTimeZone.getDefault()));
         
         List<HOSRecAdjusted> logListForDay = new ArrayList<HOSRecAdjusted>();
         logListForDay.add(new HOSRecAdjusted("1",HOSStatus.ON_DUTY, day.toDate(), TimeZone.getTimeZone("US/Mountain"), day.toDate(),60l,0,8,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
@@ -739,6 +746,9 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         hosDailyDriverLog = (HosDailyDriverLog)ddlCriteria.getCriteriaList().get(1).getMainDataset().get(0);
         
         originalList =  hosDailyDriverLog.getOriginalGraphList();
+//for (HOSRecAdjusted original : originalList) {
+//    original.dump();
+//}
         assertEquals("list size ", expOriginalLogListForDay.size(), originalList.size());
         i = 0;
         for (HOSRecAdjusted original : originalList) {
@@ -851,12 +861,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     // e.g. for this test I went to weatherford prod silo db and ran call hos_getFullRecords(184552443, 1364191200000, 1365228000000, 0)
     @Test
     public void defectDE8573Test() {
-            DDLDataSet ddlTestData = new DDLDataSet("pezinaFull_04012013_04042013", true);
+            DDLDataSet ddlTestData = new DDLDataSet("pezinaFull_04012013_04042013", DDLDataSet.INTHINC_DB_CSV);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-            Address address = new Address();
-            address.setAddr1("address 1");
-            address.setCity("city");
-            address.setZip("84120");
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -870,12 +876,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     }
     @Test
     public void defectDE8576Test() {
-            DDLDataSet ddlTestData = new DDLDataSet("lohrFull_03132013_03252013", true);
+            DDLDataSet ddlTestData = new DDLDataSet("lohrFull_03132013_03252013", DDLDataSet.INTHINC_DB_CSV);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-            Address address = new Address();
-            address.setAddr1("address 1");
-            address.setCity("city");
-            address.setZip("84120");
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -887,4 +889,64 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             dump("DDL", 1000, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
             
         }
+
+
+    
+    public static final String xmlTestCaseName[] = {
+        "test_case_us_2013_Example18", 
+        "test_case_us_2013_Example19", 
+        "test_case_us_2013_Example20", 
+    };
+
+    @Test
+    public void us2013RuleChangeTests() {
+        
+        for (String testCaseName : xmlTestCaseName) {
+            run2013TestCase(testCaseName);
+        }
+    }
+    private void run2013TestCase(String xmlTestCase) {
+            DDLDataSet ddlTestData = new DDLDataSet(xmlTestCase, DDLDataSet.TEST_CASE_XML);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+            hosDailyDriverLogReportCriteria.setCurrentDateTime(ddlTestData.currentDateTime);
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
+            
+            // check the data
+            List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
+
+            // last day
+            ReportCriteria reportCriteria = criteriaList.get(criteriaList.size()-1);
+            HosDailyDriverLog hosDailyDriverLog = (HosDailyDriverLog)reportCriteria.getMainDataset().get(0);
+
+            // turn on in base class to get a dump of report
+            dump(xmlTestCase+"_", 0, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
+            
+            List<HOSRecAdjusted> adjustedList = hosDailyDriverLog.getCorrectedGraphList();
+            for (HOSRecAdjusted rec : adjustedList)
+                rec.dump3();
+            
+            List<HOSRecBase> resultList = ddlTestData.testCase.getResultLog();
+//            for (HOSRecBase result : ddlTestData.testCase.getResultLog()) {
+//                System.out.println(result.getStatus() + " " + result.getTotalRealMinutes());
+//                
+//            }
+//            
+            assertEquals(xmlTestCase+" Incorrect size of graph list. ", resultList.size(), adjustedList.size());
+            int cnt = 0;
+            for (HOSRecBase result : resultList) {
+                HOSRecAdjusted graphRec = adjustedList.get(cnt);
+                assertEquals(xmlTestCase +" " + cnt + " Incorrect status ", result.getStatus(), graphRec.getStatus());
+                assertEquals(xmlTestCase +" " + cnt + " Incorrect minutes ", result.getTotalRealMinutes(), graphRec.getTotalRealMinutes());
+                cnt++;
+            }
+            
+            Recap recap = hosDailyDriverLog.getRecap().get(0);
+            assertEquals(xmlTestCase +" recap Day", ddlTestData.testCase.getRecapDay(), recap.getDisplayDay());
+            assertEquals(xmlTestCase +" recap Worked Today", ddlTestData.testCase.getRecapHoursWorked(), recap.getHoursWorkedToday());
+            
+        }
+
+
+
 }
