@@ -298,7 +298,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                     stopsList.add(stop);
 
                     beginStop = false;
-                    stop = createStop(driverName, trip, true);
+                    stop = createStop(driverName, vehicleName, trip, true);
                 } else {
                     if (trip.getVehicleID().intValue() == stop.getVehicleID().intValue()) {
                         // We've got two trips in a row for this driver with same vehicle,
@@ -308,7 +308,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                         stopsList.add(stop);
 
                         if (trip.getStatus() != TripStatus.TRIP_IN_PROGRESS)
-                            stop = createStop(driverName, trip, true);
+                            stop = createStop(driverName, vehicleName, trip, true);
                         else
                         {
                             stop = null;
@@ -316,7 +316,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                         }
                     } else {
                         // Vehicle for driver changes between trips. Throw out current stop and start new one.
-                        stop = createStop(driverName, trip, false);
+                        stop = createStop(driverName, vehicleName, trip, false);
                     }
                 }
             }
@@ -415,10 +415,11 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         return stopsList;
     }
 
-    private DriverStops createStop(String driverName, Trip trip, boolean setDriveTime) {
+    private DriverStops createStop(String driverName, String vehicleName, Trip trip, boolean setDriveTime) {
         DriverStops stop = new DriverStops();
         stop.setDriverID(trip.getDriverID());
         stop.setDriverName(driverName);
+        stop.setVehicleName(vehicleName);
         stop.setVehicleID(trip.getVehicleID());
         stop.setLat(trip.getEndLat());
         stop.setLng(trip.getEndLng());
