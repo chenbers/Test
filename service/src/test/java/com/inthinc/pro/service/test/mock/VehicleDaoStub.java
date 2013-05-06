@@ -4,14 +4,17 @@
 package com.inthinc.pro.service.test.mock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.Interval;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleName;
@@ -81,6 +84,17 @@ public class VehicleDaoStub implements VehicleDAO {
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
         return new ArrayList<Trip>();
     }
+    
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer driverID, Interval interval){
+        return Collections.emptyList();
+    }
+    
 
     /* (non-Javadoc)
      * @see com.inthinc.pro.dao.VehicleDAO#getVehiclesInGroup(java.lang.Integer)

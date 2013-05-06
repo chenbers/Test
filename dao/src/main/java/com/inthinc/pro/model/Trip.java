@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +18,10 @@ public class Trip extends BaseEntity {
     private Integer driverID;
     private Date startTime;
     private Date endTime;
-    private Integer startLat;
-    private Integer startLng;
-    private Integer endLat;
-    private Integer endLng;
+    private Double startLat;
+    private Double startLng;
+    private Double endLat;
+    private Double endLng;
 
     private Integer mileage;
     @Column(name = "route", type = com.inthinc.pro.model.LatLng.class, updateable = false)
@@ -36,6 +37,13 @@ public class Trip extends BaseEntity {
 
     @Column(updateable = false)
     private TripQuality quality;
+
+    private Boolean fullRouteLoaded = true;
+    private Boolean eventsLoaded = false;
+
+    private List<Event> violationEvents = new ArrayList<Event>();
+    private List<Event> idleEvents = new ArrayList<Event>();
+    private List<Event> tamperEvents = new ArrayList<Event>();
 
     public Trip() {
         super();
@@ -54,35 +62,76 @@ public class Trip extends BaseEntity {
     }
     
     
-	public Double getStartLat() {
-		return convertInt2Double(startLat);
+	public Boolean getFullRouteLoaded() {
+        return fullRouteLoaded;
+    }
+
+    public void setFullRouteLoaded(Boolean fullRouteLoaded) {
+        this.fullRouteLoaded = fullRouteLoaded;
+    }
+
+    
+    public Boolean getEventsLoaded() {
+        return eventsLoaded;
+    }
+
+    public void setEventsLoaded(Boolean eventsLoaded) {
+        this.eventsLoaded = eventsLoaded;
+    }
+
+    public List<Event> getViolationEvents() {
+        return violationEvents;
+    }
+
+    public void setViolationEvents(List<Event> violationEvents) {
+        this.violationEvents = violationEvents;
+    }
+
+    public List<Event> getIdleEvents() {
+        return idleEvents;
+    }
+
+    public void setIdleEvents(List<Event> idleEvents) {
+        this.idleEvents = idleEvents;
+    }
+
+    public List<Event> getTamperEvents() {
+        return tamperEvents;
+    }
+
+    public void setTamperEvents(List<Event> tamperEvents) {
+        this.tamperEvents = tamperEvents;
+    }
+
+    public Double getStartLat() {
+		return startLat;
 	}
 
-	public void setStartLat(Integer startLat) {
+	public void setStartLat(Double startLat) {
 		this.startLat = startLat;
 	}
 
 	public Double getStartLng() {
-		return convertInt2Double(startLng);
+		return startLng;
 	}
 
-	public void setStartLng(Integer startLng) {
+	public void setStartLng(Double startLng) {
 		this.startLng = startLng;
 	}
 
 	public Double getEndLat() {
-		return convertInt2Double(endLat);
+		return endLat;
 	}
 
-	public void setEndLat(Integer endLat) {
+	public void setEndLat(Double endLat) {
 		this.endLat = endLat;
 	}
 
 	public Double getEndLng() {
-		return convertInt2Double(endLng);
+		return endLng;
 	}
 
-	public void setEndLng(Integer endLng) {
+	public void setEndLng(Double endLng) {
 		this.endLng = endLng;
 	}
 
@@ -219,13 +268,8 @@ public class Trip extends BaseEntity {
 	public String toString()
 	{
 //        return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + ", locations Count=" + route.size() + "route=" + route + "]";
-        return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + ", locations Count=" + route.size() + "]";
+//        return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + ", locations Count=" + route.size() + "]";
+        return "Trip [driverID=" + driverID + ", vehicleID=" + vehicleID + ", startTime=" + startTime + ", endTime=" + endTime + ", mileage=" + mileage + " startLat:" + getStartLat() + " startLng:" + getStartLng() + " endLat:" + getEndLat() + " endLng: " + getEndLng() + "]";
 	}
-	
-	private double convertInt2Double(int intVal)
-	{
-		return intVal/10000D;
-	}
-
 
 }

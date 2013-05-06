@@ -111,6 +111,10 @@ public enum ReportGroup {
     DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG("Driver Performance Key Metrics Time Frame RYG", 45, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME_ALT_PLUS_CUSTOM_RANGE, CriteriaType.INACTIVE_DRIVERS, CriteriaType.ZERO_MILES_DRIVERS },
             new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.DriverPerformance, EnumSet.of(ReportAccountType.PERFORMANCE),
             ReportType.DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG),
+            
+    /* DVIR */
+    DVIR_VIOLATION("DVIR Violations", 46, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_VIOLATION)
     ;
 
     private ReportType[] reports;

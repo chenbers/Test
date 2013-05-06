@@ -95,8 +95,9 @@ public class HosDriverDOTLogReportCriteria  extends ReportCriteria implements Ta
             Collections.sort(hosRecordList);
 
             for (HOSRecord hosRecord : hosRecordList) {
-                if (!interval.contains(hosRecord.getLogTime().getTime()))
+                if (!interval.contains(hosRecord.getLogTime().getTime()) || hosRecord.getStatus() == null || hosRecord.getStatus().isInternal()) {
                     continue;
+                }
                 DriverDOTLog log = new DriverDOTLog();
                 log.setDriverName(driverName);
                 log.setOrigin(hosRecord.getOrigin());

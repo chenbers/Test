@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
 
+import me.prettyprint.cassandra.serializers.BooleanSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.serializers.IntegerSerializer;
@@ -25,6 +26,7 @@ public abstract class GenericCassandraDAO implements Serializable {
 
     private static final Logger logger = Logger.getLogger(GenericCassandraDAO.class);
 
+    final static BooleanSerializer booleanSerializer = BooleanSerializer.get();
     final static StringSerializer stringSerializer = StringSerializer.get();
     final static UUIDSerializer uuidSerializer = UUIDSerializer.get();
     final static IntegerSerializer integerSerializer = IntegerSerializer.get();
@@ -54,6 +56,7 @@ public abstract class GenericCassandraDAO implements Serializable {
 
     final static String currentTripDescription_CF = "currentTripDescription";
     final static String currentTripCounter_CF = "currentTripCounter";
+    public static final String startTripCache_CF = "startTripCache";
     final static String trip_CF = "trip";
     final static String driverTripIndex_CF = "driverTripIndex";
     final static String vehicleTripIndex_CF = "vehicleTripIndex";
@@ -67,7 +70,10 @@ public abstract class GenericCassandraDAO implements Serializable {
     final static String FORGIVEN_COL = "f";
     final static String METHOD_COL = "m";
 
-    private CassandraDB cassandraDB;
+    final static String MIN_STRING = "!";
+    final static String MAX_STRING = "~";
+
+    private static CassandraDB cassandraDB;
 
     public GenericCassandraDAO() {}
 
@@ -76,7 +82,7 @@ public abstract class GenericCassandraDAO implements Serializable {
     }
 
     public void setCassandraDB(CassandraDB cassandraDB) {
-        this.cassandraDB = cassandraDB;
+        GenericCassandraDAO.cassandraDB = cassandraDB;
     }
 
     public void shutdown() {
@@ -108,4 +114,8 @@ public abstract class GenericCassandraDAO implements Serializable {
         return CassandraDB.getKeyspace();
     }
 
+    public Keyspace getCacheKeyspace() {
+        logger.debug("Keyspace.getCacheKeyspace(): " + CassandraDB.getCacheKeyspace());
+        return CassandraDB.getCacheKeyspace();
+    }
 }

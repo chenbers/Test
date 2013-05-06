@@ -689,7 +689,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         if(item.getUser()!= null){
         	
- 	        List<Integer> roleIDs = new ArrayList<Integer>();
+ 	        List<Integer> roleIDs = new ArrayList<Integer>(); 	        
 	        for (final SelectItem item : getRolePicker().getPicked())
 	        {
 	          	Integer id = getAccountRoles().getRoleByName(item.getValue().toString()).getRoleID();
@@ -698,6 +698,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	        roleIDs.add(getAccountRoles().getRoleByName("Normal").getRoleID());
 	        item.getUser().setRoles(roleIDs);
 	        rolePicker = null;
+	        //remove user roles if Login Information checkbox is not checked
+	        if(item.userSelected == false) {
+	        	roleIDs.clear();
+	        	item.getUser().setRoles(roleIDs);
+	        }
     	}
 
          final String result = super.save();

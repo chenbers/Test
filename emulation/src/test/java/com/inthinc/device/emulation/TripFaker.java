@@ -54,11 +54,12 @@ public class TripFaker {
         tiwi.update_location(new GeoPoint(33.0163, -117.1159), 15);
         tiwi.update_location(new GeoPoint(33.018, -117.1153), 15);
         tiwi.update_location(new GeoPoint(33.0188, -117.118), 15);
-        tiwi.update_location(new GeoPoint(33.0192, -117.1199), 15);
+        tiwi.update_location(new GeoPoint(34.3886, -103.0567), 15);
         
         //AutomationDeviceEvents.rfKill(tiwi);
+        tiwi.boundaryChange();
         
-        tiwi.update_location(new GeoPoint(33.021, -117.119), 15);
+        tiwi.update_location(new GeoPoint(34.3886, -103.0328), 15);
         tiwi.update_location(new GeoPoint(33.022, -117.114), 15);
         tiwi.update_location(new GeoPoint(33.0205, -117.111), 15);
         

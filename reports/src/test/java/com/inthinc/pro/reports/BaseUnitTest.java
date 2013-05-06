@@ -19,12 +19,14 @@ import com.inthinc.pro.reports.jasper.JasperReportCreator;
 import com.inthinc.pro.reports.tabular.Result;
 
 public class BaseUnitTest {
-    
+    /* Windows path */
     public static final String BASE_PATH = "c:/reportDump/";
+    /* Mac/Linux path */
+	//public static final String BASE_PATH = "/reportDump/";
     
-    // switch to true to get a file dump of the report for debug/test
+	// switch to true to get a file dump of the report for debug/test
     public static final boolean DUMP_TO_FILE = false;
-//    public static final boolean DUMP_TO_FILE = true;
+    //public static final boolean DUMP_TO_FILE = true;
     
     @Test
     public void dummy() {
