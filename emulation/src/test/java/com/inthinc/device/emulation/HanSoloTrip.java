@@ -76,7 +76,7 @@ public class HanSoloTrip extends Thread{
     }
     
     public void routeTestTrip() {
-//        waySmart = new WaysmartDevice("FAKEIMEIDEVICE", "FAKEIMEIDEVICE", AutoSilos.QA, ProductType.WAYSMART_850);
+        waySmart = new WaysmartDevice("FAKEIMEIDEVICE", "FAKEIMEIDEVICE", AutoSilos.QA, Direction.gprs);
         waySmart.set_time(new AutomationCalendar());
         
         String start = "980 N 1050 E, Pleasant Grove, UT 84062";
@@ -91,12 +91,12 @@ public class HanSoloTrip extends Thread{
         driver.addToTrip(stop, start);
         driver.addToTrip(start, mid2);
 
-        DeviceState state = new DeviceState(null, ProductType.WAYSMART_850);
+        DeviceState state = new DeviceState("FAKEIMEIDEVICE", ProductType.WAYSMART_850);
 
 //        state.setTopSpeed(80).setSpeedingDistanceX100(200).setAvgSpeed(75).setSpeedingSpeedLimit(40);
 //        driver.addEvent(29, AutomationDeviceEvents.speeding(state, null));
         driver.addEvent(30, AutomationDeviceEvents.routeStopArrival(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));
-        driver.addEvent(35, AutomationDeviceEvents.routeStopDeparture(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));;
+        driver.addEvent(35, AutomationDeviceEvents.routeStopDeparture(state, new GeoPoint(40.74290000000001, -111.865340), "12345"));
 
         driver.start();
         
@@ -302,7 +302,7 @@ public class HanSoloTrip extends Thread{
 //        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=AutoSilos.QA; initialTime = 1316471529; vehicleID=7284; accountID=3;//deviceID=3763
         satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=AutoSilos.QA; initialTime = new AutomationCalendar(); vehicleID="dddd"; accountID=3;//deviceID=3763
         
-        trip.routeTestTrip();
+        trip.routeTestTrip();  //run the route test trip method
         
         Log.info(trip);
     }

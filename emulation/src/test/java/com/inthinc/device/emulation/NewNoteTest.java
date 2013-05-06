@@ -88,7 +88,31 @@ public class NewNoteTest {
 		}
 	}
 
-    public void testDVIRNote(String mcmID, String imei, int inspectionType, int vehicleSafeToOp) {
+
+    public void testIntraStateViolation(String mcmID, String imei, Double lat, Double lng) {
+        SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.SMTOOLS_ERROR,
+                new AutomationCalendar(), new GeoPoint(lat,lng), false, false,
+                HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
+                65, 0, 0, 47, 0);
+
+        note.addAttr(EventAttr.DRIVER_ID_STR, "71572"); //QA SILO DRIVER
+//        note.addAttr(EventAttr.DRIVER_ID_STR, "44523");  //MY SILO DRIVER
+
+        List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        try {
+            String[] response = proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+	
+	public void testDVIRNote(String mcmID, String imei, int inspectionType, int vehicleSafeToOp) {
         SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
                 new AutomationCalendar(), new GeoPoint(), false, false,
                 HOSFlags.DRIVING, false, false, false, Heading.NORTH, 15, 60,
@@ -162,6 +186,9 @@ public class NewNoteTest {
 
         String imeiOnQA = "30099FKEWS99999";
         String mcmIDOnQA = "MCMFAKEWS";
+        
+        String imeiOnMY = "30023FKE1DE7570";
+        String mcmIDOnMY = "F1DE7570";
 
 /*
         Map<String, LatLng> hazardLocations = new HashMap<String, LatLng>();
@@ -175,8 +202,10 @@ public class NewNoteTest {
         String mcmID = mcmIDOnDev;
 */        
         
-        NewNoteTest test = new NewNoteTest(AutoSilos.QA);
-        test.testInstallNote();
+        NewNoteTest test = new NewNoteTest(AutoSilos.MY);
+//        test.testInstallNote();
+        
+        test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
   /*      
         String imei = imeiOnQA;
         String mcmID = mcmIDOnQA;

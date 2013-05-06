@@ -10,6 +10,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 
 public interface DriverDAO extends GenericDAO<Driver, Integer> {
@@ -46,7 +47,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      * @param endDate
      * @return
      */
-    List<Trip> getTrips(Integer driverID, Date startDate, Date endDate);
+    List<Trip> getTrips(Integer driverID, Date startDate, Date enate);
 
     /**
      * Get all driver trips between start and end dates.
@@ -64,6 +65,10 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      * @return
      */
     Trip getLastTrip(Integer driverID);
+
+
+    public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime);
+    public List<LatLng> getLocationsForTrip(Integer driverID, Interval interval);
 
     /**
      * Get Driver object by PersonID

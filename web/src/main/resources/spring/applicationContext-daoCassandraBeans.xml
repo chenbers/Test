@@ -6,8 +6,10 @@ default-autowire="byName">
     <!-- Service Related Beans -->
 
 	<bean id="cassandraDB" class="com.inthinc.pro.dao.cassandra.CassandraDB">
+	  <constructor-arg value="${cassandra.active}" />
 	  <constructor-arg value="${cassandra.clusterName}" />
 	  <constructor-arg value="${cassandra.keyspaceName}"/>
+	  <constructor-arg value="${cassandra.cacheKeyspaceName}"/>
 	  <constructor-arg value="${cassandra.nodeAddress}"/>
 	  <constructor-arg value="${cassandra.maxActive}"/>
 	  <constructor-arg value="${cassandra.autoDiscoverHost}"/>
@@ -17,14 +19,11 @@ default-autowire="byName">
 		<property name="cassandraDB" ref="cassandraDB" />
 	</bean>
 
-	
-	<!--
-	<bean id="eventDAO" class="com.inthinc.pro.dao.cassandra.EventCassandraDAO" parent="genericCassandraDAO"></bean>
-	<bean id="locationDAO" class="com.inthinc.pro.dao.cassandra.LocationCassandraDAO" parent="genericCassandraDAO"></bean>
-	<bean id="mpgDAO" class="com.inthinc.pro.dao.cassandra.MpgCassandraDAO"/>
-	<bean id="scoreDAO" class="com.inthinc.pro.dao.cassandra.ScoreCassandraDAO" parent="genericCassandraDAO"></bean>
-  <bean id="driverReportDAO" class="com.inthinc.pro.dao.cassandra.report.DriverReportCassandraDAO" />
-  <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.cassandra.report.VehicleReportCassandraDAO" />
-  <bean id="groupReportDAO" class="com.inthinc.pro.dao.cassandra.report.GroupReportCassandraDAO" />
-	-->
+	<bean id="eventDAO" class="${eventDAO}"/>
+	<bean id="locationDAO" class="${locationDAO}"/>
+	<bean id="mpgDAO" class="${mpgDAO}"/>
+	<bean id="scoreDAO" class="${scoreDAO}"/>
+	<bean id="driverReportDAO" class="${driverReportDAO}"/>
+	<bean id="vehicleReportDAO" class="${vehicleReportDAO}"/>
+	<bean id="groupReportDAO" class="${groupReportDAO}"/>
 </beans>

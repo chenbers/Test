@@ -756,6 +756,9 @@
   </bean>
 
   <bean id="adminDevicePaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.AdminDevicePaginationTableDataProvider" scope="request" parent="adminPaginationTableDataProvider" />
-
+  
+  <bean id="navigationBarBean" class="com.inthinc.pro.backing.NavigationBarBean" scope="session" parent="baseBean">
+  	<property name="formUrl" value="${navbar.forms.url}"/>
+  </bean>
 
 </beans>

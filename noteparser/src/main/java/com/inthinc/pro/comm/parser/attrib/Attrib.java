@@ -235,10 +235,10 @@ public enum Attrib {
 	ERRORCODECONF(32790, AttribParserType.INTEGER),
 	FILESIZES(32791, AttribParserType.INTEGER),
 	FLAGS(32792, AttribParserType.INTEGER),
-	HIGHIDLE(220, AttribParserType.INTEGER, "HIGH_IDLE"),
+	LOWIDLE(219, AttribParserType.INTEGER, "lowIdle"),
+	HIGHIDLE(220, AttribParserType.INTEGER, "highIdle"),
 	LINKID(231, AttribParserType.INTEGER, "linkID"),
 	LOOPS(32794, AttribParserType.INTEGER),
-	LOWIDLE(219, AttribParserType.INTEGER, "LOW_IDLE"),
 	MAPFILESIZE(32795, AttribParserType.INTEGER),
 	MAPID(32796, AttribParserType.INTEGER),
 	MAXPOSGS(32797, AttribParserType.INTEGER),
@@ -282,7 +282,7 @@ public enum Attrib {
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
-	ROUTESTOPID(32860, AttribParserType.INTEGER, "routestopid"),
+	ROUTESTOPID(32861, AttribParserType.INTEGER, "routestopid"),
 	ATTR_ROUTE_ID(32862, AttribParserType.INTEGER, "routeid"),
 	
 	SEATBELTTOPSPEED(8285, AttribParserType.BYTE),
@@ -323,7 +323,10 @@ public enum Attrib {
 	MCMID(24594, AttribParserType.STRING_VAR_LENGTH26),
     RHA_DESCRIPTION(24595, AttribParserType.STRING_VAR_LENGTH32), 
     FOB_ID(24597, AttribParserType.STRING_VAR_LENGTH32), 
-	
+    DVIR_COMMENTS(24601, AttribParserType.STRING_VAR_LENGTH32),
+    DVIR_MECHANIC_ID(24598, AttribParserType.STRING_FIXED_LENGTH10),
+    DVIR_INSPECTOR_ID(24599, AttribParserType.STRING_VAR_LENGTH10),
+    DVIR_SIGNOFF_ID(24600, AttribParserType.STRING_VAR_LENGTH10),
 	
 	// BINARY 
 	DELTAVS(49152, AttribParserType.DELTAVS_AS_STRING),

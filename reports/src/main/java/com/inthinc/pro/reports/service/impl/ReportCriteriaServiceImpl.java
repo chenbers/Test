@@ -32,6 +32,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.report.DVIRViolationReportDAO;
 import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -61,6 +62,7 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.asset.WarrantyListReportCriteria;
 import com.inthinc.pro.reports.communication.NonCommReportCriteria;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
+import com.inthinc.pro.reports.dvir.DVIRViolationReportCriteria;
 import com.inthinc.pro.reports.forms.DVIRPostTripReportCriteria;
 import com.inthinc.pro.reports.forms.DVIRPreTripReportCriteria;
 import com.inthinc.pro.reports.hos.DotHoursRemainingReportCriteria;
@@ -123,6 +125,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private DriverPerformanceDAO driverPerformanceDAO;
     private UserDAO userDAO;
     private FormsDAO formsDAO;
+    private DVIRViolationReportDAO dvirViolationReportDAO;
     
     public FormsDAO getFormsDAO() {
         return formsDAO;
@@ -131,8 +134,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     public void setFormsDAO(FormsDAO formsDAO) {
         this.formsDAO = formsDAO;
     }
+    
+    public DVIRViolationReportDAO getDvirViolationReportDAO() {
+        return dvirViolationReportDAO;
+    }
+    
+    public void setDvirViolationReportDAO(DVIRViolationReportDAO dvirViolationReportDAO) {
+        this.dvirViolationReportDAO = dvirViolationReportDAO;
+    }
 
-    private Locale locale;
+	private Locale locale;
     private ReportAddressLookupBean reportAddressLookupBean;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
@@ -1379,7 +1390,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     public ReportCriteria getDVIRPostTripReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
         return new DVIRPostTripReportCriteria(locale).build(accountGroupHierarchy, formsDAO, groupID, timeFrame);
     }
-
+    
+    /* DVIR */
+    @Override
+    public ReportCriteria getDVIRViolationReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone) {
+        List<Integer> groupIDs = accountGroupHierarchy.getGroupIDList(groupID);
+        DVIRViolationReportCriteria.Builder builder = new DVIRViolationReportCriteria.Builder(accountGroupHierarchy, groupID, dvirViolationReportDAO, groupIDs, timeFrame); // accountGroupHierarchy
+        
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+    
     public DriveTimeDAO getDriveTimeDAO() {
         return driveTimeDAO;
     }
@@ -1434,7 +1456,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
             }
             switch (reportGroup.getReports()[i]) {
                 case SEATBELT_CLICKS_REPORT:
-                    reportCriteriaList.add(getSeatbeltClicksReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()), person.getMeasurementType()));
+                    reportCriteriaList.add(getSeatbeltClicksReportCriteria(groupHierarchy,
+                                                                           reportSchedule.getGroupID(),
+                                                                           timeFrame,
+                                                                           person.getLocale(),
+                                                                           DateTimeZone.forID(person.getTimeZone().getID()),
+                                                                           person.getMeasurementType(),
+                                                                           reportSchedule.getIncludeInactiveDrivers(),
+                                                                           reportSchedule.getIncludeZeroMilesDrivers()  )                                                                          
+                                           );
                     break;
                 case OVERALL_SCORE:
                     reportCriteriaList.add(getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), groupHierarchy));
@@ -1476,26 +1506,76 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     break;
                 case HOS_DAILY_DRIVER_LOG_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
-                        reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale(),
-                                person.getMeasurementType() == MeasurementType.METRIC));
+                    {
+                        reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        person.getMeasurementType() == MeasurementType.METRIC,
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                       );
+                    }
                     else
-                        reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale(),
-                                person.getMeasurementType() == MeasurementType.METRIC));
+                    {
+                        reportCriteriaList.addAll(getHosDailyDriverLogReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getGroupIDList(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        person.getMeasurementType() == MeasurementType.METRIC,
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                       );
+                    }
                     break;
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
-                    reportCriteriaList.add(getHosViolationsSummaryReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getHosViolationsSummaryReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    ));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
-                        reportCriteriaList.add(getHosViolationsDetailReportCriteria(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale()));
-                    else
-                        reportCriteriaList.add(getHosViolationsDetailReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    { reportCriteriaList.add(getHosViolationsDetailReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),  
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                        );
+                    }
+                    else{
+                        reportCriteriaList.add(getHosViolationsDetailReportCriteria(
+                                        groupHierarchy, 
+                                        reportSchedule.getGroupIDList(),
+                                        timeFrame.getInterval()
+                                        , person.getLocale(),
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                        );
+                    }
                     break;
                 case HOS_DRIVER_DOT_LOG_REPORT:
-                    reportCriteriaList.add(getHosDriverDOTLogReportCriteria(reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getHosDriverDOTLogReportCriteria(
+                                    reportSchedule.getDriverID(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    ));
                     break;
                 case DOT_HOURS_REMAINING:
-                    reportCriteriaList.add(getDotHoursRemainingReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), person.getLocale()));
+                    reportCriteriaList.add(getDotHoursRemainingReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    ));
                     break;
                 case HOS_ZERO_MILES:
                     reportCriteriaList.add(getHosZeroMilesReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
@@ -1504,28 +1584,80 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     reportCriteriaList.add(getHosEditsReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
                     break;
                 case PAYROLL_DETAIL:
-                    reportCriteriaList.add(getPayrollDetailReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getPayrollDetailReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                     reportSchedule.getIncludeZeroMilesDrivers()
+                                    ));
                     break;
                 case PAYROLL_SIGNOFF:
                     if(reportSchedule.getParamType() == ReportParamType.DRIVER){
-                        reportCriteriaList.add(getPayrollSignoffReportCriteria(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale()));
+                        reportCriteriaList.add(getPayrollSignoffReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
                     } else {
-                        reportCriteriaList.add(getPayrollSignoffReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                        reportCriteriaList.add(getPayrollSignoffReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getGroupIDList(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
                     }
                     break;
                 case PAYROLL_SUMMARY:
-                    reportCriteriaList.add(getPayrollSummaryReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getPayrollSummaryReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    )
+                                    );
                     break;
                 case PAYROLL_COMPENSATED_HOURS:
-                    reportCriteriaList.add(getPayrollCompensatedHoursReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getPayrollCompensatedHoursReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    )
+                                    );
                     break;
 
                 case TEN_HOUR_DAY_VIOLATIONS:
-                    reportCriteriaList.add(getTenHoursDayViolationsCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getTenHoursDayViolationsCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupID(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getIncludeZeroMilesDrivers()
+                                    )
+                                    );
                     break;
 
                 case DRIVER_HOURS:
-                    reportCriteriaList.add(getDriverHoursReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getDriverHoursReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupID(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getIncludeZeroMilesDrivers()
+                                    ));
                     break;
 
                 case MILEAGE_BY_VEHICLE:
@@ -1557,50 +1689,144 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                             .add(getStateMileageByVehicleReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale(), person.getMeasurementType()));
                     break;
                 case DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT:
-                    reportCriteriaList.add(getDrivingTimeViolationsSummaryReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getDrivingTimeViolationsSummaryReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    )
+                                    );
                     break;
                 case DRIVING_TIME_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
-                        reportCriteriaList.add(getDrivingTimeViolationsDetailReportCriteria(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale()));
+                        reportCriteriaList.add(getDrivingTimeViolationsDetailReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                        );
                     else
-                        reportCriteriaList.add(getDrivingTimeViolationsDetailReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                        reportCriteriaList.add(getDrivingTimeViolationsDetailReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getGroupIDList(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                        );
                     break;
 
                 case NON_DOT_VIOLATIONS_SUMMARY_REPORT:
-                    reportCriteriaList.add(getNonDOTViolationsSummaryReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                    reportCriteriaList.add(getNonDOTViolationsSummaryReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(), 
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    reportSchedule.getIncludeInactiveDrivers()
+                                    )
+                                    );
                     break;
                 case NON_DOT_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER)
-                        reportCriteriaList.add(getNonDOTViolationsDetailReportCriteria(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale()));
+                        reportCriteriaList.add(getNonDOTViolationsDetailReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                        );
                     else
-                        reportCriteriaList.add(getNonDOTViolationsDetailReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame.getInterval(), person.getLocale()));
+                        reportCriteriaList.add(getNonDOTViolationsDetailReportCriteria(
+                                        groupHierarchy,
+                                        reportSchedule.getGroupIDList(), 
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        reportSchedule.getIncludeInactiveDrivers()
+                                        )
+                                        );
                     break;
 
                 case DRIVER_PERFORMANCE_TEAM:
                 case DRIVER_PERFORMANCE_RYG_TEAM:
                     Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_TEAM);
-                    reportCriteriaList.add(getDriverPerformanceReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale(), ryg));
+                    reportCriteriaList.add(getDriverPerformanceReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupID(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    ryg,
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getIncludeZeroMilesDrivers()
+                                    )
+                                    );
                     break;
                 case DRIVER_PERFORMANCE_KEY_METRICS:
-                    reportCriteriaList.add(getDriverPerformanceKeyMetricsReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame, timeFrame.getInterval(), person.getLocale(),
-                            person.getMeasurementType()));
+                    reportCriteriaList.add(getDriverPerformanceKeyMetricsReportCriteria(
+                                    groupHierarchy, 
+                                    reportSchedule.getGroupIDList(),
+                                    timeFrame,
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    person.getMeasurementType(),
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getIncludeZeroMilesDrivers()
+                                    )
+                                    );
                     break;
                 case DRIVER_PERFORMANCE_KEY_METRICS_TF_RYG:
-                    reportCriteriaList.add(getDriverPerformanceKeyMetricsTimeFrameReportCriteria(groupHierarchy, reportSchedule.getGroupIDList(), timeFrame, timeFrame.getInterval(),
-                            person.getLocale(), person.getMeasurementType()));
+                    reportCriteriaList.add(getDriverPerformanceKeyMetricsTimeFrameReportCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupIDList(), 
+                                    timeFrame,
+                                    timeFrame.getInterval(),         
+                                    person.getLocale(),
+                                    person.getMeasurementType(),   
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getIncludeZeroMilesDrivers()
+                                    )
+                                    );
                     break;
 
                 case DRIVER_COACHING:
                     DateTimeZone dtz = DateTimeZone.forTimeZone(person.getTimeZone());
                     if (reportSchedule.getGroupID() != null) {
-                        reportCriteriaList.addAll(getDriverCoachingReportCriteriaByGroup(groupHierarchy, reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale(), dtz));
+                        reportCriteriaList.addAll(getDriverCoachingReportCriteriaByGroup(
+                                        groupHierarchy,
+                                        reportSchedule.getGroupID(),
+                                        timeFrame.getInterval(),
+                                        person.getLocale(),
+                                        dtz,   
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
                     } else {
-                        reportCriteriaList.add(getDriverCoachingReportCriteriaByDriver(groupHierarchy, reportSchedule.getDriverID(), timeFrame.getInterval(), person.getLocale(), dtz));
+                        reportCriteriaList.add(getDriverCoachingReportCriteriaByDriver(
+                                        groupHierarchy, reportSchedule.getDriverID(),
+                                        timeFrame.getInterval(), 
+                                        person.getLocale(),
+                                        dtz,   
+                                        reportSchedule.getIncludeInactiveDrivers(),
+                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        )
+                                        );
                     }
                     break;
                 case DRIVER_EXCLUDED_VIOLATIONS:
-                    reportCriteriaList.add(getDriverExcludedViolationCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale(),
-                            DateTimeZone.forTimeZone(person.getTimeZone())));
+                    reportCriteriaList.add(getDriverExcludedViolationCriteria(
+                                    groupHierarchy,
+                                    reportSchedule.getGroupID(),
+                                    timeFrame.getInterval(),
+                                    person.getLocale(),
+                                    DateTimeZone.forTimeZone(person.getTimeZone()),   
+                                    reportSchedule.getIncludeInactiveDrivers(),
+                                    reportSchedule.getIncludeZeroMilesDrivers()
+                                    )
+                                    );
                     break;
                 case NON_COMM:
                     reportCriteriaList.add(getNonCommReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone())));
@@ -1610,6 +1836,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     break;
                 case DVIR_POSTTRIP:
                     reportCriteriaList.add(getDVIRPostTripReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone())));
+                    break;
+                case DVIR_VIOLATION:
+                    reportCriteriaList.add(getDVIRViolationReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone())));
                     break;
                 default:
                     break;

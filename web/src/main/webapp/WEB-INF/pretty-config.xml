@@ -567,5 +567,10 @@
         <pattern>/app/fuelStopEdit/#{fuelStopsBean.vehicleID}</pattern>
         <view-id>/secured/hos/fuelStopEdit.faces</view-id>
     </url-mapping>  
+    
+    <url-mapping id="navbar">
+    	<pattern>/app/navbar</pattern>
+    	<view-id>/secured/navigationBar.faces</view-id>
+    </url-mapping>
 
 </pretty-config>
