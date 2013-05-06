@@ -921,6 +921,7 @@ System.out.println("day2: " + DateUtil.getDisplayDate(day2, DateTimeZone.getDefa
 
             // turn on in base class to get a dump of report
             dump(xmlTestCase+"_", 0, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.PDF);
+            dump(xmlTestCase+"_", 0, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.HTML);
             
             List<HOSRecAdjusted> adjustedList = hosDailyDriverLog.getCorrectedGraphList();
             for (HOSRecAdjusted rec : adjustedList)

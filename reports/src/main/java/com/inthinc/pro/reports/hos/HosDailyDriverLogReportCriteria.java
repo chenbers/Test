@@ -40,6 +40,7 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
+import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -316,7 +317,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             HosDailyDriverLog dayData= new HosDailyDriverLog();
             dayData.setCorrectedDayTotals(adjustedList.getAdjustedDayTotals(logListForDay));
             dayData.setDay(dateTimeFormatter.print(day));
-            dayData.setRemarksList(getRemarksListForDay(day, hosRecordList));
+            dayData.setRemarksList(getRemarksListForDay(day, hosRecordList, hosRecapList));
             dayData.setCarrierName(carrierName);
             dayData.setMainAddress(mainOfficeDisplayAddress);
             dayData.setTerminalAddress(terminalAddress == null ? "" : terminalAddress.getDisplayString());
@@ -463,7 +464,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     }
 
 
-    private List<RemarkLog> getRemarksListForDay(DateTime day, List<HOSRecord> hosRecordList) {
+    private List<RemarkLog> getRemarksListForDay(DateTime day, List<HOSRecord> hosRecordList, List<HOSRec> recapList) {
         List<RemarkLog> remarkLogList = new ArrayList<RemarkLog>();
         
         DateTime dayEnd = day.plusDays(1);
@@ -513,8 +514,57 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLogList.add(populateRemarkLog(hosRecordList.get(hosRecordList.size() - 1)));
         }
 
+        return fillInSubdescriptions(remarkLogList, recapList, day);
+    }
+    private List<RemarkLog> fillInSubdescriptions(List<RemarkLog> remarkLogList, List<HOSRec> recapList, DateTime day) {
+        Interval dayInterval = new Interval(day, day.plusDays(1));
+        List<Interval> passengerExceptionIntervalList = new ArrayList<Interval>();
+        for (HOSRec rec : recapList) {
+            if (rec.getStatus() == HOSStatus.OFF_DUTY_OCCUPANT && rec.getOriginalStatus() == HOSStatus.ON_DUTY_OCCUPANT && rec.getInterval().overlaps(dayInterval)) {
+                passengerExceptionIntervalList.add(rec.getInterval());
+            }
+        }
+        
+        if (passengerExceptionIntervalList.isEmpty())
+            return remarkLogList;
+
+        String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.passengerException");
+        
+        DateTime endDate = dayInterval.getEnd();
+        for (int j = remarkLogList.size()-1; j >= 0; j--) {
+            RemarkLog remarkLog = remarkLogList.get(j);
+            DateTime startDate = new DateTime(remarkLog.getLogTimeDate());
+            if (remarkLog.getStatus() == HOSStatus.ON_DUTY_OCCUPANT) {
+                long overlapMillis = 0;
+                Interval remarkLogInterval = new Interval(startDate, endDate);
+                for (Interval passengerExceptionInterval : passengerExceptionIntervalList) {
+                    if (remarkLogInterval.overlaps(passengerExceptionInterval)) {
+                        Interval overlap = remarkLogInterval.overlap(passengerExceptionInterval);
+                        overlapMillis += overlap.toDurationMillis();
+                    }
+                }
+                if (overlapMillis > 0) {
+                    remarkLog.setSubDescription(MessageFormat.format(formatString, hrMinStr(overlapMillis)));
+System.out.println("SUBDESCRIPTION: " + remarkLog.getSubDescription());         
+                }
+            }
+            endDate = startDate;
+        }
+        
+        
+        
         return remarkLogList;
     }
+
+    public String hrMinStr(long ms)
+    {
+        long seconds = ms / 1000;
+        long hours = seconds / 3600;
+        long minutes = (seconds % 3600)/ 60;
+
+        return  (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+    }
+    
     private RemarkLog getDeferralDay2Record(DateTime yesterday, List<HOSRecord> hosRecordList) {
         
         DateTime dayEnd = yesterday.plusDays(1);
@@ -535,7 +585,6 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLog.setDeleted(false);
                 remarkLog.setLogTimeDate(dayEnd.toDate());
                 remarkLog.setLogTimeZone(hosRecord.getTimeZone());
-
                 remarkLog.setLocation(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.webLogin"));
                 remarkLog.setStatusDescription(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.deferralDay2"));
                 return remarkLog;
@@ -572,6 +621,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         return remarkLog;
     }
     
+
 
     private String getEditUserFullName(Integer editUserID) {
       
