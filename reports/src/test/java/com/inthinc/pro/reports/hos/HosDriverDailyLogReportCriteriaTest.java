@@ -896,6 +896,8 @@ System.out.println("day2: " + DateUtil.getDisplayDate(day2, DateTimeZone.getDefa
         "test_case_us_2013_Example18", 
         "test_case_us_2013_Example19", 
         "test_case_us_2013_Example20", 
+        "test_case_us_2013_Passenger_seat_split", 
+        "test_case_us_2013_Passenger_seat_split_reset", 
     };
 
     @Test
