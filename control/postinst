@@ -57,6 +57,14 @@ else
     echo "404 file already exists in /var/www, not setting one up"
 fi
 
+if [ ! -f "/var/www/favicon.ico" ] && [ -f "/etc/tiwipro/www/favicon.ico" ]
+then
+    echo "No favicon.ico file in /var/www, adding one at $(date)"
+    cp /etc/tiwipro/www/favicon.ico /var/www/favicon.ico
+else
+    echo "favicon.ico file already exists in /var/www, not setting one up"
+fi
+
 service ${MY_USER} status 2&>1 >/dev/null
 if [ "$?" -ne 1 ] && [ -d "${TOMCAT_WEBAPPS_DIR}" ]
 then
