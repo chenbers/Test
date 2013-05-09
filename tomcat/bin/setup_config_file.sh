@@ -3,7 +3,7 @@ USER_DATA_FILE="/etc/user-data.sh"
 CHECKAPP_FILE="/etc/tiwipro/monitor/checkapp.txt"
 #DEBUG=1
 
-MY_VARS="AMI AWS_ZONE CHECK_USER CHECK_USER_PASSWORD COMMANDS DISK_DEVICE EC2_RUN_OPTS F_INSTALL_PACKAGES FS_BASE GOOGLE_ID GROUP HOST_NAME INSTANCE_TYPE J_INSTALL_PHASE2_PACKAGES K_SSH_CMD LOCATION MINA_IRIDIUM_PASSWORD MINA_IRIDIUM_USER MY_ELB_ADDRESS MY_FORMS_PASSWORD MY_FORMS_USERNAME MY_GIS_ADDRESS MY_GIS_PASSWORD MY_GIS_USER MY_MAPSERVER_ADDRESS MY_MAPSERVER_PORT MY_POSTGRES_SERVER MYSQL_ROOT_PASSWORD MY_TEEN_CENT_PORT MY_TEEN_SILO_PORT MY_VOXEO_ADDRESS NS_SERVERS ODK_DB_PASSWORD ODK_DB_SERVER ODK_DB_USER O_VOXEO_TOKEN POSTGRES_PASSWORD POSTGRES_USER PRIV_KEY_NAME Q_GOOGLE_ANALYTICS_KEY REGION SILO_NAME SQL_IRIDIUMPASS TIWIPRO_CLIENT_CENT_SERVER TIWIPRO_CLIENT_DB_SERVER TIWIPRO_SERVER_ID USER_HOME U_USER VOLUME_SIZE VOXEO_TOKEN WEB_DB_PASSWORD WEB_DB_SERVER WEB_DB_USER Y_SILO_ID"
+MY_VARS="AMI AWS_ZONE CHECK_USER CHECK_USER_PASSWORD COMMANDS DISK_DEVICE EC2_RUN_OPTS F_INSTALL_PACKAGES FS_BASE GOOGLE_ID GROUP HOST_NAME INSTANCE_TYPE J_INSTALL_PHASE2_PACKAGES K_SSH_CMD LOCATION MINA_IRIDIUM_PASSWORD MINA_IRIDIUM_USER MY_ELB_ADDRESS MY_FORMS_PASSWORD MY_FORMS_USERNAME MY_GIS_ADDRESS MY_GIS_PASSWORD MY_GIS_USER MY_MAPSERVER_ADDRESS MY_MAPSERVER_PORT MY_POSTGRES_SERVER MYSQL_ROOT_PASSWORD MY_TEEN_CENT_PORT MY_TEEN_SILO_PORT MY_VOXEO_ADDRESS NS_SERVERS ODK_DB_PASSWORD ODK_DB_SERVER ODK_DB_USER O_VOXEO_TOKEN POSTGRES_PASSWORD POSTGRES_USER PRIV_KEY_NAME Q_GOOGLE_ANALYTICS_KEY REGION SILO_NAME SQL_IRIDIUMPASS TIWIPRO_CLIENT_CENT_SERVER TIWIPRO_CLIENT_DB_SERVER TIWIPRO_SERVER_ID USER_HOME U_USER VOLUME_SIZE VOXEO_TOKEN WEB_DB_PASSWORD WEB_DB_SERVER WEB_DB_USER Y_SILO_ID MINA_CLIENT_DB_SERVER"
 
 function create_default_user_data {
     MY_INPUT_FILE="${1}"
@@ -28,9 +28,15 @@ function get_checkapp_info {
         then
             echo "Failed to get CHECK_USER or CHECK_USER_PASSWORD from ${CHECKAPP_FILE}"
             echo "DEBUG : Have user ${CHECK_USER} and pass ${CHECK_USER_PASSWORD}"
+            CHECK_USER="checkapp"
+            CHECK_USER_PASSWORD="ohs8aiTh5Ug0"
+            echo "Using default user ${CHECK_USER} and pass ${CHECK_USER_PASSWORD}"
         fi
     else
-        echo "Missing ${CHECKAPP_FILE} or SILO_NAME"
+        echo "Missing ${CHECKAPP_FILE} or SILO_NAME, using defaults"
+        CHECK_USER="checkapp"
+        CHECK_USER_PASSWORD="ohs8aiTh5Ug0"
+        echo "Using default user ${CHECK_USER} and pass ${CHECK_USER_PASSWORD}"
     fi
 }
 
@@ -88,6 +94,10 @@ function setup_defaults {
     if [ ! "${AWS_ZONE}" ]; then AWS_ZONE="us-east-1b"; fi
     if [ ! "${CHECK_USER_PASSWORD}" ]; then CHECK_USER_PASSWORD="ohs8aiTh5Ug0"; fi
     if [ ! "${CHECK_USER}" ]; then CHECK_USER="checkapp"; fi
+    if [ ! "${SQL_IRIDIUMPASS}" ]; then SQL_IRIDIUMPASS="aizahSu6ooGhu"; fi
+    if [ ! "${MINA_IRIDIUM_USER}" ]; then MINA_IRIDIUM_USER="iridium"; fi
+    if [ ! "${MINA_IRIDIUM_PASSWORD}" ]; then MINA_IRIDIUM_PASSWORD="aizahSu6ooGhu"; fi
+    if [ ! "${MINA_CLIENT_DB_SERVER}" ]; then MINA_CLIENT_DB_SERVER="${SILO_NAME}-dbnode0.tiwipro.com"; fi
 }
 ############################################################################################
 #
@@ -144,10 +154,15 @@ function debug_print {
     echo "AWS_ZONE is $AWS_ZONE"
     echo "CHECK_USER_PASSWORD is $CHECK_USER_PASSWORD"
     echo "CHECK_USER is $CHECK_USER"
+    echo "SQL_IRIDIUMPASS is ${SQL_IRIDIUMPASS}"
+    echo "MINA_IRIDIUM_USER is ${MINA_IRIDIUM_USER}"
+    echo "MINA_IRIDIUM_PASSWORD is ${MINA_IRIDIUM_PASSWORD}"
+    echo "MINA_CLIENT_DB_SERVER is ${MINA_CLIENT_DB_SERVER}"
 }
 
 function check_values {
-if [  "${AMI}" ] && [  "${FS_BASE}" ] && [  "${COMMANDS}" ] && [  "${SD_DISK_DEVICE}" ] && [  "${EC2_RUN_OPTS}" ] && [  "${F_INSTALL_PACKAGES}" ] && [  "${GOOGLE_ID}" ] && [  "${GROUP}" ] && [  "${HOST_NAME}" ] && [  "${INSTANCE_TYPE}" ] && [  "${J_INSTALL_PHASE2_PACKAGES}" ] && [  "${K_SSH_CMD}" ] && [  "${LOCATION}" ] && [  "${MY_FORMS_PASSWORD}" ] && [  "${MY_FORMS_USERNAME}" ] && [  "${MY_GIS_ADDRESS}" ] && [  "${MY_GIS_PASSWORD}" ] && [  "${MY_GIS_USER}" ] && [  "${MY_MAPSERVER_ADDRESS}" ] && [  "${MY_MAPSERVER_PORT}" ] && [  "${MY_POSTGRES_SERVER}" ] && [  "${MYSQL_ROOT_PASSWORD}" ] && [  "${MY_TEEN_CENT_PORT}" ] && [  "${MY_TEEN_SILO_PORT}" ] && [  "${MY_VOXEO_ADDRESS}" ] && [  "${NS_SERVERS}" ] && [  "${O_VOXEO_TOKEN}" ] && [  "${POSTGRES_PASSWORD}" ] && [  "${POSTGRES_USER}" ] && [  "${PRIV_KEY_NAME}" ] && [  "${Q_GOOGLE_ANALYTICS_KEY}" ] && [  "${REGION}" ] && [  "${SILO_NAME}" ] && [  "${MY_ELB_ADDRESS}" ] && [  "${TIWIPRO_CLIENT_CENT_SERVER}" ] && [  "${TIWIPRO_CLIENT_DB_SERVER}" ] && [  "${TIWIPRO_SERVER_ID}" ] && [  "${USER_HOME}" ] && [  "${U_USER}" ] && [  "${VOLUME_SIZE}" ] && [  "${VOXEO_TOKEN}" ] && [  "${WEB_DB_PASSWORD}" ] && [  "${WEB_DB_SERVER}" ] && [  "${WEB_DB_USER}" ] && [  "${Y_SILO_ID}" ] && [  "${AWS_ZONE}" ] && [ "${CHECK_USER_PASSWORD}" ] && [ "${CHECK_USER}" ]
+if [  "${AMI}" ] && [  "${FS_BASE}" ] && [  "${COMMANDS}" ] && [  "${SD_DISK_DEVICE}" ] && [  "${EC2_RUN_OPTS}" ] && [  "${F_INSTALL_PACKAGES}" ] && [  "${GOOGLE_ID}" ] && [  "${GROUP}" ] && [  "${HOST_NAME}" ] && [  "${INSTANCE_TYPE}" ] && [  "${J_INSTALL_PHASE2_PACKAGES}" ] && [  "${K_SSH_CMD}" ] && [  "${LOCATION}" ] && [  "${MY_FORMS_PASSWORD}" ] && [  "${MY_FORMS_USERNAME}" ] && [  "${MY_GIS_ADDRESS}" ] && [  "${MY_GIS_PASSWORD}" ] && [  "${MY_GIS_USER}" ] && [  "${MY_MAPSERVER_ADDRESS}" ] && [  "${MY_MAPSERVER_PORT}" ] && [  "${MY_POSTGRES_SERVER}" ] && [  "${MYSQL_ROOT_PASSWORD}" ] && [  "${MY_TEEN_CENT_PORT}" ] && [  "${MY_TEEN_SILO_PORT}" ] && [  "${MY_VOXEO_ADDRESS}" ] && [  "${NS_SERVERS}" ] && [  "${O_VOXEO_TOKEN}" ] && [  "${POSTGRES_PASSWORD}" ] && [  "${POSTGRES_USER}" ] && [  "${PRIV_KEY_NAME}" ] && [  "${Q_GOOGLE_ANALYTICS_KEY}" ] && [  "${REGION}" ] && [  "${SILO_NAME}" ] && [  "${MY_ELB_ADDRESS}" ] && [  "${TIWIPRO_CLIENT_CENT_SERVER}" ] && [  "${TIWIPRO_CLIENT_DB_SERVER}" ] && [  "${TIWIPRO_SERVER_ID}" ] && [  "${USER_HOME}" ] && [  "${U_USER}" ] && [  "${VOLUME_SIZE}" ] && [  "${VOXEO_TOKEN}" ] && [  "${WEB_DB_PASSWORD}" ] && [  "${WEB_DB_SERVER}" ] && [  "${WEB_DB_USER}" ] && [  "${Y_SILO_ID}" ] && [  "${AWS_ZONE}" ] && [ "${CHECK_USER_PASSWORD}" ] && [ "${CHECK_USER}" ] && [ "${SQL_IRIDIUMPASS}" ] && [ "${MINA_IRIDIUM_USER}" ] && [ "${MINA_IRIDIUM_PASSWORD}" ] && [ "${MINA_CLIENT_DB_SERVER}" ]
+
 then
     echo "All variables set"
 else
@@ -209,6 +224,10 @@ then
     perl -pi -e "s:AWS_ZONE:${AWS_ZONE}:g" ${MY_FILE}
     perl -pi -e "s:CHECK_USER_PASSWORD:${CHECK_USER_PASSWORD}:g" ${MY_FILE}
     perl -pi -e "s:CHECK_USER:${CHECK_USER}:g" ${MY_FILE}
+    perl -pi -e "s:SQL_IRIDIUMPASS:${SQL_IRIDIUMPASS}:g" ${MY_FILE}
+    perl -pi -e "s:MINA_IRIDIUM_USER:${MINA_IRIDIUM_USER}:g" ${MY_FILE}
+    perl -pi -e "s:MINA_IRIDIUM_PASSWORD:${MINA_IRIDIUM_PASSWORD}:g" ${MY_FILE}
+    perl -pi -e "s:MINA_CLIENT_DB_SERVER:${MINA_CLIENT_DB_SERVER}:g" ${MY_FILE}
 else
     echo "Missing file ${MY_FILE}, exiting at $(date)"
     exit 1

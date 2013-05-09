@@ -40,7 +40,7 @@ then
 fi
 
 touch /var/www/ping.html
-chown ${MY_USER}:${MY_GROUP_USER} ${MY_USER_HOME} /var/www/ping.html
+chown ${MY_USER}:${MY_GROUP_USER} /var/www/ping.html
 if [ ! -f "/var/www/index.html" ] && [ ! -f "/var/www/index.htm" ] && [ ! -f "/var/www/default.htm" ] && [ -f "/etc/tiwipro/www/index.html" ]
 then
     echo "No index file in /var/www, adding one at $(date)"
@@ -55,6 +55,14 @@ then
     cp /etc/tiwipro/www/404.html /var/www/404.html
 else
     echo "404 file already exists in /var/www, not setting one up"
+fi
+
+if [ ! -f "/var/www/favicon.ico" ] && [ -f "/etc/tiwipro/www/favicon.ico" ]
+then
+    echo "No favicon.ico file in /var/www, adding one at $(date)"
+    cp /etc/tiwipro/www/favicon.ico /var/www/favicon.ico
+else
+    echo "favicon.ico file already exists in /var/www, not setting one up"
 fi
 
 service ${MY_USER} status 2&>1 >/dev/null
