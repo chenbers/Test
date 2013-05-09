@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
-default-autowire="byName">
+    default-autowire="byName">
     <bean id="siloServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator">
         <constructor-arg value="${proxy.siloDataAccessHost}" />
         <constructor-arg value="${proxy.siloDataAccessPort}" />
@@ -11,28 +11,123 @@ default-autowire="byName">
         <constructor-arg value="${proxy.siloDataAccessHost}" />
         <constructor-arg value="${proxy.siloDataAccessPort}" />
     </bean>
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
-	  <property name="url" value="${jdbc.mysql.url}"/>
-	  <property name="connectionProperties" value="${jdbc.mysql.connectionProperties}"/>
-	  <property name="username" value="${jdbc.mysql.username}"/>
-	  <property name="password" value="${jdbc.mysql.password}"/>
-	  <property name="initialSize" value="${jdbc.dbcp.initialSize}"/>
-	  <property name="maxActive" value="${jdbc.dbcp.maxActive}"/>
-	  <property name="validationQuery" value="${jdbc.dbcp.validationQuery}"/>
-	  <property name="validationQueryTimeout" value="${jdbc.dbcp.validationQueryTimeout}"/>
-	  <property name="testOnBorrow" value="${jdbc.dbcp.testOnBorrow}"/>
-	  <property name="testOnReturn" value="${jdbc.dbcp.testOnReturn}"/>
-	  <property name="testWhileIdle" value="${jdbc.dbcp.testWhileIdle}"/>
-	  <property name="timeBetweenEvictionRunsMillis" value="${jdbc.dbcp.timeBetweenEvictionRunsMillis}"/>
-	  <property name="removeAbandoned" value="${jdbc.dbcp.removeAbandoned}"/>
-	  <property name="logAbandoned" value="${jdbc.dbcp.logAbandoned}"/>
-	</bean>
-	
-	<!--<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
-	  <property name="url" value="${jdbc.mysql.url}"/>
-	  <property name="username" value="${jdbc.mysql.username}"/>
-	  <property name="password" value="${jdbc.mysql.password}"/>
-	</bean>-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+        <property name="url" value="${jdbc.mysql.url}" />
+        <property name="connectionProperties" value="${jdbc.mysql.connectionProperties}" />
+        <property name="username" value="${jdbc.mysql.username}" />
+        <property name="password" value="${jdbc.mysql.password}" />
+        <property name="initialSize" value="${jdbc.dbcp.initialSize}" />
+        <property name="maxActive" value="${jdbc.dbcp.maxActive}" />
+        <property name="validationQuery" value="${jdbc.dbcp.validationQuery}" />
+        <property name="validationQueryTimeout" value="${jdbc.dbcp.validationQueryTimeout}" />
+        <property name="testOnBorrow" value="${jdbc.dbcp.testOnBorrow}" />
+        <property name="testOnReturn" value="${jdbc.dbcp.testOnReturn}" />
+        <property name="testWhileIdle" value="${jdbc.dbcp.testWhileIdle}" />
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc.dbcp.timeBetweenEvictionRunsMillis}" />
+        <property name="removeAbandoned" value="${jdbc.dbcp.removeAbandoned}" />
+        <property name="logAbandoned" value="${jdbc.dbcp.logAbandoned}" />
+    </bean>
+
+    <bean id="cassandraDB" class="com.inthinc.pro.dao.cassandra.CassandraDB">
+        <constructor-arg value="${cassandra.active}" />
+        <constructor-arg value="${cassandra.clusterName}" />
+        <constructor-arg value="${cassandra.keyspaceName}" />
+        <constructor-arg value="${cassandra.cacheKeyspaceName}" />
+        <constructor-arg value="${cassandra.nodeAddress}" />
+        <constructor-arg value="${cassandra.maxActive}" />
+        <constructor-arg value="${cassandra.autoDiscoverHost}" />
+    </bean>
+
+    <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="genericCassandraDAO" class="com.inthinc.pro.dao.cassandra.GenericCassandraDAO" abstract="true">
+        <property name="cassandraDB" ref="cassandraDB" />
+    </bean>
+    <!-- Service Related Beans -->
+    <bean id="siloService" factory-bean="siloServiceCreator" factory-method="getService" />
+    <bean id="reportService" factory-bean="reportServiceCreator" factory-method="getService" />
+
+
+    <!-- Data Access Beans -->
+    
+    <!-- Temporary DAO Beans for Transition to Cassandra -->
+    <bean id="eventTempDAO" class="${eventDAO}" />
+    <bean id="locationTempDAO" class="${locationDAO}">
+        <property name="driverDAO" ref="driverTempDAO"/>
+        <property name="vehicleDAO" ref="vehicleTempDAO"/>
+        <property name="eventDAO" ref="eventTempDAO"/>
+    </bean>
+    <bean id="driverTempDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO">
+        <property name="locationDAO" ref="locationTempDAO"></property>
+        <property name="vehicleDAO" ref="vehicleTempDAO"/>
+    </bean>
+    <bean id="vehicleTempDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO">
+        <property name="locationDAO" ref="locationTempDAO"></property>
+    </bean>
+    
+
+    <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianJdbcHybridDAO" />
+    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO" />
+    <bean id="mpgDAO" class="${mpgDAO}" />
+    <bean id="scoreDAO" class="${scoreDAO}" />
+    <bean id="driverReportDAO" class="${driverReportDAO}" />
+    <bean id="vehicleReportDAO" class="${vehicleReportDAO}" />
+    <bean id="groupReportDAO" class="${groupReportDAO}" />
+
+    <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
+    <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO"></bean>
+    <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>
+    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
+    <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" />
+    <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" />
+    <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
+    <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO"></bean>
+    <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
+    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
+    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
+    <!-- <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean> -->
+    <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
+    <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
+    <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
+    <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO"></bean>
+    <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" />
+    <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />
+    <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
+    <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
+    <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
+    <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO">
+        <property name="driverPerformanceMapper" ref="driverPerformanceMapper" />
+    </bean>
+
+    <!-- Un-comment and comment out mock DAOs below this to use real data -->
+    <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
+    <bean id="waysmartDAO" class="com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
+    <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
+    <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO"></bean>
+
+    <!-- Un-comment and comment out DAOs above to use mock data <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean> -->
+
+    <!-- <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean> -->
+    <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO" />
+    <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO" />
+    <bean id="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO" />
+    <bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO" parent="genericJDBCDAO" />
+    <bean id="fwdCmdSpoolWS" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS" />
+    <bean id="vehiclePerformanceDAO" class="com.inthinc.pro.dao.jdbc.VehiclePerformanceJDBCDAO" parent="genericJDBCDAO" />
+    <bean id="customMapDAO" class="com.inthinc.pro.dao.jdbc.CustomMapJDBCDAO" parent="genericJDBCDAO"></bean>
+    <bean id="adminPersonJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminPersonJDBCDAO" />
+    <bean id="adminVehicleJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO"/>
+    <bean id="adminDeviceJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminDeviceJDBCDAO"/>
+    <bean id="adminHazardJDBCDAO" class="com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO"/>
+    <bean id="adminReportScheduleDAO" class="com.inthinc.pro.dao.jdbc.AdminReportScheduleJDBCDAO"/>
+    <bean id="eventAggregationDAO" class="com.inthinc.pro.dao.jdbc.EventAggregationJDBCDAO" parent="genericJDBCDAO" />
+
+    <!-- Custom Mappers -->
+    <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper"/>
+
+    <!--<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> <property name="driverClassName" value="${jdbc.mysql.driverClassName}" /> <property name="url" 
+        value="${jdbc.mysql.url}"/> <property name="username" value="${jdbc.mysql.username}"/> <property name="password" value="${jdbc.mysql.password}"/> </bean> -->
 </beans>
