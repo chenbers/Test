@@ -49,7 +49,6 @@ import com.inthinc.pro.security.userdetails.ProUser;
 
 // any classes that extend this one will also have access to these configurations
 @ContextConfiguration(locations={"classpath:spring/applicationContext-mockdao.xml",
-                                 "classpath:spring/applicationContext-dao.xml",
                                  "classpath:spring/applicationContext-beans.xml",
                                  "classpath:spring/applicationContext-security.xml",
                                  "classpath:spring/applicationContext-reports.xml"},
