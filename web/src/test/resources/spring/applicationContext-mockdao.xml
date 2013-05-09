@@ -1,77 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
-default-autowire="byName">
+    default-autowire="byName">
 
     <bean id="siloServiceCreator" class="com.inthinc.pro.dao.mock.proserver.SiloServiceCreator" />
     <bean id="reportServiceCreator" class="com.inthinc.pro.dao.mock.proserver.ReportServiceCreator" />
 
     <bean id="addressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
-      <property name="mapServerURLString" value="${mapserver.geonames.url}"/>
+        <property name="mapServerURLString" value="${mapserver.geonames.url}" />
     </bean>
-    
-	<bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>
-	<bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.mock.MockWaysmartDAO"></bean>
-	<bean id="stateMileageDAO" class=" com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean>
-	<bean id="eventAggregationDAO" class="com.inthinc.pro.reports.dao.mock.MockEventAggregationDAO"></bean>
-	<bean id="driveTimeDAO" class=" com.inthinc.pro.dao.mock.MockDriveTimeDAO"></bean>
-	  <bean id="locateVehicleByTime" class="com.inthinc.pro.backing.model.LocateVehicleByTime">
-	  </bean>
-    
- <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO"/>
-  <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO"></bean>
-  <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO"></bean>
-  <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO"/>
-  <bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" />
-  <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" />
-  <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" />
-    
+
+    <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>
+    <bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.mock.MockWaysmartDAO"></bean>
+    <bean id="stateMileageDAO" class=" com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean>
+    <bean id="eventAggregationDAO" class="com.inthinc.pro.reports.dao.mock.MockEventAggregationDAO"></bean>
+    <bean id="driveTimeDAO" class=" com.inthinc.pro.dao.mock.MockDriveTimeDAO"></bean>
+    <bean id="locateVehicleByTime" class="com.inthinc.pro.backing.model.LocateVehicleByTime">
+    </bean>
+
+    <!-- Temporary DAO Beans for Transition to Cassandra -->
+    <bean id="eventTempDAO" class="${eventDAO}" />
+    <bean id="locationTempDAO" class="${locationDAO}">
+        <property name="driverDAO" ref="driverTempDAO" />
+        <property name="vehicleDAO" ref="vehicleTempDAO" />
+        <property name="eventDAO" ref="eventTempDAO" />
+    </bean>
+    <bean id="driverTempDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO">
+        <property name="locationDAO" ref="locationTempDAO"></property>
+        <property name="vehicleDAO" ref="vehicleTempDAO" />
+    </bean>
+    <bean id="vehicleTempDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO">
+        <property name="locationDAO" ref="locationTempDAO"></property>
+    </bean>
+
+    <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO" />
+    <bean id="locationDAO" class="com.inthinc.pro.dao.hessian.LocationHessianDAO"></bean>
+    <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO"></bean>
+    <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO" />
+    <bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" />
+    <bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" />
+    <bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" />
+
     <!-- Service Related Beans -->
-  <bean id="siloService" factory-bean="siloServiceCreator" factory-method="getService" />
-  <bean id="reportService" factory-bean="reportServiceCreator" factory-method="getService" />
+    <bean id="siloService" factory-bean="siloServiceCreator" factory-method="getService" />
+    <bean id="reportService" factory-bean="reportServiceCreator" factory-method="getService" />
 
-  <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
-  <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO"></bean>
-  <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>
-  <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
-  <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO"/>
-  <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO"/>
-  <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
-  <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO"></bean>
-  <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
-  <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
-  <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
-<!--  <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean>-->
-  <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
-  <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
-  <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
-  <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>
-  <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO"></bean>
-  <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO"/>
-  <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO"/>
-  <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO"/>
-  <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
-  <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
-  
-  <!-- Address Lookup -->
-  <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
-    <property name="mapServerURLString" value="${mapserver.geonames.url}" />
-  </bean>
-  <bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
-  </bean>
-  <bean id="googleClientSideAddressLookupBean" class="com.inthinc.pro.map.GoogleClientSideAddressLookup">
-  </bean>
-  <bean id="googleAjaxAddressLookupBean" class="com.inthinc.pro.map.GoogleAjaxAddressLookup">
-  </bean>
-  <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean"/>
+    <bean id="accountDAO" class="com.inthinc.pro.dao.hessian.AccountHessianDAO"></bean>
+    <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO"></bean>
+    <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO"></bean>
+    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO"></bean>
+    <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" />
+    <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" />
+    <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO"></bean>
+    <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO"></bean>
+    <bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
+    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
+    <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
+    <!-- <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean> -->
+    <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
+    <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
+    <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
+    <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO"></bean>
+    <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" />
+    <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO" />
+    <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" />
+    <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
+    <bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO"></bean>
 
-    
-  <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO">
-    <property name="driverPerformanceMapper" ref="driverPerformanceMapper"/>
-  </bean>
-  <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper">
-    <property name="driverDAO" ref="driverDAO"/>
-  </bean>
+    <!-- Address Lookup -->
+    <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
+        <property name="mapServerURLString" value="${mapserver.geonames.url}" />
+    </bean>
+    <bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
+    </bean>
+    <bean id="googleClientSideAddressLookupBean" class="com.inthinc.pro.map.GoogleClientSideAddressLookup">
+    </bean>
+    <bean id="googleAjaxAddressLookupBean" class="com.inthinc.pro.map.GoogleAjaxAddressLookup">
+    </bean>
+    <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean" />
+
+
+    <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO">
+        <property name="driverPerformanceMapper" ref="driverPerformanceMapper" />
+    </bean>
+    <bean id="driverPerformanceMapper" class="com.inthinc.pro.dao.hessian.mapper.DriverPerformanceMapper">
+        <property name="driverDAO" ref="driverDAO" />
+    </bean>
 </beans>
    
