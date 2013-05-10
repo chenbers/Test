@@ -96,7 +96,7 @@ public class HOSUtil {
                 (hosRecord.getVehicleIsDOT() == null) ? false : hosRecord.getVehicleIsDOT() && !isDriverDOT);
         hosRec.setEndTimeDate(endDate);
         hosRec.setVehicleID(hosRecord.getVehicleID());
-        hosRec.setEdited(hosRecord.getEdited());
+        hosRec.setEdited(hosRecord.getEdited() == null ? false : hosRecord.getEdited());
         hosRec.setServiceID(hosRecord.getServiceID());
         hosRec.setTrailerID(hosRecord.getTrailerID());
         hosRec.setLat(hosRecord.getLat() == null || hosRecord.getLat() == 0f ? null : new Double(hosRecord.getLat()));
