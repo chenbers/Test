@@ -545,7 +545,6 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 }
                 if (overlapMillis > 0) {
                     remarkLog.setSubDescription(MessageFormat.format(formatString, hrMinStr(overlapMillis)));
-System.out.println("SUBDESCRIPTION: " + remarkLog.getSubDescription());         
                 }
             }
             endDate = startDate;

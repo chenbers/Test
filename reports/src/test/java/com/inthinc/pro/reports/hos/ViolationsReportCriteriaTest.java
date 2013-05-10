@@ -292,7 +292,6 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             int eCnt = 0;
             for (HosViolationsSummary s : dataList) {
                 HosViolationsSummary expected = hosViolationsExpectedData[testCaseCnt][eCnt++];
-                System.out.println(expected.getGroupName());
                 assertEquals(testCaseName[testCaseCnt] + " driving_1 " + eCnt, expected.getDriving_1(), s.getDriving_1());
                 assertEquals(testCaseName[testCaseCnt] + " driving_2 " + eCnt, expected.getDriving_2(), s.getDriving_2());
                 assertEquals(testCaseName[testCaseCnt] + " driving_2 " + eCnt, expected.getDriving_3(), s.getDriving_3());

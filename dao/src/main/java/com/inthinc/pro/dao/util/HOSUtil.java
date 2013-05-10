@@ -112,7 +112,7 @@ public class HOSUtil {
         HOSRec leastRecent = null;
         for (HOSRecord hosRecord : hosRecList)
         {
-            if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()))
+            if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()) || hosRecord.getLogTime().after(endDate))
                 continue;
             long totalRealMinutes = DateUtil.deltaMinutes(hosRecord.getLogTime(), endDate);
             HOSRec hosRec = HOSUtil.mapHOSRecord(hosRecord, totalRealMinutes, endDate, isDriverDOT); 

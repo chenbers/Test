@@ -110,7 +110,6 @@ public class DDLDataSet {
         }
 
         numDays = interval.toPeriod().toStandardDays().getDays() + 1;
-System.out.println("numDays: " + numDays);        
         
         hosOccupantLogList = genOccupantLogList(driver.getDriverID(), interval.getStart(), interval.getEnd());
     }

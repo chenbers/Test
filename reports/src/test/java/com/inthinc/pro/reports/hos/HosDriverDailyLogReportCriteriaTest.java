@@ -32,7 +32,6 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
@@ -330,13 +329,9 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     @Test
     public void gainTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//        int testCaseCnt = 13; {
+//        int testCaseCnt = 1; {
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-            Address address = new Address();
-            address.setAddr1("address 1");
-            address.setCity("city");
-            address.setZip("84120");
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -429,10 +424,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         int dayIdx = 3;
         DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-        Address address = new Address();
-        address.setAddr1("address 1");
-        address.setCity("city");
-        address.setZip("84120");
         hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -554,7 +545,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         
         LocalDate localDate = new LocalDate(new DateTime());
         DateTime day = localDate.toDateTimeAtStartOfDay();
-        System.out.println("day: " + day);
         
         List<HOSRecAdjusted> logListForDay = new ArrayList<HOSRecAdjusted>();
         // on duty 2 hours in vehicle 1
@@ -614,7 +604,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         
         LocalDate localDate = new LocalDate(new DateTime());
         DateTime day = localDate.toDateTimeAtStartOfDay();
-        System.out.println("day: " + day);
         
         List<HOSRecAdjusted> logListForDay = new ArrayList<HOSRecAdjusted>();
         // on duty 2 hours in vehicle 1
@@ -661,9 +650,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         DateTime day = localDate.toDateTimeAtStartOfDay();
         LocalDate localDate2 = new LocalDate(new DateTime());
         DateTime day2 = localDate2.toDateTimeAtStartOfDay();
-System.out.println("day: " + DateUtil.getDisplayDate(day, DateTimeZone.getDefault()));
-System.out.println("day2: " + DateUtil.getDisplayDate(day2, DateTimeZone.getDefault()));
-        
         List<HOSRecAdjusted> logListForDay = new ArrayList<HOSRecAdjusted>();
         logListForDay.add(new HOSRecAdjusted("1",HOSStatus.ON_DUTY, day.toDate(), TimeZone.getTimeZone("US/Mountain"), day.toDate(),60l,0,8,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
         logListForDay.add(new HOSRecAdjusted("2",HOSStatus.DRIVING, day.plusHours(2).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(2).toDate(),60l,8,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
@@ -898,6 +884,7 @@ System.out.println("day2: " + DateUtil.getDisplayDate(day2, DateTimeZone.getDefa
         "test_case_us_2013_Example20", 
         "test_case_us_2013_Passenger_seat_split", 
         "test_case_us_2013_Passenger_seat_split_reset", 
+//        "test_case_us_2013_2_resets_in_7_days", 
     };
 
     @Test
