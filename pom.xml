@@ -171,7 +171,7 @@
                     </execution>
                     <execution>
                         <id>automation-tests</id>
-                        <phase>integration-test</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>test</goal>
                         </goals>
@@ -184,7 +184,7 @@
                                 <exclude>none</exclude>
                             </excludes>
                             <includes>
-                                <include>**/selenium/**/*.java</include>
+                                <include>**/selenium/**/CurrentStoryTest.java</include>
                             </includes>
                             <systemProperties>
                                 <property>
