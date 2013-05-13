@@ -82,7 +82,8 @@
     <property name="reportCriteriaService" ref="reportCriteriaService" />
   </bean>
   <bean id="teamTripsBean" class="com.inthinc.pro.backing.TeamTripsBean" scope="request" parent="baseBean" init-method="init" >
-  
+    <property name="eventDAO" ref="eventTempDAO" />
+    <property name="driverDAO" ref="driverTempDAO"/>
   	<property name="colors">
   		<list>
   			<value>#002BD5</value>
@@ -146,10 +147,10 @@
   </bean>
   
   <bean id="teamStopsBean" class="com.inthinc.pro.backing.TeamStopsBean" scope="request" parent="baseBean" init-method="init" >
-    <property name="driverDAO" ref="driverDAO"></property>   
-    <property name="teamCommonBean" ref="teamCommonBean"></property>
-    <property name="reportRenderer" ref="reportRenderer" />
-    <property name="reportCriteriaService" ref="reportCriteriaService" />    
+    <property name="driverDAO" ref="driverTempDAO"/>   
+    <property name="teamCommonBean" ref="teamCommonBean"/>
+    <property name="reportRenderer" ref="reportRenderer"/>
+    <property name="reportCriteriaService" ref="reportCriteriaService"/>    
   	<property name="colors">
   		<list>
   			<value>#002BD5</value>
@@ -359,10 +360,9 @@
   </bean>
 
   <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.TripsBean" scope="request" parent="baseBean">
-    <property name="vehicleDAO" ref="vehicleDAO"></property>
-    <property name="groupDAO" ref="groupDAO"></property>
-    <property name="driverDAO" ref="driverDAO"></property>
-    <property name="eventDAO" ref="eventDAO"></property>
+    <property name="eventDAO" ref="eventTempDAO"/>
+    <property name="driverDAO" ref="driverTempDAO"/>
+    <property name="vehicleDAO" ref="vehicleTempDAO"/>
     <property name="identifiableEntityBean" ref="vehicleBean" />
   </bean>
 
@@ -397,6 +397,9 @@
   </bean>
 
   <bean id="driverTripsBean" class="com.inthinc.pro.backing.TripsBean" scope="request" parent="baseBean">
+    <property name="eventDAO" ref="eventTempDAO"/>
+    <property name="driverDAO" ref="driverTempDAO"/>
+    <property name="vehicleDAO" ref="vehicleTempDAO"/>
     <property name="identifiableEntityBean" ref="driverBean" />
   </bean>
 
@@ -760,5 +763,17 @@
   <bean id="navigationBarBean" class="com.inthinc.pro.backing.NavigationBarBean" scope="session" parent="baseBean">
   	<property name="formUrl" value="${navbar.forms.url}"/>
   </bean>
+  
+    <!-- Address Lookup -->
+  <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
+    <property name="mapServerURLString" value="${mapserver.geonames.url}" />
+  </bean>
+  <bean id="googleAddressLookupBean" class="com.inthinc.pro.map.GoogleAddressLookup">
+  </bean>
+  <bean id="googleClientSideAddressLookupBean" class="com.inthinc.pro.map.GoogleClientSideAddressLookup">
+  </bean>
+  <bean id="googleAjaxAddressLookupBean" class="com.inthinc.pro.map.GoogleAjaxAddressLookup">
+  </bean>
+  <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean"/>
 
 </beans>
