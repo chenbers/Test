@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
@@ -37,7 +38,7 @@ import com.inthinc.pro.notegen.NoteGenerator;
 import com.inthinc.pro.notegen.TiwiProNoteSender;
 import com.inthinc.pro.notegen.WSNoteSender;
 
-
+@Ignore
 public class TeamStopsTest {
 //    private static final Logger logger = Logger.getLogger(TeamStopsTest.class);
     private static SiloService siloService;
