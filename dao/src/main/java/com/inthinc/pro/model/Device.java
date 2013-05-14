@@ -214,7 +214,7 @@ public class Device extends BaseEntity implements HasAccountId
      */
     public boolean isCrashTraceAppletCapable(){
         //TODO: jwimmer: another stopgap until a better way to determine device capabilities is implemented
-        return isWaySmart();
+        return (ProductType.WAYSMART.equals(this.productVersion));
     }
 
     public boolean isWaySmart() {
