@@ -506,7 +506,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         person.setAcctID(accountID);
         person.setPersonID(1);
         person.setEmpid("mock01");
-        person.setPriEmail("mock@email.com");
+        person.setPriEmail("mock@example.com");
         person.setFirst("First");
         person.setLast("Last");
         person.setTimeZone(dateTimeZone.toTimeZone());

@@ -224,7 +224,7 @@ public class DaoUtilTest extends BaseSpringTest {
 
 	protected void mockLoginUser(Boolean isSuperuser)
     {
-    	fleetUser.setPerson(new Person(1, fleetAccountID, TimeZone.getDefault(), 0, "pri@email.com", null, null, null,
+    	fleetUser.setPerson(new Person(1, fleetAccountID, TimeZone.getDefault(), 0, "pri@example.com", null, null, null,
                 null, null, 0,0,0, null, null, null, null, "first", "m",
                 "last", null, Gender.FEMALE, null, null, null, Status.ACTIVE, MeasurementType.ENGLISH,
                 FuelEfficiencyType.MPG_US, Locale.US));
