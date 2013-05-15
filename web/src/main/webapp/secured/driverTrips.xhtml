@@ -453,68 +453,56 @@
                                 <f:facet name="start">
                                 </f:facet>
                             </a4j:status>
-							<a4j:form id="selectedEventsForm">
-								<rich:dataTable value="#{driverTripsBean.allEvents}"
-									id="selectedTripTable" var="item" styleClass="datagrid"
-									rowClasses="tableOdd,tableEven" rows="5" width="100%"
-									onRowClick="selectEvent('#{item.noteID}');">
-									<!-- Data -->
-									<rich:column style="cursor: pointer;">
-										<h:graphicImage value="#{eventTypeIcons.iconAbsMap[item.eventType]}"
-											title="#{messages[item.eventType]}" />
-									</rich:column>
+                                        <a4j:form id="selectedEventsForm">
+                                            <rich:dataTable value="#{driverTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="5"
+                                                width="100%" onRowClick="selectEvent('#{item.noteID}');">
+                                                <!-- Data -->
+                                                <rich:column style="cursor: pointer;">
+                                                    <h:graphicImage value="#{eventTypeIcons.iconAbsMap[item.eventType]}" title="#{messages[item.eventType]}" />
+                                                </rich:column>
 
-									<rich:column id="address_column" style="cursor: pointer;">
-										<f:facet name="header">
-											<h:outputText value="#{messages.drivertrip_event_address}" />
-										</f:facet>
-										<ui:fragment
-											rendered="#{driverTripsBean.addressFormat == 1}">
-											<!--Address -->
-											<h:outputText value="#{item.addressStr}" />
-										</ui:fragment>
-										<ui:fragment
-											rendered="#{driverTripsBean.addressFormat == 2}">
-											<!-- Link -->
-											<a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a>
-										</ui:fragment>
-										<ui:fragment
-											rendered="#{driverTripsBean.addressFormat == 3}">
-											<!--LatLng -->
-											<h:inputHidden id="eventLat" value="#{item.latitude}" />
-											<h:inputHidden id="eventLng" value="#{item.longitude}" />
-											<h:outputText id="eventAddress" />
-											<h:inputHidden id="zoneName" value="#{item.addressStr}" />
-										</ui:fragment>
+                                                <rich:column id="address_column" style="cursor: pointer;">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{messages.drivertrip_event_address}" />
+                                                    </f:facet>
+                                                    <ui:fragment rendered="#{driverTripsBean.addressFormat == 1}">
+                                                        <!--Address -->
+                                                        <h:outputText value="#{item.addressStr}" />
+                                                    </ui:fragment>
+                                                    <ui:fragment rendered="#{driverTripsBean.addressFormat == 2}">
+                                                        <!-- Link -->
+                                                        <a href="#{item.addressStr}" target="_blank">#{messages.livefleet_address}</a>
+                                                    </ui:fragment>
+                                                    <ui:fragment rendered="#{driverTripsBean.addressFormat == 3}">
+                                                        <!--LatLng -->
+                                                        <h:inputHidden id="eventLat" value="#{item.latitude}" />
+                                                        <h:inputHidden id="eventLng" value="#{item.longitude}" />
+                                                        <h:outputText id="eventAddress" />
+                                                        <h:inputHidden id="zoneName" value="#{item.addressStr}" />
+                                                    </ui:fragment>
 
-									</rich:column>
+                                                </rich:column>
 
-									<rich:column sortBy="#{item.time}" style="cursor: pointer;">
-										<f:facet name="header">
-											<h:outputText
-												value="#{messages.drivertrip_event_datetime}" />
-										</f:facet>
+                                                <rich:column sortBy="#{item.time}" style="cursor: pointer;">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{messages.drivertrip_event_datetime}" />
+                                                    </f:facet>
 
-										<h:outputText value="#{item.time}">
-											<f:convertDateTime pattern="#{messages.dateTimeFormat}"
-												timeZone="#{driverTripsBean.timeZone}" />
-										</h:outputText>
+                                                    <h:outputText value="#{item.time}">
+                                                        <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverTripsBean.timeZone}" />
+                                                    </h:outputText>
 
-									</rich:column>
-								</rich:dataTable>
+                                                </rich:column>
+                                            </rich:dataTable>
 
-								<table align="center">
-									<tr>
-										<td><rich:datascroller align="center"
-												for="selectedTripTable" id="eventScroller" maxPages="5"
-												oncomplete="addressLookup.findAddresses();"
-												reRender="selectedTripTable"
-												styleClass="dataScrollerSmall" renderIfSinglePage="false" />
-										</td>
-									</tr>
-								</table>
-							</a4j:form>
-						</rich:panel>
+                                            <table align="center">
+                                                <tr>
+                                                    <td><rich:datascroller align="center" for="selectedTripTable" id="eventScroller" maxPages="5" oncomplete="addressLookup.findAddresses();"
+                                                            reRender="selectedTripTable" styleClass="dataScrollerSmall" renderIfSinglePage="false" /></td>
+                                                </tr>
+                                            </table>
+                                        </a4j:form>
+                                    </rich:panel>
 						<!-- End Trip table -->
 					</div>
 				</div>
