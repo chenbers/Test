@@ -30,7 +30,6 @@ import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSRecBase;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
@@ -884,7 +883,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         "test_case_us_2013_Example20", 
         "test_case_us_2013_Passenger_seat_split", 
         "test_case_us_2013_Passenger_seat_split_reset", 
-//        "test_case_us_2013_2_resets_in_7_days", 
+        "test_case_us_2013_2_resets_in_7_days", 
     };
 
     @Test
