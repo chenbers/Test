@@ -107,7 +107,7 @@ public class FileImporterTest extends BaseSpringTest {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloServiceCreator.getService());
         // create the person record for the main user
-        String email = accountName+"@email.com";
+        String email = accountName+"@example.com";
         String empID = accountName;
         Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, email, null, "5555555555", "5555555555",
                 null, null, null, null, null, empID, null,

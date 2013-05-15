@@ -218,8 +218,9 @@ public class Device extends BaseEntity implements HasAccountId
     }
 
     public boolean isWaySmart() {
-        return ProductType.WAYSMART.equals(this.productVersion);
+        return ProductType.WAYSMART.equals(this.productVersion) || ProductType.WS850.equals(this.productVersion);
     }
+
     public ProductType getProductVersion() {
         return productVersion;
     }
