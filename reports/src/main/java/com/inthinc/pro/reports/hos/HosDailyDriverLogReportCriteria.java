@@ -339,7 +339,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals(), isDSTStart, isDSTEnd));
  
             }
-            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone, new DateTime(currentTime)));
+            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone, new DateTime(currentTime), interval.getEnd()));
             dayData.setRecapType(ddlUtil.getRecapType(dayData.getRecap()));
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList, hosRecapList, ruleSetType, dayData.getRecap()));
 
@@ -523,6 +523,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Interval dayInterval = new Interval(day, day.plusDays(1));
         if (recap != null && recap.getBigReset() != null) {
             for (RemarkLog remarkLog : remarkLogList) {
+                if (remarkLog.getDeleted())
+                    continue;
                 if (remarkLog.getLogTimeDate().getTime() == recap.getBigReset().toDate().getTime()) {
                     String resetString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.reset." + ruleSetType.name());
                     remarkLog.setSubDescription(resetString);
@@ -544,6 +546,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         DateTime endDate = dayInterval.getEnd();
         for (int j = remarkLogList.size()-1; j >= 0; j--) {
             RemarkLog remarkLog = remarkLogList.get(j);
+            if (remarkLog.getDeleted())
+                continue;
             DateTime startDate = new DateTime(remarkLog.getLogTimeDate());
             if (remarkLog.getStatus() == HOSStatus.ON_DUTY_OCCUPANT) {
                 long overlapMillis = 0;

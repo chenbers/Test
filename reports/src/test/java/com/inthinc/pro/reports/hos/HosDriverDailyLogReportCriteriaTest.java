@@ -883,6 +883,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         "test_case_us_2013_Example20", 
         "test_case_us_2013_Passenger_seat_split", 
         "test_case_us_2013_Passenger_seat_split_reset", 
+        "test_case_us_2013_Passenger_seat_split_reset2", 
         "test_case_us_2013_2_resets_in_7_days", 
     };
 
