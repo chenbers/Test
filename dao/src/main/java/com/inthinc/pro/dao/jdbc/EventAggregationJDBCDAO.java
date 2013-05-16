@@ -133,7 +133,7 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                                 "INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +  
                                 "ON groupedNote.maxtime = n.time AND groupedNote.deviceID = l.deviceID AND groupedNote.vehicleID = l.vehicleID " + 
 //                                "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (SELECT max(l.stop) FROM vehicle _v WHERE _v.vehicleID = v.vehicleID)) " + 
-								"WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (select max(stop) from vddlog where vehicleID = v.vehicleID)) " +
+								"WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (SELECT max(stop) FROM vddlog WHERE vehicleID = v.vehicleID)) " +
                                 "AND g.groupID IN (:groupList)";
     private static final String SELECT_NEVER_ASSIGNED_VEHICLE = "SELECT v.vehicleID,v.name as 'vehicleName',g.groupID,g.name as 'groupName' FROM vehicle v " + 
                                 "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " + 
