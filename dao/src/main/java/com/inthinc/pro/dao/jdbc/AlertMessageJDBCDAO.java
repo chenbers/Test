@@ -672,13 +672,17 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             String mechanicID = event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()));
             String inspectorID = event.getAttrMap().get(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR.toString()));
             String signOffID = event.getAttrMap().get(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR.toString()));
-            String comments = event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()));;
+            String comments = event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()));
+            String formDefID = event.getAttrMap().get(EventAttr.ATTR_DVIR_FORM_ID.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_FORM_ID.toString()));
+            String submissionTime = event.getAttrMap().get(EventAttr.ATTR_DVIR_SUBMISSION_TIME.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_SUBMISSION_TIME.toString()));
             
             parameterList.add(mechanicID);
             parameterList.add(inspectorID);
             parameterList.add(signOffID);
             parameterList.add(comments);
-        }
+            parameterList.add(formDefID);
+            parameterList.add(submissionTime)
+;        }
 
         public List<String> getParameterList() {
             return parameterList;

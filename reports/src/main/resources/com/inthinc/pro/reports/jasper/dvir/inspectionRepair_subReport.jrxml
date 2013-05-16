@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DVIR Inspection Repair Report" pageWidth="800" pageHeight="500" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="800" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="PageFooter" lineSpacing="Single" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="Heading 3" lineSpacing="Single" fontSize="14" isBold="true"/>
+	<style name="Heading 2" lineSpacing="Single" fontSize="14" isBold="true" isItalic="true"/>
+	<subDataset name="dataList">
+		<field name="tag" class="java.lang.String"/>
+		<field name="question" class="java.lang.String"/>
+		<field name="answer" class="java.lang.String"/>
+	</subDataset>
+	<field name="driverName" class="java.lang.String"/>
+	<field name="dataList" class="java.util.List"/>
+	<field name="vehicleName" class="java.lang.String"/>
+	<field name="groupID" class="java.lang.Integer"/>
+	<field name="timestamp" class="java.lang.Long"/>
+	<field name="formTitle" class="java.lang.String"/>
+	<group name="Inspection" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{groupID}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+	</group>
+	<detail>
+		<band height="173">
+			<frame>
+				<reportElement x="0" y="47" width="782" height="20"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="234" y="0" width="140" height="20"/>
+					<textElement textAlignment="Center" lineSpacing="Single">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="572" y="0" width="140" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{timestamp},$P{REPORT_LOCALE})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="65" y="0" width="140" height="20"/>
+					<textElement textAlignment="Center" lineSpacing="Single">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="403" y="0" width="140" height="20"/>
+					<textElement textAlignment="Center" lineSpacing="Single"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{formTitle}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<rectangle radius="10">
+				<reportElement x="24" y="0" width="735" height="47" backcolor="#C0C0C0"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Heading 2" x="65" y="2" width="275" height="20"/>
+				<textElement textAlignment="Left" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.inspectionRepairDetails}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="65" y="22" width="140" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.driverName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="572" y="21" width="140" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.timestamp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="234" y="21" width="140" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.vehicleName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-9" x="403" y="22" width="140" height="20"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.formTitle}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="24" y="71" width="735" height="56"/>
+				<rectangle radius="10">
+					<reportElement x="379" y="3" width="275" height="20" backcolor="#C0C0C0"/>
+				</rectangle>
+				<componentElement>
+					<reportElement x="41" y="28" width="613" height="27"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="dataList">
+							<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{dataList})]]></dataSourceExpression>
+						</datasetRun>
+						<jr:listContents height="27" width="613">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="1" width="275" height="20"/>
+								<textElement lineSpacing="Single"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$F{question}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="338" y="0" width="275" height="20"/>
+								<textElement lineSpacing="Single"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$F{answer}]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<rectangle radius="10">
+					<reportElement x="41" y="3" width="275" height="20" backcolor="#C0C0C0"/>
+				</rectangle>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement key="textField-2" x="474" y="3" width="106" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.answer}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement key="textField-2" x="122" y="3" width="106" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.question}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

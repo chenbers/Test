@@ -114,7 +114,11 @@ public enum ReportGroup {
             
     /* DVIR */
     DVIR_VIOLATION("DVIR Violations", 46, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
-                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_VIOLATION)
+                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_VIOLATION),
+    DVIR_REPAIR("DVIR Repairs", 47, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR),
+    DVIR_REPAIR_DETAIL("DVIR Repairs Detailed", 48, EntityType.ENTITY_GROUP, new CriteriaType[] { CriteriaType.TIMEFRAME }, new GroupType[] { GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM },
+                    ReportCategory.DVIR, EnumSet.of(ReportAccountType.DVIR), ReportType.DVIR_REPAIR_DETAIL)
     ;
 
     private ReportType[] reports;

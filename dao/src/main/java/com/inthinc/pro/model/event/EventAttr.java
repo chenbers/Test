@@ -521,6 +521,10 @@ public enum EventAttr {
     TIME_DIFF(32855),
     ERROR_DETAILS(32856),
     NOTIFICATION_ENUM(32857),
+    
+    //DVIR
+    ATTR_DVIR_FORM_ID(32860),
+    ATTR_DVIR_SUBMISSION_TIME(32861), 
 
 		    
 ////////////////////////////////////////////////////////////////////////////////////
