@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.FindByKey;
@@ -17,6 +18,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleName;
@@ -154,6 +156,16 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
 
     }
 
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer vehicleID, Date startTime, Date endTime) {
+        return locationDAO.getLocationsForVehicleTrip(vehicleID, startTime, endTime);
+    }
+
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer vehicleID, Interval interval){
+        return getLocationsForTrip(vehicleID, interval.getStart().toDateTime().toDate(), interval.getEnd().toDateTime().toDate());
+    }
+    
     @Override
     public List<DriverLocation> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng) {
         try {

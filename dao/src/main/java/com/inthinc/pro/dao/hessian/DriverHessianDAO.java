@@ -20,6 +20,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
@@ -133,6 +134,16 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         return getTrips(driverID, interval.getStart().toDateTime().toDate(), interval.getEnd().toDateTime().toDate());
     }
 
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
+        return locationDAO.getLocationsForDriverTrip(driverID, startTime, endTime);
+    }
+
+    @Override
+    public List<LatLng> getLocationsForTrip(Integer driverID, Interval interval){
+        return getLocationsForTrip(driverID, interval.getStart().toDateTime().toDate(), interval.getEnd().toDateTime().toDate());
+    }
+    
     @Override
     public Driver findByPersonID(Integer personID)
     {

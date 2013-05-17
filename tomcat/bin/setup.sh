@@ -4,7 +4,7 @@ U_GROUP="tiwipro"
 U_USER_HOME="/usr/local/tomcat2"
 chown -R ${U_USER}:${U_GROUP} ${U_USER_HOME}
 chown -R ${U_USER}:${U_GROUP} ${U_USER_HOME}/
-CONFIG_FILES="${U_USER_HOME}/conf/tiwipro.properties ${U_USER_HOME}/conf/cas/cas.properties ${U_USER_HOME}/conf/cas/database.properties ${U_USER_HOME}/bin/monitor.sh /etc/nginx/sites-available/tiwipro /etc/ssl/private/inthinc-private-key-2013.pem /etc/ssl/certs/inthinc.com.crt /etc/tiwipro/nginx-nossl/roadhazard /etc/tiwipro/nginx-ssl/hoskiosk /etc/tiwipro/nginx-ssl/cas /etc/tiwipro/nginx-ssl/service /etc/tiwipro/nginx-ssl/tiwipro /etc/tiwipro/nginx-ssl/tiwiproutil"
+CONFIG_FILES="${U_USER_HOME}/conf/tiwipro.properties ${U_USER_HOME}/conf/cas/cas.properties ${U_USER_HOME}/conf/cas/database.properties ${U_USER_HOME}/bin/monitor.sh /etc/nginx/sites-available/tiwipro /etc/ssl/private/inthinc-private-key-2013.pem /etc/ssl/certs/inthinc.com.crt /etc/tiwipro/nginx-nossl/roadhazard.conf /etc/tiwipro/nginx-ssl/hoskiosk.conf /etc/tiwipro/nginx-ssl/cas.conf /etc/tiwipro/nginx-ssl/service.conf /etc/tiwipro/nginx-ssl/tiwipro.conf /etc/tiwipro/nginx-ssl/tiwiproutil.conf /var/www/index.html /var/www/404.html"
 
 if [ -f "/etc/user-data.sh" ]
 then

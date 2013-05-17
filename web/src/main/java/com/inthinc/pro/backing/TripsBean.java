@@ -152,6 +152,63 @@ public class TripsBean extends BaseBean {
         return timeZone;
     }
 
+    
+    public void initViolations() {
+        if (selectedTrip != null) {
+            Trip trip = selectedTrip.getTrip();
+            Date start = trip.getStartTime();
+            Date end = trip.getEndTime();
+            
+            if (!trip.getEventsLoaded()) {
+                trip.setEventsLoaded(true);
+                List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
+                violationEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
+                violationEventTypeList.add(NoteType.SEATBELT);
+                violationEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
+                List<NoteType> idleTypes = new ArrayList<NoteType>();
+                idleTypes.add(NoteType.IDLE);
+                List<NoteType> tamperEventTypeList = new ArrayList<NoteType>();
+                tamperEventTypeList.add(NoteType.UNPLUGGED);
+                tamperEventTypeList.add(NoteType.UNPLUGGED_ASLEEP);
+                if (identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)) {
+                    
+                    trip.setViolationEvents(eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, violationEventTypeList, getShowExcludedEvents()));
+                    trip.setIdleEvents(eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, idleTypes, getShowExcludedEvents()));
+                    trip.setTamperEvents(eventDAO.getEventsForDriver(identifiableEntityBean.getId(), start, end, tamperEventTypeList, getShowExcludedEvents()));
+                }
+                else {
+                    
+                    trip.setViolationEvents(eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, violationEventTypeList, getShowExcludedEvents()));
+                    trip.setIdleEvents(eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, idleTypes, getShowExcludedEvents()));
+                    trip.setTamperEvents(eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, tamperEventTypeList, getShowExcludedEvents()));
+                }
+            }    
+            // Lookup Addresses for events
+            if(selectedTrip.getBeginningPoint()!= null){
+                populateAddresses(trip.getViolationEvents());
+                populateAddresses(trip.getIdleEvents());
+                populateAddresses(trip.getTamperEvents());
+            }
+            
+            // Get the correct timestamp for display (vehicle page only)
+            populateFormattedDate(trip.getViolationEvents());
+            populateFormattedDate(trip.getIdleEvents());
+            populateFormattedDate(trip.getTamperEvents());
+            
+            allEvents.clear();
+            allEvents.addAll(trip.getViolationEvents());
+            allEvents.addAll(trip.getIdleEvents());
+            allEvents.addAll(trip.getTamperEvents());
+            Collections.sort(allEvents);
+            Collections.reverse(allEvents);
+            allEventsMap = new LinkedHashMap<Long,Event>();
+            for(Event event:allEvents){
+                allEventsMap.put(event.getNoteID(),event);
+            }
+            selectedViolationID = allEvents.size()>0?allEvents.get(0).getNoteID():null;
+        }    
+    }
+
     public void initViolations(Date start, Date end) {
         if (violationEvents.isEmpty()) {
             List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
@@ -479,20 +536,29 @@ public class TripsBean extends BaseBean {
 	        selectedTrips.add(selectedTrip);
 	        this.showLastTenTrips = false;
 	        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
-	            setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
+	            
+	            if (selectedVehicle == null || selectedVehicle.getVehicleID().intValue() != selectedTrip.getTrip().getVehicleID().intValue())
+	                setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
+	            loadLocations(selectedTrip, false);
 	        }else{
 	         // Get Driver for this Trip
-	            setSelectedDriver(driverDAO.findByID(selectedTrip.getTrip().getDriverID()));
+                if (selectedDriver == null || selectedDriver.getDriverID().intValue() != selectedTrip.getTrip().getDriverID().intValue())
+                    setSelectedDriver(driverDAO.findByID(selectedTrip.getTrip().getDriverID()));
+                loadLocations(selectedTrip, true);
 	        }
 	        // Get Violations for this Trip
-	        initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
+	        initViolations();
 	        selectedTripID = selectedTrips.get(0).getTrip().getTripID();
         }
     }
 
     // VIOLATIONS PROPERTIES
     public List<Event> getViolationEvents() {
-        return violationEvents;
+        if (selectedTrip != null)
+            return selectedTrip.getTrip().getViolationEvents();
+        else
+            return Collections.emptyList();
+        //        return violationEvents;
     }
 
     public void setViolationEvents(List<Event> violationEvents) {
@@ -500,7 +566,12 @@ public class TripsBean extends BaseBean {
     }
 
     public List<Event> getIdleEvents() {
-        return idleEvents;
+        if (selectedTrip != null)
+            return selectedTrip.getTrip().getIdleEvents();
+        else
+            return Collections.emptyList();
+
+        //        return idleEvents;
     }
 
     public void setIdleEvents(List<Event> idleEvents) {
@@ -613,7 +684,11 @@ public class TripsBean extends BaseBean {
     }
 
     public List<Event> getTamperEvents() {
-        return tamperEvents;
+        if (selectedTrip != null)
+            return selectedTrip.getTrip().getTamperEvents();
+        else
+            return Collections.emptyList();
+//        return tamperEvents;
     }
 
     public void setTamperEvents(List<Event> tamperEvents) {
@@ -742,4 +817,14 @@ public class TripsBean extends BaseBean {
         return group.getMapCenter();
 	    
 	}
+
+	private void loadLocations(TripDisplay selectedTrip, boolean isVehicle) {
+        if (!selectedTrip.areLocationsLoaded()) {
+            if (isVehicle)
+                selectedTrip.addLocations(vehicleDAO.getLocationsForTrip(selectedTrip.getTrip().getVehicleID(), selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime()));
+            else
+                selectedTrip.addLocations(driverDAO.getLocationsForTrip(selectedTrip.getTrip().getDriverID(), selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime()));
+            
+        }
+    }
 }

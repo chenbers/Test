@@ -530,15 +530,15 @@ reprepro_add
 #for war in ls webapps/*war
 #make a package with a user named the same thing as the war
 
-if [ "${USER}" = "jenkins" ]
-then
-    echo "We are running on the master node, running s3cmd locally"
-    s3_sync
-else
-    echo "We are not running on the master node, skipping reprepro steps"
+#if [ "${USER}" = "jenkins" ]
+#then
+#    echo "We are running on the master node, running s3cmd locally"
+#    s3_sync
+#else
+#    echo "We are not running on the master node, skipping reprepro steps"
     echo "Additional steps required to add these packages to the master node"
     echo "s3cmd --verbose --delete-removed  sync ${DEB_repository_dir} s3://${DEB_S3_bucket}/"
-fi
+#fi
 
 cleanup
 exit 0

@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,13 @@ public class Trip extends BaseEntity {
     @Column(updateable = false)
     private TripQuality quality;
 
+    private Boolean fullRouteLoaded = true;
+    private Boolean eventsLoaded = false;
+
+    private List<Event> violationEvents = new ArrayList<Event>();
+    private List<Event> idleEvents = new ArrayList<Event>();
+    private List<Event> tamperEvents = new ArrayList<Event>();
+
     public Trip() {
         super();
     }
@@ -54,7 +62,48 @@ public class Trip extends BaseEntity {
     }
     
     
-	public Double getStartLat() {
+	public Boolean getFullRouteLoaded() {
+        return fullRouteLoaded;
+    }
+
+    public void setFullRouteLoaded(Boolean fullRouteLoaded) {
+        this.fullRouteLoaded = fullRouteLoaded;
+    }
+
+    
+    public Boolean getEventsLoaded() {
+        return eventsLoaded;
+    }
+
+    public void setEventsLoaded(Boolean eventsLoaded) {
+        this.eventsLoaded = eventsLoaded;
+    }
+
+    public List<Event> getViolationEvents() {
+        return violationEvents;
+    }
+
+    public void setViolationEvents(List<Event> violationEvents) {
+        this.violationEvents = violationEvents;
+    }
+
+    public List<Event> getIdleEvents() {
+        return idleEvents;
+    }
+
+    public void setIdleEvents(List<Event> idleEvents) {
+        this.idleEvents = idleEvents;
+    }
+
+    public List<Event> getTamperEvents() {
+        return tamperEvents;
+    }
+
+    public void setTamperEvents(List<Event> tamperEvents) {
+        this.tamperEvents = tamperEvents;
+    }
+
+    public Double getStartLat() {
 		return startLat;
 	}
 

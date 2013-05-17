@@ -1,5 +1,7 @@
 package com.inthinc.device.emulation;
 
+import java.util.Calendar;
+
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
 import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
@@ -7,6 +9,7 @@ import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
 import com.inthinc.pro.automation.enums.AutoSilos;
+import com.inthinc.pro.automation.objects.AutomationCalendar;
 
 public class TripFaker {
 	
@@ -16,12 +19,14 @@ public class TripFaker {
 		//TiwiProDevice tiwi = new TiwiProDevice("151566615156661", AutoSilos.DEV);
         //TiwiProDevice tiwi = new TiwiProDevice("120275615159901", AutoSilos.DEV);
         //TiwiProDevice tiwi = new TiwiProDevice("999999000109751", AutoSilos.QA);
-        NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
+        //NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
         //noteTest.testDVIRNote("MCM821853", "300034012559130");
         WaysmartDevice tiwi = new WaysmartDevice("REDFLAGDVIRTEST", "REDFLAG11", AutoSilos.DEV, Direction.gprs);
         tiwi.dump_settings();
         DeviceState state = tiwi.getState();
-        tiwi.increment_time(60);
+        AutomationCalendar initialTime = new AutomationCalendar();
+        tiwi.set_time(initialTime.setDate(1367445641));
+//        tiwi.increment_time(20);
         tiwi.getState().setWMP(17116);
         tiwi.firstLocation(new GeoPoint(33.0104, -117.111));
         tiwi.power_on_device();
@@ -98,10 +103,14 @@ public class TripFaker {
         //tiwi.logout_driver(null, 890, 204, 200);
         
         AutomationDeviceEvents.requestSettings(tiwi);
+ 
+//      tiwi.setEmployeeID("123234345");										 //THESE THREE LINES ARE FOR SENDING IN HOS
+//      state.setHosState(HOSState.TIMESTAMP);							 //TIMESTAMP NOTE, THIS SHOULD NOT SHOW UP
+//      AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT"); //IN THE HOS LOGS ANYMORE, BUT IT WILL SHOW UP IN THE DATABASE AND UTIL
         
-        tiwi.setEmployeeID("DASTARDLY1");										 //THESE THREE LINES ARE FOR SENDING IN HOS
-        state.setHosState(HOSState.OCCUPANT_ON_DUTY);							 //DRIVER ON DUTY AS AN OCCUPANT IN A 
-        AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT");	 //VEHICLE
+//        tiwi.setEmployeeID("DASTARDLY1");										 //THESE THREE LINES ARE FOR SENDING IN HOS
+//        state.setHosState(HOSState.OCCUPANT_ON_DUTY);							 //DRIVER ON DUTY AS AN OCCUPANT IN A 
+//        AutomationDeviceEvents.hosChangeNoGPSLock(tiwi, "SALT LAKE CITY, UT");	 //VEHICLE
         //note.addAttr(EventAttr.SEATBELT_TOP_SPEED, state.getSeatbeltTopSpeed());
     	//note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, state.getSeatbeltDistanceX100());
         
