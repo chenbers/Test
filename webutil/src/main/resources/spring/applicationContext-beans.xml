@@ -96,5 +96,9 @@
 
 	<bean id="dataCache" class="com.inthinc.pro.backing.importer.datacheck.DataCache" init-method="init"/>
 	
+	<!--  hos -->
+	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
+  		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
+  	</bean>
 	
 </beans>
