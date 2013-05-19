@@ -548,7 +548,13 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
                 assetId = bigIntegerSerializer.fromByteBuffer((ByteBuffer) colName.get(3)).intValue();
                 noteId = longSerializer.fromByteBuffer((ByteBuffer) colName.get(4));
                 raw = column.getValue();
-                
+
+				// 5/18/2013 We had a bug where new notes based on End of Trip attribs had method set to null
+				// in noteservice. Fixed in noteservice but this code added to deal with old/bad data. Can eventually be removed
+				if (method == null)
+                    method = "notebc";
+				///////////////	
+
                 NoteParser parser = NoteParserFactory.getParserForMethod(method);
                 Map<String, Object> fieldMap = parser.parseNote(raw);
                 fieldMap.put("driverID", (isDriver) ? rowKey  : assetId);
