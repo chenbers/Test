@@ -15,7 +15,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
@@ -38,7 +37,6 @@ import com.inthinc.pro.notegen.NoteGenerator;
 import com.inthinc.pro.notegen.TiwiProNoteSender;
 import com.inthinc.pro.notegen.WSNoteSender;
 
-@Ignore
 public class TeamStopsTest {
 //    private static final Logger logger = Logger.getLogger(TeamStopsTest.class);
     private static SiloService siloService;
@@ -123,16 +121,15 @@ public class TeamStopsTest {
         
         // generate data
         GroupData team = itData.teamGroupData.get(ITData.INTERMEDIATE);
-        
-        DateTimeZone dateTimeZone = DateTimeZone.getDefault();
+        DateTimeZone dateTimeZone = DateTimeZone.forID("US/Mountain");
         DateTime currentDay = new DateMidnight(new Date(), dateTimeZone).toDateTime();
         Interval interval = new Interval(currentDay.minusDays(1), currentDay);
             
         NoteFileParser noteFileParser = new NoteFileParser();
         List<Event> eventList = noteFileParser.parseFile("stops" + File.separator + "driverNotes.csv");
         
-        offsetEventDates(eventList, new DateMidnight(new Date()).toDateTime());
-        System.out.println("team.driver: " + team.driver.getDriverID());
+        DateTime offset = new DateMidnight(new Date()).toDateTime(dateTimeZone);
+        offsetEventDates(eventList, offset, dateTimeZone);
         try {
             noteGenerator.genTrip(eventList, team.device);
         } catch (Exception e) {
@@ -161,20 +158,18 @@ public class TeamStopsTest {
     }
 
 
-    private void offsetEventDates(List<Event> eventList, DateTime offsetFrom) {
+    private void offsetEventDates(List<Event> eventList, DateTime offsetFrom, DateTimeZone dateTimeZone) {
         Date maxDate = new Date(0);
 
         for (Event event : eventList)
             if (event.getTime().after(maxDate))
                 maxDate = event.getTime();
         
-        System.out.println("maxDate: " + maxDate);
         int dayOffset = (int)((offsetFrom.toDate().getTime() - maxDate.getTime()) / DateUtil.MILLISECONDS_IN_DAY);
-        System.out.println("dayOffset: " + dayOffset);
-
         for (Event event : eventList) {
-            DateTime newEventTime = new DateTime(event.getTime()).plusDays(dayOffset);
+            DateTime newEventTime = new DateTime(event.getTime(), dateTimeZone).plusDays(dayOffset);
             event.setTime(newEventTime.toDate());
+//            System.out.println("eventDate: " + DateUtil.getDisplayDate(newEventTime, DateTimeZone.getDefault()));
         }
     }
 
