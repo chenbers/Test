@@ -12,13 +12,13 @@
 
         <hos_state state="off_duty" hours="24" />			<!--    day 2  7/30-->
 
-        <hos_state state="off_duty" hours="24" />			<!--    day 3  (reset) 7/31-->
+        <hos_state state="off_duty" hours="24" />			<!--    day 3  7/31-->
 
-        <hos_state state="off_duty" hours="3" />			<!--    day 2 8/1 -->
+        <hos_state state="off_duty" hours="3" />			<!--    day 4 8/1 -->
         <hos_state state="on_duty" hours="1" />	
 	</driver_log>
 	
-	<result ruleset="us" recapDay="1" recapWorked="01.00">
+	<result ruleset="us" recapDay="4" recapWorked="01.00">
         <hos_state state="off_duty" hours="3" />				
         <hos_state state="on_duty" hours="1" />				
 	</result>
