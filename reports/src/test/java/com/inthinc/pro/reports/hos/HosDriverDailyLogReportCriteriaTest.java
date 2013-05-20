@@ -883,6 +883,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         "test_case_us_2013_Example20", 
         "test_case_us_2013_Passenger_seat_split", 
         "test_case_us_2013_Passenger_seat_split_reset", 
+        "test_case_us_2013_Passenger_seat_split_reset_after", 
         "test_case_us_2013_Passenger_seat_split_reset2", 
         "test_case_us_2013_2_resets_in_7_days", 
     };
@@ -913,8 +914,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             dump(xmlTestCase+"_", 0, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.HTML);
             
             List<HOSRecAdjusted> adjustedList = hosDailyDriverLog.getCorrectedGraphList();
-            for (HOSRecAdjusted rec : adjustedList)
-                rec.dump3();
+//            for (HOSRecAdjusted rec : adjustedList)
+//                rec.dump3();
             
             List<HOSRecBase> resultList = ddlTestData.testCase.getResultLog();
 //            for (HOSRecBase result : ddlTestData.testCase.getResultLog()) {
