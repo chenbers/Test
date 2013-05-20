@@ -215,6 +215,10 @@ public class NewNoteTest {
         String imeiOnQA_WS850 = "MCMFAKE01";
         String mcmIDOnQA_WS850 = "MCMFAKE01";
         
+        // Assigned to Vehicle FAKE8501
+        String imeiOnDEV_WS850 = "IVFAKE000000000001";
+        String mcmIDOnDEV_WS850 = "IVFAKE000000000001";
+        
         String imeiOnMY = "30023FKE1DE7570";
         String mcmIDOnMY = "F1DE7570";
 

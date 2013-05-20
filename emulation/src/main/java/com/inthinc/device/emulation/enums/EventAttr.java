@@ -539,7 +539,9 @@ public enum EventAttr implements IndexEnum{
     NOTIFICATION_ENUM(32857),
     RHA_END_TIME(32858),
     RHA_ID(32859),
-    ROUTE_STOP_ID(32860),
+    ROUTE_STOP_ID(32862), // Changed it from 32860 to 32862 as it shared same id as ATTR_DVIR_FORM_ID
+    ATTR_DVIR_FORM_ID(32860),
+    ATTR_DVIR_SUBMISSION_TIME(32861),
     
 		    
 ////////////////////////////////////////////////////////////////////////////////////
