@@ -194,5 +194,11 @@
 
 
     <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.report.impl.DriverPerformanceDAOImpl"/>
+    
+	<!--  hos -->
+	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
+  		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
+  	</bean>
+    
 
 </beans>
