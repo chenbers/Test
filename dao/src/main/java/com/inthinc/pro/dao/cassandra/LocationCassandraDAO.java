@@ -576,7 +576,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 
                 //attempt to remove any points from the route that are near 0,0
                 for(LatLng latLng: routeList) {
-                    if (Math.floor(latLng.getLatitude()) + Math.floor(latLng.getLongitude()) == 0) {
+                    if (Math.floor(Math.abs(latLng.getLatitude())) + Math.floor(Math.abs(latLng.getLongitude())) == 0) {
                         routeList.remove(latLng);
                     }
                 }
