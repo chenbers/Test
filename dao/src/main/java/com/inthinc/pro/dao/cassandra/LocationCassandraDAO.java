@@ -2,14 +2,7 @@ package com.inthinc.pro.dao.cassandra;
 
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.Composite;
@@ -575,9 +568,11 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 routeList.add(endLoc);
 
                 //attempt to remove any points from the route that are near 0,0
-                for(LatLng latLng: routeList) {
+                Iterator<LatLng> iter = routeList.iterator();
+                while(iter.hasNext()){
+                    LatLng latLng = iter.next();
                     if (Math.floor(Math.abs(latLng.getLatitude())) + Math.floor(Math.abs(latLng.getLongitude())) == 0) {
-                        routeList.remove(latLng);
+                        iter.remove();
                     }
                 }
 
