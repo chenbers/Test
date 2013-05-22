@@ -573,7 +573,14 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                     routeList.addAll(fetchRouteForTrip(assetID, (int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()), isDriver));
                 }    
                 routeList.add(endLoc);
-                
+
+                //attempt to remove any points from the route that are near 0,0
+                for(LatLng latLng: routeList) {
+                    if (Math.floor(Math.abs(latLng.getLatitude())) + Math.floor(Math.abs(latLng.getLongitude())) == 0) {
+                        routeList.remove(latLng);
+                    }
+                }
+
                 trip.setRoute(routeList);
                 trip.setFullRouteLoaded(includeRoute);
                 
@@ -943,7 +950,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             Map<String, Object> fieldMap = parser.parseNote(column.getValue());
             Long startTS = ((Integer)fieldMap.get(Attrib.NOTETIME.getFieldName())) * 1000L;
             trip.setStartTime(new Date(startTS));
-            trip.setStartLng(((Number) fieldMap.get(Attrib.MAXLATITUDE.getFieldName())).doubleValue());
+            trip.setStartLat(((Number) fieldMap.get(Attrib.MAXLATITUDE.getFieldName())).doubleValue());
             trip.setStartLng(((Number) fieldMap.get(Attrib.MAXLONGITUDE.getFieldName())).doubleValue());
             trip.setMileage(((Number) fieldMap.get(Attrib.NOTEODOMETER.getFieldName())).intValue());
             trip.setVehicleID(vehicleID);
