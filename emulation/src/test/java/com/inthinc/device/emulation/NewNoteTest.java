@@ -147,17 +147,21 @@ public class NewNoteTest {
 	    GeoPoint location = new GeoPoint();
 	    
 	    SatelliteEvent_t note = new SatelliteEvent_t(type, state, location);
+	    Long submissionTimeInMillis = 1000000L;
 	    
+
 	    note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test");
 	    note.addAttr(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, "INS_Test_1");
 	    note.addAttr(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, "SGN_Test_1");
 	    note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test");
+	    note.addAttr(EventAttr.ATTR_DVIR_FORM_ID, 1);
+	    note.addAttr(EventAttr.ATTR_DVIR_SUBMISSION_TIME, submissionTimeInMillis);
 	    
 	    List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
         notes.add(note);
         
         try {
-            proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+            proxy.sendHttpNote(mcmID, Direction.sat, notes, imei); //Direction.wifi
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -216,8 +220,12 @@ public class NewNoteTest {
         String mcmIDOnQA_WS850 = "MCMFAKE01";
         
         // Assigned to Vehicle FAKE8501
-        String imeiOnDEV_WS850 = "IVFAKE000000000001";
-        String mcmIDOnDEV_WS850 = "IVFAKE000000000001";
+//        String imeiOnDEV_WS850 = "IVFAKE000000000001";
+//        String mcmIDOnDEV_WS850 = "IVFAKE000000000001";
+        
+        // Assigned to Vehicle MIKE REINICKE VID
+        String imeiOnDEV_WS850 = "imei";
+        String mcmIDOnDEV_WS850 = "mcmid";
         
         String imeiOnMY = "30023FKE1DE7570";
         String mcmIDOnMY = "F1DE7570";
@@ -234,13 +242,12 @@ public class NewNoteTest {
         String mcmID = mcmIDOnDev;
 */        
         
-        NewNoteTest test = new NewNoteTest(AutoSilos.MY);
+        NewNoteTest test = new NewNoteTest(AutoSilos.DEV);
 //        test.testInstallNote();
-        
         test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
         
         /* DVIR Repair Note Tests */
-        //test.testDVIRRepairNote_WS850(mcmIDOnQA_WS850, imeiOnQA_WS850);
+        test.testDVIRRepairNote_WS850(mcmIDOnDEV_WS850, imeiOnDEV_WS850);
         
   /*      
         String imei = imeiOnQA;

@@ -7,3 +7,4 @@ target
 [jJ]unk*
 *.jar
 *_.java
+/server.crt

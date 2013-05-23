@@ -435,6 +435,8 @@ public class MCMProxyObject implements MCMService{
                     "&sat_cmd="+note.getType().getIndex()+
                     "&event_time="+(note.getTime().toInt());
                 
+        	System.out.println(uri);
+        	
             HttpPost method = new HttpPost(uri.toLowerCase());
             MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
             
@@ -452,13 +454,16 @@ public class MCMProxyObject implements MCMService{
 //                entity.addPart("vehicle_id_str", new StringBody("654", Charset.forName("UTF-8")));
 //                entity.addPart("company_id", new StringBody("3", Charset.forName("UTF-8")));
             } catch (Exception e) {
+                System.out.println("E " + e);
                 
             }
             
             
             entity.addPart("filename", new ByteArrayBody(packaged, "filename"));
             method.setEntity(entity);
-                
+            
+            System.out.println(method.getMethod());
+            
         	reply.add(http.httpRequest(method));
             DeviceStatistics.addCall();
             printNote(note);
