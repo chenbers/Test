@@ -18,6 +18,9 @@ import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.rules.HOSRules;
+import com.inthinc.hos.rules.RuleSetFactory;
+import com.inthinc.hos.util.DebugUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSRecord;
 
@@ -25,62 +28,60 @@ public class HOSUtil {
 
     private static final long MS_IN_DAY = 86400000l;
     private static final Logger logger = Logger.getLogger(HOSUtil.class);
+
     
-    public static HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecList)
+    public static HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
     {
-        List<HOSRecAdjusted> adjustedList = new ArrayList<HOSRecAdjusted>();
-        for (HOSRecord hosRec : hosRecList)
-        {
+        List<HOSRec> recList = new ArrayList<HOSRec>(); 
+        for (HOSRecord hosRec : hosRecordList) {
             HOSStatus status = hosRec.getStatus(); 
             if (status  == null || !status.isGraphable() || hosRec.getDeleted())
                 continue;
-            HOSRecAdjusted hosDDLRec = new HOSRecAdjusted(hosRec.getHosLogID().toString(), 
-                    status, 
-                    hosRec.getLogTime(), 
-                    hosRec.getTimeZone());
-            
-            hosDDLRec.setEdited(hosRec.getEdited() || hosRec.getOrigin().equals(HOSOrigin.PORTAL));
-            hosDDLRec.setServiceID(hosRec.getServiceID());
-            hosDDLRec.setTrailerID(hosRec.getTrailerID());
-            hosDDLRec.setVehicleID(hosRec.getVehicleID());
-            hosDDLRec.setRuleType(hosRec.getDriverDotType());
-
-            adjustedList.add(hosDDLRec);
+            HOSRec rec = HOSUtil.mapHOSRecord(hosRec, 0, endDate, true);
+            rec.setEdited(hosRec.getEdited() || hosRec.getOrigin().equals(HOSOrigin.PORTAL));
+            recList.add(rec); 
 
         }
-        Collections.reverse(adjustedList);
-        return new HOSAdjustedList(adjustedList);
+        if (recList.size() > 0) {
+            RuleSetType ruleSetType = recList.get(0).getRuleType();
+        
+            DebugUtil.dumpLogs(recList);
+        
+            HOSRules rules = RuleSetFactory.getRulesForRuleSetType(ruleSetType);
+            recList = rules.adjustStatuses(recList, endDate);
+        }
 
+        return new HOSAdjustedList(recList, endDate);
     }
-    public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecList)
+
+    public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
     {
-        List<HOSRecAdjusted> adjustedList = new ArrayList<HOSRecAdjusted>();
-        for (HOSRecord hosRec : hosRecList)
-        {
+        List<HOSRec> recList = new ArrayList<HOSRec>(); //HOSUtil.getRecListFromLogList(hosRecordList, endDate, driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT);
+        for (HOSRecord hosRec : hosRecordList) {
             if (hosRec.getOrigin().equals(HOSOrigin.PORTAL))
                 continue;
             HOSStatus status = (hosRec.getEdited() && hosRec.getOriginalStatus() != null) ? hosRec.getOriginalStatus() : hosRec.getStatus(); 
             if (status  == null || !status.isGraphable() || hosRec.getDeleted())
                 continue;
-            HOSRecAdjusted hosDDLRec = new HOSRecAdjusted(hosRec.getHosLogID().toString(), 
-                    status,
-                    hosRec.getOriginalLogTime() == null || hosRec.getOriginalLogTime().getTime() == 0l ? hosRec.getLogTime() : hosRec.getOriginalLogTime(),
-                    hosRec.getTimeZone());
-            
-            hosDDLRec.setEdited(false);
-            hosDDLRec.setServiceID(hosRec.getServiceID());
-            hosDDLRec.setTrailerID(hosRec.getTrailerID());
-            hosDDLRec.setVehicleID(hosRec.getVehicleID());
-            hosDDLRec.setRuleType(hosRec.getDriverDotType());
-
-            adjustedList.add(hosDDLRec);
+            HOSRec rec = HOSUtil.mapHOSRecord(hosRec, 0, endDate, true);
+            rec.setStatus(status);
+            rec.setEdited(false);
+            rec.setLogTimeDate(hosRec.getOriginalLogTime() == null || hosRec.getOriginalLogTime().getTime() == 0l ? hosRec.getLogTime() : hosRec.getOriginalLogTime());
+            recList.add(rec); 
 
         }
         
-        Collections.sort(adjustedList);
-        Collections.reverse(adjustedList);
-        return new HOSAdjustedList(adjustedList);
+        if (recList.size() > 0) {
+            Collections.sort(recList);
+            RuleSetType ruleSetType = recList.get(0).getRuleType();
+        
+            DebugUtil.dumpLogs(recList);
+        
+            HOSRules rules = RuleSetFactory.getRulesForRuleSetType(ruleSetType);
+            recList = rules.adjustStatuses(recList, endDate);
+        }
 
+        return new HOSAdjustedList(recList, endDate);
     }
     
     public static HOSRec mapHOSRecord(HOSRecord hosRecord, long totalRealMinutes, Date endDate, Boolean isDriverDOT) {
@@ -94,7 +95,10 @@ public class HOSUtil {
                 (hosRecord.getSingleDriver() == null) ? false : hosRecord.getSingleDriver(),
                 (hosRecord.getVehicleIsDOT() == null) ? false : hosRecord.getVehicleIsDOT() && !isDriverDOT);
         hosRec.setEndTimeDate(endDate);
-        hosRec.setVehicleInternalID(hosRecord.getVehicleID());
+        hosRec.setVehicleID(hosRecord.getVehicleID());
+        hosRec.setEdited(hosRecord.getEdited() == null ? false : hosRecord.getEdited());
+        hosRec.setServiceID(hosRecord.getServiceID());
+        hosRec.setTrailerID(hosRecord.getTrailerID());
         hosRec.setLat(hosRecord.getLat() == null || hosRecord.getLat() == 0f ? null : new Double(hosRecord.getLat()));
         hosRec.setLng(hosRecord.getLng() == null || hosRecord.getLng() == 0f ? null : new Double(hosRecord.getLng()));
         return hosRec;
@@ -108,14 +112,13 @@ public class HOSUtil {
         HOSRec leastRecent = null;
         for (HOSRecord hosRecord : hosRecList)
         {
-            if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()))
+            if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()) || hosRecord.getLogTime().after(endDate))
                 continue;
             long totalRealMinutes = DateUtil.deltaMinutes(hosRecord.getLogTime(), endDate);
             HOSRec hosRec = HOSUtil.mapHOSRecord(hosRecord, totalRealMinutes, endDate, isDriverDOT); 
             endDate = hosRecord.getLogTime();
             
             recList.add(hosRec);
-//System.out.println(hosRec.getStatus().getName() + " " + hosRec.getTotalRealMinutes() + " " + hosRec.getLogTimeDate());            
             leastRecent = hosRec;
         }
         // pad with a 3 day off duty record

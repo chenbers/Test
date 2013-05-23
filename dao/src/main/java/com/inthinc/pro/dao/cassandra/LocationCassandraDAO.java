@@ -2,14 +2,7 @@ package com.inthinc.pro.dao.cassandra;
 
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.Composite;
@@ -573,7 +566,16 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                     routeList.addAll(fetchRouteForTrip(assetID, (int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()), isDriver));
                 }    
                 routeList.add(endLoc);
-                
+
+                //attempt to remove any points from the route that are near 0,0
+                Iterator<LatLng> iter = routeList.iterator();
+                while(iter.hasNext()){
+                    LatLng latLng = iter.next();
+                    if (Math.floor(Math.abs(latLng.getLatitude())) + Math.floor(Math.abs(latLng.getLongitude())) == 0) {
+                        iter.remove();
+                    }
+                }
+
                 trip.setRoute(routeList);
                 trip.setFullRouteLoaded(includeRoute);
                 
@@ -943,7 +945,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
             Map<String, Object> fieldMap = parser.parseNote(column.getValue());
             Long startTS = ((Integer)fieldMap.get(Attrib.NOTETIME.getFieldName())) * 1000L;
             trip.setStartTime(new Date(startTS));
-            trip.setStartLng(((Number) fieldMap.get(Attrib.MAXLATITUDE.getFieldName())).doubleValue());
+            trip.setStartLat(((Number) fieldMap.get(Attrib.MAXLATITUDE.getFieldName())).doubleValue());
             trip.setStartLng(((Number) fieldMap.get(Attrib.MAXLONGITUDE.getFieldName())).doubleValue());
             trip.setMileage(((Number) fieldMap.get(Attrib.NOTEODOMETER.getFieldName())).intValue());
             trip.setVehicleID(vehicleID);

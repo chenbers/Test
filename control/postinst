@@ -71,7 +71,6 @@ then
     echo -n "Stopping service ${MY_USER} :"
     service ${MY_USER} stop
     while service ${MY_USER} status 2&>1 > /dev/null; do echo -n "."; sleep 1; done
-
     for WAR in ${WARS}
     do
         if [ -d "${TOMCAT_WEBAPPS_DIR}/${WAR}" ] && [ -f "${TOMCAT_WEBAPPS_DIR}/${WAR}.war" ]
@@ -86,7 +85,22 @@ then
     done
 service ${MY_USER} start
 else
-    echo "${MY_USER} doesn't seem to be installed as a service, you will need to manually start it"
+    echo "${MY_USER} doesn't seem to be installed as a service, attempting to manually restart it"
+    su ${MY_USER} -c "source ${MY_USER_HOME}/.bashrc; ${MY_USER_HOME}/bin/shutdown.sh"
+    sleep 5
+    for WAR in ${WARS}
+    do
+        if [ -d "${TOMCAT_WEBAPPS_DIR}/${WAR}" ] && [ -f "${TOMCAT_WEBAPPS_DIR}/${WAR}.war" ]
+        then
+            /bin/rm -Rf ${TOMCAT_WEBAPPS_DIR}/${WAR}
+        fi
+        if [ -f "${TOMCAT_WEBAPPS_DIR}/${WAR}.war" ]
+        then
+            chown ${MY_USER}:${MY_GROUP_USER} ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
+            chmod u+rw,g+r,o-rwx ${TOMCAT_WEBAPPS_DIR}/${WAR}.war
+        fi
+    done
+    su ${MY_USER} -c "source ${MY_USER_HOME}/.bashrc; ${MY_USER_HOME}/bin/startup.sh"
 fi
 
 if [ -f "/etc/nginx/sites-available/tiwipro" ] && [ ! -L "/etc/nginx/sites-enabled/tiwipro" ]
