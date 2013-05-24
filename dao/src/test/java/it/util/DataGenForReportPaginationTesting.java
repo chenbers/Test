@@ -31,7 +31,7 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
 	public Integer numDays;
 	
     public static Integer NUM_EVENT_DAYS = 7;
-    public static Integer NUM_DRIVERS_VEHICLES_DEVICES = 40;//100;
+    public static Integer NUM_DRIVERS_VEHICLES_DEVICES = 15;//40;
     
     
     @Override
