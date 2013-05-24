@@ -173,8 +173,8 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
             hosViolationsDetail.setGroupName(getFullGroupName(groupHierarchy, driver.getGroupID()));
             hosViolationsDetail.setGroupID(driver.getGroupID());
             hosViolationsDetail.setNotificationTime(violationData.getHosViolationRec().getLogTimeDate());
-            hosViolationsDetail.setVehicleId(violationData.getHosViolationRec().getVehicleID());
-            hosViolationsDetail.setVehicleID(violationData.getHosViolationRec().getVehicleInternalID());
+            hosViolationsDetail.setVehicleName(violationData.getHosViolationRec().getVehicleName());
+            hosViolationsDetail.setVehicleID(getVehicleID(violationData.getHosViolationRec().getVehicleID()));
             hosViolationsDetail.setRuleType(violationData.getHosViolationRec().getRuleType());
             hosViolationsDetail.setTimeStr(displayDateTimeFormatter.print(new DateTime(violationData.getHosViolationRec().getLogTimeDate(), DateTimeZone.forTimeZone(violationData.getHosViolationRec().getLogTimeZone()))));
             hosViolationsDetail.setViolationsList(violationList);
@@ -182,6 +182,24 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
             
         }
     }
+    
+    private Integer getVehicleID(Object id) {
+        if (id == null)
+            return null;
+        
+        String idString = id.toString().trim();
+        if (idString.isEmpty() || idString.equals("0"))
+            return null;
+        
+        try {
+            return Integer.valueOf(idString);
+        }
+        catch (NumberFormatException ex) {
+            return null;
+        }
+        
+    }
+
     
     protected boolean includeViolation(RuleViolationTypes type, Long minutes)
     {

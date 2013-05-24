@@ -12,7 +12,7 @@
 	<field name="groupName" class="java.lang.String"/>
 	<field name="employeeId" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
-	<field name="vehicleId" class="java.lang.String"/>
+	<field name="vehicleName" class="java.lang.String"/>
 	<field name="ruleType" class="com.inthinc.hos.model.RuleSetType"/>
 	<field name="timeStr" class="java.lang.String"/>
 	<field name="violationsHeader_0" class="java.lang.String"/>
@@ -226,7 +226,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleId}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-51" mode="Opaque" x="210" y="0" width="35" height="18" isPrintWhenDetailOverflows="true"/>
