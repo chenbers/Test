@@ -475,7 +475,7 @@ public enum DeviceNoteTypes implements BaseEnum  {
      * DVIR Repair Note
      * Attributes [ ATTR_DVIR_MECHANIC_ID_STR, ATTR_DVIR_INSPECTOR_ID_STR, ATTR_DVIR_SIGNOFF_ID_STR, ATTR_DVIR_COMMENTS ]
      */
-    SAT_EVENT_DVIR_REPAIR(232, EventAttr.ATTR_DVIR_MECHANIC_ID_STR, EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, EventAttr.ATTR_DVIR_COMMENTS),
+    SAT_EVENT_DVIR_REPAIR(232, EventAttr.ATTR_DVIR_MECHANIC_ID_STR, EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, EventAttr.ATTR_DVIR_COMMENTS, EventAttr.ATTR_DVIR_FORM_ID, EventAttr.ATTR_DVIR_SUBMISSION_TIME),
     
     // new notifications without header information - not really a real notification.
     // used primarily for background communication

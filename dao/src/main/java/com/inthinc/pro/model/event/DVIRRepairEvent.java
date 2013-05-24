@@ -15,7 +15,9 @@ public class DVIRRepairEvent extends Event {
     /*ATTR_DVIR_MECHANIC_ID_STR(24598, 10, false), // string 10         fixed length,              \0 filled
     ATTR_DVIR_INSPECTOR_ID_STR(24599, 10, true), // string 10 max, variable length,              \0 terminated
     ATTR_DVIR_SIGNOFF_ID_STR(24600, 10, true),   // string 10 max, variable length,              \0 terminated
-    ATTR_DVIR_COMMENTS(24601, 60, true), */
+    ATTR_DVIR_COMMENTS(24601, 60, true), 
+    ATTR_DVIR_FORM_ID(32860),
+    ATTR_DVIR_SUBMISSION_TIME(32861), */
     
     @EventAttrID(name="ATTR_DVIR_MECHANIC_ID_STR")
     private String mechanicID;
@@ -25,6 +27,10 @@ public class DVIRRepairEvent extends Event {
     private String signOffID;
     @EventAttrID(name="ATTR_DVIR_COMMENTS")
     private String comments;
+    @EventAttrID(name="ATTR_DVIR_FORM_ID")
+    private String formID;
+    @EventAttrID(name="ATTR_DVIR_SUBMISSION_TIME")
+    private String submissionTime;
     
     private static EventAttr[] eventAttrList = {
         EventAttr.ATTR_DVIR_MECHANIC_ID_STR,
@@ -42,21 +48,25 @@ public class DVIRRepairEvent extends Event {
         super();
     }
     
-    public DVIRRepairEvent(String mechanicID, String inspectorID, String signOffID, String comments){
+    public DVIRRepairEvent(String mechanicID, String inspectorID, String signOffID, String comments, String formID, String submissionTime){
         super();
         this.mechanicID = mechanicID;
         this.inspectorID = inspectorID;
         this.signOffID = signOffID;
         this.comments = comments;
+        this.formID = formID;
+        this.submissionTime = submissionTime;
     }
     
     public DVIRRepairEvent(Long noteID, Integer vehicleID, NoteType type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
-                    String mechanicID, String inspectorID, String signOffID, String comments){
+                    String mechanicID, String inspectorID, String signOffID, String comments, String formID, String submissionTime){
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
         this.mechanicID = mechanicID;
         this.inspectorID = inspectorID;
         this.signOffID = signOffID;
         this.comments = comments;
+        this.formID = formID;
+        this.submissionTime = submissionTime;
     }
 
     public String getMechanicID() {
@@ -90,7 +100,23 @@ public class DVIRRepairEvent extends Event {
     public void setComments(String comments) {
         this.comments = comments;
     }
-    
+     
+    public String getFormID() {
+        return formID;
+    }
+
+    public void setFormID(String formID) {
+        this.formID = formID;
+    }
+
+    public String getSubmissionTime() {
+        return submissionTime;
+    }
+
+    public void setSubmissionTime(String submissionTime) {
+        this.submissionTime = submissionTime;
+    }
+
     @Override
     public boolean isValidEvent() {
         boolean isValidMechanicID = mechanicID != null && mechanicID.length() > 0;

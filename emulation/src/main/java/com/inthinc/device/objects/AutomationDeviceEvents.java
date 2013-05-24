@@ -1360,6 +1360,8 @@ public class AutomationDeviceEvents {
             note.addAttr(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, "INS_Test_1");
             note.addAttr(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, "SGN_Test_1");
             note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test");
+            note.addAttr(EventAttr.ATTR_DVIR_FORM_ID, 1);
+            note.addAttr(EventAttr.ATTR_DVIR_SUBMISSION_TIME, 1369413323); // GMT: Fri, 24 May 2013 16:35:23 GMT
             
             List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
             notes.add(note);

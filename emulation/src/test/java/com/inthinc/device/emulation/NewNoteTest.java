@@ -242,12 +242,12 @@ public class NewNoteTest {
         String mcmID = mcmIDOnDev;
 */        
         
-        NewNoteTest test = new NewNoteTest(AutoSilos.DEV);
+        NewNoteTest test = new NewNoteTest(AutoSilos.MY);
 //        test.testInstallNote();
         test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
         
         /* DVIR Repair Note Tests */
-        test.testDVIRRepairNote_WS850(mcmIDOnDEV_WS850, imeiOnDEV_WS850);
+        // test.testDVIRRepairNote_WS850(mcmIDOnDEV_WS850, imeiOnDEV_WS850);
         
   /*      
         String imei = imeiOnQA;
