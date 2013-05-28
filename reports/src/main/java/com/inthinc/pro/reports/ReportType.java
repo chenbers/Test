@@ -95,7 +95,9 @@ public enum ReportType
     DVIR_POSTTRIP("Driver Vehicle Inspection Reports - PostTrip","driverVehiclePostTripInspectionReport.jrxml","driverVehiclePostTripInspectionReport.jrxml","forms"),
     
     //DVIR
-    DVIR_VIOLATION("Driver Vehicle Inspection Reports - Violations","driverVehicleViolationInspectionReport.jrxml","driverVehicleViolationInspectionReport.jrxml","dvir");
+    DVIR_VIOLATION("Driver Vehicle Inspection Reports - Violations","driverVehicleViolationInspectionReport.jrxml","driverVehicleViolationInspectionReport.jrxml","dvir"),
+    DVIR_REPAIR("Driver Vehicle Inspeciton Reports - Inspection Repair Complete", "driverVehicleInspectionRepairComplete.jrxml","driverVehicleInspectionRepairComplete.jrxml","dvir"),
+    DVIR_REPAIR_DETAIL("Driver Vehicle Inspeciton Reports - Inspection Repair Complete With Details", "driverVehicleInspectionRepairCompleteDetailed.jrxml","driverVehicleInspectionRepairCompleteDetailed.jrxml","dvir");
     
     private String prettyTemplate;
     private String rawTemplate;

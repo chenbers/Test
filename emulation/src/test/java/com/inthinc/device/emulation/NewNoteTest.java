@@ -3,9 +3,7 @@ package com.inthinc.device.emulation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -15,6 +13,7 @@ import com.inthinc.device.emulation.enums.DeviceEnums.HOSFlags;
 import com.inthinc.device.emulation.enums.DeviceNoteTypes;
 import com.inthinc.device.emulation.enums.EventAttr;
 import com.inthinc.device.emulation.notes.SatelliteEvent_t;
+import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.emulation.utils.GeoPoint.Heading;
 import com.inthinc.device.emulation.utils.MCMProxyObject;
@@ -139,6 +138,34 @@ public class NewNoteTest {
             e.printStackTrace();
         }
     }
+	
+	public void testDVIRRepairNote_WS850(String mcmID, String imei){
+	    DeviceNoteTypes type = DeviceNoteTypes.SAT_EVENT_DVIR_REPAIR;
+	    DeviceState state = new DeviceState(imei, ProductType.WAYSMART_850);
+	    GeoPoint location = new GeoPoint();
+	    
+	    SatelliteEvent_t note = new SatelliteEvent_t(type, state, location);
+	    Integer submissionTimeInMillis = 1000000;
+	    
+
+	    note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test");
+	    note.addAttr(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, "INS_Test_1");
+	    note.addAttr(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, "SGN_Test_1");
+	    note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test");
+	    note.addAttr(EventAttr.ATTR_DVIR_FORM_ID, 1);
+	    note.addAttr(EventAttr.ATTR_DVIR_SUBMISSION_TIME, submissionTimeInMillis);
+	    
+	    List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        
+        try {
+            proxy.sendHttpNote(mcmID, Direction.sat, notes, imei); //Direction.wifi
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
 
     public void testNote(String mcmID, String imei, DeviceNoteTypes type) {
         SatelliteEvent_t note = new SatelliteEvent_t(type,
@@ -187,6 +214,13 @@ public class NewNoteTest {
         String imeiOnQA = "30099FKEWS99999";
         String mcmIDOnQA = "MCMFAKEWS";
         
+        String imeiOnQA_WS850 = "MCMFAKE01";
+        String mcmIDOnQA_WS850 = "MCMFAKE01";
+        
+        // Assigned to Vehicle MIKE REINICKE VID
+        String imeiOnDEV_WS850 = "imei";
+        String mcmIDOnDEV_WS850 = "mcmid";
+        
         String imeiOnMY = "30023FKE1DE7570";
         String mcmIDOnMY = "F1DE7570";
 
@@ -204,8 +238,11 @@ public class NewNoteTest {
         
         NewNoteTest test = new NewNoteTest(AutoSilos.MY);
 //        test.testInstallNote();
-        
         test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
+        
+        /* DVIR Repair Note Tests */
+        // test.testDVIRRepairNote_WS850(mcmIDOnDEV_WS850, imeiOnDEV_WS850);
+        
   /*      
         String imei = imeiOnQA;
         String mcmID = mcmIDOnQA;

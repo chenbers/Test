@@ -278,7 +278,10 @@ public enum Attrib {
 	COMPANYID(32830, AttribParserType.INTEGER),
 	EVENTCODEINT(32831, AttribParserType.INTEGER),
     RHA_ENDTIME(32858, AttribParserType.INTEGER),
-
+    
+    ATTR_DVIR_FORM_ID(32863,AttribParserType.INTEGER),
+    ATTR_DVIR_SUBMISSION_TIME(32864,AttribParserType.INTEGER),
+    
 	DEVICEID(32900, AttribParserType.INTEGER, "deviceid"),
 	VEHICLEID(32901, AttribParserType.INTEGER, "vehicleid"),
 	ACCOUNTID(32902, AttribParserType.INTEGER),
