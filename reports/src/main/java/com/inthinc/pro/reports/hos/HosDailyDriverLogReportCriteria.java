@@ -139,7 +139,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
 
-        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 7); 
         
         for (Driver driver : reportDriverList) {
             if (account == null) {
@@ -163,7 +163,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Account account = fetchAccount(driver.getPerson().getAcctID());
         initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
         Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
-        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1);
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 7);
         
         initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
     }
@@ -213,7 +213,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     		Address terminalAddress) {
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
         List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
-        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
+        initCriteriaList(interval, expandedInterval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
     }
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList){
@@ -268,7 +268,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         reportCriteria.addParameter("REPORT_DATE_TIME", sdf.format(date));
     }
 
-    void initCriteriaList(Interval interval, List<HOSRecord> hosRecordList, 
+    void initCriteriaList(Interval interval, Interval expandedInterval, List<HOSRecord> hosRecordList, 
     		List<HOSVehicleDayData> hosVehicleDayData, 
     		List<HOSOccupantLog> hosOccupantLogList, 
     		Driver driver, Account account, 
@@ -278,9 +278,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         
         boolean initVehicleDayData = (hosVehicleDayData == null);
         
-        Collections.sort(hosRecordList);
 
-        LocalDate localEndDate = new LocalDate(interval.getEnd());
+        LocalDate localEndDate = new LocalDate(expandedInterval.getEnd());
         Date endDate = localEndDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone())).plusDays(1).minusSeconds(1).toDate();
         RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
         Date currentTime = getCurrentDateTime();
@@ -340,7 +339,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals(), isDSTStart, isDSTEnd));
  
             }
-            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone, new DateTime(currentTime), interval.getEnd()));
+            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone, new DateTime(currentTime), expandedInterval.getEnd()));
             dayData.setRecapType(ddlUtil.getRecapType(dayData.getRecap()));
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList, hosRecapList, ruleSetType, dayData.getRecap()));
 

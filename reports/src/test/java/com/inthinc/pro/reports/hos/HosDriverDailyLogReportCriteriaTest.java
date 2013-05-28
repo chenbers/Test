@@ -331,7 +331,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 //        int testCaseCnt = 1; {
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
             // check the data
@@ -423,7 +423,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         int dayIdx = 3;
         DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
         HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-        hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+        hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
         // check the data
@@ -689,7 +689,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 
         Interval interval = new Interval(day.toDateTime(DateTimeZone.getDefault()), day2.toDateTime(DateTimeZone.getDefault()));
 
-        ddlCriteria.initCriteriaList(interval, hosRecordList, 
+        ddlCriteria.initCriteriaList(interval, interval, hosRecordList, 
                 null, 
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
         
@@ -722,7 +722,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 
         interval = new Interval(day.toDateTime(DateTimeZone.getDefault()).minusDays(1), day2.toDateTime(DateTimeZone.getDefault()));
         
-        ddlCriteria.initCriteriaList(interval, hosRecordList, 
+        ddlCriteria.initCriteriaList(interval, interval, hosRecordList, 
                 null, 
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
         
@@ -848,7 +848,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     public void defectDE8573Test() {
             DDLDataSet ddlTestData = new DDLDataSet("pezinaFull_04012013_04042013", DDLDataSet.INTHINC_DB_CSV);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
             // check the data
@@ -863,7 +863,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     public void defectDE8576Test() {
             DDLDataSet ddlTestData = new DDLDataSet("lohrFull_03132013_03252013", DDLDataSet.INTHINC_DB_CSV);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
             // check the data
@@ -899,7 +899,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             DDLDataSet ddlTestData = new DDLDataSet(xmlTestCase, DDLDataSet.TEST_CASE_XML);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
             hosDailyDriverLogReportCriteria.setCurrentDateTime(ddlTestData.currentDateTime);
-            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
+            hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
             // check the data
