@@ -280,7 +280,8 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         
         Collections.sort(hosRecordList);
 
-        Date endDate = interval.getEnd().toDate();
+        LocalDate localEndDate = new LocalDate(interval.getEnd());
+        Date endDate = localEndDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone())).plusDays(1).minusSeconds(1).toDate();
         RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
         Date currentTime = getCurrentDateTime();
 

@@ -19,7 +19,7 @@ public class CustomMapJDBCDAOTest extends BaseJDBCTest {
     
     
     
-    private static final Integer TESTING_ACCOUNT_ID = 5620;
+    private static final Integer TESTING_ACCOUNT_ID = 33;
     
 
 // run this if the test account gets removed
