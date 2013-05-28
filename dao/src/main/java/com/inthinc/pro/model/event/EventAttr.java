@@ -523,8 +523,8 @@ public enum EventAttr {
     NOTIFICATION_ENUM(32857),
     
     //DVIR
-    ATTR_DVIR_FORM_ID(32860),
-    ATTR_DVIR_SUBMISSION_TIME(32861), 
+    ATTR_DVIR_FORM_ID(32863),
+    ATTR_DVIR_SUBMISSION_TIME(32864), 
 
 		    
 ////////////////////////////////////////////////////////////////////////////////////

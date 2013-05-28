@@ -16,8 +16,8 @@ public class DVIRRepairEvent extends Event {
     ATTR_DVIR_INSPECTOR_ID_STR(24599, 10, true), // string 10 max, variable length,              \0 terminated
     ATTR_DVIR_SIGNOFF_ID_STR(24600, 10, true),   // string 10 max, variable length,              \0 terminated
     ATTR_DVIR_COMMENTS(24601, 60, true), 
-    ATTR_DVIR_FORM_ID(32860),
-    ATTR_DVIR_SUBMISSION_TIME(32861), */
+    ATTR_DVIR_FORM_ID(32863),
+    ATTR_DVIR_SUBMISSION_TIME(32864), */
     
     @EventAttrID(name="ATTR_DVIR_MECHANIC_ID_STR")
     private String mechanicID;

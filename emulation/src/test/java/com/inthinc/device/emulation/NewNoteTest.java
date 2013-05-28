@@ -3,9 +3,7 @@ package com.inthinc.device.emulation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -147,7 +145,7 @@ public class NewNoteTest {
 	    GeoPoint location = new GeoPoint();
 	    
 	    SatelliteEvent_t note = new SatelliteEvent_t(type, state, location);
-	    Long submissionTimeInMillis = 1000000L;
+	    Integer submissionTimeInMillis = 1000000;
 	    
 
 	    note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test");
@@ -218,10 +216,6 @@ public class NewNoteTest {
         
         String imeiOnQA_WS850 = "MCMFAKE01";
         String mcmIDOnQA_WS850 = "MCMFAKE01";
-        
-        // Assigned to Vehicle FAKE8501
-//        String imeiOnDEV_WS850 = "IVFAKE000000000001";
-//        String mcmIDOnDEV_WS850 = "IVFAKE000000000001";
         
         // Assigned to Vehicle MIKE REINICKE VID
         String imeiOnDEV_WS850 = "imei";
