@@ -1,10 +1,7 @@
 package com.inthinc.device.emulation;
 
-import java.util.Calendar;
-
 import com.inthinc.device.devices.WaysmartDevice;
 import com.inthinc.device.devices.WaysmartDevice.Direction;
-import com.inthinc.device.emulation.enums.DeviceEnums.HOSState;
 import com.inthinc.device.emulation.utils.DeviceState;
 import com.inthinc.device.emulation.utils.GeoPoint;
 import com.inthinc.device.objects.AutomationDeviceEvents;
@@ -16,12 +13,12 @@ public class TripFaker {
 	
 	public static void main(String args[]) {
 		
-		//TiwiProDevice tiwi = new TiwiProDevice("151566615156661", AutoSilos.DEV);
+//		TiwiProDevice tiwi = new TiwiProDevice("151566615156661", AutoSilos.DEV);  //WeissTiwiPro
         //TiwiProDevice tiwi = new TiwiProDevice("120275615159901", AutoSilos.DEV);
         //TiwiProDevice tiwi = new TiwiProDevice("999999000109751", AutoSilos.QA);
         //NewNoteTest noteTest = new NewNoteTest(AutoSilos.QA);
         //noteTest.testDVIRNote("MCM821853", "300034012559130");
-        WaysmartDevice tiwi = new WaysmartDevice("REDFLAGDVIRTEST", "REDFLAG11", AutoSilos.DEV, Direction.gprs);
+        WaysmartDevice tiwi = new WaysmartDevice("555550209999999", "555550201", AutoSilos.DEV, Direction.gprs);
         tiwi.dump_settings();
         DeviceState state = tiwi.getState();
         AutomationCalendar initialTime = new AutomationCalendar();
@@ -34,7 +31,6 @@ public class TripFaker {
         tiwi.getState().setLowIdle(300).setHighIdle(300);
         //AutomationDeviceEvents.idling(tiwi);
         tiwi.getState().setSpeedLimit(5);
-        
         //tiwi.increment_time(20);
         //AutomationDeviceEvents.seatbelt(tiwi);
         tiwi.update_location(new GeoPoint(33.0104, -117.111), 15);
