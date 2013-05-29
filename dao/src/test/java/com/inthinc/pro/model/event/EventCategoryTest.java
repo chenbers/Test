@@ -20,7 +20,8 @@ public class EventCategoryTest {
             3,
             4,
             4,
-            4
+            5,
+            24
     };
     
     @Test
@@ -28,6 +29,7 @@ public class EventCategoryTest {
         int i = 0;
         for (EventCategory cat : EventCategory.values()) {
             List<NoteType> noteTypeList = cat.getNoteTypesInCategory();
+            //System.out.println("category: " + cat +" Category count index: "  + i);
             assertEquals(cat + "", expectedNoteInCatCounts[i++].intValue(), noteTypeList.size());
         }
     }
@@ -51,7 +53,7 @@ public class EventCategoryTest {
 
     Integer[] expectedTypeInCatCounts = {
             4,  //  DRIVER
-            4,  //  DVIR
+            5,  //  DVIR
     		4,	//  EMERGENCY
     		3,	//  HOS
     		2,	//  NONE
