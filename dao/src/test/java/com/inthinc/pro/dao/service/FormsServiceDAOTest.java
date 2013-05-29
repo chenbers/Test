@@ -28,6 +28,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,6 +42,9 @@ import com.inthinc.pro.model.form.TriggerType;
 
 public class FormsServiceDAOTest {
 
+    private static final String SIMPLEDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern(SIMPLEDATEFORMAT);
+    
     protected HttpClient httpClient;
 
     @Before
@@ -258,5 +264,30 @@ public class FormsServiceDAOTest {
         List<SubmissionData> formSubmissions = formsDAO.getSubmissions(TriggerType.PRE_TRIP, dateTime.toDate(), new Date(), 11546);
         assertTrue(formSubmissions != null);
        
+    }
+    
+    @Ignore
+    @Test
+    public void testGetSingleSubmission(){
+        FormsServiceDAO formsDAO = new FormsServiceDAO();
+        formsDAO.setProtocol("http");
+        formsDAO.setHost("dev.tiwipro.com");
+//        formsDAO.setHost("localhost");
+        formsDAO.setPort(8080);
+        formsDAO.setUsername("jhoward");
+        formsDAO.setPassword("password");
+        formsDAO.setPath("forms_service");
+        DateTime dateTime = new DateTime();
+        dateTime = dateTime.minusYears(1);
+        
+        Integer vehicleID = 36812;
+        Integer formDefinitionID = 5113;
+        // 2012-11-09 00:15:00
+        Date submissionDate = DATE_TIME_FORMATTER.parseDateTime("2012-11-09 00:15:00").toDate();
+        Integer groupID = 11546;
+        
+        SubmissionData formSubmission = formsDAO.getSingleSubmission(vehicleID, formDefinitionID, submissionDate, groupID);
+        assertTrue(formSubmission != null);
+        
     }
 }

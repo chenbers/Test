@@ -16,7 +16,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.HOSRec;
-import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
@@ -80,8 +79,8 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
                     List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
                     Collections.sort(hosRecordList);
 
-                    driverHOSRecordMap.put(driver, getFilteredList(hosRecordList, getHOSStatusFilterList()));
-                }
+                    driverHOSRecordMap.put(driver, hosRecordList);
+                  }
             }
         }
         
@@ -89,31 +88,6 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
 
     }
 
-    private List<HOSRecord> getFilteredList(List<HOSRecord> hosRecords, List<HOSStatus> hosStatusFilterList) {
-        List<HOSRecord> filteredList = new ArrayList<HOSRecord>();
-        for (HOSRecord hosRecord : hosRecords)
-            if (hosStatusFilterList.contains(hosRecord.getStatus()))
-                    filteredList.add(hosRecord);
-        return filteredList;
-    }
-
-    // TODO: SHOULD THIS FILTERING BE HAPPENING HERE?  I believe it is also in the hos code.
-    protected List<HOSStatus> getHOSStatusFilterList() {
-        List<HOSStatus> statusFilterList = new ArrayList<HOSStatus>();
-        statusFilterList.add(HOSStatus.OFF_DUTY);
-        statusFilterList.add(HOSStatus.SLEEPER); 
-        statusFilterList.add(HOSStatus.DRIVING);
-        statusFilterList.add(HOSStatus.ON_DUTY);
-        statusFilterList.add(HOSStatus.OFF_DUTY_AT_WELL); 
-        statusFilterList.add(HOSStatus.ON_DUTY_OCCUPANT); 
-        statusFilterList.add(HOSStatus.OFF_DUTY_OCCUPANT);
-        statusFilterList.add(HOSStatus.HOS_DERERRAL);
-        statusFilterList.add(HOSStatus.HOS_PERSONALTIME);
-        statusFilterList.add(HOSStatus.TRAVELTIME_OCCUPANT);
-        statusFilterList.add(HOSStatus.HOS_PROP_CARRY_14HR);
-        statusFilterList.add(HOSStatus.HOS_ALTERNATE_SLEEPING);
-        return statusFilterList;
-    }
     void initDataSet(Interval interval, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         List<ViolationsDetailRaw> violationDetailList = new ArrayList<ViolationsDetailRaw>();

@@ -162,6 +162,37 @@ public class FormsServiceDAO extends GenericServiceDAO<Integer, Integer> impleme
         }
         return submissions;
     }
+    
+    @Override
+    public SubmissionData getSingleSubmission(Integer vehicleID, Integer formDefinitionID, Date submissionDate, Integer groupID) {
+        // REST method signature:
+        // "singleSubmission/{vehicleID}/{formDefinitionID}/{epochSubmissionDateInMilliSeconds}/{groupID}"        
+        String urlString = formatRequest() + "submissions" + "/singleSubmission/" + vehicleID + "/" + formDefinitionID + "/" + submissionDate.getTime() + "/" + groupID;
+        System.out.println(urlString);
+        
+        HttpMethod getSubmission = new GetMethod(urlString);
+        System.out.println(getSubmission.getPath());
+        getSubmission.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
+        HttpClient client = setupClient();
+        addCredentials(client);
+        SubmissionData submissionData = null;
+        try {
+            int statusCode = client.executeMethod(getSubmission);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream body = getSubmission.getResponseBodyAsStream();
+                ObjectMapper mapper = new ObjectMapper();
+                submissionData = mapper.readValue(body, SubmissionData.class);
+            }
+        } catch (HttpException he) {
+
+        } catch (IOException ioe) {
+
+        } finally {
+            getSubmission.releaseConnection();
+        }
+        return submissionData;
+    }
+    
 
     private HttpClient setupClient() {
         HttpClientParams params = new HttpClientParams();

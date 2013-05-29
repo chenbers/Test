@@ -44,6 +44,7 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.VersionEvent;
@@ -627,6 +628,9 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
                 case ALERT_TYPE_DVIR_NO_POST_TRIP_INSPECTION:
                     addAddress(event);
                     break;
+                case ALERT_TYPE_DVIR_REPAIR:
+                    addDVIRRepairAttributes(event);
+                    break;
                 default:
                     addAddress(event);
             }
@@ -663,6 +667,22 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), measurementType);
             parameterList.add(String.valueOf(speedLimit));
         }
+        
+        private void addDVIRRepairAttributes(Event event){
+            String mechanicID = event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR.toString()));
+            String inspectorID = event.getAttrMap().get(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR.toString()));
+            String signOffID = event.getAttrMap().get(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR.toString()));
+            String comments = event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_COMMENTS.toString()));
+            String formDefID = event.getAttrMap().get(EventAttr.ATTR_DVIR_FORM_ID.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_FORM_ID.toString()));
+            String submissionTime = event.getAttrMap().get(EventAttr.ATTR_DVIR_SUBMISSION_TIME.toString()) == null ? "" : String.valueOf(event.getAttrMap().get(EventAttr.ATTR_DVIR_SUBMISSION_TIME.toString()));
+            
+            parameterList.add(mechanicID);
+            parameterList.add(inspectorID);
+            parameterList.add(signOffID);
+            parameterList.add(comments);
+            parameterList.add(formDefID);
+            parameterList.add(submissionTime)
+;        }
 
         public List<String> getParameterList() {
             return parameterList;

@@ -46,6 +46,34 @@ public class HanSoloTrip extends Thread{
         hanSolosFirstTrip();
     }
     
+    public void dvirRepairTestTrip() {
+        String imeiOnQA_WS850 = "MCMFAKE01";
+        String mcmIDOnQA_WS850 = "MCMFAKE01";
+        
+        waySmart = new WaysmartDevice(imeiOnQA_WS850, mcmIDOnQA_WS850, AutoSilos.QA, Direction.gprs);
+        waySmart.set_time(new AutomationCalendar());
+        
+        String start = "980 N 1050 E, Pleasant Grove, UT 84062";
+        String mid = "815 N 1020 E, Pleasant Grove, UT 84062";
+        String stop = "1002 N 1020 E, Pleasant Grove, UT 84062";
+        String mid2 = "1100 N 1100 E, Pleasant Grove, UT 84062";
+        
+        TripDriver driver = new TripDriver(waySmart);
+        
+        driver.addToTrip(start, mid);
+        driver.addToTrip(mid, stop);
+        driver.addToTrip(stop, start);
+        driver.addToTrip(start, mid2);
+        
+        DeviceState state = new DeviceState(imeiOnQA_WS850, ProductType.WAYSMART_850);
+        GeoPoint location = new GeoPoint();
+        
+        //TODO: place holder
+        driver.addEvent(30, AutomationDeviceEvents.dvirRepairEvent(state, location));
+
+        driver.start();
+    }
+    
     public void rfSwitchTestTrip() {
         String imei = "FAKEIMEIDEVICE"; 
         AutoSilos address=AutoSilos.QA; 
@@ -264,6 +292,10 @@ public class HanSoloTrip extends Thread{
         AutoSilos address;
         String imei = "FAKEIMEIDEVICE"; 
         address=AutoSilos.QA;
+        
+        /* Dvir Trip Test */
+        //trip.dvirRepairTestTrip();
+        
         
 //        String imei = "DEVICEDOESNTEXIST";
 

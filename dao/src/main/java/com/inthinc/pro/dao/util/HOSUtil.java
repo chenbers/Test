@@ -109,7 +109,6 @@ public class HOSUtil {
     public static List<HOSRec> getRecListFromLogList(List<HOSRecord> hosRecList, Date endDate, boolean isDriverDOT)
     {
         List<HOSRec> recList = new ArrayList<HOSRec>();
-        HOSRec leastRecent = null;
         for (HOSRecord hosRecord : hosRecList)
         {
             if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()) || hosRecord.getLogTime().after(endDate))
@@ -119,20 +118,7 @@ public class HOSUtil {
             endDate = hosRecord.getLogTime();
             
             recList.add(hosRec);
-            leastRecent = hosRec;
         }
-        // pad with a 3 day off duty record
-// TODO: see if this should actually be in the hos jar        
-        if (leastRecent == null) {
-            recList.add(new HOSRec("", HOSStatus.OFF_DUTY, 1440*3, new Date(endDate.getTime()-MS_IN_DAY*3l), TimeZone.getDefault(),
-                    RuleSetType.NON_DOT, "", true, false));
-        }
-        else {
-            HOSRec hosRec = new HOSRec("", HOSStatus.OFF_DUTY, 1440*3, new Date(leastRecent.getLogTimeDate().getTime()-MS_IN_DAY*3l), leastRecent.getLogTimeZone(),
-                    leastRecent.getRuleType(), "", leastRecent.isSingleDriver(), leastRecent.isNonDOTDriverDrivingDOTVehicle());
-            recList.add(hosRec);
-//            System.out.println(hosRec.getStatus().getName() + " " + hosRec.getTotalRealMinutes() + " " + hosRec.getLogTimeDate());
-            }
         return recList;
     }
 

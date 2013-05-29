@@ -913,9 +913,13 @@
                                   </td>
                                    </tr>
                                 <tr class="tableEven">
-                                  <td colspan="2" style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                      <h:selectBooleanCheckbox id="postPassedSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_POST_TRIP_PASS']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeDVIRPostTripPassed}" />
+                                  </td>
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox id="inspectionRepairCompleted" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_DVIR_REPAIR']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeDVIRInspectionRepairCompleted}" />
                                   </td>
                                   </tr>
                               </table>
