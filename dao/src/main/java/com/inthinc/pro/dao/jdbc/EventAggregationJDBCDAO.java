@@ -131,8 +131,9 @@ public class EventAggregationJDBCDAO extends SimpleJdbcDaoSupport implements Eve
                                 "INNER JOIN vddlog l ON l.vehicleID = v.vehicleID INNER JOIN device d ON d.deviceID = l.deviceID " +
                                 "INNER JOIN note%s n ON n.deviceID = l.deviceID AND n.vehicleID = v.vehicleID " +
                                 "INNER JOIN groupVehicleFlat gv ON gv.vehicleID = v.vehicleID INNER JOIN groups g ON g.groupID = gv.groupID " +
-                                "INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n JOIN vehicle v ON _n.vehicleID = v.vehicleID WHERE v.status = 1 OR v.status = 2 GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +
-                                "ON groupedNote.maxtime = n.time AND groupedNote.deviceID = l.deviceID AND groupedNote.vehicleID = l.vehicleID " +
+//                                "INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n JOIN vehicle v ON _n.vehicleID = v.vehicleID WHERE v.status = 1 OR v.status = 2 GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +
+								"INNER JOIN (SELECT _n.vehicleID,_n.deviceID,MAX(_n.time) as 'maxTime' FROM note%s _n GROUP BY _n.deviceID,_n.vehicleID) groupedNote " +
+								"ON groupedNote.maxtime = n.time AND groupedNote.deviceID = l.deviceID AND groupedNote.vehicleID = l.vehicleID " +
                                 // "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (SELECT max(l.stop) FROM vehicle _v WHERE _v.vehicleID = v.vehicleID)) " +
                                 "WHERE n.time < :startDate AND (l.stop iS NULL OR l.stop = (select max(stop) from vddlog where vehicleID = v.vehicleID)) " +
                                 "AND g.groupID IN (:groupList)";
