@@ -559,25 +559,19 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
                 
                 LatLng startLoc = new LatLng(trip.getStartLat(), trip.getStartLng());
                 startLoc.setTime(trip.getStartTime());
-                routeList.add(startLoc);
                 LatLng endLoc = new LatLng(trip.getEndLat(), trip.getEndLng());
                 endLoc.setTime(trip.getEndTime());
-                if (includeRoute) {
+
+				if (isValidLocation(startLoc))
+					routeList.add(startLoc);
+                if (includeRoute || !isValidLocation(startLoc) || !isValidLocation(endLoc)) {
                     routeList.addAll(fetchRouteForTrip(assetID, (int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()), isDriver));
                 }    
-                routeList.add(endLoc);
-
-                //attempt to remove any points from the route that are near 0,0
-                Iterator<LatLng> iter = routeList.iterator();
-                while(iter.hasNext()){
-                    LatLng latLng = iter.next();
-                    if (Math.floor(Math.abs(latLng.getLatitude())) + Math.floor(Math.abs(latLng.getLongitude())) == 0) {
-                        iter.remove();
-                    }
-                }
+				if (isValidLocation(endLoc))
+					routeList.add(endLoc);
 
                 trip.setRoute(routeList);
-                trip.setFullRouteLoaded(includeRoute);
+                trip.setFullRouteLoaded(includeRoute || !isValidLocation(startLoc) || !isValidLocation(endLoc));
                 
                 tripList.add(trip);
             }
@@ -688,6 +682,15 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 //            log(fieldMap);
             locationList.add(location);
         }
+
+		//attempt to remove any points from the route that are near 0,0
+		Iterator<LatLng> iter = locationList.iterator();
+		while(iter.hasNext()){
+			LatLng latLng = iter.next();
+			if (!isValidLocation(latLng)) {
+				iter.remove();
+			}
+		}
 
         return locationList;
     }
@@ -1022,4 +1025,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         return intVal / 10000D;
     }
 
+	private boolean isValidLocation(LatLng latLng) {
+		return !(Math.floor(Math.abs(latLng.getLatitude())) + Math.floor(Math.abs(latLng.getLongitude())) == 0);
+	}
 }
