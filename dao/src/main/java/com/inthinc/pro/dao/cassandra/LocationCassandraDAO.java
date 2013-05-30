@@ -680,17 +680,9 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 //            logger.info("Trip LatLng: " + location);
             
 //            log(fieldMap);
-            locationList.add(location);
+			if (isValidLocation(location))
+				locationList.add(location);
         }
-
-		//attempt to remove any points from the route that are near 0,0
-		Iterator<LatLng> iter = locationList.iterator();
-		while(iter.hasNext()){
-			LatLng latLng = iter.next();
-			if (!isValidLocation(latLng)) {
-				iter.remove();
-			}
-		}
 
         return locationList;
     }
