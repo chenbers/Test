@@ -48,12 +48,11 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.security.Role;
 
-@Ignore
 public class FileImporterTest extends BaseSpringTest {
     
     // this must match the account name in importTest/DriverTemplateNoErrors.xls
-    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_6";
-    private static final String OTHER_TEST_ACCOUNT_NAME = "BulkImportTest6A";
+    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_1";
+    private static final String OTHER_TEST_ACCOUNT_NAME = "BulkImportTest1A";
     private static SiloServiceCreator siloServiceCreator;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
@@ -72,7 +71,6 @@ public class FileImporterTest extends BaseSpringTest {
     
     private static void setupAccount(String accountName) {
 
-        
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloServiceCreator.getService());
         
@@ -154,7 +152,6 @@ public class FileImporterTest extends BaseSpringTest {
         String vin = accountName;
         Vehicle vehicle = new Vehicle(0, teamGroup.getGroupID(), Status.ACTIVE, accountName, "MAKE", "MODEL", 2011, "RED", VehicleType.LIGHT, vin, 2000, "ut1111", null);
         vehicleDAO.create(acctID, vehicle);
-
         
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloServiceCreator.getService());
@@ -163,9 +160,10 @@ public class FileImporterTest extends BaseSpringTest {
                 accountName.substring(7));
         device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
         device.setProductVersion(ProductType.TIWIPRO);
+        device.setProductVer(ProductType.TIWIPRO.getVersions()[0]);
         Integer deviceID = deviceDAO.create(acctID, device);
         device.setDeviceID(deviceID);
-
+        
     }
 
     
