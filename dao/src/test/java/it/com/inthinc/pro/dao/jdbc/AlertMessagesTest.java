@@ -73,7 +73,6 @@ import com.inthinc.pro.notegen.NoteGenerator;
 import com.inthinc.pro.notegen.TiwiProNoteSender;
 import com.inthinc.pro.notegen.WSNoteSender;
 
-@Ignore
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
@@ -188,7 +187,6 @@ public class AlertMessagesTest extends BaseJDBCTest{
 	        genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Groups Set"))
 	        	anyAlertsFound = true;
-	        
 	        modZoneAlertPref(DRIVERS, zoneAlert);
             genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Drivers Set"))
@@ -892,7 +890,7 @@ ALERT_TYPE_IGNITION_ON
     }
 
     private AlertMessageBuilder pollForMessagesBuilder(String description) {
-        int secondsToWait = 10;
+        int secondsToWait = 5;
         for (int i = 0; i < secondsToWait; i++) {
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
             if (msgList.size() == 0) {
