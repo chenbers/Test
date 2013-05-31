@@ -166,6 +166,12 @@ public class LocationHessianDAO   implements LocationDAO
     }
 
     @Override
+    public List<Trip> getTripsForDriver(Integer driverID, Date startDate, Date endDate, Boolean includeRoute)
+    {
+		return getTripsForDriver(driverID, startDate, endDate);
+    }
+
+    @Override
     public List<Trip> getTripsForVehicle(Integer vehicleID, Date startDate, Date endDate)
     {
         logger.debug("getTrips() vehicleID = " + vehicleID);

@@ -365,7 +365,7 @@ public class TeamTripsBean extends BaseBean {
 	       List<Event> idles = loadIdles();
 	       List<Event> tampers = loadTampers();
 	       
-		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+		   List<Trip> tripsList = driverDAO.getTrips(driverID, teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), true);
 	       trips = new ArrayList<TeamTrip>();
 	
 	       for (Trip trip : tripsList) {

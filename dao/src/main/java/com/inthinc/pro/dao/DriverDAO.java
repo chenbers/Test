@@ -48,6 +48,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      * @return
      */
     List<Trip> getTrips(Integer driverID, Date startDate, Date enate);
+    List<Trip> getTrips(Integer driverID, Date startDate, Date enate, Boolean includeRoute);
 
     /**
      * Get all driver trips between start and end dates.
@@ -57,6 +58,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      * @return
      */
     List<Trip> getTrips(Integer driverID, Interval interval);
+    List<Trip> getTrips(Integer driverID, Interval interval, Boolean includeRoute);
 
     /**
      * Get driver last trip by DriverID

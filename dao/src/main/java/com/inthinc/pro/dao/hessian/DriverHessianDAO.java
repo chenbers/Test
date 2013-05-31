@@ -125,7 +125,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
             return Collections.emptyList();
         }
 */
-    	return locationDAO.getTripsForDriver(driverID, startDate, endDate);
+    	return locationDAO.getTripsForDriver(driverID, startDate, endDate, false);
         
     }
 
@@ -134,6 +134,17 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         return getTrips(driverID, interval.getStart().toDateTime().toDate(), interval.getEnd().toDateTime().toDate());
     }
 
+    @Override
+    public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate, Boolean includeRoute) {
+    	return locationDAO.getTripsForDriver(driverID, startDate, endDate, includeRoute);
+	}
+
+    @Override
+    public List<Trip> getTrips(Integer driverID, Interval interval, Boolean includeRoute) {
+		return getTrips(driverID, interval.getStart().toDateTime().toDate(), interval.getEnd().toDateTime().toDate(), includeRoute);
+    }
+
+	
     @Override
     public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
         return locationDAO.getLocationsForDriverTrip(driverID, startTime, endTime);

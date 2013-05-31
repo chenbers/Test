@@ -244,6 +244,16 @@ public class TeamStopsReportCriteriaTest extends BaseUnitTest {
         }
 
         @Override
+        public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate, Boolean includeRoute) {
+            return null;
+        }
+
+        @Override
+        public List<Trip> getTrips(Integer driverID, Interval interval, Boolean includeRoute) {
+            return null;
+        }
+
+        @Override
         public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
             return null;
         }

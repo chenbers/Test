@@ -56,6 +56,16 @@ public class DriverDaoStub implements DriverDAO {
         return Collections.emptyList();
     }
 
+	@Override
+	public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate, Boolean includeRoute) {
+        return Collections.emptyList();
+	}
+
+	@Override
+	public List<Trip> getTrips(Integer driverID, Interval interval, Boolean includeRoute) {
+        return Collections.emptyList();
+	}
+	
     @Override
     public List<LatLng> getLocationsForTrip(Integer driverID, Date startTime, Date endTime) {
         return Collections.emptyList();
