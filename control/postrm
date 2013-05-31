@@ -73,7 +73,7 @@ case "$1" in
         remove_group
     ;;
     upgrade)
-        echo "I dunno, maybe clean the run dirs?"
+        echo "Upgrading package."
     ;;
 esac
 
