@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.backing.importer.FileChecker;
@@ -47,6 +48,7 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.security.Role;
 
+@Ignore
 public class FileImporterTest extends BaseSpringTest {
     
     // this must match the account name in importTest/DriverTemplateNoErrors.xls
