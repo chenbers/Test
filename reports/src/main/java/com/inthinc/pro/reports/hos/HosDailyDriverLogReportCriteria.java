@@ -275,6 +275,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     		Address terminalAddress) 
     {
 
+        Collections.sort(hosRecordList);
         
         boolean initVehicleDayData = (hosVehicleDayData == null);
         
