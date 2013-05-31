@@ -40,6 +40,7 @@ import com.inthinc.pro.model.form.SubmissionData;
 import com.inthinc.pro.model.form.SubmissionDataItem;
 import com.inthinc.pro.model.form.TriggerType;
 
+@Ignore
 public class FormsServiceDAOTest {
 
     private static final String SIMPLEDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
