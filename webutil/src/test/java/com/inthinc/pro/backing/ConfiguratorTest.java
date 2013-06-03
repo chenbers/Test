@@ -37,7 +37,7 @@ public class ConfiguratorTest {
     @Before
     public void setUp() throws Exception {
        
-        SiloServiceCreator siloServiceCreator = new SiloServiceCreator("dev-pro.inthinc.com",8099);
+        SiloServiceCreator siloServiceCreator = new SiloServiceCreator("dev-web3.tiwii.com",8099);
         configuratorHessianDAO = new ConfiguratorHessianDAO();
         configuratorHessianDAO.setSiloService(siloServiceCreator.getService());
         configuratorHessianDAO.setMapper(new ConfiguratorMapper());

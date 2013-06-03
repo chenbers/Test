@@ -38,14 +38,9 @@ public class NotebcParser implements NoteParser{
 			offset += 2;
 			Attrib attrib = Attrib.get(attribCode);
 
-			//TODO: Remove logger 
-			logger.info("Attribute: " + attrib == null ? "Null" : attrib.toString() );
-			
 			if (attrib == null)
 				parser = Attrib.getAttribParser(attribCode);			
 			else {
-			  //TODO: Remove logger 
-	            logger.info("Attribute Parser Type on attribute: " + attrib.getAttribParserType() == null ? "Null" : attrib.getAttribParserType().toString() );
 			    parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
 			}
 			
