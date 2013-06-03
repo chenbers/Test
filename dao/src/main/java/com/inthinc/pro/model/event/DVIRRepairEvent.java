@@ -13,9 +13,9 @@ public class DVIRRepairEvent extends Event {
     private static final long serialVersionUID = 1L;
     
     /*ATTR_DVIR_MECHANIC_ID_STR(24598, 10, false), // string 10         fixed length,              \0 filled
-    ATTR_DVIR_INSPECTOR_ID_STR(24599, 10, true), // string 10 max, variable length,              \0 terminated
-    ATTR_DVIR_SIGNOFF_ID_STR(24600, 10, true),   // string 10 max, variable length,              \0 terminated
-    ATTR_DVIR_COMMENTS(24601, 60, true), 
+    ATTR_DVIR_INSPECTOR_ID_STR(24599, 11, true), // string 10 max, variable length,              \0 terminated
+    ATTR_DVIR_SIGNOFF_ID_STR(24600, 11, true),   // string 10 max, variable length,              \0 terminated
+    ATTR_DVIR_COMMENTS(24601, 61, true), 
     ATTR_DVIR_FORM_ID(32863),
     ATTR_DVIR_SUBMISSION_TIME(32864), */
     

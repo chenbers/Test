@@ -326,10 +326,10 @@ public enum Attrib {
 	MCMID(24594, AttribParserType.STRING_VAR_LENGTH26),
     RHA_DESCRIPTION(24595, AttribParserType.STRING_VAR_LENGTH32), 
     FOB_ID(24597, AttribParserType.STRING_VAR_LENGTH32), 
-    DVIR_COMMENTS(24601, AttribParserType.STRING_VAR_LENGTH60),
+    DVIR_COMMENTS(24601, AttribParserType.STRING_VAR_LENGTH61),// Set this to a length of 61 to allow a length of 60 and a null terminator for the 61 char
     DVIR_MECHANIC_ID(24598, AttribParserType.STRING_FIXED_LENGTH10),
-    DVIR_INSPECTOR_ID(24599, AttribParserType.STRING_VAR_LENGTH10),
-    DVIR_SIGNOFF_ID(24600, AttribParserType.STRING_VAR_LENGTH10),
+    DVIR_INSPECTOR_ID(24599, AttribParserType.STRING_VAR_LENGTH11),// Set this to length of 11 to allow a length of 10 and a null terminator for the 11 char
+    DVIR_SIGNOFF_ID(24600, AttribParserType.STRING_VAR_LENGTH11),// Set this to a length of 11 to allow a length of 10 and a null terminator for the 11 char
 	
 	// BINARY 
 	DELTAVS(49152, AttribParserType.DELTAVS_AS_STRING),
