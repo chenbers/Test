@@ -147,11 +147,10 @@ public class NewNoteTest {
 	    SatelliteEvent_t note = new SatelliteEvent_t(type, state, location);
 	    Integer submissionTimeInMillis = 1000000;
 	    
-
-	    note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test");
+	    note.addAttr(EventAttr.ATTR_DVIR_MECHANIC_ID_STR, "MCH_Test_1");
 	    note.addAttr(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR, "INS_Test_1");
 	    note.addAttr(EventAttr.ATTR_DVIR_SIGNOFF_ID_STR, "SGN_Test_1");
-	    note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test");
+	    note.addAttr(EventAttr.ATTR_DVIR_COMMENTS, "DVIR Repair Comments Test DVIR Repair Comments Test blah _1");
 	    note.addAttr(EventAttr.ATTR_DVIR_FORM_ID, 1);
 	    note.addAttr(EventAttr.ATTR_DVIR_SUBMISSION_TIME, submissionTimeInMillis);
 	    
