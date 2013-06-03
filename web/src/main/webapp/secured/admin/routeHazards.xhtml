@@ -149,7 +149,13 @@
             directionsDisplay = new google.maps.DirectionsRenderer({
                 'map' : map,
                 'preserveViewport' : true,
-                'draggable' : true
+                'draggable' : true,
+                'polylineOptions' : {
+                	'zIndex' : 999,
+                	'strokeColor' : '#3300FF',
+                	'strokeOpacity' : 0.7,
+                	'strokeWeight' : 4 
+                }
             });
             
             directionsDisplay.setPanel(document.getElementById('directions_panel'));
