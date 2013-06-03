@@ -70,7 +70,7 @@ public class AlertMessageTypeTest {
         mask = 0l;
         for (AlertMessageType type : AlertMessageType.values()) {
             mask |= type.getBitMask();
-            System.out.println(type + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(type.getBitMask()));
+            //System.out.println(type + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(type.getBitMask()));
         }
         
         String tmp = Long.toHexString(mask);

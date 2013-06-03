@@ -222,6 +222,12 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     }
 
     @Override
+    public List<Trip> getTripsForDriver(Integer driverID, Date startDate, Date endDate, Boolean includeRoute) {
+        logger.debug("LocationCassandraDAO getTripsForDriver() driverID = " + driverID);
+        return fetchTripsForAsset(driverID, (int) DateUtil.convertDateToSeconds(startDate), (int) DateUtil.convertDateToSeconds(endDate), true, includeRoute);
+    }
+
+    @Override
     public LastLocation getLastLocationForDriver(Integer driverID) {
         logger.debug("LocationCassandraDAO getLastLocationForDriver() driverID = " + driverID);
         return fetchLastLocationForAsset(driverNoteTimeTypeIndex_CF, driverBreadCrumb60_CF, driverID, true);

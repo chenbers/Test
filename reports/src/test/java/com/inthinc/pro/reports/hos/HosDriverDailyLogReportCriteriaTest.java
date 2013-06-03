@@ -638,7 +638,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 
     private static final long ONE_HOUR = 3600000L;
     @Test
-    @Ignore
     public void originalTimeChange() {
         DDLDataSet ddlTestData = new DDLDataSet(testCaseName[0]);
         HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
