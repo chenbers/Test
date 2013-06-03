@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.cassandra;
 
 import me.prettyprint.cassandra.model.AllOneConsistencyLevelPolicy;
+import me.prettyprint.cassandra.model.QuorumAllConsistencyLevelPolicy;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
@@ -98,7 +99,8 @@ public class CassandraDB {
 
     public static Keyspace getKeyspace() {
         Keyspace keyspaceOperator = HFactory.createKeyspace(keyspaceName, cluster);
-        keyspaceOperator.setConsistencyLevelPolicy(new AllOneConsistencyLevelPolicy());
+//        keyspaceOperator.setConsistencyLevelPolicy(new AllOneConsistencyLevelPolicy());
+		  keyspaceOperator.setConsistencyLevelPolicy(new QuorumAllConsistencyLevelPolicy());
         return keyspaceOperator;
     }
 
