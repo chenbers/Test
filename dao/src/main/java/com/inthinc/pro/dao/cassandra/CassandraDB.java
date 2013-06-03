@@ -99,6 +99,7 @@ public class CassandraDB {
 
     public static Keyspace getKeyspace() {
         Keyspace keyspaceOperator = HFactory.createKeyspace(keyspaceName, cluster);
+//		 TODO:  Bumped up consistency level due to lost node.  Make this configrable in future
 //        keyspaceOperator.setConsistencyLevelPolicy(new AllOneConsistencyLevelPolicy());
 		  keyspaceOperator.setConsistencyLevelPolicy(new QuorumAllConsistencyLevelPolicy());
         return keyspaceOperator;
