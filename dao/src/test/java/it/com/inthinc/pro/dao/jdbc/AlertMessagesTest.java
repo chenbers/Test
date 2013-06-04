@@ -702,7 +702,6 @@ ALERT_TYPE_IGNITION_ON
 
     private static void modRedFlagAlertPref(int type, RedFlagAlert redFlagAlert) {
     	
-    	logger.error("modRedFlagAlertPref - start " + type + " " + redFlagAlert.getAlertID()); 
     	GroupData groupData = itData.teamGroupData.get(ITData.GOOD);
 
         List<Integer> groupIDList = new ArrayList<Integer>();
@@ -791,7 +790,6 @@ ALERT_TYPE_IGNITION_ON
         redFlagAlertDAO.setSiloService(siloService);
         redFlagAlertDAO.update(redFlagAlert);
         
-        logger.error("modRedFlagAlertPref - end ");
     }
 
     private void genZoneEvent(Device device, Integer zoneID, EventType eventType) {
@@ -848,7 +846,6 @@ ALERT_TYPE_IGNITION_ON
     }
 
     private void genEvent(Event event, Device device) {
-    	logger.error("genEvent start");
         try {
             noteGenerator.genEvent(event, device);
         }
@@ -857,7 +854,6 @@ ALERT_TYPE_IGNITION_ON
             fail("Generate Note failed for device: " + device.getImei() + " noteType" + event.getType());
         }
         
-        logger.error("genEvent end");
     }
     private static void initDAOs()
     {
@@ -899,9 +895,7 @@ ALERT_TYPE_IGNITION_ON
     private AlertMessageBuilder pollForMessagesBuilder(String description) {
         int secondsToWait = 5;
         for (int i = 0; i < secondsToWait; i++) {
-logger.error(i + " -  " + secondsToWait);        	
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
-logger.error("num messages -  " + msgList.size());        	
             if (msgList.size() == 0) {
                 if (i == (secondsToWait-1)) {
                     System.out.println();
@@ -923,12 +917,10 @@ logger.error("num messages -  " + msgList.size());
                 assertNotNull(description, msg);
                 assertNotNull(description, msg.getAddress());
                 assertNotNull(description, msg.getParamterList());
-logger.error("start acknowledgeMessages");        	
                 for(AlertMessageBuilder amb:msgList)
                 {
                     alertMessageDAO.acknowledgeMessage(amb.getMessageID());
                 }
-logger.error("finished acknowledgeMessages");        	
 //System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
                 return msg;
             }
