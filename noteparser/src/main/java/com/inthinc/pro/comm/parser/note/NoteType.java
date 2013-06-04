@@ -273,16 +273,18 @@ public enum NoteType {
 		return isTripEndNoteType(this);
 	}
 
-	public static boolean isTripEndNoteType(NoteType noteType)
-	{
-		return (noteType == CLEAR_DRIVER 
-				|| noteType == LOW_BATTERY 
-				|| noteType == IGNITION_OFF 
-				|| noteType == HOS_CHANGE_STATE_EX 
-				|| noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
-//				|| noteType == LOW_POWER_MODE
-				);
-	}
+    public static boolean isTripEndNoteType(NoteType noteType)
+    {
+        return (noteType == CLEAR_DRIVER 
+                || noteType == LOW_BATTERY 
+                || noteType == IGNITION_OFF 
+                || noteType == HOS_CHANGE_STATE_EX 
+                || noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
+                || noteType == NO_DRIVER
+                || noteType == LOW_BATTERY_POTENTIAL_TAMPERING
+//              || noteType == LOW_POWER_MODE
+                );
+    }
 
 	public boolean isIdleNoteType()
 	{
