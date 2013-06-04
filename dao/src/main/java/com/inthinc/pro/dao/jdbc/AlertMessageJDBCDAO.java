@@ -90,6 +90,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
         if (msgID == null)
             return false;
+        
+        logger.info("acknowledgeMessage msgID: " + msgID);
 
         Connection conn = null;
         Integer numRows = 0;
@@ -108,11 +110,16 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             close(statement);
             close(conn);
         } // end finally
+
+        logger.info("acknowledgeMessage done numRows: " + numRows);
+
         return numRows != 0;
     }
 
     @Override
     public Boolean cancelPendingMessage(Integer msgID) {
+        logger.info("cancelPendingMessage msgID: " + msgID);
+
         Connection conn = null;
         Integer numRows = 0;
         PreparedStatement statement = null;
@@ -154,6 +161,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
     @Override
     public AlertMessage findByID(Integer id) {
+    	
+    	
         Connection conn = null;
         java.sql.PreparedStatement statement = null;
         ResultSet resultSet = null;
