@@ -892,7 +892,9 @@ ALERT_TYPE_IGNITION_ON
     private AlertMessageBuilder pollForMessagesBuilder(String description) {
         int secondsToWait = 5;
         for (int i = 0; i < secondsToWait; i++) {
+logger.info(i + " -  " + secondsToWait);        	
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
+logger.info("num messages -  " + msgList.size());        	
             if (msgList.size() == 0) {
                 if (i == (secondsToWait-1)) {
                     System.out.println();
@@ -914,10 +916,12 @@ ALERT_TYPE_IGNITION_ON
                 assertNotNull(description, msg);
                 assertNotNull(description, msg.getAddress());
                 assertNotNull(description, msg.getParamterList());
+logger.info("start acknowledgeMessages");        	
                 for(AlertMessageBuilder amb:msgList)
                 {
                     alertMessageDAO.acknowledgeMessage(amb.getMessageID());
                 }
+logger.info("finished acknowledgeMessages");        	
 //System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
                 return msg;
             }

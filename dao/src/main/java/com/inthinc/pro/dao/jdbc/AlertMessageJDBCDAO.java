@@ -204,6 +204,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
     @Override
     public synchronized List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageDeliveryType) {
 
+    	logger.info("getMessagesBuilders " + messageDeliveryType );
         List<AlertMessageBuilder> messageBuilders = new ArrayList<AlertMessageBuilder>();
         if (messageDeliveryType == null)
             return messageBuilders;
@@ -213,12 +214,18 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             conn = getConnection();
 
             Long owner = getNextJobOwner(conn);
+        	logger.info("NextJobOwner " + owner );
 
             runMessageWatchDog(conn, owner, messageDeliveryType);
 
+        	logger.info("back from runMessageWatchDog ");
             List<AlertMessage> messages = getScheduledMessages(conn, owner);
 
+            logger.info("back from getScheduledMessages msg cnt:  " + messages.size());
+
             messageBuilders = getMessageBuilders(conn,messages, messageDeliveryType);
+
+            logger.info("back from getMessageBuilders msg cnt:  " + messageBuilders.size());
 
         } catch (SQLException e) {
             throw new ProDAOException("getMessageBuilders", e);
