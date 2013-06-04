@@ -53,12 +53,13 @@ for FILE in $(/bin/ls -1 /etc/tiwipro/www/)
 do
     echo "Checking for ${FILE} in /var/www"
     if [ ! -f "/var/www/${FILE}" ] && [ -f "/etc/tiwipro/www/${FILE}" ]
-then
-    echo "No ${FILE} file in /var/www, adding at $(date)"
-    cp /etc/tiwipro/www/${FILE} /var/www/${FILE}
-else
-    echo "404 file already exists in /var/www, not setting one up"
-fi
+     then
+        echo "No ${FILE} file in /var/www, adding at $(date)"
+        cp /etc/tiwipro/www/${FILE} /var/www/${FILE}
+    else
+        echo "404 file already exists in /var/www, not setting one up"
+    fi
+done
 
 if [ ! -f "/var/www/favicon.ico" ] && [ -f "/etc/tiwipro/www/favicon.ico" ]
 then
