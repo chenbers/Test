@@ -893,7 +893,7 @@ ALERT_TYPE_IGNITION_ON
     }
 
     private AlertMessageBuilder pollForMessagesBuilder(String description) {
-        int secondsToWait = 5;
+        int secondsToWait = 10;
         for (int i = 0; i < secondsToWait; i++) {
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
             if (msgList.size() == 0) {
