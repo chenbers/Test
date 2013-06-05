@@ -41,6 +41,7 @@ public class LoginEvent extends Event implements MultipleEventTypes {
         ArrayList<String> filters = new ArrayList<String>();
         filters.add("groupName");
         filters.add("vehicleName");
+        filters.add("driverName");
         filters.add("eventType");
         return filters.contains(descriptorName);
     }
@@ -54,7 +55,7 @@ public class LoginEvent extends Event implements MultipleEventTypes {
                 } else {
                     if (eventPropValue != null && !eventPropValue.equals("")) {
                         if (eventPropValue instanceof String && thisPropValue instanceof String) {
-                            if (!((String) thisPropValue).toLowerCase().startsWith(((String) eventPropValue).toLowerCase()))
+                            if (!((String) thisPropValue).toLowerCase().contains(((String) eventPropValue).toLowerCase()))
                                 return false;
                         } else {
                             if (!eventPropValue.equals(thisPropValue))
