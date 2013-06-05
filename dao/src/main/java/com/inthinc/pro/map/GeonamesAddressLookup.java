@@ -57,8 +57,8 @@ public class GeonamesAddressLookup extends AddressLookup
             return addressMap.get(latLng);
         if (getMapServerURLString().isEmpty())
         {
-            logger.debug("AddressLookup - Map Server URL not set.");
-            return "";
+            logger.error("AddressLookup - Map Server URL not set.");
+        	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
         }
         try
         {

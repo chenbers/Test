@@ -701,6 +701,7 @@ ALERT_TYPE_IGNITION_ON
     }
 
     private static void modRedFlagAlertPref(int type, RedFlagAlert redFlagAlert) {
+    	
     	GroupData groupData = itData.teamGroupData.get(ITData.GOOD);
 
         List<Integer> groupIDList = new ArrayList<Integer>();
@@ -788,6 +789,7 @@ ALERT_TYPE_IGNITION_ON
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
         redFlagAlertDAO.setSiloService(siloService);
         redFlagAlertDAO.update(redFlagAlert);
+        
     }
 
     private void genZoneEvent(Device device, Integer zoneID, EventType eventType) {
@@ -851,6 +853,7 @@ ALERT_TYPE_IGNITION_ON
             ex.printStackTrace();
             fail("Generate Note failed for device: " + device.getImei() + " noteType" + event.getType());
         }
+        
     }
     private static void initDAOs()
     {
@@ -890,7 +893,7 @@ ALERT_TYPE_IGNITION_ON
     }
 
     private AlertMessageBuilder pollForMessagesBuilder(String description) {
-        int secondsToWait = 5;
+        int secondsToWait = 10;
         for (int i = 0; i < secondsToWait; i++) {
             List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.EMAIL);
             if (msgList.size() == 0) {

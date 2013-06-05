@@ -446,6 +446,20 @@ public class OrganizationBean extends BaseBean {
             addErrorMessage(MessageUtil.getMessageString("groupEdit_addressRequired"));
             return false;
         }
+        
+        // Rule 6 (unique name at a level in hierarchy)
+        if (groupState == State.EDIT || groupState == State.ADD) {
+        	String editGroupName = treeNode.getBaseEntity().getName();
+        	Integer editGroupID = treeNode.getBaseEntity().getGroupID();
+        	
+        	for (Group child : organizationHierarchy.getChildren(organizationHierarchy.getGroup(selectedParentGroupID))) {
+        		if (child.getName().equalsIgnoreCase(editGroupName) && !child.getGroupID().equals(editGroupID)) {
+                    addErrorMessage(MessageUtil.getMessageString("group_edit_error_duplicate_name"));
+                    return false;
+        		}
+        	}
+        }
+        
         return true;
     }
 
