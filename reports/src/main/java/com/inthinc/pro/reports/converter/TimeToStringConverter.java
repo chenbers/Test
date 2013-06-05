@@ -42,7 +42,23 @@ public class TimeToStringConverter {
         
         return sdf.format(gc.getTime());
     }
-
+    
+    public static String convertMillisToDate(Long milliSeconds, Locale locale) {
+        if (milliSeconds != null && milliSeconds == 0L) {
+            return "";            
+        }
+        
+        if (milliSeconds == null) {
+            milliSeconds = 0L;
+        }
+        
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTimeInMillis(milliSeconds);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a (z)", locale);
+        
+        return sdf.format(gc.getTime());
+    }
 
     public static String deltaSeconds(Long start, Long end) {
         if (start == null || start == 0l || end == null || end == 0l)
