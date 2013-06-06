@@ -90,6 +90,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
         if (msgID == null)
             return false;
+        
 
         Connection conn = null;
         Integer numRows = 0;
@@ -108,6 +109,7 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             close(statement);
             close(conn);
         } // end finally
+
         return numRows != 0;
     }
 
@@ -154,6 +156,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
 
     @Override
     public AlertMessage findByID(Integer id) {
+    	
+    	
         Connection conn = null;
         java.sql.PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -213,11 +217,8 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             conn = getConnection();
 
             Long owner = getNextJobOwner(conn);
-
             runMessageWatchDog(conn, owner, messageDeliveryType);
-
             List<AlertMessage> messages = getScheduledMessages(conn, owner);
-
             messageBuilders = getMessageBuilders(conn,messages, messageDeliveryType);
 
         } catch (SQLException e) {
