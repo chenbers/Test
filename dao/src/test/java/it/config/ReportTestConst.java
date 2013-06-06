@@ -12,6 +12,7 @@ public interface ReportTestConst {
     
     public static final int LO_IDLE_TIME = 4;			// seconds units
     public static final int HI_IDLE_TIME = 8;
+    public static final int DURATION = 12;
 
     public static final int TAMPER_EVENT_IDX = 0;
     public static final int TAMPER2_EVENT_IDX = 1;

@@ -10,6 +10,7 @@ public class EventGeneratorData {
 	int seatbeltCnt;
 	int aggressiveDrivingCnt;
 	int idlingCnt;
+	int backingCnt;
 	boolean includeCrash;
 	int mpg;
 	int severity;
@@ -22,12 +23,19 @@ public class EventGeneratorData {
 	List<Integer> seatbeltIndexes;
 	List<Integer> aggressiveDrivingIndexes;
 	List<Integer> idlingIndexes;
+	List<Integer> backingIndexes;
 	List<Integer> crashIndexes;
 
 	List<Integer> allIndexes;
 
 
-	
+	public EventGeneratorData(	int speedingCnt, int seatbeltCnt, int aggressiveDrivingCnt, int idlingCnt, boolean includeCrash, int mpg, int severity,
+						    boolean includeExtra,
+						    boolean includeWaysmart,
+						    boolean includeCoaching)
+	{
+		this(speedingCnt, seatbeltCnt, aggressiveDrivingCnt, idlingCnt, 0, includeCrash, mpg, severity,includeExtra,includeWaysmart,includeCoaching);
+	}
 
 	public EventGeneratorData(	int speedingCnt, int seatbeltCnt, int aggressiveDrivingCnt, int idlingCnt, boolean includeCrash, int mpg, int severity)
 	{
@@ -43,12 +51,13 @@ public class EventGeneratorData {
 	    this.includeCoaching = false;
 	    this.zoneID = 0;
 	}
-    public EventGeneratorData(  int speedingCnt, int seatbeltCnt, int aggressiveDrivingCnt, int idlingCnt, boolean includeCrash, int mpg, int severity,
+    public EventGeneratorData(  int speedingCnt, int seatbeltCnt, int aggressiveDrivingCnt, int idlingCnt, int backingCnt, boolean includeCrash, int mpg, int severity,
             boolean includeExtra,
             boolean includeWaysmart,
             boolean includeCoaching)
     {
         this(speedingCnt, seatbeltCnt, aggressiveDrivingCnt, idlingCnt, includeCrash, mpg, severity);
+		this.backingCnt = backingCnt;
         this.includeExtra = includeExtra;
         this.includeWaysmart = includeWaysmart;
         this.includeCoaching = includeCoaching;
@@ -88,6 +97,7 @@ public class EventGeneratorData {
 		seatbeltIndexes = initIndexes(seatbeltCnt, numLocs);
 		aggressiveDrivingIndexes = initIndexes(aggressiveDrivingCnt, numLocs);
 		idlingIndexes = initIndexes(idlingCnt, numLocs);
+		backingIndexes = initIndexes(backingCnt, numLocs);
 		
 	}
 	
@@ -106,6 +116,10 @@ public class EventGeneratorData {
 	public boolean isIdlingIndex(int idx)
 	{
 		return idlingIndexes.contains(Integer.valueOf(idx));
+	}
+	public boolean isBackingIndex(int idx)
+	{
+		return backingIndexes.contains(Integer.valueOf(idx));
 	}
 	public boolean isCrashIndex(int idx)
 	{
