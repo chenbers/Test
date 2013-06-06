@@ -39,15 +39,6 @@ public class BackingEvent extends Event {
 		return eventAttrList;
 	}
 
-	//
-	// public String getLowIdleDuration()
-	// {
-	// if(this.lowIdle != null)
-	// return DateUtil.getDurationFromSeconds(this.lowIdle);
-	// else
-	// return "";
-	// }
-
 	public EventType getEventType() {
 		return EventType.BACKING;
 	}
