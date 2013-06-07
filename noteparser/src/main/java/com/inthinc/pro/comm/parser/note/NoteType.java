@@ -208,7 +208,8 @@ public enum NoteType {
     ONE_WIRE_PAIRING(230, new Attrib[]{Attrib.DRIVERSTR, Attrib.FOB_ID}),
     FOB_INFO(231, new Attrib[]{Attrib.FOB_ID}),
     DVIR_REPAIR(232, new Attrib[]{Attrib.DVIR_COMMENTS,Attrib.DVIR_MECHANIC_ID,Attrib.DVIR_INSPECTOR_ID,Attrib.DVIR_SIGNOFF_ID, Attrib.ATTR_DVIR_FORM_ID, Attrib.ATTR_DVIR_SUBMISSION_TIME}),
-	BACKING(235, new Attrib[]{Attrib.TRIP_DURATION}),
+    ROUTE_STOP(234, new Attrib[]{Attrib.ROUTE_STOP_TYPE, Attrib.ROUTESTOPID, Attrib.ATTR_ROUTE_ID}),	
+    BACKING(235, new Attrib[]{Attrib.TRIP_DURATION}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),
@@ -274,16 +275,18 @@ public enum NoteType {
 		return isTripEndNoteType(this);
 	}
 
-	public static boolean isTripEndNoteType(NoteType noteType)
-	{
-		return (noteType == CLEAR_DRIVER 
-				|| noteType == LOW_BATTERY 
-				|| noteType == IGNITION_OFF 
-				|| noteType == HOS_CHANGE_STATE_EX 
-				|| noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
-//				|| noteType == LOW_POWER_MODE
-				);
-	}
+    public static boolean isTripEndNoteType(NoteType noteType)
+    {
+        return (noteType == CLEAR_DRIVER 
+                || noteType == LOW_BATTERY 
+                || noteType == IGNITION_OFF 
+                || noteType == HOS_CHANGE_STATE_EX 
+                || noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
+                || noteType == NO_DRIVER
+                || noteType == LOW_BATTERY_POTENTIAL_TAMPERING
+//              || noteType == LOW_POWER_MODE
+                );
+    }
 
 	public boolean isIdleNoteType()
 	{
