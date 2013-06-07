@@ -56,28 +56,29 @@ System.out.println("sendNote: " + uri);
     }
     
     private String httpRequest(HttpUriRequest method) {
-    	int retryCnt = 0;
-    	do {
-	        try {
-	            HttpResponse response = new DefaultHttpClient().execute(method);
-	            String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
-	            return returnResponse;
-	        } catch (Exception e) {
-	        	if (retryCnt == 4) {
-	        		e.printStackTrace();
-	        	}
-	        }
-	        retryCnt++;
-	        try {
-				Thread.sleep(100l);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-	        System.out.print(".");
-	        
-    	} while (retryCnt < 5);
+        int retryCnt = 0;
+        do {
+            try {
+                HttpResponse response = new DefaultHttpClient().execute(method);
+                String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
+                return returnResponse;
+            } catch (Exception e) {
+                if (retryCnt == 4) {
+                    e.printStackTrace();
+                }
+            }
+            retryCnt++;
+            try {
+                Thread.sleep(100l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.print(".");
+            
+        } while (retryCnt < 5);
         return "";
     }
+
     
     private String getResponseBodyFromStream(InputStream is) {
         String str = "";
