@@ -26,7 +26,7 @@ public class DVIRInspectionRepairReportJDBCDAOTest extends BaseJDBCTest {
         groupIds.add(46);
         groupIds.add(4216);
         groupIds.add(7823);
-        groupIds.add(7456);
+        groupIds.add(7791);
         
         DateTime startDate = new DateTime();
         startDate = startDate.minus(Months.months(2));

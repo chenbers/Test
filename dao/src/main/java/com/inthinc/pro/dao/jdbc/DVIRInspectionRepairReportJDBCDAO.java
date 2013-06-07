@@ -62,7 +62,7 @@ public class DVIRInspectionRepairReportJDBCDAO extends GenericJDBCDAO implements
                 
                 Map<EventAttr, String> inspectionAttrMap = buildInspectionAttrMap(attributeArray);
                 
-                DVIRInspectionRepairReport dVIRInspectionRepairReport = new DVIRInspectionRepairReport(resultSet.getDate("dateTime"), resultSet.getString("driverName"),
+                DVIRInspectionRepairReport dVIRInspectionRepairReport = new DVIRInspectionRepairReport(resultSet.getTimestamp("dateTime"), resultSet.getString("driverName"),
                                 resultSet.getString("vehicleName"), resultSet.getInt("vehicleID"), resultSet.getString("groupName"), resultSet.getInt("groupID"),
                                 inspectionAttrMap.get(EventAttr.ATTR_DVIR_FORM_ID), inspectionAttrMap.get(EventAttr.ATTR_DVIR_SUBMISSION_TIME),
                                 inspectionAttrMap.get(EventAttr.ATTR_DVIR_INSPECTOR_ID_STR), inspectionAttrMap.get(EventAttr.ATTR_DVIR_MECHANIC_ID_STR),
