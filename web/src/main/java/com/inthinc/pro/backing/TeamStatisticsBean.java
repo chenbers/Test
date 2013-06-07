@@ -136,10 +136,6 @@ public class TeamStatisticsBean extends BaseBean {
         return local;
     }
 
-    // public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
-    // this.driverTotals = driverTotals;
-    // }
-
     public int getNumRowsPerPg() {
         return numRowsPerPg;
     }
@@ -150,20 +146,7 @@ public class TeamStatisticsBean extends BaseBean {
 
     public Integer getTeamOverallScore() {
         return getDriverTotals().get(0).getScore().getOverall().intValue();
-        // return teamOverallScore;
     }
-
-    // public void setTeamOverallScore(Integer teamOverallScore) {
-    // this.teamOverallScore = teamOverallScore;
-    // }
-
-    // public String getTeamOverallScoreStyle() {
-    // return teamOverallScoreStyle;
-    // }
-    //
-    // public void setTeamOverallScoreStyle(String teamOverallScoreStyle) {
-    // this.teamOverallScoreStyle = teamOverallScoreStyle;
-    // }
 
     public void exportReportToPdf() {
         getReportRenderer().exportSingleReportToPDF(buildReportCriteria(), getFacesContext());

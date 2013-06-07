@@ -24,28 +24,9 @@
 	 		</h:panelGroup>
 	 	</f:facet>
 	
-	<!-- Driver Statistics -->
+	<!-- Vehicle Statistics -->
 	<a4j:outputPanel id="statisticsVehicleTab" ajaxRendered="true" styleClass="section" layout="block">
 		<h:form id="teamStatisticsVehicleForm">	  
-			<!--<ul id="grid_nav" style="margin: 0;">            							
-     			<li class="l text">
-     				<a4j:commandLink 
-     					id="#{context}EditColumns" 
-						reRender="editColumnsForm:editColumnGrid"
-     					action="#"
-     					styleClass="ls_tab_edit_columns"
-     					onclick="Richfaces.showModalPanel('#{context}_editColumns');">            									
-     						<h:outputText value="#{messages.button_editColumns}" />
-					</a4j:commandLink>            									
-     			</li>
-     			<li class="r grid_icon">
-     				<h:panelGroup id="#{context}_reportToolImageId">
-						<h:graphicImage value="/images/ico_tools.png"/>
-					</h:panelGroup>
-				</li>
-				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-				</li>
-			</ul>-->
             <ui:include src="/includes/reportsContextMenu.xhtml">	
 				<ui:param  name="emailModalPanelID" value="#{context}_reportEmailModal" />
 				<ui:param  name="reportBean" value="#{teamStatisticsBean}"/>
@@ -204,6 +185,22 @@
 					</pretty:link>
                    	<h:outputText value="#{total.score.safetyTotal}" rendered="#{total.score.safetyTotal eq 0}"/>
 				</rich:column>
+				<rich:column rendered="#{tableColumns['backing_time'].visible}" id="newTeamStatsTab-totalBackingTime">
+					<f:facet name="header">
+						#{messages.team_backing_time}
+					</f:facet>
+
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{total.score.backing != null}">
+                    	<a4j:actionparam value="#{total.score.backing}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>	
+                    <h:outputText value="00:00:00" rendered="#{total.score.backing == null}"/>								
+				</rich:column>
+				<rich:column rendered="#{tableColumns['backing'].visible}" id="newTeamStatsTab-totalBacking">
+					<f:facet name="header">
+						#{messages.team_backing}
+					</f:facet>
+                   	<h:outputText value="#{total.score.backingEvents}"/>
+				</rich:column>							
 				</rich:subTable>
 				</f:facet>
 				<rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicle.name}" id="newTeamStatsTab-vehicle">
@@ -335,8 +332,24 @@
 					<f:facet name="header">
 						#{messages.team_safety}
 					</f:facet>
-<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal ne 0}"/>
+					<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal ne 0}"/>
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
+				</rich:column>							
+				<rich:column rendered="#{tableColumns['backing_time'].visible}" sortBy="#{item.score.backing}" id="newTeamStatsTab-backingTime">
+					<f:facet name="header">
+						#{messages.team_backing_time}
+					</f:facet>
+
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.backing != null}">
+                    	<a4j:actionparam value="#{item.score.backing}" converter="TimeToStringConverter"/>                    
+                    </h:outputFormat>	
+                    <h:outputText value="00:00:00" rendered="#{item.score.backing == null}"/>								
+				</rich:column>
+				<rich:column rendered="#{tableColumns['backing'].visible}" sortBy="#{item.score.backingEvents}" id="newTeamStatsTab-backing">
+					<f:facet name="header">
+						#{messages.team_backing}
+					</f:facet>
+                   	<h:outputText value="#{item.score.backingEvents}"/>
 				</rich:column>							
 				<f:facet name="footer">				
 					<h:panelGroup>
