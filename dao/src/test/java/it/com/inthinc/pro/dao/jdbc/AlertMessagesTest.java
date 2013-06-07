@@ -536,7 +536,7 @@ ALERT_TYPE_IGNITION_ON
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void escalationPhoneTest()
     {
         // TODO: this was just fetching one that had been inserted in db, need a better test for this
