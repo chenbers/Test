@@ -185,8 +185,8 @@ public class DVIRInspectionRepairCompleteCriteria extends ReportCriteria {
             if (this.groupHierarchy != null && this.groupHierarchy.getGroup(this.groupID) != null) {
                 group = this.groupHierarchy.getGroup(this.groupID);
             }
-            if (group.getGroupID() != null)
-                criteria.addParameter(GROUP, String.valueOf(group.getGroupID()));
+            if (group != null && group.getName() != null)
+                criteria.addParameter(GROUP, String.valueOf(group.getName()));
             else
                 criteria.addParameter(GROUP, "");
             
