@@ -116,34 +116,37 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
         else
         {
             logger.debug("Group: " + baseEntity);
-            List<Driver> driverList = driverDAO.getAllDrivers(baseEntity.getGroupID());
-            if (driverList != null)
-            {
-                for (Driver d : driverList)
-                {
-                    DriverTreeNodeImpl treeNode = new DriverTreeNodeImpl(d, this);
-                    treeNode.setDeviceDAO(deviceDAO);
-                    treeNode.setVehicleDAO(vehicleDAO);
-                    treeNode.setGroupHeHierarchy(groupHierarchy);
-                    childNodes.add(treeNode);
-                }
-            }
-            List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(baseEntity.getGroupID());
-            if (vehicleList != null)
-            {
-                for (Vehicle v : vehicleList)
-                {
-                    VehicleTreeNodeImpl vehicleTreeNodeImpl = new VehicleTreeNodeImpl(v, this);
-                    vehicleTreeNodeImpl.setDeviceDAO(deviceDAO);
-                    vehicleTreeNodeImpl.setDriverDAO(driverDAO);
-                    vehicleTreeNodeImpl.setVehicleDAO(vehicleDAO);
-                    childNodes.add(vehicleTreeNodeImpl);
-                }
+            if (baseEntity.getGroupID() != null && baseEntity.getGroupID() != 0 ) {
+            	
+	            List<Driver> driverList = driverDAO.getAllDrivers(baseEntity.getGroupID());
+	            if (driverList != null)
+	            {
+	                for (Driver d : driverList)
+	                {
+	                    DriverTreeNodeImpl treeNode = new DriverTreeNodeImpl(d, this);
+	                    treeNode.setDeviceDAO(deviceDAO);
+	                    treeNode.setVehicleDAO(vehicleDAO);
+	                    treeNode.setGroupHeHierarchy(groupHierarchy);
+	                    childNodes.add(treeNode);
+	                }
+	            }
+	            List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(baseEntity.getGroupID());
+	            if (vehicleList != null)
+	            {
+	                for (Vehicle v : vehicleList)
+	                {
+	                    VehicleTreeNodeImpl vehicleTreeNodeImpl = new VehicleTreeNodeImpl(v, this);
+	                    vehicleTreeNodeImpl.setDeviceDAO(deviceDAO);
+	                    vehicleTreeNodeImpl.setDriverDAO(driverDAO);
+	                    vehicleTreeNodeImpl.setVehicleDAO(vehicleDAO);
+	                    childNodes.add(vehicleTreeNodeImpl);
+	                }
+	            }
             }
         }
 
         // Load Users
-        if (baseEntity != null)
+        if (baseEntity != null && baseEntity.getGroupID() != null && baseEntity.getGroupID() != 0 )
         {
             List<User> userList = userDAO.getUsersInGroupHierarchy(baseEntity.getGroupID());
             for (User u : userList)

@@ -23,4 +23,9 @@
 	<bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"></bean>
 	<bean id="hosDriverKioskBean" class="com.inthinc.pro.backing.HOSDriverKioskBean" scope="session"/>
 	
+		<!--  hos -->
+	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
+  		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
+  	</bean>
+	
 </beans>

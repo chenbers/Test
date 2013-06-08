@@ -67,7 +67,7 @@ public class PersonHessianDAOTest
 
         assertNull("expected no user to be returned" , person);
         
-        person = personHessianDAO.findByEmail("custom101@email.com");
+        person = personHessianDAO.findByEmail("custom101@example.com");
         
         assertNotNull("expected to retrieve a user record", person);
     }

@@ -475,7 +475,7 @@ public class EmailReportJobTest
             driver.setDriverID(driverID);
             driver.setGroupID(groupID);
             Person driverPerson = new Person();
-            driverPerson.setPriEmail("foo" + i + "@email.com");
+            driverPerson.setPriEmail("foo" + i + "@example.com");
             driverPerson.setLocale(Locale.ENGLISH);
             driverPerson.setTimeZone(TimeZone.getTimeZone("MST"));
             driver.setPerson(driverPerson);

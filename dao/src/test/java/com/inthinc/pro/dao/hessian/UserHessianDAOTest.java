@@ -57,7 +57,7 @@ public class UserHessianDAOTest
         
         assertNotNull("expected to retrieve a user record", user);
         assertEquals("custom101", user.getUsername());
-        assertEquals("custom101@email.com", user.getPerson().getPriEmail());
+        assertEquals("custom101@example.com", user.getPerson().getPriEmail());
         assertEquals(new Integer(101), user.getGroupID());
         assertEquals(MockRoles.getAdminUser().getRoleID(), user.getRoles().get(0));
     }

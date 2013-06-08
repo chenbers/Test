@@ -17,7 +17,7 @@ public class ViolationsDetail implements Comparable<ViolationsDetail> {
     private Date notificationTime;
     private String employeeId;
     private String driverName;
-    private String vehicleId;
+    private String vehicleName;
     private RuleSetType ruleType;
     List<Violation> violationsList;
     
@@ -30,12 +30,12 @@ public class ViolationsDetail implements Comparable<ViolationsDetail> {
     {
         
     }
-    public ViolationsDetail(String groupName, Date notificationTime, String employeeId, String driverName, String vehicleId, RuleSetType ruleType, List<Violation> violationsList) {
+    public ViolationsDetail(String groupName, Date notificationTime, String employeeId, String driverName, String vehicleName, RuleSetType ruleType, List<Violation> violationsList) {
         this.groupName = groupName;
         this.notificationTime = notificationTime;
         this.employeeId = employeeId;
         this.driverName = driverName;
-        this.vehicleId = vehicleId;
+        this.vehicleName = vehicleName;
         this.ruleType = ruleType;
         this.violationsList = violationsList;
     }
@@ -79,11 +79,11 @@ public class ViolationsDetail implements Comparable<ViolationsDetail> {
     }
     
     @XmlElement(name="vehicleName")
-    public String getVehicleId() {
-        return vehicleId;
+    public String getVehicleName() {
+        return vehicleName;
     }
-    public void setVehicleId(String vehicleId) {
-        this.vehicleId = vehicleId;
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
     @XmlTransient
     public String getTimeStr() {
@@ -127,7 +127,7 @@ public class ViolationsDetail implements Comparable<ViolationsDetail> {
                 "new Date("+getNotificationTime().getTime() + "l)," + 
                 "\"" + getEmployeeId() + "\"," + 
                 "\"" + getDriverName() + "\"," + 
-                "\"" + getVehicleId() + "\"," + 
+                "\"" + getVehicleName() + "\"," + 
                 "RuleSetType." + getRuleType().getName() + "," +
                 "Arrays.asList(");
         for (Violation v : violationsList) {

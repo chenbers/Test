@@ -447,7 +447,7 @@ public class DataGenForStressTesting extends DataGenForTesting {
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(groupID);
         List<String> emailList = new ArrayList<String>();
-        emailList.add("test@email.com");
+        emailList.add("test@example.com");
         List<Integer> notifyPersonIDList = new ArrayList<Integer>();
         notifyPersonIDList.add(notifyPersonIDs[0]);
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
@@ -484,7 +484,7 @@ public class DataGenForStressTesting extends DataGenForTesting {
             speedLevels[i] = RedFlagLevel.CRITICAL;
         }
         List<String> emailList = new ArrayList<String>();
-        emailList.add("test@email.com");
+        emailList.add("test@example.com");
         // speeding alert
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT));
         RedFlagAlert redFlagAlert = new RedFlagAlert(list, acctID, 

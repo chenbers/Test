@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -72,7 +73,6 @@ import com.inthinc.pro.notegen.NoteGenerator;
 import com.inthinc.pro.notegen.TiwiProNoteSender;
 import com.inthinc.pro.notegen.WSNoteSender;
 
-//@Ignore
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
@@ -187,7 +187,6 @@ public class AlertMessagesTest extends BaseJDBCTest{
 	        genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Groups Set"))
 	        	anyAlertsFound = true;
-	        
 	        modZoneAlertPref(DRIVERS, zoneAlert);
             genZoneEvent(device, zoneID, eventType);
 	        if (pollForMessages("Zone Alert Drivers Set"))
@@ -537,7 +536,7 @@ ALERT_TYPE_IGNITION_ON
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void escalationPhoneTest()
     {
         // TODO: this was just fetching one that had been inserted in db, need a better test for this
@@ -702,6 +701,7 @@ ALERT_TYPE_IGNITION_ON
     }
 
     private static void modRedFlagAlertPref(int type, RedFlagAlert redFlagAlert) {
+    	
     	GroupData groupData = itData.teamGroupData.get(ITData.GOOD);
 
         List<Integer> groupIDList = new ArrayList<Integer>();
@@ -789,6 +789,7 @@ ALERT_TYPE_IGNITION_ON
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
         redFlagAlertDAO.setSiloService(siloService);
         redFlagAlertDAO.update(redFlagAlert);
+        
     }
 
     private void genZoneEvent(Device device, Integer zoneID, EventType eventType) {
@@ -852,6 +853,7 @@ ALERT_TYPE_IGNITION_ON
             ex.printStackTrace();
             fail("Generate Note failed for device: " + device.getImei() + " noteType" + event.getType());
         }
+        
     }
     private static void initDAOs()
     {

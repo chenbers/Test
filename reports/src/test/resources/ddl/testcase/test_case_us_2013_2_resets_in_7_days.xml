@@ -1,0 +1,45 @@
+<testcases description="Examples for 2013" >
+<testcase description="34 hour Restart must only be used once every 7 days (pick best if 2)">
+	<driver_log id="feat276_3" current_date="2013-07-15" current_time="23:00:00">
+        <hos_state state="off_duty" hours="24" />	<!--  week 1 (days 1) -->
+        <hos_state state="off_duty" hours="24" />	<!--  days 2 (big reset) -->
+        <hos_state state="on_duty" hours="5" />		<!--  day 3 7/3 -->
+        <hos_state state="driving" hours="5" />
+        <hos_state state="off_duty" hours="14" />	
+        <hos_state state="on_duty" hours="5" />		<!--  day 4 7/4 -->
+        <hos_state state="driving" hours="5" />
+        <hos_state state="off_duty" hours="14" />	
+        <hos_state state="on_duty" hours="5" />		<!--  day 5 7/5 -->
+        <hos_state state="driving" hours="5" />
+        <hos_state state="off_duty" hours="14" />	
+        <hos_state state="on_duty" hours="5" />		<!--  day 6 7/6 -->
+        <hos_state state="driving" hours="5" />
+        <hos_state state="off_duty" hours="14" />	
+        <hos_state state="on_duty" hours="5" />		<!--  day 7 7/7 -->
+        <hos_state state="driving" hours="5" />
+        <hos_state state="off_duty" hours="14" />	
+        
+        <hos_state state="off_duty" hours="24" />	<!--  week 2 7/8 (days 1) -->
+        <hos_state state="off_duty" hours="10" />	<!--  days 2 7/9(Possible big reset A) -->
+        <hos_state state="on_duty" hours="14" />	
+        <hos_state state="off_duty" hours="24" />	<!--  day 3 7/10 (Possible big reset B This one is best.)-->
+        <hos_state state="off_duty" hours="10" />	<!--  day 4 7/11  recap day 8/1-->
+        <hos_state state="on_duty" hours="14" />	
+        <hos_state state="off_duty" hours="10" />	<!--  day 5 7/12  recap day 2 -->
+        <hos_state state="on_duty" hours="14" />	
+        <hos_state state="off_duty" hours="10" />	<!--  day 6 7/13  recap day 3-->
+        <hos_state state="on_duty" hours="14" />	
+        <hos_state state="off_duty" hours="10" />	<!--  day 7 7/14  recap day 4-->
+        <hos_state state="on_duty" hours="14" />	
+        <hos_state state="off_duty" hours="22" />	<!--  day 8 7/15  recap day 5-->
+        <hos_state state="driving" hours="1" />		<!--  if reset A is used this is a violation, if reset B is used this is NOT a violation -->	
+        
+	</driver_log>
+	<result ruleset="us" recapDay="5" recapWorked="01.00">
+        <hos_state state="off_duty" hours="22" />				
+        <hos_state state="driving" hours="1" />				
+	</result>
+</testcase>
+
+
+</testcases>

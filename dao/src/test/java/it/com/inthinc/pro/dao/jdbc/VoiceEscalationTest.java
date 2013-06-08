@@ -385,7 +385,7 @@ System.out.println("account id " + itData.account.getAccountID());
         List<String> addresses = new ArrayList<String>();
         addresses.add("1111111111");
         addresses.add("2222222222");
-        addresses.add("PersonDivisionemail85828888@email.com");
+        addresses.add("PersonDivisionemail85828888@example.com");
         AlertMessageDeliveryType deliveryType = AlertMessageDeliveryType.PHONE;
         EscalationState escalationState = new EscalationState(addresses);
         

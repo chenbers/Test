@@ -268,7 +268,7 @@ public abstract class BaseITData {
         while (retryCount > 0)
 	        try {
 		        person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
-		        		first + "email"+groupID+Util.randomInt(1, 99999)+"@email.com", 
+		        		first + "email"+groupID+Util.randomInt(1, 99999)+"@example.com", 
 		        		null, "5555555555", "5555555555", null, null, null, null, null, "emp01", 
 		                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, 
 		                MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());

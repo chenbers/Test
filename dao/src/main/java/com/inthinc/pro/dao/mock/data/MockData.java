@@ -326,23 +326,23 @@ public class MockData {
                  * "normalUser")); allRoles.put(key, new Role(key++, "supervisor")); allRoles.put(key, new Role(key++, "customUser")); allRoles.put(key, new Role(key++,
                  * "superUser"));
                  */
-                 createUser(idOffset + 1, accountID, groupID, "expired" + groupID, PASSWORD, randomPhone(), randomPhone(), "expired" + groupID + "@email.com", normalRoles,
+                 createUser(idOffset + 1, accountID, groupID, "expired" + groupID, PASSWORD, randomPhone(), randomPhone(), "expired" + groupID + "@example.com", normalRoles,
                          Boolean.FALSE),
-                createUser(idOffset + 2, accountID, groupID, "custom" + groupID, PASSWORD, randomPhone(), randomPhone(), "custom" + groupID + "@email.com", adminRoles,
+                createUser(idOffset + 2, accountID, groupID, "custom" + groupID, PASSWORD, randomPhone(), randomPhone(), "custom" + groupID + "@example.com", adminRoles,
                          Boolean.TRUE),
-                createUser(idOffset + 3, accountID, groupID, "normal" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal" + groupID + "@email.com", normalRoles,
+                createUser(idOffset + 3, accountID, groupID, "normal" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal" + groupID + "@example.com", normalRoles,
                          Boolean.TRUE),
-                createUser(idOffset + 4, accountID, groupID, "readonly" + groupID, PASSWORD, randomPhone(), randomPhone(), "readonly" + groupID + "@email.com", normalRoles,
+                createUser(idOffset + 4, accountID, groupID, "readonly" + groupID, PASSWORD, randomPhone(), randomPhone(), "readonly" + groupID + "@example.com", normalRoles,
                          Boolean.TRUE),
-                createUser(idOffset + 5, accountID, groupID, "superuser" + groupID, PASSWORD, randomPhone(), randomPhone(), "superuser" + groupID + "@email.com", adminRoles,
+                createUser(idOffset + 5, accountID, groupID, "superuser" + groupID, PASSWORD, randomPhone(), randomPhone(), "superuser" + groupID + "@example.com", adminRoles,
                          Boolean.TRUE),
-                createUser(idOffset + 6, accountID, groupID, "supervisor" + groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor" + groupID + "@email.com", adminRoles,
+                createUser(idOffset + 6, accountID, groupID, "supervisor" + groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor" + groupID + "@example.com", adminRoles,
                          Boolean.TRUE), 
-                createUser(idOffset + 7, accountID, groupID, "normal7" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal7" + groupID + "@email.com", normalRoles,
+                createUser(idOffset + 7, accountID, groupID, "normal7" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal7" + groupID + "@example.com", normalRoles,
                                  Boolean.TRUE),
-                createUser(idOffset + 8, accountID, groupID, "normal8" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal8" + groupID + "@email.com", normalRoles,
+                createUser(idOffset + 8, accountID, groupID, "normal8" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal8" + groupID + "@example.com", normalRoles,
                                          Boolean.TRUE),
-                createUser(idOffset + 9, accountID, groupID, "normal9" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal9" + groupID + "@email.com", normalRoles,
+                createUser(idOffset + 9, accountID, groupID, "normal9" + groupID, PASSWORD, randomPhone(), randomPhone(), "normal9" + groupID + "@example.com", normalRoles,
                                                  Boolean.TRUE),
                 };
         for (int userCnt = 0; userCnt < users.length; userCnt++) {
@@ -1020,7 +1020,7 @@ public class MockData {
         person.setLast(last);
         person.setPriPhone(randomPhone());
         person.setSecPhone(randomPhone());
-        person.setPriEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
+        person.setPriEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@example.com");
         person.setTimeZone(MockTimeZones.getRandomTimezone());
         Driver driver = new Driver();
         driver.setDriverID(id);

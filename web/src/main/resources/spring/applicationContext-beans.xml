@@ -776,4 +776,11 @@
   </bean>
   <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean"/>
 
+
+
+	<!--  hos -->
+  <bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
+  	<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
+  </bean>
+
 </beans>

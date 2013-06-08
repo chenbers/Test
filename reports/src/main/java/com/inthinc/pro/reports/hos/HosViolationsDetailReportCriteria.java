@@ -102,7 +102,7 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
                 row.add(new Result(detail.getGroupName(), detail.getGroupName()));
                 row.add(new Result(detail.getTimeStr(), detail.getNotificationTime()));
                 row.add(new Result(detail.getDriverName(), detail.getDriverName()));
-                row.add(new Result(detail.getVehicleId(), detail.getVehicleId()));
+                row.add(new Result(detail.getVehicleName(), detail.getVehicleName()));
                 row.add(new Result(violation.getDetails(), violation.getDetails()));
                 row.add(new Result(violation.getCfr(), violation.getCfr()));
                 row.add(new Result(Converter.convertMinutes(violation.getMinutes()), violation.getMinutes()));

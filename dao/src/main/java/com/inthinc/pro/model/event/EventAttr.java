@@ -414,6 +414,12 @@ public enum EventAttr {
     
     SKIP_INT(32000),
     
+    //DVIR Repair note string attributes
+    ATTR_DVIR_MECHANIC_ID_STR(24598, 10, false), // string 10         fixed length,              \0 filled
+    ATTR_DVIR_INSPECTOR_ID_STR(24599, 11, true), // string 10 max with the 11th char being the null terminator, variable length,              \0 terminated *A
+    ATTR_DVIR_SIGNOFF_ID_STR(24600, 11, true),   // string 10 max with the 11th char being the null terminator, variable length,              \0 terminated
+    ATTR_DVIR_COMMENTS(24601, 61, true),         // string 60 max with the 61th char being the null terminator, variable length,              \0 terminated
+    
 
 ////////////////////////////////////////////////////////////////////////////////////
 //	Attribute ids 32768  [0x8000] to  40959 [0x9FFF] have four byte values,
@@ -515,6 +521,10 @@ public enum EventAttr {
     TIME_DIFF(32855),
     ERROR_DETAILS(32856),
     NOTIFICATION_ENUM(32857),
+    
+    //DVIR
+    ATTR_DVIR_FORM_ID(32863),
+    ATTR_DVIR_SUBMISSION_TIME(32864), 
 
 		    
 ////////////////////////////////////////////////////////////////////////////////////

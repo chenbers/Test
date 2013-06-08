@@ -22,39 +22,41 @@ public class NotebcParser implements NoteParser{
 
 	public Map<String, Object> parseNote(byte[] data)
 	{
-		
-		HashMap<String, Object> attribMap = new HashMap<String, Object>();
-		parseHeader(data, attribMap);
-//        logger.debug("attribMap: " + attribMap);
-		
-		int offset = 32;
-		while ((offset + 2) < data.length)
-		{
-			AttribParser parser = null;
-			int attribCode = ReadUtil.read(data, offset, 2);
-
-//			logger.debug("attribCode: " + attribCode);
-			
-			offset += 2;
-			Attrib attrib = Attrib.get(attribCode);
-
-			
-			if (attrib == null)
-				parser = Attrib.getAttribParser(attribCode);			
-			else
-				parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
-			
-			if (parser != null)
-			{
-				offset = parser.parseAttrib(data, offset, (attrib == null) ? String.valueOf(attribCode) : attrib.getFieldName(), attribMap);
-			}
-			else
-			{
-				logger.error("Parser for code " + attribCode + " is not defined");
-				break;
-			}
+        HashMap<String, Object> attribMap = new HashMap<String, Object>();
+		try {
+    		parseHeader(data, attribMap);
+    //        logger.debug("attribMap: " + attribMap);
+    		
+    		int offset = 32;
+    		while ((offset + 2) < data.length)
+    		{
+    			AttribParser parser = null;
+    			int attribCode = ReadUtil.read(data, offset, 2);
+    
+    			logger.debug("attribCode: " + attribCode);
+    			
+    			offset += 2;
+    			Attrib attrib = Attrib.get(attribCode);
+    
+    			if (attrib == null)
+    				parser = Attrib.getAttribParser(attribCode);			
+    			else {
+    			    parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
+    			}
+    			
+    			if (parser != null)
+    			{
+    				offset = parser.parseAttrib(data, offset, (attrib == null) ? String.valueOf(attribCode) : attrib.getFieldName(), attribMap);
+    			}
+    			else
+    			{
+    				logger.error("Parser for code " + attribCode + " is not defined");
+    				break;
+    			}
+    		}
+		} catch (Throwable e){
+            logger.error("Parser error: " + e);
 		}
-
 		return attribMap;
 	}
 	
