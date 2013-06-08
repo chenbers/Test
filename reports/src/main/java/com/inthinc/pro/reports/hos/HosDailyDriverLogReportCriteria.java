@@ -30,6 +30,7 @@ import com.inthinc.hos.ddl.DDLUtil;
 import com.inthinc.hos.ddl.HOSOccupantLog;
 import com.inthinc.hos.ddl.HosDailyDriverLog;
 import com.inthinc.hos.ddl.HosDriverDailyLogGraph;
+import com.inthinc.hos.ddl.Recap;
 import com.inthinc.hos.ddl.RemarkLog;
 import com.inthinc.hos.ddl.VehicleInfo;
 import com.inthinc.hos.model.DayTotals;
@@ -38,6 +39,8 @@ import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.rules.HOSRules;
+import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -96,6 +99,19 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     private ResourceBundle resourceBundle;
     private DDLUtil ddlUtil;
     
+    private Date currentDateTime;
+    
+    public Date getCurrentDateTime() {
+        if (currentDateTime == null) {
+            return new Date();
+        }
+        return currentDateTime;
+    }
+
+    public void setCurrentDateTime(Date currentDateTime) {
+        this.currentDateTime = currentDateTime;
+    }
+
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
@@ -123,7 +139,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Account account = null;
         List<ReportCriteria> groupCriteriaList = new ArrayList<ReportCriteria>();
 
-        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 7); 
         
         for (Driver driver : reportDriverList) {
             if (account == null) {
@@ -147,7 +163,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Account account = fetchAccount(driver.getPerson().getAcctID());
         initMainOfficeInfo(accountGroupHierarchy, account, driver.getGroupID());
         Address terminalAddress = getTerminalAddress(accountGroupHierarchy, driver);
-        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1);
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 7);
         
         initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, terminalAddress);
     }
@@ -197,7 +213,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     		Address terminalAddress) {
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
         List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
-        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
+        initCriteriaList(interval, expandedInterval, hosRecordList, null, hosOccupantLogList, driver, account, terminalAddress);
     }
 
     protected List<Driver> getReportDriverList(List<Group> reportGroupList){
@@ -252,44 +268,37 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         reportCriteria.addParameter("REPORT_DATE_TIME", sdf.format(date));
     }
 
-    void initCriteriaList(Interval interval, List<HOSRecord> hosRecordList, 
+    void initCriteriaList(Interval interval, Interval expandedInterval, List<HOSRecord> hosRecordList, 
     		List<HOSVehicleDayData> hosVehicleDayData, 
     		List<HOSOccupantLog> hosOccupantLogList, 
     		Driver driver, Account account, 
     		Address terminalAddress) 
     {
 
+        Collections.sort(hosRecordList);
         
         boolean initVehicleDayData = (hosVehicleDayData == null);
         
-        Collections.sort(hosRecordList);
 
-        Date endDate = interval.getEnd().toDate();
-        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
-        HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList);
-        RuleSetType occupantTravelTimeRuleType = null;
-        for (HOSRecord logRec : hosRecordList) {
-            if (logRec.getStatus() != null && logRec.getStatus().equals(HOSStatus.TRAVELTIME_OCCUPANT))
-                occupantTravelTimeRuleType = logRec.getDriverDotType();
-        }
-        
-        if (occupantTravelTimeRuleType != null) {
-            ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, adjustedList, endDate);
-            ddlUtil.adjustForOccupantTravelTime(occupantTravelTimeRuleType, originalAdjustedList, endDate);
-        }
+        LocalDate localEndDate = new LocalDate(expandedInterval.getEnd());
+        Date endDate = localEndDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone())).plusDays(1).minusSeconds(1).toDate();
+        RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
+        Date currentTime = getCurrentDateTime();
+
+        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList, endDate);
+        HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList, endDate);
+
         List<HOSRec> hosRecapList = HOSUtil.getRecListFromLogList(hosRecordList, endDate, driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT);
-        
+        HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driverRuleSetType);
+        hosRecapList = rules.adjustStatuses(hosRecapList, endDate);
+
         Collections.reverse(hosRecordList);
 
-        Date currentTime = new Date();
-        
-        RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
 
         criteriaList = new ArrayList<ReportCriteria>();
 
         for (DateTime intervalDay = interval.getStart(); intervalDay.isBefore(interval.getEnd()); intervalDay = intervalDay.plusDays(1)) 
         {
-            
             LocalDate localDate = new LocalDate(intervalDay);
             DateTime driverDay = localDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
             DateTimeZone dateTimeZone = ddlUtil.getBestTimeZone(driverDay.toDate(), adjustedList.getHosList(), driver.getPerson().getTimeZone());
@@ -309,7 +318,6 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             HosDailyDriverLog dayData= new HosDailyDriverLog();
             dayData.setCorrectedDayTotals(adjustedList.getAdjustedDayTotals(logListForDay));
             dayData.setDay(dateTimeFormatter.print(day));
-            dayData.setRemarksList(getRemarksListForDay(day, hosRecordList));
             dayData.setCarrierName(carrierName);
             dayData.setMainAddress(mainOfficeDisplayAddress);
             dayData.setTerminalAddress(terminalAddress == null ? "" : terminalAddress.getDisplayString());
@@ -332,8 +340,9 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals(), isDSTStart, isDSTEnd));
  
             }
-            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone));
+            dayData.setRecap(ddlUtil.initRecap(ruleSetType, day, hosRecapList, dayData.getCorrectedDayTotals(), dateTimeZone, new DateTime(currentTime), expandedInterval.getEnd()));
             dayData.setRecapType(ddlUtil.getRecapType(dayData.getRecap()));
+            dayData.setRemarksList(getRemarksListForDay(day, hosRecordList, hosRecapList, ruleSetType, dayData.getRecap()));
 
             List<HosDailyDriverLog> dataList = new ArrayList<HosDailyDriverLog>();
             dataList.add(dayData);
@@ -361,7 +370,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 }
                 if (!alreadyAdded) {
                     VehicleInfo vehicleInfo = new VehicleInfo();
-                    Integer vehicleID = (Integer)(rec.getVehicleID());
+                    Integer vehicleID = Integer.valueOf(rec.getVehicleID().toString().trim());
                     vehicleInfo.setStartOdometer(getVehicleStartOdometer(day, rec, hosRecordList));
                     vehicleInfo.setName(getVehicleNameStr(vehicleID));
                     vehicleInfo.setVehicleID(rec.getVehicleID());
@@ -456,8 +465,10 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     }
 
 
-    private List<RemarkLog> getRemarksListForDay(DateTime day, List<HOSRecord> hosRecordList) {
+    private List<RemarkLog> getRemarksListForDay(DateTime day, List<HOSRecord> hosRecordList, List<HOSRec> recapList, RuleSetType ruleSetType, List<Recap> recaps) {
         List<RemarkLog> remarkLogList = new ArrayList<RemarkLog>();
+        
+        Recap recap = recaps == null || recaps.size() == 0 ? null : recaps.get(0);
         
         DateTime dayEnd = day.plusDays(1);
         HOSRecord priorRecord = null;
@@ -506,8 +517,69 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLogList.add(populateRemarkLog(hosRecordList.get(hosRecordList.size() - 1)));
         }
 
+        return fillInSubdescriptions(remarkLogList, recapList, day, ruleSetType,  recap);
+    }
+    private List<RemarkLog> fillInSubdescriptions(List<RemarkLog> remarkLogList, List<HOSRec> recapList, DateTime day, RuleSetType ruleSetType, Recap recap) {
+        
+        Interval dayInterval = new Interval(day, day.plusDays(1));
+        if (recap != null && recap.getBigReset() != null) {
+            for (RemarkLog remarkLog : remarkLogList) {
+                if (remarkLog.getDeleted())
+                    continue;
+                if (remarkLog.getLogTimeDate().getTime() == recap.getBigReset().toDate().getTime()) {
+                    String resetString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.reset." + ruleSetType.name());
+                    remarkLog.setSubDescription(resetString);
+                }
+            }
+        }
+        List<Interval> passengerExceptionIntervalList = new ArrayList<Interval>();
+        for (HOSRec rec : recapList) {
+            if (rec.getStatus() == HOSStatus.OFF_DUTY_OCCUPANT && rec.getOriginalStatus() == HOSStatus.ON_DUTY_OCCUPANT && rec.getInterval().overlaps(dayInterval)) {
+                passengerExceptionIntervalList.add(rec.getInterval());
+            }
+        }
+        
+        if (passengerExceptionIntervalList.isEmpty())
+            return remarkLogList;
+
+        String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.passengerException");
+        
+        DateTime endDate = dayInterval.getEnd();
+        for (int j = remarkLogList.size()-1; j >= 0; j--) {
+            RemarkLog remarkLog = remarkLogList.get(j);
+            if (remarkLog.getDeleted())
+                continue;
+            DateTime startDate = new DateTime(remarkLog.getLogTimeDate());
+            if (remarkLog.getStatus() == HOSStatus.ON_DUTY_OCCUPANT) {
+                long overlapMillis = 0;
+                Interval remarkLogInterval = new Interval(startDate, endDate);
+                for (Interval passengerExceptionInterval : passengerExceptionIntervalList) {
+                    if (remarkLogInterval.overlaps(passengerExceptionInterval)) {
+                        Interval overlap = remarkLogInterval.overlap(passengerExceptionInterval);
+                        overlapMillis += overlap.toDurationMillis();
+                    }
+                }
+                if (overlapMillis > 0) {
+                    remarkLog.setSubDescription(MessageFormat.format(formatString, hrMinStr(overlapMillis)));
+                }
+            }
+            endDate = startDate;
+        }
+        
+        
+        
         return remarkLogList;
     }
+
+    public String hrMinStr(long ms)
+    {
+        long seconds = ms / 1000;
+        long hours = seconds / 3600;
+        long minutes = (seconds % 3600)/ 60;
+
+        return  (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+    }
+    
     private RemarkLog getDeferralDay2Record(DateTime yesterday, List<HOSRecord> hosRecordList) {
         
         DateTime dayEnd = yesterday.plusDays(1);
@@ -528,7 +600,6 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
                 remarkLog.setDeleted(false);
                 remarkLog.setLogTimeDate(dayEnd.toDate());
                 remarkLog.setLogTimeZone(hosRecord.getTimeZone());
-
                 remarkLog.setLocation(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.webLogin"));
                 remarkLog.setStatusDescription(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.deferralDay2"));
                 return remarkLog;
@@ -565,6 +636,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         return remarkLog;
     }
     
+
 
     private String getEditUserFullName(Integer editUserID) {
       

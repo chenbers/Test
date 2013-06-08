@@ -15,6 +15,7 @@
 		<field name="edited" class="java.lang.Boolean"/>
 		<field name="locationEdited" class="java.lang.Boolean"/>
 		<field name="editor" class="java.lang.String"/>
+		<field name="subDescription" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="vehiclesDataset">
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
@@ -514,6 +515,22 @@
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{editor}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" x="190" y="12" width="320" height="11" isRemoveLineWhenBlank="true"/>
+							<textElement>
+								<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{subDescription}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="190" y="12" width="320" height="11" isRemoveLineWhenBlank="true" backcolor="#999999">
+								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$F{subDescription}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>

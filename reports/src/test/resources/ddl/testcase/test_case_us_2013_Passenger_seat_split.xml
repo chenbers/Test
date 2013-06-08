@@ -1,0 +1,24 @@
+<testcases description="Examples from http://www.fmcsa.dot.gov/documents/hos/logbook.pdf" >
+<testcase description="Driver passenger seat split">
+	<driver_log id="feat412_6" current_date="2013-08-01" current_time="09:00:00">
+        <hos_state state="off_duty" hours="48" />			<!--    reset  -->
+
+        <hos_state state="off_duty" hours="12" />			<!--   day 1  -->
+        <hos_state state="on_duty" hours="3" />				
+        <hos_state state="driving" hours="4" />				
+        <hos_state state="on_duty" hours="6" />				
+        <hos_state state="occupant_on_duty" minutes="30" />				
+        <hos_state state="sleeper" hours="8" />				<!--  day 2  - This would be off duty 1hr and sleeper 8, so this is NOT a shift reset, but the time in sleeper and passenger seat don't count towards the on duty window. -->			
+        <hos_state state="occupant_on_duty" minutes="30" />				
+        <hos_state state="driving" hours="1" />				<!--  so at this point the on duty window is 13 hrs -->								
+	</driver_log>
+	
+	<result ruleset="us" recapDay="2" recapWorked="01.00">
+        <hos_state state="sleeper" hours="7"  minutes="30"/>				
+        <hos_state state="occupant_off_duty" minutes="30" />	<!--  passenger exception -->			
+        <hos_state state="driving" hours="1" />				
+	</result>
+</testcase>
+
+
+</testcases>

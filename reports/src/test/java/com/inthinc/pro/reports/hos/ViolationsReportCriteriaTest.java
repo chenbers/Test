@@ -292,7 +292,6 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             int eCnt = 0;
             for (HosViolationsSummary s : dataList) {
                 HosViolationsSummary expected = hosViolationsExpectedData[testCaseCnt][eCnt++];
-                System.out.println(expected.getGroupName());
                 assertEquals(testCaseName[testCaseCnt] + " driving_1 " + eCnt, expected.getDriving_1(), s.getDriving_1());
                 assertEquals(testCaseName[testCaseCnt] + " driving_2 " + eCnt, expected.getDriving_2(), s.getDriving_2());
                 assertEquals(testCaseName[testCaseCnt] + " driving_2 " + eCnt, expected.getDriving_3(), s.getDriving_3());
@@ -506,7 +505,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         person.setAcctID(accountID);
         person.setPersonID(1);
         person.setEmpid("mock01");
-        person.setPriEmail("mock@email.com");
+        person.setPriEmail("mock@example.com");
         person.setFirst("First");
         person.setLast("Last");
         person.setTimeZone(dateTimeZone.toTimeZone());
@@ -519,10 +518,10 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         assertEquals(testCaseName[testCaseCnt] + " EmployeeId ", expected.getEmployeeId(), s.getEmployeeId());
         assertEquals(testCaseName[testCaseCnt] + " NotificationTime ", expected.getNotificationTime(), s.getNotificationTime());
         assertEquals(testCaseName[testCaseCnt] + " ruleType ", expected.getRuleType(), s.getRuleType());
-        if (expected.getVehicleId() == null)
-            assertNull(testCaseName[testCaseCnt] + " vehicleID ", s.getVehicleId());
+        if (expected.getVehicleName() == null)
+            assertNull(testCaseName[testCaseCnt] + " vehicleName ", s.getVehicleName());
         else
-            assertEquals(testCaseName[testCaseCnt] + " vehicleID ", expected.getVehicleId(), s.getVehicleId());
+            assertEquals(testCaseName[testCaseCnt] + " vehicleName ", expected.getVehicleName(), s.getVehicleName());
         assertEquals(testCaseName[testCaseCnt] + " violationList size ", expected.getViolationsList().size(), s.getViolationsList().size());
     }
 

@@ -21,6 +21,7 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
 		CATEGORIES = new ArrayList<EventCategory>();
 		CATEGORIES.add(EventCategory.NONE);
 		CATEGORIES.add(EventCategory.WARNING);
+		CATEGORIES.add(EventCategory.DVIR);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class PagingDiagnosticsEventsBean extends PagingEventsBean {
     @Override
     public EventCategory getEventCategory()
     {
-    	return EventCategory.WARNING;
+    	return EventCategory.DIAGNOSTICS;
     }
 
 

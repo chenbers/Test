@@ -44,7 +44,7 @@ public class PagingDriverLoginsEventsBean  extends BasePagingNotificationsBean<E
         tableDataProvider.setDateTimeZone(DateTimeZone.forTimeZone(getUser().getPerson().getTimeZone()));
         tableDataProvider.setSort(new TableSortField(SortOrder.DESCENDING, "time"));
         tableDataProvider.setEventCategory(getEventCategory());
-        tableDataProvider.getTimeFrameBean().setYearSelection(true);
+        tableDataProvider.getTimeFrameBean().setYearSelection(false);
         
         table = new BasePaginationTable<Event>();
         table.initModel(tableDataProvider);

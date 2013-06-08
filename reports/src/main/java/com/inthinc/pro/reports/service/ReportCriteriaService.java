@@ -125,6 +125,7 @@ public interface ReportCriteriaService
     
     // DVIR
     ReportCriteria getDVIRViolationReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone);
+    ReportCriteria getDVIRInspectionRepairCompleteCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, Boolean isDetailed);
     
     // Prepare report criteria
     List<ReportCriteria> getReportCriteria(ReportSchedule reportSchedule, GroupHierarchy groupHierarchy, Person person);

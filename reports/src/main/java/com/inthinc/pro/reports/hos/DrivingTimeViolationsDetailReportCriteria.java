@@ -7,7 +7,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.inthinc.hos.model.HOSRec;
-import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
@@ -46,12 +45,4 @@ public class DrivingTimeViolationsDetailReportCriteria extends ViolationsDetailR
         
     }
 
-    @Override
-    protected List<HOSStatus> getHOSStatusFilterList() {
-        List<HOSStatus> statusFilterList = super.getHOSStatusFilterList();
-        statusFilterList.add(HOSStatus.DRIVING_NONDOT);
-        statusFilterList.add(HOSStatus.STOP_DRIVING_NONDOT);
-        return statusFilterList;
-    }
-    
 }
