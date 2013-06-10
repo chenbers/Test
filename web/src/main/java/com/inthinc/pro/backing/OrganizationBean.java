@@ -452,11 +452,14 @@ public class OrganizationBean extends BaseBean {
         	String editGroupName = treeNode.getBaseEntity().getName();
         	Integer editGroupID = treeNode.getBaseEntity().getGroupID();
         	
-        	for (Group child : organizationHierarchy.getChildren(organizationHierarchy.getGroup(selectedParentGroupID))) {
-        		if (child.getName().equalsIgnoreCase(editGroupName) && !child.getGroupID().equals(editGroupID)) {
-                    addErrorMessage(MessageUtil.getMessageString("group_edit_error_duplicate_name"));
-                    return false;
-        		}
+        	List<Group> children = organizationHierarchy.getChildren(organizationHierarchy.getGroup(selectedParentGroupID));
+        	if (children != null) {
+            	for (Group child : children) {
+            		if (child.getName().equalsIgnoreCase(editGroupName) && !child.getGroupID().equals(editGroupID)) {
+                        addErrorMessage(MessageUtil.getMessageString("group_edit_error_duplicate_name"));
+                        return false;
+            		}
+            	}
         	}
         }
         
