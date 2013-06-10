@@ -46,7 +46,7 @@
 			<textField>
 				<reportElement x="400" y="70" width="381" height="16"/>
 				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.groupid} + ": " + $P{GROUP}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.groupName} + ": " + $P{GROUP}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="Heading 1" x="400" y="0" width="382" height="40"/>
@@ -69,7 +69,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="75" splitType="Stretch">
+		<band height="88" splitType="Stretch">
 			<frame>
 				<reportElement x="0" y="32" width="782" height="20"/>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -142,6 +142,9 @@
 				<textElement textAlignment="Center" lineSpacing="Single"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.signOff}]]></textFieldExpression>
 			</textField>
+			<break>
+				<reportElement x="0" y="76" width="100" height="1"/>
+			</break>
 		</band>
 	</detail>
 	<pageFooter>

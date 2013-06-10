@@ -46,7 +46,7 @@
 			<textField>
 				<reportElement x="400" y="70" width="381" height="16"/>
 				<textElement lineSpacing="Single"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.groupid} + ": " + $P{GROUP}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvir.groupName} + ": " + $P{GROUP}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="Heading 1" x="400" y="0" width="382" height="40"/>

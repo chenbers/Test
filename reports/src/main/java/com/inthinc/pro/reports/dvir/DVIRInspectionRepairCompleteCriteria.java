@@ -154,7 +154,7 @@ public class DVIRInspectionRepairCompleteCriteria extends ReportCriteria {
             if(isDetailed){
                 for(DVIRInspectionRepairReport report : dvirInspectionList) {
                     Integer vehicleID = report.getVehicleID();
-                    Date submissionDate = new Date(Long.valueOf(report.getAttr_formSubmissionTime()));
+                    Date submissionDate = new Date(Long.valueOf(report.getAttr_formSubmissionTime()) * 1000);
                     Integer formDefinitionID = Integer.valueOf(report.getAttr_formDefinitionID());
                     Integer groupID = report.getGroupID();
                     
@@ -185,8 +185,8 @@ public class DVIRInspectionRepairCompleteCriteria extends ReportCriteria {
             if (this.groupHierarchy != null && this.groupHierarchy.getGroup(this.groupID) != null) {
                 group = this.groupHierarchy.getGroup(this.groupID);
             }
-            if (group.getGroupID() != null)
-                criteria.addParameter(GROUP, String.valueOf(group.getGroupID()));
+            if (group != null && group.getName() != null)
+                criteria.addParameter(GROUP, String.valueOf(group.getName()));
             else
                 criteria.addParameter(GROUP, "");
             

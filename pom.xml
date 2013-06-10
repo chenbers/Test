@@ -4,7 +4,7 @@
     <groupId>com.inthinc.pro</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.34-SNAPSHOT</version>
+    <version>2.0.35-SNAPSHOT</version>
     <name>TIWI Pro Application</name>
     <url>http://www.iwiglobal.com</url>
     <organization>
@@ -251,7 +251,7 @@ WWUUnm]]>
                     <scmCommentPrefix>[Maven]</scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <releaseProfiles>qa</releaseProfiles>
-                    <tagNameFormat>${project.version}</tagNameFormat>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
                     <pushChanges>false</pushChanges>
                     <localCheckout>true</localCheckout>
                 </configuration>
