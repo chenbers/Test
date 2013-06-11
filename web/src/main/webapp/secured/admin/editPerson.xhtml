@@ -314,7 +314,8 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_fobID}:" /></td>
                             <td>
                               <a4j:outputPanel id="fobIDValues">
-                              <h:outputText  rendered="#{(not empty personBean.item.driver.fobID)}" value="#{personBean.item.driver.fobID}"/>
+                              <rich:message for="editPerson-driver_fobID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <h:inputText  value="#{personBean.item.driver.fobID}" id="editPerson-driver_fobID" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="24" disabled="#{personBean.rfidInfoDisabled}"/>
                               <h:commandLink rendered="#{(not empty personBean.item.driver.fobID)}"
                                 onclick="Richfaces.showModalPanel('clearFobID'); return false;" style="vertical-align: middle;"><img src="/tiwipro/images/ico_addAnother_remove.png" alt="#{messages.editPerson_clearFobPairing}" /></h:commandLink>
                               
