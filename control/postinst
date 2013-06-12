@@ -57,7 +57,7 @@ do
         echo "No ${FILE} file in /var/www, adding at $(date)"
         cp /etc/tiwipro/www/${FILE} /var/www/${FILE}
     else
-        echo "404 file already exists in /var/www, not setting one up"
+        echo "${FILE} file already exists in /var/www, not setting one up"
     fi
 done
 
