@@ -42,7 +42,7 @@
 				<textField isStretchWithOverflow="true">
 					<reportElement x="572" y="0" width="140" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{timestamp},$P{REPORT_LOCALE})]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertMillisToDate($F{timestamp},$P{REPORT_LOCALE})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement x="65" y="0" width="140" height="20"/>
