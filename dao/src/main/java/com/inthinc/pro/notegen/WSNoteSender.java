@@ -81,7 +81,6 @@ System.out.println("sendNote: " + uri);
 
     
     private String getResponseBodyFromStream(InputStream is) {
-        System.out.println("parsing response response");
         String str = "";
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

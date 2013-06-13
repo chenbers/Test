@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.inthinc.pro.comm.parser.util.ReadUtil;
-
 
 public enum Attrib {
 	
@@ -37,6 +35,7 @@ public enum Attrib {
 	EMU_HASH_4(205, AttribParserType.INTEGER),
 	
 	MPGODO(224, AttribParserType.INTEGER),
+	TRIP_DURATION(225, AttribParserType.INTEGER),
 	
 	/* byte */
 	AVGSPEED(2, AttribParserType.BYTE, "avgSpeed"),
