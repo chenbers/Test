@@ -454,7 +454,11 @@ public enum NoteType implements BaseEnum {
     
     //TODO: DVIR REPAIR TYPE
     SAT_EVENT_DVIR_REPAIR(232, EventType.DVIR_REPAIR),//DVIRRepairEvent.class
+
     
+    //TODO: BACKUP TYPE
+    BACKING(235, BackingEvent.class),
+
     // new notifications without header information - not really a real notification.
     // used primarily for background communication
     STRIPPED_LOWER_LIMIT(243),

@@ -87,6 +87,7 @@ import com.inthinc.pro.reports.ifta.StateMileageFuelByVehicleReportCriteria;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
+import com.inthinc.pro.reports.performance.BackingReportCriteria;
 import com.inthinc.pro.reports.performance.DriverCoachingReportCriteria;
 import com.inthinc.pro.reports.performance.DriverExcludedViolationsCriteria;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
@@ -1425,6 +1426,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         return builder.build();
     }
 
+
+    
+    @Override
+    public ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType) {
+        return getBackingReportCriteria(accountGroupHierarchy, groupID, timeFrame, locale, timeZone, measurementType, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        
+    }
+    @Override
+    public ReportCriteria getBackingReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, TimeFrame timeFrame, Locale locale, DateTimeZone timeZone, MeasurementType measurementType, boolean includeInactiveDrivers, boolean includeZeroMilesDrivers) {
+        BackingReportCriteria.Builder builder = new BackingReportCriteria.Builder(accountGroupHierarchy, groupReportDAO, groupID, timeFrame, measurementType, includeInactiveDrivers, includeZeroMilesDrivers);
+        builder.setLocale(locale);
+        builder.setDateTimeZone(timeZone);
+        return builder.build();
+    }
+
     public DriveTimeDAO getDriveTimeDAO() {
         return driveTimeDAO;
     }
@@ -1868,6 +1884,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     break;
                 case DVIR_REPAIR_DETAIL:
                     reportCriteriaList.add(getDVIRInspectionRepairCompleteCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forTimeZone(person.getTimeZone()), true));
+                    break;
+                case BACKING_REPORT:
+                    reportCriteriaList.add(getBackingReportCriteria(groupHierarchy, reportSchedule.getGroupID(), timeFrame, person.getLocale(), DateTimeZone.forID(person.getTimeZone().getID()),
+                            person.getMeasurementType(), reportSchedule.getIncludeInactiveDrivers(), reportSchedule.getIncludeZeroMilesDrivers()));
                     break;
                 default:
                     break;

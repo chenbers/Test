@@ -63,7 +63,8 @@ public enum EventType implements BaseEnum {
     DVIR_DRIVEN_UNSAFE(47),
     DVIR_DRIVEN_NOPREINSPEC(48),
     DVIR_DRIVEN_NOPOSTINSPEC(49),
-    DVIR_REPAIR(50);
+    DVIR_REPAIR(50),
+    BACKING(51);
 
 
     private int code;

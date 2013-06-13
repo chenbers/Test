@@ -15,6 +15,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -60,23 +61,6 @@ public class TeamStatisticsBean extends BaseBean {
     }
 
     public void init() {
-    // logger.info("TeamStatisticsBean:init()");
-
-    // Set the styles for the color-coded box
-    // loadScoreStyles();
-    // cleanData();
-
-    // All set, save so we don't grab the data again
-    // teamCommonBean.getCachedResults().put(key, driverStatistics);
-
-    // Find the totals
-    // driverTotals = getDriverTotals();
-
-    // Set the score and style for the top of the containing page
-    // teamOverallScore = driverTotals.get(0).getScore().getOverall().intValue();
-    // teamOverallScoreStyle = driverTotals.get(0).getScoreStyle();
-
-    // logger.info("TeamStatisticsBean:init()-END");
     }
 
     public List<DriverVehicleScoreWrapper> getDriverStatistics() {
@@ -88,26 +72,28 @@ public class TeamStatisticsBean extends BaseBean {
             driverStatistics = teamCommonBean.getCachedResults().get(key);
 
         } else {
+            boolean isVehicleStats = ("teamVehicleStatistics").equals(teamCommonBean.getSelectedTabId());
+
             // Not there, grab it
-            //  0: day value, start/end day the same, if no driving in time frame will show last DAY score
-            //  1: week value, calculate start and add seven, if no driving in time frame will show last DAY score
-            //  2: month or year, use duration identifier, if no driving in time frame will show last MONTH score
-            switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
-                case 0:
-                    driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(), getGroupHierarchy());
+            // 0: day value, start/end day the same, if no driving in time frame will show last DAY score
+            // 1: week value, calculate start and add seven, if no driving in time frame will show last DAY score
+            // 2: month or year, use duration identifier, if no driving in time frame will show last MONTH score
+            // switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
+            switch (teamCommonBean.getTimeFrame()) {
+                case WEEK:
+                    driverStatistics = (isVehicleStats) ? groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()),
+                            getGroupHierarchy()) : groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
                     break;
-                case 1:
-                    driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
+                case MONTH:
+                case YEAR:
+                    driverStatistics = (isVehicleStats) ? groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration(), getGroupHierarchy())
+                            : groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getAggregationDuration(), getGroupHierarchy());
                     break;
-                case 2:
-                    driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                            teamCommonBean.getTimeFrame().getAggregationDuration(), getGroupHierarchy());
+                default:
+                    driverStatistics = (isVehicleStats) ? groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
+                            getGroupHierarchy()) : groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(),
+                            getGroupHierarchy());
                     break;
-                case 3:
-                    driverStatistics = groupReportDAO.getVehicleScores(teamCommonBean.getGroupID(), 
-                            teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
             }
 
             cleanData(driverStatistics);
@@ -150,10 +136,6 @@ public class TeamStatisticsBean extends BaseBean {
         return local;
     }
 
-    // public void setDriverTotals(List<DriverVehicleScoreWrapper> driverTotals) {
-    // this.driverTotals = driverTotals;
-    // }
-
     public int getNumRowsPerPg() {
         return numRowsPerPg;
     }
@@ -164,20 +146,7 @@ public class TeamStatisticsBean extends BaseBean {
 
     public Integer getTeamOverallScore() {
         return getDriverTotals().get(0).getScore().getOverall().intValue();
-        // return teamOverallScore;
     }
-
-    // public void setTeamOverallScore(Integer teamOverallScore) {
-    // this.teamOverallScore = teamOverallScore;
-    // }
-
-    // public String getTeamOverallScoreStyle() {
-    // return teamOverallScoreStyle;
-    // }
-    //
-    // public void setTeamOverallScoreStyle(String teamOverallScoreStyle) {
-    // this.teamOverallScoreStyle = teamOverallScoreStyle;
-    // }
 
     public void exportReportToPdf() {
         getReportRenderer().exportSingleReportToPDF(buildReportCriteria(), getFacesContext());

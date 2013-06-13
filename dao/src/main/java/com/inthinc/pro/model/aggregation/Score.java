@@ -90,6 +90,8 @@ public class Score {
     private Number speedEvents8To14MphOver;
     private Number speedEvents15PlusMphOver;
     private Number speedEventsOver80Mph;
+    private Number backing;
+    private Number backingEvents;
 
 
     public Score()
@@ -152,6 +154,8 @@ public class Score {
 	    speedEvents8To14MphOver = 0;
 	    speedEvents15PlusMphOver = 0;
 	    speedEventsOver80Mph = 0;
+	    backing = 0;
+	    backingEvents = 0;
     }
     
     
@@ -870,7 +874,24 @@ public class Score {
         this.speedEventsOver80Mph = speedEventsOver80Mph;
     }
 
+    public Number getBacking() {
+        return backing;
+    }
 
+
+    public void setBacking(Number backing) {
+        this.backing = backing;
+    }
+
+
+    public Number getBackingEvents() {
+        return backingEvents;
+    }
+
+
+    public void setBackingEvents(Number backingEvents) {
+        this.backingEvents = backingEvents;
+    }
 
     @Override
     public String toString() {
@@ -888,7 +909,7 @@ public class Score {
                 + speedOdometer1 + ", speedOdometer2=" + speedOdometer2 + ", speedOdometer3=" + speedOdometer3 + ", speedOdometer4=" + speedOdometer4 + ", speedOdometer5=" + speedOdometer5
                 + ", speedOver=" + speedOver + ", speedOver1=" + speedOver1 + ", speedOver2=" + speedOver2 + ", speedOver3=" + speedOver3 + ", speedOver4=" + speedOver4 + ", speedOver5=" + speedOver5
                 + ", speeding=" + speeding + ", speeding1=" + speeding1 + ", speeding2=" + speeding2 + ", speeding3=" + speeding3 + ", speeding4=" + speeding4 + ", speeding5=" + speeding5
-                + ", startingDate=" + startingDate + ", startingOdometer=" + startingOdometer + ", trips=" + trips + "]";
+                + ", startingDate=" + startingDate + ", startingOdometer=" + startingOdometer + ", trips=" + trips + ", backing=" + backing + "backingEvents=" + backingEvents + "]";
     }
 
 }

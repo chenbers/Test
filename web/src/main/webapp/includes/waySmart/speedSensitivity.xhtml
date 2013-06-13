@@ -86,10 +86,10 @@
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled or vehiclesBean.speedInfoDisabled}" onfocus="this.select();" 
-                                          id="speedLimit" value="#{vehiclesBean.item.editableVehicleSettings.self.speedLimitInteger}" width="250"
+                                          id="speedLimit" value="#{vehiclesBean.item.editableVehicleSettings.self.speedLimitInteger}" style="width:250px"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
-                                          minValue="${tiwiprofn:convertMphToKph(40)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1" 
+                                          minValue="${tiwiprofn:convertMphToKph(0)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1"
                                           onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
