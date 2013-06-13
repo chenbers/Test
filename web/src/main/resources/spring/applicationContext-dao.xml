@@ -37,6 +37,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <constructor-arg value="${cassandra.nodeAddress}" />
         <constructor-arg value="${cassandra.maxActive}" />
         <constructor-arg value="${cassandra.autoDiscoverHost}" />
+        <constructor-arg value="${cassandra.quorumConsistency}" />
     </bean>
 
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
