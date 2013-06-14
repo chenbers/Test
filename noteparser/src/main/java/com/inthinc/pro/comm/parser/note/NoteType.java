@@ -196,8 +196,22 @@ public enum NoteType {
 	IDLING(208, new Attrib[]{}),
 	CRASH(209, new Attrib[]{}),
 	SPEED_COACHING(210, new Attrib[]{}),
+    SEATBELT_COACHING(211, new Attrib[]{}),
+    SUB_THRESHOLD_CRASH(212, new Attrib[]{}),
+    UNPLUGGED_WHILE_ASLEEP(213, new Attrib[]{}),
+    IDLE_FAKETIME(214, new Attrib[]{}),
     CHECK_HOURS_EX(215, new Attrib[]{}),
+    DRIVER_HISTOGRAM_STATS(216, new Attrib[]{}),
+    STOP_MOTION(217, new Attrib[]{}),
     GET_VSETTINGS(218, new Attrib[]{}),
+    RF_KILL(219, new Attrib[]{}),
+    
+    DIAGNOSTIC(220, new Attrib[]{}), // send general diagnostic info to server
+    MAN_DOWN_EX(221, new Attrib[]{}),
+    DVIR_DRIVEN_UNSAFE(223, new Attrib[]{}),
+    DVIR_DRIVEN_NOPREINSPEC(224, new Attrib[]{}),
+    DVIR_DRIVEN_NOPOSTINSPEC(225, new Attrib[]{}),
+    
     CREATE_ROAD_HAZARD(226, new Attrib[]{}),
     RHA_CONFIRM_REJECT(227, new Attrib[]{}),
     SEND_ROAD_HAZARDS(228, new Attrib[]{}),
