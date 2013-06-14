@@ -99,6 +99,8 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
         int totAggBumpEvt = 0;
         int totAggLeftEvt = 0;
         int totAggRightEvt = 0;   
+        int totBacking = 0;
+        int totBackingEvt = 0;
         
         float totActiveDrivers = 0;
         int totHeavyDrivers = 0;
@@ -147,6 +149,12 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
                 totDriveTime += dvsc.getScore().getDriveTime().intValue();
             }            
             
+            if ( dvsc.getScore().getBacking() != null ) {
+                totBacking += dvsc.getScore().getBacking().intValue();
+            }             
+            if ( dvsc.getScore().getBackingEvents() != null ) {
+                totBackingEvt += dvsc.getScore().getBackingEvents().intValue();
+            }
             if (dvsc.getScore().getMpgHeavy() != null ||
             		dvsc.getScore().getMpgMedium() != null ||
             		dvsc.getScore().getMpgLight() != null) {
@@ -242,7 +250,8 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
         tmp.setAggressiveBumpEvents(totAggBumpEvt);
         tmp.setAggressiveLeftEvents(totAggLeftEvt);
         tmp.setAggressiveRightEvents(totAggRightEvt);
-        
+        tmp.setBacking(totBacking);
+        tmp.setBackingEvents(totBackingEvt);
         dvsw.setScore(tmp);
         
         

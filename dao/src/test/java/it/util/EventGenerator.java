@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.BackingEvent;
 import com.inthinc.pro.model.event.DOTStoppedEvent;
 import com.inthinc.pro.model.event.DOTStoppedState;
 import com.inthinc.pro.model.event.Event;
@@ -307,6 +308,12 @@ public class EventGenerator
                 event = new IdleEvent(0l, 0, NoteType.IDLE,
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
                         ReportTestConst.LO_IDLE_TIME, ReportTestConst.HI_IDLE_TIME);
+            }
+            else if (data.isBackingIndex(i))
+            {
+                event = new BackingEvent(0l, 0, NoteType.BACKING,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        ReportTestConst.DURATION);
             }
             else if (data.isCrashIndex(i))
             {

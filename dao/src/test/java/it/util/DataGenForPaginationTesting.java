@@ -132,7 +132,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 	EventGeneratorData eventGeneratorDataList[] = {
 	        new EventGeneratorData(0,0,0,0,false,30,0),
 	        new EventGeneratorData(1,1,1,1,false,25,50,true, false, true),
-	        new EventGeneratorData(5,5,5,5,true,20,100,true, false, true),
+	        new EventGeneratorData(5,5,5,5,1, true, 20,100,true, false, true),
 	        new EventGeneratorData(0,0,0,0,false,30,0, false, true, true)
 	 };
 
@@ -252,6 +252,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
             }
 
         }
+
         System.exit(0);
     }
 
