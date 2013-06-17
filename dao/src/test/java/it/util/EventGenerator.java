@@ -25,6 +25,7 @@ import com.inthinc.pro.model.event.ParkingBrakeState;
 import com.inthinc.pro.model.event.QSIVersionEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.ValidDriverEvent;
 import com.inthinc.pro.model.event.VersionState;
 import com.inthinc.pro.model.event.WitnessVersionEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
@@ -254,8 +255,8 @@ public class EventGenerator
             }
             else if (!driverLogon)
             {
-                event = new Event(0l, 0, NoteType.NEW_DRIVER,
-                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
+                event = new ValidDriverEvent(0l, 0, NoteType.NEW_DRIVER,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), data.getEmpId());
                 driverLogon = true;
                 
             }

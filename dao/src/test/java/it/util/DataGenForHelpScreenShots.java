@@ -597,12 +597,14 @@ public class DataGenForHelpScreenShots extends DataGenForTesting {
 		int cnt = 0;
 		
 		boolean found = false;
+		Driver foundDriver = null;
 	    for (GroupData groupData :  teamGroupData)
 	    {
 	    	for (Driver driver : groupData.driverList)
 	    	{
 	    		if (driver.getDriverID().equals(driverID))
 	    		{
+	    		    foundDriver = driver;
 	    			found = true;
 	    			break;
 	    		}
@@ -629,6 +631,9 @@ public class DataGenForHelpScreenShots extends DataGenForTesting {
 				includeCrash = true;
 	    	data = new EventGeneratorData(Util.randomInt(5, 10),Util.randomInt(5, 10),Util.randomInt(5, 10),Util.randomInt(5, 10),includeCrash,Util.randomInt(10, 20),0);
 	    }
+	    
+        data.setEmpId(foundDriver.getPerson().getEmpid());
+
 		
 		return data;
 	}
