@@ -935,7 +935,7 @@ public class ReportServiceTest {
                 Score vscore = vehicleScoreList.get(0).getScore();
 
                 if (teamType == ITData.BAD) {
-                    assertEquals("Bad group should have one Backing per day", timeFrame.getNumberOfDays(), dscore.getBacking());
+                    assertEquals("Bad group should have one Backing per day", timeFrame.getNumberOfDays(), dscore.getBackingTime());
 
                 }
 
@@ -951,7 +951,7 @@ public class ReportServiceTest {
                 assertEquals("Crashes", dscore.getCrashEvents(), vscore.getCrashEvents());
                 assertEquals("Seatbelt Clicks", dscore.getSeatbeltClicks(), vscore.getSeatbeltClicks());
                 assertEquals("Safety Total", dscore.getSafetyTotal(), vscore.getSafetyTotal());
-                assertEquals("Backing", dscore.getBacking(), vscore.getBacking());
+                assertEquals("Backing", dscore.getBackingTime(), vscore.getBackingTime());
                 assertEquals("Backing Events", dscore.getBackingEvents(), vscore.getBackingEvents());
             }
         }

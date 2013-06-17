@@ -152,7 +152,7 @@ public class BackingReportCriteriaTest extends BaseUnitTest {
         
         score.setTrips(2);
         score.setOdometer6(mileage);
-        score.setBacking(1000);
+        score.setBackingTime(1000);
         score.setBackingEvents(5);
         
         wrapper.setScore(score);
