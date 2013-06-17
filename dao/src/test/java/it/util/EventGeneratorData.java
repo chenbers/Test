@@ -18,8 +18,9 @@ public class EventGeneratorData {
     boolean includeWaysmart;
     boolean includeCoaching;
     int zoneID;
+    String empId;
 	
-	List<Integer> speedingIndexes;
+    List<Integer> speedingIndexes;
 	List<Integer> seatbeltIndexes;
 	List<Integer> aggressiveDrivingIndexes;
 	List<Integer> idlingIndexes;
@@ -160,5 +161,13 @@ public class EventGeneratorData {
 	public void setMpg(int mpg) {
 		this.mpg = mpg;
 	}
+
+    public String getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
 
 }

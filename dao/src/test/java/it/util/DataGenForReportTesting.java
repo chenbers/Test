@@ -48,6 +48,7 @@ public class DataGenForReportTesting extends DataGenForTesting {
             {
                 List<Event> eventList = null;
                 EventGeneratorData eventGeneratorData = eventGeneratorDataList[driverType.intValue()];
+                eventGeneratorData.setEmpId(groupData.driver.getPerson().getEmpid());
                 eventList = eventGenerator.generateTripEvents(date, eventGeneratorData);
                 noteGenerator.genTrip(eventList, groupData.device);
                 if (driverType.intValue() == 0) {

@@ -160,7 +160,9 @@ public class DataGenForPerformanceReportTesting extends DataGenForTesting {
                     Vehicle vehicle = groupData.vehicleList.get(i);
                     Device device = groupData.deviceList.get(i);
                     vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driver.getDriverID(), dateTime.toDate());
-                    List<Event> eventList = eventGenerator.generateTripEvents(dateTime.plusMinutes(1).toDate(), eventGeneratorDataList[i]);
+                    EventGeneratorData eventGeneratorData = eventGeneratorDataList[i];
+                    eventGeneratorData.setEmpId(driver.getPerson().getEmpid());
+                    List<Event> eventList = eventGenerator.generateTripEvents(dateTime.plusMinutes(1).toDate(), eventGeneratorData);
                     noteGenerator.genTrip(eventList, device);
                     dateTime = dateTime.plusHours(1);
                 }

@@ -149,6 +149,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 				if (driverType.intValue() == 1 || driverType.intValue() == 2) 
                     eventGeneratorData.zoneID = itData.zone.getZoneID();
 
+				eventGeneratorData.setEmpId(groupData.driver.getPerson().getEmpid());
 				eventList = eventGenerator.generateTripEvents(date, eventGeneratorData);
                 noteGenerator.genTrip(eventList, groupData.device);
 			}		

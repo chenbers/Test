@@ -145,12 +145,14 @@ public class DataGenForReportPaginationTesting extends DataGenForTesting {
 		{
 			if (groupData.driverType.equals(driverType))
 			{
-				
+				int cnt = 0;
 				for (Device device : groupData.deviceList) {
 				    
 	                EventGeneratorData eventGeneratorData = eventGeneratorDataList[driverType.intValue()];
+	                eventGeneratorData.setEmpId(groupData.driverList.get(cnt).getPerson().getEmpid());
 	                List<Event> eventList = eventGenerator.generateTripEvents(date, eventGeneratorData);
 	                noteGenerator.genTrip(eventList, device);
+	                cnt++;
 				}
 			}		
 		}

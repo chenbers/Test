@@ -77,7 +77,10 @@ public abstract class DataGenForTesting  {
 		{
 			if (groupData.driverType.equals(driverType))
 			{
-                List<Event> eventList = eventGenerator.generateTripEvents(date, eventGeneratorDataList[driverType.intValue()]);
+			    EventGeneratorData eventGeneratorData = eventGeneratorDataList[driverType.intValue()];
+                eventGeneratorData.setEmpId(groupData.driver.getPerson().getEmpid());
+                List<Event> eventList = eventGenerator.generateTripEvents(date, eventGeneratorData);
+
                 noteGenerator.genTrip(eventList, groupData.device);
 			}		
 		}
