@@ -73,7 +73,7 @@ public class ScoreTest {
         imeis = new ConcurrentHashMap<String, Map<String, String>>();
         ss = new SiloServiceCreator(server.getPortalUrl(), server.getPortalPort()).getService();
         
-        db = new CassandraDB(false, "Iridium Archive", "note", "note", "10.0.35.40:9160", 10, false);
+        db = new CassandraDB(false, "Iridium Archive", "note", "note", "10.0.35.40:9160", 10, false, false);
         
 
         cs = new ScoreCassandraDAO();
