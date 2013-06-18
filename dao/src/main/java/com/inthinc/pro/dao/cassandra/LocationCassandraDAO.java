@@ -86,8 +86,8 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         vehicleDAO.setSiloService(siloService);
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
-//        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_prod","tp-node9.tiwipro.com:9160", 10, false, false);
-        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_qa", "cache_qa","tp-node9.tiwipro.com:9160", 10, false, false);
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_prod","tp-node9.tiwipro.com:9160", 10, false, false);
+//        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_qa", "cache_qa","tp-node9.tiwipro.com:9160", 10, false, false);
         LocationCassandraDAO dao = new LocationCassandraDAO();
         dao.setCassandraDB(cassandraDB);
         dao.setVehicleDAO(vehicleDAO);
@@ -100,7 +100,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 */
 //        List<Trip> trips = dao.getTripsForDriver(14372, new Date(1362355200000L), new Date()); // List<DriverLocation> driverLocations = getDriverLocations(Integer groupID)
 
-        List<Trip> trips = dao.getTripsForVehicle(57533, new Date(0), new Date()); 
+        List<Trip> trips = dao.getTripsForVehicle(22823, new Date(0), new Date()); 
         dao.logTrips(trips);
         for(Trip dTrip : trips)
         {
@@ -481,9 +481,9 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     private List<Trip> fetchTripsForAsset(Integer assetId, Integer startTime, Integer endTime, boolean isDriver, boolean includeRoute) {
         List<Long> rowKeysList = fetchTripsForAssetFromIndex(assetId, startTime, endTime, isDriver);
         List<Trip> tripList = fetchTrips(rowKeysList, assetId, isDriver, includeRoute);
-        Trip trip = fetchCurrentTripForAsset(assetId, isDriver);
-        if (trip != null)
-            tripList.add(0, trip);
+        Trip currentTrip = fetchCurrentTripForAsset(assetId, isDriver);
+        if (currentTrip != null && DateUtil.convertDateToSeconds(currentTrip.getStartTime()) <= endTime)
+            tripList.add(0, currentTrip);
 
         return tripList;
     }
