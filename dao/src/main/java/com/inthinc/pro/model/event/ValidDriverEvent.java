@@ -4,8 +4,14 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.inthinc.pro.dao.annotations.event.EventAttrID;
+
 @XmlRootElement
 public class ValidDriverEvent extends LoginEvent {
+    
+    @EventAttrID(name="MCM_RULESET")
+    private Integer dotType;
+
     
     public ValidDriverEvent() {
         super();
@@ -19,4 +25,12 @@ public class ValidDriverEvent extends LoginEvent {
     public EventType getEventType() {
         return EventType.NEW_DRIVER;
     }
+    public Integer getDotType() {
+        return dotType;
+    }
+
+    public void setDotType(Integer dotType) {
+        this.dotType = dotType;
+    }
+
 }

@@ -160,7 +160,7 @@ public class EventGenerator
         Integer odometer = ReportTestConst.MILES_PER_EVENT;
         int locCnt = ReportTestConst.EVENTS_PER_DAY;
         boolean ignitionOn = false;
-        boolean driverLogon = false;
+//        boolean driverLogon = false;
         boolean badSpeeding = false;
         int adCnt = 0;
         int realEventCnt = 0;
@@ -253,13 +253,14 @@ public class EventGenerator
                 ignitionOn = true;
                 
             }
-            else if (!driverLogon)
-            {
-                event = new ValidDriverEvent(0l, 0, NoteType.NEW_DRIVER,
-                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), data.getEmpId());
-                driverLogon = true;
-                
-            }
+//            else if (!driverLogon)
+//            {
+//                event = new ValidDriverEvent(0l, 0, NoteType.NEW_DRIVER,
+//                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), data.getEmpId());
+//                ((ValidDriverEvent)event).setDotType(0);
+//                driverLogon = true;
+//                
+//            }
             else if (i == (locCnt-1))
             {
 //System.out.println("ignition off event count = " + realEventCnt);             
