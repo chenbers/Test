@@ -298,6 +298,7 @@ public enum NoteType {
                 || noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
                 || noteType == NO_DRIVER
                 || noteType == LOW_BATTERY_POTENTIAL_TAMPERING
+                || noteType == UNPLUGGED
 //              || noteType == LOW_POWER_MODE
                 );
     }
