@@ -207,7 +207,7 @@ public class EventGenerator
                                            90, 65, 60, ReportTestConst.MILES_PER_EVENT, 10);
                         break;
                     case ReportTestConst.HARD_VERT_820_IDX:
-                    case ReportTestConst.HARD_VERT_820_SECONDARY_IDX:
+//                    case ReportTestConst.HARD_VERT_820_SECONDARY_IDX:
                         event = new HardVertical820Event(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 99, odometer, 
                                        locations[i].getLat(), locations[i].getLng());
                         break;
