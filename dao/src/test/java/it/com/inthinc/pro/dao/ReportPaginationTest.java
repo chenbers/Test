@@ -60,7 +60,7 @@ public class ReportPaginationTest {
     		new TestFilterParams("groupID", "XXX", 0),
     		new TestFilterParams("groupID", goodGroupID.toString(), countPerGroup),
     		new TestFilterParams("employeeID", "XXX", 0),
-    		new TestFilterParams("employeeID", "emp", countPerGroup),
+    		new TestFilterParams("employeeID", "e", countPerGroup),
     		new TestFilterParams("groupName", "XXX", 0),
     		new TestFilterParams("groupName", goodGroupName, countPerGroup),
     		new TestFilterParams("driverName", "XXX", 0),
