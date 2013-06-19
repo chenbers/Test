@@ -438,8 +438,10 @@ ALERT_TYPE_IGNITION_ON
                     new HOSNoHoursEvent(0l, 0, NoteType.HOS_NO_HOURS, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, HOSNoHoursState.DRIVING)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED, new Event[] {
                     new DOTStoppedEvent(0l, 0, NoteType.DOT_STOPPED, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, DOTStoppedState.DOT_INSPECTION)}),
+/* Commented out by BMiller 6/18/2013   218 Note Type is used for getting vsettings over sat..  
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_OFF_HOURS, new Event[] {
                     new Event(0l, 0, NoteType.OFF_HOURS_DRIVING, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+*/                    
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PARKING_BRAKE, new Event[] {
                     new ParkingBrakeEvent(0l, 0, NoteType.PARKING_BRAKE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, ParkingBrakeState.DRIVING)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_QSI_UPDATED, new Event[] {
