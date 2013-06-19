@@ -604,12 +604,15 @@ public class SiloServiceTest {
         driverDAO.setSiloService(siloService);
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
 //        LocationHessianDAO locationDAO = new LocationHessianDAO();
  //       locationDAO.setSiloService(siloService);
         LocationCassandraDAO locationDAO = new LocationCassandraDAO();
         locationDAO.setCassandraDB(cassandraDB);
         locationDAO.setDriverDAO(driverDAO);
         locationDAO.setVehicleDAO(vehicleDAO);
+        locationDAO.setDeviceDAO(deviceDAO);
    
         driverDAO.setLocationDAO(locationDAO);
         vehicleDAO.setLocationDAO(locationDAO);
