@@ -118,7 +118,7 @@ public class BackingReportCriteria extends ReportCriteria {
                     String groupName = groupHierarchy.getFullGroupName(dvsw.getDriver().getGroupID());
 
                     BackingReportCriteria.BackingWrapper backingWrapper = new BackingReportCriteria.BackingWrapper(driverName, score.getTrips().intValue(), score.getBackingEvents().intValue(),
-                            driveMiles, score.getBacking().intValue(), groupName);
+                            driveMiles, score.getBackingTime().intValue(), groupName);
                     backingWrappers.add(backingWrapper);
                 }
             }

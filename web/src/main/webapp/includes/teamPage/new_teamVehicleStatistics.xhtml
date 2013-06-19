@@ -190,10 +190,10 @@
 						#{messages.team_backing_time}
 					</f:facet>
 
-                    <h:outputFormat value="#{messages.reports_time}" rendered="#{total.score.backing != null}">
-                    	<a4j:actionparam value="#{total.score.backing}" converter="TimeToStringConverter"/>                    
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{total.score.backingTime != null}">
+                    	<a4j:actionparam value="#{total.score.backingTime}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>	
-                    <h:outputText value="00:00:00" rendered="#{total.score.backing == null}"/>								
+                    <h:outputText value="00:00:00" rendered="#{total.score.backingTime == null}"/>								
 				</rich:column>
 				<rich:column rendered="#{tableColumns['backing'].visible}" id="newTeamStatsTab-totalBacking">
 					<f:facet name="header">
@@ -335,15 +335,15 @@
 					<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal ne 0}"/>
                    	<h:outputText value="#{item.score.safetyTotal}" rendered="#{item.score.safetyTotal eq 0}"/>
 				</rich:column>							
-				<rich:column rendered="#{tableColumns['backing_time'].visible}" sortBy="#{item.score.backing}" id="newTeamStatsTab-backingTime">
+				<rich:column rendered="#{tableColumns['backing_time'].visible}" sortBy="#{item.score.backingTime}" id="newTeamStatsTab-backingTime">
 					<f:facet name="header">
 						#{messages.team_backing_time}
 					</f:facet>
 
-                    <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.backing != null}">
-                    	<a4j:actionparam value="#{item.score.backing}" converter="TimeToStringConverter"/>                    
+                    <h:outputFormat value="#{messages.reports_time}" rendered="#{item.score.backingTime != null}">
+                    	<a4j:actionparam value="#{item.score.backingTime}" converter="TimeToStringConverter"/>                    
                     </h:outputFormat>	
-                    <h:outputText value="00:00:00" rendered="#{item.score.backing == null}"/>								
+                    <h:outputText value="00:00:00" rendered="#{item.score.backingTime == null}"/>								
 				</rich:column>
 				<rich:column rendered="#{tableColumns['backing'].visible}" sortBy="#{item.score.backingEvents}" id="newTeamStatsTab-backing">
 					<f:facet name="header">
