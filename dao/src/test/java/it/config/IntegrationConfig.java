@@ -25,6 +25,17 @@ public class IntegrationConfig extends Properties
     public final static String JDBC_MYSQL_USERNAME = "jdbc.mysql.username";
     public final static String JDBC_MYSQL_PASSWORD = "jdbc.mysql.password";
     public final static String JDBC_MYSQL_CONNECTION_PROPERTIES = "jdbc.mysql.connectionProperties";
+    
+    
+    public final static String CASSANDRA_CLUSTER = "cassandra.clusterName";
+    public final static String CASSANDRA_KEYSPACE = "cassandra.keyspaceName";
+    public final static String CASSANDRA_CACHE_KEYSPACE = "cassandra.cacheKeyspaceName";
+    public final static String CASSANDRA_NODE_ADDRESS = "cassandra.nodeAddress";
+    public final static String CASSANDRA_AUTODISCOVER_HOSTS = "cassandra.autoDiscoverHost";
+    public final static String CASSANDRA_QUORUM_CONSISTENCY = "cassandra.quorumConsistency";
+    public final static String CASSANDRA_MAXACTIVE = "cassandra.maxActive";
+    
+
 
     public final static String MINA_HOST = "minaHost";
     public final static String MINA_PORT = "minaPort";
