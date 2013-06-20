@@ -983,7 +983,8 @@ public class ReportServiceTest {
             assertEquals("Lo idle time " + groupIdx, expectedDailyLoIdle[groupIdx], metrics.getLoIdleViolationsMinutes().intValue());
             assertEquals("Hi idle time " + groupIdx, expectedDailyHiIdle[groupIdx], metrics.getHiIdleViolationsMinutes().intValue());
             assertEquals("idle violations count " + groupIdx, expectedIdleViolationCount[groupIdx], metrics.getIdleViolationsCount().intValue());
-            assertEquals("Login count " + groupIdx, expectedLoginCount[groupIdx], metrics.getLoginCount().intValue());
+            // Removed because we are not generating the login events
+//            assertEquals("Login count " + groupIdx, expectedLoginCount[groupIdx], metrics.getLoginCount().intValue());
             assertEquals("Overall Score " + groupIdx, expectedTeamOverall[groupIdx], metrics.getOverallScore());
         }
         
