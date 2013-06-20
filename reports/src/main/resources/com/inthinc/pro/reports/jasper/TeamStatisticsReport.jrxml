@@ -35,7 +35,7 @@
 	<field name="score.crashEvents" class="java.lang.Number"/>
 	<field name="score.safetyTotal" class="java.lang.Number"/>
 	<field name="score.seatbeltClicks" class="java.lang.Number"/>
-	<field name="score.backing" class="java.lang.Number"/>
+	<field name="score.backingTime" class="java.lang.Number"/>
 	<field name="score.backingEvents" class="java.lang.Number"/>
 	<field name="summary" class="java.lang.Boolean"/>
 	<group name="Summary">
@@ -262,7 +262,7 @@ $R{notApplicable} : $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-10" x="700" y="3" width="40" height="17"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{score.backing})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{score.backingTime})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-14" x="740" y="3" width="40" height="17"/>
