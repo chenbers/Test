@@ -376,6 +376,8 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 
     @XmlJavaTypeAdapter(TimeZoneXmlAdapter.class)
     public TimeZone getDriverTimeZone() {
+        if (driverTimeZone == null && driver != null && driver.getPerson() != null)
+            return driver.getPerson().getTimeZone();
         return driverTimeZone;
     }
 
