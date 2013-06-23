@@ -86,8 +86,10 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
         vehicleDAO.setSiloService(siloService);
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
-        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_prod","tp-node9.tiwipro.com:9160", 10, false, false);
+//        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "cache_prod","tp-node9.tiwipro.com:9160", 10, false, false);
 //        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_qa", "cache_qa","tp-node9.tiwipro.com:9160", 10, false, false);
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_dev", "cache_dev","tp-node9.tiwipro.com:9160", 10, false, false);
+        
         LocationCassandraDAO dao = new LocationCassandraDAO();
         dao.setCassandraDB(cassandraDB);
         dao.setVehicleDAO(vehicleDAO);
@@ -100,7 +102,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 */
 //        List<Trip> trips = dao.getTripsForDriver(14372, new Date(1362355200000L), new Date()); // List<DriverLocation> driverLocations = getDriverLocations(Integer groupID)
 
-        List<Trip> trips = dao.getTripsForVehicle(22823, new Date(0), new Date()); 
+        List<Trip> trips = dao.getTripsForVehicle(3897, new Date(0), new Date()); 
         dao.logTrips(trips);
         for(Trip dTrip : trips)
         {
@@ -194,7 +196,7 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
 
     @Override
     public List<Trip> getTripsForVehicle(Integer vehicleID, Date startDate, Date endDate) {
-        logger.debug("LocationCassandraDAO getTripsForVehicle() vehicleID = " + vehicleID);
+        logger.debug("LocationCassandraDAO getTripsForVehicle() vehicleID = " + vehicleID + " startDate: " + startDate + " endDate: " + endDate);
         return fetchTripsForAsset(vehicleID, (int) DateUtil.convertDateToSeconds(startDate), (int) DateUtil.convertDateToSeconds(endDate), false, false);
     }
 
@@ -592,11 +594,14 @@ public class LocationCassandraDAO extends GenericCassandraDAO implements Locatio
     private Trip fetchCurrentTripForAsset(Integer id, boolean isDriver) {
         Trip trip = null;
         Vehicle vehicle = null;
-        if (isDriver)
-            vehicle = vehicleDAO.findByDriverID(id);
-        else
-            vehicle = vehicleDAO.findByID(id);
-
+        
+        if (vehicleDAO != null) {
+            if (isDriver)
+                vehicle = vehicleDAO.findByDriverID(id);
+            else
+                vehicle = vehicleDAO.findByID(id);
+        }
+        
         logger.debug("fetchCurrentTripForAsset vehicle: " + vehicle);
 
         if (vehicle != null) {
