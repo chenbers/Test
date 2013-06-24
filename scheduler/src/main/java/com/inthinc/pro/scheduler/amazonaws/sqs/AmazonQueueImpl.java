@@ -24,11 +24,6 @@ import java.util.Map;
 public class AmazonQueueImpl implements AmazonQueue {
     private static final Logger logger = Logger.getLogger(AmazonQueueImpl.class);
 
-    // Properties File Setup
-    //private static final String PROP_FILE_NAME = "AwsAttributes.properties";
-    private static final String CLASSPATH_CONTEXT_STRING = "classpath*:spring/applicationContext-*xml";
-    private static final String CONTEXT_MESSAGE_SOURCE_BEAN_NAME = "reloadableResourceBundleMessageSource";
-
     //Properties Key Names
     private int maxPop;
     private String queueName;
