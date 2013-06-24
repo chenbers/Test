@@ -163,6 +163,8 @@ System.out.println(interval);
             assertEquals("record count", numDays, driveTimeRecordList.size());
 
             long expectedDriveTime = 1410;
+            if (testGroupData.group.getName().contains("BAD"))
+                expectedDriveTime = 1350; 
             
             DateTime startDate = start.toDateTime();
             for (DriveTimeRecord rec : driveTimeRecordList) {
