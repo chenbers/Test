@@ -99,7 +99,7 @@
                 <entry key="userDAO" value-ref="userDAO" />
                 <entry key="accountDAO" value-ref="accountDAO" />
                 <entry key="webContextPath" value="${contextPath.web}" />
-                <entry key="amazonEmailReportQueue"  value-ref="amazonEmailReportQueue" />
+                <entry key="amazonQueue"  value-ref="amazonQueue" />
             </map>
         </property>
     </bean>
@@ -120,7 +120,7 @@
                 <entry key="webContextPath" value="${contextPath.web}" />
                 <entry key="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
                 <entry key="personDAO" value-ref="personDAO" />
-                <entry key="amazonEmailReportQueue"  value-ref="amazonEmailReportQueue" />
+                <entry key="amazonQueue"  value-ref="amazonQueue" />
             </map>
         </property>
     </bean>
@@ -247,16 +247,18 @@
 	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
   		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
   	</bean>
-    
+
     <!-- Amazon Queue -->
-    <bean id="amazonEmailReportQueue" class="com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueueImpl">
-        <property name="propertyfile" value="tiwipro.properties" />
-        <property name="maxPop" value="${AMAZONQUEUE_EMAILREPORT_MAX_POP}" />
+    <!--
+       Amazon clients use the DefaultAWSCredentialsProviderChain to find AWS credentials. It first looks
+       for environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_KEY, then system properties aws.accessKeyId and aws.secretKey, and finally
+       uses the amazon ec2 metadata client to try and find credentials. So not to place our individual credentials in the project, setup your
+       environment variables to contain your aws credentials.
+    -->
+    <bean id="amazonSQSClient" class="com.amazonaws.services.sqs.AmazonSQSClient"/>
+
+    <bean id="amazonQueue" class="com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueueImpl">
+        <property name="amazonSQSClient" ref="amazonSQSClient" />
         <property name="queueName" value="${AMAZONQUEUE_EMAILREPORT_QUEUENAME}" />
-        <property name="queueAttributes">
-            <map>
-                <entry key="VisibilityTimeout"  value="${AMAZONQUEUE_EMAILREPORT_VISIBILITYTIMEOUT}" />
-            </map>
-        </property>
     </bean>
 </beans>

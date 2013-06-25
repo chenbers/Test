@@ -1,18 +1,15 @@
 package com.inthinc.pro.scheduler.amazonaws.sqs;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.Message;
-import com.inthinc.pro.model.ReportSchedule;
-import com.inthinc.pro.model.Status;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,79 +19,39 @@ import static org.junit.Assert.*;
  * To change this template use File | Settings | File Templates.
  */
 public class AmazonEmailReportQueueTest {
-    private static final Integer REPORT_SCHEDULE_LIST_SIZE = 10;
+    private static AmazonQueueImpl amazonQueue;
 
+    private static final String AWS_ACCESS_KEY_ID_VALUE = "AKIAJNK2BGYZV32YDROQ";
+    private static final String AWS_SECRET_KEY_VALUE = "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";
 
-
-    private static AmazonQueueImpl emailReportQueue;
+    // Make sure this queue does exist on cloud
+    private static final String QUEUE_NAME = "amazon-queue-email-reports-test";
 
     @BeforeClass
-    public static void beforeClass(){
-        emailReportQueue = new AmazonQueueImpl();
-        emailReportQueue.setMaxPop(10);
-        emailReportQueue.setQueueName("AmazonEmailReportQueueTest");
-        emailReportQueue.setPropertyfile("tiwipro.properties");
-
-        emailReportQueue.init();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        emailReportQueue.deleteQueue();
-    }
-
-    @Before
-    public void beforeTest(){
-
-        if(!emailReportQueue.isQueueCreated()){
-            emailReportQueue.createQueue();
-        }
+    public static void beforeClass() {
+        amazonQueue = new AmazonQueueImpl();
+        amazonQueue.setQueueName(QUEUE_NAME);
+        amazonQueue.setAmazonSQSClient(new AmazonSQSClient(new BasicAWSCredentials(AWS_ACCESS_KEY_ID_VALUE, AWS_SECRET_KEY_VALUE)));
     }
 
     @Test
-    public void amazonSQSClientCheck(){
-        assertTrue(emailReportQueue.isClientCreated());
-    }
-
-    @Test
-    public void createQueueTest(){
-        if(emailReportQueue.isQueueCreated()){
-            emailReportQueue.deleteQueue();
-            AmazonAwsUtil.amazonWaitRule();
-        }
-
-        assertNotNull(emailReportQueue.createQueue());
-    }
-
-    @Test
-    public void deleteQueueTest() {
-        if(!emailReportQueue.isQueueCreated()){
-            emailReportQueue.createQueue();
-        }
-
-        assertTrue(emailReportQueue.deleteQueue());
-
-        AmazonAwsUtil.amazonWaitRule();
+    public void getAmazonQueueURLTest() {
+        assertNotNull(amazonQueue.getAmazonQueueURL());
+        assertTrue(amazonQueue.getAmazonQueueURL().length() > 0);
     }
 
     @Test
     public void pushToQueueTest() {
-        if(!emailReportQueue.isQueueCreated()){
-            emailReportQueue.createQueue();
-        }
-        assertTrue(emailReportQueue.pushToQueue("Test"));
-        assertFalse(emailReportQueue.isQueueEmpty());
+        assertTrue(amazonQueue.pushToQueue("Test"));
+        assertTrue(!amazonQueue.isQueueEmpty());
     }
 
     @Test
     public void popFromQueueTest() {
-        if(!emailReportQueue.isQueueCreated()){
-            emailReportQueue.createQueue();
-        }
 
-        emailReportQueue.pushToQueue("Test");
+        amazonQueue.pushToQueue("Test");
 
-        List<Message> msgs = (List<Message>)emailReportQueue.popFromQueue();
+        List<Message> msgs = (List<Message>)amazonQueue.popFromQueue();
 
         assertNotNull(msgs);
         assertTrue(msgs.size() > 0);
@@ -112,70 +69,24 @@ public class AmazonEmailReportQueueTest {
     }
 
     @Test
-    public void clearQueueTest() {
-        assertTrue(emailReportQueue.clearQueue());
-    }
-
-    @Test
     public void deleteMessageFromQueueTest() {
-        if(!emailReportQueue.isQueueCreated()){
-            emailReportQueue.createQueue();
+
+        amazonQueue.pushToQueue("Test");
+
+        boolean hasMessages = true;
+
+        while (hasMessages ) {
+            List<Message> messageList  = (List<Message>)this.amazonQueue.popFromQueue();
+
+            hasMessages = messageList != null && messageList.size() > 0;
+
+            for(Message message : messageList) {
+                String receiptHandle = message.getReceiptHandle();
+
+                amazonQueue.deleteMessageFromQueue(receiptHandle);
+            }
         }
 
-        emailReportQueue.pushToQueue("Test");
-
-        List<Message> messageList = (List<Message>)emailReportQueue.popFromQueue();
-
-        for(Message message : messageList) {
-            String receiptHandle = message.getReceiptHandle();
-
-            emailReportQueue.deleteMessageFromQueue(receiptHandle);
-        }
-
-        assertTrue(emailReportQueue.isQueueEmpty());
+        assertTrue(amazonQueue.isQueueEmpty());
     }
-
-    private List<ReportSchedule> buildReportScheduleList() {
-
-        Integer reportScheduleID = 0;
-        Integer accountID = 0;
-        Integer reportID = 0;
-        Integer userID = 0;
-
-        List<String> emailTo = new ArrayList<String>();
-        emailTo.add("Test Email Address");
-
-        String name = "Test ReportSchedule";
-        Date startDate = new Date();
-        Date endDate = new Date();
-
-        List<Boolean> dayOfWeek = new ArrayList<Boolean>();
-        dayOfWeek.add(true); // 0
-        dayOfWeek.add(false); // 0
-        dayOfWeek.add(false); // 0
-        dayOfWeek.add(false); // 0
-        dayOfWeek.add(false); // 0
-        dayOfWeek.add(false); // 0
-        dayOfWeek.add(false); // 0
-
-
-        Integer driverID = 0;
-        Integer vehicleID = 0;
-        Integer groupID = 0;
-        Status status = Status.ACTIVE;
-        Date lastDate = new Date();
-        Integer timeOfDay = 200;
-
-        List<ReportSchedule> retVal = new ArrayList<ReportSchedule>();
-
-        for(int i = 0; i < REPORT_SCHEDULE_LIST_SIZE; i++) {
-            ReportSchedule reportSchedule = new ReportSchedule(reportScheduleID + i, accountID, reportID, userID, emailTo,
-                    name, startDate, endDate, dayOfWeek, driverID, vehicleID, groupID, status, lastDate, timeOfDay);
-            retVal.add(reportSchedule);
-        }
-
-        return retVal;
-    }
-
-
 }

@@ -7,7 +7,7 @@ import com.inthinc.pro.model.*;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.reports.*;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
-import com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueueImpl;
+import com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueue;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -32,7 +32,7 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
 
     private static final String DEFAULT_NO_REPLY_EMAIL_ADDRESS = "noreply@inthinc.com";
 
-    private AmazonQueueImpl amazonEmailReportQueue;
+    private AmazonQueue amazonQueue;
     private ReportCreator<Report> reportCreator;
     private ReportCriteriaService reportCriteriaService;
     private AccountDAO accountDAO;
@@ -47,12 +47,12 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
     private Map<Integer, User> userMap;
     private Map<Integer, GroupHierarchy> accountGroupHierarchyMap;
 
-    public AmazonQueueImpl getAmazonEmailReportQueue() {
-        return amazonEmailReportQueue;
+    public AmazonQueue getAmazonQueue() {
+        return amazonQueue;
     }
 
-    public void setAmazonEmailReportQueue(AmazonQueueImpl amazonEmailReportQueue) {
-        this.amazonEmailReportQueue = amazonEmailReportQueue;
+    public void setAmazonQueue(AmazonQueue amazonQueue) {
+        this.amazonQueue = amazonQueue;
     }
 
     public ReportCreator<Report> getReportCreator() {
@@ -167,12 +167,11 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
         initTextEncryptor();
 
         try{
-            amazonEmailReportQueue.init();
 
             boolean hasMessages = true;
 
             while (hasMessages ) {
-                List<Message> messageList  = (List<Message>)amazonEmailReportQueue.popFromQueue();
+                List<Message> messageList  = (List<Message>)this.amazonQueue.popFromQueue();
 
                 hasMessages = messageList != null && messageList.size() > 0;
 
@@ -187,13 +186,13 @@ public class EmailReportAmazonPullJob extends QuartzJobBean {
                         logger.info("Successfully dispatched reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
                     }
                     else {
-                        logger.error("Unable to dispatch ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() );
+                        logger.error("Unable to dispatch ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
                     }
 
                     logger.info("Deleting ReportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " message from the Amazon Queue.");
 
-                    if(!amazonEmailReportQueue.deleteMessageFromQueue(message.getReceiptHandle())){
-                        logger.error("Failed to remove Message " + message.getReceiptHandle() + " from the queue.");
+                    if(!this.amazonQueue.deleteMessageFromQueue(message.getReceiptHandle())){
+                        logger.error("Failed to delete Message " + message.getReceiptHandle() + " from the queue.");
                     }
 
                     logger.info("Completed processing reportSchedule " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID() + " from the Amazon queue.");

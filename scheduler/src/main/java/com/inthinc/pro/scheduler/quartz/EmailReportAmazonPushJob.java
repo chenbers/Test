@@ -5,7 +5,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.*;
-import com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueueImpl;
+import com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueue;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -31,19 +31,19 @@ import java.util.Map;
 public class EmailReportAmazonPushJob extends QuartzJobBean {
     private static final Logger logger = Logger.getLogger(EmailReportAmazonPushJob.class);
 
-    private AmazonQueueImpl amazonEmailReportQueue;
+    private AmazonQueue amazonQueue;
     private AccountDAO accountDAO;
     private ReportScheduleDAO reportScheduleDAO;
     private UserDAO userDAO;
 
     private Map<Integer, User> userMap;
 
-    public AmazonQueueImpl getAmazonEmailReportQueue() {
-        return amazonEmailReportQueue;
+    public AmazonQueue getAmazonQueue() {
+        return amazonQueue;
     }
 
-    public void setAmazonEmailReportQueue(AmazonQueueImpl amazonEmailReportQueue) {
-        this.amazonEmailReportQueue = amazonEmailReportQueue;
+    public void setAmazonQueue(AmazonQueue amazonQueue) {
+        this.amazonQueue = amazonQueue;
     }
 
     public AccountDAO getAccountDAO() {
@@ -80,8 +80,7 @@ public class EmailReportAmazonPushJob extends QuartzJobBean {
                     " for Amazon queue.");
 
             try {
-                amazonEmailReportQueue.init();
-                amazonEmailReportQueue.pushToQueue(String.valueOf(reportSchedule.getReportScheduleID()));
+                this.amazonQueue.pushToQueue(String.valueOf(reportSchedule.getReportScheduleID()));
 
                 User user = getUser(reportSchedule.getUserID());
                 reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
@@ -104,24 +103,15 @@ public class EmailReportAmazonPushJob extends QuartzJobBean {
     private List<ReportSchedule> getReportSchedules(){
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
 
-        Long startTime = System.currentTimeMillis();
-
         List<Account> accounts = accountDAO.getAllAcctIDs();
         logger.debug("Account Count: " + accounts.size());
         //initTextEncryptor();
-
 
         for (Account account : accounts) {
             if (isValidAccount(account)){
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAccountID()));
             }
         }
-
-        Long endTime = System.currentTimeMillis();
-
-        String timeInMillis = String.valueOf(endTime - startTime);
-
-        logger.info("Time to get all the reportSchedules " + timeInMillis);
 
         return this.filterReportSchedules(reportSchedules);
     }
@@ -137,8 +127,6 @@ public class EmailReportAmazonPushJob extends QuartzJobBean {
 
         List<ReportSchedule> retVal = new ArrayList<ReportSchedule>();
 
-        long startTime = System.currentTimeMillis();
-
         for (ReportSchedule reportSchedule : reportScheduleList) {
 
             if(reportSchedule.getStatus().equals(Status.ACTIVE)){// If the reports status is not active, then the reports will no longer go out.
@@ -151,12 +139,6 @@ public class EmailReportAmazonPushJob extends QuartzJobBean {
                 }
             }
         }
-
-        long endTime = System.currentTimeMillis();
-
-        String timeInMillis = String.valueOf(endTime - startTime);
-
-        logger.info("Time to filter the reportschedules " + timeInMillis);
 
         return retVal;
     }
