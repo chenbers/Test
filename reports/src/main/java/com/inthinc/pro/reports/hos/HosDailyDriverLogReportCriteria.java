@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
@@ -100,6 +101,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     private DDLUtil ddlUtil;
     
     private Date currentDateTime;
+    private DateTimeZone userDateTimeZone;
     
     public Date getCurrentDateTime() {
         if (currentDateTime == null) {
@@ -112,14 +114,15 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         this.currentDateTime = currentDateTime;
     }
 
-    public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) {
+    public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone) {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         setResourceBundle(ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale));
         this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
         this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
-        ddlUtil = new DDLUtil(); 
+        ddlUtil = new DDLUtil();
+        this.userDateTimeZone = dateTimeZone;
     }
 
     public ResourceBundle getResourceBundle() {
@@ -263,8 +266,9 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         return (criteriaList != null)? criteriaList:new ArrayList<ReportCriteria>();
     }
 
-    private void setReportDate(Date date, ReportCriteria reportCriteria){
+    private void setReportDate(Date date, ReportCriteria reportCriteria) {
         SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("report.hos.dateTimeFormat", locale));
+        sdf.setTimeZone(userDateTimeZone == null ? TimeZone.getTimeZone("UTC") : userDateTimeZone.toTimeZone());
         reportCriteria.addParameter("REPORT_DATE_TIME", sdf.format(date));
     }
 
