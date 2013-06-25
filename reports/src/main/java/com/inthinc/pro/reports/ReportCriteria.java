@@ -64,6 +64,7 @@ public class ReportCriteria
     public static final boolean DEFAULT_INCLUDE_ZERO_MILES_DRIVERS = true;
     private int subsetIndex = 1;
     
+    private String REPORT_DATE_FORMAT = "MMM d, yyyy h:mm a (z)";
     
     
     //Initialization Block
@@ -81,6 +82,7 @@ public class ReportCriteria
         paramMap.put("REPORT_NAME", report.toString());
         paramMap.put("REPORT_LOCALE", reportCriteria.getLocale());
         this.locale = reportCriteria.getLocale();
+        this.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
     }
 
     public ReportCriteria(ReportType report, String entityName, Locale locale)
@@ -90,7 +92,7 @@ public class ReportCriteria
         paramMap.put("REPORT_NAME", report.toString());
         paramMap.put("REPORT_LOCALE", locale);
         this.locale = locale;
-       
+        this.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
     }
     
     /**
@@ -253,11 +255,16 @@ public class ReportCriteria
      * @param timeZone Time Zone to 
      */
     public void setReportDate(Date date,TimeZone timeZone){
-        addDateParameter(REPORT_DATE_STRING,date,timeZone);
+        SimpleDateFormat sdf = new SimpleDateFormat(REPORT_DATE_FORMAT, locale);
+        sdf.setTimeZone(timeZone);
+        paramMap.put(REPORT_DATE_STRING, sdf.format(date));
     }
-    
     public void addDateParameter(String parameter,Date date,TimeZone timeZone){
-        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat", locale), locale);
+        String dateFormatStr = MessageUtil.getMessageString("dateFormat", locale);
+        if (dateFormatStr == null || dateFormatStr.equals("dateFormat"))
+            dateFormatStr = REPORT_DATE_FORMAT;
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormatStr, locale);
+
         sdf.setTimeZone(timeZone);
         paramMap.put(parameter, sdf.format(date));
     }

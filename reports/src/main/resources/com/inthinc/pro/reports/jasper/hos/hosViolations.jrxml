@@ -19,6 +19,7 @@
 	<parameter name="REPORT_END_DATE" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
+	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false"/>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 	<queryString language="SQL">
@@ -721,7 +722,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 				<reportElement key="line-2" style="PageHeader" x="0" y="0" width="782" height="1"/>
 			</line>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-43" style="PageFooter" x="2" y="6" width="172" height="17"/>
+				<reportElement key="textField-43" style="PageFooter" x="2" y="4" width="172" height="19"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -734,7 +735,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.confidential}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-44" style="PageFooter" x="251" y="3" width="180" height="19" forecolor="#000000"/>
+				<reportElement key="textField-44" style="PageFooter" x="251" y="4" width="180" height="19" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -747,7 +748,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{footer.page}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-45" style="PageFooter" x="432" y="3" width="100" height="19"/>
+				<reportElement key="textField-45" style="PageFooter" x="432" y="4" width="100" height="19"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -759,18 +760,18 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Report" pattern="MM/dd/yyyy HH:mm" isBlankWhenNull="false">
-				<reportElement key="textField-46" style="PageFooter" x="678" y="4" width="100" height="18"/>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-46" style="PageFooter" x="610" y="4" width="170" height="19"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
@@ -1112,7 +1113,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 				<reportElement key="line-2" style="PageHeader" x="0" y="149" width="782" height="1"/>
 			</line>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-43" style="PageFooter" x="2" y="155" width="172" height="17"/>
+				<reportElement key="textField-43" style="PageFooter" x="2" y="152" width="172" height="19"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1150,8 +1151,8 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" evaluationTime="Report" pattern="MM/dd/yyyy HH:mm" isBlankWhenNull="false">
-				<reportElement key="textField-46" style="PageFooter" x="608" y="153" width="170" height="18"/>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-46" style="PageFooter" x="608" y="152" width="170" height="19"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1161,7 +1162,7 @@ $F{offDuty_1}.intValue()+$F{offDuty_2}.intValue()+$F{offDuty_3}.intValue()
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

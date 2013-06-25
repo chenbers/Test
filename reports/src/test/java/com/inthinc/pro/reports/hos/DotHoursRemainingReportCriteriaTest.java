@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -252,6 +253,7 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
       for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
             DotHoursRemainingReportCriteria dotHoursRemainingReportCriteria = new DotHoursRemainingReportCriteria(Locale.US);
+            dotHoursRemainingReportCriteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
             dotHoursRemainingReportCriteria.initDataSet(testData.getGroupHierarchy(), testData.driverHOSRecordMap, new DateTime(testCaseCurrentDate[testCaseCnt].getTime()));
             
             List<DotHoursRemaining> dataList= dotHoursRemainingReportCriteria.getMainDataset();
@@ -304,6 +306,7 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
 
             
             DotHoursRemainingReportCriteria dotHoursRemainingReportCriteria = new DotHoursRemainingReportCriteria(Locale.US);
+            dotHoursRemainingReportCriteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
             dotHoursRemainingReportCriteria.initDataSet(testData.getGroupHierarchy(), testData.driverHOSRecordMap, new DateTime(testCaseCurrentDate[testCaseCnt].getTime()));
             
             List<DotHoursRemaining> dataList= dotHoursRemainingReportCriteria.getMainDataset();

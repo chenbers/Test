@@ -326,12 +326,13 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,1,"00.00","60.00","00.00","-","60.00","","",0),
     };
     
+    private DateTimeZone dateTimeZone = DateTimeZone.forID("US/Pacific");
     @Test
     public void gainTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
 //        int testCaseCnt = 1; {
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
-            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -423,7 +424,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         int testCaseCnt = 14;
         int dayIdx = 3;
         DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
-        HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+        HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
         hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -484,7 +485,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     
     @Test
     public void remarks() {
-        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
         assertNotNull("resource bundle should be initialized", ddlCriteria.getResourceBundle());
         int cnt = 0;
         for (HOSRecord hosRecord : hosRecords) {
@@ -537,8 +538,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 
     @Test
     public void vehicleInfo() {
-        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-        
+        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+
         ddlCriteria.setHosDAO(new MockHOSDAO());
         ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
         ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
@@ -596,8 +597,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
 
     @Test
     public void vehicleInfoNoVehicleStatus() {
-        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-        
+        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+
         ddlCriteria.setHosDAO(new MockHOSDAO());
         ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
         ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
@@ -640,8 +641,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     @Test
     public void originalTimeChange() {
         DDLDataSet ddlTestData = new DDLDataSet(testCaseName[0]);
-        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-        
+        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
+
         ddlCriteria.setHosDAO(new MockHOSDAO());
         ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
         ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
@@ -848,7 +849,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     @Test
     public void defectDE8573Test() {
             DDLDataSet ddlTestData = new DDLDataSet("pezinaFull_04012013_04042013", DDLDataSet.INTHINC_DB_CSV);
-            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -863,7 +864,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     @Test
     public void defectDE8576Test() {
             DDLDataSet ddlTestData = new DDLDataSet("lohrFull_03132013_03252013", DDLDataSet.INTHINC_DB_CSV);
-            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());
             
@@ -898,7 +899,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     }
     private void run2013TestCase(String xmlTestCase) {
             DDLDataSet ddlTestData = new DDLDataSet(xmlTestCase, DDLDataSet.TEST_CASE_XML);
-            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+            HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
             hosDailyDriverLogReportCriteria.setCurrentDateTime(ddlTestData.currentDateTime);
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group.getAddress());

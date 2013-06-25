@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTimeZone;
+
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
@@ -25,7 +27,8 @@ public class HOSLogReport extends HOSBase{
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(groupHierarchy, driver.getDriverID(), 
                         dateRange.getInterval(), driver.getPerson().getLocale(), 
-                        driver.getPerson().getMeasurementType() == MeasurementType.METRIC));
+                        driver.getPerson().getMeasurementType() == MeasurementType.METRIC,
+                        DateTimeZone.forTimeZone(driver.getPerson().getTimeZone())));
         for (ReportCriteria reportCriteria : reportCriteriaList) {
             reportCriteria.setReportDate(new Date(), driver.getPerson().getTimeZone());
             reportCriteria.setLocale(driver.getPerson().getLocale());

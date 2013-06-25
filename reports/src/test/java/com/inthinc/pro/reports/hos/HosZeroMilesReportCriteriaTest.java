@@ -2,8 +2,10 @@ package com.inthinc.pro.reports.hos;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -42,6 +44,8 @@ public class HosZeroMilesReportCriteriaTest extends BaseUnitTest {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             ZeroMilesDataSet violationsTestData = new ZeroMilesDataSet(DATA_PATH, testCaseName[testCaseCnt]);
             HosZeroMilesReportCriteria criteria = new HosZeroMilesReportCriteria(Locale.US);
+            criteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
+
             criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.groupUnitNoDriverMileageList);
             List<HosZeroMiles> dataList = criteria.getMainDataset();
             int eCnt = 0;
