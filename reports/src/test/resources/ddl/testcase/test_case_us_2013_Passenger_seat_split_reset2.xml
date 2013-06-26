@@ -18,7 +18,7 @@
         <hos_state state="on_duty" hours="1" />	
 	</driver_log>
 	
-	<result ruleset="us" recapDay="4" recapWorked="01.00">
+	<result ruleset="us" recapDay="4" recapWorked="01:00">
         <hos_state state="off_duty" hours="3" />				
         <hos_state state="on_duty" hours="1" />				
 	</result>
