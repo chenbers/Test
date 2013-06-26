@@ -98,6 +98,7 @@ function get_tomcat2_blank {
     git clone --depth=1 ${BLANK_TOMCAT_OVERLAY} tomcat2_configs
     rm -Rf tomcat2_configs/.git*
     rsync -av ${WORKSPACE}/tomcat2_configs/* tomcat6
+    rsync -av ${WORKSPACE}/tomcat2_configs/.[a-z]* tomcat6
 }
 
 function merge_tomcat6_blank_with_tmp {
@@ -121,6 +122,53 @@ function merge_tomcat6_blank_with_tmp {
 
 function setup_tomcat2_variables {
     echo "Enter function setup_tomcat2_variables"
+    DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
+    U_GID="1090"
+    MY_GROUP_USER="tiwipro"
+    MY_USER="tomcat2"
+    MY_USER_HOME="/usr/local/${MY_USER}"
+    TOMCAT_WEBAPPS_DIR="${MY_USER_HOME}/webapps"
+    WARS="hoskiosk tiwiproutil tiwipro service"
+    BASE_INSTALL_DIR="${MY_USER_HOME}"
+    if [ "${DISTRIB_CODENAME}" == "lucid" ]
+    then
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx"
+    elif [ "${DISTRIB_CODENAME}" == "precise" ]
+    then
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx-full"
+    else
+        DEB_Depends="libdbi-perl, perl (>= 5.6), libc6 (>= 2.10), libmysqlclient16 (>= 5.1.21-1), libstdc++6 (>= 4.4), libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.2.0), debconf (>= 0.5) | debconf-2.0, psmisc, passwd, lsb-base (>= 3.0-10), sun-java6-jdk (>= 6.3), memcached (>=1.4), nginx-full"
+    fi
+    DEB_Package="inthinc-${JOB_NAME}-tomcat2_${DISTRIB_CODENAME}"
+    DEB_Package_u=$(echo -n ${DEB_Package} | sed -e 's/_/-/g')
+    DEB_Conflicts="tomcat2, tiwipro-wars"
+    DEB_Package_Filename="${WORKSPACE}/${MY_USER}_${JOB_NAME}_${ARCH_UBU}_${DISTRIB_CODENAME}.deb"
+    DEB_Provides="tomcat2, tiwipro-wars"
+    echo "Setup tomcat2 variables :"
+    echo "U_GID ${U_GID}"
+    echo "MY_GROUP_USER ${MY_GROUP_USER}"
+    echo "MY_USER ${MY_USER}"
+    echo "MY_USER_HOME ${MY_USER_HOME}"
+    echo "TOMCAT_WEBAPPS_DIR ${TOMCAT_WEBAPPS_DIR}"
+    echo "WARS ${WARS}"
+    echo "BASE_INSTALL_DIR ${BASE_INSTALL_DIR}"
+    echo "DEB_Depends ${DEB_Depends}"
+    echo "DEB_Package ${DEB_Package}"
+    echo "DEB_Package_u ${DEB_Package_u}"
+    echo "DEB_Conflicts ${DEB_Conflicts}"
+    echo "DEB_Package_Filename ${DEB_Package_Filename}"
+    echo "DEB_Provides ${DEB_Provides}"
+}
+
+function setup_webapp_variables {
+    echo "Enter function setup_webapp_variables"
+    if [ ! "${MY_WAR}" ]
+    then
+        echo "Missing ${MY_WAR}, exiting at $(date)"
+        cleanup
+        exit 1
+    fi
+    echo "Enter function setup_webapp_variables"
     DEB_Version="${SRC_VERSION}-${BUILD_NUMBER}~${DISTRIB_ID}~${DISTRIB_CODENAME}"
     U_GID="1090"
     MY_GROUP_USER="tiwipro"
@@ -529,7 +577,7 @@ reprepro_add
 #do each war thing here
 #for war in ls webapps/*war
 #make a package with a user named the same thing as the war
-
+for MY_WAR in $()
 #if [ "${USER}" = "jenkins" ]
 #then
 #    echo "We are running on the master node, running s3cmd locally"
