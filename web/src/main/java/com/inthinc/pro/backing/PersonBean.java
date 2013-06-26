@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -77,7 +76,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, Integer> WEIGHTS;
     private static final int MIN_WEIGHT = 75;
     private static final int MAX_WEIGHT = 300;
-    private static Map<String, TimeZone> TIMEZONES;
     private static final Map<String, State> STATES;
     private static final String REQUIRED_KEY = "required";
     private static final int MAX_FOB_ID_LENGTH = 24;
@@ -163,12 +161,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	private Integer passwordDaysRemaining;
 	
 	
-    public void initBean()
-    {
-        super.initBean();
-        TIMEZONES = initTimeZones();
-    }
-
+    
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -1160,8 +1153,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     }
                 }
                 // if updating the currently-logged-in person, update the proUser
-                if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID()))
+                if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID())) {
                     BeanUtil.deepCopy(person.getUser(), getUser());
+                    getTimeZonesBean().initBean();
+                }
             }
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
@@ -1250,7 +1245,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         	if (updatePersonTemplate != null) {
         		updatePersonTemplate.setPersonID(null);
         		BeanUtil.deepCopyNonNull(updatePersonTemplate, getPerson());
-        		
+        		if (updatePersonTemplate.getLocale() != null) {
+        		    getTimeZonesBean().initBean();
+        		}
         	}
         	if (updateUserTemplate != null) {
         		updateUserTemplate.setUserID(null);
@@ -1373,7 +1370,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
 
     public Map<String, TimeZone> getTimeZones() {
-        return TIMEZONES;
+        return getTimeZonesBean().getTimeZones();
     }
 
     public List<SelectItem> getProviderTypes() {
