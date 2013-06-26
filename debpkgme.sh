@@ -584,8 +584,8 @@ for MY_WAR in $()
 #    s3_sync
 #else
 #    echo "We are not running on the master node, skipping reprepro steps"
-    echo "Additional steps required to add these packages to the master node"
-    echo "s3cmd --verbose --delete-removed  sync ${DEB_repository_dir} s3://${DEB_S3_bucket}/"
+	echo "Additional steps required to add these packages to the master node"
+	echo "s3cmd --verbose --delete-removed  sync ${DEB_repository_dir} s3://${DEB_S3_bucket}/"
 #fi
 
 cleanup
