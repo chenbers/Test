@@ -89,6 +89,42 @@
 		</property>
 	</bean>
 
+    <bean name="emailReportAmazonPushJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+          parent="baseAlertJob">
+        <property name="jobClass"
+                  value="com.inthinc.pro.scheduler.quartz.EmailReportAmazonPushJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="reportScheduleDAO" value-ref="reportScheduleDAO" />
+                <entry key="userDAO" value-ref="userDAO" />
+                <entry key="accountDAO" value-ref="accountDAO" />
+                <entry key="webContextPath" value="${contextPath.web}" />
+                <entry key="amazonQueue"  value-ref="amazonQueue" />
+            </map>
+        </property>
+    </bean>
+
+    <bean name="emailReportAmazonPullJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+          parent="baseAlertJob">
+        <property name="jobClass"
+                  value="com.inthinc.pro.scheduler.quartz.EmailReportAmazonPullJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="reportCreator" value-ref="reportCreator" />
+                <entry key="reportCriteriaService" value-ref="reportCriteriaService" />
+                <entry key="reportScheduleDAO" value-ref="reportScheduleDAO" />
+                <entry key="userDAO" value-ref="userDAO" />
+                <entry key="accountDAO" value-ref="accountDAO" />
+                <entry key="groupDAO" value-ref="groupDAO" />
+                <entry key="driverDAO" value-ref="driverDAO" />
+                <entry key="webContextPath" value="${contextPath.web}" />
+                <entry key="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
+                <entry key="personDAO" value-ref="personDAO" />
+                <entry key="amazonQueue"  value-ref="amazonQueue" />
+            </map>
+        </property>
+    </bean>
+
 	<bean name="smsAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean"
 		parent="baseAlertJob">
 		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.SMSAlertJob" />
@@ -131,6 +167,16 @@
 		<property name="cronExpression" value="${cron.emailReport}" />
 	</bean>
 
+    <bean id="emailReportAmazonPushCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="emailReportAmazonPushJob" />
+        <property name="cronExpression" value="${cron.emailReportAmazonPush}" />
+    </bean>
+
+    <bean id="emailReportAmazonPullCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="emailReportAmazonPullJob" />
+        <property name="cronExpression" value="${cron.emailReportAmazonPull}" />
+    </bean>
+
 	<bean id="emailMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="emailAlertJob" />
 		<!-- run every odd minute -->
@@ -172,6 +218,8 @@
 				<ref bean="smsMessageCronTrigger" />
 				<ref bean="phoneMessageCronTrigger" />
 				<ref bean="emailReportCronTrigger" />
+                <ref bean="emailReportAmazonPushCronTrigger" />
+                <ref bean="emailReportAmazonPullCronTrigger" />
 				<ref bean="zonePublishCronTrigger" />
 				<ref bean="aggregationCronTrigger" />
 				<ref bean="stateMileageAggregationCronTrigger" />
@@ -199,6 +247,18 @@
 	<bean id="RuleSetFactory" class="com.inthinc.hos.rules.RuleSetFactory">
   		<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
   	</bean>
-    
 
+    <!-- Amazon Queue -->
+    <!--
+       Amazon clients use the DefaultAWSCredentialsProviderChain to find AWS credentials. It first looks
+       for environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_KEY, then system properties aws.accessKeyId and aws.secretKey, and finally
+       uses the amazon ec2 metadata client to try and find credentials. So not to place our individual credentials in the project, setup your
+       environment variables to contain your aws credentials.
+    -->
+    <bean id="amazonSQSClient" class="com.amazonaws.services.sqs.AmazonSQSClient"/>
+
+    <bean id="amazonQueue" class="com.inthinc.pro.scheduler.amazonaws.sqs.AmazonQueueImpl">
+        <property name="amazonSQSClient" ref="amazonSQSClient" />
+        <property name="queueName" value="${AMAZONQUEUE_EMAILREPORT_QUEUENAME}" />
+    </bean>
 </beans>
