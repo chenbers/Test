@@ -292,38 +292,35 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     
     ExpectedRecap expectedRecap[] = {
             //0 test0_03302010_04012010_rule2
-        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,8,"08.25","00.00","-","177.25","00.00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,8,"09:08","00:00","-","177:08","00:00","","",0),
             // 1 test1_01242010_01312010_rule2
-        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00.00","70.00","-","00.00","70.00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00:00","70:00","-","00:00","70:00","","",0),
             //2 test2_03012010_03052010_rule2
-        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00.00","70.00","-","00.00","70.00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00:00","70:00","-","00:00","70:00","","",0),
             //3 test3_06202010_06302010_rule13
         null, 
             //4 test4_06202010_06302010_rule7
-        new ExpectedRecap(RecapType.US,RuleSetType.TEXAS,1,"00.00","70.00","-","00.00","70.00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.TEXAS,1,"00:00","70:00","-","00:00","70:00","","",0),
             //5 test5_06202010_06302010_rule1
-        new ExpectedRecap(RecapType.US,RuleSetType.US,1,"00.00","70.00","-","00.00","70.00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.US,1,"00:00","70:00","-","00:00","70:00","","",0),
             //6 test6_04182010_04202010_rule10
         null, 
             //7 test7_06202010_06302010_rule14
         null, 
             //8 test8_06202010_06302010_rule6
-        new ExpectedRecap(RecapType.CANADA,RuleSetType.CANADA_HOME_OFFICE,14,"01.50","119.25","01.75","01.75","117.75","02.25","",0),
-//        new ExpectedRecap(RecapType.CANADA,RuleSetType.CANADA_HOME_OFFICE,14,"01.50","119.25","01.50","01.50","118.00","02.00","",0),
-//        new ExpectedRecap(RecapType.CANADA,RuleSetType.CANADA_HOME_OFFICE,14,"01.50","120.00","00.50","00.50","119.50","00.50","",0),
+        new ExpectedRecap(RecapType.CANADA,RuleSetType.CANADA_HOME_OFFICE,14,"01:24","119:08","01:58","01:58","117:44","02:16","",0),
             //9 test9_06202010_06302010_rule8
         null, 
             //10 test10_06052010_06152010_rule9
-//        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_CYCLE_1,6,"01.25","45.00","","","68.75","","26.25",1),
-        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_CYCLE_1,6,"01.25","44.50","","","68.75","","26.75",1),
+        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_CYCLE_1,6,"01:28","44:24","","","68:32","","27:04",1),
             //11 test11_01192010_01212010_rule11
-        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1,1,"00.00","80.00","","","80.00","","00.00",1),
+        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1,1,"00:00","80:00","","","80:00","","00:00",1),
             //12 test12_07132010_07172010_personalTime
-        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_CYCLE_1,3,"11.75","48.25","","","36.50","","33.50",1),
+        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_CYCLE_1,3,"11:41","47:58","","","36:17","","33:43",1),
             //13 test13_06062010_06102010_travelTimeOccupant
-        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00.00","70.00","-","00.00","70.00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00:02","70:00","-","00:02","69:58","","",0),
             // 14 test14_01242010_01312010_rule16
-        new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,1,"00.00","60.00","00.00","-","60.00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,1,"00:00","60:00","00:00","-","60:00","","",0),
     };
     
     private DateTimeZone dateTimeZone = DateTimeZone.forID("US/Pacific");
@@ -431,12 +428,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         // check the data
         List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();
         HosDailyDriverLog hosDailyDriverLog = (HosDailyDriverLog)criteriaList.get(dayIdx).getMainDataset().get(0);
-        ExpectedRecap expectedRecapList [] = {
-                 new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,3,
-                "24.00","24.00","60.00","-","00.00","","",0),
-                new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,3,
-                        "24.00","24.00","60.00","-","00.00","","",0),
-        };
+        ExpectedRecap expectedRecapList[] = { new ExpectedRecap(RecapType.US, RuleSetType.US_7DAY, 3, "24:00", "23:55", "60:05", "-", "00:00", "", "", 0),
+                new ExpectedRecap(RecapType.US, RuleSetType.US_7DAY, 3, "24:00", "23:55", "60:05", "-", "00:00", "", "", 0), };
 
         List<Recap> recapList = hosDailyDriverLog.getRecap();
         Recap baseRecap = recapList.get(0);

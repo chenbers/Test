@@ -13,7 +13,7 @@
         <hos_state state="driving" hours="1" />				<!--  so at this point the on duty window is 13 hrs -->								
 	</driver_log>
 	
-	<result ruleset="us" recapDay="2" recapWorked="01.00">
+	<result ruleset="us" recapDay="2" recapWorked="01:00">
         <hos_state state="sleeper" hours="7"  minutes="30"/>				
         <hos_state state="occupant_off_duty" minutes="30" />	<!--  passenger exception -->			
         <hos_state state="driving" hours="1" />				
