@@ -98,6 +98,7 @@ function get_tomcat2_blank {
     git clone --depth=1 ${BLANK_TOMCAT_OVERLAY} tomcat2_configs
     rm -Rf tomcat2_configs/.git*
     rsync -av ${WORKSPACE}/tomcat2_configs/* tomcat6
+    rsync -av ${WORKSPACE}/tomcat2_configs/.[a-z]* tomcat6
 }
 
 function merge_tomcat6_blank_with_tmp {
