@@ -69,26 +69,6 @@
 			value="com.inthinc.pro.scheduler.quartz.EmailAlertJob" />
 	</bean>
 
-	<bean name="emailReportJob" class="org.springframework.scheduling.quartz.JobDetailBean"
-		parent="baseAlertJob">
-		<property name="jobClass"
-			value="com.inthinc.pro.scheduler.quartz.EmailReportJob" />
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="reportCreator" value-ref="reportCreator" />
-				<entry key="reportCriteriaService" value-ref="reportCriteriaService" />
-				<entry key="reportScheduleDAO" value-ref="reportScheduleDAO" />
-				<entry key="userDAO" value-ref="userDAO" />
-				<entry key="accountDAO" value-ref="accountDAO" />
-				<entry key="groupDAO" value-ref="groupDAO" />
-				<entry key="driverDAO" value-ref="driverDAO" />
-				<entry key="webContextPath" value="${contextPath.web}" />
-				<entry key="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
-				<entry key="personDAO" value-ref="personDAO" />
-			</map>
-		</property>
-	</bean>
-
     <bean name="emailReportAmazonPushJob" class="org.springframework.scheduling.quartz.JobDetailBean"
           parent="baseAlertJob">
         <property name="jobClass"
@@ -162,11 +142,6 @@
 			value="com.inthinc.pro.scheduler.quartz.StateMileageAggregationJob" />
 	</bean>
 
-	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="emailReportJob" />
-		<property name="cronExpression" value="${cron.emailReport}" />
-	</bean>
-
     <bean id="emailReportAmazonPushCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="emailReportAmazonPushJob" />
         <property name="cronExpression" value="${cron.emailReportAmazonPush}" />
@@ -217,7 +192,6 @@
 				<ref bean="emailMessageCronTrigger" />
 				<ref bean="smsMessageCronTrigger" />
 				<ref bean="phoneMessageCronTrigger" />
-				<ref bean="emailReportCronTrigger" />
                 <ref bean="emailReportAmazonPushCronTrigger" />
                 <ref bean="emailReportAmazonPullCronTrigger" />
 				<ref bean="zonePublishCronTrigger" />
