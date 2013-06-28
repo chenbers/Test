@@ -124,7 +124,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
   assertEquals(lTotals.get(0).getScore().getDriveTime(),154);
         assertEquals(lTotals.get(0).getScore().getIdleHi(),107);
         assertEquals(lTotals.get(0).getScore().getIdleLo(),64);
-        assertEquals(lTotals.get(0).getScore().getSafetyTotal().intValue(),137);
+        assertEquals(lTotals.get(0).getScore().getSafetyTotal().intValue(),140);
         assertEquals(lTotals.get(0).getScore().getBackingTime(),140);
         assertEquals(lTotals.get(0).getScore().getBackingEvents(),3);
     }   
