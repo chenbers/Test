@@ -164,7 +164,7 @@ System.out.println(interval);
 
             long expectedDriveTime = 1410;
             if (testGroupData.group.getName().contains("BAD"))
-                expectedDriveTime = 1350; 
+                expectedDriveTime = 1395; 
             
             DateTime startDate = start.toDateTime();
             for (DriveTimeRecord rec : driveTimeRecordList) {

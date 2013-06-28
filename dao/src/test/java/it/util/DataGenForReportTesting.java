@@ -34,7 +34,7 @@ public class DataGenForReportTesting extends DataGenForTesting {
 //            new EventGeneratorData(1,1,1,0,false,30,0),
             new EventGeneratorData(0,0,0,0,false,30,0),
             new EventGeneratorData(1,1,1,1,false,25,50, false, false, true),
-            new EventGeneratorData(5,5,5,5,true,20,100, false, false, true)
+            new EventGeneratorData(5,5,5,5,1,true,20,100, false, false, true)
     };
     
     private static int VIOLATION_CNT_IN_GOOD = 0;
