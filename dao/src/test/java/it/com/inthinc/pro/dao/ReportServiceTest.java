@@ -934,14 +934,14 @@ public class ReportServiceTest {
                 Score dscore = driverScoreList.get(0).getScore();
                 Score vscore = vehicleScoreList.get(0).getScore();
 
-                if (teamType == ITData.BAD) {
-                    assertEquals("Bad group should have one Backing per day", timeFrame.getNumberOfDays(), dscore.getBackingTime());
+                if (teamType == ITData.BAD && timeFrame != TimeFrame.YEAR) {
+                    assertEquals("Bad group should have one Backing per day " + timeFrame, timeFrame.getNumberOfDays(), dscore.getBackingEvents());
 
                 }
 
                 assertEquals("Trips", dscore.getTrips(), vscore.getTrips());
                 if (timeFrame != TimeFrame.YEAR) {
-                    assertEquals("Should have one Trip per day", timeFrame.getNumberOfDays(), dscore.getTrips());
+                    assertEquals("Should have one Trip per day " + timeFrame + " group: " + teamType , timeFrame.getNumberOfDays(), dscore.getTrips());
                 }
                 assertEquals("Distance", dscore.getMilesDriven(), vscore.getMilesDriven());
                 assertEquals("Drive Time", dscore.getDriveTime(), vscore.getDriveTime());
