@@ -292,7 +292,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     
     ExpectedRecap expectedRecap[] = {
             //0 test0_03302010_04012010_rule2
-        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,8,"09:08","00:00","-","177:08","00:00","","",0),
+        new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,8,"08:08","00:00","-","177:08","00:00","","",0),
             // 1 test1_01242010_01312010_rule2
         new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00:00","70:00","-","00:00","70:00","","",0),
             //2 test2_03012010_03052010_rule2
@@ -327,7 +327,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     @Test
     public void gainTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//        int testCaseCnt = 1; {
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE, dateTimeZone);
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
@@ -352,12 +351,13 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
                compareHOSRecAdjusted(expectedAdjustedList[testCaseCnt][recCnt], adjustedRec, recCnt, testCaseCnt);
                 recCnt++;
             }
+            
             assertEquals("day edited testcase " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedEdited[testCaseCnt], hosDailyDriverLog.getEdited());
             List<HOSRecAdjusted> originalList = hosDailyDriverLog.getOriginalGraphList();
             if (hosDailyDriverLog.getEdited()) {
                 recCnt = 0;
                 for (HOSRecAdjusted originalRec : originalList) {
-//originalRec.dump();                
+                    //System.out.println(com.inthinc.hos.util.DateUtil.getDisplayDate(originalRec.getLogTimeDate(), originalRec.getLogTimeZone()) + " " + originalRec.getStatus() + " " + originalRec.getTotalRealMinutes() + " " + com.inthinc.hos.util.DateUtil.getDisplayDate(originalRec.getAdjustedTime(), originalRec.getLogTimeZone()) + " " + originalRec.getTotalAdjustedMinutes());
                     compareHOSRecAdjusted(expectedOriginalList[testCaseCnt][recCnt], originalRec, recCnt, testCaseCnt);
                     recCnt++;
                 }
@@ -453,7 +453,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     
     private void checkDayTotals(String testCaseName, DayTotals dayTotals) {
         int total = dayTotals.getDriving() + dayTotals.getOffDuty() + dayTotals.getSleeperBerth() + dayTotals.getOnDuty();
-        assertEquals(testCaseName + " dayTotals totals are full day ", 96, dayTotals.getTotal());
+        assertEquals(testCaseName + " dayTotals totals are full day ", 1440, dayTotals.getTotal());
         assertEquals(testCaseName + " dayTotals totals match ", total, dayTotals.getTotal());
     }
 
