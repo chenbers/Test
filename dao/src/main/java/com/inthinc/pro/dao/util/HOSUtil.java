@@ -8,14 +8,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRec;
-import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.rules.HOSRules;
@@ -31,6 +29,10 @@ public class HOSUtil {
 
     
     public static HOSAdjustedList getAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
+    {
+        return new HOSAdjustedList(filterCorrectedList(hosRecordList, endDate), endDate);
+    }
+    public static List<HOSRec> filterCorrectedList(List<HOSRecord> hosRecordList, Date endDate)
     {
         List<HOSRec> recList = new ArrayList<HOSRec>(); 
         for (HOSRecord hosRec : hosRecordList) {
@@ -51,10 +53,14 @@ public class HOSUtil {
             recList = rules.adjustStatuses(recList, endDate);
         }
 
-        return new HOSAdjustedList(recList, endDate);
+        return recList;
     }
 
     public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecordList, Date endDate)
+    {
+        return new HOSAdjustedList(filterOriginalList(hosRecordList, endDate), endDate);
+    }
+    public static List<HOSRec> filterOriginalList(List<HOSRecord> hosRecordList, Date endDate)
     {
         List<HOSRec> recList = new ArrayList<HOSRec>(); //HOSUtil.getRecListFromLogList(hosRecordList, endDate, driver.getDot() != null && driver.getDot() != RuleSetType.NON_DOT);
         for (HOSRecord hosRec : hosRecordList) {
@@ -81,8 +87,9 @@ public class HOSUtil {
             recList = rules.adjustStatuses(recList, endDate);
         }
 
-        return new HOSAdjustedList(recList, endDate);
+        return recList;
     }
+    
     
     public static HOSRec mapHOSRecord(HOSRecord hosRecord, long totalRealMinutes, Date endDate, Boolean isDriverDOT) {
         HOSRec hosRec = new HOSRec((hosRecord.getHosLogID() == null) ? "" : hosRecord.getHosLogID().toString(), 
