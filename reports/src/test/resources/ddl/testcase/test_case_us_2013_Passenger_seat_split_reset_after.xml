@@ -15,7 +15,7 @@
         <hos_state state="on_duty" hours="1" />				
 	</driver_log>
 	
-	<result ruleset="us" recapDay="2" recapWorked="04.00">
+	<result ruleset="us" recapDay="2" recapWorked="04:00">
         <hos_state state="sleeper" hours="8"/>				
         <hos_state state="occupant_off_duty" hours="1" />			
         <hos_state state="driving" hours="3" />				

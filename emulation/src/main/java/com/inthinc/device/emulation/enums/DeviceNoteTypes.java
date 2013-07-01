@@ -481,7 +481,15 @@ public enum DeviceNoteTypes implements BaseEnum  {
     // used primarily for background communication
     STRIPPED_LOWER_LIMIT(243),
     NOTE_TYPE_ROUTE_STOP(234, EventAttr.ROUTE_STOP_ID, EventAttr.ROUTE_STOP_TYPE),
-	/**
+
+    
+    /**
+     * Backing Note - vehicle in reverse gear, rpm > 0 or gps movement
+     * Attributes [ TRIP_DURATION ] backing time in seconds
+     */
+    BACKING(235, EventAttr.TRIP_DURATION),
+
+    /**
      * Sent on a forward command acknowledgement
      * Attributes ATTR_FWDCMD_ID, ATTR_FWDCMD_STATUS, ATTR_FWDCMD_COMMAND, [ATTR_FWDCMD_ERROR], [ATTR_VIOLATION_FLAGS]
      */

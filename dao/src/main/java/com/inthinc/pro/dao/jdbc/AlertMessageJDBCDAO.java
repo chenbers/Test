@@ -243,8 +243,11 @@ public class AlertMessageJDBCDAO extends GenericJDBCDAO implements AlertMessageD
             }
             logger.debug("Preparing message for: " + person.getFullName());
 
-
-            Event event = eventDAO.findByID(alertMessage.getNoteID());
+            Event event = null;
+            
+            if (alertMessage.getAttribs() == null || alertMessage.getAttribs().isEmpty())
+                event = eventDAO.findByID(alertMessage.getNoteID());
+            
             if (event == null) {
                 logger.debug("alertMessage.getAttribs(): " + alertMessage.getAttribs());
                 if (alertMessage.getAttribs() != null && !alertMessage.getAttribs().equalsIgnoreCase("")) {

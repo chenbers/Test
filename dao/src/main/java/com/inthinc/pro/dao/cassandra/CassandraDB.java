@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.cassandra;
 
 import me.prettyprint.cassandra.model.AllOneConsistencyLevelPolicy;
 import me.prettyprint.cassandra.model.QuorumAllConsistencyLevelPolicy;
+import me.prettyprint.hector.api.ConsistencyLevelPolicy;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
@@ -18,18 +19,22 @@ public class CassandraDB {
     private static String cacheKeyspaceName = "";
     private static String nodeAddress = "";
     private static boolean autoDiscoverHosts = false;
-    private static int maxActive = 50;
+    private static boolean quorumConsistency = false;
+    private static int maxActive = 10;
+    private static ConsistencyLevelPolicy consistencyLevelPolicy = new AllOneConsistencyLevelPolicy(); 
+    
     private static Logger logger = LoggerFactory.getLogger(CassandraDB.class);
 
-    public CassandraDB(boolean active, String clusterName, String keyspaceName, String cacheKeyspaceName, String nodeAddress, int maxActive, boolean autoDiscoverHosts) {
+    public CassandraDB(boolean active, String clusterName, String keyspaceName, String cacheKeyspaceName, String nodeAddress, int maxActive, boolean autoDiscoverHosts, boolean quorumConsistency) {
         CassandraDB.clusterName = clusterName;
         CassandraDB.keyspaceName = keyspaceName;
         CassandraDB.nodeAddress = nodeAddress;
         CassandraDB.maxActive = maxActive;
         CassandraDB.cacheKeyspaceName = cacheKeyspaceName;
         CassandraDB.autoDiscoverHosts = autoDiscoverHosts;
-
-        logger.info("CassandrsaDB clusterName: " + clusterName + " nodeAddress: " + nodeAddress + " keyspaceName: " + keyspaceName + "  cacheKeyspaceName: " + cacheKeyspaceName + " autoDiscoverHosts: " + autoDiscoverHosts);
+        CassandraDB.quorumConsistency = quorumConsistency;
+        
+        logger.info("CassandrsaDB clusterName: " + clusterName + " nodeAddress: " + nodeAddress + " keyspaceName: " + keyspaceName + "  cacheKeyspaceName: " + cacheKeyspaceName + " autoDiscoverHosts: " + autoDiscoverHosts + " quorumConsistency: " + quorumConsistency);
         
         CassandraHostConfigurator cassandraHostConfigurator = new CassandraHostConfigurator(nodeAddress);
 
@@ -40,6 +45,9 @@ public class CassandraDB {
         cassandraHostConfigurator.setUseThriftFramedTransport(true);
         cassandraHostConfigurator.setUseSocketKeepalive(true);
 
+        if (quorumConsistency)
+            consistencyLevelPolicy = new QuorumAllConsistencyLevelPolicy();
+        
         if (active)
             cluster = HFactory.getOrCreateCluster(clusterName, cassandraHostConfigurator);
     }
@@ -89,6 +97,15 @@ public class CassandraDB {
         CassandraDB.autoDiscoverHosts = autoDiscoverHosts;
     }
 
+
+    public static boolean isQuorumConsistency() {
+        return quorumConsistency;
+    }
+
+    public static void setQuorumConsistency(boolean quorumConsistency) {
+        CassandraDB.quorumConsistency = quorumConsistency;
+    }
+
     public static int getMaxActive() {
         return maxActive;
     }
@@ -99,16 +116,14 @@ public class CassandraDB {
 
     public static Keyspace getKeyspace() {
         Keyspace keyspaceOperator = HFactory.createKeyspace(keyspaceName, cluster);
-//		 TODO:  Bumped up consistency level due to lost node.  Make this configrable in future
-//        keyspaceOperator.setConsistencyLevelPolicy(new AllOneConsistencyLevelPolicy());
-		  keyspaceOperator.setConsistencyLevelPolicy(new QuorumAllConsistencyLevelPolicy());
+		  keyspaceOperator.setConsistencyLevelPolicy(consistencyLevelPolicy);
         return keyspaceOperator;
     }
 
     public static Keyspace getCacheKeyspace() {
         logger.debug("getCacheKeyspaceName(): " + cacheKeyspaceName);
         Keyspace keyspaceOperator = HFactory.createKeyspace(cacheKeyspaceName, cluster);
-        keyspaceOperator.setConsistencyLevelPolicy(new AllOneConsistencyLevelPolicy());
+        keyspaceOperator.setConsistencyLevelPolicy(consistencyLevelPolicy);
         return keyspaceOperator;
     }
 }

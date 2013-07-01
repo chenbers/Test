@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import org.joda.time.DateTimeZone;
 import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.ui.ReportParams;
@@ -86,6 +87,7 @@ public abstract class ReportsBean extends BaseBean {
                     									params.getDateRange().getInterval(), 
                     									params.getLocale(), 
                     									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
+                    									getDateTimeZone(),
                     									params.isIncludeInactiveDrivers()));
                 else
                     reportCriteriaList.addAll(getReportCriteriaService()
@@ -95,6 +97,7 @@ public abstract class ReportsBean extends BaseBean {
                     									params.getDateRange().getInterval(), 
                     									params.getLocale(), 
                     									getUser().getPerson().getMeasurementType() == MeasurementType.METRIC,
+                                                        getDateTimeZone(),
                     									params.isIncludeInactiveDrivers()));
                 break;
             case HOS_VIOLATIONS_SUMMARY_REPORT:
@@ -280,6 +283,12 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             case DVIR_VIOLATION:
                 reportCriteriaList.add(getReportCriteriaService().getDVIRViolationReportCriteria(getAccountGroupHierarchy(),params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(),getDateTimeZone()));
+                break;
+            case BACKING_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getBackingReportCriteria(getAccountGroupHierarchy(), 
+                        params.getGroupID(),params.getTimeFrameSelect().getTimeFrame(), getLocale(), getDateTimeZone(), 
+                        getUser().getPerson().getMeasurementType(), params.isIncludeInactiveDrivers(), 
+                        params.isIncludeZeroMilesDrivers()));
                 break;
             default:
                 break;

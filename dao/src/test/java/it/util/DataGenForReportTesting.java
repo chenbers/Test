@@ -31,11 +31,13 @@ public class DataGenForReportTesting extends DataGenForTesting {
     public static Integer NUM_EVENT_DAYS = 31;
     
     EventGeneratorData eventGeneratorDataList[] = {
-            new EventGeneratorData(1,1,1,0,false,30,0),
+//            new EventGeneratorData(1,1,1,0,false,30,0),
+            new EventGeneratorData(0,0,0,0,false,30,0),
             new EventGeneratorData(1,1,1,1,false,25,50, false, false, true),
-            new EventGeneratorData(5,5,5,5,true,20,100, false, false, true)
+            new EventGeneratorData(5,5,5,5,1,true,20,100, false, false, true)
     };
     
+    private static int VIOLATION_CNT_IN_GOOD = 0;
     @Override
     protected void generateDayData(Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
     {
@@ -48,18 +50,32 @@ public class DataGenForReportTesting extends DataGenForTesting {
             {
                 List<Event> eventList = null;
                 EventGeneratorData eventGeneratorData = eventGeneratorDataList[driverType.intValue()];
+                eventGeneratorData.setEmpId(groupData.driver.getPerson().getEmpid());
                 eventList = eventGenerator.generateTripEvents(date, eventGeneratorData);
                 noteGenerator.genTrip(eventList, groupData.device);
-                if (driverType.intValue() == 0) {
+                /*                 
+                if (driverType.intValue() == ITData.GOOD) {
+                    // TODO: Removing this for now, i.e. not generating/forgiving notes in the good account
+                    // because of a delay in when the notes hit the database now
                     // forgive all of the events
+                   
                     List<NoteType> noteTypes = EventCategory.VIOLATION.getNoteTypesInCategory();
                     Integer driverID = groupData.driver.getDriverID();
-                    eventList = eventDAO.getEventsForDriver(driverID, date, new Date(date.getTime() + DateUtil.MILLISECONDS_IN_DAY-1000l), noteTypes, 0);
-                   
-                    for (Event event : eventList) {
-                        eventDAO.forgive(driverID, event.getNoteID());
-                    }
+                    do {
+                        eventList = eventDAO.getEventsForDriver(driverID, date, new Date(date.getTime() + DateUtil.MILLISECONDS_IN_DAY-1000l), noteTypes, 0);
+                        if (eventList.size() == VIOLATION_CNT_IN_GOOD) { 
+                            for (Event event : eventList) {
+                                eventDAO.forgive(driverID, event.getNoteID());
+                            }
+                            break;
+                        }
+                        else {
+                            System.out.println("Waiting for notes to show up in database.");
+                            Thread.sleep(5000l);
+                        }
+                    } while (true);
                 }
+*/                    
             }       
         }
     }

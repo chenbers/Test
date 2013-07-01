@@ -1,11 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -19,41 +15,17 @@ import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.MessageUtil;
 
+
+// I don't think this is used anymore and could probably be removed.
 public class UnknownDriverBean extends BaseAdminBean<UnknownDriverBean.UnknownDriverView> implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Map<String, TimeZone> TIMEZONES;
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
     private static final String REQUIRED_KEY = "required";
-    static {
-        // time zones
-        final List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
-        // sort by offset from GMT
-        Collections.sort(timeZones, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                final TimeZone t1 = TimeZone.getTimeZone(o1);
-                final TimeZone t2 = TimeZone.getTimeZone(o2);
-                return t1.getRawOffset() - t2.getRawOffset();
-            }
-        });
-        TIMEZONES = new LinkedHashMap<String, TimeZone>();
-        final NumberFormat format = NumberFormat.getIntegerInstance();
-        format.setMinimumIntegerDigits(2);
-        for (final String id : timeZones) {
-            final TimeZone timeZone = TimeZone.getTimeZone(id);
-            final int offsetHours = timeZone.getRawOffset() / MILLIS_PER_HOUR;
-            final int offsetMinutes = Math.abs((timeZone.getRawOffset() % MILLIS_PER_HOUR) / MILLIS_PER_MINUTE);
-            if (offsetHours < 0)
-                TIMEZONES.put(timeZone.getID() + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
-            else
-                TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
-        }
-    }
     private PersonDAO personDAO;
+    private TimeZonesBean timeZonesBean;
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
@@ -131,7 +103,7 @@ public class UnknownDriverBean extends BaseAdminBean<UnknownDriverBean.UnknownDr
     }
 
     public Map<String, TimeZone> getTimeZones() {
-        return TIMEZONES;
+        return timeZonesBean.getTimeZones();
     }
 
     public static class UnknownDriverView extends Person implements EditItem {
@@ -196,4 +168,12 @@ public class UnknownDriverBean extends BaseAdminBean<UnknownDriverBean.UnknownDr
 		return null;
 	}
 		
+    public TimeZonesBean getTimeZonesBean() {
+        return timeZonesBean;
+    }
+
+    public void setTimeZonesBean(TimeZonesBean timeZonesBean) {
+        this.timeZonesBean = timeZonesBean;
+    }
+
 }

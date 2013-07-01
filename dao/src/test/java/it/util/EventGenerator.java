@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.BackingEvent;
 import com.inthinc.pro.model.event.DOTStoppedEvent;
 import com.inthinc.pro.model.event.DOTStoppedState;
 import com.inthinc.pro.model.event.Event;
@@ -24,6 +25,7 @@ import com.inthinc.pro.model.event.ParkingBrakeState;
 import com.inthinc.pro.model.event.QSIVersionEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.ValidDriverEvent;
 import com.inthinc.pro.model.event.VersionState;
 import com.inthinc.pro.model.event.WitnessVersionEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
@@ -158,7 +160,7 @@ public class EventGenerator
         Integer odometer = ReportTestConst.MILES_PER_EVENT;
         int locCnt = ReportTestConst.EVENTS_PER_DAY;
         boolean ignitionOn = false;
-        boolean driverLogon = false;
+//        boolean driverLogon = false;
         boolean badSpeeding = false;
         int adCnt = 0;
         int realEventCnt = 0;
@@ -205,7 +207,7 @@ public class EventGenerator
                                            90, 65, 60, ReportTestConst.MILES_PER_EVENT, 10);
                         break;
                     case ReportTestConst.HARD_VERT_820_IDX:
-                    case ReportTestConst.HARD_VERT_820_SECONDARY_IDX:
+//                    case ReportTestConst.HARD_VERT_820_SECONDARY_IDX:
                         event = new HardVertical820Event(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 99, odometer, 
                                        locations[i].getLat(), locations[i].getLng());
                         break;
@@ -251,13 +253,14 @@ public class EventGenerator
                 ignitionOn = true;
                 
             }
-            else if (!driverLogon)
-            {
-                event = new Event(0l, 0, NoteType.NEW_DRIVER,
-                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng());
-                driverLogon = true;
-                
-            }
+//            else if (!driverLogon)
+//            {
+//                event = new ValidDriverEvent(0l, 0, NoteType.NEW_DRIVER,
+//                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(), data.getEmpId());
+//                ((ValidDriverEvent)event).setDotType(0);
+//                driverLogon = true;
+//                
+//            }
             else if (i == (locCnt-1))
             {
 //System.out.println("ignition off event count = " + realEventCnt);             
@@ -307,6 +310,12 @@ public class EventGenerator
                 event = new IdleEvent(0l, 0, NoteType.IDLE,
                         eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
                         ReportTestConst.LO_IDLE_TIME, ReportTestConst.HI_IDLE_TIME);
+            }
+            else if (data.isBackingIndex(i))
+            {
+                event = new BackingEvent(0l, 0, NoteType.BACKING,
+                        eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                        ReportTestConst.DURATION);
             }
             else if (data.isCrashIndex(i))
             {

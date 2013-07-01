@@ -789,10 +789,11 @@ public class DataGenForStressTesting extends DataGenForTesting {
 			}
 		}
 	}
-	private void generateDayData(Date date, Device device, Integer zoneID) throws Exception 
+	private void generateDayData(Date date, Device device, String empId, Integer zoneID) throws Exception 
 	{
 		EventGenerator eventGenerator = new EventGenerator();
 		EventGeneratorData data = getEventGeneratorData(zoneID);
+		data.setEmpId(empId);
 		
         List<Event> eventList = eventGenerator.generateTripEvents(date, data);
         noteGenerator.genTrip(eventList, device);
@@ -937,16 +938,18 @@ public class DataGenForStressTesting extends DataGenForTesting {
 	            int numDays = NUM_EVENT_DAYS;
 	    		for (GroupData data : testData.teamGroupData)
 	    		{
-
+	    		    int cnt = 0;
 	    			for (Device device : data.deviceList)
 		            {
+	    			    Driver driver = data.driverList.get(cnt);
 		            	for (int day = numDays; day > 0; day--)
 		            	{
 		                    int dateInSec = DateUtil.getDaysBackDate(todayInSec, day, ReportTestConst.TIMEZONE_STR) + 60;
 		                    // startDate should be one minute after midnight in the selected time zone (TIMEZONE_STR) 
 		                    Date startDate = new Date((long)dateInSec * 1000l);
-		            		testData.generateDayData(startDate, device, testData.zoneID);
+		            		testData.generateDayData(startDate, device, driver.getPerson().getEmpid(), testData.zoneID);
 		            	}
+		            	cnt++;
 		            }
 	    		}
 	            System.out.println(" -- test data generation complete -- ");
@@ -969,14 +972,18 @@ public class DataGenForStressTesting extends DataGenForTesting {
                 DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
                 deviceDAO.setSiloService(siloService);
 
+                int cnt = 0;
                 for (String imei : testData.imeiList) {
+                    // TODO: we aren't currently using this stress test account, but if we do the empID should
+                    // be set to the employee assigned to the device
+                    String empID = "";
     	        	for (int day = 0; day < testData.numDays; day++)
     	        	{
     	                int dateInSec = testData.startDateInSec + (day * DateUtil.SECONDS_IN_DAY) + 60;
     	                Date startDate = new Date((long)dateInSec * 1000l + DateUtil.MILLISECONDS_IN_MINUTE*120);
     	                Device device = deviceDAO.findByIMEI(imei);
     	                if (device != null)
-    	                    testData.generateDayData(startDate, device, testData.zoneID);
+    	                    testData.generateDayData(startDate, device, empID, testData.zoneID);
     	                else System.out.println("Device Not Found IMEI=" + imei);
     	        	}
                 }

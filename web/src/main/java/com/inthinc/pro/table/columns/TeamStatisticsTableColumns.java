@@ -28,6 +28,8 @@ public class TeamStatisticsTableColumns extends BaseTableColumns {
     	COLUMNS.add("crashes");
     	COLUMNS.add("seatbelt_clicks");
     	COLUMNS.add("safety");
+        COLUMNS.add("backing_time");
+        COLUMNS.add("backing");
     }
     
 	@Override

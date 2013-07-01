@@ -284,6 +284,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
             HosViolationsSummaryReportCriteria criteria = new HosViolationsSummaryReportCriteria(Locale.US);
+            criteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
             criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(),
                     violationsTestData.getGroupHierarchy().getGroupList(), violationsTestData.driverHOSRecordMap,
                     violationsTestData.groupMileageList, violationsTestData.groupNoDriverMileageList);
@@ -350,6 +351,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
      
             // HOS VIOLATIONS
             HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(Locale.US);
+            criteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
             criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.driverHOSRecordMap);
             List<ViolationsDetail> dataList = criteria.getMainDataset();
 //dump("hosViolationsDetailTest", testCaseCnt + 1, criteria, FormatType.PDF);
@@ -396,6 +398,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                 continue;
             HosRecordDataSet violationsTestData = createHosDetailsDataSet(ruleSetType);
             HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(Locale.US);
+            criteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
             criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.driverHOSRecordMap);
             List<ViolationsDetail> dataList = criteria.getMainDataset();
             Integer violationCount = 0;

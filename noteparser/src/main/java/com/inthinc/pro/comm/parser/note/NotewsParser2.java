@@ -19,30 +19,34 @@ public class NotewsParser2 implements NoteParser{
 	{
 		HashMap<String, Object> attribMap = new HashMap<String, Object>();
 		
-		int noteTypeCode = ReadUtil.read(data, 0, 1);
-		NoteType noteType = NoteType.get(noteTypeCode);
-
-		if (noteType != null)
-		{
-			int offset = noteType.isStrippedNote() ? 1 : 19;
-			parseHeader(data, noteType, attribMap);
-			
-			Attrib[] attribs = noteType.getAttribs();
-	
-			if (attribs != null) 
-			{
-				for(int i = 0; i < attribs.length; i++)
-				{
-					AttribParser parser = AttribParserFactory.getParserForParserType(attribs[i].getAttribParserType());
-					offset = parser.parseAttrib(data, offset, attribs[i].getFieldName(), attribMap);
-				}
-				
-				parseExtraData(data, offset, noteType, attribMap);
-			}
+		try {
+    		int noteTypeCode = ReadUtil.read(data, 0, 1);
+    		NoteType noteType = NoteType.get(noteTypeCode);
+    
+    		if (noteType != null)
+    		{
+    			int offset = noteType.isStrippedNote() ? 1 : 19;
+    			parseHeader(data, noteType, attribMap);
+    			
+    			Attrib[] attribs = noteType.getAttribs();
+    	
+    			if (attribs != null) 
+    			{
+    				for(int i = 0; i < attribs.length; i++)
+    				{
+    					AttribParser parser = AttribParserFactory.getParserForParserType(attribs[i].getAttribParserType());
+    					offset = parser.parseAttrib(data, offset, attribs[i].getFieldName(), attribMap);
+    				}
+    				
+    				parseExtraData(data, offset, noteType, attribMap);
+    			}
+    		}
+    		else
+    			logger.info("Note parser for type " + noteTypeCode + " is not defined.");
+		} catch (Throwable e){
+            logger.error("Parser error: " + e);
 		}
-		else
-			logger.info("Note parser for type " + noteTypeCode + " is not defined.");
-
+		
 		return attribMap;
 	}
 	

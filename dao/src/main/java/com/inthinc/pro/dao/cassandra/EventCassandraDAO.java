@@ -87,7 +87,7 @@ public class EventCassandraDAO extends AggregationCassandraDAO implements EventD
         vehicleDAO.setSiloService(siloService);
 
 //    	CassandraDB cassandraDB = new CassandraDB(true, "Iridium Archive", "note", "localhost:9160", 10, false);
-        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "note_prod", "chevron-node4.tiwipro.com:9160", 10, false);
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "note_prod", "chevron-node4.tiwipro.com:9160", 10, false, false);
     	EventCassandraDAO dao = new EventCassandraDAO();
     	dao.setCassandraDB(cassandraDB);
     	dao.setVehicleDAO(vehicleDAO);

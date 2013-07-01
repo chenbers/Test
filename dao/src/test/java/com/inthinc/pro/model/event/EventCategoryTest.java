@@ -12,7 +12,7 @@ import org.junit.Test;
 public class EventCategoryTest {
 
     Integer[] expectedNoteInCatCounts = {
-            10,
+            11,
             19,
             0,
             11,
@@ -58,7 +58,7 @@ public class EventCategoryTest {
     		3,	//  HOS
     		2,	//  NONE
     		1,	//  TEXT
-    		9,	//  VIOLATION
+    		10,	//  VIOLATION
     		18,	//  WARNING
     		2	//  ZONE
     };

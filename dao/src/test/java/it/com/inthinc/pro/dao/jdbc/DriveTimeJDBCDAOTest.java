@@ -150,7 +150,6 @@ System.out.println(interval);
         DateTime end = new DateMidnight().toDateTime();
         DateTime start = new DateTime(end).minusDays(numDays-1);
         Interval interval  = new Interval(start, end);
-System.out.println(interval);        
         
         DriveTimeDAO driveTimeDAO = new DriveTimeJDBCDAO();
         ((DriveTimeJDBCDAO)driveTimeDAO).setDataSource(new ITDataSource().getRealDataSource());
@@ -163,9 +162,9 @@ System.out.println(interval);
             List<DriveTimeRecord>driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(testGroupData.group.getGroupID(), interval);
             assertEquals("record count", numDays, driveTimeRecordList.size());
 
-            long expectedDriveTime = 1395;
+            long expectedDriveTime = 1410;
             if (testGroupData.group.getName().contains("BAD"))
-                expectedDriveTime = 1380; 
+                expectedDriveTime = 1395; 
             
             DateTime startDate = start.toDateTime();
             for (DriveTimeRecord rec : driveTimeRecordList) {

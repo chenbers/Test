@@ -895,14 +895,12 @@ public class ReportServiceTest {
         	assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
         	Score score = driverScoreList.get(0).getScore();
         	assertEquals(teamType + " weighted mpg", expectedDailyMPGLight[teamType].doubleValue(), score.getWeightedMpg().doubleValue(), 0.1);
-/*        	
-        	System.out.println("group ID " + driverScoreList.get(0).getDriver().getGroupID() );
-        	System.out.println("driver ID " + driverScoreList.get(0).getDriver().getDriverID() );
-        	System.out.println("total miles = " + score.getMilesDriven());
-        	System.out.println("miles light = " + score.getOdometerLight());
-        	System.out.println("miles med = " + score.getOdometerMedium());
-        	System.out.println("miles heavy = " + score.getOdometerHeavy());
-*/
+//        	System.out.println("group ID " + driverScoreList.get(0).getDriver().getGroupID() );
+//        	System.out.println("driver ID " + driverScoreList.get(0).getDriver().getDriverID() );
+//        	System.out.println("total miles = " + score.getMilesDriven());
+//        	System.out.println("miles light = " + score.getOdometerLight());
+//        	System.out.println("miles med = " + score.getOdometerMedium());
+//        	System.out.println("miles heavy = " + score.getOdometerHeavy());
         	long totalMiles = score.getMilesDriven().longValue();
         	long totalLMHMiles = score.getOdometerLight().longValue()
         						+ score.getOdometerMedium().longValue()
@@ -910,11 +908,59 @@ public class ReportServiceTest {
         	assertEquals("total miles should match total light, med, heavy miles", totalMiles, totalLMHMiles);
 
         }
+        
     }
     
     
     @Test
-    @Ignore
+    // @Ignore
+    public void teamDriverVehicleStats() {
+        GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
+        groupReportHessianDAO.setReportService(reportService);
+
+        DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(ReportTestConst.timeZone);
+
+        TimeFrame testTimeFrames[] = { TimeFrame.ONE_DAY_AGO, TimeFrame.FIVE_DAYS_AGO, TimeFrame.WEEK, TimeFrame.MONTH, TimeFrame.YEAR, };
+
+        // test some of the fields that appear on the team stats pages
+        for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
+            for (TimeFrame timeFrame : testTimeFrames) {
+                List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone),
+                        getGroupHierarchy());
+                List<DriverVehicleScoreWrapper> vehicleScoreList = groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), timeFrame.getInterval(dateTimeZone),
+                        getGroupHierarchy());
+                assertEquals("1 driver expected", Integer.valueOf(1), Integer.valueOf(driverScoreList.size()));
+                assertEquals("1 vehicle expected", Integer.valueOf(1), Integer.valueOf(vehicleScoreList.size()));
+                Score dscore = driverScoreList.get(0).getScore();
+                Score vscore = vehicleScoreList.get(0).getScore();
+
+                if (teamType == ITData.BAD && timeFrame != TimeFrame.YEAR) {
+                    assertEquals("Bad group should have one Backing per day " + timeFrame, timeFrame.getNumberOfDays(), dscore.getBackingEvents());
+
+                }
+
+                assertEquals("Trips", dscore.getTrips(), vscore.getTrips());
+                if (timeFrame != TimeFrame.YEAR) {
+// TODO: NEED TO FIX THE DATA GEN SO THE CRASH (FULLEVENT) IS THE LAST EVENT PRIOR TO THE IGNITION OFF AND IN THIS CASE IGNITION OFF HAS A 0 ODOMETER, SINCE
+// THE WAY IT IS NOW IS NOT A REAL LIFE SCENERIO (I.E. CRASH AND THEN KEEP GOING)                    
+//                    assertEquals("Should have one Trip per day " + timeFrame + " group: " + teamType , timeFrame.getNumberOfDays(), dscore.getTrips());
+                }
+                assertEquals("Distance", dscore.getMilesDriven(), vscore.getMilesDriven());
+                assertEquals("Drive Time", dscore.getDriveTime(), vscore.getDriveTime());
+                assertEquals("Idle", dscore.getIdleTotal(), vscore.getIdleTotal());
+                assertEquals("Low Idle", dscore.getIdleLo(), vscore.getIdleLo());
+                assertEquals("High Idle", dscore.getIdleHi(), vscore.getIdleHi());
+                assertEquals("Crashes", dscore.getCrashEvents(), vscore.getCrashEvents());
+                assertEquals("Seatbelt Clicks", dscore.getSeatbeltClicks(), vscore.getSeatbeltClicks());
+                assertEquals("Safety Total", dscore.getSafetyTotal(), vscore.getSafetyTotal());
+                assertEquals("Backing", dscore.getBackingTime(), vscore.getBackingTime());
+                assertEquals("Backing Events", dscore.getBackingEvents(), vscore.getBackingEvents());
+            }
+        }
+
+    }
+  
+    @Test
     public void driverPerformanceMetrics() {
         DriverPerformanceDAOImpl driverPerformanceReportHessianDAO = new DriverPerformanceDAOImpl();
         GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
@@ -923,21 +969,25 @@ public class ReportServiceTest {
         EventHessianDAO eventHessianDAO = new EventHessianDAO();
         eventHessianDAO.setSiloService(siloService);
         driverPerformanceReportHessianDAO.setEventDAO(eventHessianDAO);
+        GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
+        groupHessianDAO.setSiloService(siloService);
+        driverPerformanceReportHessianDAO.setGroupDAO(groupHessianDAO);
         
         for (int groupIdx = ITData.GOOD; groupIdx <= ITData.BAD; groupIdx++) {
             Group group = itData.teamGroupData.get(groupIdx).group;
             List<DriverPerformanceKeyMetrics> list = driverPerformanceReportHessianDAO.getDriverPerformanceKeyMetricsListForGroup(
-                    group.getGroupID(), "test division", group.getName(), TimeFrame.TODAY);
+                    group.getGroupID(), "test division", group.getName(), TimeFrame.TODAY.getInterval());
             assertEquals("1 item in key metrics list", 1, list.size());
             DriverPerformanceKeyMetrics metrics = list.get(0);
-            assertEquals("total miles", expectedDailyMileagePerGroup[groupIdx], metrics.getTotalMiles().longValue());
-            assertEquals("driver", itData.teamGroupData.get(groupIdx).driver.getPerson().getFullName(), metrics.getDriverName());
-            assertEquals("team name", group.getName(), metrics.getTeamName());
-            assertEquals("Lo idle time", expectedDailyLoIdle[groupIdx], metrics.getLoIdleViolationsMinutes().intValue());
-            assertEquals("Hi idle time", expectedDailyHiIdle[groupIdx], metrics.getHiIdleViolationsMinutes().intValue());
-            assertEquals("idle violations count", expectedIdleViolationCount[groupIdx], metrics.getIdleViolationsCount().intValue());
-            assertEquals("Login count", expectedLoginCount[groupIdx], metrics.getLoginCount().intValue());
-            assertEquals("Overall Score", expectedTeamOverall[groupIdx], metrics.getOverallScore());
+            assertEquals("total miles " + groupIdx, expectedDailyMileagePerGroup[groupIdx], metrics.getTotalMiles().longValue());
+            assertEquals("driver " + groupIdx, itData.teamGroupData.get(groupIdx).driver.getPerson().getFullName(), metrics.getDriverName());
+            assertEquals("team name " + groupIdx, group.getName(), metrics.getTeamName());
+            assertEquals("Lo idle time " + groupIdx, expectedDailyLoIdle[groupIdx], metrics.getLoIdleViolationsMinutes().intValue());
+            assertEquals("Hi idle time " + groupIdx, expectedDailyHiIdle[groupIdx], metrics.getHiIdleViolationsMinutes().intValue());
+            assertEquals("idle violations count " + groupIdx, expectedIdleViolationCount[groupIdx], metrics.getIdleViolationsCount().intValue());
+            // Removed because we are not generating the login events
+//            assertEquals("Login count " + groupIdx, expectedLoginCount[groupIdx], metrics.getLoginCount().intValue());
+            assertEquals("Overall Score " + groupIdx, expectedTeamOverall[groupIdx], metrics.getOverallScore());
         }
         
     }

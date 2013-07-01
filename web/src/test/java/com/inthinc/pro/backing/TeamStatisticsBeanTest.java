@@ -76,6 +76,8 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         s.setSeatbeltEvents(15);
         s.setSpeedEvents(11);
         s.setIdleHiEvents(4);
+        s.setBackingTime(80);
+        s.setBackingEvents(1);
         
         DriverVehicleScoreWrapper dvsw = new DriverVehicleScoreWrapper();        
         dvsw.setScore(s);
@@ -98,6 +100,8 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
         s.setSeatbeltEvents(5);
         s.setSpeedEvents(1);   
         s.setIdleHiEvents(4);
+        s.setBackingTime(60);
+        s.setBackingEvents(2);
         
         dvsw = new DriverVehicleScoreWrapper();
         dvsw.setScore(s);
@@ -120,6 +124,8 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
   assertEquals(lTotals.get(0).getScore().getDriveTime(),154);
         assertEquals(lTotals.get(0).getScore().getIdleHi(),107);
         assertEquals(lTotals.get(0).getScore().getIdleLo(),64);
-        assertEquals(lTotals.get(0).getScore().getSafetyTotal().intValue(),137);
+        assertEquals(lTotals.get(0).getScore().getSafetyTotal().intValue(),140);
+        assertEquals(lTotals.get(0).getScore().getBackingTime(),140);
+        assertEquals(lTotals.get(0).getScore().getBackingEvents(),3);
     }   
 }

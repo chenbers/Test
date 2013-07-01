@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
@@ -100,6 +101,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
     private DDLUtil ddlUtil;
     
     private Date currentDateTime;
+    private DateTimeZone userDateTimeZone;
     
     public Date getCurrentDateTime() {
         if (currentDateTime == null) {
@@ -112,14 +114,15 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         this.currentDateTime = currentDateTime;
     }
 
-    public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) {
+    public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric, DateTimeZone dateTimeZone) {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         setResourceBundle(ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale));
         this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
         this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
-        ddlUtil = new DDLUtil(); 
+        ddlUtil = new DDLUtil();
+        this.userDateTimeZone = dateTimeZone;
     }
 
     public ResourceBundle getResourceBundle() {
@@ -263,8 +266,9 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         return (criteriaList != null)? criteriaList:new ArrayList<ReportCriteria>();
     }
 
-    private void setReportDate(Date date, ReportCriteria reportCriteria){
+    private void setReportDate(Date date, ReportCriteria reportCriteria) {
         SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("report.hos.dateTimeFormat", locale));
+        sdf.setTimeZone(userDateTimeZone == null ? TimeZone.getTimeZone("UTC") : userDateTimeZone.toTimeZone());
         reportCriteria.addParameter("REPORT_DATE_TIME", sdf.format(date));
     }
 
@@ -284,7 +288,10 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
         Date endDate = localEndDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone())).plusDays(1).minusSeconds(1).toDate();
         RuleSetType driverRuleSetType = (driver != null && driver.getDot() != null ? driver.getDot() : null);
         Date currentTime = getCurrentDateTime();
+        DateTime currentDateTime = new DateTime(currentTime);
 
+        List<HOSRec> correctedRecList = HOSUtil.filterCorrectedList(hosRecordList, endDate);
+        List<HOSRec> originalRecList = HOSUtil.filterOriginalList(hosRecordList, endDate);
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList, endDate);
         HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList, endDate);
 
@@ -306,6 +313,10 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
             if (day.toDate().after(currentTime)) 
                 break;
+            
+            DateTime dayEnd = day.plusDays(1);
+            dayEnd = dayEnd.isAfter(currentDateTime) ? currentDateTime : dayEnd; 
+            Interval dayInterval = new Interval(day, dayEnd);
 
             List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone());
             boolean isDSTStart = adjustedList.isDayDSTStart(day.toDate(), dateTimeZone.toTimeZone());
@@ -316,7 +327,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             RuleSetType ruleSetType = ddlUtil.getRuleSetTypeForDay(day, driverRuleSetType, firstHosRecForDay);
             
             HosDailyDriverLog dayData= new HosDailyDriverLog();
-            dayData.setCorrectedDayTotals(adjustedList.getAdjustedDayTotals(logListForDay));
+            dayData.setCorrectedDayTotals(rules.getDayTotals(correctedRecList, dayInterval));
             dayData.setDay(dateTimeFormatter.print(day));
             dayData.setCarrierName(carrierName);
             dayData.setMainAddress(mainOfficeDisplayAddress);
@@ -336,7 +347,7 @@ public class HosDailyDriverLogReportCriteria extends ReportCriteria {
             if (dayData.getEdited()) {
                 List<HOSRecAdjusted> originalLogListForDay = originalAdjustedList.getAdjustedListForDay(day.toDate(), currentTime, true, dateTimeZone.toTimeZone());
                 dayData.setOriginalGraphList(originalLogListForDay);
-                dayData.setOriginalDayTotals(originalAdjustedList.getAdjustedDayTotals(originalLogListForDay));
+                dayData.setOriginalDayTotals(rules.getDayTotals(originalRecList, dayInterval));
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, dayData.getOriginalDayTotals(), isDSTStart, isDSTEnd));
  
             }

@@ -170,6 +170,7 @@ public enum NoteType {
 	DSS_MICROSLEEP(176, new Attrib[]{Attrib.DATA}),
 	DSS_DISTRACTION_STATS(177, new Attrib[]{Attrib.DATA}),
 	SECONDARY_NOTEEVENT(178, new Attrib[]{Attrib.DELTAVS}),
+	VERTICAL_EVENT_SECONDARY(179, new Attrib[]{Attrib.DELTAVS, Attrib.DURATION}),
 	WEEKLY_GPRS_USAGE(180, new Attrib[]{Attrib.NOPTWEEKLYWRITECOUNT, Attrib.UPLOADWEEKTOTALWITTNESSIITRACE, Attrib.DOWNLOADWEEKLYTOTALFIRMWARE, Attrib.DOWNLOADWEEKLYTOTALMAPS, Attrib.DOWNLOADWEEKLYTOTALZONES, Attrib.DOWNLOADWEEKLYTOTALBOOTLOADER, Attrib.DOWNLOADWEEKLYTOTALQSIFIRMWARE,
 			Attrib.DOWNLOADWEEKLYTOTALWITNESSIIFIRMWARE, Attrib.DOWNLOADWEEKLYTOTALTRIAXIIFIRMWARE, Attrib.DOWNLOADWEEKLYTOTALBOUNDARYDAT, Attrib.DOWNLOADWEEKLYTOTALBOUNDARYDAT, Attrib.DOWNLOADWEEKLYTOTALSMTOOLSEMULATION, Attrib.DOWNLOADWEEKLYTOTALSMTOOLSFIRMWARE, Attrib.DOWNLOADWEEKLYTOTALSBSEXMAPSCHECKBYTES,
 			Attrib.DOWNLOADWEEKLYTOTALSBSEXMAPSDOWNLOADBYTES, Attrib.DOWNLOADWEEKLYTOTALSBSEXMAPSDOWNLOADCOUNT, Attrib.UPLOADWEEKTOTALNOTIFICATIONBYTES, Attrib.UPLOADWEEKTOTALNOTIFICATIONCOUNT}),
@@ -196,8 +197,22 @@ public enum NoteType {
 	IDLING(208, new Attrib[]{}),
 	CRASH(209, new Attrib[]{}),
 	SPEED_COACHING(210, new Attrib[]{}),
+    SEATBELT_COACHING(211, new Attrib[]{}),
+    SUB_THRESHOLD_CRASH(212, new Attrib[]{}),
+    UNPLUGGED_WHILE_ASLEEP(213, new Attrib[]{}),
+    IDLE_FAKETIME(214, new Attrib[]{}),
     CHECK_HOURS_EX(215, new Attrib[]{}),
+    DRIVER_HISTOGRAM_STATS(216, new Attrib[]{}),
+    STOP_MOTION(217, new Attrib[]{}),
     GET_VSETTINGS(218, new Attrib[]{}),
+    RF_KILL(219, new Attrib[]{}),
+    
+    DIAGNOSTIC(220, new Attrib[]{}), // send general diagnostic info to server
+    MAN_DOWN_EX(221, new Attrib[]{}),
+    DVIR_DRIVEN_UNSAFE(223, new Attrib[]{}),
+    DVIR_DRIVEN_NOPREINSPEC(224, new Attrib[]{}),
+    DVIR_DRIVEN_NOPOSTINSPEC(225, new Attrib[]{}),
+    
     CREATE_ROAD_HAZARD(226, new Attrib[]{}),
     RHA_CONFIRM_REJECT(227, new Attrib[]{}),
     SEND_ROAD_HAZARDS(228, new Attrib[]{}),
@@ -208,7 +223,8 @@ public enum NoteType {
     ONE_WIRE_PAIRING(230, new Attrib[]{Attrib.DRIVERSTR, Attrib.FOB_ID}),
     FOB_INFO(231, new Attrib[]{Attrib.FOB_ID}),
     DVIR_REPAIR(232, new Attrib[]{Attrib.DVIR_COMMENTS,Attrib.DVIR_MECHANIC_ID,Attrib.DVIR_INSPECTOR_ID,Attrib.DVIR_SIGNOFF_ID, Attrib.ATTR_DVIR_FORM_ID, Attrib.ATTR_DVIR_SUBMISSION_TIME}),
-    ROUTE_STOP(234, new Attrib[]{Attrib.ROUTE_STOP_TYPE, Attrib.ROUTESTOPID, Attrib.ATTR_ROUTE_ID}),
+    ROUTE_STOP(234, new Attrib[]{Attrib.ROUTE_STOP_TYPE, Attrib.ROUTESTOPID, Attrib.ATTR_ROUTE_ID}),	
+    BACKING(235, new Attrib[]{Attrib.TRIP_DURATION}),
 
 	//Stripped
 	STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246, new Attrib[]{Attrib.TYPE_FWDCMD, Attrib.ACKDATA, Attrib.TYPE_FWDCMD_ID}),
@@ -224,7 +240,7 @@ public enum NoteType {
 	private Attrib[] attribs;
 	private Integer code;
 	private static final Map<Integer,NoteType> lookup = new HashMap<Integer,NoteType>();
-    private static Logger logger = LoggerFactory.getLogger(NoteType.class);
+	private static Logger logger = LoggerFactory.getLogger(NoteType.class);
 	
     private NoteType(Integer code, Attrib[] attribs)
     {
@@ -283,6 +299,7 @@ public enum NoteType {
                 || noteType == HOS_CHANGE_STATE_NO_GPS_LOCK
                 || noteType == NO_DRIVER
                 || noteType == LOW_BATTERY_POTENTIAL_TAMPERING
+                || noteType == UNPLUGGED
 //              || noteType == LOW_POWER_MODE
                 );
     }

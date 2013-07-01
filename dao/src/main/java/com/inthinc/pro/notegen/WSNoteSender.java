@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
+
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpMethodRetryHandler;
+import org.apache.commons.httpclient.NoHttpResponseException;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -20,8 +24,11 @@ import com.inthinc.pro.model.Device;
 
 public class WSNoteSender implements SendNote {
 
-    private String url;         // mina?
+    private String url;         
     private Integer port;
+    
+    private DefaultHttpClient defaultClient = new DefaultHttpClient();
+
     
     private static int WIFI_COMM_TYPE = 3;
        
@@ -35,6 +42,7 @@ public class WSNoteSender implements SendNote {
                         "&event_time="+(noteTime.getTime()/1000l);
 System.out.println("sendNote: " + uri);        
         HttpPost method = new HttpPost(uri.toLowerCase());
+        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, retryhandler);
         MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
                 
         entity.addPart("mcm_id", new StringBody(device.getMcmid()==null?device.getImei() : device.getMcmid(), Charset.forName("UTF-8")));
@@ -55,33 +63,20 @@ System.out.println("sendNote: " + uri);
 //        System.out.println("response: " + response);
     }
     
+    @SuppressWarnings("finally")
     private String httpRequest(HttpUriRequest method) {
-        int retryCnt = 0;
-        do {
-            try {
-                HttpResponse response = new DefaultHttpClient().execute(method);
-                String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
-                return returnResponse;
-            } catch (Exception e) {
-                if (retryCnt == 4) {
-                    e.printStackTrace();
-                }
-            }
-            retryCnt++;
-            try {
-                Thread.sleep(100l);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.print(".");
-            
-        } while (retryCnt < 5);
-        return "";
+        try {
+            HttpResponse response = defaultClient.execute(method);
+            String returnResponse = getResponseBodyFromStream(response.getEntity().getContent()); 
+            return returnResponse;
+        } 
+        finally {
+            return "";
+        }
     }
 
     
     private String getResponseBodyFromStream(InputStream is) {
-        System.out.println("parsing response response");
         String str = "";
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -110,6 +105,27 @@ System.out.println("sendNote: " + uri);
         this.port = port;
     }
 
-
+    HttpMethodRetryHandler retryhandler = new HttpMethodRetryHandler() {
+        public boolean retryMethod(
+            final HttpMethod method, 
+            final IOException exception, 
+            int executionCount) {
+            if (executionCount >= 5) {
+                // Do not retry if over max retry count
+                return false;
+            }
+            if (exception instanceof NoHttpResponseException) {
+                // Retry if the server dropped connection on us
+                return true;
+            }
+            if (!method.isRequestSent()) {
+                // Retry if the request has not been sent fully or
+                // if it's OK to retry methods that have been sent
+                return true;
+            }
+            // otherwise do not retry
+            return false;
+        }
+    };
     
 }

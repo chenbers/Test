@@ -19,50 +19,55 @@ public class TiwiParser implements NoteParser{
 	public Map<String, Object> parseNote(byte[] data)
 	{
 		HashMap<String, Object> attribMap = new HashMap<String, Object>();
+		
+		try {
 
-		parseHeader(data, attribMap);
-		int offset = 16;
-		int attrID = 0;
-		int attrVal = 0;
-		while (offset < data.length)
-		{
-			attrID = ReadUtil.unsign(data[offset++]);
-			
-			if (attrID < 128)
-			{
-				attrVal = ReadUtil.unsign(data[offset++]); 
-			}
-			else if(attrID < 192)
-			{
-			    if (attrID == Attrib.DELTAVX.getCode() 
-			       || attrID == Attrib.DELTAVY.getCode() 
-			       || attrID == Attrib.DELTAVZ.getCode()){
-
-			        Attrib attrib = Attrib.get(attrID);
-			        AttribParser parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
-			        offset = parser.parseAttrib(data, offset, attrib.getFieldName(), attribMap);
-			        continue;
-			    }
-			    else
-			    {
-    				attrVal =  ReadUtil.read(data, offset, 2);
-    				offset += 2;
-			    }	
-			}
-			else if(attrID < 255)
-			{
-				attrVal =  ReadUtil.read(data, offset, 4);
-				offset += 4;
-			}
-			else
-			{
-				attrVal = ReadUtil.unsign(data[offset++]);
-				while ((offset < data.length) && (data[offset] != '\0'))
-					offset++;
-			}
-			Attrib attrib = Attrib.get(attrID);
-			attribMap.put((attrib == null) ? String.valueOf(attrID) : attrib.getFieldName(), attrVal);
-		}
+    		parseHeader(data, attribMap);
+    		int offset = 16;
+    		int attrID = 0;
+    		int attrVal = 0;
+    		while (offset < data.length)
+    		{
+    			attrID = ReadUtil.unsign(data[offset++]);
+    			
+    			if (attrID < 128)
+    			{
+    				attrVal = ReadUtil.unsign(data[offset++]); 
+    			}
+    			else if(attrID < 192)
+    			{
+    			    if (attrID == Attrib.DELTAVX.getCode() 
+    			       || attrID == Attrib.DELTAVY.getCode() 
+    			       || attrID == Attrib.DELTAVZ.getCode()){
+    
+    			        Attrib attrib = Attrib.get(attrID);
+    			        AttribParser parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
+    			        offset = parser.parseAttrib(data, offset, attrib.getFieldName(), attribMap);
+    			        continue;
+    			    }
+    			    else
+    			    {
+        				attrVal =  ReadUtil.read(data, offset, 2);
+        				offset += 2;
+    			    }	
+    			}
+    			else if(attrID < 255)
+    			{
+    				attrVal =  ReadUtil.read(data, offset, 4);
+    				offset += 4;
+    			}
+    			else
+    			{
+    				attrVal = ReadUtil.unsign(data[offset++]);
+    				while ((offset < data.length) && (data[offset] != '\0'))
+    					offset++;
+    			}
+    			Attrib attrib = Attrib.get(attrID);
+    			attribMap.put((attrib == null) ? String.valueOf(attrID) : attrib.getFieldName(), attrVal);
+    		}
+		} catch (Throwable e){
+            logger.error("Parser error: " + e);
+		}	
 		return attribMap;
 	}
 	

@@ -50,7 +50,6 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.DOTStoppedEvent;
 import com.inthinc.pro.model.event.DOTStoppedState;
-import com.inthinc.pro.model.event.DVIREvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.FirmwareVersionEvent;
@@ -181,6 +180,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
     		EventType eventType = getEventTypes(zoneAlert).get(0);
 	    	Integer zoneID = itData.zone.getZoneID();
 	        Device device = itData.teamGroupData.get(ITData.GOOD).device;
+	        device.setVehicleID(itData.teamGroupData.get(ITData.GOOD).vehicle.getVehicleID());
 	
 	        boolean anyAlertsFound = false;
 	        // generate zone arrival/departure event
@@ -219,7 +219,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
     		List<EventType> eventTypes = getZoneEventTypes(zoneAlert);
 	    	Integer zoneID = itData.zone.getZoneID();
 	        Device device = itData.noDriverDevice;
-	        
+	        device.setVehicleID(itData.noDriverVehicle.getVehicleID());
 	        // generate zone arrival/departure event
 	        genZoneEvent(device, zoneID, eventTypes.get(0));
 	        if (pollForMessages("Zone Alert Groups Set"))
@@ -232,6 +232,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 continue;
     		List<EventType> eventTypes = getEventTypes(redFlagAlert);
 	        Device device = itData.noDriverDevice;
+            device.setVehicleID(itData.noDriverVehicle.getVehicleID());
 	        
             genEvent(createEvent(eventTypes.get(0)), device);
 	        if (pollForMessages("Red Flag Alert Groups Set"))
@@ -285,6 +286,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
         
         List<EventType> eventTypes = getEventTypes(redFlagAlert);
         Device device = itData.noDriverDevice;
+        device.setVehicleID(itData.noDriverVehicle.getVehicleID());
             
             // set the alert
         genEvent(createEvent(eventTypes.get(0)), device);
@@ -319,8 +321,11 @@ public class AlertMessagesTest extends BaseJDBCTest{
 	        modRedFlagAlertPref(GROUPS, redFlagAlert);
 	        List<EventType> eventTypes = getEventTypes(redFlagAlert);
 	        Device device = groupData.device;
-	        if (eventTypes.get(0).equals(EventType.NO_DRIVER))
+            device.setVehicleID(groupData.vehicle.getVehicleID());
+	        if (eventTypes.get(0).equals(EventType.NO_DRIVER)) {
 	        	device= itData.noDriverDevice;
+	            device.setVehicleID(itData.noDriverVehicle.getVehicleID());
+	        }
 
 	        
 	        genEvent(createEvent(eventTypes.get(0)), device);
@@ -367,6 +372,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
           boolean anyAlertsFound = false;
           modRedFlagAlertPref(GROUPS, redFlagAlert);
           Device device = groupData.device;
+          device.setVehicleID(groupData.vehicle.getVehicleID());
           
           Event event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
                   new Double(40.704246f), new Double(-111.948613f), 11, 11, 5, 100, 100);
@@ -397,6 +403,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
           boolean anyAlertsFound = false;
           modRedFlagAlertPref(GROUPS, redFlagAlert);
           Device device = groupData.device;
+          device.setVehicleID(groupData.vehicle.getVehicleID());
           
           Event event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 
                   new Double(40.704246f), new Double(-111.948613f), 77,77, 75, 100, 100);
@@ -438,8 +445,10 @@ ALERT_TYPE_IGNITION_ON
                     new HOSNoHoursEvent(0l, 0, NoteType.HOS_NO_HOURS, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, HOSNoHoursState.DRIVING)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED, new Event[] {
                     new DOTStoppedEvent(0l, 0, NoteType.DOT_STOPPED, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, DOTStoppedState.DOT_INSPECTION)}),
+/* Commented out by BMiller 6/18/2013   218 Note Type is used for getting vsettings over sat..  
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_OFF_HOURS, new Event[] {
                     new Event(0l, 0, NoteType.OFF_HOURS_DRIVING, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG)}),
+*/                    
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_PARKING_BRAKE, new Event[] {
                     new ParkingBrakeEvent(0l, 0, NoteType.PARKING_BRAKE, new Date(), 100, 1000, DEFAULT_LAT, DEFAULT_LNG, ParkingBrakeState.DRIVING)}),
             new MiscAlertInfo(AlertMessageType.ALERT_TYPE_QSI_UPDATED, new Event[] {
@@ -467,6 +476,7 @@ ALERT_TYPE_IGNITION_ON
     public void miscWSAlert() {
         GroupData groupData = itData.teamGroupData.get(ITData.WS_GROUP); 
         Device device = groupData.device;
+        device.setVehicleID(groupData.vehicle.getVehicleID());
         
         RedFlagAlert redFlagAlert = null;
         for (RedFlagAlert rfa : redFlagAlerts) {
@@ -848,6 +858,7 @@ ALERT_TYPE_IGNITION_ON
     private void genEvent(Event event, Device device) {
         try {
             noteGenerator.genEvent(event, device);
+            pollForEvent(event, device);
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -855,6 +866,34 @@ ALERT_TYPE_IGNITION_ON
         }
         
     }
+    private void pollForEvent(Event event, Device device) {
+        List<NoteType> noteTypes = new ArrayList<NoteType>();
+        noteTypes.add(event.getType());
+        int secondsToWait = 30;
+        for (int i = 0; i < secondsToWait; i++) {
+            
+            List<Event> events = eventDAO.getEventsForVehicle(device.getVehicleID(), new Date(event.getTime().getTime() - 5000l), new Date(event.getTime().getTime() + 5000l), noteTypes, 0);
+            if (events == null || events.size() == 0) {
+                if (i == (secondsToWait-1)) {
+                    System.out.println();
+                    logger.error(" pollForEvent failed even after waiting " + secondsToWait + " sec -- most likely queue is backed up");
+                }
+                try {
+                    Thread.sleep(1000l);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
+                System.out.print(".");
+            }
+            else {
+                break;
+            }
+        }
+        
+    }
+
     private static void initDAOs()
     {
         alertMessageDAO = new AlertMessageJDBCDAO();

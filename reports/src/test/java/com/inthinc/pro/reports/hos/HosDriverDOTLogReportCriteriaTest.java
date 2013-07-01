@@ -3,10 +3,12 @@ package com.inthinc.pro.reports.hos;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.joda.time.Interval;
@@ -59,6 +61,7 @@ public class HosDriverDOTLogReportCriteriaTest extends BaseUnitTest {
             HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false, false);
 
             HosDriverDOTLogReportCriteria hosDriverDOTLogReportCriteria = new HosDriverDOTLogReportCriteria(Locale.US);
+            hosDriverDOTLogReportCriteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
             Map<Driver, List<HOSRecord>> dataMap = new HashMap<Driver, List<HOSRecord>>();
             for (Entry<Driver, List<HOSRecord>> entry : testData.driverHOSRecordMap.entrySet())
                 dataMap.put(entry.getKey(), filterByInterval(testData.interval, entry.getValue()));

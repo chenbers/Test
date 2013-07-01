@@ -129,27 +129,12 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
 
     @Override
     public List<DriverVehicleScoreWrapper> getDriverScores(Integer groupID, Interval interval, GroupHierarchy gh) {
-        //The hessian method being called requires two params, which should be the midnight value of the interval
-        //  you are trying to indicate.
-        
-        //broken up into multiple lines for ease of reading
-        
-        //find the days in the interval
-        Days days = Days.daysBetween(interval.getStart(), interval.getEnd());
-        int daysBetween = days.getDays();
-        
-        //get the intervals start DateTime
-        DateTime startDateTime = interval.getStart();
-        
-        //get the timezone of the startDateTime and store the offset
-        int offset = startDateTime.getZone().getOffset(startDateTime);
-        
-        //apply the offset to the startDateTime's underlying millis. 
-        //  Then change the timezone to UTC. Then adjust the millis to the Midnight value.
-        DateTime intervalToUse = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
-        
-        return getDriverScores(groupID, intervalToUse, intervalToUse.plusDays(daysBetween), gh);
+        Interval scoringInterval = getScoringInterval(interval);
+        logger.debug("getDriverScores: " + DateUtil.getDisplayInterval(scoringInterval, DateTimeZone.UTC));
+
+        return getDriverScores(groupID, scoringInterval.getStart(), scoringInterval.getEnd(), gh);
     }
+    
 
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration, GroupHierarchy gh) {
@@ -173,27 +158,14 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
     
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Interval interval, GroupHierarchy gh) {
-        //The hessian method being called requires two params, which should be the midnight value of the interval
-        //  you are trying to indicate.
-        
-        //broken up into multiple lines for ease of reading
-        
-        //find the days in the interval
-        Days days = Days.daysBetween(interval.getStart(), interval.getEnd());
-        int daysBetween = days.getDays();
-        
-        //get the intervals start DateTime
-        DateTime startDateTime = interval.getStart();
-        
-        //get the timezone of the startDateTime and store the offset
-        int offset = startDateTime.getZone().getOffset(startDateTime);
-        
-        //apply the offset to the startDateTime's underlying millis. 
-        //  Then change the timezone to UTC. Then adjust the millis to the Midnight value.
-        DateTime intervalToUse = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
-        
-        return getVehicleScores(groupID, intervalToUse, intervalToUse.plusDays(daysBetween-1), gh);
+        Interval scoringInterval = getScoringInterval(interval);
+        logger.debug("getDriverScores: " + DateUtil.getDisplayInterval(scoringInterval, DateTimeZone.UTC));
+
+        return getVehicleScores(groupID, scoringInterval.getStart(), scoringInterval.getEnd(), gh);
+
     }
+   
+    
     
     @Override
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, DateTime startTime, DateTime endTime, GroupHierarchy gh) {
@@ -219,4 +191,23 @@ public class GroupReportHessianDAO extends AbstractReportHessianDAO implements G
         return getVehicleScores(groupID, intervalToUse, intervalToUse, gh);
     }  
 
+    private Interval getScoringInterval(Interval interval) {
+        
+        //find the days in the interval
+        Days days = Days.daysBetween(interval.getStart(), interval.getEnd());
+        int daysBetween = days.getDays();
+        
+        //get the intervals start DateTime
+        DateTime startDateTime = interval.getStart();
+        
+        //get the timezone of the startDateTime and store the offset
+        int offset = startDateTime.getZone().getOffset(startDateTime);
+        
+        //apply the offset to the startDateTime's underlying millis. 
+        //  Then change the timezone to UTC. Then adjust the millis to the Midnight value.
+        DateTime intervalToUse = startDateTime.plusMillis(offset).toDateTime(DateTimeZone.UTC).toDateMidnight().toDateTime();
+        
+        return new Interval(intervalToUse, intervalToUse.plusDays(daysBetween-1));
+
+    }
 }
