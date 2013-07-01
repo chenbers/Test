@@ -775,18 +775,33 @@ public class TripsBean extends BaseBean {
 				break;
 			}
 		}
-		if(lastLocation==null){
+        if(!isValidLatLng(lastLocation)) {
 			lastLocation = getEntityLastLocation();
 		}
-        if(lastLocation==null){
+       if(!isValidLatLng(lastLocation)) {
             //try group default locations for driver or vehicle
             lastLocation = getGroupDefaultLocation();
         }
-        if(lastLocation==null){
+        if(!isValidLatLng(lastLocation)) {
             //something has gone horribly wrong - center on our office latlng
             lastLocation = new LatLng(40.7,-112.012);
         }
 	}
+	
+	boolean isValidLatLng(LatLng latLng) {
+	    if (latLng == null) {
+	        return false;
+	    }
+	    
+	    if (Math.abs(latLng.getLat()) < 0.005 || 
+	        Math.abs(latLng.getLat()) > LatLng.MAX_LAT ||
+	        Math.abs(latLng.getLng()) < 0.005 ||
+	        Math.abs(latLng.getLng()) > LatLng.MAX_LNG) {
+	        return false;
+	    }
+	    return true;
+	}
+	
 	private LatLng  getEntityLastLocation(){
 	    LastLocation ll;
 		if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
