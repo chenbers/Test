@@ -12,6 +12,7 @@ public interface ReportTestConst {
     
     public static final int LO_IDLE_TIME = 4;			// seconds units
     public static final int HI_IDLE_TIME = 8;
+    public static final int DURATION = 12;
 
     public static final int TAMPER_EVENT_IDX = 0;
     public static final int TAMPER2_EVENT_IDX = 1;
@@ -31,7 +32,7 @@ public interface ReportTestConst {
     public static final int NO_DRIVER_IDX = 8;
     public static final int NOTE_EVENT_SECONDARY_IDX = 10;
     public static final int HARD_VERT_820_IDX = 12;
-    public static final int HARD_VERT_820_SECONDARY_IDX = 14;
+//    public static final int HARD_VERT_820_SECONDARY_IDX = 14;
     public static final int SPEEDING_EXT_IDX = 15;
     public static final int PARKING_BRAKE_IDX = 20;
     public static final int MICRO_SLEEP_IDX = 25;
@@ -55,14 +56,14 @@ public interface ReportTestConst {
     public static final WS waySmartEventIndexes[] = {
         new WS(NOTE_EVENT_SECONDARY_IDX, NoteType.NOTE_EVENT_SECONDARY),
         new WS(HARD_VERT_820_IDX, NoteType.VERTICAL_EVENT),
-        new WS(HARD_VERT_820_SECONDARY_IDX, NoteType.VERTICAL_EVENT_SECONDARY),
+//        new WS(HARD_VERT_820_SECONDARY_IDX, NoteType.VERTICAL_EVENT_SECONDARY),
         new WS(SPEEDING_EXT_IDX, NoteType.SPEEDING_EX4),
         new WS(NO_DRIVER_IDX, NoteType.NO_DRIVER),
         new WS(PARKING_BRAKE_IDX, NoteType.PARKING_BRAKE),
         new WS(MICRO_SLEEP_IDX, NoteType.DSS_MICROSLEEP),
         new WS(LOW_BATTERY_POTENTIAL_IDX, NoteType.LOW_BATTERY_POTENIAL_TAMPERING),
         new WS(WIRELINE_ALARM_IDX, NoteType.WIRELINE_ALARM),
-        new WS(INSTALL_IDX, NoteType.INSTALL),
+//        new WS(INSTALL_IDX, NoteType.INSTALL),
         new WS(FIRMWARE_CURRENT_IDX, NoteType.FIRMWARE_UP_TO_DATE),
         new WS(LOCATION_DEBUG_IDX, NoteType.LOCATION_DEBUG),
         new WS(QSI_UPDATED_IDX, NoteType.QSI_UP_TO_DATE),

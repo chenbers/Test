@@ -17,7 +17,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.EventDAO;
@@ -46,7 +45,6 @@ public class PaginationTest {
     private static ITData itData;
     
     private static final String PAGINATION_BASE_DATA_XML = "PageTest.xml";
-//    private static final String PAGINATION_BASE_DATA_XML = "PageTest34.xml";
     private static final int FLEET_IDX = 3;    
     // the expected counts come from the events generated daily by DataGenForPaginationTesting
     // that process is run via a cron job in Hudson daily
@@ -54,8 +52,8 @@ public class PaginationTest {
     static {
     	EXPECTED_EVENT_COUNTS = new HashMap<EventCategory, Integer[]> ();
     	// events in team 0 (GOOD) are from the unknown driver
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(15), Integer.valueOf(28)});
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(8), Integer.valueOf(6), Integer.valueOf(10), Integer.valueOf(36)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(16), Integer.valueOf(28)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(8), Integer.valueOf(6), Integer.valueOf(10), Integer.valueOf(35)});
     	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(10)});
     	
     }
@@ -63,8 +61,8 @@ public class PaginationTest {
     static {
         EXPECTED_WS_EVENT_COUNTS = new HashMap<EventCategory, Integer> ();
         // events in team 0 (GOOD) are from the unknown driver
-        EXPECTED_WS_EVENT_COUNTS.put(EventCategory.VIOLATION, Integer.valueOf(7));
-        EXPECTED_WS_EVENT_COUNTS.put(EventCategory.WARNING, Integer.valueOf(12));
+        EXPECTED_WS_EVENT_COUNTS.put(EventCategory.VIOLATION, Integer.valueOf(6));
+        EXPECTED_WS_EVENT_COUNTS.put(EventCategory.WARNING, Integer.valueOf(11));
         EXPECTED_WS_EVENT_COUNTS.put(EventCategory.EMERGENCY, Integer.valueOf(9));
         
     }

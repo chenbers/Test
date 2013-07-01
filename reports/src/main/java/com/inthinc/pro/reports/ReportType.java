@@ -80,6 +80,7 @@ public enum ReportType
     DRIVER_PERFORMANCE_INDIVIDUAL("Driver  Performance (Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG(Team)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
     DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver  Performance RYG(Individual)","driverPerformanceReport.jrxml","driverPerformanceRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.performance.i18n.driverPerformanceReport", null, false), 
+    BACKING_REPORT("Back-Up Events Report","backingReport.jrxml","backingReportRaw.jrxml","performance","com.inthinc.pro.reports.jasper.performance.i18n.backingReport"),
 
     // ASSET
     WARRANTY_LIST("Warranty List","warrantyListReport.jrxml","warrantyListReportRaw.jrxml", "performance","com.inthinc.pro.reports.jasper.asset.i18n.warrantyList", null, false),

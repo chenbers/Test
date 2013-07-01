@@ -206,6 +206,59 @@ public class NewNoteTest {
         }
     }
 
+    public void testEOTAttribs(String mcmID, String imei) {
+        SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.HOS_CHANGE_STATE_NO_GPS_LOCK,
+                new AutomationCalendar(), new GeoPoint(), false, false,
+                HOSFlags.ON_DUTY_NOT_DRIVING, false, false, false, Heading.NORTH, 15, 60,
+                65, 0, 0, 47, 0);
+
+        note.addAttr(EventAttr.DRIVER_HOS_STATE, 1); 
+        note.addAttr(EventAttr.CLEAR_DRIVER_FLAG, 0);         
+        note.addAttr(EventAttr.DRIVER_ID_STR, "71572");
+        note.addAttr(EventAttr.NO_GPS_LOCK_LOCATION, "test location");
+        
+        note.addAttr(EventAttr.SEATBELT_CLICKS, 1); 
+        note.addAttr(EventAttr.SEATBELT_OUT_DISTANCE, 1000);    
+        note.addAttr(EventAttr.NO_DRIVER_DISTANCE, 1000);    
+        note.addAttr(EventAttr.NO_TRAILER_DISTANCE, 1000);    
+        note.addAttr(EventAttr.HEADLIGHT_OFF_DISTANCE, 1000);
+        note.addAttr(EventAttr.RF_OFF_DISTANCE, 1000);    
+
+        List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        try {
+            proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void testNewDriver(String mcmID, String imei) {
+        SatelliteEvent_t note = new SatelliteEvent_t(DeviceNoteTypes.CHECK_HOSMINUTES,
+                new AutomationCalendar(), new GeoPoint(), false, false,
+                HOSFlags.ON_DUTY_NOT_DRIVING, false, false, false, Heading.NORTH, 15, 60,
+                65, 0, 0, 47, 0);
+
+        note.addAttr(EventAttr.DRIVER_ID_STR, "71572");
+        note.addAttr(EventAttr.CURRENT_HOS_RULESET, 7);
+
+        List<SatelliteEvent_t> notes = new ArrayList<SatelliteEvent_t>();
+        notes.add(note);
+        try {
+            proxy.sendHttpNote(mcmID, Direction.wifi, notes, imei);
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws InterruptedException{
         String imeiOnDev = "30023FKEWS00001";
         String mcmIDOnDev = "FKE00001";
@@ -235,10 +288,11 @@ public class NewNoteTest {
         String mcmID = mcmIDOnDev;
 */        
         
-        NewNoteTest test = new NewNoteTest(AutoSilos.MY);
+        NewNoteTest test = new NewNoteTest(AutoSilos.QA);
 //        test.testInstallNote();
-        test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
-        
+//        test.testIntraStateViolation(mcmIDOnQA, imeiOnQA, 40.7525, -111.613);
+        test.testNewDriver(mcmIDOnQA, imeiOnQA);
+//        test.testEOTAttribs(mcmIDOnQA, imeiOnQA);        
         /* DVIR Repair Note Tests */
         // test.testDVIRRepairNote_WS850(mcmIDOnDEV_WS850, imeiOnDEV_WS850);
         

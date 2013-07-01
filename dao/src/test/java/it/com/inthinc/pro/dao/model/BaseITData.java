@@ -292,7 +292,7 @@ public abstract class BaseITData {
             try {
                 person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
                         first + "email"+groupID+Util.randomInt(1, 99999)+"@example.com", 
-                        null, "5555555555", "5555555555", null, null, null, null, null, "emp"+groupID+acctID+Util.randomInt(1, 99999), 
+                        null, "5555555555", "5555555555", null, null, null, null, null, genEmployeeID(groupID, acctID), 
                         null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, 
                         MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
                 person.setCrit(1);
@@ -312,7 +312,15 @@ public abstract class BaseITData {
 
         return person;
     }
-
+    
+    private String genEmployeeID(Integer groupID, Integer acctID) {
+        String empID = "e"+groupID+acctID+Util.randomInt(1, 99999);
+        if (empID.length() > 10) 
+            return empID.substring(0, 10);
+        
+        return empID;
+    }
+ 
     protected void createAccount(boolean includeWSGroup)
     {
         AccountHessianDAO accountDAO = new AccountHessianDAO();

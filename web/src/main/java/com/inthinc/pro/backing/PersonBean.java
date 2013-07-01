@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -77,9 +76,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, Integer> WEIGHTS;
     private static final int MIN_WEIGHT = 75;
     private static final int MAX_WEIGHT = 300;
-    private static Map<String, TimeZone> TIMEZONES;
     private static final Map<String, State> STATES;
     private static final String REQUIRED_KEY = "required";
+    private static final int MAX_FOB_ID_LENGTH = 24;
     static {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
@@ -162,12 +161,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	private Integer passwordDaysRemaining;
 	
 	
-    public void initBean()
-    {
-        super.initBean();
-        TIMEZONES = initTimeZones();
-    }
-
+    
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -858,6 +852,36 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:editPerson-driver_status", message);
             }
+            
+            // Check for valid Fob ID ... error message key is editPerson_fobIdInvalid "Invalid 1-Wire ID.
+            if(!isBatchEdit() && person.getDriver().getFobID() != null && !person.getDriver().getFobID().isEmpty()){
+                char[] fobIdCharArray = person.getDriver().getFobID().toCharArray();
+                // Check length of the field make sure it does not exceed the max lenght of the permitted Fob ID
+                if(person.getDriver().getFobID().length() > MAX_FOB_ID_LENGTH){
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_fobIdInvalId"), null);
+                    context.addMessage("edit-form:editPerson-driver_fobID", message);
+                    
+                    person.getDriver().setFobID(null);
+                    valid = false;
+                    
+                }
+                // Check that the first Char is not a space (" ") in the field 
+                else if(fobIdCharArray[0] == ' '){
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_fobIdInvalId"), null);
+                    context.addMessage("edit-form:editPerson-driver_fobID", message);
+                    
+                    person.getDriver().setFobID(null);
+                    valid = false;
+                }
+                // Check that the field contains only alpha numeric values
+                else if(!StringUtils.isAlphanumericSpace(person.getDriver().getFobID())){
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_fobIdInvalId"), null);
+                    context.addMessage("edit-form:editPerson-driver_fobID", message);
+                    
+                    person.getDriver().setFobID(null);
+                    valid = false;
+                }
+            }
             if (!isBatchEdit() && (person.getDriver().getBarcode() != null) && !person.getDriver().getBarcode().isEmpty()) {
             	
             	List<Long> rfids = driverDAO.getRfidsByBarcode(person.getDriver().getBarcode());
@@ -1129,8 +1153,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     }
                 }
                 // if updating the currently-logged-in person, update the proUser
-                if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID()))
+                if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID())) {
                     BeanUtil.deepCopy(person.getUser(), getUser());
+                    getTimeZonesBean().initBean();
+                }
             }
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
@@ -1219,7 +1245,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         	if (updatePersonTemplate != null) {
         		updatePersonTemplate.setPersonID(null);
         		BeanUtil.deepCopyNonNull(updatePersonTemplate, getPerson());
-        		
+        		if (updatePersonTemplate.getLocale() != null) {
+        		    getTimeZonesBean().initBean();
+        		}
         	}
         	if (updateUserTemplate != null) {
         		updateUserTemplate.setUserID(null);
@@ -1342,7 +1370,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
 
     public Map<String, TimeZone> getTimeZones() {
-        return TIMEZONES;
+        return getTimeZonesBean().getTimeZones();
     }
 
     public List<SelectItem> getProviderTypes() {

@@ -35,7 +35,7 @@
         <hos_state state="driving" hours="1" />		<!--  if reset A is used this is a violation, if reset B is used this is NOT a violation -->	
         
 	</driver_log>
-	<result ruleset="us" recapDay="5" recapWorked="01.00">
+	<result ruleset="us" recapDay="5" recapWorked="01:00">
         <hos_state state="off_duty" hours="22" />				
         <hos_state state="driving" hours="1" />				
 	</result>

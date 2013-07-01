@@ -17,6 +17,7 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false"/>
+	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
 	<field name="editUserName" class="java.lang.String"/>
 	<field name="timeStr" class="java.lang.String"/>
 	<field name="timeAddedStr" class="java.lang.String"/>
@@ -351,21 +352,8 @@ $F{editUserName} : str("origin." + $F{origin}.toString())]]></textFieldExpressio
 			<line>
 				<reportElement key="line" x="0" y="3" width="782" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
 			</line>
-			<textField evaluationTime="Report" pattern="MM/dd/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-2" style="PageFooter" x="679" y="7" width="100" height="18"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-10" style="PageFooter" x="3" y="9" width="172" height="17"/>
+				<reportElement key="textField-10" style="PageFooter" x="2" y="6" width="172" height="18"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -378,7 +366,7 @@ $F{editUserName} : str("origin." + $F{origin}.toString())]]></textFieldExpressio
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{footer.confidential}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-11" style="PageFooter" x="252" y="6" width="180" height="19" forecolor="#000000"/>
+				<reportElement key="textField-11" style="PageFooter" x="252" y="6" width="180" height="18" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -391,7 +379,7 @@ $F{editUserName} : str("origin." + $F{origin}.toString())]]></textFieldExpressio
 				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{footer.page}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-12" style="PageFooter" x="433" y="6" width="100" height="19"/>
+				<reportElement key="textField-12" style="PageFooter" x="433" y="6" width="100" height="18"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -402,6 +390,19 @@ $F{editUserName} : str("origin." + $F{origin}.toString())]]></textFieldExpressio
 					<font size="12" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-20" style="PageFooter" x="608" y="6" width="170" height="18"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

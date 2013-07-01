@@ -8,3 +8,5 @@ target
 *.jar
 *_.java
 /server.crt
+.idea/*
+*.iml

@@ -118,24 +118,6 @@ public class MiscUtil
     }
     
     
-    public static int whichMethodToUse(TeamCommonBean teamCommonBean) {
-        // Assume daily value (0)
-        int rc = 0;
-    
-        if(("teamVehicleStatistics").equals(teamCommonBean.getSelectedTabId()))
-        	return 3;
-        
-        // Not daily?
-        if (        teamCommonBean.getTimeFrame().equals(TimeFrame.WEEK) ) {
-            return 1;
-            
-        } else if ( teamCommonBean.getTimeFrame().equals(TimeFrame.MONTH) || 
-                    teamCommonBean.getTimeFrame().equals(TimeFrame.YEAR) ) {
-            return 2;
-        }
-        
-        return rc;
-    }
     /**
      * Check to see if a String contains data.
      * @param s the String to test

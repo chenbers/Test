@@ -783,4 +783,7 @@
   	<property name="effectiveDateForUS2013Changes" value="${hos.usrules.effective.date}"/>
   </bean>
 
+
+  <bean id="timeZonesBean" class="com.inthinc.pro.backing.TimeZonesBean" scope="session" init-method="initBean"/>
+
 </beans>

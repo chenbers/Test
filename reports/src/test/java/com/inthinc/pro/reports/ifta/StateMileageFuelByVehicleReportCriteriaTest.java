@@ -198,7 +198,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest { //extends BaseUnitTes
      */
     @Test
     public void testCompareWithNulls() {
-        StateMileageFuelByVehicleReportCriteria.StateMileageFuelByVehicleComparator comparator = (new StateMileageFuelByVehicleReportCriteria(null).new StateMileageFuelByVehicleComparator());
+        StateMileageFuelByVehicleReportCriteria.StateMileageFuelByVehicleComparator comparator = (new StateMileageFuelByVehicleReportCriteria(Locale.getDefault()).new StateMileageFuelByVehicleComparator());
 
         StateMileageFuelByVehicle o1 = new StateMileageFuelByVehicle();
         StateMileageFuelByVehicle o2 = new StateMileageFuelByVehicle();

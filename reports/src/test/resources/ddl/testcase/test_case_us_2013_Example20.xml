@@ -14,7 +14,7 @@
         <hos_state state="on_duty" hours="1" />				
         <hos_state state="driving" hours="1" />		<!--  violation -->								
 	</driver_log>
-	<result ruleset="us" recapDay="2" recapWorked="14.00">
+	<result ruleset="us" recapDay="2" recapWorked="14:00">
         <hos_state state="occupant_off_duty" hours="2" />	<!--  passenger exception -->			
         <hos_state state="occupant_on_duty" hours="4" />				
         <hos_state state="driving" hours="3" />				

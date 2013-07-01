@@ -29,6 +29,9 @@ import org.junit.Test;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
+import com.inthinc.pro.dao.LocationDAO;
+import com.inthinc.pro.dao.cassandra.CassandraDB;
+import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
@@ -122,6 +125,7 @@ import com.inthinc.pro.model.zone.option.type.OffOnDevice;
 public class SiloServiceTest {
     private static final Logger logger = Logger.getLogger(SiloServiceTest.class);
     private static SiloService siloService;
+    private static CassandraDB cassandraDB;
     private Account account;
     private Address address;
     private Group fleetGroup;
@@ -154,7 +158,20 @@ public class SiloServiceTest {
         IntegrationConfig config = new IntegrationConfig();
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
+        
+        
         siloService = new SiloServiceCreator(host, port).getService();
+        
+        String clusterName = config.get(IntegrationConfig.CASSANDRA_CLUSTER).toString();
+        String keyspaceName = config.get(IntegrationConfig.CASSANDRA_KEYSPACE).toString();
+        String cacheKeyspaceName = config.get(IntegrationConfig.CASSANDRA_CACHE_KEYSPACE).toString();
+        String nodeAddress = config.get(IntegrationConfig.CASSANDRA_NODE_ADDRESS).toString();
+        Boolean autoDiscoverHosts = Boolean.valueOf(config.get(IntegrationConfig.CASSANDRA_AUTODISCOVER_HOSTS).toString());
+        Boolean quorumConsistency = Boolean.valueOf(config.get(IntegrationConfig.CASSANDRA_QUORUM_CONSISTENCY).toString());
+        Integer maxActive = Integer.valueOf(config.get(IntegrationConfig.CASSANDRA_MAXACTIVE).toString());
+        
+        
+        cassandraDB = new CassandraDB(true, clusterName, keyspaceName, cacheKeyspaceName, nodeAddress, maxActive, autoDiscoverHosts, quorumConsistency);
 
         ITData itData = new ITData();
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(REPORT_BASE_DATA_XML);
@@ -386,8 +403,12 @@ public class SiloServiceTest {
     public void lastLocationDriver() {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
-        LocationHessianDAO locationDAO = new LocationHessianDAO();
-        locationDAO.setSiloService(siloService);
+//        LocationHessianDAO locationDAO = new LocationHessianDAO();
+//        locationDAO.setSiloService(siloService);
+        LocationCassandraDAO locationDAO = new LocationCassandraDAO();
+        locationDAO.setCassandraDB(cassandraDB);
+        locationDAO.setDriverDAO(driverDAO);
+
         driverDAO.setLocationDAO(locationDAO);
         LastLocation loc = driverDAO.getLastLocation(TESTING_DRIVER_ID);
         assertNotNull(loc);
@@ -481,12 +502,20 @@ public class SiloServiceTest {
     @Test
     //@Ignore
     public void lastLocationVehicle() {
+           
+         
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+//       LocationHessianDAO locationDAO = new LocationHessianDAO();
+//      locationDAO.setSiloService(siloService);
+       
+        LocationCassandraDAO locationDAO = new LocationCassandraDAO();
+        locationDAO.setCassandraDB(cassandraDB);
+        locationDAO.setVehicleDAO(vehicleDAO);
+
         vehicleDAO.setSiloService(siloService);
-        LocationHessianDAO locationDAO = new LocationHessianDAO();
-        locationDAO.setSiloService(siloService);
         vehicleDAO.setLocationDAO(locationDAO);
         
+  
         LastLocation vloc = vehicleDAO.getLastLocation(TESTING_VEHICLE_ID);
         assertNotNull(vloc);
         assertEquals(TESTING_VEHICLE_ID, vloc.getVehicleID());
@@ -498,10 +527,19 @@ public class SiloServiceTest {
     @Test
     //@Ignore
     public void lastLocationDrivers() {
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
-        LocationHessianDAO locationDAO = new LocationHessianDAO();
-        locationDAO.setSiloService(siloService);
+//        LocationHessianDAO locationDAO = new LocationHessianDAO();
+//        locationDAO.setSiloService(siloService);
+        LocationCassandraDAO locationDAO = new LocationCassandraDAO();
+        locationDAO.setCassandraDB(cassandraDB);
+        locationDAO.setDriverDAO(driverDAO);
+        locationDAO.setVehicleDAO(vehicleDAO);
+  
+        
         driverDAO.setLocationDAO(locationDAO);
         List<DriverLocation> locList = driverDAO.getDriverLocations(TESTING_GROUP_ID);
         assertNotNull(locList);
@@ -566,8 +604,16 @@ public class SiloServiceTest {
         driverDAO.setSiloService(siloService);
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
-        LocationHessianDAO locationDAO = new LocationHessianDAO();
-        locationDAO.setSiloService(siloService);
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+//        LocationHessianDAO locationDAO = new LocationHessianDAO();
+ //       locationDAO.setSiloService(siloService);
+        LocationCassandraDAO locationDAO = new LocationCassandraDAO();
+        locationDAO.setCassandraDB(cassandraDB);
+        locationDAO.setDriverDAO(driverDAO);
+        locationDAO.setVehicleDAO(vehicleDAO);
+        locationDAO.setDeviceDAO(deviceDAO);
+   
         driverDAO.setLocationDAO(locationDAO);
         vehicleDAO.setLocationDAO(locationDAO);
         

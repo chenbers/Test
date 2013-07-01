@@ -76,7 +76,7 @@ public class ScoreCassandraDAO extends AggregationCassandraDAO implements ScoreD
         dao.setGroupDAO(groupDAO);
 */
         
-        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "note_prod", "chevron-node4.tiwipro.com:9160", 10, false);
+        CassandraDB cassandraDB = new CassandraDB(true, "Inthinc Production", "note_prod", "note_prod", "chevron-node4.tiwipro.com:9160", 10, false, false);
         dao.setCassandraDB(cassandraDB);
 //        dao.printScore("2013-02-23", 13243, 8397); //tiwi
 //        dao.printScore("2013-02-23", 10715, 8397); //tiwi

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -37,6 +38,8 @@ public class HosEditsReportCriteriaTest extends BaseUnitTest {
       for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], false);
             HosEditsReportCriteria hosEditsReportCriteria = new HosEditsReportCriteria(Locale.US);
+            hosEditsReportCriteria.setReportDate(new Date(), TimeZone.getTimeZone("UTC"));
+
             hosEditsReportCriteria.initDataSet(testData.getGroupHierarchy(), testData.interval, testData.driverHOSRecordMap);
             
             List<HosEdit> dataList= hosEditsReportCriteria.getMainDataset();

@@ -35,7 +35,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
      */
     private AddressDAO addressDAO;
     private static final long serialVersionUID = 1L;
-    private static Map<String, TimeZone> TIMEZONES;
     private static final Map<String, State> STATES;
     private static final String REQUIRED_KEY = "required";
     
@@ -49,12 +48,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
           
     private PersonDAO personDAO;
     
-    public void initBean()
-    {
-        super.initBean();
-        TIMEZONES = initTimeZones();
-    }
-
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
@@ -86,7 +79,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
                 getAddressDAO().update(a.getAddress());
             }
             // Update                            
-            getAccountDAO().update(a);           
+            getAccountDAO().update(a);   
             personDAO.update(a.getPerson());
             
             // Communicate to other aspects of the system
@@ -124,7 +117,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     }
 
     public Map<String, TimeZone> getTimeZones() {
-        return TIMEZONES;
+        return getTimeZonesBean().getTimeZones();
     }
     
     public Map<String, State> getStates() {

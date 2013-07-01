@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -17,7 +16,6 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 //@KeepAlive
 public class TeamOverallBean extends BaseBean {
@@ -279,18 +277,19 @@ public class TeamOverallBean extends BaseBean {
             //  0: day value, start/end day the same, if no driving in time frame will show last DAY score
             //  1: week value, calculate start and add seven, if no driving in time frame will show last DAY score
             //  2: month or year, use duration identifier, if no driving in time frame will show last MONTH score
-            switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
-                case 0:
-                    local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
-                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(), getGroupHierarchy());
-                    break;
-                case 1:
+            switch (teamCommonBean.getTimeFrame()) {
+                case WEEK:
                     local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
                                 teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()), getGroupHierarchy());
                     break;
-                case 2:
+                case MONTH:
+                case YEAR:
                     local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
                                 teamCommonBean.getTimeFrame().getAggregationDuration(), getGroupHierarchy());
+                    break;
+                default:
+                    local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                                teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart(), getGroupHierarchy());
                     break;
             }
             
