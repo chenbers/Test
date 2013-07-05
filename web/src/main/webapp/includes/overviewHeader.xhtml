@@ -22,14 +22,7 @@
                     		<ui:param name="context" value="#{context}-overviewHeader"/> 
     					</ui:include>
     				</li>
-    				
-    				<li class="r grid_icon">
-	                <a4j:outputPanel id="contextSensitiveHelpDB">
-    	            	<a href='javascript:RH_ShowHelp(0, "#{helpBean.path}>NewWindow", 15, #{(empty helpMapIDOverride) ? helpBean.mapID : helpMapIDOverride})'>
-    					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
-        	        	</a>
-					</a4j:outputPanel>
-    				</li>
+
     				<h:outputText rendered="#{showContextMenu eq 'true'}">
     				<li class="r grid_icon">
     					<h:panelGroup id="overview_tools_icon">
