@@ -48,8 +48,15 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     }
     
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
-        
-        Double speedLimit  = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.SPEED_LIMIT.getSettingID()));
+
+        /* Start out setting the default speed. It may be that this has just been assigned to the vehicle and there
+        *  is no "best option".
+        */
+        Double speedLimit = DEFAULT_SPEED_LIMIT;
+        if(vs.getBestOption(SettingType.SPEED_LIMIT.getSettingID()) != null){
+            speedLimit  = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.SPEED_LIMIT.getSettingID()));
+        }
+
         Double speedBuffer = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.SPEED_BUFFER.getSettingID()));
         Double severeSpeed = NumberUtil.convertStringToDouble(vs.getBestOption(SettingType.SEVERE_SPEED.getSettingID()));
  
