@@ -4,10 +4,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 public enum Attrib {
-	
+
+
 	//////HEADER ATTRIBS/////////////
 	NOTETYPE(10, AttribParserType.BYTE, "type"),
 	NOTETIME(11, AttribParserType.INTEGER, "time"),
@@ -352,6 +356,7 @@ public enum Attrib {
     VSETTINGS(49169, AttribParserType.BYTEARRAY),
     CRASHDATA(49170, AttribParserType.BYTEARRAY);
 	
+    private static Logger logger = LoggerFactory.getLogger(Attrib.class.getName());
 	private static final Map<Integer,Attrib> lookup = new HashMap<Integer,Attrib>();
     private static final Map<String,Attrib> lookupName = new HashMap<String,Attrib>();
 
@@ -419,7 +424,9 @@ public enum Attrib {
             strVal = split[i+1];
 
             val = Attrib.parseStringValue(strCode, strVal);
-            map.put(strCode,  val);
+            
+            if (val != null)
+                map.put(strCode,  val);
 
         }
 
@@ -443,7 +450,12 @@ public enum Attrib {
             parser = AttribParserFactory.getParserForParserType(attrib.getAttribParserType());
     
         if (parser != null) {
-            val = parser.parseString(strVal);
+            try {
+                val = parser.parseString(strVal);
+            } catch (Throwable e)
+            {
+                logger.error("Exception: " + e);
+            }
         }
         return val;
 	}
