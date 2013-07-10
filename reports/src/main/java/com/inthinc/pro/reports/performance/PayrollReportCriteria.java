@@ -20,6 +20,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
@@ -84,6 +85,14 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
                     rec.getStatus() == HOSStatus.OFF_DUTY_OCCUPANT ||
                     rec.getStatus() == HOSStatus.HOS_PERSONALTIME) {
                     status = HOSStatus.OFF_DUTY;
+            }
+            else if (rec.getStatus() == HOSStatus.HOS_ALTERNATE_SLEEPING) {
+                if (rec.getDriverDotType() == RuleSetType.CANADA_2007_OIL) {
+                    status = HOSStatus.SLEEPER;
+                }
+                else {
+                    status = HOSStatus.OFF_DUTY;
+                }
             }
             else {
                 continue;
