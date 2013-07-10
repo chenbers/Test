@@ -22,7 +22,7 @@ public class NotebcParser implements NoteParser{
 
 	public Map<String, Object> parseNote(byte[] data)
 	{
-        HashMap<String, Object> attribMap = new HashMap<String, Object>();
+        Map<String, Object> attribMap = new HashMap<String, Object>();
 		try {
     		parseHeader(data, attribMap);
     //        logger.debug("attribMap: " + attribMap);
