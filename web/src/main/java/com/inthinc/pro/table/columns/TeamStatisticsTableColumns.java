@@ -28,8 +28,11 @@ public class TeamStatisticsTableColumns extends BaseTableColumns {
     	COLUMNS.add("crashes");
     	COLUMNS.add("seatbelt_clicks");
     	COLUMNS.add("safety");
+/*    	
+    	US6954 - Removing backing events from portal until after firmware side implements.                  
         COLUMNS.add("backing_time");
         COLUMNS.add("backing");
+*/        
     }
     
 	@Override
