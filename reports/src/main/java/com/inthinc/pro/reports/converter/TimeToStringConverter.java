@@ -1,8 +1,11 @@
 package com.inthinc.pro.reports.converter;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import com.inthinc.pro.dao.util.DateUtil;
 
@@ -25,7 +28,33 @@ public class TimeToStringConverter {
         return DateUtil.getDurationFromSeconds(seconds.intValue());
     }	
     
-    public static String convertSecondsToDate(Long seconds, Locale locale) {
+    public static String convertSecondsToDateWithUsersTimeZone(Long seconds, TimeZone timeZone) {
+        
+        if (seconds != null && seconds == 0L) {
+            return "";            
+        }
+        
+        if (seconds == null) {
+            seconds = 0L;
+        }
+        
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTimeInMillis(seconds*1000L);
+        
+        Date date = new Date(gc.getTimeInMillis());
+        
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy h:mm a (zzz)");
+        
+        if(timeZone != null) {
+            df.setTimeZone(TimeZone.getTimeZone(timeZone.getID()));
+        } else {
+            df.setTimeZone(TimeZone.getDefault());
+        }
+        
+        return df.format(date);
+    }
+    
+    public static String convertSecondsToDate(Long seconds,Locale locale) {
                 
         if (seconds != null && seconds == 0L) {
             return "";            

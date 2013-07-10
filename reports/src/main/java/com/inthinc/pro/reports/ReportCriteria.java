@@ -57,6 +57,8 @@ public class ReportCriteria
     public static final String SLASH_GROUP_SEPERATOR = "/";
     public static final String DATE_FORMAT = "MM/dd/yyyy";
     public static final String REPORT_IFTA_ONLY = "iftaVehiclesOnly";
+    
+    public static final String USER_TIME_ZONE = "USER_TIME_ZONE";
 
     public static final boolean DEFAULT_EXCLUDE_INACTIVE_DRIVERS = false;
     public static final boolean DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS = false;

@@ -1,15 +1,15 @@
 package com.inthinc.pro.reports.performance;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.ReportAddressLookupBean;
 import com.inthinc.pro.model.Driver;
@@ -69,6 +69,14 @@ public class TeamStopsReportCriteria  extends GroupListReportCriteria {
                 teamStopsCriteriaList.add(driverStopReport);
             }
         }
+        
+        DateTime dateTime = new DateTime(timeZone);
+        
+        GregorianCalendar gc = dateTime.toGregorianCalendar();
+        TimeZone zone = gc.getTimeZone();
+        
+        addParameter(USER_TIME_ZONE, zone);
+        
         setMainDataset(teamStopsCriteriaList);
     }
 

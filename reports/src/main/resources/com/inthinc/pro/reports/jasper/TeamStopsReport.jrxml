@@ -10,6 +10,9 @@
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<style name="PageFooter" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
 	<subDataset name="driverStops">
+		<parameter name="USER_TIME_ZONE" class="java.util.TimeZone" isForPrompting="false">
+			<defaultValueExpression><![CDATA[$P{USER_TIME_ZONE}]]></defaultValueExpression>
+		</parameter>
 		<field name="waitTime" class="java.lang.Integer"/>
 		<field name="driveTime" class="java.lang.Long"/>
 		<field name="zoneName" class="java.lang.String"/>
@@ -41,6 +44,7 @@
 		<parameterDescription><![CDATA[Company logo]]></parameterDescription>
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="USER_TIME_ZONE" class="java.util.TimeZone" isForPrompting="false"/>
 	<field name="driverID" class="java.lang.Integer"/>
 	<field name="driverName" class="java.lang.String"/>
 	<field name="driverStops" class="java.util.List"/>
@@ -274,13 +278,13 @@
 							<reportElement x="365" y="0" width="127" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{departTime} == null) ?  "  ----":
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{departTime}, $P{REPORT_LOCALE})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{departTime}, $P{USER_TIME_ZONE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement x="240" y="0" width="125" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{arriveTime} == null) ?  "  ----" :
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDate($F{arriveTime}, $P{REPORT_LOCALE})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{arriveTime}, $P{USER_TIME_ZONE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement x="74" y="0" width="61" height="20"/>
