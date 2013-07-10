@@ -41,10 +41,10 @@ public enum ReportGroup {
     NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report", 31, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS }, new GroupType[] {
             GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.HOS, EnumSet.of(ReportAccountType.HOS), ReportType.NON_DOT_VIOLATIONS_DETAIL_REPORT),
     DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report", 32, EntityType.ENTITY_GROUP_LIST, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] {
-            GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART),
+            GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART, ReportAccountType.DRIVE_TIME_VIOLATIONS),
             ReportType.DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT),
     DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report", 33, EntityType.ENTITY_GROUP_LIST_OR_DRIVER, new CriteriaType[] { CriteriaType.TIMEFRAME, CriteriaType.INACTIVE_DRIVERS}, new GroupType[] {
-            GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART),
+            GroupType.DIVISION, GroupType.FLEET, GroupType.TEAM }, ReportCategory.Performance, EnumSet.of(ReportAccountType.HOS, ReportAccountType.WAYSMART, ReportAccountType.DRIVE_TIME_VIOLATIONS),
             ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT),
 
     // IFTA
@@ -307,4 +307,7 @@ public enum ReportGroup {
         return reportAccountTypes != null && reportAccountTypes.contains(ReportAccountType.WAYSMART);
     }
 
+    public Boolean getRequiresDriveTimeViolationReportAccount() {
+        return reportAccountTypes != null && reportAccountTypes.contains(ReportAccountType.DRIVE_TIME_VIOLATIONS);
+    }
 }

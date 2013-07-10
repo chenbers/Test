@@ -29,7 +29,6 @@ import org.junit.Test;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
-import com.inthinc.pro.dao.LocationDAO;
 import com.inthinc.pro.dao.cassandra.CassandraDB;
 import com.inthinc.pro.dao.cassandra.LocationCassandraDAO;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -58,6 +57,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertEscalationItem;
@@ -1108,8 +1108,35 @@ public class SiloServiceTest {
         List<Account> accountList = accountDAO.getAllAcctIDs();
         assertTrue(!accountList.isEmpty());
         
-        
+        accountProps(accountDAO);
     }
+    
+    
+    private void accountProps(AccountHessianDAO accountDAO ) {
+        // default values
+        assertEquals("Account Prop Default Forms Enabled: ", Boolean.FALSE, account.hasFormsEnabled());
+        assertEquals("Account Prop Default Drive Time Violations Report Enabled: ", Boolean.FALSE, account.hasDriveTimeViolationsReportEnabled());
+        assertEquals("Account Prop Default Waysmart Enabled: ", Boolean.FALSE, account.hasWaySmartSupport());
+        assertEquals("Account Prop Default RHA Enabled: ", Boolean.FALSE, account.hasRHAEnabled());
+
+        AccountAttributes props = account.getProps();
+        if (props == null) {
+            props = new AccountAttributes();
+        }
+        props.setDriveTimeViolationsReportEnabled("true");
+        props.setFormsEnabled("true");
+        props.setWaySmart("true");
+        props.setRhaEnabled("true");
+        account.setProps(props);
+        
+        accountDAO.update(account);
+        Account updatedAccount = accountDAO.findByID(account.getAccountID());
+        assertEquals("Account Prop Forms Enabled: ", Boolean.TRUE, updatedAccount.hasFormsEnabled());
+        assertEquals("Account Prop Drive Time Violations Report Enabled: ", Boolean.TRUE, updatedAccount.hasDriveTimeViolationsReportEnabled());
+        assertEquals("Account Prop Waysmart Enabled: ", Boolean.TRUE, updatedAccount.hasWaySmartSupport());
+        assertEquals("Account Prop RHA Enabled: ", Boolean.TRUE, updatedAccount.hasRHAEnabled());
+    }
+
     private void unknownDriver(Integer acctID) {
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
