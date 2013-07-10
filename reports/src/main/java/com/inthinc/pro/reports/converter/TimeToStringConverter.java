@@ -28,7 +28,7 @@ public class TimeToStringConverter {
         return DateUtil.getDurationFromSeconds(seconds.intValue());
     }	
     
-    public static String convertSecondsToDateWithUsersTimeZone(Long seconds, TimeZone timeZone) {
+    public static String convertSecondsToDateWithUsersTimeZone(Long seconds, TimeZone timeZone, Locale locale) {
         
         if (seconds != null && seconds == 0L) {
             return "";            
@@ -43,7 +43,7 @@ public class TimeToStringConverter {
         
         Date date = new Date(gc.getTimeInMillis());
         
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy h:mm a (zzz)");
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy h:mm a (zzz)", locale);
         
         if(timeZone != null) {
             df.setTimeZone(TimeZone.getTimeZone(timeZone.getID()));

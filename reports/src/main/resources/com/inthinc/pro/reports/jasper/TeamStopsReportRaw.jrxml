@@ -157,13 +157,13 @@
 							<reportElement x="290" y="1" width="125" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{arriveTime} == null) ?  "  ----" :
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{arriveTime}, $P{USER_TIME_ZONE})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{arriveTime}, $P{USER_TIME_ZONE}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="false">
 							<reportElement x="415" y="1" width="125" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{departTime} == null) ?  "  ----":
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{departTime}, $P{USER_TIME_ZONE})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{departTime}, $P{USER_TIME_ZONE}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement x="540" y="1" width="60" height="20"/>

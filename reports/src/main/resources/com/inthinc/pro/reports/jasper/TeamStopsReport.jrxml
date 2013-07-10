@@ -278,13 +278,13 @@
 							<reportElement x="365" y="0" width="127" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{departTime} == null) ?  "  ----":
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{departTime}, $P{USER_TIME_ZONE})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{departTime}, $P{USER_TIME_ZONE}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement x="240" y="0" width="125" height="20"/>
 							<textElement textAlignment="Center"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{arriveTime} == null) ?  "  ----" :
-com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{arriveTime}, $P{USER_TIME_ZONE})]]></textFieldExpression>
+com.inthinc.pro.reports.converter.TimeToStringConverter.convertSecondsToDateWithUsersTimeZone($F{arriveTime}, $P{USER_TIME_ZONE}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement x="74" y="0" width="61" height="20"/>
