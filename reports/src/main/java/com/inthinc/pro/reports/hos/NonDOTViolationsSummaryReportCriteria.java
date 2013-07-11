@@ -64,12 +64,16 @@ public class NonDOTViolationsSummaryReportCriteria extends ViolationsSummaryRepo
         for (Group group : reportGroupList) {
             dataMap.put(group.getGroupID(), new NonDOTViolationsSummary(getFullGroupName(groupHierarchy, group.getGroupID())));
         }
+        DateTime currentTime = new DateTime(DateTimeZone.UTC);
+
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             RuleSetType driverDOTType = driver.getDot();
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
-            
+            if (reportEndDate.isAfterNow())
+                reportEndDate = currentTime;
+
             List<HOSRecord> hosRecordList = entry.getValue();
             Collections.sort(hosRecordList);
 
