@@ -19,6 +19,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.richfaces.component.html.HtmlCalendar;
 import org.richfaces.component.html.HtmlInputText;
@@ -462,6 +463,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         assertFalse(messages.hasNext()); 
     }
     @Test
+    @Ignore
     public void autocompleteTest(){
     	List<VehicleName> suggestions = fuelStopsBean.autocomplete("1");
     }

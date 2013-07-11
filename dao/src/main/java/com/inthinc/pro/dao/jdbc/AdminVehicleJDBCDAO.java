@@ -18,10 +18,13 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleIdentifiers;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.pagination.FilterOp;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -317,5 +320,36 @@ public class AdminVehicleJDBCDAO extends SimpleJdbcDaoSupport{
         
     }
 
+    private static final String FUEL_STOP_VEHICLE_SELECT = 
+            "SELECT v.vehicleID, v.name from vehicle v " +
+            "LEFT OUTER JOIN desiredVSet d ON (v.vehicleID = d.vehicleID and d.settingID = :dot_settingID) " +  
+            "LEFT OUTER JOIN actualVSet a ON (v.vehicleID = a.vehicleID and a.settingID = :dot_settingID) " + 
+            "where v.groupID in (:group_list) and v.status != 3 and v.name LIKE :name_filter " +
+            "and (d.value = :dot_type or d.value = :prompt_dot_type or (d.value is null and a.value = :dot_type or a.value = :prompt_dot_type ))";
+
+    public List<VehicleName> getFuelStopEligibleVehicles(List<Integer> groupIDs, String nameFilter) {
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("group_list", groupIDs);
+        params.put("name_filter", "%"+nameFilter+"%");
+        params.put("dot_settingID", SettingType.DOT_VEHICLE_TYPE.getSettingID());
+        params.put("dot_type", VehicleDOTType.DOT.getConfiguratorSetting());
+        params.put("prompt_dot_type", VehicleDOTType.PROMPT_FOR_DOT_TRIP.getConfiguratorSetting());
+
+        StringBuilder vehicleSelect = new StringBuilder();
+        vehicleSelect.append(FUEL_STOP_VEHICLE_SELECT);
+        
+        return  getSimpleJdbcTemplate().query(vehicleSelect.toString(), fuelStopEligibleVehicleRowMapper, params);
+    }
+
+    private ParameterizedRowMapper<VehicleName> fuelStopEligibleVehicleRowMapper = new ParameterizedRowMapper<VehicleName>() {
+        @Override
+        public VehicleName mapRow(ResultSet rs, int rowNum) throws SQLException {
+            VehicleName vehicle = new VehicleName();
+            vehicle.setVehicleID(rs.getInt("v.vehicleID"));
+            vehicle.setVehicleName(rs.getString("v.name"));
+            return vehicle;
+        }
+    };
 
 }
