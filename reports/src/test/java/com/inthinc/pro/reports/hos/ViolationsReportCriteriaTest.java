@@ -258,7 +258,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
 
     static Map<RuleSetType, Integer> expectedHosDetailCountMap = new HashMap<RuleSetType, Integer>();
     static {
-        expectedHosDetailCountMap.put(RuleSetType.US, Integer.valueOf(3));
+        expectedHosDetailCountMap.put(RuleSetType.US, Integer.valueOf(4));
         expectedHosDetailCountMap.put(RuleSetType.US_OIL, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_60_DEGREES, Integer.valueOf(3)); 
@@ -272,7 +272,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_60_DEGREES_CYCLE_2, Integer.valueOf(6)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_OIL, Integer.valueOf(7)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_60_DEGREES_OIL, Integer.valueOf(5)); 
-        expectedHosDetailCountMap.put(RuleSetType.US_7DAY, Integer.valueOf(3)); 
+        expectedHosDetailCountMap.put(RuleSetType.US_7DAY, Integer.valueOf(4)); 
         expectedHosDetailCountMap.put(RuleSetType.US_OIL_7DAY, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_7DAY, Integer.valueOf(3));
         expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_8DAY, Integer.valueOf(3)); 
@@ -404,7 +404,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             Integer violationCount = 0;
 //            System.out.println("expectedHosDetailMap.put(RuleSetType." + ruleSetType + " , ");
             for (ViolationsDetail detail : dataList) {
-//                detail.dump();
+                detail.dump();
                 violationCount += detail.getViolationsList().size();
             }
             Integer expectedViolationCount = expectedHosDetailCountMap.get(ruleSetType);
