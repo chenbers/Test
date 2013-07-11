@@ -92,6 +92,8 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         for (Group group : reportGroupList) {
             dataMap.put(group.getGroupID(), new HosViolationsSummary(getFullGroupName(groupHierarchy, group.getGroupID())));
         }
+        DateTime currentTime = new DateTime(DateTimeZone.UTC);
+
         for (Entry<Driver, List<HOSRecord>> entry : driverHOSRecordMap.entrySet()) {
             Driver driver = entry.getKey();
             RuleSetType driverDOTType = driver.getDot();
@@ -100,7 +102,9 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             
             DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
             DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
-            
+            if (reportEndDate.isAfterNow())
+                reportEndDate = currentTime;
+
             List<HOSRecord> hosRecordList = entry.getValue();
             Collections.sort(hosRecordList);
             
