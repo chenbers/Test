@@ -280,6 +280,9 @@ public class BaseBean implements Serializable {
         String formsEnabled = getProUser().getAccountAttributes().getFormsEnabled();
         return (formsEnabled == null) ? false : Boolean.valueOf(formsEnabled); 
     }
+    public boolean getAccountIsDriveTimeViolationsReportEnabled() {
+        return Boolean.valueOf(getProUser().getAccountAttributes().getDriveTimeViolationsReportEnabled()); 
+    }
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
     public String getTimeZoneDisplayName(TimeZone timeZone) {

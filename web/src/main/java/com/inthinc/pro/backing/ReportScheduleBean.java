@@ -181,6 +181,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 continue;
             if (rt.getRequiresWaySmartAccount() && !getAccountIsWaysmart())
                 continue;
+            if (rt.getRequiresDriveTimeViolationReportAccount() && !getAccountIsDriveTimeViolationsReportEnabled())
+                continue;
+
             items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
         }
         return items.toArray(new SelectItem[0]);

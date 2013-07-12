@@ -4,7 +4,8 @@ public enum ReportAccountType {
     HOS,
     WAYSMART,
     PERFORMANCE,
-    DVIR;
+    DVIR,
+    DRIVE_TIME_VIOLATIONS;
     
     
     

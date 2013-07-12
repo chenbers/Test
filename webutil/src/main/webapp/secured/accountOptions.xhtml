@@ -74,6 +74,18 @@
                         </td>                              	                           	
 					</tr>
 					<tr>
+                    	<td style="vertical-align: middle;"><h:outputText value="Driving Time Violation Reports: " /></td>
+                        <td>
+							<h:selectOneMenu id="editAccount-driveTimeReport" value="#{accountOptionsBean.account.props.driveTimeViolationsReportEnabled}">
+								<f:selectItem itemLabel="Disabled" itemValue="false"/>
+								<f:selectItem itemLabel="Enabled" itemValue="true"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td style="vertical-align: top;"><h:outputText value="HOS and waySmart must also be enabled to enable Drive Time Violation Reports." style="color:gray;font:italic 10px Verdana,Tahoma,Arial,sans-serif;"/></td>
+                   </tr>
+					<tr>
                     	<td style="vertical-align: middle;"><h:outputText value="Login Expire: " /></td>
                         <td>
 							<h:selectOneMenu id="editAccount-loginExpire" value="#{accountOptionsBean.account.props.loginExpire}">
