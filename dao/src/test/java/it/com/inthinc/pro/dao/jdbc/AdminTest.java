@@ -9,18 +9,16 @@ import it.config.IntegrationConfig;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
@@ -31,22 +29,18 @@ import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.AdminDeviceJDBCDAO;
-import com.inthinc.pro.dao.jdbc.AdminHazardJDBCDAO;
 import com.inthinc.pro.dao.jdbc.AdminPersonJDBCDAO;
 import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
-import com.inthinc.pro.model.BoundingBox;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.model.Hazard;
-import com.inthinc.pro.model.HazardStatus;
-import com.inthinc.pro.model.HazardType;
-import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.PersonIdentifiers;
-import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
@@ -277,6 +271,56 @@ public class AdminTest extends BaseJDBCTest {
             }
             assertTrue("Unable to find match for Vehicle " + hessianVehicle.getVehicleID(), found);
         }
+    }
+
+    @Test
+    public void fuelStopEligibleVehicleTest() {
+        
+        Integer groupID = itData.fleetGroup.getGroupID();
+        Integer acctID = itData.account.getAccountID();
+
+        GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
+        groupHessianDAO.setSiloService(siloService);
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupHessianDAO.getGroupsByAcctID(acctID));
+        List<Integer> groupIDList = groupHierarchy.getSubGroupIDList(groupID);
+        
+        VehicleHessianDAO vehicleHessianDAO = new VehicleHessianDAO();
+        vehicleHessianDAO.setSiloService(siloService);
+        ConfiguratorHessianDAO configuratorHessianDAO = new ConfiguratorHessianDAO();
+        configuratorHessianDAO.setSiloService(siloService);
+        List<Vehicle> hessianVehicleList = vehicleHessianDAO.getVehiclesInGroupHierarchy(groupID);
+        Integer goodVehicleID = null;
+        Integer badVehicleID = null;
+        for (Vehicle hessianVehicle : hessianVehicleList) {
+            // make sure the good vehicle is set to DOT
+            if (hessianVehicle.getName().contains("GOOD")) {
+                Map<Integer, String> setMap = new HashMap<Integer, String>();
+                setMap.put(SettingType.DOT_VEHICLE_TYPE.getSettingID(), Integer.valueOf(VehicleDOTType.DOT.getConfiguratorSetting()).toString());
+                configuratorHessianDAO.setVehicleSettings(hessianVehicle.getVehicleID(), setMap, itData.fleetUser.getUserID(), "Test");
+                goodVehicleID = hessianVehicle.getVehicleID(); 
+            }
+            // make sure the bad vehicle is set to PROMPT_FOR_DOT
+            if (hessianVehicle.getName().contains("BAD")) {
+                Map<Integer, String> setMap = new HashMap<Integer, String>();
+                setMap.put(SettingType.DOT_VEHICLE_TYPE.getSettingID(), Integer.valueOf(VehicleDOTType.PROMPT_FOR_DOT_TRIP.getConfiguratorSetting()).toString());
+                configuratorHessianDAO.setVehicleSettings(hessianVehicle.getVehicleID(), setMap, itData.fleetUser.getUserID(), "Test");
+                badVehicleID = hessianVehicle.getVehicleID(); 
+            }
+            
+        }
+        
+        
+        AdminVehicleJDBCDAO adminVehicleJDBCDAO = new AdminVehicleJDBCDAO();
+        adminVehicleJDBCDAO.setDataSource(new ITDataSource().getRealDataSource());
+        List<VehicleName> vehicleNameList = adminVehicleJDBCDAO.getFuelStopEligibleVehicles(groupIDList, "");
+        assertEquals("expected 2 fuel stop eligible vehicles for no name filter", 2, vehicleNameList.size());
+        Collections.sort(vehicleNameList);
+        assertEquals("expected BAD Vehicle", badVehicleID, vehicleNameList.get(0).getVehicleID());
+        assertEquals("expected GOOD Vehicle", goodVehicleID, vehicleNameList.get(1).getVehicleID());
+
+        vehicleNameList = adminVehicleJDBCDAO.getFuelStopEligibleVehicles(groupIDList, "G");
+        assertEquals("expected 1 fuel stop eligible vehicles for name filter", 1, vehicleNameList.size());
+        assertEquals("expected GOOD Vehicle", goodVehicleID, vehicleNameList.get(0).getVehicleID());
     }
 
     @Test

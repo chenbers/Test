@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
@@ -29,19 +25,15 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.model.LocateVehicleByTime;
 import com.inthinc.pro.backing.ui.DateRange;
-import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
-import com.inthinc.pro.dao.util.NumberUtil;
+import com.inthinc.pro.dao.jdbc.AdminVehicleJDBCDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleName;
-import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.util.MessageUtil;
@@ -64,11 +56,8 @@ public class FuelStopsBean extends BaseBean {
     
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
-    private ConfiguratorDAO configuratorDAO;
-    public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
-		this.configuratorDAO = configuratorDAO;
-	}
 	private HOSDAO hosDAO;
+    private AdminVehicleJDBCDAO adminVehicleJDBCDAO;
     private LocateVehicleByTime locateVehicleByTime;
     private PageData pageData;
     
@@ -120,9 +109,8 @@ public class FuelStopsBean extends BaseBean {
         return vehiclesSelectItems;
     }
     private void createVehiclesSelectItemsForUsersGroup(){
-        List<Vehicle> eligibleVehicles = getEligibleVehicles();
-        for (Vehicle v : eligibleVehicles) {
-            vehiclesSelectItems.add(new SelectItem(v.getVehicleID(), v.getName()));
+        for (VehicleName v : getEligibleVehicles("")) {
+            vehiclesSelectItems.add(new SelectItem(v.getVehicleID(), v.getVehicleName()));
         }
     }
     private List<SelectItem> initSelectItems(){
@@ -176,8 +164,8 @@ public class FuelStopsBean extends BaseBean {
     }
     private boolean validateVehicleName(){
     	if ((vehicle!= null) && !vehicleNameNow.equalsIgnoreCase(vehicle.getName())){
-	        for(Vehicle vehicle :getEligibleVehicles()){
-	            String name = vehicle.getName();
+	        for(VehicleName vehicle :getEligibleVehicles("")){
+	            String name = vehicle.getVehicleName();
 	            if (name != null && name.toLowerCase().equals(vehicleNameNow.toLowerCase())){
 	                return true;
 	            }
@@ -371,42 +359,14 @@ public class FuelStopsBean extends BaseBean {
     public void setPage(int page) {
         pageData.initPage(page, itemLoader.getSize());
     }
-    
 
-    private List<Vehicle> getEligibleVehicles(){
-        Set<VehicleDOTType> dotTypes = VehicleDOTType.getDOTTypes();
-
-        List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getUser().getGroupID());
-        Map<Integer, VehicleDOTType> vehicleDOTTypes = getVehicleDOTTypes();
-        Iterator<Vehicle> it = vehicles.iterator();
-        while (it.hasNext()){
-            Vehicle vehicle = it.next();
-            VehicleDOTType dot = vehicleDOTTypes.get(vehicle.getVehicleID());
-            if ((dot == null) || !dotTypes.contains(dot)){
-                it.remove();
-            }
-        }
-        return vehicles;
-    }
-    private Map<Integer, VehicleDOTType> getVehicleDOTTypes(){
-    	Map<Integer, VehicleDOTType> vehicleDOTTypes = new HashMap<Integer, VehicleDOTType>();
-        List<VehicleSetting> vehicleSettings = configuratorDAO.getVehicleSettingsByGroupIDDeep(this.getUser().getGroupID());
-        for(VehicleSetting vs : vehicleSettings){
-        	Integer dotVehicleType = NumberUtil.convertString(vs.getBestOption(SettingType.DOT_VEHICLE_TYPE.getSettingID()));
-        	vehicleDOTTypes.put(vs.getVehicleID(), VehicleDOTType.getFromSetting(dotVehicleType));
-        }
-    	return vehicleDOTTypes;
+    private List<VehicleName> getEligibleVehicles(String nameFilter){
+        return adminVehicleJDBCDAO.getFuelStopEligibleVehicles(getGroupHierarchy().getSubGroupIDList(getUser().getGroupID()), nameFilter);
+        
     }
     public List<VehicleName> autocomplete(Object suggest) {
         String pref = (String)suggest;
-        ArrayList<VehicleName> result = new ArrayList<VehicleName>();
-        for(Vehicle vehicle :getEligibleVehicles()){
-            String name =vehicle.getName();
-            if (name != null && name.toLowerCase().contains(pref.toLowerCase()) || "".equals(pref))
-            {
-                result.add(new VehicleName(vehicle.getVehicleID(),vehicle.getName()));
-            }
-        }
+        List<VehicleName> result = getEligibleVehicles(pref);
         Collections.sort(result);
         return result;
     }
@@ -475,6 +435,13 @@ public class FuelStopsBean extends BaseBean {
 		this.trailerGallonsUI = trailerGallonsUI;
 	}
 		
+    public AdminVehicleJDBCDAO getAdminVehicleJDBCDAO() {
+        return adminVehicleJDBCDAO;
+    }
+    public void setAdminVehicleJDBCDAO(AdminVehicleJDBCDAO adminVehicleJDBCDAO) {
+        this.adminVehicleJDBCDAO = adminVehicleJDBCDAO;
+    }
+
     public  class FuelStopView extends HOSRecord implements EditItem
     {
         @Column(updateable = false)
