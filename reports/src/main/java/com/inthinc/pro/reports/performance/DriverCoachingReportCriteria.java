@@ -16,13 +16,13 @@ import com.inthinc.pro.dao.report.DriverPerformanceDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.model.GroupHierarchy;
 
 /**
  * 
@@ -189,11 +189,8 @@ public class DriverCoachingReportCriteria extends ReportCriteria{
             driverCoachingReportCriteria.addParameter("DRIVER_NAME", driverPerformance.getDriverName());
             driverCoachingReportCriteria.setReportDate(new Date(), this.dateTimeZone.toTimeZone());
             driverCoachingReportCriteria.addParameter("DRIVER_SCORES_MAP", this.driverTimeFrameScoreMap.get(driverPerformance.getDriverID()));
-            driverCoachingReportCriteria.addDateParameter(REPORT_START_DATE, interval.getStart().toDate(), this.dateTimeZone.toTimeZone());
-            
-            /* The interval returns for the end date the beginning of the next day. We minus a second to get the previous day */
-            driverCoachingReportCriteria.addDateParameter(REPORT_END_DATE, interval.getEnd().minusSeconds(1).toDate(), this.dateTimeZone.toTimeZone());
-            
+            driverCoachingReportCriteria.addReportStartEndDateParams(interval);
+
             if(logger.isTraceEnabled()){
                 logger.trace(String.format("Driver violations loaded into %s", driverCoachingReportViolationSummaries.toString()));
             }
