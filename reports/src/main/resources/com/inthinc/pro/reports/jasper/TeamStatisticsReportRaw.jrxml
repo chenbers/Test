@@ -127,16 +127,6 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstats.safety}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-15" x="700" y="10" width="40" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstats.backing}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-15" x="740" y="10" width="40" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.teamstats.backing_events}]]></textFieldExpression>
-			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -218,16 +208,6 @@ $R{notApplicable} : $P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT
 				<reportElement key="textField-14" x="660" y="3" width="40" height="17"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[Integer.valueOf(($F{score.safetyTotal} == null) ? 0 : $F{score.safetyTotal}.intValue())]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-10" x="700" y="3" width="40" height="17"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{score.backingTime})]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-14" x="740" y="3" width="40" height="17"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[Integer.valueOf(($F{score.backingEvents} == null) ? 0 : $F{score.backingEvents}.intValue())]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
