@@ -934,10 +934,11 @@ public class ReportServiceTest {
                 Score dscore = driverScoreList.get(0).getScore();
                 Score vscore = vehicleScoreList.get(0).getScore();
 
-                if (teamType == ITData.BAD && timeFrame != TimeFrame.YEAR) {
-                    assertEquals("Bad group should have one Backing per day " + timeFrame, timeFrame.getNumberOfDays(), dscore.getBackingEvents());
-
-                }
+// US6954 - removoving until firmware implements feature                
+//                if (teamType == ITData.BAD && timeFrame != TimeFrame.YEAR) {
+//                    assertEquals("Bad group should have one Backing per day " + timeFrame, timeFrame.getNumberOfDays(), dscore.getBackingEvents());
+//
+//                }
 
                 assertEquals("Trips", dscore.getTrips(), vscore.getTrips());
                 if (timeFrame != TimeFrame.YEAR) {
@@ -953,8 +954,9 @@ public class ReportServiceTest {
                 assertEquals("Crashes", dscore.getCrashEvents(), vscore.getCrashEvents());
                 assertEquals("Seatbelt Clicks", dscore.getSeatbeltClicks(), vscore.getSeatbeltClicks());
                 assertEquals("Safety Total", dscore.getSafetyTotal(), vscore.getSafetyTotal());
-                assertEquals("Backing", dscore.getBackingTime(), vscore.getBackingTime());
-                assertEquals("Backing Events", dscore.getBackingEvents(), vscore.getBackingEvents());
+// US6954 - removoving until firmware implements feature                
+//                assertEquals("Backing", dscore.getBackingTime(), vscore.getBackingTime());
+//                assertEquals("Backing Events", dscore.getBackingEvents(), vscore.getBackingEvents());
             }
         }
 
