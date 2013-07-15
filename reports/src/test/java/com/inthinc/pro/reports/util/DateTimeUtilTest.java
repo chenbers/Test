@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.inthinc.hos.util.DateUtil;
 
 
+@SuppressWarnings("rawtypes")
 public class DateTimeUtilTest {
     
     DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MM/dd/yyyy");
@@ -104,5 +105,16 @@ public class DateTimeUtilTest {
         }
     }
 
-
+    @Test
+    public void startEndIntervalInTimeZoneTest()
+    {
+        Iterator iterator = DateTimeZone.getAvailableIDs().iterator();
+        Interval interval = new Interval(dateTimeFormatter.withZone(DateTimeZone.UTC).parseDateTime("02/01/2010 00:00:00"), dateTimeFormatter.withZone(DateTimeZone.UTC).parseDateTime("02/05/2010 23:59:59"));
+        while (iterator.hasNext()) {
+            DateTimeZone dateTimeZone = DateTimeZone.forID((String )iterator.next());
+            Interval tzInterval = DateTimeUtil.getStartEndIntervalInTimeZone(interval, dateTimeZone);
+            assertEquals(dateTimeZone.getID() + " Interval Start should match ", "02/01/2010 00:00:00", dateTimeFormatter.withZone(dateTimeZone).print(tzInterval.getStart()));
+            assertEquals(dateTimeZone.getID() + " Interval End should match ", "02/05/2010 23:59:59", dateTimeFormatter.withZone(dateTimeZone).print(tzInterval.getEnd()));
+        }
+    }
 }

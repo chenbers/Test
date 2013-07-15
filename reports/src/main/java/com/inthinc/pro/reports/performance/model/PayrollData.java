@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.performance.model;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.hos.model.HOSStatus;
 
@@ -22,24 +23,21 @@ public class PayrollData implements Comparable<PayrollData>
     private HOSStatus status;
     private int totalAdjustedMinutes;
 
+    private DateTimeZone driverTimeZone;
     
 
     public PayrollData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
             Date day, HOSStatus status, int totalAdjustedMinutes)
     {
-        super();
-        this.groupName = groupName;
-        this.groupAddress = groupAddress;
-        this.driverId = driverId;
-        this.driverName = driverName;
-        this.employeeID = employeeID;
-        this.day = day;
-        this.status = status;
-        this.totalAdjustedMinutes = totalAdjustedMinutes;
-        this.dateTime = new DateTime(day.getTime()); 
+        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), DateTimeZone.UTC);
+    }
+    public PayrollData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
+            Date day, HOSStatus status, int totalAdjustedMinutes, DateTimeZone driverTimeZone)
+    {
+        this(null, groupName, groupAddress, driverId, driverName, employeeID, day, status, totalAdjustedMinutes, new DateTime(day.getTime()), driverTimeZone);
     }
     public PayrollData(Integer groupID, String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
-            Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime)
+            Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime, DateTimeZone driverTimeZone)
     {
         super();
         this.groupID = groupID;
@@ -51,7 +49,9 @@ public class PayrollData implements Comparable<PayrollData>
         this.day = day;
         this.status = status;
         this.totalAdjustedMinutes = totalAdjustedMinutes;
-        this.dateTime = dateTime; 
+        this.dateTime = dateTime;
+        this.driverTimeZone = driverTimeZone;
+        
     }
     
     public void addTotalAdjustedMinutes(int minutesToAdd) {
@@ -177,4 +177,10 @@ public class PayrollData implements Comparable<PayrollData>
         return groupID;
     }
 
+    public DateTimeZone getDriverTimeZone() {
+        return driverTimeZone;
+    }
+    public void setDriverTimeZone(DateTimeZone driverTimeZone) {
+        this.driverTimeZone = driverTimeZone;
+    }
 }

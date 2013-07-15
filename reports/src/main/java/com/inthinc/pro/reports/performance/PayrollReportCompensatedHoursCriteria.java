@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
@@ -40,8 +39,10 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
         for (PayrollData rec : records) {
             if (!compensatedRecords.containsKey(rec.getDay()+"_"+rec.getDriverId())) {
                 // add an onduty row with 0 minutes so that all driver/days show up on report
-                compensatedRecords.put(rec.getDay()+"_"+rec.getDriverId(), new PayrollData(rec.getGroupName(), rec.getGroupAddress(), rec.getDriverId(), rec.getDriverName(), rec.getEmployeeID(), rec.getDay(),
-                        HOSStatus.ON_DUTY, 0));
+                PayrollData item= new PayrollData(rec.getGroupName(), rec.getGroupAddress(), rec.getDriverId(), rec.getDriverName(), rec.getEmployeeID(), rec.getDay(),
+                        HOSStatus.ON_DUTY, 0, rec.getDriverTimeZone());
+                item.setDayStr(dateTimeFormatter.withZone(rec.getDriverTimeZone()).print(rec.getDateTime()));
+                compensatedRecords.put(rec.getDay()+"_"+rec.getDriverId(), item);
             }
 
             if (rec.getStatus() == HOSStatus.DRIVING                        // 
@@ -114,7 +115,7 @@ public class PayrollReportCompensatedHoursCriteria extends PayrollReportCriteria
             row.add(new Result(data.getGroupName(), data.getGroupName()));
             row.add(new Result(data.getEmployeeID(), data.getEmployeeID()));
             row.add(new Result(data.getDriverName(), data.getDriverName()));
-            row.add(new Result(dateTimeFormatter.print(new DateTime(data.getDay())), data.getDay()));
+            row.add(new Result(data.getDayStr(), data.getDay()));
             row.add(new Result(Converter.convertMinutes(new Long(data.getTotalAdjustedMinutes())), data.getTotalAdjustedMinutes()));
             records.add(row);
         }
