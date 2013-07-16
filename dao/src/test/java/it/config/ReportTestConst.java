@@ -19,8 +19,9 @@ public interface ReportTestConst {
     public static final int LOW_BATTERY_EVENT_IDX = 2;
     public static final int ZONE_ENTER_EVENT_IDX = 77;
     public static final int ZONE_EXIT_EVENT_IDX = 85;
+    public static final int RF_KILL_IDX = 76;
     public static final int extraEventIndexes[] = {TAMPER_EVENT_IDX, TAMPER2_EVENT_IDX,   LOW_BATTERY_EVENT_IDX,  
-                        ZONE_ENTER_EVENT_IDX,  ZONE_EXIT_EVENT_IDX}; 
+                        ZONE_ENTER_EVENT_IDX,  ZONE_EXIT_EVENT_IDX, RF_KILL_IDX}; 
     public static final int CRASH_EVENT_IDX = 90;			// always put crash event at this index so we can determine mileage
 
 
@@ -81,7 +82,8 @@ public interface ReportTestConst {
         new WS(REMOTE_AUTO_MAN_DOWN_IDX, NoteType.REMOTE_AUTO_MANDOWN),
         new WS(REMOTE_MANUAL_MAN_DOWN_IDX, NoteType.REMOTE_MAN_MANDOWN),
         new WS(DOT_STOPPED_IDX,NoteType.DOT_STOPPED),
-        new WS(HOS_NO_HOURS_REMAINING_IDX, NoteType.HOS_NO_HOURS)
+        new WS(HOS_NO_HOURS_REMAINING_IDX, NoteType.HOS_NO_HOURS),
+        new WS(RF_KILL_IDX, NoteType.SATELLITE_SWITCH)
     };
     public static String TIMEZONE_STR = "US/Mountain";
     public static TimeZone timeZone = TimeZone.getTimeZone(TIMEZONE_STR);
