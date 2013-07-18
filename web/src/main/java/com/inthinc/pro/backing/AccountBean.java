@@ -239,12 +239,13 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
     
     public static class AccountView extends Account implements EditItem {
-        /**
-         * 
-         */
+        @Column(updateable = false)        
         private static final long serialVersionUID = 1L;
 
+        @Column(updateable = false)        
         private Person person;
+        
+        @Column(updateable = false)        
         private AccountBean bean;
 
         @Column(updateable = false)        
