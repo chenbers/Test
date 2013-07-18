@@ -79,6 +79,7 @@ public class EventGeneratorData {
 			allIndexes.add(Integer.valueOf(4));  // driver logon
 			allIndexes.add(Integer.valueOf(ReportTestConst.ZONE_ENTER_EVENT_IDX));
 			allIndexes.add(Integer.valueOf(ReportTestConst.ZONE_EXIT_EVENT_IDX));
+            allIndexes.add(Integer.valueOf(ReportTestConst.RF_KILL_IDX));
 			
 		}
 		else {

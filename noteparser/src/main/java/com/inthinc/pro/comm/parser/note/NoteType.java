@@ -191,7 +191,7 @@ public enum NoteType {
 	
 	SPEEDING_LOG4(192, new Attrib[]{}),
 
-	SNITCH_DIAGNOSTICS(200, new Attrib[]{}),
+	SNITCH_DIAGNOSTICS(200, new Attrib[]{Attrib.DIAGNOSTIC_CODE}),
 	UNPLUGGED(202, new Attrib[]{}),
 	SEATBELT_START(203, new Attrib[]{}),
 	IDLING(208, new Attrib[]{}),
