@@ -175,15 +175,15 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             case PAYROLL_DETAIL:
                 reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS));
                 break;
             case PAYROLL_SIGNOFF:
                 if (params.getParamType() == ReportParamType.DRIVER )
                     reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), params.getDateRange().getInterval(),  
-                        params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                        params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS));
                 else
                     reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                            params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
+                            params.getLocale(), params.isIncludeInactiveDrivers(), ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS));
                 break;
             
             case DRIVER_HOURS:

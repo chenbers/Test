@@ -30,6 +30,7 @@
 	<field name="driverName" class="java.lang.String"/>
 	<field name="day" class="java.util.Date"/>
 	<field name="totalAdjustedMinutes" class="java.lang.Integer"/>
+	<field name="dayStr" class="java.lang.String"/>
 	<sortField name="groupName"/>
 	<group name="groupName">
 		<groupExpression><![CDATA[$F{groupName}]]></groupExpression>
@@ -277,7 +278,7 @@
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[java.text.DateFormat.getDateInstance().format($F{day})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dayStr}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

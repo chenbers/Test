@@ -505,6 +505,14 @@ public class PayrollCriteriaTest extends BaseUnitTest {
             "","24:01","00:00","00:00","00:29","00:30","00:59"
     };
 
+    
+    static TimeZone centralTimeZone = TimeZone.getTimeZone("US/Central");
+    public static HOSRecord[] tzRecs = {
+        new HOSRecord(10, getUTCDate("11/10/2011 23:00:00", centralTimeZone), centralTimeZone, HOSStatus.OFF_DUTY),  
+        new HOSRecord(10, getUTCDate("11/11/2011 00:00:00", centralTimeZone), centralTimeZone, HOSStatus.DRIVING),  
+        new HOSRecord(10, getUTCDate("11/11/2011 04:00:00", centralTimeZone), centralTimeZone, HOSStatus.OFF_DUTY),  
+};
+
     @Test 
     public void daylightSavings() {
         runTest("dst", dstRecs, dstExpectedMin, dstExpectedCompMin, dstExpectedTabularData, dstExpectedSummTabularData);
@@ -648,5 +656,21 @@ public class PayrollCriteriaTest extends BaseUnitTest {
       int NUM_COMP_RECORDS_EXPECTED = 56;
       assertTrue("There should be as many compensated records as in getPayrollDataExpectedData (or more if that source has been added to)", results.size() >= NUM_COMP_RECORDS_EXPECTED);
   }
-    
+
+  @Test
+  public void testDayListDE8159() {
+      
+      PayrollReportCompensatedHoursCriteria criteria = new PayrollReportCompensatedHoursCriteria(Locale.US);
+      HosRecordDataSet testData = initTestData(10, tzRecs, "11/10/2011 00:00:00", "11/11/2011 23:59:59");
+      for (Driver driver : testData.driverHOSRecordMap.keySet())
+          driver.getPerson().setTimeZone(centralTimeZone);
+      criteria.initDataSet(testData.interval, testData.account, testData.getGroupHierarchy(), testData.driverHOSRecordMap);
+      dump("de8159", 1, criteria, FormatType.PDF);
+      
+      PayrollData secondDay = ((List<PayrollData>)criteria.getMainDataset()).get(1);
+      assertEquals("expected day", "11/11/2011", secondDay.getDayStr());
+      assertEquals("expected time", 240, secondDay.getTotalAdjustedMinutes());
+      
+      
+  }
 }
