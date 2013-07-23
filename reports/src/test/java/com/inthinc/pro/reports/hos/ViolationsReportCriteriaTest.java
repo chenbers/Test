@@ -259,10 +259,10 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
     static Map<RuleSetType, Integer> expectedHosDetailCountMap = new HashMap<RuleSetType, Integer>();
     static {
         expectedHosDetailCountMap.put(RuleSetType.US, Integer.valueOf(4));
-        expectedHosDetailCountMap.put(RuleSetType.US_OIL, Integer.valueOf(3)); 
+        expectedHosDetailCountMap.put(RuleSetType.US_OIL, Integer.valueOf(4)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_60_DEGREES, Integer.valueOf(3)); 
-        expectedHosDetailCountMap.put(RuleSetType.US_HOME_OFFICE, Integer.valueOf(3)); 
+        expectedHosDetailCountMap.put(RuleSetType.US_HOME_OFFICE, Integer.valueOf(4)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_HOME_OFFICE, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.TEXAS, Integer.valueOf(3)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_ALBERTA, Integer.valueOf(2));
@@ -273,11 +273,11 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_OIL, Integer.valueOf(7)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_60_DEGREES_OIL, Integer.valueOf(5)); 
         expectedHosDetailCountMap.put(RuleSetType.US_7DAY, Integer.valueOf(4)); 
-        expectedHosDetailCountMap.put(RuleSetType.US_OIL_7DAY, Integer.valueOf(3)); 
-        expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_7DAY, Integer.valueOf(3));
-        expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_8DAY, Integer.valueOf(3)); 
-        expectedHosDetailCountMap.put(RuleSetType.US_OIL_NO_WAIT_7DAY, Integer.valueOf(3));
-        expectedHosDetailCountMap.put(RuleSetType.US_OIL_NO_WAIT_8DAY, Integer.valueOf(3));
+        expectedHosDetailCountMap.put(RuleSetType.US_OIL_7DAY, Integer.valueOf(4)); 
+        expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_7DAY, Integer.valueOf(4));
+        expectedHosDetailCountMap.put(RuleSetType.US_WATERWELL_8DAY, Integer.valueOf(4)); 
+        expectedHosDetailCountMap.put(RuleSetType.US_OIL_NO_WAIT_7DAY, Integer.valueOf(4));
+        expectedHosDetailCountMap.put(RuleSetType.US_OIL_NO_WAIT_8DAY, Integer.valueOf(4));
     }
     @Test
     public void gainSummmaryTestCases() {
