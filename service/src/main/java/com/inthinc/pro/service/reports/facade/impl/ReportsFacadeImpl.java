@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.reports.facade.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -99,8 +100,11 @@ public class ReportsFacadeImpl implements ReportsFacade {
     @SuppressWarnings("unchecked")
     @Override
     public List<DriverHours> getDriverHours(Integer groupID, Interval interval, Locale locale) {
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(groupID);
+        
         ReportCriteria criteria = reportService.getDriverHoursReportCriteria(
-                getAccountGroupHierarchy(), groupID, interval, locale);
+                getAccountGroupHierarchy(), groupIDList, interval, locale);
         return criteria.getMainDataset();
     }
 

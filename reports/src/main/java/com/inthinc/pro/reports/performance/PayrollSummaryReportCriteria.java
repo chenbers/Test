@@ -32,6 +32,12 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
         this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
         this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
+    
+    public PayrollSummaryReportCriteria(ReportType reportType, Locale locale) {
+        super(reportType, locale);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
+    }
 
 
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {

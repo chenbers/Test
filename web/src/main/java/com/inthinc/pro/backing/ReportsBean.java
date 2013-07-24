@@ -187,7 +187,7 @@ public abstract class ReportsBean extends BaseBean {
                 break;
             
             case DRIVER_HOURS:
-                reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),
                         params.getLocale(), params.isIncludeInactiveDrivers(), params.isIncludeZeroMilesDrivers()));
                 break;
                 

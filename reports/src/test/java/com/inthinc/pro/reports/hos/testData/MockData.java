@@ -11,6 +11,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.hos.HOSRecord;
 
 public class MockData {
     
@@ -27,6 +28,10 @@ public class MockData {
 
     public static Group createMockGroup(Integer acctID) {
         Integer groupID = 15;
+        return createMockGroup(groupID, acctID);
+    }
+    
+    public static Group createMockGroup(Integer groupID, Integer acctID) {
         Group group = new Group(groupID, acctID, "Fleet Group", 0);
         group.setAddress(new Address(15, "123 Group Street", "Suite 100", "Billings", MockStates.getByAbbrev("MT"), "59801", acctID));
         return group;
@@ -47,16 +52,34 @@ public class MockData {
     }
 
     public static Driver createMockDriver(Integer acctID, Integer driverID, String first, String last) {
+        return createMockDriver(acctID, driverID, null, first, last, null);
+    }
+    
+    public static Driver createMockDriver(Integer acctID, Integer driverID, Integer groupID,String first, String last, Status status) {
         Driver driver = new Driver();
         driver.setDriverID(driverID);
         driver.setDot(RuleSetType.US);
         
+        if(status != null) {
+            driver.setStatus(status);
+        }
+        
+        if(groupID != null){
+            driver.setGroupID(groupID);
+        }
+        
         Person person = new Person();
         person.setFirst(first);
         person.setLast(last);
+        person.setTimeZone(TimeZone.getTimeZone("MST7MDT"));
         driver.setPerson(person);
         
         return driver;
+    }
+    
+    public static HOSRecord createMockHosRecord() {
+        HOSRecord hosRecord = new HOSRecord();
+        return hosRecord;
     }
 
 }
