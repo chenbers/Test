@@ -40,6 +40,7 @@ public enum Attrib {
 	
 	MPGODO(224, AttribParserType.INTEGER),
 	TRIP_DURATION(225, AttribParserType.INTEGER),
+    DIAGNOSTIC_CODE(226, AttribParserType.INTEGER),
 	
 	/* byte */
 	AVGSPEED(2, AttribParserType.BYTE, "avgSpeed"),

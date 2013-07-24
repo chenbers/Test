@@ -26,7 +26,7 @@ public class PayrollSignoffReportCriteria extends PayrollReportCriteria {
 
     public PayrollSignoffReportCriteria(Locale locale) {
         super(ReportType.PAYROLL_SIGNOFF, locale);
-        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        this.setIncludeInactiveDrivers(ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS);
         this.setIncludeZeroMilesDrivers(ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval) {

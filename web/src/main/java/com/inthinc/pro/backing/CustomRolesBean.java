@@ -301,7 +301,9 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
         private CustomRolesBean bean;
         @Column(updateable = false)
         private boolean selected;
+        @Column(updateable = false)
         private LinkedHashMap<Integer,AccessPointView> accessPointSelection;
+        @Column(updateable = false)
         private boolean allAccessPointsSelected = false;
         
         @SuppressWarnings("serial")

@@ -725,7 +725,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS );
+        return getPayrollDetailReportCriteria(accountGroupHierarchy, groupIDList, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS );
     }
     
     @Override
@@ -744,7 +744,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     @Override
     public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
-        return getPayrollSignoffReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, driverID, interval, locale, ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     
     @Override
@@ -763,7 +763,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     public ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
-        return getPayrollSignoffReportCriteria(accountGroupHierarchy, groupIDList, interval, locale,  ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_EXCLUDE_ZERO_MILES_DRIVERS);
+        return getPayrollSignoffReportCriteria(accountGroupHierarchy, groupIDList, interval, locale,  ReportCriteria.DEFAULT_EXCLUDE_INACTIVE_DRIVERS, ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS);
     }
     
     @Override
@@ -1633,7 +1633,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                     timeFrame.getInterval(),
                                     person.getLocale(),
                                     reportSchedule.getIncludeInactiveDrivers(),
-                                     reportSchedule.getIncludeZeroMilesDrivers()
+                                    ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
                                     ));
                     break;
                 case PAYROLL_SIGNOFF:
@@ -1644,7 +1644,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         timeFrame.getInterval(),
                                         person.getLocale(),
                                         reportSchedule.getIncludeInactiveDrivers(),
-                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
                                         )
                                         );
                     } else {
@@ -1654,7 +1654,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                         timeFrame.getInterval(),
                                         person.getLocale(),
                                         reportSchedule.getIncludeInactiveDrivers(),
-                                        reportSchedule.getIncludeZeroMilesDrivers()
+                                        ReportCriteria.DEFAULT_INCLUDE_ZERO_MILES_DRIVERS
                                         )
                                         );
                     }

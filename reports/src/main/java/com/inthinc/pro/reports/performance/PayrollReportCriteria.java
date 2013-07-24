@@ -137,7 +137,8 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
     
     protected List<PayrollData> getDriverPayrollData(Interval interval, GroupHierarchy groupHierarchy, Date currentTime, Driver driver, List<HOSRecord> hosRecordList) {
 
-        Interval driverInterval =DateTimeUtil.getStartEndIntervalInTimeZone(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
+        DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+        Interval driverInterval =DateTimeUtil.getStartEndIntervalInTimeZone(interval, driverTimeZone);
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         List<PayrollHOSRec> compensatedRecList = getCompensatedRecordList(hosRecordList, driverInterval.getStart().toDate(), driverInterval.getEnd().toDate(), currentTime);
         Collections.reverse(compensatedRecList);
@@ -148,7 +149,7 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
 
         String driverName = driver.getPerson().getFullNameLastFirst();
         String employeeID = driver.getPerson().getEmpid();
-        List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
+        List<DateTime> dayList = DateTimeUtil.getDayList(interval, driverTimeZone);
 
         for (DateTime day : dayList) {
             List<PayrollHOSRec> dayLogList = getListForDay(compensatedRecList, day.toDate(), day.plusDays(1).toDate());
@@ -192,8 +193,8 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
                     }
                 }
                 PayrollData item = new PayrollData(driver.getGroupID(), groupName, groupAddress, driver.getDriverID(), driverName, employeeID, day.toDate(), 
-                        status, secondsToMinutes(sortedDayMap.get(status)) + addMinute, day);
-                item.setDayStr(dateTimeFormatter.print(day));
+                        status, secondsToMinutes(sortedDayMap.get(status)) + addMinute, day, driverTimeZone);
+                item.setDayStr(dateTimeFormatter.withZone(driverTimeZone).print(day));
                 dataList.add(item);
                 
                 totalMinForDay = totalMinForDay + item.getTotalAdjustedMinutes();

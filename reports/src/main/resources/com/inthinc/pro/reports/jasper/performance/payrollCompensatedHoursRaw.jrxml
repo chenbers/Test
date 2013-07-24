@@ -15,6 +15,7 @@
 	<field name="driverName" class="java.lang.String"/>
 	<field name="day" class="java.util.Date"/>
 	<field name="totalAdjustedMinutes" class="java.lang.Integer"/>
+	<field name="dayStr" class="java.lang.String"/>
 	<columnHeader>
 		<band height="20">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -64,7 +65,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-53" mode="Opaque" x="150" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[java.text.DateFormat.getDateInstance().format($F{day})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dayStr}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="200" y="0" width="50" height="20" backcolor="#FFFFFF"/>

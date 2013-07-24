@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.BeforeClass;
@@ -44,7 +46,6 @@ public class DriverPerformanceTest {
     private static final String PERF_REPORT_BASE_DATA_XML = "PerfReportTest.xml";
 
     public static Integer NUM_DRIVERS_VEHICLES_DEVICES = 3;
-    public static DateTimeZone dateTimeZone;
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -66,9 +67,6 @@ public class DriverPerformanceTest {
         if (!itData.parseTestDataExt(stream, siloService, NUM_DRIVERS_VEHICLES_DEVICES)) {
             throw new Exception("Error parsing Test data xml file");
         }
-        
-        TimeZone timeZone = TimeZone.getTimeZone(ReportTestConst.TIMEZONE_STR);
-        dateTimeZone = DateTimeZone.forTimeZone(timeZone);
         
   }
 
@@ -98,8 +96,20 @@ public class DriverPerformanceTest {
         driverPerformanceReportHessianDAO.setGroupReportDAO(groupReportHessianDAO);
         driverPerformanceReportHessianDAO.setVehiclePerformanceDAO(vehiclePerformanceDAO);
         
+        // matches interval used with a scheduled report (UTC timezone)
+        Interval intervalFromScheduler = TimeFrame.TODAY.getInterval();
+        runTestForInterval(driverPerformanceReportHessianDAO, intervalFromScheduler);
         
-        Interval interval = TimeFrame.TODAY.getInterval(dateTimeZone);
+        // matches interval portal provides
+        DateTimeZone dateTimeZone = DateTimeZone.UTC;
+        DateTime now = new DateTime(); 
+        DateMidnight start = new DateMidnight(new DateTime(now, dateTimeZone), dateTimeZone);
+        DateTime end = new DateMidnight(now, dateTimeZone).toDateTime().plusDays(1).minus(1);
+        Interval intervalFromPortal = new Interval(start, end); 
+        runTestForInterval(driverPerformanceReportHessianDAO, intervalFromPortal);
+    }
+
+    private void runTestForInterval(DriverPerformanceDAOImpl driverPerformanceReportHessianDAO, Interval interval) {
         int groupIdx = ITData.GOOD;  
         GroupListData groupListData = itData.teamGroupListData.get(groupIdx);
         Group group = groupListData.group;

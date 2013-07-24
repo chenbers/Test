@@ -19,6 +19,7 @@
 	<field name="day" class="java.util.Date"/>
 	<field name="status" class="com.inthinc.hos.model.HOSStatus"/>
 	<field name="totalAdjustedMinutes" class="java.lang.Integer"/>
+	<field name="dayStr" class="java.lang.String"/>
 	<columnHeader>
 		<band height="20">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
@@ -135,10 +136,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="MM/dd/yyyy" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="350" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[java.text.DateFormat.getDateInstance().format($F{day})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dayStr}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
