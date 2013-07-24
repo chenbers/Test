@@ -6,16 +6,22 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import mockit.VerificationsInOrder;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.DriveTimeDAO;
+import com.inthinc.hos.ddl.HOSOccupantLog;
+import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverName;
@@ -26,6 +32,12 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.hos.HOSDriverLogin;
+import com.inthinc.pro.model.hos.HOSGroupMileage;
+import com.inthinc.pro.model.hos.HOSOccupantHistory;
+import com.inthinc.pro.model.hos.HOSOccupantInfo;
+import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.model.hos.HOSVehicleMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.hos.testData.MockData;
@@ -59,6 +71,8 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         serviceSUT.setGroupDAO(new MockGroupDAO(mockGroupId));
         serviceSUT.setDriverDAO(new MockDriverDAO(mockGroupId));
         serviceSUT.setWaysmartDAO(new MockWaysmartDAO());
+        serviceSUT.setAccountDAO(new MockAccountDAO());
+        serviceSUT.setHosDAO(new MockHosDAO());
     }
 
     /**
@@ -69,15 +83,17 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     public void testGetDriverHoursReportCriteria(final DriverHoursReportCriteria criteriaMock) {
 
         final Interval interval = new Interval(new Date().getTime() - 3000, new Date().getTime());
-
-        serviceSUT.getDriverHoursReportCriteria(groupHierarchy, mockGroupId, interval, Locale.US);
+        List<Integer> mockGroupIdList = new ArrayList<Integer>();
+        mockGroupIdList.add(mockGroupId);
+        serviceSUT.getDriverHoursReportCriteria(groupHierarchy, mockGroupIdList, interval, Locale.US);
 
         new VerificationsInOrder() {
             {
                 new DriverHoursReportCriteria(Locale.US);
-                criteriaMock.setDriverDAO((DriverDAO) any);
-                criteriaMock.setDriveTimeDAO((DriveTimeDAO) any);
-                criteriaMock.init(groupHierarchy, mockGroupId, interval);
+                criteriaMock.setAccountDAO((AccountDAO) any);
+                criteriaMock.setGroupDAO((GroupDAO) any);
+                criteriaMock.setHosDAO((HOSDAO) any);
+                criteriaMock.init(groupHierarchy, (List<Integer>) any, interval);
 
             }
         };
@@ -303,7 +319,193 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 //			return null;
 //		}
     }
+    class MockHosDAO implements HOSDAO {
+        
+        public MockHosDAO() {
+            // TODO Auto-generated constructor stub
+        }
 
+        @Override
+        public HOSRecord findByID(Long id) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Long create(Long id, HOSRecord entity) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Integer update(HOSRecord entity) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Integer deleteByID(Long id) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSRecord> getHOSRecords(Integer driverID, Interval interval, Boolean driverStatusOnly) {
+            List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
+            HOSRecord record = new HOSRecord();
+            record.setStatus(HOSStatus.DRIVING);
+            record.setLogTime(new Date());
+            hosRecordList.add(record);
+            return hosRecordList;
+        }
+
+        @Override
+        public List<HOSRecord> getHOSRecordsFilteredByInterval(Integer driverID, Interval interval, Boolean driverStatusOnly) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSGroupMileage> getHOSMileage(Integer groupID, Interval interval, Boolean noDriver) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSVehicleMileage> getHOSVehicleMileage(Integer groupID, Interval interval, Boolean noDriver) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Map<Integer, Long> fetchMileageForDayVehicle(DateTime day, Integer vehicleID) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public HOSOccupantInfo getOccupantInfo(Integer driverID) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSRecord> getHOSRecordsForCommAddress(String address, List<HOSRecord> paramList) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public HOSDriverLogin getDriverForEmpid(String commAddress, String employeeId) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public String fetchIMEIForOccupant(Integer driverID, Integer startTime) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSOccupantHistory> getHOSOccupantHistory(HOSDriverLogin driverLogin) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSOccupantHistory> getHOSOccupantHistory(String commAddress, String employeeId) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime, int odometer) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Long createFromNote(HOSRecord hosRecord) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public LatLng getVehicleHomeOfficeLocation(Integer vehicleID) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        
+    }
+    
+    class MockAccountDAO implements AccountDAO {
+
+        MockAccountDAO() {
+            MockData.createMockAccount();
+        }
+        
+        @Override
+        public Account findByID(Integer id) {
+            return null;
+        }
+
+        @Override
+        public Integer create(Integer id, Account entity) {
+            return null;
+        }
+
+        @Override
+        public Integer update(Account entity) {
+            return null;
+        }
+
+        @Override
+        public Integer deleteByID(Integer id) {
+            return null;
+        }
+
+        @Override
+        public Integer create(Account entity) {
+            return null;
+        }
+
+        @Override
+        public List<Account> getAllAcctIDs() {
+            return null;
+        }
+        
+    }
     class MockGroupDAO implements GroupDAO {
         Group group = null;
 

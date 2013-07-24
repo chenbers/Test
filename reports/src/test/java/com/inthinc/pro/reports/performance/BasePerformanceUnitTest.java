@@ -3,6 +3,8 @@ package com.inthinc.pro.reports.performance;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -25,12 +27,17 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.BaseUnitTest;
+import com.inthinc.pro.reports.hos.testData.MockData;
 
 public class BasePerformanceUnitTest extends BaseUnitTest {
     
     protected static final Integer GROUP_ID = Integer.valueOf(1);
     protected static final Integer TEAM_GROUP_ID = Integer.valueOf(2);
     protected static final String GROUP_NAME = "TEST GROUP";
+    
+    protected static Integer ACCOUNT_ID = new Integer(1);
+    protected static Integer DRIVER_ID = new Integer(1);
+    protected final Locale LOCALE = Locale.US;
 
 
     protected Interval initInterval()
@@ -72,6 +79,7 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
                 person.setPersonID(i);
                 person.setFirst("F" + i);
                 person.setLast("L"+i);
+                person.setTimeZone(TimeZone.getTimeZone("MST7MDT"));
                 driver.setPerson(person);
                 driverList.add(driver);
             }
@@ -90,7 +98,9 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
 
         @Override
         public List<Driver> getDrivers(Integer groupID) {
-            return null;
+            List<Driver> retVal = new ArrayList<Driver>();
+            retVal.add(MockData.createMockDriver(ACCOUNT_ID, DRIVER_ID, GROUP_ID, "L1", "F1", Status.ACTIVE));
+            return retVal;
         }
 
         @Override
