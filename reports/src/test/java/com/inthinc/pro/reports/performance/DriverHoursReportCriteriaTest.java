@@ -280,8 +280,8 @@ public class DriverHoursReportCriteriaTest {
                     minutes++;
                 
                 totalCompMinutes += minutes;
-                
-                PayrollData item = new PayrollData(DRIVER.getGroupID(), GROUP_FULL_NAME, "", DRIVER.getDriverID(), DRIVER.getPerson().getFullName(), null, day.toDate(), status, totalCompMinutes, day);
+                DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(DRIVER.getPerson().getTimeZone());
+                PayrollData item = new PayrollData(DRIVER.getGroupID(), GROUP_FULL_NAME, "", DRIVER.getDriverID(), DRIVER.getPerson().getFullName(), null, day.toDate(), status, totalCompMinutes, day, driverTimeZone);
                 
                 retVal.add(item);
             }
